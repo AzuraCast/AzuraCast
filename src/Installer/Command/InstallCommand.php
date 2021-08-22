@@ -111,8 +111,29 @@ class InstallCommand
         unset($azuracastEnv['ENABLE_ADVANCED_FEATURES']);
 
         // Randomize the MariaDB root password for new installs.
-        if (!$devMode && $isNewInstall && 'azur4c457' === $azuracastEnv[Environment::DB_PASSWORD]) {
-            $azuracastEnv[Environment::DB_PASSWORD] = Strings::generatePassword(12);
+        if ($isNewInstall) {
+            if ($devMode) {
+                if (empty($azuracastEnv['MYSQL_ROOT_PASSWORD'])) {
+                    $azuracastEnv['MYSQL_ROOT_PASSWORD'] = 'azur4c457_root';
+                }
+            } else {
+                if (
+                    empty($azuracastEnv[Environment::DB_PASSWORD])
+                    || 'azur4c457' === $azuracastEnv[Environment::DB_PASSWORD]
+                ) {
+                    $azuracastEnv[Environment::DB_PASSWORD] = Strings::generatePassword(12);
+                }
+
+                if (empty($azuracastEnv['MYSQL_ROOT_PASSWORD'])) {
+                    $azuracastEnv['MYSQL_ROOT_PASSWORD'] = Strings::generatePassword(20);
+                }
+            }
+        }
+
+        if (!empty($azuracastEnv['MYSQL_ROOT_PASSWORD'])) {
+            unset($azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD']);
+        } else {
+            $azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD'] = 'yes';
         }
 
         // Display header messages
@@ -141,16 +162,6 @@ class InstallCommand
         }
 
         if ($customize) {
-            // Release channel
-            $env['AZURACAST_VERSION'] = $io->choice(
-                __('AzuraCast Release Channel'),
-                [
-                    'stable' => __('Stable'),
-                    'latest' => __('Rolling Release'),
-                ],
-                $env['AZURACAST_VERSION']
-            );
-
             // Port customization
             $io->writeln(
                 __('AzuraCast is currently configured to listen on the following ports:'),

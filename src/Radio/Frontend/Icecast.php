@@ -25,11 +25,6 @@ class Icecast extends AbstractFrontend
         return true;
     }
 
-    public function supportsListenerDetail(): bool
-    {
-        return true;
-    }
-
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
@@ -220,6 +215,29 @@ class Icecast extends AbstractFrontend
                     'port' => $mountRelayUri->getPort(),
                     'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mount_row->getName(),
+                ];
+            }
+
+            $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
+            if (!empty($bannedCountries)) {
+                $mountAuthenticationUrl = $this->environment->isDocker()
+                    ? 'http://web/api/internal/' . $station->getIdRequired() . '/listener-auth'
+                    : 'http://localhost/api/internal/' . $station->getId() . '/listener-auth';
+
+                $mountAuthenticationUrl .= '?api_auth=' . $station->getAdapterApiKey();
+
+                $mount['authentication'][] = [
+                    '@type' => 'url',
+                    'option' => [
+                        [
+                            '@name' => 'listener_add',
+                            '@value' => $mountAuthenticationUrl,
+                        ],
+                        [
+                            '@name' => 'auth_header',
+                            '@value' => 'icecast-auth-user: 1',
+                        ],
+                    ],
                 ];
             }
 

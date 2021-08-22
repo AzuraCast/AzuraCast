@@ -6,6 +6,8 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Exception\PermissionDeniedException;
+use App\Http\ServerRequest;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 
 /**
@@ -22,7 +24,7 @@ class RemotesController extends AbstractStationApiCrudController
      *   description="List all current remote relays.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationRemote"))
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_StationRemote"))
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
@@ -33,10 +35,10 @@ class RemotesController extends AbstractStationApiCrudController
      *   description="Create a new remote relay.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationRemote")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_StationRemote")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationRemote")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_StationRemote")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
@@ -54,7 +56,7 @@ class RemotesController extends AbstractStationApiCrudController
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationRemote")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_StationRemote")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
@@ -64,7 +66,7 @@ class RemotesController extends AbstractStationApiCrudController
      *   tags={"Stations: Remote Relays"},
      *   description="Update details of a single remote relay.",
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationRemote")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_StationRemote")
      *   ),
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
@@ -99,6 +101,35 @@ class RemotesController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        if (!($record instanceof Entity\StationRemote)) {
+            throw new InvalidArgumentException(
+                sprintf('Record must be an instance of %s.', Entity\StationRemote::class)
+            );
+        }
+
+        $returnArray = $this->toArray($record);
+
+        $return = new Entity\Api\StationRemote();
+        $return->fromParentObject($returnArray);
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
+        $return->is_editable = $record->isEditable();
+
+        $return->links = [
+            'self' => (string)$router->fromHere(
+                route_name:   $this->resourceRouteName,
+                route_params: ['id' => $record->getIdRequired()],
+                absolute:     !$isInternal
+            ),
+        ];
+
+        return $return;
+    }
 
     /**
      * @inheritDoc

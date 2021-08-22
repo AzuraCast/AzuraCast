@@ -9,12 +9,10 @@ use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
-use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object") */
 #[
     ORM\Entity,
     ORM\Table(name: 'station_remotes'),
@@ -43,83 +41,56 @@ class StationRemote implements
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Relay $relay = null;
 
-    /** @OA\Property(example="128kbps MP3") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $display_name = null;
 
-    /** @OA\Property(example=true) */
     #[ORM\Column]
     protected bool $is_visible_on_public_pages = true;
 
-    /** @OA\Property(example="icecast") */
     #[ORM\Column(length: 50)]
     #[Assert\Choice(choices: [Adapters::REMOTE_ICECAST, Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2])]
     protected string $type;
 
-    /** @OA\Property(example=false) */
     #[ORM\Column]
     protected bool $enable_autodj = false;
 
-    /** @OA\Property(example="mp3") */
     #[ORM\Column(length: 10, nullable: true)]
     protected ?string $autodj_format = null;
 
-    /** @OA\Property(example=128) */
     #[ORM\Column(type: 'smallint', nullable: true)]
     protected ?int $autodj_bitrate = null;
 
-    /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;
 
-    /** @OA\Property(example="https://custom-url.example.com") */
     #[ORM\Column(length: 255, nullable: false)]
     protected string $url = '';
 
-    /** @OA\Property(example="/stream.mp3") */
     #[ORM\Column(length: 150, nullable: true)]
     protected ?string $mount = null;
 
-    /** @OA\Property(example="password") */
     #[ORM\Column(length: 100, nullable: true)]
     protected ?string $admin_password = null;
 
-    /** @OA\Property(example=8000) */
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     protected ?int $source_port = null;
 
-    /** @OA\Property(example="/") */
     #[ORM\Column(length: 150, nullable: true)]
     protected ?string $source_mount = null;
 
-    /** @OA\Property(example="source") */
     #[ORM\Column(length: 100, nullable: true)]
     protected ?string $source_username = null;
 
-    /** @OA\Property(example="password") */
     #[ORM\Column(length: 100, nullable: true)]
     protected ?string $source_password = null;
 
-    /** @OA\Property(example=false) */
     #[ORM\Column]
     protected bool $is_public = false;
 
-    /**
-     * @OA\Property(
-     *     description="The most recent number of unique listeners.",
-     *     example=10
-     * )
-     */
     #[ORM\Column]
     #[Attributes\AuditIgnore]
     protected int $listeners_unique = 0;
 
-    /**
-     * @OA\Property(
-     *     description="The most recent number of total (non-unique) listeners.",
-     *     example=12
-     * )
-     */
     #[ORM\Column]
     #[Attributes\AuditIgnore]
     protected int $listeners_total = 0;
@@ -406,15 +377,15 @@ class StationRemote implements
      */
     public function api(
         AbstractRemote $adapter
-    ): Api\StationRemote {
-        $response = new Api\StationRemote();
+    ): Api\NowPlaying\StationRemote {
+        $response = new Api\NowPlaying\StationRemote();
 
         $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
         $response->url = $adapter->getPublicUrl($this);
 
-        $response->listeners = new Api\NowPlayingListeners(
-            total: $this->listeners_total,
+        $response->listeners = new Api\NowPlaying\Listeners(
+            total:  $this->listeners_total,
             unique: $this->listeners_unique
         );
 

@@ -11,6 +11,7 @@ use App\Environment;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -37,6 +38,7 @@ class StationForm extends EntityForm
             'forms/station',
             [
                 'adapters' => $adapters,
+                'countries' => Countries::getNames(),
             ]
         );
         parent::__construct($em, $serializer, $validator, $form_config);

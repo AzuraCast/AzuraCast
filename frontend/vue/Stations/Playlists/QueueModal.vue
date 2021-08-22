@@ -19,7 +19,7 @@
                 </b-tbody>
             </b-table-simple>
         </b-overlay>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>

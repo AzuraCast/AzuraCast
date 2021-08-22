@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\Entity\Api\NowPlaying\SongHistory;
 use App\Traits\LoadFromParentObject;
 use OpenApi\Annotations as OA;
 

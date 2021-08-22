@@ -2,7 +2,7 @@
     <b-modal id="create_directory" centered ref="modal" :title="langNewDirectory">
         <b-form @submit.prevent="doMkdir">
             <b-form-group label-for="new_directory_name">
-                <template v-slot:label>
+                <template #label>
                     <translate key="lang_new_directory_name">Directory Name</translate>
                 </template>
                 <b-input type="text" id="new_directory_name" v-model="$v.newDirectory.$model"
@@ -12,7 +12,7 @@
                 </b-form-invalid-feedback>
             </b-form-group>
         </b-form>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" @click="close" key="lang_btn_close" v-translate>
                 Close
             </b-button>

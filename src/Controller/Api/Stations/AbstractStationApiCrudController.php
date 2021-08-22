@@ -83,16 +83,16 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int $station_id
-     * @param int $id
+     * @param string|int $station_id
+     * @param string|int $id
      *
      * @throws Exception
      */
     public function getAction(
         ServerRequest $request,
         Response $response,
-        int $station_id,
-        int $id
+        mixed $station_id,
+        mixed $id
     ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);
@@ -125,14 +125,14 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int $station_id
-     * @param int $id
+     * @param string|int $station_id
+     * @param string|int $id
      */
     public function editAction(
         ServerRequest $request,
         Response $response,
-        int $station_id,
-        int $id
+        mixed $station_id,
+        mixed $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 
@@ -149,14 +149,14 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int $station_id
-     * @param int $id
+     * @param string|int $station_id
+     * @param string|int $id
      */
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int $station_id,
-        int $id
+        mixed $station_id,
+        mixed $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 

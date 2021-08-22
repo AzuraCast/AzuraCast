@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2021-03-08T13:22:42+00:00
-PO-Revision-Date: 2021-03-09 04:27
+POT-Creation-Date: 2021-08-20T16:39:31+00:00
+PO-Revision-Date: 2021-08-22 15:51
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -25,185 +25,33 @@ X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
 ',
       ),
-      'Now Playing Data' => 
+      'This value is already used.' => 
       array (
-        0 => '"Aktuell läuft" Daten',
+        0 => 'Dieser Wert wird bereits verwendet.',
       ),
-      '1-Minute Sync' => 
+      'The port %s is in use by another station.' => 
       array (
-        0 => '1-Minute Sync',
+        0 => 'Der Port %s wird bereits von einer anderen Station verwendet.',
       ),
-      'Song Requests Queue' => 
+      'Storage location %s could not be validated: %s' => 
       array (
-        0 => 'Musikwunsch Warteschlange',
+        0 => 'Speicherort %s konnte nicht validiert werden: %s',
       ),
-      '5-Minute Sync' => 
+      'Storage location %s already exists.' => 
       array (
-        0 => '5-Minuten Sync',
+        0 => 'Speicherort %s existiert bereits.',
       ),
-      'Check Media Folders' => 
+      'Invalid token specified.' => 
       array (
-        0 => 'Prüfe den Medien-Ordner',
+        0 => 'Ungültiges Token angegeben.',
       ),
-      '1-Hour Sync' => 
+      'Logged in using account recovery token' => 
       array (
-        0 => '1-Stunde Sync',
+        0 => 'Eingeloggt mit Account-Wiederherstellungstoken',
       ),
-      'Analytics/Statistics' => 
+      'Your password has been updated.' => 
       array (
-        0 => 'Statistiken',
-      ),
-      'Cleanup' => 
-      array (
-        0 => 'Aufräumen',
-      ),
-      'All Stations' => 
-      array (
-        0 => 'Alle Stationen',
-      ),
-      'Listeners' => 
-      array (
-        0 => 'Hörer',
-      ),
-      'Record not found!' => 
-      array (
-        0 => 'Eintrag nicht gefunden!',
-      ),
-      'Changes saved successfully.' => 
-      array (
-        0 => 'Änderungen gespeichert.',
-      ),
-      'Record deleted successfully.' => 
-      array (
-        0 => 'Eintrag gelöscht.',
-      ),
-      'You cannot remove yourself.' => 
-      array (
-        0 => 'Du kannst dich nicht selbst löschen.',
-      ),
-      'This station does not accept requests currently.' => 
-      array (
-        0 => 'Diese Station akzeptiert derzeit keine Musikwünsche.',
-      ),
-      'Request submitted successfully.' => 
-      array (
-        0 => 'Wunsch erfolgreich übermittelt.',
-      ),
-      'This station is out of available storage space.' => 
-      array (
-        0 => 'Diese Station hat keinen Speicherplatz mehr.',
-      ),
-      'Station restarted.' => 
-      array (
-        0 => 'Station neu gestartet.',
-      ),
-      'Frontend stopped.' => 
-      array (
-        0 => 'Frontend gestoppt.',
-      ),
-      'Frontend started.' => 
-      array (
-        0 => 'Frontend gestartet.',
-      ),
-      'Frontend restarted.' => 
-      array (
-        0 => 'Frontend neu gestartet.',
-      ),
-      'Song skipped.' => 
-      array (
-        0 => 'Lied übersprungen.',
-      ),
-      'Streamer disconnected.' => 
-      array (
-        0 => 'Streamer getrennt.',
-      ),
-      'Backend stopped.' => 
-      array (
-        0 => 'Backend gestoppt.',
-      ),
-      'Backend started.' => 
-      array (
-        0 => 'Backend gestartet.',
-      ),
-      'Backend restarted.' => 
-      array (
-        0 => 'Backend neu gestartet.',
-      ),
-      'Playlist successfully imported; %d of %d files were successfully matched.' => 
-      array (
-        0 => 'Playlist erfolgreich importiert; %d von %d Dateien wurden erfolgreich zugeordnet.',
-      ),
-      'Playlist queue cleared.' => 
-      array (
-        0 => '',
-      ),
-      'Playlist not found.' => 
-      array (
-        0 => 'Playlist nicht gefunden.',
-      ),
-      'This playlist is not a sequential playlist.' => 
-      array (
-        0 => 'Diese Playlist ist keine sequentielle Playlist.',
-      ),
-      'Playlist enabled.' => 
-      array (
-        0 => 'Playlist aktiviert.',
-      ),
-      'Playlist disabled.' => 
-      array (
-        0 => 'Playlist deaktiviert.',
-      ),
-      'Playlist reshuffled.' => 
-      array (
-        0 => 'Wiedergabeliste neu gemischt.',
-      ),
-      'This station does not support on-demand streaming.' => 
-      array (
-        0 => 'Diese Station unterstützt kein On-Demand-Streaming.',
-      ),
-      'File not found.' => 
-      array (
-        0 => 'Datei nicht gefunden.',
-      ),
-      'Record not found.' => 
-      array (
-        0 => 'Eintrag nicht gefunden.',
-      ),
-      'No recording available.' => 
-      array (
-        0 => 'Keine Aufnahme verfügbar.',
-      ),
-      'Directory' => 
-      array (
-        0 => 'Verzeichnis',
-      ),
-      'File Not Processed: %s' => 
-      array (
-        0 => '',
-      ),
-      'File Processing' => 
-      array (
-        0 => '',
-      ),
-      'No directory specified' => 
-      array (
-        0 => '',
-      ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'Verzeichnis "%s" wurde nicht erstellt',
-      ),
-      'File not specified.' => 
-      array (
-        0 => 'Keine Datei gewählt.',
-      ),
-      'New path not specified.' => 
-      array (
-        0 => 'Neuer Pfad nicht angegeben.',
-      ),
-      'Path "%s" is not a folder.' => 
-      array (
-        0 => 'Pfad "%s" ist kein Ordner.',
+        0 => 'Dein Passwort wurde aktualisiert.',
       ),
       'Too many login attempts' => 
       array (
@@ -229,37 +77,53 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ihre Anmeldeinformationen konnten nicht bestätigt werden.',
       ),
-      'Invalid token specified.' => 
-      array (
-        0 => '',
-      ),
-      'Logged in using account recovery token' => 
-      array (
-        0 => '',
-      ),
-      'Your password has been updated.' => 
-      array (
-        0 => '',
-      ),
       'Too many forgot password attempts' => 
       array (
-        0 => '',
+        0 => 'Zu viele Versuche das Passwort zurückzusetzen',
       ),
       'You have attempted to reset your password too many times. Please wait 30 seconds and try again.' => 
       array (
-        0 => '',
+        0 => 'Du hast zu oft versucht, dein Passwort zurückzusetzen. Bitte warte 30 Sekunden und versuche es erneut.',
       ),
       'Account Recovery Link' => 
       array (
-        0 => '',
+        0 => 'Account-Wiederherstellungslink',
       ),
       'Account recovery e-mail sent.' => 
       array (
-        0 => '',
+        0 => 'Account-Wiederherstellungsemail gesendet.',
       ),
       'If the e-mail address you provided is in the system, check your inbox for a password reset message.' => 
       array (
-        0 => '',
+        0 => 'Wenn die E-Mail, die du angegeben hast im System ist, überprüfe deinen Posteingang für die Zurücksetzung deines Passworts.',
+      ),
+      'Episode not found.' => 
+      array (
+        0 => 'Episode nicht gefunden.',
+      ),
+      'No episodes found.' => 
+      array (
+        0 => 'Keine Episoden gefunden.',
+      ),
+      'Profile saved!' => 
+      array (
+        0 => 'Profil wurde gespeichert!',
+      ),
+      'Edit Profile' => 
+      array (
+        0 => 'Profil bearbeiten',
+      ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => 'Zwei-Faktor-Authentifizierung deaktiviert.',
+      ),
+      'The token you supplied is invalid. Please try again.' => 
+      array (
+        0 => 'Das eingegebene Token ist ungültig. Bitte versuche es erneut.',
+      ),
+      'Two-factor authentication enabled.' => 
+      array (
+        0 => 'Zwei-Faktor-Authentifizierung aktiviert.',
       ),
       'Setup has already been completed!' => 
       array (
@@ -297,29 +161,29 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'API-Schlüssel gelöscht.',
       ),
-      'Profile saved!' => 
+      'SHOUTcast version "%s" is currently installed.' => 
       array (
-        0 => 'Profil wurde gespeichert!',
+        0 => 'SHOUTcast Version "%s" ist derzeit installiert.',
       ),
-      'Edit Profile' => 
+      'Install SHOUTcast' => 
       array (
-        0 => 'Profil bearbeiten',
-      ),
-      'The token you supplied is invalid. Please try again.' => 
-      array (
-        0 => 'Das eingegebene Token ist ungültig. Bitte versuche es erneut.',
-      ),
-      'Two-factor authentication enabled.' => 
-      array (
-        0 => 'Zwei-Faktor-Authentifizierung aktiviert.',
-      ),
-      'Two-factor authentication disabled.' => 
-      array (
-        0 => 'Zwei-Faktor-Authentifizierung deaktiviert.',
+        0 => 'Installiere Shoutcast',
       ),
       'Changes saved.' => 
       array (
         0 => 'Änderungen gespeichert.',
+      ),
+      'An error occurred while downloading the GeoLite database: %s' => 
+      array (
+        0 => 'Beim Herunterladen der GeoLite-Datenbank ist ein Fehler aufgetreten: %s',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => 'GeoLite IP-Datenbank installieren',
+      ),
+      'GeoLite database uninstalled.' => 
+      array (
+        0 => 'GeoLite-Datenbank deinstalliert.',
       ),
       'Station updated.' => 
       array (
@@ -345,101 +209,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Sender duplizieren: %s',
       ),
-      'System Settings' => 
-      array (
-        0 => 'System Einstellungen',
-      ),
-      'Permission updated.' => 
-      array (
-        0 => 'Berechtigung aktualisiert.',
-      ),
-      'Permission added.' => 
-      array (
-        0 => 'Berechtigung hinzugefügt.',
-      ),
-      'Edit Permission' => 
-      array (
-        0 => 'Berechtigung bearbeiten',
-      ),
-      'Add Permission' => 
-      array (
-        0 => 'Berechtigung hinzufügen',
-      ),
-      'Permission deleted.' => 
-      array (
-        0 => 'Berechtigung gelöscht.',
-      ),
       'Run Synchronized Task' => 
       array (
-        0 => '',
+        0 => 'Synchronisierungsaufgabe ausführen',
       ),
       'Debug Output' => 
       array (
         0 => 'Debug Ausgabe',
-      ),
-      'AzuraCast Application Log' => 
-      array (
-        0 => 'AzuraCast-Anwendungsprotokoll',
-      ),
-      'Nginx Access Log' => 
-      array (
-        0 => 'Nginx Zugriffsprotokoll',
-      ),
-      'Nginx Error Log' => 
-      array (
-        0 => 'Nginx Fehlerprotokoll',
-      ),
-      'PHP Application Log' => 
-      array (
-        0 => 'PHP Application Log',
-      ),
-      'Supervisord Log' => 
-      array (
-        0 => 'Supervisord Log',
-      ),
-      'SHOUTcast version "%s" is currently installed.' => 
-      array (
-        0 => 'SHOUTcast Version "%s" ist derzeit installiert.',
-      ),
-      'Install SHOUTcast' => 
-      array (
-        0 => 'Installiere Shoutcast',
-      ),
-      'Configure Backups' => 
-      array (
-        0 => 'Backups konfigurieren',
-      ),
-      'Run Manual Backup' => 
-      array (
-        0 => 'Manuelles Backup ausführen',
-      ),
-      'Backup deleted.' => 
-      array (
-        0 => 'Backup gelöscht.',
-      ),
-      'Backup not found.' => 
-      array (
-        0 => 'Backup nicht gefunden.',
-      ),
-      'Custom Field updated.' => 
-      array (
-        0 => 'Benutzerdefiniertes Feld aktualisiert.',
-      ),
-      'Custom Field added.' => 
-      array (
-        0 => 'Benutzerdefiniertes Feld hinzugefügt.',
-      ),
-      'Edit Custom Field' => 
-      array (
-        0 => 'Benutzerdefiniertes Feld bearbeiten',
-      ),
-      'Add Custom Field' => 
-      array (
-        0 => 'Benutzerdefiniertes Feld hinzufügen',
-      ),
-      'Custom Field deleted.' => 
-      array (
-        0 => 'Benutzerdefiniertes Feld gelöscht.',
       ),
       'User updated.' => 
       array (
@@ -473,17 +249,117 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Benutzer nicht gefunden.',
       ),
-      'An error occurred while downloading the GeoLite database: %s' => 
+      'Custom Field updated.' => 
       array (
-        0 => 'Beim Herunterladen der GeoLite-Datenbank ist ein Fehler aufgetreten: %s',
+        0 => 'Benutzerdefiniertes Feld aktualisiert.',
       ),
-      'Install GeoLite IP Database' => 
+      'Custom Field added.' => 
       array (
-        0 => 'GeoLite IP-Datenbank installieren',
+        0 => 'Benutzerdefiniertes Feld hinzugefügt.',
       ),
-      'GeoLite database uninstalled.' => 
+      'Edit Custom Field' => 
       array (
-        0 => 'GeoLite-Datenbank deinstalliert.',
+        0 => 'Benutzerdefiniertes Feld bearbeiten',
+      ),
+      'Add Custom Field' => 
+      array (
+        0 => 'Benutzerdefiniertes Feld hinzufügen',
+      ),
+      'Custom Field deleted.' => 
+      array (
+        0 => 'Benutzerdefiniertes Feld gelöscht.',
+      ),
+      'Configure Backups' => 
+      array (
+        0 => 'Backups konfigurieren',
+      ),
+      'Run Manual Backup' => 
+      array (
+        0 => 'Manuelles Backup ausführen',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => 'Backup gelöscht.',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Backup nicht gefunden.',
+      ),
+      'Record not found.' => 
+      array (
+        0 => 'Eintrag nicht gefunden.',
+      ),
+      'Permission updated.' => 
+      array (
+        0 => 'Berechtigung aktualisiert.',
+      ),
+      'Permission added.' => 
+      array (
+        0 => 'Berechtigung hinzugefügt.',
+      ),
+      'Edit Permission' => 
+      array (
+        0 => 'Berechtigung bearbeiten',
+      ),
+      'Add Permission' => 
+      array (
+        0 => 'Berechtigung hinzufügen',
+      ),
+      'Permission deleted.' => 
+      array (
+        0 => 'Berechtigung gelöscht.',
+      ),
+      'System Settings' => 
+      array (
+        0 => 'System Einstellungen',
+      ),
+      'AzuraCast Application Log' => 
+      array (
+        0 => 'AzuraCast-Anwendungsprotokoll',
+      ),
+      'Nginx Access Log' => 
+      array (
+        0 => 'Nginx Zugriffsprotokoll',
+      ),
+      'Nginx Error Log' => 
+      array (
+        0 => 'Nginx Fehlerprotokoll',
+      ),
+      'PHP Application Log' => 
+      array (
+        0 => 'PHP Application Log',
+      ),
+      'Supervisord Log' => 
+      array (
+        0 => 'Supervisord Log',
+      ),
+      'Streamers enabled!' => 
+      array (
+        0 => 'Streamer aktiviert!',
+      ),
+      'You can now set up streamer (DJ) accounts.' => 
+      array (
+        0 => 'Sie können nun Streamer (DJ) Konten einrichten.',
+      ),
+      'Save Changes' => 
+      array (
+        0 => 'Änderungen speichern',
+      ),
+      'Edit Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap Konfiguration bearbeiten',
+      ),
+      'This feature is not currently supported on this station.' => 
+      array (
+        0 => 'Diese Funktion ist derzeit nicht auf dieser Station unterstützt.',
+      ),
+      'Automated assignment complete!' => 
+      array (
+        0 => 'Automatisierte Zuordnung abgeschlossen!',
+      ),
+      'Automated assignment error' => 
+      array (
+        0 => 'Fehler in der automatisierten Zuordnung',
       ),
       'Web Hook added.' => 
       array (
@@ -517,45 +393,161 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'WebHook gelöscht.',
       ),
-      'Save Changes' => 
+      'SoundExchange Report' => 
       array (
-        0 => 'Änderungen speichern',
+        0 => 'SoundExchange Bericht',
       ),
-      'Edit Liquidsoap Configuration' => 
+      'Edit SFTP User' => 
       array (
-        0 => 'Liquidsoap Konfiguration bearbeiten',
+        0 => 'SFTP Benutzer bearbeiten',
       ),
-      'Streamers enabled!' => 
+      'Add SFTP User' => 
       array (
-        0 => 'Streamer aktiviert!',
+        0 => 'SFTP Benutzer hinzufügen',
       ),
-      'You can now set up streamer (DJ) accounts.' => 
+      'SFTP User deleted.' => 
       array (
-        0 => 'Sie können nun Streamer (DJ) Konten einrichten.',
+        0 => 'SFTP Benutzer gelöscht.',
       ),
-      'Automated assignment complete!' => 
+      'Changes saved successfully.' => 
       array (
-        0 => 'Automatisierte Zuordnung abgeschlossen!',
+        0 => 'Änderungen gespeichert.',
       ),
-      'Automated assignment error' => 
+      'All Stations' => 
       array (
-        0 => 'Fehler in der automatisierten Zuordnung',
+        0 => 'Alle Stationen',
       ),
-      'This feature is not currently supported on this station.' => 
+      'Listeners' => 
       array (
-        0 => 'Diese Funktion ist derzeit nicht auf dieser Station unterstützt.',
+        0 => 'Hörer',
       ),
-      'Edit Mount Point' => 
+      'You cannot remove yourself.' => 
       array (
-        0 => 'Einhängepunkt bearbeiten',
+        0 => 'Du kannst dich nicht selbst löschen.',
       ),
-      'Add Mount Point' => 
+      'Record deleted successfully.' => 
       array (
-        0 => 'Einhängepunkt anlegen',
+        0 => 'Eintrag gelöscht.',
       ),
-      'Mount Point deleted.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Einhängepunkt gelöscht.',
+        0 => 'Diese Station unterstützt kein On-Demand-Streaming.',
+      ),
+      'Podcast not found!' => 
+      array (
+        0 => 'Podcast nicht gefunden!',
+      ),
+      'Podcast artwork successfully cleared.' => 
+      array (
+        0 => 'Podcast-Cover erfolgreich gelöscht.',
+      ),
+      'Episode artwork successfully cleared.' => 
+      array (
+        0 => 'Episodencover erfolgreich gelöscht.',
+      ),
+      'This station does not accept requests currently.' => 
+      array (
+        0 => 'Diese Station akzeptiert derzeit keine Musikwünsche.',
+      ),
+      'Request submitted successfully.' => 
+      array (
+        0 => 'Wunsch erfolgreich übermittelt.',
+      ),
+      'No directory specified' => 
+      array (
+        0 => 'Kein Verzeichnis angegeben',
+      ),
+      'Directory' => 
+      array (
+        0 => 'Verzeichnis',
+      ),
+      'File Not Processed: %s' => 
+      array (
+        0 => 'Datei nicht verarbeitet: %s',
+      ),
+      'File Processing' => 
+      array (
+        0 => 'Datei wird verarbeitet',
+      ),
+      'File not specified.' => 
+      array (
+        0 => 'Keine Datei gewählt.',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => 'Neuer Pfad nicht angegeben.',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Diese Station hat keinen Speicherplatz mehr.',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => 'Playlist aktiviert.',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => 'Playlist deaktiviert.',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => 'Diese Playlist ist keine sequentielle Playlist.',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => 'Playlist erfolgreich importiert; %d von %d Dateien wurden erfolgreich zugeordnet.',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => 'Playlist nicht gefunden.',
+      ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => 'Wiedergabeliste neu gemischt.',
+      ),
+      'Playlist queue cleared.' => 
+      array (
+        0 => 'Playlist-Warteschlange gelöscht.',
+      ),
+      'Station restarted.' => 
+      array (
+        0 => 'Station neu gestartet.',
+      ),
+      'Frontend stopped.' => 
+      array (
+        0 => 'Frontend gestoppt.',
+      ),
+      'Frontend started.' => 
+      array (
+        0 => 'Frontend gestartet.',
+      ),
+      'Frontend restarted.' => 
+      array (
+        0 => 'Frontend neu gestartet.',
+      ),
+      'Song skipped.' => 
+      array (
+        0 => 'Lied übersprungen.',
+      ),
+      'Streamer disconnected.' => 
+      array (
+        0 => 'Streamer getrennt.',
+      ),
+      'Backend stopped.' => 
+      array (
+        0 => 'Backend gestoppt.',
+      ),
+      'Backend started.' => 
+      array (
+        0 => 'Backend gestartet.',
+      ),
+      'Backend restarted.' => 
+      array (
+        0 => 'Backend neu gestartet.',
+      ),
+      'No recording available.' => 
+      array (
+        0 => 'Keine Aufnahme verfügbar.',
       ),
       'Listeners by Day' => 
       array (
@@ -597,46 +589,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Zuhörer nach Stunde',
       ),
-      'SoundExchange Report' => 
-      array (
-        0 => 'SoundExchange Bericht',
-      ),
-      'Edit SFTP User' => 
-      array (
-        0 => 'SFTP Benutzer bearbeiten',
-      ),
-      'Add SFTP User' => 
-      array (
-        0 => 'SFTP Benutzer hinzufügen',
-      ),
-      'SFTP User deleted.' => 
-      array (
-        0 => 'SFTP Benutzer gelöscht.',
-      ),
-      'Remote Relay updated.' => 
-      array (
-        0 => 'Remote-Relay aktualisiert.',
-      ),
-      'Remote Relay added.' => 
-      array (
-        0 => 'Remote-Relay hinzugefügt.',
-      ),
-      'Edit Remote Relay' => 
-      array (
-        0 => 'Remote-Relay bearbeiten',
-      ),
-      'Add Remote Relay' => 
-      array (
-        0 => 'Remote-Relay hinzufügen',
-      ),
-      'Remote Relay deleted.' => 
-      array (
-        0 => 'Remote-Relay gelöscht.',
-      ),
-      'This record cannot be edited.' => 
-      array (
-        0 => 'Dieser Eintrag kann nicht bearbeitet werden.',
-      ),
       'Liquidsoap Log' => 
       array (
         0 => 'Liquidsoap Log',
@@ -665,21 +617,41 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'SHOUTcast-Konfiguration',
       ),
-      'GeoLite database not configured for this installation. See System Administration for instructions.' => 
+      'Record not found' => 
       array (
-        0 => 'GeoLite-Datenbank ist für diese Installation nicht konfiguriert. Siehe System-Administration für Anweisungen.',
+        0 => 'Eintrag nicht gefunden',
       ),
-      'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
+      'The uploaded file exceeds the upload_max_filesize directive in php.ini.' => 
       array (
-        0 => 'Dieses Produkt enthält GeoLite2 Daten, die von MaxMind erstellt wurden, erhältlich auf %s.',
+        0 => 'Die hochgeladene Datei überschreitet die Direktive upload_max_filesize in der php.ini.',
       ),
-      'IP Geolocation by DB-IP' => 
+      'The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form.' => 
       array (
-        0 => 'IP-Geolokation durch DB-IP',
+        0 => 'Die hochgeladene Datei überschreitet die MAX_FILE_SIZE-Direktive aus dem HTML-Formular.',
       ),
-      'None' => 
+      'The uploaded file was only partially uploaded.' => 
       array (
-        0 => '',
+        0 => 'Die hochgeladene Datei wurde nur teilweise hochgeladen.',
+      ),
+      'No file was uploaded.' => 
+      array (
+        0 => 'Es wurde keine Datei hochgeladen.',
+      ),
+      'No temporary directory is available.' => 
+      array (
+        0 => 'Es ist kein temporäres Verzeichnis vorhanden.',
+      ),
+      'Could not write to filesystem.' => 
+      array (
+        0 => 'Konnte nicht in das Dateisystem schreiben.',
+      ),
+      'Upload halted by a PHP extension.' => 
+      array (
+        0 => 'Upload durch eine PHP-Erweiterung gestoppt.',
+      ),
+      'Unspecified error.' => 
+      array (
+        0 => 'Unbekannter Fehler.',
       ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
@@ -704,6 +676,10 @@ X-Crowdin-File-ID: 4
       'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
         0 => 'Dieser Song oder Interpret wurde zu kürzlich abgespielt. Warte eine Weile, bevor du ihn erneut wünscht.',
+      ),
+      'None' => 
+      array (
+        0 => 'Nicht vorhanden',
       ),
       'All Permissions' => 
       array (
@@ -739,7 +715,7 @@ X-Crowdin-File-ID: 4
       ),
       'Administer Storage Locations' => 
       array (
-        0 => '',
+        0 => 'Verwalten von Speicherorten',
       ),
       'View Station Page' => 
       array (
@@ -785,13 +761,629 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Stations-WebHooks verwalten',
       ),
-      'This storage location could not be validated: %s' => 
+      'Manage Station Podcasts' => 
+      array (
+        0 => 'Sender-Podcasts verwalten',
+      ),
+      'You must be logged in to access this page.' => 
+      array (
+        0 => 'Sie müssen angemeldet sein, um auf diese Seite zuzugreifen.',
+      ),
+      'You do not have permission to access this portion of the site.' => 
+      array (
+        0 => 'Sie haben keine Zugriffsberechtigung für diesen Teil der Website.',
+      ),
+      'Now Playing Data' => 
+      array (
+        0 => '"Aktuell läuft" Daten',
+      ),
+      '1-Minute Sync' => 
+      array (
+        0 => '1-Minute Sync',
+      ),
+      'Song Requests Queue' => 
+      array (
+        0 => 'Musikwunsch Warteschlange',
+      ),
+      '5-Minute Sync' => 
+      array (
+        0 => '5-Minuten Sync',
+      ),
+      'Check Media Folders' => 
+      array (
+        0 => 'Prüfe den Medien-Ordner',
+      ),
+      '1-Hour Sync' => 
+      array (
+        0 => '1-Stunde Sync',
+      ),
+      'Analytics/Statistics' => 
+      array (
+        0 => 'Statistiken',
+      ),
+      'Cleanup' => 
+      array (
+        0 => 'Aufräumen',
+      ),
+      'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
+      array (
+        0 => 'Du solltest deine <code>docker-compose.yml</code> aktualisieren, um die Änderungen zu anzuwenden.',
+      ),
+      'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
+      array (
+        0 => 'Wenn du die Datei manuell verwaltest, überprüfe <a href="%s" target="_blank"> die neueste Version der Datei</a> und übernehme die entsprechenden Änderungen.',
+      ),
+      'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
+      array (
+        0 => 'Andernfalls, aktualisiere deine Installation und antworte mit "Y" wenn du nach einer Aktualisierung der Datei gefragt wirst.',
+      ),
+      'Your <code>docker-compose.yml</code> file is out of date!' => 
+      array (
+        0 => 'Ihre <code>-Docker-compose.yml-</code> -Datei ist nicht mehr aktuell!',
+      ),
+      'Update Instructions' => 
+      array (
+        0 => 'Update-Anleitung',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => 'Es wurde seit einiger Zeit kein Backup durchgeführt',
+      ),
+      'This installation has not been backed up in the last two weeks.' => 
+      array (
+        0 => 'Diese Installation wurde in den letzten zwei Wochen nicht gesichert.',
+      ),
+      'Backups' => 
+      array (
+        0 => 'Backups',
+      ),
+      'The performance profiling extension is currently enabled on this installation.' => 
+      array (
+        0 => 'Die Performance-Profiling Erweiterung ist derzeit bei dieser Installation aktiviert.',
+      ),
+      'You can track the execution time and memory usage of any AzuraCast page or application from the profiler page.' => 
+      array (
+        0 => 'Die Ausführungszeiten und die Speichernutzung jeder AzuraCast-Seite oder -Anwendung kann auf der Profiler-Seite verfolgt werden.',
+      ),
+      'Profiler Control Panel' => 
+      array (
+        0 => 'Profiler-Systemsteuerung',
+      ),
+      'Performance profiling is currently enabled for all requests.' => 
+      array (
+        0 => 'Performance-Profiling is derzeit für alle Anfragen aktiviert.',
+      ),
+      'This can have an adverse impact on system performance. You should disable this when possible.' => 
+      array (
+        0 => 'Dies kann sich negativ auf die Systemleistung auswirken. Wenn möglich sollte dies deaktiviert werden.',
+      ),
+      'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
+      array (
+        0 => 'AzuraCast <a href="%s" target="_blank">Version %s</a> ist jetzt verfügbar.',
+      ),
+      'You are currently running version %s. Updating is highly recommended.' => 
+      array (
+        0 => 'Sie nutzen derzeit Version %s. Eine Aktualisierung wird dringend empfohlen.',
+      ),
+      'New AzuraCast Release Version Available' => 
+      array (
+        0 => 'Neue AzuraCast-Release-Version verfügbar',
+      ),
+      'Your installation is currently %d update(s) behind the latest version.' => 
+      array (
+        0 => 'Deine Installation ist derzeit %d Update(s) unter der neuesten Version.',
+      ),
+      'View the changelog for full details.' => 
+      array (
+        0 => 'Siehe das Änderungsprotokoll für mehr Details.',
+      ),
+      'You should update to take advantage of bug and security fixes.' => 
+      array (
+        0 => 'Sie sollten aktualisieren, um Fehler und Sicherheitsupdates zu nutzen.',
+      ),
+      'New AzuraCast Updates Available' => 
+      array (
+        0 => 'Neue AzuraCast-Updates verfügbar',
+      ),
+      'Synchronized Task Not Recently Run' => 
+      array (
+        0 => 'Synchronisierungsaufgabe wurde zuletzt nicht ausgeführt',
+      ),
+      'The "%s" synchronization task has not run recently. This may indicate an error with your installation.' => 
+      array (
+        0 => 'Die Synchronisierungsaufgabe "%s" ist zuletzt nicht ausgeführt worden. Dies kann ein Anzeichen für einen Fehler bei deiner Installation sein.',
+      ),
+      'Manually Run Task' => 
+      array (
+        0 => 'Aufgabe manuell ausführen',
+      ),
+      '(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation.' => 
+      array (
+        0 => '(Docker Compose) Allen Docker Containern wird dieser Name vorangestellt. Ändere dies nicht nach der Installation.',
+      ),
+      '(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers.' => 
+      array (
+        0 => '(Docker Compose) Die Zeitspanne, die gewartet wird, bevor eine Docker Compose Operation fehlschlägt. Erhöhen Sie diesen Wert auf Computern mit geringerer Leistung.',
+      ),
+      'AzuraCast Release Channel' => 
+      array (
+        0 => 'AzuraCast Release-Kanal',
+      ),
+      'HTTP Port' => 
+      array (
+        0 => 'HTTP Port',
+      ),
+      'The main port AzuraCast listens to for insecure HTTP connections.' => 
+      array (
+        0 => 'Der Hauptport, den AzuraCast für unsichere HTTP-Verbindungen nutzt.',
+      ),
+      'HTTPS Port' => 
+      array (
+        0 => 'HTTPS Port',
+      ),
+      'The main port AzuraCast listens to for secure HTTPS connections.' => 
+      array (
+        0 => 'Der Haupt-Port, den AzuraCast bei sicheren HTTPS-Verbindungen nutzt.',
+      ),
+      'SFTP Port' => 
+      array (
+        0 => 'SFTP Port',
+      ),
+      'The port AzuraCast listens to for SFTP file management connections.' => 
+      array (
+        0 => 'Der Port, den AzuraCast bei SFTP-Dateimanagement-Verbindungen nutzt.',
+      ),
+      'Station Ports' => 
+      array (
+        0 => 'Sender Ports',
+      ),
+      'The ports AzuraCast should listen to for station broadcasts and incoming DJ connections.' => 
+      array (
+        0 => 'Die Ports, die AzuraCast für Sender-Übertragungen und eingehende DJ-Verbindungen benutzen soll.',
+      ),
+      'Docker User UID' => 
+      array (
+        0 => 'Docker Benutzer UID',
+      ),
+      'Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues.' => 
+      array (
+        0 => 'Setze die UID des Benutzers, der innerhalb der Docker Container verwendet wird. Wenn dieser mit der UID Ihres Host Benutzers übereinstimmt, können Berechtigungsprobleme behoben werden.',
+      ),
+      'Docker User GID' => 
+      array (
+        0 => 'Docker Benutzer GID',
+      ),
+      'Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues.' => 
+      array (
+        0 => 'Setze die GID des Benutzers, der innerhalb der Docker Container verwendet wird. Wenn dieser mit der GID Ihres Host Benutzers übereinstimmt, können Berechtigungsprobleme behoben werden.',
+      ),
+      'Advanced: Use Privileged Docker Settings' => 
+      array (
+        0 => 'Erweitert: Privilegierte Docker Einstellungen verwenden',
+      ),
+      'LetsEncrypt Domain Name(s)' => 
+      array (
+        0 => 'LetsEncrypt Domainname(n)',
+      ),
+      'Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt.' => 
+      array (
+        0 => 'Domainname (beispiel.com) oder Namen (beispiel.com,foo.bar), die mit LetsEncrypt verwendet werden sollen.',
+      ),
+      'LetsEncrypt E-mail Address' => 
+      array (
+        0 => 'LetsEncrypt E-Mail-Adresse',
+      ),
+      'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
+      array (
+        0 => 'Gib optional eine E-Mail-Adresse für Updates von LetsEncrypt an.',
+      ),
+      'This file was automatically generated by AzuraCast.' => 
+      array (
+        0 => 'Diese Datei wurde automatisch von AzuraCast generiert.',
+      ),
+      'You can modify it as necessary. To apply changes, restart the Docker containers.' => 
+      array (
+        0 => 'Bei Bedarf können diese angepasst werden. Um die Änderungen anzuwenden, starten Sie die Docker Container neu.',
+      ),
+      'Remove the leading "#" symbol from lines to uncomment them.' => 
+      array (
+        0 => 'Entfernen Sie das führende "#" Symbol von Zeilen, um diese zu entkommentieren.',
+      ),
+      'Valid options: %s' => 
+      array (
+        0 => 'Gültige Optionen: %s',
+      ),
+      'Default: %s' => 
+      array (
+        0 => 'Standard: %s',
+      ),
+      'Additional Environment Variables' => 
+      array (
+        0 => 'Zusätzliche Umgebungsvariablen',
+      ),
+      'The locale to use for CLI commands.' => 
+      array (
+        0 => 'Die Sprache, die für CLI-Befehle verwendet werden soll.',
+      ),
+      'The application environment.' => 
+      array (
+        0 => 'Die Anwendungsumgebung.',
+      ),
+      'Manually modify the logging level.' => 
+      array (
+        0 => 'Ändere manuell das Logging-Level.',
+      ),
+      'This allows you to log debug-level errors temporarily (for problem-solving) or reduce the volume of logs that are produced by your installation, without needing to modify whether your installation is a production or development instance.' => 
+      array (
+        0 => 'Dadurch ist es möglich, Fehler auf Debug-Level vorübergehend zu loggen (zur Problemlösung) oder die Menge der von Ihrer Installation produzierten Logs zu reduzieren, ohne dass es notwendig ist, die Installation in eine Produktions- oder Entwicklungsinstanz zu ändern.',
+      ),
+      'Composer Plugin Mode' => 
+      array (
+        0 => 'Composer Plugin Modus',
+      ),
+      'Enable the composer "merge" functionality to combine the main application\'s composer.json file with any plugin composer files. This can have performance implications, so you should only use it if you use one or more plugins with their own Composer dependencies.' => 
+      array (
+        0 => 'Aktiviert die Composer-"Merge"-Funktionalität, um die composer.json-Datei der Hauptanwendung mit beliebigen Plugin Composer Dateien zu kombinieren. Dies kann Auswirkungen auf die Leistung haben, daher sollte dies nur verwendet werden, wenn Sie ein oder mehrere Plugins mit ihren eigenen Composer-Abhängigkeiten benutzen.',
+      ),
+      'Minimum Port for Station Port Assignment' => 
+      array (
+        0 => 'Minimaler Port für Sender Port-Zuweisung',
+      ),
+      'Modify this if your stations are listening on nonstandard ports.' => 
+      array (
+        0 => 'Ändere dies, wenn deine Sender nicht auf den standard Ports laufen.',
+      ),
+      'Maximum Port for Station Port Assignment' => 
+      array (
+        0 => 'Maximaler Port für Sender Port-Zuweisung',
+      ),
+      'MariaDB Host' => 
+      array (
+        0 => 'MariaDB Host',
+      ),
+      'Do not modify this after installation.' => 
+      array (
+        0 => 'Ändere dies nicht nach der Installation.',
+      ),
+      'MariaDB Port' => 
+      array (
+        0 => 'MariaDB Port',
+      ),
+      'MariaDB Username' => 
+      array (
+        0 => 'MariaDB Benutzername',
+      ),
+      'MariaDB Password' => 
+      array (
+        0 => 'MariaDB Passwort',
+      ),
+      'MariaDB Database Name' => 
+      array (
+        0 => 'MariaDB Datenbankname',
+      ),
+      'Auto-generate Random MariaDB Root Password' => 
+      array (
+        0 => 'Zufälliges MariaDB Root-Passwort generieren',
+      ),
+      'MariaDB Root Password' => 
       array (
         0 => '',
       ),
-      'The port %s is in use by another station.' => 
+      'Enable MariaDB Slow Query Log' => 
       array (
-        0 => 'Der Port %s wird bereits von einer anderen Station verwendet.',
+        0 => 'MariaDB Slow Query Log aktivieren',
+      ),
+      'Log slower queries to diagnose possible database issues. Only turn this on if needed.' => 
+      array (
+        0 => 'Langsamere Abfragen loggen, um mögliche Datenbankprobleme zu diagnostizieren. Diese Option sollte nur bei Bedarf aktiviert werden.',
+      ),
+      'MariaDB Maximum Connections' => 
+      array (
+        0 => 'MariaDB Maximale Verbindungen',
+      ),
+      'Set the amount of allowed connections to the database. This value should be increased if you are seeing the "Too many connections" error in the logs.' => 
+      array (
+        0 => 'Legt die Anzahl der zulässigen Verbindungen zur Datenbank fest. Dieser Wert sollte erhöht werden, wenn in den Logs der Fehler "Too many connections" angezeigt wird.',
+      ),
+      'Enable Redis' => 
+      array (
+        0 => 'Redis aktivieren',
+      ),
+      'Disable to use a flatfile cache instead of Redis.' => 
+      array (
+        0 => 'Deaktivieren, um einen Datei-Cache anstelle von Redis zu verwenden.',
+      ),
+      'Redis Host' => 
+      array (
+        0 => 'Redis Host',
+      ),
+      'Redis Port' => 
+      array (
+        0 => 'Redis Port',
+      ),
+      'Redis Database Index' => 
+      array (
+        0 => 'Redis Datenbank Index',
+      ),
+      'PHP Maximum POST File Size' => 
+      array (
+        0 => 'PHP maximale POST-Dateigröße',
+      ),
+      'PHP Memory Limit' => 
+      array (
+        0 => 'PHP Speicherlimit',
+      ),
+      'PHP Script Maximum Execution Time' => 
+      array (
+        0 => 'PHP maximale Skript-Ausführungszeit',
+      ),
+      '(in seconds)' => 
+      array (
+        0 => '(in Sekunden)',
+      ),
+      'Short Sync Task Execution Time' => 
+      array (
+        0 => 'Kurze Sync-Task-Ausführungszeit',
+      ),
+      'The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks.' => 
+      array (
+        0 => 'Die maximale Ausführungszeit (und Sperrzeit) für die 15-Sekunden-, 1-Minuten- und 5-Minuten-Synchronisationsaufgaben.',
+      ),
+      'Long Sync Task Execution Time' => 
+      array (
+        0 => 'Lange Sync-Task-Ausführungszeit',
+      ),
+      'The maximum execution time (and lock timeout) for the 1-hour synchronization task.' => 
+      array (
+        0 => 'Die maximale Ausführungszeit (und Sperrzeit) für die 1-Stunden-Synchronisationsaufgabe.',
+      ),
+      'Maximum PHP-FPM Worker Processes' => 
+      array (
+        0 => 'Maximale Anzahl an PHP-FPM Worker Prozessen',
+      ),
+      'Enable Performance Profiling Extension' => 
+      array (
+        0 => 'Aktiviere Performance-Profiling Erweiterung',
+      ),
+      'Profiling data can be viewed by visiting %s.' => 
+      array (
+        0 => 'Profilierungs-Daten können durch den Besuch von %s eingesehen werden.',
+      ),
+      'Profile Performance on All Requests' => 
+      array (
+        0 => 'Profiliere Leistung bei allen Anfragen',
+      ),
+      'This will have a significant performance impact on your installation.' => 
+      array (
+        0 => 'Dies hat einen erheblichen Einfluss auf die Leistung der Installation.',
+      ),
+      'Profiling Extension HTTP Key' => 
+      array (
+        0 => 'HTTP-Schlüssel zur Profiling-Erweiterung',
+      ),
+      'The value for the "SPX_KEY" parameter for viewing profiling pages.' => 
+      array (
+        0 => 'Der Wert für den Parameter "SPX_KEY" zum Anzeigen der Profiling-Seiten.',
+      ),
+      'Profiling Extension IP Allow List' => 
+      array (
+        0 => 'IP-Zulassungsliste der Profiling-Erweiterung',
+      ),
+      'AzuraCast Installer' => 
+      array (
+        0 => 'AzuraCast Installer',
+      ),
+      'Welcome to AzuraCast! Complete the initial server setup by answering a few questions.' => 
+      array (
+        0 => 'Willkommen bei AzuraCast! Vervollständigen Sie die anfängliche Servereinrichtung, indem Sie einige Fragen beantworten.',
+      ),
+      'AzuraCast Updater' => 
+      array (
+        0 => 'AzuraCast Updater',
+      ),
+      'Change installation settings?' => 
+      array (
+        0 => 'Installationseinstellungen ändern?',
+      ),
+      'AzuraCast is currently configured to listen on the following ports:' => 
+      array (
+        0 => 'AzuraCast ist derzeit so konfiguriert, dass es die folgenden Ports benutzt:',
+      ),
+      'HTTP Port: %d' => 
+      array (
+        0 => 'HTTP Port: %d',
+      ),
+      'HTTPS Port: %d' => 
+      array (
+        0 => 'HTTPS Port: %d',
+      ),
+      'SFTP Port: %d' => 
+      array (
+        0 => 'SFTP Port: %d',
+      ),
+      'Radio Ports: %s' => 
+      array (
+        0 => 'Radio Ports: %s',
+      ),
+      'Customize ports used for AzuraCast?' => 
+      array (
+        0 => 'Ports für AzuraCast anpassen?',
+      ),
+      'Set up LetsEncrypt?' => 
+      array (
+        0 => 'LetsEncrypt einrichten?',
+      ),
+      'Writing configuration files...' => 
+      array (
+        0 => 'Konfigurationsdateien werden erstellt...',
+      ),
+      'Server configuration complete!' => 
+      array (
+        0 => 'Serverkonfiguration abgeschlossen!',
+      ),
+      'Configuration successfully written.' => 
+      array (
+        0 => 'Die Konfiguration wurde gespeichert.',
+      ),
+      'Backup path %s not found!' => 
+      array (
+        0 => 'Backup-Pfad %s nicht gefunden!',
+      ),
+      'AzuraCast Backup' => 
+      array (
+        0 => 'AzuraCast Backup',
+      ),
+      'Please wait while a backup is generated...' => 
+      array (
+        0 => 'Bitte warten, während ein Backup erstellt wird...',
+      ),
+      'Creating temporary directories...' => 
+      array (
+        0 => 'Erstelle temporäre Verzeichnisse...',
+      ),
+      'Directory "%s" was not created' => 
+      array (
+        0 => 'Verzeichnis "%s" wurde nicht erstellt',
+      ),
+      'Backing up MariaDB...' => 
+      array (
+        0 => 'Sichern von MariaDB...',
+      ),
+      'Creating backup archive...' => 
+      array (
+        0 => 'Backup-Archiv wird erstellt...',
+      ),
+      'Cleaning up temporary files...' => 
+      array (
+        0 => 'Bereinige temporäre Dateien...',
+      ),
+      'Backup complete in %.2f seconds.' => 
+      array (
+        0 => 'Backup in %.2f Sekunden abgeschlossen.',
+      ),
+      'Initialize AzuraCast' => 
+      array (
+        0 => 'AzuraCast initialisieren',
+      ),
+      'Initializing essential settings...' => 
+      array (
+        0 => 'Initialisiere essentielle Einstellungen...',
+      ),
+      'Environment: %s' => 
+      array (
+        0 => 'Umgebung: %s',
+      ),
+      'Installation Method: %s' => 
+      array (
+        0 => 'Installationsart: %s',
+      ),
+      'Running Database Migrations' => 
+      array (
+        0 => 'Datenbank-Migrationen werden ausgeführt',
+      ),
+      'Generating Database Proxy Classes' => 
+      array (
+        0 => 'Generiere Datenbank Proxy Klassen',
+      ),
+      'Reload System Data' => 
+      array (
+        0 => 'Systemdaten neu laden',
+      ),
+      'AzuraCast is now initialized.' => 
+      array (
+        0 => 'AzuraCast ist nun initialisiert.',
+      ),
+      'Fixtures loaded.' => 
+      array (
+        0 => 'Fixtures geladen.',
+      ),
+      'AzuraCast Settings' => 
+      array (
+        0 => 'AzuraCast-Einstellungen',
+      ),
+      'Setting Key' => 
+      array (
+        0 => 'Einstellungsschlüssel',
+      ),
+      'Setting Value' => 
+      array (
+        0 => 'Einstellungswert',
+      ),
+      'The account associated with e-mail address "%s" has been set as an administrator' => 
+      array (
+        0 => 'Das Konto mit der E-Mail-Adresse "%s" wurde als Administrator gesetzt',
+      ),
+      'Account not found.' => 
+      array (
+        0 => 'Konto nicht gefunden.',
+      ),
+      'AzuraCast Setup' => 
+      array (
+        0 => 'AzuraCast Setup',
+      ),
+      'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
+      array (
+        0 => 'Willkommen bei AzuraCast. Bitte warten, während einige Schlüsselabhängigkeiten von AzuraCast eingerichtet werden...',
+      ),
+      'Installing Data Fixtures' => 
+      array (
+        0 => 'Installiere Daten-Fixtures',
+      ),
+      'Refreshing All Stations' => 
+      array (
+        0 => 'Alle Stationen aktualisieren',
+      ),
+      'AzuraCast is now updated to the latest version!' => 
+      array (
+        0 => 'AzuraCast ist aktuell!',
+      ),
+      'AzuraCast installation complete!' => 
+      array (
+        0 => 'AzuraCast-Installation abgeschlossen!',
+      ),
+      'Visit %s to complete setup.' => 
+      array (
+        0 => 'Einrichtung unter %s abschließen.',
+      ),
+      'Imported locale: %s' => 
+      array (
+        0 => 'Importierte Sprache: %s',
+      ),
+      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
+      array (
+        0 => 'Sie möchten SHOUTcast 2 verwenden? <a href="%s" target="_blank">installieren Sie es hier</a> und laden sie diese Seite erneut.',
+      ),
+      '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
+      array (
+        0 => '<a href="%s" target="_blank">Verwalte deine Speicherorte und Speicherkontingente hier</a>.',
+      ),
+      'Create a new storage location based on the base directory.' => 
+      array (
+        0 => 'Erstelle einen neuen Speicherort basierend auf dem Basisverzeichnis.',
+      ),
+      'Visit this page from a secure connection to enforce secure URLs on all pages.' => 
+      array (
+        0 => 'Besuche diese Seite von einer sicheren Verbindung, um sichere URLs auf allen Seiten zu erzwingen.',
+      ),
+      'Select File' => 
+      array (
+        0 => 'Datei auswählen',
+      ),
+      'Select...' => 
+      array (
+        0 => 'Auswählen...',
+      ),
+      'IP Geolocation by DB-IP' => 
+      array (
+        0 => 'IP-Geolokation durch DB-IP',
+      ),
+      'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
+      array (
+        0 => 'Dieses Produkt enthält GeoLite2 Daten, die von MaxMind erstellt wurden, erhältlich auf %s.',
+      ),
+      'GeoLite database not configured for this installation. See System Administration for instructions.' => 
+      array (
+        0 => 'GeoLite-Datenbank ist für diese Installation nicht konfiguriert. Siehe System-Administration für Anweisungen.',
       ),
       'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
       array (
@@ -804,18 +1396,6 @@ X-Crowdin-File-ID: 4
       'The non-editable sections are automatically generated by AzuraCast.' => 
       array (
         0 => 'Die nicht editierbaren Abschnitte werden automatisch von AzuraCast erzeugt.',
-      ),
-      'Use <b>%s</b> on this server' => 
-      array (
-        0 => 'Verwenden <b>%s</b> auf diesem Server',
-      ),
-      'Connect to a <b>remote radio server</b>' => 
-      array (
-        0 => 'Mit einem <b>entfernten Radio-Server</b> verbinden',
-      ),
-      '<b>Do not use</b> an AutoDJ service' => 
-      array (
-        0 => '<b>Nicht</b> den AutoDJ Service nutzen',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -849,241 +1429,17 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Überprüfen Sie die Logs für Details.',
       ),
-      'Configuration successfully written.' => 
+      'Use <b>%s</b> on this server' => 
       array (
-        0 => 'Die Konfiguration wurde gespeichert.',
+        0 => 'Verwenden <b>%s</b> auf diesem Server',
       ),
-      'Fixtures loaded.' => 
+      'Connect to a <b>remote radio server</b>' => 
       array (
-        0 => 'Fixtures geladen.',
+        0 => 'Mit einem <b>entfernten Radio-Server</b> verbinden',
       ),
-      'Backup path %s not found!' => 
+      '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => 'Backup-Pfad %s nicht gefunden!',
-      ),
-      'AzuraCast Backup' => 
-      array (
-        0 => 'AzuraCast Backup',
-      ),
-      'Please wait while a backup is generated...' => 
-      array (
-        0 => 'Bitte warten, während ein Backup erstellt wird...',
-      ),
-      'Creating temporary directories...' => 
-      array (
-        0 => 'Erstelle temporäre Verzeichnisse...',
-      ),
-      'Backing up MariaDB...' => 
-      array (
-        0 => 'Sichern von MariaDB...',
-      ),
-      'Creating backup archive...' => 
-      array (
-        0 => 'Backup-Archiv wird erstellt...',
-      ),
-      'Cleaning up temporary files...' => 
-      array (
-        0 => 'Bereinige temporäre Dateien...',
-      ),
-      'Backup complete in %.2f seconds.' => 
-      array (
-        0 => 'Backup in %.2f Sekunden abgeschlossen.',
-      ),
-      'The account associated with e-mail address "%s" has been set as an administrator' => 
-      array (
-        0 => 'Das Konto mit der E-Mail-Adresse "%s" wurde als Administrator gesetzt',
-      ),
-      'Account not found.' => 
-      array (
-        0 => 'Konto nicht gefunden.',
-      ),
-      'Imported locale: %s' => 
-      array (
-        0 => 'Importierte Sprache: %s',
-      ),
-      'AzuraCast Setup' => 
-      array (
-        0 => 'AzuraCast Setup',
-      ),
-      'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
-      array (
-        0 => 'Willkommen bei AzuraCast. Bitte warten, während einige Schlüsselabhängigkeiten von AzuraCast eingerichtet werden...',
-      ),
-      'Environment: %s' => 
-      array (
-        0 => 'Umgebung: %s',
-      ),
-      'Installation Method: %s' => 
-      array (
-        0 => 'Installationsart: %s',
-      ),
-      'Running in update mode.' => 
-      array (
-        0 => 'Läuft im Update-Modus.',
-      ),
-      'Running Database Migrations' => 
-      array (
-        0 => 'Datenbank-Migrationen werden ausgeführt',
-      ),
-      'Generating Database Proxy Classes' => 
-      array (
-        0 => 'Generiere Datenbank Proxy Klassen',
-      ),
-      'Installing Data Fixtures' => 
-      array (
-        0 => 'Installiere Daten-Fixtures',
-      ),
-      'Reload System Data' => 
-      array (
-        0 => 'Systemdaten neu laden',
-      ),
-      'Refreshing All Stations' => 
-      array (
-        0 => 'Alle Stationen aktualisieren',
-      ),
-      'AzuraCast is now updated to the latest version!' => 
-      array (
-        0 => 'AzuraCast ist aktuell!',
-      ),
-      'AzuraCast installation complete!' => 
-      array (
-        0 => 'AzuraCast-Installation abgeschlossen!',
-      ),
-      'Visit %s to complete setup.' => 
-      array (
-        0 => 'Einrichtung unter %s abschließen.',
-      ),
-      'AzuraCast Settings' => 
-      array (
-        0 => 'AzuraCast-Einstellungen',
-      ),
-      'Setting Key' => 
-      array (
-        0 => 'Einstellungsschlüssel',
-      ),
-      'Setting Value' => 
-      array (
-        0 => 'Einstellungswert',
-      ),
-      'Update Instructions' => 
-      array (
-        0 => '',
-      ),
-      'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
-      array (
-        0 => 'AzuraCast <a href="%s" target="_blank">Version %s</a> ist jetzt verfügbar.',
-      ),
-      'You are currently running version %s. Updating is highly recommended.' => 
-      array (
-        0 => 'Sie nutzen derzeit Version %s. Eine Aktualisierung wird dringend empfohlen.',
-      ),
-      'New AzuraCast Release Version Available' => 
-      array (
-        0 => 'Neue AzuraCast-Release-Version verfügbar',
-      ),
-      'Your installation is currently %d update(s) behind the latest version.' => 
-      array (
-        0 => 'Deine Installation ist derzeit %d Update(s) unter der neuesten Version.',
-      ),
-      'View the changelog for full details.' => 
-      array (
-        0 => '',
-      ),
-      'You should update to take advantage of bug and security fixes.' => 
-      array (
-        0 => 'Sie sollten aktualisieren, um Fehler und Sicherheitsupdates zu nutzen.',
-      ),
-      'New AzuraCast Updates Available' => 
-      array (
-        0 => 'Neue AzuraCast-Updates verfügbar',
-      ),
-      'Installation Not Recently Backed Up' => 
-      array (
-        0 => 'Es wurde seit einiger Zeit kein Backup durchgeführt',
-      ),
-      'This installation has not been backed up in the last two weeks.' => 
-      array (
-        0 => 'Diese Installation wurde in den letzten zwei Wochen nicht gesichert.',
-      ),
-      'Backups' => 
-      array (
-        0 => 'Backups',
-      ),
-      'Synchronized Task Not Recently Run' => 
-      array (
-        0 => '',
-      ),
-      'The "%s" synchronization task has not run recently. This may indicate an error with your installation.' => 
-      array (
-        0 => '',
-      ),
-      'Manually Run Task' => 
-      array (
-        0 => '',
-      ),
-      'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
-      array (
-        0 => '',
-      ),
-      'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
-      array (
-        0 => '',
-      ),
-      'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
-      array (
-        0 => '',
-      ),
-      'Your <code>docker-compose.yml</code> file is out of date!' => 
-      array (
-        0 => 'Ihre <code>-Docker-compose.yml-</code> -Datei ist nicht mehr aktuell!',
-      ),
-      'Select File' => 
-      array (
-        0 => 'Datei auswählen',
-      ),
-      'Visit this page from a secure connection to enforce secure URLs on all pages.' => 
-      array (
-        0 => 'Besuche diese Seite von einer sicheren Verbindung, um sichere URLs auf allen Seiten zu erzwingen.',
-      ),
-      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
-      array (
-        0 => 'Sie möchten SHOUTcast 2 verwenden? <a href="%s" target="_blank">installieren Sie es hier</a> und laden sie diese Seite erneut.',
-      ),
-      '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
-      array (
-        0 => '',
-      ),
-      'Create a new storage location based on the base directory.' => 
-      array (
-        0 => '',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Auswählen...',
-      ),
-      'You must be logged in to access this page.' => 
-      array (
-        0 => 'Sie müssen angemeldet sein, um auf diese Seite zuzugreifen.',
-      ),
-      'You do not have permission to access this portion of the site.' => 
-      array (
-        0 => 'Sie haben keine Zugriffsberechtigung für diesen Teil der Website.',
-      ),
-      'Are you sure?' => 
-      array (
-        0 => 'Bist du dir sicher?',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Erweitert',
-      ),
-      'Enter a password to continue.' => 
-      array (
-        0 => '',
-      ),
-      'No problems detected.' => 
-      array (
-        0 => '',
+        0 => '<b>Nicht</b> den AutoDJ Service nutzen',
       ),
       'System Maintenance' => 
       array (
@@ -1177,6 +1533,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Wiedergabelisten',
       ),
+      'Podcasts (Beta)' => 
+      array (
+        0 => 'Podcasts (Beta)',
+      ),
       'Streamer/DJ Accounts' => 
       array (
         0 => 'Live-Streamer/DJ Accounts',
@@ -1223,7 +1583,7 @@ X-Crowdin-File-ID: 4
       ),
       'Unprocessable Files' => 
       array (
-        0 => '',
+        0 => 'Unverarbeitbare Dateien',
       ),
       'SoundExchange Royalties' => 
       array (
@@ -1263,11 +1623,11 @@ X-Crowdin-File-ID: 4
       ),
       'Send E-mail' => 
       array (
-        0 => '',
+        0 => 'E-Mail senden',
       ),
       'Send an e-mail to specified address(es).' => 
       array (
-        0 => '',
+        0 => 'Sende eine E-Mail an die angegebenen Adresse(n).',
       ),
       'TuneIn AIR' => 
       array (
@@ -1303,9 +1663,17 @@ X-Crowdin-File-ID: 4
       ),
       'Google Analytics Integration' => 
       array (
-        0 => '',
+        0 => 'Google Analytics Integration',
       ),
       'Send stream listener details to Google Analytics.' => 
+      array (
+        0 => 'Sende die Stream-Zuhörer Details an Google Analytics.',
+      ),
+      'Matomo Analytics Integration' => 
+      array (
+        0 => '',
+      ),
+      'Send stream listener details to Matomo Analytics.' => 
       array (
         0 => '',
       ),
@@ -1331,39 +1699,35 @@ X-Crowdin-File-ID: 4
       ),
       'When the station broadcast goes offline.' => 
       array (
-        0 => '',
+        0 => 'Wenn der Sender offline geht.',
       ),
       'When the station broadcast comes online.' => 
       array (
-        0 => '',
+        0 => 'Wenn der Sender online geht.',
       ),
-      'Username' => 
+      'Are you sure?' => 
       array (
-        0 => 'Benutzername',
+        0 => 'Bist du dir sicher?',
       ),
-      'New Password' => 
+      'Advanced' => 
       array (
-        0 => 'Neues Passwort',
+        0 => 'Erweitert',
       ),
-      'Leave blank to use the current password.' => 
+      'Enter a password to continue.' => 
       array (
-        0 => 'Lass dieses Feld leer, um dein aktuelles Passwort beizubehalten.',
+        0 => 'Gib ein Password ein, um fortzufahren.',
       ),
-      'SSH Public Keys' => 
+      'No problems detected.' => 
       array (
-        0 => 'SSH Public Keys',
+        0 => 'Keine Probleme gefunden.',
       ),
-      'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
+      'Attempt to Automatically Retrieve ISRC When Missing' => 
       array (
-        0 => 'Optional kannst du SSH Public Keys angeben die dieser Benutzer statt eines Passworts verwenden kann. Gib einen Schlüssel pro Zeile ein.',
+        0 => 'Versuche ISRC automatisch abzurufen, wenn nicht vorhanden',
       ),
-      'Run Automatic Nightly Backups' => 
+      'If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.' => 
       array (
-        0 => 'Automatische nächtliche Backups ausführen',
-      ),
-      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
-      array (
-        0 => 'Aktivieren, um AzuraCast automatisch Nachtbackups zu der angegebenen Zeit ausführen zu lassen.',
+        0 => 'Wenn aktiviert, wird sich AzuraCast mit der MusicBrainz Datenbank verbinden, um zu versuchen, einen ISRC für alle Dateien zu finden, in denen dieser fehlt. Deaktivieren kann die Leistung verbessern.',
       ),
       'Yes' => 
       array (
@@ -1373,277 +1737,21 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Nein',
       ),
-      'Scheduled Backup Time' => 
-      array (
-        0 => 'Geplanter Zeitpunkt für Backups',
-      ),
-      'The time (in UTC) to run the automated backup, if enabled.' => 
-      array (
-        0 => 'Die Zeit (in UTC) um die automatische Sicherung auszuführen, falls aktiviert.',
-      ),
-      'Exclude Media from Backups' => 
-      array (
-        0 => 'Medien aus Backup ausschließen',
-      ),
-      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
-      array (
-        0 => 'Das Ausschließen von Medien bei automatisierten Backups spart Speicherplatz, aber du solltest sicherstellen, dass deine Medien an anderer Stelle gesichert werden. Beachte bitte, dass nur lokal gespeicherte Medien gesichert werden.',
-      ),
-      'Number of Backup Copies to Keep' => 
-      array (
-        0 => 'Anzahl der zu behaltenden Backups',
-      ),
-      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
-      array (
-        0 => 'Backups, die älter als die angegebene Anzahl der Tage sind, werden automatisch gelöscht. Auf Null setzen, um die automatische Löschung zu deaktivieren.',
-      ),
-      'Storage Location' => 
-      array (
-        0 => '',
-      ),
-      'Instructions' => 
-      array (
-        0 => 'Anleitung',
-      ),
-      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
-      array (
-        0 => 'Um die Geolokalisierung der IP-Adressen ihrer Zuhörer bereitzustellen, können Sie ihre MaxMind GeoLite-Datenbank hochladen. Dies wird Ihnen erlauben, die Liste der Zuhörer im "Zuhörer"-Bericht jeder Radiostation einzusehen. Um die GeoLite-Datenbank herunterzuladen:',
-      ),
-      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
-      array (
-        0 => 'Erstellen Sie ein Konto auf <a href="%s" target="_blank">der Seite von MaxMind</a>.',
-      ),
-      'Visit the "My License Key" page under the "Services" section.' => 
-      array (
-        0 => 'Besuche die Seite "Mein Lizenzschlüssel" unter "Dienste".',
-      ),
-      'Click "Generate new license key".' => 
-      array (
-        0 => 'Klicke auf "Neuen Lizenzschlüssel generieren".',
-      ),
-      'Paste the generated license key into the field on this page.' => 
-      array (
-        0 => 'Füge den generierten Lizenzschlüssel in das Feld auf dieser Seite ein.',
-      ),
-      'MaxMind License Key' => 
-      array (
-        0 => 'MaxMind Lizenzschlüssel',
-      ),
-      'Use Browser Default' => 
-      array (
-        0 => 'Nutze Browser Standard',
-      ),
-      'Name' => 
-      array (
-        0 => 'Name',
-      ),
-      'E-mail Address' => 
-      array (
-        0 => 'E-Mail Adresse',
-      ),
-      'Reset Password' => 
-      array (
-        0 => 'Passwort zurücksetzen',
-      ),
-      'Leave these fields blank to continue using your current password.' => 
-      array (
-        0 => 'Lassen Sie diese Felder leer, um Ihr aktuelles Passwort weiterhin zu verwenden.',
-      ),
-      'Current Password' => 
-      array (
-        0 => 'Aktuelles Passwort',
-      ),
-      'Confirm New Password' => 
-      array (
-        0 => 'Neues Passwort bestätigen',
-      ),
-      'Customization' => 
-      array (
-        0 => 'Personalisierung',
-      ),
-      'Language' => 
-      array (
-        0 => 'Sprache',
-      ),
-      'Site Theme' => 
-      array (
-        0 => 'Thema der Seite',
-      ),
-      'Light' => 
-      array (
-        0 => 'Hell (Light)',
-      ),
-      'Default' => 
-      array (
-        0 => 'Voreinstellung',
-      ),
-      'Dark' => 
-      array (
-        0 => 'Dunkel',
-      ),
-      'Account Information' => 
-      array (
-        0 => 'Benutzerinformationen',
-      ),
-      'Password' => 
-      array (
-        0 => 'Passwort',
-      ),
-      'Create Account' => 
-      array (
-        0 => 'Benutzer erstellen',
-      ),
-      'Show on Public Pages' => 
-      array (
-        0 => 'Auf öffentlichen Seiten anzeigen',
-      ),
-      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
-      array (
-        0 => 'Aktivieren, um den Zuhörern die Möglichkeit zu geben, diesen Relay auf den öffentlichen Seiten dieses Senders auszuwählen.',
-      ),
-      'Remote Station Type' => 
-      array (
-        0 => 'Remote-Stationstyp',
-      ),
-      'Display Name' => 
-      array (
-        0 => 'Anzeigename',
-      ),
-      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => 'Der Anzeigename dieses Relays der auf administrations oder öffentlichen Seiten angezeigt wird. Leer lassen, um automatisch einen zu erzeugen.',
-      ),
-      'Remote Station Listening URL' => 
-      array (
-        0 => 'Remote Station Listening URL',
-      ),
-      'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
-      array (
-        0 => 'Beispiel: Wenn die Remote-Radio-URL %s ist, geben Sie <code>%s</code> ein.',
-      ),
-      'Remote Station Listening Mountpoint/SID' => 
-      array (
-        0 => 'Remote Station Listening Mountpoint/SID',
-      ),
-      'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
-      array (
-        0 => 'Geben Sie einen Mountpoint (z.B. <code>%s</code>) oder eine Shoutcast SID (z.B. <code>%s</code>) an, um einen bestimmten Stream für Statistiken oder Broadcasting anzugeben.',
-      ),
-      'Remote Station Administrator Password' => 
-      array (
-        0 => 'Remote Station Administrator Passwort',
-      ),
-      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
-      array (
-        0 => 'Um detaillierte eindeutige Zuhörer und Verbindungsdaten abzurufen, wird meistens ein Administrator Passwort benötigt.',
-      ),
-      'Broadcast AutoDJ to Remote Station' => 
-      array (
-        0 => 'AutoDJ auf Remote Station übertragen',
-      ),
-      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
-      array (
-        0 => 'Wenn aktiviert, wird der AutoDJ dieser Installation automatisch Musik auf diesem Mountpoint spielen.',
-      ),
-      'Configure AutoDJ Broadcasting' => 
-      array (
-        0 => 'AutoDJ-Broadcasting konfigurieren',
-      ),
-      'AutoDJ Format' => 
-      array (
-        0 => 'AutoDJ Format',
-      ),
-      'AutoDJ Bitrate (kbps)' => 
-      array (
-        0 => 'AutoDJ Bitrate (kbps)',
-      ),
-      'Remote Station Source Port' => 
-      array (
-        0 => 'Remote Station Source Port',
-      ),
-      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
-      array (
-        0 => 'Wenn sich der Port, auf den Sie senden, von dem unterscheidet, den Sie oben in der URL angegeben haben, geben Sie hier den Quellport an.',
-      ),
-      'Remote Station Source Mountpoint/SID' => 
-      array (
-        0 => 'Remote Station Source Mountpoint/SID',
-      ),
-      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
-      array (
-        0 => 'Wenn sich der Mountpoint (z.B. <code>/radio.mp3</code>) oder die Shoutcast SID (z.B. <code>2</code>), auf den Sie senden, von dem unterscheidet, den Sie oben angegeben haben, geben Sie den Quell-Mount-Punkt hier ein.',
-      ),
-      'Remote Station Source Username' => 
-      array (
-        0 => 'Remote Station Source Benutzername',
-      ),
-      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
-      array (
-        0 => 'Wenn Sie AutoDJ verwenden, geben Sie hier den Quell-Benutzernamen hier ein. Dies kann leer bleiben.',
-      ),
-      'Remote Station Source Password' => 
-      array (
-        0 => 'Remote Station Source Passwort',
-      ),
-      'If you are broadcasting using AutoDJ, enter the source password here.' => 
-      array (
-        0 => 'Wenn Sie mit AutoDJ senden, geben Sie hier das Source Passwort ein.',
-      ),
-      'Publish to "Yellow Pages" Directories' => 
-      array (
-        0 => 'In "Yellow Pages" Verzeichnis veröffentlichen',
-      ),
-      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
-      array (
-        0 => 'Aktivieren, um diesen Mountpoint auf "Yellow Pages" öffentlichen Radioverzeichnis zu bewerben.',
-      ),
-      'New Station Name' => 
-      array (
-        0 => 'Neuer Stationsname',
-      ),
-      'New Station Description' => 
-      array (
-        0 => 'Neue Stationsbeschreibung',
-      ),
-      'Customize Station Cloning' => 
-      array (
-        0 => 'Anpassen des Klonens von Stationen',
-      ),
-      'Copy Media?' => 
-      array (
-        0 => 'Medien kopieren?',
-      ),
-      'Choose how media should be duplicated from the old station.' => 
-      array (
-        0 => 'Wählen Sie, wie die Medien von der alten Station kopiert werden sollen.',
-      ),
-      'Do not share media between the stations' => 
-      array (
-        0 => 'Keine gemeinsame Nutzung von Medien zwischen den Stationen',
-      ),
-      'Share the same folder on disk between the stations' => 
-      array (
-        0 => 'Geben Sie den gleichen Ordner auf der Festplatte zwischen den Stationen frei.',
-      ),
-      'Copy Playlists?' => 
-      array (
-        0 => 'Playlist kopieren?',
-      ),
-      'Copy Streamer/DJ Accounts?' => 
-      array (
-        0 => 'Live-Streamer/DJ Account kopieren?',
-      ),
-      'Copy Permissions?' => 
-      array (
-        0 => 'Rechte kopieren?',
-      ),
-      'Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.' => 
-      array (
-        0 => 'Wenn Sie "Ja" wählen, werden alle Benutzer mit Berechtigungen der aktuellen Station zugewiesen, um die Berechtigungen für die neue Station zu erhalten.',
-      ),
-      'Create New Station' => 
-      array (
-        0 => 'Neue Station erstellen',
+      'Web Hook Details' => 
+      array (
+        0 => 'WebHook Details',
+      ),
+      'Web hooks automatically send a HTTP POST request to the URL you specify to
+                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
+                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station.
+                In order to process quickly, web hooks have a short timeout, so the responding service should be
+                optimized to handle the request in under 2 seconds.' => 
+      array (
+        0 => 'WebHooks senden automatisch einen HTTP POST Request an die URL die du eingegeben hast um 
+                sie jedes Mal zu benachrichtigen, wenn einer der Auslöser die du aktiviert hast auf deinem Sender ausgelöst wird. Der Inhalt der POST Nachricht
+                entspricht der <a href="%s" target="_blank">Now Playing API Antwort</a> deines Senders. 
+                Um schnell verarbeitet zu werden haben WebHooks eine kurze Timeout Zeit, der antwortende Dienst sollte also darauf optimiert sein
+                einen Request in unter 2 Sekunden zu verarbeiten.',
       ),
       'Web Hook Name' => 
       array (
@@ -1653,33 +1761,41 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Wähle einen Namen für diesen WebHook, der hilft, ihn von anderen zu unterscheiden. Dieser wird nur auf der Administrationsseite angezeigt.',
       ),
-      'Bot Token' => 
+      'Web Hook URL' => 
       array (
-        0 => 'Bot Token',
+        0 => 'WebHook URL',
       ),
-      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
+      'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
-        0 => 'Weitere Details findest du in der <a href="%s" target="_blank">Telegramm Dokumentation</a>.',
+        0 => 'Die URL, die jedes Mal wenn ein Ereignis ausgelöst wird die POST-Nachrichten erhält.',
       ),
-      'Chat ID' => 
+      'Optional: HTTP Basic Authentication Username' => 
       array (
-        0 => 'Chat ID',
+        0 => 'Optional: HTTP Basic Authentication Benutzername',
       ),
-      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
+      'If your web hook requires HTTP basic authentication, provide the username here.' => 
       array (
-        0 => 'Eindeutiger Identifikator für den Zielchat oder Benutzernamen des Zielkanals (im Format @channelusername).',
+        0 => 'Wenn der WebHook HTTP Basic Authentication benötigt, gib hier den Benutzernamen ein.',
       ),
-      'Custom API Base URL' => 
+      'Optional: HTTP Basic Authentication Password' => 
       array (
-        0 => 'Individuelle API Basis URL',
+        0 => 'Optional: HTTP Basic Authentication Passwort',
       ),
-      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
+      'If your web hook requires HTTP basic authentication, provide the password here.' => 
       array (
-        0 => 'Leer lassen, um die Standard Telegram API URL zu verwenden (empfohlen). Gib die vollständige URL an, z.B. <code>https://api.pwrtelegram.xyz/</code>.',
+        0 => 'Wenn der WebHook HTTP Basic Authentication benötigt, gib hier das Passwort ein.',
       ),
       'Web Hook Triggers' => 
       array (
         0 => 'WebHook Auslöser',
+      ),
+      'Discord Web Hook URL' => 
+      array (
+        0 => 'Discord WebHook URL',
+      ),
+      'This URL is provided within the Discord application.' => 
+      array (
+        0 => 'Diese URL wird in Discord bereitgestellt.',
       ),
       'Customize Message' => 
       array (
@@ -1692,22 +1808,6 @@ X-Crowdin-File-ID: 4
       'Main Message Content' => 
       array (
         0 => 'Inhalt der Nachricht',
-      ),
-      'Now playing on %s: %s by %s! Tune in now.' => 
-      array (
-        0 => 'Gerade auf %s: %s von %s! Jetzt reinhören.',
-      ),
-      'Message parsing mode' => 
-      array (
-        0 => 'Nachrichten Verarbeitungsmodus',
-      ),
-      'Discord Web Hook URL' => 
-      array (
-        0 => 'Discord WebHook URL',
-      ),
-      'This URL is provided within the Discord application.' => 
-      array (
-        0 => 'Diese URL wird in Discord bereitgestellt.',
       ),
       'Now playing on %s:' => 
       array (
@@ -1743,23 +1843,95 @@ X-Crowdin-File-ID: 4
       ),
       'GA Property Tracking ID' => 
       array (
-        0 => '',
+        0 => 'GA Property Tracking ID',
       ),
       'The property ID used to track live listeners.' => 
+      array (
+        0 => 'Die Property Tracking ID, mit der Live-Hörer getrackt werden.',
+      ),
+      'TuneIn Station ID' => 
+      array (
+        0 => 'TuneIn Station ID',
+      ),
+      'The station ID will be a numeric string that starts with the letter S.' => 
+      array (
+        0 => 'Die Station ID wird ein numerischer String sein, der mit dem Buchstaben S beginnt.',
+      ),
+      'TuneIn Partner ID' => 
+      array (
+        0 => 'TuneIn Partner ID',
+      ),
+      'TuneIn Partner Key' => 
+      array (
+        0 => 'TuneIn Partner Key',
+      ),
+      'Bot Token' => 
+      array (
+        0 => 'Bot Token',
+      ),
+      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
+      array (
+        0 => 'Weitere Details findest du in der <a href="%s" target="_blank">Telegramm Dokumentation</a>.',
+      ),
+      'Chat ID' => 
+      array (
+        0 => 'Chat ID',
+      ),
+      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
+      array (
+        0 => 'Eindeutiger Identifikator für den Zielchat oder Benutzernamen des Zielkanals (im Format @channelusername).',
+      ),
+      'Custom API Base URL' => 
+      array (
+        0 => 'Individuelle API Basis URL',
+      ),
+      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
+      array (
+        0 => 'Leer lassen, um die Standard Telegram API URL zu verwenden (empfohlen). Gib die vollständige URL an, z.B. <code>https://api.pwrtelegram.xyz/</code>.',
+      ),
+      'Now playing on %s: %s by %s! Tune in now.' => 
+      array (
+        0 => 'Gerade auf %s: %s von %s! Jetzt reinhören.',
+      ),
+      'Message parsing mode' => 
+      array (
+        0 => 'Nachrichten Verarbeitungsmodus',
+      ),
+      'Matomo Installation Base URL' => 
+      array (
+        0 => '',
+      ),
+      'The full base URL of your Matomo installation.' => 
+      array (
+        0 => '',
+      ),
+      'Matomo Site ID' => 
+      array (
+        0 => '',
+      ),
+      'The numeric site ID for this site.' => 
+      array (
+        0 => '',
+      ),
+      'Matomo API Token' => 
+      array (
+        0 => '',
+      ),
+      'Optionally supply an API token to allow IP address overriding.' => 
       array (
         0 => '',
       ),
       'Message Recipient(s)' => 
       array (
-        0 => '',
+        0 => 'Empfänger der Nachricht',
       ),
       'E-mail addresses can be separated by commas.' => 
       array (
-        0 => '',
+        0 => 'Mehrere E-Mail-Adressen können durch Kommas getrennt werden.',
       ),
       'Message Subject' => 
       array (
-        0 => '',
+        0 => 'Betreff',
       ),
       'Message Body' => 
       array (
@@ -1778,7 +1950,21 @@ X-Crowdin-File-ID: 4
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '',
+        0 => 'Schritte zur Konfiguration einer Twitter-Anwendung:<br>
+
+                <ol type="1">
+
+                    <li>Eine neue App auf der <a href="%s" target="_blank">Twitter-App-Seite</a> erstellen. 
+
+                    Verwende die Basis-URL dieser Installation als Anwendungs-URL.</li>
+
+                    <li>In der neu erstellten Anwendung auf "Keys and tokens" klicken.</li>
+
+                    <li>Am unteren Rand der Seite auf "Create" klicken.</li>
+
+                </ol>
+
+                <p>Die Informationen der Seite in die folgenden Felder eintragen:</p>',
       ),
       'Consumer Key (API Key)' => 
       array (
@@ -1812,758 +1998,73 @@ X-Crowdin-File-ID: 4
       array (
         0 => '%d Minuten',
       ),
-      'TuneIn Station ID' => 
+      'Now playing on %s: %s by %s! Tune in now: %s' => 
       array (
-        0 => 'TuneIn Station ID',
+        0 => 'Spielt jetzt auf %s: %s von %s! Jetzt reinhören: %s',
       ),
-      'The station ID will be a numeric string that starts with the letter S.' => 
+      'New Station Name' => 
       array (
-        0 => 'Die Station ID wird ein numerischer String sein, der mit dem Buchstaben S beginnt.',
+        0 => 'Neuer Stationsname',
       ),
-      'TuneIn Partner ID' => 
+      'New Station Description' => 
       array (
-        0 => 'TuneIn Partner ID',
+        0 => 'Neue Stationsbeschreibung',
       ),
-      'TuneIn Partner Key' => 
+      'Customize Station Cloning' => 
       array (
-        0 => 'TuneIn Partner Key',
+        0 => 'Anpassen des Klonens von Stationen',
       ),
-      'Web Hook Details' => 
+      'Copy to New Station:' => 
       array (
-        0 => 'WebHook Details',
+        0 => 'In neuen Sender kopieren:',
       ),
-      'Web hooks automatically send a HTTP POST request to the URL you specify to
-                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
-                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station.
-                In order to process quickly, web hooks have a short timeout, so the responding service should be
-                optimized to handle the request in under 2 seconds.' => 
+      'Share Media Storage Location' => 
       array (
-        0 => '',
+        0 => 'Medien-Speicherort teilen',
       ),
-      'Web Hook URL' => 
+      'Share Recordings Storage Location' => 
       array (
-        0 => 'WebHook URL',
+        0 => 'Aufzeichnungs-Speicherort teilen',
       ),
-      'The URL that will receive the POST messages any time an event is triggered.' => 
+      'Share Podcasts Storage Location' => 
       array (
-        0 => 'Die URL, die jedes Mal wenn ein Ereignis ausgelöst wird die POST-Nachrichten erhält.',
+        0 => 'Podcasts-Speicherort teilen',
       ),
-      'Optional: HTTP Basic Authentication Username' => 
+      'Streamers/DJs' => 
       array (
-        0 => 'Optional: HTTP Basic Authentication Benutzername',
+        0 => 'Live-Streamer/DJs',
       ),
-      'If your web hook requires HTTP basic authentication, provide the username here.' => 
+      'User Permissions' => 
       array (
-        0 => 'Wenn der WebHook HTTP Basic Authentication benötigt, gib hier den Benutzernamen ein.',
+        0 => 'Benutzerberechtigungen',
       ),
-      'Optional: HTTP Basic Authentication Password' => 
+      'Create New Station' => 
       array (
-        0 => 'Optional: HTTP Basic Authentication Passwort',
+        0 => 'Neue Station erstellen',
       ),
-      'If your web hook requires HTTP basic authentication, provide the password here.' => 
+      'Instructions' => 
       array (
-        0 => 'Wenn der WebHook HTTP Basic Authentication benötigt, gib hier das Passwort ein.',
+        0 => 'Anleitung',
       ),
-      'Field Name' => 
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => 'Name des Feldes',
+        0 => '<p>SHOUTcast 2 DNAS ist keine freie Software und seine restriktive Lizenz erlaubt AzuraCast nicht die weitergabe eines Binaries. Um SHOUTcast zu installieren, sollten sie das Linux x64binary von der <a href="%s" target="_blank">SHOUTcast Radio Manager</a> Webseite herunterladen. Und das Binary <code>sc_serv2_linux_x64-latest.tar.gz</code>in das vorgesehene Verzeichniss extrahieren.</p>',
       ),
-      'This will be used as the label when editing individual songs, and will show in API results.' => 
+      'Current Installed Version' => 
       array (
-        0 => 'DIese Kennzeichnung wird zum Editieren individueller Songs benutzt und wird in den API Resultaten Angezeigt.',
+        0 => 'Aktuell installierte Version',
       ),
-      'Programmatic Name' => 
+      'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => 'Programmname',
+        0 => 'SHOUTcast ist derzeit nicht auf diesem System installiert.',
       ),
-      'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
+      'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
-        0 => 'Optional kann ein API freundlicher Name, wie z. b.<code>feld_name</code>genutzt werden.
-Bitte freilassen um einen Namen automatisch zu erstellen.',
+        0 => 'Wählen sie das SHOUTcast 64-bit .tar.gz aus',
       ),
-      'Automatically Set from ID3v2 Value' => 
+      'Upload' => 
       array (
-        0 => 'Automatisch aus ID3v2 Wert setzen',
-      ),
-      'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
-      array (
-        0 => 'Optional ein ID3v2-Metadatenfeld wählen, das, falls vorhanden, verwendet wird, um den Wert dieses Feldes festzulegen.',
-      ),
-      'Disable' => 
-      array (
-        0 => 'Deaktivieren',
-      ),
-      'Album' => 
-      array (
-        0 => 'Album',
-      ),
-      'Album Artist Sort Order' => 
-      array (
-        0 => 'Album-Interpret Sortier-Reihenfolge',
-      ),
-      'Album Sort Order' => 
-      array (
-        0 => 'Album-Sortierreihenfolge',
-      ),
-      'Artist' => 
-      array (
-        0 => 'Interpret',
-      ),
-      'Band' => 
-      array (
-        0 => 'Band',
-      ),
-      'Bpm' => 
-      array (
-        0 => 'BPM',
-      ),
-      'Comment' => 
-      array (
-        0 => 'Kommentar',
-      ),
-      'Commercial Information' => 
-      array (
-        0 => 'Kommerzielle Informationen',
-      ),
-      'Composer' => 
-      array (
-        0 => 'Komponist',
-      ),
-      'Composer Sort Order' => 
-      array (
-        0 => 'Interpreten-Sortierreihenfolge',
-      ),
-      'Conductor' => 
-      array (
-        0 => 'Dirigent',
-      ),
-      'Content Group Description' => 
-      array (
-        0 => 'Inhaltsgruppen-Beschreibung',
-      ),
-      'Copyright' => 
-      array (
-        0 => 'Copyright',
-      ),
-      'Copyright Message' => 
-      array (
-        0 => 'Copyright-Nachricht',
-      ),
-      'Encoded By' => 
-      array (
-        0 => 'Kodiert von',
-      ),
-      'Encoder Settings' => 
-      array (
-        0 => 'Encoder-Einstellungen',
-      ),
-      'Encoding Time' => 
-      array (
-        0 => 'Kodierungs-Zeit',
-      ),
-      'File Owner' => 
-      array (
-        0 => 'Dateieigentümer',
-      ),
-      'File Type' => 
-      array (
-        0 => 'Dateityp',
-      ),
-      'Genre' => 
-      array (
-        0 => 'Genre',
-      ),
-      'Initial Key' => 
-      array (
-        0 => 'Anfangs-Schlüssel',
-      ),
-      'Internet Radio Station Name' => 
-      array (
-        0 => 'Name der Internetradio-Station',
-      ),
-      'Internet Radio Station Owner' => 
-      array (
-        0 => 'Inhaber der Internetradio-Station',
-      ),
-      'Involved People List' => 
-      array (
-        0 => 'Liste der Mitwirkenden',
-      ),
-      'ISRC' => 
-      array (
-        0 => 'ISRC',
-      ),
-      'Length' => 
-      array (
-        0 => 'Länge',
-      ),
-      'Linked Information' => 
-      array (
-        0 => 'Angehängte Informationen',
-      ),
-      'Lyricist' => 
-      array (
-        0 => 'Lyricist',
-      ),
-      'Media Type' => 
-      array (
-        0 => 'Medientyp',
-      ),
-      'Mood' => 
-      array (
-        0 => 'Stimmung',
-      ),
-      'Music CD Identifier' => 
-      array (
-        0 => 'Musik-CD-Bezeichner',
-      ),
-      'Musician Credits List' => 
-      array (
-        0 => 'Musiker-Credits',
-      ),
-      'Original Album' => 
-      array (
-        0 => 'Original Album',
-      ),
-      'Original Artist' => 
-      array (
-        0 => 'Original Künstler',
-      ),
-      'Original Filename' => 
-      array (
-        0 => 'Original Dateiname',
-      ),
-      'Original Lyricist' => 
-      array (
-        0 => 'Original Lyricist',
-      ),
-      'Original Release Time' => 
-      array (
-        0 => 'Original Releasezeit',
-      ),
-      'Original Year' => 
-      array (
-        0 => 'Originales Jahr',
-      ),
-      'Part Of A Compilation' => 
-      array (
-        0 => 'Teil einer Zusammenstellung',
-      ),
-      'Part Of A Set' => 
-      array (
-        0 => 'Teil eines Sets',
-      ),
-      'Performer Sort Order' => 
-      array (
-        0 => 'Sortierreihenfolge Performer',
-      ),
-      'Playlist Delay' => 
-      array (
-        0 => 'Playlist-Verzögerung',
-      ),
-      'Produced Notice' => 
-      array (
-        0 => 'Produktions-Hinweis',
-      ),
-      'Publisher' => 
-      array (
-        0 => 'Herausgeber',
-      ),
-      'Recording Time' => 
-      array (
-        0 => 'Aufnahmezeit',
-      ),
-      'Release Time' => 
-      array (
-        0 => 'Veröffentlichungszeitpunkt',
-      ),
-      'Remixer' => 
-      array (
-        0 => 'Remixer',
-      ),
-      'Set Subtitle' => 
-      array (
-        0 => 'Untertitel setzen',
-      ),
-      'Subtitle' => 
-      array (
-        0 => 'Untertitel',
-      ),
-      'Tagging Time' => 
-      array (
-        0 => 'Tagging-Zeit',
-      ),
-      'Terms Of Use' => 
-      array (
-        0 => 'Nutzungsbedingungen',
-      ),
-      'Title Sort Order' => 
-      array (
-        0 => 'Sortierreihenfolge Titel',
-      ),
-      'Track Number' => 
-      array (
-        0 => 'Titelnummer',
-      ),
-      'Unsynchronised Lyric' => 
-      array (
-        0 => 'Unsynchronisierter Songtext',
-      ),
-      'URL Artist' => 
-      array (
-        0 => 'URL Künstler',
-      ),
-      'URL File' => 
-      array (
-        0 => 'URL Datei',
-      ),
-      'URL Payment' => 
-      array (
-        0 => 'URL Zahlung',
-      ),
-      'URL Publisher' => 
-      array (
-        0 => 'URL Publisher',
-      ),
-      'URL Source' => 
-      array (
-        0 => 'URL Quelle',
-      ),
-      'URL Station' => 
-      array (
-        0 => 'URL Station',
-      ),
-      'URL User' => 
-      array (
-        0 => 'URL Nutzer',
-      ),
-      'Year' => 
-      array (
-        0 => 'Jahr',
-      ),
-      'Base Theme for Public Pages' => 
-      array (
-        0 => 'Basisdesign für öffentliche Seiten',
-      ),
-      'Select a theme to use as a base for station public pages and the login page.' => 
-      array (
-        0 => 'Wählen Sie ein Theme, als Basis für öffentliche Stationsseiten und der Login-Seite.',
-      ),
-      'Hide Album Art on Public Pages' => 
-      array (
-        0 => 'Album Art auf den öffentlichen Seiten ausblenden',
-      ),
-      'If selected, album art will not display on public-facing radio pages.' => 
-      array (
-        0 => 'Wenn ausgewählt, wird das Albumcover nicht auf öffentlichen Radio Seiten angezeigt.',
-      ),
-      'Homepage Redirect URL' => 
-      array (
-        0 => 'Homepage-Umleitungs-URL',
-      ),
-      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
-      array (
-        0 => 'Wenn ein Besucher nicht eingeloggt und die AzuraCast Homepage besucht, können Sie sie automatisch mit der hier angegebenen URL umleiten. Freilassen Sie, um sie zum Login-Bildschirm standardmäßig umzuleiten.',
-      ),
-      'Default Album Art URL' => 
-      array (
-        0 => 'Standard-Album-Cover URL',
-      ),
-      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
-      array (
-        0 => 'Wenn ein Song über kein Albumcover verfügt, wird diese URL stattdessen aufgelistet. Freilassen um den Standard Platzhalter zu verwenden.',
-      ),
-      'Hide AzuraCast Branding on Public Pages' => 
-      array (
-        0 => 'Blenden Sie AzuraCast Branding auf öffentlichen Seiten aus',
-      ),
-      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
-      array (
-        0 => 'Wenn ausgewählt, wird dadurch das AzuraCast branding auf öffentlich zugänglichen Seiten nicht angezeigt.',
-      ),
-      'Custom CSS for Public Pages' => 
-      array (
-        0 => 'Custom CSS für öffentliche Seiten',
-      ),
-      'This CSS will be applied to the station public pages and login page.' => 
-      array (
-        0 => 'Dieses CSS wird auf den öffentlichen Seiten Bahnhof und Login-Seite angewendet werden.',
-      ),
-      'Custom JS for Public Pages' => 
-      array (
-        0 => 'Benutzerdefinierte JS für öffentliche Seiten',
-      ),
-      'This javascript code will be applied to the station public pages and login page.' => 
-      array (
-        0 => 'Dieser Javascript-Code wird auf den öffentlichen Seiten und Login-Seite angewendet werden.',
-      ),
-      'Custom CSS for Internal Pages' => 
-      array (
-        0 => 'Custom CSS für interne Seiten',
-      ),
-      'This CSS will be applied to the main management pages, like this one.' => 
-      array (
-        0 => 'Dieses CSS wird auf den Haupt-Seiten angwendet, wie auf dieser Seite z.b.',
-      ),
-      'Stream path cannot include reserved keywords: %s' => 
-      array (
-        0 => 'Stream-Pfad kann nicht reservierte Schlüsselwörter enthalten: %s',
-      ),
-      'YP Directory Authorization Hash' => 
-      array (
-        0 => 'YP Directory Berechtigung Hash',
-      ),
-      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
-      array (
-        0 => 'Wenn Ihr Stream auf den YP-Verzeichnissen angezeigt wird, müssen Sie einen Autorisierungshash angeben. Sie können authhashes <a href="%s" target="_blank">auf der SHOUTcast-Website</a> verwalten.',
-      ),
-      'Fallback Mount' => 
-      array (
-        0 => 'Fallback Mount',
-      ),
-      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
-      array (
-        0 => 'Wenn ein Mount Point nichts abspielt wird automatisch ein Fallback benutzt. Standardmäßig ist er /error.mp3, welcher eine Fehlermeldung abspielt.',
-      ),
-      'Custom Frontend Configuration' => 
-      array (
-        0 => 'Benutzerdefinierte Frontend Konfiguration',
-      ),
-      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
-      array (
-        0 => 'Du kannst bestimmte Einstellungen des Mount Points im JSON { key: \'value\' } format oder im XML &lt;key&gt;value&lt;/key&gt; Format eintragen',
-      ),
-      'Mount Point URL' => 
-      array (
-        0 => 'Einhängepunkt URL',
-      ),
-      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
-      array (
-        0 => 'Der Name muss mit einem Slash (/) beginnen. Außerdem muss es eine gültige URL - wie z.b. /autodj.mp3 - sein.',
-      ),
-      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => 'Der Anzeigename dieses Einhängepunktes der auf administrations oder öffentlichen Seiten angezeigt wird. Leer lassen, um automatisch einen zu erzeugen.',
-      ),
-      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
-      array (
-        0 => 'Aktivieren, um den Zuhörern die Möglichkeit zu geben, diesen Einhängepunkt auf den öffentlichen Seiten dieses Senders auszuwählen.',
-      ),
-      'Set as Default Mount Point' => 
-      array (
-        0 => 'Als Standard-Mount-Punkt festlegen',
-      ),
-      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
-      array (
-        0 => 'Der Standard Mount wird auf der öffentlichen Radioseite automatisch abgespielt.',
-      ),
-      'Relay Stream URL' => 
-      array (
-        0 => 'Relay Stream URL',
-      ),
-      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
-      array (
-        0 => 'Bitte gib die vollsändige URL deines gewünschten Relay Streams ein.',
-      ),
-      'Enable AutoDJ' => 
-      array (
-        0 => 'AutoDJ einschalten',
-      ),
-      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
-      array (
-        0 => 'Wenn aktiviert, wird der AutoDJ automatisch Musik abspielen.',
-      ),
-      'Custom Stream URL' => 
-      array (
-        0 => 'Benutzerdefinierte Stream-URL',
-      ),
-      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
-      array (
-        0 => 'Sie können eine benutzerdefinierte URL für den Stream festlegen, die von Azuracast benutzt wird. Lassen Sie es frei, um den Standardwert verwenden.',
-      ),
-      'Metadata' => 
-      array (
-        0 => 'Metadaten',
-      ),
-      'Full Text' => 
-      array (
-        0 => 'Ganzer Text',
-      ),
-      'Artist Name' => 
-      array (
-        0 => 'Interpret',
-      ),
-      'Song Title' => 
-      array (
-        0 => 'Song-Titel',
-      ),
-      'Role Name' => 
-      array (
-        0 => 'Rollenname',
-      ),
-      'System-Wide Permissions' => 
-      array (
-        0 => 'Systemweite Berechtigungen',
-      ),
-      'Permissions for %s' => 
-      array (
-        0 => 'Berechtigungen für %s',
-      ),
-      'Roles' => 
-      array (
-        0 => 'Rollen',
-      ),
-      'Rolling Release' => 
-      array (
-        0 => '',
-      ),
-      'Stable' => 
-      array (
-        0 => '',
-      ),
-      'Settings' => 
-      array (
-        0 => 'Einstellungen',
-      ),
-      'Security' => 
-      array (
-        0 => '',
-      ),
-      'Privacy' => 
-      array (
-        0 => '',
-      ),
-      'Services' => 
-      array (
-        0 => '',
-      ),
-      'Site Base URL' => 
-      array (
-        0 => 'System-URL',
-      ),
-      'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
-      array (
-        0 => 'Die Basis URL über die der Service erreichbar ist. Benutze entweder die IP oder einen Hostnamen der auf den Server zeigt (falls vorhanden).',
-      ),
-      'AzuraCast Instance Name' => 
-      array (
-        0 => 'AzuraCast Instanz Name',
-      ),
-      'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
-      array (
-        0 => 'Dieser Name erscheint als Sub-Header neben dem AzuraCast-Logo, um diesen Server zu identifizieren.',
-      ),
-      'Prefer Browser URL (If Available)' => 
-      array (
-        0 => 'Bevorzuge Browser URL (falls vorhanden)',
-      ),
-      'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
-      array (
-        0 => 'Wenn "Ja" wird die Browser-URL statt der System-URL genutzt. Bei "Nein" wird immer die System-URL genutzt.',
-      ),
-      'Use Web Proxy for Radio' => 
-      array (
-        0 => 'Nutze Webproxy für das Radio',
-      ),
-      'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
-      array (
-        0 => 'Standardmäßig nutzt jeder Sender seinen eigenen Port (z.B. 8000). Solltest du einen Service wie CloudFlare nutzen oder deinen Sender über SSL abrufen, so aktiviere bitte dieses Feature, welches alle Sender zu den Web-Ports (80 und 443) routet.',
-      ),
-      'Days of Playback History to Keep' => 
-      array (
-        0 => 'Tage zur Speicherung des Titelverlaufs',
-      ),
-      'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. ' => 
-      array (
-        0 => '',
-      ),
-      'Last 14 Days' => 
-      array (
-        0 => 'Letzte 14 Tage',
-      ),
-      'Last 30 Days' => 
-      array (
-        0 => 'Letzte 30 Tage',
-      ),
-      'Last 60 Days' => 
-      array (
-        0 => 'Letzte 60 Tage',
-      ),
-      'Last Year' => 
-      array (
-        0 => 'Letztes Jahr',
-      ),
-      'Last 2 Years' => 
-      array (
-        0 => 'Letzte 2 Jahre',
-      ),
-      'Indefinitely' => 
-      array (
-        0 => 'Gesamte Zeit',
-      ),
-      'Use WebSockets for Now Playing Updates' => 
-      array (
-        0 => 'WebSockets für "Jetzt läuft"-Updates verwenden',
-      ),
-      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
-      array (
-        0 => 'Aktiviert oder deaktiviert die Verwendung des neueren und schnelleren WebSocket-basierten Systems, um Live-Updates auf öffentlichen Playern zu erhalten. Feature deaktivieren, wenn Probleme damit auftreten.',
-      ),
-      'Enable Advanced Features' => 
-      array (
-        0 => '',
-      ),
-      'Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.' => 
-      array (
-        0 => '',
-      ),
-      'Always Use HTTPS' => 
-      array (
-        0 => 'Immer HTTPS verwenden',
-      ),
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
-      array (
-        0 => 'Auf "Ja" setzen, um immer "https://" sichere URLs zu verwenden und automatisch auf die sichere URL umzuleiten, wenn eine unsichere URL besucht wird.',
-      ),
-      'API "Access-Control-Allow-Origin" header' => 
-      array (
-        0 => 'API "Access-Control-Allow-Origin"-Header',
-      ),
-      '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
-      array (
-        0 => '<a href="%s" target="_blank">Erfahren Sie mehr über diesen Header</a>. Setzen Sie auf \'*\' , um alle Quellen zu erlauben oder geben Sie eine Liste von Quellen an (getrennt durch Komma \',\').',
-      ),
-      'Listener Analytics Collection' => 
-      array (
-        0 => 'Hörer Statistik',
-      ),
-      'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
-      array (
-        0 => 'Aggregierte Zuhörer Statistiken dienen dazu Station Berichte Systemweit anzuzeigen. IP-basierte Hörer Statistiken dienen dazu, um eventuelle Lizenzgebühren und Berichte zu erstellen.',
-      ),
-      '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
-      array (
-        0 => '<b>Komplettes:</b> sammeln aggregierte Zuhörer Statistiken und IP-basierter Hörer',
-      ),
-      '<b>Limited:</b> Only collect aggregate listener statistics' => 
-      array (
-        0 => '<b>Beschränkt:</b> sammeln nur aggregierte Zuhörer Statistiken',
-      ),
-      '<b>None:</b> Do not collect any listener analytics' => 
-      array (
-        0 => '<b>Keine:</b> Erfassen keinet Zuhörer Daten',
-      ),
-      'AzuraCast Update Checks' => 
-      array (
-        0 => '',
-      ),
-      'Current Release Channel' => 
-      array (
-        0 => '',
-      ),
-      'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.' => 
-      array (
-        0 => '',
-      ),
-      'Show Update Announcements' => 
-      array (
-        0 => '',
-      ),
-      'Show new releases within your update channel on the AzuraCast homepage.' => 
-      array (
-        0 => '',
-      ),
-      'E-mail Delivery Service' => 
-      array (
-        0 => '',
-      ),
-      'Used for "Forgot Password" functionality, web hooks and other functions.' => 
-      array (
-        0 => '',
-      ),
-      'Enable Mail Delivery' => 
-      array (
-        0 => '',
-      ),
-      'Sender Name' => 
-      array (
-        0 => '',
-      ),
-      'Sender E-mail Address' => 
-      array (
-        0 => '',
-      ),
-      'SMTP Host' => 
-      array (
-        0 => '',
-      ),
-      'SMTP Port' => 
-      array (
-        0 => '',
-      ),
-      'Use Secure (TLS) SMTP Connection' => 
-      array (
-        0 => '',
-      ),
-      'Usually enabled for port 465, disabled for ports 587 or 25.' => 
-      array (
-        0 => '',
-      ),
-      'SMTP Username' => 
-      array (
-        0 => '',
-      ),
-      'SMTP Password' => 
-      array (
-        0 => '',
-      ),
-      'Third-Party Services' => 
-      array (
-        0 => '',
-      ),
-      'Check Web Services for Album Art for "Now Playing" Tracks' => 
-      array (
-        0 => '',
-      ),
-      'Check Web Services for Album Art When Uploading Media' => 
-      array (
-        0 => '',
-      ),
-      'Last.fm API Key' => 
-      array (
-        0 => '',
-      ),
-      '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
-      array (
-        0 => '<a href="%s" target="_blank">Bewirb dich hier für einen API-Schlüssel</a>. Dieser Service kann Albumcover für Tracks bereitstellen, die nicht lokal verfügbar sind.',
-      ),
-      'Code from Authenticator App' => 
-      array (
-        0 => 'Code von Authenticator App',
-      ),
-      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
-      array (
-        0 => 'Gib den aktuellen Code aus deiner Authenticator App ein um zu überprüfen ob alles funktioniert.',
-      ),
-      'Verify Authenticator' => 
-      array (
-        0 => 'Authenticator verifizieren',
-      ),
-      'Backup Filename' => 
-      array (
-        0 => 'Dateiname des Backups',
-      ),
-      'Path where the backup file should be located.' => 
-      array (
-        0 => 'Pfad in dem sich die Backupdatei befinden soll.',
-      ),
-      'Exclude Media from Backup' => 
-      array (
-        0 => 'Medien aus Backup ausschließen',
-      ),
-      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
-      array (
-        0 => 'Das Ausschließen von Medien bei automatisierten Backups spart Speicherplatz, aber du solltest sicherstellen, dass deine Medien an anderer Stelle gesichert werden. Beachte bitte, dass nur lokal gespeicherte Medien gesichert werden.',
+        0 => 'Hochladen',
       ),
       'Station Profile' => 
       array (
@@ -2580,6 +2081,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Administration' => 
       array (
         0 => 'Administration',
+      ),
+      'Name' => 
+      array (
+        0 => 'Name',
+      ),
+      'Genre' => 
+      array (
+        0 => 'Genre',
       ),
       'Web Site URL' => 
       array (
@@ -2607,15 +2116,23 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Enable On-Demand Streaming' => 
       array (
-        0 => '',
+        0 => 'On-Demand Streaming aktivieren',
       ),
       'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
       array (
         0 => 'Falls aktiviert, steht Musik aus Wiedergabelisten mit aktiviertem On-Demand-Streaming zum Streamen und Herunterladen über eine spezialisierte öffentliche Seite zur Verfügung.',
       ),
+      'Default Album Art URL' => 
+      array (
+        0 => 'Standard-Album-Cover URL',
+      ),
+      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
+      array (
+        0 => 'Wenn ein Song über kein Albumcover verfügt, wird diese URL stattdessen aufgelistet. Freilassen um den Standard Platzhalter zu verwenden.',
+      ),
       'Enable Downloads on On-Demand Page' => 
       array (
-        0 => '',
+        0 => 'Downloads auf On-Demand Seite aktivieren',
       ),
       'URL Stub' => 
       array (
@@ -2681,6 +2198,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Dieser Code wird in die Frontend-Konfiguration aufgenommen. Du kannst entweder JSON {"new_key" verwenden: "new_value"} Format oder XML &lt;new_key&gt;new_value&lt;/new_key&gt;.',
       ),
+      'For SHOUTcast Premium users, you can use custom configuration in this format: <code>{ "licenceid": "YOUR_LICENSE_ID" "userid": "YOUR_USER_ID" }</code>' => 
+      array (
+        0 => 'SHOUTcast Premium-Benutzer können eine benutzerdefinierte Konfiguration in diesem Format verwenden: <code>{ "licenseid": "DEINE_LIZENZ_ID" "userid": "DEINE_BENUTZER_ID" }</code>',
+      ),
       'Banned IP Addresses' => 
       array (
         0 => 'Gesperrte IP-Adressen',
@@ -2688,6 +2209,22 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Eine IP-Adresse oder Gruppe (im CIDR-Format) pro Zeile auflisten.',
+      ),
+      'Banned Countries' => 
+      array (
+        0 => '',
+      ),
+      'Select the countries that are not allowed to connect to the streams.' => 
+      array (
+        0 => '',
+      ),
+      'Allowed IP Addresses' => 
+      array (
+        0 => '',
+      ),
+      'List one IP address or group (in CIDR format) per line to explicitly allow them to connect even when their country is banned.' => 
+      array (
+        0 => '',
       ),
       'AutoDJ Service' => 
       array (
@@ -2863,11 +2400,15 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Media Storage Location' => 
       array (
-        0 => '',
+        0 => 'Medien Speicherort',
       ),
       'Live Recordings Storage Location' => 
       array (
-        0 => '',
+        0 => 'Live-Aufnahmen Speicherort',
+      ),
+      'Podcasts Storage Location' => 
+      array (
+        0 => 'Podcasts-Speicherort',
       ),
       'Enable Broadcasting' => 
       array (
@@ -2885,9 +2426,89 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Das übergeordnete Verzeichnis, in dem die Wiedergabelisten und Konfigurationsdateien gespeichert werden. Leer lassen, um das Standardverzeichnis zu verwenden.',
       ),
-      'Log in' => 
+      'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
-        0 => 'Anmelden',
+        0 => 'Um die Geolokalisierung der IP-Adressen ihrer Zuhörer bereitzustellen, können Sie ihre MaxMind GeoLite-Datenbank hochladen. Dies wird Ihnen erlauben, die Liste der Zuhörer im "Zuhörer"-Bericht jeder Radiostation einzusehen. Um die GeoLite-Datenbank herunterzuladen:',
+      ),
+      'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
+      array (
+        0 => 'Erstellen Sie ein Konto auf <a href="%s" target="_blank">der Seite von MaxMind</a>.',
+      ),
+      'Visit the "My License Key" page under the "Services" section.' => 
+      array (
+        0 => 'Besuche die Seite "Mein Lizenzschlüssel" unter "Dienste".',
+      ),
+      'Click "Generate new license key".' => 
+      array (
+        0 => 'Klicke auf "Neuen Lizenzschlüssel generieren".',
+      ),
+      'Paste the generated license key into the field on this page.' => 
+      array (
+        0 => 'Füge den generierten Lizenzschlüssel in das Feld auf dieser Seite ein.',
+      ),
+      'MaxMind License Key' => 
+      array (
+        0 => 'MaxMind Lizenzschlüssel',
+      ),
+      'Account Information' => 
+      array (
+        0 => 'Benutzerinformationen',
+      ),
+      'E-mail Address' => 
+      array (
+        0 => 'E-Mail Adresse',
+      ),
+      'Password' => 
+      array (
+        0 => 'Passwort',
+      ),
+      'Create Account' => 
+      array (
+        0 => 'Benutzer erstellen',
+      ),
+      'Comments' => 
+      array (
+        0 => 'Kommentare',
+      ),
+      'Describe the use-case for this API key for future reference.' => 
+      array (
+        0 => 'Den Anwendungsfall für diesen API-Schlüssel für die Zukunft beschreiben.',
+      ),
+      'Run Automatic Nightly Backups' => 
+      array (
+        0 => 'Automatische nächtliche Backups ausführen',
+      ),
+      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
+      array (
+        0 => 'Aktivieren, um AzuraCast automatisch Nachtbackups zu der angegebenen Zeit ausführen zu lassen.',
+      ),
+      'Scheduled Backup Time' => 
+      array (
+        0 => 'Geplanter Zeitpunkt für Backups',
+      ),
+      'The time (in UTC) to run the automated backup, if enabled.' => 
+      array (
+        0 => 'Die Zeit (in UTC) um die automatische Sicherung auszuführen, falls aktiviert.',
+      ),
+      'Exclude Media from Backups' => 
+      array (
+        0 => 'Medien aus Backup ausschließen',
+      ),
+      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
+      array (
+        0 => 'Das Ausschließen von Medien bei automatisierten Backups spart Speicherplatz, aber du solltest sicherstellen, dass deine Medien an anderer Stelle gesichert werden. Beachte bitte, dass nur lokal gespeicherte Medien gesichert werden.',
+      ),
+      'Number of Backup Copies to Keep' => 
+      array (
+        0 => 'Anzahl der zu behaltenden Backups',
+      ),
+      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
+      array (
+        0 => 'Backups, die älter als die angegebene Anzahl der Tage sind, werden automatisch gelöscht. Auf Null setzen, um die automatische Löschung zu deaktivieren.',
+      ),
+      'Storage Location' => 
+      array (
+        0 => 'Speicherort',
       ),
       'Enable Automated Assignment' => 
       array (
@@ -2913,33 +2534,626 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => '%d Tage',
       ),
-      'Comments' => 
+      'Field Name' => 
       array (
-        0 => 'Kommentare',
+        0 => 'Name des Feldes',
       ),
-      'Describe the use-case for this API key for future reference.' => 
+      'This will be used as the label when editing individual songs, and will show in API results.' => 
       array (
-        0 => 'Den Anwendungsfall für diesen API-Schlüssel für die Zukunft beschreiben.',
+        0 => 'DIese Kennzeichnung wird zum Editieren individueller Songs benutzt und wird in den API Resultaten Angezeigt.',
       ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
+      'Programmatic Name' => 
       array (
-        0 => '<p>SHOUTcast 2 DNAS ist keine freie Software und seine restriktive Lizenz erlaubt AzuraCast nicht die weitergabe eines Binaries. Um SHOUTcast zu installieren, sollten sie das Linux x64binary von der <a href="%s" target="_blank">SHOUTcast Radio Manager</a> Webseite herunterladen. Und das Binary <code>sc_serv2_linux_x64-latest.tar.gz</code>in das vorgesehene Verzeichniss extrahieren.</p>',
+        0 => 'Programmname',
       ),
-      'Current Installed Version' => 
+      'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
       array (
-        0 => 'Aktuell installierte Version',
+        0 => 'Optional kann ein API freundlicher Name, wie z. b.<code>feld_name</code>genutzt werden.
+Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
-      'SHOUTcast is not currently installed on this installation.' => 
+      'Automatically Set from ID3v2 Value' => 
       array (
-        0 => 'SHOUTcast ist derzeit nicht auf diesem System installiert.',
+        0 => 'Automatisch aus ID3v2 Wert setzen',
       ),
-      'Select SHOUTcast 64-bit .tar.gz File' => 
+      'Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.' => 
       array (
-        0 => 'Wählen sie das SHOUTcast 64-bit .tar.gz aus',
+        0 => 'Optional ein ID3v2-Metadatenfeld wählen, das, falls vorhanden, verwendet wird, um den Wert dieses Feldes festzulegen.',
       ),
-      'Upload' => 
+      'Disable' => 
       array (
-        0 => 'Hochladen',
+        0 => 'Deaktivieren',
+      ),
+      'Album' => 
+      array (
+        0 => 'Album',
+      ),
+      'Album Artist Sort Order' => 
+      array (
+        0 => 'Album-Interpret Sortier-Reihenfolge',
+      ),
+      'Album Sort Order' => 
+      array (
+        0 => 'Album-Sortierreihenfolge',
+      ),
+      'Artist' => 
+      array (
+        0 => 'Interpret',
+      ),
+      'Band' => 
+      array (
+        0 => 'Band',
+      ),
+      'Bpm' => 
+      array (
+        0 => 'BPM',
+      ),
+      'Comment' => 
+      array (
+        0 => 'Kommentar',
+      ),
+      'Commercial Information' => 
+      array (
+        0 => 'Kommerzielle Informationen',
+      ),
+      'Composer' => 
+      array (
+        0 => 'Komponist',
+      ),
+      'Composer Sort Order' => 
+      array (
+        0 => 'Interpreten-Sortierreihenfolge',
+      ),
+      'Conductor' => 
+      array (
+        0 => 'Dirigent',
+      ),
+      'Content Group Description' => 
+      array (
+        0 => 'Inhaltsgruppen-Beschreibung',
+      ),
+      'Copyright' => 
+      array (
+        0 => 'Copyright',
+      ),
+      'Copyright Message' => 
+      array (
+        0 => 'Copyright-Nachricht',
+      ),
+      'Encoded By' => 
+      array (
+        0 => 'Kodiert von',
+      ),
+      'Encoder Settings' => 
+      array (
+        0 => 'Encoder-Einstellungen',
+      ),
+      'Encoding Time' => 
+      array (
+        0 => 'Kodierungs-Zeit',
+      ),
+      'File Owner' => 
+      array (
+        0 => 'Dateieigentümer',
+      ),
+      'File Type' => 
+      array (
+        0 => 'Dateityp',
+      ),
+      'Initial Key' => 
+      array (
+        0 => 'Anfangs-Schlüssel',
+      ),
+      'Internet Radio Station Name' => 
+      array (
+        0 => 'Name der Internetradio-Station',
+      ),
+      'Internet Radio Station Owner' => 
+      array (
+        0 => 'Inhaber der Internetradio-Station',
+      ),
+      'Involved People List' => 
+      array (
+        0 => 'Liste der Mitwirkenden',
+      ),
+      'ISRC' => 
+      array (
+        0 => 'ISRC',
+      ),
+      'Language' => 
+      array (
+        0 => 'Sprache',
+      ),
+      'Length' => 
+      array (
+        0 => 'Länge',
+      ),
+      'Linked Information' => 
+      array (
+        0 => 'Angehängte Informationen',
+      ),
+      'Lyricist' => 
+      array (
+        0 => 'Lyricist',
+      ),
+      'Media Type' => 
+      array (
+        0 => 'Medientyp',
+      ),
+      'Mood' => 
+      array (
+        0 => 'Stimmung',
+      ),
+      'Music CD Identifier' => 
+      array (
+        0 => 'Musik-CD-Bezeichner',
+      ),
+      'Musician Credits List' => 
+      array (
+        0 => 'Musiker-Credits',
+      ),
+      'Original Album' => 
+      array (
+        0 => 'Original Album',
+      ),
+      'Original Artist' => 
+      array (
+        0 => 'Original Künstler',
+      ),
+      'Original Filename' => 
+      array (
+        0 => 'Original Dateiname',
+      ),
+      'Original Lyricist' => 
+      array (
+        0 => 'Original Lyricist',
+      ),
+      'Original Release Time' => 
+      array (
+        0 => 'Original Releasezeit',
+      ),
+      'Original Year' => 
+      array (
+        0 => 'Originales Jahr',
+      ),
+      'Part Of A Compilation' => 
+      array (
+        0 => 'Teil einer Zusammenstellung',
+      ),
+      'Part Of A Set' => 
+      array (
+        0 => 'Teil eines Sets',
+      ),
+      'Performer Sort Order' => 
+      array (
+        0 => 'Sortierreihenfolge Performer',
+      ),
+      'Playlist Delay' => 
+      array (
+        0 => 'Playlist-Verzögerung',
+      ),
+      'Produced Notice' => 
+      array (
+        0 => 'Produktions-Hinweis',
+      ),
+      'Publisher' => 
+      array (
+        0 => 'Herausgeber',
+      ),
+      'Recording Time' => 
+      array (
+        0 => 'Aufnahmezeit',
+      ),
+      'Release Time' => 
+      array (
+        0 => 'Veröffentlichungszeitpunkt',
+      ),
+      'Remixer' => 
+      array (
+        0 => 'Remixer',
+      ),
+      'Set Subtitle' => 
+      array (
+        0 => 'Untertitel setzen',
+      ),
+      'Subtitle' => 
+      array (
+        0 => 'Untertitel',
+      ),
+      'Tagging Time' => 
+      array (
+        0 => 'Tagging-Zeit',
+      ),
+      'Terms Of Use' => 
+      array (
+        0 => 'Nutzungsbedingungen',
+      ),
+      'Title Sort Order' => 
+      array (
+        0 => 'Sortierreihenfolge Titel',
+      ),
+      'Track Number' => 
+      array (
+        0 => 'Titelnummer',
+      ),
+      'Unsynchronised Lyric' => 
+      array (
+        0 => 'Unsynchronisierter Songtext',
+      ),
+      'URL Artist' => 
+      array (
+        0 => 'URL Künstler',
+      ),
+      'URL File' => 
+      array (
+        0 => 'URL Datei',
+      ),
+      'URL Payment' => 
+      array (
+        0 => 'URL Zahlung',
+      ),
+      'URL Publisher' => 
+      array (
+        0 => 'URL Publisher',
+      ),
+      'URL Source' => 
+      array (
+        0 => 'URL Quelle',
+      ),
+      'URL Station' => 
+      array (
+        0 => 'URL Station',
+      ),
+      'URL User' => 
+      array (
+        0 => 'URL Nutzer',
+      ),
+      'Year' => 
+      array (
+        0 => 'Jahr',
+      ),
+      'Rolling Release' => 
+      array (
+        0 => 'Rolling Release',
+      ),
+      'Stable' => 
+      array (
+        0 => 'Stable',
+      ),
+      'Settings' => 
+      array (
+        0 => 'Einstellungen',
+      ),
+      'Security' => 
+      array (
+        0 => 'Sicherheit',
+      ),
+      'Privacy' => 
+      array (
+        0 => 'Datenschutz',
+      ),
+      'Services' => 
+      array (
+        0 => 'Dienste',
+      ),
+      'Site Base URL' => 
+      array (
+        0 => 'System-URL',
+      ),
+      'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
+      array (
+        0 => 'Die Basis URL über die der Service erreichbar ist. Benutze entweder die IP oder einen Hostnamen der auf den Server zeigt (falls vorhanden).',
+      ),
+      'AzuraCast Instance Name' => 
+      array (
+        0 => 'AzuraCast Instanz Name',
+      ),
+      'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
+      array (
+        0 => 'Dieser Name erscheint als Sub-Header neben dem AzuraCast-Logo, um diesen Server zu identifizieren.',
+      ),
+      'Prefer Browser URL (If Available)' => 
+      array (
+        0 => 'Bevorzuge Browser URL (falls vorhanden)',
+      ),
+      'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
+      array (
+        0 => 'Wenn "Ja" wird die Browser-URL statt der System-URL genutzt. Bei "Nein" wird immer die System-URL genutzt.',
+      ),
+      'Use Web Proxy for Radio' => 
+      array (
+        0 => 'Nutze Webproxy für das Radio',
+      ),
+      'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
+      array (
+        0 => 'Standardmäßig nutzt jeder Sender seinen eigenen Port (z.B. 8000). Solltest du einen Service wie CloudFlare nutzen oder deinen Sender über SSL abrufen, so aktiviere bitte dieses Feature, welches alle Sender zu den Web-Ports (80 und 443) routet.',
+      ),
+      'Days of Playback History to Keep' => 
+      array (
+        0 => 'Tage zur Speicherung des Titelverlaufs',
+      ),
+      'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. ' => 
+      array (
+        0 => 'Erhöhe die Zeit um den Song Verlauf und Zuhörerstatistiken länger zu speichern. Verringere die Zeit um Speicherplatz zu sparen. ',
+      ),
+      'Last 14 Days' => 
+      array (
+        0 => 'Letzte 14 Tage',
+      ),
+      'Last 30 Days' => 
+      array (
+        0 => 'Letzte 30 Tage',
+      ),
+      'Last 60 Days' => 
+      array (
+        0 => 'Letzte 60 Tage',
+      ),
+      'Last Year' => 
+      array (
+        0 => 'Letztes Jahr',
+      ),
+      'Last 2 Years' => 
+      array (
+        0 => 'Letzte 2 Jahre',
+      ),
+      'Indefinitely' => 
+      array (
+        0 => 'Gesamte Zeit',
+      ),
+      'Use WebSockets for Now Playing Updates' => 
+      array (
+        0 => 'WebSockets für "Jetzt läuft"-Updates verwenden',
+      ),
+      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
+      array (
+        0 => 'Aktiviert oder deaktiviert die Verwendung des neueren und schnelleren WebSocket-basierten Systems, um Live-Updates auf öffentlichen Playern zu erhalten. Feature deaktivieren, wenn Probleme damit auftreten.',
+      ),
+      'Enable Advanced Features' => 
+      array (
+        0 => 'Erweiterte Funktionen aktivieren',
+      ),
+      'Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.' => 
+      array (
+        0 => 'Aktiviere bestimmte erweiterte Funktionen im Webinterface, einschließlich der erweiterten Wiedergabelisten-Konfiguration, der Port-Zuweisung von Sendern, Änderungen der Basis-Medienverzeichnisse und anderer Funktionalitäten, die nur von Benutzern genutzt werden sollten, die mit komplexeren Funktionen vertraut sind.',
+      ),
+      'Always Use HTTPS' => 
+      array (
+        0 => 'Immer HTTPS verwenden',
+      ),
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
+      array (
+        0 => 'Auf "Ja" setzen, um immer "https://" sichere URLs zu verwenden und automatisch auf die sichere URL umzuleiten, wenn eine unsichere URL besucht wird.',
+      ),
+      'API "Access-Control-Allow-Origin" header' => 
+      array (
+        0 => 'API "Access-Control-Allow-Origin"-Header',
+      ),
+      '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
+      array (
+        0 => '<a href="%s" target="_blank">Erfahren Sie mehr über diesen Header</a>. Setzen Sie auf \'*\' , um alle Quellen zu erlauben oder geben Sie eine Liste von Quellen an (getrennt durch Komma \',\').',
+      ),
+      'Listener Analytics Collection' => 
+      array (
+        0 => 'Hörer Statistik',
+      ),
+      'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
+      array (
+        0 => 'Aggregierte Zuhörer Statistiken dienen dazu Station Berichte Systemweit anzuzeigen. IP-basierte Hörer Statistiken dienen dazu, um eventuelle Lizenzgebühren und Berichte zu erstellen.',
+      ),
+      '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
+      array (
+        0 => '<b>Komplettes:</b> sammeln aggregierte Zuhörer Statistiken und IP-basierter Hörer',
+      ),
+      '<b>Limited:</b> Only collect aggregate listener statistics' => 
+      array (
+        0 => '<b>Beschränkt:</b> sammeln nur aggregierte Zuhörer Statistiken',
+      ),
+      '<b>None:</b> Do not collect any listener analytics' => 
+      array (
+        0 => '<b>Keine:</b> Erfassen keinet Zuhörer Daten',
+      ),
+      'AzuraCast Update Checks' => 
+      array (
+        0 => 'AzuraCast Update-Überprüfung',
+      ),
+      'Current Release Channel' => 
+      array (
+        0 => 'Aktueller Release-Kanal',
+      ),
+      'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.' => 
+      array (
+        0 => 'Für Informationen wie man den Release Kanal wechselt besuche <a href="%s" target="_blank">diese Seite</a>.',
+      ),
+      'Show Update Announcements' => 
+      array (
+        0 => 'Zeige Update-Ankündigungen an',
+      ),
+      'Show new releases within your update channel on the AzuraCast homepage.' => 
+      array (
+        0 => 'Neue Releases in deinem Update-Kanal auf der AzuraCast Homepage anzeigen.',
+      ),
+      'E-mail Delivery Service' => 
+      array (
+        0 => 'E-Mail-Zustelldienst',
+      ),
+      'Used for "Forgot Password" functionality, web hooks and other functions.' => 
+      array (
+        0 => 'Verwendet für "Passwort vergessen" Funktionalität, Web-Hooks und andere Funktionen.',
+      ),
+      'Enable Mail Delivery' => 
+      array (
+        0 => 'E-Mail-Zustellung aktivieren',
+      ),
+      'Sender Name' => 
+      array (
+        0 => 'Absendername',
+      ),
+      'Sender E-mail Address' => 
+      array (
+        0 => 'E-Mail-Adresse des Absenders',
+      ),
+      'SMTP Host' => 
+      array (
+        0 => 'SMTP Host',
+      ),
+      'SMTP Port' => 
+      array (
+        0 => 'SMTP-Port',
+      ),
+      'Use Secure (TLS) SMTP Connection' => 
+      array (
+        0 => 'Sichere (TLS) SMTP Verbindung verwenden',
+      ),
+      'Usually enabled for port 465, disabled for ports 587 or 25.' => 
+      array (
+        0 => 'Normalerweise aktiviert für Port 465, deaktiviert für Ports 587 oder 25.',
+      ),
+      'SMTP Username' => 
+      array (
+        0 => 'SMTP-Benutzername',
+      ),
+      'SMTP Password' => 
+      array (
+        0 => 'SMTP-Passwort',
+      ),
+      'Avatar Services' => 
+      array (
+        0 => 'Avatar Dienste',
+      ),
+      'Avatar Service' => 
+      array (
+        0 => 'Avatar Dienst',
+      ),
+      'Default Avatar URL' => 
+      array (
+        0 => 'Standard Avatar-URL',
+      ),
+      'Album Art Services' => 
+      array (
+        0 => 'Albumcover Dienste',
+      ),
+      'Check Web Services for Album Art for "Now Playing" Tracks' => 
+      array (
+        0 => 'Suche in Webdiensten nach Album Cover für "Aktuell laufende" Tracks',
+      ),
+      'Check Web Services for Album Art When Uploading Media' => 
+      array (
+        0 => 'Suche in Webdiensten nach Album Cover beim Hochladen von Medien',
+      ),
+      'Last.fm API Key' => 
+      array (
+        0 => 'Last.fm API-Schlüssel',
+      ),
+      '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
+      array (
+        0 => '<a href="%s" target="_blank">Bewirb dich hier für einen API-Schlüssel</a>. Dieser Service kann Albumcover für Tracks bereitstellen, die nicht lokal verfügbar sind.',
+      ),
+      'Role Name' => 
+      array (
+        0 => 'Rollenname',
+      ),
+      'System-Wide Permissions' => 
+      array (
+        0 => 'Systemweite Berechtigungen',
+      ),
+      'Permissions for %s' => 
+      array (
+        0 => 'Berechtigungen für %s',
+      ),
+      'Use Browser Default' => 
+      array (
+        0 => 'Nutze Browser Standard',
+      ),
+      'Reset Password' => 
+      array (
+        0 => 'Passwort zurücksetzen',
+      ),
+      'Leave these fields blank to continue using your current password.' => 
+      array (
+        0 => 'Lassen Sie diese Felder leer, um Ihr aktuelles Passwort weiterhin zu verwenden.',
+      ),
+      'Current Password' => 
+      array (
+        0 => 'Aktuelles Passwort',
+      ),
+      'New Password' => 
+      array (
+        0 => 'Neues Passwort',
+      ),
+      'Confirm New Password' => 
+      array (
+        0 => 'Neues Passwort bestätigen',
+      ),
+      'Customization' => 
+      array (
+        0 => 'Personalisierung',
+      ),
+      'Site Theme' => 
+      array (
+        0 => 'Thema der Seite',
+      ),
+      'Prefer System Default' => 
+      array (
+        0 => 'System Standard bevorzugen',
+      ),
+      'Light' => 
+      array (
+        0 => 'Hell (Light)',
+      ),
+      'Dark' => 
+      array (
+        0 => 'Dunkel',
+      ),
+      'Backup Filename' => 
+      array (
+        0 => 'Dateiname des Backups',
+      ),
+      'This will be the file name for your backup, include the file type (.zip or .rar) you wish to use.' => 
+      array (
+        0 => 'Dies wird der Dateiname für das Backup sein. Geben Sie den gewünschten Dateityp (.zip oder .rar) mit an.',
+      ),
+      'Exclude Media from Backup' => 
+      array (
+        0 => 'Medien aus Backup ausschließen',
+      ),
+      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
+      array (
+        0 => 'Das Ausschließen von Medien bei automatisierten Backups spart Speicherplatz, aber du solltest sicherstellen, dass deine Medien an anderer Stelle gesichert werden. Beachte bitte, dass nur lokal gespeicherte Medien gesichert werden.',
+      ),
+      'Display Name' => 
+      array (
+        0 => 'Anzeigename',
+      ),
+      'Leave blank to use the current password.' => 
+      array (
+        0 => 'Lass dieses Feld leer, um dein aktuelles Passwort beizubehalten.',
+      ),
+      'Roles' => 
+      array (
+        0 => 'Rollen',
+      ),
+      'Code from Authenticator App' => 
+      array (
+        0 => 'Code von Authenticator App',
+      ),
+      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
+      array (
+        0 => 'Gib den aktuellen Code aus deiner Authenticator App ein um zu überprüfen ob alles funktioniert.',
+      ),
+      'Verify Authenticator' => 
+      array (
+        0 => 'Authenticator verifizieren',
+      ),
+      'Username' => 
+      array (
+        0 => 'Benutzername',
+      ),
+      'SSH Public Keys' => 
+      array (
+        0 => 'SSH Public Keys',
+      ),
+      'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
+      array (
+        0 => 'Optional kannst du SSH Public Keys angeben die dieser Benutzer statt eines Passworts verwenden kann. Gib einen Schlüssel pro Zeile ein.',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2948,6 +3162,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Convert translated locale files into PHP arrays.' => 
       array (
         0 => 'Konvertiere übersetzte Lokalisierungsdaten in PHP-Arrays.',
+      ),
+      'Ensure key settings are initialized within AzuraCast.' => 
+      array (
+        0 => 'Sicherstellen, dass die wichtigsten Einstellungen in AzuraCast initialisiert sind.',
       ),
       'Migrate existing configuration to new INI format if any exists.' => 
       array (
@@ -2971,7 +3189,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Clear the contents of the message queue.' => 
       array (
-        0 => '',
+        0 => 'Lösche den Inhalt der Nachrichtenwarteschlange.',
       ),
       'List all settings in the AzuraCast settings database.' => 
       array (
@@ -3029,77 +3247,65 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Gefällt dir uns unsere Software? <a href="%s" target="_blank">Spende etwas, um AzuraCast zu unterstützen!</a>',
       ),
-      'Errors were encountered when trying to save changes:' => 
+      'Account Recovery' => 
       array (
-        0 => 'Fehler beim Speichern der Änderungen aufgetreten:',
+        0 => 'Accountwiederherstellung',
       ),
-      'General' => 
+      'An account recovery link has been requested for your account on "%s".' => 
       array (
-        0 => 'Allgemein',
+        0 => 'Ein Link zur Accountwiederherstellung wurde für dein Konto unter "%s " angefordert.',
       ),
-      'Details' => 
+      'Click the link below to log in to your account.' => 
       array (
-        0 => 'Details',
+        0 => 'Klicke auf den unten stehenden Link, um dein Konto zu entsperren.',
       ),
-      '%s of %s Used (%d Files)' => 
+      'Download CSV' => 
       array (
-        0 => '%s von %s belegt (%d Dateien)',
+        0 => 'CSV herunterladen',
       ),
-      '%s Used (%d Files)' => 
+      'Filename' => 
       array (
-        0 => '%s belegt (%d Dateien)',
+        0 => 'Dateiname',
       ),
-      'You can also upload files in bulk via SFTP.' => 
+      'Length Text' => 
       array (
-        0 => 'Du kannst Dateien auch per Massen-Upload über SFTP hochladen.',
+        0 => 'Länge Text',
       ),
-      'Manage SFTP Accounts' => 
+      'Playlist(s)' => 
       array (
-        0 => 'SFTP Zugänge verwalten',
+        0 => 'Playlist(en)',
       ),
-      'Please wait...' => 
+      'Joins' => 
       array (
-        0 => 'Bitte warten...',
+        0 => 'Eingeschaltet',
       ),
-      'Station Broadcasting Disabled' => 
+      'Losses' => 
       array (
-        0 => 'Sender Übertragung deaktiviert',
+        0 => 'Abgeschalten',
       ),
-      'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
+      'Total' => 
       array (
-        0 => 'Dein Sender ist zur Zeit nicht für Übertragungen aktiviert. Du kannst immer noch Musik Dateien, Wiedergabelisten und andere Sendereinstellungen verwalten. Um die Übertragung wieder zu aktivieren, <a href="%s">bearbeite dein Sender Profil</a>.',
+        0 => 'Gesamt',
       ),
-      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      'Plays' => 
       array (
-        0 => 'Einhängepunkte sind die Zugangspunkte für Zuhörer deines Senders. Jeder Einhängepunkt kann ein anderes Audioformat oder eine andere Qualität haben. Mit Einhängepunkten kannst du einen hochwertigen Stream für Festnetz Verbindungen und einen mobilen Stream für Mobile Zuhörer einrichten.',
+        0 => 'Wiedergaben',
       ),
-      'Actions' => 
+      'Play %' => 
       array (
-        0 => 'Aktionen',
+        0 => 'Wiedergabe %',
       ),
-      'Mount Point' => 
+      'Ratio' => 
       array (
-        0 => 'Einhängepunkt',
+        0 => 'Verhältnis',
       ),
-      'Edit' => 
+      'Report Not Available' => 
       array (
-        0 => 'Bearbeiten',
+        0 => 'Bericht nicht verfügbar',
       ),
-      'Delete mount point "%s"?' => 
+      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
       array (
-        0 => 'Einhängepunkt "%s" löschen?',
-      ),
-      'Delete' => 
-      array (
-        0 => 'Löschen',
-      ),
-      'Default Mount' => 
-      array (
-        0 => 'Standard Einhängepunkt',
-      ),
-      'Station Time' => 
-      array (
-        0 => 'Stationszeit',
+        0 => 'Dieser Bericht ist für diesen Sender nicht verfügbar, da der Systemadministrator sich dazu entschieden hat, keine detaillierten IP-basierten Zuhörerinformationen zu sammeln.',
       ),
       'Clear all pending requests?' => 
       array (
@@ -3117,9 +3323,17 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Wiedergabe Datum',
       ),
+      'Song Title' => 
+      array (
+        0 => 'Song-Titel',
+      ),
       'Requester IP' => 
       array (
         0 => 'Hörer-IP',
+      ),
+      'Actions' => 
+      array (
+        0 => 'Aktionen',
       ),
       'Not Played' => 
       array (
@@ -3129,37 +3343,9 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Wunsch löschen?',
       ),
-      'Best Performing Songs' => 
+      'Delete' => 
       array (
-        0 => 'Best laufende Lider',
-      ),
-      'in the last 48 hours' => 
-      array (
-        0 => 'in den letzten 48 Stunden',
-      ),
-      'Change' => 
-      array (
-        0 => 'Ändern',
-      ),
-      'Song' => 
-      array (
-        0 => 'Lied',
-      ),
-      'Worst Performing Songs' => 
-      array (
-        0 => 'Schlecht laufendste Lieder',
-      ),
-      'Most Played Songs' => 
-      array (
-        0 => 'Meistgespielte Lieder',
-      ),
-      'in the last month' => 
-      array (
-        0 => 'im letzten Monat',
-      ),
-      'Plays' => 
-      array (
-        0 => 'Wiedergaben',
+        0 => 'Löschen',
       ),
       'Live Listeners' => 
       array (
@@ -3189,38 +3375,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Letzter Monat',
       ),
-      'Report Not Available' => 
-      array (
-        0 => 'Bericht nicht verfügbar',
-      ),
-      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
-      array (
-        0 => 'Dieser Bericht ist für diesen Sender nicht verfügbar, da der Systemadministrator sich dazu entschieden hat, keine detaillierten IP-basierten Zuhörerinformationen zu sammeln.',
-      ),
-      'Download CSV' => 
-      array (
-        0 => 'CSV herunterladen',
-      ),
-      'Date/Time' => 
-      array (
-        0 => 'Datum/Zeit',
-      ),
-      'Source' => 
-      array (
-        0 => 'Quelle',
-      ),
-      'Listener Request' => 
-      array (
-        0 => 'Zuhörerwunsch',
-      ),
-      'Playlist:' => 
-      array (
-        0 => 'Wiedergabeliste:',
-      ),
-      'Live Streamer:' => 
-      array (
-        0 => 'Live-Streamer:',
-      ),
       'Unique Listeners' => 
       array (
         0 => 'Eindeutige Hörer',
@@ -3236,6 +3390,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'IP' => 
       array (
         0 => 'IP',
+      ),
+      'Time' => 
+      array (
+        0 => 'Zeit',
       ),
       'Time (sec)' => 
       array (
@@ -3273,53 +3431,53 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Remote',
       ),
-      'Hour' => 
+      'Date/Time' => 
       array (
-        0 => 'Stunde',
+        0 => 'Datum/Zeit',
       ),
-      'Filename' => 
+      'Change' => 
       array (
-        0 => 'Dateiname',
+        0 => 'Ändern',
       ),
-      'Length Text' => 
+      'Source' => 
       array (
-        0 => 'Länge Text',
+        0 => 'Quelle',
       ),
-      'Playlist(s)' => 
+      'Listener Request' => 
       array (
-        0 => 'Playlist(en)',
+        0 => 'Zuhörerwunsch',
       ),
-      'Joins' => 
+      'Playlist:' => 
       array (
-        0 => 'Eingeschaltet',
+        0 => 'Wiedergabeliste:',
       ),
-      'Losses' => 
+      'Live Streamer:' => 
       array (
-        0 => 'Abgeschalten',
+        0 => 'Live-Streamer:',
       ),
-      'Total' => 
+      'Podcasts' => 
       array (
-        0 => 'Gesamt',
+        0 => 'Podcasts',
       ),
-      'Play %' => 
+      'Station Time' => 
       array (
-        0 => 'Wiedergabe %',
+        0 => 'Stationszeit',
       ),
-      'Ratio' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => 'Verhältnis',
+        0 => '%s von %s belegt (%d Dateien)',
       ),
-      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      '%s Used (%d Files)' => 
       array (
-        0 => 'Remote Relays ermöglichen es dir, mit einer Sendesoftware außerhalb dieses Servers zu arbeiten. Jeder Server, den du hier einfügst, wird in die Statistiken deines Senders aufgenommen. Du kannst auch von diesem Server zu entfernten Relays senden.',
+        0 => '%s belegt (%d Dateien)',
       ),
-      'Remote Relay' => 
+      'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => 'Remote-Relay',
+        0 => 'Du kannst Dateien auch per Massen-Upload über SFTP hochladen.',
       ),
-      'Delete remote relay "%s"?' => 
+      'Manage SFTP Accounts' => 
       array (
-        0 => 'Remote Relay "%s" löschen?',
+        0 => 'SFTP Zugänge verwalten',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (
@@ -3373,9 +3531,17 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Eine Anleitung zur Einrichtung der Zugangsdaten findest du <a href="%s" target="_blank">im AzuraCast Wiki</a>.',
       ),
-      'Delete SFTP User "%s"?' => 
+      'Please wait...' => 
       array (
-        0 => 'SFTP Benutzer "%s" löschen?',
+        0 => 'Bitte warten...',
+      ),
+      'Station Broadcasting Disabled' => 
+      array (
+        0 => 'Sender Übertragung deaktiviert',
+      ),
+      'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
+      array (
+        0 => 'Dein Sender ist zur Zeit nicht für Übertragungen aktiviert. Du kannst immer noch Musik Dateien, Wiedergabelisten und andere Sendereinstellungen verwalten. Um die Übertragung wieder zu aktivieren, <a href="%s">bearbeite dein Sender Profil</a>.',
       ),
       'Automated Playlist Assignment' => 
       array (
@@ -3413,6 +3579,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Auslöser',
       ),
+      'Edit' => 
+      array (
+        0 => 'Bearbeiten',
+      ),
       'Enable' => 
       array (
         0 => 'Aktivieren',
@@ -3433,37 +3603,9 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Verfügbare Logs',
       ),
-      'Account Recovery' => 
+      'Delete SFTP User "%s"?' => 
       array (
-        0 => '',
-      ),
-      'An account recovery link has been requested for your account on "%s".' => 
-      array (
-        0 => '',
-      ),
-      'Click the link below to log in to your account.' => 
-      array (
-        0 => '',
-      ),
-      'Copy to Clipboard' => 
-      array (
-        0 => 'In Zwischenablage kopieren',
-      ),
-      'Pause' => 
-      array (
-        0 => 'Pause',
-      ),
-      'Play' => 
-      array (
-        0 => 'Abspielen',
-      ),
-      'Log View' => 
-      array (
-        0 => 'Log Viewer',
-      ),
-      'Automatically scroll to the bottom of the log' => 
-      array (
-        0 => 'Automatisch nach unten scrollen',
+        0 => 'SFTP Benutzer "%s" löschen?',
       ),
       'Need Help?' => 
       array (
@@ -3485,6 +3627,42 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'GitHub-Ticket erstellen',
       ),
+      'Stop' => 
+      array (
+        0 => 'Stoppen',
+      ),
+      'Play' => 
+      array (
+        0 => 'Abspielen',
+      ),
+      'Copy to Clipboard' => 
+      array (
+        0 => 'In Zwischenablage kopieren',
+      ),
+      'Log View' => 
+      array (
+        0 => 'Log Viewer',
+      ),
+      'Automatically scroll to the bottom of the log' => 
+      array (
+        0 => 'Automatisch nach unten scrollen',
+      ),
+      'Relay' => 
+      array (
+        0 => 'Relay',
+      ),
+      'Is Public' => 
+      array (
+        0 => 'Öffentlich',
+      ),
+      'First Connected' => 
+      array (
+        0 => 'Erste Verbindung',
+      ),
+      'Latest Update' => 
+      array (
+        0 => 'Letztes Update',
+      ),
       'Log In' => 
       array (
         0 => 'Anmelden',
@@ -3497,13 +3675,57 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => '(Du)',
       ),
-      'SHOUTcast Installed' => 
+      'Delete role "%s"?' => 
       array (
-        0 => 'SHOUTcast installiert',
+        0 => 'Rolle "%s" löschen?',
       ),
-      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
+      'This role cannot be deleted.' => 
       array (
-        0 => 'Der SHOUTcast 2 DNAS ist installiert und für den Einsatz bereit.',
+        0 => 'Diese Rolle kann nicht gelöscht werden.',
+      ),
+      'Global' => 
+      array (
+        0 => 'Global',
+      ),
+      'API Key' => 
+      array (
+        0 => 'API-Schlüssel',
+      ),
+      'Owner' => 
+      array (
+        0 => 'Besitzer',
+      ),
+      'Revoke' => 
+      array (
+        0 => 'Entfernen',
+      ),
+      'Manage Stations' => 
+      array (
+        0 => 'Sender verwalten',
+      ),
+      'Add Station' => 
+      array (
+        0 => 'Station hinzufügen',
+      ),
+      'Station' => 
+      array (
+        0 => 'Sender',
+      ),
+      'Manage' => 
+      array (
+        0 => 'Verwalten',
+      ),
+      'Clone' => 
+      array (
+        0 => 'Duplizieren',
+      ),
+      'Delete station "%s"?' => 
+      array (
+        0 => 'Sender "%s" löschen?',
+      ),
+      'Delete custom field "%s"?' => 
+      array (
+        0 => 'Benutzerdefiniertes Feld "%s" löschen?',
       ),
       'Clear Cache' => 
       array (
@@ -3571,175 +3793,19 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Debug Home' => 
       array (
-        0 => '',
+        0 => 'Debugging Seite',
       ),
       'The synchronization task is running in the background. The log below will update automatically.' => 
       array (
         0 => 'Die Synchronisationsaufgabe wird im Hintergrund ausgeführt. Das untenstehende Log wird automatisch aktualisiert.',
       ),
-      'Delete role "%s"?' => 
+      'Automatic Backups' => 
       array (
-        0 => 'Rolle "%s" löschen?',
-      ),
-      'This role cannot be deleted.' => 
-      array (
-        0 => 'Diese Rolle kann nicht gelöscht werden.',
-      ),
-      'Global' => 
-      array (
-        0 => 'Global',
-      ),
-      'Manage Stations' => 
-      array (
-        0 => 'Sender verwalten',
-      ),
-      'Add Station' => 
-      array (
-        0 => 'Station hinzufügen',
-      ),
-      'Station' => 
-      array (
-        0 => 'Sender',
-      ),
-      'Manage' => 
-      array (
-        0 => 'Verwalten',
-      ),
-      'Clone' => 
-      array (
-        0 => 'Duplizieren',
-      ),
-      'Delete station "%s"?' => 
-      array (
-        0 => 'Sender "%s" löschen?',
-      ),
-      'Relay' => 
-      array (
-        0 => 'Relay',
-      ),
-      'Is Public' => 
-      array (
-        0 => 'Öffentlich',
-      ),
-      'First Connected' => 
-      array (
-        0 => 'Erste Verbindung',
-      ),
-      'Latest Update' => 
-      array (
-        0 => 'Letztes Update',
-      ),
-      'API Key' => 
-      array (
-        0 => 'API-Schlüssel',
-      ),
-      'Owner' => 
-      array (
-        0 => 'Besitzer',
-      ),
-      'Revoke' => 
-      array (
-        0 => 'Entfernen',
-      ),
-      'Delete custom field "%s"?' => 
-      array (
-        0 => 'Benutzerdefiniertes Feld "%s" löschen?',
-      ),
-      'GeoLite version "%s" is currently installed.' => 
-      array (
-        0 => 'Derzeit ist Version "%s" von GeoLite installiert.',
-      ),
-      'Uninstall GeoLite database?' => 
-      array (
-        0 => 'GeoLite-Datenbank deinstallieren?',
-      ),
-      'Uninstall GeoLite Database' => 
-      array (
-        0 => 'GeoLite-Datenbank deinstallieren',
-      ),
-      'GeoLite is not currently installed on this installation.' => 
-      array (
-        0 => 'GeoLite ist auf diesem System derzeit nicht installiert.',
-      ),
-      'Insert' => 
-      array (
-        0 => 'Einfügen',
-      ),
-      'Update' => 
-      array (
-        0 => 'Bearbeiten',
-      ),
-      'Changes' => 
-      array (
-        0 => 'Änderungen',
-      ),
-      'User' => 
-      array (
-        0 => 'Benutzer',
-      ),
-      'Identifier' => 
-      array (
-        0 => 'Identifikator',
-      ),
-      'Target' => 
-      array (
-        0 => 'Ziel',
-      ),
-      'Field' => 
-      array (
-        0 => 'Feld',
-      ),
-      'Previous' => 
-      array (
-        0 => 'Vorher',
-      ),
-      'Updated' => 
-      array (
-        0 => 'Jetzt',
-      ),
-      'Server Status' => 
-      array (
-        0 => 'Server Status',
-      ),
-      'CPU Load' => 
-      array (
-        0 => 'CPU Load',
-      ),
-      'Current' => 
-      array (
-        0 => 'Aktuell',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => '15-Minuten Durchschnitt',
-      ),
-      'Memory' => 
-      array (
-        0 => 'RAM',
-      ),
-      '%s of %s Used' => 
-      array (
-        0 => '%s von %s verwendet',
-      ),
-      'Disk Space' => 
-      array (
-        0 => 'Festplattenspeicher',
+        0 => 'Automatische Backups',
       ),
       'Last run: %s' => 
       array (
         0 => 'Letzte Ausführung: %s',
-      ),
-      'Backups Home' => 
-      array (
-        0 => 'Backups',
-      ),
-      'The backup process is running in the background. The log below will update automatically.' => 
-      array (
-        0 => 'Der Backup-Prozess läuft im Hintergrund. Der untenstehende Log wird automatisch aktualisiert.',
-      ),
-      'Automatic Backups' => 
-      array (
-        0 => 'Automatische Backups',
       ),
       'Never run' => 
       array (
@@ -3785,6 +3851,66 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Backup "%s" löschen?',
       ),
+      'Backups Home' => 
+      array (
+        0 => 'Backups',
+      ),
+      'The backup process is running in the background. The log below will update automatically.' => 
+      array (
+        0 => 'Der Backup-Prozess läuft im Hintergrund. Der untenstehende Log wird automatisch aktualisiert.',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => 'Derzeit ist Version "%s" von GeoLite installiert.',
+      ),
+      'Uninstall GeoLite database?' => 
+      array (
+        0 => 'GeoLite-Datenbank deinstallieren?',
+      ),
+      'Uninstall GeoLite Database' => 
+      array (
+        0 => 'GeoLite-Datenbank deinstallieren',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => 'GeoLite ist auf diesem System derzeit nicht installiert.',
+      ),
+      'Server Status' => 
+      array (
+        0 => 'Server Status',
+      ),
+      'CPU Load' => 
+      array (
+        0 => 'CPU Load',
+      ),
+      'Current' => 
+      array (
+        0 => 'Aktuell',
+      ),
+      '15-Minute Average' => 
+      array (
+        0 => '15-Minuten Durchschnitt',
+      ),
+      'Memory' => 
+      array (
+        0 => 'RAM',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '%s von %s verwendet',
+      ),
+      'Disk Space' => 
+      array (
+        0 => 'Festplattenspeicher',
+      ),
+      'SHOUTcast Installed' => 
+      array (
+        0 => 'SHOUTcast installiert',
+      ),
+      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
+      array (
+        0 => 'Der SHOUTcast 2 DNAS ist installiert und für den Einsatz bereit.',
+      ),
       'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
       array (
         0 => 'Da du Docker nutzt, können einige Systemprotokolle nur von einer Shell-Sitzung auf dem Host-Computer abgerufen werden. Du kannst <code>%s</code> ausführen, um auf Containerprotokolle aus dem Terminal zuzugreifen.',
@@ -3793,79 +3919,41 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Logs nach Sender',
       ),
-      'Enable Two-Factor Authentication' => 
+      'User' => 
       array (
-        0 => 'Zwei-Faktor-Authentifizierung aktivieren',
+        0 => 'Benutzer',
       ),
-      'Step 1: Scan QR Code' => 
+      'Identifier' => 
       array (
-        0 => 'Schritt 1: QR-Code scannen',
+        0 => 'Identifikator',
       ),
-      'From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).' => 
+      'Target' => 
       array (
-        0 => 'Scanne den Code rechts mit deinem Smartphone mit einer Authentication App deiner Wahl (FreeOTP, Authy, etc.).',
+        0 => 'Ziel',
       ),
-      'Step 2: Verify Generated Code' => 
+      'Changes' => 
       array (
-        0 => 'Schritt 2: Generierten Code verifizieren',
+        0 => 'Änderungen',
       ),
-      'To verify that the code was set up correctly, enter the 6-digit code the app shows you.' => 
+      'Field' => 
       array (
-        0 => 'Um zu überprüfen, ob der Code korrekt eingerichtet wurde, gib den 6-stelligen Code ein, den die App dir anzeigt.',
+        0 => 'Feld',
       ),
-      'QR-Code' => 
+      'Previous' => 
       array (
-        0 => 'QR-Code',
+        0 => 'Vorher',
       ),
-      'Customize' => 
+      'Updated' => 
       array (
-        0 => 'Anpassen',
+        0 => 'Jetzt',
       ),
-      'Two-Factor Authentication' => 
+      'Insert' => 
       array (
-        0 => 'Zwei-Faktor-Authentifizierung',
+        0 => 'Einfügen',
       ),
-      'Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.' => 
+      'Update' => 
       array (
-        0 => 'Zwei-Faktor-Authentifizierung verbessert die Sicherheit deines Accounts, indem zusätzlich zu deinem Passwort ein zweiter einmaliger Zugangscode benötigt wird.',
-      ),
-      'Disable Two-Factor' => 
-      array (
-        0 => 'Zwei-Faktor deaktivieren',
-      ),
-      'Enable Two-Factor' => 
-      array (
-        0 => 'Zwei-Faktor aktivieren',
-      ),
-      'New Key Generated' => 
-      array (
-        0 => 'Neuer Schlüssel generiert',
-      ),
-      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
-      array (
-        0 => '<b>Wichtig: Kopiere den unten stehenden Schlüssel, bevor du fortfährst!</b> Du wirst ihn nicht wieder abrufen können.',
-      ),
-      'Your full API key is below:' => 
-      array (
-        0 => 'Dein vollständiger API-Schlüssel steht unten:',
-      ),
-      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
-      array (
-        0 => 'Bei API Aufrufen, kannst du diesen Wert im "X-API-Key" Header senden, um dich zu authentifizieren. Du kannst nur die Aktionen ausführen, die dein Account ausführen darf.',
-      ),
-      'Continue' => 
-      array (
-        0 => 'Weiter',
-      ),
-      'API keys can be used to access some system functionality without needing to log in. All of the keys 
-            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
-      array (
-        0 => 'API-Schlüssel können verwendet werden, um auf einige Systemfunktionen zuzugreifen, ohne sich einzuloggen. Alle erstellten Schlüssel 
-            teilen deine Berechtigungen im System. Weitere Informationen findest du in der <a href="%s">API-Dokumentation</a>.',
-      ),
-      'Key Identifier' => 
-      array (
-        0 => 'Schlüssel Bezeichnung',
+        0 => 'Bearbeiten',
       ),
       'Create Station' => 
       array (
@@ -3903,49 +3991,134 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Neuen Radiosender erstellen',
       ),
+      'Episodes' => 
+      array (
+        0 => 'Episoden',
+      ),
+      'Back' => 
+      array (
+        0 => 'Zurück',
+      ),
+      'RSS Feed' => 
+      array (
+        0 => 'RSS-Feed',
+      ),
+      'View Details' => 
+      array (
+        0 => 'Details anzeigen',
+      ),
+      'Contains explicit content' => 
+      array (
+        0 => 'Enthält expliziten Inhalt',
+      ),
+      'Explicit' => 
+      array (
+        0 => 'Explizit',
+      ),
+      'Schedule' => 
+      array (
+        0 => 'Zeitplan',
+      ),
+      'Categories' => 
+      array (
+        0 => 'Kategorien',
+      ),
+      'No entries found.' => 
+      array (
+        0 => 'Keine Einträge gefunden.',
+      ),
+      'New Key Generated' => 
+      array (
+        0 => 'Neuer Schlüssel generiert',
+      ),
+      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
+      array (
+        0 => '<b>Wichtig: Kopiere den unten stehenden Schlüssel, bevor du fortfährst!</b> Du wirst ihn nicht wieder abrufen können.',
+      ),
+      'Your full API key is below:' => 
+      array (
+        0 => 'Dein vollständiger API-Schlüssel steht unten:',
+      ),
+      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
+      array (
+        0 => 'Bei API Aufrufen, kannst du diesen Wert im "X-API-Key" Header senden, um dich zu authentifizieren. Du kannst nur die Aktionen ausführen, die dein Account ausführen darf.',
+      ),
+      'Continue' => 
+      array (
+        0 => 'Weiter',
+      ),
+      'API keys can be used to access some system functionality without needing to log in. All of the keys
+            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
+      array (
+        0 => 'API-Schlüssel können verwendet werden, um auf einige Systemfunktionen zuzugreifen, ohne sich anmelden zu müssen. Alle von dir erstellten Schlüssel teilen deine Berechtigungen im System. Weitere Informationen findest du in der <a href="%s">API-Dokumentation</a>.',
+      ),
+      'Key Identifier' => 
+      array (
+        0 => 'Schlüssel Bezeichnung',
+      ),
+      'Customize' => 
+      array (
+        0 => 'Anpassen',
+      ),
+      'Two-Factor Authentication' => 
+      array (
+        0 => 'Zwei-Faktor-Authentifizierung',
+      ),
+      'Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.' => 
+      array (
+        0 => 'Zwei-Faktor-Authentifizierung verbessert die Sicherheit deines Accounts, indem zusätzlich zu deinem Passwort ein zweiter einmaliger Zugangscode benötigt wird.',
+      ),
+      'Disable Two-Factor' => 
+      array (
+        0 => 'Zwei-Faktor deaktivieren',
+      ),
+      'Enable Two-Factor' => 
+      array (
+        0 => 'Zwei-Faktor aktivieren',
+      ),
+      'Enable Two-Factor Authentication' => 
+      array (
+        0 => 'Zwei-Faktor-Authentifizierung aktivieren',
+      ),
+      'Step 1: Scan QR Code' => 
+      array (
+        0 => 'Schritt 1: QR-Code scannen',
+      ),
+      'From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).' => 
+      array (
+        0 => 'Scanne den Code rechts mit deinem Smartphone mit einer Authentication App deiner Wahl (FreeOTP, Authy, etc.).',
+      ),
+      'Step 2: Verify Generated Code' => 
+      array (
+        0 => 'Schritt 2: Generierten Code verifizieren',
+      ),
+      'To verify that the code was set up correctly, enter the 6-digit code the app shows you.' => 
+      array (
+        0 => 'Um zu überprüfen, ob der Code korrekt eingerichtet wurde, gib den 6-stelligen Code ein, den die App dir anzeigt.',
+      ),
+      'QR-Code' => 
+      array (
+        0 => 'QR-Code',
+      ),
       'AzuraCast User' => 
       array (
         0 => 'AzuraCast Benutzer',
       ),
       'Forgot Password' => 
       array (
-        0 => '',
-      ),
-      'name@example.com' => 
-      array (
-        0 => 'name@example.com',
-      ),
-      'Sign in' => 
-      array (
-        0 => 'Anmelden',
-      ),
-      'Send Recovery E-mail' => 
-      array (
-        0 => '',
-      ),
-      'Recover Account' => 
-      array (
-        0 => '',
-      ),
-      'Choose a new password for your account.' => 
-      array (
-        0 => '',
-      ),
-      'Enter your password' => 
-      array (
-        0 => 'Passwort eingeben',
+        0 => 'Passwort vergessen',
       ),
       'This installation\'s administrator has not configured this functionality.' => 
       array (
-        0 => '',
+        0 => 'Der Administrator dieser Installation hat diese Funktion nicht konfiguriert.',
       ),
       'Contact an administrator to reset your password following the instructions in our documentation:' => 
       array (
-        0 => '',
+        0 => 'Kontaktiere einen Administrator, um dein Passwort nach den Anweisungen in unserer Dokumentation zurückzusetzen:',
       ),
       'Password Reset Instructions' => 
       array (
-        0 => '',
+        0 => 'Anweisungen zum Zurücksetzen des Passworts',
       ),
       'Enter Two-Factor Code' => 
       array (
@@ -3959,6 +4132,22 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Sicherheitscode',
       ),
+      'Sign in' => 
+      array (
+        0 => 'Anmelden',
+      ),
+      'Recover Account' => 
+      array (
+        0 => 'Account wiederherstellen',
+      ),
+      'Choose a new password for your account.' => 
+      array (
+        0 => 'Wähle ein neues Passwort für deinen Account.',
+      ),
+      'Enter your password' => 
+      array (
+        0 => 'Passwort eingeben',
+      ),
       'Welcome!' => 
       array (
         0 => 'Willkommen!',
@@ -3966,6 +4155,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Welcome to %s!' => 
       array (
         0 => 'Willkommen bei %s!',
+      ),
+      'name@example.com' => 
+      array (
+        0 => 'name@example.com',
       ),
       'Remember me' => 
       array (
@@ -3977,7 +4170,23 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       ),
       'Forgot your password?' => 
       array (
-        0 => '',
+        0 => 'Passwort vergessen?',
+      ),
+      'Send Recovery E-mail' => 
+      array (
+        0 => 'Wiederherstellungs-E-Mail senden',
+      ),
+      'Errors were encountered when trying to save changes:' => 
+      array (
+        0 => 'Fehler beim Speichern der Änderungen aufgetreten:',
+      ),
+      'General' => 
+      array (
+        0 => 'Allgemein',
+      ),
+      'Details' => 
+      array (
+        0 => 'Details',
       ),
     ),
   ),

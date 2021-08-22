@@ -11,42 +11,49 @@
                     </p>
                 </b-alert>
 
-                <b-form-group class="col-md-6" label-for="edit_form_backend_options">
-                    <template v-slot:label>
+                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_options" :field="form.backend_options">
+                    <template #label>
                         <translate key="lang_form_backend_options">Advanced Manual AutoDJ Scheduling Options</translate>
                     </template>
-                    <template v-slot:description>
+                    <template #description>
                         <translate key="lang_form_backend_options_desc">Control how this playlist is handled by the AutoDJ software.</translate>
                     </template>
-
-                    <b-form-checkbox-group stacked id="edit_form_backend_options" v-model="form.backend_options.$model">
-                        <b-form-checkbox value="interrupt">
-                            <translate key="lang_backend_option_interrupt">Interrupt other songs to play at scheduled time.</translate>
-                        </b-form-checkbox>
-                        <b-form-checkbox value="loop_once">
-                            <translate key="lang_backend_option_loop_once">Only loop through playlist once.</translate>
-                        </b-form-checkbox>
-                        <b-form-checkbox value="single_track">
-                            <translate key="lang_backend_option_single_track">Only play one track at scheduled time.</translate>
-                        </b-form-checkbox>
-                        <b-form-checkbox value="merge">
-                            <translate key="lang_backend_option_merge">Merge playlist to play as a single track.</translate>
-                        </b-form-checkbox>
-                    </b-form-checkbox-group>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-checkbox-group stacked :id="props.id" v-model="props.field.$model">
+                            <b-form-checkbox value="interrupt">
+                                <translate key="lang_backend_option_interrupt">Interrupt other songs to play at scheduled time.</translate>
+                            </b-form-checkbox>
+                            <b-form-checkbox value="loop_once">
+                                <translate
+                                    key="lang_backend_option_loop_once">Only loop through playlist once.</translate>
+                            </b-form-checkbox>
+                            <b-form-checkbox value="single_track">
+                                <translate
+                                    key="lang_backend_option_single_track">Only play one track at scheduled time.</translate>
+                            </b-form-checkbox>
+                            <b-form-checkbox value="merge">
+                                <translate
+                                    key="lang_backend_option_merge">Merge playlist to play as a single track.</translate>
+                            </b-form-checkbox>
+                        </b-form-checkbox-group>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
         </b-form-group>
     </b-tab>
 </template>
 
 <script>
+import BWrappedFormGroup from "../../../Form/BWrappedFormGroup";
+
 export default {
     name: 'PlaylistEditAdvanced',
+    components: {BWrappedFormGroup},
     props: {
         form: Object
     },
     computed: {
-        langTabTitle () {
+        langTabTitle() {
             return this.$gettext('Advanced');
         }
     }

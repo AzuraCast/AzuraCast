@@ -70,7 +70,7 @@ class Discord extends AbstractConnector
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying $np,
+        Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
     ): bool {
         $config = $webhook->getConfig();

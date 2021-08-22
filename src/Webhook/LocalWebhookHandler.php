@@ -28,7 +28,7 @@ class LocalWebhookHandler
 
     public function dispatch(
         Entity\Station $station,
-        Entity\Api\NowPlaying $np
+        Entity\Api\NowPlaying\NowPlaying $np
     ): void {
         // Write local static file that the video stream (and other scripts) can use.
         $this->logger->debug('Writing local nowplaying text file...');

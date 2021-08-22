@@ -49,14 +49,6 @@ abstract class AbstractFrontend extends AbstractAdapter
     }
 
     /**
-     * @return bool Whether the station supports enhanced listener detail (per-client records)
-     */
-    public function supportsListenerDetail(): bool
-    {
-        return false;
-    }
-
-    /**
      * Get the default mounts when resetting or initializing a station.
      *
      * @return mixed[]

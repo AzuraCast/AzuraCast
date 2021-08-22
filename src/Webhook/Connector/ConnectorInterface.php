@@ -27,7 +27,7 @@ interface ConnectorInterface
      *
      * @param Entity\Station $station
      * @param Entity\StationWebhook $webhook
-     * @param Entity\Api\NowPlaying $np
+     * @param Entity\Api\NowPlaying\NowPlaying $np
      * @param array<string> $triggers
      *
      * @return bool Whether the webhook actually dispatched.
@@ -35,7 +35,7 @@ interface ConnectorInterface
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying $np,
+        Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
     ): bool;
 }

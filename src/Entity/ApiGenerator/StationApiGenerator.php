@@ -21,11 +21,11 @@ class StationApiGenerator
         Entity\Station $station,
         ?UriInterface $baseUri = null,
         bool $showAllMounts = false
-    ): Entity\Api\Station {
+    ): Entity\Api\NowPlaying\Station {
         $fa = $this->adapters->getFrontendAdapter($station);
         $remoteAdapters = $this->adapters->getRemoteAdapters($station);
 
-        $response = new Entity\Api\Station();
+        $response = new Entity\Api\NowPlaying\Station();
         $response->id = (int)$station->getId();
         $response->name = (string)$station->getName();
         $response->shortcode = (string)$station->getShortName();

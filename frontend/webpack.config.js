@@ -22,6 +22,7 @@ module.exports = {
     StationsPodcasts: './vue/Stations/Podcasts.vue',
     StationsProfile: './vue/Stations/Profile.vue',
     StationsQueue: './vue/Stations/Queue.vue',
+    StationsRemotes: './vue/Stations/Remotes.vue',
     StationsStreamers: './vue/Stations/Streamers.vue',
     StationsReportsOverview: './vue/Stations/Reports/Overview.vue'
   },

@@ -20,8 +20,8 @@ class StationQueueApiGenerator
         Entity\StationQueue $record,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false
-    ): Entity\Api\StationQueue {
-        $response = new Entity\Api\StationQueue();
+    ): Entity\Api\NowPlaying\StationQueue {
+        $response = new Entity\Api\NowPlaying\StationQueue();
         $response->cued_at = $record->getTimestampCued();
         $response->duration = (int)$record->getDuration();
         $response->is_request = $record->getRequest() !== null;

@@ -361,8 +361,8 @@ class StationMount implements
     public function api(
         AbstractFrontend $fa,
         UriInterface $base_url = null
-    ): Api\StationMount {
-        $response = new Api\StationMount();
+    ): Api\NowPlaying\StationMount {
+        $response = new Api\NowPlaying\StationMount();
 
         $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
@@ -370,8 +370,8 @@ class StationMount implements
         $response->is_default = $this->is_default;
         $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 
-        $response->listeners = new Api\NowPlayingListeners(
-            total: $this->listeners_total,
+        $response->listeners = new Api\NowPlaying\Listeners(
+            total:  $this->listeners_total,
             unique: $this->listeners_unique
         );
 

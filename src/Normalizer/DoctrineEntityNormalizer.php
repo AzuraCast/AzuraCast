@@ -6,7 +6,6 @@ namespace App\Normalizer;
 
 use App\Exception\NoGetterAvailableException;
 use App\Normalizer\Attributes\DeepNormalize;
-use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
@@ -16,8 +15,8 @@ use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionProperty;
-use ReflectionUnionType;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -372,66 +371,70 @@ class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerA
         }
 
         $method = new ReflectionMethod(get_class($entity), $method_name);
-        $first_param = $method->getParameters()[0];
+        $firstParam = $method->getParameters()[0];
 
-        if ($first_param->hasType()) {
-            $firstParamTypeObj = $first_param->getType();
+        $value = $this->castValue($firstParam, $value);
+        return $entity->$method_name($value);
+    }
 
-            if ($firstParamTypeObj instanceof ReflectionNamedType) {
-                $first_param_type = $firstParamTypeObj->getName();
-            } elseif ($firstParamTypeObj instanceof ReflectionUnionType) {
-                $types = $firstParamTypeObj->getTypes();
-                $first_param_type = $types[0]->getName();
-            } else {
-                $first_param_type = null;
-            }
-
-            switch ($first_param_type) {
-                case 'DateTime':
-                    if (!($value instanceof DateTime)) {
-                        if (!is_numeric($value)) {
-                            $value = strtotime($value . ' UTC');
-                        }
-
-                        $dt = new DateTime();
-                        $dt->setTimestamp((int)$value);
-                        $value = $dt;
-                    }
-                    break;
-
-                case 'int':
-                    if ($value === null) {
-                        if (!$first_param->allowsNull()) {
-                            $value = 0;
-                        }
-                    } else {
-                        $value = (int)$value;
-                    }
-                    break;
-
-                case 'float':
-                    if ($value === null) {
-                        if (!$first_param->allowsNull()) {
-                            $value = 0.0;
-                        }
-                    } else {
-                        $value = (float)$value;
-                    }
-                    break;
-
-                case 'bool':
-                    if ($value === null) {
-                        if (!$first_param->allowsNull()) {
-                            $value = false;
-                        }
-                    } else {
-                        $value = (bool)$value;
-                    }
-                    break;
-            }
+    protected function castValue(ReflectionParameter $firstParam, mixed $value): mixed
+    {
+        if (!$firstParam->hasType()) {
+            return $value;
         }
 
-        return $entity->$method_name($value);
+        $firstParamTypeObj = $firstParam->getType();
+
+        if (
+            !($firstParamTypeObj instanceof ReflectionNamedType)
+            || !$firstParamTypeObj->isBuiltin()
+        ) {
+            return $value;
+        }
+
+        switch ($firstParamTypeObj->getName()) {
+            case 'string':
+                if ($value === null) {
+                    if (!$firstParam->allowsNull()) {
+                        return '';
+                    }
+                } else {
+                    return (string)$value;
+                }
+                break;
+
+            case 'int':
+                if ($value === null) {
+                    if (!$firstParam->allowsNull()) {
+                        return 0;
+                    }
+                } else {
+                    return (int)$value;
+                }
+                break;
+
+            case 'float':
+                if ($value === null) {
+                    if (!$firstParam->allowsNull()) {
+                        return 0.0;
+                    }
+                } else {
+                    return (float)$value;
+                }
+                break;
+
+            case 'bool':
+                if ($value === null) {
+                    if (!$firstParam->allowsNull()) {
+                        return false;
+                    }
+                } else {
+                    return (bool)$value;
+                }
+                break;
+        }
+
+        return $value;
     }
 
     protected function isEntity(mixed $class): bool

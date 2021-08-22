@@ -2,14 +2,17 @@
     <b-tab :title="langTitle">
         <b-form-group>
             <b-row>
-                <b-form-group class="col-md-12" label-for="edit_form_playlists" :label="langTitle">
-                    <b-form-checkbox-group
-                        id="edit_form_playlists"
-                        v-model="form.playlists.$model"
-                        :options="options"
-                        stacked
-                    ></b-form-checkbox-group>
-                </b-form-group>
+                <b-wrapped-form-group class="col-md-12" id="edit_form_playlists" :field="form.playlists">
+                    <template #label>{{ langTitle }}</template>
+                    <template #default="props">
+                        <b-form-checkbox-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :options="options"
+                            stacked
+                        ></b-form-checkbox-group>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
         </b-form-group>
     </b-tab>
@@ -17,18 +20,20 @@
 
 <script>
 import _ from 'lodash';
+import BWrappedFormGroup from "../../../Form/BWrappedFormGroup";
 
 export default {
     name: 'MediaFormPlaylists',
+    components: {BWrappedFormGroup},
     props: {
         form: Object,
         playlists: Array
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Playlists');
         },
-        options () {
+        options() {
             return _.map(this.playlists, function (row) {
                 return {
                     text: row.name,

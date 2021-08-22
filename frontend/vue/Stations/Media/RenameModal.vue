@@ -2,7 +2,7 @@
     <b-modal id="rename_file" centered ref="modal" :title="langRenameFile">
         <b-form @submit.prevent="doRename">
             <b-form-group label-for="new_directory_name">
-                <template v-slot:label>
+                <template #label>
                     <translate key="lang_new_directory_name">New File Name</translate>
                 </template>
                 <b-input type="text" id="new_directory_name" v-model="$v.form.newPath.$model"
@@ -12,7 +12,7 @@
                 </b-form-invalid-feedback>
             </b-form-group>
         </b-form>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>

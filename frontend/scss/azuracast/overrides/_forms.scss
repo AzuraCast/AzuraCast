@@ -16,11 +16,18 @@ input, textarea {
 
     .form-group {
       & > label {
-        margin-bottom: .5rem!important;
+        margin-bottom: .5rem !important;
       }
 
       &:last-child {
         margin-bottom: 0;
+      }
+    }
+
+    label.required {
+      &:after {
+        content: " *";
+        color: $material-color-red-700;
       }
     }
   }

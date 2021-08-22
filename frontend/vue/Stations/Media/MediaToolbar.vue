@@ -4,7 +4,7 @@
             <div class="btn-group dropdown allow-focus">
                 <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown" v-b-tooltip.hover
                             :title="langPlaylistDropdown">
-                    <template v-slot:button-content>
+                    <template #button-content>
                         <icon icon="clear_all"></icon>
                         <translate key="lang_playlists_title">Playlists</translate>
                         <span class="caret"></span>
@@ -46,7 +46,7 @@
                 <translate key="lang_btn_move">Move</translate>
             </b-button>
             <b-dropdown size="sm" variant="default">
-                <template v-slot:button-content>
+                <template #button-content>
                     <icon icon="more_horiz"></icon>
                     {{ langMore }}
                 </template>

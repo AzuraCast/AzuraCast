@@ -54,12 +54,12 @@ class StationScheduleRepository extends Repository
                 $record = new Entity\StationSchedule($relation);
             }
 
-            $record->setStartTime($item['start_time']);
-            $record->setEndTime($item['end_time']);
+            $record->setStartTime((int)$item['start_time']);
+            $record->setEndTime((int)$item['end_time']);
             $record->setStartDate($item['start_date']);
             $record->setEndDate($item['end_date']);
             $record->setDays($item['days'] ?? []);
-            $record->setLoopOnce($item['loop_once']);
+            $record->setLoopOnce($item['loop_once'] ?? false);
 
             $this->em->persist($record);
         }

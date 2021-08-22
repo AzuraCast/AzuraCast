@@ -12,6 +12,7 @@ $this->layout(
 
 $props = [
     'initialNowPlaying' => $nowplaying,
+    'showAlbumArt' => !$customization->hideAlbumArt(),
 ];
 
 if ($customization->useWebSocketsForNowPlaying()) {

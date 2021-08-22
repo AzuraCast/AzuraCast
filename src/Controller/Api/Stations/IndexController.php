@@ -28,7 +28,7 @@ class IndexController
      *   parameters={},
      *   @OA\Response(response=200, description="Success",
      *     @OA\JsonContent(type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_Station")
+     *       @OA\Items(ref="#/components/schemas/Api_NowPlaying_Station")
      *     )
      *   )
      * )
@@ -63,7 +63,7 @@ class IndexController
      *   description="Return information about a single station.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Station")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_NowPlaying_Station")
      *   ),
      *   @OA\Response(response=404, description="Station not found")
      * )

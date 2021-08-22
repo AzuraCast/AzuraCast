@@ -85,7 +85,7 @@ class Relay implements Entity\Api\ResolvableUrlInterface
 
     /**
      * @OA\Property()
-     * @var Entity\Api\StationMount[]
+     * @var Entity\Api\NowPlaying\StationMount[]
      */
     public array $mounts = [];
 

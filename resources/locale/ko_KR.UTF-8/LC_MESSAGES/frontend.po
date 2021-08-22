@@ -1,0 +1,2844 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: easygettext\n"
+"Project-Id-Version: azuracast\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: azuracast\n"
+"X-Crowdin-Project-ID: 217396\n"
+"X-Crowdin-Language: ko\n"
+"X-Crowdin-File: /main/resources/locale/frontend.pot\n"
+"X-Crowdin-File-ID: 11\n"
+"Language-Team: Korean\n"
+"Language: ko_KR\n"
+"PO-Revision-Date: 2021-08-22 15:51\n"
+
+#: ./vue/Stations/Podcasts/ListView.vue:28
+msgid "# Episodes"
+msgstr "# 에피소드"
+
+#: ./vue/Stations/Playlists.vue:29
+msgid "# Songs"
+msgstr "# 곡"
+
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:30
+msgid "%{listeners} Listener"
+msgid_plural "%{listeners} Listeners"
+msgstr[0] "%{listeners} 청취자"
+
+#: ./vue/Stations/Playlists/CloneModal.vue:45
+msgid "%{name} - Copy"
+msgstr "%{name} - 사본"
+
+#: ./vue/Stations/Profile/BackendPanel.vue:30
+msgid "%{numPlaylists} playlist"
+msgid_plural "%{numPlaylists} playlists"
+msgstr[0] "%{numPlaylists} 개의 재생 목록"
+
+#: ./vue/Stations/Profile/BackendPanel.vue:27
+msgid "%{numSongs} uploaded song"
+msgid_plural "%{numSongs} uploaded songs"
+msgstr[0] "업로드 된 %{numSongs} 개의 곡"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:47
+#: ./vue/Stations/Playlists/Form/Source.vue:8
+msgid "A completely random track is picked for playback every time the queue is populated."
+msgstr "대기열이 채워질 때마다 재생을 위해 완전히 무작위 트랙이 선택됩니다."
+
+#: ./vue/Stations/Playlists/Form/Source.vue:13
+#: ./vue/Stations/Playlists/Form/Source.vue:4
+msgid "A playlist containing media files hosted on this server."
+msgstr "이 서버에 호스팅된 미디어 파일이 포함된 재생 목록."
+
+#: ./vue/Stations/Playlists/Form/Source.vue:17
+#: ./vue/Stations/Playlists/Form/Source.vue:8
+msgid "A playlist that instructs the station to play from a remote URL."
+msgstr ""
+
+#: ./vue/Admin/StorageLocations/Form.vue:63
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Access Key ID"
+msgstr "액세스 키 ID"
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:59
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:2
+msgid "Account is Active"
+msgstr "계정이 활성 상태입니다"
+
+#: ./vue/Stations/Streamers.vue:31
+msgid "Account List"
+msgstr "계정 목록"
+
+#: ./vue/Admin/StorageLocations.vue:17
+#: ./vue/Public/Requests.vue:51
+#: ./vue/Stations/Media.vue:116
+#: ./vue/Stations/Mounts.vue:22
+#: ./vue/Stations/Playlists.vue:26
+#: ./vue/Stations/Playlists/ReorderModal.vue:9
+#: ./vue/Stations/Podcasts/EpisodesView.vue:32
+#: ./vue/Stations/Podcasts/ListView.vue:29
+#: ./vue/Stations/Queue.vue:17
+#: ./vue/Stations/Remotes.vue:21
+#: ./vue/Stations/Streamers.vue:22
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:54
+msgid "Actions"
+msgstr "액션"
+
+#: ./vue/Admin/StorageLocations.vue:18
+msgid "Adapter"
+msgstr "어댑터"
+
+#: ./vue/Stations/Podcasts/EpisodeEditModal.vue:37
+#: ./vue/Stations/Podcasts/EpisodesView.vue:21
+msgid "Add Episode"
+msgstr "에피소드 추가"
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:57
+msgid "Add Files to Playlist"
+msgstr "재생 목록에 파일 추가"
+
+#: ./vue/Stations/Mounts.vue:16
+#: ./vue/Stations/Mounts/EditModal.vue:62
+msgid "Add Mount Point"
+msgstr "마운트 지점 추가"
+
+#: ./vue/Stations/Playlists.vue:18
+#: ./vue/Stations/Playlists/EditModal.vue:21
+msgid "Add Playlist"
+msgstr "재생 목록 추가"
+
+#: ./vue/Stations/Podcasts/ListView.vue:14
+#: ./vue/Stations/Podcasts/PodcastEditModal.vue:40
+msgid "Add Podcast"
+msgstr "팟캐스트 추가"
+
+#: ./vue/Common/BaseEditModal.vue:26
+msgid "Add Record"
+msgstr ""
+
+#: ./vue/Stations/Remotes.vue:16
+#: ./vue/Stations/Remotes/EditModal.vue:44
+msgid "Add Remote Relay"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:116
+#: ./vue/Stations/Streamers/Form/Schedule.vue:99
+msgid "Add Schedule Item"
+msgstr "예약 생성"
+
+#: ./vue/Dashboard.vue:86
+msgid "Add Station"
+msgstr "스테이션 추가"
+
+#: ./vue/Admin/StorageLocations.vue:16
+#: ./vue/Admin/StorageLocations/EditModal.vue:19
+msgid "Add Storage Location"
+msgstr "저장소 위치 추가"
+
+#: ./vue/Stations/Streamers.vue:19
+#: ./vue/Stations/Streamers/EditModal.vue:45
+msgid "Add Streamer"
+msgstr "스트리머 추가"
+
+#: ./vue/Dashboard.vue:18
+msgid "Administration"
+msgstr "관리"
+
+#: ./vue/Stations/Profile/FrontendPanel.vue:20
+#: ./vue/Stations/Profile/FrontendPanel.vue:8
+msgid "Administration URL"
+msgstr "관리 URL"
+
+#: ./vue/Stations/Profile/FrontendPanel.vue:26
+#: ./vue/Stations/Profile/FrontendPanel.vue:14
+msgid "Administrator Password"
+msgstr "관리자 암호"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:12
+#: ./vue/Stations/Mounts/Form/Advanced.vue:13
+#: ./vue/Stations/Playlists/Form/Advanced.vue:11
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:78
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:19
+msgid "Advanced"
+msgstr "고급"
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:15
+#: ./vue/Stations/Playlists/Form/Advanced.vue:1
+msgid "Advanced Manual AutoDJ Scheduling Options"
+msgstr ""
+
+#: ./vue/Public/OnDemand.vue:20
+#: ./vue/Public/Requests.vue:36
+#: ./vue/Stations/Media.vue:79
+#: ./vue/Stations/Playlists/ReorderModal.vue:8
+msgid "Album"
+msgstr "앨범"
+
+#: ./vue/Public/OnDemand.vue:50
+#: ./vue/Public/Player.vue:74
+#: ./vue/Public/Requests.vue:63
+#: ./vue/Stations/Media.vue:142
+#: ./vue/Stations/Media/Form/AlbumArt.vue:16
+msgid "Album Art"
+msgstr "앨범 이미지"
+
+#: ./vue/Stations/Playlists.vue:35
+msgid "All Playlists"
+msgstr "모든 재생 목록"
+
+#: ./vue/Stations/Podcasts/EpisodesView.vue:16
+#: ./vue/Stations/Podcasts/ListView.vue:35
+msgid "All Podcasts"
+msgstr "모든 팟캐스트"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:63
+#: ./vue/Stations/Playlists/Form/Source.vue:2
+msgid "Allow Requests from This Playlist"
+msgstr ""
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:14
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Amplify: Amplification (dB)"
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:68
+#: ./vue/Admin/Branding/BrandingForm.vue:102
+#: ./vue/Admin/StorageLocations/EditModal.vue:122
+#: ./vue/Common/BaseEditModal.vue:58
+#: ./vue/Common/BaseEditModal.vue:93
+#: ./vue/Stations/Media/EditModal.vue:140
+#: ./vue/Stations/Media/EditModal.vue:172
+#: ./vue/Stations/Media/MoveFilesModal.vue:53
+#: ./vue/Stations/Media/NewDirectoryModal.vue:50
+#: ./vue/Stations/Playlists/CloneModal.vue:69
+#: ./vue/Stations/Playlists/ImportModal.vue:39
+msgid "An error occurred and your request could not be completed."
+msgstr "오류가 발생하여 요청을 완료할 수 없습니다."
+
+#: ./vue/Stations/Media/MediaToolbar.vue:53
+msgid "Analyze and reprocess the selected media"
+msgstr "선택한 미디어 분석 및 재처리"
+
+#: ./vue/Admin/StorageLocations/Form.vue:118
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "API Version"
+msgstr "API 버전"
+
+#: ./vue/Admin/StorageLocations.vue:67
+#: ./vue/Stations/Media/MediaToolbar.vue:159
+#: ./vue/Stations/Playlists.vue:132
+msgid "Applying changes..."
+msgstr "변경 내용을 적용하는 중..."
+
+#: ./vue/Public/OnDemand.vue:17
+#: ./vue/Stations/Podcasts/EpisodesView.vue:28
+#: ./vue/Stations/Podcasts/ListView.vue:26
+msgid "Art"
+msgstr ""
+
+#: ./vue/Public/OnDemand.vue:19
+#: ./vue/Public/Requests.vue:31
+#: ./vue/Public/WebDJ/SettingsPanel.vue:109
+#: ./vue/Stations/Media.vue:74
+#: ./vue/Stations/Playlists/QueueModal.vue:10
+#: ./vue/Stations/Playlists/ReorderModal.vue:7
+msgid "Artist"
+msgstr "아티스트"
+
+#: ./vue/Stations/Podcasts/Common/Artwork.vue:19
+msgid "Artwork"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/Common/Artwork.vue:10
+#: ./vue/Stations/Podcasts/Common/Artwork.vue:1
+msgid "Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts."
+msgstr "Apple 팟캐스트의 경우 아트워크 크기는 최소 1400 x 1400 픽셀이고 최대 크기는 3000 x 3000 픽셀이어야 합니다."
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:46
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Author"
+msgstr ""
+
+#: ./vue/Stations/Playlists.vue:82
+#: ./vue/Stations/Playlists.vue:21
+msgid "Auto-Assigned"
+msgstr "자동 할당"
+
+#: ./vue/Stations/Mounts.vue:21
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:12
+#: ./vue/Stations/Remotes.vue:20
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:12
+msgid "AutoDJ"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:27
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:1
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:30
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "AutoDJ Bitrate (kbps)"
+msgstr "AutoDJ 비트 레이트 (kbps)"
+
+#: ./vue/Stations/Profile/BackendNonePanel.vue:3
+msgid "AutoDJ Disabled"
+msgstr "AutoDJ 비활성화됨"
+
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:19
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:1
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:21
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "AutoDJ Format"
+msgstr "AutoDJ 포맷"
+
+#: ./vue/Stations/Profile/BackendNonePanel.vue:6
+msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
+msgstr "이 스테이션의 AutoDJ가 비활성화되었습니다. 소스가 활성화되지 않은 경우 어떤 음악도 자동으로 재생되지 않습니다."
+
+#: ./vue/Stations/Profile/BackendPanel.vue:4
+msgid "AutoDJ Service"
+msgstr "AutoDJ 서비스"
+
+#: ./vue/Common/Avatar.vue:14
+msgid "Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings."
+msgstr "%{service} 서비스에서 이메일 주소를 기반으로 아바타를 가져옵니다. %{service} 설정을 관리하려면 클릭하십시오."
+
+#: ./vue/Dashboard.vue:47
+msgid "Average Listeners"
+msgstr "평균 청취자"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:39
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:2
+msgid "Avoid Duplicate Artists/Titles"
+msgstr "아티스트/제목 중복 방지"
+
+#: ./vue/Stations/Playlists/ImportModal.vue:8
+#: ./vue/Stations/Playlists/ImportModal.vue:1
+msgid "AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed."
+msgstr "AzuraCast는 이 방송국의 음악 라이브러리에서 업로드된 파일의 일치하는 내용을 검색합니다. 이 단계를 실행하기 전에 미디어를 미리 업로드해야 합니다. 필요한 횟수만큼 이 도구를 다시 실행할 수 있습니다."
+
+#: ./vue/Stations/Media/MoveFilesModal.vue:6
+msgid "Back"
+msgstr "뒤로"
+
+#: ./vue/Admin/StorageLocations.vue:34
+msgid "Backups"
+msgstr "백업"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:17
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Base Theme for Public Pages"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:13
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:27
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:12
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:11
+msgid "Basic Info"
+msgstr "기본 정보"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:11
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:12
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:13
+msgid "Basic Information"
+msgstr "기본 정보"
+
+#: ./vue/Stations/Reports/Overview.vue:32
+msgid "Best Performing Songs"
+msgstr "베스트 퍼포먼스 곡"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:56
+msgid "Bit Rate"
+msgstr "비트 레이트"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:5
+msgid "Branding Settings"
+msgstr "브랜딩 설정"
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:10
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:2
+msgid "Broadcast AutoDJ to Remote Station"
+msgstr ""
+
+#: ./vue/Stations/Profile/FrontendPanel.vue:4
+msgid "Broadcasting Service"
+msgstr "방송 서비스"
+
+#: ./vue/Stations/Streamers.vue:38
+#: ./vue/Stations/Streamers.vue:6
+msgid "Broadcasts"
+msgstr "방송"
+
+#: ./vue/Admin/Branding.vue:15
+msgid "Browser Icon"
+msgstr "파비콘"
+
+#: ./vue/Admin/StorageLocations/Form.vue:96
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Bucket Name"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:67
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Categories"
+msgstr "카테고리"
+
+#: ./vue/Stations/Reports/Overview.vue:47
+#: ./vue/Stations/Reports/Overview.vue:90
+msgid "Change"
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:97
+#: ./vue/Admin/StorageLocations/EditModal.vue:116
+#: ./vue/Common/BaseEditModal.vue:87
+#: ./vue/Stations/Media/EditModal.vue:166
+#: ./vue/Stations/Playlists/CloneModal.vue:63
+msgid "Changes saved."
+msgstr "변경 내용 저장."
+
+#: ./vue/Stations/Media/MediaToolbar.vue:32
+msgid "Clear"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/Common/Artwork.vue:20
+msgid "Clear Artwork"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/Intro.vue:26
+msgid "Clear File"
+msgstr ""
+
+#: ./vue/Admin/Branding/CustomAssetForm.vue:13
+msgid "Clear Image"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:26
+msgid "Clear Media"
+msgstr ""
+
+#: ./vue/Stations/Playlists/QueueModal.vue:26
+#: ./vue/Stations/Playlists/QueueModal.vue:5
+msgid "Clear Queue"
+msgstr "대기열 비우기"
+
+#: ./vue/Admin/StorageLocations/EditModal.vue:12
+#: ./vue/Admin/StorageLocations/EditModal.vue:2
+#: ./vue/Stations/Media/EditModal.vue:18
+#: ./vue/Stations/Media/EditModal.vue:2
+#: ./vue/Stations/Media/MoveFilesModal.vue:32
+#: ./vue/Stations/Media/MoveFilesModal.vue:2
+#: ./vue/Stations/Media/NewDirectoryModal.vue:14
+#: ./vue/Stations/Media/NewDirectoryModal.vue:1
+#: ./vue/Stations/Media/RenameModal.vue:15
+#: ./vue/Stations/Media/RenameModal.vue:2
+#: ./vue/Stations/Mounts/EditModal.vue:17
+#: ./vue/Stations/Mounts/EditModal.vue:2
+#: ./vue/Stations/Playlists/CloneModal.vue:36
+#: ./vue/Stations/Playlists/CloneModal.vue:2
+#: ./vue/Stations/Playlists/EditModal.vue:17
+#: ./vue/Stations/Playlists/EditModal.vue:2
+#: ./vue/Stations/Playlists/ImportModal.vue:17
+#: ./vue/Stations/Playlists/ImportModal.vue:2
+#: ./vue/Stations/Playlists/QueueModal.vue:23
+#: ./vue/Stations/Playlists/QueueModal.vue:2
+#: ./vue/Stations/Podcasts/EpisodeEditModal.vue:16
+#: ./vue/Stations/Podcasts/EpisodeEditModal.vue:2
+#: ./vue/Stations/Podcasts/PodcastEditModal.vue:16
+#: ./vue/Stations/Podcasts/PodcastEditModal.vue:2
+#: ./vue/Stations/Queue/LogsModal.vue:6
+#: ./vue/Stations/Queue/LogsModal.vue:2
+#: ./vue/Stations/Remotes/EditModal.vue:15
+#: ./vue/Stations/Remotes/EditModal.vue:2
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:32
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:2
+#: ./vue/Stations/Streamers/EditModal.vue:15
+#: ./vue/Stations/Streamers/EditModal.vue:2
+msgid "Close"
+msgstr "닫기"
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:40
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "Comments"
+msgstr "댓글"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:62
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:2
+msgid "Contains explicit content"
+msgstr ""
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:66
+msgid "Continuous Play"
+msgstr "연속 재생"
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:18
+#: ./vue/Stations/Playlists/Form/Advanced.vue:1
+msgid "Control how this playlist is handled by the AutoDJ software."
+msgstr "AutoDJ 소프트웨어에서 이 재생 목록을 처리하는 방법을 제어합니다."
+
+#: ./vue/Stations/Playlists/CloneModal.vue:23
+msgid "Copy associated media and folders."
+msgstr ""
+
+#: ./vue/Stations/Playlists/CloneModal.vue:26
+msgid "Copy scheduled playback times."
+msgstr ""
+
+#: ./vue/Common/CopyToClipboardButton.vue:3
+#: ./vue/Stations/Queue/LogsModal.vue:9
+#: ./vue/Stations/Queue/LogsModal.vue:5
+msgid "Copy to Clipboard"
+msgstr "클립보드에 복사"
+
+#: ./vue/Stations/Media/NewDirectoryModal.vue:17
+#: ./vue/Stations/Media/NewDirectoryModal.vue:4
+msgid "Create Directory"
+msgstr "디렉터리 생성"
+
+#: ./vue/Public/WebDJ/MicrophonePanel.vue:19
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:30
+#: ./vue/Public/WebDJ/SettingsPanel.vue:133
+msgid "Cue"
+msgstr "큐"
+
+#: ./vue/Stations/Queue.vue:19
+msgid "Cued On"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/Intro.vue:17
+#: ./vue/Stations/Mounts/Form/Intro.vue:1
+msgid "Current Intro File"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:17
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:1
+msgid "Current Podcast Media"
+msgstr "현재 팟캐스트 미디어"
+
+#: ./vue/Stations/Playlists.vue:99
+msgid "Custom"
+msgstr "사용자 지정"
+
+#: ./vue/Admin/Branding.vue:3
+msgid "Custom Branding"
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:96
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Custom CSS for Internal Pages"
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:72
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Custom CSS for Public Pages"
+msgstr ""
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:50
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Custom Cues: Cue-In Point (seconds)"
+msgstr "사용자 지정 큐：큐 인 포인트 (초)"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:59
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Custom Cues: Cue-Out Point (seconds)"
+msgstr "사용자 지정 큐：큐 아웃 포인트 (초)"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:32
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Custom Fading: Fade-In Time (seconds)"
+msgstr "사용자 지정 페이딩：페이드 인 시간 (초)"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:41
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Custom Fading: Fade-Out Time (seconds)"
+msgstr "사용자 지정 페이딩：페이드 아웃 시간 (초)"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:23
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Custom Fading: Overlap Time (seconds)"
+msgstr "사용자 지정 페이딩：오버랩 시간 (초)"
+
+#: ./vue/Stations/Media/Form/CustomFields.vue:12
+msgid "Custom Fields"
+msgstr "사용자 정의 필드"
+
+#: ./vue/Stations/Mounts/Form/Advanced.vue:19
+#: ./vue/Stations/Mounts/Form/Advanced.vue:1
+msgid "Custom Frontend Configuration"
+msgstr "사용자 정의 프론트 엔드 구성"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:84
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Custom JS for Public Pages"
+msgstr ""
+
+#: ./vue/Stations/Profile/EmbedModal.vue:6
+msgid "Customize"
+msgstr "개인화"
+
+#: ./vue/Stations/Playlists/CloneModal.vue:18
+#: ./vue/Stations/Playlists/CloneModal.vue:1
+msgid "Customize Copy"
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:38
+#: ./vue/Stations/Profile/EmbedModal.vue:63
+msgid "Dark"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:13
+msgid "Default"
+msgstr "기본값"
+
+#: ./vue/Admin/Branding.vue:21
+msgid "Default Album Art"
+msgstr "기본 앨범아트"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:63
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Default Album Art URL"
+msgstr "기본 앨범아트 URL"
+
+#: ./vue/Stations/Mounts.vue:26
+#: ./vue/Stations/Mounts.vue:5
+msgid "Default Mount"
+msgstr "기본 마운트"
+
+#: ./vue/Admin/StorageLocations.vue:27
+#: ./vue/Admin/StorageLocations.vue:6
+#: ./vue/Admin/StorageLocations.vue:80
+#: ./vue/Stations/Media/MediaToolbar.vue:56
+#: ./vue/Stations/Media/MediaToolbar.vue:70
+#: ./vue/Stations/Mounts.vue:45
+#: ./vue/Stations/Mounts.vue:6
+#: ./vue/Stations/Mounts.vue:46
+#: ./vue/Stations/Playlists.vue:29
+#: ./vue/Stations/Playlists.vue:6
+#: ./vue/Stations/Playlists.vue:148
+#: ./vue/Stations/Podcasts/EpisodesView.vue:55
+#: ./vue/Stations/Podcasts/EpisodesView.vue:6
+#: ./vue/Stations/Podcasts/EpisodesView.vue:64
+#: ./vue/Stations/Podcasts/ListView.vue:44
+#: ./vue/Stations/Podcasts/ListView.vue:6
+#: ./vue/Stations/Podcasts/ListView.vue:69
+#: ./vue/Stations/Queue.vue:14
+#: ./vue/Stations/Queue.vue:6
+#: ./vue/Stations/Queue.vue:38
+#: ./vue/Stations/Remotes.vue:42
+#: ./vue/Stations/Remotes.vue:6
+#: ./vue/Stations/Remotes.vue:45
+#: ./vue/Stations/Streamers.vue:41
+#: ./vue/Stations/Streamers.vue:9
+#: ./vue/Stations/Streamers.vue:60
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:23
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:21
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:3
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:89
+msgid "Delete"
+msgstr "삭제"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:71
+msgid "Delete %{ num } media files?"
+msgstr "%{ num } 개의 미디어 파일을 삭제하시겠습니까?"
+
+#: ./vue/Stations/Media/Form/AlbumArt.vue:8
+msgid "Delete Album Art"
+msgstr "앨범아트 삭제"
+
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:90
+msgid "Delete broadcast?"
+msgstr "방송을 삭제하시겠습니까?"
+
+#: ./vue/Stations/Podcasts/EpisodesView.vue:65
+msgid "Delete episode?"
+msgstr "에피소드를 삭제하시겠습니까?"
+
+#: ./vue/Stations/Mounts.vue:47
+msgid "Delete Mount Point?"
+msgstr "마운트 지점을 삭제하시겠습니까?"
+
+#: ./vue/Stations/Playlists.vue:149
+msgid "Delete playlist?"
+msgstr "재생 목록을 삭제하시겠습니까?"
+
+#: ./vue/Stations/Podcasts/ListView.vue:70
+msgid "Delete podcast?"
+msgstr "팟캐스트를 삭제하시겠습니까?"
+
+#: ./vue/Stations/Queue.vue:39
+msgid "Delete queue item?"
+msgstr "대기열 항목을 삭제하시겠습니까?"
+
+#: ./vue/Stations/Remotes.vue:46
+msgid "Delete Remote Relay?"
+msgstr ""
+
+#: ./vue/Admin/StorageLocations.vue:81
+msgid "Delete storage location?"
+msgstr "저장소 위치를 삭제하시겠습니까?"
+
+#: ./vue/Stations/Streamers.vue:61
+msgid "Delete streamer?"
+msgstr "스트리머를 삭제하시겠습니까?"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:22
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:22
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Description"
+msgstr "설명"
+
+#: ./vue/Common/DataTable.vue:92
+msgid "Deselect"
+msgstr "선택 취소"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:107
+#: ./vue/Stations/Playlists/Form/Source.vue:3
+msgid "Direct Stream URL"
+msgstr "다이렉트 스트림 URL"
+
+#: ./vue/Stations/Media/MoveFilesModal.vue:21
+msgid "Directory"
+msgstr "디렉터리"
+
+#: ./vue/Stations/Media/NewDirectoryModal.vue:5
+#: ./vue/Stations/Media/NewDirectoryModal.vue:1
+msgid "Directory Name"
+msgstr "폴더 이름"
+
+#: ./vue/Stations/Playlists.vue:68
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:54
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:52
+#: ./vue/Stations/Profile/RequestsPanel.vue:16
+#: ./vue/Stations/Profile/RequestsPanel.vue:14
+#: ./vue/Stations/Profile/StreamersPanel.vue:16
+#: ./vue/Stations/Profile/StreamersPanel.vue:14
+msgid "Disable"
+msgstr "비활성화"
+
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:27
+msgid "Disable public pages?"
+msgstr "공용 페이지를 비활성화하시겠습니까?"
+
+#: ./vue/Stations/Profile/RequestsPanel.vue:18
+msgid "Disable song requests?"
+msgstr "곡 요청을 비활성화하시겠습니까?"
+
+#: ./vue/Stations/Profile/StreamersPanel.vue:18
+msgid "Disable streamers?"
+msgstr "스트리머를 비활성화하시겠습니까?"
+
+#: ./vue/Stations/Mounts.vue:36
+#: ./vue/Stations/Mounts.vue:7
+#: ./vue/Stations/Mounts.vue:1
+#: ./vue/Stations/Playlists.vue:85
+#: ./vue/Stations/Playlists.vue:24
+#: ./vue/Stations/Playlists.vue:79
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:63
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:4
+#: ./vue/Stations/Profile/RequestsPanel.vue:24
+#: ./vue/Stations/Profile/RequestsPanel.vue:4
+#: ./vue/Stations/Profile/StreamersPanel.vue:24
+#: ./vue/Stations/Profile/StreamersPanel.vue:4
+#: ./vue/Stations/Remotes.vue:33
+#: ./vue/Stations/Remotes.vue:7
+#: ./vue/Stations/Remotes.vue:1
+#: ./vue/Stations/Streamers.vue:28
+#: ./vue/Stations/Streamers.vue:4
+msgid "Disabled"
+msgstr "비활성화"
+
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:99
+msgid "Disconnect Streamer"
+msgstr "스트리머 연결 해제"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:17
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:15
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+#: ./vue/Stations/Streamers.vue:24
+msgid "Display Name"
+msgstr "표시 이름"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:81
+msgid "DJ Credentials"
+msgstr "DJ 자격 증명"
+
+#: ./vue/Stations/Playlists/ReorderModal.vue:24
+msgid "Down"
+msgstr "아래로"
+
+#: ./vue/Public/OnDemand.vue:56
+#: ./vue/Stations/Mounts/Form/Intro.vue:23
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:23
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:68
+msgid "Download"
+msgstr "다운로드"
+
+#: ./vue/Stations/Profile/StreamsPanel.vue:78
+msgid "Download M3U"
+msgstr "M3U 다운로드"
+
+#: ./vue/Stations/Profile/StreamsPanel.vue:74
+msgid "Download PLS"
+msgstr "PLS 다운로드"
+
+#: ./vue/Common/FlowUpload.vue:15
+msgid "Drag file(s) here to upload or"
+msgstr ""
+
+#: ./vue/Admin/StorageLocations/Form.vue:142
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Dropbox Generated Access Token"
+msgstr "Dropbox 생성 액세스 토큰"
+
+#: ./vue/Stations/Playlists.vue:53
+msgid "Duplicate"
+msgstr "복제"
+
+#: ./vue/Stations/Playlists/CloneModal.vue:23
+msgid "Duplicate Playlist"
+msgstr "재생 목록 복제"
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:55
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "E-Mail"
+msgstr "이메일"
+
+#: ./vue/Admin/StorageLocations.vue:24
+#: ./vue/Admin/StorageLocations.vue:3
+#: ./vue/Stations/Media.vue:148
+#: ./vue/Stations/Mounts.vue:42
+#: ./vue/Stations/Mounts.vue:3
+#: ./vue/Stations/Playlists.vue:26
+#: ./vue/Stations/Playlists.vue:3
+#: ./vue/Stations/Podcasts/EpisodesView.vue:52
+#: ./vue/Stations/Podcasts/EpisodesView.vue:3
+#: ./vue/Stations/Podcasts/ListView.vue:41
+#: ./vue/Stations/Podcasts/ListView.vue:3
+#: ./vue/Stations/Remotes.vue:39
+#: ./vue/Stations/Remotes.vue:3
+#: ./vue/Stations/Streamers.vue:35
+#: ./vue/Stations/Streamers.vue:3
+msgid "Edit"
+msgstr "편집"
+
+#: ./vue/Stations/Podcasts/EpisodeEditModal.vue:36
+msgid "Edit Episode"
+msgstr "에피소드 편집"
+
+#: ./vue/Stations/Media/EditModal.vue:74
+msgid "Edit Media"
+msgstr "미디어 편집"
+
+#: ./vue/Stations/Mounts/EditModal.vue:61
+msgid "Edit Mount Point"
+msgstr "마운트 지점 편집"
+
+#: ./vue/Stations/Playlists/EditModal.vue:20
+msgid "Edit Playlist"
+msgstr "재생 목록 편집"
+
+#: ./vue/Stations/Podcasts/PodcastEditModal.vue:39
+msgid "Edit Podcast"
+msgstr "팟캐스트 편집"
+
+#: ./vue/Stations/Profile/HeaderPanel.vue:10
+msgid "Edit Profile"
+msgstr "프로필 편집"
+
+#: ./vue/Common/BaseEditModal.vue:25
+msgid "Edit Record"
+msgstr ""
+
+#: ./vue/Stations/Remotes/EditModal.vue:43
+msgid "Edit Remote Relay"
+msgstr ""
+
+#: ./vue/Admin/StorageLocations/EditModal.vue:18
+msgid "Edit Storage Location"
+msgstr "저장소 위치 편집"
+
+#: ./vue/Stations/Streamers/EditModal.vue:44
+msgid "Edit Streamer"
+msgstr "스트리머 편집"
+
+#: ./vue/Stations/Profile/EmbedModal.vue:27
+msgid "Embed Code"
+msgstr "임베드 코드"
+
+#: ./vue/Stations/Profile/EmbedModal.vue:70
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:50
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:48
+msgid "Embed Widgets"
+msgstr "임베드 위젯"
+
+#: ./vue/Stations/Playlists.vue:69
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:69
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:10
+#: ./vue/Stations/Profile/RequestsPanel.vue:30
+#: ./vue/Stations/Profile/RequestsPanel.vue:10
+#: ./vue/Stations/Profile/StreamersPanel.vue:30
+#: ./vue/Stations/Profile/StreamersPanel.vue:10
+msgid "Enable"
+msgstr "활성화"
+
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:10
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:2
+msgid "Enable AutoDJ"
+msgstr "AutoDJ 활성화"
+
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:30
+msgid "Enable public pages?"
+msgstr "공용 페이지를 활성화하시겠습니까?"
+
+#: ./vue/Stations/Profile/RequestsPanel.vue:21
+msgid "Enable song requests?"
+msgstr "곡 요청을 활성화하시겠습니까?"
+
+#: ./vue/Stations/Profile/StreamersPanel.vue:21
+msgid "Enable streamers?"
+msgstr "스트리머를 활성화하시겠습니까?"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:70
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
+msgstr "이 설정을 활성화하면 이 재생 목록에 있는 파일의 메타데이터가 AutoDJ로 전송되지 않습니다. 이 기능은 재생 목록에 징글 또는 범퍼가 포함된 경우에 유용합니다."
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:62
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:75
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "Enable to advertise this relay on \"Yellow Pages\" public radio directories."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:31
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Enable to allow listeners to select this mount point on this station's public pages."
+msgstr "청취자가 이 스테이션의 공개 페이지에서 이 마운트 지점을 선택할 수 있도록 하려면 활성화합니다."
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:51
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Enable to allow listeners to select this relay on this station's public pages."
+msgstr ""
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:55
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "Enable to allow this account to log in and stream."
+msgstr "이 계정이 로그인하고 스트리밍할 수 있도록 활성화합니다."
+
+#: ./vue/Stations/Mounts.vue:31
+#: ./vue/Stations/Mounts.vue:2
+#: ./vue/Stations/Mounts.vue:1
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:6
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:4
+#: ./vue/Stations/Profile/RequestsPanel.vue:6
+#: ./vue/Stations/Profile/RequestsPanel.vue:4
+#: ./vue/Stations/Profile/StreamersPanel.vue:6
+#: ./vue/Stations/Profile/StreamersPanel.vue:4
+#: ./vue/Stations/Remotes.vue:28
+#: ./vue/Stations/Remotes.vue:2
+#: ./vue/Stations/Remotes.vue:1
+msgid "Enabled"
+msgstr "활성화"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:27
+msgid "Encoder"
+msgstr "인코더"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:78
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/Form/Schedule.vue:72
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "End Date"
+msgstr "종료 날짜"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:42
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:31
+#: ./vue/Stations/Streamers/Form/Schedule.vue:39
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "End Time"
+msgstr "종료 시간"
+
+#: ./vue/Admin/StorageLocations/Form.vue:85
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Endpoint"
+msgstr "끝점"
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:70
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:2
+msgid "Enforce Schedule Times"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:51
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
+msgstr "다른 스트림의 전체 URL을 입력하여 이 마운트 지점을 통해 방송을 중계합니다."
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:7
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+#: ./vue/Stations/Podcasts/EpisodesView.vue:29
+msgid "Episode"
+msgstr "에피소드"
+
+#: ./vue/Stations/Podcasts/EpisodesView.vue:9
+#: ./vue/Stations/Podcasts/ListView.vue:47
+#: ./vue/Stations/Podcasts/ListView.vue:9
+msgid "Episodes"
+msgstr "에피소드"
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:27
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter \"http://station.example.com:8000\"."
+msgstr "예시: 원격 라디오 URL이 http://station.example.com:8000/radio.mp3,이면 \"http://station.example.com:8000\"을 입력합니다."
+
+#: ./vue/Stations/Podcasts/EpisodesView.vue:46
+#: ./vue/Stations/Podcasts/EpisodesView.vue:2
+#: ./vue/Stations/Podcasts/EpisodesView.vue:31
+msgid "Explicit"
+msgstr ""
+
+#: ./vue/Stations/Playlists.vue:53
+#: ./vue/Stations/Playlists.vue:30
+#: ./vue/Stations/Playlists.vue:2
+msgid "Export %{format}"
+msgstr "%{format} 로 내보내기"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:89
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:3
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Fallback Mount"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodesView.vue:30
+msgid "File"
+msgstr "파일"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:6
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "File Name"
+msgstr "파일 이름"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:67
+msgid "Files marked for reprocessing:"
+msgstr ""
+
+#: ./vue/Stations/Media/MoveFilesModal.vue:47
+msgid "Files moved:"
+msgstr "파일이 이동됨:"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:64
+msgid "Files queued for playback:"
+msgstr ""
+
+#: ./vue/Stations/Media/MediaToolbar.vue:83
+msgid "Files removed:"
+msgstr "파일 삭제됨:"
+
+#: ./vue/Admin/StorageLocations/Form.vue:27
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
+msgstr "로컬 파일 시스템의 경우 디렉토리의 기본 경로입니다. 원격 파일 시스템의 경우 폴더 접두사입니다."
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:20
+#: ./vue/Stations/Streamers/Form/Schedule.vue:20
+msgid "Friday"
+msgstr "금요일"
+
+#: ./vue/Common/Waveform.vue:37
+#: ./vue/InlinePlayer.vue:34
+#: ./vue/Public/Player.vue:71
+msgid "Full Volume"
+msgstr "최대 볼륨"
+
+#: ./vue/Stations/Playlists.vue:84
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:62
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:95
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:3
+msgid "General Rotation"
+msgstr "일반적인 로테이션"
+
+#: ./vue/Public/Requests.vue:37
+#: ./vue/Stations/Media.vue:80
+msgid "Genre"
+msgstr "장르"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:35
+#: ./vue/Admin/Branding/BrandingForm.vue:2
+msgid "Hide Album Art on Public Pages"
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:46
+#: ./vue/Admin/Branding/BrandingForm.vue:2
+msgid "Hide AzuraCast Branding on Public Pages"
+msgstr ""
+
+#: ./vue/Dashboard.vue:57
+msgid "Hide Charts"
+msgstr "차트 숨기기"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:74
+#: ./vue/Stations/Playlists/Form/Source.vue:2
+msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:15
+msgid "High"
+msgstr "높음"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:15
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
+msgstr "가중치가 높은 재생 목록은 가중치가 낮은 다른 재생 목록에 비해 재생 빈도가 높습니다."
+
+#: ./vue/Stations/Profile/EmbedModal.vue:30
+msgid "History"
+msgstr "기록"
+
+#: ./vue/Stations/Media/Breadcrumb.vue:2
+msgid "Home"
+msgstr "홈"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:54
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Homepage Redirect URL"
+msgstr ""
+
+#: ./vue/Stations/Reports/HourChart.vue:39
+msgid "Hour"
+msgstr "시간"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:66
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:57
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:9
+msgid "If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results."
+msgstr "이러한 옵션 중 하나라도 활성화된 경우 이 재생 목록은 AzuraCast를 통해 관리되지 않고 Liquidsoap을 통해 직접 관리됩니다. 이것은 의도하지 않은 영향을 미칠 수 있으며, 결과에 만족하는 경우에만 사용해야 합니다."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:103
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
+msgstr "자동 할당이 활성화된 경우 이 재생 목록을 재배포할 곡의 대상 중 하나로 사용하십시오. 이 재생 목록의 기존 내용을 덮어씁니다."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:24
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "If disabled, the playlist will not be included in radio playback, but can still be managed."
+msgstr "비활성화된 경우 재생 목록은 라디오 재생에 포함되지 않지만 여전히 관리할 수 있습니다."
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:6
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:6
+#: ./vue/Stations/Mounts/Form/AutoDj.vue:1
+msgid "If enabled, the AutoDJ will automatically play music to this mount point."
+msgstr "활성화된 경우 AutoDJ는 자동으로 이 마운트 지점까지 음악을 재생합니다."
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:66
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "If enabled, this streamer will only be able to connect during their scheduled broadcast times."
+msgstr "활성화된 경우 이 스트리머는 예약된 방송 시간 동안만 연결할 수 있습니다."
+
+#: ./vue/Stations/Playlists/Form/Source.vue:59
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
+msgstr "스테이션에 대한 요청이 활성화된 경우, 사용자는 이 재생 목록에 있는 미디어를 요청할 수 있습니다."
+
+#: ./vue/Admin/Branding/BrandingForm.vue:31
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "If selected, album art will not display on public-facing radio pages."
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:42
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:45
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+msgid "If the end time is before the start time, the playlist will play overnight."
+msgstr "종료 시간이 시작 시간 이전인 경우, 재생 목록이 밤새 재생됩니다."
+
+#: ./vue/Stations/Streamers/Form/Schedule.vue:42
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "If the end time is before the start time, the schedule entry will continue overnight."
+msgstr "종료 시간이 시작 시간 이전인 경우, 일정 항목은 밤새 계속됩니다."
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:51
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:42
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:42
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
+msgstr "이 마운트가 기본값인 경우 이 시스템의 라디오 미리 보기 및 공용 라디오 페이지에서 재생됩니다."
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:92
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:6
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
+msgstr "이 마운트 지점이 오디오를 재생하고 있지 않으면 수신기가 자동으로 이 마운트 지점으로 리디렉션됩니다. 기본값은 반복 오류 메시지인 /error.mp3 입니다."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:46
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible."
+msgstr "이 스테이션에 주문형 스트리밍 및 다운로드가 활성화된 경우, 이 설정이 활성화된 재생 목록에 있는 곡만 표시됩니다."
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:69
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "If you are broadcasting using AutoDJ, enter the source password here."
+msgstr "AutoDJ를 사용하여 방송하는 경우 여기에 소스 암호를 입력합니다."
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:60
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
+msgstr "AutoDJ를 사용하여 방송하는 경우 여기에 소스 사용자 이름을 입력합니다. 공백일 수 있습니다."
+
+#: ./vue/Stations/Playlists.vue:56
+#: ./vue/Stations/Playlists/ImportModal.vue:20
+#: ./vue/Stations/Playlists/ImportModal.vue:5
+#: ./vue/Stations/Playlists/ImportModal.vue:15
+msgid "Import from PLS/M3U"
+msgstr "PLS/M3U으로 들여오기"
+
+#: ./vue/Stations/Reports/Overview.vue:34
+#: ./vue/Stations/Reports/Overview.vue:77
+msgid "in the last 48 hours"
+msgstr "지난 48시간"
+
+#: ./vue/Stations/Reports/Overview.vue:123
+msgid "in the last month"
+msgstr "지난 달"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:107
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:2
+msgid "Include in Automated Assignment"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:50
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:2
+msgid "Include in On-Demand Player"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:58
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories."
+msgstr "명시적 내용(명시적 언어 또는 성인 내용) 의 존재를 나타냅니다. Apple 팟캐스트가 켜져 있는 경우 해당 에피소드에 대한 명시적 부모 조언 그래픽을 표시합니다. 일부 Apple 팟캐스트 영역에서는 명시적 자료가 포함된 에피소드를 사용할 수 없습니다."
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:43
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "Internal notes or comments about the user, visible only on this control panel."
+msgstr ""
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:51
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "International Standard Recording Code, used for licensing reports."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:23
+#: ./vue/Stations/Playlists/Form/Advanced.vue:3
+msgid "Interrupt other songs to play at scheduled time."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/Intro.vue:27
+msgid "Intro"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:28
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:2
+msgid "Is Enabled"
+msgstr ""
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:48
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "ISRC"
+msgstr "ISRC (국제 표준 녹음 코드)"
+
+#: ./vue/Stations/Playlists.vue:73
+#: ./vue/Stations/Playlists.vue:12
+msgid "Jingle Mode"
+msgstr "징글 모드"
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:34
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Language"
+msgstr "언어"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:82
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:23
+msgid "Learn about Advanced Playlists"
+msgstr "고급 재생 목록에 대해 알아보기"
+
+#: ./vue/Admin/StorageLocations/Form.vue:145
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Learn More about Dropbox Auth Tokens"
+msgstr "Dropbox 인증 토큰에 대한 자세한 정보"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:101
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/Form/Schedule.vue:84
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "Leave blank to play on every day of the week."
+msgstr "매일 재생하려면 공백으로 두십시오."
+
+#: ./vue/Stations/Media.vue:81
+msgid "Length"
+msgstr "길이"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:34
+#: ./vue/Stations/Profile/EmbedModal.vue:59
+msgid "Light"
+msgstr ""
+
+#: ./vue/Stations/Profile/BackendPanel.vue:33
+msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
+msgstr "LiquidSoap은 현재 %{songs} 과 %{playlists} 에서 뒤섞고 있습니다."
+
+#: ./vue/Stations/Queue.vue:35
+#: ./vue/Stations/Queue.vue:2
+msgid "Listener Request"
+msgstr "청취자 요청"
+
+#: ./vue/Common/TimeSeriesChart.vue:57
+#: ./vue/Dashboard.vue:110
+#: ./vue/Stations/Profile/StreamsPanel.vue:15
+#: ./vue/Stations/Profile/StreamsPanel.vue:45
+#: ./vue/Stations/Profile/StreamsPanel.vue:4
+#: ./vue/Stations/Reports/HourChart.vue:47
+msgid "Listeners"
+msgstr "청취자"
+
+#: ./vue/Stations/Reports/Overview.vue:47
+msgid "Listeners by Day"
+msgstr ""
+
+#: ./vue/Stations/Reports/Overview.vue:50
+msgid "Listeners by Day of Week"
+msgstr ""
+
+#: ./vue/Stations/Reports/Overview.vue:53
+msgid "Listeners by Hour"
+msgstr ""
+
+#: ./vue/Dashboard.vue:48
+msgid "Listeners Per Station"
+msgstr "스테이션 당 청취자 수"
+
+#: ./vue/Public/Player.vue:13
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:80
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:35
+msgid "Live"
+msgstr "라이브"
+
+#: ./vue/Common/DataTable.vue:101
+msgid "Loading..."
+msgstr "로딩 중…"
+
+#: ./vue/Admin/StorageLocations.vue:48
+msgid "Local"
+msgstr "로컬"
+
+#: ./vue/Admin/StorageLocations/Form.vue:11
+msgid "Local Filesystem"
+msgstr "로컬 파일 시스템"
+
+#: ./vue/Stations/Profile/StreamsPanel.vue:14
+#: ./vue/Stations/Profile/StreamsPanel.vue:3
+msgid "Local Streams"
+msgstr "로컬 스트림"
+
+#: ./vue/Stations/Queue/LogsModal.vue:13
+msgid "Log View"
+msgstr "로그 보기"
+
+#: ./vue/Stations/Queue.vue:11
+#: ./vue/Stations/Queue.vue:3
+msgid "Logs"
+msgstr "로그"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:91
+#: ./vue/Stations/Playlists/Form/Schedule.vue:2
+msgid "Loop Once"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:11
+msgid "Low"
+msgstr "낮음"
+
+#: ./vue/Dashboard.vue:145
+#: ./vue/Stations/Profile/StreamersPanel.vue:12
+#: ./vue/Stations/Profile/StreamersPanel.vue:10
+msgid "Manage"
+msgstr "관리"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:80
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:21
+msgid "Manually define how this playlist is used in Liquidsoap configuration."
+msgstr "이 재생 목록이 Liquidsoap 구성에서 사용되는 방법을 수동으로 정의합니다."
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:68
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Max Listener Duration"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:28
+msgid "Media"
+msgstr "미디어"
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:32
+#: ./vue/Stations/Playlists/Form/Advanced.vue:12
+msgid "Merge playlist to play as a single track."
+msgstr ""
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:16
+msgid "Metadata"
+msgstr "메타데이터"
+
+#: ./vue/Public/WebDJ/MicrophonePanel.vue:4
+msgid "Microphone"
+msgstr "마이크"
+
+#: ./vue/Public/WebDJ/MicrophonePanel.vue:34
+msgid "Microphone Source"
+msgstr "마이크 소스"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:180
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Minute of Hour to Play"
+msgstr ""
+
+#: ./vue/Public/WebDJ/MixerPanel.vue:4
+msgid "Mixer"
+msgstr "믹서"
+
+#: ./vue/Stations/Media.vue:98
+msgid "Modified"
+msgstr "수정됨"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:16
+#: ./vue/Stations/Streamers/Form/Schedule.vue:16
+msgid "Monday"
+msgstr "월요일"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:47
+#: ./vue/Stations/Playlists.vue:41
+msgid "More"
+msgstr "더 보기"
+
+#: ./vue/Stations/Reports/Overview.vue:121
+msgid "Most Played Songs"
+msgstr "가장 많이 재생된 곡"
+
+#: ./vue/Stations/Mounts/Form/Advanced.vue:7
+#: ./vue/Stations/Mounts/Form/Advanced.vue:1
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:8
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Mount Point URL"
+msgstr "마운트 지점 URL"
+
+#: ./vue/Stations/Mounts.vue:4
+msgid "Mount Points"
+msgstr ""
+
+#: ./vue/Stations/Mounts.vue:9
+msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
+msgstr "마운트 지점은 청취자가 방송을 연결하고 청취하는 방법입니다. 각 마운트 지점은 오디오 형식 또는 품질이 다를 수 있습니다. 마운트 지점을 사용하여 광대역 수신기를 위한 고품질 스트림과 모바일 사용자를 위한 모바일 스트림을 설정할 수 있습니다."
+
+#: ./vue/Stations/Media/MediaToolbar.vue:39
+msgid "Move"
+msgstr "이동"
+
+#: ./vue/Stations/Media/MoveFilesModal.vue:27
+msgid "Move %{ num } File(s) to"
+msgstr ""
+
+#: ./vue/Stations/Media/MoveFilesModal.vue:35
+#: ./vue/Stations/Media/MoveFilesModal.vue:5
+msgid "Move to Directory"
+msgstr ""
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:31
+msgid "MP3"
+msgstr "MP3"
+
+#: ./vue/Common/Waveform.vue:28
+#: ./vue/InlinePlayer.vue:25
+#: ./vue/Public/Player.vue:65
+msgid "Mute"
+msgstr "음소거"
+
+#: ./vue/Dashboard.vue:14
+msgid "My Account"
+msgstr "나의 계정"
+
+#: ./vue/Public/Requests.vue:27
+#: ./vue/Stations/Media.vue:70
+#: ./vue/Stations/Mounts.vue:20
+#: ./vue/Stations/Remotes.vue:19
+msgid "Name"
+msgstr "이름"
+
+#: ./vue/Stations/Media/NewDirectoryModal.vue:25
+msgid "New Directory"
+msgstr "새 디렉터리"
+
+#: ./vue/Stations/Media/NewDirectoryModal.vue:44
+msgid "New directory created."
+msgstr "새 디렉터리가 생성되었습니다."
+
+#: ./vue/Stations/Media/RenameModal.vue:5
+#: ./vue/Stations/Media/RenameModal.vue:1
+msgid "New File Name"
+msgstr "새 파일 이름"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:62
+msgid "New Folder"
+msgstr "새 폴더"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:44
+msgid "New Playlist"
+msgstr "새 재생 목록"
+
+#: ./vue/Stations/Playlists/CloneModal.vue:8
+#: ./vue/Stations/Playlists/CloneModal.vue:1
+msgid "New Playlist Name"
+msgstr ""
+
+#: ./vue/Stations/Media/MediaToolbar.vue:164
+msgid "No files selected."
+msgstr "선택한 파일이 없습니다."
+
+#: ./vue/Common/DataTable.vue:98
+#: ./vue/Public/FullPlayer/SongHistory.vue:11
+msgid "No records to display."
+msgstr "표시할 기록이 없습니다."
+
+#: ./vue/Stations/Profile/BackendPanel.vue:7
+msgid "Not Running"
+msgstr "실행 중이 아님"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:4
+#: ./vue/Stations/Streamers/Form/Schedule.vue:4
+msgid "Not Scheduled"
+msgstr "예약되지 않음"
+
+#: ./vue/Stations/Streamers.vue:25
+msgid "Notes"
+msgstr "비고"
+
+#: ./vue/Stations/Profile/SchedulePanel.vue:27
+#: ./vue/Stations/Profile/SchedulePanel.vue:1
+msgid "Now"
+msgstr "지금"
+
+#: ./vue/Dashboard.vue:113
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:23
+msgid "Now Playing"
+msgstr "지금 재생 중"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:153
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Number of Minutes Between Plays"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:127
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Number of Songs Between Plays"
+msgstr ""
+
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:4
+msgid "On the Air"
+msgstr "방송중"
+
+#: ./vue/Stations/Playlists.vue:79
+#: ./vue/Stations/Playlists.vue:18
+msgid "On-Demand"
+msgstr ""
+
+#: ./vue/Public/OnDemand.vue:10
+#: ./vue/Public/OnDemand.vue:1
+#: ./vue/Stations/Profile/EmbedModal.vue:48
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:28
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:26
+msgid "On-Demand Media"
+msgstr "주문형 미디어"
+
+#: ./vue/Stations/Playlists.vue:91
+msgid "Once per %{minutes} Minutes"
+msgstr "매 %{minutes} 분당 한 번"
+
+#: ./vue/Stations/Playlists.vue:87
+msgid "Once per %{songs} Songs"
+msgstr "매 %{songs} 곡당 한 번"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:74
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:171
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:15
+msgid "Once per Hour"
+msgstr "시간 마다"
+
+#: ./vue/Stations/Playlists.vue:95
+msgid "Once per Hour (at %{minute})"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:70
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:144
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:11
+msgid "Once per x Minutes"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:66
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:119
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:7
+msgid "Once per x Songs"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:26
+#: ./vue/Stations/Playlists/Form/Advanced.vue:6
+#: ./vue/Stations/Playlists/Form/Schedule.vue:87
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+msgid "Only loop through playlist once."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:29
+#: ./vue/Stations/Playlists/Form/Advanced.vue:9
+msgid "Only play one track at scheduled time."
+msgstr ""
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:24
+msgid "Password"
+msgstr "비밀번호"
+
+#: ./vue/Admin/StorageLocations/Form.vue:24
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Path/Suffix"
+msgstr "경로/접미사"
+
+#: ./vue/Public/Player.vue:59
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:13
+msgid "Play"
+msgstr "재생"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:71
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:12
+msgid "Play exactly once every $x minutes."
+msgstr "정확히 $x분마다 한 번씩 플레이합니다."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:67
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:8
+msgid "Play exactly once every $x songs."
+msgstr "정확히 $x곡마다 한 번씩 플레이합니다."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:75
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:16
+msgid "Play once per hour at the specified minute."
+msgstr "지정된 분마다 한 시간에 한 번 재생합니다."
+
+#: ./vue/Dashboard.vue:53
+#: ./vue/Public/OnDemand.vue:53
+#: ./vue/Stations/Media.vue:151
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:65
+msgid "Play/Pause"
+msgstr "재생/일시 정지"
+
+#: ./vue/Stations/Playlists.vue:47
+#: ./vue/Stations/Playlists/QueueModal.vue:15
+msgid "Playback Queue"
+msgstr "재생 대기열"
+
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:53
+msgid "Playing Next"
+msgstr "다음 재생"
+
+#: ./vue/Public/FullPlayer.vue:41
+#: ./vue/Public/OnDemand.vue:21
+#: ./vue/Stations/Playlists.vue:27
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:40
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:72
+#: ./vue/Stations/Profile/SchedulePanel.vue:14
+#: ./vue/Stations/Profile/SchedulePanel.vue:1
+msgid "Playlist"
+msgstr "재생 목록"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:110
+#: ./vue/Stations/Playlists/Form/Source.vue:6
+msgid "Playlist (M3U/PLS) URL"
+msgstr "재생 목록 (M3U/PLS) URL"
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:26
+msgid "Playlist 1"
+msgstr "재생 목록 1"
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:27
+msgid "Playlist 2"
+msgstr "재생 목록 2"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:6
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Playlist Name"
+msgstr "재생 목록 이름"
+
+#: ./vue/Stations/Playlists/ReorderModal.vue:61
+msgid "Playlist order set."
+msgstr "재생 목록 순서가 설정되었습니다."
+
+#: ./vue/Stations/Playlists/QueueModal.vue:33
+msgid "Playlist queue cleared."
+msgstr "재생 목록 대기열을 비웠습니다"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:57
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Playlist Type"
+msgstr "재생 목록 타입"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:12
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Playlist Weight"
+msgstr "재생 목록 용량"
+
+#: ./vue/Stations/Queue.vue:38
+#: ./vue/Stations/Queue.vue:5
+msgid "Playlist:"
+msgstr "재생 목록："
+
+#: ./vue/Stations/Media.vue:111
+#: ./vue/Stations/Media/Form/Playlists.vue:13
+#: ./vue/Stations/Media/MediaToolbar.vue:7
+#: ./vue/Stations/Media/MediaToolbar.vue:2
+#: ./vue/Stations/Playlists.vue:6
+#: ./vue/Stations/Profile/BackendPanel.vue:19
+msgid "Playlists"
+msgstr "재생 목록"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:139
+msgid "Playlists cleared for selected files:"
+msgstr ""
+
+#: ./vue/Stations/Media/MediaToolbar.vue:138
+msgid "Playlists updated for selected files:"
+msgstr "선택한 파일에 대해 재생 목록이 업데이트되었습니다 :"
+
+#: ./vue/Stations/Reports/Overview.vue:136
+msgid "Plays"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/ListView.vue:27
+msgid "Podcast"
+msgstr "팟캐스트"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:9
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:1
+msgid "Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility."
+msgstr "호환성을 극대화하려면 팟캐스트 미디어가 MP3 또는 M4A(AAC) 형식이어야 합니다."
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:7
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Podcast Title"
+msgstr "팟캐스트 제목"
+
+#: ./vue/Stations/Podcasts/ListView.vue:6
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:34
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:32
+msgid "Podcasts"
+msgstr "팟캐스트"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:30
+msgid "Prefer System Default"
+msgstr "시스템 기본값"
+
+#: ./vue/Stations/Profile/EmbedModal.vue:39
+msgid "Preview"
+msgstr "미리보기"
+
+#: ./vue/Dashboard.vue:128
+#: ./vue/Stations/Podcasts/EpisodesView.vue:32
+#: ./vue/Stations/Podcasts/EpisodesView.vue:3
+#: ./vue/Stations/Podcasts/ListView.vue:25
+#: ./vue/Stations/Podcasts/ListView.vue:3
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:16
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:14
+msgid "Public Page"
+msgstr "공용 페이지"
+
+#: ./vue/Admin/Branding.vue:18
+msgid "Public Page Background"
+msgstr ""
+
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:5
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:62
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:3
+msgid "Public Pages"
+msgstr "공용 페이지"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:34
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "Publish Date"
+msgstr "게시 날짜"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:46
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "Publish Time"
+msgstr "게시 시간"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:58
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:2
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:79
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:2
+msgid "Publish to \"Yellow Pages\" Directories"
+msgstr ""
+
+#: ./vue/Stations/Media/MediaToolbar.vue:47
+msgid "Queue"
+msgstr "대기열"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:50
+msgid "Queue the selected media to play next"
+msgstr ""
+
+#: ./vue/Stations/Profile/EmbedModal.vue:26
+msgid "Radio Player"
+msgstr "라디오 플레이어"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:46
+#: ./vue/Stations/Playlists/Form/Source.vue:7
+msgid "Random"
+msgstr "무작위"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:35
+msgid "Raw"
+msgstr "무변환"
+
+#: ./vue/Common/DataTable.vue:77
+msgid "Refresh rows"
+msgstr "행 새로 고침"
+
+#: ./vue/Admin/StorageLocations/Form.vue:107
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Region"
+msgstr "지역"
+
+#: ./vue/Stations/Profile/FrontendPanel.vue:40
+#: ./vue/Stations/Profile/FrontendPanel.vue:28
+msgid "Relay Password"
+msgstr "중계 암호"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:48
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Relay Stream URL"
+msgstr "중계 스트림 URL"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:118
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "Remote Playback Buffer (Seconds)"
+msgstr ""
+
+#: ./vue/Stations/Profile/StreamsPanel.vue:44
+#: ./vue/Stations/Profile/StreamsPanel.vue:3
+#: ./vue/Stations/Remotes.vue:4
+msgid "Remote Relays"
+msgstr "원격 릴레이"
+
+#: ./vue/Stations/Remotes.vue:9
+msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
+msgstr "원격 릴레이를 사용하면 이 서버 외부에서 브로드캐스팅 소프트웨어로 작업할 수 있습니다. 여기에 포함된 릴레이는 모두 해당 스테이션의 통계에 포함됩니다. 이 서버에서 원격 릴레이로 브로드캐스트할 수도 있습니다."
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:42
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Remote Station Administrator Password"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:33
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Remote Station Listening Mountpoint/SID"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:24
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Remote Station Listening URL"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:48
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "Remote Station Source Mountpoint/SID"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:66
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "Remote Station Source Password"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:39
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "Remote Station Source Port"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:57
+#: ./vue/Stations/Remotes/Form/AutoDj.vue:1
+msgid "Remote Station Source Username"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:6
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Remote Station Type"
+msgstr ""
+
+#: ./vue/Stations/Playlists.vue:68
+#: ./vue/Stations/Playlists.vue:7
+#: ./vue/Stations/Playlists/Form/Source.vue:96
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "Remote URL"
+msgstr "원격 URL"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:16
+#: ./vue/Stations/Playlists/Form/Source.vue:87
+#: ./vue/Stations/Playlists/Form/Source.vue:7
+msgid "Remote URL Playlist"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Source.vue:102
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "Remote URL Type"
+msgstr ""
+
+#: ./vue/Admin/StorageLocations.vue:54
+#: ./vue/Admin/StorageLocations/Form.vue:17
+#: ./vue/Admin/StorageLocations/Form.vue:134
+msgid "Remote: Dropbox"
+msgstr ""
+
+#: ./vue/Admin/StorageLocations.vue:51
+#: ./vue/Admin/StorageLocations/Form.vue:14
+#: ./vue/Admin/StorageLocations/Form.vue:55
+msgid "Remote: S3 Compatible"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:21
+#: ./vue/Stations/Streamers/Form/Schedule.vue:21
+msgid "Remove"
+msgstr "제거"
+
+#: ./vue/Stations/Media.vue:145
+#: ./vue/Stations/Media/RenameModal.vue:18
+#: ./vue/Stations/Media/RenameModal.vue:5
+msgid "Rename"
+msgstr "이름 바꾸기"
+
+#: ./vue/Stations/Media/RenameModal.vue:29
+msgid "Rename File/Directory"
+msgstr "파일/디렉터리 이름 바꾸기"
+
+#: ./vue/Stations/Playlists.vue:44
+msgid "Reorder"
+msgstr "재정렬"
+
+#: ./vue/Stations/Playlists/ReorderModal.vue:21
+msgid "Reorder Playlist"
+msgstr ""
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:72
+msgid "Repeat Playlist"
+msgstr "재생 목록 반복"
+
+#: ./vue/Stations/Media/Form/AlbumArt.vue:14
+#: ./vue/Stations/Media/Form/AlbumArt.vue:1
+msgid "Replace Album Cover Art"
+msgstr ""
+
+#: ./vue/Stations/Media/MediaToolbar.vue:50
+msgid "Reprocess"
+msgstr "재처리"
+
+#: ./vue/Public/Requests.vue:10
+#: ./vue/Public/Requests.vue:3
+msgid "Request"
+msgstr "요청"
+
+#: ./vue/Public/FullPlayer/RequestModal.vue:27
+msgid "Request a Song"
+msgstr "곡 요청"
+
+#: ./vue/Public/FullPlayer.vue:38
+msgid "Request Song"
+msgstr "곡 요청"
+
+#: ./vue/Stations/Profile/EmbedModal.vue:41
+msgid "Requests"
+msgstr "요청"
+
+#: ./vue/Stations/Playlists.vue:50
+msgid "Reshuffle"
+msgstr ""
+
+#: ./vue/Stations/Profile/BackendPanel.vue:25
+#: ./vue/Stations/Profile/FrontendPanel.vue:52
+#: ./vue/Stations/Profile/FrontendPanel.vue:40
+msgid "Restart"
+msgstr "다시 시작"
+
+#: ./vue/Common/DataTable.vue:80
+msgid "Rows per page"
+msgstr "페이지당 열"
+
+#: ./vue/Stations/Podcasts/ListView.vue:30
+#: ./vue/Stations/Podcasts/ListView.vue:8
+msgid "RSS Feed"
+msgstr "RSS 피드"
+
+#: ./vue/Stations/Profile/BackendPanel.vue:6
+msgid "Running"
+msgstr "실행 중"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:40
+msgid "Sample Rate"
+msgstr "샘플 레이트"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:21
+#: ./vue/Stations/Streamers/Form/Schedule.vue:21
+msgid "Saturday"
+msgstr "토요일"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:29
+msgid "Save"
+msgstr "저장"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:108
+#: ./vue/Admin/StorageLocations/EditModal.vue:15
+#: ./vue/Admin/StorageLocations/EditModal.vue:5
+#: ./vue/Stations/Media/EditModal.vue:21
+#: ./vue/Stations/Media/EditModal.vue:5
+#: ./vue/Stations/Mounts/EditModal.vue:20
+#: ./vue/Stations/Mounts/EditModal.vue:5
+#: ./vue/Stations/Playlists/CloneModal.vue:39
+#: ./vue/Stations/Playlists/CloneModal.vue:5
+#: ./vue/Stations/Playlists/EditModal.vue:20
+#: ./vue/Stations/Playlists/EditModal.vue:5
+#: ./vue/Stations/Podcasts/EpisodeEditModal.vue:40
+#: ./vue/Stations/Podcasts/PodcastEditModal.vue:19
+#: ./vue/Stations/Podcasts/PodcastEditModal.vue:5
+#: ./vue/Stations/Remotes/EditModal.vue:18
+#: ./vue/Stations/Remotes/EditModal.vue:5
+#: ./vue/Stations/Streamers/EditModal.vue:18
+#: ./vue/Stations/Streamers/EditModal.vue:5
+msgid "Save Changes"
+msgstr "변경 내용 저장"
+
+#: ./vue/Public/Schedule.vue:10
+#: ./vue/Public/Schedule.vue:1
+#: ./vue/Stations/Playlists/Form/Schedule.vue:28
+#: ./vue/Stations/Profile/EmbedModal.vue:34
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:40
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:38
+#: ./vue/Stations/Streamers/Form/Schedule.vue:28
+msgid "Schedule"
+msgstr ""
+
+#: ./vue/Stations/Playlists.vue:38
+#: ./vue/Stations/Streamers.vue:34
+msgid "Schedule View"
+msgstr ""
+
+#: ./vue/Stations/Profile/SchedulePanel.vue:4
+msgid "Scheduled"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:98
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/Form/Schedule.vue:81
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "Scheduled Play Days of Week"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:15
+#: ./vue/Stations/Streamers/Form/Schedule.vue:15
+msgid "Scheduled Time #%{num}"
+msgstr ""
+
+#: ./vue/Stations/Playlists.vue:28
+msgid "Scheduling"
+msgstr "예약"
+
+#: ./vue/Common/DataTable.vue:95
+msgid "Search"
+msgstr "검색"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:53
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Seconds from the start of the song that the AutoDJ should start playing."
+msgstr ""
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:62
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Seconds from the start of the song that the AutoDJ should stop playing."
+msgstr ""
+
+#: ./vue/Admin/StorageLocations/Form.vue:74
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Secret Key"
+msgstr "비밀 키"
+
+#: ./vue/InlinePlayer.vue:17
+msgid "Seek"
+msgstr "탐색"
+
+#: ./vue/Common/DataTable.vue:89
+msgid "Select"
+msgstr "선택"
+
+#: ./vue/Admin/Branding/BrandingForm.vue:20
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "Select a theme to use as a base for station public pages and the login page."
+msgstr ""
+
+#: ./vue/Common/DataTable.vue:86
+msgid "Select all visible rows"
+msgstr ""
+
+#: ./vue/Common/DataTable.vue:83
+msgid "Select displayed fields"
+msgstr "표시된 필드 선택"
+
+#: ./vue/Common/FlowUpload.vue:17
+msgid "Select File"
+msgstr "파일 선택"
+
+#: ./vue/Stations/Mounts/Form/Intro.vue:6
+#: ./vue/Stations/Mounts/Form/Intro.vue:1
+msgid "Select Intro File"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:6
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:1
+msgid "Select Media File"
+msgstr "미디어 파일 선택"
+
+#: ./vue/Stations/Playlists/ImportModal.vue:5
+#: ./vue/Stations/Playlists/ImportModal.vue:1
+msgid "Select PLS/M3U File to Import"
+msgstr "가져올 PLS/M3U 파일 선택"
+
+#: ./vue/Stations/Podcasts/Common/Artwork.vue:7
+#: ./vue/Stations/Podcasts/Common/Artwork.vue:1
+msgid "Select PNG/JPG artwork file"
+msgstr "PNG/JPG 아트워크 파일 선택"
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:70
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Select the category/categories that best reflects the content of your podcast."
+msgstr "팟캐스트의 내용을 가장 잘 반영한 카테고리를 선택하십시오."
+
+#: ./vue/Stations/Playlists.vue:76
+#: ./vue/Stations/Playlists.vue:15
+#: ./vue/Stations/Playlists/Form/Source.vue:50
+#: ./vue/Stations/Playlists/Form/Source.vue:11
+msgid "Sequential"
+msgstr ""
+
+#: ./vue/Admin/StorageLocations/Form.vue:41
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:38
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:2
+msgid "Set as Default Mount Point"
+msgstr "기본 마운트 지점으로 설정"
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:3
+msgid "Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings."
+msgstr ""
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:22
+msgid "Set Cue In"
+msgstr "큐 인 설정"
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:26
+msgid "Set Cue Out"
+msgstr "큐 아웃 설정"
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:36
+msgid "Set Fade In"
+msgstr "페이드 인 설정"
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:40
+msgid "Set Fade Out"
+msgstr "페이드 아웃 설정"
+
+#: ./vue/Stations/Media/MediaToolbar.vue:41
+msgid "Set or clear playlists from the selected media"
+msgstr "선택한 미디어에서 재생 목록 설정 또는 지우기"
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:31
+msgid "Set Overlap"
+msgstr "오버랩 설정"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:71
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely."
+msgstr ""
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:11
+msgid "Settings"
+msgstr "설정"
+
+#: ./vue/Dashboard.vue:59
+msgid "Show Charts"
+msgstr "차트 보이기"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:27
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:2
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:55
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:2
+msgid "Show on Public Pages"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Source.vue:42
+#: ./vue/Stations/Playlists/Form/Source.vue:3
+msgid "Shuffled"
+msgstr ""
+
+#: ./vue/Stations/Media.vue:95
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:42
+msgid "Size"
+msgstr "크기"
+
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:95
+msgid "Skip Song"
+msgstr "곡 건너뛰기"
+
+#: ./vue/Stations/Reports/Overview.vue:50
+#: ./vue/Stations/Reports/Overview.vue:93
+#: ./vue/Stations/Reports/Overview.vue:139
+msgid "Song"
+msgstr "곡"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:33
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "Song Album"
+msgstr "곡 앨범"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:21
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "Song Artist"
+msgstr "곡 아티스트"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:27
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "Song Genre"
+msgstr "곡 장르"
+
+#: ./vue/Public/FullPlayer.vue:35
+#: ./vue/Public/FullPlayer/SongHistoryModal.vue:18
+msgid "Song History"
+msgstr "재생 기록"
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:6
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "Song Length"
+msgstr "곡 길이"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:39
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "Song Lyrics"
+msgstr "곡 가사"
+
+#: ./vue/Stations/Playlists/Form/Source.vue:37
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "Song Playback Order"
+msgstr ""
+
+#: ./vue/Stations/Profile/RequestsPanel.vue:5
+#: ./vue/Stations/Profile/RequestsPanel.vue:23
+#: ./vue/Stations/Profile/RequestsPanel.vue:3
+msgid "Song Requests"
+msgstr "요청 곡"
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:15
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+#: ./vue/Stations/Queue.vue:18
+msgid "Song Title"
+msgstr "곡 제목"
+
+#: ./vue/Stations/Playlists.vue:65
+#: ./vue/Stations/Playlists.vue:4
+msgid "Song-based"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Source.vue:12
+#: ./vue/Stations/Playlists/Form/Source.vue:28
+#: ./vue/Stations/Playlists/Form/Source.vue:3
+msgid "Song-Based Playlist"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Source.vue:7
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+#: ./vue/Stations/Playlists/Form/Source.vue:11
+#: ./vue/Stations/Queue.vue:20
+msgid "Source"
+msgstr "소스"
+
+#: ./vue/Stations/Profile/FrontendPanel.vue:33
+#: ./vue/Stations/Profile/FrontendPanel.vue:21
+msgid "Source Password"
+msgstr ""
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:36
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "Specify a mountpoint (i.e. \"/radio.mp3\") or a Shoutcast SID (i.e. \"2\") to specify a specific stream to use for statistics or broadcasting."
+msgstr "마운트 지점(\"/radio.mp3\") 또는 Shoutcast SID(\"2\")를 지정하여 통계 또는 브로드캐스트에 사용할 특정 스트림을 지정합니다."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:183
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Specify the minute of every hour that this playlist should play."
+msgstr "이 재생 목록을 재생할 시간을 분 단위로 지정하십시오."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:63
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:4
+msgid "Standard playlist, shuffles with other standard playlists based on weight."
+msgstr "표준 재생 목록, 용량에 따라 다른 표준 재생 목록과 섞습니다."
+
+#: ./vue/Stations/Profile/BackendPanel.vue:29
+#: ./vue/Stations/Profile/FrontendPanel.vue:56
+#: ./vue/Stations/Profile/FrontendPanel.vue:44
+msgid "Start"
+msgstr "시작"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:63
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/Form/Schedule.vue:60
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "Start Date"
+msgstr "시작 날짜"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:29
+msgid "Start Streaming"
+msgstr "방송 시작"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:30
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:23
+#: ./vue/Stations/Streamers/Form/Schedule.vue:30
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "Start Time"
+msgstr "시작 시간"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:68
+#: ./vue/Stations/Playlists/Form/Schedule.vue:3
+msgid "Start/end date cannot be used on playlists with advanced settings!"
+msgstr "시작/종료일은 고급 설정이 있는 재생 목록에서는 사용할 수 없습니다!"
+
+#: ./vue/Admin/StorageLocations.vue:25
+msgid "Station Media"
+msgstr "스테이션 미디어"
+
+#: ./vue/Dashboard.vue:107
+msgid "Station Name"
+msgstr "스테이션 이름"
+
+#: ./vue/Dashboard.vue:80
+msgid "Station Overview"
+msgstr "스테이션 개요"
+
+#: ./vue/Admin/StorageLocations.vue:31
+msgid "Station Podcasts"
+msgstr "스테이션 팟캐스트"
+
+#: ./vue/Admin/StorageLocations.vue:28
+msgid "Station Recordings"
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:54
+#: ./vue/Stations/Streamers/Form/Schedule.vue:51
+msgid "Station Time Zone"
+msgstr "스테이션 표준 시간대"
+
+#: ./vue/Admin/StorageLocations.vue:19
+msgid "Station(s)"
+msgstr "스테이션"
+
+#: ./vue/InlinePlayer.vue:19
+#: ./vue/Public/Player.vue:62
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:17
+#: ./vue/Stations/Profile/BackendPanel.vue:33
+#: ./vue/Stations/Profile/FrontendPanel.vue:60
+#: ./vue/Stations/Profile/FrontendPanel.vue:48
+msgid "Stop"
+msgstr "정지"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:28
+msgid "Stop Streaming"
+msgstr "스트리밍 중단"
+
+#: ./vue/Admin/StorageLocations/Form.vue:6
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Storage Adapter"
+msgstr "저장소 어댑터"
+
+#: ./vue/Admin/StorageLocations.vue:4
+msgid "Storage Locations"
+msgstr "저장소 위치"
+
+#: ./vue/Admin/StorageLocations/Form.vue:38
+#: ./vue/Admin/StorageLocations/Form.vue:1
+msgid "Storage Quota"
+msgstr "총 용량"
+
+#: ./vue/Stations/Streamers/BroadcastsModal.vue:62
+msgid "Streamer Broadcasts"
+msgstr "스트리머 방송"
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:31
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "Streamer Display Name"
+msgstr "스트리머 표시 이름"
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:16
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "Streamer password"
+msgstr "스트리머 암호"
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:7
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "Streamer Username"
+msgstr "스트리머 사용자 이름"
+
+#: ./vue/Stations/Profile/SchedulePanel.vue:17
+#: ./vue/Stations/Profile/SchedulePanel.vue:1
+msgid "Streamer/DJ"
+msgstr "스트리머/DJ"
+
+#: ./vue/Stations/Streamers.vue:6
+msgid "Streamer/DJ Accounts"
+msgstr "스트리머/DJ 계정"
+
+#: ./vue/Stations/Profile/StreamersPanel.vue:5
+#: ./vue/Stations/Profile/StreamersPanel.vue:23
+#: ./vue/Stations/Profile/StreamersPanel.vue:3
+msgid "Streamers/DJs"
+msgstr "스트리머/DJ"
+
+#: ./vue/Stations/Profile/StreamsPanel.vue:3
+msgid "Streams"
+msgstr "스트림"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:22
+#: ./vue/Stations/Streamers/Form/Schedule.vue:22
+msgid "Sunday"
+msgstr "일요일"
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:19
+msgid "text"
+msgstr ""
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:49
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc."
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:37
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "The date when the episode should be published."
+msgstr "에피소드가 게시되어야 하는 날짜."
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:25
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "The description of the episode. The typical maximum amount of text allowed for this is 4000 characters."
+msgstr "에피소드에 대한 설명. 이 항목에 허용되는 텍스트의 일반적인 최대 길이는 4000자입니다."
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:25
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters."
+msgstr "팟캐스트에 대한 설명입니다. 이 항목에 허용되는 텍스트의 일반적인 최대 길이는 4000자입니다."
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:20
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr "관리 또는 공용 페이지에서 이 마운트 지점을 볼 때 이 마운트 지점에 할당된 표시 이름입니다. 자동으로 생성하려면 비워 두십시오."
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:18
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr ""
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:58
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Source.vue:43
+#: ./vue/Stations/Playlists/Form/Source.vue:4
+msgid "The full playlist is shuffled and then played through in the shuffled order."
+msgstr "전체 재생 목록을 뒤섞은 다음 그 순서대로 재생됩니다."
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:37
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "The language spoken on the podcast."
+msgstr "팟캐스트에서 사용되는 언어."
+
+#: ./vue/Stations/Playlists/Form/Source.vue:121
+#: ./vue/Stations/Playlists/Form/Source.vue:1
+msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
+msgstr "이 원격 재생 목록을 재생할 때 Liquidsoap이 버퍼링해야 하는 재생 시간. 짧은 시간 동안 불안정한 연결에서 재생이 간헐적으로 끊어질 수 있습니다."
+
+#: ./vue/Stations/Playlists/Form/Source.vue:51
+#: ./vue/Stations/Playlists/Form/Source.vue:12
+msgid "The order of the playlist is manually specified and followed by the AutoDJ."
+msgstr "재생 목록의 순서를 수동으로 지정한 다음 AutoDJ를 사용합니다."
+
+#: ./vue/Stations/Media/Form/BasicInfo.vue:9
+#: ./vue/Stations/Media/Form/BasicInfo.vue:1
+msgid "The relative path of the file in the station's media directory."
+msgstr "스테이션의 미디어 디렉토리에 있는 파일의 상대 경로입니다."
+
+#: ./vue/Stations/Media/MediaToolbar.vue:56
+msgid "The request could not be processed."
+msgstr "요청을 처리할 수 없습니다."
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:19
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "The streamer will use this password to connect to the radio server."
+msgstr "스트리머가 이 암호를 사용하여 라디오 서버에 연결합니다."
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:10
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "The streamer will use this username to connect to the radio server."
+msgstr "스트리머가 이 사용자 이름을 사용하여 라디오 서버에 연결합니다."
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:35
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "The time period that the song should fade in. Leave blank to use the system default."
+msgstr "곡이 페이드 인 되는 시간. 시스템 기본값을 사용하려면 공백으로 두십시오."
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:44
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "The time period that the song should fade out. Leave blank to use the system default."
+msgstr "곡이 페이드 아웃 되는 시간. 시스템 기본값을 사용하려면 공백으로 두십시오."
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:26
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
+msgstr "이 곡이 페이딩 할 때 주변 곡와 겹치는 시간. 시스템 기본값을 사용하려면 공백으로 두십시오."
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:49
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "The time when the episode should be published (according to the stations timezone)."
+msgstr "(스테이션 표준 시간대에 따라) 에피소드가 공개되어야 하는 시간."
+
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:17
+#: ./vue/Stations/Media/Form/AdvancedSettings.vue:1
+msgid "The volume in decibels to amplify the track with. Leave blank to use the system default."
+msgstr "트랙을 증폭할 볼륨(데시벨)입니다. 시스템 기본값을 사용하려면 비워 두십시오."
+
+#: ./vue/Stations/Profile/EmbedModal.vue:76
+msgid "Theme"
+msgstr "테마"
+
+#: ./vue/Stations/Mounts/Form/Intro.vue:31
+msgid "There is no existing intro file associated with this mount point."
+msgstr ""
+
+#: ./vue/Stations/Podcasts/EpisodeForm/Media.vue:31
+msgid "There is no existing media associated with this episode."
+msgstr "이 에피소드와 관련된 기존 미디어가 없습니다."
+
+#: ./vue/Admin/Branding/BrandingForm.vue:99
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "This CSS will be applied to the main management pages, like this one."
+msgstr ""
+
+#: ./vue/Admin/Branding/BrandingForm.vue:75
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "This CSS will be applied to the station public pages and login page."
+msgstr ""
+
+#: ./vue/Admin/StorageLocations/Form.vue:32
+#: ./vue/Admin/StorageLocations/Form.vue:46
+#: ./vue/Admin/StorageLocations/Form.vue:68
+#: ./vue/Admin/StorageLocations/Form.vue:79
+#: ./vue/Admin/StorageLocations/Form.vue:90
+#: ./vue/Admin/StorageLocations/Form.vue:101
+#: ./vue/Admin/StorageLocations/Form.vue:112
+#: ./vue/Admin/StorageLocations/Form.vue:123
+#: ./vue/Admin/StorageLocations/Form.vue:150
+#: ./vue/Form/VuelidateError.vue:12
+#: ./vue/Stations/Media/NewDirectoryModal.vue:8
+#: ./vue/Stations/Media/RenameModal.vue:9
+#: ./vue/Stations/Playlists/CloneModal.vue:12
+msgid "This field is required."
+msgstr "이 필드는 필수 항목입니다."
+
+#: ./vue/Form/VuelidateError.vue:39
+msgid "This field must be a valid decimal number."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:42
+msgid "This field must be a valid e-mail address."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:36
+msgid "This field must be a valid integer."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:45
+msgid "This field must be a valid IP address."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:48
+msgid "This field must be a valid URL."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:23
+msgid "This field must be between %{ min } and %{ max }."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:15
+msgid "This field must have at least %{ min } letters."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:19
+msgid "This field must have at most %{ max } letters."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:27
+msgid "This field must only contain alphabetic characters."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:30
+msgid "This field must only contain alphanumeric characters."
+msgstr ""
+
+#: ./vue/Form/VuelidateError.vue:33
+msgid "This field must only contain numeric characters."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/Intro.vue:9
+#: ./vue/Stations/Mounts/Form/Intro.vue:1
+msgid "This introduction file should exactly match the bitrate and format of the mount point itself."
+msgstr ""
+
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:34
+#: ./vue/Stations/Streamers/Form/BasicInfo.vue:1
+msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
+msgstr "이것은 스트리머/DJ가 라이브 상태일 경우 API 응답에 표시되는 비공식 표시 이름입니다."
+
+#: ./vue/Admin/Branding/BrandingForm.vue:87
+#: ./vue/Admin/Branding/BrandingForm.vue:1
+msgid "This javascript code will be applied to the station public pages and login page."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:11
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
+msgstr "이 이름은 항상 슬래시(/)로 시작해야 하며 /autodj.mp3 와 같은 유효한 URL이어야 합니다."
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:7
+msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
+msgstr "이 재생 목록에는 현재 예약된 시간이 없습니다. 그것은 항상 플레이 될 것입니다. 새 예약 시간을 추가하려면 아래 버튼을 클릭하십시오."
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:156
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "This playlist will play every $x minutes, where $x is specified below."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:130
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "This playlist will play every $x songs, where $x is specified below."
+msgstr ""
+
+#: ./vue/Stations/Playlists/QueueModal.vue:3
+msgid "This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played)."
+msgstr ""
+
+#: ./vue/Stations/Playlists.vue:9
+#: ./vue/Stations/Playlists/Form/Schedule.vue:57
+#: ./vue/Stations/Streamers.vue:9
+#: ./vue/Stations/Streamers/Form/Schedule.vue:54
+msgid "This station's time zone is currently %{tz}."
+msgstr "이 스테이션의 표준 시간대는 현재 %{tz} 입니다."
+
+#: ./vue/Stations/Streamers/Form/Schedule.vue:7
+msgid "This streamer is not scheduled to play at any times."
+msgstr "이 스트리머는 어느 시간에도 재생되도록 예약되어 있지 않습니다."
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:19
+#: ./vue/Stations/Streamers/Form/Schedule.vue:19
+msgid "Thursday"
+msgstr "목요일"
+
+#: ./vue/Public/OnDemand.vue:18
+#: ./vue/Public/Requests.vue:28
+#: ./vue/Public/WebDJ/SettingsPanel.vue:103
+#: ./vue/Stations/Media.vue:71
+#: ./vue/Stations/Playlists/QueueModal.vue:9
+#: ./vue/Stations/Playlists/ReorderModal.vue:6
+msgid "Title"
+msgstr "제목"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:33
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+msgid "To play once per day, set the start and end times to the same value."
+msgstr "하루에 한 번 재생하려면 시작 시간과 종료 시간을 동일한 값으로 설정합니다."
+
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:45
+#: ./vue/Stations/Remotes/Form/BasicInfo.vue:1
+msgid "To retrieve detailed unique listeners and client details, an administrator password is often required."
+msgstr ""
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:66
+#: ./vue/Stations/Playlists/Form/Schedule.vue:1
+#: ./vue/Stations/Streamers/Form/Schedule.vue:63
+#: ./vue/Stations/Streamers/Form/Schedule.vue:1
+msgid "To set this schedule to run only within a certain date range, specify a start and end date."
+msgstr "이 일정을 특정 날짜 범위 내에서만 실행하도록 설정하려면 시작 날짜와 종료 날짜를 지정하십시오."
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:17
+#: ./vue/Stations/Streamers/Form/Schedule.vue:17
+msgid "Tuesday"
+msgstr "화요일"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:16
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+msgid "Typically a website with content about the episode."
+msgstr ""
+
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:16
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Typically the home page of a podcast."
+msgstr ""
+
+#: ./vue/Stations/Profile/NowPlayingPanel.vue:11
+#: ./vue/Stations/Profile/StreamsPanel.vue:34
+#: ./vue/Stations/Profile/StreamsPanel.vue:64
+#: ./vue/Stations/Profile/StreamsPanel.vue:23
+msgid "Unique"
+msgstr ""
+
+#: ./vue/Dashboard.vue:50
+msgid "Unique Listeners"
+msgstr "특별 청취자"
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:33
+msgid "Unknown Artist"
+msgstr "알 수 없는 아티스트"
+
+#: ./vue/Public/WebDJ/PlaylistPanel.vue:30
+msgid "Unknown Title"
+msgstr "알 수 없는 제목"
+
+#: ./vue/Stations/Playlists/ReorderModal.vue:27
+msgid "Up"
+msgstr "위로"
+
+#: ./vue/Stations/Queue.vue:4
+msgid "Upcoming Song Queue"
+msgstr "다가오는 곡 대기열"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:116
+msgid "Update Metadata"
+msgstr "메타데이터 업데이트"
+
+#: ./vue/Admin/Branding.vue:9
+msgid "Upload Custom Assets"
+msgstr ""
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:96
+msgid "Use Asynchronous Worker"
+msgstr "비동기 작업자 사용"
+
+#: ./vue/Public/WebDJ/SettingsPanel.vue:21
+#: ./vue/Stations/Streamers.vue:23
+msgid "Username"
+msgstr "사용자 이름"
+
+#: ./vue/Stations/Profile/RequestsPanel.vue:12
+#: ./vue/Stations/Profile/RequestsPanel.vue:10
+msgid "View"
+msgstr "보기"
+
+#: ./vue/Stations/Media.vue:154
+msgid "View tracks in playlist"
+msgstr "재생 목록의 트랙 보기"
+
+#: ./vue/Stations/Media/Form/WaveformEditor.vue:14
+msgid "Visual Cue Editor"
+msgstr "비주얼 큐 에디터"
+
+#: ./vue/Common/Waveform.vue:66
+#: ./vue/InlinePlayer.vue:20
+#: ./vue/Public/Player.vue:68
+msgid "Volume"
+msgstr "볼륨"
+
+#: ./vue/Stations/Playlists/Form/Advanced.vue:6
+msgid "Warning"
+msgstr "경고"
+
+#: ./vue/Common/Waveform.vue:15
+msgid "Waveform Zoom"
+msgstr "파형 확대/축소"
+
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:22
+#: ./vue/Stations/Profile/PublicPagesPanel.vue:20
+msgid "Web DJ"
+msgstr "웹 DJ"
+
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:13
+#: ./vue/Stations/Podcasts/EpisodeForm/BasicInfo.vue:1
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:13
+#: ./vue/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
+msgid "Website"
+msgstr "웹사이트"
+
+#: ./vue/Stations/Playlists/Form/Schedule.vue:18
+#: ./vue/Stations/Streamers/Form/Schedule.vue:18
+msgid "Wednesday"
+msgstr "수요일"
+
+#: ./vue/Stations/Playlists.vue:84
+msgid "Weight"
+msgstr "용량"
+
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:35
+#: ./vue/Stations/Playlists/Form/BasicInfo.vue:1
+msgid "Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist."
+msgstr "AutoDJ가 이 재생 목록에서 미디어를 재생할 때 아티스트가 중복되지 않도록 하고 제목을 추적해야 하는지 여부입니다."
+
+#: ./vue/Stations/Profile/EmbedModal.vue:73
+msgid "Widget Type"
+msgstr "위젯 종류"
+
+#: ./vue/Stations/Reports/Overview.vue:75
+msgid "Worst Performing Songs"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/Advanced.vue:22
+#: ./vue/Stations/Mounts/Form/Advanced.vue:1
+msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/Advanced.vue:10
+#: ./vue/Stations/Mounts/Form/Advanced.vue:1
+msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
+msgstr ""
+
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:81
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:3
+#: ./vue/Stations/Mounts/Form/BasicInfo.vue:1
+msgid "YP Directory Authorization Hash"
+msgstr ""
+

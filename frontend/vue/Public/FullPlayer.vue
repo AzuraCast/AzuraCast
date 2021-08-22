@@ -27,13 +27,14 @@
             </div>
         </div>
 
-        <song-history-modal ref="history_modal"></song-history-modal>
-        <request-modal :request-list-uri="requestListUri" :custom-fields="customFields"></request-modal>
+        <song-history-modal :show-album-art="showAlbumArt" ref="history_modal"></song-history-modal>
+        <request-modal :show-album-art="showAlbumArt" :request-list-uri="requestListUri"
+                       :custom-fields="customFields"></request-modal>
     </div>
 </template>
 
 <script>
-import RadioPlayer, { radioPlayerProps } from './Player';
+import RadioPlayer, {radioPlayerProps} from './Player';
 import SongHistoryModal from './FullPlayer/SongHistoryModal';
 import RequestModal from './FullPlayer/RequestModal';
 import Icon from '../Common/Icon';

@@ -26,29 +26,30 @@
             <b-card-body>
                 <b-form-group>
                     <b-row>
-                        <b-form-group class="col-md-4" :label-for="'edit_form_start_time_'+index">
-                            <template v-slot:label>
+                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_time_'+index"
+                                              :field="row.start_time">
+                            <template #label>
                                 <translate key="lang_edit_form_start_time">Start Time</translate>
                             </template>
-                            <playlist-time :id="'edit_form_start_time_'+index" v-model="row.start_time.$model"
-                                           :state="row.start_time.$dirty ? !row.start_time.$error : null"></playlist-time>
-                            <b-form-invalid-feedback>
-                                <translate key="lang_error_required">This field is required.</translate>
-                            </b-form-invalid-feedback>
-                        </b-form-group>
-                        <b-form-group class="col-md-4" :label-for="'edit_form_end_time_'+index">
-                            <template v-slot:label>
+                            <template #default="props">
+                                <playlist-time :id="props.id" v-model="props.field.$model"
+                                               :state="props.state"></playlist-time>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="row.end_time">
+                            <template #label>
                                 <translate key="lang_edit_form_end_time">End Time</translate>
                             </template>
-                            <template v-slot:description>
+                            <template #description>
                                 <translate key="lang_edit_form_end_time_desc">If the end time is before the start time, the schedule entry will continue overnight.</translate>
                             </template>
-                            <playlist-time :id="'edit_form_end_time_'+index" v-model="row.end_time.$model"
-                                           :state="row.end_time.$dirty ? !row.end_time.$error : null"></playlist-time>
-                            <b-form-invalid-feedback>
-                                <translate key="lang_error_required">This field is required.</translate>
-                            </b-form-invalid-feedback>
-                        </b-form-group>
+                            <template #default="props">
+                                <playlist-time :id="props.id" v-model="props.field.$model"
+                                               :state="props.state"></playlist-time>
+                            </template>
+                        </b-wrapped-form-group>
+
                         <b-col md="4" class="form-group">
                             <label>
                                 <translate key="lang_station_tz">Station Time Zone</translate>
@@ -58,44 +59,44 @@
                             </div>
                         </b-col>
 
-                        <b-form-group class="col-md-4" :label-for="'edit_form_start_date_'+index">
-                            <template v-slot:label>
+                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_date_'+index"
+                                              :field="row.start_date">
+                            <template #label>
                                 <translate key="lang_edit_form_start_date">Start Date</translate>
                             </template>
-                            <template v-slot:description>
+                            <template #description>
                                 <translate key="lang_edit_form_start_date_desc">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
                             </template>
-                            <b-form-input :label-for="'edit_form_start_date_'+index" type="date"
-                                          v-model="row.start_date.$model"
-                                          :state="row.start_date.$dirty ? !row.start_date.$error : null"></b-form-input>
-                            <b-form-invalid-feedback>
-                                <translate key="lang_error_required">This field is required.</translate>
-                            </b-form-invalid-feedback>
-                        </b-form-group>
+                            <template #default="props">
+                                <b-form-input :id="props.id" type="date" v-model="props.field.$model"
+                                              :state="props.state"></b-form-input>
+                            </template>
+                        </b-wrapped-form-group>
 
-                        <b-form-group class="col-md-4" :label-for="'edit_form_end_date_'+index">
-                            <template v-slot:label>
+                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="row.end_date">
+                            <template #label>
                                 <translate key="lang_edit_form_end_date">End Date</translate>
                             </template>
-                            <b-form-input :label-for="'edit_form_end_date_'+index" type="date"
-                                          v-model="row.end_date.$model"
-                                          :state="row.end_date.$dirty ? !row.end_date.$error : null"></b-form-input>
-                            <b-form-invalid-feedback>
-                                <translate key="lang_error_required">This field is required.</translate>
-                            </b-form-invalid-feedback>
-                        </b-form-group>
+                            <template #default="props">
+                                <b-form-input :id="props.id" type="date" v-model="props.field.$model"
+                                              :state="props.state"></b-form-input>
+                            </template>
+                        </b-wrapped-form-group>
 
-                        <b-form-group class="col-md-4" :label-for="'edit_form_days_'+index">
-                            <template v-slot:label>
+                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_days_'+index" :field="row.days">
+                            <template #label>
                                 <translate key="lang_edit_form_days">Scheduled Play Days of Week</translate>
                             </template>
-                            <template v-slot:description>
-                                <translate key="lang_edit_form_days_desc">Leave blank to play on every day of the week.</translate>
+                            <template #description>
+                                <translate
+                                    key="lang_edit_form_days_desc">Leave blank to play on every day of the week.</translate>
                             </template>
+                            <template #default="props">
+                                <b-checkbox-group stacked :id="props.id" v-model="props.field.$model"
+                                                  :options="dayOptions"></b-checkbox-group>
+                            </template>
+                        </b-wrapped-form-group>
 
-                            <b-checkbox-group stacked :id="'edit_form_days_'+index" v-model="row.days.$model"
-                                              :options="dayOptions"></b-checkbox-group>
-                        </b-form-group>
                     </b-row>
                 </b-form-group>
             </b-card-body>
@@ -113,25 +114,26 @@
 <script>
 import PlaylistTime from '../../../Common/TimeCode';
 import Icon from '../../../Common/Icon';
+import BWrappedFormGroup from "../../../Form/BWrappedFormGroup";
 
 export default {
     name: 'StreamerFormSchedule',
-    components: { Icon, PlaylistTime },
+    components: {BWrappedFormGroup, Icon, PlaylistTime},
     props: {
         form: Object,
         stationTimeZone: String,
         scheduleItems: Array
     },
-    data () {
+    data() {
         return {
             dayOptions: [
-                { value: 1, text: this.$gettext('Monday') },
-                { value: 2, text: this.$gettext('Tuesday') },
-                { value: 3, text: this.$gettext('Wednesday') },
-                { value: 4, text: this.$gettext('Thursday') },
-                { value: 5, text: this.$gettext('Friday') },
-                { value: 6, text: this.$gettext('Saturday') },
-                { value: 7, text: this.$gettext('Sunday') }
+                {value: 1, text: this.$gettext('Monday')},
+                {value: 2, text: this.$gettext('Tuesday')},
+                {value: 3, text: this.$gettext('Wednesday')},
+                {value: 4, text: this.$gettext('Thursday')},
+                {value: 5, text: this.$gettext('Friday')},
+                {value: 6, text: this.$gettext('Saturday')},
+                {value: 7, text: this.$gettext('Sunday')}
             ]
         };
     },

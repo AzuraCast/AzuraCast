@@ -5,11 +5,38 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no changes in the latest Rolling Release channel yet.
-
 ## Code Quality/Technical Changes
 
-There have been no changes in the latest Rolling Release channel yet.
+## Bug Fixes
+
+---
+
+# AzuraCast 0.14.1 (Aug 22, 2021)
+
+## New Features/Changes
+
+- If you're using the Icecast broadcasting software option, you can now block listeners from connecting from specified
+  countries; this list can be maintained from the "Broadcasting" tab of the station profile. You can exempt specific IPs
+  or IP ranges (using CIDR notation) from this block as well.
+
+- We now support the self-hosted, free and open-source analytics tool Matomo for listener metrics; your Matomo
+  installation can be added as a web hook and will receive listener data in periodic pings.
+
+## Bug Fixes
+
+- If your settings hide album art on public pages, this will also apply on requests and history dialogs/embeds too.
+
+- Even for stations that only broadcast remotely, certain reports are now visible that weren't before.
+
+- The "Worst" performing songs on the overview report will now properly show the worst performing songs.
+
+- Numerous fixes have been made around strict typing, affecting the following areas:
+    - Station API endpoints (Station ID can be a string and some non-numeric IDs are supported)
+    - Various forms around the system that use numeric values
+    - Setting schedule entries for playlists/streamers
+    - CSV export functionality
+
+- A minor issue with displaying rows on the Audit log has been fixed.
 
 ---
 

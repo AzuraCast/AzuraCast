@@ -373,12 +373,14 @@ install-dev() {
     fi
   fi
 
-  if ask "Clone related repositories?" Y; then
-    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
-    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
-    git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
-    git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
-    git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
+  if [[ ! -d ../docker-azuracast-nginx-proxy ]]; then
+    if ask "Clone related repositories?" Y; then
+      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
+      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
+      git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
+      git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
+      git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
+    fi
   fi
 
   if [[ ! -f docker-compose.yml ]]; then
@@ -407,7 +409,7 @@ install-dev() {
   docker-compose run --rm --user="azuracast" web azuracast_install "$@"
 
   docker-compose -f frontend/docker-compose.yml build
-  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
+  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
 
   docker-compose up -d
   exit

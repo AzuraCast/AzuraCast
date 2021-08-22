@@ -3,6 +3,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "dev": "npm ci && bash",
+        "dev-build": "npm ci && npm run build",
         "build": "gulp",
         "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../resources/locale/frontend.pot $(find ./vue -type f -name '*.vue')",
         "import-locales": "gettext-compile --output ../resources/locale/translations.json $(find ../resources/locale/*.UTF-8 -type f -name 'frontend.po')",

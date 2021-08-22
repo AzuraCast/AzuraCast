@@ -5,14 +5,22 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.14.1 (Aug 22, 2021)
+
+## New Features/Changes
+
 - If you're using the Icecast broadcasting software option, you can now block listeners from connecting from specified
   countries; this list can be maintained from the "Broadcasting" tab of the station profile. You can exempt specific IPs
   or IP ranges (using CIDR notation) from this block as well.
 
 - We now support the self-hosted, free and open-source analytics tool Matomo for listener metrics; your Matomo
   installation can be added as a web hook and will receive listener data in periodic pings.
-
-## Code Quality/Technical Changes
 
 ## Bug Fixes
 

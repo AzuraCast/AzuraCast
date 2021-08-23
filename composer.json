@@ -32,7 +32,7 @@
         "doctrine/orm": "~2.6",
         "gettext/gettext": "^4.4",
         "guzzlehttp/guzzle": "^7.0",
-        "guzzlehttp/oauth-subscriber": "^0.5.0",
+        "guzzlehttp/oauth-subscriber": "^0.6.0",
         "http-interop/http-factory-guzzle": "^1.0",
         "intervention/image": "^2.6",
         "james-heinrich/getid3": "dev-master#0bc9aca",

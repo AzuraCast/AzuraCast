@@ -250,6 +250,9 @@ class Environment
         return (int)($this->data[self::SYNC_LONG_EXECUTION_TIME] ?? 1800);
     }
 
+    /**
+     * @phpstan-return LogLevel::*
+     */
     public function getLogLevel(): string
     {
         if (!empty($this->data[self::LOG_LEVEL])) {

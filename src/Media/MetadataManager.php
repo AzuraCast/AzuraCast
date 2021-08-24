@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Media;
 
-use App\Entity;
 use App\Environment;
 use App\Event\Media\ReadMetadata;
 use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
 use App\Utilities\File;
 use App\Utilities\Json;
+use Azura\MetadataManager\Metadata;
+use Azura\MetadataManager\MetadataInterface;
 use GuzzleHttp\Client;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -38,7 +39,7 @@ class MetadataManager implements EventSubscriberInterface
         ];
     }
 
-    public function read(string $filePath): Entity\Metadata
+    public function read(string $filePath): MetadataInterface
     {
         if (!MimeType::isFileProcessable($filePath)) {
             $mimeType = MimeType::getMimeTypeFromFile($filePath);
@@ -67,7 +68,7 @@ class MetadataManager implements EventSubscriberInterface
                 throw new \RuntimeException('Could not find PHP executable path.');
             }
 
-            $scriptPath = $this->environment->getBaseDirectory() . '/bin/metadata';
+            $scriptPath = $this->environment->getBaseDirectory() . '/vendor/bin/metadata-manager';
 
             $process = new Process(
                 [
@@ -76,14 +77,14 @@ class MetadataManager implements EventSubscriberInterface
                     'read',
                     $sourceFilePath,
                     $jsonOutput,
-                    '--art-output=' . $artOutput,
+                    $artOutput,
                 ]
             );
 
             $process->mustRun();
 
             $metadataJson = Json::loadFromFile($jsonOutput);
-            $metadata = Entity\Metadata::fromJson($metadataJson);
+            $metadata = Metadata::fromJson($metadataJson);
 
             if (is_file($artOutput)) {
                 $artwork = file_get_contents($artOutput) ?: null;
@@ -97,7 +98,7 @@ class MetadataManager implements EventSubscriberInterface
         }
     }
 
-    public function write(Entity\Metadata $metadata, string $filePath): void
+    public function write(MetadataInterface $metadata, string $filePath): void
     {
         $event = new WriteMetadata($metadata, $filePath);
         $this->eventDispatcher->dispatch($event);
@@ -136,7 +137,7 @@ class MetadataManager implements EventSubscriberInterface
                 throw new \RuntimeException('Could not find PHP executable path.');
             }
 
-            $scriptPath = $this->environment->getBaseDirectory() . '/bin/metadata';
+            $scriptPath = $this->environment->getBaseDirectory() . '/vendor/bin/metadata-manager';
 
             $processCommand = [
                 $phpBinaryPath,
@@ -147,7 +148,7 @@ class MetadataManager implements EventSubscriberInterface
             ];
 
             if (null !== $artwork) {
-                $processCommand[] = '--art-input=' . $artInput;
+                $processCommand[] = $artInput;
             }
 
             $process = new Process($processCommand);

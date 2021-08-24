@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Event\Media;
 
-use App\Entity;
+use Azura\MetadataManager\Metadata;
+use Azura\MetadataManager\MetadataInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class ReadMetadata extends Event
 {
-    protected ?Entity\Metadata $metadata = null;
+    protected ?MetadataInterface $metadata = null;
 
     public function __construct(
         protected string $path
@@ -21,13 +22,13 @@ class ReadMetadata extends Event
         return $this->path;
     }
 
-    public function setMetadata(Entity\Metadata $metadata): void
+    public function setMetadata(MetadataInterface $metadata): void
     {
         $this->metadata = $metadata;
     }
 
-    public function getMetadata(): Entity\Metadata
+    public function getMetadata(): MetadataInterface
     {
-        return $this->metadata ?? new Entity\Metadata();
+        return $this->metadata ?? new Metadata();
     }
 }

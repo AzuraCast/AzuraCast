@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20b7638fe0d73d395369811b1b582368",
+    "content-hash": "47b9920342b23a86135e11644f663a6c",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.191.1",
+            "version": "3.191.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "221eb3790a2f5cc73067ec1c13d4c788a0296351"
+                "reference": "d659144bf8618c891fd01f0f375f1f0b4db21b05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/221eb3790a2f5cc73067ec1c13d4c788a0296351",
-                "reference": "221eb3790a2f5cc73067ec1c13d4c788a0296351",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d659144bf8618c891fd01f0f375f1f0b4db21b05",
+                "reference": "d659144bf8618c891fd01f0f375f1f0b4db21b05",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.191.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.191.2"
             },
-            "time": "2021-08-20T18:43:14+00:00"
+            "time": "2021-08-23T18:17:20+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -246,6 +246,76 @@
                 }
             ],
             "time": "2021-06-21T02:10:40+00:00"
+        },
+        {
+            "name": "azuracast/metadata-manager",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AzuraCast/metadata-manager.git",
+                "reference": "36638b7dfe52e3d2a502e9269b02b4d885820ddd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AzuraCast/metadata-manager/zipball/36638b7dfe52e3d2a502e9269b02b4d885820ddd",
+                "reference": "36638b7dfe52e3d2a502e9269b02b4d885820ddd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "james-heinrich/getid3": "dev-master#0bc9aca",
+                "php": ">=7.4",
+                "symfony/console": ">5.0",
+                "voku/portable-utf8": "^5.4"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpstan/phpstan": "^0.12",
+                "roave/security-advisories": "dev-latest"
+            },
+            "default-branch": true,
+            "bin": [
+                "bin/metadata-manager"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Azura\\MetadataManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Buster 'Silver Eagle' Neece",
+                    "email": "buster@busterneece.com",
+                    "homepage": "https://dashdev.net/",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "A command-line wrapper around the PHP GetId3 library.",
+            "homepage": "https://github.com/AzuraCast/metadata-manager",
+            "support": {
+                "source": "https://github.com/AzuraCast/metadata-manager/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/AzuraCast",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/azuracast",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/AzuraCast",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-08-24T03:19:30+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -1882,16 +1952,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.9.4",
+            "version": "2.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "b19a13f4edfaa5806109cd899f5912a7df1547b5"
+                "reference": "77cc86ed880e3f1f6c9c5819e131a8aaeeeee0da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/b19a13f4edfaa5806109cd899f5912a7df1547b5",
-                "reference": "b19a13f4edfaa5806109cd899f5912a7df1547b5",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/77cc86ed880e3f1f6c9c5819e131a8aaeeeee0da",
+                "reference": "77cc86ed880e3f1f6c9c5819e131a8aaeeeee0da",
                 "shasum": ""
             },
             "require": {
@@ -1970,9 +2040,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.9.4"
+                "source": "https://github.com/doctrine/orm/tree/2.9.5"
             },
-            "time": "2021-08-11T20:53:03+00:00"
+            "time": "2021-08-23T10:20:22+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2935,12 +3005,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "0bc9aca"
+                "reference": "cb831b64d21b2b2361e7011853d0fc26e323e11c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/0bc9aca",
-                "reference": "0bc9aca",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/cb831b64d21b2b2361e7011853d0fc26e323e11c",
+                "reference": "cb831b64d21b2b2361e7011853d0fc26e323e11c",
                 "shasum": ""
             },
             "require": {
@@ -11822,12 +11892,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "3c3cc12a9f163e589a12b9ea756c5a2dae9c59dd"
+                "reference": "cd0a994884c7323cdc591f02b6027e00c1d88e74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3c3cc12a9f163e589a12b9ea756c5a2dae9c59dd",
-                "reference": "3c3cc12a9f163e589a12b9ea756c5a2dae9c59dd",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/cd0a994884c7323cdc591f02b6027e00c1d88e74",
+                "reference": "cd0a994884c7323cdc591f02b6027e00c1d88e74",
                 "shasum": ""
             },
             "conflict": {
@@ -12005,7 +12075,7 @@
                 "phpunit/phpunit": ">=4.8.19,<4.8.28|>=5.0.10,<5.6.3",
                 "phpwhois/phpwhois": "<=4.2.5",
                 "phpxmlrpc/extras": "<0.6.1",
-                "pimcore/pimcore": "<10.0.7",
+                "pimcore/pimcore": "<10.1.1",
                 "pocketmine/pocketmine-mp": "<3.15.4",
                 "pressbooks/pressbooks": "<5.18",
                 "prestashop/autoupgrade": ">=4,<4.10.1",
@@ -12028,8 +12098,8 @@
                 "scheb/two-factor-bundle": ">=0,<3.26|>=4,<4.11",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
-                "shopware/core": "<=6.4.1",
-                "shopware/platform": "<=6.4.1",
+                "shopware/core": "<=6.4.3",
+                "shopware/platform": "<=6.4.3",
                 "shopware/production": "<=6.3.5.2",
                 "shopware/shopware": "<=5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
@@ -12197,7 +12267,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-19T16:07:21+00:00"
+            "time": "2021-08-23T20:03:09+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -13760,9 +13830,9 @@
     "stability-flags": {
         "azuracast/azuraforms": 20,
         "azuracast/flysystem-v2-extensions": 20,
+        "azuracast/metadata-manager": 20,
         "azuracast/nowplaying": 20,
         "azuracast/slim-callable-eventdispatcher": 20,
-        "james-heinrich/getid3": 20,
         "lstrojny/fxmlrpc": 20,
         "rlanvin/php-ip": 20,
         "supervisorphp/supervisor": 20,

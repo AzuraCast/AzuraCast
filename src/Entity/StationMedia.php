@@ -10,6 +10,8 @@ use App\Entity\Interfaces\ProcessableMediaInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Utilities\Time;
+use Azura\MetadataManager\Metadata;
+use Azura\MetadataManager\MetadataInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -460,7 +462,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         return $this->playlists;
     }
 
-    public function fromMetadata(Metadata $metadata): void
+    public function fromMetadata(MetadataInterface $metadata): void
     {
         $this->setLength((int)$metadata->getDuration());
 
@@ -488,7 +490,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $this->updateSongId();
     }
 
-    public function toMetadata(): Metadata
+    public function toMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
         $metadata->setDuration($this->getLength() ?? 0.0);

@@ -38,9 +38,6 @@ class EnforceSecurity implements MiddlewareInterface
 
         $addHstsHeader = false;
         if ('https' === $request->getUri()->getScheme()) {
-            // Enforce secure cookies.
-            ini_set('session.cookie_secure', '1');
-
             $addHstsHeader = true;
         } elseif ($always_use_ssl && !$internal_api_url) {
             return $this->responseFactory->createResponse(307)

@@ -219,28 +219,6 @@ return [
         return $store;
     },
 
-    // Session save handler middleware
-    Mezzio\Session\SessionPersistenceInterface::class => static function (
-        Environment $environment,
-        Psr\Cache\CacheItemPoolInterface $cachePool
-    ) {
-        if ($environment->isCli()) {
-            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        }
-
-        $cachePool = new Symfony\Component\Cache\Adapter\ProxyAdapter($cachePool, 'session.');
-
-        return new Mezzio\Session\Cache\CacheSessionPersistence(
-            $cachePool,
-            'app_session',
-            '/',
-            'nocache',
-            43200,
-            time(),
-            true
-        );
-    },
-
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,

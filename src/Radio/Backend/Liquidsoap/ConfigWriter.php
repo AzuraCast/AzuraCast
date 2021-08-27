@@ -226,7 +226,6 @@ class ConfigWriter implements EventSubscriberInterface
 
             $usesRandom = true;
             $usesReloadMode = true;
-            $usesConservative = false;
 
             if ($playlist->backendLoopPlaylistOnce()) {
                 $playlistFuncName = 'playlist.once';
@@ -236,7 +235,6 @@ class ConfigWriter implements EventSubscriberInterface
             } else {
                 $playlistFuncName = 'playlist';
                 $usesRandom = false;
-                $usesConservative = true;
             }
 
             $playlistConfigLines = [];
@@ -268,12 +266,6 @@ class ConfigWriter implements EventSubscriberInterface
 
                 if ($usesReloadMode) {
                     $playlistParams[] = 'reload_mode="watch"';
-                }
-
-                if ($usesConservative) {
-                    $playlistParams[] = 'conservative=true';
-                    $playlistParams[] = 'default_duration=10.';
-                    $playlistParams[] = 'length=20.';
                 }
 
                 $playlistParams[] = '"' . $playlistFilePath . '"';

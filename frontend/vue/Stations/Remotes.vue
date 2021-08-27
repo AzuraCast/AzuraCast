@@ -54,7 +54,6 @@
 
 <script>
 import DataTable from '../Common/DataTable';
-import axios from 'axios';
 import EditModal from './Mounts/EditModal';
 import Icon from '../Common/Icon';
 import InfoCard from '../Common/InfoCard';
@@ -108,7 +107,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.relist();

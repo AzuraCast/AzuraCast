@@ -25,8 +25,7 @@
     </b-modal>
 </template>
 <script>
-import { validationMixin } from 'vuelidate';
-import axios from 'axios';
+import {validationMixin} from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import _ from 'lodash';
 import MediaFormBasicInfo from './Form/BasicInfo';
@@ -136,7 +135,7 @@ export default {
             this.recordUrl = recordUrl;
             this.audioUrl = audioUrl;
 
-            axios.get(recordUrl).then((resp) => {
+            this.axios.get(recordUrl).then((resp) => {
                 let d = resp.data;
 
                 this.songLength = d.length_text;
@@ -189,7 +188,7 @@ export default {
 
             this.error = null;
 
-            axios.put(this.recordUrl, this.form).then((resp) => {
+            this.axios.put(this.recordUrl, this.form).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');
                 notify('<b>' + notifyMessage + '</b>', 'success');
 

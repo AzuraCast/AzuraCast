@@ -49,7 +49,6 @@
 import WaveSurfer from 'wavesurfer.js';
 import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
-import axios from 'axios';
 import getLogarithmicVolume from '../Function/GetLogarithmicVolume.js';
 import store from 'store';
 import Icon from './Icon';
@@ -92,7 +91,7 @@ export default {
             this.$emit('ready');
         });
 
-        axios.get(this.waveformUrl).then((resp) => {
+        this.axios.get(this.waveformUrl).then((resp) => {
             let waveform = resp.data;
             if (waveform.data) {
                 this.wavesurfer.load(this.audioUrl, waveform.data);

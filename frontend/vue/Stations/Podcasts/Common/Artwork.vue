@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import handleAxiosError from '../../../Function/handleAxiosError';
 
 export default {
@@ -66,7 +65,7 @@ export default {
             let formData = new FormData();
             formData.append('art', file);
 
-            axios.post(url, formData).then((resp) => {
+            this.axios.post(url, formData).then((resp) => {
                 this.$emit('input', resp.data);
             }).catch((err) => {
                 handleAxiosError(err);
@@ -74,7 +73,7 @@ export default {
         },
         deleteArt () {
             if (this.editArtUrl) {
-                axios.delete(this.editArtUrl).then((resp) => {
+                this.axios.delete(this.editArtUrl).then((resp) => {
                     this.src = null;
                 }).catch((err) => {
                     handleAxiosError(err);

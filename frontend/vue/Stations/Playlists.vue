@@ -131,7 +131,6 @@ import EditModal from './Playlists/EditModal';
 import ReorderModal from './Playlists/ReorderModal';
 import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
-import axios from 'axios';
 import Icon from '../Common/Icon';
 import handleAxiosError from '../Function/handleAxiosError';
 import CloneModal from './Playlists/CloneModal';
@@ -260,7 +259,7 @@ export default {
                 delay: 3000
             });
 
-            axios.put(url).then((resp) => {
+            this.axios.put(url).then((resp) => {
                 notify('<b>' + resp.data.message + '</b>', 'success');
 
                 this.relist();
@@ -283,7 +282,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.relist();

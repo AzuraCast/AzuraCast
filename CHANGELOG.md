@@ -7,7 +7,22 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- A number of security fixes are being incorporated into the software as of this version. See below for details.
+
 ## Bug Fixes
+
+## Security Fixes
+
+- Session cookies are now marked as HTTP-only, avoiding possible use by custom JavaScript that may be injected into a
+  given page.
+
+- If the "Always Use HTTPS" setting is enabled, session cookies will be sent as "secure only" as well.
+
+- API calls will now either require API key authentication _or_ both a current active login session and a unique
+  identifier; if you're calling the API externally, you should _always_ use a generated API key and not count on the
+  user's existing session.
+
+-
 
 ---
 

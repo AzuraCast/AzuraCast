@@ -39,7 +39,6 @@
 </template>
 <script>
 import DataTable from '../../Common/DataTable.vue';
-import axios from 'axios';
 import formatFileSize from '../../Function/FormatFileSize.js';
 import InlinePlayer from '../../InlinePlayer';
 import Icon from '../../Common/Icon';
@@ -137,7 +136,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.$refs.datatable.refresh();

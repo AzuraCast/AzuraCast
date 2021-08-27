@@ -72,7 +72,6 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
 import _ from 'lodash';
 import Icon from '../../Common/Icon';
 import handleAxiosError from '../../Function/handleAxiosError';
@@ -162,7 +161,7 @@ export default {
             if (this.selectedItems.all.length) {
                 this.notifyPending();
 
-                axios.put(this.batchUrl, {
+                this.axios.put(this.batchUrl, {
                     'do': action,
                     'current_directory': this.currentDirectory,
                     'files': this.selectedItems.files,
@@ -195,7 +194,7 @@ export default {
             if (this.selectedItems.all.length) {
                 this.notifyPending();
 
-                axios.put(this.batchUrl, {
+                this.axios.put(this.batchUrl, {
                     'do': 'playlist',
                     'playlists': this.checkedPlaylists,
                     'new_playlist_name': this.newPlaylist,

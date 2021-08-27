@@ -164,7 +164,6 @@
 <script>
 import TimeSeriesChart from '../../Common/TimeSeriesChart';
 import DataTable from '../../Common/DataTable';
-import axios from 'axios';
 import Icon from '../../Common/Icon';
 import Avatar, {avatarProps} from '../../Common/Avatar';
 import DayOfWeekChart from './DayOfWeekChart';
@@ -220,21 +219,21 @@ export default {
     created () {
         moment.tz.setDefault('UTC');
 
-        axios.get(this.chartsUrl).then((response) => {
+        this.axios.get(this.chartsUrl).then((response) => {
             this.chartsData = response.data;
             this.chartsLoading = false;
         }).catch((error) => {
             console.error(error);
         });
 
-        axios.get(this.bestAndWorstUrl).then((response) => {
+        this.axios.get(this.bestAndWorstUrl).then((response) => {
             this.bestAndWorst = response.data;
             this.bestAndWorstLoading = false;
         }).catch((error) => {
             console.error(error);
         });
 
-        axios.get(this.mostPlayedUrl).then((response) => {
+        this.axios.get(this.mostPlayedUrl).then((response) => {
             this.mostPlayed = response.data;
             this.mostPlayedLoading = false;
         }).catch((error) => {

@@ -158,7 +158,6 @@
 <script>
 import TimeSeriesChart from './Common/TimeSeriesChart';
 import DataTable from './Common/DataTable';
-import axios from 'axios';
 import store from 'store';
 import Icon from './Common/Icon';
 import Avatar, {avatarProps} from './Common/Avatar';
@@ -227,7 +226,7 @@ export default {
         }
 
         if (this.showCharts) {
-            axios.get(this.chartsUrl).then((response) => {
+            this.axios.get(this.chartsUrl).then((response) => {
                 this.chartsData = response.data;
                 this.chartsLoading = false;
             }).catch((error) => {
@@ -235,7 +234,7 @@ export default {
             });
         }
 
-        axios.get(this.notificationsUrl).then((response) => {
+        this.axios.get(this.notificationsUrl).then((response) => {
             this.notifications = response.data;
             this.notificationsLoading = false;
         }).catch((error) => {
@@ -256,7 +255,7 @@ export default {
             this.$eventHub.$emit('player_toggle', url);
         },
         updateNowPlaying () {
-            axios.get(this.stationsUrl).then((response) => {
+            this.axios.get(this.stationsUrl).then((response) => {
                 this.stationsLoading = false;
                 this.stations = response.data;
 

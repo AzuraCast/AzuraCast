@@ -146,7 +146,6 @@ table.b-table-selectable {
 </style>
 
 <script>
-import axios from 'axios';
 import store from 'store';
 import _ from 'lodash';
 import Icon from './Icon';
@@ -385,7 +384,7 @@ export default {
                 requestConfig = this.requestConfig(requestConfig);
             }
 
-            axios.get(ctx.apiUrl, requestConfig).then((resp) => {
+            this.axios.get(ctx.apiUrl, requestConfig).then((resp) => {
                 this.flushCache = false;
                 this.totalRows = resp.data.total;
 

@@ -46,7 +46,6 @@
 
 <script>
 import DataTable from '../Common/DataTable';
-import axios from 'axios';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '../Common/Icon';
 import handleAxiosError from '../Function/handleAxiosError';
@@ -115,7 +114,7 @@ export default {
                 delay: 3000
             });
 
-            axios.put(url).then((resp) => {
+            this.axios.put(url).then((resp) => {
                 notify('<b>' + resp.data.message + '</b>', 'success');
 
                 this.relist();
@@ -135,7 +134,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.relist();

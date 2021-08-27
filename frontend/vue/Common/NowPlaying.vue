@@ -1,7 +1,6 @@
 <template></template>
 <script>
 import NowPlaying from '../Entity/NowPlaying';
-import axios from 'axios';
 import NchanSubscriber from 'nchan';
 
 export const nowPlayingProps = {
@@ -48,7 +47,7 @@ export default {
                 });
                 this.nchan_subscriber.start();
             } else {
-                axios.get(this.nowPlayingUri).then((response) => {
+                this.axios.get(this.nowPlayingUri).then((response) => {
                     this.setNowPlaying(response.data);
 
                     setTimeout(this.checkNowPlaying, 15000);

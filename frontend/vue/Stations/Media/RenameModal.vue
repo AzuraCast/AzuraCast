@@ -23,9 +23,8 @@
     </b-modal>
 </template>
 <script>
-import { validationMixin } from 'vuelidate';
-import { required } from 'vuelidate/lib/validators';
-import axios from 'axios';
+import {validationMixin} from 'vuelidate';
+import {required} from 'vuelidate/lib/validators';
 import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
@@ -34,7 +33,7 @@ export default {
     props: {
         renameUrl: String
     },
-    data () {
+    data() {
         return {
             form: {
                 file: null,
@@ -71,7 +70,7 @@ export default {
                 return;
             }
 
-            axios.put(this.renameUrl, this.form).then((resp) => {
+            this.axios.put(this.renameUrl, this.form).then((resp) => {
                 this.$refs.modal.hide();
                 this.$emit('relist');
             }).catch((err) => {

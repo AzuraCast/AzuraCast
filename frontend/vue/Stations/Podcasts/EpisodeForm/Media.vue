@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import handleAxiosError from '../../../Function/handleAxiosError';
 import FlowUpload from '../../../Common/FlowUpload';
 
@@ -82,7 +81,7 @@ export default {
         },
         deleteMedia () {
             if (this.editMediaUrl) {
-                axios.delete(this.editMediaUrl).then((resp) => {
+                this.axios.delete(this.editMediaUrl).then((resp) => {
                     this.hasMedia = false;
                 }).catch((err) => {
                     handleAxiosError(err);

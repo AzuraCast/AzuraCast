@@ -50,7 +50,6 @@
 
 <script>
 import DataTable from '../Common/DataTable';
-import axios from 'axios';
 import QueueLogsModal from './Queue/LogsModal';
 import handleAxiosError from '../Function/handleAxiosError';
 
@@ -97,7 +96,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.$refs.datatable.refresh();

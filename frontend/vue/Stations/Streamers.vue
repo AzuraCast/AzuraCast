@@ -60,7 +60,6 @@
 
 <script>
 import DataTable from '../Common/DataTable';
-import axios from 'axios';
 import EditModal from './Streamers/EditModal';
 import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '../Common/ScheduleView';
@@ -129,7 +128,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.relist();

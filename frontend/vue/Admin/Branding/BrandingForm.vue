@@ -135,7 +135,6 @@
 <script>
 import {validationMixin} from "vuelidate";
 import handleAxiosError from "../../Function/handleAxiosError";
-import axios from "axios";
 import CodemirrorTextarea from "../../Common/CodemirrorTextarea";
 import BWrappedFormGroup from "../../Form/BWrappedFormGroup";
 
@@ -196,7 +195,7 @@ export default {
             this.$v.form.$reset();
             this.loading = true;
 
-            axios.get(this.apiUrl).then((resp) => {
+            this.axios.get(this.apiUrl).then((resp) => {
                 this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
@@ -224,7 +223,7 @@ export default {
                 return;
             }
 
-            axios({
+            this.axios({
                 method: 'PUT',
                 url: this.apiUrl,
                 data: this.form

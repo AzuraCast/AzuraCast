@@ -70,7 +70,6 @@
 <script>
 import DataTable from './../../Common/DataTable';
 import EditModal from './EpisodeEditModal';
-import axios from 'axios';
 import Icon from '../../Common/Icon';
 import AlbumArt from '../../Common/AlbumArt';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
@@ -142,7 +141,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.relist();

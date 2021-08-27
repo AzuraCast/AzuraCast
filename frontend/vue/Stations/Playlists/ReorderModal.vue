@@ -41,7 +41,6 @@ table.sortable {
 </style>
 
 <script>
-import axios from 'axios';
 import Draggable from 'vuedraggable';
 import Icon from '../../Common/Icon';
 import handleAxiosError from '../../Function/handleAxiosError';
@@ -76,7 +75,7 @@ export default {
             this.reorderUrl = reorderUrl;
             this.loading = true;
 
-            axios.get(this.reorderUrl).then((resp) => {
+            this.axios.get(this.reorderUrl).then((resp) => {
                 this.media = resp.data;
                 this.loading = false;
             }).catch((err) => {
@@ -100,7 +99,7 @@ export default {
                 newOrder[row.id] = i;
             });
 
-            axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
+            this.axios.put(this.reorderUrl, {'order': newOrder}).then((resp) => {
                 notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success');
             }).catch((err) => {
                 handleAxiosError(err);

@@ -2,10 +2,9 @@
 
 use App\Controller;
 use App\Middleware;
-use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
-return function (App $app) {
+return static function (RouteCollectorProxy $app) {
     $app->get('/sw.js', Controller\Frontend\PWA\ServiceWorkerAction::class)
         ->setName('public:sw');
 

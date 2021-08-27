@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
@@ -54,7 +53,7 @@ export default {
             this.queueUrl = queueUrl;
             this.loading = true;
 
-            axios.get(this.queueUrl).then((resp) => {
+            this.axios.get(this.queueUrl).then((resp) => {
                 this.media = resp.data;
                 this.loading = false;
             }).catch((err) => {
@@ -62,7 +61,7 @@ export default {
             });
         },
         doClear () {
-            axios.delete(this.queueUrl).then((resp) => {
+            this.axios.delete(this.queueUrl).then((resp) => {
                 notify('<b>' + this.$gettext('Playlist queue cleared.') + '</b>', 'success');
                 this.close();
             }).catch((err) => {

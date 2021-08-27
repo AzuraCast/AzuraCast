@@ -4,7 +4,7 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 module.exports = {
   mode: 'production',
   entry: {
-    VueTranslations: './vue/VueTranslations.js',
+    VueBase: './vue/VueBase.js',
     InlinePlayer: './vue/InlinePlayer.vue',
     Dashboard: './vue/Dashboard.vue',
     AdminBranding: './vue/Admin/Branding.vue',

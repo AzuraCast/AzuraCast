@@ -83,7 +83,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             $app->add(Middleware\WrapExceptionsWithRequestData::class);
 
             $app->add(Middleware\EnforceSecurity::class);
-            $app->add(Middleware\GetCurrentUser::class);
 
             // Request injection middlewares.
             $app->add(Middleware\InjectRouter::class);

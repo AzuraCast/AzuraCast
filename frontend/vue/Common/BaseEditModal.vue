@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { validationMixin } from 'vuelidate';
+import {validationMixin} from 'vuelidate';
 import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
@@ -56,7 +55,7 @@ export default {
             this.doLoad(recordUrl);
         },
         doLoad (recordUrl) {
-            axios.get(recordUrl).then((resp) => {
+            this.axios.get(recordUrl).then((resp) => {
                 this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
@@ -88,7 +87,7 @@ export default {
 
             this.error = null;
 
-            axios(this.buildSubmitRequest()).then((resp) => {
+            this.axios(this.buildSubmitRequest()).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');
                 notify('<b>' + notifyMessage + '</b>', 'success');
 

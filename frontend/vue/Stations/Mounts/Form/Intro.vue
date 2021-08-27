@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import handleAxiosError from '../../../Function/handleAxiosError';
 import FlowUpload from '../../../Common/FlowUpload';
 
@@ -82,7 +81,7 @@ export default {
         },
         deleteIntro() {
             if (this.editIntroUrl) {
-                axios.delete(this.editIntroUrl).then((resp) => {
+                this.axios.delete(this.editIntroUrl).then((resp) => {
                     this.hasIntro = false;
                 }).catch((err) => {
                     handleAxiosError(err);

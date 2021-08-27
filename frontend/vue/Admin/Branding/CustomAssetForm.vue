@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import handleAxiosError from "../../Function/handleAxiosError";
 
 export default {
@@ -44,7 +43,7 @@ export default {
             this.file = null;
             this.loading = true;
 
-            axios.get(this.apiUrl).then((resp) => {
+            this.axios.get(this.apiUrl).then((resp) => {
                 this.isUploaded = resp.data.is_uploaded;
                 this.url = resp.data.url;
 
@@ -55,7 +54,7 @@ export default {
 
         },
         clear() {
-            axios.delete(this.apiUrl).then((resp) => {
+            this.axios.delete(this.apiUrl).then((resp) => {
                 this.relist();
             }).catch((error) => {
                 handleAxiosError(error);
@@ -70,7 +69,7 @@ export default {
             let formData = new FormData();
             formData.append('file', this.file);
 
-            axios.post(this.apiUrl, formData).then((resp) => {
+            this.axios.post(this.apiUrl, formData).then((resp) => {
                 this.relist();
             }).catch((error) => {
                 handleAxiosError(error);

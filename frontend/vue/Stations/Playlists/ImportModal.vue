@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 
 export default {
@@ -53,7 +52,7 @@ export default {
             let formData = new FormData();
             formData.append('playlist_file', this.playlistFile);
 
-            axios.post(this.importPlaylistUrl, formData).then((resp) => {
+            this.axios.post(this.importPlaylistUrl, formData).then((resp) => {
                 if (resp.data.success) {
                     notify('<b>' + resp.data.message + '</b>', 'success');
                 } else {

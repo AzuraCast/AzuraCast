@@ -62,7 +62,6 @@
 <script>
 import DataTable from '../../Common/DataTable';
 import EditModal from './PodcastEditModal';
-import axios from 'axios';
 import AlbumArt from '../../Common/AlbumArt';
 import handleAxiosError from '../../Function/handleAxiosError';
 
@@ -139,7 +138,7 @@ export default {
                 focusCancel: true
             }).then((result) => {
                 if (result.value) {
-                    axios.delete(url).then((resp) => {
+                    this.axios.delete(url).then((resp) => {
                         notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.relist();

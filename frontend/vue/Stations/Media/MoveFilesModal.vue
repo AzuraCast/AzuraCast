@@ -42,7 +42,6 @@
 </template>
 <script>
 import DataTable from '../../Common/DataTable.vue';
-import axios from 'axios';
 import _ from 'lodash';
 import Icon from '../../Common/Icon';
 import handleAxiosError from '../../Function/handleAxiosError';
@@ -79,7 +78,7 @@ export default {
             this.$refs.modal.hide();
         },
         doMove () {
-            (this.selectedItems.all.length) && axios.put(this.batchUrl, {
+            (this.selectedItems.all.length) && this.axios.put(this.batchUrl, {
                 'do': 'move',
                 'currentDirectory': this.currentDirectory,
                 'directory': this.destinationDirectory,

@@ -2,6 +2,8 @@
 
 use App\Environment;
 use App\Http\ServerRequest;
+use App\Middleware\Auth\ApiAuth;
+use App\Session\Csrf;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -40,19 +42,29 @@ return [
         ],
     ],
 
-    'vue-translations' => [
+    'vue-base' => [
         'order' => 4,
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/VueTranslations.js',
+                    'src' => 'dist/VueBase.js',
                 ],
             ],
         ],
         'inline' => [
             'js' => [
                 function (Request $request) {
-                    return 'VueTranslations.default(App.locale);';
+                    $csrfJson = 'null';
+
+                    $csrf = $request->getAttribute(ServerRequest::ATTR_SESSION_CSRF);
+                    if ($csrf instanceof Csrf) {
+                        $csrfToken = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
+                        $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
+                    }
+
+                    return <<<JS
+                    VueBase.default(App.locale, ${csrfJson});
+                    JS;
                 },
             ],
         ],
@@ -76,7 +88,7 @@ return [
 
     'vue-component-common' => [
         'order' => 3,
-        'require' => ['vue', 'vue-translations'],
+        'require' => ['vue', 'vue-base'],
         'files' => [
             'js' => [
                 [

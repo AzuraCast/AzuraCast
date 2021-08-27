@@ -23,9 +23,8 @@
     </b-modal>
 </template>
 <script>
-import { validationMixin } from 'vuelidate';
-import { required } from 'vuelidate/lib/validators';
-import axios from 'axios';
+import {validationMixin} from 'vuelidate';
+import {required} from 'vuelidate/lib/validators';
 import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
@@ -35,7 +34,7 @@ export default {
         currentDirectory: String,
         mkdirUrl: String
     },
-    data () {
+    data() {
         return {
             newDirectory: null
         };
@@ -62,7 +61,7 @@ export default {
                 return;
             }
 
-            axios.post(this.mkdirUrl, {
+            this.axios.post(this.mkdirUrl, {
                 'currentDirectory': this.currentDirectory,
                 'name': this.newDirectory
             }).then((resp) => {

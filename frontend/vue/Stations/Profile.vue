@@ -38,19 +38,18 @@
 
 <script>
 import ProfileStreams from './Profile/StreamsPanel';
-import ProfileHeader, { profileHeaderProps } from './Profile/HeaderPanel';
-import ProfileNowPlaying, { profileNowPlayingProps } from './Profile/NowPlayingPanel';
+import ProfileHeader, {profileHeaderProps} from './Profile/HeaderPanel';
+import ProfileNowPlaying, {profileNowPlayingProps} from './Profile/NowPlayingPanel';
 import ProfileSchedule from './Profile/SchedulePanel';
-import ProfileRequests, { profileRequestsProps } from './Profile/RequestsPanel';
-import ProfileStreamers, { profileStreamersProps } from './Profile/StreamersPanel';
-import ProfilePublicPages, { profilePublicProps } from './Profile/PublicPagesPanel';
-import ProfileFrontend, { profileFrontendProps } from './Profile/FrontendPanel';
+import ProfileRequests, {profileRequestsProps} from './Profile/RequestsPanel';
+import ProfileStreamers, {profileStreamersProps} from './Profile/StreamersPanel';
+import ProfilePublicPages, {profilePublicProps} from './Profile/PublicPagesPanel';
+import ProfileFrontend, {profileFrontendProps} from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
-import ProfileBackend, { profileBackendProps } from './Profile/BackendPanel';
-import { profileEmbedModalProps } from './Profile/EmbedModal';
-import { BACKEND_NONE, FRONTEND_REMOTE } from '../Entity/RadioAdapters.js';
+import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
+import {profileEmbedModalProps} from './Profile/EmbedModal';
+import {BACKEND_NONE, FRONTEND_REMOTE} from '../Entity/RadioAdapters.js';
 import NowPlaying from '../Entity/NowPlaying';
-import axios from 'axios';
 
 export default {
     components: {
@@ -131,7 +130,7 @@ export default {
     },
     methods: {
         checkNowPlaying () {
-            axios.get(this.profileApiUri).then((response) => {
+            this.axios.get(this.profileApiUri).then((response) => {
                 let np = response.data;
                 np.loading = false;
                 this.np = np;

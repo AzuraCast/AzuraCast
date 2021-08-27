@@ -47,9 +47,8 @@
 <script>
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
-import axios from 'axios';
 import handleAxiosError from '../../Function/handleAxiosError';
-import { validationMixin } from 'vuelidate';
+import {validationMixin} from 'vuelidate';
 
 export default {
     name: 'CloneModal',
@@ -102,7 +101,7 @@ export default {
 
             this.error = null;
 
-            axios({
+            this.axios({
                 method: 'POST',
                 url: this.cloneUrl,
                 data: this.form

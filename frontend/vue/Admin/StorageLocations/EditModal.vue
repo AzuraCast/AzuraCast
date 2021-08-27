@@ -20,8 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { validationMixin } from 'vuelidate';
+import {validationMixin} from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
@@ -126,7 +125,7 @@ export default {
             let data = this.form;
             data.type = this.type;
 
-            axios({
+            this.axios({
                 method: (this.isEditMode)
                     ? 'PUT'
                     : 'POST',

@@ -628,26 +628,6 @@ class Settings implements Stringable
 
     /**
      * @OA\Property(
-     *     description="The result of the latest automated backup task.",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Attributes\AuditIgnore]
-    protected ?string $backup_last_result = null;
-
-    public function getBackupLastResult(): ?string
-    {
-        return $this->backup_last_result;
-    }
-
-    public function setBackupLastResult(?string $backupLastResult): void
-    {
-        $this->backup_last_result = $backupLastResult;
-    }
-
-    /**
-     * @OA\Property(
      *     description="The output of the latest automated backup task.",
      *     example=""
      * )

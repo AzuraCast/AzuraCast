@@ -77,7 +77,6 @@ class BackupsController extends AbstractLogViewerController
                 'backups' => $backups,
                 'is_enabled' => $settings->getBackupEnabled(),
                 'last_run' => $settings->getBackupLastRun(),
-                'last_result' => $settings->getBackupLastResult(),
                 'last_output' => $settings->getBackupLastOutput(),
                 'csrf' => $request->getCsrf()->generate($this->csrfNamespace),
             ]

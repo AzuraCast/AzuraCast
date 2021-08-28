@@ -45,8 +45,9 @@ class RunBackupTask extends AbstractTask
                 $message->storageLocationId
             );
 
+            $result_output = 'Exited with code ' . $result_code . ":\n" . $result_output;
+
             $settings = $this->settingsRepo->readSettings();
-            $settings->setBackupLastResult($result_code);
             $settings->setBackupLastOutput($result_output);
             $this->settingsRepo->writeSettings($settings);
         }

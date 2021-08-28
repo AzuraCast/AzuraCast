@@ -56,7 +56,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         if ($exception instanceof Exception) {
             $this->loggerLevel = $exception->getLoggerLevel();
         } elseif ($exception instanceof HttpException) {
-            $this->loggerLevel = LogLevel::WARNING;
+            $this->loggerLevel = LogLevel::INFO;
         }
 
         $this->showDetailed = (!$this->environment->isProduction() && !in_array(

@@ -24,6 +24,11 @@ $(function () {
 
                 $.ajax({
                     type: 'POST',
+                    headers: {
+                        "X-API-CSRF": <?=$this->escapeJs(
+                            $csrf->generate(\App\Middleware\Auth\ApiAuth::API_CSRF_NAMESPACE)
+                        ) ?>
+                    },
                     url: btn.attr('href'),
                     success: function (data) {
                         // Only restart if the user isn't on a form page

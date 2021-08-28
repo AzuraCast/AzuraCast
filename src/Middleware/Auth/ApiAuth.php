@@ -51,11 +51,6 @@ class ApiAuth extends AbstractAuth
         }
 
         // Fallback to session login if available.
-        $csrfKey = $request->getHeaderLine('X-API-CSRF');
-        if (empty($csrfKey) && !$this->environment->isTesting()) {
-            return null;
-        }
-
         $auth = new Auth(
             userRepo:    $this->userRepo,
             session:     $request->getAttribute(ServerRequest::ATTR_SESSION),
@@ -63,12 +58,22 @@ class ApiAuth extends AbstractAuth
         );
 
         if ($auth->isLoggedIn()) {
+            $user = $auth->getLoggedInUser();
+            if ('GET' === $request->getMethod()) {
+                return $user;
+            }
+
+            $csrfKey = $request->getHeaderLine('X-API-CSRF');
+            if (empty($csrfKey) && !$this->environment->isTesting()) {
+                return null;
+            }
+
             $csrf = $request->getAttribute(ServerRequest::ATTR_SESSION_CSRF);
 
             if ($csrf instanceof Csrf) {
                 try {
                     $csrf->verify($csrfKey, self::API_CSRF_NAMESPACE);
-                    return $auth->getLoggedInUser();
+                    return $user;
                 } catch (CsrfValidationException) {
                 }
             }

@@ -17,6 +17,7 @@ class Customization
     public const THEME_BROWSER = 'browser';
     public const THEME_LIGHT = 'light';
     public const THEME_DARK = 'dark';
+    public const THEMES = [self::THEME_BROWSER, self::THEME_LIGHT, self::THEME_DARK];
 
     protected ?Entity\User $user = null;
 
@@ -45,7 +46,7 @@ class Customization
         // Register current theme
         $queryParams = $request->getQueryParams();
 
-        if (!empty($queryParams['theme'])) {
+        if (!empty($queryParams['theme']) && in_array($queryParams['theme'], self::THEMES, true)) {
             $this->publicTheme = $this->theme = $queryParams['theme'];
         } else {
             $this->publicTheme = $this->settings->getPublicTheme() ?? $this->publicTheme;

@@ -22,7 +22,7 @@ release channel, you can take advantage of these new features and fixes.
   identifier; if you're calling the API externally, you should _always_ use a generated API key and not count on the
   user's existing session.
 
--
+- A minor cross-site scripting (XSS) vulnerability on public pages has been resolved.
 
 ---
 

@@ -15,10 +15,14 @@ export default function (lang, csrf) {
     silent: true
   });
 
-  Vue.config.language = lang;
+  if (typeof App.locale !== 'undefined') {
+    Vue.config.language = App.locale;
+  }
 
   // Configure auto-CSRF on requests
-  axios.defaults.headers.common['X-API-CSRF'] = csrf;
+  if (typeof App.api_csrf !== 'undefined') {
+    axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
+  }
 
   Vue.use(VueAxios, axios);
 }

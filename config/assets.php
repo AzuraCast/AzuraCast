@@ -43,7 +43,7 @@ return [
     ],
 
     'vue-base' => [
-        'order' => 4,
+        'order' => 5,
         'files' => [
             'js' => [
                 [
@@ -53,25 +53,13 @@ return [
         ],
         'inline' => [
             'js' => [
-                function (Request $request) {
-                    $csrfJson = 'null';
-
-                    $csrf = $request->getAttribute(ServerRequest::ATTR_SESSION_CSRF);
-                    if ($csrf instanceof Csrf) {
-                        $csrfToken = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
-                        $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
-                    }
-
-                    return <<<JS
-                    VueBase.default(App.locale, ${csrfJson});
-                    JS;
-                },
+                'VueBase.default()',
             ],
         ],
     ],
 
     'bootstrap-vue' => [
-        'order' => 3,
+        'order' => 4,
         'files' => [
             'js' => [
                 [
@@ -87,7 +75,7 @@ return [
     ],
 
     'vue-component-common' => [
-        'order' => 3,
+        'order' => 4,
         'require' => ['vue', 'vue-base'],
         'files' => [
             'js' => [
@@ -181,9 +169,10 @@ return [
                         'locale' => $locale,
                         'locale_short' => $localeShort,
                         'locale_with_dashes' => $localeWithDashes,
+                        'api_csrf' => null,
                     ];
 
-                    return 'let App = ' . json_encode($app) . ';';
+                    return 'let App = ' . json_encode($app, JSON_THROW_ON_ERROR) . ';';
                 },
                 <<<'JS'
                     let currentTheme = document.documentElement.getAttribute('data-theme');
@@ -209,6 +198,24 @@ return [
                     'src' => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
                 ],
+            ],
+        ],
+    ],
+
+    // Require this if using any non-GET API calls.
+    'uses-api' => [
+        'order' => 3,
+        'inline' => [
+            'js' => [
+                function (Request $request) {
+                    $csrfJson = 'null';
+                    $csrf = $request->getAttribute(ServerRequest::ATTR_SESSION_CSRF);
+                    if ($csrf instanceof Csrf) {
+                        $csrfToken = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
+                        $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
+                    }
+                    return "App.api_csrf = ${csrfJson};";
+                },
             ],
         ],
     ],
@@ -469,7 +476,7 @@ return [
 
     'Vue_Dashboard' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'chartjs'],
         // Auto-managed by Assets
     ],
 
@@ -487,13 +494,13 @@ return [
 
     'Vue_AdminBranding' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'codemirror'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox', 'codemirror'],
         // Auto-managed by Assets
     ],
 
     'Vue_AdminStorageLocations' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
@@ -538,61 +545,61 @@ return [
 
     'Vue_StationsMedia' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsMounts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_timezone'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcastEpisodes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsProfile' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment', 'fancybox'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsQueue' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsRemotes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsOverview' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'chartjs'],
         // Auto-managed by Assets
     ],
 ];

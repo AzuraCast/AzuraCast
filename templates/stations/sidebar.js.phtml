@@ -25,9 +25,7 @@ $(function () {
                 $.ajax({
                     type: 'POST',
                     headers: {
-                        "X-API-CSRF": <?=$this->escapeJs(
-                            $csrf->generate(\App\Middleware\Auth\ApiAuth::API_CSRF_NAMESPACE)
-                        ) ?>
+                        "X-API-CSRF": App.api_csrf
                     },
                     url: btn.attr('href'),
                     success: function (data) {

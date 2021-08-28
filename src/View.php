@@ -127,7 +127,6 @@ class View extends Engine
                     'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
                     'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
                     'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
-                    'csrf' => $request->getAttribute(ServerRequest::ATTR_SESSION_CSRF),
                     'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
                     'user' => $request->getAttribute(ServerRequest::ATTR_USER),
                 ]

@@ -7,6 +7,7 @@
 $assets
     ->load('moment')
     ->load('moment_timezone')
+    ->load('uses-api')
     ->addInlineJs($this->fetch('stations/sidebar.js', ['station' => $station]), 95);
 ?>
 

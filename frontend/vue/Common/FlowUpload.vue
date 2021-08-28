@@ -68,7 +68,7 @@ export default {
             singleFile: !this.allowMultiple,
             headers: {
                 'Accept': 'application/json',
-                'X-API-CSRF': this.axios.defaults.headers.common['X-API-CSRF']
+                'X-API-CSRF': App.api_csrf
             },
             withCredentials: true,
             allowDuplicateUploads: true,

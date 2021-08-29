@@ -11,9 +11,9 @@ on :
       - 'update.sh'
       - 'util/ansible/**'
     branches :
-      - ci-testing
       - main
       - stable
+      - 'test/*'
     tags :
       - '*'
   schedule :

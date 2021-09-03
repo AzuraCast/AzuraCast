@@ -1,8 +1,14 @@
 {
     "name": "azuracast/azuracast",
+    "type": "project",
     "description": "The AzuraCast self-hosted web radio station management suite.",
     "license": "Apache-2.0",
-    "type": "project",
+    "authors": [
+        {
+            "name": "Buster Neece",
+            "email": "buster@busterneece.com"
+        }
+    ],
     "require": {
         "php": "^8.0",
         "ext-PDO": "*",
@@ -84,6 +90,20 @@
         "wikimedia/composer-merge-plugin": "dev-master",
         "zircote/swagger-php": "^3"
     },
+    "replace": {
+        "symfony/polyfill-iconv": "1.99",
+        "symfony/polyfill-intl-grapheme": "1.99",
+        "symfony/polyfill-intl-normalizer": "1.99",
+        "symfony/polyfill-mbstring": "1.99",
+        "symfony/polyfill-php71": "1.99",
+        "symfony/polyfill-php72": "1.99",
+        "symfony/polyfill-php73": "1.99",
+        "symfony/polyfill-php74": "1.99",
+        "symfony/polyfill-php80": "1.99"
+    },
+    "conflict": {
+        "gettext/gettext": ">=5"
+    },
     "require-dev": {
         "codeception/codeception": "^4.0",
         "codeception/module-asserts": "^1.1",
@@ -91,6 +111,7 @@
         "codeception/module-doctrine2": "^1.0",
         "codeception/module-phpbrowser": "^1.0",
         "codeception/module-rest": "^1.0",
+        "ergebnis/composer-normalize": "^2.15",
         "filp/whoops": "^2",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mockery/mockery": "^1.0",
@@ -106,74 +127,54 @@
         "squizlabs/php_codesniffer": "^3.5",
         "symfony/var-dumper": "^5.1"
     },
-    "conflict": {
-        "gettext/gettext": ">=5"
+    "config": {
+        "discard-changes": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
-    "replace": {
-        "symfony/polyfill-php71": "1.99",
-        "symfony/polyfill-php72": "1.99",
-        "symfony/polyfill-php73": "1.99",
-        "symfony/polyfill-php74": "1.99",
-        "symfony/polyfill-php80": "1.99",
-        "symfony/polyfill-iconv": "1.99",
-        "symfony/polyfill-intl-grapheme": "1.99",
-        "symfony/polyfill-intl-normalizer": "1.99",
-        "symfony/polyfill-mbstring": "1.99"
+    "extra": {
+        "merge-plugin": {
+            "ignore-duplicates": false,
+            "include": [
+                "plugins/*/composer.json"
+            ],
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false,
+            "merge-scripts": false,
+            "recurse": true,
+            "replace": true
+        }
     },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "bin": [
+        "bin/console"
+    ],
     "scripts": {
+        "ci-import-locales": [
+            "bin/console locale:import"
+        ],
         "cleanup-and-test": [
             "@phpcbf",
             "@dev-test"
         ],
+        "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
+        "codeception-no-coverage": "codecept run --no-interaction",
         "dev-test": [
             "@phplint",
             "@phpstan",
             "@phpcs",
             "@codeception-no-coverage"
         ],
-        "phplint": "parallel-lint . --exclude vendor",
-        "phpstan": "phpstan analyze --memory-limit=-1",
-        "phpcs": "phpcs",
         "phpcbf": "phpcbf",
-        "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
-        "codeception-no-coverage": "codecept run --no-interaction",
-        "ci-import-locales": [
-            "bin/console locale:import"
-        ]
-    },
-    "authors": [
-        {
-            "name": "Buster Neece",
-            "email": "buster@busterneece.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "App\\": "src"
-        }
-    },
-    "bin": [
-        "bin/console"
-    ],
-    "config": {
-        "preferred-install": "dist",
-        "discard-changes": true,
-        "sort-packages": true
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev",
-    "extra": {
-        "merge-plugin": {
-            "include": [
-                "plugins/*/composer.json"
-            ],
-            "recurse": true,
-            "replace": true,
-            "ignore-duplicates": false,
-            "merge-dev": true,
-            "merge-extra": false,
-            "merge-extra-deep": false,
-            "merge-scripts": false
-        }
+        "phpcs": "phpcs",
+        "phplint": "parallel-lint . --exclude vendor",
+        "phpstan": "phpstan analyze --memory-limit=-1"
     }
 }

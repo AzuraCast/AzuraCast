@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47b9920342b23a86135e11644f663a6c",
+    "content-hash": "4167349d3d28c860b126fdfb041d5eb6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -10428,6 +10428,226 @@
             "time": "2020-12-07T18:04:37+00:00"
         },
         {
+            "name": "ergebnis/composer-normalize",
+            "version": "2.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ergebnis/composer-normalize.git",
+                "reference": "d469a15b916441959446d52a0f5d3fc9f7720317"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/d469a15b916441959446d52a0f5d3fc9f7720317",
+                "reference": "d469a15b916441959446d52a0f5d3fc9f7720317",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1.0 || ^2.0.0",
+                "ergebnis/json-normalizer": "^1.0.3",
+                "ergebnis/json-printer": "^3.1.1",
+                "justinrainbow/json-schema": "^5.2.10",
+                "localheinz/diff": "^1.1.1",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.10.22 || ^2.0.13",
+                "ergebnis/license": "^1.1.0",
+                "ergebnis/php-cs-fixer-config": "^2.14.0",
+                "ergebnis/phpstan-rules": "~0.15.3",
+                "ergebnis/test-util": "^1.5.0",
+                "phpstan/extension-installer": "^1.1.0",
+                "phpstan/phpstan": "~0.12.89",
+                "phpstan/phpstan-deprecation-rules": "~0.12.6",
+                "phpstan/phpstan-phpunit": "~0.12.19",
+                "phpstan/phpstan-strict-rules": "~0.12.9",
+                "phpunit/phpunit": "^8.5.16",
+                "psalm/plugin-phpunit": "~0.16.0",
+                "symfony/filesystem": "^5.3.0",
+                "vimeo/psalm": "^4.7.3"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Ergebnis\\Composer\\Normalize\\NormalizePlugin",
+                "composer-normalize": {
+                    "indent-size": 2,
+                    "indent-style": "space"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ergebnis\\Composer\\Normalize\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "Provides a composer plugin for normalizing composer.json.",
+            "homepage": "https://github.com/ergebnis/composer-normalize",
+            "keywords": [
+                "composer",
+                "normalize",
+                "normalizer",
+                "plugin"
+            ],
+            "support": {
+                "issues": "https://github.com/ergebnis/composer-normalize/issues",
+                "source": "https://github.com/ergebnis/composer-normalize"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/localheinz",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-06-15T08:06:45+00:00"
+        },
+        {
+            "name": "ergebnis/json-normalizer",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ergebnis/json-normalizer.git",
+                "reference": "4a7f064ce34d5a2e382564565cdd433dbc5b9494"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ergebnis/json-normalizer/zipball/4a7f064ce34d5a2e382564565cdd433dbc5b9494",
+                "reference": "4a7f064ce34d5a2e382564565cdd433dbc5b9494",
+                "shasum": ""
+            },
+            "require": {
+                "ergebnis/json-printer": "^3.1.1",
+                "ext-json": "*",
+                "justinrainbow/json-schema": "^5.2.10",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "ergebnis/license": "^1.1.0",
+                "ergebnis/php-cs-fixer-config": "^2.10.0",
+                "ergebnis/phpstan-rules": "~0.15.3",
+                "ergebnis/test-util": "^1.4.0",
+                "infection/infection": "~0.15.3",
+                "jangregor/phpstan-prophecy": "~0.8.1",
+                "phpstan/extension-installer": "^1.1.0",
+                "phpstan/phpstan": "~0.12.80",
+                "phpstan/phpstan-deprecation-rules": "~0.12.6",
+                "phpstan/phpstan-phpunit": "~0.12.17",
+                "phpstan/phpstan-strict-rules": "~0.12.9",
+                "phpunit/phpunit": "^8.5.14",
+                "psalm/plugin-phpunit": "~0.12.2",
+                "vimeo/psalm": "^3.18"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ergebnis\\Json\\Normalizer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "Provides generic and vendor-specific normalizers for normalizing JSON documents.",
+            "homepage": "https://github.com/ergebnis/json-normalizer",
+            "keywords": [
+                "json",
+                "normalizer"
+            ],
+            "support": {
+                "issues": "https://github.com/ergebnis/json-normalizer/issues",
+                "source": "https://github.com/ergebnis/json-normalizer"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/localheinz",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-03-06T13:33:57+00:00"
+        },
+        {
+            "name": "ergebnis/json-printer",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ergebnis/json-printer.git",
+                "reference": "e4190dadd9937a77d8afcaf2b6c42a528ab367d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ergebnis/json-printer/zipball/e4190dadd9937a77d8afcaf2b6c42a528ab367d6",
+                "reference": "e4190dadd9937a77d8afcaf2b6c42a528ab367d6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "ergebnis/license": "^1.0.0",
+                "ergebnis/php-cs-fixer-config": "^2.2.1",
+                "ergebnis/phpstan-rules": "~0.15.2",
+                "ergebnis/test-util": "^1.1.0",
+                "infection/infection": "~0.15.3",
+                "phpstan/extension-installer": "^1.0.4",
+                "phpstan/phpstan": "~0.12.40",
+                "phpstan/phpstan-deprecation-rules": "~0.12.5",
+                "phpstan/phpstan-phpunit": "~0.12.16",
+                "phpstan/phpstan-strict-rules": "~0.12.4",
+                "phpunit/phpunit": "^8.5.8",
+                "psalm/plugin-phpunit": "~0.11.0",
+                "vimeo/psalm": "^3.14.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ergebnis\\Json\\Printer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "Provides a JSON printer, allowing for flexible indentation.",
+            "homepage": "https://github.com/ergebnis/json-printer",
+            "keywords": [
+                "formatter",
+                "json",
+                "printer"
+            ],
+            "support": {
+                "issues": "https://github.com/ergebnis/json-printer/issues",
+                "source": "https://github.com/ergebnis/json-printer"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/localheinz",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-08-30T12:17:03+00:00"
+        },
+        {
             "name": "filp/whoops",
             "version": "2.14.0",
             "source": {
@@ -10660,6 +10880,66 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/5.2.11"
             },
             "time": "2021-07-22T09:24:00+00:00"
+        },
+        {
+            "name": "localheinz/diff",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/localheinz/diff.git",
+                "reference": "851bb20ea8358c86f677f5f111c4ab031b1c764c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/localheinz/diff/zipball/851bb20ea8358c86f677f5f111c4ab031b1c764c",
+                "reference": "851bb20ea8358c86f677f5f111c4ab031b1c764c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5 || ^8.0",
+                "symfony/process": "^4.2 || ^5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Kore Nordmann",
+                    "email": "mail@kore-nordmann.de"
+                }
+            ],
+            "description": "Fork of sebastian/diff for use with ergebnis/composer-normalize",
+            "homepage": "https://github.com/localheinz/diff",
+            "keywords": [
+                "diff",
+                "udiff",
+                "unidiff",
+                "unified diff"
+            ],
+            "support": {
+                "source": "https://github.com/localheinz/diff/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-07-06T04:49:32+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -11903,6 +12183,7 @@
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
+                "akaunting/akaunting": "<2.1.13",
                 "alterphp/easyadmin-extension-bundle": ">=1.2,<1.2.11|>=1.3,<1.3.1",
                 "amazing/media2click": ">=1,<1.3.3",
                 "amphp/artax": "<1.0.6|>=2,<2.0.6",
@@ -11914,19 +12195,23 @@
                 "bagisto/bagisto": "<0.1.5",
                 "barrelstrength/sprout-base-email": "<1.2.7",
                 "barrelstrength/sprout-forms": "<3.9",
-                "baserproject/basercms": "<4.4.5",
+                "baserproject/basercms": "<=4.5",
+                "billz/raspap-webgui": "<=2.6.6",
                 "bk2k/bootstrap-package": ">=7.1,<7.1.2|>=8,<8.0.8|>=9,<9.0.4|>=9.1,<9.1.3|>=10,<10.0.10|>=11,<11.0.3",
                 "bolt/bolt": "<3.7.2",
                 "bolt/core": "<4.1.13",
                 "brightlocal/phpwhois": "<=4.2.5",
                 "buddypress/buddypress": "<5.1.2",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
+                "cachethq/cachet": "<2.5.1",
                 "cakephp/cakephp": ">=1.3,<1.3.18|>=2,<2.4.99|>=2.5,<2.5.99|>=2.6,<2.6.12|>=2.7,<2.7.6|>=3,<3.5.18|>=3.6,<3.6.15|>=3.7,<3.7.7",
                 "cart2quote/module-quotation": ">=4.1.6,<=4.4.5|>=5,<5.4.4",
                 "cartalyst/sentry": "<=2.1.6",
                 "centreon/centreon": "<20.10.7",
                 "cesnet/simplesamlphp-module-proxystatistics": "<3.1",
+                "codeception/codeception": "<3.1.3|>=4,<4.1.22",
                 "codeigniter/framework": "<=3.0.6",
+                "codiad/codiad": "<=2.8.4",
                 "composer/composer": "<1.10.22|>=2-alpha.1,<2.0.13",
                 "contao-components/mediaelement": ">=2.14.2,<2.21.1",
                 "contao/core": ">=2,<3.5.39",
@@ -11947,11 +12232,12 @@
                 "doctrine/mongodb-odm": ">=1,<1.0.2",
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1|>=2.8.3,<2.8.4",
-                "dolibarr/dolibarr": "<14",
+                "dolibarr/dolibarr": "<14|>= 3.3.beta1, < 13.0.2",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=7,<7.80|>=8,<8.9.14|>=9,<9.0.12|>=9.1,<9.1.7",
-                "drupal/drupal": ">=7,<7.80|>=8,<8.9.14|>=9,<9.0.12|>=9.1,<9.1.7",
+                "drupal/core": ">=7,<7.80|>=8,<8.9.16|>=9,<9.1.12|>=9.2,<9.2.4",
+                "drupal/drupal": ">=7,<7.80|>=8,<8.9.16|>=9,<9.1.12|>=9.2,<9.2.4",
                 "dweeves/magmi": "<=0.7.24",
+                "ecodev/newsletter": "<=4",
                 "endroid/qr-code-bundle": "<3.4.2",
                 "enshrined/svg-sanitize": "<0.13.1",
                 "erusev/parsedown": "<1.7.2",
@@ -11973,6 +12259,7 @@
                 "ezyang/htmlpurifier": "<4.1.1",
                 "facade/ignition": "<1.16.14|>=2,<2.4.2|>=2.5,<2.5.2",
                 "feehi/cms": "<=2.1.1",
+                "feehi/feehicms": "<=0.1.3",
                 "firebase/php-jwt": "<2",
                 "flarum/core": ">=1,<=1.0.1",
                 "flarum/sticky": ">=0.1-beta.14,<=0.1-beta.15",
@@ -11994,14 +12281,16 @@
                 "gos/web-socket-bundle": "<1.10.4|>=2,<2.6.1|>=3,<3.3",
                 "gree/jose": "<=2.2",
                 "gregwar/rst": "<1.0.3",
-                "grumpydictator/firefly-iii": "<5.5.13",
+                "grumpydictator/firefly-iii": "<5.6",
                 "guzzlehttp/guzzle": ">=4-rc.2,<4.2.4|>=5,<5.3.1|>=6,<6.2.1",
+                "helloxz/imgurl": "<=2.31",
                 "illuminate/auth": ">=4,<4.0.99|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.10",
                 "illuminate/cookie": ">=4,<=4.0.11|>=4.1,<=4.1.99999|>=4.2,<=4.2.99999|>=5,<=5.0.99999|>=5.1,<=5.1.99999|>=5.2,<=5.2.99999|>=5.3,<=5.3.99999|>=5.4,<=5.4.99999|>=5.5,<=5.5.49|>=5.6,<=5.6.99999|>=5.7,<=5.7.99999|>=5.8,<=5.8.99999|>=6,<6.18.31|>=7,<7.22.4",
                 "illuminate/database": "<6.20.26|>=7,<8.40",
                 "illuminate/encryption": ">=4,<=4.0.11|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.40|>=5.6,<5.6.15",
                 "illuminate/view": ">=7,<7.1.2",
                 "impresscms/impresscms": "<=1.4.2",
+                "in2code/femanager": "<5.5.1|>=6,<6.3.1",
                 "intelliants/subrion": "<=4.2.1",
                 "ivankristianto/phpwhois": "<=4.3",
                 "james-heinrich/getid3": "<1.9.9",
@@ -12022,14 +12311,16 @@
                 "lexik/jwt-authentication-bundle": "<2.10.7|>=2.11,<2.11.3",
                 "librenms/librenms": "<21.1",
                 "livewire/livewire": ">2.2.4,<2.2.6",
+                "lms/routes": "<2.1.1",
                 "localizationteam/l10nmgr": "<7.4|>=8,<8.7|>=9,<9.2",
                 "magento/community-edition": ">=2,<2.2.10|>=2.3,<2.3.3",
                 "magento/magento1ce": "<1.9.4.3",
                 "magento/magento1ee": ">=1,<1.14.4.3",
                 "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2-p.2",
                 "marcwillmann/turn": "<0.3.3",
-                "mautic/core": "<3.3.2|= 2.13.1",
+                "mautic/core": "<4|= 2.13.1",
                 "mediawiki/core": ">=1.27,<1.27.6|>=1.29,<1.29.3|>=1.30,<1.30.2|>=1.31,<1.31.9|>=1.32,<1.32.6|>=1.32.99,<1.33.3|>=1.33.99,<1.34.3|>=1.34.99,<1.35",
+                "miniorange/miniorange-saml": "<1.4.3",
                 "mittwald/typo3_forum": "<1.2.1",
                 "monolog/monolog": ">=1.8,<1.12",
                 "moodle/moodle": "<3.5.17|>=3.7,<3.7.9|>=3.8,<3.8.8|>=3.9,<3.9.5|>=3.10,<3.10.2",
@@ -12048,11 +12339,12 @@
                 "october/cms": "= 1.1.1|= 1.0.471|= 1.0.469|>=1.0.319,<1.0.469",
                 "october/october": ">=1.0.319,<1.0.466",
                 "october/rain": "<1.0.472|>=1.1,<1.1.2",
+                "october/system": "<1.0.472|>=1.1.1,<1.1.5",
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "opencart/opencart": "<=3.0.3.2",
                 "openid/php-openid": "<2.3",
-                "openmage/magento-lts": "<=19.4.12|>=20,<=20.0.8",
+                "openmage/magento-lts": "<19.4.15|>=20,<20.0.13",
                 "orchid/platform": ">=9,<9.4.4",
                 "oro/crm": ">=1.7,<1.7.4",
                 "oro/platform": ">=1.7,<1.7.4",
@@ -12065,7 +12357,7 @@
                 "pear/archive_tar": "<1.4.14",
                 "personnummer/personnummer": "<3.0.2",
                 "phanan/koel": "<5.1.4",
-                "phpfastcache/phpfastcache": ">=5,<5.0.13",
+                "phpfastcache/phpfastcache": "<6.1.5|>=7,<7.1.2|>=8,<8.0.7",
                 "phpmailer/phpmailer": "<6.5",
                 "phpmussel/phpmussel": ">=1,<1.6",
                 "phpmyadmin/phpmyadmin": "<4.9.6|>=5,<5.0.3",
@@ -12102,6 +12394,7 @@
                 "shopware/platform": "<=6.4.3",
                 "shopware/production": "<=6.3.5.2",
                 "shopware/shopware": "<=5.6.9",
+                "showdoc/showdoc": "<=2.9.8",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
                 "silverstripe/assets": ">=1,<1.4.7|>=1.5,<1.5.2",
                 "silverstripe/cms": "<4.3.6|>=4.4,<4.4.4",
@@ -12188,9 +12481,11 @@
                 "typo3fluid/fluid": ">=2,<2.0.8|>=2.1,<2.1.7|>=2.2,<2.2.4|>=2.3,<2.3.7|>=2.4,<2.4.4|>=2.5,<2.5.11|>=2.6,<2.6.10",
                 "ua-parser/uap-php": "<3.8",
                 "usmanhalalit/pixie": "<1.0.3|>=2,<2.0.2",
+                "vanilla/safecurl": "<0.9.2",
                 "verot/class.upload.php": "<=1.0.3|>=2,<=2.0.4",
                 "vrana/adminer": "<4.7.9",
                 "wallabag/tcpdf": "<6.2.22",
+                "webcoast/deferred-image-processing": "<1.0.2",
                 "wikimedia/parsoid": "<0.12.2",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "wp-cli/wp-cli": "<2.5",
@@ -12199,13 +12494,13 @@
                 "yiisoft/yii": ">=1.1.14,<1.1.15",
                 "yiisoft/yii2": "<2.0.38",
                 "yiisoft/yii2-bootstrap": "<2.0.4",
-                "yiisoft/yii2-dev": "<2.0.15",
+                "yiisoft/yii2-dev": "<2.0.43",
                 "yiisoft/yii2-elasticsearch": "<2.0.5",
                 "yiisoft/yii2-gii": "<2.0.4",
                 "yiisoft/yii2-jui": "<2.0.4",
                 "yiisoft/yii2-redis": "<2.0.8",
-                "yoast-seo-for-typo3/yoast_seo": "<7.2.1",
-                "yourls/yourls": "<1.7.4",
+                "yoast-seo-for-typo3/yoast_seo": "<7.2.3",
+                "yourls/yourls": "<=1.8.1",
                 "zendesk/zendesk_api_client_php": "<2.2.11",
                 "zendframework/zend-cache": ">=2.4,<2.4.8|>=2.5,<2.5.3",
                 "zendframework/zend-captcha": ">=2,<2.4.9|>=2.5,<2.5.2",
@@ -13122,6 +13417,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {

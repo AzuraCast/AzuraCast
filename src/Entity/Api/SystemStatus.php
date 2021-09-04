@@ -22,7 +22,7 @@ class SystemStatus
     /**
      * The current UNIX timestamp
      *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=1609480800)
      * @var int
      */
     public $timestamp;

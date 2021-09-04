@@ -271,7 +271,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when updates were last checked.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -604,7 +604,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when automated backup was last run.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -649,7 +649,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when setup was last completed.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -702,7 +702,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when the now playing sync task was last run.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -722,7 +722,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when the 60-second 'short' sync task was last run.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -742,7 +742,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when the 5-minute 'medium' sync task was last run.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -762,7 +762,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when the 1-hour 'long' sync task was last run.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]
@@ -856,7 +856,7 @@ class Settings implements Stringable
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when the Maxmind Geolite was last downloaded.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]

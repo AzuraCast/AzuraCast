@@ -31,7 +31,7 @@ use OpenApi\Annotations as OA;
  *     in="path",
  *     required=true,
  *     @OA\Schema(
- *         type="integer", format="int64"
+ *         anyOf={@OA\Schema(type="integer", format="int64"), @OA\Schema(type="string", format="string")}
  *     )
  * )
  *

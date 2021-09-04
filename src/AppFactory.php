@@ -128,9 +128,6 @@ class AppFactory
 
         self::applyPhpSettings($environment);
 
-        // Helper constants for annotations.
-        define('SAMPLE_TIMESTAMP', random_int(time() - 86400, time() + 86400));
-
         // Override DI definitions for settings.
         $diDefinitions[Environment::class] = $environment;
 

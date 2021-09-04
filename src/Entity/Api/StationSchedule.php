@@ -37,7 +37,7 @@ class StationSchedule
 
     /**
      * The start time of the schedule entry, in UNIX format.
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=1609480800)
      * @var int
      */
     public int $start_timestamp;
@@ -51,7 +51,7 @@ class StationSchedule
 
     /**
      * The end time of the schedule entry, in UNIX format.
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=1609480800)
      * @var int
      */
     public int $end_timestamp;

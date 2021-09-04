@@ -17,7 +17,7 @@ class StationQueue implements ResolvableUrlInterface
     /**
      * UNIX timestamp when playback is expected to start.
      *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=1609480800)
      * @var int
      */
     public int $cued_at = 0;

@@ -65,12 +65,12 @@ class User implements Stringable, IdentifiableEntityInterface
     #[Attributes\AuditIgnore]
     protected ?string $two_factor_secret = null;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    /** @OA\Property(example=1609480800) */
     #[ORM\Column]
     #[Attributes\AuditIgnore]
     protected int $created_at;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    /** @OA\Property(example=1609480800) */
     #[ORM\Column]
     #[Attributes\AuditIgnore]
     protected int $updated_at;

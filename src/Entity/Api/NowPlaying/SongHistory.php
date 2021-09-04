@@ -25,7 +25,7 @@ class SongHistory implements ResolvableUrlInterface
     /**
      * UNIX timestamp when playback started.
      *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=1609480800)
      * @var int
      */
     public int $played_at = 0;

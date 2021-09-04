@@ -120,7 +120,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     /**
      * @OA\Property(
      *     description="The UNIX timestamp when the database was last modified.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column(nullable: true)]
@@ -183,7 +183,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     /**
      * @OA\Property(
      *     description="The latest time (UNIX timestamp) when album art was updated.",
-     *     example=SAMPLE_TIMESTAMP
+     *     example=1609480800
      * )
      */
     #[ORM\Column]

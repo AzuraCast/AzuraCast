@@ -138,7 +138,7 @@ class RequestsController
      *     in="path",
      *     required=true,
      *     @OA\Schema(
-     *         type="integer", format="int64"
+     *         type="string"
      *     )
      *   ),
      *   @OA\Response(response=200, description="Success"),
@@ -148,11 +148,11 @@ class RequestsController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param mixed $media_id
+     * @param string $media_id
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    public function submitAction(ServerRequest $request, Response $response, mixed $media_id): ResponseInterface
+    public function submitAction(ServerRequest $request, Response $response, string $media_id): ResponseInterface
     {
         $station = $request->getStation();
 

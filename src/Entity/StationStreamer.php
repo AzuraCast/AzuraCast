@@ -71,7 +71,7 @@ class StationStreamer implements
     #[ORM\Column]
     protected bool $enforce_schedule = false;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    /** @OA\Property(example=1609480800) */
     #[ORM\Column(nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?int $reactivate_at = null;

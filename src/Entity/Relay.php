@@ -36,11 +36,11 @@ class Relay implements IdentifiableEntityInterface
     #[ORM\Column(type: 'array', nullable: true)]
     protected mixed $nowplaying;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    /** @OA\Property(example=1609480800) */
     #[ORM\Column]
     protected int $created_at;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    /** @OA\Property(example=1609480800) */
     #[ORM\Column]
     protected int $updated_at;
 

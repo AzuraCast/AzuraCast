@@ -121,6 +121,7 @@
         "phpstan/phpstan-doctrine": "^0.12",
         "phpunit/php-timer": "^5.0",
         "phpunit/phpunit": "^9.2",
+        "pyrech/composer-changelogs": "^1.7",
         "roave/security-advisories": "dev-latest",
         "slevomat/coding-standard": "^7",
         "softcreatr/jsonpath": "^0.7.2",

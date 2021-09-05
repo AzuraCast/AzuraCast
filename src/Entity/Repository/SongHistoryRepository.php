@@ -114,9 +114,9 @@ class SongHistoryRepository extends Repository
                 }
             }
 
-            $last_sh->setDeltaPositive($delta_positive);
-            $last_sh->setDeltaNegative($delta_negative);
-            $last_sh->setDeltaTotal($delta_total);
+            $last_sh->setDeltaPositive((int)$delta_positive);
+            $last_sh->setDeltaNegative((int)$delta_negative);
+            $last_sh->setDeltaTotal((int)$delta_total);
 
             $last_sh->setUniqueListeners(
                 $this->listenerRepository->getUniqueListeners(

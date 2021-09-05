@@ -96,6 +96,18 @@ class StationQueueRepository extends Repository
         return $this->getUpcomingQuery($station)->execute();
     }
 
+    public function clearUpcomingQueue(Entity\Station $station): void
+    {
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                AND sq.sent_to_autodj = 0
+            DQL
+        )->setParameter('station', $station)
+            ->execute();
+    }
+
     public function getUpcomingQuery(Entity\Station $station): Query
     {
         return $this->getUpcomingBaseQuery($station)->getQuery();

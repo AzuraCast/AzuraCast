@@ -240,6 +240,9 @@ return static function (RouteCollectorProxy $app) {
                             $group->get('', Controller\Api\Stations\QueueController::class . ':listAction')
                                 ->setName('api:stations:queue');
 
+                            $group->post('/clear', Controller\Api\Stations\QueueController::class . ':clearAction')
+                                ->setName('api:stations:queue:clear');
+
                             $group->get('/{id}', Controller\Api\Stations\QueueController::class . ':getAction')
                                 ->setName('api:stations:queue:record');
 

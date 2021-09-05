@@ -5,6 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- You can now clear the entire upcoming song queue with a single button click.
+
 ## Code Quality/Technical Changes
 
 - A number of security fixes are being incorporated into the software as of this version. See below for details.

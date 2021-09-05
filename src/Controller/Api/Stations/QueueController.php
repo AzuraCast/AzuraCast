@@ -134,4 +134,12 @@ class QueueController extends AbstractStationApiCrudController
 
         return $apiResponse;
     }
+
+    public function clearAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+        $this->queueRepo->clearUpcomingQueue($station);
+
+        return $response->withJson(Entity\Api\Status::deleted());
+    }
 }

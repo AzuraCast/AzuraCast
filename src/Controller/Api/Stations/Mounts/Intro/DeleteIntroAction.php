@@ -27,6 +27,6 @@ class DeleteIntroAction
 
         $mountRepo->clearIntro($mount);
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 }

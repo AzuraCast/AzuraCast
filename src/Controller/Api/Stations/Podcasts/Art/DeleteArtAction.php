@@ -37,11 +37,6 @@ class DeleteArtAction
         $em->persist($podcast);
         $em->flush();
 
-        return $response->withJson(
-            new Entity\Api\Status(
-                true,
-                __('Podcast artwork successfully cleared.')
-            )
-        );
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 }

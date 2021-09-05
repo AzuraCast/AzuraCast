@@ -38,6 +38,6 @@ class MakeDirectoryAction
                 ->withJson(new Entity\Api\Error(400, $e->getMessage()));
         }
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::created());
     }
 }

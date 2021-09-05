@@ -38,4 +38,24 @@ class Status
         $this->message = $message;
         $this->formatted_message = $formatted_message ?? $message;
     }
+
+    public static function success(): self
+    {
+        return new self(true, __('Changes saved successfully.'));
+    }
+
+    public static function created(): self
+    {
+        return new self(true, __('Record created successfully.'));
+    }
+
+    public static function updated(): self
+    {
+        return new self(true, __('Record updated successfully.'));
+    }
+
+    public static function deleted(): self
+    {
+        return new self(true, __('Record deleted successfully.'));
+    }
 }

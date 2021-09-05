@@ -21,6 +21,6 @@ class PutMeAction extends UsersController
         $user = $request->getUser();
         $this->editRecord((array)$request->getParsedBody(), $user);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
+        return $response->withJson(Entity\Api\Status::updated());
     }
 }

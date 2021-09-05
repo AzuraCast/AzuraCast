@@ -292,7 +292,7 @@ class FilesController extends AbstractStationApiCrudController
             }
         }
 
-        return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
+        return $response->withJson(Entity\Api\Status::updated());
     }
 
     protected function createRecord(array $data, Entity\Station $station): object

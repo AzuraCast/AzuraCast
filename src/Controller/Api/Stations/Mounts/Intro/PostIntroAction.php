@@ -34,7 +34,7 @@ class PostIntroAction
 
             $mountRepo->setIntro($mount, $flowResponse);
 
-            return $response->withJson(new Entity\Api\Status());
+            return $response->withJson(Entity\Api\Status::updated());
         }
 
         return $response->withJson($flowResponse);

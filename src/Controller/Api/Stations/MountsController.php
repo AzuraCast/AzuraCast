@@ -176,7 +176,7 @@ class MountsController extends AbstractStationApiCrudController
 
         $this->mountRepo->destroy($record);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 
     /**

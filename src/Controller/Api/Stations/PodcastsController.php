@@ -202,7 +202,7 @@ class PodcastsController extends AbstractApiCrudController
 
         $this->editRecord((array)$request->getParsedBody(), $podcast);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
+        return $response->withJson(Entity\Api\Status::updated());
     }
 
     public function deleteAction(
@@ -221,7 +221,7 @@ class PodcastsController extends AbstractApiCrudController
         $fsStation = new StationFilesystems($station);
         $this->podcastRepository->delete($record, $fsStation->getPodcastsFilesystem());
 
-        return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 
     /**

@@ -75,6 +75,6 @@ class SettingsController extends AbstractApiCrudController
         $settings = $this->settingsRepo->readSettings();
         $this->editRecord((array)$request->getParsedBody(), $settings);
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::success());
     }
 }

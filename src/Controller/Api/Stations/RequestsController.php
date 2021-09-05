@@ -180,7 +180,7 @@ class RequestsController
                 $request->getHeaderLine('User-Agent')
             );
 
-            return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
+            return $response->withJson(Entity\Api\Status::success());
         } catch (Exception $e) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Error(400, $e->getMessage()));

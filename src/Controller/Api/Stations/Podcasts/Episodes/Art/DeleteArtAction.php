@@ -31,6 +31,6 @@ class DeleteArtAction
         $em->persist($episode);
         $em->flush();
 
-        return $response->withJson(new Entity\Api\Status(true, __('Episode artwork successfully cleared.')));
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 }

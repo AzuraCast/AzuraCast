@@ -44,7 +44,7 @@ class PostMediaAction
                 $fsStation->getPodcastsFilesystem()
             );
 
-            return $response->withJson(new Entity\Api\Status());
+            return $response->withJson(Entity\Api\Status::updated());
         }
 
         return $response->withJson($flowResponse);

@@ -83,6 +83,6 @@ class CloneAction extends AbstractPlaylistsAction
 
         $this->em->flush();
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::created());
     }
 }

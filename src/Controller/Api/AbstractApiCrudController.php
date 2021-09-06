@@ -44,14 +44,14 @@ abstract class AbstractApiCrudController
     ): ResponseInterface {
         $paginator = Paginator::fromQuery($query, $request);
 
-        $is_bootgrid = $paginator->isFromBootgrid();
-        $is_internal = ('true' === $request->getParam('internal', 'false'));
+        $isBootgrid = $paginator->isFromBootgrid();
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
 
-        $postProcessor ??= function ($row) use ($is_bootgrid, $is_internal, $request) {
+        $postProcessor ??= function ($row) use ($isBootgrid, $isInternal, $request) {
             $return = $this->viewRecord($row, $request);
 
             // Older jQuery Bootgrid requests should be "flattened".
-            if ($is_bootgrid && !$is_internal) {
+            if ($isBootgrid && !$isInternal) {
                 return Utilities\Arrays::flattenArray($return, '_');
             }
 

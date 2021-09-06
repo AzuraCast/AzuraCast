@@ -7,6 +7,9 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 
+/**
+ * @extends Repository<Entity\StationPlaylistFolder>
+ */
 class StationPlaylistFolderRepository extends Repository
 {
     /**

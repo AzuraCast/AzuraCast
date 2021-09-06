@@ -14,6 +14,9 @@ use App\Radio\AutoDJ\Scheduler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\StationStreamer>
+ */
 class StationStreamerRepository extends Repository
 {
     protected Scheduler $scheduler;

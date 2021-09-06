@@ -10,6 +10,9 @@ use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use NowPlaying\Result\Client;
 
+/**
+ * @extends Repository<Entity\Listener>
+ */
 class ListenerRepository extends Repository
 {
     /**

@@ -10,6 +10,9 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 
+/**
+ * @extends Repository<Entity\Analytics>
+ */
 class AnalyticsRepository extends Repository
 {
     /**

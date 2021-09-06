@@ -6,10 +6,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity\Podcast;
-use App\Entity\PodcastEpisode;
-use App\Entity\Station;
-use App\Entity\StorageLocation;
+use App\Entity;
 use App\Environment;
 use Azura\Files\ExtendedFilesystemInterface;
 use Intervention\Image\Constraint;
@@ -18,6 +15,9 @@ use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\PodcastEpisode>
+ */
 class PodcastEpisodeRepository extends Repository
 {
     public function __construct(
@@ -30,7 +30,7 @@ class PodcastEpisodeRepository extends Repository
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
 
-    public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode
+    public function fetchEpisodeForStation(Entity\Station $station, string $episodeId): ?Entity\PodcastEpisode
     {
         return $this->fetchEpisodeForStorageLocation(
             $station->getPodcastsStorageLocation(),
@@ -39,9 +39,9 @@ class PodcastEpisodeRepository extends Repository
     }
 
     public function fetchEpisodeForStorageLocation(
-        StorageLocation $storageLocation,
+        Entity\StorageLocation $storageLocation,
         string $episodeId
-    ): ?PodcastEpisode {
+    ): ?Entity\PodcastEpisode {
         return $this->em->createQuery(
             <<<'DQL'
                 SELECT pe
@@ -56,13 +56,13 @@ class PodcastEpisodeRepository extends Repository
     }
 
     /**
-     * @return PodcastEpisode[]
+     * @return Entity\PodcastEpisode[]
      */
-    public function fetchPublishedEpisodesForPodcast(Podcast $podcast): array
+    public function fetchPublishedEpisodesForPodcast(Entity\Podcast $podcast): array
     {
         $episodes = $this->em->createQueryBuilder()
             ->select('pe')
-            ->from(PodcastEpisode::class, 'pe')
+            ->from(Entity\PodcastEpisode::class, 'pe')
             ->where('pe.podcast = :podcast')
             ->setParameter('podcast', $podcast)
             ->getQuery()
@@ -70,14 +70,14 @@ class PodcastEpisodeRepository extends Repository
 
         return array_filter(
             $episodes,
-            static function (PodcastEpisode $episode) {
+            static function (Entity\PodcastEpisode $episode) {
                 return $episode->isPublished();
             }
         );
     }
 
     public function writeEpisodeArt(
-        PodcastEpisode $episode,
+        Entity\PodcastEpisode $episode,
         string $rawArtworkString
     ): void {
         $episodeArtwork = $this->imageManager->make($rawArtworkString);
@@ -89,7 +89,7 @@ class PodcastEpisodeRepository extends Repository
             }
         );
 
-        $episodeArtworkPath = PodcastEpisode::getArtPath($episode->getIdRequired());
+        $episodeArtworkPath = Entity\PodcastEpisode::getArtPath($episode->getIdRequired());
         $episodeArtworkStream = $episodeArtwork->stream('jpg');
 
         $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
@@ -99,10 +99,10 @@ class PodcastEpisodeRepository extends Repository
     }
 
     public function removeEpisodeArt(
-        PodcastEpisode $episode,
+        Entity\PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $artworkPath = PodcastEpisode::getArtPath($episode->getIdRequired());
+        $artworkPath = Entity\PodcastEpisode::getArtPath($episode->getIdRequired());
 
         $fs ??= $episode->getPodcast()->getStorageLocation()->getFilesystem();
 
@@ -115,7 +115,7 @@ class PodcastEpisodeRepository extends Repository
     }
 
     public function delete(
-        PodcastEpisode $episode,
+        Entity\PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $episode->getPodcast()->getStorageLocation()->getFilesystem();

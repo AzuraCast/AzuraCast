@@ -17,6 +17,9 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\StationPlaylistMedia>
+ */
 class StationPlaylistMediaRepository extends Repository
 {
     protected StationQueueRepository $queueRepo;

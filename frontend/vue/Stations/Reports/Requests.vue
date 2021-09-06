@@ -2,66 +2,59 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_queue" v-translate>Upcoming Song Queue</h2>
+                <h2 class="card-title" key="lang_queue" v-translate>Song Requests</h2>
             </b-card-header>
             <div class="card-actions">
                 <b-button variant="outline-danger" @click="doClear()">
                     <icon icon="remove"></icon>
-                    <translate key="lang_btn_clear_requests">Clear Upcoming Song Queue</translate>
+                    <translate key="lang_btn_clear_requests">Clear Pending Requests</translate>
                 </b-button>
             </div>
             <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl">
+                <template #cell(timestamp)="row">
+                    {{ formatTime(row.item.timestamp) }}
+                </template>
+                <template #cell(played_at)="row">
+                    <span v-if="row.item.played_at === 0">
+                        <translate key="lang_item_not_played">Not Played</translate>
+                    </span>
+                    <span v-else>
+                        {{ formatTime(row.item.played_at) }}
+                    </span>
+                </template>
+                <template #cell(song_title)="row">
+                    <div v-if="row.item.track.title">
+                        <b>{{ row.item.track.title }}</b><br>
+                        {{ row.item.track.artist }}
+                    </div>
+                    <div v-else>
+                        {{ row.item.track.text }}
+                    </div>
+                </template>
+                <template #cell(ip)="row">
+                    {{ row.item.ip }}
+                </template>
                 <template #cell(actions)="row">
                     <b-button-group>
-                        <b-button v-if="row.item.log" size="sm" variant="primary"
-                                  @click.prevent="doShowLogs(row.item.log)">
-                            <translate key="lang_btn_logs">Logs</translate>
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        <b-button v-if="row.item.played_at === 0" size="sm" variant="danger"
+                                  @click.prevent="doDelete(row.item.links.delete)">
                             <translate key="lang_btn_delete">Delete</translate>
                         </b-button>
                     </b-button-group>
                 </template>
-                <template #cell(song_title)="row">
-                    <div v-if="row.item.autodj_custom_uri">
-                        {{ row.item.autodj_custom_uri }}
-                    </div>
-                    <div v-else-if="row.item.song.title">
-                        <b>{{ row.item.song.title }}</b><br>
-                        {{ row.item.song.artist }}
-                    </div>
-                    <div v-else>
-                        {{ row.item.song.text }}
-                    </div>
-                </template>
-                <template #cell(cued_at)="row">
-                    {{ formatTime(row.item.cued_at) }}
-                </template>
-                <template #cell(source)="row">
-                    <div v-if="row.item.is_request">
-                        <translate key="lang_source_request">Listener Request</translate>
-                    </div>
-                    <div v-else-if="row.item.playlist">
-                        <translate key="lang_source_playlist">Playlist: </translate>
-                        {{ row.item.playlist }}
-                    </div>
-                </template>
             </data-table>
         </b-card>
-
-        <queue-logs-modal ref="logs_modal"></queue-logs-modal>
     </div>
 </template>
 
 <script>
-import DataTable from '../Common/DataTable';
-import QueueLogsModal from './Queue/LogsModal';
-import handleAxiosError from '../Function/handleAxiosError';
-import Icon from "../Common/Icon";
+import DataTable from '../../Common/DataTable';
+import handleAxiosError from '../../Function/handleAxiosError';
+import Icon from "../../Common/Icon";
 
 export default {
-    name: 'StationQueue',
-    components: {QueueLogsModal, DataTable, Icon},
+    name: 'StationRequests',
+    components: {DataTable, Icon},
     props: {
         listUrl: String,
         clearUrl: String,
@@ -70,29 +63,27 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false},
+                {key: 'timestamp', label: this.$gettext('Date Requested'), sortable: false},
+                {key: 'played_at', label: this.$gettext('Date Played'), sortable: false},
                 {key: 'song_title', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
-                {key: 'cued_at', label: this.$gettext('Cued On'), sortable: false},
-                {key: 'source', label: this.$gettext('Source'), sortable: false}
+                {key: 'ip', label: this.$gettext('Requester IP'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false}
             ]
-        };
+        }
     },
-    mounted () {
+    mounted() {
         moment.relativeTimeThreshold('ss', 1);
         moment.relativeTimeRounding(function (value) {
             return Math.round(value * 10) / 10;
         });
     },
     methods: {
-        formatTime (time) {
+        formatTime(time) {
             return moment.unix(time).tz(this.stationTimeZone).format('lll');
         },
-        doShowLogs (logs) {
-            this.$refs.logs_modal.show(logs);
-        },
-        doDelete (url) {
+        doDelete(url) {
             let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete queue item?');
+            let buttonConfirmText = this.$gettext('Delete request?');
 
             Swal.fire({
                 title: buttonConfirmText,
@@ -114,7 +105,7 @@ export default {
         },
         doClear() {
             let buttonText = this.$gettext('Clear');
-            let buttonConfirmText = this.$gettext('Clear upcoming song queue?');
+            let buttonConfirmText = this.$gettext('Clear all pending requests?');
 
             Swal.fire({
                 title: buttonConfirmText,

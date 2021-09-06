@@ -13,6 +13,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends Repository<Entity\Settings>
+ */
 class SettingsRepository extends Repository
 {
     protected ValidatorInterface $validator;

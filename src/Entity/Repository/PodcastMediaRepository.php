@@ -6,8 +6,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity\PodcastEpisode;
-use App\Entity\PodcastMedia;
+use App\Entity;
 use App\Environment;
 use App\Exception\InvalidPodcastMediaFileException;
 use App\Media\MetadataManager;
@@ -17,6 +16,9 @@ use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\PodcastMedia>
+ */
 class PodcastMediaRepository extends Repository
 {
     public function __construct(
@@ -32,7 +34,7 @@ class PodcastMediaRepository extends Repository
     }
 
     public function upload(
-        PodcastEpisode $episode,
+        Entity\PodcastEpisode $episode,
         string $originalPath,
         string $uploadPath,
         ?ExtendedFilesystemInterface $fs = null
@@ -52,7 +54,7 @@ class PodcastMediaRepository extends Repository
         }
 
         $existingMedia = $episode->getMedia();
-        if ($existingMedia instanceof PodcastMedia) {
+        if ($existingMedia instanceof Entity\PodcastMedia) {
             $this->delete($existingMedia, $fs);
             $episode->setMedia(null);
         }
@@ -60,7 +62,7 @@ class PodcastMediaRepository extends Repository
         $ext = pathinfo($originalPath, PATHINFO_EXTENSION);
         $path = $podcast->getId() . '/' . $episode->getId() . '.' . $ext;
 
-        $podcastMedia = new PodcastMedia($storageLocation);
+        $podcastMedia = new Entity\PodcastMedia($storageLocation);
         $podcastMedia->setPath($path);
         $podcastMedia->setOriginalName(basename($originalPath));
 
@@ -89,7 +91,7 @@ class PodcastMediaRepository extends Repository
     }
 
     public function delete(
-        PodcastMedia $media,
+        Entity\PodcastMedia $media,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $media->getStorageLocation()->getFilesystem();

@@ -11,6 +11,9 @@ use Carbon\CarbonInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @extends Repository<Entity\StationQueue>
+ */
 class StationQueueRepository extends Repository
 {
     public function clearForMediaAndPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void

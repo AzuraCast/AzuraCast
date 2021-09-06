@@ -8,6 +8,9 @@ use App\Doctrine\Repository;
 use App\Entity;
 use Generator;
 
+/**
+ * @extends Repository<Entity\UnprocessableMedia>
+ */
 class UnprocessableMediaRepository extends Repository
 {
     public function findByPath(string $path, Entity\StorageLocation $storageLocation): ?Entity\UnprocessableMedia

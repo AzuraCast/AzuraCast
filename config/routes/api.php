@@ -243,10 +243,8 @@ return static function (RouteCollectorProxy $app) {
                             $group->post('/clear', Controller\Api\Stations\QueueController::class . ':clearAction')
                                 ->setName('api:stations:queue:clear');
 
-                            $group->get('/{id}', Controller\Api\Stations\QueueController::class . ':getAction')
+                            $group->delete('/{id}', Controller\Api\Stations\QueueController::class . ':deleteAction')
                                 ->setName('api:stations:queue:record');
-
-                            $group->delete('/{id}', Controller\Api\Stations\QueueController::class . ':deleteAction');
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
@@ -572,6 +570,26 @@ return static function (RouteCollectorProxy $app) {
                     $group->group(
                         '/reports',
                         function (RouteCollectorProxy $group) {
+                            $group->group(
+                                '/requests',
+                                function (RouteCollectorProxy $group) {
+                                    $group->get(
+                                        '',
+                                        Controller\Api\Stations\Reports\RequestsController::class . ':listAction'
+                                    )->setName('api:stations:reports:requests');
+
+                                    $group->post(
+                                        '/clear',
+                                        Controller\Api\Stations\Reports\RequestsController::class . ':clearAction'
+                                    )->setName('api:stations:reports:requests:clear');
+
+                                    $group->delete(
+                                        '/{request_id}',
+                                        Controller\Api\Stations\Reports\RequestsController::class . ':deleteAction'
+                                    )->setName('api:stations:reports:requests:delete');
+                                }
+                            )->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+
                             $group->get(
                                 '/overview/charts',
                                 Controller\Api\Stations\Reports\Overview\ChartsAction::class

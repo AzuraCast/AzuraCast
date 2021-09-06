@@ -109,20 +109,8 @@ return static function (RouteCollectorProxy $app) {
                     )
                         ->setName('stations:reports:soundexchange');
 
-                    $group->get('/requests', Controller\Stations\Reports\RequestsController::class)
+                    $group->get('/requests', Controller\Stations\Reports\RequestsAction::class)
                         ->setName('stations:reports:requests');
-
-                    $group->get(
-                        '/requests/delete/{request_id}/{csrf}',
-                        Controller\Stations\Reports\RequestsController::class . ':deleteAction'
-                    )
-                        ->setName('stations:reports:requests:delete');
-
-                    $group->get(
-                        '/requests/clear/{csrf}',
-                        Controller\Stations\Reports\RequestsController::class . ':clearAction'
-                    )
-                        ->setName('stations:reports:requests:clear');
                 }
             )->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 

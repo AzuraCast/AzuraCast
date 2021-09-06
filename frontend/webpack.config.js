@@ -24,6 +24,7 @@ module.exports = {
     StationsQueue: './vue/Stations/Queue.vue',
     StationsRemotes: './vue/Stations/Remotes.vue',
     StationsStreamers: './vue/Stations/Streamers.vue',
+    StationsReportsRequests: './vue/Stations/Reports/Requests.vue',
     StationsReportsOverview: './vue/Stations/Reports/Overview.vue'
   },
   resolve: {

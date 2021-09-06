@@ -7,6 +7,9 @@ namespace App\Entity\Repository;
 use App\Entity;
 use App\Security\SplitToken;
 
+/**
+ * @extends AbstractSplitTokenRepository<Entity\UserLoginToken>
+ */
 class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {
     public function createToken(Entity\User $user): SplitToken

@@ -12,6 +12,9 @@ use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\SongHistory>
+ */
 class SongHistoryRepository extends Repository
 {
     protected ListenerRepository $listenerRepository;

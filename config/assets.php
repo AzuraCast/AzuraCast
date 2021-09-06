@@ -597,6 +597,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_StationsReportsRequests' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_StationsReportsOverview' => [
         'order' => 10,
         'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'chartjs'],

@@ -1,4 +1,7 @@
 # This is a security.txt file according to https://github.com/EdOverflow/security-txt
 
-# Our security address
-Contact: help@azuracast.com
+# Our security policy
+Our detailed security policy can be found here: 
+https://github.com/AzuraCast/AzuraCast/security/policy
+
+For legitimate security flaws or bugs relating to the security of AzuraCast, contact security@azuracast.com

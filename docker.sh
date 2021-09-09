@@ -235,7 +235,7 @@ check-install-requirements() {
   echo "Operating system: "
   CURRENT_OS=$(uname -s)
   if [[ $CURRENT_OS == "Linux" ]]; then
-    echo "OK: ${CURRENT_OS}"
+    echo " OK: ${CURRENT_OS}"
   else
     echo "ERROR: You are running an unsupported OS (${CURRENT_OS})."
     echo "Automated AzuraCast installation is not currently supported on this"
@@ -246,7 +246,7 @@ check-install-requirements() {
   echo "Processor Architecture: "
   CURRENT_ARCH=$(uname -m)
   if [[ $CURRENT_ARCH == "x86_64" ]]; then
-    echo "OK: ${CURRENT_ARCH}"
+    echo " OK: ${CURRENT_ARCH}"
   else
     echo "ERROR: You are running an unsupported processor architecture (${CURRENT_ARCH})."
     echo "Automated AzuraCast installation is not currently supported on this "
@@ -259,7 +259,7 @@ check-install-requirements() {
   REQUIRED_COMMANDS=(curl awk)
   for COMMAND in "${REQUIRED_COMMANDS[@]}" ; do
     if [[ $(command -v "$COMMAND") ]]; then
-      echo "OK: ${COMMAND}"
+      echo " OK: ${COMMAND}"
     else
       echo "${COMMAND} does not appear to be installed."
       echo "Install ${COMMAND} using your host's package manager,"
@@ -271,7 +271,7 @@ check-install-requirements() {
   echo "Permissions: "
   if [[ $EUID -ne 0 ]]; then
     if [[ $(command -v sudo) ]]; then
-      echo "OK: Non-root user with sudo"
+      echo " OK: Non-root user with sudo"
     else
       echo "ERROR: You are not currently the root user, and "
       echo "'sudo' does not appear to be installed."
@@ -280,10 +280,10 @@ check-install-requirements() {
       exit 1
     fi
   else
-    echo "OK: Root user"
+    echo " OK: Root user"
   fi
 
-  echo "OK: All requirements met!"
+  echo " OK: All requirements met!"
 }
 
 install-docker() {

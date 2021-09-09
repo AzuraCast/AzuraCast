@@ -227,6 +227,65 @@ setup-release() {
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
+check-install-requirements() {
+  local CURRENT_OS CURRENT_ARCH REQUIRED_COMMANDS
+
+  echo "Checking installation requirements for AzuraCast..."
+
+  echo "Operating system: "
+  CURRENT_OS=$(uname -s)
+  if [[ $CURRENT_OS == "Linux" ]]; then
+    echo "OK: ${CURRENT_OS}"
+  else
+    echo "ERROR: You are running an unsupported OS (${CURRENT_OS})."
+    echo "Automated AzuraCast installation is not currently supported on this"
+    echo "operating system."
+    exit 1
+  fi
+
+  echo "Processor Architecture: "
+  CURRENT_ARCH=$(uname -m)
+  if [[ $CURRENT_ARCH == "x86_64" ]]; then
+    echo "OK: ${CURRENT_ARCH}"
+  else
+    echo "ERROR: You are running an unsupported processor architecture (${CURRENT_ARCH})."
+    echo "Automated AzuraCast installation is not currently supported on this "
+    echo "operating system."
+    exit 1
+  fi
+
+  echo "Installed Software: "
+
+  REQUIRED_COMMANDS=(curl awk)
+  for COMMAND in "${REQUIRED_COMMANDS[@]}" ; do
+    if [[ $(command -v "$COMMAND") ]]; then
+      echo "OK: ${COMMAND}"
+    else
+      echo "${COMMAND} does not appear to be installed."
+      echo "Install ${COMMAND} using your host's package manager,"
+      echo "then continue installing using this script."
+      exit 1
+    fi
+  done
+
+  echo "Permissions: "
+  if [[ $EUID -ne 0 ]]; then
+    if [[ $(command -v sudo) ]]; then
+      echo "OK: Non-root user with sudo"
+    else
+      echo "ERROR: You are not currently the root user, and "
+      echo "'sudo' does not appear to be installed."
+      echo "Install sudo using your host's package manager,"
+      echo "then continue installing using this script."
+      exit 1
+    fi
+  else
+    echo "OK: Root user"
+  fi
+
+  echo "OK: All requirements met!"
+}
+
 install-docker() {
   curl -fsSL get.docker.com -o get-docker.sh
   sh get-docker.sh
@@ -243,13 +302,6 @@ install-docker() {
 
 install-docker-compose() {
   if [[ $EUID -ne 0 ]]; then
-    if [[ ! $(command -v sudo) ]]; then
-      echo "Sudo does not appear to be installed."
-      echo "Install sudo using your host's package manager,"
-      echo "then continue installing using this script."
-      exit 1
-    fi
-
     sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
     sudo chmod +x /usr/local/bin/docker-compose
     sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
@@ -288,12 +340,7 @@ run-installer() {
 # Usage: ./docker.sh install
 #
 install() {
-  if [[ ! $(command -v curl) ]]; then
-    echo "cURL does not appear to be installed."
-    echo "Install curl using your host's package manager,"
-    echo "then continue installing using this script."
-    exit 1
-  fi
+  check-install-requirements
 
   if [[ $(command -v docker) && $(docker --version) ]]; then
     echo "Docker is already installed! Continuing..."
@@ -589,8 +636,8 @@ backup() {
 
   # Move from Docker volume to local filesystem
   docker run --rm -v "azuracast_backups:/backup_src" \
-      -v "$BACKUP_DIR:/backup_dest" \
-      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+  -v "$BACKUP_DIR:/backup_dest" \
+  busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 }
 
 #

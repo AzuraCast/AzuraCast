@@ -228,39 +228,41 @@ setup-release() {
 }
 
 check-install-requirements() {
-  local CURRENT_OS CURRENT_ARCH REQUIRED_COMMANDS
+  local CURRENT_OS CURRENT_ARCH REQUIRED_COMMANDS SCRIPT_DIR
 
   echo "Checking installation requirements for AzuraCast..."
 
-  echo "Operating system: "
   CURRENT_OS=$(uname -s)
   if [[ $CURRENT_OS == "Linux" ]]; then
-    echo " OK: ${CURRENT_OS}"
+    echo -en "\e[32m[PASS]\e[0m Operating System: ${CURRENT_OS}\n"
   else
-    echo "ERROR: You are running an unsupported OS (${CURRENT_OS})."
+    echo -en "\e[41m[FAIL]\e[0m Operating System: ${CURRENT_OS}\n"
+
+    echo "You are running an unsupported operating system."
     echo "Automated AzuraCast installation is not currently supported on this"
     echo "operating system."
     exit 1
   fi
 
-  echo "Processor Architecture: "
   CURRENT_ARCH=$(uname -m)
   if [[ $CURRENT_ARCH == "x86_64" ]]; then
-    echo " OK: ${CURRENT_ARCH}"
+    echo -en "\e[32m[PASS]\e[0m Architecture: ${CURRENT_ARCH}\n"
   else
-    echo "ERROR: You are running an unsupported processor architecture (${CURRENT_ARCH})."
+    echo -en "\e[41m[FAIL]\e[0m Architecture: ${CURRENT_ARCH}\n"
+
+    echo "You are running an unsupported processor architecture."
     echo "Automated AzuraCast installation is not currently supported on this "
     echo "operating system."
     exit 1
   fi
 
-  echo "Installed Software: "
-
   REQUIRED_COMMANDS=(curl awk)
   for COMMAND in "${REQUIRED_COMMANDS[@]}" ; do
     if [[ $(command -v "$COMMAND") ]]; then
-      echo " OK: ${COMMAND}"
+      echo -en "\e[32m[PASS]\e[0m Command Present: ${COMMAND}\n"
     else
+      echo -en "\e[41m[FAIL]\e[0m Command Present: ${COMMAND}\n"
+
       echo "${COMMAND} does not appear to be installed."
       echo "Install ${COMMAND} using your host's package manager,"
       echo "then continue installing using this script."
@@ -268,11 +270,12 @@ check-install-requirements() {
     fi
   done
 
-  echo "Permissions: "
   if [[ $EUID -ne 0 ]]; then
     if [[ $(command -v sudo) ]]; then
-      echo " OK: Non-root user with sudo"
+      echo -en "\e[32m[PASS]\e[0m User Permissions\n"
     else
+      echo -en "\e[41m[FAIL]\e[0m User Permissions\n"
+
       echo "ERROR: You are not currently the root user, and "
       echo "'sudo' does not appear to be installed."
       echo "Install sudo using your host's package manager,"
@@ -280,10 +283,22 @@ check-install-requirements() {
       exit 1
     fi
   else
-    echo " OK: Root user"
+    echo -en "\e[32m[PASS]\e[0m User Permissions\n"
   fi
 
-  echo " OK: All requirements met!"
+  SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+  if [[ $SCRIPT_DIR == "/var/azuracast" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Installation Directory\n"
+  else
+    echo -en "\e[93m[WARN]\e[0m Installation Directory\n"
+    echo "AzuraCast is not installed in /var/azuracast, as is recommended"
+    echo "for most installations. This will not prevent AzuraCast from"
+    echo "working, but you will need to update any instructions in our"
+    echo "documentation to reflect your current directory:"
+    echo "$SCRIPT_DIR"
+  fi
+
+  echo -en "\e[32m[PASS]\e[0m All requirements met!\n"
 }
 
 install-docker() {

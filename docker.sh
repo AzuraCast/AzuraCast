@@ -238,9 +238,9 @@ check-install-requirements() {
   else
     echo -en "\e[41m[FAIL]\e[0m Operating System: ${CURRENT_OS}\n"
 
-    echo "You are running an unsupported operating system."
-    echo "Automated AzuraCast installation is not currently supported on this"
-    echo "operating system."
+    echo "     You are running an unsupported operating system."
+    echo "     Automated AzuraCast installation is not currently supported on this"
+    echo "     operating system."
     exit 1
   fi
 
@@ -250,9 +250,9 @@ check-install-requirements() {
   else
     echo -en "\e[41m[FAIL]\e[0m Architecture: ${CURRENT_ARCH}\n"
 
-    echo "You are running an unsupported processor architecture."
-    echo "Automated AzuraCast installation is not currently supported on this "
-    echo "operating system."
+    echo "     You are running an unsupported processor architecture."
+    echo "     Automated AzuraCast installation is not currently supported on this "
+    echo "     operating system."
     exit 1
   fi
 
@@ -263,9 +263,9 @@ check-install-requirements() {
     else
       echo -en "\e[41m[FAIL]\e[0m Command Present: ${COMMAND}\n"
 
-      echo "${COMMAND} does not appear to be installed."
-      echo "Install ${COMMAND} using your host's package manager,"
-      echo "then continue installing using this script."
+      echo "     ${COMMAND} does not appear to be installed."
+      echo "     Install ${COMMAND} using your host's package manager,"
+      echo "     then continue installing using this script."
       exit 1
     fi
   done
@@ -276,10 +276,10 @@ check-install-requirements() {
     else
       echo -en "\e[41m[FAIL]\e[0m User Permissions\n"
 
-      echo "ERROR: You are not currently the root user, and "
-      echo "'sudo' does not appear to be installed."
-      echo "Install sudo using your host's package manager,"
-      echo "then continue installing using this script."
+      echo "     You are not currently the root user, and "
+      echo "     'sudo' does not appear to be installed."
+      echo "     Install sudo using your host's package manager,"
+      echo "     then continue installing using this script."
       exit 1
     fi
   else
@@ -291,11 +291,11 @@ check-install-requirements() {
     echo -en "\e[32m[PASS]\e[0m Installation Directory\n"
   else
     echo -en "\e[93m[WARN]\e[0m Installation Directory\n"
-    echo "AzuraCast is not installed in /var/azuracast, as is recommended"
-    echo "for most installations. This will not prevent AzuraCast from"
-    echo "working, but you will need to update any instructions in our"
-    echo "documentation to reflect your current directory:"
-    echo "$SCRIPT_DIR"
+    echo "     AzuraCast is not installed in /var/azuracast, as is recommended"
+    echo "     for most installations. This will not prevent AzuraCast from"
+    echo "     working, but you will need to update any instructions in our"
+    echo "     documentation to reflect your current directory:"
+    echo "     $SCRIPT_DIR"
   fi
 
   echo -en "\e[32m[PASS]\e[0m All requirements met!\n"

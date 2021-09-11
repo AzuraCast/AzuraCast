@@ -22,7 +22,7 @@
     </b-modal>
 </template>
 <script>
-import required from 'vuelidate/src/validators/required';
+import {required} from 'vuelidate/dist/validators.min.js';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
 import RemoteFormBasicInfo from "./Form/BasicInfo";

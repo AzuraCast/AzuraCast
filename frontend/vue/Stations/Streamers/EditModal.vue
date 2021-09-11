@@ -23,7 +23,7 @@
     </b-modal>
 </template>
 <script>
-import required from 'vuelidate/src/validators/required';
+import {required} from 'vuelidate/dist/validators.min.js';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';

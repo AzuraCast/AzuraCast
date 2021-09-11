@@ -26,7 +26,7 @@
 </template>
 <script>
 import {validationMixin} from 'vuelidate';
-import required from 'vuelidate/src/validators/required';
+import {required} from 'vuelidate/dist/validators.min.js';
 import _ from 'lodash';
 import MediaFormBasicInfo from './Form/BasicInfo';
 import MediaFormAlbumArt from './Form/AlbumArt';

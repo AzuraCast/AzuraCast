@@ -24,7 +24,7 @@
 </template>
 <script>
 import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/lib/validators';
+import {required} from 'vuelidate/dist/validators.min.js';
 import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {

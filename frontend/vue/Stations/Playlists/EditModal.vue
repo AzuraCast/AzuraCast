@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import required from 'vuelidate/src/validators/required';
+import {required} from 'vuelidate/dist/validators.min.js';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSource from './Form/Source';
 import FormSchedule from './Form/Schedule';

@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import required from 'vuelidate/src/validators/required';
+import {required} from 'vuelidate/dist/validators.min.js';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import handleAxiosError from '../../Function/handleAxiosError';
 import {validationMixin} from 'vuelidate';

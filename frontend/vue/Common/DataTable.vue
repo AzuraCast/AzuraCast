@@ -54,7 +54,8 @@
         </div>
         <div class="datatable-main">
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                     :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
+                     :current-page="currentPage" @row-selected="onRowSelected" :items="itemProvider"
+                     :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
                      :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
                      :no-provider-filtering="handleClientSide"
@@ -155,7 +156,14 @@ export default {
     components: { Icon },
     props: {
         id: String,
-        apiUrl: String,
+        apiUrl: {
+            type: String,
+            default: null
+        },
+        items: {
+            type: Array,
+            default: null
+        },
         responsive: {
             type: [String, Boolean],
             default: true
@@ -278,15 +286,24 @@ export default {
                 return field.selectable;
             });
         },
-        showPagination () {
+        showPagination() {
             return this.paginated && this.perPage !== 0;
         },
-        perPageLabel () {
+        perPageLabel() {
             return this.getPerPageLabel(this.perPage);
         },
-        allSelected () {
+        allSelected() {
             return ((this.selected.length === this.totalRows)
                 || (this.showPagination && this.selected.length === this.perPage));
+        },
+        itemProvider() {
+            if (this.items !== null) {
+                return this.items;
+            }
+
+            return (ctx, callback) => {
+                this.loadItems(ctx, callback);
+            }
         }
     },
     methods: {

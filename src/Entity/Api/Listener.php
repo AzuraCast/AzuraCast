@@ -30,6 +30,13 @@ class Listener
     public string $user_agent = '';
 
     /**
+     * A unique identifier for this instance of this listener on this user agent (used for unique calculations).
+     *
+     * @OA\Property(example="")
+     */
+    public string $hash = '';
+
+    /**
      * The listener's client details (extracted from user-agent)
      *
      * @OA\Property(example="")

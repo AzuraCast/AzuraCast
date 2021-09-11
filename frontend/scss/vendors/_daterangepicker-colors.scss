@@ -31,6 +31,10 @@
     background: $navdrawer-header-bg;
   }
 
+  td, th {
+    background-color: transparent;
+  }
+
   td.available:hover,
   th.available:hover {
     background-color: $navdrawer-nav-link-bg-hover;

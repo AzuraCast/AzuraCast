@@ -157,6 +157,7 @@ class ListenersAction
             $api = new Entity\Api\Listener();
             $api->ip = $listener->getListenerIp();
             $api->user_agent = $userAgent;
+            $api->hash = $hash;
             $api->client = $client;
             $api->is_mobile = $dd->isMobile();
 

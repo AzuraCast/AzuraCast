@@ -99,7 +99,7 @@ return static function (RouteCollectorProxy $app) {
                     )
                         ->setName('stations:reports:performance');
 
-                    $group->map(['GET', 'POST'], '/listeners', Controller\Stations\Reports\ListenersController::class)
+                    $group->get('/listeners', Controller\Stations\Reports\ListenersAction::class)
                         ->setName('stations:reports:listeners');
 
                     $group->map(

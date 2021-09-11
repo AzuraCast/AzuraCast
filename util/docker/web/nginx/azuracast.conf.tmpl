@@ -109,6 +109,9 @@ server {
     location /static/dist {
         expires 365d;
     }
+    location /static/webpack_dist {
+        expires 365d;
+    }
 
     location ~ ^/index\.php(/|$) {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;

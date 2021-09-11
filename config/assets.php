@@ -42,22 +42,6 @@ return [
         ],
     ],
 
-    'vue-base' => [
-        'order' => 5,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/VueBase.js',
-                ],
-            ],
-        ],
-        'inline' => [
-            'js' => [
-                'VueBase.default()',
-            ],
-        ],
-    ],
-
     'bootstrap-vue' => [
         'order' => 4,
         'files' => [
@@ -69,29 +53,6 @@ return [
             'css' => [
                 [
                     'href' => 'dist/lib/bootstrap-vue/bootstrap-vue.min.css',
-                ],
-            ],
-        ],
-    ],
-
-    'vue-component-common' => [
-        'order' => 4,
-        'require' => ['vue', 'vue-base'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/vendor.js',
-                ],
-            ],
-        ],
-    ],
-
-    'lodash' => [
-        'order' => 2,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/lodash/lodash.min.js',
                 ],
             ],
         ],
@@ -450,81 +411,68 @@ return [
         ],
     ],
 
-    'leaflet' => [
-        'order' => 20,
-        'files' => [
+    'Vue_Base' => [
+        'order' => 5,
+        'require' => ['vue'],
+        // Auto-managed by Assets
+        'inline' => [
             'js' => [
-                [
-                    'src' => 'dist/lib/leaflet/leaflet.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/leaflet-fullscreen/Control.FullScreen.js',
-                    'defer' => true,
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/leaflet/leaflet.css',
-                ],
-                [
-                    'href' => 'dist/lib/leaflet-fullscreen/Control.FullScreen.css',
-                ],
+                'Base.default()',
             ],
         ],
     ],
 
     'Vue_Dashboard' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'chartjs'],
+        'require' => ['Vue_Base', 'bootstrap-vue', 'uses-api', 'chartjs'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicFullPlayer' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment', 'fancybox'],
+        'require' => ['Vue_Base', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicHistory' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        'require' => ['Vue_Base', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_AdminBranding' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox', 'codemirror'],
+        'require' => ['Vue_Base', 'bootstrap-vue', 'uses-api', 'fancybox', 'codemirror'],
         // Auto-managed by Assets
     ],
 
     'Vue_AdminStorageLocations' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue'],
+        'require' => ['Vue_Base', 'bootstrap-vue', 'uses-api'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicOnDemand' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['Vue_Base', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicRequests' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['Vue_Base', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicSchedule' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_timezone'],
+        'require' => ['Vue_Base', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicWebDJ' => [
         'order' => 10,
-        'require' => ['vue-component-common'],
+        'require' => ['Vue_Base'],
         'files' => [
             'js' => [
                 [
@@ -545,67 +493,73 @@ return [
 
     'Vue_StationsMedia' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsMounts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment_timezone'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcastEpisodes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsProfile' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment', 'fancybox'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsQueue' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsRemotes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_StationsReportsListeners' => [
+        'order' => 10,
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsRequests' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsOverview' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'uses-api', 'bootstrap-vue', 'chartjs'],
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'chartjs'],
         // Auto-managed by Assets
     ],
 ];

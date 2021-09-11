@@ -10,9 +10,8 @@ const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-dart-sass');
 const clean_css = require('gulp-clean-css');
 const revdel = require('gulp-rev-delete-original');
-const webpackStream = require('webpack-stream');
-const gulpIgnore = require('gulp-ignore');
 const mode = require('gulp-mode')();
+const run = require('gulp-run-command').default;
 
 var jsFiles = {
   // Core Libraries
@@ -81,12 +80,6 @@ var jsFiles = {
   },
 
   // Individual libraries
-  'store': {
-    base: 'node_modules/store',
-    files: [
-      'node_modules/store/store.min.js'
-    ]
-  },
   'zxcvbn': {
     base: 'node_modules/zxcvbn/dist',
     files: [
@@ -148,28 +141,6 @@ var jsFiles = {
       'node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.*'
     ]
   },
-  'flowjs': {
-    base: 'node_modules/@flowjs/flow.js/dist',
-    files: [
-      'node_modules/@flowjs/flow.js/dist/flow.min.js'
-    ]
-  },
-  'leaflet': {
-    base: 'node_modules/leaflet/dist',
-    files: [
-      'node_modules/leaflet/dist/leaflet.js',
-      'node_modules/leaflet/dist/leaflet.css',
-      'node_modules/leaflet/dist/images/*'
-    ]
-  },
-  'leaflet-fullscreen': {
-    base: 'node_modules/leaflet.fullscreen',
-    files: [
-      'node_modules/leaflet.fullscreen/Control.FullScreen.js',
-      'node_modules/leaflet.fullscreen/Control.FullScreen.css',
-      'node_modules/leaflet.fullscreen/icon-*.png'
-    ]
-  },
   'nchan': {
     base: null,
     files: [
@@ -217,6 +188,7 @@ gulp.task('bundle_deps', gulp.parallel(
 gulp.task('clean', function () {
   return del([
     '../web/static/dist/**/*',
+    '../web/static/webpack_dist/**/*',
     '../web/static/assets.json',
     '../web/static/webpack.json'
   ], { force: true });
@@ -234,16 +206,7 @@ gulp.task('concat-js', function () {
     .pipe(gulp.dest('../web/static/dist'));
 });
 
-gulp.task('build-vue', function () {
-  return gulp.src(['vue/*.js', 'vue/*.vue'])
-    .pipe(webpackStream(require('./webpack.config.js')))
-    .pipe(gulpIgnore.exclude('webpack.json'))
-    .pipe(babel({
-      presets: ['@babel/env']
-    }))
-    .pipe(uglify())
-    .pipe(gulp.dest('../web/static/dist'));
-});
+gulp.task('build-vue', run('webpack -c webpack.config.js'));
 
 gulp.task('build-js', function () {
   return gulp.src(['./js/*.js'])

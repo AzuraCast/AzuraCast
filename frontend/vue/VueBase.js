@@ -7,7 +7,7 @@ import GetTextPlugin
 import translations
   from '../../resources/locale/translations';
 
-export default function (lang, csrf) {
+export default function () {
   // Configure localization
   Vue.use(GetTextPlugin, {
     defaultLanguage: 'en_US',

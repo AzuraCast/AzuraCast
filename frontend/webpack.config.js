@@ -1,10 +1,12 @@
 const webpack = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+const { VueLoaderPlugin } = require('vue-loader');
+const path = require('path');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
-    VueBase: './vue/VueBase.js',
+    Base: './vue/VueBase.js',
     InlinePlayer: './vue/InlinePlayer.vue',
     Dashboard: './vue/Dashboard.vue',
     AdminBranding: './vue/Admin/Branding.vue',
@@ -24,17 +26,21 @@ module.exports = {
     StationsQueue: './vue/Stations/Queue.vue',
     StationsRemotes: './vue/Stations/Remotes.vue',
     StationsStreamers: './vue/Stations/Streamers.vue',
+    StationsReportsListeners: './vue/Stations/Reports/Listeners.vue',
     StationsReportsRequests: './vue/Stations/Reports/Requests.vue',
     StationsReportsOverview: './vue/Stations/Reports/Overview.vue'
   },
   resolve: {
-    extensions: ['*', '.js', '.vue', '.json']
+    enforceExtension: false,
+    extensions: ['.js', '.vue', '.json']
   },
   output: {
-    publicPath: 'dist/',
-    filename: '[name].js',
-    sourceMapFilename: '[name].map',
-    library: '[name]'
+    path: path.resolve(__dirname, '../web/static/webpack_dist'),
+    publicPath: '/static/webpack_dist/',
+    filename: '[name].[contenthash].js',
+    sourceMapFilename: '[name].[contenthash].map',
+    library: '[name]',
+    assetModuleFilename: 'images/[contenthash][ext]'
   },
   optimization: {
     splitChunks: {
@@ -53,6 +59,20 @@ module.exports = {
           chunks: 'initial',
           enforce: true
         },
+        leaflet: {
+          test: /[\\/]node_modules[\\/]leaflet/,
+          name: 'vendor-leaflet',
+          priority: 2,
+          chunks: 'initial',
+          enforce: true
+        },
+        vuelidate: {
+          test: /[\\/]node_modules[\\/]vuelidate/,
+          name: 'vendor-vuelidate',
+          priority: 2,
+          chunks: 'initial',
+          enforce: true
+        },
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
@@ -65,24 +85,43 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        loader: 'vue-loader'
+        test: /\.vue$/i,
+        use: [
+          'vue-loader'
+        ]
       },
       {
-        test: /\.scss$/,
-        loader: 'vue-style-loader'
+        test: /\.scss$/i,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
+        type: 'asset/resource'
       }
     ]
   },
   plugins: [
     new WebpackAssetsManifest({
-      output: '../web/static/webpack.json',
+      output: path.resolve(__dirname, '../web/static/webpack.json'),
       writeToDisk: true,
       merge: true,
       publicPath: true,
       entrypoints: true
-    })
+    }),
+    new VueLoaderPlugin()
   ],
+  target: 'web',
   performance: {
     hints: false
   }

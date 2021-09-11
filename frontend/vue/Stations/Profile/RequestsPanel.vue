@@ -49,13 +49,14 @@ export const profileRequestsProps = {
 };
 
 export default {
-    components: { Icon },
+    inheritAttrs: false,
+    components: {Icon},
     mixins: [profileRequestsProps],
     computed: {
-        langDisableRequests () {
+        langDisableRequests() {
             return this.$gettext('Disable song requests?');
         },
-        langEnableRequests () {
+        langEnableRequests() {
             return this.$gettext('Enable song requests?');
         }
     }

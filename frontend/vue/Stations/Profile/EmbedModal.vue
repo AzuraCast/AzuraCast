@@ -78,9 +78,10 @@ export const profileEmbedModalProps = {
 };
 
 export default {
-    components: { CopyToClipboardButton },
+    inheritAttrs: false,
+    components: {CopyToClipboardButton},
     mixins: [profileEmbedModalProps],
-    data () {
+    data() {
         let types = [
             {
                 value: 'player',

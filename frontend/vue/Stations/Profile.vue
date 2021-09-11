@@ -52,6 +52,7 @@ import {BACKEND_NONE, FRONTEND_REMOTE} from '../Entity/RadioAdapters.js';
 import NowPlaying from '../Entity/NowPlaying';
 
 export default {
+    inheritAttrs: false,
     components: {
         ProfileBackend,
         ProfileBackendNone,

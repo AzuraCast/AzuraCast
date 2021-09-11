@@ -86,12 +86,13 @@
 import Icon from '../../Common/Icon';
 
 export default {
-    components: { Icon },
+    inheritAttrs: false,
+    components: {Icon},
     props: {
         np: Object
     },
     methods: {
-        toggle (url) {
+        toggle(url) {
             this.$eventHub.$emit('player_toggle', url);
         }
     }

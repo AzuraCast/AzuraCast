@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { BACKEND_LIQUIDSOAP } from '../../Entity/RadioAdapters.js';
+import {BACKEND_LIQUIDSOAP} from '../../Entity/RadioAdapters.js';
 import Icon from '../../Common/Icon';
 
 export const profileNowPlayingProps = {
@@ -117,12 +117,13 @@ export const profileNowPlayingProps = {
 };
 
 export default {
-    components: { Icon },
+    inheritAttrs: false,
+    components: {Icon},
     mixins: [profileNowPlayingProps],
     props: {
         np: Object
     },
-    data () {
+    data() {
         return {
             npElapsed: 0,
             clockInterval: null

@@ -49,13 +49,14 @@ export const profileStreamersProps = {
 };
 
 export default {
-    components: { Icon },
+    inheritAttrs: false,
+    components: {Icon},
     mixins: [profileStreamersProps],
     computed: {
-        langDisableStreamers () {
+        langDisableStreamers() {
             return this.$gettext('Disable streamers?');
         },
-        langEnableStreamers () {
+        langEnableStreamers() {
             return this.$gettext('Enable streamers?');
         }
     }

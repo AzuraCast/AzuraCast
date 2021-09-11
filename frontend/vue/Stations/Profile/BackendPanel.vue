@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { BACKEND_LIQUIDSOAP } from '../../Entity/RadioAdapters.js';
+import {BACKEND_LIQUIDSOAP} from '../../Entity/RadioAdapters.js';
 import Icon from '../../Common/Icon';
 
 export const profileBackendProps = {
@@ -57,15 +57,16 @@ export const profileBackendProps = {
 };
 
 export default {
-    components: { Icon },
+    inheritAttrs: false,
+    components: {Icon},
     mixins: [profileBackendProps],
     props: {
         np: Object
     },
     computed: {
-        langTotalTracks () {
+        langTotalTracks() {
             let numSongsRaw = this.$ngettext('%{numSongs} uploaded song', '%{numSongs} uploaded songs', this.numSongs);
-            let numSongs = this.$gettextInterpolate(numSongsRaw, { numSongs: this.numSongs });
+            let numSongs = this.$gettextInterpolate(numSongsRaw, {numSongs: this.numSongs});
 
             let numPlaylistsRaw = this.$ngettext('%{numPlaylists} playlist', '%{numPlaylists} playlists', this.numPlaylists);
             let numPlaylists = this.$gettextInterpolate(numPlaylistsRaw, { numPlaylists: this.numPlaylists });

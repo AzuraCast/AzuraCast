@@ -28,7 +28,8 @@ export const profileHeaderProps = {
 };
 
 export default {
-    components: { Icon },
+    inheritAttrs: false,
+    components: {Icon},
     mixins: [profileHeaderProps]
 };
 </script>

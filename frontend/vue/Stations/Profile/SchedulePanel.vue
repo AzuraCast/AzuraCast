@@ -41,6 +41,7 @@
 
 <script>
 export default {
+    inheritAttrs: false,
     props: {
         scheduleItems: Array
     }

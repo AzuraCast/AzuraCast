@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import EmbedModal, { profileEmbedModalProps } from './EmbedModal';
+import EmbedModal, {profileEmbedModalProps} from './EmbedModal';
 import Icon from '../../Common/Icon';
 
 export const profilePublicProps = {
@@ -97,16 +97,17 @@ export const profilePublicProps = {
 };
 
 export default {
-    components: { Icon, EmbedModal },
+    inheritAttrs: false,
+    components: {Icon, EmbedModal},
     mixins: [profilePublicProps, profileEmbedModalProps],
     computed: {
-        langDisablePublicPages () {
+        langDisablePublicPages() {
             return this.$gettext('Disable public pages?');
         },
-        langEnablePublicPages () {
+        langEnablePublicPages() {
             return this.$gettext('Enable public pages?');
         },
-        publicPageEmbedCode () {
+        publicPageEmbedCode() {
             return '<iframe src="' + this.publicPageEmbedUri + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe>';
         },
         publicOnDemandEmbedCode () {

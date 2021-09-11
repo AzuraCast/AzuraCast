@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { FRONTEND_ICECAST, FRONTEND_SHOUTCAST } from '../../Entity/RadioAdapters.js';
+import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '../../Entity/RadioAdapters.js';
 import CopyToClipboardButton from '../../Common/CopyToClipboardButton';
 import Icon from '../../Common/Icon';
 
@@ -85,13 +85,14 @@ export const profileFrontendProps = {
 };
 
 export default {
-    components: { Icon, CopyToClipboardButton },
+    inheritAttrs: false,
+    components: {Icon, CopyToClipboardButton},
     mixins: [profileFrontendProps],
     props: {
         np: Object
     },
     computed: {
-        frontendName () {
+        frontendName() {
             if (this.frontendType === FRONTEND_ICECAST) {
                 return 'Icecast';
             } else if (this.frontendType === FRONTEND_SHOUTCAST) {

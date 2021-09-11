@@ -90,7 +90,7 @@ return static function (RouteCollectorProxy $app) {
                     $group->get('/overview', Controller\Stations\Reports\OverviewController::class)
                         ->setName('stations:reports:overview');
 
-                    $group->get('/timeline[/format/{format}]', Controller\Stations\Reports\TimelineController::class)
+                    $group->get('/timeline', Controller\Stations\Reports\TimelineAction::class)
                         ->setName('stations:reports:timeline');
 
                     $group->get(

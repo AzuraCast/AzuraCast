@@ -151,18 +151,13 @@ class HistoryController
 
         $paginator = App\Paginator::fromQueryBuilder($qb, $request);
 
-        $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(
-            function ($sh_row) use ($is_bootgrid, $router) {
+            function ($sh_row) use ($router) {
                 /** @var Entity\SongHistory $sh_row */
                 $row = $this->songHistoryApiGenerator->detailed($sh_row);
                 $row->resolveUrls($router->getBaseUrl());
-
-                if ($is_bootgrid) {
-                    return App\Utilities\Arrays::flattenArray($row, '_');
-                }
 
                 return $row;
             }

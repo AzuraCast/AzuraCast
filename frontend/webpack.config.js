@@ -28,7 +28,8 @@ module.exports = {
     StationsStreamers: './vue/Stations/Streamers.vue',
     StationsReportsListeners: './vue/Stations/Reports/Listeners.vue',
     StationsReportsRequests: './vue/Stations/Reports/Requests.vue',
-    StationsReportsOverview: './vue/Stations/Reports/Overview.vue'
+    StationsReportsOverview: './vue/Stations/Reports/Overview.vue',
+    StationsReportsTimeline: './vue/Stations/Reports/Timeline.vue'
   },
   resolve: {
     enforceExtension: false,

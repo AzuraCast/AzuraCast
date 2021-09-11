@@ -310,24 +310,6 @@ return [
         ],
     ],
 
-    'daterangepicker' => [
-        'order' => 9,
-        'require' => ['moment'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/daterangepicker/daterangepicker.js',
-                    'defer' => true,
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/daterangepicker/daterangepicker.css',
-                ],
-            ],
-        ],
-    ],
-
     'codemirror' => [
         'order' => 10,
         'files' => [
@@ -560,6 +542,12 @@ return [
     'Vue_StationsReportsOverview' => [
         'order' => 10,
         'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'chartjs'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_StationsReportsTimeline' => [
+        'order' => 10,
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 ];

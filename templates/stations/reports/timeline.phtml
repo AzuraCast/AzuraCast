@@ -1,54 +1,14 @@
-<?php $this->layout('main', ['title' => __('Song Playback Timeline'), 'manual' => true]) ?>
-
 <?php
+
+$this->layout('main', ['title' => __('Song Playback Timeline'), 'manual' => true]);
+
+/** @var App\Http\RouterInterface $router */
+$props = [
+    'baseApiUrl' => (string)$router->fromHere('api:stations:history'),
+];
+
 /** @var \App\Assets $assets */
-$assets
-    ->load('daterangepicker')
-    ->load('bootgrid')
-    ->addInlineJs($this->fetch('stations/reports/timeline.js'));
+$assets->addVueRender('Vue_StationsReportsTimeline', '#station-report-timeline', $props);
 ?>
 
-<div class="card">
-    <div class="card-header bg-primary-dark">
-        <div class="d-flex align-items-center">
-            <h2 class="card-title flex-fill my-0">
-                <?=__('Song Playback Timeline')?>
-            </h2>
-            <div class="flex-shrink">
-                <a class="btn btn-bg" id="btn-export" href="<?=$router->fromHere(
-                    'api:stations:history',
-                    [],
-                    ['format' => 'csv']
-                )?>" target="_blank" title="<?=__('Download CSV')?>">
-                    <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Download CSV')?>
-                </a>
-                <a class="btn btn-bg mr-2 dropdown-toggle" id="reportrange" href="#">
-                    <i class="material-icons" aria-hidden="true">date_range</i> <span><?=__('Last 14 Days')?></span>
-                </a>
-            </div>
-        </div>
-        <h2 class="card-title"></h2>
-    </div>
-    <div class="table-responsive">
-        <table class="data-table table table-striped">
-            <colgroup>
-                <col width="15%">
-                <col width="10%">
-                <col width="10%">
-                <col width="40%">
-                <col width="25%">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th data-column-id="date_time" data-formatter="datetime"><?=__('Date/Time') ?></th>
-                    <th data-column-id="listeners_start"><?=__('Listeners') ?></th>
-                    <th data-column-id="delta" data-formatter="delta"><?=__('Change') ?></th>
-                    <th data-column-id="song" data-formatter="song_title"><?=__('Song Title') ?></th>
-                    <th data-column-id="playlists" data-formatter="playlists"><?=__('Source') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-</div>
+<div id="station-report-timeline"></div>

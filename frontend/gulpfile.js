@@ -115,12 +115,6 @@ var jsFiles = {
       'node_modules/moment-timezone/builds/moment-timezone-with-data-10-year-range.min.js'
     ]
   },
-  'daterangepicker': {
-    base: 'node_modules/bootstrap-daterangepicker',
-    files: [
-      'node_modules/bootstrap-daterangepicker/daterangepicker.*'
-    ]
-  },
   'codemirror': {
     base: null,
     files: [

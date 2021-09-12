@@ -4,7 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     Base: './vue/VueBase.js',
     InlinePlayer: './vue/InlinePlayer.vue',
@@ -46,39 +46,18 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        moment: {
-          test: /[\\/]node_modules[\\/]moment/,
-          name: 'vendor-moment',
-          priority: 2,
-          chunks: 'initial',
-          enforce: true
-        },
-        fullcalendar: {
-          test: /[\\/]node_modules[\\/]@fullcalendar/,
-          name: 'vendor-fullcalendar',
-          priority: 2,
-          chunks: 'initial',
-          enforce: true
-        },
-        leaflet: {
-          test: /[\\/]node_modules[\\/]leaflet/,
-          name: 'vendor-leaflet',
-          priority: 2,
-          chunks: 'initial',
-          enforce: true
-        },
-        vuelidate: {
-          test: /[\\/]node_modules[\\/]vuelidate/,
-          name: 'vendor-vuelidate',
-          priority: 2,
-          chunks: 'initial',
-          enforce: true
-        },
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'initial',
-          enforce: true
+          chunks: 'all',
+          enforce: true,
+          name (module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `vendor-${packageName.replace('@', '')}`;
+          }
         }
       }
     }

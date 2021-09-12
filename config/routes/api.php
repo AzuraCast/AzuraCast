@@ -591,6 +591,11 @@ return static function (RouteCollectorProxy $app) {
                             )->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
                             $group->get(
+                                '/performance',
+                                Controller\Api\Stations\Reports\PerformanceAction::class
+                            )->setName('api:stations:reports:performance');
+
+                            $group->get(
                                 '/overview/charts',
                                 Controller\Api\Stations\Reports\Overview\ChartsAction::class
                             )->setName('api:stations:reports:overview-charts');

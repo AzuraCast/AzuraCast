@@ -29,6 +29,7 @@ module.exports = {
     StationsReportsListeners: './vue/Stations/Reports/Listeners.vue',
     StationsReportsRequests: './vue/Stations/Reports/Requests.vue',
     StationsReportsOverview: './vue/Stations/Reports/Overview.vue',
+    StationsReportsPerformance: './vue/Stations/Reports/Performance.vue',
     StationsReportsTimeline: './vue/Stations/Reports/Timeline.vue'
   },
   resolve: {

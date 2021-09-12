@@ -545,6 +545,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_StationsReportsPerformance' => [
+        'order' => 10,
+        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_StationsReportsTimeline' => [
         'order' => 10,
         'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],

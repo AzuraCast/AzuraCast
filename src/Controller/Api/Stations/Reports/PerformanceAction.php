@@ -2,27 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Stations\Reports;
+namespace App\Controller\Api\Stations\Reports;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator;
 use App\Sync\Task\RunAutomatedAssignmentTask;
 use App\Utilities\Csv;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class PerformanceController
+class PerformanceAction
 {
-    public function __construct(
-        protected EntityManagerInterface $em,
-        protected RunAutomatedAssignmentTask $sync_automation
-    ) {
-    }
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $format = 'html'
+        EntityManagerInterface $em,
+        RunAutomatedAssignmentTask $automationTask
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -30,7 +26,7 @@ class PerformanceController
         $threshold_days = (int)($automation_config['threshold_days']
             ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
 
-        $report_data = $this->sync_automation->generateReport($station, $threshold_days);
+        $report_data = $automationTask->generateReport($station, $threshold_days);
 
         // Do not show songs that are not in playlists.
         $report_data = array_filter(
@@ -39,6 +35,9 @@ class PerformanceController
                 return !(empty($media['playlists']));
             }
         );
+
+        $params = $request->getQueryParams();
+        $format = $params['format'] ?? 'json';
 
         if ($format === 'csv') {
             $export_csv = [
@@ -81,12 +80,7 @@ class PerformanceController
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
-        if ($format === 'json') {
-            return $response->withJson($report_data);
-        }
-
-        return $request->getView()->renderToResponse($response, 'stations/reports/performance', [
-            'report_data' => $report_data,
-        ]);
+        $paginator = Paginator::fromArray($report_data, $request);
+        return $paginator->write($response);
     }
 }

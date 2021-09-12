@@ -94,10 +94,9 @@ return static function (RouteCollectorProxy $app) {
                         ->setName('stations:reports:timeline');
 
                     $group->get(
-                        '/performance[/format/{format}]',
-                        Controller\Stations\Reports\PerformanceController::class
-                    )
-                        ->setName('stations:reports:performance');
+                        '/performance',
+                        Controller\Stations\Reports\PerformanceAction::class
+                    )->setName('stations:reports:performance');
 
                     $group->get('/listeners', Controller\Stations\Reports\ListenersAction::class)
                         ->setName('stations:reports:listeners');

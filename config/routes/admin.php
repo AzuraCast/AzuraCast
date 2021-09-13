@@ -66,7 +66,7 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
-            $group->get('/auditlog', Controller\Admin\AuditLogController::class)
+            $group->get('/auditlog', Controller\Admin\AuditLogAction::class)
                 ->setName('admin:auditlog:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 

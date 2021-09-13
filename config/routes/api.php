@@ -130,7 +130,7 @@ return static function (RouteCollectorProxy $app) {
             $group->group(
                 '/admin',
                 function (RouteCollectorProxy $group) {
-                    $group->get('/auditlog', Controller\Api\Admin\AuditLogController::class)
+                    $group->get('/auditlog', Controller\Api\Admin\AuditLogAction::class)
                         ->setName('api:admin:auditlog')
                         ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 

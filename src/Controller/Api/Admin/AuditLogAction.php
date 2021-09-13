@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 
 use const JSON_PRETTY_PRINT;
 
-class AuditLogController
+class AuditLogAction
 {
     public function __construct(
         protected EntityManagerInterface $em

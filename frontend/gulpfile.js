@@ -147,13 +147,6 @@ var jsFiles = {
       'js/webcaster/*.js'
     ]
   },
-  'bootgrid': {
-    base: null,
-    files: [
-      'js/bootgrid/jquery.bootgrid.min.css',
-      'js/bootgrid/jquery.bootgrid.updated.js'
-    ]
-  },
   'bootstrap-vue': {
     base: null,
     files: [

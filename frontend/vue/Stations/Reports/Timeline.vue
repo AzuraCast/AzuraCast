@@ -11,19 +11,7 @@
                         <translate key="lang_download_csv_button">Download CSV</translate>
                     </a>
 
-                    <date-range-picker
-                        ref="picker"
-                        controlContainerClass=""
-                        opens="left" show-dropdowns time-picker
-                        :ranges="dateRanges"
-                        v-model="dateRange" @update="relist">
-                        <template #input="datePicker">
-                            <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
-                                <icon icon="date_range"></icon>
-                                {{ datePicker.rangeText }}
-                            </a>
-                        </template>
-                    </date-range-picker>
+                    <date-range-dropdown v-model="dateRange" @update="relist"></date-range-dropdown>
                 </div>
             </div>
         </div>
@@ -81,18 +69,14 @@
     </div>
 </template>
 
-<style lang="css">
-@import '../../../node_modules/vue2-daterange-picker/dist/vue2-daterange-picker.css';
-</style>
-
 <script>
 import Icon from "../../Common/Icon";
-import DateRangePicker from 'vue2-daterange-picker';
 import DataTable from "../../Common/DataTable";
+import DateRangeDropdown from "../../Common/DateRangeDropdown";
 
 export default {
     name: 'StationsReportsTimeline',
-    components: {DateRangePicker, DataTable, Icon},
+    components: {DateRangeDropdown, DataTable, Icon},
     props: {
         baseApiUrl: String,
     },
@@ -112,39 +96,6 @@ export default {
         }
     },
     computed: {
-        dateRanges() {
-            let ranges = {};
-            ranges[this.$gettext('Today')] = [
-                moment().toDate(),
-                moment().toDate()
-            ];
-            ranges[this.$gettext('Yesterday')] = [
-                moment().subtract(1, 'days').toDate(),
-                moment().subtract(1, 'days').toDate()
-            ];
-            ranges[this.$gettext('Last 7 Days')] = [
-                moment().subtract(6, 'days').toDate(),
-                moment().toDate()
-            ];
-            ranges[this.$gettext('Last 14 Days')] = [
-                moment().subtract(13, 'days').toDate(),
-                moment().toDate()
-            ];
-            ranges[this.$gettext('Last 30 Days')] = [
-                moment().subtract(29, 'days').toDate(),
-                moment().toDate()
-            ];
-            ranges[this.$gettext('This Month')] = [
-                moment().startOf('month').toDate(),
-                moment().endOf('month').toDate()
-            ];
-            ranges[this.$gettext('Last Month')] = [
-                moment().subtract(1, 'month').startOf('month').toDate(),
-                moment().subtract(1, 'month').endOf('month').toDate()
-            ];
-
-            return ranges;
-        },
         apiUrl() {
             let params = {};
             params.start = moment(this.dateRange.startDate).format('YYYY-MM-DD');

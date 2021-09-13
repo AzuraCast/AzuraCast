@@ -12,13 +12,9 @@
                                 <icon icon="file_download"></icon>
                                 <translate key="lang_download_csv_button">Download CSV</translate>
                             </a>
-                            <date-range-picker
-                                ref="picker"
-                                controlContainerClass=""
-                                opens="left" :showDropdowns="true" :timePicker="true"
-                                :minDate="minDate" :maxDate="maxDate" :ranges="dateRanges"
-                                v-model="dateRange"
-                                @update="updateListeners">
+
+                            <date-range-dropdown time-picker :min-date="minDate" :max-date="maxDate"
+                                                 :ranges="dateRanges" v-model="dateRange" @update="updateListeners">
                                 <template #input="datePicker">
                                     <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                                         <icon icon="date_range"></icon>
@@ -30,7 +26,7 @@
                                         </template>
                                     </a>
                                 </template>
-                            </date-range-picker>
+                            </date-range-dropdown>
                         </div>
                     </div>
                 </div>
@@ -123,21 +119,17 @@
     </div>
 </template>
 
-<style lang="css">
-@import '../../../node_modules/vue2-daterange-picker/dist/vue2-daterange-picker.css';
-</style>
-
 <script>
 import StationReportsListenersMap from "./Listeners/Map";
 import handleAxiosError from "../../Function/handleAxiosError";
 import Icon from "../../Common/Icon";
-import DateRangePicker from 'vue2-daterange-picker';
 import formatTime from "../../Function/FormatTime";
 import DataTable from "../../Common/DataTable";
+import DateRangeDropdown from "../../Common/DateRangeDropdown";
 
 export default {
     name: 'StationReportsListeners',
-    components: {DataTable, StationReportsListenersMap, Icon, DateRangePicker},
+    components: {DateRangeDropdown, DataTable, StationReportsListenersMap, Icon},
     props: {
         apiUrl: String,
         attribution: String

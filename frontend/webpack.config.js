@@ -9,6 +9,7 @@ module.exports = {
     Base: './vue/VueBase.js',
     InlinePlayer: './vue/InlinePlayer.vue',
     Dashboard: './vue/Dashboard.vue',
+    AdminAuditLog: './vue/Admin/AuditLog.vue',
     AdminBranding: './vue/Admin/Branding.vue',
     AdminStorageLocations: './vue/Admin/StorageLocations.vue',
     PublicFullPlayer: './vue/Public/FullPlayer.vue',

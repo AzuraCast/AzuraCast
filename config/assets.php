@@ -406,55 +406,60 @@ return [
 
     'Vue_Dashboard' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue', 'uses-api', 'chartjs'],
+        'require' => ['bootstrap-vue', 'uses-api', 'chartjs'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicFullPlayer' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue', 'moment', 'fancybox'],
+        'require' => ['bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicHistory' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue', 'moment'],
+        'require' => ['bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_AdminAuditLog' => [
+        'order' => 10,
+        'require' => ['uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_AdminBranding' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue', 'uses-api', 'fancybox', 'codemirror'],
+        'require' => ['bootstrap-vue', 'uses-api', 'fancybox', 'codemirror'],
         // Auto-managed by Assets
     ],
 
     'Vue_AdminStorageLocations' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue', 'uses-api'],
+        'require' => ['bootstrap-vue', 'uses-api'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicOnDemand' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue'],
+        'require' => ['bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicRequests' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue'],
+        'require' => ['bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicSchedule' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'bootstrap-vue', 'moment_timezone'],
+        'require' => ['bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicWebDJ' => [
         'order' => 10,
-        'require' => ['Vue_Base'],
         'files' => [
             'js' => [
                 [
@@ -475,85 +480,85 @@ return [
 
     'Vue_StationsMedia' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'fancybox'],
+        'require' => ['uses-api', 'bootstrap-vue', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsMounts' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue'],
+        'require' => ['uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment_timezone'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
+        'require' => ['uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcastEpisodes' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
+        'require' => ['uses-api', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsProfile' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment', 'fancybox'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsQueue' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsRemotes' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue'],
+        'require' => ['uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsListeners' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsRequests' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsOverview' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'chartjs'],
+        'require' => ['uses-api', 'bootstrap-vue', 'chartjs'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsPerformance' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue'],
+        'require' => ['uses-api', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsTimeline' => [
         'order' => 10,
-        'require' => ['Vue_Base', 'uses-api', 'bootstrap-vue', 'moment'],
+        'require' => ['uses-api', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 ];

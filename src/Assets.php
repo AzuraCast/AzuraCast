@@ -73,10 +73,6 @@ class Assets
                         'files' => [],
                     ];
 
-                if ($componentName !== 'Vue_Base' && !in_array('Vue_Base', $library['require'], true)) {
-                    $library['require'][] = 'Vue_Base';
-                }
-
                 foreach ($componentDeps['js'] as $componentDep) {
                     $library['files']['js'][] = [
                         'src' => $componentDep,
@@ -257,16 +253,8 @@ class Assets
         $this->addInlineJs(
             <<<JS
                 let ${name};
-
                 $(function () {
-                    ${name} = new Vue({
-                        el: '${elementId}',
-                        render: function (createElement) {
-                            return createElement(${nameWithoutPrefix}.default, {
-                                props: ${propsJson}
-                            });
-                        }
-                    });
+                    ${name} = ${nameWithoutPrefix}.default('${elementId}', ${propsJson});
                 });
             JS
         );

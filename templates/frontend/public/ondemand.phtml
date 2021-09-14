@@ -21,10 +21,6 @@ $props = [
     'stationName' => $station->getName(),
 ];
 
-if (!$embed) {
-    $assets->load('fancybox');
-}
-
 /** @var \App\Assets $assets */
 $assets->addVueRender('Vue_PublicOnDemand', '#station_on_demand', $props);
 ?>

@@ -9,10 +9,8 @@
                         :fields="fields" :api-url="listUrl">
                 <template #cell(recording_links_download)="row">
                     <template v-if="row.item.recording_links_download">
-                        <a class="file-icon btn-audio" href="#"
-                           @click.prevent="playAudio(row.item.recording_links_download)" :title="langPlayPause">
-                            <icon class="outlined" :icon="(now_playing_url === row.item.recording_links_download) ? 'stop_circle' : 'play_circle'"></icon>
-                        </a>
+                        <play-button class="file-icon" icon-class="outlined"
+                                     :url="row.item.recording_links_download"></play-button>
                         &nbsp;
                         <a class="name" :href="row.item.recording_links_download" target="_blank" :title="langDownload">
                             <icon icon="cloud_download"></icon>
@@ -43,10 +41,11 @@ import formatFileSize from '~/functions/formatFileSize.js';
 import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import handleAxiosError from '~/functions/handleAxiosError';
+import PlayButton from "~/components/Common/PlayButton";
 
 export default {
     name: 'StreamerBroadcastsModal',
-    components: {Icon, InlinePlayer, DataTable},
+    components: {PlayButton, Icon, InlinePlayer, DataTable},
     data() {
         return {
             now_playing_url: null,

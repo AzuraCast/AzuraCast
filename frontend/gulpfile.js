@@ -21,19 +21,6 @@ var jsFiles = {
       'node_modules/jquery/dist/jquery.min.js'
     ]
   },
-  'vue': {
-    base: 'node_modules/vue/dist',
-    files: [
-      'node_modules/vue/dist/vue.js',
-      'node_modules/vue/dist/vue.min.js'
-    ]
-  },
-  'lodash': {
-    base: 'node_modules/lodash',
-    files: [
-      'node_modules/lodash/lodash.min.js'
-    ]
-  },
 
   // Main per-layout dependencies
   'bootstrap': {
@@ -129,31 +116,12 @@ var jsFiles = {
       'node_modules/clipboard/dist/clipboard.min.js'
     ]
   },
-  'fancybox': {
-    base: 'node_modules/@fancyapps/fancybox/dist',
-    files: [
-      'node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.*'
-    ]
-  },
-  'nchan': {
-    base: null,
-    files: [
-      'node_modules/nchan/NchanSubscriber.js'
-    ]
-  },
   'webcaster': {
     base: null,
     files: [
       'js/webcaster/*.js'
     ]
   },
-  'bootstrap-vue': {
-    base: null,
-    files: [
-      'node_modules/bootstrap-vue/dist/bootstrap-vue.min.js',
-      'node_modules/bootstrap-vue/dist/bootstrap-vue.min.css'
-    ]
-  }
 };
 
 var defaultTasks = Object.keys(jsFiles);

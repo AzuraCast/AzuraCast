@@ -1,6 +1,5 @@
 <?php
 
-use App\Environment;
 use App\Http\ServerRequest;
 use App\Middleware\Auth\ApiAuth;
 use App\Session\Csrf;
@@ -22,22 +21,6 @@ return [
                 [
                     'src' => 'dist/lib/jquery/jquery.min.js',
                 ],
-            ],
-        ],
-    ],
-
-    'vue' => [
-        'order' => 1,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/vue/' . (Environment::getInstance()->isProduction() ? 'vue.min.js' : 'vue.js'),
-                ],
-            ],
-        ],
-        'inline' => [
-            'js' => [
-                'Vue.prototype.$eventHub = new Vue();',
             ],
         ],
     ],
@@ -145,11 +128,6 @@ return [
                 ],
             ],
         ],
-    ],
-
-    // Require this if using any non-GET API calls.
-    'uses-api' => [
-        'order' => 3,
         'inline' => [
             'js' => [
                 function (Request $request) {
@@ -345,27 +323,15 @@ return [
         ],
     ],
 
-    'nchan' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/nchan/NchanSubscriber.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
     'Vue_Dashboard' => [
         'order' => 10,
-        'require' => ['uses-api', 'chartjs'],
+        'require' => ['chartjs'],
         // Auto-managed by Assets
     ],
 
     'Vue_PublicFullPlayer' => [
         'order' => 10,
-        'require' => ['moment', 'fancybox'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
@@ -377,19 +343,13 @@ return [
 
     'Vue_AdminAuditLog' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_AdminBranding' => [
         'order' => 10,
-        'require' => ['uses-api', 'fancybox', 'codemirror'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_AdminStorageLocations' => [
-        'order' => 10,
-        'require' => ['uses-api'],
+        'require' => ['codemirror'],
         // Auto-managed by Assets
     ],
 
@@ -419,87 +379,57 @@ return [
         ],
     ],
 
-    'Vue_StationsMedia' => [
-        'order' => 10,
-        'require' => ['uses-api', 'fancybox'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsMounts' => [
-        'order' => 10,
-        'require' => ['uses-api'],
-        // Auto-managed by Assets
-    ],
-
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment_timezone'],
+        'require' => ['moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['uses-api', 'fancybox', 'moment_timezone'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsPodcastEpisodes' => [
-        'order' => 10,
-        'require' => ['uses-api', 'fancybox', 'moment_timezone'],
+        'require' => ['moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsProfile' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment', 'fancybox'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsQueue' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsRemotes' => [
-        'order' => 10,
-        'require' => ['uses-api'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsListeners' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsRequests' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsOverview' => [
         'order' => 10,
-        'require' => ['uses-api', 'chartjs'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsReportsPerformance' => [
-        'order' => 10,
-        'require' => ['uses-api'],
+        'require' => ['chartjs'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsTimeline' => [
         'order' => 10,
-        'require' => ['uses-api', 'moment'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 ];

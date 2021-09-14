@@ -1,10 +1,11 @@
-import '~/init/base.js';
-import '~/init/bootstrapVue.js';
-import '~/init/inlinePlayer.js';
-import '~/init/fancybox.js';
+import '~/base.js';
+import '~/vendor/bootstrapVue.js';
+import '~/vendor/fancybox.js';
 
 import Vue
   from 'vue';
+
+import '~/pages/InlinePlayer.js';
 
 import Media
   from '~/components/Stations/Media.vue';

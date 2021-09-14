@@ -7,7 +7,7 @@ import VueAxios
 import GetTextPlugin
   from 'vue-gettext';
 import translations
-  from '../../../resources/locale/translations';
+  from '../../resources/locale/translations.json';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Configure localization

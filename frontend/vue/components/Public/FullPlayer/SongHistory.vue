@@ -78,6 +78,8 @@
 </style>
 
 <script>
+import moment from 'moment-timezone';
+
 export default {
     props: {
         history: Array,

@@ -2,7 +2,7 @@ import Vue
   from 'vue';
 
 import store
-  from '~/init/store';
+  from '~/store';
 
 import InlinePlayer
   from '~/components/InlinePlayer.vue';

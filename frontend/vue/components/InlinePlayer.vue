@@ -68,7 +68,7 @@
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon';
-import store from '~/init/store.js';
+import store from '~/store.js';
 
 export default {
     components: {Icon, AudioPlayer},

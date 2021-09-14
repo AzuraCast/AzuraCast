@@ -3,6 +3,11 @@
 </template>
 
 <script>
+import Codemirror from 'codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/css/css.js';
+import 'codemirror/mode/javascript/javascript.js';
+
 export default {
     name: 'CodemirrorTextarea',
     props: {
@@ -26,7 +31,7 @@ export default {
         }
     },
     mounted() {
-        this.codemirror = CodeMirror.fromTextArea(this.$refs.textarea, {
+        this.codemirror = Codemirror.fromTextArea(this.$refs.textarea, {
             lineNumbers: true,
             theme: 'default',
             mode: this.mode

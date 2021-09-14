@@ -1,9 +1,10 @@
-import '~/init/base.js';
-import '~/init/bootstrapVue.js';
-import '~/init/inlinePlayer.js';
+import '~/base.js';
+import '~/vendor/bootstrapVue.js';
 
 import Vue
   from 'vue';
+
+import '~/pages/InlinePlayer.js';
 
 import Dashboard
   from '~/components/Dashboard.vue';

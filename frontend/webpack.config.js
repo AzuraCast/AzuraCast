@@ -49,6 +49,12 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
+        translations: {
+          test: /translations\.json$/,
+          chunks: 'all',
+          enforce: true,
+          name: 'translations'
+        },
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           chunks: 'all',

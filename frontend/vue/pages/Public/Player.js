@@ -1,5 +1,5 @@
-import '~/init/base.js';
-import '~/init/store.js';
+import '~/base.js';
+import '~/store.js';
 
 import Vue
   from 'vue';

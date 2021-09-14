@@ -1,7 +1,8 @@
-import '~/init/base.js';
-import '~/init/bootstrapVue.js';
-import '~/init/store.js';
-import '~/init/fancybox.js';
+import '~/base.js';
+import '~/vendor/bootstrapVue.js';
+import '~/store.js';
+import '~/vendor/fancybox.js';
+import '~/vendor/moment.js';
 
 import Vue
   from 'vue';

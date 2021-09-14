@@ -252,31 +252,6 @@ return [
         ],
     ],
 
-    'codemirror' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/codemirror/codemirror.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/codemirror/css.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/codemirror/javascript.js',
-                    'defer' => true,
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/codemirror/codemirror.css',
-                ],
-            ],
-        ],
-    ],
-
     'clipboard' => [
         'order' => 10,
         'files' => [
@@ -344,12 +319,6 @@ return [
     'Vue_AdminAuditLog' => [
         'order' => 10,
         'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_AdminBranding' => [
-        'order' => 10,
-        'require' => ['codemirror'],
         // Auto-managed by Assets
     ],
 

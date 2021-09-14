@@ -1,6 +1,6 @@
-import '~/init/base.js';
-import '~/init/bootstrapVue.js';
-import '~/init/store.js';
+import '~/base.js';
+import '~/vendor/bootstrapVue.js';
+import '~/store.js';
 
 import Vue
   from 'vue';

@@ -7,7 +7,7 @@
 <script>
 import store from 'store';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
-import vueStore from '~/init/store.js';
+import vueStore from '~/store.js';
 
 export default {
     props: {

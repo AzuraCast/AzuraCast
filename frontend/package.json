@@ -49,6 +49,7 @@
         "leaflet": "^1.7.1",
         "leaflet.fullscreen": "^1.6.0",
         "lodash": "^4.17.21",
+        "luxon": "^2.0.2",
         "material-icons": "^0.5.5",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.33",

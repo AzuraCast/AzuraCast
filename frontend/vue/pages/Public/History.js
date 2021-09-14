@@ -1,4 +1,5 @@
-import '~/init/base.js';
+import '~/base.js';
+import '~/vendor/moment.js';
 
 import Vue
   from 'vue';

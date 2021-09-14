@@ -191,26 +191,6 @@ return [
     /*
      * Individual libraries
      */
-    'bootgrid' => [
-        'order' => 8,
-        'require' => ['jquery'],
-        'files' => [
-            'css' => [
-                [
-                    'href' => 'dist/lib/bootgrid/jquery.bootgrid.min.css',
-                ],
-            ],
-            'js' => [
-                [
-                    'src' => 'dist/lib/bootgrid/jquery.bootgrid.updated.js',
-                ],
-                [
-                    'src' => 'dist/bootgrid.js',
-                ],
-            ],
-        ],
-    ],
-
     'chartjs' => [
         'order' => 20,
         'require' => ['moment_timezone'],

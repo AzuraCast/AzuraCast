@@ -27,7 +27,6 @@
         "bootstrap-vue": "^2.21.2",
         "chart.js": "^3.5.1",
         "chartjs-adapter-luxon": "^1.1.0",
-        "chartjs-plugin-colorschemes": "github:siriusnote/chartjs-plugin-colorschemes",
         "chartjs-plugin-zoom": "^1.1.1",
         "clipboard": "^2.0.8",
         "codemirror": "^5.62.3",

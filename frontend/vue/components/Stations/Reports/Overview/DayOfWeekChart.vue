@@ -7,6 +7,7 @@
 <script>
 import _ from 'lodash';
 import {Chart} from 'chart.js';
+import {Tableau20} from '~/vendor/chartjs-colorschemes/colorschemes.tableau.js';
 
 export default {
     name: 'DayOfWeekChart',
@@ -36,7 +37,7 @@ export default {
                     aspectRatio: 4,
                     plugins: {
                         colorschemes: {
-                            scheme: 'tableau.Tableau20'
+                            scheme: Tableau20
                         }
                     }
                 }

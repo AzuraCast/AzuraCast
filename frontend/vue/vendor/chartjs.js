@@ -8,7 +8,8 @@ import {
 import 'chartjs-adapter-luxon';
 
 import colorSchemesPlugin
-  from 'chartjs-plugin-colorschemes/src/index.js';
+  from './chartjs-colorschemes/plugin.colorschemes.js';
+
 import zoomPlugin
   from 'chartjs-plugin-zoom';
 

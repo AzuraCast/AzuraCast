@@ -9,6 +9,8 @@ import _ from 'lodash';
 import {DateTime} from "luxon";
 import {Chart} from 'chart.js';
 
+import {Tableau20} from '~/vendor/chartjs-colorschemes/colorschemes.tableau.js';
+
 export default {
     name: 'TimeSeriesChart',
     inheritAttrs: true,
@@ -42,7 +44,7 @@ export default {
                             }
                         },
                         colorschemes: {
-                            scheme: 'tableau.Tableau20'
+                            scheme: Tableau20
                         }
                     },
                     scales: {

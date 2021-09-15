@@ -94,6 +94,7 @@ pre.changes {
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'AdminAuditLog',
@@ -104,8 +105,8 @@ export default {
     data() {
         return {
             dateRange: {
-                startDate: moment().subtract(13, 'days').toDate(),
-                endDate: moment().toDate(),
+                startDate: DateTime.now().minus({days: 13}).toJSDate(),
+                endDate: DateTime.now().toJSDate(),
             },
             fields: [
                 {key: 'date_time', label: this.$gettext('Date/Time'), sortable: false},
@@ -129,8 +130,8 @@ export default {
         },
         apiUrl() {
             let params = {};
-            params.start = moment(this.dateRange.startDate).format('YYYY-MM-DD');
-            params.end = moment(this.dateRange.endDate).format('YYYY-MM-DD');
+            params.start = DateTime.fromJSDate(this.dateRange.startDate).toISODate();
+            params.end = DateTime.fromJSDate(this.dateRange.endDate).toISODate();
 
             return this.baseApiUrl + '?start=' + params.start + '&end=' + params.end;
         },
@@ -140,7 +141,7 @@ export default {
             this.$refs.datatable.relist();
         },
         formatTimestamp(unix_timestamp) {
-            return moment.unix(unix_timestamp).format('lll');
+            return DateTime.fromSeconds(unix_timestamp).toLocaleString(DateTime.DATETIME_SHORT);
         }
     }
 }

@@ -51,6 +51,7 @@
 import DataTable from '~/components/Common/DataTable';
 import handleAxiosError from '~/functions/handleAxiosError';
 import Icon from "~/components/Common/Icon";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'StationRequests',
@@ -71,15 +72,9 @@ export default {
             ]
         }
     },
-    mounted() {
-        moment.relativeTimeThreshold('ss', 1);
-        moment.relativeTimeRounding(function (value) {
-            return Math.round(value * 10) / 10;
-        });
-    },
     methods: {
         formatTime(time) {
-            return moment.unix(time).tz(this.stationTimeZone).format('lll');
+            return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
         },
         doDelete(url) {
             let buttonText = this.$gettext('Delete');

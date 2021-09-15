@@ -304,24 +304,6 @@ return [
         // Auto-managed by Assets
     ],
 
-    'Vue_PublicFullPlayer' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_PublicHistory' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_AdminAuditLog' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
     'Vue_PublicSchedule' => [
         'order' => 10,
         'require' => ['moment_timezone'],
@@ -348,6 +330,12 @@ return [
         ],
     ],
 
+    'Vue_StationsMedia' => [
+        'order' => 10,
+        'require' => ['moment_timezone'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_StationsPlaylists' => [
         'order' => 10,
         'require' => ['moment_timezone'],
@@ -360,45 +348,15 @@ return [
         // Auto-managed by Assets
     ],
 
-    'Vue_StationsProfile' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsQueue' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
     'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsReportsListeners' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsReportsRequests' => [
-        'order' => 10,
-        'require' => ['moment'],
+        'require' => ['moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsReportsOverview' => [
         'order' => 10,
         'require' => ['chartjs'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsReportsTimeline' => [
-        'order' => 10,
-        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 ];

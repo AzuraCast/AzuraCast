@@ -11,7 +11,8 @@
                         <translate key="lang_download_csv_button">Download CSV</translate>
                     </a>
 
-                    <date-range-dropdown v-model="dateRange" @update="relist"></date-range-dropdown>
+                    <date-range-dropdown v-model="dateRange" :tz="stationTimeZone"
+                                         @update="relist"></date-range-dropdown>
                 </div>
             </div>
         </div>
@@ -73,18 +74,22 @@
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'StationsReportsTimeline',
     components: {DateRangeDropdown, DataTable, Icon},
     props: {
         baseApiUrl: String,
+        stationTimeZone: String
     },
     data() {
+        let nowTz = DateTime.now().setZone(this.stationTimeZone);
+
         return {
             dateRange: {
-                startDate: moment().subtract(13, 'days').toDate(),
-                endDate: moment().toDate(),
+                startDate: nowTz.minus({days: 13}).toJSDate(),
+                endDate: nowTz.toJSDate(),
             },
             fields: [
                 {key: 'datetime', label: this.$gettext('Date/Time'), sortable: false},
@@ -98,8 +103,8 @@ export default {
     computed: {
         apiUrl() {
             let params = {};
-            params.start = moment(this.dateRange.startDate).format('YYYY-MM-DD');
-            params.end = moment(this.dateRange.endDate).format('YYYY-MM-DD');
+            params.start = DateTime.fromJSDate(this.dateRange.startDate).toISODate();
+            params.end = DateTime.fromJSDate(this.dateRange.endDate).toISODate();
 
             return this.baseApiUrl + '?start=' + params.start + '&end=' + params.end;
         },
@@ -115,7 +120,7 @@ export default {
             return Math.abs(val);
         },
         formatTimestamp(unix_timestamp) {
-            return moment.unix(unix_timestamp).format('lll');
+            return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_SHORT);
         }
     }
 };

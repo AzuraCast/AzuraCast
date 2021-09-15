@@ -2,9 +2,13 @@
 
 $this->layout('main', ['title' => __('Listeners'), 'manual' => true]);
 
-/** @var App\Http\RouterInterface $router */
+/**
+ * @var App\Http\RouterInterface $router
+ * @var \App\Entity\Station $station
+ */
 $props = [
     'apiUrl' => (string)$router->fromHere('api:listeners:index'),
+    'stationTz' => $station->getTimezone(),
 ];
 
 /** @var \App\Assets $assets */

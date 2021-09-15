@@ -1,9 +1,12 @@
 $(function () {
-    moment.tz.setDefault(<?=$this->escapeJs($station->getTimezone()) ?>);
+    function updateClock() {
+        let d = new Date();
+        let time = d.toLocaleString(App.locale_with_dashes, {
+            timeZone: <?=$this->escapeJs($station->getTimezone()) ?>,
+            timeStyle: 'long'
+        })
 
-    function updateClock () {
-        var station_time = $('#station-time');
-        station_time.text(moment().format('LTS z'));
+        $('#station-time').text(time);
     }
 
     setInterval(updateClock, 1000);

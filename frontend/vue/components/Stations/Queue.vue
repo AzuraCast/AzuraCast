@@ -58,6 +58,7 @@ import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import handleAxiosError from '~/functions/handleAxiosError';
 import Icon from "~/components/Common/Icon";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'StationQueue',
@@ -77,15 +78,9 @@ export default {
             ]
         };
     },
-    mounted () {
-        moment.relativeTimeThreshold('ss', 1);
-        moment.relativeTimeRounding(function (value) {
-            return Math.round(value * 10) / 10;
-        });
-    },
     methods: {
         formatTime (time) {
-            return moment.unix(time).tz(this.stationTimeZone).format('lll');
+            return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
         },
         doShowLogs (logs) {
             this.$refs.logs_modal.show(logs);

@@ -22,6 +22,7 @@
 <script>
 import DateRangePicker from 'vue2-daterange-picker';
 import Icon from "./Icon";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'DateRangeDropdown',
@@ -32,6 +33,10 @@ export default {
         event: 'update',
     },
     props: {
+        tz: {
+            type: String,
+            default: 'system'
+        },
         minDate: {
             type: [String, Date],
             default() {
@@ -56,34 +61,37 @@ export default {
         ranges: {
             type: [Object, Boolean],
             default() {
+                let nowTz = DateTime.now().setZone(this.tz);
+                let nowTzDate = nowTz.toJSDate();
+
                 let ranges = {};
                 ranges[this.$gettext('Today')] = [
-                    moment().toDate(),
-                    moment().toDate()
+                    nowTzDate,
+                    nowTzDate
                 ];
                 ranges[this.$gettext('Yesterday')] = [
-                    moment().subtract(1, 'days').toDate(),
-                    moment().subtract(1, 'days').toDate()
+                    nowTz.minus({days: 1}).toJSDate(),
+                    nowTz.minus({days: 1}).toJSDate()
                 ];
                 ranges[this.$gettext('Last 7 Days')] = [
-                    moment().subtract(6, 'days').toDate(),
-                    moment().toDate()
+                    nowTz.minus({days: 6}).toJSDate(),
+                    nowTzDate
                 ];
                 ranges[this.$gettext('Last 14 Days')] = [
-                    moment().subtract(13, 'days').toDate(),
-                    moment().toDate()
+                    nowTz.minus({days: 13}).toJSDate(),
+                    nowTzDate
                 ];
                 ranges[this.$gettext('Last 30 Days')] = [
-                    moment().subtract(29, 'days').toDate(),
-                    moment().toDate()
+                    nowTz.minus({days: 29}).toJSDate(),
+                    nowTzDate
                 ];
                 ranges[this.$gettext('This Month')] = [
-                    moment().startOf('month').toDate(),
-                    moment().endOf('month').toDate()
+                    nowTz.startOf('month').toJSDate(),
+                    nowTz.endOf('month').toJSDate()
                 ];
                 ranges[this.$gettext('Last Month')] = [
-                    moment().subtract(1, 'month').startOf('month').toDate(),
-                    moment().subtract(1, 'month').endOf('month').toDate()
+                    nowTz.minus({months: 1}).startOf('month').toJSDate(),
+                    nowTz.minus({months: 1}).endOf('month').toJSDate()
                 ];
 
                 return ranges;

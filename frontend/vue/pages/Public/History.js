@@ -1,5 +1,5 @@
 import '~/base.js';
-import '~/vendor/moment.js';
+import '~/vendor/luxon.js';
 
 import Vue
   from 'vue';

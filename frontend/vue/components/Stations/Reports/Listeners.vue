@@ -14,7 +14,8 @@
                             </a>
 
                             <date-range-dropdown time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :ranges="dateRanges" v-model="dateRange" @update="updateListeners">
+                                                 :tz="stationTimeZone" :ranges="dateRanges"
+                                                 v-model="dateRange" @update="updateListeners">
                                 <template #input="datePicker">
                                     <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                                         <icon icon="date_range"></icon>
@@ -126,16 +127,18 @@ import Icon from "~/components/Common/Icon";
 import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'StationReportsListeners',
     components: {DateRangeDropdown, DataTable, StationReportsListenersMap, Icon},
     props: {
         apiUrl: String,
-        attribution: String
+        attribution: String,
+        stationTimeZone: String,
     },
     data() {
-        let liveTime = moment().add(1, 'days').toDate();
+        let liveTime = DateTime.now().setZone(this.stationTimeZone).plus({days: 1}).toJSDate();
 
         return {
             listeners: [],
@@ -155,11 +158,14 @@ export default {
         };
     },
     computed: {
+        nowTz() {
+            return DateTime.now().setZone(this.stationTimeZone);
+        },
         minDate() {
-            return moment().subtract(5, 'years').toDate();
+            return this.nowTz.minus({years: 5}).toJSDate();
         },
         maxDate() {
-            return moment().add(5, 'days').toDate();
+            return this.nowTz.plus({days: 5}).toJSDate();
         },
         dateRanges() {
             let ranges = {};
@@ -168,41 +174,41 @@ export default {
                 this.liveTime
             ];
             ranges[this.$gettext('Today')] = [
-                moment().startOf('day').toDate(),
-                moment().endOf('day').toDate()
+                this.nowTz.startOf('day').toJSDate(),
+                this.nowTz.endOf('day').toJSDate()
             ];
             ranges[this.$gettext('Yesterday')] = [
-                moment().subtract(1, 'days').startOf('day').toDate(),
-                moment().subtract(1, 'days').endOf('day').toDate()
+                this.nowTz.minus({days: 1}).startOf('day').toJSDate(),
+                this.nowTz.minus({days: 1}).endOf('day').toJSDate()
             ];
             ranges[this.$gettext('Last 7 Days')] = [
-                moment().subtract(6, 'days').startOf('day').toDate(),
-                moment().endOf('day').toDate()
+                this.nowTz.minus({days: 6}).startOf('day').toJSDate(),
+                this.nowTz.endOf('day').toJSDate()
             ];
             ranges[this.$gettext('Last 30 Days')] = [
-                moment().subtract(29, 'days').startOf('day').toDate(),
-                moment().endOf('day').toDate()
+                this.nowTz.minus({days: 29}).startOf('day').toJSDate(),
+                this.nowTz.endOf('day').toJSDate()
             ];
             ranges[this.$gettext('This Month')] = [
-                moment().startOf('month').startOf('day').toDate(),
-                moment().endOf('month').endOf('day').toDate()
+                this.nowTz.startOf('month').startOf('day').toJSDate(),
+                this.nowTz.endOf('month').endOf('day').toJSDate()
             ];
             ranges[this.$gettext('Last Month')] = [
-                moment().subtract(1, 'month').startOf('month').startOf('day').toDate(),
-                moment().subtract(1, 'month').endOf('month').endOf('day').toDate()
+                this.nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
+                this.nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
             ];
             return ranges;
         },
         isLive() {
-            return moment(this.liveTime).isSame(moment(this.dateRange.startDate));
+            return DateTime.fromJSDate(this.liveTime).equals(DateTime.fromJSDate(this.dateRange.startDate));
         },
         exportUrl() {
             let params = {};
             let export_url = this.apiUrl + '?format=csv';
 
             if (!this.isLive) {
-                params.start = moment(this.dateRange.startDate).format('YYYY-MM-DD H:mm:ss');
-                params.end = moment(this.dateRange.endDate).format('YYYY-MM-DD H:mm:ss');
+                params.start = DateTime.fromJSDate(this.dateRange.startDate).toISO();
+                params.end = DateTime.fromJSDate(this.dateRange.endDate).toISO();
                 export_url += '&start=' + params.start + '&end=' + params.end;
             }
 
@@ -228,8 +234,8 @@ export default {
         updateListeners() {
             let params = {};
             if (!this.isLive) {
-                params.start = moment(this.dateRange.startDate).format('YYYY-MM-DD H:mm:ss');
-                params.end = moment(this.dateRange.endDate).format('YYYY-MM-DD H:mm:ss');
+                params.start = DateTime.fromJSDate(this.dateRange.startDate).toISO();
+                params.end = DateTime.fromJSDate(this.dateRange.endDate).toISO();
             }
 
             this.axios.get(this.apiUrl, {params: params}).then((resp) => {

@@ -20,6 +20,7 @@ $props = [
     // Common
     'backendType' => $station->getBackendType(),
     'frontendType' => $station->getFrontendType(),
+    'stationTimeZone' => $station->getTimezone(),
     'stationSupportsRequests' => $backend->supportsRequests(),
     'stationSupportsStreamers' => $backend->supportsStreamers(),
     'enableRequests' => $station->getEnableRequests(),

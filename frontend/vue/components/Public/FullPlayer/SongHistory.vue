@@ -78,7 +78,7 @@
 </style>
 
 <script>
-import moment from 'moment-timezone';
+import {DateTime} from 'luxon';
 
 export default {
     props: {
@@ -98,11 +98,8 @@ export default {
             if (!timestamp) {
                 return '';
             }
-            const date = moment.unix(timestamp);
-            if (moment().diff(date, 'days', true) > 0.5) {
-                return date.calendar();
-            }
-            return date.fromNow();
+
+            return DateTime.fromSeconds(timestamp).toRelative();
         },
         albumAndArtist (song) {
             return [song.album, song.artist].filter(str => !!str).join(', ');

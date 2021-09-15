@@ -2,9 +2,13 @@
 
 $this->layout('main', ['title' => __('Song Playback Timeline'), 'manual' => true]);
 
-/** @var App\Http\RouterInterface $router */
+/**
+ * @var App\Http\RouterInterface $router
+ * @var \App\Entity\Station $station
+ */
 $props = [
     'baseApiUrl' => (string)$router->fromHere('api:stations:history'),
+    'stationTimeZone' => $station->getTimezone(),
 ];
 
 /** @var \App\Assets $assets */

@@ -50,6 +50,7 @@ import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
 import {profileEmbedModalProps} from './Profile/EmbedModal';
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters.js';
 import NowPlaying from '~/components/Entity/NowPlaying';
+import {DateTime} from 'luxon';
 
 export default {
     inheritAttrs: false,
@@ -77,6 +78,7 @@ export default {
     ],
     props: {
         profileApiUri: String,
+        stationTimeZone: String,
         stationSupportsRequests: Boolean,
         stationSupportsStreamers: Boolean
     },
@@ -105,24 +107,24 @@ export default {
         },
         scheduleItems () {
             let scheduleItems = this.np.schedule;
-            let now = moment();
+            let now = DateTime.now().setZone(this.stationTimeZone);
 
             scheduleItems.forEach(function (row, index) {
-                let start_moment = moment.unix(row.start_timestamp);
-                let end_moment = moment.unix(row.end_timestamp);
+                let start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(this.stationTimeZone);
+                let end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(this.stationTimeZone);
 
-                this[index].time_until = start_moment.fromNow();
+                this[index].time_until = start_moment.toRelative();
 
-                if (start_moment.isSame(now, 'day')) {
-                    this[index].start_formatted = start_moment.format('LT');
+                if (start_moment.hasSame(now, 'day')) {
+                    this[index].start_formatted = start_moment.toLocaleString(DateTime.TIME_SIMPLE);
                 } else {
-                    this[index].start_formatted = start_moment.format('llll');
+                    this[index].start_formatted = start_moment.toLocaleString(DateTime.DATETIME_MED);
                 }
 
-                if (end_moment.isSame(start_moment, 'day')) {
-                    this[index].end_formatted = end_moment.format('LT');
+                if (end_moment.hasSame(start_moment, 'day')) {
+                    this[index].end_formatted = end_moment.toLocaleString(DateTime.TIME_SIMPLE);
                 } else {
-                    this[index].end_formatted = end_moment.format('lll');
+                    this[index].end_formatted = end_moment.toLocaleString(DateTime.DATETIME_MED);
                 }
             }, scheduleItems);
 

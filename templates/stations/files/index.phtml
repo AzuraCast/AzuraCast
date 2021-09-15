@@ -10,7 +10,10 @@ $this->layout(
     ]
 );
 
-/** @var App\Http\RouterInterface $router */
+/**
+ * @var App\Http\RouterInterface $router
+ * @var \App\Entity\Station $station
+ */
 $props = [
     'listUrl' => (string)$router->fromHere('api:stations:files:list'),
     'batchUrl' => (string)$router->fromHere('api:stations:files:batch'),
@@ -21,6 +24,7 @@ $props = [
     'initialPlaylists' => $playlists,
     'customFields' => $custom_fields,
     'validMimeTypes' => $mime_types,
+    'stationTimeZone' => $station->getTimezone(),
 ];
 
 $assets

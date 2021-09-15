@@ -115,6 +115,7 @@ import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import PlayButton from "~/components/Common/PlayButton";
+import {DateTime} from 'luxon';
 
 export default {
     components: {
@@ -169,7 +170,8 @@ export default {
             type: Array,
             required: false,
             default: () => []
-        }
+        },
+        stationTimeZone: String
     },
     data () {
         let fields = [
@@ -207,7 +209,7 @@ export default {
                     if (!value) {
                         return '';
                     }
-                    return moment.unix(value).format('lll');
+                    return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
                 },
                 selectable: true,
                 visible: true

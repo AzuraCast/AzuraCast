@@ -1,6 +1,7 @@
 import '~/base.js';
 import '~/vendor/bootstrapVue.js';
 import '~/vendor/fancybox.js';
+import '~/vendor/luxon.js';
 
 import Vue
   from 'vue';

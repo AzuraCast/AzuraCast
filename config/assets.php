@@ -251,10 +251,24 @@ return [
         // Auto-managed by Assets
     ],
 
-    'Vue_StationsMedia' => [
+    'Vue_PublicWebDJ' => [
         'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/webcaster/libshine.js',
+                ],
+                [
+                    'src' => 'dist/lib/webcaster/libsamplerate.js',
+                ],
+                [
+                    'src' => 'dist/lib/webcaster/taglib.js',
+                ],
+                [
+                    'src' => 'dist/lib/webcaster/webcast.js',
+                ],
+            ],
+        ],
     ],
 
     'Vue_StationsPlaylists' => [

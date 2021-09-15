@@ -166,8 +166,8 @@ import TimeSeriesChart from '~/components/Common/TimeSeriesChart';
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
 import Avatar, {avatarProps} from '~/components/Common/Avatar';
-import DayOfWeekChart from './DayOfWeekChart';
-import HourChart from './HourChart';
+import DayOfWeekChart from './Overview/DayOfWeekChart';
+import HourChart from './Overview/HourChart';
 
 export default {
     components: {HourChart, DayOfWeekChart, Avatar, Icon, DataTable, TimeSeriesChart},
@@ -177,7 +177,7 @@ export default {
         bestAndWorstUrl: String,
         mostPlayedUrl: String
     },
-    data () {
+    data() {
         return {
             chartsLoading: true,
             chartsData: {
@@ -217,8 +217,6 @@ export default {
         }
     },
     created () {
-        moment.tz.setDefault('UTC');
-
         this.axios.get(this.chartsUrl).then((response) => {
             this.chartsData = response.data;
             this.chartsLoading = false;

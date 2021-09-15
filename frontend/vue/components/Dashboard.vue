@@ -213,8 +213,6 @@ export default {
         }
     },
     created () {
-        moment.tz.setDefault('UTC');
-
         if (store.enabled) {
             this.chartsVisible = store.get('dashboard_show_chart', true);
         } else {

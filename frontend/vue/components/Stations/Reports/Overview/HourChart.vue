@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import {Chart} from 'chart.js';
 
 export default {
     name: 'HourChart',
@@ -20,8 +21,6 @@ export default {
         };
     },
     mounted () {
-        Chart.platform.disableCSSInjection = true;
-
         this.renderChart();
     },
     methods: {

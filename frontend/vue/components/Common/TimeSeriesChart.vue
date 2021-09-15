@@ -6,6 +6,8 @@
 
 <script>
 import _ from 'lodash';
+import {DateTime} from "luxon";
+import {Chart} from 'chart.js';
 
 export default {
     name: 'TimeSeriesChart',
@@ -14,14 +16,12 @@ export default {
         options: Object,
         data: Array
     },
-    data () {
+    data() {
         return {
             _chart: null
         };
     },
     mounted () {
-        Chart.platform.disableCSSInjection = true;
-
         this.renderChart();
     },
     methods: {
@@ -55,7 +55,7 @@ export default {
                             ticks: {
                                 source: 'data',
                                 autoSkip: true,
-                                min: moment().subtract(30, 'days')
+                                min: DateTime.now().minus({days: 30}).toJSDate()
                             }
                         }],
                         yAxes: [{

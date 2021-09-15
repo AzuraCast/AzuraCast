@@ -73,16 +73,6 @@ var jsFiles = {
       'node_modules/zxcvbn/dist/zxcvbn.js'
     ]
   },
-  'chartjs': {
-    base: null,
-    files: [
-      'node_modules/chart.js/dist/Chart.min.js',
-      'node_modules/chart.js/dist/Chart.min.css',
-      'node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js',
-      'node_modules/hammerjs/hammer.min.js',
-      'node_modules/chartjs-plugin-zoom/chartjs-plugin-zoom.min.js'
-    ]
-  },
   'select2': {
     files: [
       'node_modules/select2/dist/css/select2.min.css',

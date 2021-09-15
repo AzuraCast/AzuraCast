@@ -122,10 +122,6 @@ return [
                     'src' => 'dist/lib/sweetalert2/sweetalert2.min.js',
                     'defer' => true,
                 ],
-                [
-                    'src' => 'dist/lib/autosize/autosize.min.js',
-                    'defer' => true,
-                ],
             ],
         ],
         'inline' => [
@@ -148,42 +144,19 @@ return [
      */
     'forms_common' => [
         'require' => ['zxcvbn', 'select2', 'dirrty'],
-    ],
-
-    /*
-     * Individual libraries
-     */
-    'chartjs' => [
-        'order' => 20,
-        'require' => ['moment_timezone'],
-
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/chartjs/Chart.min.js',
+                    'src' => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/chartjs/chartjs-plugin-colorschemes.min.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/chartjs/hammer.min.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/lib/chartjs/chartjs-plugin-zoom.min.js',
-                    'defer' => true,
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/chartjs/Chart.min.css',
                 ],
             ],
         ],
     ],
 
+    /*
+     * Individual libraries
+     */
     'zxcvbn' => [
         'order' => 10,
         'files' => [
@@ -229,6 +202,9 @@ return [
                     'src' => 'dist/lib/moment/locales.min.js',
                     'charset' => 'UTF-8',
                 ],
+                [
+                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data-10-year-range.min.js',
+                ],
             ],
         ],
         'inline' => [
@@ -236,18 +212,6 @@ return [
                 function (Request $request) {
                     return 'moment.locale(App.locale_with_dashes);';
                 },
-            ],
-        ],
-    ],
-
-    'moment_timezone' => [
-        'order' => 9,
-        'require' => ['moment'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data-10-year-range.min.js',
-                ],
             ],
         ],
     ],
@@ -281,82 +245,33 @@ return [
         ],
     ],
 
-    'fancybox' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/fancybox/jquery.fancybox.min.js',
-                    'defer' => true,
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/fancybox/jquery.fancybox.min.css',
-                ],
-            ],
-        ],
-    ],
-
-    'Vue_Dashboard' => [
-        'order' => 10,
-        'require' => ['chartjs'],
-        // Auto-managed by Assets
-    ],
-
     'Vue_PublicSchedule' => [
         'order' => 10,
-        'require' => ['moment_timezone'],
+        'require' => ['moment'],
         // Auto-managed by Assets
-    ],
-
-    'Vue_PublicWebDJ' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/webcaster/libshine.js',
-                ],
-                [
-                    'src' => 'dist/lib/webcaster/libsamplerate.js',
-                ],
-                [
-                    'src' => 'dist/lib/webcaster/taglib.js',
-                ],
-                [
-                    'src' => 'dist/lib/webcaster/webcast.js',
-                ],
-            ],
-        ],
     ],
 
     'Vue_StationsMedia' => [
         'order' => 10,
-        'require' => ['moment_timezone'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['moment_timezone'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['moment_timezone'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['moment_timezone'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsReportsOverview' => [
-        'order' => 10,
-        'require' => ['chartjs'],
+        'require' => ['moment'],
         // Auto-managed by Assets
     ],
 ];

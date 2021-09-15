@@ -6,6 +6,7 @@
 
 <script>
 import _ from 'lodash';
+import {Chart} from 'chart.js';
 
 export default {
     name: 'DayOfWeekChart',
@@ -21,8 +22,6 @@ export default {
         };
     },
     mounted () {
-        Chart.platform.disableCSSInjection = true;
-
         this.renderChart();
     },
     methods: {

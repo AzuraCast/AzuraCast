@@ -94,12 +94,6 @@ export default {
             return this.$gettext('Schedule View');
         }
     },
-    mounted () {
-        moment.relativeTimeThreshold('ss', 1);
-        moment.relativeTimeRounding(function (value) {
-            return Math.round(value * 10) / 10;
-        });
-    },
     methods: {
         relist () {
             this.$refs.datatable.refresh();

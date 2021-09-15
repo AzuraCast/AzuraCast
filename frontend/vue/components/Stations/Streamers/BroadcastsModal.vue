@@ -42,6 +42,7 @@ import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import handleAxiosError from '~/functions/handleAxiosError';
 import PlayButton from "~/components/Common/PlayButton";
+import {DateTime} from 'luxon';
 
 export default {
     name: 'StreamerBroadcastsModal',
@@ -61,7 +62,7 @@ export default {
                     label: this.$gettext('Start Time'),
                     sortable: false,
                     formatter: (value, key, item) => {
-                        return moment.unix(value).format('lll');
+                        return DateTime.fromSeconds(value).toLocaleString(DateTime.DATETIME_MED);
                     }
                 },
                 {
@@ -72,7 +73,7 @@ export default {
                         if (value === 0) {
                             return this.$gettext('Live');
                         }
-                        return moment.unix(value).format('lll');
+                        return DateTime.fromSeconds(value).toLocaleString(DateTime.DATETIME_MED);
                     }
                 },
                 {

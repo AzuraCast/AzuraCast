@@ -11,12 +11,11 @@
                 "@babel/preset-env": "^7.15.6",
                 "@fancyapps/fancybox": "^3.5.7",
                 "@flowjs/flow.js": "^2.14.1",
-                "@fullcalendar/core": "^4",
-                "@fullcalendar/daygrid": "^4",
-                "@fullcalendar/moment": "^4",
-                "@fullcalendar/moment-timezone": "^4",
-                "@fullcalendar/timegrid": "^4",
-                "@fullcalendar/vue": "^4",
+                "@fullcalendar/core": "^5.9.0",
+                "@fullcalendar/daygrid": "^5.9.0",
+                "@fullcalendar/luxon": "^5.9.0",
+                "@fullcalendar/timegrid": "^5.9.0",
+                "@fullcalendar/vue": "^5.9.0",
                 "autosize": "^4.0.2",
                 "axios": "^0.21.4",
                 "bootstrap": "^4.6.0",
@@ -42,12 +41,13 @@
                 "gulp-run-command": "0.0.10",
                 "gulp-sourcemaps": "^2.6.5",
                 "gulp-uglify": "^3.0.2",
+                "humanize-duration": "^3.27.0",
                 "imports-loader": "^3.0.0",
                 "jquery": "^3.6.0",
                 "leaflet": "^1.7.1",
                 "leaflet.fullscreen": "^1.6.0",
                 "lodash": "^4.17.21",
-                "luxon": "^2.0.2",
+                "luxon": "^1.28.0",
                 "material-icons": "^0.5.5",
                 "moment": "^2.29.1",
                 "moment-timezone": "^0.5.33",
@@ -2009,65 +2009,66 @@
             "resolved": "https://registry.npmjs.org/@flowjs/flow.js/-/flow.js-2.14.1.tgz",
             "integrity": "sha512-99DWlPnksOOS8uHfo+bhSjvs8d2MfLTB/22JBDC2ONwz/OCdP+gL/iiM4puMSTE2wH4A2/+J0eMc7pKwusXunw=="
         },
+        "node_modules/@fullcalendar/common": {
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/common/-/common-5.9.0.tgz",
+            "integrity": "sha512-wfUDRg53gzUU7Ng1wqjvvM2ncFx+5PiyCq5k2KjEbMourv7m4Zw6B3xlhpQbfUv3WOnbJgwLLNLFEMcsEJpXBQ==",
+            "dependencies": {
+                "tslib": "^2.1.0"
+            }
+        },
         "node_modules/@fullcalendar/core": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-4.4.2.tgz",
-            "integrity": "sha512-vq7KQGuAJ1ieFG5tUqwxwUwmXYtblFOTjHaLAVHo6iEPB52mS7DS45VJfkhaQmX4+5/+BHRpg82G1qkuAINwtg=="
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-5.9.0.tgz",
+            "integrity": "sha512-3+zSm8ykXqM2vEGYp4P/BEoR2TB0W9mN6zBGZ6SY9y0nC+Fc0+ZXJmFlYmrEYSdO4kmREnlxntkp1+o9mu8PIQ==",
+            "dependencies": {
+                "@fullcalendar/common": "~5.9.0",
+                "preact": "^10.0.5",
+                "tslib": "^2.1.0"
+            }
         },
         "node_modules/@fullcalendar/daygrid": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-4.4.2.tgz",
-            "integrity": "sha512-axjfMhxEXHShV3r2TZjf+2niJ1C6LdAxkHKmg7mVq4jXtUQHOldU5XsjV0v2lUAt1urJBFi2zajfK8798ukL3Q==",
-            "peerDependencies": {
-                "@fullcalendar/core": "~4.4.0"
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-5.9.0.tgz",
+            "integrity": "sha512-yTYjTM+bjTWfq5uUnSMBH4j1il+b0IAAe+q2UcAeky4iggwn9pi+taUtETtlPTQCSBSWaF8TuEZ3+apB0RrjyQ==",
+            "dependencies": {
+                "@fullcalendar/common": "~5.9.0",
+                "tslib": "^2.1.0"
             }
         },
-        "node_modules/@fullcalendar/moment": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/moment/-/moment-4.4.2.tgz",
-            "integrity": "sha512-PBrjxxDEG3RO+8SOA3a1YA7yoGI3bgnltiGY3ehOtJwFIMsUQDSSr5aMoWyRpz7MXgp2YOQY5rzMEIp2A8eK9w==",
+        "node_modules/@fullcalendar/luxon": {
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/luxon/-/luxon-5.9.0.tgz",
+            "integrity": "sha512-N2ZMJ7JD1yBt56pumi3CSo9PHf8eVsbfMU+ECvvifyae1Zi2SRQhpV1LnWm92BVg4dPk42Ciz0TB4TaH6um3EA==",
+            "dependencies": {
+                "@fullcalendar/common": "~5.9.0",
+                "tslib": "^2.1.0"
+            },
             "peerDependencies": {
-                "@fullcalendar/core": "~4.4.0",
-                "moment": "^2.24.0"
-            }
-        },
-        "node_modules/@fullcalendar/moment-timezone": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/moment-timezone/-/moment-timezone-4.4.2.tgz",
-            "integrity": "sha512-8CjGpBdrQqDh60y6BQJScR2OcCNghPrMFNXd5L9PkU6ktfoYJapTyPZNddCXPPFiPJJdEmarU+RxPxgkl/EP9g==",
-            "peerDependencies": {
-                "@fullcalendar/core": "~4.4.0",
-                "moment": "^2.24.0",
-                "moment-timezone": "^0.5.25"
+                "luxon": "^1.12.1"
             }
         },
         "node_modules/@fullcalendar/timegrid": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/timegrid/-/timegrid-4.4.2.tgz",
-            "integrity": "sha512-M5an7qii8OUmI4ogY47k5pn2j/qUbLp6sa6Vo0gO182HR5pb9YtrEZnoQhnScok+I0BkDkLFzMQoiAMTjBm2PQ==",
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/timegrid/-/timegrid-5.9.0.tgz",
+            "integrity": "sha512-X9JLepHz6hSuiziVkIlgBkx/W/5E4nIqJ6i0LISk3zPFH/Arn0QjQU345ISys8OTwezPUgJvLGrl4Yy4/gRULw==",
             "dependencies": {
-                "@fullcalendar/daygrid": "~4.4.0"
-            },
-            "peerDependencies": {
-                "@fullcalendar/core": "~4.4.0"
+                "@fullcalendar/common": "~5.9.0",
+                "@fullcalendar/daygrid": "~5.9.0",
+                "tslib": "^2.1.0"
             }
         },
         "node_modules/@fullcalendar/vue": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/vue/-/vue-4.4.2.tgz",
-            "integrity": "sha512-Iq5l8s0exyUI2vicPDs1Hn6SFLy0gnFAOEINqXixmnn9+U2fHgM++ofal1yKqpU9bAWE4d58Mizu2tlDlc6NyQ==",
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/vue/-/vue-5.9.0.tgz",
+            "integrity": "sha512-P18svkJldj9dz0AZN0PTKzhcXOJJ9Do5T0iI9GNOXu+WqdQJdtBEyl87A+VgWn85CvefWqf5Yc44U4LdW1QjiA==",
             "dependencies": {
-                "@fullcalendar/core": "~4.4.0",
-                "fast-deep-equal": "^2.0.1"
+                "@fullcalendar/core": "~5.9.0",
+                "tslib": "^2.1.0"
             },
             "peerDependencies": {
-                "vue": "^2.6.6"
+                "vue": "^2.6.12"
             }
-        },
-        "node_modules/@fullcalendar/vue/node_modules/fast-deep-equal": {
-            "version": "2.0.1",
-            "resolved": "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz",
-            "integrity": "sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk="
         },
         "node_modules/@gulp-sourcemaps/identity-map": {
             "version": "1.0.2",
@@ -5773,6 +5774,11 @@
                 "node": ">=10.17.0"
             }
         },
+        "node_modules/humanize-duration": {
+            "version": "3.27.0",
+            "resolved": "https://registry.npmjs.org/humanize-duration/-/humanize-duration-3.27.0.tgz",
+            "integrity": "sha512-qLo/08cNc3Tb0uD7jK0jAcU5cnqCM0n568918E7R2XhMr/+7F37p4EY062W/stg7tmzvknNn9b/1+UhVRzsYrQ=="
+        },
         "node_modules/icss-replace-symbols": {
             "version": "1.1.0",
             "resolved": "https://registry.npmjs.org/icss-replace-symbols/-/icss-replace-symbols-1.1.0.tgz",
@@ -6555,9 +6561,9 @@
             }
         },
         "node_modules/luxon": {
-            "version": "2.0.2",
-            "resolved": "https://registry.npmjs.org/luxon/-/luxon-2.0.2.tgz",
-            "integrity": "sha512-ZRioYLCgRHrtTORaZX1mx+jtxKtKuI5ZDvHNAmqpUzGqSrR+tL4FVLn/CUGMA3h0+AKD1MAxGI5GnCqR5txNqg==",
+            "version": "1.28.0",
+            "resolved": "https://registry.npmjs.org/luxon/-/luxon-1.28.0.tgz",
+            "integrity": "sha512-TfTiyvZhwBYM/7QdAVDh+7dBTBA29v4ik0Ce9zda3Mnf8on1S5KJI8P2jKFZ8+5C0jhmr0KwJEO/Wdpm0VeWJQ==",
             "engines": {
                 "node": "*"
             }
@@ -7585,6 +7591,15 @@
             "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==",
             "engines": {
                 "node": ">=0.10.0"
+            }
+        },
+        "node_modules/preact": {
+            "version": "10.5.14",
+            "resolved": "https://registry.npmjs.org/preact/-/preact-10.5.14.tgz",
+            "integrity": "sha512-KojoltCrshZ099ksUZ2OQKfbH66uquFoxHSbnwKbTJHeQNvx42EmC7wQVWNuDt6vC5s3nudRHFtKbpY4ijKlaQ==",
+            "funding": {
+                "type": "opencollective",
+                "url": "https://opencollective.com/preact"
             }
         },
         "node_modules/prettier": {
@@ -11266,51 +11281,59 @@
             "resolved": "https://registry.npmjs.org/@flowjs/flow.js/-/flow.js-2.14.1.tgz",
             "integrity": "sha512-99DWlPnksOOS8uHfo+bhSjvs8d2MfLTB/22JBDC2ONwz/OCdP+gL/iiM4puMSTE2wH4A2/+J0eMc7pKwusXunw=="
         },
+        "@fullcalendar/common": {
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/common/-/common-5.9.0.tgz",
+            "integrity": "sha512-wfUDRg53gzUU7Ng1wqjvvM2ncFx+5PiyCq5k2KjEbMourv7m4Zw6B3xlhpQbfUv3WOnbJgwLLNLFEMcsEJpXBQ==",
+            "requires": {
+                "tslib": "^2.1.0"
+            }
+        },
         "@fullcalendar/core": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-4.4.2.tgz",
-            "integrity": "sha512-vq7KQGuAJ1ieFG5tUqwxwUwmXYtblFOTjHaLAVHo6iEPB52mS7DS45VJfkhaQmX4+5/+BHRpg82G1qkuAINwtg=="
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-5.9.0.tgz",
+            "integrity": "sha512-3+zSm8ykXqM2vEGYp4P/BEoR2TB0W9mN6zBGZ6SY9y0nC+Fc0+ZXJmFlYmrEYSdO4kmREnlxntkp1+o9mu8PIQ==",
+            "requires": {
+                "@fullcalendar/common": "~5.9.0",
+                "preact": "^10.0.5",
+                "tslib": "^2.1.0"
+            }
         },
         "@fullcalendar/daygrid": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-4.4.2.tgz",
-            "integrity": "sha512-axjfMhxEXHShV3r2TZjf+2niJ1C6LdAxkHKmg7mVq4jXtUQHOldU5XsjV0v2lUAt1urJBFi2zajfK8798ukL3Q==",
-            "requires": {}
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-5.9.0.tgz",
+            "integrity": "sha512-yTYjTM+bjTWfq5uUnSMBH4j1il+b0IAAe+q2UcAeky4iggwn9pi+taUtETtlPTQCSBSWaF8TuEZ3+apB0RrjyQ==",
+            "requires": {
+                "@fullcalendar/common": "~5.9.0",
+                "tslib": "^2.1.0"
+            }
         },
-        "@fullcalendar/moment": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/moment/-/moment-4.4.2.tgz",
-            "integrity": "sha512-PBrjxxDEG3RO+8SOA3a1YA7yoGI3bgnltiGY3ehOtJwFIMsUQDSSr5aMoWyRpz7MXgp2YOQY5rzMEIp2A8eK9w==",
-            "requires": {}
-        },
-        "@fullcalendar/moment-timezone": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/moment-timezone/-/moment-timezone-4.4.2.tgz",
-            "integrity": "sha512-8CjGpBdrQqDh60y6BQJScR2OcCNghPrMFNXd5L9PkU6ktfoYJapTyPZNddCXPPFiPJJdEmarU+RxPxgkl/EP9g==",
-            "requires": {}
+        "@fullcalendar/luxon": {
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/luxon/-/luxon-5.9.0.tgz",
+            "integrity": "sha512-N2ZMJ7JD1yBt56pumi3CSo9PHf8eVsbfMU+ECvvifyae1Zi2SRQhpV1LnWm92BVg4dPk42Ciz0TB4TaH6um3EA==",
+            "requires": {
+                "@fullcalendar/common": "~5.9.0",
+                "tslib": "^2.1.0"
+            }
         },
         "@fullcalendar/timegrid": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/timegrid/-/timegrid-4.4.2.tgz",
-            "integrity": "sha512-M5an7qii8OUmI4ogY47k5pn2j/qUbLp6sa6Vo0gO182HR5pb9YtrEZnoQhnScok+I0BkDkLFzMQoiAMTjBm2PQ==",
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/timegrid/-/timegrid-5.9.0.tgz",
+            "integrity": "sha512-X9JLepHz6hSuiziVkIlgBkx/W/5E4nIqJ6i0LISk3zPFH/Arn0QjQU345ISys8OTwezPUgJvLGrl4Yy4/gRULw==",
             "requires": {
-                "@fullcalendar/daygrid": "~4.4.0"
+                "@fullcalendar/common": "~5.9.0",
+                "@fullcalendar/daygrid": "~5.9.0",
+                "tslib": "^2.1.0"
             }
         },
         "@fullcalendar/vue": {
-            "version": "4.4.2",
-            "resolved": "https://registry.npmjs.org/@fullcalendar/vue/-/vue-4.4.2.tgz",
-            "integrity": "sha512-Iq5l8s0exyUI2vicPDs1Hn6SFLy0gnFAOEINqXixmnn9+U2fHgM++ofal1yKqpU9bAWE4d58Mizu2tlDlc6NyQ==",
+            "version": "5.9.0",
+            "resolved": "https://registry.npmjs.org/@fullcalendar/vue/-/vue-5.9.0.tgz",
+            "integrity": "sha512-P18svkJldj9dz0AZN0PTKzhcXOJJ9Do5T0iI9GNOXu+WqdQJdtBEyl87A+VgWn85CvefWqf5Yc44U4LdW1QjiA==",
             "requires": {
-                "@fullcalendar/core": "~4.4.0",
-                "fast-deep-equal": "^2.0.1"
-            },
-            "dependencies": {
-                "fast-deep-equal": {
-                    "version": "2.0.1",
-                    "resolved": "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz",
-                    "integrity": "sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk="
-                }
+                "@fullcalendar/core": "~5.9.0",
+                "tslib": "^2.1.0"
             }
         },
         "@gulp-sourcemaps/identity-map": {
@@ -14256,6 +14279,11 @@
             "resolved": "https://registry.npmjs.org/human-signals/-/human-signals-2.1.0.tgz",
             "integrity": "sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw=="
         },
+        "humanize-duration": {
+            "version": "3.27.0",
+            "resolved": "https://registry.npmjs.org/humanize-duration/-/humanize-duration-3.27.0.tgz",
+            "integrity": "sha512-qLo/08cNc3Tb0uD7jK0jAcU5cnqCM0n568918E7R2XhMr/+7F37p4EY062W/stg7tmzvknNn9b/1+UhVRzsYrQ=="
+        },
         "icss-replace-symbols": {
             "version": "1.1.0",
             "resolved": "https://registry.npmjs.org/icss-replace-symbols/-/icss-replace-symbols-1.1.0.tgz",
@@ -14863,9 +14891,9 @@
             }
         },
         "luxon": {
-            "version": "2.0.2",
-            "resolved": "https://registry.npmjs.org/luxon/-/luxon-2.0.2.tgz",
-            "integrity": "sha512-ZRioYLCgRHrtTORaZX1mx+jtxKtKuI5ZDvHNAmqpUzGqSrR+tL4FVLn/CUGMA3h0+AKD1MAxGI5GnCqR5txNqg=="
+            "version": "1.28.0",
+            "resolved": "https://registry.npmjs.org/luxon/-/luxon-1.28.0.tgz",
+            "integrity": "sha512-TfTiyvZhwBYM/7QdAVDh+7dBTBA29v4ik0Ce9zda3Mnf8on1S5KJI8P2jKFZ8+5C0jhmr0KwJEO/Wdpm0VeWJQ=="
         },
         "magic-string": {
             "version": "0.25.7",
@@ -15655,6 +15683,11 @@
             "version": "3.3.1",
             "resolved": "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-3.3.1.tgz",
             "integrity": "sha512-pISE66AbVkp4fDQ7VHBwRNXzAAKJjw4Vw7nWI/+Q3vuly7SNfgYXvm6i5IgFylHGK5sP/xHAbB7N49OS4gWNyQ=="
+        },
+        "preact": {
+            "version": "10.5.14",
+            "resolved": "https://registry.npmjs.org/preact/-/preact-10.5.14.tgz",
+            "integrity": "sha512-KojoltCrshZ099ksUZ2OQKfbH66uquFoxHSbnwKbTJHeQNvx42EmC7wQVWNuDt6vC5s3nudRHFtKbpY4ijKlaQ=="
         },
         "prettier": {
             "version": "1.12.1",

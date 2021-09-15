@@ -245,12 +245,6 @@ return [
         ],
     ],
 
-    'Vue_PublicSchedule' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
     'Vue_PublicWebDJ' => [
         'order' => 10,
         'files' => [
@@ -269,23 +263,5 @@ return [
                 ],
             ],
         ],
-    ],
-
-    'Vue_StationsPlaylists' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsPodcasts' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
-    ],
-
-    'Vue_StationsStreamers' => [
-        'order' => 10,
-        'require' => ['moment'],
-        // Auto-managed by Assets
     ],
 ];

@@ -33,6 +33,7 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
+import {DateTime} from 'luxon';
 
 export default {
     name: 'EditModal',
@@ -116,9 +117,9 @@ export default {
             let publishTime = '';
 
             if (d.publishAt !== null) {
-                let publishDateTime = moment.unix(d.publishAt);
-                publishDate = publishDateTime.format('YYYY-MM-DD');
-                publishTime = publishDateTime.format('hh:mm');
+                let publishDateTime = DateTime.fromSeconds(d.publishAt);
+                publishDate = publishDateTime.toISODate();
+                publishTime = publishDateTime.toFormat('hh:mm');
             }
 
             this.record = d;
@@ -136,9 +137,9 @@ export default {
             let modifiedForm = this.form;
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 let publishDateTimeString = modifiedForm.publish_date + ' ' + modifiedForm.publish_time;
-                let publishDateTime = moment(publishDateTimeString);
+                let publishDateTime = DateTime.fromFormat(publishDateTimeString, 'YYYY-mm-dd HH:ss');
 
-                modifiedForm.publish_at = publishDateTime.unix();
+                modifiedForm.publish_at = publishDateTime.toSeconds();
             }
 
             return {

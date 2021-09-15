@@ -46,16 +46,5 @@ export default {
         locale: String,
         stationTimeZone: String
     },
-    mounted () {
-        moment.relativeTimeThreshold('ss', 1);
-        moment.relativeTimeRounding(function (value) {
-            return Math.round(value * 10) / 10;
-        });
-    },
-    methods: {
-        formatTime (time) {
-            return moment(time).tz(this.stationTimeZone).format('LT');
-        }
-    }
 };
 </script>

@@ -1,19 +1,11 @@
 .fc {
-  table {
-    thead.fc-head td {
-      border-top-width: 0;
+  &.fc-theme-standard {
+    .fc-scrollgrid {
+      border: 0;
     }
 
-    th:first-child, td:first-child {
-      border-left-width: 0;
-    }
-    th:last-child, td:last-child {
-      border-right-width: 0;
-    }
-
-    tbody.fc-body td {
-      border-bottom-width: 0;
+    .fc-scrollgrid-section-sticky > * {
+      background: none;
     }
   }
-
 }

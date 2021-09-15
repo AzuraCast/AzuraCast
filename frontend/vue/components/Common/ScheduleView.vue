@@ -1,31 +1,39 @@
 <template>
-    <full-calendar ref="calendar" :plugins="plugins" :locales="locales" :time-zone="stationTimeZone"
-                   theme-system="bootstrap4"
-                   :now-indicator="true" default-view="timeGridWeek" default-timed-event-duration="00:20"
-                   :locale="locale" :header="false" :footer="false" height="auto"
-                   :events="scheduleUrl" @eventClick="onEventClick">
-    </full-calendar>
+    <full-calendar ref="calendar" :options="calendarOptions" @eventClick="onEventClick"></full-calendar>
 </template>
 
 <script>
+import '@fullcalendar/core/vdom';
 import FullCalendar from '@fullcalendar/vue';
 import allLocales from '@fullcalendar/core/locales-all';
-import momentPlugin from '@fullcalendar/moment';
-import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+import luxonPlugin from '@fullcalendar/luxon';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 export default {
     name: 'Schedule',
-    components: { FullCalendar },
+    components: {FullCalendar},
     props: {
         scheduleUrl: String,
         stationTimeZone: String,
         locale: String
     },
-    data () {
+    data() {
         return {
-            locales: allLocales,
-            plugins: [momentPlugin, momentTimezonePlugin, timeGridPlugin]
+            calendarOptions: {
+                locales: allLocales,
+                plugins: [luxonPlugin, timeGridPlugin],
+                initialView: 'timeGridWeek',
+                timeZone: this.stationTimeZone,
+                themeSystem: 'bootstrap',
+                nowIndicator: true,
+                defaultTimedEventDuration: '00:20',
+                locale: this.locale,
+                headerToolbar: false,
+                footerToolbar: false,
+                height: 'auto',
+                events: this.scheduleUrl,
+                eventClick: this.onEventClick
+            }
         };
     },
     methods: {
@@ -38,9 +46,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss">
-@import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
-@import '~@fullcalendar/timegrid/main.css';
-</style>

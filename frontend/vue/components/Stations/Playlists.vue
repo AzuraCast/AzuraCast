@@ -134,6 +134,8 @@ import QueueModal from './Playlists/QueueModal';
 import Icon from '~/components/Common/Icon';
 import handleAxiosError from '~/functions/handleAxiosError';
 import CloneModal from './Playlists/CloneModal';
+import {DateTime} from 'luxon';
+import humanizeDuration from 'humanize-duration';
 
 export default {
     name: 'StationPlaylists',
@@ -182,12 +184,6 @@ export default {
             return this.$gettext('Import from PLS/M3U');
         }
     },
-    mounted () {
-        moment.relativeTimeThreshold('ss', 1);
-        moment.relativeTimeRounding(function (value) {
-            return Math.round(value * 10) / 10;
-        });
-    },
     methods: {
         langToggleButton (record) {
             return (record.is_enabled)
@@ -195,10 +191,14 @@ export default {
                 : this.$gettext('Enable');
         },
         formatTime (time) {
-            return moment(time).tz(this.stationTimeZone).format('LT');
+            return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
         },
         formatLength (length) {
-            return moment.duration(length, 'seconds').humanize();
+            return humanizeDuration(length * 1000, {
+                round: true,
+                language: App.locale_short,
+                fallbacks: ['en']
+            });
         },
         formatType (record) {
             if (!record.is_enabled) {

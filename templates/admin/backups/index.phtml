@@ -12,7 +12,6 @@ $this->layout('main', [
 
 $assets
     ->load('luxon')
-    ->load('humanize-duration')
     ->addInlineJs($this->fetch('admin/backups/index.js'), 99);
 ?>
 
@@ -28,7 +27,7 @@ $assets
             <div class="card-body">
                 <p class="card-text">
                     <?php if ($last_run > 0): ?>
-                        <?=__('Last run: %s', '<time data-duration="' . (0 - (time() - $last_run)) . '"></time>')?>
+                        <?=__('Last run: %s', '<time data-duration="' . $last_run . '"></time>')?>
                     <?php else: ?>
                         <?=__('Never run')?>
                     <?php endif; ?>

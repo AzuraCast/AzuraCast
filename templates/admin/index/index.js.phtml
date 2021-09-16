@@ -1,5 +1,5 @@
 jQuery(function ($) {
     $('time[data-duration]').each(function () {
-        $(this).text(humanizeDuration($(this).data('duration') * 1000, {locale: App.locale_short}));
+        $(this).text(luxon.DateTime.fromSeconds($(this).data('duration')).toRelative());
     });
 });

@@ -11,7 +11,7 @@ $this->layout('main', [
 ]);
 
 $assets
-    ->load('humanize-duration')
+    ->load('luxon')
     ->addInlineJs($this->fetch('admin/index/index.js'), 99);
 ?>
 
@@ -96,12 +96,16 @@ $assets
                 <h3 class="card-subtitle"><?=implode(', ', $sync_info['contents'])?></h3>
             </div>
             <div class="card-body">
-                <p class="card-text"><?=__('Last run: %s',
-                        '<time data-duration="' . $sync_info['diff'] . '"></time>')?></p>
+                <p class="card-text"><?=__(
+                        'Last run: %s',
+                        '<time data-duration="' . $sync_info['latest'] . '"></time>'
+                    )?></p>
             </div>
             <div class="card-actions">
-                <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:debug:sync',
-                    ['type' => $sync_key])?>">
+                <a class="btn btn-outline-primary" role="button" href="<?=$router->named(
+                    'admin:debug:sync',
+                    ['type' => $sync_key]
+                )?>">
                     <i class="material-icons" aria-hidden="true">send</i>
                     <?=__('Run Task')?>
                 </a>

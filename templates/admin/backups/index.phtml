@@ -11,7 +11,8 @@ $this->layout('main', [
 ]);
 
 $assets
-    ->load('moment')
+    ->load('luxon')
+    ->load('humanize-duration')
     ->addInlineJs($this->fetch('admin/backups/index.js'), 99);
 ?>
 

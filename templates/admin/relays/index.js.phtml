@@ -1,9 +1,6 @@
-$(function() {
-    moment.relativeTimeThreshold('ss', 1);
-    moment.relativeTimeRounding(function(value) { return Math.round(value * 10) / 10; });
-
-    $('time[data-content]').each(function() {
+$(function () {
+    $('time[data-content]').each(function () {
         let tz_display = $(this).data('content');
-        $(this).text(moment(tz_display).format('LT'));
+        $(this).text(luxon.DateTime.fromSeconds(tz_display).toLocaleString(luxon.DateTime.TIME_SIMPLE));
     });
 });

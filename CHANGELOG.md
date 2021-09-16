@@ -9,6 +9,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- The `moment.js` library, rather bulky in size and now no longer recommended for new application development, has been
+  replaced across the application with the `luxon` library, which relies instead on new JavaScript functionality built
+  directly into the browser to do date/time normalization and localization.
+
+- Our Vue component build process has been completely overhauled to be fully independent of our legacy asset management;
+  if you're contributing Vue components to our codebase, it should much more intuitively match the experience you would
+  expect from other Vue-based apps using Webpack than before.
+
 - A number of security fixes are being incorporated into the software as of this version. See below for details.
 
 ## Bug Fixes

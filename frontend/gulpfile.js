@@ -79,25 +79,14 @@ var jsFiles = {
       'node_modules/select2/dist/js/select2.full.min.js'
     ]
   },
-  'moment': {
-    base: 'node_modules/moment/min',
+  'luxon': {
     files: [
-      'node_modules/moment/min/moment.min.js',
-      'node_modules/moment/min/locales.min.js'
+      'node_modules/luxon/build/global/luxon.min.js'
     ]
   },
-  'moment-timezone': {
-    base: 'node_modules/moment-timezone/builds',
+  'humanize-duration': {
     files: [
-      'node_modules/moment-timezone/builds/moment-timezone-with-data-10-year-range.min.js'
-    ]
-  },
-  'codemirror': {
-    base: null,
-    files: [
-      'node_modules/codemirror/lib/codemirror.*',
-      'node_modules/codemirror/mode/css/css.js',
-      'node_modules/codemirror/mode/javascript/javascript.js'
+      'node_modules/humanize-duration/humanize-duration.js'
     ]
   },
   'clipboard': {

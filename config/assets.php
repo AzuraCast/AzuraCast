@@ -190,28 +190,34 @@ return [
         ],
     ],
 
-    // Moment standalone (with locales)
-    'moment' => [
+    'luxon' => [
         'order' => 8,
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/moment/moment.min.js',
-                ],
-                [
-                    'src' => 'dist/lib/moment/locales.min.js',
-                    'charset' => 'UTF-8',
-                ],
-                [
-                    'src' => 'dist/lib/moment-timezone/moment-timezone-with-data-10-year-range.min.js',
+                    'src' => 'dist/lib/luxon/luxon.min.js',
                 ],
             ],
         ],
         'inline' => [
             'js' => [
                 function (Request $request) {
-                    return 'moment.locale(App.locale_with_dashes);';
+                    return <<<'JS'
+                    luxon.Settings.defaultLocale = App.locale_with_dashes;
+                    luxon.Settings.defaultZoneName = 'UTC';
+                    JS;
                 },
+            ],
+        ],
+    ],
+
+    'humanize-duration' => [
+        'order' => 8,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/lib/humanize-duration/humanize-duration.js',
+                ],
             ],
         ],
     ],

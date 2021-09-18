@@ -14,6 +14,8 @@ class PodcastsAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $router = $request->getRouter();
+        $customization = $request->getCustomization();
         $station = $request->getStation();
 
         $userLocale = (string)$request->getCustomization()->getLocale();
@@ -23,12 +25,20 @@ class PodcastsAction
 
         return $request->getView()->renderToResponse(
             $response,
-            'stations/podcasts/index',
+            'system/vue',
             [
-                'stationId' => $station->getId(),
-                'stationTz' => $station->getTimezone(),
-                'languageOptions' => $languageOptions,
-                'categoriesOptions' => $categoriesOptions,
+                'title' => __('Podcasts'),
+                'id' => 'station-podcasts',
+                'component' => 'Vue_StationsPodcasts',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:podcasts'),
+                    'newArtUrl' => (string)$router->fromHere('api:stations:podcasts:new-art'),
+                    'stationUrl' => (string)$router->fromHere('stations:index:index'),
+                    'locale' => substr((string)$customization->getLocale(), 0, 2),
+                    'stationTimeZone' => $station->getTimezone(),
+                    'languageOptions' => $languageOptions,
+                    'categoriesOptions' => $categoriesOptions,
+                ],
             ]
         );
     }

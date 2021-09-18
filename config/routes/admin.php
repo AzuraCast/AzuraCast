@@ -205,7 +205,7 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
-            $group->get('/storage_locations', Controller\Admin\StorageLocationsController::class)
+            $group->get('/storage_locations', Controller\Admin\StorageLocationsAction::class)
                 ->setName('admin:storage_locations:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_STORAGE_LOCATIONS));
 

@@ -12,9 +12,21 @@ class ListenersAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $station = $request->getStation();
+        $router = $request->getRouter();
+
         return $request->getView()->renderToResponse(
             $response,
-            'stations/reports/listeners',
+            'system/vue',
+            [
+                'title' => __('Listeners'),
+                'id' => 'station-report-listeners',
+                'component' => 'Vue_StationsReportsListeners',
+                'props' => [
+                    'apiUrl' => (string)$router->fromHere('api:listeners:index'),
+                    'stationTz' => $station->getTimezone(),
+                ],
+            ]
         );
     }
 }

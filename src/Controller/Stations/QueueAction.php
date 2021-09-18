@@ -12,12 +12,21 @@ class QueueAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $router = $request->getRouter();
         $station = $request->getStation();
+
         return $request->getView()->renderToResponse(
             $response,
-            'stations/queue/index',
+            'system/vue',
             [
-                'stationTz' => $station->getTimezone(),
+                'title' => __('Upcoming Song Queue'),
+                'id' => 'station-queue',
+                'component' => 'Vue_StationsQueue',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:queue'),
+                    'clearUrl' => (string)$router->fromHere('api:stations:queue:clear'),
+                    'stationTimeZone' => $station->getTimezone(),
+                ],
             ]
         );
     }

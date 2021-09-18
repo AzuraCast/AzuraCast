@@ -16,16 +16,24 @@ class MountsAction
         Response $response,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
+        $router = $request->getRouter();
         $station = $request->getStation();
 
         $settings = $settingsRepo->readSettings();
 
         return $request->getView()->renderToResponse(
             $response,
-            'stations/mounts/index',
+            'system/vue',
             [
-                'station' => $station,
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+                'title' => __('Mount Points'),
+                'id' => 'station-mounts',
+                'component' => 'Vue_StationsMounts',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:mounts'),
+                    'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
+                    'stationFrontendType' => $station->getFrontendType(),
+                    'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+                ],
             ]
         );
     }

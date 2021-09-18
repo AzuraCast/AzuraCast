@@ -9,7 +9,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class OverviewController
+class OverviewAction
 {
     public function __invoke(
         ServerRequest $request,
@@ -24,9 +24,21 @@ class OverviewController
             return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
         }
 
+        $router = $request->getRouter();
+
         return $request->getView()->renderToResponse(
             $response,
-            'stations/reports/overview'
+            'system/vue',
+            [
+                'title' => __('Statistics Overview'),
+                'id' => 'vue-reports-overview',
+                'component' => 'Vue_StationsReportsOverview',
+                'props' => [
+                    'chartsUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
+                    'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),
+                    'mostPlayedUrl' => (string)$router->fromHere('api:stations:reports:most-played'),
+                ],
+            ]
         );
     }
 }

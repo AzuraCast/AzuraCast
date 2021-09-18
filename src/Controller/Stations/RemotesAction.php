@@ -16,16 +16,21 @@ class RemotesAction
         Response $response,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
-        $station = $request->getStation();
+        $router = $request->getRouter();
 
         $settings = $settingsRepo->readSettings();
 
         return $request->getView()->renderToResponse(
             $response,
-            'stations/remotes/index',
+            'system/vue',
             [
-                'station' => $station,
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+                'title' => __('Remote Relays'),
+                'id' => 'station-remotes',
+                'component' => 'Vue_StationsRemotes',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:remotes'),
+                    'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+                ],
             ]
         );
     }

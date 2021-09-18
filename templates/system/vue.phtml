@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var App\Assets $assets
+ *
+ * @var string|null $layout "main" or "minimal"
+ * @var string $title Page title
+ * @var string $component Vue component ID
+ * @var string|null $id Div container ID
+ * @var array $props Vue props
+ */
+
+$this->layout(
+    $layout ?? 'main',
+    [
+        'title' => $title,
+        'manual' => true,
+    ]
+);
+
+$id ??= $component;
+$assets->addVueRender($component, '#' . $id, (array)$props);
+?>
+
+<div id="<?=$id?>"></div>

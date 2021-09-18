@@ -14,6 +14,19 @@ class PerformanceAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        return $request->getView()->renderToResponse($response, 'stations/reports/performance');
+        $router = $request->getRouter();
+
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/vue',
+            [
+                'title' => __('Song Listener Impact'),
+                'id' => 'station-report-performance',
+                'component' => 'Vue_StationsReportsPerformance',
+                'props' => [
+                    'apiUrl' => (string)$router->fromHere('api:stations:reports:performance'),
+                ],
+            ]
+        );
     }
 }

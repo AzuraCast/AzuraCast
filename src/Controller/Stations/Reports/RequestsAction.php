@@ -12,12 +12,21 @@ class RequestsAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $router = $request->getRouter();
         $station = $request->getStation();
+
         return $request->getView()->renderToResponse(
             $response,
-            'stations/reports/requests',
+            'system/vue',
             [
-                'stationTz' => $station->getTimezone(),
+                'title' => __('Song Requests'),
+                'id' => 'station-report-requests',
+                'component' => 'Vue_StationsReportsRequests',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:reports:requests'),
+                    'clearUrl' => (string)$router->fromHere('api:stations:reports:requests:clear'),
+                    'stationTimeZone' => $station->getTimezone(),
+                ],
             ]
         );
     }

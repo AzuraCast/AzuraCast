@@ -12,6 +12,19 @@ class AuditLogAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        return $request->getView()->renderToResponse($response, 'admin/audit_log/index');
+        $router = $request->getRouter();
+
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/vue',
+            [
+                'title' => __('Audit Log'),
+                'id' => 'admin-audit-log',
+                'component' => 'Vue_AdminAuditLog',
+                'props' => [
+                    'baseApiUrl' => (string)$router->fromHere('api:admin:auditlog'),
+                ],
+            ]
+        );
     }
 }

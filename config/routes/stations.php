@@ -87,7 +87,7 @@ return static function (RouteCollectorProxy $app) {
             $group->group(
                 '/reports',
                 function (RouteCollectorProxy $group) {
-                    $group->get('/overview', Controller\Stations\Reports\OverviewController::class)
+                    $group->get('/overview', Controller\Stations\Reports\OverviewAction::class)
                         ->setName('stations:reports:overview');
 
                     $group->get('/timeline', Controller\Stations\Reports\TimelineAction::class)

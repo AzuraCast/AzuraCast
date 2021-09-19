@@ -84,7 +84,7 @@
                         <template #label>
                             <translate key="lang_edit_form_authhash">YP Directory Authorization Hash</translate>
                         </template>
-                        <template #description>{{ langAuthhashDesc }}</template>
+                        <template #description><span v-html="langAuthhashDesc"></span></template>
                     </b-wrapped-form-group>
                 </template>
                 <template v-if="isIcecast">
@@ -119,7 +119,7 @@ export default {
         },
         langAuthhashDesc() {
             let text = 'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the SHOUTcast web site</a>.';
-            let url = 'https://rmo.shoutcast.com';
+            let url = 'https://radiomanager.shoutcast.com/';
 
             return this.$gettextInterpolate(this.$gettext(text), {url: url});
         },

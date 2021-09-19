@@ -16,7 +16,13 @@ class OpenApiController
         Response $response,
         GenerateApiDocsCommand $apiDocsCommand
     ): ResponseInterface {
-        $yaml = $apiDocsCommand->generate(true)->toYaml();
+        $apiBaseUrl = str_replace(
+            '/openapi.yml',
+            '',
+            (string)$request->getRouter()->fromHere(absolute: true)
+        );
+
+        $yaml = $apiDocsCommand->generate(true, $apiBaseUrl)->toYaml();
 
         $response->getBody()->write($yaml);
         return $response->withHeader('Content-Type', 'text/x-yaml');

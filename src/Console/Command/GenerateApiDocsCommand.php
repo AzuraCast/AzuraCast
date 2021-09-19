@@ -33,9 +33,11 @@ class GenerateApiDocsCommand extends CommandAbstract
         return 0;
     }
 
-    public function generate(bool $useCurrentVersion = false): OpenApi
-    {
-        define('AZURACAST_API_URL', 'https://demo.azuracast.com/api');
+    public function generate(
+        bool $useCurrentVersion = false,
+        string $apiBaseUrl = 'https://demo.azuracast.com/api'
+    ): OpenApi {
+        define('AZURACAST_API_URL', $apiBaseUrl);
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define(
             'AZURACAST_VERSION',

@@ -66,9 +66,11 @@ class Acl
      */
     public function isValidPermission(string $permission_name, bool $is_global): bool
     {
+        $permissions = $this->listPermissions();
+
         return $is_global
-            ? isset($this->permissions['global'][$permission_name])
-            : isset($this->permissions['station'][$permission_name]);
+            ? isset($permissions['global'][$permission_name])
+            : isset($permissions['station'][$permission_name]);
     }
 
     /**

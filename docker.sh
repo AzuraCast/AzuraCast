@@ -635,7 +635,7 @@ db() {
 #
 backup() {
   local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
-  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_PATH=$(readlink -f ${1:-"./backup.tar.gz"})
   BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
@@ -662,7 +662,7 @@ backup() {
 #
 restore() {
   local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
-  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_PATH=$(readlink -f ${1:-"./backup.tar.gz"})
   BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"

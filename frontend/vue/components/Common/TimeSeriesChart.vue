@@ -48,19 +48,23 @@ export default {
                         }
                     },
                     scales: {
-                        xAxes: [{
+                        x: {
                             type: 'time',
                             distribution: 'linear',
+                            display: true,
+                            min: DateTime.now().minus({days: 30}).toJSDate(),
+                            max: DateTime.now().toJSDate(),
                             time: {
-                                unit: 'day'
+                                unit: 'day',
+                                tooltipFormat: DateTime.DATE_SHORT,
                             },
                             ticks: {
                                 source: 'data',
-                                autoSkip: true,
-                                min: DateTime.now().minus({days: 30}).toJSDate()
+                                autoSkip: true
                             }
-                        }],
-                        yAxes: [{
+                        },
+                        y: {
+                            display: true,
                             scaleLabel: {
                                 display: true,
                                 labelString: this.$gettext('Listeners')
@@ -68,7 +72,7 @@ export default {
                             ticks: {
                                 min: 0
                             }
-                        }]
+                        }
                     },
                     tooltips: {
                         intersect: false,

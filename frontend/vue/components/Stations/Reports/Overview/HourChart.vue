@@ -40,25 +40,21 @@ export default {
                         }
                     },
                     scales: {
-                        xAxes: [
-                            {
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: this.$gettext('Hour')
-                                }
+                        x: {
+                            scaleLabel: {
+                                display: true,
+                                labelString: this.$gettext('Hour')
                             }
-                        ],
-                        yAxes: [
-                            {
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: this.$gettext('Listeners')
-                                },
-                                ticks: {
-                                    min: 0
-                                }
+                        },
+                        y: {
+                            scaleLabel: {
+                                display: true,
+                                labelString: this.$gettext('Listeners')
+                            },
+                            ticks: {
+                                min: 0
                             }
-                        ]
+                        }
                     }
                 }
             };

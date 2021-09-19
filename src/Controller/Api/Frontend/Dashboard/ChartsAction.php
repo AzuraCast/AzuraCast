@@ -161,7 +161,7 @@ class ChartsAction
 
                     foreach ($statRows[$stationId] as $sortableKey => [$jsTimestamp, $value]) {
                         $series['data'][] = [
-                            't' => $jsTimestamp,
+                            'x' => $jsTimestamp,
                             'y' => $value,
                         ];
 

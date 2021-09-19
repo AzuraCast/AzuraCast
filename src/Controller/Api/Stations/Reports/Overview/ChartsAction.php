@@ -60,12 +60,12 @@ class ChartsAction
             $statTime = $statTime->shiftTimezone($station_tz);
 
             $avg_row = new stdClass();
-            $avg_row->t = $statTime->getTimestamp() * 1000;
+            $avg_row->x = $statTime->getTimestampMs();
             $avg_row->y = round((float)$stat['number_avg'], 2);
             $daily_averages[] = $avg_row;
 
             $row_date = $statTime->format('Y-m-d');
-            $daily_alt[] = '<dt><time data-original="' . $avg_row->t . '">' . $row_date . '</time></dt>';
+            $daily_alt[] = '<dt><time data-original="' . $avg_row->x . '">' . $row_date . '</time></dt>';
             $daily_alt[] = '<dd>' . $avg_row->y . ' ' . __('Listeners') . '</dd>';
 
             $day_of_week = (int)$statTime->format('N') - 1;

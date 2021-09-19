@@ -9,6 +9,7 @@ module.exports = {
     Dashboard: '~/pages/Dashboard.js',
     AdminAuditLog: '~/pages/Admin/AuditLog.js',
     AdminBranding: '~/pages/Admin/Branding.js',
+    AdminPermissions: '~/pages/Admin/Permissions.js',
     AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
     PublicFullPlayer: '~/pages/Public/FullPlayer.js',
     PublicHistory: '~/pages/Public/History.js',

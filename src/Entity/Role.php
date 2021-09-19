@@ -24,8 +24,6 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
-
     /** @OA\Property(example="Super Administrator") */
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]

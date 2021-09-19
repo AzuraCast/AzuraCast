@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Users;
 
-use App\Acl;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,36 +23,22 @@ class SetAdministratorCommand extends CommandAbstract
             ->findOneBy(['email' => $email]);
 
         if ($user instanceof Entity\User) {
-            $admin_role = $em->getRepository(Entity\Role::class)
-                ->find(Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID);
-
-            if (null === $admin_role) {
-                $io->error('Administrator role not found.');
-                return 1;
-            }
-
-            $perms_repo->setActionsForRole(
-                $admin_role,
-                [
-                    'actions_global' => [
-                        Acl::GLOBAL_ALL,
-                    ],
-                ]
-            );
+            $adminRole = $perms_repo->ensureSuperAdministratorRole();
 
             $user_roles = $user->getRoles();
-
-            if (!$user_roles->contains($admin_role)) {
-                $user_roles->add($admin_role);
+            if (!$user_roles->contains($adminRole)) {
+                $user_roles->add($adminRole);
             }
 
             $em->persist($user);
             $em->flush();
 
-            $io->text(__(
-                'The account associated with e-mail address "%s" has been set as an administrator',
-                $user->getEmail()
-            ));
+            $io->text(
+                __(
+                    'The account associated with e-mail address "%s" has been set as an administrator',
+                    $user->getEmail()
+                )
+            );
             $io->newLine();
             return 0;
         }

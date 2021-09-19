@@ -148,26 +148,9 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 
-            $group->group(
-                '/permissions',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\PermissionsController::class . ':indexAction')
-                        ->setName('admin:permissions:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Admin\PermissionsController::class . ':editAction'
-                    )
-                        ->setName('admin:permissions:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Admin\PermissionsController::class . ':editAction')
-                        ->setName('admin:permissions:add');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class . ':deleteAction')
-                        ->setName('admin:permissions:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+            $group->get('/permissions', Controller\Admin\PermissionsAction::class)
+                ->setName('admin:permissions:index')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
             $group->get('/relays', Controller\Admin\RelaysController::class)
                 ->setName('admin:relays:index')

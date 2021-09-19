@@ -131,26 +131,20 @@ class RolesController extends AbstractAdminApiCrudController
 
     protected function doUpdatePermissions(Entity\Role $role, array $newPermissions): void
     {
-        $perms = $role->getPermissions();
-
-        if ($perms->count() > 0) {
-            foreach ($perms as $existing_perm) {
-                $this->em->remove($existing_perm);
-            }
-            $perms->clear();
+        foreach ($role->getPermissions() as $perm) {
+            $this->em->remove($perm);
         }
 
-        if (!empty($newPermissions['global'])) {
+        if (isset($newPermissions['global'])) {
             foreach ($newPermissions['global'] as $perm_name) {
                 if ($this->acl->isValidPermission($perm_name, true)) {
                     $perm_record = new Entity\RolePermission($role, null, $perm_name);
                     $this->em->persist($perm_record);
-                    $perms->add($perm_record);
                 }
             }
         }
 
-        if (!empty($newPermissions['station'])) {
+        if (isset($newPermissions['station'])) {
             foreach ($newPermissions['station'] as $station_id => $station_perms) {
                 $station = $this->em->find(Entity\Station::class, $station_id);
 
@@ -159,7 +153,6 @@ class RolesController extends AbstractAdminApiCrudController
                         if ($this->acl->isValidPermission($perm_name, false)) {
                             $perm_record = new Entity\RolePermission($role, $station, $perm_name);
                             $this->em->persist($perm_record);
-                            $perms->add($perm_record);
                         }
                     }
                 }

@@ -57,7 +57,7 @@ return function (App\Event\BuildAdminMenu $e) {
                         'permission' => Acl::GLOBAL_ALL,
                     ],
                     'permissions' => [
-                        'label' => __('Permissions'),
+                        'label' => __('Roles & Permissions'),
                         'url' => (string)$router->named('admin:permissions:index'),
                         'permission' => Acl::GLOBAL_ALL,
                     ],

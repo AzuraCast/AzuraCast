@@ -45,35 +45,6 @@ class Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageRoles(FunctionalTester $I): void
-    {
-        $I->wantTo('Manage roles.');
-
-        // Permissions homepage
-        $I->amOnPage('/admin/permissions');
-        $I->see('Super Administrator');
-
-        // Add another role
-        $I->click('Add Permission', '#content');
-
-        $I->submitForm('.form', [
-            'name' => 'ZZZ Test Administrator',
-        ]);
-
-        $I->seeCurrentUrlEquals('/admin/permissions');
-        $I->see('ZZZ Test Administrator');
-
-        // Delete the new role
-        $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
-
-        $I->seeCurrentUrlEquals('/admin/permissions');
-        $I->dontSee('ZZZ Test Administrator');
-    }
-
-    /**
-     * @before setupComplete
-     * @before login
-     */
     public function manageStations(FunctionalTester $I): void
     {
         $I->wantTo('Manage stations.');

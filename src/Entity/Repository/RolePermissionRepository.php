@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Acl;
 use App\Doctrine\Repository;
 use App\Entity;
 
@@ -59,43 +60,30 @@ class RolePermissionRepository extends Repository
         return $result;
     }
 
-    /**
-     * @param Entity\Role $role
-     * @param array $post_values
-     */
-    public function setActionsForRole(Entity\Role $role, array $post_values): void
+    public function ensureSuperAdministratorRole(): Entity\Role
     {
-        $this->em->createQuery(
+        $superAdminRole = $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\RolePermission rp
-                WHERE rp.role_id = :role_id
+            SELECT r FROM
+            App\Entity\Role r LEFT JOIN r.permissions rp
+            WHERE rp.station IS NULL AND rp.action_name = :action
             DQL
-        )->setParameter('role_id', $role->getId())
-            ->execute();
+        )->setParameter('action', Acl::GLOBAL_ALL)
+            ->setMaxResults(1)
+            ->getSingleResult();
 
-        foreach ($post_values as $post_key => $post_value) {
-            if (str_contains($post_key, '_')) {
-                [$post_key_action, $post_key_id] = explode('_', $post_key);
-            } else {
-                $post_key_action = $post_key;
-                $post_key_id = null;
-            }
-
-            if ($post_key_action !== 'actions' || empty($post_value)) {
-                continue;
-            }
-
-            foreach ((array)$post_value as $action_name) {
-                $station = ($post_key_id !== 'global') ? $this->em->getReference(
-                    Entity\Station::class,
-                    $post_key_id
-                ) : null;
-
-                $record = new Entity\RolePermission($role, $station, $action_name);
-                $this->em->persist($record);
-            }
+        if ($superAdminRole instanceof Entity\Role) {
+            return $superAdminRole;
         }
 
+        $newRole = new Entity\Role();
+        $newRole->setName('Super Administrator');
+        $this->em->persist($newRole);
+
+        $newPerm = new Entity\RolePermission($newRole, null, Acl::GLOBAL_ALL);
+        $this->em->persist($newPerm);
+
         $this->em->flush();
+        return $newRole;
     }
 }

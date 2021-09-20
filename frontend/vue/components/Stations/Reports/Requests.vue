@@ -52,6 +52,7 @@ import DataTable from '~/components/Common/DataTable';
 import handleAxiosError from '~/functions/handleAxiosError';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
+import confirmDelete from "~/functions/confirmDelete";
 
 export default {
     name: 'StationRequests',
@@ -77,15 +78,9 @@ export default {
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
         },
         doDelete(url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete request?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Request?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
@@ -99,15 +94,9 @@ export default {
             });
         },
         doClear() {
-            let buttonText = this.$gettext('Clear');
-            let buttonConfirmText = this.$gettext('Clear all pending requests?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Clear All Pending Requests?'),
+                confirmButtonText: this.$gettext('Clear'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.post(this.clearUrl).then((resp) => {

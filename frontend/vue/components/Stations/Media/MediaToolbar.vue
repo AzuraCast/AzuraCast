@@ -75,6 +75,7 @@
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
 import handleAxiosError from '~/functions/handleAxiosError';
+import confirmDelete from "~/functions/confirmDelete";
 
 export default {
     name: 'station-media-toolbar',
@@ -140,17 +141,12 @@ export default {
             this.doBatch('reprocess', this.$gettext('Files marked for reprocessing:'));
         },
         doDelete (e) {
-            let buttonText = this.$gettext('Delete');
             let buttonConfirmText = this.$gettext('Delete %{ num } media files?');
-
             let numFiles = this.selectedItems.all.length;
 
-            Swal.fire({
-                title: this.$gettextInterpolate(buttonConfirmText, { num: numFiles }),
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettextInterpolate(buttonConfirmText, {num: numFiles}),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.doBatch('delete', this.$gettext('Files removed:'));

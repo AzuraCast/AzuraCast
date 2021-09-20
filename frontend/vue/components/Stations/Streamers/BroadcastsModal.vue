@@ -43,6 +43,7 @@ import Icon from '~/components/Common/Icon';
 import handleAxiosError from '~/functions/handleAxiosError';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
+import confirmDelete from "~/functions/confirmDelete";
 
 export default {
     name: 'StreamerBroadcastsModal',
@@ -125,15 +126,9 @@ export default {
             }
         },
         doDelete (url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete broadcast?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Broadcast?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

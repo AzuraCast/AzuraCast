@@ -59,6 +59,7 @@ import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import handleAxiosError from '~/functions/handleAxiosError';
 import RemoteEditModal from "./Remotes/EditModal";
+import confirmDelete from "~/functions/confirmDelete";
 
 export default {
     name: 'StationMounts',
@@ -96,15 +97,9 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete Remote Relay?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Remote Relay?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

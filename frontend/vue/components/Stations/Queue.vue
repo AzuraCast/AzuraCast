@@ -59,6 +59,7 @@ import QueueLogsModal from './Queue/LogsModal';
 import handleAxiosError from '~/functions/handleAxiosError';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
+import confirmDelete from "~/functions/confirmDelete";
 
 export default {
     name: 'StationQueue',
@@ -86,15 +87,9 @@ export default {
             this.$refs.logs_modal.show(logs);
         },
         doDelete (url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete queue item?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Queue Item?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
@@ -108,15 +103,9 @@ export default {
             });
         },
         doClear() {
-            let buttonText = this.$gettext('Clear');
-            let buttonConfirmText = this.$gettext('Clear upcoming song queue?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Clear Upcoming Song Queue?'),
+                confirmButtonText: this.$gettext('Clear'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.post(this.clearUrl).then((resp) => {

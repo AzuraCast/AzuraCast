@@ -55,6 +55,7 @@ import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import handleAxiosError from '~/functions/handleAxiosError';
 import _ from 'lodash';
+import confirmDelete from "~/functions/confirmDelete";
 
 export default {
     name: 'AdminPermissions',
@@ -98,15 +99,9 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete Role?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Role?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

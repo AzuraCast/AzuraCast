@@ -75,6 +75,7 @@ import AlbumArt from '~/components/Common/AlbumArt';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import handleAxiosError from '~/functions/handleAxiosError';
+import confirmDelete from "~/functions/confirmDelete";
 
 export const episodeViewProps = {
     props: {
@@ -118,15 +119,9 @@ export default {
             this.$emit('clear-podcast');
         },
         doDelete (url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete episode?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Episode?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

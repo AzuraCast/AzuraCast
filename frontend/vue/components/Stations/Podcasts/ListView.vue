@@ -64,6 +64,7 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
 import handleAxiosError from '~/functions/handleAxiosError';
+import confirmDelete from "~/functions/confirmDelete";
 
 export const listViewProps = {
     props: {
@@ -115,15 +116,9 @@ export default {
             this.$emit('select-podcast', podcast);
         },
         doDelete (url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete podcast?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Podcast?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

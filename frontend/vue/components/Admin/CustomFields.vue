@@ -49,6 +49,7 @@ import EditModal from './CustomFields/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import handleAxiosError from '~/functions/handleAxiosError';
+import confirmDelete from '~/functions/confirmDelete';
 import _ from 'lodash';
 
 export default {
@@ -81,15 +82,9 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete Custom Field?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
+            confirmDelete({
+                title: this.$gettext('Delete Custom Field?'),
+                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

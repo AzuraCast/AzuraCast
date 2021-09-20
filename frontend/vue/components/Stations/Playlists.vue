@@ -151,10 +151,10 @@ export default {
     data () {
         return {
             fields: [
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false },
-                { key: 'name', isRowHeader: true, label: this.$gettext('Playlist'), sortable: false },
-                { key: 'scheduling', label: this.$gettext('Scheduling'), sortable: false },
-                { key: 'num_songs', label: this.$gettext('# Songs'), sortable: false }
+                {key: 'name', isRowHeader: true, label: this.$gettext('Playlist'), sortable: false},
+                {key: 'scheduling', label: this.$gettext('Scheduling'), sortable: false},
+                {key: 'num_songs', label: this.$gettext('# Songs'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
     },

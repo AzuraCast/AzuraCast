@@ -79,10 +79,10 @@ export default {
     data () {
         return {
             fields: [
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false },
-                { key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: false },
-                { key: 'display_name', label: this.$gettext('Display Name'), sortable: false },
-                { key: 'comments', label: this.$gettext('Notes'), sortable: false }
+                {key: 'display_name', label: this.$gettext('Display Name'), sortable: false},
+                {key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: false},
+                {key: 'comments', label: this.$gettext('Notes'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
     },

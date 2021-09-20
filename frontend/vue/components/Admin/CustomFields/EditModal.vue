@@ -1,38 +1,22 @@
 <template>
-    <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-overlay variant="card" :show="loading">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+                @submit="doSubmit">
 
-            <b-form class="form" @submit.prevent="doSubmit">
-                <b-tabs content-class="mt-3">
-                    <admin-custom-fields-form :form="$v.form" :auto-assign-types="autoAssignTypes">
-                    </admin-custom-fields-form>
-                </b-tabs>
+        <admin-custom-fields-form :form="$v.form" :auto-assign-types="autoAssignTypes">
+        </admin-custom-fields-form>
 
-                <invisible-submit-button/>
-            </b-form>
-        </b-overlay>
-        <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
-            </b-button>
-            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save_changes">Save Changes</translate>
-            </b-button>
-        </template>
-    </b-modal>
+    </modal-form>
 </template>
 
 <script>
 import {validationMixin} from 'vuelidate';
 import {required} from 'vuelidate/dist/validators.min.js';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form";
 
 export default {
     name: 'AdminCustomFieldsEditModal',
-    components: {AdminCustomFieldsForm, InvisibleSubmitButton},
+    components: {AdminCustomFieldsForm},
     mixins: [validationMixin, BaseEditModal],
     props: {
         autoAssignTypes: Object

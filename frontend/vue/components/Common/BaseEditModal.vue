@@ -5,9 +5,11 @@
 <script>
 import {validationMixin} from 'vuelidate';
 import handleAxiosError from '~/functions/handleAxiosError';
+import ModalForm from "~/components/Common/ModalForm";
 
 export default {
     name: 'BaseEditModal',
+    components: {ModalForm},
     emits: ['relist'],
     props: {
         createUrl: String
@@ -15,7 +17,7 @@ export default {
     mixins: [
         validationMixin
     ],
-    data () {
+    data() {
         return {
             loading: true,
             error: null,

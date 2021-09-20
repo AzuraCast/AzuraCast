@@ -1,28 +1,16 @@
 <template>
-    <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-overlay variant="card" :show="loading">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
-            <b-form class="form" @submit.prevent="doSubmit">
-                <b-tabs content-class="mt-3">
-                    <form-basic-info :form="$v.form"></form-basic-info>
-                    <form-source :form="$v.form"></form-source>
-                    <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
-                                   :station-time-zone="stationTimeZone"></form-schedule>
-                    <form-advanced :form="$v.form" v-if="enableAdvancedFeatures"></form-advanced>
-                </b-tabs>
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+                @submit="doSubmit">
 
-                <invisible-submit-button/>
-            </b-form>
-        </b-overlay>
-        <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
-            </b-button>
-            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save_changes">Save Changes</translate>
-            </b-button>
-        </template>
-    </b-modal>
+        <b-tabs content-class="mt-3">
+            <form-basic-info :form="$v.form"></form-basic-info>
+            <form-source :form="$v.form"></form-source>
+            <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
+                           :station-time-zone="stationTimeZone"></form-schedule>
+            <form-advanced :form="$v.form" v-if="enableAdvancedFeatures"></form-advanced>
+        </b-tabs>
+
+    </modal-form>
 </template>
 
 <script>
@@ -32,18 +20,17 @@ import FormSource from './Form/Source';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
 import BaseEditModal from '~/components/Common/BaseEditModal';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 
 export default {
     name: 'EditModal',
-    components: {FormSchedule, FormSource, FormBasicInfo, FormAdvanced, InvisibleSubmitButton},
+    components: {FormSchedule, FormSource, FormBasicInfo, FormAdvanced},
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
         enableAdvancedFeatures: Boolean
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.isEditMode
                 ? this.$gettext('Edit Playlist')
                 : this.$gettext('Add Playlist');

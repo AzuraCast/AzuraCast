@@ -1,28 +1,19 @@
 <template>
-    <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-overlay variant="card" :show="loading">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
-            <b-form class="form" @submit.prevent="doEdit">
-                <b-tabs content-class="mt-3">
-                    <media-form-basic-info :form="$v.form"></media-form-basic-info>
-                    <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
-                    <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
-                    <media-form-custom-fields v-if="customFields.length > 0" :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
-                    <media-form-waveform-editor :form="form" :audio-url="audioUrl" :waveform-url="waveformUrl"></media-form-waveform-editor>
-                    <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
-                </b-tabs>
-                <invisible-submit-button/>
-            </b-form>
-        </b-overlay>
-        <template #modal-footer>
-            <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
-            </b-button>
-            <b-button variant="primary" @click="doEdit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save">Save Changes</translate>
-            </b-button>
-        </template>
-    </b-modal>
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+                @submit="doEdit">
+
+        <b-tabs content-class="mt-3">
+            <media-form-basic-info :form="$v.form"></media-form-basic-info>
+            <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
+            <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
+            <media-form-custom-fields v-if="customFields.length > 0" :form="$v.form"
+                                      :custom-fields="customFields"></media-form-custom-fields>
+            <media-form-waveform-editor :form="form" :audio-url="audioUrl"
+                                        :waveform-url="waveformUrl"></media-form-waveform-editor>
+            <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
+        </b-tabs>
+
+    </modal-form>
 </template>
 <script>
 import {validationMixin} from 'vuelidate';
@@ -36,10 +27,12 @@ import MediaFormPlaylists from './Form/Playlists';
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import MediaFormWaveformEditor from './Form/WaveformEditor';
 import handleAxiosError from '~/functions/handleAxiosError';
+import ModalForm from "~/components/Common/ModalForm";
 
 export default {
     name: 'EditModal',
     components: {
+        ModalForm,
         MediaFormPlaylists,
         MediaFormWaveformEditor,
         MediaFormAdvancedSettings,

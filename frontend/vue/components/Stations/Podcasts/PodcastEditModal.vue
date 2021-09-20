@@ -1,40 +1,28 @@
 <template>
-    <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-spinner v-if="loading">
-        </b-spinner>
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+                @submit="doSubmit">
 
-        <b-form class="form" v-else @submit.prevent="doSubmit">
-            <b-tabs content-class="mt-3">
-                <podcast-form-basic-info :form="$v.form"
-                                         :categories-options="categoriesOptions" :language-options="languageOptions">
-                </podcast-form-basic-info>
-                <podcast-common-artwork v-model="$v.form.artwork_file.$model" :artwork-src="record.art"
-                                        :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
-            </b-tabs>
+        <b-tabs content-class="mt-3">
+            <podcast-form-basic-info :form="$v.form"
+                                     :categories-options="categoriesOptions" :language-options="languageOptions">
+            </podcast-form-basic-info>
 
-            <invisible-submit-button/>
-        </b-form>
-        <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
-            </b-button>
-            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save_changes">Save Changes</translate>
-            </b-button>
-        </template>
-    </b-modal>
+            <podcast-common-artwork v-model="$v.form.artwork_file.$model" :artwork-src="record.art"
+                                    :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
+        </b-tabs>
+
+    </modal-form>
 </template>
 
 <script>
 import {required} from 'vuelidate/dist/validators.min.js';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 
 export default {
     name: 'EditModal',
-    components: {PodcastCommonArtwork, PodcastFormBasicInfo, InvisibleSubmitButton},
+    components: {PodcastCommonArtwork, PodcastFormBasicInfo},
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
@@ -42,7 +30,7 @@ export default {
         categoriesOptions: Object,
         newArtUrl: String
     },
-    data () {
+    data() {
         return {
             record: {
                 has_custom_art: false,

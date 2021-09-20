@@ -1,29 +1,17 @@
 <template>
-    <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-overlay variant="card" :show="loading">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
-            <b-form class="form" @submit.prevent="doSubmit">
-                <b-tabs content-class="mt-3">
-                    <remote-form-basic-info :form="$v.form"></remote-form-basic-info>
-                    <remote-form-auto-dj :form="$v.form"></remote-form-auto-dj>
-                </b-tabs>
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+                @submit="doSubmit">
 
-                <invisible-submit-button/>
-            </b-form>
-        </b-overlay>
-        <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
-            </b-button>
-            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save">Save Changes</translate>
-            </b-button>
-        </template>
-    </b-modal>
+        <b-tabs content-class="mt-3">
+            <remote-form-basic-info :form="$v.form"></remote-form-basic-info>
+
+            <remote-form-auto-dj :form="$v.form"></remote-form-auto-dj>
+        </b-tabs>
+
+    </modal-form>
 </template>
 <script>
 import {required} from 'vuelidate/dist/validators.min.js';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
@@ -34,8 +22,7 @@ export default {
     mixins: [BaseEditModal],
     components: {
         RemoteFormAutoDj,
-        RemoteFormBasicInfo,
-        InvisibleSubmitButton
+        RemoteFormBasicInfo
     },
     props: {
         enableAdvancedFeatures: Boolean

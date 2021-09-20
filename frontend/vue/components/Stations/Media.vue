@@ -1,89 +1,132 @@
 <template>
-    <div>
-        <div class="card-body">
-            <breadcrumb :current-directory="currentDirectory" @change-directory="changeDirectory"></breadcrumb>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary-dark">
+                    <div class="row align-items-center">
+                        <div class="col-md-7">
+                            <h2 class="card-title">
+                                <translate key="lang_title">Music Files</translate>
+                            </h2>
+                        </div>
+                        <div class="col-md-5 text-right text-white-50">
+                            <template v-if="spaceTotal">
+                                <b-progress class="mb-1" :value="spacePercent" show-progress height="20px"></b-progress>
 
-            <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase" :valid-mime-types="validMimeTypes"
-                         :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
-
-            <media-toolbar :batch-url="batchUrl" :selected-items="selectedItems" :current-directory="currentDirectory"
-                           :playlists="playlists" @add-playlist="onAddPlaylist"
-                           @relist="onTriggerRelist"></media-toolbar>
-        </div>
-
-        <data-table ref="datatable" id="station_media" selectable paginated select-fields
-                    @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
-                    :request-config="requestConfig">
-            <template #cell(name)="row">
-                <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
-                    <album-art v-if="row.item.media_art" :src="row.item.media_art" class="float-right pl-3"></album-art>
-
-                    <template v-if="row.item.media_is_playable">
-                        <play-button :url="row.item.media_links_play" icon-class="outlined"></play-button>
-                    </template>
-                    <template v-else>
-                        <span class="file-icon" v-if="row.item.is_dir">
-                            <icon icon="folder"></icon>
-                        </span>
-                        <span class="file-icon" v-else>
-                            <icon icon="note"></icon>
-                        </span>
-                    </template>
-
-                    <template v-if="row.item.is_dir">
-                        <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
-                           :title="row.item.name">
-                            {{ row.item.path_short }}
-                        </a>
-                    </template>
-                    <template v-else-if="row.item.media_is_playable">
-                        <a class="name" :href="row.item.media_links_play" target="_blank" :title="row.item.name">
-                            {{ row.item.text }}
-                        </a>
-                    </template>
-                    <template v-else>
-                        <a class="name" :href="row.item.links_download" target="_blank" :title="row.item.text">
-                            {{ row.item.path_short }}
-                        </a>
-                    </template>
-                    <br>
-                    <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
-                    <small v-else>{{ row.item.text }}</small>
+                                {{ langSpaceUsed }}
+                            </template>
+                            <template v-else>
+                                {{ langSpaceUsed }}
+                            </template>
+                        </div>
+                    </div>
                 </div>
-            </template>
-            <template #cell(media_genre)="row">
-                {{ row.item.media_genre }}
-            </template>
-            <template #cell(media_length)="row">
-                {{ row.item.media_length_text }}
-            </template>
-            <template #cell(size)="row">
-                <template v-if="!row.item.size">&nbsp;</template>
-                <template v-else>
-                    {{ formatFileSize(row.item.size) }}
-                </template>
-            </template>
-            <template #cell(playlists)="row">
-                <template v-for="(playlist, index) in row.item.playlists">
-                    <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
-                       :title="langPlaylistSelect">{{ playlist.name }}</a>
-                    <span v-if="index+1 < row.item.playlists.length">, </span>
-                </template>
-            </template>
-            <template #cell(commands)="row">
-                <template v-if="row.item.media_links_edit">
-                    <b-button size="sm" variant="primary"
-                              @click.prevent="edit(row.item.media_links_edit, row.item.media_links_art, row.item.media_links_play, row.item.media_links_waveform)">
-                        {{ langEditButton }}
-                    </b-button>
-                </template>
-                <template v-else>
-                    <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
-                        {{ langRenameButton }}
-                    </b-button>
-                </template>
-            </template>
-        </data-table>
+                <div v-if="showSftp" class="card-body alert-info d-flex align-items-center" role="alert">
+                    <div class="flex-shrink-0 mr-2">
+                        <i class="material-icons" aria-hidden="true">info</i>
+                    </div>
+                    <div class="flex-fill">
+                        <p class="mb-0">
+                            <translate key="lang_sftp_details">You can also upload files in bulk via SFTP.</translate>
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0 ml-2">
+                        <a class="btn btn-sm btn-light" target="_blank" :href="sftpUrl">
+                            <translate key="lang_sftp_btn">Manage SFTP Accounts</translate>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <breadcrumb :current-directory="currentDirectory" @change-directory="changeDirectory"></breadcrumb>
+
+                    <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase"
+                                 :valid-mime-types="validMimeTypes"
+                                 :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
+
+                    <media-toolbar :batch-url="batchUrl" :selected-items="selectedItems"
+                                   :current-directory="currentDirectory"
+                                   :playlists="playlists" @add-playlist="onAddPlaylist"
+                                   @relist="onTriggerRelist"></media-toolbar>
+                </div>
+
+                <data-table ref="datatable" id="station_media" selectable paginated select-fields
+                            @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
+                            :request-config="requestConfig">
+                    <template #cell(name)="row">
+                        <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
+                            <album-art v-if="row.item.media_art" :src="row.item.media_art"
+                                       class="float-right pl-3"></album-art>
+
+                            <template v-if="row.item.media_is_playable">
+                                <play-button :url="row.item.media_links_play" icon-class="outlined"></play-button>
+                            </template>
+                            <template v-else>
+                                <span class="file-icon" v-if="row.item.is_dir">
+                                    <icon icon="folder"></icon>
+                                </span>
+                                <span class="file-icon" v-else>
+                                    <icon icon="note"></icon>
+                                </span>
+                            </template>
+
+                            <template v-if="row.item.is_dir">
+                                <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
+                                   :title="row.item.name">
+                                    {{ row.item.path_short }}
+                                </a>
+                            </template>
+                            <template v-else-if="row.item.media_is_playable">
+                                <a class="name" :href="row.item.media_links_play" target="_blank"
+                                   :title="row.item.name">
+                                    {{ row.item.text }}
+                                </a>
+                            </template>
+                            <template v-else>
+                                <a class="name" :href="row.item.links_download" target="_blank" :title="row.item.text">
+                                    {{ row.item.path_short }}
+                                </a>
+                            </template>
+                            <br>
+                            <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
+                            <small v-else>{{ row.item.text }}</small>
+                        </div>
+                    </template>
+                    <template #cell(media_genre)="row">
+                        {{ row.item.media_genre }}
+                    </template>
+                    <template #cell(media_length)="row">
+                        {{ row.item.media_length_text }}
+                    </template>
+                    <template #cell(size)="row">
+                        <template v-if="!row.item.size">&nbsp;</template>
+                        <template v-else>
+                            {{ formatFileSize(row.item.size) }}
+                        </template>
+                    </template>
+                    <template #cell(playlists)="row">
+                        <template v-for="(playlist, index) in row.item.playlists">
+                            <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
+                               :title="langPlaylistSelect">{{ playlist.name }}</a>
+                            <span v-if="index+1 < row.item.playlists.length">, </span>
+                        </template>
+                    </template>
+                    <template #cell(commands)="row">
+                        <template v-if="row.item.media_links_edit">
+                            <b-button size="sm" variant="primary"
+                                      @click.prevent="edit(row.item.media_links_edit, row.item.media_links_art, row.item.media_links_play, row.item.media_links_waveform)">
+                                {{ langEditButton }}
+                            </b-button>
+                        </template>
+                        <template v-else>
+                            <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
+                                {{ langRenameButton }}
+                            </b-button>
+                        </template>
+                    </template>
+                </data-table>
+            </div>
+        </div>
 
         <new-directory-modal :current-directory="currentDirectory" :mkdir-url="mkdirUrl"
                              @relist="onTriggerRelist">
@@ -171,7 +214,15 @@ export default {
             required: false,
             default: () => []
         },
-        stationTimeZone: String
+        stationTimeZone: String,
+
+        spacePercent: Number,
+        spaceUsed: String,
+        spaceTotal: String,
+        filesCount: Number,
+
+        showSftp: Boolean,
+        sftpUrl: String
     },
     data () {
         let fields = [
@@ -249,15 +300,26 @@ export default {
         langAlbumArt () {
             return this.$gettext('Album Art');
         },
-        langRenameButton () {
+        langRenameButton() {
             return this.$gettext('Rename');
         },
-        langEditButton () {
+        langEditButton() {
             return this.$gettext('Edit');
         },
-        langPlaylistSelect () {
+        langPlaylistSelect() {
             return this.$gettext('View tracks in playlist');
-        }
+        },
+        langSpaceUsed() {
+            let lang = (this.spaceTotal)
+                ? this.$gettext('%{spaceUsed} of %{spaceTotal} Used (%{filesCount} Files)')
+                : this.$gettext('%{spaceUsed} Used (%{filesCount} Files)');
+
+            return this.$gettextInterpolate(lang, {
+                spaceUsed: this.spaceUsed,
+                spaceTotal: this.spaceTotal,
+                filesCount: this.filesCount
+            });
+        },
     },
     methods: {
         formatFileSize (size) {

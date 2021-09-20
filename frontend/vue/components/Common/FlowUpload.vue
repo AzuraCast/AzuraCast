@@ -20,10 +20,48 @@
                 <icon icon="cloud_upload"></icon>
             </button>
             <small class="file-name"></small>
-            <input type="file" :accept="validMimeTypesList" :multiple="allowMultiple" style="visibility: hidden; position: absolute;"/>
+            <input type="file" :accept="validMimeTypesList" :multiple="allowMultiple"
+                   style="visibility: hidden; position: absolute;"/>
         </div>
     </div>
 </template>
+
+<style lang="scss">
+div.flow-upload {
+    div.upload-progress {
+        padding: 4px 0;
+
+        & > div {
+            padding: 3px 0;
+        }
+
+        .error {
+            color: #a00;
+        }
+
+        .progress {
+            margin-bottom: 5px;
+
+            .progress-bar {
+                border-bottom-width: 10px;
+
+                &::after {
+                    height: 10px;
+                }
+            }
+        }
+    }
+
+    div.file-drop-target {
+        padding: 25px 0;
+        text-align: center;
+
+        input {
+            display: inline;
+        }
+    }
+}
+</style>
 
 <script>
 import formatFileSize from '~/functions/formatFileSize.js';
@@ -33,7 +71,7 @@ import _ from 'lodash';
 
 export default {
     name: 'FlowUpload',
-    components: { Icon },
+    components: {Icon},
     emits: ['complete', 'success', 'error'],
     props: {
         targetUrl: String,

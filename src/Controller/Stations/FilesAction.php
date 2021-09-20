@@ -43,18 +43,33 @@ class FilesAction
 
         $mediaStorage = $station->getMediaStorageLocation();
 
+        $router = $request->getRouter();
+
         return $request->getView()->renderToResponse(
             $response,
-            'stations/files/index',
+            'system/vue',
             [
-                'show_sftp' => SftpGo::isSupportedForStation($station),
-                'playlists' => $playlists,
-                'custom_fields' => $customFieldRepo->fetchArray(),
-                'mime_types' => MimeType::getProcessableTypes(),
-                'space_used' => $mediaStorage->getStorageUsed(),
-                'space_total' => $mediaStorage->getStorageAvailable(),
-                'space_percent' => $mediaStorage->getStorageUsePercentage(),
-                'files_count' => $files_count,
+                'title' => __('Music Files'),
+                'id' => 'media-manager',
+                'component' => 'Vue_StationsMedia',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:files:list'),
+                    'batchUrl' => (string)$router->fromHere('api:stations:files:batch'),
+                    'uploadUrl' => (string)$router->fromHere('api:stations:files:upload'),
+                    'listDirectoriesUrl' => (string)$router->fromHere('api:stations:files:directories'),
+                    'mkdirUrl' => (string)$router->fromHere('api:stations:files:mkdir'),
+                    'renameUrl' => (string)$router->fromHere('api:stations:files:rename'),
+                    'initialPlaylists' => $playlists,
+                    'customFields' => $customFieldRepo->fetchArray(),
+                    'validMimeTypes' => MimeType::getProcessableTypes(),
+                    'stationTimeZone' => $station->getTimezone(),
+                    'spacePercent' => $mediaStorage->getStorageUsePercentage(),
+                    'spaceUsed' => $mediaStorage->getStorageUsed(),
+                    'spaceTotal' => $mediaStorage->getStorageAvailable(),
+                    'filesCount' => $files_count,
+                    'showSftp' => SftpGo::isSupportedForStation($station),
+                    'sftpUrl' => (string)$router->fromHere('stations:sftp_users:index'),
+                ],
             ]
         );
     }

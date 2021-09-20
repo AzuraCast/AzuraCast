@@ -115,26 +115,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:branding:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
-            $group->group(
-                '/custom_fields',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\CustomFieldsController::class . ':indexAction')
-                        ->setName('admin:custom_fields:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Admin\CustomFieldsController::class . ':editAction'
-                    )
-                        ->setName('admin:custom_fields:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Admin\CustomFieldsController::class . ':editAction')
-                        ->setName('admin:custom_fields:add');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Admin\CustomFieldsController::class . ':deleteAction')
-                        ->setName('admin:custom_fields:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_CUSTOM_FIELDS));
+            $group->get('/custom_fields', Controller\Admin\CustomFieldsAction::class)
+                ->setName('admin:custom_fields:index')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_CUSTOM_FIELDS));
 
             $group->group(
                 '/logs',

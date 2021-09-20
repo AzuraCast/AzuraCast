@@ -33,7 +33,7 @@ import {required} from 'vuelidate/dist/validators.min.js';
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
-import AdminPermissionsStationForm from "~/components/Admin/Permissions/Form/StationForm";
+import AdminPermissionsStationForm from "./Form/StationForm";
 import _ from 'lodash';
 
 export default {

@@ -131,8 +131,13 @@ class RolesController extends AbstractAdminApiCrudController
 
     protected function doUpdatePermissions(Entity\Role $role, array $newPermissions): void
     {
-        foreach ($role->getPermissions() as $perm) {
-            $this->em->remove($perm);
+        $existingPerms = $role->getPermissions();
+        if ($existingPerms->count() > 0) {
+            foreach ($existingPerms as $perm) {
+                $this->em->remove($perm);
+            }
+            $this->em->flush();
+            $existingPerms->clear();
         }
 
         if (isset($newPermissions['global'])) {

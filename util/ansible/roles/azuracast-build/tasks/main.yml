@@ -11,6 +11,7 @@
     - "{{ www_base }}/frontend/node_modules"
     - "{{ www_base }}/web/static"
     - "{{ www_base }}/web/static/dist"
+    - "{{ www_base }}/web/static/webpack_dist"
 
 - name: Pull Node Dependencies
   become: true

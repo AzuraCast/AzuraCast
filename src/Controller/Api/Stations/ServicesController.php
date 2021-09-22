@@ -50,7 +50,9 @@ class ServicesController
         return $response->withJson(
             new Entity\Api\StationServiceStatus(
                 $backend->isRunning($station),
-                $frontend->isRunning($station)
+                $frontend->isRunning($station),
+                $station->getHasStarted(),
+                $station->getNeedsRestart()
             )
         );
     }

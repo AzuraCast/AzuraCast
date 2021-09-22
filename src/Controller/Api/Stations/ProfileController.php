@@ -34,7 +34,9 @@ class ProfileController
 
         $apiResponse->services = new Entity\Api\StationServiceStatus(
             $backend->isRunning($station),
-            $frontend->isRunning($station)
+            $frontend->isRunning($station),
+            $station->getHasStarted(),
+            $station->getNeedsRestart()
         );
 
         $apiResponse->schedule = $scheduleRepo->getUpcomingSchedule($station);

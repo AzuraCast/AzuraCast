@@ -2,10 +2,15 @@ github :
   prebuilds :
     addCheck : false
 
+vscode :
+  extensions :
+    - bmewburn.vscode-intelephense-client
+    - editorconfig.editorconfig
+
 tasks :
   - name : Docker Build
     init : |
-      yes '' | bash docker.sh install-dev
+      make install-gitpod
       gp sync-done docker-build
     command : |
       make up
@@ -13,6 +18,8 @@ tasks :
 
   - name : Static Service
     openMode : split-right
-    command :
+    init : |
       gp sync-await docker-build
+      make frontend-build
+    command : |
       make frontend-bash

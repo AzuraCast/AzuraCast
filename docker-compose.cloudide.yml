@@ -32,8 +32,8 @@ services :
       PUID : ${AZURACAST_PUID:-1000}
       PGID : ${AZURACAST_PGID:-1000}
     volumes :
-      - ./vendor:/var/azuracast/www/vendor
-      - .:/var/azuracast/www
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/vendor:/var/azuracast/www/vendor
+      - ${LOCAL_WORKSPACE_FOLDER:-.}:/var/azuracast/www
       - www_uploads:/var/azuracast/uploads
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations

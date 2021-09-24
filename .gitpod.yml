@@ -10,7 +10,7 @@ vscode :
 tasks :
   - name : Docker Build
     init : |
-      make install-gitpod
+      make install-cloud-ide
       gp sync-done docker-build
     command : |
       make up

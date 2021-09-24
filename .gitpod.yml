@@ -11,7 +11,6 @@ tasks :
     openMode : split-right
     init : |
       gp sync-await docker-build
-      make frontend-build
     command : |
       make frontend-bash
 

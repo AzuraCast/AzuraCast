@@ -39,9 +39,9 @@ bash:
 
 frontend-bash:
 	docker-compose -f frontend/docker-compose.yml build
-	docker-compose -f frontend/docker-compose.yml run --rm frontend
+	docker-compose --env-file=.env -f frontend/docker-compose.yml run --rm frontend
 
 frontend-build:
 	docker-compose -f frontend/docker-compose.yml build
-	docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
+	docker-compose --env-file=.env -f frontend/docker-compose.yml run --rm frontend npm run dev-build
 

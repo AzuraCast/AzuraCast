@@ -3,7 +3,7 @@ services :
     container_name : azuracast_frontend
     build :
       context : .
-    user : "${PUID:-1000}:${PGID:-1000}"
+    user : "${AZURACAST_PUID:-1000}:${AZURACAST_PGID:-1000}"
     volumes :
       - .:/data/frontend
       - ../resources/locale:/data/resources/locale

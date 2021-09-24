@@ -80,7 +80,7 @@ class ScheduleAction
                     $startDate,
                     $endDate
                 ) {
-                    $item->expiresAfter(1);
+                    $item->expiresAfter(600);
 
                     $nowTz = CarbonImmutable::now($station->getTimezoneObject());
                     $events = $scheduleRepo->getAllScheduledItemsForStation($station);

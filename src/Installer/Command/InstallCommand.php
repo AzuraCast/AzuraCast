@@ -333,20 +333,14 @@ class InstallCommand
 
         // Remove privileged-mode settings if not enabled.
         $enablePrivileged = $env->getAsBool('AZURACAST_COMPOSE_PRIVILEGED', true);
-        if ($enablePrivileged) {
-            $yaml['services']['redis']['sysctls'] = [
-                'net.core.somaxconn' => 1024,
-            ];
-
-            $ulimits = [
-                'nofile' => [
-                    'soft' => 65536,
-                    'hard' => 65536,
-                ],
-            ];
-
-            $yaml['services']['web']['ulimits'] = $ulimits;
-            $yaml['services']['stations']['ulimits'] = $ulimits;
+        if (!$enablePrivileged) {
+            foreach ($yaml['services'] as &$service) {
+                unset(
+                    $service['ulimits'],
+                    $service['sysctls']
+                );
+            }
+            unset($service);
         }
 
         $yamlRaw = Yaml::dump($yaml, PHP_INT_MAX);

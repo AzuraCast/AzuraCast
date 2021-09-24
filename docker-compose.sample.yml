@@ -83,6 +83,10 @@ services :
       - frontend
       - backend
     restart : always
+    ulimits : &default-ulimits
+      nofile :
+        soft : 65536
+        hard : 65536
     logging : &default-logging
       options :
         max-size : "1m"
@@ -102,6 +106,8 @@ services :
   redis :
     container_name : azuracast_redis
     image : "ghcr.io/azuracast/redis:${AZURACAST_VERSION:-latest}"
+    sysctls :
+      net.core.somaxconn : 1024
     volumes :
       - redis_data:/data
     networks :
@@ -277,6 +283,7 @@ services :
       - backend
     init : true
     restart : always
+    ulimits : *default-ulimits
     logging : *default-logging
 
 networks :

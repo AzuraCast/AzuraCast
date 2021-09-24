@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\HasScheduleDisplay;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -22,6 +23,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
 {
+    use HasScheduleDisplay;
+
     public function __construct(
         protected Entity\Repository\StationScheduleRepository $scheduleRepo,
         protected Scheduler $scheduler,
@@ -38,54 +41,12 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         array $scheduleItems,
         callable $rowRender
     ): ResponseInterface {
-        $tz = $request->getStation()->getTimezoneObject();
+        [$startDate, $endDate] = $this->getDateRange($request);
 
-        $params = $request->getQueryParams();
+        $station = $request->getStation();
+        $now = CarbonImmutable::now($station->getTimezoneObject());
 
-        $startDateStr = substr($params['start'], 0, 10);
-        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz);
-
-        if (false === $startDate) {
-            throw new \InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
-        }
-
-        $startDate = $startDate->subDay();
-
-        $endDateStr = substr($params['end'], 0, 10);
-        $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
-
-        if (false === $endDate) {
-            throw new \InvalidArgumentException(sprintf('Could not parse end date: "%s"', $endDateStr));
-        }
-
-        $events = [];
-
-        foreach ($scheduleItems as $scheduleItem) {
-            /** @var Entity\StationSchedule $scheduleItem */
-            $i = $startDate;
-
-            while ($i <= $endDate) {
-                $dayOfWeek = $i->dayOfWeekIso;
-
-                if (
-                    $this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
-                    && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
-                ) {
-                    $rowStart = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
-                    $rowEnd = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
-
-                    // Handle overnight schedule items
-                    if ($rowEnd < $rowStart) {
-                        $rowEnd = $rowEnd->addDay();
-                    }
-
-                    $events[] = $rowRender($scheduleItem, $rowStart, $rowEnd);
-                }
-
-                $i = $i->addDay();
-            }
-        }
-
+        $events = $this->getEvents($startDate, $endDate, $now, $this->scheduler, $scheduleItems, $rowRender);
         return $response->withJson($events);
     }
 

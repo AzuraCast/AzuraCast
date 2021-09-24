@@ -227,7 +227,7 @@ return static function (RouteCollectorProxy $app) {
                         ->setName('api:stations:profile')
                         ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
-                    $group->get('/schedule', Controller\Api\Stations\ScheduleController::class)
+                    $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                         ->setName('api:stations:schedule');
 
                     $group->get('/history', Controller\Api\Stations\HistoryController::class)

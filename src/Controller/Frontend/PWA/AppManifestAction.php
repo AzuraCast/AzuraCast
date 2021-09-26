@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PWA;
 
-use App\Environment;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -28,6 +27,7 @@ class AppManifestAction
             'name' => $station->getName() . ' - AzuraCast',
             'short_name' => $station->getName(),
             'description' => $station->getDescription(),
+            'scope' => '/public/',
             'start_url' => '.',
             'display' => 'standalone',
             'theme_color' => '#2196F3',

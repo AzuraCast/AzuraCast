@@ -250,7 +250,6 @@ export default {
                 'name': '',
                 'url': ''
             },
-            'nchan_subscriber': null,
             'clock_interval': null
         };
     },

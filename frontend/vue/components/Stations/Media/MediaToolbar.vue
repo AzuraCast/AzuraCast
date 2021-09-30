@@ -69,6 +69,14 @@
                 <translate key="lang_btn_new_folder">New Folder</translate>
             </b-button>
         </div>
+
+        <b-alert :show="pending"
+                 class="position-fixed fixed-bottom m-0 rounded-0"
+                 style="z-index: 2000;"
+                 variant="warning"
+                 dismissible>
+            <translate key="lang_applying_changes">Applying changes...</translate>
+        </b-alert>
     </div>
 </template>
 <script>
@@ -88,7 +96,8 @@ export default {
     data () {
         return {
             checkedPlaylists: [],
-            newPlaylist: ''
+            newPlaylist: '',
+            pending: false
         };
     },
     watch: {
@@ -154,7 +163,7 @@ export default {
         },
         doBatch (action, notifyMessage) {
             if (this.selectedItems.all.length) {
-                this.notifyPending();
+                this.pending = true;
 
                 this.axios.put(this.batchUrl, {
                     'do': action,
@@ -162,20 +171,30 @@ export default {
                     'files': this.selectedItems.files,
                     'dirs': this.selectedItems.directories
                 }).then((resp) => {
+                    this.pending = false;
                     if (resp.data.success) {
-                        let allItemNames = _.map(this.selectedItems.all, 'path_short');
+                        let allItemNodes = [];
+                        _.forEach(this.selectedItems.all, (item) => {
+                            allItemNodes.push(this.$createElement('div', {}, item.path_short));
+                        });
 
-                        this.$notifySuccess(allItemNames.join('<br>'), {
+                        this.$notifySuccess(allItemNodes, {
                             title: notifyMessage
                         });
                     } else {
-                        this.$notifyError(resp.data.errors.join('<br>'), {
+                        let errorNodes = [];
+                        _.forEach(resp.data.errors, (error) => {
+                            errorNodes.push(this.$createElement('div', {}, error));
+                        });
+
+                        this.$notifyError(errorNodes, {
                             title: this.langErrors
                         });
                     }
 
                     this.$emit('relist');
                 }).catch((err) => {
+                    this.pending = false;
                     this.$handleAxiosError(err);
                 });
             } else {
@@ -192,7 +211,7 @@ export default {
             this.$refs.setPlaylistsDropdown.hide();
 
             if (this.selectedItems.all.length) {
-                this.notifyPending();
+                this.pending = true;
 
                 this.axios.put(this.batchUrl, {
                     'do': 'playlist',
@@ -202,6 +221,8 @@ export default {
                     'files': this.selectedItems.files,
                     'dirs': this.selectedItems.directories
                 }).then((resp) => {
+                    this.pending = false;
+
                     if (resp.data.success) {
                         if (resp.data.record) {
                             this.$emit('add-playlist', resp.data.record);
@@ -211,33 +232,39 @@ export default {
                             ? this.$gettext('Playlists updated for selected files:')
                             : this.$gettext('Playlists cleared for selected files:');
 
-                        let allItemNames = _.map(this.selectedItems.all, 'path_short');
-                        this.$notifySuccess(allItemNames.join('<br>'), {
+                        let allItemNodes = [];
+                        _.forEach(this.selectedItems.all, (item) => {
+                            allItemNodes.push(this.$createElement('div', {}, item.path_short));
+                        });
+
+                        this.$notifySuccess(allItemNodes, {
                             title: notifyMessage
                         });
 
                         this.checkedPlaylists = [];
                         this.newPlaylist = '';
                     } else {
-                        this.$notifyError(resp.data.errors.join('<br>'), {
+                        let errorNodes = [];
+                        _.forEach(resp.data.errors, (error) => {
+                            errorNodes.push(this.$createElement('div', {}, error));
+                        });
+
+                        this.$notifyError(errorNodes, {
                             title: this.langErrors
                         });
                     }
 
                     this.$emit('relist');
                 }).catch((err) => {
+                    this.pending = false;
+                    
                     this.$handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();
             }
         },
-        notifyPending () {
-            this.$notify(this.$gettext('Applying changes...'), {
-                variant: 'warning'
-            });
-        },
-        notifyNoFiles () {
+        notifyNoFiles() {
             this.$notifyError(this.$gettext('No files selected.'));
         }
     }

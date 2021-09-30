@@ -26,7 +26,6 @@ import MediaFormAdvancedSettings from './Form/AdvancedSettings';
 import MediaFormPlaylists from './Form/Playlists';
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import MediaFormWaveformEditor from './Form/WaveformEditor';
-import handleAxiosError from '~/functions/handleAxiosError';
 import ModalForm from "~/components/Common/ModalForm";
 
 export default {
@@ -156,9 +155,7 @@ export default {
 
                 this.loading = false;
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(error, notifyMessage);
-
+                this.$handleAxiosError(error);
                 this.close();
             });
         },
@@ -182,16 +179,11 @@ export default {
             this.error = null;
 
             this.axios.put(this.recordUrl, this.form).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
+                this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notifyMessage = handleAxiosError(error, notifyMessage);
-
-                this.error = notifyMessage;
+                this.error = this.$handleAxiosError(error);
             });
         }
     }

@@ -25,7 +25,6 @@
 <script>
 import {validationMixin} from 'vuelidate';
 import {required} from 'vuelidate/dist/validators.min.js';
-import handleAxiosError from '~/functions/handleAxiosError';
 
 export default {
     name: 'RenameModal',
@@ -74,7 +73,7 @@ export default {
                 this.$refs.modal.hide();
                 this.$emit('relist');
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
 
                 this.$refs.modal.hide();
                 this.$emit('relist');

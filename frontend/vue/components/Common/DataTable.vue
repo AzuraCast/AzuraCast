@@ -203,14 +203,17 @@ export default {
     data () {
         let allFields = [];
         _.forEach(this.fields, function (field) {
-            allFields.push(_.defaults(_.clone(field), {
-                label: '',
-                isRowHeader: false,
-                sortable: false,
-                selectable: false,
-                visible: true,
-                formatter: null
-            }));
+            allFields.push({
+                ...{
+                    label: '',
+                    isRowHeader: false,
+                    sortable: false,
+                    selectable: false,
+                    visible: true,
+                    formatter: null
+                },
+                ...field
+            });
         });
 
         return {

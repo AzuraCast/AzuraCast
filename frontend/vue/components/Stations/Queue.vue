@@ -56,7 +56,6 @@
 <script>
 import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
-import handleAxiosError from '~/functions/handleAxiosError';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
 import confirmDelete from "~/functions/confirmDelete";
@@ -93,11 +92,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.$refs.datatable.refresh();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
                 }
             });
@@ -109,11 +107,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.post(this.clearUrl).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.$refs.datatable.refresh();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
                 }
             });

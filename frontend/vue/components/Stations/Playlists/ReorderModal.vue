@@ -43,7 +43,6 @@ table.sortable {
 <script>
 import Draggable from 'vuedraggable';
 import Icon from '~/components/Common/Icon';
-import handleAxiosError from '~/functions/handleAxiosError';
 
 export default {
     name: 'ReorderModal',
@@ -79,7 +78,7 @@ export default {
                 this.media = resp.data;
                 this.loading = false;
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
             });
         },
         moveDown (index) {
@@ -100,9 +99,9 @@ export default {
             });
 
             this.axios.put(this.reorderUrl, {'order': newOrder}).then((resp) => {
-                notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success');
+                this.$notifySuccess(this.$gettext('Playlist order set.'));
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
             });
         },
     }

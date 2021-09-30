@@ -74,7 +74,6 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
-import handleAxiosError from '~/functions/handleAxiosError';
 import confirmDelete from "~/functions/confirmDelete";
 
 export const episodeViewProps = {
@@ -125,11 +124,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.relist();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
                 }
             });

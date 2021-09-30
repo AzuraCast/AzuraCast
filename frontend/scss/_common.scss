@@ -39,6 +39,7 @@ $enable-print-styles: true !default;
 @import 'bootstrap/responsive-embed';
 @import 'bootstrap/spinner';
 @import 'bootstrap/transition';
+@import 'bootstrap/toasts';
 
 // Material components
 // Components covered in Material design (https://material.google.com/components)
@@ -101,6 +102,7 @@ $enable-print-styles: true !default;
 @import 'azuracast/overrides/modal';
 @import 'azuracast/overrides/progressbar';
 @import 'azuracast/overrides/tables';
+@import 'azuracast/overrides/toasts';
 
 // Individual AzuraCast pages
 @import 'azuracast/pages/embed';

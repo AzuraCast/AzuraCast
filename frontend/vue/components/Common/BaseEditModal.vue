@@ -4,7 +4,6 @@
 
 <script>
 import {validationMixin} from 'vuelidate';
-import handleAxiosError from '~/functions/handleAxiosError';
 import ModalForm from "~/components/Common/ModalForm";
 
 export default {
@@ -61,9 +60,7 @@ export default {
                 this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(error, notifyMessage);
-
+                this.$handleAxiosError(error);
                 this.close();
             });
         },
@@ -90,16 +87,11 @@ export default {
             this.error = null;
 
             this.axios(this.buildSubmitRequest()).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
+                this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notifyMessage = handleAxiosError(error, notifyMessage);
-
-                this.error = notifyMessage;
+                this.error = this.$handleAxiosError(error);
             });
         },
         close () {

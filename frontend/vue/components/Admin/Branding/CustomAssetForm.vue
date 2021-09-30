@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import handleAxiosError from "~/functions/handleAxiosError";
 
 export default {
     name: 'CustomAssetForm',
@@ -48,8 +47,8 @@ export default {
                 this.url = resp.data.url;
 
                 this.loading = false;
-            }).catch((error) => {
-                handleAxiosError(error);
+            }).catch((err) => {
+                this.$handleAxiosError(err);
             });
 
         },
@@ -57,7 +56,7 @@ export default {
             this.axios.delete(this.apiUrl).then((resp) => {
                 this.relist();
             }).catch((error) => {
-                handleAxiosError(error);
+                this.$handleAxiosError(error);
                 this.relist();
             });
         },
@@ -72,7 +71,7 @@ export default {
             this.axios.post(this.apiUrl, formData).then((resp) => {
                 this.relist();
             }).catch((error) => {
-                handleAxiosError(error);
+                this.$handleAxiosError(error);
                 this.relist();
             });
         },

@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import handleAxiosError from '~/functions/handleAxiosError';
 
 export default {
     name: 'QueueModal',
@@ -57,15 +56,15 @@ export default {
                 this.media = resp.data;
                 this.loading = false;
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
             });
         },
         doClear () {
             this.axios.delete(this.queueUrl).then((resp) => {
-                notify('<b>' + this.$gettext('Playlist queue cleared.') + '</b>', 'success');
+                this.$notifySuccess(this.$gettext('Playlist queue cleared.'));
                 this.close();
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
             });
         },
         close () {

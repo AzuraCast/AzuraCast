@@ -63,7 +63,6 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
-import handleAxiosError from '~/functions/handleAxiosError';
 import confirmDelete from "~/functions/confirmDelete";
 
 export const listViewProps = {
@@ -122,11 +121,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.relist();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
                 }
             });

@@ -40,7 +40,6 @@ import DataTable from '~/components/Common/DataTable.vue';
 import formatFileSize from '~/functions/formatFileSize.js';
 import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
-import handleAxiosError from '~/functions/handleAxiosError';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
 import confirmDelete from "~/functions/confirmDelete";
@@ -132,11 +131,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.$refs.datatable.refresh();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
 
                     this.$refs.datatable.refresh();

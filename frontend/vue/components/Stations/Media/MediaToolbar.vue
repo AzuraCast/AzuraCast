@@ -74,7 +74,6 @@
 <script>
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
-import handleAxiosError from '~/functions/handleAxiosError';
 import confirmDelete from "~/functions/confirmDelete";
 
 export default {
@@ -165,14 +164,19 @@ export default {
                 }).then((resp) => {
                     if (resp.data.success) {
                         let allItemNames = _.map(this.selectedItems.all, 'path_short');
-                        notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success');
+
+                        this.$notifySuccess(allItemNames.join('<br>'), {
+                            title: notifyMessage
+                        });
                     } else {
-                        notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger');
+                        this.$notifyError(resp.data.errors.join('<br>'), {
+                            title: this.langErrors
+                        });
                     }
 
                     this.$emit('relist');
                 }).catch((err) => {
-                    handleAxiosError(err);
+                    this.$handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();
@@ -208,29 +212,33 @@ export default {
                             : this.$gettext('Playlists cleared for selected files:');
 
                         let allItemNames = _.map(this.selectedItems.all, 'path_short');
-                        notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success');
+                        this.$notifySuccess(allItemNames.join('<br>'), {
+                            title: notifyMessage
+                        });
 
                         this.checkedPlaylists = [];
                         this.newPlaylist = '';
                     } else {
-                        notify(resp.data.errors.join('<br>'), 'danger');
+                        this.$notifyError(resp.data.errors.join('<br>'), {
+                            title: this.langErrors
+                        });
                     }
 
                     this.$emit('relist');
                 }).catch((err) => {
-                    handleAxiosError(err);
+                    this.$handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();
             }
         },
         notifyPending () {
-            notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
-                delay: 3000
+            this.$notify(this.$gettext('Applying changes...'), {
+                variant: 'warning'
             });
         },
         notifyNoFiles () {
-            notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger');
+            this.$notifyError(this.$gettext('No files selected.'));
         }
     }
 };

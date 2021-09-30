@@ -132,7 +132,6 @@ import ReorderModal from './Playlists/ReorderModal';
 import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
 import Icon from '~/components/Common/Icon';
-import handleAxiosError from '~/functions/handleAxiosError';
 import CloneModal from './Playlists/CloneModal';
 import {DateTime} from 'luxon';
 import humanizeDuration from 'humanize-duration';
@@ -256,19 +255,15 @@ export default {
             this.$refs.cloneModal.open(name, url);
         },
         doModify (url) {
-            notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
-                delay: 3000
+            this.$notify(this.$gettext('Applying changes...'), {
+                variant: 'warning'
             });
 
             this.axios.put(url).then((resp) => {
-                notify('<b>' + resp.data.message + '</b>', 'success');
-
+                this.$notifySuccess(resp.data.message);
                 this.relist();
             }).catch((err) => {
-                console.error(err);
-                if (err.response.data.message) {
-                    notify('<b>' + err.response.data.message + '</b>', 'danger');
-                }
+                this.$handleAxiosError(err);
             });
         },
         doDelete (url) {
@@ -278,11 +273,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.relist();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
                 }
             });

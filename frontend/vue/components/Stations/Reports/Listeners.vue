@@ -122,7 +122,6 @@
 
 <script>
 import StationReportsListenersMap from "./Listeners/Map";
-import handleAxiosError from "~/functions/handleAxiosError";
 import Icon from "~/components/Common/Icon";
 import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
@@ -245,8 +244,7 @@ export default {
                     setTimeout(this.updateListeners, 15000);
                 }
             }).catch((err) => {
-                handleAxiosError(err);
-
+                this.$handleAxiosError(err);
                 if (this.isLive) {
                     setTimeout(this.updateListeners, 30000);
                 }

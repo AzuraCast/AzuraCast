@@ -54,9 +54,9 @@ export default {
 
             this.axios.post(this.importPlaylistUrl, formData).then((resp) => {
                 if (resp.data.success) {
-                    notify('<b>' + resp.data.message + '</b>', 'success');
+                    this.$notifySuccess(resp.data.message);
                 } else {
-                    notify('<b>' + resp.data.message + '</b>', 'danger');
+                    this.$notifyError(resp.data.message);
                 }
 
                 this.$emit('relist');

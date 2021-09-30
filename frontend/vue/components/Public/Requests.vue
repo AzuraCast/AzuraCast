@@ -28,7 +28,6 @@ img.album_art {
 import DataTable from '~/components/Common/DataTable';
 import _ from 'lodash';
 import AlbumArt from '~/components/Common/AlbumArt';
-import handleAxiosError from '~/functions/handleAxiosError';
 
 export default {
     components: {AlbumArt, DataTable},
@@ -92,10 +91,10 @@ export default {
     methods: {
         doSubmitRequest (url) {
             this.axios.post(url).then((resp) => {
-                notify('<b>' + resp.data.message + '</b>', 'success');
+                this.$notifySuccess(resp.data.message);
                 this.$emit('submitted');
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
                 this.$emit('submitted');
             });
         }

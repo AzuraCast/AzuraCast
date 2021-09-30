@@ -25,7 +25,6 @@
 <script>
 import {validationMixin} from 'vuelidate';
 import {required} from 'vuelidate/dist/validators.min.js';
-import handleAxiosError from '~/functions/handleAxiosError';
 
 export default {
     name: 'NewDirectoryModal',
@@ -65,14 +64,12 @@ export default {
                 'currentDirectory': this.currentDirectory,
                 'name': this.newDirectory
             }).then((resp) => {
-                let notifyMessage = this.$gettext('New directory created.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
+                this.$notifySuccess(this.$gettext('New directory created.'));
 
                 this.$emit('relist');
                 this.close();
             }).catch((err) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(err, notifyMessage);
+                this.$handleAxiosError(err);
 
                 this.$emit('relist');
                 this.close();

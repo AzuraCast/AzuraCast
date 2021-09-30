@@ -47,7 +47,6 @@
 <script>
 import {required} from 'vuelidate/dist/validators.min.js';
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
-import handleAxiosError from '~/functions/handleAxiosError';
 import {validationMixin} from 'vuelidate';
 
 export default {
@@ -106,16 +105,11 @@ export default {
                 url: this.cloneUrl,
                 data: this.form
             }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
+                this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notifyMessage = handleAxiosError(error, notifyMessage);
-
-                this.error = notifyMessage;
+                this.error = this.$handleAxiosError(error);
             });
         },
         close () {

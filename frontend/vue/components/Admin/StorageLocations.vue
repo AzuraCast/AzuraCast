@@ -48,7 +48,6 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
-import handleAxiosError from '~/functions/handleAxiosError';
 import confirmDelete from "~/functions/confirmDelete";
 
 export default {
@@ -111,16 +110,15 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doModify (url) {
-            notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
-                delay: 3000
+            this.$notify(this.$gettext('Applying changes...'), {
+                variant: 'warning'
             });
 
             this.axios.put(url).then((resp) => {
-                notify('<b>' + resp.data.message + '</b>', 'success');
-
+                this.$notifySuccess(resp.data.message);
                 this.relist();
             }).catch((err) => {
-                handleAxiosError(err);
+                this.$handleAxiosError(err);
             });
         },
         doDelete (url) {
@@ -130,11 +128,10 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
+                        this.$notifySuccess(resp.data.message);
                         this.relist();
                     }).catch((err) => {
-                        handleAxiosError(err);
+                        this.$handleAxiosError(err);
                     });
                 }
             });

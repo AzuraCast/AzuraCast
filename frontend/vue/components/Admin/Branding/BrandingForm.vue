@@ -134,7 +134,6 @@
 
 <script>
 import {validationMixin} from "vuelidate";
-import handleAxiosError from "~/functions/handleAxiosError";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
@@ -199,9 +198,7 @@ export default {
                 this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(error, notifyMessage);
-
+                this.$handleAxiosError(error);
                 this.close();
             });
         },
@@ -228,15 +225,10 @@ export default {
                 url: this.apiUrl,
                 data: this.form
             }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
+                this.$notifySuccess(this.$gettext('Changes saved.'));
                 this.relist();
             }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notifyMessage = handleAxiosError(error, notifyMessage);
-
-                this.error = notifyMessage;
+                this.error = this.$handleAxiosError(error);
             });
 
         }

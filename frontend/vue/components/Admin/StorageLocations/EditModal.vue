@@ -121,9 +121,7 @@ export default {
                     : this.createUrl,
                 data: data
             }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
+                this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {

@@ -93,7 +93,7 @@ export default {
 
             if (this._chart) this._chart.destroy();
 
-            let chartOptions = _.defaultsDeep(_.clone(this.options), defaultOptions);
+            let chartOptions = _.defaultsDeep({}, this.options, defaultOptions);
             this._chart = new Chart(this.$refs.canvas.getContext('2d'), chartOptions);
         }
     },

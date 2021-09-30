@@ -159,7 +159,6 @@ import DataTable from '~/components/Common/DataTable';
 import store from 'store';
 import Icon from '~/components/Common/Icon';
 import Avatar, {avatarProps} from '~/components/Common/Avatar';
-import handleAxiosError from '~/functions/handleAxiosError';
 import PlayButton from "~/components/Common/PlayButton";
 
 export default {
@@ -223,16 +222,16 @@ export default {
             this.axios.get(this.chartsUrl).then((response) => {
                 this.chartsData = response.data;
                 this.chartsLoading = false;
-            }).catch((error) => {
-                handleAxiosError(error);
+            }).catch((err) => {
+                this.$handleAxiosError(err);
             });
         }
 
         this.axios.get(this.notificationsUrl).then((response) => {
             this.notifications = response.data;
             this.notificationsLoading = false;
-        }).catch((error) => {
-            handleAxiosError(error);
+        }).catch((err) => {
+            this.$handleAxiosError(err);
         });
 
         this.updateNowPlaying();
@@ -256,7 +255,7 @@ export default {
 
                 setTimeout(this.updateNowPlaying, 15000);
             }).catch((error) => {
-                handleAxiosError(error);
+                this.$handleAxiosError(error);
 
                 setTimeout(this.updateNowPlaying, 30000);
             });

@@ -244,8 +244,7 @@ export default {
                 title: this.metadata.title,
                 artist: this.metadata.artist
             });
-
-            notify('Metadata updated!', 'success');
+            this.$notifySuccess(this.$gettext('Metadata updated!'));
         },
         onMetadataUpdate (new_metadata) {
             this.metadata.title = new_metadata.title;

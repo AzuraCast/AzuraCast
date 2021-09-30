@@ -116,7 +116,7 @@ export default {
             method: 'multipart',
             testChunks: false
         };
-        let config = _.defaultsDeep(_.clone(this.flowConfiguration), defaultConfig);
+        let config = _.defaultsDeep({}, this.flowConfiguration, defaultConfig);
 
         this.flow = new Flow(config);
 

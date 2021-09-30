@@ -314,23 +314,6 @@ class InstallCommand
             unset($yaml['services']['redis']);
         }
 
-        // Remove LetsEncrypt if it's not enabled.
-        $letsEncryptHost = $env['LETSENCRYPT_HOST'] ?? null;
-        $letsEncryptEmail = $env['LETSENCRYPT_EMAIL'] ?? null;
-
-        if (empty($letsEncryptHost)) {
-            unset(
-                $yaml['services']['nginx_proxy_letsencrypt'],
-                $yaml['services']['web']['environment']['LETSENCRYPT_HOST'],
-                $yaml['services']['web']['environment']['LETSENCRYPT_EMAIL']
-            );
-        } elseif (empty($letsEncryptEmail)) {
-            unset(
-                $yaml['services']['web']['environment']['LETSENCRYPT_EMAIL'],
-                $yaml['services']['nginx_proxy_letsencrypt']['environment']['DEFAULT_EMAIL']
-            );
-        }
-
         // Remove privileged-mode settings if not enabled.
         $enablePrivileged = $env->getAsBool('AZURACAST_COMPOSE_PRIVILEGED', true);
         if (!$enablePrivileged) {

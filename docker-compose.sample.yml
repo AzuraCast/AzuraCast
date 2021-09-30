@@ -30,7 +30,7 @@ services :
       - frontend
     depends_on :
       - web
-    restart : always
+    restart : unless-stopped
 
   nginx_proxy_letsencrypt :
     container_name : nginx_proxy_letsencrypt
@@ -44,7 +44,7 @@ services :
       DEFAULT_EMAIL : ${LETSENCRYPT_EMAIL}
     networks :
       - frontend
-    restart : always
+    restart : unless-stopped
 
   web :
     container_name : azuracast_web
@@ -82,7 +82,7 @@ services :
     networks :
       - frontend
       - backend
-    restart : always
+    restart : unless-stopped
     ulimits : &default-ulimits
       nofile :
         soft : 65536
@@ -100,7 +100,7 @@ services :
     env_file : azuracast.env
     networks :
       - backend
-    restart : always
+    restart : unless-stopped
     logging : *default-logging
 
   redis :
@@ -112,7 +112,7 @@ services :
       - redis_data:/data
     networks :
       - backend
-    restart : always
+    restart : unless-stopped
     logging : *default-logging
 
   stations :
@@ -282,7 +282,7 @@ services :
       - frontend
       - backend
     init : true
-    restart : always
+    restart : unless-stopped
     ulimits : *default-ulimits
     logging : *default-logging
 

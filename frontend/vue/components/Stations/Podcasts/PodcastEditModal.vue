@@ -58,13 +58,13 @@ export default {
     },
     validations: {
         form: {
-            'title': { required },
+            'title': {required},
             'link': {},
-            'description': {},
-            'language': { required },
+            'description': {required},
+            'language': {required},
             'author': {},
             'email': {},
-            'categories': { required },
+            'categories': {required},
             'artwork_file': {}
         }
     },

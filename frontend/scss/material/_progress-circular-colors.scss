@@ -1,5 +1,5 @@
 .progress-circular-gap {
-  border-top: ($progress-circular-spinner-width / 2) solid $progress-circular-bg;
+  border-top: ($progress-circular-spinner-width * 0.5) solid $progress-circular-bg;
 }
 
 .progress-circular-spinner {

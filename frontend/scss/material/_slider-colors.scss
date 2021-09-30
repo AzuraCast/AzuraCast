@@ -52,7 +52,7 @@
     background-color: $slider-thumb-bg;
 
     &:active {
-      box-shadow: 0 0 0 ($slider-thumb-size / 2) $slider-thumb-bg;
+      box-shadow: 0 0 0 ($slider-thumb-size * 0.5) $slider-thumb-bg;
     }
   }
 
@@ -64,7 +64,7 @@
     background-color: $slider-thumb-bg;
 
     &:active {
-      box-shadow: 0 0 0 ($slider-thumb-size / 2) $slider-thumb-bg;
+      box-shadow: 0 0 0 ($slider-thumb-size * 0.5) $slider-thumb-bg;
     }
   }
 }

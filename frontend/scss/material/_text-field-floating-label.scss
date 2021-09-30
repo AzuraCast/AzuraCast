@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .floating-label {
   padding-top: $floating-label-font-size;
   position: relative;
@@ -5,7 +7,7 @@
   &.has-value label,
   &.is-focused label {
     top: 0;
-    transform: scale($floating-label-font-size / $textfield-font-size);
+    transform: scale(math.div($floating-label-font-size, $textfield-font-size));
   }
 
   &:not(.has-value):not(.is-focused) .form-control {
@@ -53,7 +55,7 @@
 .floating-label-lg {
   &.has-value label,
   &.is-focused label {
-    transform: scale($floating-label-font-size-lg / $textfield-font-size-lg);
+    transform: scale(math.div($floating-label-font-size-lg, $textfield-font-size-lg));
   }
 
   label {
@@ -80,7 +82,7 @@
 .floating-label-sm {
   &.has-value label,
   &.is-focused label {
-    transform: scale($floating-label-font-size-sm / $textfield-font-size-sm);
+    transform: scale(math.div($floating-label-font-size-sm, $textfield-font-size-sm));
   }
 
   label {

@@ -1,5 +1,7 @@
 // Checkbox and radio button
 
+@use "sass:math";
+
 .form-check {
   display: block;
   margin-bottom: $textfield-margin-y;
@@ -14,7 +16,7 @@
 }
 
 .form-check-input {
-  margin-top: (($font-size-base * $line-height-base - $font-size-base) / 3 * 2);
+  margin-top: (math.div($font-size-base * $line-height-base - $font-size-base, 3) * 2);
   margin-left: ($form-check-input-gutter * -1);
   position: absolute;
 }
@@ -33,13 +35,13 @@
 .form-row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: ($textfield-margin-x / -2);
-  margin-left: ($textfield-margin-x / -2);
+  margin-right: math.div($textfield-margin-x, -2);
+  margin-left: math.div($textfield-margin-x, -2);
 
   > .col,
   > [class*='col-'] {
-    padding-right: ($textfield-margin-x / 2);
-    padding-left: ($textfield-margin-x / 2);
+    padding-right: ($textfield-margin-x * 0.5);
+    padding-left: ($textfield-margin-x * 0.5);
   }
 }
 
@@ -88,21 +90,21 @@
 
 .col-form-label {
   font-size: $font-size-base;
-  line-height: ($textfield-font-size * $textfield-line-height / $font-size-base);
+  line-height: math.div($textfield-font-size * $textfield-line-height, $font-size-base);
   padding-top: $textfield-padding-y;
   padding-bottom: $textfield-padding-y;
 }
 
 .col-form-label-lg {
-  font-size: ($font-size-base / $textfield-font-size * $textfield-font-size-lg);
-  line-height: ($textfield-line-height-lg / ($font-size-base / $textfield-font-size));
+  font-size: (math.div($font-size-base, $textfield-font-size) * $textfield-font-size-lg);
+  line-height: math.div($textfield-line-height-lg, math.div($font-size-base, $textfield-font-size));
   padding-top: $textfield-padding-y-lg;
   padding-bottom: $textfield-padding-y-lg;
 }
 
 .col-form-label-sm {
-  font-size: ($font-size-base / $textfield-font-size * $textfield-font-size-sm);
-  line-height: ($textfield-line-height-sm / ($font-size-base / $textfield-font-size));
+  font-size: (math.div($font-size-base, $textfield-font-size) * $textfield-font-size-sm);
+  line-height: math.div($textfield-line-height-sm, math.div($font-size-base, $textfield-font-size));
   padding-top: $textfield-padding-y-sm;
   padding-bottom: $textfield-padding-y-sm;
 }

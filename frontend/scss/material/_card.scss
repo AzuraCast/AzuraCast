@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .card {
   @include border-radius($card-border-radius);
 
@@ -206,8 +208,8 @@
 .card-columns {
   column-count: $card-columns-count;
   column-gap: $card-margin-x;
-  margin-top: ($card-margin-y / -2);
-  margin-bottom: ($card-margin-y / 2);
+  margin-top: math.div($card-margin-y, -2);
+  margin-bottom: ($card-margin-y * 0.5);
   orphans: 1;
   widows: 1;
 
@@ -217,8 +219,8 @@
 
   .card {
     display: inline-flex;
-    margin-top: ($card-margin-y / 2);
-    margin-bottom: ($card-margin-y / 2);
+    margin-top: ($card-margin-y * 0.5);
+    margin-bottom: ($card-margin-y * 0.5);
     width: 100%;
   }
 }
@@ -227,8 +229,8 @@
   @include media-breakpoint-up(sm) {
     display: flex;
     flex-flow: row wrap;
-    margin-right: ($card-margin-x / -2);
-    margin-left: ($card-margin-x / -2);
+    margin-right: math.div($card-margin-x, -2);
+    margin-left: math.div($card-margin-x, -2);
   }
 
   .card {
@@ -236,8 +238,8 @@
 
     @include media-breakpoint-up(sm) {
       flex: 1 0 0;
-      margin-right: ($card-margin-x / 2);
-      margin-left: ($card-margin-x / 2);
+      margin-right: ($card-margin-x * 0.5);
+      margin-left: ($card-margin-x * 0.5);
     }
   }
 }

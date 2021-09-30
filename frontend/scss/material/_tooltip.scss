@@ -40,7 +40,7 @@
 
     &::before {
       top: 0;
-      border-width: $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
+      border-width: $tooltip-arrow-height ($tooltip-arrow-width * 0.5) 0;
     }
   }
 }
@@ -55,7 +55,7 @@
 
     &::before {
       right: 0;
-      border-width: ($tooltip-arrow-width / 2) $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
+      border-width: ($tooltip-arrow-width * 0.5) $tooltip-arrow-height ($tooltip-arrow-width * 0.5) 0;
     }
   }
 }
@@ -68,7 +68,7 @@
 
     &::before {
       bottom: 0;
-      border-width: 0 ($tooltip-arrow-width / 2) $tooltip-arrow-height;
+      border-width: 0 ($tooltip-arrow-width * 0.5) $tooltip-arrow-height;
     }
   }
 }
@@ -83,7 +83,7 @@
 
     &::before {
       left: 0;
-      border-width: ($tooltip-arrow-width / 2) 0 ($tooltip-arrow-width / 2) $tooltip-arrow-height;
+      border-width: ($tooltip-arrow-width * 0.5) 0 ($tooltip-arrow-width * 0.5) $tooltip-arrow-height;
     }
   }
 }

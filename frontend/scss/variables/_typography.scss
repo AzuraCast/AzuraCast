@@ -1,5 +1,7 @@
 // A base value used to responsively scale all typography, applied to the `<html>` element
 
+@use "sass:math";
+
 $font-size-root: 16px !default;
 
 // Font face
@@ -78,6 +80,6 @@ $line-height-caption:    1.5 !default;      // 18px
 
 // Material icons default size
 
-$material-icon-size: (24 / strip-unit($font-size-root) * 1rem) !default;
+$material-icon-size: (math.div(24, strip-unit($font-size-root)) * 1rem) !default;
 $material-icon-size-lg: ($material-icon-size * 1.5) !default;
 $material-icon-size-sm: ($material-icon-size * .6) !default;

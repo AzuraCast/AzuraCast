@@ -3,6 +3,8 @@
 
 // N.B. Material design only specifies specs for default button (.btn) and dense button (.btn-sm)
 
+@use "sass:math";
+
 $btn-bg-active: rgba(153, 153, 153, 0.4) !default;
 $btn-bg-active-inverse: rgba(204, 204, 204, 0.25) !default;
 $btn-bg-disabled: $black-divider !default;
@@ -29,9 +31,9 @@ $btn-height-sm: 2.5rem !default;
 $btn-padding-x: 1rem !default;
 $btn-padding-x-lg: $btn-padding-x !default;
 $btn-padding-x-sm: $btn-padding-x !default;
-$btn-padding-y: (($btn-height - $btn-font-size * $btn-line-height) / 2) !default;
-$btn-padding-y-lg: (($btn-height-lg - $btn-font-size-lg * $btn-line-height) / 2) !default;
-$btn-padding-y-sm: (($btn-height-sm - $btn-font-size-sm * $btn-line-height) / 2) !default;
+$btn-padding-y: (($btn-height - $btn-font-size * $btn-line-height) * 0.5) !default;
+$btn-padding-y-lg: (($btn-height-lg - $btn-font-size-lg * $btn-line-height) * 0.5) !default;
+$btn-padding-y-sm: (($btn-height-sm - $btn-font-size-sm * $btn-line-height) * 0.5) !default;
 
 @if $theme == 'dark' {
   $btn-bg-active: rgba(153, 153, 153, 0.4);
@@ -143,29 +145,29 @@ $table-tbody-cell-height: 3rem !default;
 $table-tbody-color: $black-primary !default;
 $table-tbody-font-size: 0.8125rem !default;
 $table-tbody-font-weight: $font-weight-regular !default;
-$table-tbody-padding-y: (($table-tbody-cell-height - $table-tbody-font-size * $table-line-height) / 2) !default;
+$table-tbody-padding-y: (($table-tbody-cell-height - $table-tbody-font-size * $table-line-height) * 0.5) !default;
 
 $table-tfoot-cell-height: 2.5rem !default;
 $table-tfoot-color: $black-secondary !default;
 $table-tfoot-font-size: 0.75rem !default;
 $table-tfoot-font-weight: $font-weight-regular !default;
-$table-tfoot-padding-y: (($table-tfoot-cell-height - $table-tfoot-font-size * $table-line-height) / 2) !default;
+$table-tfoot-padding-y: (($table-tfoot-cell-height - $table-tfoot-font-size * $table-line-height) * 0.5) !default;
 
 $table-thead-bg: $table-bg-accent !default;
 $table-thead-cell-height: $table-tfoot-cell-height !default;
 $table-thead-color: $table-tfoot-color !default;
 $table-thead-font-size: $table-tfoot-font-size !default;
 $table-thead-font-weight: $font-weight-medium !default;
-$table-thead-padding-y: (($table-thead-cell-height - $table-thead-font-size * $table-line-height) / 2) !default;
+$table-thead-padding-y: (($table-thead-cell-height - $table-thead-font-size * $table-line-height) * 0.5) !default;
 
 $table-sm-cell-padding-x: 1rem !default;
 $table-sm-cell-padding-x-alt: 1rem !default;
 $table-sm-tbody-cell-height: 2.25rem !default;
-$table-sm-tbody-padding-y: (($table-sm-tbody-cell-height - $table-tbody-font-size * $table-line-height) / 2) !default;
+$table-sm-tbody-padding-y: (($table-sm-tbody-cell-height - $table-tbody-font-size * $table-line-height) * 0.5) !default;
 $table-sm-tfoot-cell-height: 2.0rem !default;
-$table-sm-tfoot-padding-y: (($table-sm-tfoot-cell-height - $table-tfoot-font-size * $table-line-height) / 2) !default;
+$table-sm-tfoot-padding-y: (($table-sm-tfoot-cell-height - $table-tfoot-font-size * $table-line-height) * 0.5) !default;
 $table-sm-thead-cell-height: $table-sm-tfoot-cell-height !default;
-$table-sm-thead-padding-y: (($table-sm-thead-cell-height - $table-thead-font-size * $table-line-height) / 2) !default;
+$table-sm-thead-padding-y: (($table-sm-thead-cell-height - $table-thead-font-size * $table-line-height) * 0.5) !default;
 
 @if $theme == 'dark' {
   $table-bg: none;
@@ -200,7 +202,7 @@ $dialog-elevation-shadow: map-get($elevation-shadows, 24) !default;
 $dialog-footer-btn-min-width: 4rem !default;
 $dialog-footer-btn-stacked-height: 3rem !default;
 $dialog-footer-btn-stacked-padding-x: 1rem !default;
-$dialog-footer-btn-stacked-padding-y: (($dialog-footer-btn-stacked-height - $btn-font-size * $btn-line-height) / 2) !default;
+$dialog-footer-btn-stacked-padding-y: (($dialog-footer-btn-stacked-height - $btn-font-size * $btn-line-height) * 0.5) !default;
 $dialog-footer-inner-spacer-x: 0.5rem !default;
 $dialog-footer-padding-x: 0.5rem !default;
 $dialog-footer-padding-y: 0.5rem !default;
@@ -240,7 +242,7 @@ $expansion-panel-inner-spacer-y: 1rem !default;
 $expansion-panel-line-height: $line-height-base !default;
 $expansion-panel-margin-y: $spacer !default;
 $expansion-panel-padding-x: 1.5rem !default;
-$expansion-panel-padding-y: (($expansion-panel-height - $expansion-panel-font-size * $expansion-panel-line-height) / 2) !default;
+$expansion-panel-padding-y: (($expansion-panel-height - $expansion-panel-font-size * $expansion-panel-line-height) * 0.5) !default;
 
 @if $theme == 'dark' {
   $expansion-panel-bg: $dark-theme-3;
@@ -272,8 +274,8 @@ $menu-link-height: 3rem !default;
 $menu-link-height-cascading: 2rem !default;
 $menu-link-padding-x: 1rem !default;
 $menu-link-padding-x-cascading: 1.5rem !default;
-$menu-link-padding-y: (($menu-link-height - $menu-line-height) / 2) !default;
-$menu-link-padding-y-cascading: (($menu-link-height-cascading - $menu-line-height-cascading) / 2) !default;
+$menu-link-padding-y: (($menu-link-height - $menu-line-height) * 0.5) !default;
+$menu-link-padding-y-cascading: (($menu-link-height-cascading - $menu-line-height-cascading) * 0.5) !default;
 $menu-min-width: 7rem !default;
 $menu-min-width-cascading: 20rem !default;
 $menu-padding-y: 0.3rem !default;
@@ -400,8 +402,8 @@ $selection-control-color-active: theme-color(secondary) !default;
 $selection-control-color-disabled: rgba(0, 0, 0, 0.26) !default;
 $selection-control-indicator-size: $material-icon-size !default;
 $selection-control-radial-opacity: $black-divider-opacity !default;
-$selection-control-spacer-x: ($material-icon-size / 3) !default;
-$selection-control-spacer-y: ($material-icon-size / 2.5) !default;
+$selection-control-spacer-x: math.div($material-icon-size, 3) !default;
+$selection-control-spacer-y: math.div($material-icon-size, 2.5) !default;
 $selection-control-thumb-bg: $material-color-grey-050 !default;
 $selection-control-thumb-bg-disabled: #bdbdbd !default;
 $selection-control-thumb-shadow: 0 1px 5px 0 rgba(0, 0, 0, $black-secondary-opacity) !default;
@@ -436,7 +438,7 @@ $selection-control-radio-icon-checked: str-replace(url('data:image/svg+xml;chars
 
 $slider-thumb-bg: theme-color(secondary) !default;
 $slider-thumb-radial-opacity: $black-divider-opacity !default;
-$slider-thumb-size: ($material-icon-size / 2) !default;
+$slider-thumb-size: ($material-icon-size * 0.5) !default;
 $slider-track-bg: rgba(0, 0, 0, 0.26) !default;
 $slider-track-bg-active: rgba(0, 0, 0, 0.38) !default;
 $slider-track-height: 0.125rem !default;
@@ -510,7 +512,7 @@ $nav-tab-indicator-height: 0.125rem !default;
 $nav-tab-line-height: 1 !default;
 $nav-tab-link-opacity: 0.7 !default;
 $nav-tab-link-padding-x: 0.75rem !default;
-$nav-tab-link-padding-y: (($nav-tab-height - $nav-tab-font-size * $nav-tab-line-height) / 2) !default;
+$nav-tab-link-padding-y: (($nav-tab-height - $nav-tab-font-size * $nav-tab-line-height) * 0.5) !default;
 
 @if $theme == 'dark' {
   $nav-tab-bg-hover: $black-divider;
@@ -553,10 +555,10 @@ $textfield-padding-x: .75rem !default;
 $textfield-padding-x-lg: .75rem !default;
 $textfield-padding-x-sm: .75rem !default;
 $textfield-padding-y: .6rem !default;
-$textfield-padding-y-lg: (($textfield-height-lg - $textfield-font-size-lg * $textfield-line-height-lg) / 2) !default;
-$textfield-padding-y-sm: (($textfield-height-sm - $textfield-font-size-sm * $textfield-line-height-sm) / 2) !default;
+$textfield-padding-y-lg: (($textfield-height-lg - $textfield-font-size-lg * $textfield-line-height-lg) * 0.5) !default;
+$textfield-padding-y-sm: (($textfield-height-sm - $textfield-font-size-sm * $textfield-line-height-sm) * 0.5) !default;
 
-$textfield-select-bg-size: ($material-icon-size / $textfield-font-size * 1em) !default;
+$textfield-select-bg-size: (math.div($material-icon-size, $textfield-font-size) * 1em) !default;
 
 @if $theme == 'dark' {
   $textfield-border-color: rgba(255, 255, 255, 0.22);
@@ -585,8 +587,8 @@ $textfield-box-padding-x: .75rem !default;
 $textfield-box-padding-x-lg: 1rem !default;
 $textfield-box-padding-x-sm: .75rem !default;
 $textfield-box-padding-y: .6rem !default;
-$textfield-box-padding-y-lg: (($textfield-box-height-lg - $textfield-font-size-lg * $textfield-line-height-lg) / 2) !default;
-$textfield-box-padding-y-sm: (($textfield-box-height-sm - $textfield-font-size-sm * $textfield-line-height-sm) / 2) !default;
+$textfield-box-padding-y-lg: (($textfield-box-height-lg - $textfield-font-size-lg * $textfield-line-height-lg) * 0.5) !default;
+$textfield-box-padding-y-sm: (($textfield-box-height-sm - $textfield-font-size-sm * $textfield-line-height-sm) * 0.5) !default;
 
 // Text field: floating label
 // Based on https://material.google.com/components/text-fields.html#text-fields-labels
@@ -613,7 +615,7 @@ $toolbar-link-font-size: 1rem !default;
 $toolbar-link-height: $toolbar-element-height !default;
 $toolbar-link-line-height: 1 !default;
 $toolbar-link-padding-x: 1rem !default;
-$toolbar-link-padding-y: (($toolbar-link-height - $toolbar-link-font-size * $toolbar-link-line-height) / 2) !default;
+$toolbar-link-padding-y: (($toolbar-link-height - $toolbar-link-font-size * $toolbar-link-line-height) * 0.5) !default;
 $toolbar-padding-x: 1rem !default;
 $toolbar-padding-y: 1rem !default;
 $toolbar-waterfall-bg: theme-color(primary) !default;
@@ -652,8 +654,8 @@ $tooltip-margin-desktop: 0.875rem !default;
 $tooltip-opacity: 0.9 !default;
 $tooltip-padding-x: 1rem !default;
 $tooltip-padding-x-desktop: 0.5rem !default;
-$tooltip-padding-y: (($tooltip-height - $tooltip-font-size * $tooltip-line-height) / 2) !default;
-$tooltip-padding-y-desktop: (($tooltip-height-desktop - $tooltip-font-size-desktop * $tooltip-line-height) / 2) !default;
+$tooltip-padding-y: (($tooltip-height - $tooltip-font-size * $tooltip-line-height) * 0.5) !default;
+$tooltip-padding-y-desktop: (($tooltip-height-desktop - $tooltip-font-size-desktop * $tooltip-line-height) * 0.5) !default;
 $tooltip-scale: 0.87 !default;
 $tooltip-zindex: map-get($elevations, 24) !default;
 

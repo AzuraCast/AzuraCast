@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .picker {
   outline: 0;
   overflow: hidden;
@@ -144,7 +146,7 @@
 .picker-nav-next,
 .picker-nav-prev {
   height: $picker-cell-size;
-  margin-top: ($picker-cell-size / -2);
+  margin-top: math.div($picker-cell-size, -2);
   position: absolute;
   top: 50%;
   width: $picker-cell-size;
@@ -242,8 +244,8 @@
   width: $picker-cell-size;
 
   @media (orientation: landscape) {
-    margin-right: ($picker-inner-spacer-x / 2);
-    margin-left: ($picker-inner-spacer-x / 2);
+    margin-right: ($picker-inner-spacer-x * 0.5);
+    margin-left: ($picker-inner-spacer-x * 0.5);
   }
 }
 
@@ -293,10 +295,10 @@
   box-shadow: none;
   display: inline-block;
   font-size: inherit;
-  height: ($picker-cell-size / 2);
-  line-height: ($picker-cell-size / 2);
+  height: ($picker-cell-size * 0.5);
+  line-height: ($picker-cell-size * 0.5);
   opacity: $picker-select-opacity;
-  padding: 0 ($picker-cell-size / 2) 0 $picker-inner-spacer-x;
+  padding: 0 ($picker-cell-size * 0.5) 0 $picker-inner-spacer-x;
 
   @include focus-hover {
     opacity: 1;

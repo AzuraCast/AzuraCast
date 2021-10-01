@@ -695,8 +695,8 @@ $colors: map-merge(
 $black:                   #000000 !default;
 
 $black-primary-opacity:   0.87 !default;
-$black-secondary-opacity: 0.54 !default;
-$black-hint-opacity:      0.38 !default;
+$black-secondary-opacity: 0.65 !default;
+$black-hint-opacity: 0.5 !default;
 $black-divider-opacity:   0.12 !default;
 
 $black-primary:           rgba(red($black), green($black), blue($black), $black-primary-opacity) !default;

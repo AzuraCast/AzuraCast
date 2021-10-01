@@ -48,6 +48,62 @@ const BootstrapVueNotifiers = {
 
       return message;
     };
+
+    const LOADING_TOAST_ID = 'toast-loading';
+
+    Vue.prototype.$showLoading = function (message = null, options = {}) {
+      if (message === null) {
+        message = this.$gettext('Applying changes...');
+      }
+
+      const defaults = {
+        id: LOADING_TOAST_ID,
+        variant: 'warning',
+        title: this.$gettext('Please wait...'),
+        autoHideDelay: 10000,
+        isStatus: true
+      };
+
+      this.$notify(message, { ...defaults, ...options });
+      return message;
+    };
+
+    Vue.prototype.$hideLoading = function () {
+      this.$bvToast.hide(LOADING_TOAST_ID);
+    };
+
+    let $isAxiosLoading = false;
+    let $axiosLoadCount = 0;
+
+    Vue.prototype.$setLoading = function (isLoading) {
+      let prevIsLoading = $isAxiosLoading;
+      if (isLoading) {
+        $axiosLoadCount++;
+        $isAxiosLoading = true;
+      } else if ($axiosLoadCount > 0) {
+        $axiosLoadCount--;
+        $isAxiosLoading = ($axiosLoadCount > 0);
+      }
+
+      // Handle state changes
+      if (!prevIsLoading && $isAxiosLoading) {
+        this.$showLoading();
+      } else if (prevIsLoading && !$isAxiosLoading) {
+        this.$hideLoading();
+      }
+    };
+
+    Vue.prototype.$wrapWithLoading = function (promise) {
+      this.$setLoading(true);
+
+      promise.then(() => {
+        this.$setLoading(false);
+      }).catch(() => {
+        this.$setLoading(false);
+      });
+
+      return promise;
+    };
   }
 };
 

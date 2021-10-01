@@ -55,16 +55,14 @@ export default {
             this.axios.get(this.queueUrl).then((resp) => {
                 this.media = resp.data;
                 this.loading = false;
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         },
         doClear () {
-            this.axios.delete(this.queueUrl).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios.delete(this.queueUrl)
+            ).then((resp) => {
                 this.$notifySuccess(this.$gettext('Playlist queue cleared.'));
                 this.close();
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         },
         close () {

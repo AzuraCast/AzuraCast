@@ -82,11 +82,11 @@ export default {
                 confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
-                    this.axios.delete(url).then((resp) => {
+                    this.$wrapWithLoading(
+                        this.axios.delete(url)
+                    ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
                         this.$refs.datatable.refresh();
-                    }).catch((err) => {
-                        this.$handleAxiosError(err);
                     });
                 }
             });
@@ -97,11 +97,11 @@ export default {
                 confirmButtonText: this.$gettext('Clear'),
             }).then((result) => {
                 if (result.value) {
-                    this.axios.post(this.clearUrl).then((resp) => {
+                    this.$wrapWithLoading(
+                        this.axios.post(this.clearUrl)
+                    ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
                         this.$refs.datatable.refresh();
-                    }).catch((err) => {
-                        this.$handleAxiosError(err);
                     });
                 }
             });

@@ -101,47 +101,6 @@ export default {
                 'storageQuota': d.storageQuota
             };
         },
-        doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            let data = this.form;
-            data.type = this.type;
-
-            this.axios({
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: data
-            }).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                this.error = notifyMessage;
-            });
-        }
     }
 };
 </script>

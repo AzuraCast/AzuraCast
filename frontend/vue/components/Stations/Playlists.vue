@@ -255,15 +255,11 @@ export default {
             this.$refs.cloneModal.open(name, url);
         },
         doModify (url) {
-            this.$notify(this.$gettext('Applying changes...'), {
-                variant: 'warning'
-            });
-
-            this.axios.put(url).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios.put(url)
+            ).then((resp) => {
                 this.$notifySuccess(resp.data.message);
                 this.relist();
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         },
         doDelete (url) {
@@ -272,11 +268,11 @@ export default {
                 confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
-                    this.axios.delete(url).then((resp) => {
+                    this.$wrapWithLoading(
+                        this.axios.delete(url)
+                    ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
                         this.relist();
-                    }).catch((err) => {
-                        this.$handleAxiosError(err);
                     });
                 }
             });

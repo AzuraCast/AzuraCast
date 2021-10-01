@@ -52,19 +52,15 @@ export default {
             let formData = new FormData();
             formData.append('playlist_file', this.playlistFile);
 
-            this.axios.post(this.importPlaylistUrl, formData).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios.post(this.importPlaylistUrl, formData)
+            ).then((resp) => {
                 if (resp.data.success) {
                     this.$notifySuccess(resp.data.message);
                 } else {
                     this.$notifyError(resp.data.message);
                 }
-
-                this.$emit('relist');
-                this.close();
-            }).catch((err) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(err, notifyMessage);
-
+            }).finally(() => {
                 this.$emit('relist');
                 this.close();
             });

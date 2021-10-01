@@ -77,24 +77,25 @@ export default {
             this.$refs.modal.hide();
         },
         doMove () {
-            (this.selectedItems.all.length) && this.axios.put(this.batchUrl, {
-                'do': 'move',
-                'currentDirectory': this.currentDirectory,
-                'directory': this.destinationDirectory,
-                'files': this.selectedItems.files,
-                'dirs': this.selectedItems.directories
-            }).then((resp) => {
-                let allItemNames = _.map(this.selectedItems.all, 'name');
+            (this.selectedItems.all.length) && this.$wrapWithLoading(
+                this.axios.put(this.batchUrl, {
+                    'do': 'move',
+                    'currentDirectory': this.currentDirectory,
+                    'directory': this.destinationDirectory,
+                    'files': this.selectedItems.files,
+                    'dirs': this.selectedItems.directories
+                })
+            ).then(() => {
                 let notifyMessage = this.$gettext('Files moved:');
-
-                this.$notifySuccess(allItemNames.join('<br>'), {
-                    title: notifyMessage
+                let itemNameNodes = [];
+                _.forEach(this.selectedItems.all, (item) => {
+                    itemNameNodes.push(this.$createElement('div', {}, item.name));
                 });
 
-                this.close();
-                this.$emit('relist');
-            }).catch((err) => {
-                this.$handleAxiosError(err);
+                this.$notifySuccess(itemNameNodes, {
+                    title: notifyMessage
+                });
+            }).finally(() => {
                 this.close();
                 this.$emit('relist');
             });

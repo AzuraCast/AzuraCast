@@ -47,16 +47,13 @@ export default {
                 this.url = resp.data.url;
 
                 this.loading = false;
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
 
         },
         clear() {
-            this.axios.delete(this.apiUrl).then((resp) => {
-                this.relist();
-            }).catch((error) => {
-                this.$handleAxiosError(error);
+            this.$wrapWithLoading(
+                this.axios.delete(this.apiUrl)
+            ).finally((resp) => {
                 this.relist();
             });
         },
@@ -68,10 +65,9 @@ export default {
             let formData = new FormData();
             formData.append('file', this.file);
 
-            this.axios.post(this.apiUrl, formData).then((resp) => {
-                this.relist();
-            }).catch((error) => {
-                this.$handleAxiosError(error);
+            this.$wrapWithLoading(
+                this.axios.post(this.apiUrl, formData)
+            ).finally((resp) => {
                 this.relist();
             });
         },

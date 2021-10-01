@@ -60,17 +60,14 @@ export default {
                 return;
             }
 
-            this.axios.post(this.mkdirUrl, {
-                'currentDirectory': this.currentDirectory,
-                'name': this.newDirectory
-            }).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios.post(this.mkdirUrl, {
+                    'currentDirectory': this.currentDirectory,
+                    'name': this.newDirectory
+                })
+            ).then(() => {
                 this.$notifySuccess(this.$gettext('New directory created.'));
-
-                this.$emit('relist');
-                this.close();
-            }).catch((err) => {
-                this.$handleAxiosError(err);
-
+            }).finally(() => {
                 this.$emit('relist');
                 this.close();
             });

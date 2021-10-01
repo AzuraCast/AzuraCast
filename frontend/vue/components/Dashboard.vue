@@ -222,16 +222,12 @@ export default {
             this.axios.get(this.chartsUrl).then((response) => {
                 this.chartsData = response.data;
                 this.chartsLoading = false;
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         }
 
         this.axios.get(this.notificationsUrl).then((response) => {
             this.notifications = response.data;
             this.notificationsLoading = false;
-        }).catch((err) => {
-            this.$handleAxiosError(err);
         });
 
         this.updateNowPlaying();
@@ -255,8 +251,6 @@ export default {
 
                 setTimeout(this.updateNowPlaying, 15000);
             }).catch((error) => {
-                this.$handleAxiosError(error);
-
                 setTimeout(this.updateNowPlaying, 30000);
             });
         }

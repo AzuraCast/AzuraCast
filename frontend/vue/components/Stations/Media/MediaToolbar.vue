@@ -69,14 +69,6 @@
                 <translate key="lang_btn_new_folder">New Folder</translate>
             </b-button>
         </div>
-
-        <b-alert :show="pending"
-                 class="position-fixed fixed-bottom m-0 rounded-0"
-                 style="z-index: 2000;"
-                 variant="warning"
-                 dismissible>
-            <translate key="lang_applying_changes">Applying changes...</translate>
-        </b-alert>
     </div>
 </template>
 <script>
@@ -97,7 +89,6 @@ export default {
         return {
             checkedPlaylists: [],
             newPlaylist: '',
-            pending: false
         };
     },
     watch: {
@@ -163,15 +154,14 @@ export default {
         },
         doBatch (action, notifyMessage) {
             if (this.selectedItems.all.length) {
-                this.pending = true;
-
-                this.axios.put(this.batchUrl, {
-                    'do': action,
-                    'current_directory': this.currentDirectory,
-                    'files': this.selectedItems.files,
-                    'dirs': this.selectedItems.directories
-                }).then((resp) => {
-                    this.pending = false;
+                this.$wrapWithLoading(
+                    this.axios.put(this.batchUrl, {
+                        'do': action,
+                        'current_directory': this.currentDirectory,
+                        'files': this.selectedItems.files,
+                        'dirs': this.selectedItems.directories
+                    })
+                ).then((resp) => {
                     if (resp.data.success) {
                         let allItemNodes = [];
                         _.forEach(this.selectedItems.all, (item) => {
@@ -193,9 +183,6 @@ export default {
                     }
 
                     this.$emit('relist');
-                }).catch((err) => {
-                    this.pending = false;
-                    this.$handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();
@@ -211,18 +198,16 @@ export default {
             this.$refs.setPlaylistsDropdown.hide();
 
             if (this.selectedItems.all.length) {
-                this.pending = true;
-
-                this.axios.put(this.batchUrl, {
-                    'do': 'playlist',
-                    'playlists': this.checkedPlaylists,
-                    'new_playlist_name': this.newPlaylist,
-                    'currentDirectory': this.currentDirectory,
-                    'files': this.selectedItems.files,
-                    'dirs': this.selectedItems.directories
-                }).then((resp) => {
-                    this.pending = false;
-
+                this.$wrapWithLoading(
+                    this.axios.put(this.batchUrl, {
+                        'do': 'playlist',
+                        'playlists': this.checkedPlaylists,
+                        'new_playlist_name': this.newPlaylist,
+                        'currentDirectory': this.currentDirectory,
+                        'files': this.selectedItems.files,
+                        'dirs': this.selectedItems.directories
+                    })
+                ).then((resp) => {
                     if (resp.data.success) {
                         if (resp.data.record) {
                             this.$emit('add-playlist', resp.data.record);
@@ -255,10 +240,6 @@ export default {
                     }
 
                     this.$emit('relist');
-                }).catch((err) => {
-                    this.pending = false;
-                    
-                    this.$handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();

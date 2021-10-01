@@ -155,7 +155,6 @@ export default {
 
                 this.loading = false;
             }).catch((error) => {
-                this.$handleAxiosError(error);
                 this.close();
             });
         },
@@ -183,7 +182,7 @@ export default {
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {
-                this.error = this.$handleAxiosError(error);
+                this.error = error.response.data.message;
             });
         }
     }

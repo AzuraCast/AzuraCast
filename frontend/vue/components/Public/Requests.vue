@@ -94,7 +94,6 @@ export default {
                 this.$notifySuccess(resp.data.message);
                 this.$emit('submitted');
             }).catch((err) => {
-                this.$handleAxiosError(err);
                 this.$emit('submitted');
             });
         }

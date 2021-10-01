@@ -82,8 +82,6 @@ export default {
             if (this.editMediaUrl) {
                 this.axios.delete(this.editMediaUrl).then((resp) => {
                     this.hasMedia = false;
-                }).catch((err) => {
-                    this.$handleAxiosError(err);
                 });
             } else {
                 this.hasMedia = false;

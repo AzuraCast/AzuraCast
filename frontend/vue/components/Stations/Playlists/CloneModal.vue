@@ -100,16 +100,16 @@ export default {
 
             this.error = null;
 
-            this.axios({
-                method: 'POST',
-                url: this.cloneUrl,
-                data: this.form
-            }).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios({
+                    method: 'POST',
+                    url: this.cloneUrl,
+                    data: this.form
+                })
+            ).then((resp) => {
                 this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
-            }).catch((error) => {
-                this.error = this.$handleAxiosError(error);
             });
         },
         close () {

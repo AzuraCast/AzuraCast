@@ -198,7 +198,6 @@ export default {
                 this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
-                this.$handleAxiosError(error);
                 this.close();
             });
         },
@@ -220,15 +219,15 @@ export default {
                 return;
             }
 
-            this.axios({
-                method: 'PUT',
-                url: this.apiUrl,
-                data: this.form
-            }).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios({
+                    method: 'PUT',
+                    url: this.apiUrl,
+                    data: this.form
+                })
+            ).then((resp) => {
                 this.$notifySuccess(this.$gettext('Changes saved.'));
                 this.relist();
-            }).catch((error) => {
-                this.error = this.$handleAxiosError(error);
             });
 
         }

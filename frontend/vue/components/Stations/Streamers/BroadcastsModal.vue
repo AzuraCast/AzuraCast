@@ -133,8 +133,6 @@ export default {
                     this.axios.delete(url).then((resp) => {
                         this.$notifySuccess(resp.data.message);
                         this.$refs.datatable.refresh();
-                    }).catch((err) => {
-                        this.$handleAxiosError(err);
                     });
 
                     this.$refs.datatable.refresh();

@@ -77,8 +77,6 @@ export default {
             this.axios.get(this.reorderUrl).then((resp) => {
                 this.media = resp.data;
                 this.loading = false;
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         },
         moveDown (index) {
@@ -100,8 +98,6 @@ export default {
 
             this.axios.put(this.reorderUrl, {'order': newOrder}).then((resp) => {
                 this.$notifySuccess(this.$gettext('Playlist order set.'));
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         },
     }

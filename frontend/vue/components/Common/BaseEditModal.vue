@@ -56,11 +56,12 @@ export default {
             this.doLoad(recordUrl);
         },
         doLoad (recordUrl) {
-            this.axios.get(recordUrl).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios.get(recordUrl)
+            ).then((resp) => {
                 this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
-                this.$handleAxiosError(error);
                 this.close();
             });
         },
@@ -86,12 +87,14 @@ export default {
 
             this.error = null;
 
-            this.axios(this.buildSubmitRequest()).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios(this.buildSubmitRequest())
+            ).then((resp) => {
                 this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {
-                this.error = this.$handleAxiosError(error);
+                this.error = error.response.data.message;
             });
         },
         close () {

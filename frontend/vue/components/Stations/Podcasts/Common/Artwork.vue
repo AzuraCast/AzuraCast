@@ -66,16 +66,12 @@ export default {
 
             this.axios.post(url, formData).then((resp) => {
                 this.$emit('input', resp.data);
-            }).catch((err) => {
-                this.$handleAxiosError(err);
             });
         },
         deleteArt () {
             if (this.editArtUrl) {
                 this.axios.delete(this.editArtUrl).then((resp) => {
                     this.src = null;
-                }).catch((err) => {
-                    this.$handleAxiosError(err);
                 });
             } else {
                 this.src = null;

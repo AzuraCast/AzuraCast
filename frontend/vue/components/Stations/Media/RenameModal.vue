@@ -69,12 +69,9 @@ export default {
                 return;
             }
 
-            this.axios.put(this.renameUrl, this.form).then((resp) => {
-                this.$refs.modal.hide();
-                this.$emit('relist');
-            }).catch((err) => {
-                this.$handleAxiosError(err);
-
+            this.$wrapWithLoading(
+                this.axios.put(this.renameUrl, this.form)
+            ).finally(() => {
                 this.$refs.modal.hide();
                 this.$emit('relist');
             });

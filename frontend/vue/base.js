@@ -28,32 +28,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
   Vue.use(VueAxios, axios);
 
-  const AxiosErrorHandler = {
-    install (Vue, opts) {
-      Vue.prototype.$handleAxiosError = function (error) {
-        let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-        if (error.response) {
-          // Request made and server responded
-          notifyMessage = error.response.data.message;
-          console.error(notifyMessage);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.error(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error('Error', error.message);
-        }
-
-        if (typeof this.$notifyError === 'function') {
-          this.$notifyError(notifyMessage);
-        }
-
-        return notifyMessage;
-      };
-    }
-  };
-
-  Vue.use(AxiosErrorHandler);
-
   Vue.prototype.$eventHub = new Vue();
 });
+
+export default function (component) {
+  return function (el, props) {
+    return new Vue({
+      el: el,
+      created () {
+        let handleAxiosError = (error) => {
+          let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+          if (error.response) {
+            // Request made and server responded
+            notifyMessage = error.response.data.message;
+            console.error(notifyMessage);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.error(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error', error.message);
+          }
+
+          if (typeof this.$notifyError === 'function') {
+            this.$notifyError(notifyMessage);
+          }
+        };
+
+        axios.interceptors.request.use((config) => {
+          return config;
+        }, (error) => {
+          handleAxiosError(error);
+          return Promise.reject(error);
+        });
+
+        axios.interceptors.response.use((response) => {
+          return response;
+        }, (error) => {
+          handleAxiosError(error);
+          return Promise.reject(error);
+        });
+      },
+      render: createElement => createElement(component, { props: props })
+    });
+  };
+}

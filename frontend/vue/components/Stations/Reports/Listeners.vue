@@ -237,14 +237,15 @@ export default {
                 params.end = DateTime.fromJSDate(this.dateRange.endDate).toISO();
             }
 
-            this.axios.get(this.apiUrl, {params: params}).then((resp) => {
+            this.$wrapWithLoading(
+                this.axios.get(this.apiUrl, {params: params})
+            ).then((resp) => {
                 this.listeners = resp.data;
 
                 if (this.isLive) {
                     setTimeout(this.updateListeners, 15000);
                 }
-            }).catch((err) => {
-                this.$handleAxiosError(err);
+            }).catch(() => {
                 if (this.isLive) {
                     setTimeout(this.updateListeners, 30000);
                 }

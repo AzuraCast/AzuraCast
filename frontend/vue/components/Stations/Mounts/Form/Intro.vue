@@ -82,8 +82,6 @@ export default {
             if (this.editIntroUrl) {
                 this.axios.delete(this.editIntroUrl).then((resp) => {
                     this.hasIntro = false;
-                }).catch((err) => {
-                    this.$handleAxiosError(err);
                 });
             } else {
                 this.hasIntro = false;

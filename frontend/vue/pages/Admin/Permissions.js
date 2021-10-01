@@ -1,19 +1,9 @@
-import '~/base.js';
-import '~/vendor/bootstrapVue.js';
+import initBase
+  from '~/base.js';
 
-import Vue
-  from 'vue';
+import '~/vendor/bootstrapVue.js';
 
 import AdminPermissions
   from '~/components/Admin/Permissions.vue';
 
-export default function (el, props) {
-  return new Vue({
-    el: el,
-    render: (createElement) => {
-      return createElement(AdminPermissions, {
-        props: props
-      });
-    }
-  });
-}
+export default initBase(AdminPermissions);

@@ -1,18 +1,11 @@
-import '~/base.js';
+import initBase
+  from '~/base.js';
 import '~/vendor/bootstrapVue.js';
 import '~/vendor/chartjs.js';
-
-import Vue
-  from 'vue';
 
 import '~/pages/InlinePlayer.js';
 
 import Dashboard
-  from '~/components/Dashboard.vue';
+  from '~/components/Dashboard';
 
-export default function (el, props) {
-  return new Vue({
-    el: el,
-    render: createElement => createElement(Dashboard, { props: props })
-  });
-}
+export default initBase(Dashboard);

@@ -96,9 +96,7 @@ const BootstrapVueNotifiers = {
     Vue.prototype.$wrapWithLoading = function (promise) {
       this.$setLoading(true);
 
-      promise.then(() => {
-        this.$setLoading(false);
-      }).catch(() => {
+      promise.finally(() => {
         this.$setLoading(false);
       });
 

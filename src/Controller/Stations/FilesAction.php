@@ -66,7 +66,7 @@ class FilesAction
                     'spacePercent' => $mediaStorage->getStorageUsePercentage(),
                     'spaceUsed' => $mediaStorage->getStorageUsed(),
                     'spaceTotal' => $mediaStorage->getStorageAvailable(),
-                    'filesCount' => $files_count,
+                    'filesCount' => (int)$files_count,
                     'showSftp' => SftpGo::isSupportedForStation($station),
                     'sftpUrl' => (string)$router->fromHere('stations:sftp_users:index'),
                 ],

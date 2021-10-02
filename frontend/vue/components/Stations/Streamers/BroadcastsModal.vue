@@ -49,7 +49,6 @@ export default {
     components: {PlayButton, Icon, InlinePlayer, DataTable},
     data() {
         return {
-            now_playing_url: null,
             listUrl: null,
             fields: [
                 {
@@ -107,23 +106,7 @@ export default {
             return this.$gettext('Download');
         }
     },
-    mounted () {
-        this.$eventHub.$on('player_stopped', () => {
-            this.now_playing_url = null;
-        });
-
-        this.$eventHub.$on('player_playing', (url) => {
-            this.now_playing_url = url;
-        });
-    },
     methods: {
-        playAudio (url) {
-            if (this.now_playing_url === url) {
-                this.$refs.player.stop();
-            } else {
-                this.$refs.player.play(url);
-            }
-        },
         doDelete (url) {
             confirmDelete({
                 title: this.$gettext('Delete Broadcast?'),

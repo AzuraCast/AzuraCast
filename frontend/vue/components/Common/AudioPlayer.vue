@@ -128,9 +128,6 @@ export default {
                 isStream: isStream
             });
         },
-        isPlaying() {
-            return this.is_playing;
-        },
         getVolume() {
             return this.volume;
         },
@@ -140,13 +137,13 @@ export default {
         getCurrentTime() {
             return this.currentTime;
         },
-        getDuration () {
+        getDuration() {
             return this.duration;
         },
-        getProgress () {
-            return (this.duration !== 0) ? Math.round((this.currentTime / this.duration) * 100, 2) : 0;
+        getProgress(x) {
+            return (this.duration !== 0) ? +((this.currentTime / this.duration) * 100).toFixed(2) : 0;
         },
-        setProgress (progress) {
+        setProgress(progress) {
             if (this.audio !== null) {
                 this.audio.currentTime = (progress / 100) * this.duration;
             }

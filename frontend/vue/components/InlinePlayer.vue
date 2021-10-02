@@ -139,9 +139,6 @@ export default {
         }
     },
     methods: {
-        play (url) {
-            this.$refs.player.play(url);
-        },
         stop () {
             store.commit('player/toggle', {
                 url: null,

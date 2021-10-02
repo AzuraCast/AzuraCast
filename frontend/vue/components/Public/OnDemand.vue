@@ -21,10 +21,8 @@
         <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
                     :fields="fields" :api-url="listUrl">
             <template #cell(download_url)="row">
-                <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
-                   @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">
-                    <icon class="outlined" :icon="(now_playing_url === row.item.download_url) ? 'stop_circle' : 'play_circle'"></icon>
-                </a>
+                <play-button class="file-icon" icon-class="outlined" :url="row.item.download_url"
+                             :is-stream="false"></play-button>
                 <template v-if="showDownloadButton">
                     &nbsp;
                     <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
@@ -97,23 +95,24 @@ import InlinePlayer from '../InlinePlayer';
 import DataTable from '~/components/Common/DataTable';
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
+import PlayButton from "~/components/Common/PlayButton";
 
 export default {
-    components: { Icon, DataTable, InlinePlayer },
+    components: {PlayButton, Icon, DataTable, InlinePlayer},
     props: {
         listUrl: String,
         stationName: String,
         customFields: Array,
         showDownloadButton: Boolean
     },
-    data () {
+    data() {
         let fields = [
-            { key: 'download_url', label: ' ' },
-            { key: 'media_art', label: this.$gettext('Art') },
-            { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
-            { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true },
-            { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
-            { key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false }
+            {key: 'download_url', label: ' '},
+            {key: 'media_art', label: this.$gettext('Art')},
+            {key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true},
+            {key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true},
+            {key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
+            {key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false}
         ];
 
         _.forEach(this.customFields.slice(), (field) => {
@@ -127,18 +126,8 @@ export default {
         });
 
         return {
-            now_playing_url: '',
             fields: fields
         };
-    },
-    mounted () {
-        this.$eventHub.$on('player_stopped', () => {
-            this.now_playing_url = '';
-        });
-
-        this.$eventHub.$on('player_playing', (url) => {
-            this.now_playing_url = url;
-        });
     },
     computed: {
         langAlbumArt () {
@@ -149,15 +138,6 @@ export default {
         },
         langDownload () {
             return this.$gettext('Download');
-        }
-    },
-    methods: {
-        playAudio (url) {
-            if (this.now_playing_url === url) {
-                this.$refs.player.stop();
-            } else {
-                this.$refs.player.play(url);
-            }
         }
     }
 };

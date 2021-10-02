@@ -13,30 +13,17 @@ export default {
         icon: {
             type: String,
             required: true
-        },
-        class: {
-            type: String,
-            default: '',
         }
     },
     computed: {
         iconClass () {
-            let classes = [this.class];
-
-            switch (this.type) {
-                case 'md':
-                default:
-                    classes.push('material-icons');
+            if (this.type === 'md') {
+                return ['material-icons'];
             }
-
-            return classes;
+            return null;
         },
         iconContent () {
-            switch (this.type) {
-                case 'md':
-                default:
-                    return this.icon;
-            }
+            return this.icon;
         }
     }
 };

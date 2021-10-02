@@ -4,7 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
+  mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
   entry: {
     Dashboard: '~/pages/Dashboard.js',
     AdminAuditLog: '~/pages/Admin/AuditLog.js',

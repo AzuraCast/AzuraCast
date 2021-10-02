@@ -24,6 +24,8 @@ USER node:node
 
 VOLUME /data/frontend/node_modules
 
+ENV NODE_ENV=production
+
 # Define default command.
 ENTRYPOINT ["fixuid"]
 CMD ["npm", "run", "dev"]

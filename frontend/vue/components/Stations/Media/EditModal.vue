@@ -24,7 +24,6 @@ import MediaFormAlbumArt from './Form/AlbumArt';
 import MediaFormCustomFields from './Form/CustomFields';
 import MediaFormAdvancedSettings from './Form/AdvancedSettings';
 import MediaFormPlaylists from './Form/Playlists';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import MediaFormWaveformEditor from './Form/WaveformEditor';
 import ModalForm from "~/components/Common/ModalForm";
 
@@ -37,8 +36,7 @@ export default {
         MediaFormAdvancedSettings,
         MediaFormCustomFields,
         MediaFormAlbumArt,
-        MediaFormBasicInfo,
-        InvisibleSubmitButton
+        MediaFormBasicInfo
     },
     mixins: [validationMixin],
     props: {

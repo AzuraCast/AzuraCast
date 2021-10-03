@@ -14,20 +14,19 @@
 import {required} from 'vuelidate/dist/validators.min.js';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 
 export default {
     name: 'EditModal',
     mixins: [BaseEditModal],
-    components: {FormBasicInfo, FormSchedule, InvisibleSubmitButton},
+    components: {FormBasicInfo, FormSchedule},
     props: {
         stationTimeZone: String
     },
     validations() {
         let validations = {
             form: {
-                'streamer_username': { required },
+                'streamer_username': {required},
                 'streamer_password': {},
                 'display_name': {},
                 'comments': {},

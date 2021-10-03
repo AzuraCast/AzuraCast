@@ -1,36 +1,23 @@
 <template>
-    <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-overlay variant="card" :show="loading">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
-            <b-form class="form" @submit.prevent="doSubmit">
-                <b-tabs content-class="mt-3">
-                    <mount-form-basic-info :form="$v.form"
-                                           :station-frontend-type="stationFrontendType"></mount-form-basic-info>
-                    <mount-form-auto-dj :form="$v.form"
-                                        :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
-                    <mount-form-intro v-model="$v.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
-                                      :new-intro-url="newIntroUrl"
-                                      :edit-intro-url="record.links.intro"></mount-form-intro>
-                    <mount-form-advanced v-if="enableAdvancedFeatures" :form="$v.form"
-                                         :station-frontend-type="stationFrontendType"></mount-form-advanced>
-                </b-tabs>
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+                @submit="doSubmit">
 
-                <invisible-submit-button/>
-            </b-form>
-        </b-overlay>
-        <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
-            </b-button>
-            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save">Save Changes</translate>
-            </b-button>
-        </template>
-    </b-modal>
+        <b-tabs content-class="mt-3">
+            <mount-form-basic-info :form="$v.form"
+                                   :station-frontend-type="stationFrontendType"></mount-form-basic-info>
+            <mount-form-auto-dj :form="$v.form"
+                                :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
+            <mount-form-intro v-model="$v.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
+                              :new-intro-url="newIntroUrl"
+                              :edit-intro-url="record.links.intro"></mount-form-intro>
+            <mount-form-advanced v-if="enableAdvancedFeatures" :form="$v.form"
+                                 :station-frontend-type="stationFrontendType"></mount-form-advanced>
+        </b-tabs>
+
+    </modal-form>
 </template>
 <script>
 import {required} from 'vuelidate/dist/validators.min.js';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 
 import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
@@ -42,7 +29,7 @@ import MountFormIntro from "./Form/Intro";
 export default {
     name: 'EditModal',
     mixins: [BaseEditModal],
-    components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo, InvisibleSubmitButton},
+    components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo},
     props: {
         stationFrontendType: String,
         newIntroUrl: String,

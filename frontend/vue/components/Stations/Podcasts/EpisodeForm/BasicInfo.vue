@@ -19,16 +19,13 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description">
+                <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description"
+                                      input-type="textarea">
                     <template #label>
                         <translate key="lang_form_edit_description">Description</translate>
                     </template>
                     <template #description>
                         <translate key="lang_form_edit_description_desc">The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.</translate>
-                    </template>
-                    <template #default="props">
-                        <b-form-textarea :id="props.id" v-model="props.field.$model"
-                                         :state="props.state"></b-form-textarea>
                     </template>
                 </b-wrapped-form-group>
 

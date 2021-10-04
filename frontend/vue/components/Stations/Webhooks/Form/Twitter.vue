@@ -1,125 +1,164 @@
 <template>
-    'api_info' => [
-    'use_grid' => true,
-    'legend' => __('Twitter Account Details'),
-    'legend_class' => 'd-none',
-    'description' => __(
-    'Steps for configuring a Twitter application:<br>
-    <ol type="1">
-        <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>.
-            Use this installation\'s base URL as the application URL.
-        </li>
-        <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
-        <li>At the bottom of the page, click "Create my access token".</li>
-    </ol>
-    <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields
-        below.</p>',
-    'https://developer.twitter.com/en/apps'
-    ),
+    <b-form-group>
+        <template #label>
+            <translate key="lang_twitter_instructions_hdr">Twitter Account Details</translate>
+        </template>
+        <template #description>
+            <p>
+                <translate key="lang_twitter_instructions_1">Steps for configuring a Twitter application:</translate>
+            </p>
+            <ul>
+                <li>
+                    <translate key="lang_twitter_instructions_1">Create a new app on the Twitter Applications site. Use this installation's base URL as the application URL.</translate>
+                    <br>
+                    <a href="https://developer.twitter.com/en/apps" target="_blank">
+                        <translate key="lang_twitter_instructions_url">Twitter Applications</translate>
+                    </a>
+                </li>
+                <li>
+                    <translate key="lang_twitter_instructions_2">In the newly created application, click the "Keys and Access Tokens" tab.</translate>
+                </li>
+                <li>
+                    <translate key="lang_twitter_instructions_3">At the bottom of the page, click "Create my access token".</translate>
+                </li>
+            </ul>
+            <p>
+                <translate key="lang_twitter_instructions_4">Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</translate>
+            </p>
+        </template>
 
-    'elements' => [
+        <b-row>
+            <b-wrapped-form-group class="col-md-6" id="form_config_consumer_key" :field="form.config.consumer_key">
+                <template #label>
+                    <translate key="lang_form_config_consumer_key">Consumer Key (API Key)</translate>
+                </template>
+            </b-wrapped-form-group>
 
-    'consumer_key' => [
-    'text',
-    [
-    'label' => __('Consumer Key (API Key)'),
-    'belongsTo' => 'config',
-    'required' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+            <b-wrapped-form-group class="col-md-6" id="form_config_consumer_secret"
+                                  :field="form.config.consumer_secret">
+                <template #label>
+                    <translate key="lang_form_config_consumer_secret">Consumer Secret (API Secret)</translate>
+                </template>
+            </b-wrapped-form-group>
 
-    'consumer_secret' => [
-    'text',
-    [
-    'label' => __('Consumer Secret (API Secret)'),
-    'belongsTo' => 'config',
-    'required' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+            <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
+                <template #label>
+                    <translate key="lang_form_config_token">Access Token</translate>
+                </template>
+            </b-wrapped-form-group>
 
-    'token' => [
-    'text',
-    [
-    'label' => __('Access Token'),
-    'belongsTo' => 'config',
-    'required' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+            <b-wrapped-form-group class="col-md-6" id="form_config_token_secret" :field="form.config.token_secret">
+                <template #label>
+                    <translate key="lang_form_config_token_secret">Access Token Secret</translate>
+                </template>
+            </b-wrapped-form-group>
 
-    'token_secret' => [
-    'text',
-    [
-    'label' => __('Access Token Secret'),
-    'belongsTo' => 'config',
-    'required' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+            <b-wrapped-form-group class="col-md-12" id="form_config_rate_limit" :field="form.config.rate_limit">
+                <template #label>
+                    <translate key="lang_form_config_rate_limit">Only Send One Tweet Every...</translate>
+                </template>
+                <template #default="props">
+                    <b-form-radio-group stacked :id="props.id" :options="rateLimitOptions"
+                                        v-model="props.field.$model">
+                    </b-form-radio-group>
+                </template>
+            </b-wrapped-form-group>
+        </b-row>
+    </b-form-group>
 
-    'rate_limit' => [
-    'select',
-    [
-    'label' => __('Only Send One Tweet Every...'),
-    'belongsTo' => 'config',
-    'default' => 0,
-    'choices' => [
-    0 => __('No Limit'),
-    15 => __('%d seconds', 15),
-    30 => __('%d seconds', 30),
-    60 => __('%d seconds', 60),
-    120 => __('%d minutes', 2),
-    300 => __('%d minutes', 5),
-    600 => __('%d minutes', 10),
-    900 => __('%d minutes', 15),
-    1800 => __('%d minutes', 30),
-    3600 => __('%d minutes', 60),
-    ],
-    'form_group_class' => 'col-sm-12',
-    ],
-    ],
+    <b-form-group>
+        <template #label>
+            <translate key="lang_customize_message_hdr">Customize Message</translate>
+        </template>
+        <template #description>
+            <ul>
+                <li>
+                    <translate key="lang_customize_message_desc_1">Variables are in the form of: </translate>
+                    <code v-pre>{{ var.name }}</code>
+                </li>
+                <li>
+                    <translate key="lang_customize_message_desc_2">All values in the NowPlaying API response are available for use. Any empty fields are ignored.</translate>
+                </li>
+                <li>
+                    <a href="https://azuracast.com/api" target="_blank">
+                        <translate key="lang_customize_response_link">NowPlaying API Response</translate>
+                    </a>
+                </li>
+            </ul>
+        </template>
 
-    ],
-    ],
-
-    'message_grp' => [
-    'use_grid' => true,
-    'elements' => [
-
-    'message' => [
-    'textarea',
-    [
-    'label' => __('Message Body'),
-    'belongsTo' => 'config',
-    'required' => true,
-    'default' => __(
-    'Now playing on %s: %s by %s! Tune in now: %s',
-    '{{ station.name }}',
-    '{{ now_playing.song.title }}',
-    '{{ now_playing.song.artist }}',
-    '{{ station.public_player_url }}'
-    ),
-    'description' => __(
-    'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now
-    Playing API response</a> are avaliable for use. Any empty fields are ignored.',
-    $router->named('api:nowplaying:index')
-    ),
-    'form_group_class' => 'col-sm-12',
-    ],
-    ],
-
-    ],
-    ],
+        <b-row>
+            <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message"
+                                  input-type="textarea">
+                <template #label>
+                    <translate key="lang_form_config_message">Message Body</translate>
+                </template>
+            </b-wrapped-form-group>
+        </b-row>
+    </b-form-group>
 </template>
 
 <script>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+
 export default {
     name: 'Twitter',
+    components: {BWrappedFormGroup},
     props: {
         title: String,
         form: Object
+    },
+    computed: {
+        langSeconds() {
+            return this.$gettext('%{ seconds } seconds');
+        },
+        langMinutes() {
+            return this.$gettext('%{ minutes } minutes');
+        },
+        rateLimitOptions() {
+            return [
+                {
+                    text: this.$gettext('No Limit'),
+                    value: 0,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 15}),
+                    value: 15,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 30}),
+                    value: 30,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 60}),
+                    value: 60,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 2}),
+                    value: 120,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 5}),
+                    value: 300,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 10}),
+                    value: 600,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 15}),
+                    value: 900,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 30}),
+                    value: 1800,
+                },
+                {
+                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 60}),
+                    value: 3600,
+                }
+            ];
+        }
     }
 }
 </script>

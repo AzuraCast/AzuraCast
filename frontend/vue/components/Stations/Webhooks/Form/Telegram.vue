@@ -1,108 +1,110 @@
 <template>
-    'api_info' => [
-    'use_grid' => true,
-    'elements' => [
+    <b-tab :title="title">
+        <b-form-group>
+            <b-row>
+                <b-wrapped-form-group class="col-md-6" id="form_config_bot_token" :field="form.config.bot_token">
+                    <template #label>
+                        <translate key="lang_form_config_bot_token">Bot Token</translate>
+                    </template>
+                    <template #description>
+                        <a href="https://core.telegram.org/bots#botfather" target="_blank">
+                            <translate key="lang_form_config_bot_token_desc">See the Telegram Documentation for more details.</translate>
+                        </a>
+                    </template>
+                </b-wrapped-form-group>
 
-    'bot_token' => [
-    'text',
-    [
-    'label' => __('Bot Token'),
-    'description' => __(
-    'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.',
-    'https://core.telegram.org/bots#botfather'
-    ),
-    'belongsTo' => 'config',
-    'required' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+                <b-wrapped-form-group class="col-md-6" id="form_config_chat_id" :field="form.config.chat_id">
+                    <template #label>
+                        <translate key="lang_form_config_chat_id">Chat ID</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_config_chat_id_desc">Unique identifier for the target chat or username of the target channel (in the format @channelusername).</translate>
+                    </template>
+                </b-wrapped-form-group>
 
-    'chat_id' => [
-    'text',
-    [
-    'label' => __('Chat ID'),
-    'description' => __(
-    'Unique identifier for the target chat or username of the target channel (in the format @channelusername).'
-    ),
-    'belongsTo' => 'config',
-    'required' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+                <b-wrapped-form-group class="col-md-6" id="form_config_api" :field="form.config.api">
+                    <template #label>
+                        <translate key="lang_form_config_api">Custom API Base URL</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_config_api_desc">Leave blank to use the default Telegram API URL (recommended).</translate>
+                    </template>
+                </b-wrapped-form-group>
+            </b-row>
+        </b-form-group>
 
-    'api' => [
-    'text',
-    [
-    'label' => __('Custom API Base URL'),
-    'label_class' => 'advanced',
-    'description' => __(
-    'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.'
-    ),
-    'belongsTo' => 'config',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
+        <b-form-group>
+            <template #label>
+                <translate key="lang_customize_message_hdr">Customize Message</translate>
+            </template>
+            <template #description>
+                <ul>
+                    <li>
+                        <translate key="lang_customize_message_desc_1">Variables are in the form of: </translate>
+                        <code v-pre>{{ var.name }}</code>
+                    </li>
+                    <li>
+                        <translate key="lang_customize_message_desc_2">All values in the NowPlaying API response are available for use. Any empty fields are ignored.</translate>
+                    </li>
+                    <li>
+                        <a href="https://azuracast.com/api" target="_blank">
+                            <translate key="lang_customize_response_link">NowPlaying API Response</translate>
+                        </a>
+                    </li>
+                </ul>
+            </template>
 
-    ],
-    ],
+            <b-row>
+                <b-wrapped-form-group class="col-md-12" id="form_config_text" :field="form.config.text"
+                                      input-type="textarea">
+                    <template #label>
+                        <translate key="lang_form_config_text">Main Message Content</translate>
+                    </template>
+                </b-wrapped-form-group>
 
-    'message' => [
-    'use_grid' => true,
-    'legend' => __('Customize Message'),
-    'legend_class' => 'd-none',
-    'description' => sprintf(
-    __(
-    'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now
-    Playing API response</a> are avaliable for use. Any empty fields are ignored.'
-    ),
-    $router->named('api:nowplaying:index')
-    ),
-
-    'elements' => [
-
-    'text' => [
-    'textarea',
-    [
-    'label' => __('Main Message Content'),
-    'belongsTo' => 'config',
-    'default' => sprintf(
-    __('Now playing on %s: %s by %s! Tune in now.'),
-    '{{ station.name }}',
-    '{{ now_playing.song.title }}',
-    '{{ now_playing.song.artist }}'
-    ),
-    'required' => true,
-    'form_group_class' => 'col-sm-12',
-    ],
-    ],
-
-    'parse_mode' => [
-    'radio',
-    [
-    'label' => __('Message parsing mode'),
-    'description' => __(
-    'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.',
-    'https://core.telegram.org/bots/api#sendmessage'
-    ),
-    'default' => 'Markdown',
-    'options' => [
-    'Markdown' => 'Markdown',
-    'HTML' => 'HTML',
-    ],
-    'form_group_class' => 'col-sm-12',
-    ],
-    ],
-
-    ],
-    ],
+                <b-wrapped-form-group class="col-md-12" id="form_config_parse_mode" :field="form.config.parse_mode">
+                    <template #label>
+                        <translate key="lang_form_config_parse_mode">Message parsing mode</translate>
+                    </template>
+                    <template #description>
+                        <a href="https://core.telegram.org/bots/api#sendmessage" target="_blank">
+                            <translate key="lang_form_config_parse_mode_desc">See the Telegram documentation for more details.</translate>
+                        </a>
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="parseModeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+            </b-row>
+        </b-form-group>
+    </b-tab>
 </template>
 
 <script>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+
 export default {
     name: 'Telegram',
+    components: {BWrappedFormGroup},
     props: {
         title: String,
         form: Object
+    },
+    computed: {
+        parseModeOptions() {
+            return [
+                {
+                    text: this.$gettext('Markdown'),
+                    value: 'Markdown',
+                },
+                {
+                    text: this.$gettext('HTML'),
+                    value: 'HTML',
+                }
+            ];
+        }
     }
 }
 </script>

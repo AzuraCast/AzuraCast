@@ -21,7 +21,7 @@
                 <ul>
                     <li>
                         <translate key="lang_customize_message_desc_1">Variables are in the form of: </translate>
-                        <code>{{ var.name }}</code>
+                        <code v-pre>{{ var.name }}</code>
                     </li>
                     <li>
                         <translate key="lang_customize_message_desc_2">All values in the NowPlaying API response are available for use. Any empty fields are ignored.</translate>

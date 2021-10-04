@@ -34,5 +34,9 @@
 <script>
 export default {
     name: 'Tunein',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

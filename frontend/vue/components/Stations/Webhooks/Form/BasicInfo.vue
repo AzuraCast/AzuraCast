@@ -7,7 +7,7 @@
                         <translate key="lang_form_edit_name">Web Hook Name</translate>
                     </template>
                     <template #description>
-                        <translate key="lang-form_edit_name_desc">Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.</translate>
+                        <translate key="lang_form_edit_name_desc">Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.</translate>
                     </template>
                 </b-wrapped-form-group>
 
@@ -17,8 +17,11 @@
                     <template #label>
                         <translate key="lang_form_triggers">Web Hook Triggers</translate>
                     </template>
+                    <template #description>
+                        <translate key="lang_form_triggers_desc">This web hook will only run when the selected event(s) occur on this specific station.</translate>
+                    </template>
                     <template #default="props">
-                        <b-form-checkbox-group :id="props.id" :options="globalPermissionOptions"
+                        <b-form-checkbox-group :id="props.id" :options="triggerOptions"
                                                v-model="props.field.$model">
                         </b-form-checkbox-group>
                     </template>

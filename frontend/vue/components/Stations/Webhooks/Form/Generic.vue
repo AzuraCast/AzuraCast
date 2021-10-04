@@ -61,5 +61,9 @@
 <script>
 export default {
     name: 'Generic',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

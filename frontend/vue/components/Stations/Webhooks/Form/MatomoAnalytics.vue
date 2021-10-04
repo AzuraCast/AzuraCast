@@ -34,6 +34,10 @@
 
 <script>
 export default {
-    name: 'MatomoAnalytics'
+    name: 'MatomoAnalytics',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

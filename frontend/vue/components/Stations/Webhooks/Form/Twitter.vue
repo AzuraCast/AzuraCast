@@ -116,6 +116,10 @@
 
 <script>
 export default {
-    name: 'Twitter'
+    name: 'Twitter',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

@@ -44,5 +44,9 @@
 <script>
 export default {
     name: 'Email',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

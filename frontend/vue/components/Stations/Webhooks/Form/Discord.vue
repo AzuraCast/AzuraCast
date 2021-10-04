@@ -106,6 +106,9 @@
 <script>
 export default {
     name: 'Discord',
-
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

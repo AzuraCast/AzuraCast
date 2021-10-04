@@ -14,5 +14,9 @@
 <script>
 export default {
     name: 'GoogleAnalytics',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

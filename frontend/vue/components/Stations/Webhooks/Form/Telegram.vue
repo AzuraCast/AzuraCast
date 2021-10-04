@@ -100,5 +100,9 @@
 <script>
 export default {
     name: 'Telegram',
+    props: {
+        title: String,
+        form: Object
+    }
 }
 </script>

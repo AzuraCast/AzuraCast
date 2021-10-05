@@ -26,22 +26,22 @@
                 <tr>
                     <td key="lang_frontend_admin_pw" v-translate>Administrator Password</td>
                     <td>
-                        <span id="frontend_admin_pw">{{ frontendAdminPassword }}</span>
-                        <copy-to-clipboard-button target="#frontend_admin_pw" hide-text></copy-to-clipboard-button>
+                        {{ frontendAdminPassword }}
+                        <copy-to-clipboard-button :text="frontendAdminPassword" hide-text></copy-to-clipboard-button>
                     </td>
                 </tr>
                 <tr>
                     <td key="lang_frontend_source_pw" v-translate>Source Password</td>
                     <td>
-                        <span id="frontend_source_pw">{{ frontendSourcePassword }}</span>
-                        <copy-to-clipboard-button target="#frontend_source_pw" hide-text></copy-to-clipboard-button>
+                        {{ frontendSourcePassword }}
+                        <copy-to-clipboard-button :text="frontendSourcePassword" hide-text></copy-to-clipboard-button>
                     </td>
                 </tr>
                 <tr v-if="isIcecast">
                     <td key="lang_frontend_relay_pw" v-translate>Relay Password</td>
                     <td>
-                        <span id="frontend_relay_pw">{{ frontendRelayPassword }}</span>
-                        <copy-to-clipboard-button target="#frontend_relay_pw" hide-text></copy-to-clipboard-button>
+                        {{ frontendRelayPassword }}
+                        <copy-to-clipboard-button :text="frontendRelayPassword" hide-text></copy-to-clipboard-button>
                     </td>
                 </tr>
                 </tbody>

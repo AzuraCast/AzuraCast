@@ -40,8 +40,9 @@
                         <h2 class="card-title" v-translate key="lang_embed_code">Embed Code</h2>
                     </div>
                     <b-card-body>
-                        <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 100px;">{{ embedCode }}</textarea>
-                        <copy-to-clipboard-button target="#request_embed_url"></copy-to-clipboard-button>
+                        <textarea class="full-width form-control text-preformatted" spellcheck="false"
+                                  style="height: 100px;">{{ embedCode }}</textarea>
+                        <copy-to-clipboard-button :text="embedCode"></copy-to-clipboard-button>
                     </b-card-body>
                 </b-card>
             </b-col>

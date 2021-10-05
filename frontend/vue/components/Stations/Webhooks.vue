@@ -33,18 +33,12 @@
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                             <translate key="lang_btn_edit">Edit</translate>
                         </b-button>
-                        <!-- TODO
-                        <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success')?>" href="<?=$router->fromHere('stations:webhooks:toggle',
-                        [
-                            'id' => $row->getId(),
-                            'csrf' => $csrf,
-                        ])?>"><?=($row->isEnabled() ? __('Disable') : __('Enable'))?></a>
-                        <a class="btn btn-sm btn-default" href="<?=$router->fromHere('stations:webhooks:test', [
-                            'id' => $row->getId(),
-                            'csrf' => $csrf,
-                        ])?>"
-                           title="<?=__('Trigger the web hook manually and view the raw response.')?>"><?=__('Test')?></a>
-                        -->
+                        <b-button size="sm" variant="warning" @click.prevent="doToggle(row.item.links.toggle)">
+                            {{ langToggleButton(row.item) }}
+                        </b-button>
+                        <b-button size="sm" variant="default" @click.prevent="doTest(row.item.links.test)">
+                            <translate key="lang_btn_test">Test</translate>
+                        </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
                             <translate key="lang_btn_delete">Delete</translate>
                         </b-button>
@@ -53,6 +47,7 @@
             </data-table>
         </b-card>
 
+        <streaming-log-modal ref="logModal"></streaming-log-modal>
         <edit-modal ref="editModal" :create-url="listUrl" @relist="relist"></edit-modal>
     </div>
 </template>
@@ -64,10 +59,11 @@ import Icon from '~/components/Common/Icon';
 import confirmDelete from "~/functions/confirmDelete";
 import InfoCard from "~/components/Common/InfoCard";
 import _ from 'lodash';
+import StreamingLogModal from "~/components/Common/StreamingLogModal";
 
 export default {
     name: 'StationWebhooks',
-    components: {InfoCard, Icon, EditModal, DataTable},
+    components: {StreamingLogModal, InfoCard, Icon, EditModal, DataTable},
     props: {
         listUrl: String,
         webhookTypes: Object,
@@ -83,6 +79,11 @@ export default {
         };
     },
     methods: {
+        langToggleButton(record) {
+            return (record.is_enabled)
+                ? this.$gettext('Disable')
+                : this.$gettext('Enable');
+        },
         getWebhookName(key) {
             return _.get(this.webhookTypes, [key, 'name'], '');
         },
@@ -99,6 +100,22 @@ export default {
         },
         doEdit(url) {
             this.$refs.editModal.edit(url);
+        },
+        doToggle(url) {
+            this.$wrapWithLoading(
+                this.axios.put(url)
+            ).then((resp) => {
+                this.$notifySuccess(resp.data.message);
+                this.relist();
+            });
+        },
+        doTest(url) {
+            this.$wrapWithLoading(
+                this.axios.put(url)
+            ).then((resp) => {
+                resp.data.this.$notifySuccess(resp.data.links.log);
+                this.relist();
+            });
         },
         doDelete(url) {
             confirmDelete({

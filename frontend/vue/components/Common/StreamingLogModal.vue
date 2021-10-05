@@ -1,6 +1,6 @@
 <template>
     <b-modal id="logs_modal" ref="modal" :title="langLogView">
-        <textarea class="form-control log-viewer" spellcheck="false" readonly>{{ logs }}</textarea>
+        <streaming-log-view ref="logView" :log-url="logUrl"></streaming-log-view>
 
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
@@ -15,33 +15,32 @@
 
 <script>
 import '~/vendor/clipboard.js';
+import StreamingLogView from "~/components/Common/StreamingLogView";
 
 export default {
-    name: 'QueueLogsModal',
-    data () {
+    name: 'StreamingLogModal',
+    components: {StreamingLogView},
+    data() {
         return {
-            logs: 'Loading...',
+            logUrl: null,
         };
     },
     computed: {
-        langLogView () {
+        langLogView() {
             return this.$gettext('Log View');
         }
     },
     methods: {
-        show(logs) {
-            let logDisplay = [];
-            logs.forEach(function (log) {
-                logDisplay.push(log.formatted);
-            });
-
-            this.logs = logDisplay.join('');
+        show(logUrl) {
+            this.logUrl = logUrl;
             this.$refs.modal.show();
         },
         doCopy() {
-            this.$copyText(this.logs);
+            this.$copyText(this.$refs.logView.getContents());
         },
         close() {
+            this.logUrl = null;
+            this.log = null;
             this.$refs.modal.hide();
         }
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 
 /**
@@ -98,4 +99,36 @@ class WebhooksController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        if (!($record instanceof Entity\StationWebhook)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $return = $this->toArray($record);
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
+        $return['links'] = [
+            'self' => (string)$router->fromHere(
+                route_name:   $this->resourceRouteName,
+                route_params: ['id' => $record->getIdRequired()],
+                absolute:     !$isInternal
+            ),
+            'toggle' => (string)$router->fromHere(
+                route_name:   'api:stations:webhook:toggle',
+                route_params: ['id' => $record->getIdRequired()],
+                absolute:     !$isInternal
+            ),
+            'test' => (string)$router->fromHere(
+                route_name:   'api:stations:webhook:test',
+                route_params: ['id' => $record->getIdRequired()],
+                absolute:     !$isInternal
+            ),
+        ];
+
+        return $return;
+    }
 }

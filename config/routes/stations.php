@@ -138,36 +138,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:streamers:index')
                 ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
-            $group->group(
-                '/webhooks',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Stations\WebhooksController::class . ':indexAction')
-                        ->setName('stations:webhooks:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Stations\WebhooksController::class . ':editAction'
-                    )
-                        ->setName('stations:webhooks:edit');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/add[/{type}]',
-                        Controller\Stations\WebhooksController::class . ':addAction'
-                    )
-                        ->setName('stations:webhooks:add');
-
-                    $group->get('/toggle/{id}/{csrf}', Controller\Stations\WebhooksController::class . ':toggleAction')
-                        ->setName('stations:webhooks:toggle');
-
-                    $group->get('/test/{id}/{csrf}', Controller\Stations\WebhooksController::class . ':testAction')
-                        ->setName('stations:webhooks:test');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Stations\WebhooksController::class . ':deleteAction')
-                        ->setName('stations:webhooks:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::STATION_WEB_HOOKS, true));
+            $group->get('/webhooks', Controller\Stations\WebhooksAction::class)
+                ->setName('stations:webhooks:index')
+                ->add(new Middleware\Permissions(Acl::STATION_WEB_HOOKS, true));
         }
     )
         ->add(Middleware\Module\Stations::class)

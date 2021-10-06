@@ -48,7 +48,8 @@
         </b-card>
 
         <streaming-log-modal ref="logModal"></streaming-log-modal>
-        <edit-modal ref="editModal" :create-url="listUrl" @relist="relist"></edit-modal>
+        <edit-modal ref="editModal" :create-url="listUrl" :webhook-types="webhookTypes"
+                    :webhook-triggers="webhookTriggers" @relist="relist"></edit-modal>
     </div>
 </template>
 

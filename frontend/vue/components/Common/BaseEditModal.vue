@@ -98,13 +98,13 @@ export default {
             });
         },
         close () {
+            this.$v.form.$reset();
+            this.$refs.modal.hide();
+
             this.loading = false;
             this.error = null;
             this.editUrl = null;
             this.resetForm();
-
-            this.$v.form.$reset();
-            this.$refs.modal.hide();
         }
     }
 };

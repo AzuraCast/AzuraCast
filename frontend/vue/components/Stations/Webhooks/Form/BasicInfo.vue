@@ -22,7 +22,7 @@
                     </template>
                     <template #default="props">
                         <b-form-checkbox-group :id="props.id" :options="triggerOptions"
-                                               v-model="props.field.$model">
+                                               v-model="props.field.$model" stacked>
                         </b-form-checkbox-group>
                     </template>
                 </b-wrapped-form-group>

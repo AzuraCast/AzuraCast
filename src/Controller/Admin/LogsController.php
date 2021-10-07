@@ -101,6 +101,6 @@ class LogsController extends AbstractLogViewerController
         }
 
         $logArea = $log_areas[$log];
-        return $this->view($request, $response, $logArea['path'], $logArea['tail'] ?? true);
+        return $this->streamLogToResponse($request, $response, $logArea['path'], $logArea['tail'] ?? true);
     }
 }

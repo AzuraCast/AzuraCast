@@ -65,10 +65,13 @@ export default {
                 this.close();
             });
         },
-        populateForm (data) {
+        populateForm(data) {
             this.form = data;
         },
-        buildSubmitRequest () {
+        getSubmittableFormData() {
+            return this.form;
+        },
+        buildSubmitRequest() {
             return {
                 method: (this.isEditMode)
                     ? 'PUT'
@@ -76,7 +79,7 @@ export default {
                 url: (this.isEditMode)
                     ? this.editUrl
                     : this.createUrl,
-                data: this.form
+                data: this.getSubmittableFormData()
             };
         },
         doSubmit () {
@@ -97,15 +100,17 @@ export default {
                 this.error = error.response.data.message;
             });
         },
-        close () {
+        close() {
+            this.$refs.modal.hide();
+        },
+        clearContents() {
+            this.$v.form.$reset();
+
             this.loading = false;
             this.error = null;
             this.editUrl = null;
             this.resetForm();
-
-            this.$v.form.$reset();
-            this.$refs.modal.hide();
-        }
+        },
     }
 };
 </script>

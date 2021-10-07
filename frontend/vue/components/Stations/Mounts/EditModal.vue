@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit">
+                @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3">
             <mount-form-basic-info :form="$v.form"

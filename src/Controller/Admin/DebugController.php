@@ -90,7 +90,7 @@ class DebugController extends AbstractLogViewerController
     ): ResponseInterface {
         $logPath = File::validateTempPath($path);
 
-        return $this->view($request, $response, $logPath, true);
+        return $this->streamLogToResponse($request, $response, $logPath, true);
     }
 
     public function nextsongAction(

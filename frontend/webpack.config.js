@@ -31,7 +31,8 @@ module.exports = {
     StationsReportsRequests: '~/pages/Stations/Reports/Requests.js',
     StationsReportsOverview: '~/pages/Stations/Reports/Overview.js',
     StationsReportsPerformance: '~/pages/Stations/Reports/Performance.js',
-    StationsReportsTimeline: '~/pages/Stations/Reports/Timeline.js'
+    StationsReportsTimeline: '~/pages/Stations/Reports/Timeline.js',
+    StationsWebhooks: '~/pages/Stations/Webhooks.js'
   },
   resolve: {
     enforceExtension: false,

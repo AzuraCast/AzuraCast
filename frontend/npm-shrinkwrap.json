@@ -63,6 +63,7 @@
                 "sweetalert2": "^10.16.6",
                 "vue": "^2.6.14",
                 "vue-axios": "^3.3.6",
+                "vue-clipboard2": "^0.3.3",
                 "vue-gettext": "^2.1.12",
                 "vue-loader": "^15.9.8",
                 "vue-template-compiler": "^2.6.14",
@@ -9617,6 +9618,14 @@
                 "vue": "^ 3.0.0 || ^ 2.0.0"
             }
         },
+        "node_modules/vue-clipboard2": {
+            "version": "0.3.3",
+            "resolved": "https://registry.npmjs.org/vue-clipboard2/-/vue-clipboard2-0.3.3.tgz",
+            "integrity": "sha512-aNWXIL2DKgJyY/1OOeITwAQz1fHaCIGvUFHf9h8UcoQBG5a74MkdhS/xqoYe7DNZdQmZRL+TAdIbtUs9OyVjbw==",
+            "dependencies": {
+                "clipboard": "^2.0.0"
+            }
+        },
         "node_modules/vue-functional-data-merge": {
             "version": "3.1.0",
             "resolved": "https://registry.npmjs.org/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz",
@@ -17451,6 +17460,14 @@
             "integrity": "sha512-CnAnbyVqD4b1/IBz9lJQDOnBFX+AZLi0ZsPGy7i9Vo5z4QnquiN2FhCX1HDFGd5RNVwAhZrNY+PycRa6jrUmFw==",
             "requires": {
                 "merge-stream": "^2.0.0"
+            }
+        },
+        "vue-clipboard2": {
+            "version": "0.3.3",
+            "resolved": "https://registry.npmjs.org/vue-clipboard2/-/vue-clipboard2-0.3.3.tgz",
+            "integrity": "sha512-aNWXIL2DKgJyY/1OOeITwAQz1fHaCIGvUFHf9h8UcoQBG5a74MkdhS/xqoYe7DNZdQmZRL+TAdIbtUs9OyVjbw==",
+            "requires": {
+                "clipboard": "^2.0.0"
             }
         },
         "vue-functional-data-merge": {

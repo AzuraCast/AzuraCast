@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit">
+                @submit="doSubmit" @hidden="clearContents">
 
         <admin-custom-fields-form :form="$v.form" :auto-assign-types="autoAssignTypes">
         </admin-custom-fields-form>

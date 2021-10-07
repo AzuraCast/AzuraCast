@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit">
+                @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3">
             <admin-permissions-global-form :form="$v.form" :global-permissions="globalPermissions">
@@ -74,7 +74,7 @@ export default {
                 };
             });
         },
-        buildSubmitRequest () {
+        getSubmittableFormData() {
             let form = {
                 name: this.form.name,
                 permissions: {
@@ -87,15 +87,7 @@ export default {
                 form.permissions.station[row.station_id] = row.permissions;
             });
 
-            return {
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: form
-            };
+            return form;
         },
     }
 };

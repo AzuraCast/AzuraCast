@@ -667,6 +667,26 @@ return static function (RouteCollectorProxy $app) {
                     $group->post('/restart', Controller\Api\Stations\ServicesController::class . ':restartAction')
                         ->setName('api:stations:restart')
                         ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+
+                    $group->group(
+                        '/webhook/{id}',
+                        function (RouteCollectorProxy $group) {
+                            $group->put(
+                                '/toggle',
+                                Controller\Api\Stations\Webhooks\ToggleAction::class
+                            )->setName('api:stations:webhook:toggle');
+
+                            $group->put(
+                                '/test',
+                                Controller\Api\Stations\Webhooks\TestAction::class
+                            )->setName('api:stations:webhook:test');
+
+                            $group->get(
+                                '/test-log/{path}',
+                                Controller\Api\Stations\Webhooks\TestLogAction::class
+                            )->setName('api:stations:webhook:test-log');
+                        }
+                    )->add(new Middleware\Permissions(Acl::STATION_WEB_HOOKS, true));
                 }
             )->add(Middleware\RequireStation::class)
                 ->add(Middleware\GetStation::class);

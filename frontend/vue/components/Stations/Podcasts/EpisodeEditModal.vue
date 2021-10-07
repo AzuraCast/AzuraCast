@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit">
+                @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3">
             <episode-form-basic-info :form="$v.form"></episode-form-basic-info>
@@ -122,7 +122,7 @@ export default {
                 'explicit': d.explicit
             };
         },
-        buildSubmitRequest () {
+        getSubmittableFormData() {
             let modifiedForm = this.form;
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 let publishDateTimeString = modifiedForm.publish_date + ' ' + modifiedForm.publish_time;
@@ -131,16 +131,8 @@ export default {
                 modifiedForm.publish_at = publishDateTime.toSeconds();
             }
 
-            return {
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: this.form
-            };
-        }
+            return modifiedForm;
+        },
     }
 };
 </script>

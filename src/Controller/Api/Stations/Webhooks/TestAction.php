@@ -29,8 +29,6 @@ class TestAction extends AbstractWebhooksAction
 
         $messageBus->dispatch($message);
 
-        $request->getSession()->set('webhook_test_' . $id . '_log_path', $tempFile);
-
         $router = $request->getRouter();
         return $response->withJson(
             [

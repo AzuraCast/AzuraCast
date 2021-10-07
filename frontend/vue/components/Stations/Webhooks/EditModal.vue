@@ -1,9 +1,9 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit">
+                @submit="doSubmit" @hidden="clearContents">
 
         <type-select v-if="!type" :webhook-types="webhookTypes" @select="setType"></type-select>
-        <b-tabs v-else content-class="mt-3">
+        <b-tabs v-else lazy content-class="mt-3">
             <basic-info :trigger-options="triggerOptions" :form="$v.form"></basic-info>
             <component :is="formComponent" :title="typeTitle" :form="$v.form"></component>
         </b-tabs>
@@ -233,31 +233,22 @@ export default {
     methods: {
         resetForm() {
             this.type = null;
-            this.$nextTick(() => {
-                this.form = {
-                    name: null,
-                    triggers: [],
-                    config: {}
-                };
-            });
+            this.form = {
+                name: null,
+                triggers: [],
+                config: {}
+            };
         },
         setType(type) {
             this.type = type;
             this.form.config = _.get(this.webhookConfig, [type, 'defaultConfig'], {});
         },
-        buildSubmitRequest() {
-            return {
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: {
-                    type: this.type,
-                    ...this.form
-                }
-            };
+        getSubmittableFormData() {
+            let formData = this.form;
+            if (!this.isEditMode) {
+                formData.type = this.type;
+            }
+            return formData;
         },
         populateForm(d) {
             this.type = d.type;

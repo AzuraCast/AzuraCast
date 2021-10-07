@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="logs_modal" ref="modal" :title="langLogView">
+    <b-modal id="logs_modal" ref="modal" :title="langLogView" @hidden="clearContents">
         <streaming-log-view ref="logView" :log-url="logUrl"></streaming-log-view>
 
         <template #modal-footer>
@@ -39,9 +39,11 @@ export default {
             this.$copyText(this.$refs.logView.getContents());
         },
         close() {
+            this.$refs.modal.hide();
+        },
+        clearContents() {
             this.logUrl = null;
             this.log = null;
-            this.$refs.modal.hide();
         }
     }
 };

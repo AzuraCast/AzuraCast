@@ -106,7 +106,7 @@ class Dispatcher
     ): TestHandler {
         $station = $webhook->getStation();
 
-        $handler = new TestHandler(LogLevel::DEBUG, false);
+        $handler = new TestHandler(LogLevel::DEBUG, true);
         $this->logger->pushHandler($handler);
 
         $np = $this->nowPlayingApiGen->currentOrEmpty($station);

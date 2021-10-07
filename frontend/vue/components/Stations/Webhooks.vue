@@ -21,19 +21,23 @@
                 <template #cell(name)="row">
                     <big>{{ row.item.name }}</big><br>
                     {{ getWebhookName(row.item.type) }}
-                    <span v-if="!row.item.is_enabled" class="label label-danger">
+                    <b-badge v-if="!row.item.is_enabled" variant="danger">
                         <translate key="lang_webhook_disabled">Disabled</translate>
-                    </span>
+                    </b-badge>
                 </template>
                 <template #cell(triggers)="row">
-                    {{ getTriggerNames(row.item.triggers) }}
+                    <div v-for="(name, index) in getTriggerNames(row.item.triggers)" :key="row.item.id+'_'+index"
+                         class="small">
+                        {{ name }}
+                    </div>
                 </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                             <translate key="lang_btn_edit">Edit</translate>
                         </b-button>
-                        <b-button size="sm" variant="warning" @click.prevent="doToggle(row.item.links.toggle)">
+                        <b-button size="sm" :variant="getToggleVariant(row.item)"
+                                  @click.prevent="doToggle(row.item.links.toggle)">
                             {{ langToggleButton(row.item) }}
                         </b-button>
                         <b-button size="sm" variant="default" @click.prevent="doTest(row.item.links.test)">
@@ -85,13 +89,18 @@ export default {
                 ? this.$gettext('Disable')
                 : this.$gettext('Enable');
         },
+        getToggleVariant(record) {
+            return (record.is_enabled)
+                ? 'warning'
+                : 'success';
+        },
         getWebhookName(key) {
             return _.get(this.webhookTypes, [key, 'name'], '');
         },
         getTriggerNames(triggers) {
             return _.map(triggers, (trigger) => {
                 return _.get(this.webhookTriggers, trigger, '');
-            }).join(', ');
+            });
         },
         relist() {
             this.$refs.datatable.refresh();
@@ -114,8 +123,7 @@ export default {
             this.$wrapWithLoading(
                 this.axios.put(url)
             ).then((resp) => {
-                resp.data.this.$notifySuccess(resp.data.links.log);
-                this.relist();
+                this.$refs.logModal.show(resp.data.links.log);
             });
         },
         doDelete(url) {

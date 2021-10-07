@@ -30,21 +30,32 @@ export default {
             method: 'GET',
             url: this.logUrl
         }).then((resp) => {
-            this.logs = resp.data.contents + "\n";
+            if (resp.data.contents !== '') {
+                this.logs = resp.data.contents + "\n";
+            } else {
+                this.logs = '';
+            }
+
             this.currentLogPosition = resp.data.position;
 
             if (!resp.data.eof) {
-                this.timeoutUpdateLog = setTimeout(this.updateLogs, 15000);
+                this.timeoutUpdateLog = setTimeout(this.updateLogs, 2500);
             }
         }).finally(() => {
             this.loading = false;
         });
     },
+    beforeDestroy() {
+        clearTimeout(this.timeoutUpdateLog);
+    },
     methods: {
         updateLogs() {
             this.axios({
                 method: 'GET',
-                url: this.logUrl
+                url: this.logUrl,
+                params: {
+                    position: this.currentLogPosition
+                }
             }).then((resp) => {
                 if (resp.data.contents !== '') {
                     this.logs = this.logs + resp.data.contents + "\n";
@@ -52,7 +63,7 @@ export default {
                 this.currentLogPosition = resp.data.position;
 
                 if (!resp.data.eof) {
-                    this.timeoutUpdateLog = setTimeout(this.updateLogs, 15000);
+                    this.timeoutUpdateLog = setTimeout(this.updateLogs, 2500);
                 }
             });
         },

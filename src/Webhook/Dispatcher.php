@@ -85,7 +85,9 @@ class Dispatcher
             }
 
             $webhook = $this->em->find(Entity\StationWebhook::class, $message->webhookId);
-            $this->testDispatch($webhook);
+            if ($webhook instanceof Entity\StationWebhook) {
+                $this->testDispatch($webhook);
+            }
 
             if (null !== $outputPath) {
                 $this->logger->popHandler();

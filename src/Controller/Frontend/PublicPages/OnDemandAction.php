@@ -49,13 +49,31 @@ class OnDemandAction
             ];
         }
 
+        $router = $request->getRouter();
+
+        $pageClass = 'ondemand station-' . $station->getShortName();
+        if ($embed) {
+            $pageClass .= ' embed';
+        }
+
         return $request->getView()->renderToResponse(
             $response,
-            'frontend/public/ondemand',
+            'system/vue',
             [
-                'embed' => $embed,
-                'station' => $station,
-                'custom_fields' => $customFields,
+                'title' => __('On-Demand Media') . ' - ' . $station->getName(),
+                'id' => 'station-on-demand',
+                'layout' => 'minimal',
+                'layoutParams' => [
+                    'page_class' => $pageClass,
+                    'hide_footer' => true,
+                ],
+                'component' => 'Vue_PublicOnDemand',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:ondemand:list'),
+                    'showDownloadButton' => $station->getEnableOnDemandDownload(),
+                    'customFields' => $customFields,
+                    'stationName' => $station->getName(),
+                ],
             ]
         );
     }

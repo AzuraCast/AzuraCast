@@ -26,7 +26,6 @@ class PlaylistsAction
 
         $settings = $settingsRepo->readSettings();
         $router = $request->getRouter();
-        $customization = $request->getCustomization();
 
         return $request->getView()->renderToResponse(
             $response,
@@ -38,7 +37,6 @@ class PlaylistsAction
                 'props' => [
                     'listUrl' => (string)$router->fromHere('api:stations:playlists'),
                     'scheduleUrl' => (string)$router->fromHere('api:stations:playlists:schedule'),
-                    'locale' => substr($customization->getLocale()->getLocale(), 0, 2),
                     'filesUrl' => (string)$router->fromHere('stations:files:index'),
                     'stationTimeZone' => $station->getTimezone(),
                     'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),

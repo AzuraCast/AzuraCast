@@ -11,10 +11,13 @@
 
 $this->layout(
     $layout ?? 'main',
-    [
-        'title' => $title,
-        'manual' => true,
-    ]
+    array_merge(
+        [
+            'title' => $title,
+            'manual' => true,
+        ],
+        $layoutParams ?? []
+    )
 );
 
 $id ??= $component;

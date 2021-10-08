@@ -50,17 +50,28 @@ class StreamersAction
         }
 
         $settings = $settingsRepo->readSettings();
-        $be_settings = $station->getBackendConfig();
+        $backendConfig = $station->getBackendConfig();
 
-        return $view->renderToResponse(
+        $router = $request->getRouter();
+
+        return $request->getView()->renderToResponse(
             $response,
-            'stations/streamers/index',
+            'system/vue',
             [
-                'server_url' => $settings->getBaseUrl(),
-                'stream_port' => $backend->getStreamPort($station),
-                'ip' => $acCentral->getIp(),
-                'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
-                'station_tz' => $station->getTimezone(),
+                'title' => __('Streamer/DJ Accounts'),
+                'id' => 'station-streamers',
+                'component' => 'Vue_StationsStreamers',
+                'props' => [
+                    'listUrl' => (string)$router->fromHere('api:stations:streamers'),
+                    'scheduleUrl' => (string)$router->fromHere('api:stations:streamers:schedule'),
+                    'stationTimeZone' => $station->getTimezone(),
+                    'connectionInfo' => [
+                        'serverUrl' => $settings->getBaseUrl(),
+                        'streamPort' => $backend->getStreamPort($station),
+                        'ip' => $acCentral->getIp(),
+                        'djMountPoint' => $backendConfig->getDjMountPoint(),
+                    ],
+                ],
             ]
         );
     }

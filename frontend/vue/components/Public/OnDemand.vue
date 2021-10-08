@@ -1,49 +1,53 @@
 <template>
-    <div class="card" style="height: 100%;">
-        <div class="card-header bg-primary-dark">
-            <div class="d-flex align-items-center">
-                <div class="flex-shrink">
-                    <h2 class="card-title py-2">
-                        <template v-if="stationName">
-                            {{ stationName }}
+    <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
+        <div class="container pt-5 pb-5 h-100" style="flex: 1;">
+            <div class="card" style="height: 100%;">
+                <div class="card-header bg-primary-dark">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink">
+                            <h2 class="card-title py-2">
+                                <template v-if="stationName">
+                                    {{ stationName }}
+                                </template>
+                                <template v-else>
+                                    <translate key="lang_title">On-Demand Media</translate>
+                                </template>
+                            </h2>
+                        </div>
+                        <div class="flex-fill text-right">
+                            <inline-player ref="player"></inline-player>
+                        </div>
+                    </div>
+                </div>
+
+                <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
+                            :fields="fields" :api-url="listUrl">
+                    <template #cell(download_url)="row">
+                        <play-button class="file-icon" icon-class="outlined" :url="row.item.download_url"
+                                     :is-stream="false"></play-button>
+                        <template v-if="showDownloadButton">
+                            &nbsp;
+                            <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
+                                <icon icon="cloud_download"></icon>
+                            </a>
                         </template>
+                    </template>
+                    <template #cell(media_art)="row">
+                        <a :href="row.item.media_art" class="album-art" target="_blank"
+                           data-fancybox="gallery">
+                            <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
+                        </a>
+                    </template>
+                    <template #cell(size)="row">
+                        <template v-if="!row.item.size">&nbsp;</template>
                         <template v-else>
-                            <translate key="lang_title">On-Demand Media</translate>
+                            {{ formatFileSize(row.item.size) }}
                         </template>
-                    </h2>
-                </div>
-                <div class="flex-fill text-right">
-                    <inline-player ref="player"></inline-player>
-                </div>
+                    </template>
+                </data-table>
             </div>
         </div>
-
-        <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
-                    :fields="fields" :api-url="listUrl">
-            <template #cell(download_url)="row">
-                <play-button class="file-icon" icon-class="outlined" :url="row.item.download_url"
-                             :is-stream="false"></play-button>
-                <template v-if="showDownloadButton">
-                    &nbsp;
-                    <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
-                        <icon icon="cloud_download"></icon>
-                    </a>
-                </template>
-            </template>
-            <template #cell(media_art)="row">
-                <a :href="row.item.media_art" class="album-art" target="_blank"
-                   data-fancybox="gallery">
-                    <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
-                </a>
-            </template>
-            <template #cell(size)="row">
-                <template v-if="!row.item.size">&nbsp;</template>
-                <template v-else>
-                    {{ formatFileSize(row.item.size) }}
-                </template>
-            </template>
-        </data-table>
-    </div>
+    </section>
 </template>
 
 <style lang="scss">

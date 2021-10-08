@@ -14,12 +14,12 @@ export default {
     components: {FullCalendar},
     props: {
         scheduleUrl: String,
-        stationTimeZone: String,
-        locale: String
+        stationTimeZone: String
     },
     data() {
         return {
             calendarOptions: {
+                locale: App.locale_short,
                 locales: allLocales,
                 plugins: [luxonPlugin, timeGridPlugin],
                 initialView: 'timeGridWeek',
@@ -27,7 +27,6 @@ export default {
                 themeSystem: 'bootstrap',
                 nowIndicator: true,
                 defaultTimedEventDuration: '00:20',
-                locale: this.locale,
                 headerToolbar: false,
                 footerToolbar: false,
                 height: 'auto',

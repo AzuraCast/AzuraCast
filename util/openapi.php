@@ -58,6 +58,7 @@ use OpenApi\Annotations as OA;
  * @OA\Tag(name="Stations: Podcasts")
  * @OA\Tag(name="Stations: Queue")
  * @OA\Tag(name="Stations: Remote Relays")
+ * @OA\Tag(name="Stations: SFTP Users")
  * @OA\Tag(name="Stations: Streamers/DJs")
  * @OA\Tag(name="Stations: Web Hooks")
  *

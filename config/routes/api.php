@@ -421,6 +421,12 @@ return static function (RouteCollectorProxy $app) {
                         ],
                         ['remote', 'remotes', Controller\Api\Stations\RemotesController::class, Acl::STATION_REMOTES],
                         [
+                            'sftp-user',
+                            'sftp-users',
+                            Controller\Api\Stations\SftpUsersController::class,
+                            Acl::STATION_MEDIA,
+                        ],
+                        [
                             'streamer',
                             'streamers',
                             Controller\Api\Stations\StreamersController::class,

@@ -113,26 +113,9 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
-            $group->group(
-                '/sftp_users',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Stations\SftpUsersController::class . ':indexAction')
-                        ->setName('stations:sftp_users:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Stations\SftpUsersController::class . ':editAction'
-                    )
-                        ->setName('stations:sftp_users:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Stations\SftpUsersController::class . ':editAction')
-                        ->setName('stations:sftp_users:add');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Stations\SftpUsersController::class . ':deleteAction')
-                        ->setName('stations:sftp_users:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+            $group->get('/sftp_users', Controller\Stations\SftpUsersAction::class)
+                ->setName('stations:sftp_users:index')
+                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
             $group->get('/streamers', Controller\Stations\StreamersAction::class)
                 ->setName('stations:streamers:index')

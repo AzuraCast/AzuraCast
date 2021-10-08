@@ -8,10 +8,12 @@ use App\Entity\Attributes\Auditable;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;
 
+/** @OA\Schema(type="object") */
 #[ORM\Entity, ORM\Table(name: 'sftp_user')]
 #[ORM\UniqueConstraint(name: 'username_idx', columns: ['username'])]
 #[UniqueEntity(fields: ['username'])]
@@ -24,16 +26,19 @@ class SftpUser implements IdentifiableEntityInterface
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
+    /** @OA\Property() */
     #[ORM\Column(length: 32)]
     #[Assert\Length(min: 1, max: 32)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^[a-zA-Z0-9-_.~]+$/')]
     protected string $username;
 
+    /** @OA\Property() */
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     protected string $password;
 
+    /** @OA\Property() */
     #[ORM\Column(name: 'public_keys', type: 'text', nullable: true)]
     protected ?string $publicKeys = null;
 

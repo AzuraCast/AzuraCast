@@ -92,9 +92,13 @@ return [
         try {
             // Fetch and store entity manager.
             $config = Doctrine\ORM\Tools\Setup::createConfiguration(
-                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS,
+                !$environment->isProduction(),
                 $environment->getTempDirectory() . '/proxies',
                 $doctrineCache
+            );
+            
+            $config->setAutoGenerateProxyClasses(
+                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS
             );
 
             $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];

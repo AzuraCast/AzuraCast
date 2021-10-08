@@ -23,23 +23,20 @@ class PodcastsAction
         $languageOptions = Languages::getNames($userLocale);
         $categoriesOptions = PodcastCategory::getAvailableCategories();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Podcasts'),
-                'id' => 'station-podcasts',
-                'component' => 'Vue_StationsPodcasts',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:podcasts'),
-                    'newArtUrl' => (string)$router->fromHere('api:stations:podcasts:new-art'),
-                    'stationUrl' => (string)$router->fromHere('stations:index:index'),
-                    'locale' => substr((string)$customization->getLocale(), 0, 2),
-                    'stationTimeZone' => $station->getTimezone(),
-                    'languageOptions' => $languageOptions,
-                    'categoriesOptions' => $categoriesOptions,
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsPodcasts',
+            id: 'station-podcasts',
+            title: __('Podcasts'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:podcasts'),
+                'newArtUrl' => (string)$router->fromHere('api:stations:podcasts:new-art'),
+                'stationUrl' => (string)$router->fromHere('stations:index:index'),
+                'locale' => substr((string)$customization->getLocale(), 0, 2),
+                'stationTimeZone' => $station->getTimezone(),
+                'languageOptions' => $languageOptions,
+                'categoriesOptions' => $categoriesOptions,
+            ],
         );
     }
 }

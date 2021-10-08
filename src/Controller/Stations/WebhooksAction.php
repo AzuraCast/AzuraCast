@@ -24,19 +24,16 @@ class WebhooksAction
 
         $webhookConfig = $config->get('webhooks');
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Web Hooks'),
-                'id' => 'station-webhooks',
-                'component' => 'Vue_StationsWebhooks',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:webhooks'),
-                    'webhookTypes' => $webhookConfig['webhooks'],
-                    'webhookTriggers' => $webhookConfig['triggers'],
-                    'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsWebhooks',
+            id: 'station-webhooks',
+            title: __('Web Hooks'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:webhooks'),
+                'webhookTypes' => $webhookConfig['webhooks'],
+                'webhookTriggers' => $webhookConfig['triggers'],
+                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
             ]
         );
     }

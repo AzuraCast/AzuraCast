@@ -29,26 +29,23 @@ class RequestsAction
         $router = $request->getRouter();
         $customization = $request->getCustomization();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Requests') . ' - ' . $station->getName(),
-                'id' => 'song-requests',
-                'layout' => 'minimal',
-                'layoutParams' => [
-                    'page_class' => 'embed station-' . $station->getShortName(),
-                    'hide_footer' => true,
-                ],
-                'component' => 'Vue_PublicRequests',
-                'props' => [
-                    'customFields' => $customFieldRepo->fetchArray(),
-                    'showAlbumArt' => !$customization->hideAlbumArt(),
-                    'requestListUri' => (string)$router->named('api:requests:list', [
-                        'station_id' => $station->getId(),
-                    ]),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicRequests',
+            id: 'song-requests',
+            layout: 'minimal',
+            title: __('Requests') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => 'embed station-' . $station->getShortName(),
+                'hide_footer' => true,
+            ],
+            props: [
+                'customFields' => $customFieldRepo->fetchArray(),
+                'showAlbumArt' => !$customization->hideAlbumArt(),
+                'requestListUri' => (string)$router->named('api:requests:list', [
+                    'station_id' => $station->getId(),
+                ]),
+            ],
         );
     }
 }

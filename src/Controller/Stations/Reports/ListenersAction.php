@@ -15,17 +15,14 @@ class ListenersAction
         $station = $request->getStation();
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Listeners'),
-                'id' => 'station-report-listeners',
-                'component' => 'Vue_StationsReportsListeners',
-                'props' => [
-                    'apiUrl' => (string)$router->fromHere('api:listeners:index'),
-                    'stationTz' => $station->getTimezone(),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsReportsListeners',
+            id: 'station-report-listeners',
+            title: __('Listeners'),
+            props: [
+                'apiUrl' => (string)$router->fromHere('api:listeners:index'),
+                'stationTz' => $station->getTimezone(),
             ]
         );
     }

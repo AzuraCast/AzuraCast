@@ -51,24 +51,21 @@ class WebDjAction
             }
         }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Web DJ') . ' - ' . $station->getName(),
-                'id' => 'web_dj',
-                'layout' => 'minimal',
-                'layoutParams' => [
-                    'page_class' => 'dj station-' . $station->getShortName(),
-                    'hide_footer' => true,
-                ],
-                'component' => 'Vue_PublicWebDJ',
-                'props' => [
-                    'stationName' => $station->getName(),
-                    'libUrls' => $libUrls,
-                    'baseUri' => $wss_url,
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicWebDJ',
+            id: 'web_dj',
+            layout: 'minimal',
+            title: __('Web DJ') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => 'dj station-' . $station->getShortName(),
+                'hide_footer' => true,
+            ],
+            props: [
+                'stationName' => $station->getName(),
+                'libUrls' => $libUrls,
+                'baseUri' => $wss_url,
+            ],
         );
     }
 }

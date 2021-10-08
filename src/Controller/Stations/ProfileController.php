@@ -66,145 +66,142 @@ class ProfileController
         $acl = $request->getAcl();
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Profile'),
-                'id' => 'profile',
-                'component' => 'Vue_StationsProfile',
-                'props' => [
-                    // Common
-                    'backendType' => $station->getBackendType(),
-                    'frontendType' => $station->getFrontendType(),
-                    'stationTimeZone' => $station->getTimezone(),
-                    'stationSupportsRequests' => $backend->supportsRequests(),
-                    'stationSupportsStreamers' => $backend->supportsStreamers(),
-                    'enableRequests' => $station->getEnableRequests(),
-                    'enableStreamers' => $station->getEnableStreamers(),
-                    'enablePublicPage' => $station->getEnablePublicPage(),
-                    'enableOnDemand' => $station->getEnableOnDemand(),
-                    'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsProfile',
+            id: 'profile',
+            title: __('Profile'),
+            props: [
+                // Common
+                'backendType' => $station->getBackendType(),
+                'frontendType' => $station->getFrontendType(),
+                'stationTimeZone' => $station->getTimezone(),
+                'stationSupportsRequests' => $backend->supportsRequests(),
+                'stationSupportsStreamers' => $backend->supportsStreamers(),
+                'enableRequests' => $station->getEnableRequests(),
+                'enableStreamers' => $station->getEnableStreamers(),
+                'enablePublicPage' => $station->getEnablePublicPage(),
+                'enableOnDemand' => $station->getEnableOnDemand(),
+                'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
 
-                    // ACL
-                    'userCanManageMedia' => $acl->isAllowed(Acl::STATION_MEDIA, $station->getId()),
-                    'userCanManageBroadcasting' => $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId()),
-                    'userCanManageProfile' => $acl->isAllowed(Acl::STATION_PROFILE, $station->getId()),
-                    'userCanManageReports' => $acl->isAllowed(Acl::STATION_REPORTS, $station->getId()),
-                    'userCanManageStreamers' => $acl->isAllowed(Acl::STATION_STREAMERS, $station->getId()),
+                // ACL
+                'userCanManageMedia' => $acl->isAllowed(Acl::STATION_MEDIA, $station->getId()),
+                'userCanManageBroadcasting' => $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId()),
+                'userCanManageProfile' => $acl->isAllowed(Acl::STATION_PROFILE, $station->getId()),
+                'userCanManageReports' => $acl->isAllowed(Acl::STATION_REPORTS, $station->getId()),
+                'userCanManageStreamers' => $acl->isAllowed(Acl::STATION_STREAMERS, $station->getId()),
 
-                    // Header
-                    'stationName' => $station->getName(),
-                    'stationDescription' => $station->getDescription(),
-                    'manageProfileUri' => (string)$router->fromHere('stations:profile:edit'),
+                // Header
+                'stationName' => $station->getName(),
+                'stationDescription' => $station->getDescription(),
+                'manageProfileUri' => (string)$router->fromHere('stations:profile:edit'),
 
-                    // Now Playing
-                    'backendSkipSongUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
-                    'backendDisconnectStreamerUri' => (string)$router->fromHere(
-                        'api:stations:backend',
-                        ['do' => 'disconnect']
-                    ),
+                // Now Playing
+                'backendSkipSongUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
+                'backendDisconnectStreamerUri' => (string)$router->fromHere(
+                    'api:stations:backend',
+                    ['do' => 'disconnect']
+                ),
 
-                    // Requests
-                    'requestsViewUri' => (string)$router->fromHere('stations:reports:requests'),
-                    'requestsToggleUri' => (string)$router->fromHere(
-                        'stations:profile:toggle',
-                        ['feature' => 'requests', 'csrf' => $csrf]
-                    ),
+                // Requests
+                'requestsViewUri' => (string)$router->fromHere('stations:reports:requests'),
+                'requestsToggleUri' => (string)$router->fromHere(
+                    'stations:profile:toggle',
+                    ['feature' => 'requests', 'csrf' => $csrf]
+                ),
 
-                    // Streamers
-                    'streamersViewUri' => (string)$router->fromHere('stations:streamers:index'),
-                    'streamersToggleUri' => (string)$router->fromHere(
-                        'stations:profile:toggle',
-                        ['feature' => 'streamers', 'csrf' => $csrf]
-                    ),
+                // Streamers
+                'streamersViewUri' => (string)$router->fromHere('stations:streamers:index'),
+                'streamersToggleUri' => (string)$router->fromHere(
+                    'stations:profile:toggle',
+                    ['feature' => 'streamers', 'csrf' => $csrf]
+                ),
 
-                    // Public Pages
-                    'publicPageUri' => (string)$router->named(
-                        'public:index',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicPageEmbedUri' => (string)$router->named(
-                        'public:index',
-                        ['station_id' => $station->getShortName(), 'embed' => 'embed'],
-                        [],
-                        true
-                    ),
-                    'publicWebDjUri' => (string)$router->named(
-                        'public:dj',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicOnDemandUri' => (string)$router->named(
-                        'public:ondemand',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicPodcastsUri' => (string)$router->named(
-                        'public:podcasts',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicScheduleUri' => (string)$router->named(
-                        'public:schedule',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicOnDemandEmbedUri' => (string)$router->named(
-                        'public:ondemand',
-                        ['station_id' => $station->getShortName(), 'embed' => 'embed'],
-                        [],
-                        true
-                    ),
-                    'publicRequestEmbedUri' => (string)$router->named(
-                        'public:embedrequests',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicHistoryEmbedUri' => (string)$router->named(
-                        'public:history',
-                        ['station_id' => $station->getShortName()],
-                        [],
-                        true
-                    ),
-                    'publicScheduleEmbedUri' => (string)$router->named(
-                        'public:schedule',
-                        ['station_id' => $station->getShortName(), 'embed' => 'embed'],
-                        [],
-                        true
-                    ),
+                // Public Pages
+                'publicPageUri' => (string)$router->named(
+                    'public:index',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicPageEmbedUri' => (string)$router->named(
+                    'public:index',
+                    ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                    [],
+                    true
+                ),
+                'publicWebDjUri' => (string)$router->named(
+                    'public:dj',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicOnDemandUri' => (string)$router->named(
+                    'public:ondemand',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicPodcastsUri' => (string)$router->named(
+                    'public:podcasts',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicScheduleUri' => (string)$router->named(
+                    'public:schedule',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicOnDemandEmbedUri' => (string)$router->named(
+                    'public:ondemand',
+                    ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                    [],
+                    true
+                ),
+                'publicRequestEmbedUri' => (string)$router->named(
+                    'public:embedrequests',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicHistoryEmbedUri' => (string)$router->named(
+                    'public:history',
+                    ['station_id' => $station->getShortName()],
+                    [],
+                    true
+                ),
+                'publicScheduleEmbedUri' => (string)$router->named(
+                    'public:schedule',
+                    ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                    [],
+                    true
+                ),
 
-                    'togglePublicPageUri' => (string)$router->fromHere(
-                        'stations:profile:toggle',
-                        ['feature' => 'public', 'csrf' => $csrf]
-                    ),
+                'togglePublicPageUri' => (string)$router->fromHere(
+                    'stations:profile:toggle',
+                    ['feature' => 'public', 'csrf' => $csrf]
+                ),
 
-                    // Frontend
-                    'frontendAdminUri' => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
-                    'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
-                    'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
-                    'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
-                    'frontendRestartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
-                    'frontendStartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
-                    'frontendStopUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
+                // Frontend
+                'frontendAdminUri' => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
+                'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
+                'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
+                'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
+                'frontendRestartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
+                'frontendStartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
+                'frontendStopUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
 
-                    // Backend
-                    'numSongs' => (int)$num_songs,
-                    'numPlaylists' => (int)$num_playlists,
-                    'manageMediaUri' => (string)$router->fromHere('stations:files:index'),
-                    'managePlaylistsUri' => (string)$router->fromHere('stations:playlists:index'),
-                    'backendRestartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
-                    'backendStartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
-                    'backendStopUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
-                ],
-            ]
+                // Backend
+                'numSongs' => (int)$num_songs,
+                'numPlaylists' => (int)$num_playlists,
+                'manageMediaUri' => (string)$router->fromHere('stations:files:index'),
+                'managePlaylistsUri' => (string)$router->fromHere('stations:playlists:index'),
+                'backendRestartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
+                'backendStartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
+                'backendStopUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
+            ],
         );
     }
 

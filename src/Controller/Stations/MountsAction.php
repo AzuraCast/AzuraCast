@@ -21,20 +21,17 @@ class MountsAction
 
         $settings = $settingsRepo->readSettings();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Mount Points'),
-                'id' => 'station-mounts',
-                'component' => 'Vue_StationsMounts',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:mounts'),
-                    'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
-                    'stationFrontendType' => $station->getFrontendType(),
-                    'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsMounts',
+            id: 'station-mounts',
+            title: __('Mount Points'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:mounts'),
+                'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
+                'stationFrontendType' => $station->getFrontendType(),
+                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+            ],
         );
     }
 }

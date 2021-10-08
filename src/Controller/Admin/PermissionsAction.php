@@ -20,19 +20,16 @@ class PermissionsAction
 
         $actions = $request->getAcl()->listPermissions();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Roles & Permissions'),
-                'id' => 'admin-permissions',
-                'component' => 'Vue_AdminPermissions',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:admin:roles'),
-                    'stations' => $stationRepo->fetchSelect(),
-                    'globalPermissions' => $actions['global'],
-                    'stationPermissions' => $actions['station'],
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_AdminPermissions',
+            id: 'admin-permissions',
+            title: __('Roles & Permissions'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:admin:roles'),
+                'stations' => $stationRepo->fetchSelect(),
+                'globalPermissions' => $actions['global'],
+                'stationPermissions' => $actions['station'],
             ]
         );
     }

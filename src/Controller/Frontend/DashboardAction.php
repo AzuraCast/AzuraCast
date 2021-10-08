@@ -33,28 +33,25 @@ class DashboardAction
         $router = $request->getRouter();
         $acl = $request->getAcl();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Dashboard'),
-                'id' => 'dashboard',
-                'component' => 'Vue_Dashboard',
-                'props' => [
-                    'avatar' => $avatar->getAvatar($request->getUser()->getEmail(), 64),
-                    'avatarServiceName' => $avatarService->getServiceName(),
-                    'avatarServiceUrl' => $avatarService->getServiceUrl(),
-                    'userName' => $user->getName() ?? __('AzuraCast User'),
-                    'userEmail' => $user->getEmail(),
-                    'profileUrl' => (string)$router->named('profile:index'),
-                    'adminUrl' => (string)$router->named('admin:index:index'),
-                    'showAdmin' => $acl->isAllowed(Acl::GLOBAL_VIEW),
-                    'notificationsUrl' => (string)$router->named('api:frontend:dashboard:notifications'),
-                    'showCharts' => $showCharts,
-                    'chartsUrl' => (string)$router->named('api:frontend:dashboard:charts'),
-                    'addStationUrl' => (string)$router->named('admin:stations:add'),
-                    'stationsUrl' => (string)$router->named('api:frontend:dashboard:stations'),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_Dashboard',
+            id: 'dashboard',
+            title: __('Dashboard'),
+            props: [
+                'avatar' => $avatar->getAvatar($request->getUser()->getEmail(), 64),
+                'avatarServiceName' => $avatarService->getServiceName(),
+                'avatarServiceUrl' => $avatarService->getServiceUrl(),
+                'userName' => $user->getName() ?? __('AzuraCast User'),
+                'userEmail' => $user->getEmail(),
+                'profileUrl' => (string)$router->named('profile:index'),
+                'adminUrl' => (string)$router->named('admin:index:index'),
+                'showAdmin' => $acl->isAllowed(Acl::GLOBAL_VIEW),
+                'notificationsUrl' => (string)$router->named('api:frontend:dashboard:notifications'),
+                'showCharts' => $showCharts,
+                'chartsUrl' => (string)$router->named('api:frontend:dashboard:charts'),
+                'addStationUrl' => (string)$router->named('admin:stations:add'),
+                'stationsUrl' => (string)$router->named('api:frontend:dashboard:stations'),
             ]
         );
     }

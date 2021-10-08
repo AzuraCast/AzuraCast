@@ -15,18 +15,15 @@ class RequestsAction
         $router = $request->getRouter();
         $station = $request->getStation();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Song Requests'),
-                'id' => 'station-report-requests',
-                'component' => 'Vue_StationsReportsRequests',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:reports:requests'),
-                    'clearUrl' => (string)$router->fromHere('api:stations:reports:requests:clear'),
-                    'stationTimeZone' => $station->getTimezone(),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsReportsRequests',
+            id: 'station-report-requests',
+            title: __('Song Requests'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:reports:requests'),
+                'clearUrl' => (string)$router->fromHere('api:stations:reports:requests:clear'),
+                'stationTimeZone' => $station->getTimezone(),
             ]
         );
     }

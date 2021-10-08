@@ -14,17 +14,14 @@ class StorageLocationsAction
     {
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Storage Locations'),
-                'id' => 'admin-storage-locations',
-                'component' => 'Vue_AdminStorageLocations',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:admin:storage_locations'),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_AdminStorageLocations',
+            id: 'admin-storage-locations',
+            title: __('Storage Locations'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:admin:storage_locations'),
+            ],
         );
     }
 }

@@ -16,16 +16,13 @@ class PerformanceAction
     ): ResponseInterface {
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Song Listener Impact'),
-                'id' => 'station-report-performance',
-                'component' => 'Vue_StationsReportsPerformance',
-                'props' => [
-                    'apiUrl' => (string)$router->fromHere('api:stations:reports:performance'),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsReportsPerformance',
+            id: 'station-report-performance',
+            title: __('Song Listener Impact'),
+            props: [
+                'apiUrl' => (string)$router->fromHere('api:stations:reports:performance'),
             ]
         );
     }

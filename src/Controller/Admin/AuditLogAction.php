@@ -14,16 +14,13 @@ class AuditLogAction
     {
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Audit Log'),
-                'id' => 'admin-audit-log',
-                'component' => 'Vue_AdminAuditLog',
-                'props' => [
-                    'baseApiUrl' => (string)$router->fromHere('api:admin:auditlog'),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_AdminAuditLog',
+            id: 'admin-audit-log',
+            title: __('Audit Log'),
+            props: [
+                'baseApiUrl' => (string)$router->fromHere('api:admin:auditlog'),
             ]
         );
     }

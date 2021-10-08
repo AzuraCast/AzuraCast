@@ -32,26 +32,23 @@ class ScheduleAction
             $pageClass .= ' embed';
         }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Schedule') . ' - ' . $station->getName(),
-                'id' => 'station-schedule',
-                'layout' => 'minimal',
-                'layoutParams' => [
-                    'page_class' => $pageClass,
-                    'hide_footer' => true,
-                ],
-                'component' => 'Vue_PublicSchedule',
-                'props' => [
-                    'scheduleUrl' => (string)$router->named('api:stations:schedule', [
-                        'station_id' => $station->getId(),
-                    ]),
-                    'stationName' => $station->getName(),
-                    'stationTimeZone' => $station->getTimezone(),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicSchedule',
+            id: 'station-schedule',
+            layout: 'minimal',
+            title: __('Schedule') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => $pageClass,
+                'hide_footer' => true,
+            ],
+            props: [
+                'scheduleUrl' => (string)$router->named('api:stations:schedule', [
+                    'station_id' => $station->getId(),
+                ]),
+                'stationName' => $station->getName(),
+                'stationTimeZone' => $station->getTimezone(),
+            ],
         );
     }
 }

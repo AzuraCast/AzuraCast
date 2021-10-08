@@ -27,21 +27,18 @@ class PlaylistsAction
         $settings = $settingsRepo->readSettings();
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Playlists'),
-                'id' => 'station-playlist',
-                'component' => 'Vue_StationsPlaylists',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:playlists'),
-                    'scheduleUrl' => (string)$router->fromHere('api:stations:playlists:schedule'),
-                    'filesUrl' => (string)$router->fromHere('stations:files:index'),
-                    'stationTimeZone' => $station->getTimezone(),
-                    'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsPlaylists',
+            id: 'station-playlist',
+            title: __('Playlists'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:playlists'),
+                'scheduleUrl' => (string)$router->fromHere('api:stations:playlists:schedule'),
+                'filesUrl' => (string)$router->fromHere('stations:files:index'),
+                'stationTimeZone' => $station->getTimezone(),
+                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+            ],
         );
     }
 }

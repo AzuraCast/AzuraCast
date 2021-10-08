@@ -15,17 +15,14 @@ class TimelineAction
         $router = $request->getRouter();
         $station = $request->getStation();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Song Playback Timeline'),
-                'id' => 'station-report-timeline',
-                'component' => 'Vue_StationsReportsTimeline',
-                'props' => [
-                    'baseApiUrl' => (string)$router->fromHere('api:stations:history'),
-                    'stationTimeZone' => $station->getTimezone(),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsReportsTimeline',
+            id: 'station-report-timeline',
+            title: __('Song Playback Timeline'),
+            props: [
+                'baseApiUrl' => (string)$router->fromHere('api:stations:history'),
+                'stationTimeZone' => $station->getTimezone(),
             ]
         );
     }

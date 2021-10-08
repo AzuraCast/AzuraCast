@@ -34,27 +34,24 @@ class HistoryAction
 
         $useNChan = $customization->useWebSocketsForNowPlaying();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('History') . ' - ' . $station->getName(),
-                'id' => 'song-history',
-                'layout' => 'minimal',
-                'layoutParams' => [
-                    'page_class' => 'embed station-' . $station->getShortName(),
-                    'hide_footer' => true,
-                ],
-                'component' => 'Vue_PublicHistory',
-                'props' => [
-                    'initialNowPlaying' => $np,
-                    'showAlbumArt' => !$customization->hideAlbumArt(),
-                    'useNchan' => $useNChan,
-                    'nowPlayingUri' => $useNChan
-                        ? '/api/live/nowplaying/' . urlencode($station->getShortName())
-                        : (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicHistory',
+            id: 'song-history',
+            layout: 'minimal',
+            title: __('History') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => 'embed station-' . $station->getShortName(),
+                'hide_footer' => true,
+            ],
+            props: [
+                'initialNowPlaying' => $np,
+                'showAlbumArt' => !$customization->hideAlbumArt(),
+                'useNchan' => $useNChan,
+                'nowPlayingUri' => $useNChan
+                    ? '/api/live/nowplaying/' . urlencode($station->getShortName())
+                    : (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]),
+            ],
         );
     }
 }

@@ -26,18 +26,15 @@ class OverviewAction
 
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Statistics Overview'),
-                'id' => 'vue-reports-overview',
-                'component' => 'Vue_StationsReportsOverview',
-                'props' => [
-                    'chartsUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
-                    'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),
-                    'mostPlayedUrl' => (string)$router->fromHere('api:stations:reports:most-played'),
-                ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsReportsOverview',
+            id: 'vue-reports-overview',
+            title: __('Statistics Overview'),
+            props: [
+                'chartsUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
+                'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),
+                'mostPlayedUrl' => (string)$router->fromHere('api:stations:reports:most-played'),
             ]
         );
     }

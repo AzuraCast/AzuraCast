@@ -20,18 +20,15 @@ class RemotesAction
 
         $settings = $settingsRepo->readSettings();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Remote Relays'),
-                'id' => 'station-remotes',
-                'component' => 'Vue_StationsRemotes',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:remotes'),
-                    'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-                ],
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsRemotes',
+            id: 'station-remotes',
+            title: __('Remote Relays'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:remotes'),
+                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+            ],
         );
     }
 }

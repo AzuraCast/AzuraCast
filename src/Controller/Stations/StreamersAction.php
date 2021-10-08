@@ -54,23 +54,20 @@ class StreamersAction
 
         $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/vue',
-            [
-                'title' => __('Streamer/DJ Accounts'),
-                'id' => 'station-streamers',
-                'component' => 'Vue_StationsStreamers',
-                'props' => [
-                    'listUrl' => (string)$router->fromHere('api:stations:streamers'),
-                    'scheduleUrl' => (string)$router->fromHere('api:stations:streamers:schedule'),
-                    'stationTimeZone' => $station->getTimezone(),
-                    'connectionInfo' => [
-                        'serverUrl' => $settings->getBaseUrl(),
-                        'streamPort' => $backend->getStreamPort($station),
-                        'ip' => $acCentral->getIp(),
-                        'djMountPoint' => $backendConfig->getDjMountPoint(),
-                    ],
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsStreamers',
+            id: 'station-streamers',
+            title: __('Streamer/DJ Accounts'),
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:streamers'),
+                'scheduleUrl' => (string)$router->fromHere('api:stations:streamers:schedule'),
+                'stationTimeZone' => $station->getTimezone(),
+                'connectionInfo' => [
+                    'serverUrl' => $settings->getBaseUrl(),
+                    'streamPort' => $backend->getStreamPort($station),
+                    'ip' => $acCentral->getIp(),
+                    'djMountPoint' => $backendConfig->getDjMountPoint(),
                 ],
             ]
         );

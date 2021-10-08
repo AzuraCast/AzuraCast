@@ -44,8 +44,9 @@ class RequestsAction
                 'props' => [
                     'customFields' => $customFieldRepo->fetchArray(),
                     'showAlbumArt' => !$customization->hideAlbumArt(),
-                    'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]
-                    ),
+                    'requestListUri' => (string)$router->named('api:requests:list', [
+                        'station_id' => $station->getId(),
+                    ]),
                 ],
             ]
         );

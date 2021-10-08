@@ -22,9 +22,6 @@ class DashboardAction
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
-        $view = $request->getView();
-        $acl = $request->getAcl();
-
         // Detect current analytics level.
         $analyticsLevel = $settingsRepo->readSettings()->getAnalytics();
         $showCharts = $analyticsLevel !== Entity\Analytics::LEVEL_NONE;
@@ -32,15 +29,32 @@ class DashboardAction
         // Avatars
         $avatarService = $avatar->getAvatarService();
 
-        return $view->renderToResponse(
+        $user = $request->getUser();
+        $router = $request->getRouter();
+        $acl = $request->getAcl();
+
+        return $request->getView()->renderToResponse(
             $response,
-            'frontend/index/index',
+            'system/vue',
             [
-                'avatar' => $avatar->getAvatar($request->getUser()->getEmail(), 64),
-                'avatarServiceName' => $avatarService->getServiceName(),
-                'avatarServiceUrl' => $avatarService->getServiceUrl(),
-                'showAdmin' => $acl->isAllowed(Acl::GLOBAL_VIEW),
-                'showCharts' => $showCharts,
+                'title' => __('Dashboard'),
+                'id' => 'dashboard',
+                'component' => 'Vue_Dashboard',
+                'props' => [
+                    'avatar' => $avatar->getAvatar($request->getUser()->getEmail(), 64),
+                    'avatarServiceName' => $avatarService->getServiceName(),
+                    'avatarServiceUrl' => $avatarService->getServiceUrl(),
+                    'userName' => $user->getName() ?? __('AzuraCast User'),
+                    'userEmail' => $user->getEmail(),
+                    'profileUrl' => (string)$router->named('profile:index'),
+                    'adminUrl' => (string)$router->named('admin:index:index'),
+                    'showAdmin' => $acl->isAllowed(Acl::GLOBAL_VIEW),
+                    'notificationsUrl' => (string)$router->named('api:frontend:dashboard:notifications'),
+                    'showCharts' => $showCharts,
+                    'chartsUrl' => (string)$router->named('api:frontend:dashboard:charts'),
+                    'addStationUrl' => (string)$router->named('admin:stations:add'),
+                    'stationsUrl' => (string)$router->named('api:frontend:dashboard:stations'),
+                ],
             ]
         );
     }

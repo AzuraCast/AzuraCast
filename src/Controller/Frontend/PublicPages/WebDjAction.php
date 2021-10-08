@@ -45,9 +45,10 @@ class WebDjAction
 
         $libUrls = [];
         $lib = $assets->getLibrary('Vue_PublicWebDJ');
-
-        foreach (array_slice($lib['files']['js'], 0, -1) as $script) {
-            $libUrls[] = (string)($router->getBaseUrl()->withPath($assets->getUrl($script['src'])));
+        if (null !== $lib) {
+            foreach (array_slice($lib['files']['js'], 0, -1) as $script) {
+                $libUrls[] = (string)($router->getBaseUrl()->withPath($assets->getUrl($script['src'])));
+            }
         }
 
         return $request->getView()->renderToResponse(

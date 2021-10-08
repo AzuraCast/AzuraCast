@@ -45,8 +45,9 @@ class ScheduleAction
                 ],
                 'component' => 'Vue_PublicSchedule',
                 'props' => [
-                    'scheduleUrl' => (string)$router->named('api:stations:schedule', ['station_id' => $station->getId()]
-                    ),
+                    'scheduleUrl' => (string)$router->named('api:stations:schedule', [
+                        'station_id' => $station->getId(),
+                    ]),
                     'stationName' => $station->getName(),
                     'stationTimeZone' => $station->getTimezone(),
                 ],

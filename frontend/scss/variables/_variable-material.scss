@@ -481,18 +481,15 @@ $stepper-icon-height: $material-icon-size !default;
 $stepper-inner-spacer: 0.5rem !default;
 $stepper-padding-x: 1.5rem !default;
 $stepper-padding-y: 1.5rem !default;
-$stepper-text-color: $black-hint !default;
-$stepper-text-color-active: $black-primary !default;
+$stepper-text-color: $text-hint !default;
+$stepper-text-color-active: $text-primary !default;
 $stepper-text-font-size: 0.875rem !default;
 $stepper-text-font-weight: $font-weight-regular !default;
 
 @if $theme == 'dark' {
   $stepper-border-color: $material-color-grey-800;
   $stepper-icon-bg: $theme-color-3;
-  $stepper-icon-color: $white-primary;
   $stepper-icon-height: $material-icon-size;
-  $stepper-text-color: $white-divider;
-  $stepper-text-color-active: $material-color-grey-200;
 }
 
 // Tab (Bootstrap tab)

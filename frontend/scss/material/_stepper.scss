@@ -22,6 +22,12 @@
   &:last-child::after {
     display: none;
   }
+
+  &.active {
+    .stepper-text {
+      font-weight: bolder;
+    }
+  }
 }
 
 .stepper-horiz {
@@ -100,8 +106,4 @@
   font-size: $stepper-text-font-size;
   font-weight: $stepper-text-font-weight;
   position: relative;
-
-  .stepper.active & {
-    font-weight: bolder;
-  }
 }

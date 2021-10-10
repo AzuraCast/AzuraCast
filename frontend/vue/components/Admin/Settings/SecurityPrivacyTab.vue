@@ -1,6 +1,6 @@
 <template>
-    <b-tab :title="langTabTitle">
-        <b-form-group>
+    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+        <b-form-fieldset>
             <template #label>
                 <translate key="lang_privacy_hdr">Privacy</translate>
             </template>
@@ -39,15 +39,15 @@
                     </template>
                 </b-wrapped-form-group>
             </b-row>
-        </b-form-group>
+        </b-form-fieldset>
 
-        <b-form-group>
+        <b-form-fieldset>
             <template #label>
                 <translate key="lang_security_hdr">Security</translate>
             </template>
 
             <b-row>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_always_use_ssl"
+                <b-wrapped-form-group class="col-md-12" id="edit_form_always_use_ssl"
                                       :field="form.always_use_ssl">
                     <template #description>
                         <translate key="lang_edit_form_always_use_ssl_desc">Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.</translate>
@@ -75,18 +75,20 @@
                     </template>
                 </b-wrapped-form-group>
             </b-row>
-        </b-form-group>
+        </b-form-fieldset>
     </b-tab>
 </template>
 
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BFormFieldset from "~/components/Form/BFormFieldset";
 
 export default {
     name: 'SettingsSecurityPrivacyTab',
-    components: {BWrappedFormGroup},
+    components: {BFormFieldset, BWrappedFormGroup},
     props: {
-        form: Object
+        form: Object,
+        tabClass: {},
     },
     computed: {
         langTabTitle() {

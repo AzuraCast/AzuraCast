@@ -147,7 +147,11 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/autosize/autosize.min.js',
+                    'src'   => 'dist/form.js',
+                    'defer' => true,
+                ],
+                [
+                    'src'   => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
                 ],
             ],

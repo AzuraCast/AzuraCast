@@ -11,6 +11,7 @@ module.exports = {
         AdminBranding: '~/pages/Admin/Branding.js',
         AdminCustomFields: '~/pages/Admin/CustomFields.js',
         AdminPermissions: '~/pages/Admin/Permissions.js',
+        AdminSettings: '~/pages/Admin/Settings.js',
         AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
         PublicFullPlayer: '~/pages/Public/FullPlayer.js',
         PublicHistory: '~/pages/Public/History.js',

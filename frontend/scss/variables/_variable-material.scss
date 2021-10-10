@@ -501,8 +501,8 @@ $stepper-text-font-weight: $font-weight-regular !default;
 $nav-tab-bg-hover: $black-divider !default;
 $nav-tab-border-color: $border-color !default;
 $nav-tab-border-width: $border-width !default;
-$nav-tab-color: $black-primary !default;
-$nav-tab-color-active: theme-color(secondary) !default;
+$nav-tab-color: $text-secondary !default;
+$nav-tab-color-active: $text-primary !default;
 $nav-tab-color-disabled: $black-hint !default;
 $nav-tab-font-size: 0.875rem !default;
 $nav-tab-font-weight: $font-weight-medium !default;
@@ -518,8 +518,8 @@ $nav-tab-link-padding-y: (($nav-tab-height - $nav-tab-font-size * $nav-tab-line-
   $nav-tab-bg-hover: $black-divider;
   $nav-tab-border-color: $border-color;
   $nav-tab-border-width: $border-width;
-  $nav-tab-color: $material-color-grey-200;
-  $nav-tab-color-active: theme-color(secondary);
+  $nav-tab-color: $text-secondary;
+  $nav-tab-color-active: $text-primary;
   $nav-tab-color-disabled: $black-hint;
   $nav-tab-indicator-bg: theme-color(secondary);
 }

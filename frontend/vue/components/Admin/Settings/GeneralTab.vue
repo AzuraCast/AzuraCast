@@ -1,6 +1,6 @@
 <template>
-    <b-tab :title="langTabTitle">
-        <b-form-group>
+    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+        <b-form-fieldset>
             <b-row>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_base_url" :field="form.base_url" input-type="url">
@@ -87,19 +87,21 @@
                 </b-wrapped-form-group>
 
             </b-row>
-        </b-form-group>
+        </b-form-fieldset>
 
     </b-tab>
 </template>
 
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BFormFieldset from "~/components/Form/BFormFieldset";
 
 export default {
     name: 'SettingsGeneralTab',
-    components: {BWrappedFormGroup},
+    components: {BFormFieldset, BWrappedFormGroup},
     props: {
-        form: Object
+        form: Object,
+        tabClass: {},
     },
     computed: {
         langTabTitle() {

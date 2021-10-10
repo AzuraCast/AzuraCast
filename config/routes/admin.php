@@ -139,7 +139,7 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:relays:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
-            $group->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class)
+            $group->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsAction::class)
                 ->setName('admin:settings:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 

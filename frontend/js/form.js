@@ -1,6 +1,6 @@
 $(function () {
-  $('form.form').each(function () {
-    styleForm(this);
+  $('form.form').not('.vue-form').each(function () {
+      styleForm(this);
   });
 });
 

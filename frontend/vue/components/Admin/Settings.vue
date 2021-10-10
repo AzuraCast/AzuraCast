@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit">
+    <form class="form vue-form" @submit.prevent="submit">
         <b-card no-body>
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
@@ -10,16 +10,20 @@
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
             <b-overlay variant="card" :show="loading">
-                <b-tabs card lazy>
-                    <settings-general-tab :form="$v.form"></settings-general-tab>
-                    <settings-security-privacy-tab :form="$v.form"></settings-security-privacy-tab>
-                    <settings-services-tab :form="$v.form"></settings-services-tab>
+                <b-tabs card lazy justified>
+                    <settings-general-tab :form="$v.form"
+                                          :tab-class="getTabClass($v.generalTab)"></settings-general-tab>
+                    <settings-security-privacy-tab :form="$v.form"
+                                                   :tab-class="getTabClass($v.securityPrivacyTab)"></settings-security-privacy-tab>
+                    <settings-services-tab :form="$v.form" :tab-class="getTabClass($v.servicesTab)"
+                                           :release-channel="releaseChannel"></settings-services-tab>
                 </b-tabs>
             </b-overlay>
 
             <b-card-body body-class="card-padding-sm">
-                <b-button size="lg" type="submit" variant="primary">
-                    <translate key="lang_btn_save_changes">Save Changes</translate>
+                <b-button size="lg" type="submit" variant="primary" :disabled="$v.form.$invalid">
+                    <translate v-if="continueUrl" key="lang_btn_save_and_continue">Save and Continue</translate>
+                    <translate v-else key="lang_btn_save_changes">Save Changes</translate>
                 </b-button>
             </b-card-body>
         </b-card>
@@ -108,6 +112,12 @@ export default {
         this.relist();
     },
     methods: {
+        getTabClass(validationGroup) {
+            if (validationGroup.$invalid) {
+                return 'text-danger';
+            }
+            return null;
+        },
         relist() {
             this.$v.form.$reset();
             this.loading = true;
@@ -163,8 +173,12 @@ export default {
                     data: this.form
                 })
             ).then((resp) => {
-                this.$notifySuccess(this.$gettext('Changes saved.'));
-                this.relist();
+                if (this.continueUrl) {
+                    window.location.href = this.continueUrl;
+                } else {
+                    this.$notifySuccess(this.$gettext('Changes saved.'));
+                    this.relist();
+                }
             });
 
         }

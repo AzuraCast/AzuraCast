@@ -5,6 +5,44 @@
                 <translate key="lang_section_update_checks">AzuraCast Update Checks</translate>
             </template>
 
+            <b-row>
+                <b-form-markup id="form_release_channel">
+                    <template #label>
+                        <translate key="lang_release_channel">Current Release Channel</translate>
+                    </template>
+                    <template #description>
+                        <a href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
+                           target="_blank">
+                            <translate key="lang_switch_release_channel">Learn more about release channels in the AzuraCast docs.</translate>
+                        </a>
+                    </template>
+
+                    <p class="card-text font-weight-bold">
+                        {{ langReleaseChannel }}
+                    </p>
+                </b-form-markup>
+
+                <b-wrapped-form-group class="col-md-12" id="edit_form_check_for_updates"
+                                      :field="form.check_for_updates">
+                    <template #description>
+                        <translate key="lang_edit_form_check_for_updates_desc">Show new releases within your update channel on the AzuraCast homepage.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                            <translate key="lang_edit_form_check_for_updates">Show Update Announcements</translate>
+                        </b-form-checkbox>
+                    </template>
+                </b-wrapped-form-group>
+            </b-row>
+        </b-form-group>
+
+        <b-form-group>
+            <template #label>
+                <translate key="lang_section_email_delivery">E-mail Delivery Service</translate>
+            </template>
+            <template #description>
+                <translate key="lang_section_email_delivery_desc">Used for "Forgot Password" functionality, web hooks and other functions.</translate>
+            </template>
 
             <b-row>
 
@@ -12,38 +50,10 @@
         </b-form-group>
     </b-tab>
 
-
-    'legend' => __('AzuraCast Update Checks'),
-
-    'elements' => [
-
-    'release_channel' => [
-    'markup',
-    [
-    'label' => __('Current Release Channel'),
-    'markup' => '<strong>' . $releaseChannelName . '</strong>',
-    'description' => __(
-    'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.',
-    'https://docs.azuracast.com/en/getting-started/updates/release-channels'
-    ),
-    ],
-    ],
-
-    'check_for_updates' => [
-    'toggle',
-    [
-    'label' => __('Show Update Announcements'),
-    'description' => __('Show new releases within your update channel on the AzuraCast homepage.'),
-    'default' => true,
-    ],
-    ],
-
-    ],
-
     ----
 
-    'legend' => __('E-mail Delivery Service'),
-    'description' => __('Used for "Forgot Password" functionality, web hooks and other functions.'),
+    'legend' => __(''),
+    'description' => __(''),
     'use_grid' => true,
 
     'elements' => [
@@ -203,15 +213,25 @@
 </template>
 
 <script>
+import BFormMarkup from "~/components/Form/BFormMarkup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+
 export default {
     name: 'SettingsServicesTab',
+    components: {BWrappedFormGroup, BFormMarkup},
     props: {
-        form: Object
+        form: Object,
+        releaseChannel: String,
     },
     computed: {
         langTabTitle() {
             return this.$gettext('Services');
         },
+        langReleaseChannel() {
+            return (this.releaseChannel === 'stable')
+                ? this.$gettext('Stable')
+                : this.$gettext('Rolling Release');
+        }
     }
 }
 </script>

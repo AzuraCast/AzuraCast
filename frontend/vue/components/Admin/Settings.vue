@@ -12,8 +12,7 @@
             <b-overlay variant="card" :show="loading">
                 <b-tabs card lazy>
                     <settings-general-tab :form="$v.form"></settings-general-tab>
-                    <settings-privacy-tab :form="$v.form"></settings-privacy-tab>
-                    <settings-security-tab :form="$v.form"></settings-security-tab>
+                    <settings-security-privacy-tab :form="$v.form"></settings-security-privacy-tab>
                     <settings-services-tab :form="$v.form"></settings-services-tab>
                 </b-tabs>
             </b-overlay>
@@ -29,17 +28,26 @@
 
 <script>
 import SettingsGeneralTab from "./Settings/GeneralTab";
-import SettingsPrivacyTab from "./Settings/PrivacyTab";
-import SettingsSecurityTab from "./Settings/ServicesTab";
 import SettingsServicesTab from "./Settings/ServicesTab";
 import {validationMixin} from "vuelidate";
 import {required} from 'vuelidate/dist/validators.min.js';
+import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab";
 
 export default {
     name: 'AdminSettings',
-    components: {SettingsServicesTab, SettingsSecurityTab, SettingsPrivacyTab, SettingsGeneralTab},
+    components: {SettingsSecurityPrivacyTab, SettingsServicesTab, SettingsGeneralTab},
     props: {
         apiUrl: String,
+        releaseChannel: {
+            type: String,
+            default: 'rolling',
+            required: false
+        },
+        continueUrl: {
+            type: String,
+            default: null,
+            required: false
+        }
     },
     mixins: [
         validationMixin
@@ -85,11 +93,8 @@ export default {
             'form.base_url', 'form.instance_name', 'form.prefer_browser_url', 'form.use_radio_proxy',
             'form.history_keep_days', 'form.enable_websockets', 'form.enable_advanced_features'
         ],
-        privacyTab: [
-            'form.analytics',
-        ],
-        securityTab: [
-            'form.always_use_ssl', 'form.api_access_control'
+        securityPrivacyTab: [
+            'form.analytics', 'form.always_use_ssl', 'form.api_access_control'
         ],
         servicesTab: [
             'form.check_for_updates', 'form.mail_enabled', 'form.mail_sender_name', 'form.mail_sender_email',
@@ -116,14 +121,33 @@ export default {
         },
         populateForm(data) {
             this.form = {
-                'public_theme': data.public_theme,
-                'hide_album_art': data.hide_album_art,
-                'homepage_redirect_url': data.homepage_redirect_url,
-                'default_album_art_url': data.default_album_art_url,
-                'hide_product_name': data.hide_product_name,
-                'public_custom_css': data.public_custom_css,
-                'public_custom_js': data.public_custom_js,
-                'internal_custom_css': data.internal_custom_css
+                base_url: data.base_url,
+                instance_name: data.instance_name,
+                prefer_browser_url: data.prefer_browser_url,
+                use_radio_proxy: data.use_radio_proxy,
+                history_keep_days: data.history_keep_days,
+                enable_websockets: data.enable_websockets,
+                enable_advanced_features: data.enable_advanced_features,
+
+                analytics: data.analytics,
+
+                always_use_ssl: data.always_use_ssl,
+                api_access_control: data.api_access_control,
+
+                check_for_updates: data.check_for_updates,
+                mail_enabled: data.mail_enabled,
+                mail_sender_name: data.mail_sender_name,
+                mail_sender_email: data.mail_sender_email,
+                mail_smtp_host: data.mail_smtp_host,
+                mail_smtp_port: data.mail_smtp_port,
+                mail_smtp_secure: data.mail_smtp_secure,
+                mail_smtp_username: data.mail_smtp_username,
+                mail_smtp_password: data.mail_smtp_password,
+                avatar_service: data.avatar_service,
+                avatar_default_url: data.avatar_default_url,
+                use_external_album_art_in_apis: data.use_external_album_art_in_apis,
+                use_external_album_art_when_processing_media: data.use_external_album_art_when_processing_media,
+                last_fm_api_key: data.last_fm_api_key
             }
         },
         submit() {

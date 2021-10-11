@@ -219,12 +219,12 @@ class InstallCommand
             if ($customizeLetsEncrypt) {
                 $env['LETSENCRYPT_HOST'] = $io->ask(
                     $envConfig['LETSENCRYPT_HOST']['description'],
-                    $env['LETSENCRYPT_HOST']
+                    $env['LETSENCRYPT_HOST'] ?? ''
                 );
 
                 $env['LETSENCRYPT_EMAIL'] = $io->ask(
                     $envConfig['LETSENCRYPT_EMAIL']['description'],
-                    $env['LETSENCRYPT_EMAIL']
+                    $env['LETSENCRYPT_EMAIL'] ?? ''
                 );
             }
         }

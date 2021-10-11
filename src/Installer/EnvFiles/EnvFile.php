@@ -84,13 +84,15 @@ class EnvFile extends AbstractEnvFile
                     'default' => true,
                 ],
                 'LETSENCRYPT_HOST' => [
-                    'name' => __('LetsEncrypt Domain Name(s)'),
+                    'name'        => __('LetsEncrypt Domain Name(s)'),
+                    'default'     => '',
                     'description' => __(
                         'Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt.'
                     ),
                 ],
                 'LETSENCRYPT_EMAIL' => [
-                    'name' => __('LetsEncrypt E-mail Address'),
+                    'name'        => __('LetsEncrypt E-mail Address'),
+                    'default'     => '',
                     'description' => __(
                         'Optionally provide an e-mail address for updates from LetsEncrypt.',
                     ),

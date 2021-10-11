@@ -1,11 +1,17 @@
 <template>
     <form class="form vue-form" @submit.prevent="submit">
+        <slot name="preCard"></slot>
+
         <b-card no-body>
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_settings">System Settings</translate>
+                    <slot name="cardTitle">
+                        <translate key="lang_settings">System Settings</translate>
+                    </slot>
                 </h2>
             </div>
+
+            <slot name="cardUpper"></slot>
 
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
@@ -22,8 +28,9 @@
 
             <b-card-body body-class="card-padding-sm">
                 <b-button size="lg" type="submit" variant="primary" :disabled="$v.form.$invalid">
-                    <translate v-if="continueUrl" key="lang_btn_save_and_continue">Save and Continue</translate>
-                    <translate v-else key="lang_btn_save_changes">Save Changes</translate>
+                    <slot name="submitButtonName">
+                        <translate key="lang_btn_save_changes">Save Changes</translate>
+                    </slot>
                 </b-button>
             </b-card-body>
         </b-card>
@@ -40,16 +47,12 @@ import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPriv
 export default {
     name: 'AdminSettings',
     components: {SettingsSecurityPrivacyTab, SettingsServicesTab, SettingsGeneralTab},
+    emits: ['saved'],
     props: {
         apiUrl: String,
         releaseChannel: {
             type: String,
             default: 'rolling',
-            required: false
-        },
-        continueUrl: {
-            type: String,
-            default: null,
             required: false
         }
     },
@@ -113,7 +116,7 @@ export default {
     },
     methods: {
         getTabClass(validationGroup) {
-            if (validationGroup.$invalid) {
+            if (!this.loading && validationGroup.$invalid) {
                 return 'text-danger';
             }
             return null;
@@ -173,12 +176,10 @@ export default {
                     data: this.form
                 })
             ).then((resp) => {
-                if (this.continueUrl) {
-                    window.location.href = this.continueUrl;
-                } else {
-                    this.$notifySuccess(this.$gettext('Changes saved.'));
-                    this.relist();
-                }
+                this.$emit('saved');
+
+                this.$notifySuccess(this.$gettext('Changes saved.'));
+                this.relist();
             });
 
         }

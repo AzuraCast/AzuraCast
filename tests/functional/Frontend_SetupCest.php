@@ -54,12 +54,12 @@ class Frontend_SetupCest extends CestAbstract
 
     protected function setupSettings(FunctionalTester $I): void
     {
-        $I->submitForm('.form', [
-            'base_url' => 'http://localhost',
-        ]);
-
         $I->seeResponseCodeIs(200);
-        $I->seeCurrentUrlEquals('/dashboard');
-        $I->seeInSource('Setup is now complete!');
+        $I->seeInTitle('System Settings');
+
+        $this->setupCompleteSettings($I);
+
+        $I->amOnPage('/dashboard');
+        $I->seeResponseCodeIs(200);
     }
 }

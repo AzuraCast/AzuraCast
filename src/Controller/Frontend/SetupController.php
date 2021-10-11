@@ -7,11 +7,11 @@ namespace App\Controller\Frontend;
 use App\Entity;
 use App\Environment;
 use App\Exception\NotLoggedInException;
-use App\Form\SettingsForm;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use App\Version;
 use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -183,40 +183,26 @@ class SetupController
     public function settingsAction(
         ServerRequest $request,
         Response $response,
-        FactoryInterface $factory
+        Version $version
     ): ResponseInterface {
-        $settingsForm = $factory->make(SettingsForm::class);
+        $router = $request->getRouter();
 
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'settings' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+            return $response->withRedirect((string)$router->named('setup:' . $current_step));
         }
 
-        if ($settingsForm->process($request)) {
-            $settings = $this->settingsRepo->readSettings();
-            $settings->updateSetupComplete();
-            $this->settingsRepo->writeSettings($settings);
-
-            // Notify the user and redirect to homepage.
-            $request->getFlash()->addMessage(
-                sprintf(
-                    '<b>%s</b><br>%s',
-                    __('Setup is now complete!'),
-                    __('Continue setting up your station in the main AzuraCast app.')
-                ),
-                Flash::SUCCESS
-            );
-
-            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
-        }
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/setup/settings',
-            [
-                'form' => $settingsForm,
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_SetupSettings',
+            id: 'setup-settings',
+            title: __('System Settings'),
+            props: [
+                'apiUrl'         => (string)$router->named('api:admin:settings'),
+                'releaseChannel' => $version->getReleaseChannel(),
+                'continueUrl'    => (string)$router->named('dashboard'),
+            ],
         );
     }
 }

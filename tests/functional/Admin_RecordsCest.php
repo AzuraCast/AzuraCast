@@ -72,7 +72,7 @@ class Admin_RecordsCest extends CestAbstract
         $I->wantTo('Manage settings.');
 
         $I->amOnPage('/admin/settings');
-        $I->submitForm('.form', []);
-        $I->seeCurrentUrlEquals('/admin/settings');
+        $I->seeResponseCodeIs(200);
+        $I->seeInTitle('System Settings');
     }
 }

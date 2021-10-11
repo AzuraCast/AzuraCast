@@ -62,6 +62,13 @@ abstract class CestAbstract
 
         /* Walk through the steps of completing setup automatically. */
 
+        $this->setupCompleteUser($I);
+        $this->setupCompleteStations($I);
+        $this->setupCompleteSettings($I);
+    }
+
+    protected function setupCompleteUser(FunctionalTester $I): void
+    {
         // Create administrator account.
         $role = new Entity\Role;
         $role->setName('Super Administrator');
@@ -83,7 +90,10 @@ abstract class CestAbstract
         $this->em->flush();
 
         $this->di->get(App\Acl::class)->reload();
+    }
 
+    protected function setupCompleteStations(FunctionalTester $I): void
+    {
         $test_station = new Entity\Station();
         $test_station->setName('Functional Test Radio');
         $test_station->setDescription('Test radio station.');
@@ -91,7 +101,10 @@ abstract class CestAbstract
         $test_station->setBackendType(App\Radio\Adapters::DEFAULT_BACKEND);
 
         $this->test_station = $this->stationRepo->create($test_station);
+    }
 
+    protected function setupCompleteSettings(FunctionalTester $I): void
+    {
         // Set settings.
         $settings = $this->settingsRepo->readSettings();
         $settings->updateSetupComplete();

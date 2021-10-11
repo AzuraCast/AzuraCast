@@ -41,8 +41,11 @@
                 <template #button-content>
                     <translate key="lang_btn_add_station">Add Station</translate>
                 </template>
-                <b-dropdown-item-button v-for="(stationName, stationId) in remainingStations" :key="stationId"
-                    @click="add(stationId)">{{ stationName }}</b-dropdown-item-button>
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <b-dropdown-item-button v-for="(stationName, stationId) in remainingStations" :key="stationId"
+                                            @click="add(stationId)">{{ stationName }}
+                    </b-dropdown-item-button>
+                </div>
             </b-dropdown>
         </b-button-group>
     </b-tab>

@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit">
+    <form class="form vue-form" @submit.prevent="submit">
         <section class="card mb-3" role="region">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">

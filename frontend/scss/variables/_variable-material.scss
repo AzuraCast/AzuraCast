@@ -481,18 +481,15 @@ $stepper-icon-height: $material-icon-size !default;
 $stepper-inner-spacer: 0.5rem !default;
 $stepper-padding-x: 1.5rem !default;
 $stepper-padding-y: 1.5rem !default;
-$stepper-text-color: $black-hint !default;
-$stepper-text-color-active: $black-primary !default;
+$stepper-text-color: $text-hint !default;
+$stepper-text-color-active: $text-primary !default;
 $stepper-text-font-size: 0.875rem !default;
 $stepper-text-font-weight: $font-weight-regular !default;
 
 @if $theme == 'dark' {
   $stepper-border-color: $material-color-grey-800;
   $stepper-icon-bg: $theme-color-3;
-  $stepper-icon-color: $white-primary;
   $stepper-icon-height: $material-icon-size;
-  $stepper-text-color: $white-divider;
-  $stepper-text-color-active: $material-color-grey-200;
 }
 
 // Tab (Bootstrap tab)
@@ -501,8 +498,8 @@ $stepper-text-font-weight: $font-weight-regular !default;
 $nav-tab-bg-hover: $black-divider !default;
 $nav-tab-border-color: $border-color !default;
 $nav-tab-border-width: $border-width !default;
-$nav-tab-color: $black-primary !default;
-$nav-tab-color-active: theme-color(secondary) !default;
+$nav-tab-color: $text-secondary !default;
+$nav-tab-color-active: $text-primary !default;
 $nav-tab-color-disabled: $black-hint !default;
 $nav-tab-font-size: 0.875rem !default;
 $nav-tab-font-weight: $font-weight-medium !default;
@@ -518,8 +515,8 @@ $nav-tab-link-padding-y: (($nav-tab-height - $nav-tab-font-size * $nav-tab-line-
   $nav-tab-bg-hover: $black-divider;
   $nav-tab-border-color: $border-color;
   $nav-tab-border-width: $border-width;
-  $nav-tab-color: $material-color-grey-200;
-  $nav-tab-color-active: theme-color(secondary);
+  $nav-tab-color: $text-secondary;
+  $nav-tab-color-active: $text-primary;
   $nav-tab-color-disabled: $black-hint;
   $nav-tab-indicator-bg: theme-color(secondary);
 }

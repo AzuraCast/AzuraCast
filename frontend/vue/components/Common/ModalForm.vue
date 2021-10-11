@@ -4,7 +4,7 @@
             <b-overlay variant="card" :show="loading">
                 <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
-                <b-form class="form" @submit.prevent="doSubmit">
+                <b-form class="form vue-form" @submit.prevent="doSubmit">
                     <slot name="default" v-bind="slotProps">
                     </slot>
 

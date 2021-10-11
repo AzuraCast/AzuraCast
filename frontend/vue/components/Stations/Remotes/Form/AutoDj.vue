@@ -7,7 +7,7 @@
                     <translate key="lang_edit_form_enable_autodj_desc">If enabled, the AutoDJ on this installation will automatically play music to this mount point.</translate>
                 </template>
                 <template #default="props">
-                    <b-form-checkbox :id="props.id" v-model="form.enable_autodj.$model">
+                    <b-form-checkbox :id="props.id" v-model="props.field.$model">
                         <translate key="lang_edit_form_enable_autodj">Broadcast AutoDJ to Remote Station</translate>
                     </b-form-checkbox>
                 </template>

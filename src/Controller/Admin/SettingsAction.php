@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
@@ -24,7 +25,9 @@ class SettingsAction
             id: 'admin-settings',
             title: __('System Settings'),
             props: [
-                'apiUrl'         => (string)$router->named('api:admin:settings'),
+                'apiUrl'         => (string)$router->named('api:admin:settings', [
+                    'group' => Settings::GROUP_GENERAL,
+                ]),
                 'releaseChannel' => $version->getReleaseChannel(),
             ],
         );

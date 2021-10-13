@@ -12,6 +12,7 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -45,10 +46,18 @@ class SettingsController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        ?string $group = null
+    ): ResponseInterface {
+        $context = [];
+        if (null !== $group && in_array($group, Entity\Settings::VALID_GROUPS, true)) {
+            $context[AbstractNormalizer::GROUPS] = [$group];
+        }
+
         $settings = $this->settingsRepo->readSettings();
-        return $response->withJson($this->toArray($settings));
+        return $response->withJson($this->toArray($settings, $context));
     }
 
     /**
@@ -70,10 +79,18 @@ class SettingsController extends AbstractApiCrudController
      *
      * @throws ValidationException
      */
-    public function updateAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function updateAction(
+        ServerRequest $request,
+        Response $response,
+        ?string $group = null
+    ): ResponseInterface {
+        $context = [];
+        if (null !== $group && in_array($group, Entity\Settings::VALID_GROUPS, true)) {
+            $context[AbstractNormalizer::GROUPS] = [$group];
+        }
+
         $settings = $this->settingsRepo->readSettings();
-        $this->editRecord((array)$request->getParsedBody(), $settings);
+        $this->editRecord((array)$request->getParsedBody(), $settings, $context);
 
         return $response->withJson(Entity\Api\Status::success());
     }

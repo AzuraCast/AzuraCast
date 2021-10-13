@@ -150,10 +150,15 @@ return static function (RouteCollectorProxy $app) {
                     $group->group(
                         '',
                         function (RouteCollectorProxy $group) {
-                            $group->get('/settings', Controller\Api\Admin\SettingsController::class . ':listAction')
-                                ->setName('api:admin:settings');
+                            $group->get(
+                                '/settings[/{group}]',
+                                Controller\Api\Admin\SettingsController::class . ':listAction'
+                            )->setName('api:admin:settings');
 
-                            $group->put('/settings', Controller\Api\Admin\SettingsController::class . ':updateAction');
+                            $group->put(
+                                '/settings[/{group}]',
+                                Controller\Api\Admin\SettingsController::class . ':updateAction'
+                            );
 
                             $group->get(
                                 '/custom_assets/{type}',

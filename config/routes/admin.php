@@ -53,7 +53,7 @@ return static function (RouteCollectorProxy $app) {
             $group->group(
                 '/install',
                 function (RouteCollectorProxy $group) {
-                    $group->map(['GET', 'POST'], '/shoutcast', Controller\Admin\InstallShoutcastController::class)
+                    $group->get('/shoutcast', Controller\Admin\ShoutcastAction::class)
                         ->setName('admin:install_shoutcast:index');
 
                     $group->get('/geolite', Controller\Admin\GeoLiteAction::class)

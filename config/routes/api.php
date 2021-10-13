@@ -183,6 +183,16 @@ return static function (RouteCollectorProxy $app) {
                                 '/geolite',
                                 Controller\Api\Admin\GeoLite\PostAction::class
                             );
+
+                            $group->get(
+                                '/shoutcast',
+                                Controller\Api\Admin\Shoutcast\GetAction::class
+                            )->setName('api:admin:shoutcast');
+
+                            $group->post(
+                                '/shoutcast',
+                                Controller\Api\Admin\Shoutcast\PostAction::class
+                            );
                         }
                     )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 

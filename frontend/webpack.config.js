@@ -13,6 +13,7 @@ module.exports = {
         AdminGeoLite: '~/pages/Admin/GeoLite.js',
         AdminPermissions: '~/pages/Admin/Permissions.js',
         AdminSettings: '~/pages/Admin/Settings.js',
+        AdminShoutcast: '~/pages/Admin/Shoutcast.js',
         AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
         PublicFullPlayer: '~/pages/Public/FullPlayer.js',
         PublicHistory: '~/pages/Public/History.js',

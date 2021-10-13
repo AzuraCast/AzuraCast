@@ -173,6 +173,16 @@ return static function (RouteCollectorProxy $app) {
                                 '/custom_assets/{type}',
                                 Controller\Api\Admin\CustomAssets\DeleteCustomAssetAction::class
                             );
+
+                            $group->get(
+                                '/geolite',
+                                Controller\Api\Admin\GeoLite\GetAction::class
+                            )->setName('api:admin:geolite');
+
+                            $group->post(
+                                '/geolite',
+                                Controller\Api\Admin\GeoLite\PostAction::class
+                            );
                         }
                     )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 

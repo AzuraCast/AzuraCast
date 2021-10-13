@@ -39,7 +39,7 @@ class PostMediaAction
             $fsStation = new StationFilesystems($station);
             $mediaRepo->upload(
                 $episode,
-                $flowResponse->getOriginalFilename(),
+                $flowResponse->getClientFilename(),
                 $flowResponse->getUploadedPath(),
                 $fsStation->getPodcastsFilesystem()
             );

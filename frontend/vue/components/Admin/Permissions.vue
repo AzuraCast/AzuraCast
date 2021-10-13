@@ -54,7 +54,7 @@ import EditModal from './Permissions/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import _ from 'lodash';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'AdminPermissions',
@@ -98,9 +98,8 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Role?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

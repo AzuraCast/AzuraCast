@@ -51,7 +51,7 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationRequests',
@@ -77,9 +77,8 @@ export default {
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
         },
         doDelete(url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Request?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(
@@ -92,7 +91,7 @@ export default {
             });
         },
         doClear() {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Clear All Pending Requests?'),
                 confirmButtonText: this.$gettext('Clear'),
             }).then((result) => {

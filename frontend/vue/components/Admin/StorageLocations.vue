@@ -48,7 +48,7 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'AdminStorageLocations',
@@ -120,9 +120,8 @@ export default {
             });
         },
         doDelete (url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Storage Location?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

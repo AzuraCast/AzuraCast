@@ -48,8 +48,8 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './CustomFields/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import confirmDelete from '~/functions/confirmDelete';
 import _ from 'lodash';
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'AdminCustomFields',
@@ -81,9 +81,8 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            confirmDelete({
-                title: this.$gettext('Delete Custom Field?'),
-                confirmButtonText: this.$gettext('Delete'),
+            this.$confirmDelete({
+                title: this.$gettext('Delete Custom Field?')
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

@@ -61,10 +61,10 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Webhooks/EditModal';
 import Icon from '~/components/Common/Icon';
-import confirmDelete from "~/functions/confirmDelete";
 import InfoCard from "~/components/Common/InfoCard";
 import _ from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationWebhooks',
@@ -127,9 +127,8 @@ export default {
             });
         },
         doDelete(url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Web Hook?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

@@ -63,7 +63,7 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export const listViewProps = {
     props: {
@@ -115,9 +115,8 @@ export default {
             this.$emit('select-podcast', podcast);
         },
         doDelete (url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Podcast?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

@@ -71,8 +71,8 @@ import EditModal from './Streamers/EditModal';
 import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '~/components/Common/ScheduleView';
 import Icon from '~/components/Common/Icon';
-import confirmDelete from "~/functions/confirmDelete";
 import ConnectionInfo from "./Streamers/ConnectionInfo";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationStreamers',
@@ -119,9 +119,8 @@ export default {
             this.$refs.broadcastsModal.open(url);
         },
         doDelete (url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Streamer?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

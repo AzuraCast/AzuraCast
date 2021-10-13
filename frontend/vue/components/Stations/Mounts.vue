@@ -62,7 +62,7 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationMounts',
@@ -102,9 +102,8 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete (url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Mount Point?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

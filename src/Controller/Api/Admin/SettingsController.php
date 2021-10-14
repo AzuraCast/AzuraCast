@@ -90,6 +90,11 @@ class SettingsController extends AbstractApiCrudController
         }
 
         $settings = $this->settingsRepo->readSettings();
+
+        if ($group === Entity\Settings::GROUP_GENERAL && !$settings->isSetupComplete()) {
+            $settings->updateSetupComplete();
+        }
+
         $this->editRecord((array)$request->getParsedBody(), $settings, $context);
 
         return $response->withJson(Entity\Api\Status::success());

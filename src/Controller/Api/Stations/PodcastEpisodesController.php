@@ -235,7 +235,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
 
             $this->podcastMediaRepository->upload(
                 $record,
-                $media->getOriginalFilename(),
+                $media->getClientFilename(),
                 $media->getUploadedPath()
             );
         }

@@ -155,6 +155,7 @@ class Flow
 
         $uploadedFile = new UploadedFile($file->getClientFilename(), null, $tempDir);
         $file->moveTo($uploadedFile->getUploadedPath());
+
         return $uploadedFile;
     }
 

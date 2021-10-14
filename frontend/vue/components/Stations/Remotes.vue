@@ -58,7 +58,7 @@ import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import RemoteEditModal from "./Remotes/EditModal";
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationMounts',
@@ -96,9 +96,8 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Remote Relay?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

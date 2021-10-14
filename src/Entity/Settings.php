@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
 use OpenApi\Annotations as OA;
 use Stringable;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object", schema="Settings") */
@@ -22,6 +23,19 @@ class Settings implements Stringable
 {
     use Entity\Traits\TruncateStrings;
     use Entity\Traits\TruncateInts;
+
+    // Sorting groups for settings, as used in Symfony serialization.
+    public const GROUP_GENERAL = 'general';
+    public const GROUP_BRANDING = 'branding';
+    public const GROUP_BACKUP = 'backup';
+    public const GROUP_GEO_IP = 'geo_ip';
+
+    public const VALID_GROUPS = [
+        self::GROUP_GENERAL,
+        self::GROUP_BRANDING,
+        self::GROUP_BACKUP,
+        self::GROUP_GEO_IP,
+    ];
 
     /** @OA\Property() */
     #[ORM\Column(type: 'guid', unique: true)]
@@ -44,6 +58,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $base_url = '';
 
     public function getBaseUrl(): ?string
@@ -80,6 +95,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $instance_name = null;
 
     public function getInstanceName(): ?string
@@ -99,6 +115,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $prefer_browser_url = false;
 
     public function getPreferBrowserUrl(): bool
@@ -118,6 +135,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $use_radio_proxy = false;
 
     public function getUseRadioProxy(): bool
@@ -137,6 +155,7 @@ class Settings implements Stringable
      */
     #[ORM\Column(type: 'smallint')]
     #[Assert\Choice([0, 14, 30, 60, 365, 730])]
+    #[Groups(self::GROUP_GENERAL)]
     protected int $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
 
     public function getHistoryKeepDays(): int
@@ -156,6 +175,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $always_use_ssl = false;
 
     public function getAlwaysUseSsl(): bool
@@ -175,6 +195,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $api_access_control = '';
 
     public function getApiAccessControl(): string
@@ -194,6 +215,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $enable_websockets = false;
 
     public function getEnableWebsockets(): bool
@@ -213,6 +235,7 @@ class Settings implements Stringable
      */
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Choice([Analytics::LEVEL_NONE, Analytics::LEVEL_NO_IP, Analytics::LEVEL_ALL])]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $analytics = Analytics::LEVEL_ALL;
 
     public function getAnalytics(): string
@@ -232,6 +255,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $check_for_updates = true;
 
     public function getCheckForUpdates(): bool
@@ -301,6 +325,7 @@ class Settings implements Stringable
      */
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Choice([Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK])]
+    #[Groups(self::GROUP_BRANDING)]
     protected ?string $public_theme = Customization::DEFAULT_THEME;
 
     public function getPublicTheme(): string
@@ -320,6 +345,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_BRANDING)]
     protected bool $hide_album_art = false;
 
     public function getHideAlbumArt(): bool
@@ -339,6 +365,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_BRANDING)]
     protected ?string $homepage_redirect_url = null;
 
     public function getHomepageRedirectUrl(): ?string
@@ -358,6 +385,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(nullable: true)]
+    #[Groups(self::GROUP_BRANDING)]
     protected ?string $default_album_art_url = null;
 
     public function getDefaultAlbumArtUrl(): ?string
@@ -377,6 +405,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $use_external_album_art_when_processing_media = false;
 
     public function getUseExternalAlbumArtWhenProcessingMedia(): bool
@@ -396,6 +425,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $use_external_album_art_in_apis = false;
 
     public function getUseExternalAlbumArtInApis(): bool
@@ -415,6 +445,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $last_fm_api_key = null;
 
     public function getLastFmApiKey(): ?string
@@ -437,6 +468,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_BRANDING)]
     protected bool $hide_product_name = false;
 
     public function getHideProductName(): bool
@@ -456,6 +488,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(self::GROUP_BRANDING)]
     protected ?string $public_custom_css = null;
 
     public function getPublicCustomCss(): ?string
@@ -475,6 +508,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(self::GROUP_BRANDING)]
     protected ?string $public_custom_js = null;
 
     public function getPublicCustomJs(): ?string
@@ -494,6 +528,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(self::GROUP_BRANDING)]
     protected ?string $internal_custom_css = null;
 
     public function getInternalCustomCss(): ?string
@@ -513,6 +548,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_BACKUP)]
     protected bool $backup_enabled = false;
 
     public function getBackupEnabled(): bool
@@ -532,6 +568,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 4, nullable: true)]
+    #[Groups(self::GROUP_BACKUP)]
     protected ?string $backup_time_code = null;
 
     public function getBackupTimeCode(): ?string
@@ -551,6 +588,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_BACKUP)]
     protected bool $backup_exclude_media = false;
 
     public function getBackupExcludeMedia(): bool
@@ -570,6 +608,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'smallint')]
+    #[Groups(self::GROUP_BACKUP)]
     protected int $backup_keep_copies = 0;
 
     public function getBackupKeepCopies(): int
@@ -589,6 +628,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(nullable: true)]
+    #[Groups(self::GROUP_BACKUP)]
     protected ?int $backup_storage_location = null;
 
     public function getBackupStorageLocation(): ?int
@@ -609,6 +649,7 @@ class Settings implements Stringable
      */
     #[ORM\Column]
     #[Attributes\AuditIgnore]
+    #[Groups(self::GROUP_BACKUP)]
     protected int $backup_last_run = 0;
 
     public function getBackupLastRun(): int
@@ -634,6 +675,7 @@ class Settings implements Stringable
      */
     #[ORM\Column(type: 'text', nullable: true)]
     #[Attributes\AuditIgnore]
+    #[Groups(self::GROUP_BACKUP)]
     protected ?string $backup_last_output = null;
 
     public function getBackupLastOutput(): ?string
@@ -839,6 +881,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GEO_IP)]
     protected ?string $geolite_license_key = null;
 
     public function getGeoliteLicenseKey(): ?string
@@ -861,6 +904,7 @@ class Settings implements Stringable
      */
     #[ORM\Column]
     #[Attributes\AuditIgnore]
+    #[Groups(self::GROUP_GEO_IP)]
     protected int $geolite_last_run = 0;
 
     public function getGeoliteLastRun(): int
@@ -885,6 +929,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $enable_advanced_features = false;
 
     public function getEnableAdvancedFeatures(): bool
@@ -904,6 +949,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $mail_enabled = false;
 
     public function getMailEnabled(): bool
@@ -923,6 +969,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $mail_sender_name = '';
 
     public function getMailSenderName(): string
@@ -942,6 +989,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $mail_sender_email = '';
 
     public function getMailSenderEmail(): string
@@ -961,6 +1009,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $mail_smtp_host = '';
 
     public function getMailSmtpHost(): string
@@ -980,6 +1029,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'smallint')]
+    #[Groups(self::GROUP_GENERAL)]
     protected int $mail_smtp_port = 0;
 
     public function getMailSmtpPort(): int
@@ -999,6 +1049,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $mail_smtp_username = '';
 
     public function getMailSmtpUsername(): string
@@ -1018,6 +1069,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $mail_smtp_password = '';
 
     public function getMailSmtpPassword(): string
@@ -1037,6 +1089,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
+    #[Groups(self::GROUP_GENERAL)]
     protected bool $mail_smtp_secure = true;
 
     public function getMailSmtpSecure(): bool
@@ -1056,6 +1109,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 25, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $avatar_service = null;
 
     public function getAvatarService(): string
@@ -1075,6 +1129,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(self::GROUP_GENERAL)]
     protected ?string $avatar_default_url = null;
 
     public function getAvatarDefaultUrl(): string

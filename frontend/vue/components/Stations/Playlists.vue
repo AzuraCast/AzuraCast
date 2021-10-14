@@ -135,7 +135,7 @@ import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
 import {DateTime} from 'luxon';
 import humanizeDuration from 'humanize-duration';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationPlaylists',
@@ -262,9 +262,8 @@ export default {
             });
         },
         doDelete (url) {
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettext('Delete Playlist?'),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

@@ -37,7 +37,7 @@ class StationMountRepository extends Repository
             $mount->setIntroPath(null);
         }
 
-        $originalPath = $file->getOriginalFilename();
+        $originalPath = $file->getClientFilename();
         $originalExt = pathinfo($originalPath, PATHINFO_EXTENSION);
 
         $introPath = 'mount_' . $mount->getIdRequired() . '_intro.' . $originalExt;

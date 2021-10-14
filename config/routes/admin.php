@@ -53,18 +53,13 @@ return static function (RouteCollectorProxy $app) {
             $group->group(
                 '/install',
                 function (RouteCollectorProxy $group) {
-                    $group->map(['GET', 'POST'], '/shoutcast', Controller\Admin\InstallShoutcastController::class)
+                    $group->get('/shoutcast', Controller\Admin\ShoutcastAction::class)
                         ->setName('admin:install_shoutcast:index');
 
-                    $group->map(['GET', 'POST'], '/geolite', Controller\Admin\InstallGeoLiteController::class)
+                    $group->get('/geolite', Controller\Admin\GeoLiteAction::class)
                         ->setName('admin:install_geolite:index');
-
-                    $group->get(
-                        '/geolite/uninstall/{csrf}',
-                        Controller\Admin\InstallGeoLiteController::class . ':uninstallAction'
-                    )->setName('admin:install_geolite:uninstall');
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+            )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
             $group->get('/auditlog', Controller\Admin\AuditLogAction::class)
                 ->setName('admin:auditlog:index')

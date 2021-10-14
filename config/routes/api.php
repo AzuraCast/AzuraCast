@@ -150,10 +150,15 @@ return static function (RouteCollectorProxy $app) {
                     $group->group(
                         '',
                         function (RouteCollectorProxy $group) {
-                            $group->get('/settings', Controller\Api\Admin\SettingsController::class . ':listAction')
-                                ->setName('api:admin:settings');
+                            $group->get(
+                                '/settings[/{group}]',
+                                Controller\Api\Admin\SettingsController::class . ':listAction'
+                            )->setName('api:admin:settings');
 
-                            $group->put('/settings', Controller\Api\Admin\SettingsController::class . ':updateAction');
+                            $group->put(
+                                '/settings[/{group}]',
+                                Controller\Api\Admin\SettingsController::class . ':updateAction'
+                            );
 
                             $group->get(
                                 '/custom_assets/{type}',
@@ -167,6 +172,26 @@ return static function (RouteCollectorProxy $app) {
                             $group->delete(
                                 '/custom_assets/{type}',
                                 Controller\Api\Admin\CustomAssets\DeleteCustomAssetAction::class
+                            );
+
+                            $group->get(
+                                '/geolite',
+                                Controller\Api\Admin\GeoLite\GetAction::class
+                            )->setName('api:admin:geolite');
+
+                            $group->post(
+                                '/geolite',
+                                Controller\Api\Admin\GeoLite\PostAction::class
+                            );
+
+                            $group->get(
+                                '/shoutcast',
+                                Controller\Api\Admin\Shoutcast\GetAction::class
+                            )->setName('api:admin:shoutcast');
+
+                            $group->post(
+                                '/shoutcast',
+                                Controller\Api\Admin\Shoutcast\PostAction::class
                             );
                         }
                     )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));

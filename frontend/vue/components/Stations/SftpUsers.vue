@@ -62,9 +62,9 @@
 
 <script>
 import DataTable from "~/components/Common/DataTable";
-import confirmDelete from "~/functions/confirmDelete";
 import SftpUsersEditModal from "./SftpUsers/EditModal";
 import Icon from "~/components/Common/Icon";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'SftpUsers',
@@ -92,9 +92,8 @@ export default {
             this.$refs.editModal.edit(url);
         },
         doDelete(url) {
-            confirmDelete({
-                title: this.$gettext('Delete SFTP User?'),
-                confirmButtonText: this.$gettext('Delete'),
+            this.$confirmDelete({
+                title: this.$gettext('Delete SFTP User?')
             }).then((result) => {
                 if (result.value) {
                     this.$wrapWithLoading(

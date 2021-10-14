@@ -42,7 +42,7 @@ import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StreamerBroadcastsModal',
@@ -108,9 +108,8 @@ export default {
     },
     methods: {
         doDelete (url) {
-            confirmDelete({
-                title: this.$gettext('Delete Broadcast?'),
-                confirmButtonText: this.$gettext('Delete'),
+            this.$confirmDelete({
+                title: this.$gettext('Delete Broadcast?')
             }).then((result) => {
                 if (result.value) {
                     this.axios.delete(url).then((resp) => {

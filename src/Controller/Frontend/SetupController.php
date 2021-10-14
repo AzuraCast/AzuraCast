@@ -199,7 +199,9 @@ class SetupController
             id: 'setup-settings',
             title: __('System Settings'),
             props: [
-                'apiUrl'         => (string)$router->named('api:admin:settings'),
+                'apiUrl'         => (string)$router->named('api:admin:settings', [
+                    'group' => Entity\Settings::GROUP_GENERAL,
+                ]),
                 'releaseChannel' => $version->getReleaseChannel(),
                 'continueUrl'    => (string)$router->named('dashboard'),
             ],

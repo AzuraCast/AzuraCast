@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
-class SettingsAction
+class ShoutcastAction
 {
     public function __invoke(
         ServerRequest $request,
@@ -21,14 +20,11 @@ class SettingsAction
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminSettings',
-            id: 'admin-settings',
-            title: __('System Settings'),
+            component: 'Vue_AdminShoutcast',
+            id: 'admin-shoutcast',
+            title: __('Install SHOUTcast 2 DNAS'),
             props: [
-                'apiUrl'         => (string)$router->named('api:admin:settings', [
-                    'group' => Settings::GROUP_GENERAL,
-                ]),
-                'releaseChannel' => $version->getReleaseChannel(),
+                'apiUrl' => (string)$router->named('api:admin:shoutcast'),
             ],
         );
     }

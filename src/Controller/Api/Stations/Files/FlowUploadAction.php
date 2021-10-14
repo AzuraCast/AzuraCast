@@ -40,12 +40,12 @@ class FlowUploadAction
 
         $currentDir = $request->getParam('currentDirectory', '');
 
-        $destPath = $flowResponse->getOriginalFilename();
+        $destPath = $flowResponse->getClientFilename();
         if (!empty($currentDir)) {
             $destPath = $currentDir . '/' . $destPath;
         }
 
-        $uploadedSize = $flowResponse->getUploadedSize();
+        $uploadedSize = $flowResponse->getSize();
 
         try {
             $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse->getUploadedPath());

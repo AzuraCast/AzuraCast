@@ -74,7 +74,7 @@
 <script>
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
-import confirmDelete from "~/functions/confirmDelete";
+import '~/vendor/sweetalert.js';
 
 export default {
     name: 'station-media-toolbar',
@@ -143,9 +143,8 @@ export default {
             let buttonConfirmText = this.$gettext('Delete %{ num } media files?');
             let numFiles = this.selectedItems.all.length;
 
-            confirmDelete({
+            this.$confirmDelete({
                 title: this.$gettextInterpolate(buttonConfirmText, {num: numFiles}),
-                confirmButtonText: this.$gettext('Delete'),
             }).then((result) => {
                 if (result.value) {
                     this.doBatch('delete', this.$gettext('Files removed:'));

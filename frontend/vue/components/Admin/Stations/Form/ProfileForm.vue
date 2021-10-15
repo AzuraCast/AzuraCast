@@ -1,4 +1,12 @@
 <template>
+    <b-tab :title="langTabTitle" active>
+        <b-form-group>
+            <b-row>
+
+            </b-row>
+        </b-form-group>
+    </b-tab>
+
     'profile' => [
     'tab' => 'profile',
     'use_grid' => true,
@@ -146,6 +154,14 @@
 
 <script>
 export default {
-    name: 'AdminStationsProfileForm'
+    name: 'AdminStationsProfileForm',
+    props: {
+        form: Object
+    },
+    computed: {
+        langTabTitle() {
+            return this.$gettext('Station Profile');
+        },
+    }
 }
 </script>

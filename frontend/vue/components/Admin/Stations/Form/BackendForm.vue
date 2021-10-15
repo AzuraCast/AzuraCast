@@ -1,4 +1,12 @@
 <template>
+    <b-tab :title="langTabTitle">
+        <b-form-group>
+            <b-row>
+
+            </b-row>
+        </b-form-group>
+    </b-tab>
+
     'select_backend_type' => [
     'tab' => 'backend',
     'elements' => [
@@ -92,7 +100,8 @@
     'label' => __('Request Minimum Delay (Minutes)'),
     'description' => __(
     'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being
-    played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum
+    played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.<br><b>Important:</b> Some
+    stream licensing rules require a minimum
     delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.'
     ),
     'default' => Station::DEFAULT_REQUEST_DELAY,
@@ -348,5 +357,13 @@
 <script>
 export default {
     name: 'AdminStationsBackendForm',
+    props: {
+        form: Object
+    },
+    computed: {
+        langTabTitle() {
+            return this.$gettext('AutoDJ');
+        },
+    }
 }
 </script>

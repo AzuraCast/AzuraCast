@@ -1,4 +1,12 @@
 <template>
+    <b-tab :title="langTabTitle">
+        <b-form-group>
+            <b-row>
+
+            </b-row>
+        </b-form-group>
+    </b-tab>
+
     'select_frontend_type' => [
     'tab' => 'frontend',
 
@@ -128,6 +136,14 @@
 
 <script>
 export default {
-    name: 'AdminStationsFrontendForm'
+    name: 'AdminStationsFrontendForm',
+    props: {
+        form: Object
+    },
+    computed: {
+        langTabTitle() {
+            return this.$gettext('Broadcasting');
+        },
+    }
 }
 </script>

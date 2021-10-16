@@ -1,149 +1,173 @@
 <template>
     <b-tab :title="langTabTitle">
-        <b-form-group>
+        <b-form-fieldset>
+            <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
+                                  :field="form.frontend_type">
+                <template #label>
+                    <translate key="lang_edit_form_frontend_type">Broadcasting Service</translate>
+                </template>
+                <template #description>
+                    <translate key="lang_edit_form_frontend_type_desc">This software delivers your broadcast to the listening audience.</translate>
+                </template>
+                <template #default="props">
+                    <b-form-radio-group stacked :id="props.id" :options="frontendTypeOptions"
+                                        v-model="props.field.$model">
+                    </b-form-radio-group>
+                </template>
+            </b-wrapped-form-group>
+        </b-form-fieldset>
+
+        <b-form-fieldset v-if="isLocalFrontend">
             <b-row>
+                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
+                                      :field="form.frontend_config.source_pw">
+                    <template #label>
+                        <translate key="lang_form_frontend_source_pw">Customize Source Password</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_source_pw_desc">Leave blank to automatically generate a new password.</translate>
+                    </template>
+                </b-wrapped-form-group>
 
+                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_admin_pw"
+                                      :field="form.frontend_config.admin_pw">
+                    <template #label>
+                        <translate key="lang_form_frontend_admin_pw">Customize Administrator Password</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_admin_pw_desc">Leave blank to automatically generate a new password.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_port"
+                                      :field="form.frontend_config.port" advanced>
+                    <template #label>
+                        <translate key="lang_form_frontend_port">Customize Broadcasting Port</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_port_desc">No other program can be using this port. Leave blank to automatically assign a port.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-6" id="edit_form_max_listeners"
+                                      :field="form.frontend_config.max_listeners" advanced>
+                    <template #label>
+                        <translate key="lang_form_frontend_max_listeners">Maximum Listeners</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_max_listeners_desc">Maximum number of total listeners across all streams. Leave blank to use the default.</translate>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
-        </b-form-group>
+
+            <b-row>
+                <b-wrapped-form-group class="col-md-5" id="edit_form_frontend_banned_ips"
+                                      :field="form.frontend_config.banned_ips" input-type="textarea"
+                                      :input-attrs="{class: 'text-preformatted'}" advanced>
+                    <template #label>
+                        <translate key="lang_form_frontend_banned_ips">Banned IP Addresses</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_banned_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
+                                      :field="form.frontend_config.banned_countries"
+                                      advanced>
+                    <template #label>
+                        <translate key="lang_form_frontend_banned_countries">Banned Countries</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_banned_countries_desc">Select the countries that are not allowed to connect to the streams.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-select :id="props.id" v-model="props.field.$model"
+                                       :options="countryOptions"></b-form-select>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-5" id="edit_form_frontend_allowed_ips"
+                                      :field="form.frontend_config.allowed_ips" input-type="textarea"
+                                      :input-attrs="{class: 'text-preformatted'}" advanced>
+                    <template #label>
+                        <translate key="lang_form_frontend_allowed_ips">Allowed IP Addresses</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_frontend_allowed_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                    </template>
+                </b-wrapped-form-group>
+            </b-row>
+
+            <b-form-fieldset>
+                <template #label>
+                    <translate key="lang_hdr_custom_config">Custom Configuration</translate>
+                </template>
+                <template #description>
+                    <translate key="lang_custom_config_1">This code will be included in the frontend configuration. Allowed formats are:</translate>
+                    <ul>
+                        <li>JSON: <code>{"new_key": "new_value"}</code></li>
+                        <li>XML: <code>&lt;new_key&gt;new_value&lt;/new_key&gt;</code></li>
+                    </ul>
+                </template>
+            </b-form-fieldset>
+        </b-form-fieldset>
     </b-tab>
-
-    'select_frontend_type' => [
-    'tab' => 'frontend',
-
-    'elements' => [
-    'frontend_type' => [
-    'radio',
-    [
-    'label' => __('Broadcasting Service'),
-    'description' => __('This software delivers your broadcast to the listening audience.'),
-    'options' => $frontend_types,
-    'default' => Adapters::DEFAULT_FRONTEND,
-    ],
-    ],
-    ],
-    ],
-
-    'frontend_local' => [
-    'use_grid' => true,
-    'class' => 'frontend_fieldset',
-    'tab' => 'frontend',
-
-    'elements' => [
-
-    StationFrontendConfiguration::SOURCE_PASSWORD => [
-    'text',
-    [
-    'label' => __('Customize Source Password'),
-    'description' => __('Leave blank to automatically generate a new password.'),
-    'belongsTo' => 'frontend_config',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    StationFrontendConfiguration::ADMIN_PASSWORD => [
-    'text',
-    [
-    'label' => __('Customize Administrator Password'),
-    'description' => __('Leave blank to automatically generate a new password.'),
-    'belongsTo' => 'frontend_config',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    StationFrontendConfiguration::PORT => [
-    'text',
-    [
-    'label' => __('Customize Broadcasting Port'),
-    'label_class' => 'advanced',
-    'description' => __(
-    'No other program can be using this port. Leave blank to automatically assign a port.'
-    ),
-    'belongsTo' => 'frontend_config',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    StationFrontendConfiguration::MAX_LISTENERS => [
-    'text',
-    [
-    'label' => __('Maximum Listeners'),
-    'label_class' => 'advanced',
-    'description' => __(
-    'Maximum number of total listeners across all streams. Leave blank to use the default (250).'
-    ),
-    'belongsTo' => 'frontend_config',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    StationFrontendConfiguration::CUSTOM_CONFIGURATION => [
-    'textarea',
-    [
-    'label' => __('Custom Configuration'),
-    'label_class' => 'advanced',
-    'belongsTo' => 'frontend_config',
-    'class' => 'text-preformatted',
-    'description' => __(
-    'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format
-    or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'
-    ).__(
-    'For SHOUTcast Premium users, you can use custom configuration in this format: <code>{ "licenceid":
-    "YOUR_LICENSE_ID", "userid": "YOUR_USER_ID" }</code>'
-    ),
-    'form_group_class' => 'col-sm-7',
-    ],
-    ],
-
-    StationFrontendConfiguration::BANNED_IPS => [
-    'textarea',
-    [
-    'label' => __('Banned IP Addresses'),
-    'label_class' => 'advanced',
-    'belongsTo' => 'frontend_config',
-    'class' => 'text-preformatted',
-    'description' => __('List one IP address or group (in CIDR format) per line.'),
-    'form_group_class' => 'col-sm-5',
-    ],
-    ],
-
-    StationFrontendConfiguration::BANNED_COUNTRIES => [
-    'multiselect',
-    [
-    'label' => __('Banned Countries'),
-    'label_class' => 'advanced',
-    'belongsTo' => 'frontend_config',
-    'description' => __('Select the countries that are not allowed to connect to the streams.'),
-    'form_group_class' => 'col-sm-7',
-    'options' => $countries,
-    ],
-    ],
-
-    StationFrontendConfiguration::ALLOWED_IPS => [
-    'textarea',
-    [
-    'label' => __('Allowed IP Addresses'),
-    'label_class' => 'advanced',
-    'belongsTo' => 'frontend_config',
-    'class' => 'text-preformatted',
-    'description' => __('List one IP address or group (in CIDR format) per line to explicitly allow them to connect even
-    when their country is banned.'),
-    'form_group_class' => 'col-sm-5',
-    ],
-    ],
-    ],
-    ],
 </template>
 
 <script>
+import BFormFieldset from "~/components/Form/BFormFieldset";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
+import _ from "lodash";
+
 export default {
     name: 'AdminStationsFrontendForm',
+    components: {BWrappedFormGroup, BFormFieldset},
     props: {
-        form: Object
+        form: Object,
+        isShoutcastInstalled: {
+            type: Boolean,
+            default: false
+        },
+        countries: Object
     },
     computed: {
         langTabTitle() {
             return this.$gettext('Broadcasting');
         },
+        frontendTypeOptions() {
+            let frontendOptions = [
+                {
+                    text: this.$gettext('Only connect to a remote server.'),
+                    value: FRONTEND_REMOTE
+                },
+                {
+                    text: this.$gettext('Use Icecast 2.4 on this server.'),
+                    value: FRONTEND_ICECAST
+                },
+            ];
+
+            if (this.isShoutcastInstalled) {
+                frontendOptions.push({
+                    text: this.$gettext('Use SHOUTcast DNAS 2 on this server.'),
+                    value: FRONTEND_SHOUTCAST
+                });
+            }
+
+            return frontendOptions;
+        },
+        countryOptions() {
+            return _.map(this.countries, (name, key) => {
+                return {
+                    text: name,
+                    value: key
+                }
+            });
+        },
+        isLocalFrontend() {
+            return form.frontend_type.$model !== FRONTEND_REMOTE;
+        }
     }
 }
 </script>

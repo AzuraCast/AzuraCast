@@ -3,9 +3,9 @@
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
                 <b-form-textarea v-if="inputType === 'textarea'" :id="id" v-model="field.$model"
-                                 :state="fieldState"></b-form-textarea>
+                                 v-bind="fieldAttrs" :state="fieldState"></b-form-textarea>
                 <b-form-input v-else :type="inputType" :id="id" v-model="field.$model"
-                              :state="fieldState"></b-form-input>
+                              v-bind="fieldAttrs" :state="fieldState"></b-form-input>
             </slot>
 
             <b-form-invalid-feedback :state="fieldState">
@@ -44,6 +44,12 @@ export default {
         field: {
             type: Object,
             required: true
+        },
+        fieldAttrs: {
+            type: Object,
+            default() {
+                return {};
+            }
         },
         inputType: {
             type: String,

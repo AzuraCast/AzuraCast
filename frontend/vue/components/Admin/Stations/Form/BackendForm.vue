@@ -1,130 +1,118 @@
 <template>
     <b-tab :title="langTabTitle">
-        <b-form-group>
+        <b-form-fieldset>
+            <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
+                                  :field="form.backend_type">
+                <template #label>
+                    <translate key="lang_edit_form_backend_type">Broadcasting Service</translate>
+                </template>
+                <template #description>
+                    <translate key="lang_edit_form_backend_type_desc">This software shuffles from playlists of music constantly and plays when no other radio source is available.</translate>
+                </template>
+                <template #default="props">
+                    <b-form-radio-group stacked :id="props.id" :options="backendTypeOptions"
+                                        v-model="props.field.$model">
+                    </b-form-radio-group>
+                </template>
+            </b-wrapped-form-group>
+        </b-form-fieldset>
+
+        <b-form-fieldset v-if="isBackendEnabled">
             <b-row>
+                <b-wrapped-form-group class="col-md-8" id="edit_form_backend_crossfade_type"
+                                      :field="form.backend_config.crossfade_type">
+                    <template #label>
+                        <translate key="lang_form_backend_crossfade_type">Crossfade Method</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_backend_crossfade_type_desc">Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.</translate>
+                    </template>
 
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="crossfadeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-4" id="edit_form_backend_crossfade"
+                                      :field="form.backend_config.crossfade" input-type="number"
+                                      :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }">
+                    <template #label>
+                        <translate key="lang_form_backend_crossfade">Crossfade Duration (Seconds)</translate>
+                    </template>
+                    <template #description>
+                        <translate
+                            key="lang_form_backend_crossfade_desc">Number of seconds to overlap songs.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-12"
+                                      id="edit_form_backend_config_nrj"
+                                      :field="form.backend_config.nrj">
+                    <template #description>
+                        <translate key="lang_edit_form_backend_config_nrj_desc">Compress and normalize your station's audio, producing a more uniform and "full" sound.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                            <translate
+                                key="lang_edit_form_backend_config_nrj">Apply Compression and Normalization</translate>
+                        </b-form-checkbox>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
-        </b-form-group>
+
+            <b-form-fieldset>
+                <template #label>
+                    <translate key="lang_hdr_song_requests">Song Requests</translate>
+                </template>
+
+                <b-wrapped-form-group class="col-md-12" id="edit_form_enable_requests" :field="form.enable_requests">
+                    <template #description>
+                        <translate key="lang_edit_form_enable_requests_desc">Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                            <translate
+                                key="lang_edit_form_enable_requests">Allow Song Requests</translate>
+                        </b-form-checkbox>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-form-fieldset v-if="form.enable_requests.$model">
+                    <b-row>
+                        <b-wrapped-form-group class="col-md-6" id="edit_form_request_delay"
+                                              :field="form.request_delay" input-type="number"
+                                              :input-attrs="{ min: '0', max: '1440' }">
+                            <template #label>
+                                <translate key="lang_form_request_delay">Request Minimum Delay (Minutes)</translate>
+                            </template>
+                            <template #description>
+                                <translate key="lang_form_backend_request_delay_desc_1">If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.</translate>
+                                <br>
+                                <translate key="lang_form_backend_request_delay_desc_2">Important: Some stream licensing rules require a minimum delay for requests. Check your local regulations for more information.</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-6" id="edit_form_request_threshold"
+                                              :field="form.request_threshold" input-type="number"
+                                              :input-attrs="{ min: '0', max: '1440' }">
+                            <template #label>
+                                <translate
+                                    key="lang_form_request_threshold">Request Last Played Threshold (Minutes)</translate>
+                            </template>
+                            <template #description>
+                        <translate
+                            key="lang_form_request_threshold_desc">This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-row>
+                </b-form-fieldset>
+            </b-form-fieldset>
+
+        </b-form-fieldset>
+
     </b-tab>
-
-    'select_backend_type' => [
-    'tab' => 'backend',
-    'elements' => [
-    'backend_type' => [
-    'radio',
-    [
-    'label' => __('AutoDJ Service'),
-    'description' => __(
-    'This software shuffles from playlists of music constantly and plays when no other radio source is available.'
-    ),
-    'options' => $backend_types,
-    'default' => Adapters::DEFAULT_BACKEND,
-    ],
-    ],
-    ],
-    ],
-
-    'backend_liquidsoap' => [
-    'use_grid' => true,
-    'class' => 'backend_fieldset',
-    'tab' => 'backend',
-
-    'elements' => [
-
-    StationBackendConfiguration::CROSSFADE_TYPE => [
-    'radio',
-    [
-    'label' => __('Crossfade Method'),
-    'belongsTo' => 'backend_config',
-    'description' => __(
-    'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two
-    tracks when fading for a smoother effect, but requires more CPU resources.'
-    ),
-    'choices' => [
-    StationBackendConfiguration::CROSSFADE_SMART => __('Smart Mode'),
-    StationBackendConfiguration::CROSSFADE_NORMAL => __('Normal Mode'),
-    StationBackendConfiguration::CROSSFADE_DISABLED => __('Disable Crossfading'),
-    ],
-    'default' => StationBackendConfiguration::CROSSFADE_NORMAL,
-    'form_group_class' => 'col-md-8',
-    ],
-    ],
-
-    'crossfade' => [
-    'number',
-    [
-    'label' => __('Crossfade Duration (Seconds)'),
-    'belongsTo' => 'backend_config',
-    'description' => __('Number of seconds to overlap songs.'),
-    'default' => 2,
-    'min' => '0.0',
-    'max' => '30.0',
-    'step' => '0.1',
-    'form_group_class' => 'col-md-4',
-    ],
-    ],
-
-    StationBackendConfiguration::USE_NORMALIZER => [
-    'toggle',
-    [
-    'label' => __('Apply Compression and Normalization'),
-    'belongsTo' => 'backend_config',
-    'description' => __(
-    'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.'
-    ),
-    'selected_text' => __('Yes'),
-    'deselected_text' => __('No'),
-    'default' => false,
-    'form_group_class' => 'col-sm-12',
-    ],
-    ],
-
-    'enable_requests' => [
-    'toggle',
-    [
-    'label' => __('Allow Song Requests'),
-    'description' => __(
-    'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are
-    requestable.'
-    ),
-    'selected_text' => __('Yes'),
-    'deselected_text' => __('No'),
-    'default' => false,
-    'form_group_class' => 'col-sm-12',
-    ],
-    ],
-
-    'request_delay' => [
-    'number',
-    [
-    'label' => __('Request Minimum Delay (Minutes)'),
-    'description' => __(
-    'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being
-    played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.<br><b>Important:</b> Some
-    stream licensing rules require a minimum
-    delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.'
-    ),
-    'default' => Station::DEFAULT_REQUEST_DELAY,
-    'min' => '0',
-    'max' => '1440',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    'request_threshold' => [
-    'number',
-    [
-    'label' => __('Request Last Played Threshold (Minutes)'),
-    'description' => __(
-    'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being
-    available to request again. Set to 0 for no threshold.'
-    ),
-    'default' => Station::DEFAULT_REQUEST_THRESHOLD,
-    'min' => '0',
-    'max' => '1440',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
 
     'enable_streamers' => [
     'toggle',
@@ -222,20 +210,6 @@
     ],
     ],
 
-    StationBackendConfiguration::TELNET_PORT => [
-    'text',
-    [
-    'label' => __('Customize Internal Request Processing Port'),
-    'label_class' => 'advanced',
-    'description' => __(
-    'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to
-    automatically assign a port.'
-    ),
-    'belongsTo' => 'backend_config',
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
     'dj_buffer' => [
     'number',
     [
@@ -263,6 +237,20 @@
     ),
     'belongsTo' => 'backend_config',
     'default' => '/',
+    'form_group_class' => 'col-md-6',
+    ],
+    ],
+
+    StationBackendConfiguration::TELNET_PORT => [
+    'text',
+    [
+    'label' => __('Customize Internal Request Processing Port'),
+    'label_class' => 'advanced',
+    'description' => __(
+    'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to
+    automatically assign a port.'
+    ),
+    'belongsTo' => 'backend_config',
     'form_group_class' => 'col-md-6',
     ],
     ],
@@ -355,8 +343,13 @@
 </template>
 
 <script>
+import BFormFieldset from "~/components/Form/BFormFieldset";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {BACKEND_LIQUIDSOAP, BACKEND_NONE} from "~/components/Entity/RadioAdapters";
+
 export default {
     name: 'AdminStationsBackendForm',
+    components: {BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object
     },
@@ -364,6 +357,37 @@ export default {
         langTabTitle() {
             return this.$gettext('AutoDJ');
         },
+        backendTypeOptions() {
+            return [
+                {
+                    text: this.$gettext('Use Liquidsoap on this server.'),
+                    value: BACKEND_LIQUIDSOAP
+                },
+                {
+                    text: this.$gettext('Do not use an AutoDJ service.'),
+                    value: BACKEND_NONE
+                }
+            ];
+        },
+        isBackendEnabled() {
+            return this.form.backend_type.$model !== BACKEND_NONE;
+        },
+        crossfadeOptions() {
+            return [
+                {
+                    text: this.$gettext('Smart Mode'),
+                    value: 'smart',
+                },
+                {
+                    text: this.$gettext('Normal Mode'),
+                    value: 'normal',
+                },
+                {
+                    text: this.$gettext('Disable Crossfading')
+                    value: 'none',
+                }
+            ];
+        }
     }
 }
 </script>

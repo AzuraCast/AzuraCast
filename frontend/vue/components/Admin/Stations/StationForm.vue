@@ -4,7 +4,9 @@
 
         <b-form class="form vue-form" @submit.prevent="submit">
             <b-tabs card lazy justified>
-
+                <admin-stations-profile-form :form="$v.form" :timezones="timezones"></admin-stations-profile-form>
+                <admin-stations-frontend-form :form="$v.form" :is-shoutcast-installed="isShoutcastInstalled"
+                                              :countries="countries"></admin-stations-frontend-form>
 
             </b-tabs>
 
@@ -23,21 +25,40 @@
 import {validationMixin} from "vuelidate";
 import {required} from 'vuelidate/dist/validators.min.js';
 import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+import AdminStationsProfileForm from "./Form/ProfileForm";
+import AdminStationsFrontendForm from "./Form/FrontendForm";
+
+export const StationFormProps = {
+    props: {
+        // Global
+        showAdminTab: {
+            type: Boolean,
+            default: true
+        },
+        // Profile
+        timezones: Object,
+        // Frontend
+        isShoutcastInstalled: {
+            type: Boolean,
+            default: false
+        },
+        countries: Object
+    }
+}
+
 
 export default {
     name: 'AdminStationsForm',
+    components: {AdminStationsFrontendForm, AdminStationsProfileForm},
     emits: ['error', 'submitted'],
     props: {
         createUrl: String,
         editUrl: String,
-        isEditMode: Boolean,
-        showAdminTab: {
-            type: Boolean,
-            default: true
-        }
+        isEditMode: Boolean
     },
     mixins: [
-        validationMixin
+        validationMixin,
+        StationFormProps
     ],
     validations() {
         let formValidations = {

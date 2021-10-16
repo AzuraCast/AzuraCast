@@ -119,7 +119,7 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group v-if="form.enable_on_demand_download.$model" class="col-md-12"
+                <b-wrapped-form-group v-if="form.enable_on_demand.$model" class="col-md-12"
                                       id="edit_form_enable_on_demand_download"
                                       :field="form.enable_on_demand_download">
                     <template #description>

@@ -43,6 +43,10 @@ export const StationFormProps = {
             default: false
         },
         countries: Object
+        // Admin
+        mediaStorageLocations: Object,
+        recordingsStorageLocations: Object,
+        podcastsStorageLocations: Object
     }
 }
 

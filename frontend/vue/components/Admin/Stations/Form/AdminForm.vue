@@ -2,84 +2,107 @@
     <b-tab :title="langTabTitle">
         <b-form-group>
             <b-row>
+                <b-wrapped-form-group class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
+                    <template #description>
+                        <translate key="lang_edit_form_is_enabled_desc">If disabled, the station will not broadcast or shuffle its AutoDJ.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                            <translate
+                                key="lang_edit_form_is_enabled">Enable Broadcasting</translate>
+                        </b-form-checkbox>
+                    </template>
+                </b-wrapped-form-group>
 
+                <b-wrapped-form-group class="col-md-6" id="edit_form_radio_base_dir" :field="form.radio_base_dir"
+                                      advanced>
+                    <template #label>
+                        <translate key="lang_edit_form_radio_base_dir">Base Station Directory</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_edit_form_radio_base_dir_desc">The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location_id"
+                                      :field="form.media_storage_location_id">
+                    <template #label>
+                        <translate key="lang_form_media_storage_location_id">Media Storage Location</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-select :id="props.id" v-model="props.field.$model"
+                                       :options="mediaStorageLocationOptions"></b-form-select>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location_id"
+                                      :field="form.recordings_storage_location_id">
+                    <template #label>
+                        <translate
+                            key="lang_form_recordings_storage_location_id">Live Recordings Storage Location</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-select :id="props.id" v-model="props.field.$model"
+                                       :options="recordingsStorageLocationOptions"></b-form-select>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location_id"
+                                      :field="form.podcasts_storage_location_id">
+                    <template #label>
+                        <translate key="lang_form_podcasts_storage_location_id">Podcasts Storage Location</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-select :id="props.id" v-model="props.field.$model"
+                                       :options="podcastsStorageLocationOptions"></b-form-select>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
         </b-form-group>
     </b-tab>
-
-
-    'admin' => [
-    'use_grid' => true,
-    'tab' => 'admin',
-
-    'elements' => [
-
-    'media_storage_location_id' => [
-    'select',
-    [
-    'label' => __('Media Storage Location'),
-    'choices' => [],
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    'recordings_storage_location_id' => [
-    'select',
-    [
-    'label' => __('Live Recordings Storage Location'),
-    'choices' => [],
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    'podcasts_storage_location_id' => [
-    'select',
-    [
-    'label' => __('Podcasts Storage Location'),
-    'choices' => [],
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    'is_enabled' => [
-    'toggle',
-    [
-    'label' => __('Enable Broadcasting'),
-    'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
-    'selected_text' => __('Yes'),
-    'deselected_text' => __('No'),
-    'default' => true,
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    'radio_base_dir' => [
-    'text',
-    [
-    'label' => __('Base Station Directory'),
-    'label_class' => 'advanced',
-    'description' => __(
-    'The parent directory where station playlist and configuration files are stored. Leave blank to use default
-    directory.'
-    ),
-    'form_group_class' => 'col-md-6',
-    ],
-    ],
-
-    ],
-    ],
 </template>
 
 <script>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import _ from "lodash";
+
 export default {
     name: 'AdminStationsAdminForm',
+    components: {BWrappedFormGroup},
     props: {
-        form: Object
+        form: Object,
+        mediaStorageLocations: Object,
+        recordingsStorageLocations: Object,
+        podcastsStorageLocations: Object
     },
     computed: {
         langTabTitle() {
             return this.$gettext('Administration');
         },
+        mediaStorageLocationOptions() {
+            return _.map(this.mediaStorageLocations, (name, key) => {
+                return {
+                    text: name,
+                    value: key
+                }
+            });
+        },
+        recordingsStorageLocationOptions() {
+            return _.map(this.recordingsStorageLocations, (name, key) => {
+                return {
+                    text: name,
+                    value: key
+                }
+            });
+        },
+        podcastsStorageLocationOptions() {
+            return _.map(this.podcastsStorageLocations, (name, key) => {
+                return {
+                    text: name,
+                    value: key
+                }
+            });
+        }
     }
 }
 </script>

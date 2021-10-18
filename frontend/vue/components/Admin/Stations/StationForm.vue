@@ -7,7 +7,12 @@
                 <admin-stations-profile-form :form="$v.form" :timezones="timezones"></admin-stations-profile-form>
                 <admin-stations-frontend-form :form="$v.form" :is-shoutcast-installed="isShoutcastInstalled"
                                               :countries="countries"></admin-stations-frontend-form>
-
+                <admin-stations-backend-form :form="$v.form"></admin-stations-backend-form>
+                <admin-stations-admin-form v-if="showAdminTab" :form="$v.form"
+                                           :media-storage-locations="mediaStorageLocations"
+                                           :recordings-storage-locations="recordingsStorageLocations"
+                                           :podcasts-storage-locations="podcastsStorageLocations">
+                </admin-stations-admin-form>
             </b-tabs>
 
             <slot name="submitButton">
@@ -27,6 +32,8 @@ import {required} from 'vuelidate/dist/validators.min.js';
 import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
+import AdminStationsBackendForm from "~/components/Admin/Stations/Form/BackendForm";
+import AdminStationsAdminForm from "~/components/Admin/Stations/Form/AdminForm";
 
 export const StationFormProps = {
     props: {
@@ -42,18 +49,18 @@ export const StationFormProps = {
             type: Boolean,
             default: false
         },
-        countries: Object
+        countries: Object,
         // Admin
         mediaStorageLocations: Object,
         recordingsStorageLocations: Object,
         podcastsStorageLocations: Object
     }
-}
-
+};
 
 export default {
     name: 'AdminStationsForm',
-    components: {AdminStationsFrontendForm, AdminStationsProfileForm},
+    inheritAttrs: false,
+    components: {AdminStationsAdminForm, AdminStationsBackendForm, AdminStationsFrontendForm, AdminStationsProfileForm},
     emits: ['error', 'submitted'],
     props: {
         createUrl: String,

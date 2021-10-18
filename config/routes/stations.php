@@ -72,7 +72,7 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:profile:toggle')
                 ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
-            $group->map(['GET', 'POST'], '/profile/edit', Controller\Stations\ProfileController::class . ':editAction')
+            $group->get('/profile/edit', Controller\Stations\ProfileController::class . ':editAction')
                 ->setName('stations:profile:edit')
                 ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 

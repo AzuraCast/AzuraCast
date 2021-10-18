@@ -366,7 +366,7 @@ export default {
                     value: 'normal',
                 },
                 {
-                    text: this.$gettext('Disable Crossfading')
+                    text: this.$gettext('Disable Crossfading'),
                     value: 'none',
                 }
             ];

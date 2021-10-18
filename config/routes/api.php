@@ -252,6 +252,17 @@ return static function (RouteCollectorProxy $app) {
                         ->setName('api:stations:profile')
                         ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
+                    $group->get(
+                        '/profile/edit',
+                        Controller\Api\Stations\EditProfileController::class . ':getProfileAction'
+                    )->setName('api:stations:edit-profile')
+                        ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+
+                    $group->put(
+                        '/profile/edit',
+                        Controller\Api\Stations\EditProfileController::class . ':putProfileAction'
+                    )->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+
                     $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                         ->setName('api:stations:schedule');
 

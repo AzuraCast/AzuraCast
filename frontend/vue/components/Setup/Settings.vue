@@ -1,7 +1,7 @@
 <template>
     <admin-settings :api-url="apiUrl" :release-channel="releaseChannel" @saved="onSaved">
         <template #preCard>
-            <setup-step step="3"></setup-step>
+            <setup-step :step="3"></setup-step>
         </template>
         <template #cardTitle>
             <translate key="lang_setup_settings_hdr">Customize AzuraCast Settings</translate>

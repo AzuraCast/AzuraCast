@@ -7,12 +7,11 @@ namespace App\Controller\Frontend;
 use App\Entity;
 use App\Environment;
 use App\Exception\NotLoggedInException;
-use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
 use App\Version;
-use DI\FactoryInterface;
+use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -153,26 +152,26 @@ class SetupController
     public function stationAction(
         ServerRequest $request,
         Response $response,
-        FactoryInterface $factory
+        StationFormComponent $stationFormComponent
     ): ResponseInterface {
-        $stationForm = $factory->make(StationForm::class);
-
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'station' && $this->environment->isProduction()) {
             return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
         }
 
-        if (false !== $stationForm->process($request)) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:settings'));
-        }
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/setup/station',
-            [
-                'form' => $stationForm,
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_SetupStation',
+            id: 'setup-station',
+            title: __('Create a New Radio Station'),
+            props: array_merge(
+                $stationFormComponent->getProps($request),
+                [
+                    'createUrl' => (string)$request->getRouter()->named('api:admin:stations'),
+                    'continueUrl' => (string)$request->getRouter()->named('setup:settings'),
+                ]
+            )
         );
     }
 

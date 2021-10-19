@@ -7,6 +7,9 @@ namespace App\Controller\Api\Admin;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Normalizer\DoctrineEntityNormalizer;
+use App\Radio\Adapters;
+use App\Radio\Configuration;
+use App\Utilities\File;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
@@ -22,7 +25,10 @@ class StationsController extends AbstractAdminApiCrudController
     protected string $resourceRouteName = 'api:admin:station';
 
     public function __construct(
-        protected Entity\Repository\StationRepository $station_repo,
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Adapters $adapters,
+        protected Configuration $configuration,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -156,14 +162,9 @@ class StationsController extends AbstractAdminApiCrudController
             throw $e;
         }
 
-        $this->em->persist($record);
-        $this->em->flush();
-
-        if ($create_mode) {
-            return $this->station_repo->create($record);
-        }
-
-        return $this->station_repo->edit($record);
+        return ($create_mode)
+            ? $this->handleCreate($record)
+            : $this->handleEdit($record);
     }
 
     /**
@@ -171,6 +172,82 @@ class StationsController extends AbstractAdminApiCrudController
      */
     protected function deleteRecord(object $record): void
     {
-        $this->station_repo->destroy($record);
+        $this->handleDelete($record);
+    }
+
+    protected function handleEdit(Entity\Station $station): Entity\Station
+    {
+        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
+
+        $this->em->persist($station);
+        $this->em->flush();
+
+        $this->configuration->initializeConfiguration($station);
+
+        // Delete media-related items if the media storage is changed.
+        /** @var Entity\StorageLocation|null $oldMediaStorage */
+        $oldMediaStorage = $original_record['media_storage_location'];
+        $newMediaStorage = $station->getMediaStorageLocation();
+
+        if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
+            $this->stationRepo->flushRelatedMedia($station);
+        }
+
+        // Get the original values to check for changes.
+        $old_frontend = $original_record['frontend_type'];
+        $old_backend = $original_record['backend_type'];
+
+        $frontend_changed = ($old_frontend !== $station->getFrontendType());
+        $backend_changed = ($old_backend !== $station->getBackendType());
+        $adapter_changed = $frontend_changed || $backend_changed;
+
+        if ($frontend_changed) {
+            $frontend = $this->adapters->getFrontendAdapter($station);
+            $this->stationRepo->resetMounts($station, $frontend);
+        }
+
+        if ($adapter_changed) {
+            $this->configuration->writeConfiguration($station, true);
+        }
+
+        return $station;
+    }
+
+    protected function handleCreate(Entity\Station $station): Entity\Station
+    {
+        $station->generateAdapterApiKey();
+
+        $this->em->persist($station);
+        $this->em->flush();
+
+        $this->configuration->initializeConfiguration($station);
+
+        // Create default mountpoints if station supports them.
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+        $this->stationRepo->resetMounts($station, $frontend_adapter);
+
+        return $station;
+    }
+
+    protected function handleDelete(Entity\Station $station): void
+    {
+        $this->configuration->removeConfiguration($station);
+
+        // Remove media folders.
+        $radio_dir = $station->getRadioBaseDir();
+        File::rmdirRecursive($radio_dir);
+
+        // Save changes and continue to the last setup step.
+        $this->em->flush();
+
+        foreach ($station->getAllStorageLocations() as $storageLocation) {
+            $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
+            if (1 === count($stations)) {
+                $this->em->remove($storageLocation);
+            }
+        }
+
+        $this->em->remove($station);
+        $this->em->flush();
     }
 }

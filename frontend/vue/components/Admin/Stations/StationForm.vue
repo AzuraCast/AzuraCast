@@ -8,7 +8,7 @@
                 <admin-stations-frontend-form :form="$v.form" :is-shoutcast-installed="isShoutcastInstalled"
                                               :countries="countries"></admin-stations-frontend-form>
                 <admin-stations-backend-form :form="$v.form"></admin-stations-backend-form>
-                <admin-stations-admin-form v-if="showAdminTab" :form="$v.form"
+                <admin-stations-admin-form v-if="showAdminTab" :form="$v.form" :is-edit-mode="isEditMode"
                                            :media-storage-locations="mediaStorageLocations"
                                            :recordings-storage-locations="recordingsStorageLocations"
                                            :podcasts-storage-locations="podcastsStorageLocations">
@@ -18,7 +18,9 @@
             <slot name="submitButton">
                 <b-card-body body-class="card-padding-sm">
                     <b-button size="lg" type="submit" variant="primary" :disabled="!isValid">
-                        <translate key="lang_btn_save_changes">Save Changes</translate>
+                        <slot name="submitButtonText">
+                            <translate key="lang_btn_save_changes">Save Changes</translate>
+                        </slot>
                     </b-button>
                 </b-card-body>
             </slot>

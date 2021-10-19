@@ -71,6 +71,7 @@ export default {
     components: {BWrappedFormGroup},
     props: {
         form: Object,
+        isEditMode: Boolean,
         mediaStorageLocations: Object,
         recordingsStorageLocations: Object,
         podcastsStorageLocations: Object
@@ -80,7 +81,7 @@ export default {
             return this.$gettext('Administration');
         },
         mediaStorageLocationOptions() {
-            return _.map(this.mediaStorageLocations, (name, key) => {
+            return _.map(this.filterLocations(this.mediaStorageLocations), (name, key) => {
                 return {
                     text: name,
                     value: key
@@ -88,7 +89,7 @@ export default {
             });
         },
         recordingsStorageLocationOptions() {
-            return _.map(this.recordingsStorageLocations, (name, key) => {
+            return _.map(this.filterLocations(this.recordingsStorageLocations), (name, key) => {
                 return {
                     text: name,
                     value: key
@@ -96,12 +97,23 @@ export default {
             });
         },
         podcastsStorageLocationOptions() {
-            return _.map(this.podcastsStorageLocations, (name, key) => {
+            return _.map(this.filterLocations(this.podcastsStorageLocations), (name, key) => {
                 return {
                     text: name,
                     value: key
                 }
             });
+        },
+    },
+    methods: {
+        filterLocations(group) {
+            if (!this.isEditMode) {
+                return group;
+            }
+
+            let newGroup = _.clone(group);
+            delete newGroup[""];
+            return newGroup;
         }
     }
 }

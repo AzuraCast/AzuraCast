@@ -35,10 +35,7 @@ abstract class CestAbstract
         $this->em->clear();
 
         if (null !== $this->test_station) {
-            $testStation = $this->getTestStation();
-
-            $this->stationRepo->destroy($testStation);
-            $this->test_station = null;
+            $I->sendDelete('/api/admin/station/' . $this->test_station->getId());
 
             $this->em->clear();
         }
@@ -94,22 +91,23 @@ abstract class CestAbstract
 
     protected function setupCompleteStations(FunctionalTester $I): void
     {
-        $test_station = new Entity\Station();
-        $test_station->setName('Functional Test Radio');
-        $test_station->setDescription('Test radio station.');
-        $test_station->setFrontendType(App\Radio\Adapters::DEFAULT_FRONTEND);
-        $test_station->setBackendType(App\Radio\Adapters::DEFAULT_BACKEND);
-
-        $this->test_station = $this->stationRepo->create($test_station);
+        $I->sendPost(
+            '/api/admin/stations',
+            [
+                'name' => 'Functional Test Radio',
+                'description' => 'Test radio station.',
+            ]
+        );
     }
 
     protected function setupCompleteSettings(FunctionalTester $I): void
     {
-        // Set settings.
-        $settings = $this->settingsRepo->readSettings();
-        $settings->updateSetupComplete();
-        $settings->setBaseUrl('http://localhost');
-        $this->settingsRepo->writeSettings($settings);
+        $I->sendPut(
+            '/api/admin/settings',
+            [
+                'base_url' => 'http://localhost',
+            ]
+        );
     }
 
     protected function getTestStation(): Entity\Station

@@ -32,8 +32,9 @@ import {required} from 'vuelidate/dist/validators.min.js';
 import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
-import AdminStationsBackendForm from "~/components/Admin/Stations/Form/BackendForm";
-import AdminStationsAdminForm from "~/components/Admin/Stations/Form/AdminForm";
+import AdminStationsBackendForm from "./Form/BackendForm";
+import AdminStationsAdminForm from "./Form/AdminForm";
+import _ from "lodash";
 
 export const StationFormProps = {
     props: {
@@ -130,11 +131,10 @@ export default {
                     podcasts_storage_location_id: {},
                     is_enabled: {},
                     radio_base_dir: {},
-
                 }
             };
 
-            formValidations = {...formValidations, ...adminValidations};
+            _.merge(formValidations, adminValidations);
         }
 
         return formValidations;

@@ -3,9 +3,9 @@
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
                 <b-form-textarea v-if="inputType === 'textarea'" :id="id" v-model="field.$model"
-                                 v-bind="fieldAttrs" :state="fieldState"></b-form-textarea>
+                                 v-bind="inputAttrs" :state="fieldState"></b-form-textarea>
                 <b-form-input v-else :type="inputType" :id="id" v-model="field.$model"
-                              v-bind="fieldAttrs" :state="fieldState"></b-form-input>
+                              v-bind="inputAttrs" :state="fieldState"></b-form-input>
             </slot>
 
             <b-form-invalid-feedback :state="fieldState">
@@ -15,8 +15,9 @@
 
         <template #label="slotProps">
             <slot name="label" v-bind="slotProps"></slot>
-            <span v-if="advanced" class="badge badge-primary"><translate
-                key="badge_advanced">Advanced</translate></span>
+            <span v-if="advanced" class="badge small badge-primary">
+                <translate key="badge_advanced">Advanced</translate>
+            </span>
         </template>
         <template #description="slotProps">
             <slot name="description" v-bind="slotProps"></slot>
@@ -45,15 +46,15 @@ export default {
             type: Object,
             required: true
         },
-        fieldAttrs: {
+        inputType: {
+            type: String,
+            default: 'text'
+        },
+        inputAttrs: {
             type: Object,
             default() {
                 return {};
             }
-        },
-        inputType: {
-            type: String,
-            default: 'text'
         },
         labelClass: {
             type: String,

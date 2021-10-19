@@ -21,7 +21,7 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="edit_form_url" :field="form.url" input-type="url">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_url" :field="form.url" input-type="url">
                     <template #label>
                         <translate key="lang_form_url">Web Site URL</translate>
                     </template>
@@ -102,7 +102,7 @@
 
         <b-form-fieldset>
             <template #label>
-                <translate key="lang_header_on_demand">On-Demand</translate>
+                <translate key="lang_header_on_demand">On-Demand Streaming</translate>
             </template>
 
             <b-row>
@@ -154,11 +154,16 @@ export default {
             return this.$gettext('Station Profile');
         },
         timezoneOptions() {
-            return _.map(this.timezones, (zoneName, zoneKey) => {
+            return _.map(this.timezones, (groupZones, groupName) => {
                 return {
-                    text: zoneName,
-                    value: zoneKey
-                }
+                    label: groupName,
+                    options: _.map(groupZones, (zoneName, zoneKey) => {
+                        return {
+                            text: zoneName,
+                            value: zoneKey
+                        };
+                    })
+                };
             });
         },
         historyItemsOptions() {

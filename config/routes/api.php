@@ -254,13 +254,13 @@ return static function (RouteCollectorProxy $app) {
 
                     $group->get(
                         '/profile/edit',
-                        Controller\Api\Stations\EditProfileController::class . ':getProfileAction'
-                    )->setName('api:stations:edit-profile')
+                        Controller\Api\Stations\ProfileEditController::class . ':getProfileAction'
+                    )->setName('api:stations:profile:edit')
                         ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
                     $group->put(
                         '/profile/edit',
-                        Controller\Api\Stations\EditProfileController::class . ':putProfileAction'
+                        Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
                     )->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
                     $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)

@@ -1,25 +1,27 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-fieldset>
-            <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
-                                  :field="form.backend_type">
-                <template #label>
-                    <translate key="lang_edit_form_backend_type">Broadcasting Service</translate>
-                </template>
-                <template #description>
-                    <translate key="lang_edit_form_backend_type_desc">This software shuffles from playlists of music constantly and plays when no other radio source is available.</translate>
-                </template>
-                <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" :options="backendTypeOptions"
-                                        v-model="props.field.$model">
-                    </b-form-radio-group>
-                </template>
-            </b-wrapped-form-group>
+            <b-row>
+                <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
+                                      :field="form.backend_type">
+                    <template #label>
+                        <translate key="lang_edit_form_backend_type">AutoDJ Service</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_edit_form_backend_type_desc">This software shuffles from playlists of music constantly and plays when no other radio source is available.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="backendTypeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+            </b-row>
         </b-form-fieldset>
 
         <b-form-fieldset v-if="isBackendEnabled">
             <b-row>
-                <b-wrapped-form-group class="col-md-8" id="edit_form_backend_crossfade_type"
+                <b-wrapped-form-group class="col-md-7" id="edit_form_backend_crossfade_type"
                                       :field="form.backend_config.crossfade_type">
                     <template #label>
                         <translate key="lang_form_backend_crossfade_type">Crossfade Method</translate>
@@ -35,7 +37,7 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-4" id="edit_form_backend_crossfade"
+                <b-wrapped-form-group class="col-md-5" id="edit_form_backend_crossfade"
                                       :field="form.backend_config.crossfade" input-type="number"
                                       :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }">
                     <template #label>
@@ -66,6 +68,9 @@
                 <template #label>
                     <translate key="lang_hdr_song_requests">Song Requests</translate>
                 </template>
+                <template #description>
+                    <translate key="lang_song_requests_desc">Some stream licensing providers may have specific rules regarding song requests. Check your local regulations for more information.</translate>
+                </template>
 
                 <b-row>
                     <b-wrapped-form-group class="col-md-12" id="edit_form_enable_requests"
@@ -92,8 +97,6 @@
                             </template>
                             <template #description>
                                 <translate key="lang_form_backend_request_delay_desc_1">If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.</translate>
-                                <br>
-                                <translate key="lang_form_backend_request_delay_desc_2">Important: Some stream licensing rules require a minimum delay for requests. Check your local regulations for more information.</translate>
                             </template>
                         </b-wrapped-form-group>
 

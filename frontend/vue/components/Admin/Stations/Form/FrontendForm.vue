@@ -1,20 +1,22 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-fieldset>
-            <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
-                                  :field="form.frontend_type">
-                <template #label>
-                    <translate key="lang_edit_form_frontend_type">Broadcasting Service</translate>
-                </template>
-                <template #description>
-                    <translate key="lang_edit_form_frontend_type_desc">This software delivers your broadcast to the listening audience.</translate>
-                </template>
-                <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" :options="frontendTypeOptions"
-                                        v-model="props.field.$model">
-                    </b-form-radio-group>
-                </template>
-            </b-wrapped-form-group>
+            <b-row>
+                <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
+                                      :field="form.frontend_type">
+                    <template #label>
+                        <translate key="lang_edit_form_frontend_type">Broadcasting Service</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_edit_form_frontend_type_desc">This software delivers your broadcast to the listening audience.</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="frontendTypeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+            </b-row>
         </b-form-fieldset>
 
         <b-form-fieldset v-if="isLocalFrontend">
@@ -40,7 +42,8 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_port"
-                                      :field="form.frontend_config.port" advanced>
+                                      :field="form.frontend_config.port" input-type="number"
+                                      :input-attrs="{min: '0'}" advanced>
                     <template #label>
                         <translate key="lang_form_frontend_port">Customize Broadcasting Port</translate>
                     </template>
@@ -83,7 +86,7 @@
                     </template>
                     <template #default="props">
                         <b-form-select :id="props.id" v-model="props.field.$model"
-                                       :options="countryOptions"></b-form-select>
+                                       :options="countryOptions" multiple></b-form-select>
                     </template>
                 </b-wrapped-form-group>
 
@@ -110,6 +113,17 @@
                         <li>XML: <code>&lt;new_key&gt;new_value&lt;/new_key&gt;</code></li>
                     </ul>
                 </template>
+
+                <b-row>
+                    <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_custom_config"
+                                          :field="form.frontend_config.custom_config" input-type="textarea"
+                                          :input-attrs="{class: 'text-preformatted', style: 'min-height: 250px;'}"
+                                          advanced>
+                        <template #label>
+                            <translate key="lang_form_frontend_custom_config">Custom Configuration</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </b-row>
             </b-form-fieldset>
         </b-form-fieldset>
     </b-tab>
@@ -166,7 +180,7 @@ export default {
             });
         },
         isLocalFrontend() {
-            return form.frontend_type.$model !== FRONTEND_REMOTE;
+            return this.form.frontend_type.$model !== FRONTEND_REMOTE;
         }
     }
 }

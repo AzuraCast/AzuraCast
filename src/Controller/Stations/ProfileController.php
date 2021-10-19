@@ -212,13 +212,13 @@ class ProfileController
     ): ResponseInterface {
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsEditProfile',
+            component: 'Vue_StationsProfileEdit',
             id: 'edit-profile',
             title: __('Edit Profile'),
             props: array_merge(
                 $stationFormComponent->getProps($request),
                 [
-                    'editUrl'     => (string)$request->getRouter()->fromHere('api:stations:edit-profile'),
+                    'editUrl' => (string)$request->getRouter()->fromHere('api:stations:profile:edit'),
                     'continueUrl' => (string)$request->getRouter()->fromHere('stations:profile:index'),
                 ]
             )

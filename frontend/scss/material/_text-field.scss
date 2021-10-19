@@ -83,11 +83,6 @@
     background-repeat: no-repeat;
     background-size: $textfield-select-bg-size $textfield-select-bg-size;
     padding-right: $textfield-select-bg-size;
-
-    &[multiple],
-    &[size]:not([size='1']) {
-      background-image: none;
-    }
   }
 }
 

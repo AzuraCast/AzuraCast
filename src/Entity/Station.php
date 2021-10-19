@@ -277,6 +277,10 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OrderBy(['timestamp_start' => 'desc'])]
     protected Collection $history;
 
+    #[ORM\Column(nullable: true)]
+    #[Serializer\Groups(self::GROUP_ADMIN)]
+    protected ?int $media_storage_location_id = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(
         name: 'media_storage_location_id',
@@ -286,8 +290,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
     protected ?StorageLocation $media_storage_location = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Serializer\Groups(self::GROUP_ADMIN)]
+    protected ?int $recordings_storage_location_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(
@@ -298,8 +305,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
     protected ?StorageLocation $recordings_storage_location = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Serializer\Groups(self::GROUP_ADMIN)]
+    protected ?int $podcasts_storage_location_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(
@@ -310,7 +320,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
     protected ?StorageLocation $podcasts_storage_location = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
@@ -886,6 +895,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
     }
 
+    public function getMediaStorageLocationId(): ?int
+    {
+        return $this->media_storage_location_id;
+    }
+
+    public function setMediaStorageLocationId(?int $media_storage_location_id): void
+    {
+        $this->media_storage_location_id = $media_storage_location_id;
+    }
+
     public function getMediaStorageLocation(): StorageLocation
     {
         if (null === $this->media_storage_location) {
@@ -904,6 +923,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->media_storage_location = $storageLocation;
     }
 
+    public function getRecordingsStorageLocationId(): ?int
+    {
+        return $this->recordings_storage_location_id;
+    }
+
+    public function setRecordingsStorageLocationId(?int $recordings_storage_location_id): void
+    {
+        $this->recordings_storage_location_id = $recordings_storage_location_id;
+    }
+
     public function getRecordingsStorageLocation(): StorageLocation
     {
         if (null === $this->recordings_storage_location) {
@@ -920,6 +949,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
 
         $this->recordings_storage_location = $storageLocation;
+    }
+
+    public function getPodcastsStorageLocationId(): ?int
+    {
+        return $this->podcasts_storage_location_id;
+    }
+
+    public function setPodcastsStorageLocationId(?int $podcasts_storage_location_id): void
+    {
+        $this->podcasts_storage_location_id = $podcasts_storage_location_id;
     }
 
     public function getPodcastsStorageLocation(): StorageLocation

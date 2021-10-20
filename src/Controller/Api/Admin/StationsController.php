@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
+use App\Http\ServerRequest;
 use App\Normalizer\DoctrineEntityNormalizer;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Utilities\File;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Serializer;
@@ -29,11 +30,11 @@ class StationsController extends AbstractAdminApiCrudController
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         protected Adapters $adapters,
         protected Configuration $configuration,
-        EntityManagerInterface $em,
+        protected ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($reloadableEm, $serializer, $validator);
     }
 
     /**
@@ -114,6 +115,33 @@ class StationsController extends AbstractAdminApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $return = $this->toArray($record);
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
+        $return['links'] = [
+            'self'  => (string)$router->fromHere(
+                route_name: $this->resourceRouteName,
+                route_params: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'clone' => (string)$router->fromHere(
+                route_name: 'api:admin:station:clone',
+                route_params: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+        ];
+
+        return $return;
+    }
 
     /**
      * @param Entity\Station $record

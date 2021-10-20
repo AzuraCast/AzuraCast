@@ -3,7 +3,7 @@
         <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
         <b-form class="form vue-form" @submit.prevent="submit">
-            <b-tabs card lazy justified>
+            <b-tabs :card="!isModal" lazy justified :content-class="tabContentClass">
                 <admin-stations-profile-form :form="$v.form" :timezones="timezones"></admin-stations-profile-form>
                 <admin-stations-frontend-form :form="$v.form" :is-shoutcast-installed="isShoutcastInstalled"
                                               :countries="countries"></admin-stations-frontend-form>
@@ -68,7 +68,11 @@ export default {
     props: {
         createUrl: String,
         editUrl: String,
-        isEditMode: Boolean
+        isEditMode: Boolean,
+        isModal: {
+            type: Boolean,
+            default: false
+        }
     },
     mixins: [
         validationMixin,
@@ -151,6 +155,11 @@ export default {
     computed: {
         isValid() {
             return !this.$v.form.$invalid;
+        },
+        tabContentClass() {
+            return (this.isModal)
+                ? 'mt-3'
+                : '';
         }
     },
     methods: {

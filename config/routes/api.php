@@ -229,6 +229,10 @@ return static function (RouteCollectorProxy $app) {
                             }
                         )->add(new Middleware\Permissions($permission));
                     }
+
+                    $group->post('/station/{id}/clone', Controller\Api\Admin\Stations\CloneAction::class)
+                        ->setName('api:admin:station:clone')
+                        ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
                 }
             );
 

@@ -1,8 +1,8 @@
 <template>
-    <b-modal :size="size" id="station_edit_modal" ref="modal" :title="langTitle" :busy="loading"
-             @hidden="clearContents">
-        <admin-stations-form ref="form" :create-url="createUrl" :edit-url="editUrl" :is-edit-mode="isEditMode"
-                             @error="close" @submitted="onSubmit">
+    <b-modal size="lg" id="station_edit_modal" ref="modal" :title="langTitle" :busy="loading"
+             @shown="resetForm" @hidden="clearContents">
+        <admin-stations-form ref="form" v-bind="$props" is-modal :create-url="createUrl" :edit-url="editUrl"
+                             :is-edit-mode="isEditMode" @error="close" @submitted="onSubmit">
             <template #submitButton>
                 <invisible-submit-button></invisible-submit-button>
             </template>
@@ -20,20 +20,20 @@
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
 import ModalForm from "~/components/Common/ModalForm";
-import AdminStationsForm from "~/components/Admin/Stations/StationForm";
+import AdminStationsForm, {StationFormProps} from "~/components/Admin/Stations/StationForm";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 
 export default {
-    name: 'BaseEditModal',
+    name: 'AdminStationsEditModal',
+    inheritAttrs: false,
     components: {InvisibleSubmitButton, AdminStationsForm, ModalForm},
     emits: ['relist'],
     props: {
         createUrl: String
     },
     mixins: [
-        validationMixin
+        StationFormProps
     ],
     data() {
         return {
@@ -49,22 +49,30 @@ export default {
         isEditMode() {
             return this.editUrl !== null;
         },
+        loading() {
+            if (typeof this.$refs.form !== "undefined") {
+                return this.$refs.form.loading;
+            }
+            return true;
+        },
         disableSaveButton() {
-            return !this.$refs.form.isValid;
+            if (typeof this.$refs.form !== "undefined") {
+                return !this.$refs.form.isValid;
+            }
+            return true;
         }
     },
     methods: {
         create() {
             this.editUrl = null;
-
-            this.$refs.form.reset();
             this.$refs.modal.show();
         },
         edit(recordUrl) {
             this.editUrl = recordUrl;
-
-            this.$refs.form.reset();
             this.$refs.modal.show();
+        },
+        resetForm() {
+            this.$refs.form.reset();
         },
         onSubmit() {
             this.$emit('relist');
@@ -74,11 +82,11 @@ export default {
             this.$refs.form.submit();
         },
         close() {
+            this.$refs.form.clear();
             this.$refs.modal.hide();
         },
         clearContents() {
             this.editUrl = null;
-            this.$refs.form.clear();
         },
     }
 };

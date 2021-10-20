@@ -82,7 +82,6 @@ export default {
             this.$refs.form.submit();
         },
         close() {
-            this.$refs.form.clear();
             this.$refs.modal.hide();
         },
         clearContents() {

@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use App\VueComponent\StationFormComponent;
 use Psr\Http\Message\ResponseInterface;
 
@@ -14,7 +15,8 @@ class StationsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        StationFormComponent $stationFormComponent
+        StationFormComponent $stationFormComponent,
+        Adapters $adapters
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -26,7 +28,9 @@ class StationsAction
             props: array_merge(
                 $stationFormComponent->getProps($request),
                 [
-                    'listUrl' => (string)$router->fromHere('api:admin:stations'),
+                    'listUrl'       => (string)$router->fromHere('api:admin:stations'),
+                    'frontendTypes' => $adapters->listFrontendAdapters(false),
+                    'backendTypes'  => $adapters->listBackendAdapters(false),
                 ]
             )
         );

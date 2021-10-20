@@ -128,12 +128,17 @@ class StationsController extends AbstractAdminApiCrudController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'self'  => (string)$router->fromHere(
+            'self'   => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'clone' => (string)$router->fromHere(
+            'manage' => (string)$router->named(
+                route_name: 'stations:index:index',
+                route_params: ['station_id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'clone'  => (string)$router->fromHere(
                 route_name: 'api:admin:station:clone',
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal

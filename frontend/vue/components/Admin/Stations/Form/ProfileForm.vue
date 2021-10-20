@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="langTabTitle" :title-link-class="tabClass" active>
         <b-form-fieldset>
             <b-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
@@ -140,13 +140,14 @@
 <script>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import _ from "lodash";
+import objectToFormOptions from "~/functions/objectToFormOptions";
 
 export default {
     name: 'AdminStationsProfileForm',
     components: {BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
+        tabClass: {},
         timezones: Object
     },
     computed: {
@@ -154,17 +155,7 @@ export default {
             return this.$gettext('Station Profile');
         },
         timezoneOptions() {
-            return _.map(this.timezones, (groupZones, groupName) => {
-                return {
-                    label: groupName,
-                    options: _.map(groupZones, (zoneName, zoneKey) => {
-                        return {
-                            text: zoneName,
-                            value: zoneKey
-                        };
-                    })
-                };
-            });
+            return objectToFormOptions(this.timezones);
         },
         historyItemsOptions() {
             return [

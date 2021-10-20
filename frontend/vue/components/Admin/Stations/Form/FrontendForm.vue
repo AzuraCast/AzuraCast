@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="langTabTitle" :title-link-class="tabClass">
         <b-form-fieldset>
             <b-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
@@ -133,13 +133,14 @@
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
-import _ from "lodash";
+import objectToFormOptions from "~/functions/objectToFormOptions";
 
 export default {
     name: 'AdminStationsFrontendForm',
     components: {BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
+        tabClass: {},
         isShoutcastInstalled: {
             type: Boolean,
             default: false
@@ -172,12 +173,7 @@ export default {
             return frontendOptions;
         },
         countryOptions() {
-            return _.map(this.countries, (name, key) => {
-                return {
-                    text: name,
-                    value: key
-                }
-            });
+            return objectToFormOptions(this.countries);
         },
         isLocalFrontend() {
             return this.form.frontend_type.$model !== FRONTEND_REMOTE;

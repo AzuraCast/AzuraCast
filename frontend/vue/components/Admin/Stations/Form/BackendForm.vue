@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="langTabTitle" :title-link-class="tabClass">
         <b-form-fieldset>
             <b-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
@@ -337,7 +337,8 @@ export default {
     name: 'AdminStationsBackendForm',
     components: {BWrappedFormGroup, BFormFieldset},
     props: {
-        form: Object
+        form: Object,
+        tabClass: {},
     },
     computed: {
         langTabTitle() {

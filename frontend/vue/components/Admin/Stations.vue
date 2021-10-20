@@ -13,15 +13,25 @@
             </b-card-body>
 
             <data-table ref="datatable" id="permissions" :fields="fields" :show-toolbar="false" :api-url="listUrl">
+                <template #cell(name)="row">
+                    <big>{{ row.item.name }}</big><br>
+                    <code>{{ row.item.short_name }}</code>
+                </template>
+                <template #cell(frontend_type)="row">
+                    {{ getFrontendName(row.item.frontend_type) }}
+                </template>
+                <template #cell(backend_type)="row">
+                    {{ getBackendName(row.item.backend_type) }}
+                </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
-                        <!--
-                        TODO
-                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:index:index',
-                            ['station_id' => $record['id']])?>" target="_blank"><?=__('Manage')?></a>
-                        <a class="btn btn-sm btn-dark" href="<?=$router->named('admin:stations:clone',
-                            ['id' => $record['id']])?>"><?=__('Clone')?></a>
-                        -->
+                        <b-button size="sm" variant="secondary" :href="row.item.links.manage" target="_blank">
+                            <translate key="lang_btn_manage">Manage</translate>
+                        </b-button>
+                        <b-button size="sm" variant="secondary"
+                                  @click.prevent="doClone(row.item.name, row.item.links.clone)">
+                            <translate key="lang_btn_clone">Clone</translate>
+                        </b-button>
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                             <translate key="lang_btn_edit">Edit</translate>
                         </b-button>
@@ -33,8 +43,10 @@
             </data-table>
         </b-card>
 
-        <admin-stations-edit-modal ref="editModal" create-url="listUrl" v-bind="$props"
+        <admin-stations-edit-modal ref="editModal" :create-url="listUrl" v-bind="$props"
                                    @relist="relist"></admin-stations-edit-modal>
+
+        <admin-stations-clone-modal ref="cloneModal" @relist="relist"></admin-stations-clone-modal>
     </div>
 </template>
 
@@ -45,20 +57,26 @@ import InfoCard from '~/components/Common/InfoCard';
 import '~/vendor/sweetalert.js';
 import {StationFormProps} from "./Stations/StationForm";
 import AdminStationsEditModal from "./Stations/EditModal";
+import _ from "lodash";
+import AdminStationsCloneModal from "~/components/Admin/Stations/CloneModal";
 
 export default {
     name: 'AdminPermissions',
-    components: {AdminStationsEditModal, InfoCard, Icon, DataTable},
+    components: {AdminStationsCloneModal, AdminStationsEditModal, InfoCard, Icon, DataTable},
     mixins: [
         StationFormProps
     ],
     props: {
         listUrl: String,
+        frontendTypes: Object,
+        backendTypes: Object
     },
     data() {
         return {
             fields: [
                 {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: false},
+                {key: 'frontend_type', label: this.$gettext('Broadcasting'), sortable: false},
+                {key: 'backend_type', label: this.$gettext('AutoDJ'), sortable: false},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
@@ -73,6 +91,9 @@ export default {
         doEdit(url) {
             this.$refs.editModal.edit(url);
         },
+        doClone(stationName, url) {
+            this.$refs.cloneModal.create(stationName, url);
+        },
         doDelete(url) {
             this.$confirmDelete({
                 title: this.$gettext('Delete Station?'),
@@ -86,6 +107,12 @@ export default {
                     });
                 }
             });
+        },
+        getFrontendName(frontend_type) {
+            return _.get(this.frontendTypes, [frontend_type, 'name'], '');
+        },
+        getBackendName(backend_type) {
+            return _.get(this.backendTypes, [backend_type, 'name'], '');
         }
     }
 };

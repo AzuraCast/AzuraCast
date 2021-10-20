@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="langTabTitle" :title-link-class="tabClass">
         <b-form-group>
             <b-row>
                 <b-wrapped-form-group class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
@@ -65,12 +65,14 @@
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import _ from "lodash";
+import objectToFormOptions from "~/functions/objectToFormOptions";
 
 export default {
     name: 'AdminStationsAdminForm',
     components: {BWrappedFormGroup},
     props: {
         form: Object,
+        tabClass: {},
         isEditMode: Boolean,
         mediaStorageLocations: Object,
         recordingsStorageLocations: Object,
@@ -81,28 +83,13 @@ export default {
             return this.$gettext('Administration');
         },
         mediaStorageLocationOptions() {
-            return _.map(this.filterLocations(this.mediaStorageLocations), (name, key) => {
-                return {
-                    text: name,
-                    value: key
-                }
-            });
+            return objectToFormOptions(this.filterLocations(this.mediaStorageLocations));
         },
         recordingsStorageLocationOptions() {
-            return _.map(this.filterLocations(this.recordingsStorageLocations), (name, key) => {
-                return {
-                    text: name,
-                    value: key
-                }
-            });
+            return objectToFormOptions(this.filterLocations(this.recordingsStorageLocations));
         },
         podcastsStorageLocationOptions() {
-            return _.map(this.filterLocations(this.podcastsStorageLocations), (name, key) => {
-                return {
-                    text: name,
-                    value: key
-                }
-            });
+            return objectToFormOptions(this.filterLocations(this.podcastsStorageLocations));
         },
     },
     methods: {

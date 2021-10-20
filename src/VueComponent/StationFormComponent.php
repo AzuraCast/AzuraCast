@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\VueComponent;
 
 use App\Acl;
-use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use DateTime;
@@ -15,8 +14,7 @@ use Symfony\Component\Intl\Countries;
 class StationFormComponent implements VueComponentInterface
 {
     public function __construct(
-        protected Adapters $adapters,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo
+        protected Adapters $adapters
     ) {
     }
 
@@ -24,28 +22,12 @@ class StationFormComponent implements VueComponentInterface
     {
         $installedFrontends = $this->adapters->listFrontendAdapters(true);
 
-        $newStorageLocationMessage = __('Create a new storage location based on the base directory.');
-
         return [
-            'showAdminTab'               => $request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS),
-            'timezones'                  => $this->getTimezones(),
-            'isShoutcastInstalled'       => isset($installedFrontends[Adapters::FRONTEND_SHOUTCAST]),
-            'countries'                  => Countries::getNames(),
-            'mediaStorageLocations'      => $this->storageLocationRepo->fetchSelectByType(
-                Entity\StorageLocation::TYPE_STATION_MEDIA,
-                true,
-                $newStorageLocationMessage
-            ),
-            'recordingsStorageLocations' => $this->storageLocationRepo->fetchSelectByType(
-                Entity\StorageLocation::TYPE_STATION_RECORDINGS,
-                true,
-                $newStorageLocationMessage
-            ),
-            'podcastsStorageLocations'   => $this->storageLocationRepo->fetchSelectByType(
-                Entity\StorageLocation::TYPE_STATION_PODCASTS,
-                true,
-                $newStorageLocationMessage
-            ),
+            'showAdminTab'          => $request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS),
+            'timezones'             => $this->getTimezones(),
+            'isShoutcastInstalled'  => isset($installedFrontends[Adapters::FRONTEND_SHOUTCAST]),
+            'countries'             => Countries::getNames(),
+            'storageLocationApiUrl' => (string)$request->getRouter()->named('api:admin:stations:storage-locations'),
         ];
     }
 

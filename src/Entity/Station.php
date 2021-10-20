@@ -989,6 +989,15 @@ class Station implements Stringable, IdentifiableEntityInterface
         ];
     }
 
+    public static function getStorageLocationTypes(): array
+    {
+        return [
+            'media_storage_location'      => StorageLocation::TYPE_STATION_MEDIA,
+            'recordings_storage_location' => StorageLocation::TYPE_STATION_RECORDINGS,
+            'podcasts_storage_location'   => StorageLocation::TYPE_STATION_PODCASTS,
+        ];
+    }
+
     /**
      * @return Collection<RolePermission>
      */

@@ -8,12 +8,12 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\ServerRequest;
-use App\Normalizer\DoctrineEntityNormalizer;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -156,19 +156,28 @@ class StationsController extends AbstractAdminApiCrudController
      */
     protected function toArray(object $record, array $context = []): array
     {
-        return parent::toArray(
-            $record,
-            $context + [
-                DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [
-                    'adapter_api_key',
-                    'nowplaying',
-                    'nowplaying_timestamp',
-                    'automation_timestamp',
-                    'needs_restart',
-                    'has_started',
-                ],
-            ]
-        );
+        $context[AbstractNormalizer::IGNORED_ATTRIBUTES] = [
+            'adapter_api_key',
+            'nowplaying',
+            'nowplaying_timestamp',
+            'automation_timestamp',
+            'needs_restart',
+            'has_started',
+        ];
+
+        return parent::toArray($record, $context);
+    }
+
+    protected function fromArray(array $data, ?object $record = null, array $context = []): object
+    {
+        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $locationType) {
+            $idKey = $locationKey . '_id';
+            if (!empty($data[$idKey])) {
+                $data[$locationKey] = $data[$idKey];
+            }
+        }
+
+        return parent::fromArray($data, $record, $context);
     }
 
     /**

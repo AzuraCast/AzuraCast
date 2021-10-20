@@ -233,6 +233,12 @@ return static function (RouteCollectorProxy $app) {
                     $group->post('/station/{id}/clone', Controller\Api\Admin\Stations\CloneAction::class)
                         ->setName('api:admin:station:clone')
                         ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+
+                    $group->get(
+                        '/stations/storage-locations',
+                        Controller\Api\Admin\Stations\StorageLocationsAction::class
+                    )->setName('api:admin:stations:storage-locations')
+                        ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
                 }
             );
 

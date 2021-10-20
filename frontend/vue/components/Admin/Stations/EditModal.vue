@@ -2,7 +2,8 @@
     <b-modal size="lg" id="station_edit_modal" ref="modal" :title="langTitle" :busy="loading"
              @shown="resetForm" @hidden="clearContents">
         <admin-stations-form ref="form" v-bind="$props" is-modal :create-url="createUrl" :edit-url="editUrl"
-                             :is-edit-mode="isEditMode" @error="close" @submitted="onSubmit">
+                             :is-edit-mode="isEditMode" @error="close" @submitted="onSubmit"
+                             @validUpdate="onValidUpdate" @loadingUpdate="onLoadingUpdate">
             <template #submitButton>
                 <invisible-submit-button></invisible-submit-button>
             </template>
@@ -38,6 +39,8 @@ export default {
     data() {
         return {
             editUrl: null,
+            loading: true,
+            disableSaveButton: true,
         };
     },
     computed: {
@@ -48,21 +51,15 @@ export default {
         },
         isEditMode() {
             return this.editUrl !== null;
-        },
-        loading() {
-            if (typeof this.$refs.form !== "undefined") {
-                return this.$refs.form.loading;
-            }
-            return true;
-        },
-        disableSaveButton() {
-            if (typeof this.$refs.form !== "undefined") {
-                return !this.$refs.form.isValid;
-            }
-            return true;
         }
     },
     methods: {
+        onValidUpdate(newValue) {
+            this.disableSaveButton = !newValue;
+        },
+        onLoadingUpdate(newValue) {
+            this.loading = newValue;
+        },
         create() {
             this.editUrl = null;
             this.$refs.modal.show();

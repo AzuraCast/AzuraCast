@@ -12,10 +12,7 @@
                 <admin-stations-backend-form :form="$v.form"
                                              :tab-class="getTabClass($v.backendTab)"></admin-stations-backend-form>
                 <admin-stations-admin-form v-if="showAdminTab" :tab-class="getTabClass($v.adminTab)" :form="$v.form"
-                                           :is-edit-mode="isEditMode"
-                                           :media-storage-locations="mediaStorageLocations"
-                                           :recordings-storage-locations="recordingsStorageLocations"
-                                           :podcasts-storage-locations="podcastsStorageLocations">
+                                           :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl">
                 </admin-stations-admin-form>
             </b-tabs>
 
@@ -41,6 +38,7 @@ import AdminStationsFrontendForm from "./Form/FrontendForm";
 import AdminStationsBackendForm from "./Form/BackendForm";
 import AdminStationsAdminForm from "./Form/AdminForm";
 import _ from "lodash";
+import mergeExisting from "~/functions/mergeExisting";
 
 export const StationFormProps = {
     props: {
@@ -58,9 +56,7 @@ export const StationFormProps = {
         },
         countries: Object,
         // Admin
-        mediaStorageLocations: Object,
-        recordingsStorageLocations: Object,
-        podcastsStorageLocations: Object
+        storageLocationApiUrl: String
     }
 };
 
@@ -68,7 +64,7 @@ export default {
     name: 'AdminStationsForm',
     inheritAttrs: false,
     components: {AdminStationsAdminForm, AdminStationsBackendForm, AdminStationsFrontendForm, AdminStationsProfileForm},
-    emits: ['error', 'submitted'],
+    emits: ['error', 'submitted', 'loadingUpdate', 'validUpdate'],
     props: {
         createUrl: String,
         editUrl: String,
@@ -172,6 +168,14 @@ export default {
             form: {}
         };
     },
+    watch: {
+        loading(newValue) {
+            this.$emit('loadingUpdate', newValue);
+        },
+        isValid(newValue) {
+            this.$emit('validUpdate', newValue);
+        }
+    },
     computed: {
         isValid() {
             return !this.$v.form.$invalid;
@@ -273,7 +277,7 @@ export default {
             });
         },
         populateForm(data) {
-            this.form = _.defaultsDeep({}, data, this.form);
+            this.form = mergeExisting(this.form, data);
         },
         getSubmittableFormData() {
             return this.form;

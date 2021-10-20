@@ -19,7 +19,7 @@ export default {
     emits: ['relist'],
     data() {
         return {
-            loading: null,
+            loading: true,
             cloneUrl: null,
             error: null,
             form: {},

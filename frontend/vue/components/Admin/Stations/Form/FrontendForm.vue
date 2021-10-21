@@ -20,6 +20,24 @@
         </b-form-fieldset>
 
         <b-form-fieldset v-if="isLocalFrontend">
+            <b-form-fieldset v-if="isShoutcastFrontend">
+                <b-row>
+                    <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_license_id"
+                                          :field="form.frontend_config.sc_license_id">
+                        <template #label>
+                            <translate key="lang_form_frontend_sc_license_id">SHOUTcast License ID</translate>
+                        </template>
+                    </b-wrapped-form-group>
+
+                    <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_user_id"
+                                          :field="form.frontend_config.sc_user_id">
+                        <template #label>
+                            <translate key="lang_form_frontend_sc_user_id">SHOUTcast User ID</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </b-row>
+            </b-form-fieldset>
+
             <b-row>
                 <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
                                       :field="form.frontend_config.source_pw">
@@ -177,6 +195,9 @@ export default {
         },
         isLocalFrontend() {
             return this.form.frontend_type.$model !== FRONTEND_REMOTE;
+        },
+        isShoutcastFrontend() {
+            return this.form.frontend_type.$model === FRONTEND_SHOUTCAST;
         }
     }
 }

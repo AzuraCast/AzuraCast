@@ -94,6 +94,8 @@ export default {
                 api_history_items: {},
                 frontend_type: {required},
                 frontend_config: {
+                    sc_license_id: {},
+                    sc_user_id: {},
                     source_pw: {},
                     admin_pw: {},
                     port: {},
@@ -211,6 +213,8 @@ export default {
                 api_history_items: 5,
                 frontend_type: FRONTEND_ICECAST,
                 frontend_config: {
+                    sc_license_id: '',
+                    sc_user_id: '',
                     source_pw: '',
                     admin_pw: '',
                     port: '',

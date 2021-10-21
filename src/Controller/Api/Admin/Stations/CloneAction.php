@@ -33,7 +33,7 @@ class CloneAction extends StationsController
         mixed $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
-        $data = $request->getParsedBody();
+        $data = (array)$request->getParsedBody();
 
         $toClone = $data['clone'];
 

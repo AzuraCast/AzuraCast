@@ -45,7 +45,7 @@ class StationFormComponent implements VueComponentInterface
             ) as $tzIdentifier
         ) {
             $tz = new DateTimeZone($tzIdentifier);
-            $tzRegion = substr($tzIdentifier, 0, strpos($tzIdentifier, '/')) ?: $tzIdentifier;
+            $tzRegion = substr($tzIdentifier, 0, strpos($tzIdentifier, '/') ?: 0) ?: $tzIdentifier;
             $tzSubregion = str_replace([$tzRegion . '/', '_'], ['', ' '], $tzIdentifier) ?: $tzRegion;
 
             $offset = $tz->getOffset(new DateTime());

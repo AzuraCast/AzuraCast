@@ -2,6 +2,7 @@
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Security\SplitToken;
 use Psr\Container\ContainerInterface;
 
 abstract class CestAbstract
@@ -18,6 +19,9 @@ abstract class CestAbstract
 
     protected string $login_username = 'azuracast@azuracast.com';
     protected string $login_password = 'AzuraCastFunctionalTests!';
+
+    protected ?string $login_api_key = null;
+
     private ?Entity\Station $test_station = null;
 
     protected function _inject(App\Tests\Module $tests_module): void
@@ -84,7 +88,18 @@ abstract class CestAbstract
         $user->setLocale('en_US.UTF-8');
 
         $this->em->persist($user);
+
+        // Create API key
+        $key = SplitToken::generate();
+
+        $apiKey = new Entity\ApiKey($user, $key);
+        $apiKey->setComment('Test Suite');
+
+        $this->em->persist($apiKey);
         $this->em->flush();
+
+        $this->login_api_key = (string)$key;
+        $I->amBearerAuthenticated($this->login_api_key);
 
         $this->di->get(App\Acl::class)->reload();
     }
@@ -98,12 +113,15 @@ abstract class CestAbstract
                 'description' => 'Test radio station.',
             ]
         );
+
+        $stationId = $I->grabDataFromResponseByJsonPath('id');
+        $this->test_station = $this->em->find(Entity\Station::class, $stationId[0]);
     }
 
     protected function setupCompleteSettings(FunctionalTester $I): void
     {
         $I->sendPut(
-            '/api/admin/settings',
+            '/api/admin/settings/' . Entity\Settings::GROUP_GENERAL,
             [
                 'base_url' => 'http://localhost',
             ]

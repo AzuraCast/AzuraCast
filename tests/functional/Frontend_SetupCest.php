@@ -23,38 +23,39 @@ class Frontend_SetupCest extends CestAbstract
 
     protected function setupRegister(FunctionalTester $I): void
     {
-        $I->submitForm('#login-form', [
-            'username' => $this->login_username,
-            'password' => $this->login_password,
-        ]);
+        $I->amOnPage('/setup');
 
-        $I->seeInSource('continue the setup process');
-        $I->seeInRepository(\App\Entity\User::class, ['email' => $this->login_username]);
+        $I->seeCurrentUrlEquals('/setup/register');
+        $I->seeResponseCodeIs(200);
 
-        $I->comment('User account created.');
+        $this->setupCompleteUser($I);
 
-        // $this->login_cookie = $I->grabCookie('PHPSESSID');
+        $I->amOnPage('/login');
+
+        $I->submitForm(
+            '#login-form',
+            [
+                'username' => $this->login_username,
+                'password' => $this->login_password,
+            ]
+        );
     }
 
     protected function setupStation(FunctionalTester $I): void
     {
+        $I->amOnPage('/setup');
         $I->seeCurrentUrlEquals('/setup/station');
+        $I->seeResponseCodeIs(200);
 
-        $I->see('continue the setup process');
-
-        $I->submitForm('.form', [
-            'name' => 'Functional Test Radio',
-            'description' => 'Test radio station.',
-        ]);
-
-        $I->comment('Station created.');
-
-        $I->seeCurrentUrlEquals('/setup/settings');
+        $this->setupCompleteStations($I);
     }
 
     protected function setupSettings(FunctionalTester $I): void
     {
+        $I->amOnPage('/setup');
+        $I->seeCurrentUrlEquals('/setup/settings');
         $I->seeResponseCodeIs(200);
+
         $I->seeInTitle('System Settings');
 
         $this->setupCompleteSettings($I);

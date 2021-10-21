@@ -82,16 +82,29 @@
             </b-row>
 
             <b-row>
-                <b-wrapped-form-group class="col-md-5" id="edit_form_frontend_banned_ips"
-                                      :field="form.frontend_config.banned_ips" input-type="textarea"
-                                      :input-attrs="{class: 'text-preformatted'}" advanced>
-                    <template #label>
-                        <translate key="lang_form_frontend_banned_ips">Banned IP Addresses</translate>
-                    </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_banned_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
-                    </template>
-                </b-wrapped-form-group>
+                <b-col md="5">
+                    <b-wrapped-form-group id="edit_form_frontend_banned_ips"
+                                          :field="form.frontend_config.banned_ips" input-type="textarea"
+                                          :input-attrs="{class: 'text-preformatted'}" advanced>
+                        <template #label>
+                            <translate key="lang_form_frontend_banned_ips">Banned IP Addresses</translate>
+                        </template>
+                        <template #description>
+                            <translate key="lang_form_frontend_banned_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+
+                    <b-wrapped-form-group id="edit_form_frontend_allowed_ips"
+                                          :field="form.frontend_config.allowed_ips" input-type="textarea"
+                                          :input-attrs="{class: 'text-preformatted'}" advanced>
+                        <template #label>
+                            <translate key="lang_form_frontend_allowed_ips">Allowed IP Addresses</translate>
+                        </template>
+                        <template #description>
+                            <translate key="lang_form_frontend_allowed_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </b-col>
 
                 <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
                                       :field="form.frontend_config.banned_countries"
@@ -104,18 +117,11 @@
                     </template>
                     <template #default="props">
                         <b-form-select :id="props.id" v-model="props.field.$model"
-                                       :options="countryOptions" multiple></b-form-select>
-                    </template>
-                </b-wrapped-form-group>
+                                       :options="countryOptions" style="min-height: 200px;" multiple></b-form-select>
 
-                <b-wrapped-form-group class="col-md-5" id="edit_form_frontend_allowed_ips"
-                                      :field="form.frontend_config.allowed_ips" input-type="textarea"
-                                      :input-attrs="{class: 'text-preformatted'}" advanced>
-                    <template #label>
-                        <translate key="lang_form_frontend_allowed_ips">Allowed IP Addresses</translate>
-                    </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_allowed_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                        <b-button block variant="outline-primary" @click.prevent="clearCountries">
+                            <translate key="lang_btn_clear_countries">Clear List</translate>
+                        </b-button>
                     </template>
                 </b-wrapped-form-group>
             </b-row>
@@ -198,6 +204,11 @@ export default {
         },
         isShoutcastFrontend() {
             return this.form.frontend_type.$model === FRONTEND_SHOUTCAST;
+        }
+    },
+    methods: {
+        clearCountries() {
+            this.form.frontend_config.banned_countries.$model = [];
         }
     }
 }

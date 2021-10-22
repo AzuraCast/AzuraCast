@@ -14,15 +14,23 @@ opcache.enable_cli=1
 opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}
 {{end}}
 
+{{if eq .Env.APPLICATION_ENV "development"}}
+[Xdebug]
+xdebug.mode=develop,debug
+xdebug.start_with_request=trigger
+xdebug.discover_client_host=true
+xdebug.client_host=host.docker.internal
+{{end}}
+
 {{if isTrue .Env.PROFILING_EXTENSION_ENABLED}}
+[zlib]
+zlib.output_compression=0
+
 [spx]
 spx.http_enabled=1
 spx.data_dir=/var/azuracast/www_tmp
 spx.http_key={{ default .Env.PROFILING_EXTENSION_HTTP_KEY "dev" }}
 spx.http_ip_whitelist={{ default .Env.PROFILING_EXTENSION_HTTP_IP_WHITELIST "*" }}
-
-[zlib]
-zlib.output_compression=0
 
 {{if isTrue .Env.PROFILING_EXTENSION_ALWAYS_ON}}
 spx.http_profiling_enabled=1

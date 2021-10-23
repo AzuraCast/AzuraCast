@@ -155,9 +155,7 @@ jobs:
     name: Push API Docs
     needs: build
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || github.event_name == 'schedule'
-      endsWith(github.ref, github.event.repository.default_branch)
+    if: (github.event_name == 'push' || github.event_name == 'schedule') && endsWith(github.ref, github.event.repository.default_branch)
     env:
       REDOCLY_AUTHORIZATION: ${{ secrets.REDOCLY_AUTHORIZATION }}
     steps:

@@ -38,13 +38,7 @@ export default {
                 password: null,
                 publicKeys: null
             };
-        },
-        populateForm(data) {
-            this.form = {
-                username: data.username,
-                publicKeys: data.publicKeys
-            };
-        },
+        }
     }
 };
 </script>

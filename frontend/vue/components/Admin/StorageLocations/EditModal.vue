@@ -86,21 +86,7 @@ export default {
                 'dropboxAuthToken': null,
                 'storageQuota': ''
             };
-        },
-        populateForm (d) {
-            this.form = {
-                'adapter': d.adapter,
-                'path': d.path,
-                's3CredentialKey': d.s3CredentialKey,
-                's3CredentialSecret': d.s3CredentialSecret,
-                's3Region': d.s3Region,
-                's3Version': d.s3Version,
-                's3Bucket': d.s3Bucket,
-                's3Endpoint': d.s3Endpoint,
-                'dropboxAuthToken': d.dropboxAuthToken,
-                'storageQuota': d.storageQuota
-            };
-        },
+        }
     }
 };
 </script>

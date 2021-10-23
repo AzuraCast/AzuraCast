@@ -19,6 +19,7 @@ import {required} from 'vuelidate/dist/validators.min.js';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
+import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'EditModal',
@@ -90,16 +91,7 @@ export default {
         },
         populateForm (d) {
             this.record = d;
-            this.form = {
-                'title': d.title,
-                'link': d.link,
-                'description': d.description,
-                'language': d.language,
-                'author': d.author,
-                'email': d.email,
-                'categories': d.categories,
-                'artwork_file': null
-            };
+            this.form = mergeExisting(this.form, d);
         }
     }
 };

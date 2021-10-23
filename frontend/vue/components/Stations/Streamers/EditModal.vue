@@ -68,17 +68,6 @@ export default {
                 'enforce_schedule': false,
                 'schedule_items': []
             };
-        },
-        populateForm (d) {
-            this.form = {
-                'streamer_username': d.streamer_username,
-                'streamer_password': null,
-                'display_name': d.display_name,
-                'comments': d.comments,
-                'is_active': d.is_active,
-                'enforce_schedule': d.enforce_schedule,
-                'schedule_items': d.schedule_items
-            };
         }
     }
 };

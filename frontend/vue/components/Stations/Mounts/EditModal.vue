@@ -25,6 +25,7 @@ import MountFormBasicInfo from './Form/BasicInfo';
 import MountFormAutoDj from './Form/AutoDj';
 import MountFormAdvanced from './Form/Advanced';
 import MountFormIntro from "./Form/Intro";
+import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'EditModal',
@@ -108,23 +109,7 @@ export default {
         },
         populateForm (d) {
             this.record = d;
-            this.form = {
-                'name': d.name,
-                'display_name': d.display_name,
-                'is_visible_on_public_pages': d.is_visible_on_public_pages,
-                'is_default': d.is_default,
-                'relay_url': d.relay_url,
-                'is_public': d.is_public,
-                'enable_autodj': d.enable_autodj,
-                'autodj_format': d.autodj_format,
-                'autodj_bitrate': d.autodj_bitrate,
-                'custom_listen_url': d.custom_listen_url,
-                'authhash': d.authhash,
-                'fallback_mount': d.fallback_mount,
-                'max_listener_duration': d.max_listener_duration,
-                'frontend_config': d.frontend_config,
-                'intro_file': null
-            };
+            this.form = mergeExisting(this.form, d);
         }
     }
 };

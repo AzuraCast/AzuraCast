@@ -91,29 +91,6 @@ export default {
                 'backend_options': [],
                 'schedule_items': []
             };
-        },
-        populateForm (d) {
-            this.form = {
-                'name': d.name,
-                'is_enabled': d.is_enabled,
-                'include_in_on_demand': d.include_in_on_demand,
-                'weight': d.weight,
-                'type': d.type,
-                'source': d.source,
-                'order': d.order,
-                'remote_url': d.remote_url,
-                'remote_type': d.remote_type,
-                'remote_buffer': d.remote_buffer,
-                'is_jingle': d.is_jingle,
-                'play_per_songs': d.play_per_songs,
-                'play_per_minutes': d.play_per_minutes,
-                'play_per_hour_minute': d.play_per_hour_minute,
-                'include_in_requests': d.include_in_requests,
-                'include_in_automation': d.include_in_automation,
-                'avoid_duplicates': d.avoid_duplicates,
-                'backend_options': d.backend_options,
-                'schedule_items': d.schedule_items
-            };
         }
     }
 };

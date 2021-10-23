@@ -5,6 +5,7 @@
 <script>
 import {validationMixin} from 'vuelidate';
 import ModalForm from "~/components/Common/ModalForm";
+import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'BaseEditModal',
@@ -66,7 +67,7 @@ export default {
             });
         },
         populateForm(data) {
-            this.form = data;
+            this.form = mergeExisting(this.form, data);
         },
         getSubmittableFormData() {
             return this.form;

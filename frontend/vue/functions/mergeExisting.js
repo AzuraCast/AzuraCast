@@ -1,9 +1,4 @@
-function isObject(value) {
-    if (typeof value !== "object") {
-        return false;
-    }
-    return !Array.isArray(value);
-}
+import isObject from "./isObject.js";
 
 /*
  * A "deep" merge that only merges items from the source into the destination that already exist in the destination.

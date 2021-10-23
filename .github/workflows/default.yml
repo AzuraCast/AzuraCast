@@ -151,24 +151,6 @@ jobs:
             web/static/assets.json
             web/static/api/openapi.yml
 
-  push-api-docs:
-    name: Push API Docs
-    needs: build
-    runs-on: ubuntu-latest
-    if: (github.event_name == 'push' || github.event_name == 'schedule') && endsWith(github.ref, github.event.repository.default_branch)
-    env:
-      REDOCLY_AUTHORIZATION: ${{ secrets.REDOCLY_AUTHORIZATION }}
-    steps:
-      - uses: actions/checkout@master
-
-      - name: Download built static assets from previous step
-        uses: actions/download-artifact@v2
-        with:
-          name: assets
-
-      - name: Submit OpenAPI YML to Redocly
-        run: npx @redocly/openapi-cli@latest push ./web/static/api/openapi.yml "@azuracast/AzuraCast@Latest"
-
   publish:
     name: Publish
     needs: build

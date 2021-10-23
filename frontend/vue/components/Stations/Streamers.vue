@@ -50,7 +50,7 @@
                     </b-tab>
                     <b-tab :title="langScheduleViewTab" no-body>
                         <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
-                                  :locale="locale" @click="doCalendarClick"></schedule>
+                                  @click="doCalendarClick"></schedule>
                     </b-tab>
                 </b-tabs>
             </b-card>

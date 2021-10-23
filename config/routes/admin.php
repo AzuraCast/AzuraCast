@@ -138,33 +138,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:settings:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
-            $group->group(
-                '/stations',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\StationsController::class)
-                        ->setName('admin:stations:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Admin\StationsController::class . ':editAction'
-                    )
-                        ->setName('admin:stations:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Admin\StationsController::class . ':editAction')
-                        ->setName('admin:stations:add');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/clone/{id}',
-                        Controller\Admin\StationsController::class . ':cloneAction'
-                    )
-                        ->setName('admin:stations:clone');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class . ':deleteAction')
-                        ->setName('admin:stations:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+            $group->get('/stations', Controller\Admin\StationsAction::class)
+                ->setName('admin:stations:index')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
             $group->get('/storage_locations', Controller\Admin\StorageLocationsAction::class)
                 ->setName('admin:storage_locations:index')

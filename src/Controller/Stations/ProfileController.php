@@ -6,9 +6,9 @@ namespace App\Controller\Stations;
 
 use App\Acl;
 use App\Entity;
-use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\VueComponent\StationFormComponent;
 use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -179,47 +179,49 @@ class ProfileController
                     true
                 ),
 
-                'togglePublicPageUri' => (string)$router->fromHere(
+                'togglePublicPageUri'    => (string)$router->fromHere(
                     'stations:profile:toggle',
                     ['feature' => 'public', 'csrf' => $csrf]
                 ),
 
                 // Frontend
-                'frontendAdminUri' => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
-                'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
+                'frontendAdminUri'       => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
+                'frontendAdminPassword'  => $frontendConfig->getAdminPassword(),
                 'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
-                'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
-                'frontendRestartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
-                'frontendStartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
-                'frontendStopUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
+                'frontendRelayPassword'  => $frontendConfig->getRelayPassword(),
+                'frontendRestartUri'     => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
+                'frontendStartUri'       => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
+                'frontendStopUri'        => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
 
                 // Backend
-                'numSongs' => (int)$num_songs,
-                'numPlaylists' => (int)$num_playlists,
-                'manageMediaUri' => (string)$router->fromHere('stations:files:index'),
-                'managePlaylistsUri' => (string)$router->fromHere('stations:playlists:index'),
-                'backendRestartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
-                'backendStartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
-                'backendStopUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
+                'numSongs'               => (int)$num_songs,
+                'numPlaylists'           => (int)$num_playlists,
+                'manageMediaUri'         => (string)$router->fromHere('stations:files:index'),
+                'managePlaylistsUri'     => (string)$router->fromHere('stations:playlists:index'),
+                'backendRestartUri'      => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
+                'backendStartUri'        => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
+                'backendStopUri'         => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
             ],
         );
     }
 
-    public function editAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $station = $request->getStation();
-        $stationForm = $this->factory->make(StationForm::class);
-
-        if (false !== $stationForm->process($request, $station)) {
-            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));
-        }
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'stations/profile/edit',
-            [
-                'form' => $stationForm,
-            ]
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        StationFormComponent $stationFormComponent
+    ): ResponseInterface {
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsProfileEdit',
+            id: 'edit-profile',
+            title: __('Edit Profile'),
+            props: array_merge(
+                $stationFormComponent->getProps($request),
+                [
+                    'editUrl' => (string)$request->getRouter()->fromHere('api:stations:profile:edit'),
+                    'continueUrl' => (string)$request->getRouter()->fromHere('stations:profile:index'),
+                ]
+            )
         );
     }
 

@@ -1,6 +1,7 @@
-select.form-control option,
-select.custom-select option {
-  background: $menu-bg;
+select.form-control, select.custom-select {
+  option, optgroup {
+    background: $menu-bg;
+  }
 }
 
 .form {

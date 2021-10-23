@@ -229,6 +229,16 @@ return static function (RouteCollectorProxy $app) {
                             }
                         )->add(new Middleware\Permissions($permission));
                     }
+
+                    $group->post('/station/{id}/clone', Controller\Api\Admin\Stations\CloneAction::class)
+                        ->setName('api:admin:station:clone')
+                        ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+
+                    $group->get(
+                        '/stations/storage-locations',
+                        Controller\Api\Admin\Stations\StorageLocationsAction::class
+                    )->setName('api:admin:stations:storage-locations')
+                        ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
                 }
             );
 
@@ -251,6 +261,17 @@ return static function (RouteCollectorProxy $app) {
                     $group->get('/profile', Controller\Api\Stations\ProfileController::class)
                         ->setName('api:stations:profile')
                         ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
+
+                    $group->get(
+                        '/profile/edit',
+                        Controller\Api\Stations\ProfileEditController::class . ':getProfileAction'
+                    )->setName('api:stations:profile:edit')
+                        ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+
+                    $group->put(
+                        '/profile/edit',
+                        Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
+                    )->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
                     $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                         ->setName('api:stations:schedule');

@@ -9,17 +9,12 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
-use App\Radio\Adapters;
-use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Utilities;
 use Closure;
-use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @extends Repository<Entity\Station>
@@ -28,14 +23,10 @@ class StationRepository extends Repository
 {
     public function __construct(
         protected SettingsRepository $settingsRepo,
-        protected StorageLocationRepository $storageLocationRepo,
-        protected LoggerInterface $logger,
-        protected Adapters $adapters,
-        protected Configuration $configuration,
-        protected ValidatorInterface $validator,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
     }
@@ -97,44 +88,6 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param Entity\Station $station
-     */
-    public function edit(Entity\Station $station): Entity\Station
-    {
-        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
-
-        $this->configuration->initializeConfiguration($station);
-
-        // Delete media-related items if the media storage is changed.
-        /** @var Entity\StorageLocation|null $oldMediaStorage */
-        $oldMediaStorage = $original_record['media_storage_location'];
-        $newMediaStorage = $station->getMediaStorageLocation();
-
-        if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
-            $this->flushRelatedMedia($station);
-        }
-
-        // Get the original values to check for changes.
-        $old_frontend = $original_record['frontend_type'];
-        $old_backend = $original_record['backend_type'];
-
-        $frontend_changed = ($old_frontend !== $station->getFrontendType());
-        $backend_changed = ($old_backend !== $station->getBackendType());
-        $adapter_changed = $frontend_changed || $backend_changed;
-
-        if ($frontend_changed) {
-            $frontend = $this->adapters->getFrontendAdapter($station);
-            $this->resetMounts($station, $frontend);
-        }
-
-        if ($adapter_changed) {
-            $this->configuration->writeConfiguration($station, true);
-        }
-
-        return $station;
-    }
-
-    /**
      * Reset mount points to their adapter defaults (in the event of an adapter change).
      *
      * @param Entity\Station $station
@@ -161,7 +114,7 @@ class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    protected function flushRelatedMedia(Entity\Station $station): void
+    public function flushRelatedMedia(Entity\Station $station): void
     {
         $this->em->createQuery(
             <<<'DQL'
@@ -194,51 +147,6 @@ class StationRepository extends Repository
             DQL
         )->setParameter('station', $station)
             ->execute();
-    }
-
-    /**
-     * Handle tasks necessary to a station's creation.
-     *
-     * @param Entity\Station $station
-     */
-    public function create(Entity\Station $station): Entity\Station
-    {
-        $station->generateAdapterApiKey();
-
-        $this->configuration->initializeConfiguration($station);
-
-        // Create default mountpoints if station supports them.
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-        $this->resetMounts($station, $frontend_adapter);
-
-        return $station;
-    }
-
-    /**
-     * @param Entity\Station $station
-     *
-     * @throws Exception
-     */
-    public function destroy(Entity\Station $station): void
-    {
-        $this->configuration->removeConfiguration($station);
-
-        // Remove media folders.
-        $radio_dir = $station->getRadioBaseDir();
-        Utilities\File::rmdirRecursive($radio_dir);
-
-        // Save changes and continue to the last setup step.
-        $this->em->flush();
-
-        foreach ($station->getAllStorageLocations() as $storageLocation) {
-            $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
-            if (1 === count($stations)) {
-                $this->em->remove($storageLocation);
-            }
-        }
-
-        $this->em->remove($station);
-        $this->em->flush();
     }
 
     /**

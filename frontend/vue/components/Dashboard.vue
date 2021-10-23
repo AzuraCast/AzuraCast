@@ -82,9 +82,9 @@
                     </h2>
                 </div>
                 <div class="flex-shrink-0" v-if="showAdmin">
-                    <b-button variant="outline-light" size="sm" class="py-2" :href="addStationUrl">
-                        <icon icon="add"></icon>
-                        <translate key="dashboard_btn_add_station">Add Station</translate>
+                    <b-button variant="outline-light" size="sm" class="py-2" :href="manageStationsUrl">
+                        <icon icon="settings"></icon>
+                        <translate key="dashboard_btn_manage_stations">Manage Stations</translate>
                     </b-button>
                 </div>
             </div>
@@ -174,7 +174,7 @@ export default {
         notificationsUrl: String,
         showCharts: Boolean,
         chartsUrl: String,
-        addStationUrl: String,
+        manageStationsUrl: String,
         stationsUrl: String
     },
     data () {

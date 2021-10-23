@@ -149,4 +149,28 @@ class StationFrontendConfiguration extends ArrayCollection
     {
         $this->set(self::ALLOWED_IPS, $ips);
     }
+
+    public const SC_LICENSE_ID = 'sc_license_id';
+
+    public function getScLicenseId(): ?string
+    {
+        return $this->get(self::SC_LICENSE_ID);
+    }
+
+    public function setScLicenseId(?string $licenseId): void
+    {
+        $this->set(self::SC_LICENSE_ID, $licenseId);
+    }
+
+    public const SC_USER_ID = 'sc_user_id';
+
+    public function getScUserId(): ?string
+    {
+        return $this->get(self::SC_USER_ID);
+    }
+
+    public function setScUserId(?string $userId): void
+    {
+        $this->set(self::SC_USER_ID, $userId);
+    }
 }

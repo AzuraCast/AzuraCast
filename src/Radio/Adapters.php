@@ -25,9 +25,6 @@ class Adapters
     public const REMOTE_ICECAST = 'icecast';
     public const REMOTE_AZURARELAY = 'azurarelay';
 
-    public const DEFAULT_FRONTEND = self::FRONTEND_ICECAST;
-    public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;
-
     public function __construct(
         protected ContainerInterface $adapters
     ) {
@@ -66,15 +63,15 @@ class Adapters
     {
         $adapters = [
             self::FRONTEND_ICECAST => [
-                'name' => __('Use <b>%s</b> on this server', 'Icecast 2.4'),
+                'name'  => 'Icecast 2.4',
                 'class' => Frontend\Icecast::class,
             ],
             self::FRONTEND_SHOUTCAST => [
-                'name' => __('Use <b>%s</b> on this server', 'SHOUTcast DNAS 2'),
+                'name'  => 'SHOUTcast DNAS 2',
                 'class' => Frontend\SHOUTcast::class,
             ],
             self::FRONTEND_REMOTE => [
-                'name' => __('Connect to a <b>remote radio server</b>'),
+                'name'  => 'Remote',
                 'class' => Frontend\Remote::class,
             ],
         ];
@@ -126,11 +123,11 @@ class Adapters
     {
         $adapters = [
             self::BACKEND_LIQUIDSOAP => [
-                'name' => __('Use <b>%s</b> on this server', 'Liquidsoap'),
+                'name'  => 'Liquidsoap',
                 'class' => Backend\Liquidsoap::class,
             ],
             self::BACKEND_NONE => [
-                'name' => __('<b>Do not use</b> an AutoDJ service'),
+                'name'  => 'Disabled',
                 'class' => Backend\None::class,
             ],
         ];

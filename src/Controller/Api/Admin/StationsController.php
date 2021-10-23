@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
-use App\Normalizer\DoctrineEntityNormalizer;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Http\ServerRequest;
+use App\Radio\Adapters;
+use App\Radio\Configuration;
+use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -22,12 +26,15 @@ class StationsController extends AbstractAdminApiCrudController
     protected string $resourceRouteName = 'api:admin:station';
 
     public function __construct(
-        protected Entity\Repository\StationRepository $station_repo,
-        EntityManagerInterface $em,
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Adapters $adapters,
+        protected Configuration $configuration,
+        protected ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($reloadableEm, $serializer, $validator);
     }
 
     /**
@@ -109,6 +116,38 @@ class StationsController extends AbstractAdminApiCrudController
      * )
      */
 
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $return = $this->toArray($record);
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+
+        $return['links'] = [
+            'self'   => (string)$router->fromHere(
+                route_name: $this->resourceRouteName,
+                route_params: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'manage' => (string)$router->named(
+                route_name: 'stations:index:index',
+                route_params: ['station_id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'clone'  => (string)$router->fromHere(
+                route_name: 'api:admin:station:clone',
+                route_params: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+        ];
+
+        return $return;
+    }
+
     /**
      * @param Entity\Station $record
      * @param array<string, mixed> $context
@@ -117,19 +156,28 @@ class StationsController extends AbstractAdminApiCrudController
      */
     protected function toArray(object $record, array $context = []): array
     {
-        return parent::toArray(
-            $record,
-            $context + [
-                DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [
-                    'adapter_api_key',
-                    'nowplaying',
-                    'nowplaying_timestamp',
-                    'automation_timestamp',
-                    'needs_restart',
-                    'has_started',
-                ],
-            ]
-        );
+        $context[AbstractNormalizer::IGNORED_ATTRIBUTES] = [
+            'adapter_api_key',
+            'nowplaying',
+            'nowplaying_timestamp',
+            'automation_timestamp',
+            'needs_restart',
+            'has_started',
+        ];
+
+        return parent::toArray($record, $context);
+    }
+
+    protected function fromArray(array $data, ?object $record = null, array $context = []): object
+    {
+        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $locationType) {
+            $idKey = $locationKey . '_id';
+            if (!empty($data[$idKey])) {
+                $data[$locationKey] = $data[$idKey];
+            }
+        }
+
+        return parent::fromArray($data, $record, $context);
     }
 
     /**
@@ -156,14 +204,9 @@ class StationsController extends AbstractAdminApiCrudController
             throw $e;
         }
 
-        $this->em->persist($record);
-        $this->em->flush();
-
-        if ($create_mode) {
-            return $this->station_repo->create($record);
-        }
-
-        return $this->station_repo->edit($record);
+        return ($create_mode)
+            ? $this->handleCreate($record)
+            : $this->handleEdit($record);
     }
 
     /**
@@ -171,6 +214,82 @@ class StationsController extends AbstractAdminApiCrudController
      */
     protected function deleteRecord(object $record): void
     {
-        $this->station_repo->destroy($record);
+        $this->handleDelete($record);
+    }
+
+    protected function handleEdit(Entity\Station $station): Entity\Station
+    {
+        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
+
+        $this->em->persist($station);
+        $this->em->flush();
+
+        $this->configuration->initializeConfiguration($station);
+
+        // Delete media-related items if the media storage is changed.
+        /** @var Entity\StorageLocation|null $oldMediaStorage */
+        $oldMediaStorage = $original_record['media_storage_location'];
+        $newMediaStorage = $station->getMediaStorageLocation();
+
+        if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
+            $this->stationRepo->flushRelatedMedia($station);
+        }
+
+        // Get the original values to check for changes.
+        $old_frontend = $original_record['frontend_type'];
+        $old_backend = $original_record['backend_type'];
+
+        $frontend_changed = ($old_frontend !== $station->getFrontendType());
+        $backend_changed = ($old_backend !== $station->getBackendType());
+        $adapter_changed = $frontend_changed || $backend_changed;
+
+        if ($frontend_changed) {
+            $frontend = $this->adapters->getFrontendAdapter($station);
+            $this->stationRepo->resetMounts($station, $frontend);
+        }
+
+        if ($adapter_changed) {
+            $this->configuration->writeConfiguration($station, true);
+        }
+
+        return $station;
+    }
+
+    protected function handleCreate(Entity\Station $station): Entity\Station
+    {
+        $station->generateAdapterApiKey();
+
+        $this->em->persist($station);
+        $this->em->flush();
+
+        $this->configuration->initializeConfiguration($station);
+
+        // Create default mountpoints if station supports them.
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+        $this->stationRepo->resetMounts($station, $frontend_adapter);
+
+        return $station;
+    }
+
+    protected function handleDelete(Entity\Station $station): void
+    {
+        $this->configuration->removeConfiguration($station);
+
+        // Remove media folders.
+        $radio_dir = $station->getRadioBaseDir();
+        File::rmdirRecursive($radio_dir);
+
+        // Save changes and continue to the last setup step.
+        $this->em->flush();
+
+        foreach ($station->getAllStorageLocations() as $storageLocation) {
+            $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
+            if (1 === count($stations)) {
+                $this->em->remove($storageLocation);
+            }
+        }
+
+        $this->em->remove($station);
+        $this->em->flush();
     }
 }

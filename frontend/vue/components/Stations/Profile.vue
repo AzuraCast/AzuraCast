@@ -5,7 +5,7 @@
 
             <profile-now-playing :np="np" v-bind="$props"></profile-now-playing>
 
-            <profile-schedule :schedule-items="scheduleItems"></profile-schedule>
+            <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
 
             <div class="row" v-if="stationSupportsRequests || stationSupportsStreamers">
                 <div class="col" v-if="stationSupportsRequests">
@@ -50,7 +50,6 @@ import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
 import {profileEmbedModalProps} from './Profile/EmbedModal';
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters.js';
 import NowPlaying from '~/components/Entity/NowPlaying';
-import {DateTime} from 'luxon';
 
 export default {
     inheritAttrs: false,
@@ -105,31 +104,6 @@ export default {
         hasActiveBackend () {
             return this.backendType !== BACKEND_NONE;
         },
-        scheduleItems () {
-            let scheduleItems = this.np.schedule;
-            let now = DateTime.now().setZone(this.stationTimeZone);
-
-            scheduleItems.forEach(function (row, index) {
-                let start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(this.stationTimeZone);
-                let end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(this.stationTimeZone);
-
-                this[index].time_until = start_moment.toRelative();
-
-                if (start_moment.hasSame(now, 'day')) {
-                    this[index].start_formatted = start_moment.toLocaleString(DateTime.TIME_SIMPLE);
-                } else {
-                    this[index].start_formatted = start_moment.toLocaleString(DateTime.DATETIME_MED);
-                }
-
-                if (end_moment.hasSame(start_moment, 'day')) {
-                    this[index].end_formatted = end_moment.toLocaleString(DateTime.TIME_SIMPLE);
-                } else {
-                    this[index].end_formatted = end_moment.toLocaleString(DateTime.DATETIME_MED);
-                }
-            }, scheduleItems);
-
-            return scheduleItems;
-        }
     },
     methods: {
         checkNowPlaying () {

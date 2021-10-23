@@ -1,104 +1,104 @@
-name : Build, Test and Publish
-on :
-  pull_request :
-    branches :
+name: Build, Test and Publish
+on:
+  pull_request:
+    branches:
       - main
-  push :
-    paths-ignore :
+  push:
+    paths-ignore:
       - '.github/*.yml'
       - '.github/ISSUE_TEMPLATE/*.md'
       - 'install.sh' # Ansible-only scripts and folders
       - 'update.sh'
       - 'util/ansible/**'
-    branches :
+    branches:
       - ci-testing
       - main
       - stable
-    tags :
+    tags:
       - '*'
-  schedule :
-    - cron : '0 2 * * 0' # Weekly on Sundays at 02:00
+  schedule:
+    - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
 
-jobs :
-  build :
-    name : Build and Test
-    runs-on : ubuntu-latest
-    env :
-      APPLICATION_ENV : testing
-      NODE_ENV : production
-    steps :
-      - uses : actions/checkout@master
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    env:
+      APPLICATION_ENV: testing
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@master
 
-      - name : Setup PHP
-        uses : shivammathur/setup-php@v2
-        with :
-          php-version : '8.0'
-          extensions : intl, maxminddb
-          tools : composer:v2, cs2pr
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: intl, maxminddb
+          tools: composer:v2, cs2pr
 
-      - name : Cache PHP dependencies
-        uses : actions/cache@v2
-        with :
-          path : vendor
-          key : ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+      - name: Cache PHP dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
-      - name : Set console permissions and clear static assets.
-        run : |
+      - name: Set console permissions and clear static assets.
+        run: |
           rm -rf web/static/dist
           rm -rf web/static/webpack_dist
           rm -rf web/static/webpack.json
           rm -rf web/static/assets.json
           chmod a+x bin/console
 
-      - name : Run Composer install
-        run : |
+      - name: Run Composer install
+        run: |
           composer install --no-interaction --ignore-platform-reqs
 
-      - name : Run PHP Linter
-        run : |
+      - name: Run PHP Linter
+        run: |
           vendor/bin/parallel-lint . --exclude vendor --checkstyle | cs2pr
 
-      - name : Run PHPStan
-        run : |
+      - name: Run PHPStan
+        run: |
           vendor/bin/phpstan analyze --error-format=checkstyle | cs2pr
 
-      - name : Run PHP Code Sniffer
-        run : |
+      - name: Run PHP Code Sniffer
+        run: |
           vendor/bin/phpcs --report=checkstyle | cs2pr
 
-      - name : Clear existing locales.
-        if : github.event_name == 'push' || github.event_name == 'schedule'
-        run : |
+      - name: Clear existing locales.
+        if: github.event_name == 'push' || github.event_name == 'schedule'
+        run: |
           rm -rf resources/locale/compiled
           rm -rf resources/locale/*.UTF-8
           rm -rf resources/locale/translations.json
           mkdir -p resources/locale/compiled
 
-      - name : Generate new translations from existing code.
-        if : github.event_name == 'push' || github.event_name == 'schedule'
-        run : |
+      - name: Generate new translations from existing code.
+        if: github.event_name == 'push' || github.event_name == 'schedule'
+        run: |
           bin/console locale:generate
           cd frontend
           npm ci
           npm run generate-locales
 
-      - name : Pull latest translations.
-        if : github.event_name == 'push' || github.event_name == 'schedule'
-        uses : crowdin/github-action@1.0.18
-        with :
-          upload_sources : true
-          download_translations : true
-          export_only_approved : false
-          push_translations : false
-          crowdin_branch_name : main
-          config : crowdin.yaml
-        env :
-          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID : ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN : ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      - name: Pull latest translations.
+        if: github.event_name == 'push' || github.event_name == 'schedule'
+        uses: crowdin/github-action@1.0.18
+        with:
+          upload_sources: true
+          download_translations: true
+          export_only_approved: false
+          push_translations: false
+          crowdin_branch_name: main
+          config: crowdin.yaml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name : Import locales, build static assets.
-        run : |
+      - name: Import locales, build static assets.
+        run: |
           bin/console locale:import
 
           cd frontend
@@ -106,8 +106,11 @@ jobs :
           npm run import-locales
           npm run build
 
-      - name : Set up functional test environment.
-        run : |
+      - name: Build OpenAPI Docs
+        run: bin/console azuracast:api:docs
+
+      - name: Set up functional test environment.
+        run: |
           cp sample.env .env
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
@@ -118,89 +121,110 @@ jobs :
 
           docker-compose run --rm --user="azuracast" web azuracast_install
 
-      - name : Run functional test suite.
-        run : |
+      - name: Run functional test suite.
+        run: |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
           docker-compose run --rm --user="azuracast" web composer codeception-no-coverage
 
-      - name : Stop all running containers.
-        run : |
+      - name: Stop all running containers.
+        run: |
           docker-compose down
 
-      - name : Echo test output directory
-        if : failure()
-        run : |
+      - name: Echo test output directory
+        if: failure()
+        run: |
           docker-compose logs
           cat tests/_output/*
 
-      - name : Upload built static assets and translations
-        uses : actions/upload-artifact@v2
-        with :
-          name : assets
-          if-no-files-found : error
-          path : |
+      - name: Upload built static assets and translations
+        uses: actions/upload-artifact@v2
+        with:
+          name: assets
+          if-no-files-found: error
+          path: |
             resources/locale/compiled
             resources/locale/translations.json
             web/static/dist
             web/static/webpack_dist
             web/static/webpack.json
             web/static/assets.json
+            web/static/api/openapi.yml
 
-  publish :
-    name : Publish
-    needs : build
-    runs-on : ubuntu-latest
-    if : github.event_name == 'push' || github.event_name == 'schedule'
-    steps :
-      - uses : actions/checkout@master
+  push-api-docs:
+    name: Push API Docs
+    needs: build
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || github.event_name == 'schedule'
+      endsWith(github.ref, github.event.repository.default_branch)
+    env:
+      REDOCLY_AUTHORIZATION: ${{ secrets.REDOCLY_AUTHORIZATION }}
+    steps:
+      - uses: actions/checkout@master
 
-      - name : Reduce Git repository size.
-        run : |
+      - name: Download built static assets from previous step
+        uses: actions/download-artifact@v2
+        with:
+          name: assets
+
+      - name: Submit OpenAPI YML to Redocly
+        run: npx @redocly/openapi-cli@latest push ./web/static/api/openapi.yml "@azuracast/AzuraCast@Latest"
+
+  publish:
+    name: Publish
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Reduce Git repository size.
+        run: |
           git gc --prune=now --aggressive
 
-      - name : Download built static assets from previous step
-        uses : actions/download-artifact@v2
-        with :
-          name : assets
+      - name: Download built static assets from previous step
+        uses: actions/download-artifact@v2
+        with:
+          name: assets
 
       # - name : Set up QEMU
       #  uses : docker/setup-qemu-action@v1
 
-      - name : Set up Docker Buildx
-        uses : docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      - name : Login to DockerHub
-        uses : docker/login-action@v1
-        with :
-          username : ${{ secrets.DOCKERHUB_USERNAME }}
-          password : ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name : Login to GitHub Container Registry
-        uses : docker/login-action@v1
-        with :
-          registry : ghcr.io
-          username : ${{ github.repository_owner }}
-          password : ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name : Build Docker Metadata
-        id : meta
-        uses : crazy-max/ghaction-docker-meta@v2
-        with :
-          images : |
+      - name: Build Docker Metadata
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: |
             azuracast/azuracast_web_v2
             ghcr.io/azuracast/web
-          tags : |
+          tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=branch
             type=semver,pattern={{version}}
 
-      - name : Publish to Docker Hub
-        uses : docker/build-push-action@v2
-        with :
-          context : .
+      - name: Publish to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
           # platforms : linux/amd64,linux/arm64
-          cache-from : type=registry,ref=azuracast/azuracast_web_v2:latest
-          push : true
-          tags : ${{ steps.meta.outputs.tags }}
-          labels : ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=azuracast/azuracast_web_v2:latest
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

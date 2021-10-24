@@ -3,8 +3,10 @@
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
                 <b-form-textarea v-if="inputType === 'textarea'" :id="id" v-model="field.$model"
-                                 v-bind="inputAttrs" :state="fieldState"></b-form-textarea>
+                                 :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
+                                 :state="fieldState"></b-form-textarea>
                 <b-form-input v-else :type="inputType" :id="id" v-model="field.$model"
+                              :number="isNumeric" :trim="inputTrim"
                               v-bind="inputAttrs" :state="fieldState"></b-form-input>
             </slot>
 
@@ -50,6 +52,14 @@ export default {
             type: String,
             default: 'text'
         },
+        inputNumber: {
+            type: Boolean,
+            default: false
+        },
+        inputTrim: {
+            type: Boolean,
+            default: false
+        },
         inputAttrs: {
             type: Object,
             default() {
@@ -76,7 +86,7 @@ export default {
         fieldState() {
             return this.field.$dirty ? !this.field.$error : null;
         },
-        labelClassWithRequired () {
+        labelClassWithRequired() {
             let labelClass = this.labelClass;
             if (this.isRequired) {
                 labelClass += ' required';
@@ -85,6 +95,9 @@ export default {
         },
         isRequired() {
             return _.has(this.field, 'required');
+        },
+        isNumeric() {
+            return this.inputNumber || this.inputType === "number";
         }
     }
 }

@@ -31,7 +31,7 @@
 
 <script>
 import {validationMixin} from "vuelidate";
-import {required} from 'vuelidate/dist/validators.min.js';
+import {decimal, numeric, required, url} from 'vuelidate/dist/validators.min.js';
 import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
@@ -84,7 +84,7 @@ export default {
                 name: {required},
                 description: {},
                 genre: {},
-                url: {},
+                url: {url},
                 timezone: {},
                 enable_public_page: {},
                 enable_on_demand: {},
@@ -98,7 +98,7 @@ export default {
                     sc_user_id: {},
                     source_pw: {},
                     admin_pw: {},
-                    port: {},
+                    port: {numeric},
                     max_listeners: {},
                     custom_config: {},
                     banned_ips: {},
@@ -108,14 +108,14 @@ export default {
                 backend_type: {required},
                 backend_config: {
                     crossfade_type: {},
-                    crossfade: {},
+                    crossfade: {decimal},
                     nrj: {},
                     record_streams: {},
                     record_streams_format: {},
                     record_streams_bitrate: {},
-                    dj_port: {},
-                    telnet_port: {},
-                    dj_buffer: {},
+                    dj_port: {numeric},
+                    telnet_port: {numeric},
+                    dj_buffer: {numeric},
                     dj_mount_point: {},
                     enable_replaygain_metadata: {},
                     autodj_queue_length: {},
@@ -124,8 +124,8 @@ export default {
                     duplicate_prevention_time_range: {},
                 },
                 enable_requests: {},
-                request_delay: {},
-                request_threshold: {},
+                request_delay: {numeric},
+                request_threshold: {numeric},
                 enable_streamers: {},
                 disconnect_deactivate_streamer: {},
             },

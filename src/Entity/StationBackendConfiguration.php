@@ -158,7 +158,7 @@ class StationBackendConfiguration extends ArrayCollection
 
     public function getCrossfade(): float
     {
-        return round($this->get(self::CROSSFADE) ?? self::DEFAULT_CROSSFADE_DURATION, 1);
+        return round((float)($this->get(self::CROSSFADE) ?? self::DEFAULT_CROSSFADE_DURATION), 1);
     }
 
     public function setCrossfade(?float $crossfade): void
@@ -184,7 +184,9 @@ class StationBackendConfiguration extends ArrayCollection
 
     public function getDuplicatePreventionTimeRange(): int
     {
-        return $this->get(self::DUPLICATE_PREVENTION_TIME_RANGE) ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE;
+        return (int)(
+            $this->get(self::DUPLICATE_PREVENTION_TIME_RANGE) ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE
+        );
     }
 
     public function setDuplicatePreventionTimeRange(?int $duplicatePreventionTimeRange): void

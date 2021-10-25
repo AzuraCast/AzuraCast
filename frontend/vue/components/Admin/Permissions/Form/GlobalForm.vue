@@ -1,20 +1,20 @@
 <template>
     <b-tab :title="langTabTitle" active>
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                    <template #label>
-                        <translate key="lang_form_name">Role Name</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Role Name</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_global_permissions"
                                       :field="form.permissions.global">
-                    <template #label>
-                        <translate key="lang_form_global_permissions">Global Permissions</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Global Permissions</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_global_permissions_desc">Users with this role will have these permissions across the entire installation.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Users with this role will have these permissions across the entire installation.</translate>
                     </template>
                     <template #default="props">
                         <b-form-checkbox-group :id="props.id" :options="globalPermissionOptions"
@@ -22,7 +22,7 @@
                         </b-form-checkbox-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

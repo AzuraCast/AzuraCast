@@ -16,14 +16,15 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
-                        <b-wrapped-form-group class="col-md-12" :id="'edit_form_station_permissions_'+row.station_id.$model"
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12"
+                                              :id="'edit_form_station_permissions_'+row.station_id.$model"
                                               :field="row.permissions">
-                            <template #label>
-                                <translate key="lang_form_station_permission">Station Permissions</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Station Permissions</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_station_permission_desc">Users with this role will have these permissions for this single station.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">Users with this role will have these permissions for this single station.</translate>
                             </template>
                             <template #default="props">
                                 <b-form-checkbox-group :id="props.id" :options="stationPermissionOptions"
@@ -31,7 +32,7 @@
                                 </b-form-checkbox-group>
                             </template>
                         </b-wrapped-form-group>
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>

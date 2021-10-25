@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-alert show variant="warning">
                     <h4 class="alert-heading">
                         <translate key="lang_advanced_warning">Warning</translate>
@@ -12,11 +12,11 @@
                 </b-alert>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backend_options" :field="form.backend_options">
-                    <template #label>
-                        <translate key="lang_form_backend_options">Advanced Manual AutoDJ Scheduling Options</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Advanced Manual AutoDJ Scheduling Options</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_backend_options_desc">Control how this playlist is handled by the AutoDJ software.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Control how this playlist is handled by the AutoDJ software.</translate>
                     </template>
                     <template #default="props">
                         <b-form-checkbox-group stacked :id="props.id" v-model="props.field.$model">
@@ -38,7 +38,7 @@
                         </b-form-checkbox-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

@@ -1,36 +1,34 @@
 <template>
     <b-tab :title="langTabTitle" :title-link-class="tabClass">
         <b-form-group>
-            <b-row>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
-                    <template #description>
-                        <translate key="lang_edit_form_is_enabled_desc">If disabled, the station will not broadcast or shuffle its AutoDJ.</translate>
+            <b-form-row>
+                <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
+                    <template #label="{lang}">
+                        <translate :key="lang">Enable Broadcasting</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate
-                                key="lang_edit_form_is_enabled">Enable Broadcasting</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">If disabled, the station will not broadcast or shuffle its AutoDJ.</translate>
                     </template>
-                </b-wrapped-form-group>
+                </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_radio_base_dir" :field="form.radio_base_dir"
                                       advanced>
-                    <template #label>
-                        <translate key="lang_edit_form_radio_base_dir">Base Station Directory</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Base Station Directory</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_edit_form_radio_base_dir_desc">The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
 
             <b-overlay variant="card" :show="storageLocationsLoading">
-                <b-row>
+                <b-form-row>
                     <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location_id"
                                           :field="form.media_storage_location_id">
-                        <template #label>
-                            <translate key="lang_form_media_storage_location_id">Media Storage Location</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">Media Storage Location</translate>
                         </template>
                         <template #default="props">
                             <b-form-select :id="props.id" v-model="props.field.$model"
@@ -40,9 +38,8 @@
 
                     <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location_id"
                                           :field="form.recordings_storage_location_id">
-                        <template #label>
-                            <translate
-                                key="lang_form_recordings_storage_location_id">Live Recordings Storage Location</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">Live Recordings Storage Location</translate>
                         </template>
                         <template #default="props">
                             <b-form-select :id="props.id" v-model="props.field.$model"
@@ -52,16 +49,15 @@
 
                     <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location_id"
                                           :field="form.podcasts_storage_location_id">
-                        <template #label>
-                            <translate
-                                key="lang_form_podcasts_storage_location_id">Podcasts Storage Location</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">Podcasts Storage Location</translate>
                         </template>
                         <template #default="props">
                             <b-form-select :id="props.id" v-model="props.field.$model"
                                            :options="storageLocationOptions.podcasts_storage_location"></b-form-select>
                         </template>
                     </b-wrapped-form-group>
-                </b-row>
+                </b-form-row>
             </b-overlay>
         </b-form-group>
     </b-tab>
@@ -70,10 +66,11 @@
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'AdminStationsAdminForm',
-    components: {BWrappedFormGroup},
+    components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
         form: Object,
         tabClass: {},

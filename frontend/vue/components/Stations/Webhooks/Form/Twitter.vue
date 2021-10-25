@@ -29,35 +29,35 @@
         </b-form-group>
 
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_config_consumer_key" :field="form.config.consumer_key">
-                    <template #label>
-                        <translate key="lang_form_config_consumer_key">Consumer Key (API Key)</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Consumer Key (API Key)</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_consumer_secret"
                                       :field="form.config.consumer_secret">
-                    <template #label>
-                        <translate key="lang_form_config_consumer_secret">Consumer Secret (API Secret)</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Consumer Secret (API Secret)</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
-                    <template #label>
-                        <translate key="lang_form_config_token">Access Token</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Access Token</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_token_secret" :field="form.config.token_secret">
-                    <template #label>
-                        <translate key="lang_form_config_token_secret">Access Token Secret</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Access Token Secret</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_config_rate_limit" :field="form.config.rate_limit">
-                    <template #label>
-                        <translate key="lang_form_config_rate_limit">Only Send One Tweet Every...</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Only Send One Tweet Every...</translate>
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" :options="rateLimitOptions"
@@ -65,20 +65,20 @@
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
 
         <common-formatting-info></common-formatting-info>
 
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message"
                                       input-type="textarea">
-                    <template #label>
-                        <translate key="lang_form_config_message">Message Body</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Message Body</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

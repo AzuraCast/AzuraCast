@@ -25,14 +25,14 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
+                    <b-form-row>
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_time_'+index"
                                               :field="row.start_time">
-                            <template #label>
-                                <translate key="lang_form_start_time">Start Time</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Start Time</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_start_time_desc">To play once per day, set the start and end times to the same value.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">To play once per day, set the start and end times to the same value.</translate>
                             </template>
                             <template #default="props">
                                 <playlist-time :id="props.id" v-model="props.field.$model"
@@ -41,11 +41,11 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="row.end_time">
-                            <template #label>
-                                <translate key="lang_form_end_time">End Time</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">End Time</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_end_time_desc">If the end time is before the start time, the playlist will play overnight.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">If the end time is before the start time, the playlist will play overnight.</translate>
                             </template>
                             <template #default="props">
                                 <playlist-time :id="props.id" v-model="props.field.$model"
@@ -64,13 +64,13 @@
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_date_'+index"
                                               :field="row.start_date">
-                            <template #label>
-                                <translate key="lang_form_start_date">Start Date</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Start Date</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_start_date_desc">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
                                 <div v-if="hasAdvancedSettings" class="text-danger">
-                                    <translate key="lang_form_start_date_warning">Start/end date cannot be used on playlists with advanced settings!</translate>
+                                    <translate :key="lang+'_warning'">Start/end date cannot be used on playlists with advanced settings!</translate>
                                 </div>
                             </template>
                             <template #default="props">
@@ -80,8 +80,8 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="row.end_date">
-                            <template #label>
-                                <translate key="lang_form_end_date">End Date</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">End Date</translate>
                             </template>
                             <template #default="props">
                                 <b-form-input :id="props.id" type="date" v-model="props.field.$model"
@@ -89,25 +89,22 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_loop_once_'+index"
-                                              :field="row.loop_once">
-                            <template #description>
-                                <translate key="lang_form_loop_once_desc">Only loop through playlist once.</translate>
+                        <b-wrapped-form-checkbox class="col-md-4" :id="'edit_form_loop_once_'+index"
+                                                 :field="row.loop_once">
+                            <template #label="{lang}">
+                                <translate :key="lang">Loop Once</translate>
                             </template>
-                            <template #default="props">
-                                <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                                    <translate key="lang_form_loop_once">Loop Once</translate>
-                                </b-form-checkbox>
+                            <template #description="{lang}">
+                                <translate :key="lang">Only loop through playlist once.</translate>
                             </template>
-                        </b-wrapped-form-group>
+                        </b-wrapped-form-checkbox>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_days_'+index" :field="row.days">
-                            <template #label>
-                                <translate key="lang_form_days">Scheduled Play Days of Week</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Scheduled Play Days of Week</translate>
                             </template>
-                            <template #description>
-                                <translate
-                                    key="lang_form_days_desc">Leave blank to play on every day of the week.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">Leave blank to play on every day of the week.</translate>
                             </template>
                             <template #default="props">
                                 <b-checkbox-group stacked :id="'edit_form_days_'+index" v-model="row.days.$model"
@@ -115,7 +112,7 @@
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>
@@ -133,10 +130,11 @@
 import PlaylistTime from '~/components/Common/TimeCode';
 import Icon from '~/components/Common/Icon';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'PlaylistEditSchedule',
-    components: {BWrappedFormGroup, Icon, PlaylistTime},
+    components: {BWrappedFormCheckbox, BWrappedFormGroup, Icon, PlaylistTime},
     props: {
         form: Object,
         stationTimeZone: String,

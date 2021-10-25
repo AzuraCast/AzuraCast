@@ -52,7 +52,7 @@ export default {
         },
         loading: {
             type: Boolean,
-            required: true
+            default: false
         },
         disableSaveButton: {
             type: Boolean,

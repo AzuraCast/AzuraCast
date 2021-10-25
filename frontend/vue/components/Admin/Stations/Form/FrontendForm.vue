@@ -1,14 +1,15 @@
 <template>
     <b-tab :title="langTabTitle" :title-link-class="tabClass">
         <b-form-fieldset>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
                                       :field="form.frontend_type">
-                    <template #label>
-                        <translate key="lang_edit_form_frontend_type">Broadcasting Service</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Broadcasting Service</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_edit_form_frontend_type_desc">This software delivers your broadcast to the listening audience.</translate>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">This software delivers your broadcast to the listening audience.</translate>
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" :options="frontendTypeOptions"
@@ -16,92 +17,92 @@
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-fieldset>
 
         <b-form-fieldset v-if="isLocalFrontend">
             <b-form-fieldset v-if="isShoutcastFrontend">
-                <b-row>
+                <b-form-row>
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_license_id"
                                           :field="form.frontend_config.sc_license_id">
-                        <template #label>
-                            <translate key="lang_form_frontend_sc_license_id">SHOUTcast License ID</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">SHOUTcast License ID</translate>
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_user_id"
                                           :field="form.frontend_config.sc_user_id">
-                        <template #label>
-                            <translate key="lang_form_frontend_sc_user_id">SHOUTcast User ID</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">SHOUTcast User ID</translate>
                         </template>
                     </b-wrapped-form-group>
-                </b-row>
+                </b-form-row>
             </b-form-fieldset>
 
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
                                       :field="form.frontend_config.source_pw">
-                    <template #label>
-                        <translate key="lang_form_frontend_source_pw">Customize Source Password</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Customize Source Password</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_source_pw_desc">Leave blank to automatically generate a new password.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Leave blank to automatically generate a new password.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_admin_pw"
                                       :field="form.frontend_config.admin_pw">
-                    <template #label>
-                        <translate key="lang_form_frontend_admin_pw">Customize Administrator Password</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Customize Administrator Password</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_admin_pw_desc">Leave blank to automatically generate a new password.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Leave blank to automatically generate a new password.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_port"
                                       :field="form.frontend_config.port" input-type="number"
                                       :input-attrs="{min: '0'}" advanced>
-                    <template #label>
-                        <translate key="lang_form_frontend_port">Customize Broadcasting Port</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Customize Broadcasting Port</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_port_desc">No other program can be using this port. Leave blank to automatically assign a port.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">No other program can be using this port. Leave blank to automatically assign a port.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_max_listeners"
                                       :field="form.frontend_config.max_listeners" advanced>
-                    <template #label>
-                        <translate key="lang_form_frontend_max_listeners">Maximum Listeners</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Maximum Listeners</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_max_listeners_desc">Maximum number of total listeners across all streams. Leave blank to use the default.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Maximum number of total listeners across all streams. Leave blank to use the default.</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
 
-            <b-row>
+            <b-form-row>
                 <b-col md="5">
                     <b-wrapped-form-group id="edit_form_frontend_banned_ips"
                                           :field="form.frontend_config.banned_ips" input-type="textarea"
                                           :input-attrs="{class: 'text-preformatted'}" advanced>
-                        <template #label>
-                            <translate key="lang_form_frontend_banned_ips">Banned IP Addresses</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">Banned IP Addresses</translate>
                         </template>
-                        <template #description>
-                            <translate key="lang_form_frontend_banned_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                        <template #description="{lang}">
+                            <translate :key="lang">List one IP address or group (in CIDR format) per line.</translate>
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group id="edit_form_frontend_allowed_ips"
                                           :field="form.frontend_config.allowed_ips" input-type="textarea"
                                           :input-attrs="{class: 'text-preformatted'}" advanced>
-                        <template #label>
-                            <translate key="lang_form_frontend_allowed_ips">Allowed IP Addresses</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">Allowed IP Addresses</translate>
                         </template>
-                        <template #description>
-                            <translate key="lang_form_frontend_allowed_ips_desc">List one IP address or group (in CIDR format) per line.</translate>
+                        <template #description="{lang}">
+                            <translate :key="lang">List one IP address or group (in CIDR format) per line.</translate>
                         </template>
                     </b-wrapped-form-group>
                 </b-col>
@@ -109,11 +110,12 @@
                 <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
                                       :field="form.frontend_config.banned_countries"
                                       advanced>
-                    <template #label>
-                        <translate key="lang_form_frontend_banned_countries">Banned Countries</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Banned Countries</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_frontend_banned_countries_desc">Select the countries that are not allowed to connect to the streams.</translate>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">Select the countries that are not allowed to connect to the streams.</translate>
                     </template>
                     <template #default="props">
                         <b-form-select :id="props.id" v-model="props.field.$model"
@@ -124,7 +126,7 @@
                         </b-button>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
 
             <b-form-fieldset>
                 <template #label>
@@ -138,16 +140,16 @@
                     </ul>
                 </template>
 
-                <b-row>
+                <b-form-row>
                     <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_custom_config"
                                           :field="form.frontend_config.custom_config" input-type="textarea"
                                           :input-attrs="{class: 'text-preformatted', style: 'min-height: 250px;'}"
                                           advanced>
-                        <template #label>
-                            <translate key="lang_form_frontend_custom_config">Custom Configuration</translate>
+                        <template #label="{lang}">
+                            <translate :key="lang">Custom Configuration</translate>
                         </template>
                     </b-wrapped-form-group>
-                </b-row>
+                </b-form-row>
             </b-form-fieldset>
         </b-form-fieldset>
     </b-tab>

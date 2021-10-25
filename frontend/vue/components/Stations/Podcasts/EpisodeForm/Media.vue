@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="langTitle">
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-form-group class="col-md-6" label-for="media_file">
                     <template #label>
                         <translate key="media_file">Select Media File</translate>
@@ -10,7 +10,8 @@
                         <translate key="media_file_desc">Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.</translate>
                     </template>
 
-                    <flow-upload :target-url="targetUrl" :valid-mime-types="acceptMimeTypes" @success="onFileSuccess"></flow-upload>
+                    <flow-upload :target-url="targetUrl" :valid-mime-types="acceptMimeTypes"
+                                 @success="onFileSuccess"></flow-upload>
                 </b-form-group>
 
                 <b-form-group class="col-md-6">
@@ -29,10 +30,11 @@
                         </div>
                     </div>
                     <div v-else>
-                        <translate key="no_existing_media">There is no existing media associated with this episode.</translate>
+                        <translate
+                            key="no_existing_media">There is no existing media associated with this episode.</translate>
                     </div>
                 </b-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

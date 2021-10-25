@@ -24,39 +24,37 @@
         </b-form-group>
 
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_webhook_url" :field="form.config.webhook_url"
                                       input-type="url">
-                    <template #label>
-                        <translate key="lang_form_config_webhook_url">Web Hook URL</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Web Hook URL</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_config_webhook_url_desc">The URL that will receive the POST messages any time an event is triggered.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">The URL that will receive the POST messages any time an event is triggered.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_basic_auth_username"
                                       :field="form.config.basic_auth_username">
-                    <template #label>
-                    <translate
-                        key="lang_form_config_basic_auth_username">Optional: HTTP Basic Authentication Username</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Optional: HTTP Basic Authentication Username</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_config_basic_auth_username_desc">If your web hook requires HTTP basic authentication, provide the username here.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">If your web hook requires HTTP basic authentication, provide the username here.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_basic_auth_password"
                                       :field="form.config.basic_auth_password">
-                    <template #label>
-                    <translate
-                        key="lang_form_config_basic_auth_password">Optional: HTTP Basic Authentication Password</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Optional: HTTP Basic Authentication Password</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_config_basic_auth_password_desc">If your web hook requires HTTP basic authentication, provide the password here.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">If your web hook requires HTTP basic authentication, provide the password here.</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

@@ -1,16 +1,11 @@
 <template>
     <b-modal id="rename_file" centered ref="modal" :title="langRenameFile">
         <b-form @submit.prevent="doRename">
-            <b-form-group label-for="new_directory_name">
-                <template #label>
-                    <translate key="lang_new_directory_name">New File Name</translate>
+            <b-wrapped-form-group id="new_directory_name" :field="$v.form.newPath">
+                <template #label="{lang}">
+                    <translate :key="lang">New File Name</translate>
                 </template>
-                <b-input type="text" id="new_directory_name" v-model="$v.form.newPath.$model"
-                         :state="$v.form.newPath.$dirty ? !$v.form.newPath.$error : null" autofocus></b-input>
-                <b-form-invalid-feedback>
-                    <translate key="lang_error_required">This field is required.</translate>
-                </b-form-invalid-feedback>
-            </b-form-group>
+            </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
             <b-button variant="default" @click="close">
@@ -25,9 +20,11 @@
 <script>
 import {validationMixin} from 'vuelidate';
 import {required} from 'vuelidate/dist/validators.min.js';
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 export default {
     name: 'RenameModal',
+    components: {BWrappedFormGroup},
     mixins: [validationMixin],
     props: {
         renameUrl: String

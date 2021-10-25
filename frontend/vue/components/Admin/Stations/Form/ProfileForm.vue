@@ -1,41 +1,41 @@
 <template>
     <b-tab :title="langTabTitle" :title-link-class="tabClass" active>
         <b-form-fieldset>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                    <template #label>
-                        <translate key="lang_form_name">Name</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Name</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
                                       input-type="textarea">
-                    <template #label>
-                        <translate key="lang_form_description">Description</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Description</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_genre" :field="form.genre">
-                    <template #label>
-                        <translate key="lang_form_genre">Genre</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Genre</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_url" :field="form.url" input-type="url">
-                    <template #label>
-                        <translate key="lang_form_url">Web Site URL</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Web Site URL</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_url_desc">Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_timezone" :field="form.timezone">
-                    <template #label>
-                        <translate key="lang_form_timezone">Time Zone</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Time Zone</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_timezone_desc">Scheduled playlists and other timed items will be controlled by this time zone.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Scheduled playlists and other timed items will be controlled by this time zone.</translate>
                     </template>
                     <template #default="props">
                         <b-form-select :id="props.id" v-model="props.field.$model"
@@ -45,38 +45,37 @@
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_default_album_art_url"
                                       :field="form.default_album_art_url">
-                    <template #label>
-                        <translate key="lang_form_default_album_art_url">Default Album Art URL</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Default Album Art URL</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_default_album_art_url_desc">If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_short_name" :field="form.short_name" advanced>
-                    <template #label>
-                        <translate key="lang_form_short_name">URL Stub</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">URL Stub</translate>
                     </template>
-                    <template #description>
-                    <translate
-                        key="lang_form_short_name_desc">Optionally specify a short URL-friendly name, such as "my_station_name", that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Optionally specify a short URL-friendly name, such as "my_station_name", that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name.</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_api_history_items" :field="form.api_history_items"
                                       advanced>
-                    <template #label>
-                        <translate key="lang_form_api_history_items">Number of Visible Recent Songs</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Number of Visible Recent Songs</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_api_history_items_desc">Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.</translate>
                     </template>
                     <template #default="props">
                         <b-form-select :id="props.id" v-model="props.field.$model"
                                        :options="historyItemsOptions"></b-form-select>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-fieldset>
 
         <b-form-fieldset>
@@ -84,20 +83,17 @@
                 <translate key="lang_header_public_pages">Public Pages</translate>
             </template>
 
-            <b-row>
-                <b-wrapped-form-group class="col-md-12" id="edit_form_enable_public_page"
-                                      :field="form.enable_public_page">
-                    <template #description>
-                        <translate key="lang_edit_form_enable_public_page_desc">Show the station in public pages and general API results.</translate>
+            <b-form-row>
+                <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_public_page"
+                                         :field="form.enable_public_page">
+                    <template #label="{lang}">
+                        <translate :key="lang">Enable Public Pages</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate
-                                key="lang_edit_form_enable_public_page">Enable Public Pages</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate :key="lang">Show the station in public pages and general API results.</translate>
                     </template>
-                </b-wrapped-form-group>
-            </b-row>
+                </b-wrapped-form-checkbox>
+            </b-form-row>
         </b-form-fieldset>
 
         <b-form-fieldset>
@@ -105,34 +101,28 @@
                 <translate key="lang_header_on_demand">On-Demand Streaming</translate>
             </template>
 
-            <b-row>
-                <b-wrapped-form-group class="col-md-12" id="edit_form_enable_on_demand"
-                                      :field="form.enable_on_demand">
-                    <template #description>
-                        <translate key="lang_edit_form_enable_on_demand">If enabled, music from playlists with on-demand streaming enabled will be available to stream via a specialized public page.</translate>
+            <b-form-row>
+                <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_on_demand"
+                                         :field="form.enable_on_demand">
+                    <template #label="{lang}">
+                        <translate :key="lang">Enable On-Demand Streaming</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate
-                                key="lang_edit_form_enable_on_demand">Enable On-Demand Streaming</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate :key="lang">If enabled, music from playlists with on-demand streaming enabled will be available to stream via a specialized public page.</translate>
                     </template>
-                </b-wrapped-form-group>
+                </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group v-if="form.enable_on_demand.$model" class="col-md-12"
-                                      id="edit_form_enable_on_demand_download"
-                                      :field="form.enable_on_demand_download">
-                    <template #description>
-                        <translate key="lang_edit_form_enable_on_demand">If enabled, a download button will also be present on the public "On-Demand" page.</translate>
+                <b-wrapped-form-checkbox v-if="form.enable_on_demand.$model" class="col-md-12"
+                                         id="edit_form_enable_on_demand_download"
+                                         :field="form.enable_on_demand_download">
+                    <template #label="{lang}">
+                        <translate :key="lang">Enable Downloads on On-Demand Page</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate
-                                key="lang_edit_form_enable_on_demand_download">Enable Downloads on On-Demand Page</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate :key="lang">If enabled, a download button will also be present on the public "On-Demand" page.</translate>
                     </template>
-                </b-wrapped-form-group>
-            </b-row>
+                </b-wrapped-form-checkbox>
+            </b-form-row>
         </b-form-fieldset>
     </b-tab>
 </template>
@@ -141,10 +131,11 @@
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'AdminStationsProfileForm',
-    components: {BWrappedFormGroup, BFormFieldset},
+    components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
         tabClass: {},

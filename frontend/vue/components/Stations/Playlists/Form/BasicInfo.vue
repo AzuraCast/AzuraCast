@@ -1,19 +1,19 @@
 <template>
     <b-tab :title="langTabTitle" active>
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_edit_name" :field="form.name">
-                    <template #label>
-                        <translate key="lang_form_edit_name">Playlist Name</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Playlist Name</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_weight" :field="form.weight">
-                    <template #label>
-                        <translate key="lang_form_edit_weight">Playlist Weight</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Playlist Weight</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_edit_weight_desc">Higher weight playlists are played more frequently compared to other lower-weight playlists.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">Higher weight playlists are played more frequently compared to other lower-weight playlists.</translate>
                     </template>
                     <template #default="props">
                         <b-form-select :id="props.id" v-model="props.field.$model" :options="weightOptions"
@@ -21,43 +21,38 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_is_enabled" :field="form.is_enabled">
-                    <template #description>
-                        <translate key="lang_form_edit_is_enabled_desc">If disabled, the playlist will not be included in radio playback, but can still be managed.</translate>
+                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_is_enabled" :field="form.is_enabled">
+                    <template #label="{lang}">
+                        <translate :key="lang">Is Enabled</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate key="lang_form_edit_is_enabled">Is Enabled</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate :key="lang">If disabled, the playlist will not be included in radio playback, but can still be managed.</translate>
                     </template>
-                </b-wrapped-form-group>
+                </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_avoid_duplicates" :field="form.avoid_duplicates">
-                    <template #description>
-                        <translate key="lang_form_edit_avoid_duplicates_desc">Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.</translate>
+                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_avoid_duplicates"
+                                         :field="form.avoid_duplicates">
+                    <template #label="{lang}">
+                        <translate :key="lang">Avoid Duplicate Artists/Titles</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate key="lang_form_edit_avoid_duplicates">Avoid Duplicate Artists/Titles</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate :key="lang">Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.</translate>
                     </template>
-                </b-wrapped-form-group>
+                </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-12" id="form_edit_include_in_on_demand"
-                                      :field="form.include_in_on_demand">
-                    <template #description>
-                        <translate key="lang_form_edit_include_in_on_demand_desc">If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.</translate>
+                <b-wrapped-form-checkbox class="col-md-12" id="form_edit_include_in_on_demand"
+                                         :field="form.include_in_on_demand">
+                    <template #label="{lang}">
+                        <translate :key="lang">Include in On-Demand Player</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate key="lang_form_edit_include_in_on_demand">Include in On-Demand Player</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate :key="lang">If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.</translate>
                     </template>
-                </b-wrapped-form-group>
+                </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_type" :field="form.type">
-                    <template #label>
-                        <translate key="lang_edit_form_type">Playlist Type</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Playlist Type</translate>
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
@@ -91,7 +86,7 @@
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
 
         <b-card v-show="form.type.$model === 'default'" class="mb-3" no-body>
@@ -102,19 +97,17 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_include_in_automation"
-                                              :field="form.include_in_automation">
-                            <template #description>
-                                <translate key="lang_form_edit_include_in_automation_desc">If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.</translate>
+                    <b-form-row>
+                        <b-wrapped-form-checkbox class="col-md-12" id="form_edit_include_in_automation"
+                                                 :field="form.include_in_automation">
+                            <template #label="{lang}">
+                                <translate :key="lang">Include in Automated Assignment</translate>
                             </template>
-                            <template #default="props">
-                                <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                                    <translate key="lang_form_edit_include_in_automation">Include in Automated Assignment</translate>
-                                </b-form-checkbox>
+                            <template #description="{lang}">
+                                <translate :key="lang">If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.</translate>
                             </template>
-                        </b-wrapped-form-group>
-                    </b-row>
+                        </b-wrapped-form-checkbox>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>
@@ -127,21 +120,18 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_play_per_songs"
-                                              :field="form.play_per_songs">
-                            <template #label>
-                                <translate key="lang_form_edit_play_per_songs">Number of Songs Between Plays</translate>
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_songs"
+                                              :field="form.play_per_songs" input-type="number"
+                                              :input-attrs="{min: '0', max: '150'}">
+                            <template #label="{lang}">
+                                <translate :key="lang">Number of Songs Between Plays</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_edit_play_per_songs_desc">This playlist will play every $x songs, where $x is specified below.</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-input :id="props.id" type="number" min="0" max="150"
-                                              v-model="props.field.$model" :state="props.state"></b-form-input>
+                            <template #description="{lang}">
+                                <translate :key="lang">This playlist will play every $x songs, where $x is specified below.</translate>
                             </template>
                         </b-wrapped-form-group>
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>
@@ -154,23 +144,20 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
+                    <b-form-row>
 
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_play_per_minutes"
-                                              :field="form.play_per_minutes">
-                            <template #label>
-                                <translate key="form_edit_play_per_minutes">Number of Minutes Between Plays</translate>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_minutes"
+                                              :field="form.play_per_minutes" input-type="number"
+                                              :input-attrs="{min: '0', max: '360'}">
+                            <template #label="{lang}">
+                                <translate :key="lang">Number of Minutes Between Plays</translate>
                             </template>
-                            <template #description>
-                                <translate key="form_edit_play_per_minutes_desc">This playlist will play every $x minutes, where $x is specified below.</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-input :id="props.id" type="number" min="0" max="360"
-                                              v-model="props.field.$model" :state="props.state"></b-form-input>
+                            <template #description="{lang}">
+                                <translate :key="lang">This playlist will play every $x minutes, where $x is specified below.</translate>
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>
@@ -183,23 +170,21 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
+                    <b-form-row>
 
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_play_per_hour_minute"
-                                              :field="form.play_per_hour_minute">
-                            <template #label>
-                                <translate key="lang_form_edit_play_per_hour_minute">Minute of Hour to Play</translate>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_hour_minute"
+                                              :field="form.play_per_hour_minute" input-type="number"
+                                              :input-attrs="{min: '0', max: '59'}">
+                            <template #label="{lang}">
+                                <translate :key="lang">Minute of Hour to Play</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_edit_play_per_hour_minute_desc">Specify the minute of every hour that this playlist should play.</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-input :id="props.id" type="number" min="0" max="59"
-                                              v-model="props.field.$model" :state="props.state"></b-form-input>
+                            <template #description="{lang}">
+                                <translate
+                                    :key="lang">Specify the minute of every hour that this playlist should play.</translate>
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>
@@ -208,10 +193,11 @@
 
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'PlaylistEditBasicInfo',
-    components: {BWrappedFormGroup},
+    components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
         form: Object
     },

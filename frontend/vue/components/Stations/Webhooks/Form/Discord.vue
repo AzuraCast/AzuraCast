@@ -1,67 +1,66 @@
 <template>
     <b-tab :title="title">
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_webhook_url" :field="form.config.webhook_url"
                                       input-type="url">
-                    <template #label>
-                        <translate key="lang_form_webhook_url">Discord Web Hook URL</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Discord Web Hook URL</translate>
                     </template>
-                    <template #description>
-                        <translate
-                            key="lang_form_webhook_url">This URL is provided within the Discord application.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">This URL is provided within the Discord application.</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
 
         <common-formatting-info></common-formatting-info>
 
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_config_content" :field="form.config.content">
-                    <template #label>
-                        <translate key="lang_form_config_content">Main Message Content</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Main Message Content</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_title" :field="form.config.title">
-                    <template #label>
-                        <translate key="lang_form_config_title">Title</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Title</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_description" :field="form.config.description">
-                    <template #label>
-                        <translate key="lang_form_config_description">Description</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Description</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_url" :field="form.config.url" input-type="url">
-                    <template #label>
-                        <translate key="lang_form_config_url">URL</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">URL</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_author" :field="form.config.author">
-                    <template #label>
-                        <translate key="lang_form_config_author">Author Name</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Author Name</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_thumbnail" :field="form.config.thumbnail"
                                       input-type="url">
-                    <template #label>
-                        <translate key="lang_form_config_thumbnail">Thumbnail Image URL</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Thumbnail Image URL</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_footer" :field="form.config.footer">
-                    <template #label>
-                        <translate key="lang_form_config_footer">Footer Text</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Footer Text</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

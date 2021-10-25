@@ -1,34 +1,34 @@
 <template>
     <b-tab :title="title">
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_to" :field="form.config.to">
-                    <template #label>
-                        <translate key="lang_form_to">Message Recipient(s)</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Message Recipient(s)</translate>
                     </template>
-                    <template #description>
-                        <translate key="lang_form_to_desc">E-mail addresses can be separated by commas.</translate>
+                    <template #description="{lang}">
+                        <translate :key="lang">E-mail addresses can be separated by commas.</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
 
         <common-formatting-info></common-formatting-info>
 
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_subject" :field="form.config.subject">
-                    <template #label>
-                        <translate key="lang_form_config_subject">Message Subject</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Message Subject</translate>
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message">
-                    <template #label>
-                        <translate key="lang_form_config_message">Message Body</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Message Body</translate>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="langTitle">
         <b-form-group>
-            <b-row>
+            <b-form-row>
                 <b-form-group class="col-md-6" label-for="intro_file">
                     <template #label>
                         <translate key="intro_file">Select Intro File</translate>
@@ -33,7 +33,7 @@
                         <translate key="no_existing_intro">There is no existing intro file associated with this mount point.</translate>
                     </div>
                 </b-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>

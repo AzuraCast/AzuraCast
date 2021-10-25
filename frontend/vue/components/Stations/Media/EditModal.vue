@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doEdit">
+                @submit="doEdit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3">
             <media-form-basic-info :form="$v.form"></media-form-basic-info>
@@ -52,7 +52,7 @@ export default {
             waveformUrl: null,
             audioUrl: null,
             songLength: null,
-            form: this.getBlankForm()
+            form: {}
         };
     },
     validations () {
@@ -91,13 +91,21 @@ export default {
         }
     },
     methods: {
-        getBlankForm () {
+        resetForm() {
+            this.loading = false;
+            this.error = null;
+
+            this.albumArtUrl = null;
+            this.waveformUrl = null;
+            this.recordUrl = null;
+            this.audioUrl = null;
+
             let customFields = {};
             _.forEach(this.customFields.slice(), (field) => {
                 customFields[field.short_name] = null;
             });
 
-            return {
+            this.form = {
                 path: null,
                 title: null,
                 artist: null,
@@ -116,14 +124,17 @@ export default {
             };
         },
         open (recordUrl, albumArtUrl, audioUrl, waveformUrl) {
+            this.resetForm();
+
             this.loading = true;
             this.error = null;
-            this.$refs.modal.show();
 
             this.albumArtUrl = albumArtUrl;
             this.waveformUrl = waveformUrl;
             this.recordUrl = recordUrl;
             this.audioUrl = audioUrl;
+
+            this.$refs.modal.show();
 
             this.axios.get(recordUrl).then((resp) => {
                 let d = resp.data;
@@ -156,18 +167,14 @@ export default {
                 this.close();
             });
         },
-        close () {
-            this.loading = false;
-            this.error = null;
-            this.albumArtUrl = null;
-            this.audioUrl = null;
-
-            this.form = this.getBlankForm();
-
-            this.$v.form.$reset();
+        close() {
             this.$refs.modal.hide();
         },
-        doEdit () {
+        clearContents() {
+            this.resetForm();
+            this.$v.form.$reset();
+        },
+        doEdit() {
             this.$v.form.$touch();
             if (this.$v.form.$anyError) {
                 return;

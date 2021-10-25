@@ -1,11 +1,11 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-group>
-            <b-row>
+            <b-form-row>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_source" :field="form.source">
-                    <template #label>
-                        <translate key="lang_edit_form_source">Source</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">Source</translate>
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
@@ -20,7 +20,7 @@
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
 
         <b-card v-show="form.source.$model === 'songs'" class="mb-3" no-body>
@@ -31,11 +31,11 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
+                    <b-form-row>
 
                         <b-wrapped-form-group class="col-md-12" id="edit_form_order" :field="form.order">
-                            <template #label>
-                                <translate key="lang_edit_form_order">Song Playback Order</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Song Playback Order</translate>
                             </template>
                             <template #default="props">
                                 <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
@@ -57,8 +57,8 @@
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_include_in_requests"
                                               :field="form.include_in_requests">
-                            <template #description>
-                                <translate key="lang_form_edit_include_in_requests_desc">If requests are enabled for your station, users will be able to request media that is on this playlist.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">If requests are enabled for your station, users will be able to request media that is on this playlist.</translate>
                             </template>
                             <template #default="props">
                                 <b-form-checkbox :id="props.id" v-model="props.field.$model">
@@ -68,8 +68,8 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_is_jingle" :field="form.is_jingle">
-                            <template #description>
-                                <translate key="lang_form_edit_is_jingle_desc">Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.</translate>
                             </template>
                             <template #default="props">
                                 <b-form-checkbox :id="props.id" v-model="props.field.$model">
@@ -78,7 +78,7 @@
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>
@@ -91,17 +91,17 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
+                    <b-form-row>
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_remote_url" :field="form.remote_url">
-                            <template #label>
-                                <translate key="lang_edit_form_remote_url">Remote URL</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Remote URL</translate>
                             </template>
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="edit_form_remote_type" :field="form.remote_type">
-                            <template #label>
-                                <translate key="lang_edit_form_remote_type">Remote URL Type</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Remote URL Type</translate>
                             </template>
                             <template #default="props">
                                 <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
@@ -117,12 +117,11 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_remote_buffer" :field="form.remote_buffer">
-                            <template #label>
-                                <translate
-                                    key="lang_form_edit_remote_buffer">Remote Playback Buffer (Seconds)</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Remote Playback Buffer (Seconds)</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_form_edit_remote_buffer_desc">The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.</translate>
                             </template>
                             <template #default="props">
                                 <b-form-input id="form_edit_remote_buffer" type="number" min="0" max="120"
@@ -131,7 +130,7 @@
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>

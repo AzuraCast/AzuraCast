@@ -1,23 +1,22 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-group>
-            <b-row class="mb-3">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
-                    <template #description>
-                        <translate key="lang_edit_form_enable_autodj_desc">If enabled, the AutoDJ will automatically play music to this mount point.</translate>
+            <b-form-row class="mb-3">
+                <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
+                    <template #label="{lang}">
+                        <translate :key="lang">Enable AutoDJ</translate>
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                            <translate key="lang_edit_form_enable_autodj">Enable AutoDJ</translate>
-                        </b-form-checkbox>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">If enabled, the AutoDJ will automatically play music to this mount point.</translate>
                     </template>
-                </b-wrapped-form-group>
-            </b-row>
+                </b-wrapped-form-checkbox>
+            </b-form-row>
 
-            <b-row v-if="form.enable_autodj.$model">
+            <b-form-row v-if="form.enable_autodj.$model">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
-                    <template #label>
-                        <translate key="lang_edit_form_autodj_format">AutoDJ Format</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">AutoDJ Format</translate>
                     </template>
                     <template #default="props">
                         <b-form-radio-group
@@ -31,8 +30,8 @@
                 </b-wrapped-form-group>
                 <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
                                       v-if="formatSupportsBitrateOptions">
-                    <template #label>
-                        <translate key="lang_edit_form_autodj_bitrate">AutoDJ Bitrate (kbps)</translate>
+                    <template #label="{lang}">
+                        <translate :key="lang">AutoDJ Bitrate (kbps)</translate>
                     </template>
                     <template #default="props">
                         <b-form-radio-group
@@ -44,7 +43,7 @@
                         ></b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-row>
+            </b-form-row>
         </b-form-group>
     </b-tab>
 </template>
@@ -52,10 +51,11 @@
 <script>
 
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'MountFormAutoDj',
-    components: {BWrappedFormGroup},
+    components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
         form: Object,
         stationFrontendType: String

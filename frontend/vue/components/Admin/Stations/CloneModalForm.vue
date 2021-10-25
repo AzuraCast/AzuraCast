@@ -1,21 +1,21 @@
 <template>
-    <b-row>
+    <b-form-row>
         <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-            <template #label>
-                <translate key="lang_form_name">New Station Name</translate>
+            <template #label="{lang}">
+                <translate :key="lang">New Station Name</translate>
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
                               input-type="textarea">
-            <template #label>
-                <translate key="lang_form_description">New Station Description</translate>
+            <template #label="{lang}">
+                <translate :key="lang">New Station Description</translate>
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_clone" :field="form.clone">
-            <template #label>
-                <translate key="lang_form_clone">Copy to New Station</translate>
+            <template #label="{lang}">
+                <translate :key="lang">Copy to New Station</translate>
             </template>
             <template #default="props">
                 <b-form-checkbox-group
@@ -26,7 +26,7 @@
                 ></b-form-checkbox-group>
             </template>
         </b-wrapped-form-group>
-    </b-row>
+    </b-form-row>
 </template>
 
 <script>

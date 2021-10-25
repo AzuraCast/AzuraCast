@@ -25,11 +25,11 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-row>
+                    <b-form-row>
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_time_'+index"
                                               :field="row.start_time">
-                            <template #label>
-                                <translate key="lang_edit_form_start_time">Start Time</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Start Time</translate>
                             </template>
                             <template #default="props">
                                 <playlist-time :id="props.id" v-model="props.field.$model"
@@ -38,11 +38,11 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="row.end_time">
-                            <template #label>
-                                <translate key="lang_edit_form_end_time">End Time</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">End Time</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_edit_form_end_time_desc">If the end time is before the start time, the schedule entry will continue overnight.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">If the end time is before the start time, the schedule entry will continue overnight.</translate>
                             </template>
                             <template #default="props">
                                 <playlist-time :id="props.id" v-model="props.field.$model"
@@ -60,36 +60,28 @@
                         </b-col>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_date_'+index"
-                                              :field="row.start_date">
-                            <template #label>
-                                <translate key="lang_edit_form_start_date">Start Date</translate>
+                                              :field="row.start_date" input-type="date">
+                            <template #label="{lang}">
+                                <translate :key="lang">Start Date</translate>
                             </template>
-                            <template #description>
-                                <translate key="lang_edit_form_start_date_desc">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-input :id="props.id" type="date" v-model="props.field.$model"
-                                              :state="props.state"></b-form-input>
+                            <template #description="{lang}">
+                                <translate :key="lang">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="row.end_date">
-                            <template #label>
-                                <translate key="lang_edit_form_end_date">End Date</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-input :id="props.id" type="date" v-model="props.field.$model"
-                                              :state="props.state"></b-form-input>
+                        <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="row.end_date"
+                                              input-type="date">
+                            <template #label="{lang}">
+                                <translate :key="lang">End Date</translate>
                             </template>
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_days_'+index" :field="row.days">
-                            <template #label>
-                                <translate key="lang_edit_form_days">Scheduled Play Days of Week</translate>
+                            <template #label="{lang}">
+                                <translate :key="lang">Scheduled Play Days of Week</translate>
                             </template>
-                            <template #description>
-                                <translate
-                                    key="lang_edit_form_days_desc">Leave blank to play on every day of the week.</translate>
+                            <template #description="{lang}">
+                                <translate :key="lang">Leave blank to play on every day of the week.</translate>
                             </template>
                             <template #default="props">
                                 <b-checkbox-group stacked :id="props.id" v-model="props.field.$model"
@@ -97,7 +89,7 @@
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-row>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>

@@ -1,25 +1,23 @@
 <template>
     <b-tab :title="langTabTitle">
-        <b-row class="mb-3">
+        <b-form-row class="mb-3">
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
-                <template #description>
-                    <translate key="lang_edit_form_enable_autodj_desc">If enabled, the AutoDJ on this installation will automatically play music to this mount point.</translate>
+            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
+                <template #label="{lang}">
+                    <translate :key="lang">Broadcast AutoDJ to Remote Station</translate>
                 </template>
-                <template #default="props">
-                    <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                        <translate key="lang_edit_form_enable_autodj">Broadcast AutoDJ to Remote Station</translate>
-                    </b-form-checkbox>
+                <template #description="{lang}">
+                    <translate :key="lang">If enabled, the AutoDJ on this installation will automatically play music to this mount point.</translate>
                 </template>
-            </b-wrapped-form-group>
+            </b-wrapped-form-checkbox>
 
-        </b-row>
+        </b-form-row>
 
-        <b-row v-if="form.enable_autodj.$model">
+        <b-form-row v-if="form.enable_autodj.$model">
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
-                <template #label>
-                    <translate key="lang_edit_form_autodj_format">AutoDJ Format</translate>
+                <template #label="{lang}">
+                    <translate :key="lang">AutoDJ Format</translate>
                 </template>
                 <template #default="props">
                     <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
@@ -29,8 +27,8 @@
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
                                   v-if="formatSupportsBitrateOptions">
-                <template #label>
-                    <translate key="lang_edit_form_autodj_bitrate">AutoDJ Bitrate (kbps)</translate>
+                <template #label="{lang}">
+                    <translate :key="lang">AutoDJ Bitrate (kbps)</translate>
                 </template>
                 <template #default="props">
                     <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
@@ -39,63 +37,65 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_port" :field="form.source_port">
-                <template #label>
-                    <translate key="lang_edit_form_source_port">Remote Station Source Port</translate>
+                <template #label="{lang}">
+                    <translate :key="lang">Remote Station Source Port</translate>
                 </template>
-                <template #description>
-                    <translate key="lang_edit_form_source_port_desc">If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.</translate>
+                <template #description="{lang}">
+                    <translate :key="lang">If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.</translate>
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_mount" :field="form.source_mount">
-                <template #label>
-                    <translate key="lang_edit_form_source_mount">Remote Station Source Mountpoint/SID</translate>
+                <template #label="{lang}">
+                    <translate :key="lang">Remote Station Source Mountpoint/SID</translate>
                 </template>
-                <template #description>
-                    <translate key="lang_edit_form_source_mount_desc">If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.</translate>
+                <template #description="{lang}">
+                    <translate
+                        :key="lang">If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.</translate>
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_username" :field="form.source_username">
-                <template #label>
-                    <translate key="lang_edit_form_source_username">Remote Station Source Username</translate>
+                <template #label="{lang}">
+                    <translate :key="lang">Remote Station Source Username</translate>
                 </template>
-                <template #description>
-                    <translate key="lang_edit_form_source_username_desc">If you are broadcasting using AutoDJ, enter the source username here. This may be blank.</translate>
+                <template #description="{lang}">
+                    <translate :key="lang">If you are broadcasting using AutoDJ, enter the source username here. This may be blank.</translate>
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_password" :field="form.source_password">
-                <template #label>
-                    <translate key="lang_edit_form_source_password">Remote Station Source Password</translate>
+                <template #label="{lang}">
+                    <translate :key="lang">Remote Station Source Password</translate>
                 </template>
-                <template #description>
-                    <translate key="lang_edit_form_source_password_desc">If you are broadcasting using AutoDJ, enter the source password here.</translate>
-                </template>
-            </b-wrapped-form-group>
-
-            <b-wrapped-form-group class="col-md-6" id="edit_form_is_public" :field="form.is_public">
-                <template #description>
-                    <translate key="lang_edit_form_is_public_desc">Enable to advertise this relay on "Yellow Pages" public radio directories.</translate>
-                </template>
-                <template #default="props">
-                    <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                        <translate key="lang_edit_form_is_public">Publish to "Yellow Pages" Directories</translate>
-                    </b-form-checkbox>
+                <template #description="{lang}">
+                    <translate
+                        :key="lang">If you are broadcasting using AutoDJ, enter the source password here.</translate>
                 </template>
             </b-wrapped-form-group>
 
-        </b-row>
+            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_public" :field="form.is_public">
+                <template #label="{lang}">
+                    <translate :key="lang">Publish to "Yellow Pages" Directories</translate>
+                </template>
+                <template #description="{lang}">
+                    <translate
+                        :key="lang">Enable to advertise this relay on "Yellow Pages" public radio directories.</translate>
+                </template>
+            </b-wrapped-form-checkbox>
+
+        </b-form-row>
     </b-tab>
 </template>
 
 <script>
 
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'RemoteFormAutoDj',
-    components: {BWrappedFormGroup},
+    components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
         form: Object,
         stationFrontendType: String

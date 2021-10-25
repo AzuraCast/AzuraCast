@@ -1,12 +1,12 @@
 <template>
-    <b-form-group v-bind="$attrs" :label-class="labelClassWithRequired" :label-for="id" :state="fieldState">
+    <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
                 <b-form-textarea v-if="inputType === 'textarea'" :id="id" v-model="field.$model"
-                                 :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
+                                 :required="isRequired" :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
                                  :state="fieldState"></b-form-textarea>
                 <b-form-input v-else :type="inputType" :id="id" v-model="field.$model"
-                              :number="isNumeric" :trim="inputTrim"
+                              :required="isRequired" :number="isNumeric" :trim="inputTrim"
                               v-bind="inputAttrs" :state="fieldState"></b-form-input>
             </slot>
 
@@ -16,13 +16,17 @@
         </template>
 
         <template #label="slotProps">
-            <slot name="label" v-bind="slotProps"></slot>
+            <slot name="label" v-bind="slotProps" :lang="'lang_'+id"></slot>
+            <span v-if="isRequired" class="text-danger">
+                <span aria-hidden="true">*</span>
+                <span class="sr-only">Required</span>
+            </span>
             <span v-if="advanced" class="badge small badge-primary">
                 <translate key="badge_advanced">Advanced</translate>
             </span>
         </template>
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps"></slot>
+            <slot name="description" v-bind="slotProps" :lang="'lang_'+id+'_desc'"></slot>
         </template>
 
         <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
@@ -66,10 +70,6 @@ export default {
                 return {};
             }
         },
-        labelClass: {
-            type: String,
-            default: ''
-        },
         advanced: {
             type: Boolean,
             default: false
@@ -85,13 +85,6 @@ export default {
         },
         fieldState() {
             return this.field.$dirty ? !this.field.$error : null;
-        },
-        labelClassWithRequired() {
-            let labelClass = this.labelClass;
-            if (this.isRequired) {
-                labelClass += ' required';
-            }
-            return labelClass;
         },
         isRequired() {
             return _.has(this.field, 'required');

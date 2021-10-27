@@ -77,10 +77,10 @@ jobs:
       - name: Generate new translations from existing code.
         if: github.event_name == 'push' || github.event_name == 'schedule'
         run: |
-          bin/console locale:generate
           cd frontend
           npm ci
           npm run generate-locales
+          bin/console locale:generate
 
       - name: Pull latest translations.
         if: github.event_name == 'push' || github.event_name == 'schedule'

@@ -21,8 +21,16 @@ class GenerateCommand extends CommandAbstract
     ): int {
         $io->title('Generate Locales');
 
-        $dest_file = $environment->getBaseDirectory() . '/resources/locale/default.pot';
+        $exportDir = $environment->getBaseDirectory() . '/resources/locale';
+
+        $dest_file = $exportDir . '/default.pot';
+        $frontendFile = $exportDir . '/frontend.pot';
+
         $translations = new Translations();
+
+        if (file_exists($frontendFile)) {
+            $translations->addFromPoFile($frontendFile);
+        }
 
         // Find all PHP/PHTML files in the application's code.
         $translatable_folders = [
@@ -43,6 +51,8 @@ class GenerateCommand extends CommandAbstract
         }
 
         $translations->toPoFile($dest_file);
+
+        @unlink($frontendFile);
 
         $io->success('Locales generated.');
         return 0;

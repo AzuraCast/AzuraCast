@@ -2,12 +2,12 @@
     "name": "azuracast",
     "license": "Apache-2.0",
     "scripts": {
-        "dev": "npm ci && bash",
-        "dev-build": "npm ci && npm run build",
-        "build": "gulp",
-        "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../resources/locale/frontend.pot $(find ./vue -type f -name '*.vue')",
-        "import-locales": "gettext-compile --output ../resources/locale/translations.json $(find ../resources/locale/*.UTF-8 -type f -name 'frontend.po')",
-        "ci": "npm run import-locales && npm run build"
+      "dev": "npm ci && bash",
+      "dev-build": "npm ci && npm run build",
+      "build": "gulp",
+      "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../resources/locale/frontend.pot $(find ./vue -type f -name '*.vue' -o -name '*.js')",
+      "import-locales": "gettext-compile --output ../resources/locale/translations.json $(find ../resources/locale/*.UTF-8 -type f -name '*.po')",
+      "ci": "npm run import-locales && npm run build"
     },
     "dependencies": {
         "@babel/core": "^7.15.5",

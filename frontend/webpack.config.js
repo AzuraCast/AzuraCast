@@ -16,6 +16,7 @@ module.exports = {
         AdminShoutcast: '~/pages/Admin/Shoutcast.js',
         AdminStations: '~/pages/Admin/Stations.js',
         AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
+        AdminUsers: '~/pages/Admin/Users.js',
         PublicFullPlayer: '~/pages/Public/FullPlayer.js',
         PublicHistory: '~/pages/Public/History.js',
         PublicOnDemand: '~/pages/Public/OnDemand.js',

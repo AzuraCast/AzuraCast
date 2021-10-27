@@ -146,25 +146,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:storage_locations:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_STORAGE_LOCATIONS));
 
-            $group->group(
-                '/users',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\UsersController::class . ':indexAction')
-                        ->setName('admin:users:index');
-
-                    $group->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\UsersController::class . ':editAction')
-                        ->setName('admin:users:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Admin\UsersController::class . ':editAction')
-                        ->setName('admin:users:add');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Admin\UsersController::class . ':deleteAction')
-                        ->setName('admin:users:delete');
-
-                    $group->get('/login-as/{id}/{csrf}', Controller\Admin\UsersController::class . ':impersonateAction')
-                        ->setName('admin:users:impersonate');
-                }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+            $group->get('/users', Controller\Admin\UsersAction::class)
+                ->setName('admin:users:index')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
         }
     )
         ->add(Middleware\Module\Admin::class)

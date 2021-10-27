@@ -17,6 +17,10 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/logout', Controller\Frontend\Account\LogoutAction::class)
                 ->setName('account:logout');
 
+            $group->get('/login-as/{id}/{csrf}', Controller\Frontend\Account\MasqueradeAction::class)
+                ->setName('account:masquerade')
+                ->add(new Middleware\Permissions(App\Acl::GLOBAL_ALL));
+
             $group->get('/endsession', Controller\Frontend\Account\EndMasqueradeAction::class)
                 ->setName('account:endmasquerade');
 

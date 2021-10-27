@@ -81,10 +81,9 @@ abstract class AbstractApiCrudController
         if ($record instanceof IdentifiableEntityInterface) {
             $return['links'] = [
                 'self' => (string)$router->fromHere(
-                    $this->resourceRouteName,
-                    ['id' => $record->getIdRequired()],
-                    [],
-                    !$isInternal
+                    route_name: $this->resourceRouteName,
+                    route_params: ['id' => $record->getIdRequired()],
+                    absolute: !$isInternal
                 ),
             ];
         }

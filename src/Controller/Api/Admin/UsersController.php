@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Frontend\Account\MasqueradeAction;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -79,6 +80,37 @@ class UsersController extends AbstractAdminApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $return = $this->toArray($record);
+
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+        $csrf = $request->getCsrf();
+
+        $return['links'] = [
+            'self'       => (string)$router->fromHere(
+                route_name: $this->resourceRouteName,
+                route_params: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'masquerade' => (string)$router->fromHere(
+                route_name: 'account:masquerade',
+                route_params: [
+                    'id'   => $record->getIdRequired(),
+                    'csrf' => $csrf->generate(MasqueradeAction::CSRF_NAMESPACE),
+                ],
+                absolute: !$isInternal
+            ),
+        ];
+
+        return $return;
+    }
 
     /**
      * @OA\Delete(path="/admin/user/{id}",

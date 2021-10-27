@@ -1,8 +1,8 @@
 <template>
     <div class="public-page">
         <div class="card">
-            <div class="card-body">
-                <div class="row mb-4">
+            <div class="card-body p-4">
+                <div class="row mb-2">
                     <div class="col-sm">
                         <h2 class="card-title mb-0 text-center">
                             <translate key="lang_hdr_setup">AzuraCast First-Time Setup</translate>
@@ -47,7 +47,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button type="submit" block variant="primary" class="mt-2" :disabled="$v.form.$invalid">
+                    <b-button type="submit" size="lg" block variant="primary" class="mt-2" :disabled="$v.form.$invalid">
                         <translate key="btn_create_acct">Create Account</translate>
                     </b-button>
                 </form>

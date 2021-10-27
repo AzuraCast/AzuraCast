@@ -70,7 +70,7 @@ class RolePermissionRepository extends Repository
             DQL
         )->setParameter('action', Acl::GLOBAL_ALL)
             ->setMaxResults(1)
-            ->getSingleResult();
+            ->getOneOrNullResult();
 
         if ($superAdminRole instanceof Entity\Role) {
             return $superAdminRole;

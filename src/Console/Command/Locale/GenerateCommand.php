@@ -61,8 +61,6 @@ class GenerateCommand extends CommandAbstract
 
         $translations->toPoFile($dest_file);
 
-        @unlink($frontendFile);
-
         $io->success('Locales generated.');
         return 0;
     }

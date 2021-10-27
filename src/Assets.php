@@ -73,7 +73,7 @@ class Assets
                         'files' => [],
                     ];
 
-                foreach ($componentDeps['js'] as $componentDep) {
+                foreach ($componentDeps['assets']['js'] as $componentDep) {
                     $library['files']['js'][] = [
                         'src' => $componentDep,
                     ];

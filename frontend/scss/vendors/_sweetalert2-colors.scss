@@ -11,7 +11,7 @@ $swal2-backdrop: rgba($dialog-backdrop-bg, .75);
 
 // FOOTER
 $swal2-footer-border-color: $table-border-color;
-$swal2-footer-color: darken($swal2-content-color, 15%);
+$swal2-footer-color: darken($swal2-dark-theme-black, 15%);
 
 // TIMER POGRESS BAR
 $swal2-timer-progress-bar-background: rgba($text-color, .6);

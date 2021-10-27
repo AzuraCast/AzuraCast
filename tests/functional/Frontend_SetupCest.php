@@ -14,9 +14,8 @@ class Frontend_SetupCest extends CestAbstract
 
         $I->amOnPage('/');
 
-        $I->see('Setup');
-        $I->see('Super Administrator');
         $I->seeCurrentUrlEquals('/setup/register');
+        $I->seeInTitle('Set Up');
 
         $I->comment('Setup redirect found.');
     }

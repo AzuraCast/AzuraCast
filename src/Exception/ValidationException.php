@@ -31,4 +31,11 @@ class ValidationException extends Exception
     {
         $this->detailedErrors = $detailedErrors;
     }
+
+    public static function fromValidationErrors(ConstraintViolationListInterface $detailedErrors): self
+    {
+        $exception = new self((string)$detailedErrors);
+        $exception->setDetailedErrors($detailedErrors);
+        return $exception;
+    }
 }

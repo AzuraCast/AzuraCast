@@ -23,6 +23,7 @@ module.exports = {
         PublicRequests: '~/pages/Public/Requests.js',
         PublicSchedule: '~/pages/Public/Schedule.js',
         PublicWebDJ: '~/pages/Public/WebDJ.js',
+        SetupRegister: '~/pages/Setup/Register.js',
         SetupSettings: '~/pages/Setup/Settings.js',
         SetupStation: '~/pages/Setup/Station.js',
         StationsMedia: '~/pages/Stations/Media.js',

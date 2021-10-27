@@ -2,10 +2,10 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-textarea v-if="inputType === 'textarea'" :id="id" v-model="field.$model"
+                <b-form-textarea v-if="inputType === 'textarea'" :id="id" :name="name" v-model="field.$model"
                                  :required="isRequired" :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
                                  :state="fieldState"></b-form-textarea>
-                <b-form-input v-else :type="inputType" :id="id" v-model="field.$model"
+                <b-form-input v-else :type="inputType" :id="id" :name="name" v-model="field.$model"
                               :required="isRequired" :number="isNumeric" :trim="inputTrim"
                               v-bind="inputAttrs" :state="fieldState"></b-form-input>
             </slot>
@@ -47,6 +47,9 @@ export default {
         id: {
             type: String,
             required: true
+        },
+        name: {
+            type: String,
         },
         field: {
             type: Object,

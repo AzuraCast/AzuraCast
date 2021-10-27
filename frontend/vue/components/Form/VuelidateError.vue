@@ -55,20 +55,26 @@ export default {
                 },
                 url: () => {
                     return this.$gettext('This field must be a valid URL.');
+                },
+                validatePassword: () => {
+                    return this.$gettext('This password is too common or insecure.');
                 }
             }
         }
     },
     computed: {
         errorMessages() {
+            if (!this.field.$error) {
+                return [];
+            }
+
             let errors = [];
             _.forEach(this.messages, (message, key) => {
-                if (!_.has(this.field, key)) {
-                    return;
+                const isValid = !!_.get(this.field, key, true);
+                if (!isValid) {
+                    const params = _.get(this.field, ['$params', key], {});
+                    errors.push(message(params));
                 }
-
-                let params = _.get(this.field, '$params.' + key, {});
-                errors.push(message(params));
             });
 
             return errors;

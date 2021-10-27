@@ -7,6 +7,7 @@ namespace App\Controller\Frontend;
 use App\Entity;
 use App\Environment;
 use App\Exception\NotLoggedInException;
+use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
@@ -14,6 +15,7 @@ use App\Version;
 use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SetupController
 {
@@ -37,112 +39,75 @@ class SetupController
     }
 
     /**
-     * Determine which step of setup is currently active.
-     *
-     * @param ServerRequest $request
-     */
-    protected function getSetupStep(ServerRequest $request): string
-    {
-        $settings = $this->settingsRepo->readSettings();
-        if ($settings->isSetupComplete()) {
-            return 'complete';
-        }
-
-        // Step 1: Register
-        $num_users = (int)$this->em->createQuery(
-            <<<'DQL'
-                SELECT COUNT(u.id) FROM App\Entity\User u
-            DQL
-        )->getSingleScalarResult();
-
-        if (0 === $num_users) {
-            return 'register';
-        }
-
-        // If past "register" step, require login.
-        $auth = $request->getAuth();
-        if (!$auth->isLoggedIn()) {
-            throw new NotLoggedInException();
-        }
-
-        // Step 2: Set up Station
-        $num_stations = (int)$this->em->createQuery(
-            <<<'DQL'
-                SELECT COUNT(s.id) FROM App\Entity\Station s
-            DQL
-        )->getSingleScalarResult();
-
-        if (0 === $num_stations) {
-            return 'station';
-        }
-
-        // Step 3: System Settings
-        return 'settings';
-    }
-
-    /**
-     * Placeholder function for "setup complete" redirection.
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function completeAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
-
-        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
-    }
-
-    /**
      * Setup Step 1:
      * Create Super Administrator Account
      */
-    public function registerAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function registerAction(
+        ServerRequest $request,
+        Response $response,
+        Entity\Repository\RolePermissionRepository $permissionRepo,
+        ValidatorInterface $validator
+    ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'register' && $this->environment->isProduction()) {
             return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
         }
 
-        // Create first account form.
-        $data = $request->getParams();
+        $csrf = $request->getCsrf();
 
-        if (!empty($data['username']) && !empty($data['password'])) {
-            // Create actions and roles supporting Super Admninistrator.
-            $role = new Entity\Role();
-            $role->setName(__('Super Administrator'));
+        $error = null;
 
-            $this->em->persist($role);
-            $this->em->flush();
+        if ($request->isPost()) {
+            try {
+                $data = $request->getParams();
 
-            $rha = new Entity\RolePermission($role);
-            $rha->setActionName('administer all');
+                $csrf->verify($data['csrf'] ?? null, 'register');
 
-            $this->em->persist($rha);
+                if (empty($data['username']) || empty($data['password'])) {
+                    throw new \InvalidArgumentException('Username and password required.');
+                }
 
-            // Create user account.
-            $user = new Entity\User();
-            $user->setEmail($data['username']);
-            $user->setNewPassword($data['password']);
-            $user->getRoles()->add($role);
-            $this->em->persist($user);
+                $role = $permissionRepo->ensureSuperAdministratorRole();
 
-            // Write to DB.
-            $this->em->flush();
+                // Create user account.
+                $user = new Entity\User();
+                $user->setEmail($data['username']);
+                $user->setNewPassword($data['password']);
+                $user->getRoles()->add($role);
 
-            // Log in the newly created user.
-            $auth = $request->getAuth();
-            $auth->authenticate($data['username'], $data['password']);
+                $errors = $validator->validate($user);
+                if (count($errors) > 0) {
+                    throw ValidationException::fromValidationErrors($errors);
+                }
 
-            $acl = $request->getAcl();
-            $acl->reload();
+                $this->em->persist($user);
+                $this->em->flush();
 
-            return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+                // Log in the newly created user.
+                $auth = $request->getAuth();
+                $auth->authenticate($data['username'], $data['password']);
+
+                $acl = $request->getAcl();
+                $acl->reload();
+
+                return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+            } catch (\Throwable $e) {
+                $error = $e->getMessage();
+            }
         }
 
-        return $request->getView()
-            ->renderToResponse($response, 'frontend/setup/register');
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_SetupRegister',
+            id: 'setup-register',
+            layout: 'minimal',
+            title: __('Set Up AzuraCast'),
+            props: [
+                'csrf'  => $csrf->generate('register'),
+                'error' => $error,
+            ]
+        );
     }
 
     /**
@@ -205,5 +170,62 @@ class SetupController
                 'continueUrl'    => (string)$router->named('dashboard'),
             ],
         );
+    }
+
+    /**
+     * Placeholder function for "setup complete" redirection.
+     *
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function completeAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
+
+        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+    }
+
+    /**
+     * Determine which step of setup is currently active.
+     *
+     * @param ServerRequest $request
+     */
+    protected function getSetupStep(ServerRequest $request): string
+    {
+        $settings = $this->settingsRepo->readSettings();
+        if ($settings->isSetupComplete()) {
+            return 'complete';
+        }
+
+        // Step 1: Register
+        $num_users = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(u.id) FROM App\Entity\User u
+            DQL
+        )->getSingleScalarResult();
+
+        if (0 === $num_users) {
+            return 'register';
+        }
+
+        // If past "register" step, require login.
+        $auth = $request->getAuth();
+        if (!$auth->isLoggedIn()) {
+            throw new NotLoggedInException();
+        }
+
+        // Step 2: Set up Station
+        $num_stations = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(s.id) FROM App\Entity\Station s
+            DQL
+        )->getSingleScalarResult();
+
+        if (0 === $num_stations) {
+            return 'station';
+        }
+
+        // Step 3: System Settings
+        return 'settings';
     }
 }

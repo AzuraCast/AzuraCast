@@ -2,7 +2,7 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-checkbox :id="id" v-model="field.$model" v-bind="inputAttrs">
+                <b-form-checkbox :id="id" :name="name" v-model="field.$model" v-bind="inputAttrs">
                     <slot name="label" :lang="'lang_'+id">
 
                     </slot>
@@ -43,6 +43,9 @@ export default {
         id: {
             type: String,
             required: true
+        },
+        name: {
+            type: String,
         },
         field: {
             type: Object,

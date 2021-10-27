@@ -24,12 +24,21 @@ class GenerateCommand extends CommandAbstract
         $exportDir = $environment->getBaseDirectory() . '/resources/locale';
 
         $dest_file = $exportDir . '/default.pot';
-        $frontendFile = $exportDir . '/frontend.pot';
 
         $translations = new Translations();
 
-        if (file_exists($frontendFile)) {
-            $translations->addFromPoFile($frontendFile);
+        // Find all JS/Vue file translations.
+        $directory = new RecursiveDirectoryIterator($environment->getBaseDirectory() . '/frontend/vue');
+        $iterator = new RecursiveIteratorIterator($directory);
+
+        $vueRegex = new RegexIterator($iterator, '/^.+\.(vue)$/i', RecursiveRegexIterator::GET_MATCH);
+        foreach ($vueRegex as $pathMatch) {
+            $translations->addFromVueJsFile($pathMatch[0]);
+        }
+
+        $jsRegex = new RegexIterator($iterator, '/^.+\.(js)$/i', RecursiveRegexIterator::GET_MATCH);
+        foreach ($jsRegex as $pathMatch) {
+            $translations->addFromJsCodeFile($pathMatch[0]);
         }
 
         // Find all PHP/PHTML files in the application's code.

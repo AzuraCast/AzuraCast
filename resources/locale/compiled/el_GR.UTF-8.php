@@ -23,6 +23,7 @@ X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: el
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
+Generated-By: easygettext
 ',
       ),
       'This value is already used.' => 
@@ -4180,6 +4181,1857 @@ X-Crowdin-File-ID: 4
       'Details' => 
       array (
         0 => 'Λεπτομέρειες',
+      ),
+      '# Episodes' => 
+      array (
+        0 => '# Επεισόδια',
+      ),
+      '# Songs' => 
+      array (
+        0 => '# Τραγούδια',
+      ),
+      '%{listeners} Listener' => 
+      array (
+        0 => '%{listeners} Ακροατές',
+        1 => '%{listeners} Ακροατές',
+      ),
+      '%{name} - Copy' => 
+      array (
+        0 => '%{name} - Αντιγραφή',
+      ),
+      '%{numPlaylists} playlist' => 
+      array (
+        0 => '%{numPlaylists} λίστα αναπαραγωγής',
+        1 => '%{numPlaylists} λίστες αναπαραγωγής',
+      ),
+      '%{numSongs} uploaded song' => 
+      array (
+        0 => '%{numSongs} ανεβασμένο τραγούδι',
+        1 => '%{numSongs} ανεβασμένα τραγούδια',
+      ),
+      'A completely random track is picked for playback every time the queue is populated.' => 
+      array (
+        0 => 'Ένα εντελώς τυχαίο κομμάτι επιλέγεται για αναπαραγωγή κάθε φορά που συμπληρώνεται η ουρά.',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => 'Μια λίστα αναπαραγωγής που περιέχει αρχεία πολυμέσων που φιλοξενούνται σε αυτόν τον διακομιστή.',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => 'Μια λίστα αναπαραγωγής που δίνει εντολή στον σταθμό να παίζει από μια απομακρυσμένη διεύθυνση URL.',
+      ),
+      'Access Key ID' => 
+      array (
+        0 => 'Αναγνωριστικό Κλειδί Πρόσβασης',
+      ),
+      'Account is Active' => 
+      array (
+        0 => 'Ο λογαριασμός είναι ενεργός',
+      ),
+      'Account List' => 
+      array (
+        0 => 'Λίστα Λογαριασμών',
+      ),
+      'Adapter' => 
+      array (
+        0 => 'Προσαρμογέας',
+      ),
+      'Add Episode' => 
+      array (
+        0 => 'Προσθήκη Επεισόδιο',
+      ),
+      'Add Files to Playlist' => 
+      array (
+        0 => 'Προσθήκη αρχείων στη λίστα αναπαραγωγής',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => 'Προσθήκη Σημείου Προσάρτησης',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => 'Προσθήκη λίστας αναπαραγωγής',
+      ),
+      'Add Podcast' => 
+      array (
+        0 => 'Προσθήκη Podcast',
+      ),
+      'Add Record' => 
+      array (
+        0 => 'Προσθήκη Εγγραφής',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => 'Προσθήκη Απομακρυσμένου Ρελέ',
+      ),
+      'Add Schedule Item' => 
+      array (
+        0 => 'Προσθήκη αντικειμένου προγράμματος',
+      ),
+      'Add Storage Location' => 
+      array (
+        0 => 'Προσθήκη Τοποθεσίας Αποθήκευσης',
+      ),
+      'Add Streamer' => 
+      array (
+        0 => 'Προσθήκη Ροής',
+      ),
+      'Administration URL' => 
+      array (
+        0 => 'Διαχείριση URL',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => 'Κωδικός Διαχειριστή',
+      ),
+      'Advanced Manual AutoDJ Scheduling Options' => 
+      array (
+        0 => 'Προχωρημένες Επιλογές Χειροκίνητου ΑυτόματουDJ Προγραμματισμού',
+      ),
+      'Album Art' => 
+      array (
+        0 => 'Εξώφυλλο Άλμπουμ',
+      ),
+      'All Playlists' => 
+      array (
+        0 => 'Όλες οι λίστες αναπαραγωγής',
+      ),
+      'All Podcasts' => 
+      array (
+        0 => 'Όλα Τα Podcast',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => 'Να επιτρέπονται αιτήματα από αυτήν τη λίστα αναπαραγωγής',
+      ),
+      'Amplify: Amplification (dB)' => 
+      array (
+        0 => 'Ενίσχυση: Ενίσχυσης (dB)',
+      ),
+      'An error occurred and your request could not be completed.' => 
+      array (
+        0 => 'Παρουσιάστηκε σφάλμα και δεν ήταν δυνατή η ολοκλήρωση του αιτήματός σας.',
+      ),
+      'Analyze and reprocess the selected media' => 
+      array (
+        0 => 'Ανάλυση και επανεπεξεργασία των επιλεγμένων μέσων',
+      ),
+      'API Version' => 
+      array (
+        0 => 'Εκδόσεις API',
+      ),
+      'Applying changes...' => 
+      array (
+        0 => 'Εφαρμογή αλλαγών...',
+      ),
+      'Art' => 
+      array (
+        0 => 'Εξώφυλλο',
+      ),
+      'Artwork' => 
+      array (
+        0 => 'Γραφικά',
+      ),
+      'Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.' => 
+      array (
+        0 => 'Το έργο τέχνης πρέπει να είναι ένα ελάχιστο μέγεθος 1400 x 1400 pixels και ένα μέγιστο μέγεθος 3000 x 3000 pixels για το Apple Podcasts.',
+      ),
+      'Author' => 
+      array (
+        0 => 'Συγγραφέας',
+      ),
+      'Auto-Assigned' => 
+      array (
+        0 => 'Αυτόματη Ανάθεση',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'Ρυθμός Bit AutoDJ (kbps)',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => 'Το AutoDJ Απενεργοποιήθηκε',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'Μορφή AutoDJ',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => 'Το AutoDJ έχει απενεργοποιηθεί για αυτόν τον σταθμό. Καμία μουσική δεν θα αναπαράγεται αυτόματα όταν μια πηγή δεν είναι ζωντανή.',
+      ),
+      'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.' => 
+      array (
+        0 => 'Τα Avatars ανακτώνται με βάση τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας από την υπηρεσία %{service}. Κάντε κλικ για να διαχειριστείτε τις ρυθμίσεις σας %{service}.',
+      ),
+      'Average Listeners' => 
+      array (
+        0 => 'Μέσος Όρος Ακροατών',
+      ),
+      'Avoid Duplicate Artists/Titles' => 
+      array (
+        0 => 'Αποφύγετε Διπλούς Καλλιτέχνες / Τίτλους',
+      ),
+      'AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.' => 
+      array (
+        0 => 'Το AzuraCast θα σαρώσει το το ανεβασμένο αρχείο στη μουσική βιβλιοθήκη αυτού του σταθμού. Τα πολυμέσα πρέπει ήδη να φορτωθούν πριν από την εκτέλεση αυτού του βήματος. Μπορείτε να εκτελέσετε ξανά αυτό το εργαλείο όσες φορές χρειάζεται.',
+      ),
+      'Base Theme for Public Pages' => 
+      array (
+        0 => 'Βασικό θέμα για δημόσιες σελίδες',
+      ),
+      'Basic Info' => 
+      array (
+        0 => 'Βασικές πληροφορίες',
+      ),
+      'Basic Information' => 
+      array (
+        0 => 'Βασικές Πληροφορίες',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => 'Καλύτερα τραγούδια',
+      ),
+      'Bit Rate' => 
+      array (
+        0 => 'Ρυθμός Bit',
+      ),
+      'Branding Settings' => 
+      array (
+        0 => 'Ρυθμίσεις Μάρκετινγκ',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => 'Μετάδοση AutoDJ σε απομακρυσμένο σταθμό',
+      ),
+      'Broadcasts' => 
+      array (
+        0 => 'Αναμεταδόσεις',
+      ),
+      'Browser Icon' => 
+      array (
+        0 => 'Εικονίδιο Περιηγητή',
+      ),
+      'Bucket Name' => 
+      array (
+        0 => 'Όνομα Κάδου',
+      ),
+      'Clear' => 
+      array (
+        0 => 'Καθαρισμός',
+      ),
+      'Clear Artwork' => 
+      array (
+        0 => 'Καθαρισμός Γραφικών',
+      ),
+      'Clear File' => 
+      array (
+        0 => 'Εκκαθάριση Αρχείου',
+      ),
+      'Clear Image' => 
+      array (
+        0 => 'Καθαρισμός Εικόνας',
+      ),
+      'Clear Media' => 
+      array (
+        0 => 'Εκκαθάριση Πολυμέσων',
+      ),
+      'Close' => 
+      array (
+        0 => 'Κλείσιμο',
+      ),
+      'Continuous Play' => 
+      array (
+        0 => 'Συνεχής αναπαραγωγή',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => 'Ελέγξτε τον τρόπο χειρισμού αυτής της λίστας αναπαραγωγής από το λογισμικό AutoDJ.',
+      ),
+      'Copy associated media and folders.' => 
+      array (
+        0 => 'Αντιγραφή συνδεδεμένων μέσων και φακέλων.',
+      ),
+      'Copy scheduled playback times.' => 
+      array (
+        0 => 'Αντιγραφή προγραμματισμένων χρόνων αναπαραγωγής.',
+      ),
+      'Create Directory' => 
+      array (
+        0 => 'Δημιουργία καταλόγου',
+      ),
+      'Cue' => 
+      array (
+        0 => 'Ένδειξη',
+      ),
+      'Cued On' => 
+      array (
+        0 => 'Αποκοπή Σε',
+      ),
+      'Current Intro File' => 
+      array (
+        0 => 'Τρέχον Εισαγωγικό Αρχείο',
+      ),
+      'Current Podcast Media' => 
+      array (
+        0 => 'Τρέχοντα Πολυμέσα Εκπομπής Podcast',
+      ),
+      'Custom' => 
+      array (
+        0 => 'Προσαρμοσμένο',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => 'Προσαρμοσμένο CSS για εσωτερικές σελίδες',
+      ),
+      'Custom CSS for Public Pages' => 
+      array (
+        0 => 'Προσαρμοσμένο CSS για δημόσιες σελίδες',
+      ),
+      'Custom Cues: Cue-In Point (seconds)' => 
+      array (
+        0 => 'Προσαρμοσμένες Ενδείξεις: Cue-In Σημείο (δευτερόλεπτα)',
+      ),
+      'Custom Cues: Cue-Out Point (seconds)' => 
+      array (
+        0 => 'Προσαρμοσμένες Ενδείξεις: Cue-Out Σημείο (δευτερόλεπτα)',
+      ),
+      'Custom Fading: Fade-In Time (seconds)' => 
+      array (
+        0 => 'Προσαρμοσμένο ξεθώριασμα: Fade-In Χρόνος (δευτερόλεπτα)',
+      ),
+      'Custom Fading: Fade-Out Time (seconds)' => 
+      array (
+        0 => 'Προσαρμοσμένο ξεθώριασμα: Fade-Out Χρόνος (δευτερόλεπτα)',
+      ),
+      'Custom Fading: Overlap Time (seconds)' => 
+      array (
+        0 => 'Προσαρμοσμένο ξεθώριασμα: Χρόνος επικάλυψης (δευτερόλεπτα)',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => 'Προσαρμοσμένες Ρυθμίσεις Frontend',
+      ),
+      'Custom JS for Public Pages' => 
+      array (
+        0 => 'Προσαρμοσμένο JS για δημόσιες σελίδες',
+      ),
+      'Customize Copy' => 
+      array (
+        0 => 'Προσαρμογή Αντιγράφου',
+      ),
+      'Default' => 
+      array (
+        0 => 'Προεπιλογή',
+      ),
+      'Default Album Art' => 
+      array (
+        0 => 'Προεπιλεγμένο Εξώφυλλο Άλμπουμ',
+      ),
+      'Default Mount' => 
+      array (
+        0 => 'Προεπιλεγμένη Προσάρτηση',
+      ),
+      'Delete %{ num } media files?' => 
+      array (
+        0 => 'Διαγραφή %{ num } αρχείων πολυμέσων?',
+      ),
+      'Delete Album Art' => 
+      array (
+        0 => 'Διαγραφή εξώφυλλου άλμπουμ',
+      ),
+      'Delete broadcast?' => 
+      array (
+        0 => 'Διαγραφή αναμετάδοσης;',
+      ),
+      'Delete episode?' => 
+      array (
+        0 => 'Διαγραφή επεισοδίου;',
+      ),
+      'Delete Mount Point?' => 
+      array (
+        0 => 'Διαγραφή Σημείου;',
+      ),
+      'Delete playlist?' => 
+      array (
+        0 => 'Διαγραφή λίστας αναπαραγωγής;',
+      ),
+      'Delete podcast?' => 
+      array (
+        0 => 'Διαγραφή podcast;',
+      ),
+      'Delete queue item?' => 
+      array (
+        0 => 'Διαγραφή επιλεγμένου στοιχείου;',
+      ),
+      'Delete Remote Relay?' => 
+      array (
+        0 => 'Διαγραφή Απομακρυσμένου Ρελέ;',
+      ),
+      'Delete storage location?' => 
+      array (
+        0 => 'Διαγραφή τοποθεσίας αποθήκευσης;',
+      ),
+      'Delete streamer?' => 
+      array (
+        0 => 'Διαγραφή ροής;',
+      ),
+      'Deselect' => 
+      array (
+        0 => 'Αποεπιλογή',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => 'Άμεση Ροή URL',
+      ),
+      'Directory Name' => 
+      array (
+        0 => 'Όνομα καταλόγου',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => 'Απενεργοποίηση δημόσιων σελίδων;',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => 'Απενεργοποίηση αιτημάτων τραγουδιών;',
+      ),
+      'Disable streamers?' => 
+      array (
+        0 => 'Απενεργοποίηση ροής;',
+      ),
+      'Disconnect Streamer' => 
+      array (
+        0 => 'Αποσύνδεση της ροής',
+      ),
+      'DJ Credentials' => 
+      array (
+        0 => 'Διαπιστευτήρια DJ',
+      ),
+      'Down' => 
+      array (
+        0 => 'Κάτω',
+      ),
+      'Download M3U' => 
+      array (
+        0 => 'Λήψη M3U',
+      ),
+      'Download PLS' => 
+      array (
+        0 => 'Λήψη PLS',
+      ),
+      'Drag file(s) here to upload or' => 
+      array (
+        0 => 'Σύρετε αρχείο(α) εδώ για να ανεβάσετε ή',
+      ),
+      'Dropbox Generated Access Token' => 
+      array (
+        0 => 'Dropbox Δημιουργημένο Διακριτικό Πρόσβασης',
+      ),
+      'Duplicate' => 
+      array (
+        0 => 'Διπλότυπο',
+      ),
+      'Duplicate Playlist' => 
+      array (
+        0 => 'Διπλότυπο Λίστας Αναπαραγωγής',
+      ),
+      'E-Mail' => 
+      array (
+        0 => 'E-mail',
+      ),
+      'Edit Episode' => 
+      array (
+        0 => 'Επεξεργασία Επεισόδιο',
+      ),
+      'Edit Media' => 
+      array (
+        0 => 'Επεξεργασία πολυμέσων',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => 'Επεξεργασία Σημείου Προσάρτησης',
+      ),
+      'Edit Playlist' => 
+      array (
+        0 => 'Επεξεργασία λίστας αναπαραγωγής',
+      ),
+      'Edit Podcast' => 
+      array (
+        0 => 'Επεξεργασία Podcast',
+      ),
+      'Edit Record' => 
+      array (
+        0 => 'Επεξεργασία Εγγραφής',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => 'Επεξεργασία Απομακρυσμένου Ρελέ',
+      ),
+      'Edit Storage Location' => 
+      array (
+        0 => 'Επεξεργασία Τοποθεσίας Αποθήκευσης',
+      ),
+      'Edit Streamer' => 
+      array (
+        0 => 'Επεξεργασία Ροής',
+      ),
+      'Embed Code' => 
+      array (
+        0 => 'Ενσωμάτωση Κωδικού',
+      ),
+      'Embed Widgets' => 
+      array (
+        0 => 'Ενσωμάτωση Συστατικών',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => 'Ενεργοποίηση AutoDJ',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => 'Ενεργοποίηση δημόσιων σελίδων;',
+      ),
+      'Enable song requests?' => 
+      array (
+        0 => 'Ενεργοποίηση αιτημάτων τραγουδιού;',
+      ),
+      'Enable streamers?' => 
+      array (
+        0 => 'Ενεργοποίηση ροής;',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => 'Ενεργοποιήστε αυτήν τη ρύθμιση για να αποτρέψετε την αποστολή μεταδεδομένων στο AutoDJ για αρχεία σε αυτήν τη λίστα αναπαραγωγής. Αυτό είναι χρήσιμο εάν η λίστα αναπαραγωγής περιέχει κουδούνισμα ή προφυλακτήρες.',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => 'Ενεργοποιήστε τη διαφήμιση αυτού του σημείου προσάρτησης στους δημόσιους ραδιοφωνικούς καταλόγους "Κίτρινες σελίδες".',
+      ),
+      'Enable to advertise this relay on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => 'Ενεργοποιήστε τη διαφήμιση αυτού του ρελέ σε δημόσιους ραδιοφωνικούς καταλόγους "Κίτρινες σελίδες".',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => 'Ενεργοποιήστε για να επιτρέψετε στους ακροατές να επιλέξουν αυτό το σημείο προσάρτησης στις δημόσιες σελίδες αυτού του σταθμού.',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => 'Ενεργοποιήστε για να επιτρέψετε στους ακροατές να επιλέξουν αυτό το relay στις δημόσιες σελίδες αυτού του σταθμού.',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => 'Ενεργοποιήστε για να επιτρέψετε σε αυτόν τον λογαριασμό να συνδεθεί και να πραγματοποιήσει ροή.',
+      ),
+      'Encoder' => 
+      array (
+        0 => 'Κωδικοποιητής',
+      ),
+      'End Date' => 
+      array (
+        0 => 'Ημερομηνία λήξης',
+      ),
+      'End Time' => 
+      array (
+        0 => 'Ώρα Λήξης',
+      ),
+      'Endpoint' => 
+      array (
+        0 => 'Τελικό σημείο',
+      ),
+      'Enforce Schedule Times' => 
+      array (
+        0 => 'Επιβολή Χρονοδιαγράμματος Φορών',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => 'Εισάγετε την πλήρη διεύθυνση URL μιας άλλης ροής για να μεταδώσετε την εκπομπή της μέσω αυτού του σημείου προσάρτησης.',
+      ),
+      'Episode' => 
+      array (
+        0 => 'Επεισόδιο',
+      ),
+      'Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".' => 
+      array (
+        0 => 'Παράδειγμα: αν το απομακρυσμένο URL του ραδιοφώνου είναι http://station.example.com:8000/radio.mp3, εισάγετε "http://station.example.com:8000".',
+      ),
+      'Export %{format}' => 
+      array (
+        0 => 'Εξαγωγή %{format}',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => 'Fallback Mount',
+      ),
+      'File' => 
+      array (
+        0 => 'Αρχείο',
+      ),
+      'File Name' => 
+      array (
+        0 => 'Όνομα αρχείου',
+      ),
+      'Files marked for reprocessing:' => 
+      array (
+        0 => 'Αρχεία που σημειώθηκαν για επανεπεξεργασία:',
+      ),
+      'Files moved:' => 
+      array (
+        0 => 'Αρχεία που μετακινήθηκαν:',
+      ),
+      'Files queued for playback:' => 
+      array (
+        0 => 'Αρχεία σε ουρά αναπαραγωγής:',
+      ),
+      'Files removed:' => 
+      array (
+        0 => 'Αρχεία που διαγράφηκαν:',
+      ),
+      'For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.' => 
+      array (
+        0 => 'Για τα τοπικά συστήματα αρχείων, αυτή είναι η βασική διαδρομή του καταλόγου. Για απομακρυσμένα συστήματα αρχείων, αυτό είναι το πρόθεμα φακέλων.',
+      ),
+      'Full Volume' => 
+      array (
+        0 => 'Πλήρης ένταση',
+      ),
+      'General Rotation' => 
+      array (
+        0 => 'Γενική Περιστροφή',
+      ),
+      'Hide Album Art on Public Pages' => 
+      array (
+        0 => 'Απόκρυψη εξώφυλλου άλμπουμ σε δημόσιες σελίδες',
+      ),
+      'Hide AzuraCast Branding on Public Pages' => 
+      array (
+        0 => 'Απόκρυψη AzuraCast Branding σε δημόσιες σελίδες',
+      ),
+      'Hide Charts' => 
+      array (
+        0 => 'Απόκρυψη Γραφημάτων',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => 'Απόκρυψη μεταδεδομένων από ακροατές ("Λειτουργία Jing")',
+      ),
+      'High' => 
+      array (
+        0 => 'Υψηλή',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => 'Υψηλότερες λίστες αναπαραγωγής βάρους παίζονται συχνότερα σε σύγκριση με άλλες λίστες αναπαραγωγής χαμηλότερου βάρους.',
+      ),
+      'History' => 
+      array (
+        0 => 'Ιστορικό',
+      ),
+      'Home' => 
+      array (
+        0 => 'Αρχική',
+      ),
+      'Homepage Redirect URL' => 
+      array (
+        0 => 'URL Ανακατεύθυνσης Αρχικής Σελίδας',
+      ),
+      'Hour' => 
+      array (
+        0 => 'Ώρα',
+      ),
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      array (
+        0 => 'Αν ένας επισκέπτης δεν είναι συνδεδεμένος και επισκέπτεται την αρχική σελίδα AzuraCast, μπορείτε να τον ανακατευθύνετε αυτόματα στη διεύθυνση URL που καθορίζεται εδώ. Αφήστε κενό για να τους ανακατευθύνετε στην οθόνη σύνδεσης από προεπιλογή.',
+      ),
+      'If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results.' => 
+      array (
+        0 => 'Αν ενεργοποιηθεί οποιαδήποτε από αυτές τις επιλογές, αυτή η λίστα αναπαραγωγής θα γίνεται απευθείας μέσω Liquidsoap αντί μέσω του AzuraCast. Αυτό μπορεί να έχει ακούσια αποτελέσματα και θα πρέπει να χρησιμοποιείται μόνο όταν είστε άνετα με τα αποτελέσματα.',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => 'Αν είναι ενεργοποιημένη η αυτόματη ανάθεση, χρησιμοποιήστε αυτή τη λίστα αναπαραγωγής ως έναν από τους στόχους για την αναδιανομή των τραγουδιών. Αυτό θα αντικαταστήσει τα υπάρχοντα περιεχόμενα αυτής της λίστας αναπαραγωγής.',
+      ),
+      'If disabled, the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => 'Αν απενεργοποιηθεί, η λίστα αναπαραγωγής δεν θα συμπεριληφθεί στην αναπαραγωγή του ραδιοφώνου, αλλά μπορεί ακόμα να διαχειριστεί.',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => 'Αν ενεργοποιηθεί, το AutoDJ σε αυτή την εγκατάσταση θα αναπαράγει αυτόματα μουσική σε αυτό το σημείο προσάρτησης.',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => 'Αν ενεργοποιηθεί, το AutoDJ θα αναπαράγει αυτόματα μουσική σε αυτό το σημείο προσάρτησης.',
+      ),
+      'If enabled, this streamer will only be able to connect during their scheduled broadcast times.' => 
+      array (
+        0 => 'Αν ενεργοποιηθεί, αυτός ο streamer θα μπορεί να συνδεθεί μόνο κατά τη διάρκεια των προγραμματισμένων χρόνων εκπομπής.',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => 'Εάν τα αιτήματα είναι ενεργοποιημένα για το σταθμό σας, οι χρήστες θα είναι σε θέση να ζητήσουν πολυμέσα που βρίσκονται σε αυτή τη λίστα αναπαραγωγής.',
+      ),
+      'If selected, album art will not display on public-facing radio pages.' => 
+      array (
+        0 => 'Αν επιλεχθεί, το εξώφυλλο του άλμπουμ δεν θα εμφανίζεται σε δημόσιες ραδιοφωνικές σελίδες.',
+      ),
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      array (
+        0 => 'Αν επιλεχθεί, αυτό θα αφαιρέσει το εμπορικό σήμα AzuraCast από τις σελίδες με μέρος.',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => 'Αν η ώρα λήξης είναι πριν από την ώρα έναρξης, η λίστα αναπαραγωγής θα παίξει μια νύχτα.',
+      ),
+      'If the end time is before the start time, the schedule entry will continue overnight.' => 
+      array (
+        0 => 'Αν η ώρα λήξης είναι πριν από την ώρα έναρξης, η εγγραφή του προγράμματος θα συνεχιστεί κατά τη διάρκεια της νύχτας.',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => 'Εάν το σημείο στερέωσης (δηλαδή <code>/radio.mp3</code>) ή το Shoutcast SID (δηλ. <code>2</code>) στην εκπομπή είναι διαφορετική από αυτή που αναφέρεται παραπάνω, καθορίστε εδώ το σημείο προσάρτησης πηγής.',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => 'Αν η θύρα στην οποία μεταδίδετε είναι διαφορετική από αυτή που αναφέρατε στην παραπάνω διεύθυνση URL, καθορίστε εδώ τη θύρα προέλευσης.',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => 'Αν αυτή η προσάρτηση είναι η προεπιλογή, θα παίξει στην προεπισκόπηση του ραδιοφώνου και στη δημόσια σελίδα ραδιοφώνου σε αυτό το σύστημα.',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => 'Αν αυτό το σημείο προσάρτησης δεν αναπαράγει ήχο, οι ακροατές θα ανακατευθυνθούν αυτόματα σε αυτό το σημείο προσάρτησης. Η προεπιλογή είναι /error.mp3, ένα μήνυμα σφάλματος επανάληψης.',
+      ),
+      'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
+      array (
+        0 => 'Αν αυτός ο σταθμός έχει κατά παραγγελία ροή και λήψη ενεργοποιημένη, μόνο τραγούδια που βρίσκονται σε λίστες αναπαραγωγής με ενεργοποιημένη αυτή τη ρύθμιση θα είναι ορατά.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => 'Εάν εκπέμπει χρησιμοποιώντας AutoDJ, εισάγετε τον πηγαίο κωδικό πρόσβασης εδώ.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => 'Αν μεταδίδετε χρησιμοποιώντας AutoDJ, εισάγετε εδώ το όνομα χρήστη του πηγαίου κώδικα. Αυτό μπορεί να είναι κενό.',
+      ),
+      'Import from PLS/M3U' => 
+      array (
+        0 => 'Εισαγωγή από PLS/M3U',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => 'τις τελευταίες 48 ώρες',
+      ),
+      'in the last month' => 
+      array (
+        0 => 'τον τελευταίο μήνα',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => 'Συμπερίληψη στην αυτοματοποιημένη ανάθεση',
+      ),
+      'Include in On-Demand Player' => 
+      array (
+        0 => 'Συμπερίληψη στο πρόγραμμα αναπαραγωγής κατά την παραγγελία',
+      ),
+      'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
+      array (
+        0 => 'Υποδεικνύει την παρουσία ρητού περιεχομένου (ρητή γλώσσα ή περιεχόμενο ενηλίκων). Το Apple Podcasts εμφανίζει ένα αντίγραφο γονικού συμβουλευτικού γραφικού για το επεισόδιό σας, αν ενεργοποιηθεί. Επεισόδια που περιέχουν σαφές υλικό δεν είναι διαθέσιμα σε ορισμένες περιοχές της Apple Podcasts.',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => 'Εσωτερικές σημειώσεις ή σχόλια σχετικά με το χρήστη, ορατά μόνο σε αυτόν τον πίνακα ελέγχου.',
+      ),
+      'International Standard Recording Code, used for licensing reports.' => 
+      array (
+        0 => 'Διεθνής τυποποιημένος κώδικας εγγραφής, που χρησιμοποιείται για τις εκθέσεις αδειοδότησης.',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => 'Διακοπή άλλων τραγουδιών για να παίξει την προγραμματισμένη ώρα.',
+      ),
+      'Intro' => 
+      array (
+        0 => 'Εισαγωγή',
+      ),
+      'Is Enabled' => 
+      array (
+        0 => 'Είναι Ενεργοποιημένο',
+      ),
+      'Jingle Mode' => 
+      array (
+        0 => 'Λειτουργία Jingle',
+      ),
+      'Learn about Advanced Playlists' => 
+      array (
+        0 => 'Μάθετε για τις προηγμένες λίστες αναπαραγωγής',
+      ),
+      'Learn More about Dropbox Auth Tokens' => 
+      array (
+        0 => 'Μάθετε περισσότερα για το Dropbox Auth Tokens',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => 'Αφήστε κενό για να παίξει σε κάθε μέρα της εβδομάδας.',
+      ),
+      'LiquidSoap is currently shuffling from %{songs} and %{playlists}.' => 
+      array (
+        0 => 'Το LiquidSoap ανακατεύεται αυτή τη στιγμή από %{songs} και %{playlists}.',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => 'Ακροατές Ανά Βάση',
+      ),
+      'Live' => 
+      array (
+        0 => 'Ζωντανά',
+      ),
+      'Loading...' => 
+      array (
+        0 => 'Φόρτωση...',
+      ),
+      'Local Filesystem' => 
+      array (
+        0 => 'Τοπικό Σύστημα Αρχείων',
+      ),
+      'Local Streams' => 
+      array (
+        0 => 'Τοπικές Ροές',
+      ),
+      'Logs' => 
+      array (
+        0 => 'Καταγραφή',
+      ),
+      'Loop Once' => 
+      array (
+        0 => 'Επανάληψη Μια Φορά',
+      ),
+      'Low' => 
+      array (
+        0 => 'Χαμηλή',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration.' => 
+      array (
+        0 => 'Χειροκίνητος ορισμός του τρόπου χρήσης αυτής της λίστας αναπαραγωγής στις ρυθμίσεις του Liquidsoap.',
+      ),
+      'Max Listener Duration' => 
+      array (
+        0 => 'Μέγιστη Διάρκεια Ακρόασης',
+      ),
+      'Media' => 
+      array (
+        0 => 'Πολυμέσα',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => 'Συγχώνευση λίστας αναπαραγωγής για να παίξει ως ένα μόνο κομμάτι.',
+      ),
+      'Metadata' => 
+      array (
+        0 => 'Μετα-δεδομένα',
+      ),
+      'Microphone' => 
+      array (
+        0 => 'Μικρόφωνο',
+      ),
+      'Microphone Source' => 
+      array (
+        0 => 'Πηγή Μικροφώνου',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => 'Λεπτό της ώρας για να παίξει',
+      ),
+      'Mixer' => 
+      array (
+        0 => 'Μείκτης',
+      ),
+      'Modified' => 
+      array (
+        0 => 'Τροποποιήθηκε',
+      ),
+      'More' => 
+      array (
+        0 => 'Περισσότερα',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => 'Περισσότερα Τραγούδια',
+      ),
+      'Mount Point URL' => 
+      array (
+        0 => 'Url Σημείου Προσάρτησης',
+      ),
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      array (
+        0 => 'Τα σημεία προσάρτησης είναι ο τρόπος σύνδεσης των ακροατών και ακρόασης στο σταθμό σας. Κάθε σημείο προσάρτησης μπορεί να είναι μια διαφορετική μορφή ήχου ή ποιότητα. Χρησιμοποιώντας τα σημεία προσάρτησης, μπορείτε να δημιουργήσετε μια υψηλής ποιότητας ροή για ευρυζωνικούς ακροατές και μια κινητή ροή για τους χρήστες του τηλεφώνου.',
+      ),
+      'Move' => 
+      array (
+        0 => 'Μετακίνηση',
+      ),
+      'Move %{ num } File(s) to' => 
+      array (
+        0 => 'Μετακίνηση αρχείου %{ num } σε',
+      ),
+      'Move to Directory' => 
+      array (
+        0 => 'Μετακίνηση στον κατάλογο',
+      ),
+      'MP3' => 
+      array (
+        0 => 'MP3',
+      ),
+      'Mute' => 
+      array (
+        0 => 'Σίγαση',
+      ),
+      'New Directory' => 
+      array (
+        0 => 'Νέος Κατάλογος',
+      ),
+      'New directory created.' => 
+      array (
+        0 => 'Δημιουργήθηκε νέος κατάλογος.',
+      ),
+      'New File Name' => 
+      array (
+        0 => 'Νέο Όνομα Αρχείου',
+      ),
+      'New Folder' => 
+      array (
+        0 => 'Νέος Φάκελος',
+      ),
+      'New Playlist' => 
+      array (
+        0 => 'Νέα Λίστα Αναπαραγωγής',
+      ),
+      'New Playlist Name' => 
+      array (
+        0 => 'Νέο Όνομα Λίστας Αναπαραγωγής',
+      ),
+      'No files selected.' => 
+      array (
+        0 => 'Δεν επιλέχθηκαν αρχεία.',
+      ),
+      'No records to display.' => 
+      array (
+        0 => 'Δεν βρέθηκαν εγγραφές.',
+      ),
+      'Not Running' => 
+      array (
+        0 => 'Δεν Εκτελείται',
+      ),
+      'Not Scheduled' => 
+      array (
+        0 => 'Μη Προγραμματισμένο',
+      ),
+      'Notes' => 
+      array (
+        0 => 'Σημειώσεις',
+      ),
+      'Now' => 
+      array (
+        0 => 'Τώρα',
+      ),
+      'Now Playing' => 
+      array (
+        0 => 'Παίζει Τώρα',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => 'Αριθμός λεπτών μεταξύ των τραγουδιών',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => 'Αριθμός λεπτών μεταξύ των τραγουδιών',
+      ),
+      'On the Air' => 
+      array (
+        0 => 'Στον αέρα',
+      ),
+      'On-Demand' => 
+      array (
+        0 => 'Κατα παραγγελια',
+      ),
+      'Once per %{minutes} Minutes' => 
+      array (
+        0 => 'Μία φορά ανά %{minutes} λεπτά',
+      ),
+      'Once per %{songs} Songs' => 
+      array (
+        0 => 'Μία φορά ανά %{songs} τραγούδια',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => 'Μία φορά ανά ώρα',
+      ),
+      'Once per Hour (at %{minute})' => 
+      array (
+        0 => 'Μία φορά την ώρα (στις %{minute})',
+      ),
+      'Once per x Minutes' => 
+      array (
+        0 => 'Μία φορά το x λεπτά',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => 'Μία φορά ανά x Τραγούδια',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => 'Μόνο μια επανάληψη μέσω της λίστας αναπαραγωγής.',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => 'Παίξε μόνο ένα κομμάτι την προγραμματισμένη ώρα.',
+      ),
+      'Path/Suffix' => 
+      array (
+        0 => 'Διαδρομή/επίθεμα',
+      ),
+      'Play exactly once every $x minutes.' => 
+      array (
+        0 => 'Παίξτε ακριβώς μία φορά κάθε $x λεπτά.',
+      ),
+      'Play exactly once every $x songs.' => 
+      array (
+        0 => 'Παίξτε ακριβώς μία φορά κάθε $x τραγούδια.',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => 'Παίξτε μία φορά ανά ώρα στο συγκεκριμένο λεπτό.',
+      ),
+      'Play/Pause' => 
+      array (
+        0 => 'Αναπαραγωγή/Παύση',
+      ),
+      'Playback Queue' => 
+      array (
+        0 => 'Σειρά Αναπαραγωγής',
+      ),
+      'Playing Next' => 
+      array (
+        0 => 'Αναπαραγωγή Στο Επόμενο',
+      ),
+      'Playlist' => 
+      array (
+        0 => 'Λίστες αναπαραγωγής',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => 'Διεύθυνση URL Λίστας Αναπαραγωγής (M3U/PLS)',
+      ),
+      'Playlist 1' => 
+      array (
+        0 => 'Λίστα Αναπαραγωγής 1',
+      ),
+      'Playlist 2' => 
+      array (
+        0 => 'Λίστα Αναπαραγωγής 2',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => 'Όνομα Λίστας Αναπαραγωγής',
+      ),
+      'Playlist order set.' => 
+      array (
+        0 => 'Σειρά λίστας αναπαραγωγής.',
+      ),
+      'Playlist Type' => 
+      array (
+        0 => 'Τύπος Λίστας Αναπαραγωγής',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => 'Βάρος Λίστας Αναπαραγωγής',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => 'Λίστες αναπαραγωγής εκκαθαρίστηκαν για τα επιλεγμένα αρχεία:',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => 'Λίστες αναπαραγωγής ενημερώθηκαν για τα επιλεγμένα αρχεία:',
+      ),
+      'Podcast' => 
+      array (
+        0 => 'Podcast',
+      ),
+      'Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.' => 
+      array (
+        0 => 'Τα μέσα ενημέρωσης Podcast θα πρέπει να είναι σε μορφή MP3 ή M4A (AAC) για τη μεγαλύτερη συμβατότητα.',
+      ),
+      'Podcast Title' => 
+      array (
+        0 => 'Τίτλος Podcast',
+      ),
+      'Preview' => 
+      array (
+        0 => 'Προεπισκόπηση',
+      ),
+      'Public Page Background' => 
+      array (
+        0 => 'Φόντο Δημόσιας Σελίδας',
+      ),
+      'Public Pages' => 
+      array (
+        0 => 'Δημόσιες Σελίδες',
+      ),
+      'Publish Date' => 
+      array (
+        0 => 'Ημερομηνία Δημοσίευσης',
+      ),
+      'Publish Time' => 
+      array (
+        0 => 'Ώρα Δημοσίευσης',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => 'Δημοσίευση σε Κατάλογους "Κίτρινες Σελίδες"',
+      ),
+      'Queue' => 
+      array (
+        0 => 'Σειρά αναπαραγωγής',
+      ),
+      'Queue the selected media to play next' => 
+      array (
+        0 => 'Σειρά των επιλεγμένων πολυμέσων για αναπαραγωγή του επόμενου',
+      ),
+      'Radio Player' => 
+      array (
+        0 => 'Ραδιοφωνικός Player',
+      ),
+      'Random' => 
+      array (
+        0 => 'Τυχαία',
+      ),
+      'Raw' => 
+      array (
+        0 => 'Χωρίς επεξεργασία',
+      ),
+      'Refresh rows' => 
+      array (
+        0 => 'Ανανέωση γραμμών',
+      ),
+      'Region' => 
+      array (
+        0 => 'Περιοχή',
+      ),
+      'Relay Password' => 
+      array (
+        0 => 'Κωδικός Relay',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => 'Url Ροής Relay',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => 'Απομακρυσμένη Μνήμη Αναπαραγωγής (Δευτερόλεπτα)',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => 'Οι απομακρυσμένοι ηλεκτρονόμοι σας επιτρέπουν να εργάζεστε με λογισμικό μετάδοσης έξω από αυτόν το διακομιστή. Κάθε ρελέ που περιλαμβάνετε εδώ θα περιλαμβάνεται στα στατιστικά στοιχεία του σταθμού σας. Μπορείτε επίσης να μεταδώσετε από αυτόν τον διακομιστή σε απομακρυσμένους ρελέ.',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => 'Κωδικός Πρόσβασης Διαχείρισης Απομακρυσμένου Σταθμού',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => 'Απομακρυσμένος Σταθμός Ακρόασης Σημείο/SID',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => 'Απομακρυσμένος Σταθμός Listening URL',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => 'Απομακρυσμένος Σταθμός Πηγή Mountpoint/SID',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => 'Κωδικός πρόσβασης πηγής απομακρυσμένου σταθμού',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => 'Θύρα πηγής απομακρυσμένου σταθμού',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => 'Όνομα Χρήστη Απομακρυσμένης Πηγής Σταθμού',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => 'Τύπος Απομακρυσμένου Σταθμού',
+      ),
+      'Remote URL' => 
+      array (
+        0 => 'Απομακρυσμένο URL',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => 'Λίστα Απομακρυσμένων URL',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => 'Απομακρυσμένος Τύπος URL',
+      ),
+      'Remote: Dropbox' => 
+      array (
+        0 => 'Απομακρυσμένο: Dropbox',
+      ),
+      'Remote: S3 Compatible' => 
+      array (
+        0 => 'Remote: S3 Συμβατό Σύστημα',
+      ),
+      'Remove' => 
+      array (
+        0 => 'Αφαίρεση',
+      ),
+      'Rename' => 
+      array (
+        0 => 'Μετονομασία',
+      ),
+      'Rename File/Directory' => 
+      array (
+        0 => 'Μετονομασία Αρχείου/Καταλόγου',
+      ),
+      'Reorder' => 
+      array (
+        0 => 'Αναδιάταξη',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => 'Αναδιάταξη Λίστας Αναπαραγωγής',
+      ),
+      'Repeat Playlist' => 
+      array (
+        0 => 'Επανάληψη Λίστας Αναπαραγωγής',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => 'Αντικατάσταση Εξώφυλλου Άλμπουμ',
+      ),
+      'Reprocess' => 
+      array (
+        0 => 'Επανεπεξεργασία',
+      ),
+      'Request' => 
+      array (
+        0 => 'Αίτημα',
+      ),
+      'Request a Song' => 
+      array (
+        0 => 'Ζητήστε ένα τραγούδι',
+      ),
+      'Request Song' => 
+      array (
+        0 => 'Αίτημα Τραγουδιού',
+      ),
+      'Requests' => 
+      array (
+        0 => 'Αιτήματα',
+      ),
+      'Reshuffle' => 
+      array (
+        0 => 'Ανακάτεμα',
+      ),
+      'Restart' => 
+      array (
+        0 => 'Επανεκκίνηση',
+      ),
+      'Rows per page' => 
+      array (
+        0 => 'Γραμμές ανά σελίδα',
+      ),
+      'Running' => 
+      array (
+        0 => 'Εκτελείται',
+      ),
+      'Sample Rate' => 
+      array (
+        0 => 'Ρυθμός Δειγμάτων',
+      ),
+      'Save' => 
+      array (
+        0 => 'Αποθήκευση',
+      ),
+      'Schedule View' => 
+      array (
+        0 => 'Προβολή Χρονοδιαγράμματος',
+      ),
+      'Scheduled' => 
+      array (
+        0 => 'Προγραμματισμένο',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => 'Προγραμματισμένες Ημέρες Παιχνιδιού της εβδομάδας',
+      ),
+      'Scheduled Time #%{num}' => 
+      array (
+        0 => 'Προγραμματισμένη ώρα #%{num}',
+      ),
+      'Scheduling' => 
+      array (
+        0 => 'Προγραμματισμός',
+      ),
+      'Search' => 
+      array (
+        0 => 'Αναζήτηση',
+      ),
+      'Seconds from the start of the song that the AutoDJ should start playing.' => 
+      array (
+        0 => 'Δευτερόλεπτα από την αρχή του τραγουδιού που θα αρχίσει να παίζει το AutoDJ.',
+      ),
+      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
+      array (
+        0 => 'Δευτερόλεπτα από την αρχή του τραγουδιού που θα σταματήσει να παίζει το AutoDJ.',
+      ),
+      'Secret Key' => 
+      array (
+        0 => 'Μυστικό Κλειδί',
+      ),
+      'Seek' => 
+      array (
+        0 => 'Αναζήτηση',
+      ),
+      'Select' => 
+      array (
+        0 => 'Επιλογή',
+      ),
+      'Select a theme to use as a base for station public pages and the login page.' => 
+      array (
+        0 => 'Επιλέξτε ένα θέμα για να χρησιμοποιήσετε ως βάση για τις δημόσιες σελίδες σταθμού και τη σελίδα σύνδεσης.',
+      ),
+      'Select all visible rows' => 
+      array (
+        0 => 'Επιλογή όλων των ορατών γραμμών',
+      ),
+      'Select displayed fields' => 
+      array (
+        0 => 'Επιλέξτε εμφανιζόμενα πεδία',
+      ),
+      'Select Intro File' => 
+      array (
+        0 => 'Επιλογή Αρχείου Εισαγωγής',
+      ),
+      'Select Media File' => 
+      array (
+        0 => 'Επιλογή Αρχείου Πολυμέσων',
+      ),
+      'Select PLS/M3U File to Import' => 
+      array (
+        0 => 'Επιλέξτε αρχείο PLS/M3U για εισαγωγή',
+      ),
+      'Select PNG/JPG artwork file' => 
+      array (
+        0 => 'Επιλογή αρχείου γραφικών PNG/JPG',
+      ),
+      'Select the category/categories that best reflects the content of your podcast.' => 
+      array (
+        0 => 'Επιλέξτε την κατηγορία/κατηγορίες που αντικατοπτρίζουν καλύτερα το περιεχόμενο του podcast σας.',
+      ),
+      'Sequential' => 
+      array (
+        0 => 'Ακολουθίες',
+      ),
+      'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => 'Ορίστε ένα μέγιστο χώρο στο δίσκο που αυτή η θέση αποθήκευσης μπορεί να χρησιμοποιήσει. Καθορίστε το μέγεθος με τη μονάδα, δηλαδή "8 GB". Οι μονάδες μετρώνται σε 1024 bytes. Αφήστε κενό στην προεπιλογή στο διαθέσιμο χώρο στο δίσκο.',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => 'Ορισμός ως προκαθορισμένο σημείο προσάρτησης',
+      ),
+      'Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.' => 
+      array (
+        0 => 'Ορισμός σημείων cue και fade χρησιμοποιώντας τον οπτικό επεξεργαστή. Οι timestamps θα αποθηκευτούν στα αντίστοιχα πεδία στις προηγμένες ρυθμίσεις αναπαραγωγής.',
+      ),
+      'Set Cue In' => 
+      array (
+        0 => 'Ορισμός Cue Στο',
+      ),
+      'Set Cue Out' => 
+      array (
+        0 => 'Ορισμός Cue Έξω',
+      ),
+      'Set Fade In' => 
+      array (
+        0 => 'Ορισμός Ξεθωριάσματος Σε',
+      ),
+      'Set Fade Out' => 
+      array (
+        0 => 'Ορισμός Cue Έξω',
+      ),
+      'Set or clear playlists from the selected media' => 
+      array (
+        0 => 'Ορισμός ή εκκαθάριση λιστών αναπαραγωγής από τα επιλεγμένα μέσα',
+      ),
+      'Set Overlap' => 
+      array (
+        0 => 'Ορισμός Επικάλυψης',
+      ),
+      'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 
+      array (
+        0 => 'Ορίστε το χρονικό διάστημα (δευτερόλεπτα) που ένας ακροατής θα παραμείνει συνδεδεμένος στη ροή. Αν οριστεί σε 0, οι ακροατές μπορούν να παραμείνουν συνδεδεμένοι άπειρα.',
+      ),
+      'Show Charts' => 
+      array (
+        0 => 'Εμφάνιση Γραφημάτων',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => 'Εμφάνιση στις Δημόσιες Σελίδες',
+      ),
+      'Shuffled' => 
+      array (
+        0 => 'Ανακατευμένο',
+      ),
+      'Skip Song' => 
+      array (
+        0 => 'Παράλειψη Τραγουδιού',
+      ),
+      'Song' => 
+      array (
+        0 => 'Τραγούδι',
+      ),
+      'Song Album' => 
+      array (
+        0 => 'Άλμπουμ Τραγουδιού',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Καλλιτέχνης Τραγουδιού',
+      ),
+      'Song Genre' => 
+      array (
+        0 => 'Είδος Τραγουδιού',
+      ),
+      'Song History' => 
+      array (
+        0 => 'Ιστορικό Τραγουδιού',
+      ),
+      'Song Length' => 
+      array (
+        0 => 'Μήκος Τραγουδιού',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => 'Στίχοι Τραγουδιού',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => 'Σειρά Αναπαραγωγής Τραγουδιού',
+      ),
+      'Song-based' => 
+      array (
+        0 => 'Τραγούδι',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => 'Λίστα Αναπαραγωγής Με Τραγούδια',
+      ),
+      'Source Password' => 
+      array (
+        0 => 'Κωδικός πηγής',
+      ),
+      'Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => 'Καθορίστε ένα σημείο προσάρτησης (δηλαδή "/radio.mp3") ή ένα Shoutcast SID (δηλαδή "2") για να καθορίσετε μια συγκεκριμένη ροή προς χρήση για στατιστικές ή εκπομπές.',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => 'Καθορίστε το λεπτό κάθε ώρας που θα πρέπει να παίζει αυτή η λίστα.',
+      ),
+      'Standard playlist, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => 'Τυπική λίστα αναπαραγωγής, ανακατεύει με άλλες τυπικές λίστες αναπαραγωγής με βάση το βάρος.',
+      ),
+      'Start' => 
+      array (
+        0 => 'Έναρξη',
+      ),
+      'Start Date' => 
+      array (
+        0 => 'Ημερομηνία Έναρξης',
+      ),
+      'Start Streaming' => 
+      array (
+        0 => 'Έναρξη Μετάδοσης:',
+      ),
+      'Start Time' => 
+      array (
+        0 => 'Ώρα Έναρξης',
+      ),
+      'Start/end date cannot be used on playlists with advanced settings!' => 
+      array (
+        0 => 'Ημερομηνία έναρξης/λήξης δεν μπορεί να χρησιμοποιηθεί στις λίστες αναπαραγωγής με προηγμένες ρυθμίσεις!',
+      ),
+      'Station Media' => 
+      array (
+        0 => 'Μέσα Σταθμού',
+      ),
+      'Station Name' => 
+      array (
+        0 => 'Όνομα Σταθμού',
+      ),
+      'Station Overview' => 
+      array (
+        0 => 'Επισκόπηση Σταθμού',
+      ),
+      'Station Podcasts' => 
+      array (
+        0 => 'Σταθμός Podcasts',
+      ),
+      'Station Recordings' => 
+      array (
+        0 => 'Έναρξη Εγγραφής:',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => 'Ζώνη Ώρας Σταθμού',
+      ),
+      'Station(s)' => 
+      array (
+        0 => 'Σταθμός(οί)',
+      ),
+      'Stop Streaming' => 
+      array (
+        0 => 'Διακοπή Μετάδοσης:',
+      ),
+      'Storage Adapter' => 
+      array (
+        0 => 'Προσαρμογέας Αποθήκευσης',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => 'Συνολικός Αποθηκευτικός Χώρος',
+      ),
+      'Streamer Broadcasts' => 
+      array (
+        0 => 'Streamer Εκπομπές',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => 'Εμφανιζόμενο Όνομα Ροής',
+      ),
+      'Streamer password' => 
+      array (
+        0 => 'Συνθηματικό μετάδοσης',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => 'Streamer Όνομα Χρήστη',
+      ),
+      'Streamer/DJ' => 
+      array (
+        0 => 'Streamer/DJ',
+      ),
+      'Streams' => 
+      array (
+        0 => 'Μεταδόσεις',
+      ),
+      'text' => 
+      array (
+        0 => 'κείμενο',
+      ),
+      'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => 'Το άτομο επαφής του podcast. Μπορεί να απαιτείται για να απαριθμήσετε το podcast σε υπηρεσίες όπως το Apple Podcasts, το Spotify, το Google Podcasts, κλπ.',
+      ),
+      'The date when the episode should be published.' => 
+      array (
+        0 => 'Η ημερομηνία δημοσίευσης του επεισοδίου.',
+      ),
+      'The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => 'Η περιγραφή του επεισοδίου. Η τυπική μέγιστη ποσότητα κειμένου που επιτρέπεται για αυτό είναι 4000 χαρακτήρες.',
+      ),
+      'The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => 'Η περιγραφή του podcast σας. Η τυπική μέγιστη ποσότητα κειμένου που επιτρέπεται για αυτό είναι 4000 χαρακτήρες.',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'Το όνομα εμφάνισης που αντιστοιχίστηκε σε αυτό το σημείο προσάρτησης κατά την προβολή του σε διοικητικές ή δημόσιες σελίδες. Αφήστε κενό για να δημιουργηθεί αυτόματα μία.',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'Το όνομα εμφάνισης που αντιστοιχίστηκε σε αυτόν τον ρελέ κατά την προβολή του σε διοικητικές ή δημόσιες σελίδες. Αφήστε κενό για να δημιουργηθεί αυτόματα μία.',
+      ),
+      'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => 'Το email της επαφής podcast. Μπορεί να απαιτείται για να απαριθμήσετε το podcast σε υπηρεσίες όπως το Apple Podcasts, το Spotify, το Google Podcasts, κλπ.',
+      ),
+      'The full playlist is shuffled and then played through in the shuffled order.' => 
+      array (
+        0 => 'Η πλήρης λίστα αναπαραγωγής ανακατεύεται και στη συνέχεια παίζεται με ανακατεμένη σειρά.',
+      ),
+      'The language spoken on the podcast.' => 
+      array (
+        0 => 'Η γλώσσα που ομιλείται στο podcast.',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => 'Το χρονικό διάστημα αναπαραγωγής που το Liquidsoap θα αποθηκεύσει κατά την αναπαραγωγή αυτής της απομακρυσμένης λίστας αναπαραγωγής. Οι μικρότεροι χρόνοι μπορεί να οδηγήσουν σε διακοπτόμενη αναπαραγωγή σε ασταθείς συνδέσεις.',
+      ),
+      'The order of the playlist is manually specified and followed by the AutoDJ.' => 
+      array (
+        0 => 'Η σειρά της λίστας αναπαραγωγής καθορίζεται χειροκίνητα και ακολουθείται από το AutoDJ.',
+      ),
+      'The relative path of the file in the station\'s media directory.' => 
+      array (
+        0 => 'Η σχετική διαδρομή του αρχείου στον κατάλογο πολυμέσων του σταθμού.',
+      ),
+      'The request could not be processed.' => 
+      array (
+        0 => 'Το αίτημα δεν ήταν δυνατόν να υποβληθεί σε επεξεργασία.',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => 'Ο streamer θα χρησιμοποιήσει αυτόν τον κωδικό πρόσβασης για να συνδεθεί με τον ραδιοφωνικό διακομιστή.',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => 'Ο streamer θα χρησιμοποιήσει αυτό το όνομα χρήστη για να συνδεθεί με τον ραδιοφωνικό διακομιστή.',
+      ),
+      'The time period that the song should fade in. Leave blank to use the system default.' => 
+      array (
+        0 => 'Το χρονικό διάστημα στο οποίο θα ξεθωριάσει το τραγούδι. Αφήστε κενό για να χρησιμοποιήσετε την προεπιλογή του συστήματος.',
+      ),
+      'The time period that the song should fade out. Leave blank to use the system default.' => 
+      array (
+        0 => 'Η χρονική περίοδος που θα πρέπει να σβήσει το τραγούδι. Αφήστε κενό για να χρησιμοποιήσετε την προεπιλογή συστήματος.',
+      ),
+      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
+      array (
+        0 => 'Ο χρόνος που αυτό το τραγούδι θα πρέπει να επικαλύπτει τα γύρω τραγούδια του όταν ξεθωριάζει. Αφήστε κενό για να χρησιμοποιήσετε το σύστημα προεπιλογή.',
+      ),
+      'The time when the episode should be published (according to the stations timezone).' => 
+      array (
+        0 => 'Ο χρόνος δημοσίευσης του επεισοδίου (σύμφωνα με το χρονοδιάγραμμα των σταθμών).',
+      ),
+      'The volume in decibels to amplify the track with. Leave blank to use the system default.' => 
+      array (
+        0 => 'Ο όγκος σε ντεσιμπέλ για να ενισχύσει το κομμάτι με. Αφήστε κενό για να χρησιμοποιήσετε την προεπιλογή του συστήματος.',
+      ),
+      'Theme' => 
+      array (
+        0 => 'Θέμα',
+      ),
+      'There is no existing intro file associated with this mount point.' => 
+      array (
+        0 => 'Δεν υπάρχει κανένα υπάρχον εισαγωγικό αρχείο που να συνδέεται με αυτό το σημείο προσάρτησης.',
+      ),
+      'There is no existing media associated with this episode.' => 
+      array (
+        0 => 'Δεν υπάρχει κανένα υπάρχον εισαγωγικό αρχείο που να συνδέεται με αυτό το σημείο προσάρτησης.',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => 'Αυτό το CSS θα εφαρμοστεί στις κύριες σελίδες διαχείρισης, όπως αυτή.',
+      ),
+      'This CSS will be applied to the station public pages and login page.' => 
+      array (
+        0 => 'Αυτό το CSS θα εφαρμοστεί στις δημόσιες σελίδες του σταθμού και τη σελίδα σύνδεσης.',
+      ),
+      'This field is required.' => 
+      array (
+        0 => 'Αυτό το πεδίο απαιτείται.',
+      ),
+      'This field must be a valid decimal number.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να είναι ένα έγκυρο δεκαδικό αριθμό.',
+      ),
+      'This field must be a valid e-mail address.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να είναι μια έγκυρη διεύθυνση email.',
+      ),
+      'This field must be a valid integer.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να είναι ένας έγκυρος ακέραιος.',
+      ),
+      'This field must be a valid IP address.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να είναι μια έγκυρη διεύθυνση IP.',
+      ),
+      'This field must be a valid URL.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να είναι μια έγκυρη διεύθυνση URL.',
+      ),
+      'This field must be between %{ min } and %{ max }.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να είναι μεταξύ %{ min } και %{ max }.',
+      ),
+      'This field must have at least %{ min } letters.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να έχει τουλάχιστον %{ min } γράμματα.',
+      ),
+      'This field must have at most %{ max } letters.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να έχει το πολύ %{ max } γράμματα.',
+      ),
+      'This field must only contain alphabetic characters.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να περιέχει μόνο αλφαβητικούς χαρακτήρες.',
+      ),
+      'This field must only contain alphanumeric characters.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να περιέχει μόνο αλφαριθμητικούς χαρακτήρες.',
+      ),
+      'This field must only contain numeric characters.' => 
+      array (
+        0 => 'Αυτό το πεδίο πρέπει να περιέχει μόνο αριθμητικούς χαρακτήρες.',
+      ),
+      'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
+      array (
+        0 => 'Αυτό το αρχείο εισαγωγής πρέπει να ταιριάζει ακριβώς με το bitrate και τη μορφή του ίδιου του σημείου προσάρτησης.',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => 'Αυτό είναι το άτυπο όνομα εμφάνισης που θα εμφανίζεται στις απαντήσεις API αν ο streamer/DJ είναι ζωντανός.',
+      ),
+      'This javascript code will be applied to the station public pages and login page.' => 
+      array (
+        0 => 'Αυτός ο κώδικας javascript θα εφαρμοστεί στις δημόσιες σελίδες του σταθμού και τη σελίδα σύνδεσης.',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => 'Αυτό το όνομα θα πρέπει πάντα να ξεκινά με κάθετο (/), και πρέπει να είναι μια έγκυρη διεύθυνση URL, όπως /autodj.mp3',
+      ),
+      'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
+      array (
+        0 => 'Αυτή η λίστα αναπαραγωγής αυτή τη στιγμή δεν έχει προγραμματισμένες ώρες. Θα παίξει πάντα. Για να προσθέσετε μια νέα προγραμματισμένη ώρα, κάντε κλικ στο παρακάτω κουμπί.',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => 'Αυτή η λίστα αναπαραγωγής θα παίζει κάθε $x λεπτά, όπου $x καθορίζεται παρακάτω.',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => 'Αυτή η λίστα αναπαραγωγής θα αναπαράγει κάθε $x τραγούδια, όπου $x καθορίζεται παρακάτω.',
+      ),
+      'This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).' => 
+      array (
+        0 => 'Αυτή η ουρά περιέχει τα εναπομείναντα κομμάτια με τη σειρά που θα τεθούν σε αναμονή από το AzuraCast AutoDJ (αν τα κομμάτια είναι επιλέξιμα για αναπαραγωγή).',
+      ),
+      'This station\'s time zone is currently %{tz}.' => 
+      array (
+        0 => 'Η ωρολογιακή ζώνη αυτού του σταθμού είναι αυτή τη στιγμή %{tz}.',
+      ),
+      'This streamer is not scheduled to play at any times.' => 
+      array (
+        0 => 'Αυτός ο streamer δεν έχει προγραμματιστεί να παίξει ανά πάσα στιγμή.',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => 'Για να παίξετε μία φορά την ημέρα, ορίστε τις ώρες έναρξης και λήξης στην ίδια τιμή.',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => 'Για να ανακτήσετε λεπτομερείς μοναδικούς ακροατές και λεπτομέρειες πελάτη, συχνά απαιτείται κωδικός διαχειριστή.',
+      ),
+      'To set this schedule to run only within a certain date range, specify a start and end date.' => 
+      array (
+        0 => 'Για να ορίσετε αυτό το χρονοδιάγραμμα να εκτελείται μόνο μέσα σε ένα συγκεκριμένο εύρος ημερομηνιών, καθορίστε μια ημερομηνία έναρξης και λήξης.',
+      ),
+      'Typically a website with content about the episode.' => 
+      array (
+        0 => 'Συνήθως μια ιστοσελίδα με περιεχόμενο σχετικά με το επεισόδιο.',
+      ),
+      'Typically the home page of a podcast.' => 
+      array (
+        0 => 'Συνήθως η αρχική σελίδα ενός podcast.',
+      ),
+      'Unique' => 
+      array (
+        0 => 'Μοναδικό(οι)',
+      ),
+      'Unknown Artist' => 
+      array (
+        0 => 'Άγνωστος Καλλιτέχνης',
+      ),
+      'Unknown Title' => 
+      array (
+        0 => 'Άγνωστος Τίτλος',
+      ),
+      'Up' => 
+      array (
+        0 => 'Επάνω',
+      ),
+      'Update Metadata' => 
+      array (
+        0 => 'Ενημέρωση Μεταδεδομένων',
+      ),
+      'Upload Custom Assets' => 
+      array (
+        0 => 'Μεταφόρτωση Προσαρμοσμένων Αντικειμένων',
+      ),
+      'Use Asynchronous Worker' => 
+      array (
+        0 => 'Χρήση Ασύγχρονου Εργαζόμενου',
+      ),
+      'View' => 
+      array (
+        0 => 'Προβολή',
+      ),
+      'View tracks in playlist' => 
+      array (
+        0 => 'Προβολή κομματιών στη λίστα αναπαραγωγής',
+      ),
+      'Visual Cue Editor' => 
+      array (
+        0 => 'Επεξεργαστής Οπτικής Cue',
+      ),
+      'Volume' => 
+      array (
+        0 => 'Όγκος',
+      ),
+      'Warning' => 
+      array (
+        0 => 'Προειδοποίηση',
+      ),
+      'Waveform Zoom' => 
+      array (
+        0 => 'Μεγέθυνση Κυματομορφής',
+      ),
+      'Website' => 
+      array (
+        0 => 'Τοποθεσία web',
+      ),
+      'Weight' => 
+      array (
+        0 => 'Βάρος',
+      ),
+      'Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.' => 
+      array (
+        0 => 'Αν το AutoDJ θα προσπαθήσει να αποφύγει την αναπαραγωγή καλλιτεχνών και την παρακολούθηση τίτλων κατά την αναπαραγωγή πολυμέσων από αυτήν τη λίστα αναπαραγωγής.',
+      ),
+      'Widget Type' => 
+      array (
+        0 => 'Τύπος Γραφικού Στοιχείου',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => 'Χειρότερα Τραγούδια',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => 'Μπορείτε να συμπεριλάβετε εδώ οποιαδήποτε ειδική ρύθμιση σημείου προσάρτησης, είτε σε μορφή JSON { key: \'value\' } είτε σε τιμή XML &lt;key&gt;&lt;/key&gt;',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => 'Μπορείτε να ορίσετε μια προσαρμοσμένη διεύθυνση URL για αυτήν τη ροή που θα χρησιμοποιήσει το AzuraCast όταν αναφέρεται σε αυτήν. Αφήστε κενό για να χρησιμοποιήσετε την προεπιλεγμένη τιμή.',
+      ),
+      'YP Directory Authorization Hash' => 
+      array (
+        0 => 'Κατακερματισμός Εξουσιοδότησης Yp Καταλόγου',
       ),
     ),
   ),

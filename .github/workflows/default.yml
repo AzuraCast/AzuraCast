@@ -70,17 +70,13 @@ jobs:
         if: github.event_name == 'push' || github.event_name == 'schedule'
         run: |
           rm -rf resources/locale/compiled
+          rm -rf resources/locale/compiled_js
           rm -rf resources/locale/*.UTF-8
-          rm -rf resources/locale/translations.json
           mkdir -p resources/locale/compiled
 
       - name: Generate new translations from existing code.
         if: github.event_name == 'push' || github.event_name == 'schedule'
-        run: |
-          cd frontend
-          npm ci
-          npm run generate-locales
-          bin/console locale:generate
+        run: bin/console locale:generate
 
       - name: Pull latest translations.
         if: github.event_name == 'push' || github.event_name == 'schedule'
@@ -103,7 +99,6 @@ jobs:
 
           cd frontend
           npm ci
-          npm run import-locales
           npm run build
 
       - name: Build OpenAPI Docs

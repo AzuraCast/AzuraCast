@@ -23,6 +23,7 @@ X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: sv-SE
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
+Generated-By: easygettext
 ',
       ),
       'This value is already used.' => 
@@ -4166,6 +4167,1855 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Details' => 
+      array (
+        0 => '',
+      ),
+      '# Episodes' => 
+      array (
+        0 => '',
+      ),
+      '# Songs' => 
+      array (
+        0 => '# Låtar',
+      ),
+      '%{listeners} Listener' => 
+      array (
+        0 => '%{listeners} lyssnare',
+        1 => '%{listeners} lyssnare',
+      ),
+      '%{name} - Copy' => 
+      array (
+        0 => '',
+      ),
+      '%{numPlaylists} playlist' => 
+      array (
+        0 => '',
+      ),
+      '%{numSongs} uploaded song' => 
+      array (
+        0 => '',
+      ),
+      'A completely random track is picked for playback every time the queue is populated.' => 
+      array (
+        0 => 'Ett helt slumpmässigt spår väljs för uppspelning varje gång kön är aktiv.',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => 'En spellista som innehåller mediafiler som finns på denna server.',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => 'En spellista som instruerar stationen att spela från en fjärr-URL.',
+      ),
+      'Access Key ID' => 
+      array (
+        0 => '',
+      ),
+      'Account is Active' => 
+      array (
+        0 => 'Kontot är aktiverat',
+      ),
+      'Account List' => 
+      array (
+        0 => 'Kontolista',
+      ),
+      'Adapter' => 
+      array (
+        0 => '',
+      ),
+      'Add Episode' => 
+      array (
+        0 => '',
+      ),
+      'Add Files to Playlist' => 
+      array (
+        0 => 'Lägg till filer i spellistan',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => 'Lägg till ny spellista',
+      ),
+      'Add Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Add Record' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Schedule Item' => 
+      array (
+        0 => 'Lägg till Schemaläggning',
+      ),
+      'Add Storage Location' => 
+      array (
+        0 => '',
+      ),
+      'Add Streamer' => 
+      array (
+        0 => 'Lägg till Streamer',
+      ),
+      'Administration URL' => 
+      array (
+        0 => '',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => '',
+      ),
+      'Advanced Manual AutoDJ Scheduling Options' => 
+      array (
+        0 => 'Avancerade manuella AutoDJ schemaläggningsalternativ',
+      ),
+      'Album Art' => 
+      array (
+        0 => 'Skivomslag',
+      ),
+      'All Playlists' => 
+      array (
+        0 => 'Alla spellistor',
+      ),
+      'All Podcasts' => 
+      array (
+        0 => '',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => 'Tillåt önskemål från den här spellistan',
+      ),
+      'Amplify: Amplification (dB)' => 
+      array (
+        0 => 'Förstärkning: Förstärkning (dB)',
+      ),
+      'An error occurred and your request could not be completed.' => 
+      array (
+        0 => 'Ett fel uppstod och din begäran kunde inte slutföras.',
+      ),
+      'Analyze and reprocess the selected media' => 
+      array (
+        0 => '',
+      ),
+      'API Version' => 
+      array (
+        0 => '',
+      ),
+      'Applying changes...' => 
+      array (
+        0 => 'Tillämpar ändringar...',
+      ),
+      'Art' => 
+      array (
+        0 => '',
+      ),
+      'Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.' => 
+      array (
+        0 => '',
+      ),
+      'Author' => 
+      array (
+        0 => '',
+      ),
+      'Auto-Assigned' => 
+      array (
+        0 => 'Auto-tilldelad',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => 'AutoDJ inaktiverad',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => '',
+      ),
+      'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.' => 
+      array (
+        0 => '',
+      ),
+      'Average Listeners' => 
+      array (
+        0 => '',
+      ),
+      'Avoid Duplicate Artists/Titles' => 
+      array (
+        0 => 'Undvik duplicerade artister/titlar',
+      ),
+      'AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.' => 
+      array (
+        0 => 'AzuraCast kommer att skanna den uppladdade filen för matcher i den här stationens musikbibliotek. Media bör redan ha laddats upp innan du kör detta steg. Du kan använda denna tjänst hur många gånger du vill.',
+      ),
+      'Base Theme for Public Pages' => 
+      array (
+        0 => 'Bastema för offentliga sidor',
+      ),
+      'Basic Info' => 
+      array (
+        0 => 'Grundläggande information',
+      ),
+      'Basic Information' => 
+      array (
+        0 => 'Grundläggande information',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'Bit Rate' => 
+      array (
+        0 => 'Bit hastighet',
+      ),
+      'Branding Settings' => 
+      array (
+        0 => '',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => '',
+      ),
+      'Broadcasts' => 
+      array (
+        0 => 'Sändningar',
+      ),
+      'Browser Icon' => 
+      array (
+        0 => '',
+      ),
+      'Bucket Name' => 
+      array (
+        0 => '',
+      ),
+      'Clear' => 
+      array (
+        0 => 'Rensa',
+      ),
+      'Clear Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Clear File' => 
+      array (
+        0 => '',
+      ),
+      'Clear Image' => 
+      array (
+        0 => '',
+      ),
+      'Clear Media' => 
+      array (
+        0 => '',
+      ),
+      'Close' => 
+      array (
+        0 => 'Stäng',
+      ),
+      'Continuous Play' => 
+      array (
+        0 => 'Kontinuerlig uppspelning',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => 'Styr hur denna spellista hanteras av AutoDJ-programvaran.',
+      ),
+      'Copy associated media and folders.' => 
+      array (
+        0 => '',
+      ),
+      'Copy scheduled playback times.' => 
+      array (
+        0 => '',
+      ),
+      'Create Directory' => 
+      array (
+        0 => 'Skapa katalog',
+      ),
+      'Cue' => 
+      array (
+        0 => 'Kö',
+      ),
+      'Cued On' => 
+      array (
+        0 => '',
+      ),
+      'Current Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Current Podcast Media' => 
+      array (
+        0 => '',
+      ),
+      'Custom' => 
+      array (
+        0 => 'Anpassad',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => '',
+      ),
+      'Custom CSS for Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Custom Cues: Cue-In Point (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Cues: Cue-Out Point (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Fading: Fade-In Time (seconds)' => 
+      array (
+        0 => 'Anpassad Fading: Fade-In Tid (sekunder)',
+      ),
+      'Custom Fading: Fade-Out Time (seconds)' => 
+      array (
+        0 => 'Anpassad Fading: Fade-Out tid (sekunder)',
+      ),
+      'Custom Fading: Overlap Time (seconds)' => 
+      array (
+        0 => 'Anpassad Fading: Överlappningstid (sekunder)',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => '',
+      ),
+      'Custom JS for Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Customize Copy' => 
+      array (
+        0 => '',
+      ),
+      'Default' => 
+      array (
+        0 => 'Standard',
+      ),
+      'Default Album Art' => 
+      array (
+        0 => '',
+      ),
+      'Default Mount' => 
+      array (
+        0 => '',
+      ),
+      'Delete %{ num } media files?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Album Art' => 
+      array (
+        0 => 'Ta bort skivomslag',
+      ),
+      'Delete broadcast?' => 
+      array (
+        0 => 'Ta bort sändning?',
+      ),
+      'Delete episode?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Mount Point?' => 
+      array (
+        0 => '',
+      ),
+      'Delete playlist?' => 
+      array (
+        0 => 'Ta bort spellista?',
+      ),
+      'Delete podcast?' => 
+      array (
+        0 => '',
+      ),
+      'Delete queue item?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Remote Relay?' => 
+      array (
+        0 => '',
+      ),
+      'Delete storage location?' => 
+      array (
+        0 => '',
+      ),
+      'Delete streamer?' => 
+      array (
+        0 => 'Ta bort streamer?',
+      ),
+      'Deselect' => 
+      array (
+        0 => '',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => 'Direkt Stream URL',
+      ),
+      'Directory Name' => 
+      array (
+        0 => 'Katalogens namn',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => '',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => '',
+      ),
+      'Disable streamers?' => 
+      array (
+        0 => '',
+      ),
+      'Disconnect Streamer' => 
+      array (
+        0 => '',
+      ),
+      'DJ Credentials' => 
+      array (
+        0 => 'DJ-uppgifter',
+      ),
+      'Down' => 
+      array (
+        0 => 'Ner',
+      ),
+      'Download M3U' => 
+      array (
+        0 => 'Hämta M3U',
+      ),
+      'Download PLS' => 
+      array (
+        0 => 'Hämta PLS',
+      ),
+      'Drag file(s) here to upload or' => 
+      array (
+        0 => '',
+      ),
+      'Dropbox Generated Access Token' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate Playlist' => 
+      array (
+        0 => '',
+      ),
+      'E-Mail' => 
+      array (
+        0 => '',
+      ),
+      'Edit Episode' => 
+      array (
+        0 => '',
+      ),
+      'Edit Media' => 
+      array (
+        0 => 'Redigera media',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Edit Playlist' => 
+      array (
+        0 => 'Redigera spellista',
+      ),
+      'Edit Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Edit Record' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Edit Storage Location' => 
+      array (
+        0 => '',
+      ),
+      'Edit Streamer' => 
+      array (
+        0 => 'Redigera streamer',
+      ),
+      'Embed Code' => 
+      array (
+        0 => '',
+      ),
+      'Embed Widgets' => 
+      array (
+        0 => '',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => '',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => '',
+      ),
+      'Enable song requests?' => 
+      array (
+        0 => '',
+      ),
+      'Enable streamers?' => 
+      array (
+        0 => '',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => 'Aktivera denna inställning för att förhindra att metadata skickas till AutoDJ för filer i den här spellistan. Detta är användbart om spellistan innehåller jingles eller liknande.',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to advertise this relay on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => 'Aktivera för att tillåta detta konto att logga in och strömma.',
+      ),
+      'Encoder' => 
+      array (
+        0 => 'Encoder',
+      ),
+      'End Date' => 
+      array (
+        0 => 'Slutdatum',
+      ),
+      'End Time' => 
+      array (
+        0 => 'Sluttid',
+      ),
+      'Endpoint' => 
+      array (
+        0 => '',
+      ),
+      'Enforce Schedule Times' => 
+      array (
+        0 => 'Tvinga schemalagda tidee',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'Episode' => 
+      array (
+        0 => '',
+      ),
+      'Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".' => 
+      array (
+        0 => '',
+      ),
+      'Export %{format}' => 
+      array (
+        0 => 'Exportera %{format}',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => '',
+      ),
+      'File' => 
+      array (
+        0 => '',
+      ),
+      'File Name' => 
+      array (
+        0 => 'Filnamn',
+      ),
+      'Files marked for reprocessing:' => 
+      array (
+        0 => '',
+      ),
+      'Files moved:' => 
+      array (
+        0 => 'Filer flyttade:',
+      ),
+      'Files queued for playback:' => 
+      array (
+        0 => 'Filer köade för uppspelning:',
+      ),
+      'Files removed:' => 
+      array (
+        0 => 'Filer borttagna:',
+      ),
+      'For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.' => 
+      array (
+        0 => '',
+      ),
+      'Full Volume' => 
+      array (
+        0 => 'Full volym',
+      ),
+      'General Rotation' => 
+      array (
+        0 => 'Allmän rotation',
+      ),
+      'Hide Album Art on Public Pages' => 
+      array (
+        0 => 'Dölj skivomslag på offentliga sidor',
+      ),
+      'Hide AzuraCast Branding on Public Pages' => 
+      array (
+        0 => 'Dölj AzuraCast Branding på offentliga sidor',
+      ),
+      'Hide Charts' => 
+      array (
+        0 => '',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => 'Dölj Metadata från lyssnare ("Jingle Mode")',
+      ),
+      'High' => 
+      array (
+        0 => 'Hög',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => 'Spellistor med högre vikt spelas oftare jämfört med andra lägre vikt.',
+      ),
+      'History' => 
+      array (
+        0 => '',
+      ),
+      'Home' => 
+      array (
+        0 => 'Hem',
+      ),
+      'Homepage Redirect URL' => 
+      array (
+        0 => 'URL för omdirigering',
+      ),
+      'Hour' => 
+      array (
+        0 => '',
+      ),
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      array (
+        0 => 'Om en besökare inte är inloggad och besöker AzuraCasts hemsida, kan du automatiskt omdirigera dem till den URL som anges här. Lämna tomt för att omdirigera dem till inloggningsskärmen som standard.',
+      ),
+      'If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results.' => 
+      array (
+        0 => 'Om något av dessa alternativ är aktiverat, kommer denna spellista att hanteras direkt via Liquidsoap istället för via AzuraCast. Detta kan ha oavsiktliga effekter och bör endast användas när du är bekväm med resultatet.',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => 'Om auto-tilldelning är aktiverad, använd den här spellistan som ett av målen för låtar att omfördelas till. Detta kommer att skriva över det befintliga innehållet i denna spellista.',
+      ),
+      'If disabled, the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => 'Om inaktiverad kommer spellistan inte att inkluderas i radiouppspelningen, men den kan fortfarande hanteras.',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, this streamer will only be able to connect during their scheduled broadcast times.' => 
+      array (
+        0 => 'Om aktiverad, kommer denna streamer/DJ bara att kunna ansluta under sina schemalagda sändningstider.',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => 'Om önskningar är aktiverade för din station, kommer användare att kunna önska låtar som finns i den här spellistan.',
+      ),
+      'If selected, album art will not display on public-facing radio pages.' => 
+      array (
+        0 => 'Om vald, kommer skivomslag inte visas på offentliga radio sidor.',
+      ),
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      array (
+        0 => 'Om vald, kommer detta att ta bort AzuraCast branding från offentliga sidor.',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => 'Om sluttiden är före starttiden kommer spellistan att spelas över natten.',
+      ),
+      'If the end time is before the start time, the schedule entry will continue overnight.' => 
+      array (
+        0 => 'Om sluttiden är före starttiden kommer schemat att fortsätta över natten.',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => '',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => '',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => '',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => '',
+      ),
+      'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
+      array (
+        0 => 'Om denna station har on-demand streaming och nedladdning aktiverad, kommer endast låtar som finns i spellistor med denna inställning aktiverade att synas.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => '',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => '',
+      ),
+      'Import from PLS/M3U' => 
+      array (
+        0 => 'Importera från PLS/M3U',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => '',
+      ),
+      'in the last month' => 
+      array (
+        0 => '',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => 'Inkludera i automatiserad tilldelning',
+      ),
+      'Include in On-Demand Player' => 
+      array (
+        0 => 'Inkludera i On-Demand spelare',
+      ),
+      'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
+      array (
+        0 => '',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => 'Interna anteckningar eller kommentarer om användaren, synliga endast på den här kontrollpanelen.',
+      ),
+      'International Standard Recording Code, used for licensing reports.' => 
+      array (
+        0 => 'International Standard Recording Code, används för licensrapporter.',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => 'Förhindra andra låtar att spela på schemalagd tid.',
+      ),
+      'Intro' => 
+      array (
+        0 => '',
+      ),
+      'Is Enabled' => 
+      array (
+        0 => 'Är aktiverad',
+      ),
+      'Jingle Mode' => 
+      array (
+        0 => 'Jingelläge/Jingle Mode',
+      ),
+      'Learn about Advanced Playlists' => 
+      array (
+        0 => 'Lär dig mer om avancerade spellistor',
+      ),
+      'Learn More about Dropbox Auth Tokens' => 
+      array (
+        0 => '',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => 'Lämna tomt för att spela på varje dag i veckan.',
+      ),
+      'LiquidSoap is currently shuffling from %{songs} and %{playlists}.' => 
+      array (
+        0 => '',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => '',
+      ),
+      'Live' => 
+      array (
+        0 => 'Live',
+      ),
+      'Loading...' => 
+      array (
+        0 => 'Laddar...',
+      ),
+      'Local Filesystem' => 
+      array (
+        0 => '',
+      ),
+      'Local Streams' => 
+      array (
+        0 => '',
+      ),
+      'Logs' => 
+      array (
+        0 => '',
+      ),
+      'Loop Once' => 
+      array (
+        0 => '',
+      ),
+      'Low' => 
+      array (
+        0 => 'Låg',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration.' => 
+      array (
+        0 => 'Definiera manuellt hur denna spellista används i Liquidsoap-konfigurationen.',
+      ),
+      'Max Listener Duration' => 
+      array (
+        0 => '',
+      ),
+      'Media' => 
+      array (
+        0 => '',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => 'Slå ihop spellistan för att spela som ett enda spår.',
+      ),
+      'Metadata' => 
+      array (
+        0 => '',
+      ),
+      'Microphone' => 
+      array (
+        0 => 'Mikrofon',
+      ),
+      'Microphone Source' => 
+      array (
+        0 => 'Mikrofon källa',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => 'Minut i timmen att spela',
+      ),
+      'Mixer' => 
+      array (
+        0 => 'Mixer',
+      ),
+      'Modified' => 
+      array (
+        0 => 'Ändrad',
+      ),
+      'More' => 
+      array (
+        0 => 'Mer',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => '',
+      ),
+      'Mount Point URL' => 
+      array (
+        0 => '',
+      ),
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      array (
+        0 => '',
+      ),
+      'Move' => 
+      array (
+        0 => 'Flytta',
+      ),
+      'Move %{ num } File(s) to' => 
+      array (
+        0 => 'Flytta %{ num } fil(er) till',
+      ),
+      'Move to Directory' => 
+      array (
+        0 => 'Flytta till katalog',
+      ),
+      'MP3' => 
+      array (
+        0 => 'MP3',
+      ),
+      'Mute' => 
+      array (
+        0 => 'Tysta',
+      ),
+      'New Directory' => 
+      array (
+        0 => 'Ny katalog',
+      ),
+      'New directory created.' => 
+      array (
+        0 => 'Ny katalog skapad.',
+      ),
+      'New File Name' => 
+      array (
+        0 => 'Nytt filnamn',
+      ),
+      'New Folder' => 
+      array (
+        0 => 'Ny mapp',
+      ),
+      'New Playlist' => 
+      array (
+        0 => 'Ny spellista',
+      ),
+      'New Playlist Name' => 
+      array (
+        0 => '',
+      ),
+      'No files selected.' => 
+      array (
+        0 => 'Inga filer valda.',
+      ),
+      'No records to display.' => 
+      array (
+        0 => 'Inga poster att visa.',
+      ),
+      'Not Running' => 
+      array (
+        0 => 'Körs inte',
+      ),
+      'Not Scheduled' => 
+      array (
+        0 => 'Inte schemalagd',
+      ),
+      'Notes' => 
+      array (
+        0 => 'Anteckningar',
+      ),
+      'Now' => 
+      array (
+        0 => 'Nu',
+      ),
+      'Now Playing' => 
+      array (
+        0 => 'Nu Spelas',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => 'Antal minuter mellan spelningar',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => 'Antal låtar mellan spelningar',
+      ),
+      'On the Air' => 
+      array (
+        0 => '',
+      ),
+      'On-Demand' => 
+      array (
+        0 => 'On-Demand',
+      ),
+      'Once per %{minutes} Minutes' => 
+      array (
+        0 => 'En gång per %{minutes} minuter',
+      ),
+      'Once per %{songs} Songs' => 
+      array (
+        0 => 'En gång per %{songs} låtar',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => 'En gång i timmen',
+      ),
+      'Once per Hour (at %{minute})' => 
+      array (
+        0 => 'En gång i timmen (på %{minute})',
+      ),
+      'Once per x Minutes' => 
+      array (
+        0 => 'En gång per x minuter',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => 'En gång per x låtar',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => 'Loopa bara igenom spellistan en gång.',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => 'Spela bara ett spår vid schemalagd tidpunkt.',
+      ),
+      'Path/Suffix' => 
+      array (
+        0 => '',
+      ),
+      'Play exactly once every $x minutes.' => 
+      array (
+        0 => 'Spela exakt en gång var $x minut.',
+      ),
+      'Play exactly once every $x songs.' => 
+      array (
+        0 => 'Spela exakt en gång var $x låt.',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => 'Spela en gång i timmen på angiven minut.',
+      ),
+      'Play/Pause' => 
+      array (
+        0 => 'Spela/Pausa',
+      ),
+      'Playback Queue' => 
+      array (
+        0 => '',
+      ),
+      'Playing Next' => 
+      array (
+        0 => 'Nästa låt',
+      ),
+      'Playlist' => 
+      array (
+        0 => 'Spellista',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => 'Spellista (M3U/PLS) URL',
+      ),
+      'Playlist 1' => 
+      array (
+        0 => 'Spellista 1',
+      ),
+      'Playlist 2' => 
+      array (
+        0 => 'Spellista 2',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => 'Namn på spellista',
+      ),
+      'Playlist order set.' => 
+      array (
+        0 => 'Sorteringsordning för spellista.',
+      ),
+      'Playlist Type' => 
+      array (
+        0 => 'Typ av spellista',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => 'Vikt för spellista',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => 'Spellistor rensade för valda filer:',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => 'Spellistor uppdaterade för valda filer:',
+      ),
+      'Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.' => 
+      array (
+        0 => '',
+      ),
+      'Podcast Title' => 
+      array (
+        0 => '',
+      ),
+      'Preview' => 
+      array (
+        0 => '',
+      ),
+      'Public Page Background' => 
+      array (
+        0 => '',
+      ),
+      'Public Pages' => 
+      array (
+        0 => 'Offentliga sidor',
+      ),
+      'Publish Date' => 
+      array (
+        0 => '',
+      ),
+      'Publish Time' => 
+      array (
+        0 => '',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => '',
+      ),
+      'Queue' => 
+      array (
+        0 => 'Kö',
+      ),
+      'Queue the selected media to play next' => 
+      array (
+        0 => 'Lägg det valda mediet i kö',
+      ),
+      'Radio Player' => 
+      array (
+        0 => '',
+      ),
+      'Random' => 
+      array (
+        0 => 'Slumpmässig',
+      ),
+      'Raw' => 
+      array (
+        0 => '',
+      ),
+      'Refresh rows' => 
+      array (
+        0 => 'Uppdatera rader',
+      ),
+      'Region' => 
+      array (
+        0 => '',
+      ),
+      'Relay Password' => 
+      array (
+        0 => '',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => '',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => 'Fjärruppspelningsbuffert (sekunder)',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL' => 
+      array (
+        0 => 'Fjärr-URL',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => 'Fjärr-URL spellista',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => 'Fjärr-URL-typ',
+      ),
+      'Remote: Dropbox' => 
+      array (
+        0 => '',
+      ),
+      'Remote: S3 Compatible' => 
+      array (
+        0 => '',
+      ),
+      'Remove' => 
+      array (
+        0 => 'Radera',
+      ),
+      'Rename' => 
+      array (
+        0 => 'Döp om',
+      ),
+      'Rename File/Directory' => 
+      array (
+        0 => 'Döp om fil/katalog',
+      ),
+      'Reorder' => 
+      array (
+        0 => 'Omordna',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Repeat Playlist' => 
+      array (
+        0 => 'Upprepa spellista',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => 'Ersätt skivomslag',
+      ),
+      'Reprocess' => 
+      array (
+        0 => '',
+      ),
+      'Request' => 
+      array (
+        0 => '',
+      ),
+      'Request a Song' => 
+      array (
+        0 => '',
+      ),
+      'Request Song' => 
+      array (
+        0 => '',
+      ),
+      'Requests' => 
+      array (
+        0 => '',
+      ),
+      'Reshuffle' => 
+      array (
+        0 => 'Omfördela',
+      ),
+      'Restart' => 
+      array (
+        0 => 'Starta om',
+      ),
+      'Rows per page' => 
+      array (
+        0 => 'Rader per sida',
+      ),
+      'Running' => 
+      array (
+        0 => 'Körs',
+      ),
+      'Sample Rate' => 
+      array (
+        0 => '',
+      ),
+      'Save' => 
+      array (
+        0 => 'Spara',
+      ),
+      'Schedule View' => 
+      array (
+        0 => 'Schemalägg vy',
+      ),
+      'Scheduled' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => 'Schemalagda speldagar i veckan',
+      ),
+      'Scheduled Time #%{num}' => 
+      array (
+        0 => 'Schemalagd tid #%{num}',
+      ),
+      'Scheduling' => 
+      array (
+        0 => 'Schemaläggning',
+      ),
+      'Search' => 
+      array (
+        0 => 'Sök',
+      ),
+      'Seconds from the start of the song that the AutoDJ should start playing.' => 
+      array (
+        0 => 'Sekunder från början av låten som AutoDJ borde börja spela.',
+      ),
+      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
+      array (
+        0 => 'Sekunder från början av låten som AutoDJ borde sluta spela.',
+      ),
+      'Secret Key' => 
+      array (
+        0 => '',
+      ),
+      'Seek' => 
+      array (
+        0 => 'Sök',
+      ),
+      'Select' => 
+      array (
+        0 => '',
+      ),
+      'Select a theme to use as a base for station public pages and the login page.' => 
+      array (
+        0 => 'Välj ett tema att använda som bas för offentliga sidor och inloggningssidan.',
+      ),
+      'Select all visible rows' => 
+      array (
+        0 => 'Markera alla synliga rader',
+      ),
+      'Select displayed fields' => 
+      array (
+        0 => 'Välj visade fält',
+      ),
+      'Select Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Select Media File' => 
+      array (
+        0 => '',
+      ),
+      'Select PLS/M3U File to Import' => 
+      array (
+        0 => 'Välj PLS/M3U-fil att importera',
+      ),
+      'Select PNG/JPG artwork file' => 
+      array (
+        0 => '',
+      ),
+      'Select the category/categories that best reflects the content of your podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Sequential' => 
+      array (
+        0 => 'Sekventiell',
+      ),
+      'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => '',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.' => 
+      array (
+        0 => '',
+      ),
+      'Set Cue In' => 
+      array (
+        0 => '',
+      ),
+      'Set Cue Out' => 
+      array (
+        0 => '',
+      ),
+      'Set Fade In' => 
+      array (
+        0 => '',
+      ),
+      'Set Fade Out' => 
+      array (
+        0 => '',
+      ),
+      'Set or clear playlists from the selected media' => 
+      array (
+        0 => '',
+      ),
+      'Set Overlap' => 
+      array (
+        0 => '',
+      ),
+      'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 
+      array (
+        0 => '',
+      ),
+      'Show Charts' => 
+      array (
+        0 => '',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Shuffled' => 
+      array (
+        0 => '',
+      ),
+      'Skip Song' => 
+      array (
+        0 => 'Hoppa över låt',
+      ),
+      'Song' => 
+      array (
+        0 => '',
+      ),
+      'Song Album' => 
+      array (
+        0 => 'Låtalbum',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Låtartist',
+      ),
+      'Song Genre' => 
+      array (
+        0 => 'Låten genre',
+      ),
+      'Song History' => 
+      array (
+        0 => '',
+      ),
+      'Song Length' => 
+      array (
+        0 => 'Låtlängd',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => 'Låttext',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => 'Ordning för Låtuppspelning',
+      ),
+      'Song-based' => 
+      array (
+        0 => 'Låt-baserad',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => 'Låtbaserad spellista',
+      ),
+      'Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => '',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => '',
+      ),
+      'Standard playlist, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => '',
+      ),
+      'Start' => 
+      array (
+        0 => '',
+      ),
+      'Start Date' => 
+      array (
+        0 => '',
+      ),
+      'Start Streaming' => 
+      array (
+        0 => '',
+      ),
+      'Start Time' => 
+      array (
+        0 => 'Starttid',
+      ),
+      'Start/end date cannot be used on playlists with advanced settings!' => 
+      array (
+        0 => '',
+      ),
+      'Station Media' => 
+      array (
+        0 => '',
+      ),
+      'Station Name' => 
+      array (
+        0 => '',
+      ),
+      'Station Overview' => 
+      array (
+        0 => '',
+      ),
+      'Station Podcasts' => 
+      array (
+        0 => '',
+      ),
+      'Station Recordings' => 
+      array (
+        0 => '',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => 'Tidszon för station',
+      ),
+      'Station(s)' => 
+      array (
+        0 => '',
+      ),
+      'Stop Streaming' => 
+      array (
+        0 => '',
+      ),
+      'Storage Adapter' => 
+      array (
+        0 => '',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Broadcasts' => 
+      array (
+        0 => 'DJ Sändningar',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => '',
+      ),
+      'Streamer password' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => '',
+      ),
+      'Streamer/DJ' => 
+      array (
+        0 => '',
+      ),
+      'Streams' => 
+      array (
+        0 => '',
+      ),
+      'text' => 
+      array (
+        0 => '',
+      ),
+      'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The date when the episode should be published.' => 
+      array (
+        0 => '',
+      ),
+      'The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '',
+      ),
+      'The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '',
+      ),
+      'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The full playlist is shuffled and then played through in the shuffled order.' => 
+      array (
+        0 => '',
+      ),
+      'The language spoken on the podcast.' => 
+      array (
+        0 => '',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => '',
+      ),
+      'The order of the playlist is manually specified and followed by the AutoDJ.' => 
+      array (
+        0 => '',
+      ),
+      'The relative path of the file in the station\'s media directory.' => 
+      array (
+        0 => '',
+      ),
+      'The request could not be processed.' => 
+      array (
+        0 => '',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => '',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => '',
+      ),
+      'The time period that the song should fade in. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'The time period that the song should fade out. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'The time when the episode should be published (according to the stations timezone).' => 
+      array (
+        0 => '',
+      ),
+      'The volume in decibels to amplify the track with. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'Theme' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing intro file associated with this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing media associated with this episode.' => 
+      array (
+        0 => '',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => '',
+      ),
+      'This CSS will be applied to the station public pages and login page.' => 
+      array (
+        0 => '',
+      ),
+      'This field is required.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid decimal number.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid e-mail address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid integer.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid IP address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid URL.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be between %{ min } and %{ max }.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at least %{ min } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at most %{ max } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphabetic characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphanumeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain numeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
+      array (
+        0 => '',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => '',
+      ),
+      'This javascript code will be applied to the station public pages and login page.' => 
+      array (
+        0 => '',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => '',
+      ),
+      'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
+      array (
+        0 => '',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => '',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => '',
+      ),
+      'This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).' => 
+      array (
+        0 => '',
+      ),
+      'This station\'s time zone is currently %{tz}.' => 
+      array (
+        0 => '',
+      ),
+      'This streamer is not scheduled to play at any times.' => 
+      array (
+        0 => '',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => 'Om du vill spela en gång per dag, ange start- och sluttider till samma värde.',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => '',
+      ),
+      'To set this schedule to run only within a certain date range, specify a start and end date.' => 
+      array (
+        0 => 'För att ställa in detta schema till att endast köras inom ett visst datumintervall, ange ett start- och slutdatum.',
+      ),
+      'Typically a website with content about the episode.' => 
+      array (
+        0 => '',
+      ),
+      'Typically the home page of a podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Unique' => 
+      array (
+        0 => 'Unika',
+      ),
+      'Unknown Artist' => 
+      array (
+        0 => 'Okänd artist',
+      ),
+      'Unknown Title' => 
+      array (
+        0 => 'Okänd titel',
+      ),
+      'Up' => 
+      array (
+        0 => 'Upp',
+      ),
+      'Update Metadata' => 
+      array (
+        0 => 'Uppdatera metadata',
+      ),
+      'Upload Custom Assets' => 
+      array (
+        0 => '',
+      ),
+      'Use Asynchronous Worker' => 
+      array (
+        0 => '',
+      ),
+      'View' => 
+      array (
+        0 => 'Visa',
+      ),
+      'View tracks in playlist' => 
+      array (
+        0 => 'Visa spår i spellistan',
+      ),
+      'Visual Cue Editor' => 
+      array (
+        0 => 'Visuell Cue Editor',
+      ),
+      'Volume' => 
+      array (
+        0 => 'Volym',
+      ),
+      'Warning' => 
+      array (
+        0 => 'Varning',
+      ),
+      'Waveform Zoom' => 
+      array (
+        0 => 'Vågform Zoom',
+      ),
+      'Website' => 
+      array (
+        0 => '',
+      ),
+      'Weight' => 
+      array (
+        0 => 'Vikt',
+      ),
+      'Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.' => 
+      array (
+        0 => 'Om AutoDJ ska försöka undvika dubbla artister och spåra titlar när du spelar media från den här spellistan.',
+      ),
+      'Widget Type' => 
+      array (
+        0 => '',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => '',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => '',
+      ),
+      'YP Directory Authorization Hash' => 
       array (
         0 => '',
       ),

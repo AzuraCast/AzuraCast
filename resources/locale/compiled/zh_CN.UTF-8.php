@@ -23,6 +23,7 @@ X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: zh-CN
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
+Generated-By: easygettext
 ',
       ),
       'This value is already used.' => 
@@ -4180,6 +4181,1854 @@ X-Crowdin-File-ID: 4
       'Details' => 
       array (
         0 => '详情',
+      ),
+      '# Episodes' => 
+      array (
+        0 => '# 集数',
+      ),
+      '# Songs' => 
+      array (
+        0 => '＃歌曲',
+      ),
+      '%{listeners} Listener' => 
+      array (
+        0 => '%{listeners} 听众',
+      ),
+      '%{name} - Copy' => 
+      array (
+        0 => '',
+      ),
+      '%{numPlaylists} playlist' => 
+      array (
+        0 => '%{numPlaylists}播放列表',
+      ),
+      '%{numSongs} uploaded song' => 
+      array (
+        0 => '%{numSongs}上传的歌曲',
+      ),
+      'A completely random track is picked for playback every time the queue is populated.' => 
+      array (
+        0 => '每次填充队列时，都会随机挑选一首曲目进行播放。',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => '包含该服务器上托管的媒体文件的播放列表。',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => '指示电台从远程URL播放的播放列表。',
+      ),
+      'Access Key ID' => 
+      array (
+        0 => '访问密钥ID',
+      ),
+      'Account is Active' => 
+      array (
+        0 => '帐户处于激活状态',
+      ),
+      'Account List' => 
+      array (
+        0 => '帐户列表',
+      ),
+      'Adapter' => 
+      array (
+        0 => '适配器',
+      ),
+      'Add Episode' => 
+      array (
+        0 => '添加# ＃集数',
+      ),
+      'Add Files to Playlist' => 
+      array (
+        0 => '将文件添加到播放列表',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => '添加播放列表',
+      ),
+      'Add Podcast' => 
+      array (
+        0 => '添加播客',
+      ),
+      'Add Record' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Schedule Item' => 
+      array (
+        0 => '增加时间表项目',
+      ),
+      'Add Storage Location' => 
+      array (
+        0 => '添加存储位置',
+      ),
+      'Add Streamer' => 
+      array (
+        0 => '添加流媒体',
+      ),
+      'Administration URL' => 
+      array (
+        0 => '管理 URL',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => '管理员 密码',
+      ),
+      'Advanced Manual AutoDJ Scheduling Options' => 
+      array (
+        0 => '高级手动AutoDJ调度选项',
+      ),
+      'Album Art' => 
+      array (
+        0 => '专辑封面',
+      ),
+      'All Playlists' => 
+      array (
+        0 => '所有播放列表',
+      ),
+      'All Podcasts' => 
+      array (
+        0 => '所有播客',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => '允许该播放列表的请求',
+      ),
+      'Amplify: Amplification (dB)' => 
+      array (
+        0 => '放大: 放大 (dB)',
+      ),
+      'An error occurred and your request could not be completed.' => 
+      array (
+        0 => '发生错误，您的请求无法完成。',
+      ),
+      'Analyze and reprocess the selected media' => 
+      array (
+        0 => '分析和重新处理选定的媒体',
+      ),
+      'API Version' => 
+      array (
+        0 => 'API 版本',
+      ),
+      'Applying changes...' => 
+      array (
+        0 => '应用更改中...',
+      ),
+      'Art' => 
+      array (
+        0 => '艺术',
+      ),
+      'Artwork' => 
+      array (
+        0 => '截图',
+      ),
+      'Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.' => 
+      array (
+        0 => '截图的最小尺寸为1400 x 1400像素，苹果播客的最大尺寸为3000 x 3000像素。',
+      ),
+      'Author' => 
+      array (
+        0 => '',
+      ),
+      'Auto-Assigned' => 
+      array (
+        0 => '自动分配',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'AutoDJ比特率(kbps)',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => 'AutoDJ 禁用',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'AutoDJ格式',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => '本台的AutoDJ已被禁用。当音源不在现场时，不会自动播放音乐。',
+      ),
+      'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.' => 
+      array (
+        0 => '头像是根据您的电子邮件地址从%{服务}服务中获取的。点击管理您的%{服务}设置。',
+      ),
+      'Average Listeners' => 
+      array (
+        0 => '平均听众',
+      ),
+      'Avoid Duplicate Artists/Titles' => 
+      array (
+        0 => '避免重复的艺术家/标题',
+      ),
+      'AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.' => 
+      array (
+        0 => 'AzuraCast将扫描上传的文件，寻找与电台音乐库匹配的文件。在运行这一步之前，媒体应该已经被上传。你可以根据需要多次重新运行这个工具。',
+      ),
+      'Base Theme for Public Pages' => 
+      array (
+        0 => '公共页面的基本主题',
+      ),
+      'Basic Info' => 
+      array (
+        0 => '基本信息',
+      ),
+      'Basic Information' => 
+      array (
+        0 => '基本信息',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => '最佳表演歌曲',
+      ),
+      'Bit Rate' => 
+      array (
+        0 => '比特率',
+      ),
+      'Branding Settings' => 
+      array (
+        0 => '',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => '廣播AutoDJ到遠端電台',
+      ),
+      'Broadcasts' => 
+      array (
+        0 => '广播',
+      ),
+      'Browser Icon' => 
+      array (
+        0 => '',
+      ),
+      'Bucket Name' => 
+      array (
+        0 => '桶名',
+      ),
+      'Clear' => 
+      array (
+        0 => '清除',
+      ),
+      'Clear Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Clear File' => 
+      array (
+        0 => '',
+      ),
+      'Clear Image' => 
+      array (
+        0 => '',
+      ),
+      'Clear Media' => 
+      array (
+        0 => '',
+      ),
+      'Close' => 
+      array (
+        0 => '关闭',
+      ),
+      'Continuous Play' => 
+      array (
+        0 => '连续播放',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => '控制AutoDJ软件如何处理该播放列表。',
+      ),
+      'Copy associated media and folders.' => 
+      array (
+        0 => '',
+      ),
+      'Copy scheduled playback times.' => 
+      array (
+        0 => '',
+      ),
+      'Create Directory' => 
+      array (
+        0 => '创建目录',
+      ),
+      'Cue' => 
+      array (
+        0 => '开始',
+      ),
+      'Cued On' => 
+      array (
+        0 => '开启队列',
+      ),
+      'Current Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Current Podcast Media' => 
+      array (
+        0 => '当前的播客媒体',
+      ),
+      'Custom' => 
+      array (
+        0 => '自定义',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => '内部页面的自定义CSS',
+      ),
+      'Custom CSS for Public Pages' => 
+      array (
+        0 => '公共页面的自定义CSS',
+      ),
+      'Custom Cues: Cue-In Point (seconds)' => 
+      array (
+        0 => '自定义提示：插入点 (seconds)',
+      ),
+      'Custom Cues: Cue-Out Point (seconds)' => 
+      array (
+        0 => '自定义提示：插入点 (seconds)',
+      ),
+      'Custom Fading: Fade-In Time (seconds)' => 
+      array (
+        0 => '自定义渐变：淡入时间 (seconds)',
+      ),
+      'Custom Fading: Fade-Out Time (seconds)' => 
+      array (
+        0 => '自定义渐变。淡出时间 (seconds)',
+      ),
+      'Custom Fading: Overlap Time (seconds)' => 
+      array (
+        0 => '自定义渐变：重叠时间 (seconds)',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => '自定义前端配置',
+      ),
+      'Custom JS for Public Pages' => 
+      array (
+        0 => '公共页面的自定义JS',
+      ),
+      'Customize Copy' => 
+      array (
+        0 => '',
+      ),
+      'Default' => 
+      array (
+        0 => '默认',
+      ),
+      'Default Album Art' => 
+      array (
+        0 => '',
+      ),
+      'Default Mount' => 
+      array (
+        0 => '',
+      ),
+      'Delete %{ num } media files?' => 
+      array (
+        0 => '删除 %{ num } 媒体文件？',
+      ),
+      'Delete Album Art' => 
+      array (
+        0 => '删除专辑封面',
+      ),
+      'Delete broadcast?' => 
+      array (
+        0 => '删除广播？',
+      ),
+      'Delete episode?' => 
+      array (
+        0 => '删除# ＃集数？',
+      ),
+      'Delete Mount Point?' => 
+      array (
+        0 => '',
+      ),
+      'Delete playlist?' => 
+      array (
+        0 => '删除播放列表？',
+      ),
+      'Delete podcast?' => 
+      array (
+        0 => '删除播客？',
+      ),
+      'Delete queue item?' => 
+      array (
+        0 => '删除队列项目吗？',
+      ),
+      'Delete Remote Relay?' => 
+      array (
+        0 => '',
+      ),
+      'Delete storage location?' => 
+      array (
+        0 => '删除存储位置？',
+      ),
+      'Delete streamer?' => 
+      array (
+        0 => '删除流媒体？',
+      ),
+      'Deselect' => 
+      array (
+        0 => '取消选择',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => '流媒体直链URL',
+      ),
+      'Directory Name' => 
+      array (
+        0 => '目录名称',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => '禁用公共页面？',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => '禁用歌曲请求？',
+      ),
+      'Disable streamers?' => 
+      array (
+        0 => '禁用流媒体？',
+      ),
+      'Disconnect Streamer' => 
+      array (
+        0 => '断开流媒体的连接',
+      ),
+      'DJ Credentials' => 
+      array (
+        0 => 'DJ凭证',
+      ),
+      'Down' => 
+      array (
+        0 => '下',
+      ),
+      'Download M3U' => 
+      array (
+        0 => '下载M3U',
+      ),
+      'Download PLS' => 
+      array (
+        0 => '下载PLS',
+      ),
+      'Drag file(s) here to upload or' => 
+      array (
+        0 => '',
+      ),
+      'Dropbox Generated Access Token' => 
+      array (
+        0 => 'Dropbox生成的访问令牌',
+      ),
+      'Duplicate' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate Playlist' => 
+      array (
+        0 => '',
+      ),
+      'E-Mail' => 
+      array (
+        0 => '',
+      ),
+      'Edit Episode' => 
+      array (
+        0 => '编辑# ＃集数',
+      ),
+      'Edit Media' => 
+      array (
+        0 => '编辑媒体',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Edit Playlist' => 
+      array (
+        0 => '编辑播放列表',
+      ),
+      'Edit Podcast' => 
+      array (
+        0 => '编辑播客',
+      ),
+      'Edit Record' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Edit Storage Location' => 
+      array (
+        0 => '编辑存储位置',
+      ),
+      'Edit Streamer' => 
+      array (
+        0 => '编辑流媒体',
+      ),
+      'Embed Code' => 
+      array (
+        0 => '嵌入代码',
+      ),
+      'Embed Widgets' => 
+      array (
+        0 => '嵌入小部件',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => '启用自动DJ',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => '启用公共页面？',
+      ),
+      'Enable song requests?' => 
+      array (
+        0 => '启用歌曲请求？',
+      ),
+      'Enable streamers?' => 
+      array (
+        0 => '启用流媒体？',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => '启用此设置可防止将此播放列表中的文件的元数据发送到AutoDJ。如果播放列表包含插曲或碰碰声，这很有用。',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '启用在 "黄页 "公共广播目录中宣传该挂载点。',
+      ),
+      'Enable to advertise this relay on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => '启用允许听众在本台的公共页面上选择这个挂载点。',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => '启用，允许听众在本台的公共页面上选择此中继。',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => '启用以允许该帐户登录和流媒体传输。',
+      ),
+      'Encoder' => 
+      array (
+        0 => '编码器',
+      ),
+      'End Date' => 
+      array (
+        0 => '结束日期',
+      ),
+      'End Time' => 
+      array (
+        0 => '结束时间',
+      ),
+      'Endpoint' => 
+      array (
+        0 => '端点',
+      ),
+      'Enforce Schedule Times' => 
+      array (
+        0 => '执行时间表时间',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => '输入另一个流的完整URL，以便通过这个挂载点转发其广播。',
+      ),
+      'Episode' => 
+      array (
+        0 => '# ＃集数介绍',
+      ),
+      'Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".' => 
+      array (
+        0 => '',
+      ),
+      'Export %{format}' => 
+      array (
+        0 => '输出 %{format}',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => '回退安装',
+      ),
+      'File' => 
+      array (
+        0 => '文件',
+      ),
+      'File Name' => 
+      array (
+        0 => '文件名',
+      ),
+      'Files marked for reprocessing:' => 
+      array (
+        0 => '标记为需要重新处理的文件：',
+      ),
+      'Files moved:' => 
+      array (
+        0 => '文件被移动：',
+      ),
+      'Files queued for playback:' => 
+      array (
+        0 => '等待排队播放的文件：',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '文件被删除：',
+      ),
+      'For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.' => 
+      array (
+        0 => '对于本地文件系统，这是目录的基本路径。对于远程文件系统，这是文件夹的前缀。',
+      ),
+      'Full Volume' => 
+      array (
+        0 => '完全音量',
+      ),
+      'General Rotation' => 
+      array (
+        0 => '常规轮换',
+      ),
+      'Hide Album Art on Public Pages' => 
+      array (
+        0 => '在公共页面上隐藏专辑封面',
+      ),
+      'Hide AzuraCast Branding on Public Pages' => 
+      array (
+        0 => '在公共网页上隐藏AzuraCast品牌信息',
+      ),
+      'Hide Charts' => 
+      array (
+        0 => '隐藏图表',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => '从听众那里隐藏元数据（"铃声模式"）。',
+      ),
+      'High' => 
+      array (
+        0 => '高',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => '与其他低权重的播放列表相比，高权重的播放列表的播放频率更高。',
+      ),
+      'History' => 
+      array (
+        0 => '历史',
+      ),
+      'Home' => 
+      array (
+        0 => '主页',
+      ),
+      'Homepage Redirect URL' => 
+      array (
+        0 => '主页重定向网址',
+      ),
+      'Hour' => 
+      array (
+        0 => '小时',
+      ),
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      array (
+        0 => '如果访问者没有登录并访问AzuraCast主页，您可以将他们自动重定向到这里指定的URL。如果留空，则默认将他们重定向到登录页面。',
+      ),
+      'If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results.' => 
+      array (
+        0 => '如果启用了这些选项中的任何一个，这个播放列表将直接通过Liquidsoap而不是通过AzuraCast来管理。这可能会产生意想不到的效果，只有当你对结果感到满意时才能使用。',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => '如果启用了自动分配，则将此播放列表作为要重新分配歌曲的目标之一。这将覆盖该播放列表的现有内容。',
+      ),
+      'If disabled, the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => '如果禁用，播放列表将不包含在广播的播放中，但仍可进行管理。',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => '如果启用，此安装的AutoDJ将自动播放音乐到此挂载点。',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => '如果启用，AutoDJ将自动播放音乐到该安装点。',
+      ),
+      'If enabled, this streamer will only be able to connect during their scheduled broadcast times.' => 
+      array (
+        0 => '如果启用，该流媒体播放器将只能在其预定的广播时间内进行连接。',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => '如果为您的电台启用了请求功能，用户将能够请求该播放列表中的媒体。',
+      ),
+      'If selected, album art will not display on public-facing radio pages.' => 
+      array (
+        0 => '如果选择，专辑封面将不会显示在面向公众的广播页面上。',
+      ),
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      array (
+        0 => '如果选择，这将从面向公众的页面中移除AzuraCast品牌。',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => '如果结束时间早于开始时间，则播放列表将隔夜播放。',
+      ),
+      'If the end time is before the start time, the schedule entry will continue overnight.' => 
+      array (
+        0 => '如果结束时间早于开始时间，则计划列表将继续过夜。',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => '如果您广播的挂载点（即<code>/radio.mp3</code>）或Shoutcast SID（即<code>2</code>）与上面列出的挂载点不同，请在此指定源挂载点。',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => '如果您广播的端口与您在上面的URL中列出的端口不同，请在这里指定源端口。',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => '如果这个挂载点是默认的，则会在本系统的电台预览和公共电台页面上播放。',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => '如果这个挂载点不播放音频，听众将自动被重定向到这个挂载点。默认是/error.mp3，一个重复的错误信息的音频。',
+      ),
+      'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
+      array (
+        0 => '如果该电台启用了点播流媒体和下载功能，则只有启用此设置的播放列表中的歌曲才会显示。',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => '如果您使用的是AutoDJ广播，请在这里输入源密码。',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => '如果您使用 AutoDJ 进行广播，请在此输入源用户名。这可能是空白的。',
+      ),
+      'Import from PLS/M3U' => 
+      array (
+        0 => '从PLS/M3U导入',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => '在过去48小时内',
+      ),
+      'in the last month' => 
+      array (
+        0 => '在过去的一个月里',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => '包括在自动分配中',
+      ),
+      'Include in On-Demand Player' => 
+      array (
+        0 => '包含在点播播放器中',
+      ),
+      'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
+      array (
+        0 => '表示存在明确的内容（明确的语言或成人内容）。如果开启，Apple Podcasts会为你的剧集显示一个明确的家长建议图形。含有明确内容的剧集在某些Apple Podcasts地区不可用。',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => '关于用户的内部备注或评论，仅在此控制面板上可见。',
+      ),
+      'International Standard Recording Code, used for licensing reports.' => 
+      array (
+        0 => '国际标准录音准则，用于许可证报告。',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => '中断其他歌曲在预定时间播放。',
+      ),
+      'Intro' => 
+      array (
+        0 => '',
+      ),
+      'Is Enabled' => 
+      array (
+        0 => '已启用',
+      ),
+      'Jingle Mode' => 
+      array (
+        0 => '铃声模式',
+      ),
+      'Learn about Advanced Playlists' => 
+      array (
+        0 => '了解高级播放列表',
+      ),
+      'Learn More about Dropbox Auth Tokens' => 
+      array (
+        0 => '了解有关Dropbox认证令牌的更多信息',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => '留出空白，一周中的每一天都可以播放。',
+      ),
+      'LiquidSoap is currently shuffling from %{songs} and %{playlists}.' => 
+      array (
+        0 => 'LiquidSoap目前正在从%{歌曲}和%{播放列表}进行排列。',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => '每电台听众',
+      ),
+      'Live' => 
+      array (
+        0 => '直播',
+      ),
+      'Loading...' => 
+      array (
+        0 => '加载中...',
+      ),
+      'Local Filesystem' => 
+      array (
+        0 => '本地文件系统',
+      ),
+      'Local Streams' => 
+      array (
+        0 => '本地流',
+      ),
+      'Logs' => 
+      array (
+        0 => '日志',
+      ),
+      'Loop Once' => 
+      array (
+        0 => '',
+      ),
+      'Low' => 
+      array (
+        0 => '低',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration.' => 
+      array (
+        0 => '在Liquidsoap配置中手动定义如何使用这个播放列表。',
+      ),
+      'Max Listener Duration' => 
+      array (
+        0 => '',
+      ),
+      'Media' => 
+      array (
+        0 => '媒体',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => '合并播放列表，作为单轨播放。',
+      ),
+      'Metadata' => 
+      array (
+        0 => '元数据',
+      ),
+      'Microphone' => 
+      array (
+        0 => '麦克风',
+      ),
+      'Microphone Source' => 
+      array (
+        0 => '麦克风来源',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => '播放时间分钟',
+      ),
+      'Mixer' => 
+      array (
+        0 => '混音器',
+      ),
+      'Modified' => 
+      array (
+        0 => '更改',
+      ),
+      'More' => 
+      array (
+        0 => '更多',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => '播放次数最多的歌曲',
+      ),
+      'Mount Point URL' => 
+      array (
+        0 => '挂载点URL',
+      ),
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      array (
+        0 => '',
+      ),
+      'Move' => 
+      array (
+        0 => '移动',
+      ),
+      'Move %{ num } File(s) to' => 
+      array (
+        0 => '移动文件到 %{ num }',
+      ),
+      'Move to Directory' => 
+      array (
+        0 => '移动到目录',
+      ),
+      'MP3' => 
+      array (
+        0 => 'MP 3',
+      ),
+      'Mute' => 
+      array (
+        0 => '静音',
+      ),
+      'New Directory' => 
+      array (
+        0 => '新目录',
+      ),
+      'New directory created.' => 
+      array (
+        0 => '创建新目录。',
+      ),
+      'New File Name' => 
+      array (
+        0 => '新文件名',
+      ),
+      'New Folder' => 
+      array (
+        0 => '新文件夹',
+      ),
+      'New Playlist' => 
+      array (
+        0 => '新播放列表',
+      ),
+      'New Playlist Name' => 
+      array (
+        0 => '',
+      ),
+      'No files selected.' => 
+      array (
+        0 => '未选择文件。',
+      ),
+      'No records to display.' => 
+      array (
+        0 => '没有记录可显示。',
+      ),
+      'Not Running' => 
+      array (
+        0 => '未运行',
+      ),
+      'Not Scheduled' => 
+      array (
+        0 => '未安排',
+      ),
+      'Notes' => 
+      array (
+        0 => '备注',
+      ),
+      'Now' => 
+      array (
+        0 => '现在',
+      ),
+      'Now Playing' => 
+      array (
+        0 => '正在播放',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => '播放之间的分钟数',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => '播放之间的歌曲数量',
+      ),
+      'On the Air' => 
+      array (
+        0 => '直播中',
+      ),
+      'On-Demand' => 
+      array (
+        0 => '点播请求',
+      ),
+      'Once per %{minutes} Minutes' => 
+      array (
+        0 => '每%{minutes}分钟一次',
+      ),
+      'Once per %{songs} Songs' => 
+      array (
+        0 => '每%{songs}歌曲一次',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => '每小时一次',
+      ),
+      'Once per Hour (at %{minute})' => 
+      array (
+        0 => '每小时一次(%{分钟})',
+      ),
+      'Once per x Minutes' => 
+      array (
+        0 => '每x分钟一次',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => '每x首歌曲一次',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => '只在播放列表中循环一次。',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => '在预定时间只能播放一首歌曲。',
+      ),
+      'Path/Suffix' => 
+      array (
+        0 => '路径/后缀',
+      ),
+      'Play exactly once every $x minutes.' => 
+      array (
+        0 => '每隔x分钟正好播放一次。',
+      ),
+      'Play exactly once every $x songs.' => 
+      array (
+        0 => '每x首歌曲准确播放一次。',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => '每小时在指定的分钟播放一次。',
+      ),
+      'Play/Pause' => 
+      array (
+        0 => '播放/暂停',
+      ),
+      'Playback Queue' => 
+      array (
+        0 => '播放队列',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '播放下一个',
+      ),
+      'Playlist' => 
+      array (
+        0 => '播放列表',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => '播放列表 (M3U/PLS) 地址',
+      ),
+      'Playlist 1' => 
+      array (
+        0 => '播放列表1',
+      ),
+      'Playlist 2' => 
+      array (
+        0 => '播放列表2',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => '播放列表名称',
+      ),
+      'Playlist order set.' => 
+      array (
+        0 => '播放列表顺序设置。',
+      ),
+      'Playlist Type' => 
+      array (
+        0 => '播放列表类型',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => '播放列表权重',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '清理所选文件的播放列表：',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '更新所选文件的播放列表：',
+      ),
+      'Podcast' => 
+      array (
+        0 => '播客',
+      ),
+      'Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.' => 
+      array (
+        0 => '播客媒体应采用MP3或M4A（AAC）格式，以获得最大的兼容性。',
+      ),
+      'Podcast Title' => 
+      array (
+        0 => '播客标题',
+      ),
+      'Preview' => 
+      array (
+        0 => '预览',
+      ),
+      'Public Page Background' => 
+      array (
+        0 => '',
+      ),
+      'Public Pages' => 
+      array (
+        0 => '公共页面',
+      ),
+      'Publish Date' => 
+      array (
+        0 => '发布日期',
+      ),
+      'Publish Time' => 
+      array (
+        0 => '发布时间',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => '发布到 "黄页 "目录',
+      ),
+      'Queue' => 
+      array (
+        0 => '队列',
+      ),
+      'Queue the selected media to play next' => 
+      array (
+        0 => '将选定的媒体排队等待下一个播放',
+      ),
+      'Radio Player' => 
+      array (
+        0 => '电台播放器',
+      ),
+      'Random' => 
+      array (
+        0 => '随机',
+      ),
+      'Raw' => 
+      array (
+        0 => '原始',
+      ),
+      'Refresh rows' => 
+      array (
+        0 => '刷新行数',
+      ),
+      'Region' => 
+      array (
+        0 => '地区',
+      ),
+      'Relay Password' => 
+      array (
+        0 => '中继密码',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => '流媒体中继 URL',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => '远程播放缓冲区 (Seconds)',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => '远程电台管理员密码',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => '远程电台监听挂载点/SID',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => '远程电台监听URL',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => '远程站源挂载点/SID',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => '远程电台源密码',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => '远程电台源端口',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => '远程电台源用户名',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => '远程 电台 类型',
+      ),
+      'Remote URL' => 
+      array (
+        0 => '远端网址',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => '远程URL播放列表',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => '远程URL类型',
+      ),
+      'Remote: Dropbox' => 
+      array (
+        0 => '远程： Dropbox',
+      ),
+      'Remote: S3 Compatible' => 
+      array (
+        0 => '远程：S3兼容',
+      ),
+      'Remove' => 
+      array (
+        0 => '移除',
+      ),
+      'Rename' => 
+      array (
+        0 => '重命名',
+      ),
+      'Rename File/Directory' => 
+      array (
+        0 => '重命名文件/目录',
+      ),
+      'Reorder' => 
+      array (
+        0 => '重新排序',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => '重新排序播放列表',
+      ),
+      'Repeat Playlist' => 
+      array (
+        0 => '重复播放列表',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => '更换专辑封面',
+      ),
+      'Reprocess' => 
+      array (
+        0 => '正在重新处理',
+      ),
+      'Request' => 
+      array (
+        0 => '请求',
+      ),
+      'Request a Song' => 
+      array (
+        0 => '请求歌曲',
+      ),
+      'Request Song' => 
+      array (
+        0 => '请求歌曲',
+      ),
+      'Requests' => 
+      array (
+        0 => '请求',
+      ),
+      'Reshuffle' => 
+      array (
+        0 => '洗牌',
+      ),
+      'Restart' => 
+      array (
+        0 => '重启',
+      ),
+      'Rows per page' => 
+      array (
+        0 => '每页行数',
+      ),
+      'Running' => 
+      array (
+        0 => '运行中',
+      ),
+      'Sample Rate' => 
+      array (
+        0 => '采样率',
+      ),
+      'Save' => 
+      array (
+        0 => '保存',
+      ),
+      'Schedule View' => 
+      array (
+        0 => '时间表检视',
+      ),
+      'Scheduled' => 
+      array (
+        0 => '计划中的',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => '每周预定的播放日',
+      ),
+      'Scheduled Time #%{num}' => 
+      array (
+        0 => '预定时间#%{num}。',
+      ),
+      'Scheduling' => 
+      array (
+        0 => '时间安排',
+      ),
+      'Search' => 
+      array (
+        0 => '搜索',
+      ),
+      'Seconds from the start of the song that the AutoDJ should start playing.' => 
+      array (
+        0 => '从歌曲开始到AutoDJ开始播放的秒数。',
+      ),
+      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
+      array (
+        0 => '从歌曲开始到AutoDJ停止播放的秒数。',
+      ),
+      'Secret Key' => 
+      array (
+        0 => '密钥',
+      ),
+      'Seek' => 
+      array (
+        0 => '寻求',
+      ),
+      'Select' => 
+      array (
+        0 => '选择',
+      ),
+      'Select a theme to use as a base for station public pages and the login page.' => 
+      array (
+        0 => '选择一个主题作为电台内公共页面和登录页面的基础。',
+      ),
+      'Select all visible rows' => 
+      array (
+        0 => '选择所有可见行',
+      ),
+      'Select displayed fields' => 
+      array (
+        0 => '选择显示的字段',
+      ),
+      'Select Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Select Media File' => 
+      array (
+        0 => '选择媒体文件',
+      ),
+      'Select PLS/M3U File to Import' => 
+      array (
+        0 => '选择要导入的PLS/M3U文件',
+      ),
+      'Select PNG/JPG artwork file' => 
+      array (
+        0 => '选择PNG/JPG截图文件',
+      ),
+      'Select the category/categories that best reflects the content of your podcast.' => 
+      array (
+        0 => '选择最能反映你的播客内容的类别/分类。',
+      ),
+      'Sequential' => 
+      array (
+        0 => '顺序',
+      ),
+      'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => '设置这个存储位置可以使用的最大磁盘空间。用单位指定大小，如 "8 GB"。单位以1024字节为单位。留空则默认为磁盘上的可用空间。',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => '设置为默认挂在点',
+      ),
+      'Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.' => 
+      array (
+        0 => '使用可视化编辑器设置提示点和渐变点。时间戳将被保存到高级播放设置中的相应字段。',
+      ),
+      'Set Cue In' => 
+      array (
+        0 => '设置提示',
+      ),
+      'Set Cue Out' => 
+      array (
+        0 => '设置提示输出',
+      ),
+      'Set Fade In' => 
+      array (
+        0 => '设置淡入',
+      ),
+      'Set Fade Out' => 
+      array (
+        0 => '设置淡出',
+      ),
+      'Set or clear playlists from the selected media' => 
+      array (
+        0 => '设置或清除所选媒体的播放列表',
+      ),
+      'Set Overlap' => 
+      array (
+        0 => '设置重叠',
+      ),
+      'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 
+      array (
+        0 => '',
+      ),
+      'Show Charts' => 
+      array (
+        0 => '显示图表',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => '在公共页面上显示',
+      ),
+      'Shuffled' => 
+      array (
+        0 => '洗牌',
+      ),
+      'Skip Song' => 
+      array (
+        0 => '跳过歌曲',
+      ),
+      'Song' => 
+      array (
+        0 => '歌曲',
+      ),
+      'Song Album' => 
+      array (
+        0 => '歌曲专辑',
+      ),
+      'Song Artist' => 
+      array (
+        0 => '歌曲艺术家',
+      ),
+      'Song Genre' => 
+      array (
+        0 => '歌曲类型',
+      ),
+      'Song History' => 
+      array (
+        0 => '歌曲历史',
+      ),
+      'Song Length' => 
+      array (
+        0 => '歌曲长度',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => '歌词',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => '歌曲播放顺序',
+      ),
+      'Song-based' => 
+      array (
+        0 => '基于歌曲',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => '基于歌曲的播放列表',
+      ),
+      'Source Password' => 
+      array (
+        0 => '源密码',
+      ),
+      'Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => '',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => '指定该播放列表每小时应播放的分钟数。',
+      ),
+      'Standard playlist, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => '标准播放列表，根据权重与其他标准播放列表进行随机播放。',
+      ),
+      'Start' => 
+      array (
+        0 => '开始',
+      ),
+      'Start Date' => 
+      array (
+        0 => '开始日期',
+      ),
+      'Start Streaming' => 
+      array (
+        0 => '开始流媒体',
+      ),
+      'Start Time' => 
+      array (
+        0 => '开始时间',
+      ),
+      'Start/end date cannot be used on playlists with advanced settings!' => 
+      array (
+        0 => '开始/结束日期不能用于具有高级设置的播放列表!',
+      ),
+      'Station Media' => 
+      array (
+        0 => '电台媒体',
+      ),
+      'Station Name' => 
+      array (
+        0 => '电台名称',
+      ),
+      'Station Overview' => 
+      array (
+        0 => '电台概况',
+      ),
+      'Station Podcasts' => 
+      array (
+        0 => '电台播客',
+      ),
+      'Station Recordings' => 
+      array (
+        0 => '电台录音',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => '电台时区',
+      ),
+      'Station(s)' => 
+      array (
+        0 => '电台(s)',
+      ),
+      'Stop Streaming' => 
+      array (
+        0 => '停止流媒体',
+      ),
+      'Storage Adapter' => 
+      array (
+        0 => '存储适配器',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => '储存配额',
+      ),
+      'Streamer Broadcasts' => 
+      array (
+        0 => '流媒体广播',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => '流媒体显示名称',
+      ),
+      'Streamer password' => 
+      array (
+        0 => '流媒体密码',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => '流媒体用户名',
+      ),
+      'Streamer/DJ' => 
+      array (
+        0 => '流媒体/DJ',
+      ),
+      'Streams' => 
+      array (
+        0 => '流媒体',
+      ),
+      'text' => 
+      array (
+        0 => '',
+      ),
+      'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The date when the episode should be published.' => 
+      array (
+        0 => '这一集应该发表的日期。',
+      ),
+      'The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '该集的描述。通常允许的最大文本量为4000个字符。',
+      ),
+      'The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '你的播客的描述。通常允许的最大文本量为4000个字符。',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '在管理页面或公共页面上查看此挂载点分配给挂在URL的显示名称。留空以自动生成显示名。',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '在管理页面或公共页面上查看此中继时指定的显示名称。留空以自动生成显示名称。',
+      ),
+      'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The full playlist is shuffled and then played through in the shuffled order.' => 
+      array (
+        0 => '完整的播放列表经过排列，然后按照排列顺序播放。',
+      ),
+      'The language spoken on the podcast.' => 
+      array (
+        0 => '播客中使用的语言。',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => '播放这个远程播放列表时，Liquidsoap应该缓冲的播放时间长度。较短的时间可能会导致在不稳定的连接上出现间歇性播放问题。',
+      ),
+      'The order of the playlist is manually specified and followed by the AutoDJ.' => 
+      array (
+        0 => '播放列表的顺序由人工指定，然后由AutoDJ进行。',
+      ),
+      'The relative path of the file in the station\'s media directory.' => 
+      array (
+        0 => '站内媒体目录下文件的相对路径。',
+      ),
+      'The request could not be processed.' => 
+      array (
+        0 => '无法处理该请求。',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => '流媒体将使用这个密码连接到电台服务器。',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => '流媒体将使用这个用户名连接到电台服务器。',
+      ),
+      'The time period that the song should fade in. Leave blank to use the system default.' => 
+      array (
+        0 => '歌曲应该淡入的时间段。留空以使用系统默认值。',
+      ),
+      'The time period that the song should fade out. Leave blank to use the system default.' => 
+      array (
+        0 => '歌曲应该淡出的时间段。留空以使用系统默认值。',
+      ),
+      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
+      array (
+        0 => '渐变时，这首歌曲与周围歌曲重叠的时间。留空以使用系统默认值。',
+      ),
+      'The time when the episode should be published (according to the stations timezone).' => 
+      array (
+        0 => '这一集应该发布的时间（根据电台时区）。',
+      ),
+      'The volume in decibels to amplify the track with. Leave blank to use the system default.' => 
+      array (
+        0 => '要放大音轨的音量，单位为分贝。留空以使用系统默认值。',
+      ),
+      'Theme' => 
+      array (
+        0 => '主题',
+      ),
+      'There is no existing intro file associated with this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing media associated with this episode.' => 
+      array (
+        0 => '没有与本集相关的现有媒体。',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => '这个CSS将被应用到主管理页面，比如这个。',
+      ),
+      'This CSS will be applied to the station public pages and login page.' => 
+      array (
+        0 => '该CSS将应用于电台内公共页面和登录页面。',
+      ),
+      'This field is required.' => 
+      array (
+        0 => '这是必填栏。',
+      ),
+      'This field must be a valid decimal number.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid e-mail address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid integer.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid IP address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid URL.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be between %{ min } and %{ max }.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at least %{ min } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at most %{ max } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphabetic characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphanumeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain numeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
+      array (
+        0 => '',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => '这是非正式的显示名称，如果流媒体/DJ是现场直播，将显示在API响应中。',
+      ),
+      'This javascript code will be applied to the station public pages and login page.' => 
+      array (
+        0 => '该javascript代码将被应用到电台内公共页面和登录页面。',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => '这个地址应该总是以斜杠(/)开头，并且必须是一个有效的URL，比如/autodj.mp3',
+      ),
+      'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
+      array (
+        0 => '该播放列表目前没有安排时间。它将在所有时间播放。要添加新的预定时间，请点击下面的按钮。',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => '该播放列表将每隔$x分钟播放一次，其中$x在下面指定。',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => '此播放列表将每隔$x歌曲播放一次，其中$x在下面指定。',
+      ),
+      'This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).' => 
+      array (
+        0 => '这个队列包含剩余的曲目，其顺序将由AzuraCast AutoDJ排队进行播放，（如果曲目有资格播放的话）。',
+      ),
+      'This station\'s time zone is currently %{tz}.' => 
+      array (
+        0 => '此电台的时区目前是%{tz}。',
+      ),
+      'This streamer is not scheduled to play at any times.' => 
+      array (
+        0 => '此流媒体在任何时候都没有安排播放。',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => '要想每天播放一次，请将开始和结束时间设置为相同的值。',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => '要检索详细的监听器和客户端的详细信息，通常需要一个管理员密码。',
+      ),
+      'To set this schedule to run only within a certain date range, specify a start and end date.' => 
+      array (
+        0 => '要将此计划设置为仅在特定日期范围内运行，请指定开始和结束的日期。',
+      ),
+      'Typically a website with content about the episode.' => 
+      array (
+        0 => '通常是一个有关于该剧集内容的网站。',
+      ),
+      'Typically the home page of a podcast.' => 
+      array (
+        0 => '通常是一个播客的主页。',
+      ),
+      'Unique' => 
+      array (
+        0 => '特别听众',
+      ),
+      'Unknown Artist' => 
+      array (
+        0 => '未知艺术家',
+      ),
+      'Unknown Title' => 
+      array (
+        0 => '未知标题',
+      ),
+      'Up' => 
+      array (
+        0 => '上',
+      ),
+      'Update Metadata' => 
+      array (
+        0 => '更新元数据',
+      ),
+      'Upload Custom Assets' => 
+      array (
+        0 => '',
+      ),
+      'Use Asynchronous Worker' => 
+      array (
+        0 => '使用异步Worker',
+      ),
+      'View' => 
+      array (
+        0 => '查看',
+      ),
+      'View tracks in playlist' => 
+      array (
+        0 => '在播放列表中查看曲目',
+      ),
+      'Visual Cue Editor' => 
+      array (
+        0 => '视觉提示编辑器',
+      ),
+      'Volume' => 
+      array (
+        0 => '音量',
+      ),
+      'Warning' => 
+      array (
+        0 => '警告',
+      ),
+      'Waveform Zoom' => 
+      array (
+        0 => '波形缩放',
+      ),
+      'Website' => 
+      array (
+        0 => '网站',
+      ),
+      'Weight' => 
+      array (
+        0 => '重量',
+      ),
+      'Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.' => 
+      array (
+        0 => '当播放该播放列表中的媒体时，AutoDJ是否应该尝试避免重复的艺术家和曲目标题。',
+      ),
+      'Widget Type' => 
+      array (
+        0 => '小部件类型',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => '最差的表演歌曲',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => '',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => '您可以为这个流设置一个自定义的URL，当AzuraCast引用它时，将使用它。留空，则使用默认值。',
+      ),
+      'YP Directory Authorization Hash' => 
+      array (
+        0 => 'YP目录授权哈希',
       ),
     ),
   ),

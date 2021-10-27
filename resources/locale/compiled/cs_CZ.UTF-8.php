@@ -23,6 +23,7 @@ X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: cs
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
+Generated-By: easygettext
 ',
       ),
       'This value is already used.' => 
@@ -4168,6 +4169,1854 @@ X-Crowdin-File-ID: 4
       'Details' => 
       array (
         0 => '',
+      ),
+      '# Episodes' => 
+      array (
+        0 => '',
+      ),
+      '# Songs' => 
+      array (
+        0 => '',
+      ),
+      '%{listeners} Listener' => 
+      array (
+        0 => '',
+      ),
+      '%{name} - Copy' => 
+      array (
+        0 => '',
+      ),
+      '%{numPlaylists} playlist' => 
+      array (
+        0 => '',
+      ),
+      '%{numSongs} uploaded song' => 
+      array (
+        0 => '',
+      ),
+      'A completely random track is picked for playback every time the queue is populated.' => 
+      array (
+        0 => '',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => '',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => '',
+      ),
+      'Access Key ID' => 
+      array (
+        0 => '',
+      ),
+      'Account is Active' => 
+      array (
+        0 => '',
+      ),
+      'Account List' => 
+      array (
+        0 => '',
+      ),
+      'Adapter' => 
+      array (
+        0 => '',
+      ),
+      'Add Episode' => 
+      array (
+        0 => '',
+      ),
+      'Add Files to Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Add Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Add Record' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Schedule Item' => 
+      array (
+        0 => '',
+      ),
+      'Add Storage Location' => 
+      array (
+        0 => '',
+      ),
+      'Add Streamer' => 
+      array (
+        0 => '',
+      ),
+      'Administration URL' => 
+      array (
+        0 => '',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => '',
+      ),
+      'Advanced Manual AutoDJ Scheduling Options' => 
+      array (
+        0 => '',
+      ),
+      'Album Art' => 
+      array (
+        0 => 'Obal alba',
+      ),
+      'All Playlists' => 
+      array (
+        0 => '',
+      ),
+      'All Podcasts' => 
+      array (
+        0 => '',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Amplify: Amplification (dB)' => 
+      array (
+        0 => '',
+      ),
+      'An error occurred and your request could not be completed.' => 
+      array (
+        0 => '',
+      ),
+      'Analyze and reprocess the selected media' => 
+      array (
+        0 => '',
+      ),
+      'API Version' => 
+      array (
+        0 => '',
+      ),
+      'Applying changes...' => 
+      array (
+        0 => '',
+      ),
+      'Art' => 
+      array (
+        0 => '',
+      ),
+      'Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.' => 
+      array (
+        0 => '',
+      ),
+      'Author' => 
+      array (
+        0 => '',
+      ),
+      'Auto-Assigned' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'Přenosová rychlost funkce AutoDJ (kbps)',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => '',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'Formát funkce AutoDJ',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => '',
+      ),
+      'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.' => 
+      array (
+        0 => '',
+      ),
+      'Average Listeners' => 
+      array (
+        0 => '',
+      ),
+      'Avoid Duplicate Artists/Titles' => 
+      array (
+        0 => '',
+      ),
+      'AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.' => 
+      array (
+        0 => '',
+      ),
+      'Base Theme for Public Pages' => 
+      array (
+        0 => 'Základní téma pro veřejné stránky',
+      ),
+      'Basic Info' => 
+      array (
+        0 => '',
+      ),
+      'Basic Information' => 
+      array (
+        0 => '',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'Bit Rate' => 
+      array (
+        0 => '',
+      ),
+      'Branding Settings' => 
+      array (
+        0 => '',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => 'Vysílání AutoDJ do vzdálené stanice',
+      ),
+      'Broadcasts' => 
+      array (
+        0 => '',
+      ),
+      'Browser Icon' => 
+      array (
+        0 => '',
+      ),
+      'Bucket Name' => 
+      array (
+        0 => '',
+      ),
+      'Clear' => 
+      array (
+        0 => '',
+      ),
+      'Clear Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Clear File' => 
+      array (
+        0 => '',
+      ),
+      'Clear Image' => 
+      array (
+        0 => '',
+      ),
+      'Clear Media' => 
+      array (
+        0 => '',
+      ),
+      'Close' => 
+      array (
+        0 => '',
+      ),
+      'Continuous Play' => 
+      array (
+        0 => '',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => '',
+      ),
+      'Copy associated media and folders.' => 
+      array (
+        0 => '',
+      ),
+      'Copy scheduled playback times.' => 
+      array (
+        0 => '',
+      ),
+      'Create Directory' => 
+      array (
+        0 => '',
+      ),
+      'Cue' => 
+      array (
+        0 => '',
+      ),
+      'Cued On' => 
+      array (
+        0 => '',
+      ),
+      'Current Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Current Podcast Media' => 
+      array (
+        0 => '',
+      ),
+      'Custom' => 
+      array (
+        0 => '',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => 'Vlastní CSS pro interní stránky',
+      ),
+      'Custom CSS for Public Pages' => 
+      array (
+        0 => 'Vlastní CSS pro veřejné stránky',
+      ),
+      'Custom Cues: Cue-In Point (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Cues: Cue-Out Point (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Fading: Fade-In Time (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Fading: Fade-Out Time (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Fading: Overlap Time (seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => 'Vlastní konfigurace frontendu',
+      ),
+      'Custom JS for Public Pages' => 
+      array (
+        0 => 'Vlastní JS pro veřejné stránky',
+      ),
+      'Customize Copy' => 
+      array (
+        0 => '',
+      ),
+      'Default' => 
+      array (
+        0 => 'Výchozí',
+      ),
+      'Default Album Art' => 
+      array (
+        0 => '',
+      ),
+      'Default Mount' => 
+      array (
+        0 => '',
+      ),
+      'Delete %{ num } media files?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Album Art' => 
+      array (
+        0 => '',
+      ),
+      'Delete broadcast?' => 
+      array (
+        0 => '',
+      ),
+      'Delete episode?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Mount Point?' => 
+      array (
+        0 => '',
+      ),
+      'Delete playlist?' => 
+      array (
+        0 => '',
+      ),
+      'Delete podcast?' => 
+      array (
+        0 => '',
+      ),
+      'Delete queue item?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Remote Relay?' => 
+      array (
+        0 => '',
+      ),
+      'Delete storage location?' => 
+      array (
+        0 => '',
+      ),
+      'Delete streamer?' => 
+      array (
+        0 => '',
+      ),
+      'Deselect' => 
+      array (
+        0 => '',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => '',
+      ),
+      'Directory Name' => 
+      array (
+        0 => '',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => '',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => '',
+      ),
+      'Disable streamers?' => 
+      array (
+        0 => '',
+      ),
+      'Disconnect Streamer' => 
+      array (
+        0 => '',
+      ),
+      'DJ Credentials' => 
+      array (
+        0 => '',
+      ),
+      'Down' => 
+      array (
+        0 => '',
+      ),
+      'Download M3U' => 
+      array (
+        0 => '',
+      ),
+      'Download PLS' => 
+      array (
+        0 => '',
+      ),
+      'Drag file(s) here to upload or' => 
+      array (
+        0 => '',
+      ),
+      'Dropbox Generated Access Token' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate Playlist' => 
+      array (
+        0 => '',
+      ),
+      'E-Mail' => 
+      array (
+        0 => '',
+      ),
+      'Edit Episode' => 
+      array (
+        0 => '',
+      ),
+      'Edit Media' => 
+      array (
+        0 => '',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Edit Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Edit Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Edit Record' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Edit Storage Location' => 
+      array (
+        0 => '',
+      ),
+      'Edit Streamer' => 
+      array (
+        0 => '',
+      ),
+      'Embed Code' => 
+      array (
+        0 => '',
+      ),
+      'Embed Widgets' => 
+      array (
+        0 => '',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => 'Povolit funkci AutoDJ',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => '',
+      ),
+      'Enable song requests?' => 
+      array (
+        0 => '',
+      ),
+      'Enable streamers?' => 
+      array (
+        0 => '',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => 'Povolit publikování tohoto přípojného bodu do veřejných adresářů rádiových stanic typu "Zlaté stránky".',
+      ),
+      'Enable to advertise this relay on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => 'Umožněte posluchačům vybrat tento přípojný bod na veřejných stránkách této stanice.',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => 'Umožněte posluchačům vybrat toto vzdálené připojení na veřejných stránkách této stanice.',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => '',
+      ),
+      'Encoder' => 
+      array (
+        0 => '',
+      ),
+      'End Date' => 
+      array (
+        0 => '',
+      ),
+      'End Time' => 
+      array (
+        0 => '',
+      ),
+      'Endpoint' => 
+      array (
+        0 => '',
+      ),
+      'Enforce Schedule Times' => 
+      array (
+        0 => '',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => 'Zadejte úplnou adresu URL jiného streamu, aby bylo možné přenášet vysílání prostřednictvím tohoto bodu připojení.',
+      ),
+      'Episode' => 
+      array (
+        0 => '',
+      ),
+      'Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".' => 
+      array (
+        0 => '',
+      ),
+      'Export %{format}' => 
+      array (
+        0 => '',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => 'Nouzový přípojný bod',
+      ),
+      'File' => 
+      array (
+        0 => '',
+      ),
+      'File Name' => 
+      array (
+        0 => '',
+      ),
+      'Files marked for reprocessing:' => 
+      array (
+        0 => '',
+      ),
+      'Files moved:' => 
+      array (
+        0 => '',
+      ),
+      'Files queued for playback:' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '',
+      ),
+      'For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.' => 
+      array (
+        0 => '',
+      ),
+      'Full Volume' => 
+      array (
+        0 => 'Plná hlasitost',
+      ),
+      'General Rotation' => 
+      array (
+        0 => '',
+      ),
+      'Hide Album Art on Public Pages' => 
+      array (
+        0 => 'Skrýt obal alba na veřejných stránkách',
+      ),
+      'Hide AzuraCast Branding on Public Pages' => 
+      array (
+        0 => 'Skrýt AzuraCast značku na veřejných stránkách',
+      ),
+      'Hide Charts' => 
+      array (
+        0 => '',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => '',
+      ),
+      'High' => 
+      array (
+        0 => '',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => '',
+      ),
+      'History' => 
+      array (
+        0 => '',
+      ),
+      'Home' => 
+      array (
+        0 => '',
+      ),
+      'Homepage Redirect URL' => 
+      array (
+        0 => 'URL adresa přesměrování z úvodní stránky',
+      ),
+      'Hour' => 
+      array (
+        0 => '',
+      ),
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      array (
+        0 => 'Pokud není návštěvník přihlášen a navštíví domovskou stránku AzuraCast, můžete ho automaticky přesměrovat na zde uvedenou URL adresu. Chcete-li ho přesměrovat na výchozí přihlašovací obrazovku, ponechte prázdné.',
+      ),
+      'If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results.' => 
+      array (
+        0 => '',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => '',
+      ),
+      'If disabled, the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => 'Pokud je povoleno, funkce AutoDJ této instalace bude do tohoto přípojného bodu automaticky přehrávat playlisty.',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => 'Pokud je povoleno, funkce AutoDJ bude do tohoto přípojného bodu automaticky přehrávat playlisty.',
+      ),
+      'If enabled, this streamer will only be able to connect during their scheduled broadcast times.' => 
+      array (
+        0 => '',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => '',
+      ),
+      'If selected, album art will not display on public-facing radio pages.' => 
+      array (
+        0 => 'Pokud je vybráno, nebude se obal alba zobrazovat na veřejně přístupných stránkách.',
+      ),
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      array (
+        0 => 'Pokud je tato možnost vybrána, odstraní se značka AzuraCast ze stránek, které jsou veřejně přístupné.',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => '',
+      ),
+      'If the end time is before the start time, the schedule entry will continue overnight.' => 
+      array (
+        0 => '',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => 'Pokud je přípojný bod (tj. <code>/radio.mp3</code>) nebo SHOUTcast SID (tj. <code>2</code>) vysílání odlišný od výše uvedeného, určete zdrojový přípojný bod zde.',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => 'Pokud se port, na který se vysílá, liší od portu uvedeného výše, určete zdrojový port zde.',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => 'Pokud je toto připojení výchozí, bude přehráno v náhledu rádia a na veřejné stránce rádia.',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => 'Pokud tento přípojný bod nepřehrává zvuk, posluchači budou automaticky přesměrováni na tento přípojný bod. Výchozí hodnota je /error.mp3, opakující se chybová zpráva.',
+      ),
+      'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
+      array (
+        0 => '',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => 'Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové heslo.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => 'Pokud se vysílá pomocí funkce AutoDJ, zadejte zde zdrojové uživatelské jméno. Může být prázdné.',
+      ),
+      'Import from PLS/M3U' => 
+      array (
+        0 => '',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => '',
+      ),
+      'in the last month' => 
+      array (
+        0 => '',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => '',
+      ),
+      'Include in On-Demand Player' => 
+      array (
+        0 => '',
+      ),
+      'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
+      array (
+        0 => '',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => '',
+      ),
+      'International Standard Recording Code, used for licensing reports.' => 
+      array (
+        0 => '',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => '',
+      ),
+      'Intro' => 
+      array (
+        0 => '',
+      ),
+      'Is Enabled' => 
+      array (
+        0 => '',
+      ),
+      'Jingle Mode' => 
+      array (
+        0 => '',
+      ),
+      'Learn about Advanced Playlists' => 
+      array (
+        0 => '',
+      ),
+      'Learn More about Dropbox Auth Tokens' => 
+      array (
+        0 => '',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => '',
+      ),
+      'LiquidSoap is currently shuffling from %{songs} and %{playlists}.' => 
+      array (
+        0 => '',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => '',
+      ),
+      'Live' => 
+      array (
+        0 => '',
+      ),
+      'Loading...' => 
+      array (
+        0 => '',
+      ),
+      'Local Filesystem' => 
+      array (
+        0 => '',
+      ),
+      'Local Streams' => 
+      array (
+        0 => '',
+      ),
+      'Logs' => 
+      array (
+        0 => '',
+      ),
+      'Loop Once' => 
+      array (
+        0 => '',
+      ),
+      'Low' => 
+      array (
+        0 => '',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration.' => 
+      array (
+        0 => '',
+      ),
+      'Max Listener Duration' => 
+      array (
+        0 => '',
+      ),
+      'Media' => 
+      array (
+        0 => '',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => '',
+      ),
+      'Metadata' => 
+      array (
+        0 => '',
+      ),
+      'Microphone' => 
+      array (
+        0 => '',
+      ),
+      'Microphone Source' => 
+      array (
+        0 => '',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => '',
+      ),
+      'Mixer' => 
+      array (
+        0 => '',
+      ),
+      'Modified' => 
+      array (
+        0 => '',
+      ),
+      'More' => 
+      array (
+        0 => '',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => '',
+      ),
+      'Mount Point URL' => 
+      array (
+        0 => 'URL přípojného bodu',
+      ),
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      array (
+        0 => '',
+      ),
+      'Move' => 
+      array (
+        0 => '',
+      ),
+      'Move %{ num } File(s) to' => 
+      array (
+        0 => '',
+      ),
+      'Move to Directory' => 
+      array (
+        0 => '',
+      ),
+      'MP3' => 
+      array (
+        0 => '',
+      ),
+      'Mute' => 
+      array (
+        0 => 'Umlčet',
+      ),
+      'New Directory' => 
+      array (
+        0 => '',
+      ),
+      'New directory created.' => 
+      array (
+        0 => '',
+      ),
+      'New File Name' => 
+      array (
+        0 => '',
+      ),
+      'New Folder' => 
+      array (
+        0 => '',
+      ),
+      'New Playlist' => 
+      array (
+        0 => '',
+      ),
+      'New Playlist Name' => 
+      array (
+        0 => '',
+      ),
+      'No files selected.' => 
+      array (
+        0 => '',
+      ),
+      'No records to display.' => 
+      array (
+        0 => '',
+      ),
+      'Not Running' => 
+      array (
+        0 => '',
+      ),
+      'Not Scheduled' => 
+      array (
+        0 => '',
+      ),
+      'Notes' => 
+      array (
+        0 => '',
+      ),
+      'Now' => 
+      array (
+        0 => '',
+      ),
+      'Now Playing' => 
+      array (
+        0 => '',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => '',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => '',
+      ),
+      'On the Air' => 
+      array (
+        0 => '',
+      ),
+      'On-Demand' => 
+      array (
+        0 => '',
+      ),
+      'Once per %{minutes} Minutes' => 
+      array (
+        0 => '',
+      ),
+      'Once per %{songs} Songs' => 
+      array (
+        0 => '',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => '',
+      ),
+      'Once per Hour (at %{minute})' => 
+      array (
+        0 => '',
+      ),
+      'Once per x Minutes' => 
+      array (
+        0 => '',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => '',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => '',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => '',
+      ),
+      'Path/Suffix' => 
+      array (
+        0 => '',
+      ),
+      'Play exactly once every $x minutes.' => 
+      array (
+        0 => '',
+      ),
+      'Play exactly once every $x songs.' => 
+      array (
+        0 => '',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => '',
+      ),
+      'Play/Pause' => 
+      array (
+        0 => '',
+      ),
+      'Playback Queue' => 
+      array (
+        0 => '',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '',
+      ),
+      'Playlist' => 
+      array (
+        0 => 'Playlist',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => '',
+      ),
+      'Playlist 1' => 
+      array (
+        0 => '',
+      ),
+      'Playlist 2' => 
+      array (
+        0 => '',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => '',
+      ),
+      'Playlist order set.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist Type' => 
+      array (
+        0 => '',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => '',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.' => 
+      array (
+        0 => '',
+      ),
+      'Podcast Title' => 
+      array (
+        0 => '',
+      ),
+      'Preview' => 
+      array (
+        0 => '',
+      ),
+      'Public Page Background' => 
+      array (
+        0 => '',
+      ),
+      'Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Publish Date' => 
+      array (
+        0 => '',
+      ),
+      'Publish Time' => 
+      array (
+        0 => '',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => 'Publikovat do adresářů "Zlaté stránky"',
+      ),
+      'Queue' => 
+      array (
+        0 => '',
+      ),
+      'Queue the selected media to play next' => 
+      array (
+        0 => '',
+      ),
+      'Radio Player' => 
+      array (
+        0 => '',
+      ),
+      'Random' => 
+      array (
+        0 => '',
+      ),
+      'Raw' => 
+      array (
+        0 => '',
+      ),
+      'Refresh rows' => 
+      array (
+        0 => '',
+      ),
+      'Region' => 
+      array (
+        0 => '',
+      ),
+      'Relay Password' => 
+      array (
+        0 => '',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => 'URL jiného streamu',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => 'Přípojný bod/SID vzdálené stanice',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => 'URL adresa pro vzdálenou stanici',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => 'Přípojný bod/SID vzdálené stanice',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => 'Zdrojové heslo vzdálené stanice',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => 'Zdrojový port vzdálené stanice',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => 'Zdrojové uživatelské jméno vzdálené stanice',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => 'Typ vzdálené stanice',
+      ),
+      'Remote URL' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => '',
+      ),
+      'Remote: Dropbox' => 
+      array (
+        0 => '',
+      ),
+      'Remote: S3 Compatible' => 
+      array (
+        0 => '',
+      ),
+      'Remove' => 
+      array (
+        0 => '',
+      ),
+      'Rename' => 
+      array (
+        0 => '',
+      ),
+      'Rename File/Directory' => 
+      array (
+        0 => '',
+      ),
+      'Reorder' => 
+      array (
+        0 => '',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Repeat Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => '',
+      ),
+      'Reprocess' => 
+      array (
+        0 => '',
+      ),
+      'Request' => 
+      array (
+        0 => '',
+      ),
+      'Request a Song' => 
+      array (
+        0 => '',
+      ),
+      'Request Song' => 
+      array (
+        0 => '',
+      ),
+      'Requests' => 
+      array (
+        0 => '',
+      ),
+      'Reshuffle' => 
+      array (
+        0 => '',
+      ),
+      'Restart' => 
+      array (
+        0 => '',
+      ),
+      'Rows per page' => 
+      array (
+        0 => '',
+      ),
+      'Running' => 
+      array (
+        0 => '',
+      ),
+      'Sample Rate' => 
+      array (
+        0 => '',
+      ),
+      'Save' => 
+      array (
+        0 => '',
+      ),
+      'Schedule View' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled Time #%{num}' => 
+      array (
+        0 => '',
+      ),
+      'Scheduling' => 
+      array (
+        0 => '',
+      ),
+      'Search' => 
+      array (
+        0 => '',
+      ),
+      'Seconds from the start of the song that the AutoDJ should start playing.' => 
+      array (
+        0 => '',
+      ),
+      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
+      array (
+        0 => '',
+      ),
+      'Secret Key' => 
+      array (
+        0 => '',
+      ),
+      'Seek' => 
+      array (
+        0 => '',
+      ),
+      'Select' => 
+      array (
+        0 => '',
+      ),
+      'Select a theme to use as a base for station public pages and the login page.' => 
+      array (
+        0 => 'Vyberte téma, které se použije jako základní pro veřejné stránky stanice a přihlašovací stránku.',
+      ),
+      'Select all visible rows' => 
+      array (
+        0 => '',
+      ),
+      'Select displayed fields' => 
+      array (
+        0 => '',
+      ),
+      'Select Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Select Media File' => 
+      array (
+        0 => '',
+      ),
+      'Select PLS/M3U File to Import' => 
+      array (
+        0 => '',
+      ),
+      'Select PNG/JPG artwork file' => 
+      array (
+        0 => '',
+      ),
+      'Select the category/categories that best reflects the content of your podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Sequential' => 
+      array (
+        0 => '',
+      ),
+      'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => '',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => 'Nastavit jako výchozí přípojný bod',
+      ),
+      'Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.' => 
+      array (
+        0 => '',
+      ),
+      'Set Cue In' => 
+      array (
+        0 => '',
+      ),
+      'Set Cue Out' => 
+      array (
+        0 => '',
+      ),
+      'Set Fade In' => 
+      array (
+        0 => '',
+      ),
+      'Set Fade Out' => 
+      array (
+        0 => '',
+      ),
+      'Set or clear playlists from the selected media' => 
+      array (
+        0 => '',
+      ),
+      'Set Overlap' => 
+      array (
+        0 => '',
+      ),
+      'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 
+      array (
+        0 => '',
+      ),
+      'Show Charts' => 
+      array (
+        0 => '',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => 'Zobrazit na veřejných stránkách',
+      ),
+      'Shuffled' => 
+      array (
+        0 => '',
+      ),
+      'Skip Song' => 
+      array (
+        0 => '',
+      ),
+      'Song' => 
+      array (
+        0 => '',
+      ),
+      'Song Album' => 
+      array (
+        0 => '',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Interpret skladby',
+      ),
+      'Song Genre' => 
+      array (
+        0 => '',
+      ),
+      'Song History' => 
+      array (
+        0 => '',
+      ),
+      'Song Length' => 
+      array (
+        0 => '',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => '',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => '',
+      ),
+      'Song-based' => 
+      array (
+        0 => '',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => '',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => '',
+      ),
+      'Standard playlist, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => '',
+      ),
+      'Start' => 
+      array (
+        0 => '',
+      ),
+      'Start Date' => 
+      array (
+        0 => '',
+      ),
+      'Start Streaming' => 
+      array (
+        0 => '',
+      ),
+      'Start Time' => 
+      array (
+        0 => '',
+      ),
+      'Start/end date cannot be used on playlists with advanced settings!' => 
+      array (
+        0 => '',
+      ),
+      'Station Media' => 
+      array (
+        0 => '',
+      ),
+      'Station Name' => 
+      array (
+        0 => '',
+      ),
+      'Station Overview' => 
+      array (
+        0 => '',
+      ),
+      'Station Podcasts' => 
+      array (
+        0 => '',
+      ),
+      'Station Recordings' => 
+      array (
+        0 => '',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => '',
+      ),
+      'Station(s)' => 
+      array (
+        0 => '',
+      ),
+      'Stop Streaming' => 
+      array (
+        0 => '',
+      ),
+      'Storage Adapter' => 
+      array (
+        0 => '',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Broadcasts' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => '',
+      ),
+      'Streamer password' => 
+      array (
+        0 => '',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => '',
+      ),
+      'Streamer/DJ' => 
+      array (
+        0 => '',
+      ),
+      'Streams' => 
+      array (
+        0 => '',
+      ),
+      'text' => 
+      array (
+        0 => '',
+      ),
+      'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The date when the episode should be published.' => 
+      array (
+        0 => '',
+      ),
+      'The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '',
+      ),
+      'The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'Zobrazovaný název přiřazený tomuto přípojnému bodu při zobrazení na administrativních nebo veřejných stránkách. Nechte prázdné pro automatické vygenerování.',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'Zobrazovaný název přiřazený tomuto vzdálenému připojení při zobrazení na administrativních nebo veřejných stránkách. Nechte prázdné pro automatické vygenerování.',
+      ),
+      'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The full playlist is shuffled and then played through in the shuffled order.' => 
+      array (
+        0 => '',
+      ),
+      'The language spoken on the podcast.' => 
+      array (
+        0 => '',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => '',
+      ),
+      'The order of the playlist is manually specified and followed by the AutoDJ.' => 
+      array (
+        0 => '',
+      ),
+      'The relative path of the file in the station\'s media directory.' => 
+      array (
+        0 => '',
+      ),
+      'The request could not be processed.' => 
+      array (
+        0 => '',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => '',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => '',
+      ),
+      'The time period that the song should fade in. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'The time period that the song should fade out. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'The time when the episode should be published (according to the stations timezone).' => 
+      array (
+        0 => '',
+      ),
+      'The volume in decibels to amplify the track with. Leave blank to use the system default.' => 
+      array (
+        0 => '',
+      ),
+      'Theme' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing intro file associated with this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing media associated with this episode.' => 
+      array (
+        0 => '',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => 'Tento CSS bude aplikován na hlavní správcovské stránky, jako je tato.',
+      ),
+      'This CSS will be applied to the station public pages and login page.' => 
+      array (
+        0 => 'Tento CSS bude aplikován na veřejné stránky stanice a na přihlašovací stránku.',
+      ),
+      'This field is required.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid decimal number.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid e-mail address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid integer.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid IP address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid URL.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be between %{ min } and %{ max }.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at least %{ min } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at most %{ max } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphabetic characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphanumeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain numeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
+      array (
+        0 => '',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => '',
+      ),
+      'This javascript code will be applied to the station public pages and login page.' => 
+      array (
+        0 => 'Tento javascript bude aplikován na veřejné stránky stanice a na přihlašovací stránku.',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => 'Tento řetězec by měl vždy začínat lomítkem (/) a musí být platnou adresou URL, například /autodj.mp3',
+      ),
+      'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
+      array (
+        0 => '',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => '',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => '',
+      ),
+      'This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).' => 
+      array (
+        0 => '',
+      ),
+      'This station\'s time zone is currently %{tz}.' => 
+      array (
+        0 => '',
+      ),
+      'This streamer is not scheduled to play at any times.' => 
+      array (
+        0 => '',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => '',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => '',
+      ),
+      'To set this schedule to run only within a certain date range, specify a start and end date.' => 
+      array (
+        0 => '',
+      ),
+      'Typically a website with content about the episode.' => 
+      array (
+        0 => '',
+      ),
+      'Typically the home page of a podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Unique' => 
+      array (
+        0 => '',
+      ),
+      'Unknown Artist' => 
+      array (
+        0 => 'Neznámý interpret',
+      ),
+      'Unknown Title' => 
+      array (
+        0 => 'Neznámý název',
+      ),
+      'Up' => 
+      array (
+        0 => '',
+      ),
+      'Update Metadata' => 
+      array (
+        0 => '',
+      ),
+      'Upload Custom Assets' => 
+      array (
+        0 => '',
+      ),
+      'Use Asynchronous Worker' => 
+      array (
+        0 => '',
+      ),
+      'View' => 
+      array (
+        0 => '',
+      ),
+      'View tracks in playlist' => 
+      array (
+        0 => '',
+      ),
+      'Visual Cue Editor' => 
+      array (
+        0 => '',
+      ),
+      'Volume' => 
+      array (
+        0 => 'Hlasitost',
+      ),
+      'Warning' => 
+      array (
+        0 => '',
+      ),
+      'Waveform Zoom' => 
+      array (
+        0 => '',
+      ),
+      'Website' => 
+      array (
+        0 => '',
+      ),
+      'Weight' => 
+      array (
+        0 => '',
+      ),
+      'Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.' => 
+      array (
+        0 => '',
+      ),
+      'Widget Type' => 
+      array (
+        0 => '',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => '',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => 'Pro tento stream můžete nastavit vlastní adresu URL, kterou bude služba AzuraCast používat, když na ni bude odkazováno. Chcete-li použít výchozí hodnotu, ponechte prázdné.',
+      ),
+      'YP Directory Authorization Hash' => 
+      array (
+        0 => 'Autorizační hash adresáře YP',
       ),
     ),
   ),

@@ -23,6 +23,7 @@ X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: ko
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
+Generated-By: easygettext
 ',
       ),
       'This value is already used.' => 
@@ -4168,6 +4169,1854 @@ X-Crowdin-File-ID: 4
       'Details' => 
       array (
         0 => '세부정보',
+      ),
+      '# Episodes' => 
+      array (
+        0 => '# 에피소드',
+      ),
+      '# Songs' => 
+      array (
+        0 => '# 곡',
+      ),
+      '%{listeners} Listener' => 
+      array (
+        0 => '%{listeners} 청취자',
+      ),
+      '%{name} - Copy' => 
+      array (
+        0 => '%{name} - 사본',
+      ),
+      '%{numPlaylists} playlist' => 
+      array (
+        0 => '%{numPlaylists} 개의 재생 목록',
+      ),
+      '%{numSongs} uploaded song' => 
+      array (
+        0 => '업로드 된 %{numSongs} 개의 곡',
+      ),
+      'A completely random track is picked for playback every time the queue is populated.' => 
+      array (
+        0 => '대기열이 채워질 때마다 재생을 위해 완전히 무작위 트랙이 선택됩니다.',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => '이 서버에 호스팅된 미디어 파일이 포함된 재생 목록.',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => '',
+      ),
+      'Access Key ID' => 
+      array (
+        0 => '액세스 키 ID',
+      ),
+      'Account is Active' => 
+      array (
+        0 => '계정이 활성 상태입니다',
+      ),
+      'Account List' => 
+      array (
+        0 => '계정 목록',
+      ),
+      'Adapter' => 
+      array (
+        0 => '어댑터',
+      ),
+      'Add Episode' => 
+      array (
+        0 => '에피소드 추가',
+      ),
+      'Add Files to Playlist' => 
+      array (
+        0 => '재생 목록에 파일 추가',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => '마운트 지점 추가',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => '재생 목록 추가',
+      ),
+      'Add Podcast' => 
+      array (
+        0 => '팟캐스트 추가',
+      ),
+      'Add Record' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Schedule Item' => 
+      array (
+        0 => '예약 생성',
+      ),
+      'Add Storage Location' => 
+      array (
+        0 => '저장소 위치 추가',
+      ),
+      'Add Streamer' => 
+      array (
+        0 => '스트리머 추가',
+      ),
+      'Administration URL' => 
+      array (
+        0 => '관리 URL',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => '관리자 암호',
+      ),
+      'Advanced Manual AutoDJ Scheduling Options' => 
+      array (
+        0 => '',
+      ),
+      'Album Art' => 
+      array (
+        0 => '앨범 이미지',
+      ),
+      'All Playlists' => 
+      array (
+        0 => '모든 재생 목록',
+      ),
+      'All Podcasts' => 
+      array (
+        0 => '모든 팟캐스트',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Amplify: Amplification (dB)' => 
+      array (
+        0 => '',
+      ),
+      'An error occurred and your request could not be completed.' => 
+      array (
+        0 => '오류가 발생하여 요청을 완료할 수 없습니다.',
+      ),
+      'Analyze and reprocess the selected media' => 
+      array (
+        0 => '선택한 미디어 분석 및 재처리',
+      ),
+      'API Version' => 
+      array (
+        0 => 'API 버전',
+      ),
+      'Applying changes...' => 
+      array (
+        0 => '변경 내용을 적용하는 중...',
+      ),
+      'Art' => 
+      array (
+        0 => '',
+      ),
+      'Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.' => 
+      array (
+        0 => 'Apple 팟캐스트의 경우 아트워크 크기는 최소 1400 x 1400 픽셀이고 최대 크기는 3000 x 3000 픽셀이어야 합니다.',
+      ),
+      'Author' => 
+      array (
+        0 => '',
+      ),
+      'Auto-Assigned' => 
+      array (
+        0 => '자동 할당',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'AutoDJ 비트 레이트 (kbps)',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => 'AutoDJ 비활성화됨',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'AutoDJ 포맷',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => '이 스테이션의 AutoDJ가 비활성화되었습니다. 소스가 활성화되지 않은 경우 어떤 음악도 자동으로 재생되지 않습니다.',
+      ),
+      'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.' => 
+      array (
+        0 => '%{service} 서비스에서 이메일 주소를 기반으로 아바타를 가져옵니다. %{service} 설정을 관리하려면 클릭하십시오.',
+      ),
+      'Average Listeners' => 
+      array (
+        0 => '평균 청취자',
+      ),
+      'Avoid Duplicate Artists/Titles' => 
+      array (
+        0 => '아티스트/제목 중복 방지',
+      ),
+      'AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.' => 
+      array (
+        0 => 'AzuraCast는 이 방송국의 음악 라이브러리에서 업로드된 파일의 일치하는 내용을 검색합니다. 이 단계를 실행하기 전에 미디어를 미리 업로드해야 합니다. 필요한 횟수만큼 이 도구를 다시 실행할 수 있습니다.',
+      ),
+      'Base Theme for Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Basic Info' => 
+      array (
+        0 => '기본 정보',
+      ),
+      'Basic Information' => 
+      array (
+        0 => '기본 정보',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => '베스트 퍼포먼스 곡',
+      ),
+      'Bit Rate' => 
+      array (
+        0 => '비트 레이트',
+      ),
+      'Branding Settings' => 
+      array (
+        0 => '브랜딩 설정',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => '',
+      ),
+      'Broadcasts' => 
+      array (
+        0 => '방송',
+      ),
+      'Browser Icon' => 
+      array (
+        0 => '파비콘',
+      ),
+      'Bucket Name' => 
+      array (
+        0 => '',
+      ),
+      'Clear' => 
+      array (
+        0 => '',
+      ),
+      'Clear Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Clear File' => 
+      array (
+        0 => '',
+      ),
+      'Clear Image' => 
+      array (
+        0 => '',
+      ),
+      'Clear Media' => 
+      array (
+        0 => '',
+      ),
+      'Close' => 
+      array (
+        0 => '닫기',
+      ),
+      'Continuous Play' => 
+      array (
+        0 => '연속 재생',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => 'AutoDJ 소프트웨어에서 이 재생 목록을 처리하는 방법을 제어합니다.',
+      ),
+      'Copy associated media and folders.' => 
+      array (
+        0 => '',
+      ),
+      'Copy scheduled playback times.' => 
+      array (
+        0 => '',
+      ),
+      'Create Directory' => 
+      array (
+        0 => '디렉터리 생성',
+      ),
+      'Cue' => 
+      array (
+        0 => '큐',
+      ),
+      'Cued On' => 
+      array (
+        0 => '',
+      ),
+      'Current Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Current Podcast Media' => 
+      array (
+        0 => '현재 팟캐스트 미디어',
+      ),
+      'Custom' => 
+      array (
+        0 => '사용자 지정',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => '',
+      ),
+      'Custom CSS for Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Custom Cues: Cue-In Point (seconds)' => 
+      array (
+        0 => '사용자 지정 큐：큐 인 포인트 (초)',
+      ),
+      'Custom Cues: Cue-Out Point (seconds)' => 
+      array (
+        0 => '사용자 지정 큐：큐 아웃 포인트 (초)',
+      ),
+      'Custom Fading: Fade-In Time (seconds)' => 
+      array (
+        0 => '사용자 지정 페이딩：페이드 인 시간 (초)',
+      ),
+      'Custom Fading: Fade-Out Time (seconds)' => 
+      array (
+        0 => '사용자 지정 페이딩：페이드 아웃 시간 (초)',
+      ),
+      'Custom Fading: Overlap Time (seconds)' => 
+      array (
+        0 => '사용자 지정 페이딩：오버랩 시간 (초)',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => '사용자 정의 프론트 엔드 구성',
+      ),
+      'Custom JS for Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Customize Copy' => 
+      array (
+        0 => '',
+      ),
+      'Default' => 
+      array (
+        0 => '기본값',
+      ),
+      'Default Album Art' => 
+      array (
+        0 => '기본 앨범아트',
+      ),
+      'Default Mount' => 
+      array (
+        0 => '기본 마운트',
+      ),
+      'Delete %{ num } media files?' => 
+      array (
+        0 => '%{ num } 개의 미디어 파일을 삭제하시겠습니까?',
+      ),
+      'Delete Album Art' => 
+      array (
+        0 => '앨범아트 삭제',
+      ),
+      'Delete broadcast?' => 
+      array (
+        0 => '방송을 삭제하시겠습니까?',
+      ),
+      'Delete episode?' => 
+      array (
+        0 => '에피소드를 삭제하시겠습니까?',
+      ),
+      'Delete Mount Point?' => 
+      array (
+        0 => '마운트 지점을 삭제하시겠습니까?',
+      ),
+      'Delete playlist?' => 
+      array (
+        0 => '재생 목록을 삭제하시겠습니까?',
+      ),
+      'Delete podcast?' => 
+      array (
+        0 => '팟캐스트를 삭제하시겠습니까?',
+      ),
+      'Delete queue item?' => 
+      array (
+        0 => '대기열 항목을 삭제하시겠습니까?',
+      ),
+      'Delete Remote Relay?' => 
+      array (
+        0 => '',
+      ),
+      'Delete storage location?' => 
+      array (
+        0 => '저장소 위치를 삭제하시겠습니까?',
+      ),
+      'Delete streamer?' => 
+      array (
+        0 => '스트리머를 삭제하시겠습니까?',
+      ),
+      'Deselect' => 
+      array (
+        0 => '선택 취소',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => '다이렉트 스트림 URL',
+      ),
+      'Directory Name' => 
+      array (
+        0 => '폴더 이름',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => '공용 페이지를 비활성화하시겠습니까?',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => '곡 요청을 비활성화하시겠습니까?',
+      ),
+      'Disable streamers?' => 
+      array (
+        0 => '스트리머를 비활성화하시겠습니까?',
+      ),
+      'Disconnect Streamer' => 
+      array (
+        0 => '스트리머 연결 해제',
+      ),
+      'DJ Credentials' => 
+      array (
+        0 => 'DJ 자격 증명',
+      ),
+      'Down' => 
+      array (
+        0 => '아래로',
+      ),
+      'Download M3U' => 
+      array (
+        0 => 'M3U 다운로드',
+      ),
+      'Download PLS' => 
+      array (
+        0 => 'PLS 다운로드',
+      ),
+      'Drag file(s) here to upload or' => 
+      array (
+        0 => '',
+      ),
+      'Dropbox Generated Access Token' => 
+      array (
+        0 => 'Dropbox 생성 액세스 토큰',
+      ),
+      'Duplicate' => 
+      array (
+        0 => '복제',
+      ),
+      'Duplicate Playlist' => 
+      array (
+        0 => '재생 목록 복제',
+      ),
+      'E-Mail' => 
+      array (
+        0 => '이메일',
+      ),
+      'Edit Episode' => 
+      array (
+        0 => '에피소드 편집',
+      ),
+      'Edit Media' => 
+      array (
+        0 => '미디어 편집',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => '마운트 지점 편집',
+      ),
+      'Edit Playlist' => 
+      array (
+        0 => '재생 목록 편집',
+      ),
+      'Edit Podcast' => 
+      array (
+        0 => '팟캐스트 편집',
+      ),
+      'Edit Record' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Edit Storage Location' => 
+      array (
+        0 => '저장소 위치 편집',
+      ),
+      'Edit Streamer' => 
+      array (
+        0 => '스트리머 편집',
+      ),
+      'Embed Code' => 
+      array (
+        0 => '임베드 코드',
+      ),
+      'Embed Widgets' => 
+      array (
+        0 => '임베드 위젯',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => 'AutoDJ 활성화',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => '공용 페이지를 활성화하시겠습니까?',
+      ),
+      'Enable song requests?' => 
+      array (
+        0 => '곡 요청을 활성화하시겠습니까?',
+      ),
+      'Enable streamers?' => 
+      array (
+        0 => '스트리머를 활성화하시겠습니까?',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => '이 설정을 활성화하면 이 재생 목록에 있는 파일의 메타데이터가 AutoDJ로 전송되지 않습니다. 이 기능은 재생 목록에 징글 또는 범퍼가 포함된 경우에 유용합니다.',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to advertise this relay on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => '청취자가 이 스테이션의 공개 페이지에서 이 마운트 지점을 선택할 수 있도록 하려면 활성화합니다.',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => '이 계정이 로그인하고 스트리밍할 수 있도록 활성화합니다.',
+      ),
+      'Encoder' => 
+      array (
+        0 => '인코더',
+      ),
+      'End Date' => 
+      array (
+        0 => '종료 날짜',
+      ),
+      'End Time' => 
+      array (
+        0 => '종료 시간',
+      ),
+      'Endpoint' => 
+      array (
+        0 => '끝점',
+      ),
+      'Enforce Schedule Times' => 
+      array (
+        0 => '',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => '다른 스트림의 전체 URL을 입력하여 이 마운트 지점을 통해 방송을 중계합니다.',
+      ),
+      'Episode' => 
+      array (
+        0 => '에피소드',
+      ),
+      'Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".' => 
+      array (
+        0 => '예시: 원격 라디오 URL이 http://station.example.com:8000/radio.mp3,이면 "http://station.example.com:8000"을 입력합니다.',
+      ),
+      'Export %{format}' => 
+      array (
+        0 => '%{format} 로 내보내기',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => '',
+      ),
+      'File' => 
+      array (
+        0 => '파일',
+      ),
+      'File Name' => 
+      array (
+        0 => '파일 이름',
+      ),
+      'Files marked for reprocessing:' => 
+      array (
+        0 => '',
+      ),
+      'Files moved:' => 
+      array (
+        0 => '파일이 이동됨:',
+      ),
+      'Files queued for playback:' => 
+      array (
+        0 => '',
+      ),
+      'Files removed:' => 
+      array (
+        0 => '파일 삭제됨:',
+      ),
+      'For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.' => 
+      array (
+        0 => '로컬 파일 시스템의 경우 디렉토리의 기본 경로입니다. 원격 파일 시스템의 경우 폴더 접두사입니다.',
+      ),
+      'Full Volume' => 
+      array (
+        0 => '최대 볼륨',
+      ),
+      'General Rotation' => 
+      array (
+        0 => '일반적인 로테이션',
+      ),
+      'Hide Album Art on Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Hide AzuraCast Branding on Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Hide Charts' => 
+      array (
+        0 => '차트 숨기기',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => '',
+      ),
+      'High' => 
+      array (
+        0 => '높음',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => '가중치가 높은 재생 목록은 가중치가 낮은 다른 재생 목록에 비해 재생 빈도가 높습니다.',
+      ),
+      'History' => 
+      array (
+        0 => '기록',
+      ),
+      'Home' => 
+      array (
+        0 => '홈',
+      ),
+      'Homepage Redirect URL' => 
+      array (
+        0 => '',
+      ),
+      'Hour' => 
+      array (
+        0 => '시간',
+      ),
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      array (
+        0 => '',
+      ),
+      'If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results.' => 
+      array (
+        0 => '이러한 옵션 중 하나라도 활성화된 경우 이 재생 목록은 AzuraCast를 통해 관리되지 않고 Liquidsoap을 통해 직접 관리됩니다. 이것은 의도하지 않은 영향을 미칠 수 있으며, 결과에 만족하는 경우에만 사용해야 합니다.',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => '자동 할당이 활성화된 경우 이 재생 목록을 재배포할 곡의 대상 중 하나로 사용하십시오. 이 재생 목록의 기존 내용을 덮어씁니다.',
+      ),
+      'If disabled, the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => '비활성화된 경우 재생 목록은 라디오 재생에 포함되지 않지만 여전히 관리할 수 있습니다.',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => '활성화된 경우 AutoDJ는 자동으로 이 마운트 지점까지 음악을 재생합니다.',
+      ),
+      'If enabled, this streamer will only be able to connect during their scheduled broadcast times.' => 
+      array (
+        0 => '활성화된 경우 이 스트리머는 예약된 방송 시간 동안만 연결할 수 있습니다.',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => '스테이션에 대한 요청이 활성화된 경우, 사용자는 이 재생 목록에 있는 미디어를 요청할 수 있습니다.',
+      ),
+      'If selected, album art will not display on public-facing radio pages.' => 
+      array (
+        0 => '',
+      ),
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      array (
+        0 => '',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => '종료 시간이 시작 시간 이전인 경우, 재생 목록이 밤새 재생됩니다.',
+      ),
+      'If the end time is before the start time, the schedule entry will continue overnight.' => 
+      array (
+        0 => '종료 시간이 시작 시간 이전인 경우, 일정 항목은 밤새 계속됩니다.',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => '',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => '',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => '이 마운트가 기본값인 경우 이 시스템의 라디오 미리 보기 및 공용 라디오 페이지에서 재생됩니다.',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => '이 마운트 지점이 오디오를 재생하고 있지 않으면 수신기가 자동으로 이 마운트 지점으로 리디렉션됩니다. 기본값은 반복 오류 메시지인 /error.mp3 입니다.',
+      ),
+      'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
+      array (
+        0 => '이 스테이션에 주문형 스트리밍 및 다운로드가 활성화된 경우, 이 설정이 활성화된 재생 목록에 있는 곡만 표시됩니다.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => 'AutoDJ를 사용하여 방송하는 경우 여기에 소스 암호를 입력합니다.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => 'AutoDJ를 사용하여 방송하는 경우 여기에 소스 사용자 이름을 입력합니다. 공백일 수 있습니다.',
+      ),
+      'Import from PLS/M3U' => 
+      array (
+        0 => 'PLS/M3U으로 들여오기',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => '지난 48시간',
+      ),
+      'in the last month' => 
+      array (
+        0 => '지난 달',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => '',
+      ),
+      'Include in On-Demand Player' => 
+      array (
+        0 => '',
+      ),
+      'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
+      array (
+        0 => '명시적 내용(명시적 언어 또는 성인 내용) 의 존재를 나타냅니다. Apple 팟캐스트가 켜져 있는 경우 해당 에피소드에 대한 명시적 부모 조언 그래픽을 표시합니다. 일부 Apple 팟캐스트 영역에서는 명시적 자료가 포함된 에피소드를 사용할 수 없습니다.',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => '',
+      ),
+      'International Standard Recording Code, used for licensing reports.' => 
+      array (
+        0 => '',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => '',
+      ),
+      'Intro' => 
+      array (
+        0 => '',
+      ),
+      'Is Enabled' => 
+      array (
+        0 => '',
+      ),
+      'Jingle Mode' => 
+      array (
+        0 => '징글 모드',
+      ),
+      'Learn about Advanced Playlists' => 
+      array (
+        0 => '고급 재생 목록에 대해 알아보기',
+      ),
+      'Learn More about Dropbox Auth Tokens' => 
+      array (
+        0 => 'Dropbox 인증 토큰에 대한 자세한 정보',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => '매일 재생하려면 공백으로 두십시오.',
+      ),
+      'LiquidSoap is currently shuffling from %{songs} and %{playlists}.' => 
+      array (
+        0 => 'LiquidSoap은 현재 %{songs} 과 %{playlists} 에서 뒤섞고 있습니다.',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => '스테이션 당 청취자 수',
+      ),
+      'Live' => 
+      array (
+        0 => '라이브',
+      ),
+      'Loading...' => 
+      array (
+        0 => '로딩 중…',
+      ),
+      'Local Filesystem' => 
+      array (
+        0 => '로컬 파일 시스템',
+      ),
+      'Local Streams' => 
+      array (
+        0 => '로컬 스트림',
+      ),
+      'Logs' => 
+      array (
+        0 => '로그',
+      ),
+      'Loop Once' => 
+      array (
+        0 => '',
+      ),
+      'Low' => 
+      array (
+        0 => '낮음',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration.' => 
+      array (
+        0 => '이 재생 목록이 Liquidsoap 구성에서 사용되는 방법을 수동으로 정의합니다.',
+      ),
+      'Max Listener Duration' => 
+      array (
+        0 => '',
+      ),
+      'Media' => 
+      array (
+        0 => '미디어',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => '',
+      ),
+      'Metadata' => 
+      array (
+        0 => '메타데이터',
+      ),
+      'Microphone' => 
+      array (
+        0 => '마이크',
+      ),
+      'Microphone Source' => 
+      array (
+        0 => '마이크 소스',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => '',
+      ),
+      'Mixer' => 
+      array (
+        0 => '믹서',
+      ),
+      'Modified' => 
+      array (
+        0 => '수정됨',
+      ),
+      'More' => 
+      array (
+        0 => '더 보기',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => '가장 많이 재생된 곡',
+      ),
+      'Mount Point URL' => 
+      array (
+        0 => '마운트 지점 URL',
+      ),
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      array (
+        0 => '마운트 지점은 청취자가 방송을 연결하고 청취하는 방법입니다. 각 마운트 지점은 오디오 형식 또는 품질이 다를 수 있습니다. 마운트 지점을 사용하여 광대역 수신기를 위한 고품질 스트림과 모바일 사용자를 위한 모바일 스트림을 설정할 수 있습니다.',
+      ),
+      'Move' => 
+      array (
+        0 => '이동',
+      ),
+      'Move %{ num } File(s) to' => 
+      array (
+        0 => '',
+      ),
+      'Move to Directory' => 
+      array (
+        0 => '',
+      ),
+      'MP3' => 
+      array (
+        0 => 'MP3',
+      ),
+      'Mute' => 
+      array (
+        0 => '음소거',
+      ),
+      'New Directory' => 
+      array (
+        0 => '새 디렉터리',
+      ),
+      'New directory created.' => 
+      array (
+        0 => '새 디렉터리가 생성되었습니다.',
+      ),
+      'New File Name' => 
+      array (
+        0 => '새 파일 이름',
+      ),
+      'New Folder' => 
+      array (
+        0 => '새 폴더',
+      ),
+      'New Playlist' => 
+      array (
+        0 => '새 재생 목록',
+      ),
+      'New Playlist Name' => 
+      array (
+        0 => '',
+      ),
+      'No files selected.' => 
+      array (
+        0 => '선택한 파일이 없습니다.',
+      ),
+      'No records to display.' => 
+      array (
+        0 => '표시할 기록이 없습니다.',
+      ),
+      'Not Running' => 
+      array (
+        0 => '실행 중이 아님',
+      ),
+      'Not Scheduled' => 
+      array (
+        0 => '예약되지 않음',
+      ),
+      'Notes' => 
+      array (
+        0 => '비고',
+      ),
+      'Now' => 
+      array (
+        0 => '지금',
+      ),
+      'Now Playing' => 
+      array (
+        0 => '지금 재생 중',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => '',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => '',
+      ),
+      'On the Air' => 
+      array (
+        0 => '방송중',
+      ),
+      'On-Demand' => 
+      array (
+        0 => '',
+      ),
+      'Once per %{minutes} Minutes' => 
+      array (
+        0 => '매 %{minutes} 분당 한 번',
+      ),
+      'Once per %{songs} Songs' => 
+      array (
+        0 => '매 %{songs} 곡당 한 번',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => '시간 마다',
+      ),
+      'Once per Hour (at %{minute})' => 
+      array (
+        0 => '',
+      ),
+      'Once per x Minutes' => 
+      array (
+        0 => '',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => '',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => '',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => '',
+      ),
+      'Path/Suffix' => 
+      array (
+        0 => '경로/접미사',
+      ),
+      'Play exactly once every $x minutes.' => 
+      array (
+        0 => '정확히 $x분마다 한 번씩 플레이합니다.',
+      ),
+      'Play exactly once every $x songs.' => 
+      array (
+        0 => '정확히 $x곡마다 한 번씩 플레이합니다.',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => '지정된 분마다 한 시간에 한 번 재생합니다.',
+      ),
+      'Play/Pause' => 
+      array (
+        0 => '재생/일시 정지',
+      ),
+      'Playback Queue' => 
+      array (
+        0 => '재생 대기열',
+      ),
+      'Playing Next' => 
+      array (
+        0 => '다음 재생',
+      ),
+      'Playlist' => 
+      array (
+        0 => '재생 목록',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => '재생 목록 (M3U/PLS) URL',
+      ),
+      'Playlist 1' => 
+      array (
+        0 => '재생 목록 1',
+      ),
+      'Playlist 2' => 
+      array (
+        0 => '재생 목록 2',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => '재생 목록 이름',
+      ),
+      'Playlist order set.' => 
+      array (
+        0 => '재생 목록 순서가 설정되었습니다.',
+      ),
+      'Playlist Type' => 
+      array (
+        0 => '재생 목록 타입',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => '재생 목록 용량',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => '',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => '선택한 파일에 대해 재생 목록이 업데이트되었습니다 :',
+      ),
+      'Podcast' => 
+      array (
+        0 => '팟캐스트',
+      ),
+      'Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.' => 
+      array (
+        0 => '호환성을 극대화하려면 팟캐스트 미디어가 MP3 또는 M4A(AAC) 형식이어야 합니다.',
+      ),
+      'Podcast Title' => 
+      array (
+        0 => '팟캐스트 제목',
+      ),
+      'Preview' => 
+      array (
+        0 => '미리보기',
+      ),
+      'Public Page Background' => 
+      array (
+        0 => '',
+      ),
+      'Public Pages' => 
+      array (
+        0 => '공용 페이지',
+      ),
+      'Publish Date' => 
+      array (
+        0 => '게시 날짜',
+      ),
+      'Publish Time' => 
+      array (
+        0 => '게시 시간',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => '',
+      ),
+      'Queue' => 
+      array (
+        0 => '대기열',
+      ),
+      'Queue the selected media to play next' => 
+      array (
+        0 => '',
+      ),
+      'Radio Player' => 
+      array (
+        0 => '라디오 플레이어',
+      ),
+      'Random' => 
+      array (
+        0 => '무작위',
+      ),
+      'Raw' => 
+      array (
+        0 => '무변환',
+      ),
+      'Refresh rows' => 
+      array (
+        0 => '행 새로 고침',
+      ),
+      'Region' => 
+      array (
+        0 => '지역',
+      ),
+      'Relay Password' => 
+      array (
+        0 => '중계 암호',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => '중계 스트림 URL',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => '',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => '원격 릴레이를 사용하면 이 서버 외부에서 브로드캐스팅 소프트웨어로 작업할 수 있습니다. 여기에 포함된 릴레이는 모두 해당 스테이션의 통계에 포함됩니다. 이 서버에서 원격 릴레이로 브로드캐스트할 수도 있습니다.',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL' => 
+      array (
+        0 => '원격 URL',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => '',
+      ),
+      'Remote: Dropbox' => 
+      array (
+        0 => '',
+      ),
+      'Remote: S3 Compatible' => 
+      array (
+        0 => '',
+      ),
+      'Remove' => 
+      array (
+        0 => '제거',
+      ),
+      'Rename' => 
+      array (
+        0 => '이름 바꾸기',
+      ),
+      'Rename File/Directory' => 
+      array (
+        0 => '파일/디렉터리 이름 바꾸기',
+      ),
+      'Reorder' => 
+      array (
+        0 => '재정렬',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Repeat Playlist' => 
+      array (
+        0 => '재생 목록 반복',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => '',
+      ),
+      'Reprocess' => 
+      array (
+        0 => '재처리',
+      ),
+      'Request' => 
+      array (
+        0 => '요청',
+      ),
+      'Request a Song' => 
+      array (
+        0 => '곡 요청',
+      ),
+      'Request Song' => 
+      array (
+        0 => '곡 요청',
+      ),
+      'Requests' => 
+      array (
+        0 => '요청',
+      ),
+      'Reshuffle' => 
+      array (
+        0 => '',
+      ),
+      'Restart' => 
+      array (
+        0 => '다시 시작',
+      ),
+      'Rows per page' => 
+      array (
+        0 => '페이지당 열',
+      ),
+      'Running' => 
+      array (
+        0 => '실행 중',
+      ),
+      'Sample Rate' => 
+      array (
+        0 => '샘플 레이트',
+      ),
+      'Save' => 
+      array (
+        0 => '저장',
+      ),
+      'Schedule View' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => '',
+      ),
+      'Scheduled Time #%{num}' => 
+      array (
+        0 => '',
+      ),
+      'Scheduling' => 
+      array (
+        0 => '예약',
+      ),
+      'Search' => 
+      array (
+        0 => '검색',
+      ),
+      'Seconds from the start of the song that the AutoDJ should start playing.' => 
+      array (
+        0 => '',
+      ),
+      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
+      array (
+        0 => '',
+      ),
+      'Secret Key' => 
+      array (
+        0 => '비밀 키',
+      ),
+      'Seek' => 
+      array (
+        0 => '탐색',
+      ),
+      'Select' => 
+      array (
+        0 => '선택',
+      ),
+      'Select a theme to use as a base for station public pages and the login page.' => 
+      array (
+        0 => '',
+      ),
+      'Select all visible rows' => 
+      array (
+        0 => '',
+      ),
+      'Select displayed fields' => 
+      array (
+        0 => '표시된 필드 선택',
+      ),
+      'Select Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Select Media File' => 
+      array (
+        0 => '미디어 파일 선택',
+      ),
+      'Select PLS/M3U File to Import' => 
+      array (
+        0 => '가져올 PLS/M3U 파일 선택',
+      ),
+      'Select PNG/JPG artwork file' => 
+      array (
+        0 => 'PNG/JPG 아트워크 파일 선택',
+      ),
+      'Select the category/categories that best reflects the content of your podcast.' => 
+      array (
+        0 => '팟캐스트의 내용을 가장 잘 반영한 카테고리를 선택하십시오.',
+      ),
+      'Sequential' => 
+      array (
+        0 => '',
+      ),
+      'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => '',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => '기본 마운트 지점으로 설정',
+      ),
+      'Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.' => 
+      array (
+        0 => '',
+      ),
+      'Set Cue In' => 
+      array (
+        0 => '큐 인 설정',
+      ),
+      'Set Cue Out' => 
+      array (
+        0 => '큐 아웃 설정',
+      ),
+      'Set Fade In' => 
+      array (
+        0 => '페이드 인 설정',
+      ),
+      'Set Fade Out' => 
+      array (
+        0 => '페이드 아웃 설정',
+      ),
+      'Set or clear playlists from the selected media' => 
+      array (
+        0 => '선택한 미디어에서 재생 목록 설정 또는 지우기',
+      ),
+      'Set Overlap' => 
+      array (
+        0 => '오버랩 설정',
+      ),
+      'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 
+      array (
+        0 => '',
+      ),
+      'Show Charts' => 
+      array (
+        0 => '차트 보이기',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => '',
+      ),
+      'Shuffled' => 
+      array (
+        0 => '',
+      ),
+      'Skip Song' => 
+      array (
+        0 => '곡 건너뛰기',
+      ),
+      'Song' => 
+      array (
+        0 => '곡',
+      ),
+      'Song Album' => 
+      array (
+        0 => '곡 앨범',
+      ),
+      'Song Artist' => 
+      array (
+        0 => '곡 아티스트',
+      ),
+      'Song Genre' => 
+      array (
+        0 => '곡 장르',
+      ),
+      'Song History' => 
+      array (
+        0 => '재생 기록',
+      ),
+      'Song Length' => 
+      array (
+        0 => '곡 길이',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => '곡 가사',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => '',
+      ),
+      'Song-based' => 
+      array (
+        0 => '',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => '',
+      ),
+      'Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => '마운트 지점("/radio.mp3") 또는 Shoutcast SID("2")를 지정하여 통계 또는 브로드캐스트에 사용할 특정 스트림을 지정합니다.',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => '이 재생 목록을 재생할 시간을 분 단위로 지정하십시오.',
+      ),
+      'Standard playlist, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => '표준 재생 목록, 용량에 따라 다른 표준 재생 목록과 섞습니다.',
+      ),
+      'Start' => 
+      array (
+        0 => '시작',
+      ),
+      'Start Date' => 
+      array (
+        0 => '시작 날짜',
+      ),
+      'Start Streaming' => 
+      array (
+        0 => '방송 시작',
+      ),
+      'Start Time' => 
+      array (
+        0 => '시작 시간',
+      ),
+      'Start/end date cannot be used on playlists with advanced settings!' => 
+      array (
+        0 => '시작/종료일은 고급 설정이 있는 재생 목록에서는 사용할 수 없습니다!',
+      ),
+      'Station Media' => 
+      array (
+        0 => '스테이션 미디어',
+      ),
+      'Station Name' => 
+      array (
+        0 => '스테이션 이름',
+      ),
+      'Station Overview' => 
+      array (
+        0 => '스테이션 개요',
+      ),
+      'Station Podcasts' => 
+      array (
+        0 => '스테이션 팟캐스트',
+      ),
+      'Station Recordings' => 
+      array (
+        0 => '',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => '스테이션 표준 시간대',
+      ),
+      'Station(s)' => 
+      array (
+        0 => '스테이션',
+      ),
+      'Stop Streaming' => 
+      array (
+        0 => '스트리밍 중단',
+      ),
+      'Storage Adapter' => 
+      array (
+        0 => '저장소 어댑터',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => '총 용량',
+      ),
+      'Streamer Broadcasts' => 
+      array (
+        0 => '스트리머 방송',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => '스트리머 표시 이름',
+      ),
+      'Streamer password' => 
+      array (
+        0 => '스트리머 암호',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => '스트리머 사용자 이름',
+      ),
+      'Streamer/DJ' => 
+      array (
+        0 => '스트리머/DJ',
+      ),
+      'Streams' => 
+      array (
+        0 => '스트림',
+      ),
+      'text' => 
+      array (
+        0 => '',
+      ),
+      'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The date when the episode should be published.' => 
+      array (
+        0 => '에피소드가 게시되어야 하는 날짜.',
+      ),
+      'The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '에피소드에 대한 설명. 이 항목에 허용되는 텍스트의 일반적인 최대 길이는 4000자입니다.',
+      ),
+      'The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '팟캐스트에 대한 설명입니다. 이 항목에 허용되는 텍스트의 일반적인 최대 길이는 4000자입니다.',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '관리 또는 공용 페이지에서 이 마운트 지점을 볼 때 이 마운트 지점에 할당된 표시 이름입니다. 자동으로 생성하려면 비워 두십시오.',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '',
+      ),
+      'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The full playlist is shuffled and then played through in the shuffled order.' => 
+      array (
+        0 => '전체 재생 목록을 뒤섞은 다음 그 순서대로 재생됩니다.',
+      ),
+      'The language spoken on the podcast.' => 
+      array (
+        0 => '팟캐스트에서 사용되는 언어.',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => '이 원격 재생 목록을 재생할 때 Liquidsoap이 버퍼링해야 하는 재생 시간. 짧은 시간 동안 불안정한 연결에서 재생이 간헐적으로 끊어질 수 있습니다.',
+      ),
+      'The order of the playlist is manually specified and followed by the AutoDJ.' => 
+      array (
+        0 => '재생 목록의 순서를 수동으로 지정한 다음 AutoDJ를 사용합니다.',
+      ),
+      'The relative path of the file in the station\'s media directory.' => 
+      array (
+        0 => '스테이션의 미디어 디렉토리에 있는 파일의 상대 경로입니다.',
+      ),
+      'The request could not be processed.' => 
+      array (
+        0 => '요청을 처리할 수 없습니다.',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => '스트리머가 이 암호를 사용하여 라디오 서버에 연결합니다.',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => '스트리머가 이 사용자 이름을 사용하여 라디오 서버에 연결합니다.',
+      ),
+      'The time period that the song should fade in. Leave blank to use the system default.' => 
+      array (
+        0 => '곡이 페이드 인 되는 시간. 시스템 기본값을 사용하려면 공백으로 두십시오.',
+      ),
+      'The time period that the song should fade out. Leave blank to use the system default.' => 
+      array (
+        0 => '곡이 페이드 아웃 되는 시간. 시스템 기본값을 사용하려면 공백으로 두십시오.',
+      ),
+      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
+      array (
+        0 => '이 곡이 페이딩 할 때 주변 곡와 겹치는 시간. 시스템 기본값을 사용하려면 공백으로 두십시오.',
+      ),
+      'The time when the episode should be published (according to the stations timezone).' => 
+      array (
+        0 => '(스테이션 표준 시간대에 따라) 에피소드가 공개되어야 하는 시간.',
+      ),
+      'The volume in decibels to amplify the track with. Leave blank to use the system default.' => 
+      array (
+        0 => '트랙을 증폭할 볼륨(데시벨)입니다. 시스템 기본값을 사용하려면 비워 두십시오.',
+      ),
+      'Theme' => 
+      array (
+        0 => '테마',
+      ),
+      'There is no existing intro file associated with this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing media associated with this episode.' => 
+      array (
+        0 => '이 에피소드와 관련된 기존 미디어가 없습니다.',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => '',
+      ),
+      'This CSS will be applied to the station public pages and login page.' => 
+      array (
+        0 => '',
+      ),
+      'This field is required.' => 
+      array (
+        0 => '이 필드는 필수 항목입니다.',
+      ),
+      'This field must be a valid decimal number.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid e-mail address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid integer.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid IP address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid URL.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be between %{ min } and %{ max }.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at least %{ min } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at most %{ max } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphabetic characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphanumeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain numeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
+      array (
+        0 => '',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => '이것은 스트리머/DJ가 라이브 상태일 경우 API 응답에 표시되는 비공식 표시 이름입니다.',
+      ),
+      'This javascript code will be applied to the station public pages and login page.' => 
+      array (
+        0 => '',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => '이 이름은 항상 슬래시(/)로 시작해야 하며 /autodj.mp3 와 같은 유효한 URL이어야 합니다.',
+      ),
+      'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
+      array (
+        0 => '이 재생 목록에는 현재 예약된 시간이 없습니다. 그것은 항상 플레이 될 것입니다. 새 예약 시간을 추가하려면 아래 버튼을 클릭하십시오.',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => '',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => '',
+      ),
+      'This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).' => 
+      array (
+        0 => '',
+      ),
+      'This station\'s time zone is currently %{tz}.' => 
+      array (
+        0 => '이 스테이션의 표준 시간대는 현재 %{tz} 입니다.',
+      ),
+      'This streamer is not scheduled to play at any times.' => 
+      array (
+        0 => '이 스트리머는 어느 시간에도 재생되도록 예약되어 있지 않습니다.',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => '하루에 한 번 재생하려면 시작 시간과 종료 시간을 동일한 값으로 설정합니다.',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => '',
+      ),
+      'To set this schedule to run only within a certain date range, specify a start and end date.' => 
+      array (
+        0 => '이 일정을 특정 날짜 범위 내에서만 실행하도록 설정하려면 시작 날짜와 종료 날짜를 지정하십시오.',
+      ),
+      'Typically a website with content about the episode.' => 
+      array (
+        0 => '',
+      ),
+      'Typically the home page of a podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Unique' => 
+      array (
+        0 => '',
+      ),
+      'Unknown Artist' => 
+      array (
+        0 => '알 수 없는 아티스트',
+      ),
+      'Unknown Title' => 
+      array (
+        0 => '알 수 없는 제목',
+      ),
+      'Up' => 
+      array (
+        0 => '위로',
+      ),
+      'Update Metadata' => 
+      array (
+        0 => '메타데이터 업데이트',
+      ),
+      'Upload Custom Assets' => 
+      array (
+        0 => '',
+      ),
+      'Use Asynchronous Worker' => 
+      array (
+        0 => '비동기 작업자 사용',
+      ),
+      'View' => 
+      array (
+        0 => '보기',
+      ),
+      'View tracks in playlist' => 
+      array (
+        0 => '재생 목록의 트랙 보기',
+      ),
+      'Visual Cue Editor' => 
+      array (
+        0 => '비주얼 큐 에디터',
+      ),
+      'Volume' => 
+      array (
+        0 => '볼륨',
+      ),
+      'Warning' => 
+      array (
+        0 => '경고',
+      ),
+      'Waveform Zoom' => 
+      array (
+        0 => '파형 확대/축소',
+      ),
+      'Website' => 
+      array (
+        0 => '웹사이트',
+      ),
+      'Weight' => 
+      array (
+        0 => '용량',
+      ),
+      'Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.' => 
+      array (
+        0 => 'AutoDJ가 이 재생 목록에서 미디어를 재생할 때 아티스트가 중복되지 않도록 하고 제목을 추적해야 하는지 여부입니다.',
+      ),
+      'Widget Type' => 
+      array (
+        0 => '위젯 종류',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => '',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => '',
+      ),
+      'YP Directory Authorization Hash' => 
+      array (
+        0 => '',
       ),
     ),
   ),

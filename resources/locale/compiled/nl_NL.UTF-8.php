@@ -23,6 +23,7 @@ X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: nl
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
+Generated-By: easygettext
 ',
       ),
       'This value is already used.' => 
@@ -4168,6 +4169,1857 @@ X-Crowdin-File-ID: 4
       'Details' => 
       array (
         0 => 'Beschrijving',
+      ),
+      '# Episodes' => 
+      array (
+        0 => '',
+      ),
+      '# Songs' => 
+      array (
+        0 => 'Liedjes',
+      ),
+      '%{listeners} Listener' => 
+      array (
+        0 => '%{listeners} luisteraars',
+        1 => '%{listeners} luisteraars',
+      ),
+      '%{name} - Copy' => 
+      array (
+        0 => '',
+      ),
+      '%{numPlaylists} playlist' => 
+      array (
+        0 => '%{numPlaylists} afspeellijst',
+        1 => '%{numPlaylists} afspeellijsten',
+      ),
+      '%{numSongs} uploaded song' => 
+      array (
+        0 => '%{numSongs} geüploade nummer',
+        1 => '%{numSongs} geüploade nummers',
+      ),
+      'A completely random track is picked for playback every time the queue is populated.' => 
+      array (
+        0 => 'Elke keer dat de wachtrij wordt gevuld, wordt een volledig willekeurige track gekozen om af te spelen.',
+      ),
+      'A playlist containing media files hosted on this server.' => 
+      array (
+        0 => 'Een afspeellijst met mediabestanden gehost op deze server.',
+      ),
+      'A playlist that instructs the station to play from a remote URL.' => 
+      array (
+        0 => 'Een afspeellijst afspelen vanaf een andere server (Externe URL)',
+      ),
+      'Access Key ID' => 
+      array (
+        0 => 'Access Key ID',
+      ),
+      'Account is Active' => 
+      array (
+        0 => 'Account is actief',
+      ),
+      'Account List' => 
+      array (
+        0 => 'Accountoverzicht',
+      ),
+      'Adapter' => 
+      array (
+        0 => 'Adapter',
+      ),
+      'Add Episode' => 
+      array (
+        0 => '',
+      ),
+      'Add Files to Playlist' => 
+      array (
+        0 => 'Bestanden toevoegen aan afspeellijst',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Add Playlist' => 
+      array (
+        0 => 'Afspeellijst toevoegen',
+      ),
+      'Add Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Add Record' => 
+      array (
+        0 => '',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Add Schedule Item' => 
+      array (
+        0 => 'Voeg item toe aan schema',
+      ),
+      'Add Storage Location' => 
+      array (
+        0 => 'Voeg opslaglocatie toe',
+      ),
+      'Add Streamer' => 
+      array (
+        0 => 'Streamer toevoegen',
+      ),
+      'Administration URL' => 
+      array (
+        0 => 'Administratie URL',
+      ),
+      'Administrator Password' => 
+      array (
+        0 => 'Administrator wachtwoord',
+      ),
+      'Advanced Manual AutoDJ Scheduling Options' => 
+      array (
+        0 => 'Geavanceerde handmatige AutoDJ planning instellingen',
+      ),
+      'Album Art' => 
+      array (
+        0 => 'Albumhoes',
+      ),
+      'All Playlists' => 
+      array (
+        0 => 'Alle afspeellijsten',
+      ),
+      'All Podcasts' => 
+      array (
+        0 => '',
+      ),
+      'Allow Requests from This Playlist' => 
+      array (
+        0 => 'Sta liedjes verzoeken toe van deze afspeellijst',
+      ),
+      'Amplify: Amplification (dB)' => 
+      array (
+        0 => 'Versterk: Versterking (dB)',
+      ),
+      'An error occurred and your request could not be completed.' => 
+      array (
+        0 => 'Er is een fout opgetreden, uw verzoek kon niet worden voltooid',
+      ),
+      'Analyze and reprocess the selected media' => 
+      array (
+        0 => '',
+      ),
+      'API Version' => 
+      array (
+        0 => 'API versie',
+      ),
+      'Applying changes...' => 
+      array (
+        0 => 'Wijzigingen toepassen.',
+      ),
+      'Art' => 
+      array (
+        0 => 'Albumhoes',
+      ),
+      'Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.' => 
+      array (
+        0 => '',
+      ),
+      'Author' => 
+      array (
+        0 => '',
+      ),
+      'Auto-Assigned' => 
+      array (
+        0 => 'Automatisch toegewezen',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'AutoDJ bitrate (kbps)',
+      ),
+      'AutoDJ Disabled' => 
+      array (
+        0 => 'AutoDJ uitgeschakeld',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'AutoDJ formaat',
+      ),
+      'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
+      array (
+        0 => 'AutoDJ is uitgeschakeld. Er zal geen muziek worden afgespeeld wanneer er niet live wordt uitgezonden.',
+      ),
+      'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.' => 
+      array (
+        0 => '',
+      ),
+      'Average Listeners' => 
+      array (
+        0 => '',
+      ),
+      'Avoid Duplicate Artists/Titles' => 
+      array (
+        0 => 'Voorkom dubbele artiesten/titels',
+      ),
+      'AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.' => 
+      array (
+        0 => 'AzuraCast zal het geüploade bestand scannen voor overeenkomsten in de muziekbibliotheek van dit station. Media dient geüpload te zijn voor deze stap wordt uitgevoerd. Je kunt deze tool opnieuw uitvoeren, zo vaak als nodig is.',
+      ),
+      'Base Theme for Public Pages' => 
+      array (
+        0 => 'Basis thema voor openbare pagina\'s',
+      ),
+      'Basic Info' => 
+      array (
+        0 => 'Algemene informatie',
+      ),
+      'Basic Information' => 
+      array (
+        0 => 'Algemene Informatie',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'Bit Rate' => 
+      array (
+        0 => 'Bit Rate',
+      ),
+      'Branding Settings' => 
+      array (
+        0 => '',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => 'Zend AutoDJ uit naar het station',
+      ),
+      'Broadcasts' => 
+      array (
+        0 => 'Uitzendingen',
+      ),
+      'Browser Icon' => 
+      array (
+        0 => '',
+      ),
+      'Bucket Name' => 
+      array (
+        0 => 'Bucket Naam',
+      ),
+      'Clear' => 
+      array (
+        0 => 'Leegmaken',
+      ),
+      'Clear Artwork' => 
+      array (
+        0 => '',
+      ),
+      'Clear File' => 
+      array (
+        0 => '',
+      ),
+      'Clear Image' => 
+      array (
+        0 => '',
+      ),
+      'Clear Media' => 
+      array (
+        0 => '',
+      ),
+      'Close' => 
+      array (
+        0 => 'Sluit',
+      ),
+      'Continuous Play' => 
+      array (
+        0 => 'Continu spelen',
+      ),
+      'Control how this playlist is handled by the AutoDJ software.' => 
+      array (
+        0 => 'Bepaal hoe deze afspeellijst wordt behandeld door de AutoDJ software.',
+      ),
+      'Copy associated media and folders.' => 
+      array (
+        0 => '',
+      ),
+      'Copy scheduled playback times.' => 
+      array (
+        0 => '',
+      ),
+      'Create Directory' => 
+      array (
+        0 => 'Maak map',
+      ),
+      'Cue' => 
+      array (
+        0 => 'Stop (in cue mode)',
+      ),
+      'Cued On' => 
+      array (
+        0 => '',
+      ),
+      'Current Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Current Podcast Media' => 
+      array (
+        0 => '',
+      ),
+      'Custom' => 
+      array (
+        0 => 'Op maat aanpassen',
+      ),
+      'Custom CSS for Internal Pages' => 
+      array (
+        0 => 'Aangepaste CSS voor interne pagina\'s',
+      ),
+      'Custom CSS for Public Pages' => 
+      array (
+        0 => 'Aangepaste CSS voor openbare pagina\'s',
+      ),
+      'Custom Cues: Cue-In Point (seconds)' => 
+      array (
+        0 => 'Op maat gemaakte Cues: In rij staan (seconden)',
+      ),
+      'Custom Cues: Cue-Out Point (seconds)' => 
+      array (
+        0 => 'Op maat gemaakte Cues: In rij staan (seconden)',
+      ),
+      'Custom Fading: Fade-In Time (seconds)' => 
+      array (
+        0 => 'Op maat gemaakte Fade in (seconden)',
+      ),
+      'Custom Fading: Fade-Out Time (seconds)' => 
+      array (
+        0 => 'Op maat gemaakte Fade out (seconden)',
+      ),
+      'Custom Fading: Overlap Time (seconds)' => 
+      array (
+        0 => 'Op maat gemaakte overgang van muziek in (seconden)',
+      ),
+      'Custom Frontend Configuration' => 
+      array (
+        0 => 'Aangepaste front-end configuratie',
+      ),
+      'Custom JS for Public Pages' => 
+      array (
+        0 => 'Aangepaste JS voor openbare pagina\'s',
+      ),
+      'Customize Copy' => 
+      array (
+        0 => '',
+      ),
+      'Default' => 
+      array (
+        0 => 'Standaard',
+      ),
+      'Default Album Art' => 
+      array (
+        0 => '',
+      ),
+      'Default Mount' => 
+      array (
+        0 => '',
+      ),
+      'Delete %{ num } media files?' => 
+      array (
+        0 => '%{ num } mediabestanden verwijderen?',
+      ),
+      'Delete Album Art' => 
+      array (
+        0 => 'Verwijder Albumhoezen',
+      ),
+      'Delete broadcast?' => 
+      array (
+        0 => 'Uitzending verwijderen?',
+      ),
+      'Delete episode?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Mount Point?' => 
+      array (
+        0 => '',
+      ),
+      'Delete playlist?' => 
+      array (
+        0 => 'Verwijder afspeellijst',
+      ),
+      'Delete podcast?' => 
+      array (
+        0 => '',
+      ),
+      'Delete queue item?' => 
+      array (
+        0 => '',
+      ),
+      'Delete Remote Relay?' => 
+      array (
+        0 => '',
+      ),
+      'Delete storage location?' => 
+      array (
+        0 => 'Opslaglocatie verwijderen?',
+      ),
+      'Delete streamer?' => 
+      array (
+        0 => 'Verwijderen streamer',
+      ),
+      'Deselect' => 
+      array (
+        0 => 'Deselecteer',
+      ),
+      'Direct Stream URL' => 
+      array (
+        0 => 'Directe stream URL',
+      ),
+      'Directory Name' => 
+      array (
+        0 => 'Directorynaam',
+      ),
+      'Disable public pages?' => 
+      array (
+        0 => 'Publieke pagina\'s uitschakelen?',
+      ),
+      'Disable song requests?' => 
+      array (
+        0 => 'Verzoeknummers uitschakelen?',
+      ),
+      'Disable streamers?' => 
+      array (
+        0 => 'Streamers uitschakelen?',
+      ),
+      'Disconnect Streamer' => 
+      array (
+        0 => 'Verbreek verbinding met streamer',
+      ),
+      'DJ Credentials' => 
+      array (
+        0 => 'DJ inloggegevens',
+      ),
+      'Down' => 
+      array (
+        0 => 'Omlaag',
+      ),
+      'Download M3U' => 
+      array (
+        0 => 'M3U downloaden',
+      ),
+      'Download PLS' => 
+      array (
+        0 => 'PLS downloaden',
+      ),
+      'Drag file(s) here to upload or' => 
+      array (
+        0 => '',
+      ),
+      'Dropbox Generated Access Token' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate' => 
+      array (
+        0 => '',
+      ),
+      'Duplicate Playlist' => 
+      array (
+        0 => '',
+      ),
+      'E-Mail' => 
+      array (
+        0 => '',
+      ),
+      'Edit Episode' => 
+      array (
+        0 => '',
+      ),
+      'Edit Media' => 
+      array (
+        0 => 'Media gegevens aanpassen',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => '',
+      ),
+      'Edit Playlist' => 
+      array (
+        0 => 'Afspeellijst bewerken',
+      ),
+      'Edit Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Edit Record' => 
+      array (
+        0 => '',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '',
+      ),
+      'Edit Storage Location' => 
+      array (
+        0 => 'Bewerk opslaglocatie',
+      ),
+      'Edit Streamer' => 
+      array (
+        0 => 'Wijzig streamer',
+      ),
+      'Embed Code' => 
+      array (
+        0 => '',
+      ),
+      'Embed Widgets' => 
+      array (
+        0 => '',
+      ),
+      'Enable AutoDJ' => 
+      array (
+        0 => 'AutoDJ inschakelen',
+      ),
+      'Enable public pages?' => 
+      array (
+        0 => 'Openbare pagina\'s inschakelen?',
+      ),
+      'Enable song requests?' => 
+      array (
+        0 => 'Verzoeknummers inschakelen?',
+      ),
+      'Enable streamers?' => 
+      array (
+        0 => 'Streamers inschakelen?',
+      ),
+      'Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.' => 
+      array (
+        0 => 'Schakel deze instelling in om te voorkomen dat metadata naar de AutoDJ wordt verzonden voor bestanden binnen deze afspeellijst. Dit is handig wanneer de afspeellijst jingles of reclames bevat.',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => 'Schakel in om dit mountpoint binnen de publieke "Yellow Pages" weer te geven.',
+      ),
+      'Enable to advertise this relay on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '',
+      ),
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
+      array (
+        0 => 'Inschakelen om luisteraars toe te staan dit mount point te selecteren op de publieke pagina van dit station.',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => 'Inschakelen om luisteraars toe te staan dit mount point te selecteren op de publieke pagina van het station.',
+      ),
+      'Enable to allow this account to log in and stream.' => 
+      array (
+        0 => 'Stel in op “Ja” om dit account toegang te geven om in te loggen en te streamen.',
+      ),
+      'Encoder' => 
+      array (
+        0 => 'Encoder',
+      ),
+      'End Date' => 
+      array (
+        0 => 'Eind Datum',
+      ),
+      'End Time' => 
+      array (
+        0 => 'Eind Tijd',
+      ),
+      'Endpoint' => 
+      array (
+        0 => 'Eindpunt',
+      ),
+      'Enforce Schedule Times' => 
+      array (
+        0 => 'Geplande uitzendtijden afdwingen',
+      ),
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
+      array (
+        0 => 'Voer de volledige URL in van een andere stream om deze opnieuw uit te zenden via dit mount punt.',
+      ),
+      'Episode' => 
+      array (
+        0 => '',
+      ),
+      'Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".' => 
+      array (
+        0 => '',
+      ),
+      'Export %{format}' => 
+      array (
+        0 => 'Exporteren Formaat',
+      ),
+      'Fallback Mount' => 
+      array (
+        0 => 'Back-up mount point',
+      ),
+      'File' => 
+      array (
+        0 => '',
+      ),
+      'File Name' => 
+      array (
+        0 => 'Bestandsnaam',
+      ),
+      'Files marked for reprocessing:' => 
+      array (
+        0 => '',
+      ),
+      'Files moved:' => 
+      array (
+        0 => 'Bestanden verplaatsen',
+      ),
+      'Files queued for playback:' => 
+      array (
+        0 => 'Bestanden in de afspeelwachtrij:',
+      ),
+      'Files removed:' => 
+      array (
+        0 => 'Bestanden verwijderd:',
+      ),
+      'For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.' => 
+      array (
+        0 => 'Voor lokale bestandssystemen is dit het basispad van de map. Voor externe bestandssystemen is dit het voorvoegsel van de map.',
+      ),
+      'Full Volume' => 
+      array (
+        0 => 'Volledige volume',
+      ),
+      'General Rotation' => 
+      array (
+        0 => 'Algemene Rotatie',
+      ),
+      'Hide Album Art on Public Pages' => 
+      array (
+        0 => 'Verberg albumhoezen op openbare pagina\'s',
+      ),
+      'Hide AzuraCast Branding on Public Pages' => 
+      array (
+        0 => 'Verberg AzuraCast reclame op openbare pagina\'s',
+      ),
+      'Hide Charts' => 
+      array (
+        0 => '',
+      ),
+      'Hide Metadata from Listeners ("Jingle Mode")' => 
+      array (
+        0 => 'Verberg metadata voor luisteraars (Jingel Modus)',
+      ),
+      'High' => 
+      array (
+        0 => 'Hoog',
+      ),
+      'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
+      array (
+        0 => 'Afspeellijsten met een hoger gewicht worden vaker afgespeeld dan afspeellijsten met een lager gewicht.',
+      ),
+      'History' => 
+      array (
+        0 => '',
+      ),
+      'Home' => 
+      array (
+        0 => 'Startpagina',
+      ),
+      'Homepage Redirect URL' => 
+      array (
+        0 => 'URL van homepage omleiden',
+      ),
+      'Hour' => 
+      array (
+        0 => '',
+      ),
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      array (
+        0 => 'Als een bezoeker niet is aangemeld en de homepage van AzuraCast bezoekt, kunt u ze automatisch doorverwijzen naar de hier opgegeven URL. Laat leeg om ze standaard naar het login scherm te verwijzen.',
+      ),
+      'If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results.' => 
+      array (
+        0 => 'Als een van deze opties ingeschakeld zijn, zal de afspeellijst direct via Liquidsoap beheert worden in plaats dat dit via AzuraCast gebeurt.',
+      ),
+      'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
+      array (
+        0 => 'Wanneer automatische toewijzig is ingeschakeld, gebruik dan deze afspeellijst als een bron van herverdeelbare nummers. Hiermee wordt de bestaande inhoud van deze afspeellijst overschreven.',
+      ),
+      'If disabled, the playlist will not be included in radio playback, but can still be managed.' => 
+      array (
+        0 => 'Wanneer gekozen voor "Nee", zal de afspeellijst niet worden afgespeeld op de stream. De afspeellijst kan nog steeds worden beheert.',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => 'Indien ingeschakeld, zal de AutoDJ op deze installatie automatisch muziek afspelen naar dit mount punt.',
+      ),
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
+      array (
+        0 => 'Indien ingeschakeld, zal de AutoDJ automatisch muziek afspelen op dit mount punt.',
+      ),
+      'If enabled, this streamer will only be able to connect during their scheduled broadcast times.' => 
+      array (
+        0 => 'Indien ingeschakeld, zal deze streamer enkel de mogelijkheid hebben om te verbinden gedurende de geplande uitzendtijden.',
+      ),
+      'If requests are enabled for your station, users will be able to request media that is on this playlist.' => 
+      array (
+        0 => 'Als requests zijn ingeschakeld voor uw station zullen luisteraars de mogelijkheid hebben om nummers binnen deze afspeellijst aan te vragen.',
+      ),
+      'If selected, album art will not display on public-facing radio pages.' => 
+      array (
+        0 => 'Indien geselecteerd, worden albumhoezen niet weergegeven op publieke radio-pagina\'s.',
+      ),
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      array (
+        0 => 'Indien geselecteerd, zal dit AzuraCast reclame van publieke pagina\'s verwijderen.',
+      ),
+      'If the end time is before the start time, the playlist will play overnight.' => 
+      array (
+        0 => 'Als de eindtijd voor de begintijd is, zal de afspeellijst van de ene op de andere dag afspelen.',
+      ),
+      'If the end time is before the start time, the schedule entry will continue overnight.' => 
+      array (
+        0 => 'Als de eindtijd voor de begintijd is, zal het geplande item in de nacht doorgaan.',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => 'Geef hier het mountpoint op als het mountpoint (bijv. <code>/radio.mp3</code>) of Shoutcast SID (bijv. <code>2</code>) waar uw naar toe wilt streamen anders is dan hierboven wordt weergeven.',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => 'Als de poort die u uitzendt anders is dan de poort die u hierboven hebt aangegeven, geef dan hier de bronpoort op.',
+      ),
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
+      array (
+        0 => 'Als dit mount point standaard is, zal deze gebruikt worden binnen de radiospeler op de publieke radio pagina van dit systeem.',
+      ),
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
+      array (
+        0 => 'Wanneer dit mount point geen audio speelt, zullen luisteraars doorverwezen worden naar dit mount punt. De standaard is /error.mp3, welke herhaaldelijk een foutmelding laat horen.',
+      ),
+      'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
+      array (
+        0 => 'Als dit station on-demand streamen en downloaden heeft ingeschakeld, zullen alleen nummers die in afspeellijsten staan met deze instelling ingeschakeld zichtbaar zijn.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => 'Als u met AutoDJ uitzendt, voer hier het bronwachtwoord in.',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => 'Als u met AutoDJ uitzendt, voer hier de brongebruikersnaam in. Dit kan leeg zijn.',
+      ),
+      'Import from PLS/M3U' => 
+      array (
+        0 => 'Importeren uit PLS/M3U',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => '',
+      ),
+      'in the last month' => 
+      array (
+        0 => '',
+      ),
+      'Include in Automated Assignment' => 
+      array (
+        0 => 'Automatische toewijzing inschakelen',
+      ),
+      'Include in On-Demand Player' => 
+      array (
+        0 => 'Opnemen in On-Demand speler',
+      ),
+      'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
+      array (
+        0 => '',
+      ),
+      'Internal notes or comments about the user, visible only on this control panel.' => 
+      array (
+        0 => 'Interne notities of commentaar over de gebruiker, alleen zichtbaar vanuit dit controle paneel.',
+      ),
+      'International Standard Recording Code, used for licensing reports.' => 
+      array (
+        0 => 'Internationale standaardcode voor het opnemen van licenties.',
+      ),
+      'Interrupt other songs to play at scheduled time.' => 
+      array (
+        0 => 'Onderbreek andere nummers om af te spelen op het geplande tijdstip.',
+      ),
+      'Intro' => 
+      array (
+        0 => '',
+      ),
+      'Is Enabled' => 
+      array (
+        0 => 'Is ingeschakeld',
+      ),
+      'Jingle Mode' => 
+      array (
+        0 => 'Jingle modus',
+      ),
+      'Learn about Advanced Playlists' => 
+      array (
+        0 => 'Meer informatie over geavanceerde afspeellijsten',
+      ),
+      'Learn More about Dropbox Auth Tokens' => 
+      array (
+        0 => 'Meer informatie over Dropbox Auth Tokens',
+      ),
+      'Leave blank to play on every day of the week.' => 
+      array (
+        0 => 'Laat leeg om elke dag van de week af te laten spelen',
+      ),
+      'LiquidSoap is currently shuffling from %{songs} and %{playlists}.' => 
+      array (
+        0 => 'LiquidSoap wordt momenteel geschuffeld van %{songs} en %{playlists}.',
+      ),
+      'Listeners Per Station' => 
+      array (
+        0 => '',
+      ),
+      'Live' => 
+      array (
+        0 => 'Live',
+      ),
+      'Loading...' => 
+      array (
+        0 => 'Laden...',
+      ),
+      'Local Filesystem' => 
+      array (
+        0 => 'Lokaal bestandssysteem',
+      ),
+      'Local Streams' => 
+      array (
+        0 => 'Lokale streams',
+      ),
+      'Logs' => 
+      array (
+        0 => '',
+      ),
+      'Loop Once' => 
+      array (
+        0 => '',
+      ),
+      'Low' => 
+      array (
+        0 => 'Laag',
+      ),
+      'Manually define how this playlist is used in Liquidsoap configuration.' => 
+      array (
+        0 => 'Handmatig definiëren hoe deze afspeellijst wordt gebruikt in de Liquidsoap configuratie.',
+      ),
+      'Max Listener Duration' => 
+      array (
+        0 => '',
+      ),
+      'Media' => 
+      array (
+        0 => '',
+      ),
+      'Merge playlist to play as a single track.' => 
+      array (
+        0 => 'Voeg afspeellijst samen om af te spelen als één nummer.',
+      ),
+      'Metadata' => 
+      array (
+        0 => 'Metagegevens',
+      ),
+      'Microphone' => 
+      array (
+        0 => 'Microfoon',
+      ),
+      'Microphone Source' => 
+      array (
+        0 => 'Microfoon bron',
+      ),
+      'Minute of Hour to Play' => 
+      array (
+        0 => 'Minuten van het uur om te spelen',
+      ),
+      'Mixer' => 
+      array (
+        0 => 'Mixen',
+      ),
+      'Modified' => 
+      array (
+        0 => 'Gewijzigd',
+      ),
+      'More' => 
+      array (
+        0 => 'Meer',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => '',
+      ),
+      'Mount Point URL' => 
+      array (
+        0 => 'Mount point URL',
+      ),
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
+      array (
+        0 => '',
+      ),
+      'Move' => 
+      array (
+        0 => 'Verplaats',
+      ),
+      'Move %{ num } File(s) to' => 
+      array (
+        0 => 'Verplaats %{ num } bestand(en) naar',
+      ),
+      'Move to Directory' => 
+      array (
+        0 => 'Verplaats naar map',
+      ),
+      'MP3' => 
+      array (
+        0 => 'MP3',
+      ),
+      'Mute' => 
+      array (
+        0 => 'Geluid dempen',
+      ),
+      'New Directory' => 
+      array (
+        0 => 'Nieuwe map',
+      ),
+      'New directory created.' => 
+      array (
+        0 => 'Nieuwe map aangemaakt.',
+      ),
+      'New File Name' => 
+      array (
+        0 => 'Nieuwe bestandsnaam',
+      ),
+      'New Folder' => 
+      array (
+        0 => 'Nieuwe map',
+      ),
+      'New Playlist' => 
+      array (
+        0 => 'Nieuwe afspeellijst',
+      ),
+      'New Playlist Name' => 
+      array (
+        0 => '',
+      ),
+      'No files selected.' => 
+      array (
+        0 => 'Geen bestanden geselecteerd.',
+      ),
+      'No records to display.' => 
+      array (
+        0 => 'Geen archief om te laten zien.',
+      ),
+      'Not Running' => 
+      array (
+        0 => 'Wordt niet uitgevoerd',
+      ),
+      'Not Scheduled' => 
+      array (
+        0 => 'Niet gepland',
+      ),
+      'Notes' => 
+      array (
+        0 => 'Notities',
+      ),
+      'Now' => 
+      array (
+        0 => 'Nu',
+      ),
+      'Now Playing' => 
+      array (
+        0 => 'Huidig nummer',
+      ),
+      'Number of Minutes Between Plays' => 
+      array (
+        0 => 'Aantal minuten tussen het afspelen',
+      ),
+      'Number of Songs Between Plays' => 
+      array (
+        0 => 'Aantal nummers tussen spelen',
+      ),
+      'On the Air' => 
+      array (
+        0 => 'On the Air',
+      ),
+      'On-Demand' => 
+      array (
+        0 => 'On-Demand',
+      ),
+      'Once per %{minutes} Minutes' => 
+      array (
+        0 => 'Eens per %{minutes} minuten',
+      ),
+      'Once per %{songs} Songs' => 
+      array (
+        0 => 'Eens per %{songs} nummers',
+      ),
+      'Once per Hour' => 
+      array (
+        0 => 'Eenmaal per uur',
+      ),
+      'Once per Hour (at %{minute})' => 
+      array (
+        0 => 'Eens per uur (om %{minute})',
+      ),
+      'Once per x Minutes' => 
+      array (
+        0 => 'Eens in de x minuten',
+      ),
+      'Once per x Songs' => 
+      array (
+        0 => 'Eenmaal per x nummers',
+      ),
+      'Only loop through playlist once.' => 
+      array (
+        0 => 'Afspeellijst maar eenmaal afspelen.',
+      ),
+      'Only play one track at scheduled time.' => 
+      array (
+        0 => 'Slechts één track afspelen op geplande tijd.',
+      ),
+      'Path/Suffix' => 
+      array (
+        0 => 'Pad/achtervoegsel',
+      ),
+      'Play exactly once every $x minutes.' => 
+      array (
+        0 => 'Speel precies één keer per <i>x</i> minuten.',
+      ),
+      'Play exactly once every $x songs.' => 
+      array (
+        0 => 'Speel precies eenmaal elke <i>x</i> nummers.',
+      ),
+      'Play once per hour at the specified minute.' => 
+      array (
+        0 => 'Speel één keer per uur op de aangeven tijd.',
+      ),
+      'Play/Pause' => 
+      array (
+        0 => 'Afspelen/Pauzeren',
+      ),
+      'Playback Queue' => 
+      array (
+        0 => '',
+      ),
+      'Playing Next' => 
+      array (
+        0 => 'Speelt hierna',
+      ),
+      'Playlist' => 
+      array (
+        0 => 'Afspeellijst',
+      ),
+      'Playlist (M3U/PLS) URL' => 
+      array (
+        0 => 'Speellijst (M3U/PLS) URL',
+      ),
+      'Playlist 1' => 
+      array (
+        0 => 'Afspeellijst 1',
+      ),
+      'Playlist 2' => 
+      array (
+        0 => 'Afspeellijst 2',
+      ),
+      'Playlist Name' => 
+      array (
+        0 => 'Naam van afspeellijst',
+      ),
+      'Playlist order set.' => 
+      array (
+        0 => 'Afspeellijst volgorde ingesteld.',
+      ),
+      'Playlist Type' => 
+      array (
+        0 => 'Afspeellijst type',
+      ),
+      'Playlist Weight' => 
+      array (
+        0 => 'Gewicht van afspeellijst',
+      ),
+      'Playlists cleared for selected files:' => 
+      array (
+        0 => 'Afspeellijsten geleegd voor geselecteerde bestanden:',
+      ),
+      'Playlists updated for selected files:' => 
+      array (
+        0 => 'Afspeellijsten bijgewerkt voor geselecteerde bestanden:',
+      ),
+      'Podcast' => 
+      array (
+        0 => '',
+      ),
+      'Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.' => 
+      array (
+        0 => '',
+      ),
+      'Podcast Title' => 
+      array (
+        0 => '',
+      ),
+      'Preview' => 
+      array (
+        0 => '',
+      ),
+      'Public Page Background' => 
+      array (
+        0 => '',
+      ),
+      'Public Pages' => 
+      array (
+        0 => 'Publieke pagina\'s',
+      ),
+      'Publish Date' => 
+      array (
+        0 => '',
+      ),
+      'Publish Time' => 
+      array (
+        0 => '',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => 'Publiceren naar "Yellow Pages" gids',
+      ),
+      'Queue' => 
+      array (
+        0 => 'Wachtrij',
+      ),
+      'Queue the selected media to play next' => 
+      array (
+        0 => 'Voeg de geselecteerde media toe aan de wachtrij om hierna af te spelen',
+      ),
+      'Radio Player' => 
+      array (
+        0 => '',
+      ),
+      'Random' => 
+      array (
+        0 => 'Willekeurig',
+      ),
+      'Raw' => 
+      array (
+        0 => 'Raw',
+      ),
+      'Refresh rows' => 
+      array (
+        0 => 'Ververs rijen',
+      ),
+      'Region' => 
+      array (
+        0 => 'Regio',
+      ),
+      'Relay Password' => 
+      array (
+        0 => 'Relay wachtwoord',
+      ),
+      'Relay Stream URL' => 
+      array (
+        0 => 'Relay stream URL',
+      ),
+      'Remote Playback Buffer (Seconds)' => 
+      array (
+        0 => 'Externe afspeelbuffer (seconden)',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => '',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => 'Wachtwoord van extern station',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => 'Mountpoint/SID van extern station',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => 'Luister URL van extern station',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => 'Externe station bron mountpoint/SID',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => 'Bronwachtwoord van extern station',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => 'Externe Station bron poort',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => 'Bron gebruikersnaam van extern station',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => 'Extern station type',
+      ),
+      'Remote URL' => 
+      array (
+        0 => 'Externe URL',
+      ),
+      'Remote URL Playlist' => 
+      array (
+        0 => 'Afspeellijst vanaf externe URL',
+      ),
+      'Remote URL Type' => 
+      array (
+        0 => 'Externe URL type',
+      ),
+      'Remote: Dropbox' => 
+      array (
+        0 => 'Extern: Dropbox',
+      ),
+      'Remote: S3 Compatible' => 
+      array (
+        0 => 'Extern: S3 Compatibel',
+      ),
+      'Remove' => 
+      array (
+        0 => 'Verwijderen',
+      ),
+      'Rename' => 
+      array (
+        0 => 'Hernoemen',
+      ),
+      'Rename File/Directory' => 
+      array (
+        0 => 'Wijzig bestand/map',
+      ),
+      'Reorder' => 
+      array (
+        0 => 'Herschikken',
+      ),
+      'Reorder Playlist' => 
+      array (
+        0 => 'Afspeellijst herschikken',
+      ),
+      'Repeat Playlist' => 
+      array (
+        0 => 'Herhaal afspeellijst',
+      ),
+      'Replace Album Cover Art' => 
+      array (
+        0 => 'Vervang albumhoes',
+      ),
+      'Reprocess' => 
+      array (
+        0 => '',
+      ),
+      'Request' => 
+      array (
+        0 => 'Aanvragen',
+      ),
+      'Request a Song' => 
+      array (
+        0 => 'Nummer aanvragen',
+      ),
+      'Request Song' => 
+      array (
+        0 => 'Nummer aanvragen',
+      ),
+      'Requests' => 
+      array (
+        0 => '',
+      ),
+      'Reshuffle' => 
+      array (
+        0 => 'Opnieuw shufflen',
+      ),
+      'Restart' => 
+      array (
+        0 => 'Herstart',
+      ),
+      'Rows per page' => 
+      array (
+        0 => 'Rijen per pagina',
+      ),
+      'Running' => 
+      array (
+        0 => 'Wordt uitgevoerd',
+      ),
+      'Sample Rate' => 
+      array (
+        0 => 'Sample snelheid',
+      ),
+      'Save' => 
+      array (
+        0 => 'Opslaan',
+      ),
+      'Schedule View' => 
+      array (
+        0 => 'Schema Bekijken',
+      ),
+      'Scheduled' => 
+      array (
+        0 => 'Gepland',
+      ),
+      'Scheduled Play Days of Week' => 
+      array (
+        0 => 'Schema voor afspelen dagelijks en wekelijks',
+      ),
+      'Scheduled Time #%{num}' => 
+      array (
+        0 => 'Geplande Tijd #%{num}',
+      ),
+      'Scheduling' => 
+      array (
+        0 => 'Schema planning',
+      ),
+      'Search' => 
+      array (
+        0 => 'Zoeken',
+      ),
+      'Seconds from the start of the song that the AutoDJ should start playing.' => 
+      array (
+        0 => 'Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet beginnen met spelen.',
+      ),
+      'Seconds from the start of the song that the AutoDJ should stop playing.' => 
+      array (
+        0 => 'Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet stoppen met spelen.',
+      ),
+      'Secret Key' => 
+      array (
+        0 => 'Geheime sleutel',
+      ),
+      'Seek' => 
+      array (
+        0 => 'Zoeken',
+      ),
+      'Select' => 
+      array (
+        0 => 'Selecteer',
+      ),
+      'Select a theme to use as a base for station public pages and the login page.' => 
+      array (
+        0 => 'Selecteer een thema dat als basis moet worden gebruikt voor openbare stations en de inlogpagina.',
+      ),
+      'Select all visible rows' => 
+      array (
+        0 => 'Selecteer alle zichtbare rijen',
+      ),
+      'Select displayed fields' => 
+      array (
+        0 => 'Selecteer weer te geven velden',
+      ),
+      'Select Intro File' => 
+      array (
+        0 => '',
+      ),
+      'Select Media File' => 
+      array (
+        0 => '',
+      ),
+      'Select PLS/M3U File to Import' => 
+      array (
+        0 => 'Selecteer PLS/M3U bestand om te importeren',
+      ),
+      'Select PNG/JPG artwork file' => 
+      array (
+        0 => '',
+      ),
+      'Select the category/categories that best reflects the content of your podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Sequential' => 
+      array (
+        0 => 'Opeenvolgend',
+      ),
+      'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
+      array (
+        0 => 'Stel de maximale schijfruimte in die deze opslaglocatie mag gebruiken. Geef een grootte op met eenheid, d.w.z. "8 GB". Eenheden worden gemeten per 1024 bytes. Laat leeg om de standaard beschikbare ruimte op de schijf te gebruiken.',
+      ),
+      'Set as Default Mount Point' => 
+      array (
+        0 => 'Instellen als standaard mount point',
+      ),
+      'Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.' => 
+      array (
+        0 => 'Stel cue en fade-punten in met behulp van de visuele editor. De tijdstempels worden opgeslagen in de overeenkomstige velden in de geavanceerde instellingen voor afspelen.',
+      ),
+      'Set Cue In' => 
+      array (
+        0 => 'Cue In instellen',
+      ),
+      'Set Cue Out' => 
+      array (
+        0 => 'Cue Out instellen',
+      ),
+      'Set Fade In' => 
+      array (
+        0 => 'Fade In instellen',
+      ),
+      'Set Fade Out' => 
+      array (
+        0 => 'Fade Out instellen',
+      ),
+      'Set or clear playlists from the selected media' => 
+      array (
+        0 => 'Afspeellijsten van geselecteerde media instellen of legen',
+      ),
+      'Set Overlap' => 
+      array (
+        0 => 'Overlap instellen',
+      ),
+      'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 
+      array (
+        0 => '',
+      ),
+      'Show Charts' => 
+      array (
+        0 => '',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => 'Toon op openbare pagina\'s',
+      ),
+      'Shuffled' => 
+      array (
+        0 => 'Shuffled',
+      ),
+      'Skip Song' => 
+      array (
+        0 => 'Nummer overslaan',
+      ),
+      'Song' => 
+      array (
+        0 => '',
+      ),
+      'Song Album' => 
+      array (
+        0 => 'Album',
+      ),
+      'Song Artist' => 
+      array (
+        0 => 'Artiest',
+      ),
+      'Song Genre' => 
+      array (
+        0 => 'Track Genre',
+      ),
+      'Song History' => 
+      array (
+        0 => 'Afspeelgeschiedenis',
+      ),
+      'Song Length' => 
+      array (
+        0 => 'Lengte Lied',
+      ),
+      'Song Lyrics' => 
+      array (
+        0 => 'Songtekst Lied',
+      ),
+      'Song Playback Order' => 
+      array (
+        0 => 'Volgorde van afspelen',
+      ),
+      'Song-based' => 
+      array (
+        0 => 'Nummergebaseerd',
+      ),
+      'Song-Based Playlist' => 
+      array (
+        0 => 'Op lied gebaseerde afspeellijst',
+      ),
+      'Source Password' => 
+      array (
+        0 => 'Source wachtwoord',
+      ),
+      'Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => '',
+      ),
+      'Specify the minute of every hour that this playlist should play.' => 
+      array (
+        0 => 'Specificeer de minuut van elk uur dat deze afspeellijst moet spelen.',
+      ),
+      'Standard playlist, shuffles with other standard playlists based on weight.' => 
+      array (
+        0 => 'Standaard afspeellijst, shuffles met andere standaard afspeellijsten gebaseerd op gewicht.',
+      ),
+      'Start' => 
+      array (
+        0 => 'Start',
+      ),
+      'Start Date' => 
+      array (
+        0 => 'Start Datum',
+      ),
+      'Start Streaming' => 
+      array (
+        0 => 'Start streamen',
+      ),
+      'Start Time' => 
+      array (
+        0 => 'Starttijd',
+      ),
+      'Start/end date cannot be used on playlists with advanced settings!' => 
+      array (
+        0 => 'Start-/einddatum kan niet worden gebruikt in afspeellijsten met geavanceerde instellingen!',
+      ),
+      'Station Media' => 
+      array (
+        0 => 'Station media',
+      ),
+      'Station Name' => 
+      array (
+        0 => '',
+      ),
+      'Station Overview' => 
+      array (
+        0 => '',
+      ),
+      'Station Podcasts' => 
+      array (
+        0 => '',
+      ),
+      'Station Recordings' => 
+      array (
+        0 => 'Station opnames',
+      ),
+      'Station Time Zone' => 
+      array (
+        0 => 'Tijdzone',
+      ),
+      'Station(s)' => 
+      array (
+        0 => 'Station(s)',
+      ),
+      'Stop Streaming' => 
+      array (
+        0 => 'Stoppen met streamen',
+      ),
+      'Storage Adapter' => 
+      array (
+        0 => 'Opslag Adapter',
+      ),
+      'Storage Quota' => 
+      array (
+        0 => 'Opslagruimte',
+      ),
+      'Streamer Broadcasts' => 
+      array (
+        0 => 'Streamer uitzendingen',
+      ),
+      'Streamer Display Name' => 
+      array (
+        0 => 'Streamer weergavenaam',
+      ),
+      'Streamer password' => 
+      array (
+        0 => 'Wachtwoord streamer',
+      ),
+      'Streamer Username' => 
+      array (
+        0 => 'Streamer gebruikersnaam',
+      ),
+      'Streamer/DJ' => 
+      array (
+        0 => 'Streamer/DJ',
+      ),
+      'Streams' => 
+      array (
+        0 => 'Streams',
+      ),
+      'text' => 
+      array (
+        0 => '',
+      ),
+      'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The date when the episode should be published.' => 
+      array (
+        0 => '',
+      ),
+      'The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '',
+      ),
+      'The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.' => 
+      array (
+        0 => '',
+      ),
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'De weergave naam die aan dit mountpoint is gekoppeld en wordt weergegeven op administratieve- en publieke pagina\'s. Laat leeg om automatisch te laten genereren.',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'De naam die aan dit mountpoint is gekoppeld en wordt weergegeven op administratieve- en publieke pagina\'s. Laat leeg om automatisch te laten genereren.',
+      ),
+      'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
+      array (
+        0 => '',
+      ),
+      'The full playlist is shuffled and then played through in the shuffled order.' => 
+      array (
+        0 => 'De volledige afspeellijst is geschuffeld, en zal worden afgespeeld in de geschuffelde volgorde.',
+      ),
+      'The language spoken on the podcast.' => 
+      array (
+        0 => '',
+      ),
+      'The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.' => 
+      array (
+        0 => 'De lengte van afspeeltijd dat Liquidsoap moet bufferen wanneer deze externe playlist wordt afgespeeld. Te korte buffers kunnen lijden tot onderbrekingen en instabiele verbindingen. ',
+      ),
+      'The order of the playlist is manually specified and followed by the AutoDJ.' => 
+      array (
+        0 => 'De volgorde van de afspeellijst is handmatig opgegeven en gevolgd door de AutoDJ.',
+      ),
+      'The relative path of the file in the station\'s media directory.' => 
+      array (
+        0 => 'Het relatieve pad naar het bestand in de media map van het station.',
+      ),
+      'The request could not be processed.' => 
+      array (
+        0 => 'Het verzoek kon niet worden verwerkt.',
+      ),
+      'The streamer will use this password to connect to the radio server.' => 
+      array (
+        0 => 'De streamer zal dit wachtwoord gebruiken om verbinding te maken met de radioserver.',
+      ),
+      'The streamer will use this username to connect to the radio server.' => 
+      array (
+        0 => 'De streamer dient de gebruikersnaam te gebruiken om met de radio server te verbinden.',
+      ),
+      'The time period that the song should fade in. Leave blank to use the system default.' => 
+      array (
+        0 => 'De periode waarin het liedje moet infaden. Leeg laten om de systeemstandaard te gebruiken.',
+      ),
+      'The time period that the song should fade out. Leave blank to use the system default.' => 
+      array (
+        0 => 'De periode waarin het nummer moet uitfaden. Leeg laten om de systeemstandaard te gebruiken.',
+      ),
+      'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
+      array (
+        0 => 'De tijd dat dit nummer moet overlappen met de nummers om te faden. Laat leeg om de standaard nummer te gebruiken.',
+      ),
+      'The time when the episode should be published (according to the stations timezone).' => 
+      array (
+        0 => '',
+      ),
+      'The volume in decibels to amplify the track with. Leave blank to use the system default.' => 
+      array (
+        0 => 'Het volume in decibels om het nummer mee te versterken. Laat leeg om de systeemstandaard te gebruiken.',
+      ),
+      'Theme' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing intro file associated with this mount point.' => 
+      array (
+        0 => '',
+      ),
+      'There is no existing media associated with this episode.' => 
+      array (
+        0 => '',
+      ),
+      'This CSS will be applied to the main management pages, like this one.' => 
+      array (
+        0 => 'Deze CSS zal worden toegevoegd aan alle pagina\'s binnen de beheeromgeving, zoals deze pagina.',
+      ),
+      'This CSS will be applied to the station public pages and login page.' => 
+      array (
+        0 => 'Deze CSS zal worden toegepast op de inlogpagina en openbare pagina\'s van het station.',
+      ),
+      'This field is required.' => 
+      array (
+        0 => 'Dit veld is verplicht.',
+      ),
+      'This field must be a valid decimal number.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid e-mail address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid integer.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid IP address.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be a valid URL.' => 
+      array (
+        0 => '',
+      ),
+      'This field must be between %{ min } and %{ max }.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at least %{ min } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must have at most %{ max } letters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphabetic characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain alphanumeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This field must only contain numeric characters.' => 
+      array (
+        0 => '',
+      ),
+      'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
+      array (
+        0 => '',
+      ),
+      'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
+      array (
+        0 => 'Dit is de informele weergavenaam die zal worden weergegeven in API-antwoorden als de streamer/DJ live is.',
+      ),
+      'This javascript code will be applied to the station public pages and login page.' => 
+      array (
+        0 => 'Deze javascript code zal worden toegepast op de openbare pagina\'s van het station en de inlogpagina.',
+      ),
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
+      array (
+        0 => 'De naam dient te beginnen met een schuine streep (/), en een geldige URL te bevatten. Bijv: /autodj.mp3',
+      ),
+      'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
+      array (
+        0 => 'De afspeellijst heeft momenteel geen geplande tijden. Hij zal te allen tijde afspelen. Klik op de knop hieronder om een nieuwe geplande tijd toe te voegen.',
+      ),
+      'This playlist will play every $x minutes, where $x is specified below.' => 
+      array (
+        0 => 'Deze afspeellijst zal elke $x minuten spelen, waar $x hieronder is opgegeven.',
+      ),
+      'This playlist will play every $x songs, where $x is specified below.' => 
+      array (
+        0 => 'Deze afspeellijst zal om $x nummers worden afgespeeld, waar $x hieronder is opgegeven.',
+      ),
+      'This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).' => 
+      array (
+        0 => '',
+      ),
+      'This station\'s time zone is currently %{tz}.' => 
+      array (
+        0 => 'De tijdzone van dit station is momenteel %{tz}.',
+      ),
+      'This streamer is not scheduled to play at any times.' => 
+      array (
+        0 => 'Deze streamer is nog niet opgenomen in de planning.',
+      ),
+      'To play once per day, set the start and end times to the same value.' => 
+      array (
+        0 => 'Stel de start- en eindtijd in op dezelfde waarde om één keer per dag te spelen.',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => 'Om gedetailleerde unieke luisteraar- en clientgegevens op te halen, is een beheerders wachtwoord vaak vereist.',
+      ),
+      'To set this schedule to run only within a certain date range, specify a start and end date.' => 
+      array (
+        0 => 'Om dit schema alleen binnen een bepaald datumbereik uit te voeren, geef je een start- en einddatum op.',
+      ),
+      'Typically a website with content about the episode.' => 
+      array (
+        0 => '',
+      ),
+      'Typically the home page of a podcast.' => 
+      array (
+        0 => '',
+      ),
+      'Unique' => 
+      array (
+        0 => 'Uniek',
+      ),
+      'Unknown Artist' => 
+      array (
+        0 => 'Onbekende artiest',
+      ),
+      'Unknown Title' => 
+      array (
+        0 => 'Onbekende titel',
+      ),
+      'Up' => 
+      array (
+        0 => 'Omhoog',
+      ),
+      'Update Metadata' => 
+      array (
+        0 => 'Metadata bijwerken',
+      ),
+      'Upload Custom Assets' => 
+      array (
+        0 => '',
+      ),
+      'Use Asynchronous Worker' => 
+      array (
+        0 => 'Gebruik asynchrone streamer',
+      ),
+      'View' => 
+      array (
+        0 => 'Bekijk',
+      ),
+      'View tracks in playlist' => 
+      array (
+        0 => 'Bekijk nummers in afspeellijst',
+      ),
+      'Visual Cue Editor' => 
+      array (
+        0 => 'Visuele Cue Editor',
+      ),
+      'Volume' => 
+      array (
+        0 => 'Volume',
+      ),
+      'Warning' => 
+      array (
+        0 => 'Waarschuwing',
+      ),
+      'Waveform Zoom' => 
+      array (
+        0 => 'Waveform Zoom',
+      ),
+      'Website' => 
+      array (
+        0 => '',
+      ),
+      'Weight' => 
+      array (
+        0 => 'Gewicht',
+      ),
+      'Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.' => 
+      array (
+        0 => 'Of de AutoDJ moet proberen dubbele artiesten en titels te vermijden gedurende het afspelen van media uit deze afspeellijst.',
+      ),
+      'Widget Type' => 
+      array (
+        0 => '',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => '',
+      ),
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
+      array (
+        0 => '',
+      ),
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
+      array (
+        0 => 'U kunt een aangepaste URL instellen voor de stream die door AzuraCast wordt gebruikt. Laat leeg om de standaardwaarde te gebruiken.',
+      ),
+      'YP Directory Authorization Hash' => 
+      array (
+        0 => 'YP Directory Autorisatie Hash',
       ),
     ),
   ),

@@ -25,7 +25,6 @@ class UsersAction
             title: __('Users'),
             props: [
                 'listUrl' => (string)$router->fromHere('api:admin:users'),
-                'currentUserId' => $request->getUser()->getIdRequired(),
                 'roles' => $roleRepo->fetchSelect(),
             ]
         );

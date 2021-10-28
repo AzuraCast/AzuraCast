@@ -83,7 +83,7 @@ class UsersController extends AbstractAdminApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof $this->entityClass)) {
+        if (!($record instanceof Entity\User)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
@@ -92,6 +92,9 @@ class UsersController extends AbstractAdminApiCrudController
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
         $csrf = $request->getCsrf();
+        $currentUser = $request->getUser();
+
+        $return['is_me'] = $currentUser->getIdRequired() === $record->getIdRequired();
 
         $return['links'] = [
             'self'       => (string)$router->fromHere(
@@ -110,6 +113,26 @@ class UsersController extends AbstractAdminApiCrudController
         ];
 
         return $return;
+    }
+
+    public function editAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
+    {
+        $record = $this->getRecord($id);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Entity\Api\Error::notFound());
+        }
+
+        $currentUser = $request->getUser();
+        if ($record->getId() === $currentUser->getId()) {
+            return $response->withStatus(403)
+                ->withJson(new Entity\Api\Error(403, __('You cannot modify yourself.')));
+        }
+
+        $this->editRecord((array)$request->getParsedBody(), $record);
+
+        return $response->withJson(Entity\Api\Status::updated());
     }
 
     /**
@@ -141,9 +164,8 @@ class UsersController extends AbstractAdminApiCrudController
                 ->withJson(Entity\Api\Error::notFound());
         }
 
-        $current_user = $request->getUser();
-
-        if ($record->getId() === $current_user->getId()) {
+        $currentUser = $request->getUser();
+        if ($record->getId() === $currentUser->getId()) {
             return $response->withStatus(403)
                 ->withJson(new Entity\Api\Error(403, __('You cannot remove yourself.')));
         }

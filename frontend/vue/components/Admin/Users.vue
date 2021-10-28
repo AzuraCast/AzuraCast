@@ -16,7 +16,7 @@
                 <template #cell(name)="row">
                     <h5 class="mb-0" v-if="row.item.name !== ''">{{ row.item.name }}</h5>
                     <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>
-                    <span v-if="isMe(row.item.id)" class="badge badge-primary">
+                    <span v-if="row.item.is_me" class="badge badge-primary">
                         <translate key="lang_is_me">You</translate>
                     </span>
                 </template>
@@ -26,7 +26,7 @@
                     </div>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button-group size="sm" v-if="!isMe(row.item.id)">
+                    <b-button-group size="sm" v-if="!row.item.is_me">
                         <b-button size="sm" variant="secondary" :href="row.item.links.masquerade" target="_blank">
                             <translate key="lang_btn_masquerade">Log In</translate>
                         </b-button>
@@ -57,7 +57,6 @@ export default {
     components: {InfoCard, Icon, EditModal, DataTable},
     props: {
         listUrl: String,
-        currentUserId: Number,
         roles: Object
     },
     data() {

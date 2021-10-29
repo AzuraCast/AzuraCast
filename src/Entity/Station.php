@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Environment;
 use App\Normalizer\Attributes\DeepNormalize;
@@ -38,8 +39,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     use Traits\TruncateStrings;
 
     // Taxonomical groups for permission-based serialization.
-    public const GROUP_GENERAL = 'general';
-    public const GROUP_ADMIN = 'admin';
     public const GROUP_AUTOMATION = 'automation';
 
     /**
@@ -50,7 +49,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     #[ORM\Column(length: 100, nullable: false)]
     #[Assert\NotBlank]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected string $name = '';
 
     /**
@@ -61,7 +60,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     #[ORM\Column(length: 100, nullable: false)]
     #[Assert\NotBlank]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected string $short_name = '';
 
     /**
@@ -71,7 +70,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected bool $is_enabled = true;
 
     /**
@@ -82,7 +81,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST])]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $frontend_type = Adapters::FRONTEND_ICECAST;
 
     /**
@@ -93,7 +92,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?array $frontend_config = null;
 
     /**
@@ -104,7 +103,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE])]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
     /**
@@ -115,7 +114,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?array $backend_config = null;
 
     #[ORM\Column(length: 150, nullable: true)]
@@ -124,22 +123,22 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     /** @OA\Property(example="A sample radio station.") */
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $description = null;
 
     /** @OA\Property(example="https://demo.azuracast.com/") */
     #[ORM\Column(length: 255, nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $url = null;
 
     /** @OA\Property(example="Various") */
     #[ORM\Column(length: 150, nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $genre = null;
 
     /** @OA\Property(example="/var/azuracast/stations/azuratest_radio") */
     #[ORM\Column(length: 255, nullable: true)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $radio_base_dir = null;
 
     #[ORM\Column(type: 'array', nullable: true)]
@@ -152,12 +151,12 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     /** @OA\Property(type="array", @OA\Items()) */
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Serializer\Groups(self::GROUP_AUTOMATION)]
+    #[Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])]
     protected ?array $automation_settings = null;
 
     #[ORM\Column(nullable: true)]
     #[Attributes\AuditIgnore]
-    #[Serializer\Groups(self::GROUP_AUTOMATION)]
+    #[Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $automation_timestamp = 0;
 
     /**
@@ -167,22 +166,22 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected bool $enable_requests = false;
 
     /** @OA\Property(example=5) */
     #[ORM\Column(nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $request_delay = 5;
 
     /** @OA\Property(example=15) */
     #[ORM\Column(nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $request_threshold = 15;
 
     /** @OA\Property(example=0) */
     #[ORM\Column(nullable: true, options: ['default' => 0])]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $disconnect_deactivate_streamer = 0;
 
     /**
@@ -192,7 +191,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected bool $enable_streamers = false;
 
     /**
@@ -212,7 +211,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected bool $enable_public_page = true;
 
     /**
@@ -222,7 +221,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected bool $enable_on_demand = false;
 
     /**
@@ -232,7 +231,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected bool $enable_on_demand_download = true;
 
     #[ORM\Column]
@@ -250,7 +249,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column(type: 'smallint')]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected int $api_history_items = 5;
 
     /**
@@ -260,7 +259,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column(length: 100, nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $timezone = 'UTC';
 
     /**
@@ -270,7 +269,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      * )
      */
     #[ORM\Column(length: 255, nullable: true)]
-    #[Serializer\Groups(self::GROUP_GENERAL)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $default_album_art_url = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
@@ -278,7 +277,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected Collection $history;
 
     #[ORM\Column(nullable: true)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $media_storage_location_id = null;
 
     #[ORM\ManyToOne]
@@ -293,7 +292,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?StorageLocation $media_storage_location = null;
 
     #[ORM\Column(nullable: true)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $recordings_storage_location_id = null;
 
     #[ORM\ManyToOne]
@@ -308,7 +307,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?StorageLocation $recordings_storage_location = null;
 
     #[ORM\Column(nullable: true)]
-    #[Serializer\Groups(self::GROUP_ADMIN)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?int $podcasts_storage_location_id = null;
 
     #[ORM\ManyToOne]

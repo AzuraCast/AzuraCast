@@ -7,11 +7,13 @@ namespace App\Entity\Traits;
 use App\Entity;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait HasSplitTokenFields
 {
     #[ORM\Column(length: 16)]
     #[ORM\Id]
+    #[Groups([Entity\Interfaces\EntityGroupsInterface::GROUP_ID, Entity\Interfaces\EntityGroupsInterface::GROUP_ALL])]
     protected string $id;
 
     #[ORM\Column(length: 128)]

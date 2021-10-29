@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations;
 use App\Acl;
 use App\Controller\Api\Admin\StationsController;
 use App\Entity;
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -44,12 +45,13 @@ class ProfileEditController extends StationsController
     {
         $context = [
             AbstractNormalizer::GROUPS => [
-                Entity\Station::GROUP_GENERAL,
+                EntityGroupsInterface::GROUP_ID,
+                EntityGroupsInterface::GROUP_GENERAL,
             ],
         ];
 
         if ($request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS)) {
-            $context[AbstractNormalizer::GROUPS][] = Entity\Station::GROUP_ADMIN;
+            $context[AbstractNormalizer::GROUPS][] = EntityGroupsInterface::GROUP_ALL;
         }
 
         return $context;

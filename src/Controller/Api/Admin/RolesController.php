@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -22,7 +22,7 @@ class RolesController extends AbstractAdminApiCrudController
 
     public function __construct(
         protected Acl $acl,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {

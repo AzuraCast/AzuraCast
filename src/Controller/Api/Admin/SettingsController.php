@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -25,7 +25,7 @@ class SettingsController extends AbstractApiCrudController
 
     public function __construct(
         protected Entity\Repository\SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {

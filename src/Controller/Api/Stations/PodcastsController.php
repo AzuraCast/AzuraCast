@@ -6,12 +6,12 @@ namespace App\Controller\Api\Stations;
 
 use App\Acl;
 use App\Controller\Api\AbstractApiCrudController;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -28,7 +28,7 @@ class PodcastsController extends AbstractApiCrudController
     protected string $resourceRouteName = 'api:stations:podcast';
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         protected Entity\Repository\StationRepository $stationRepository,

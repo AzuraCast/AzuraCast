@@ -8,7 +8,6 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -26,7 +25,7 @@ class QueueController extends AbstractStationApiCrudController
     public function __construct(
         protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
         protected Entity\Repository\StationQueueRepository $queueRepo,
-        EntityManagerInterface $em,
+        App\Doctrine\ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {

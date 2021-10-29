@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -25,7 +25,7 @@ class MountsController extends AbstractStationApiCrudController
     protected string $resourceRouteName = 'api:stations:mount';
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         protected Entity\Repository\StationMountRepository $mountRepo

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -25,7 +25,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
 
     public function __construct(
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {

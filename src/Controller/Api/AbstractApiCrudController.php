@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -30,7 +30,7 @@ abstract class AbstractApiCrudController
     protected string $resourceRouteName;
 
     public function __construct(
-        protected EntityManagerInterface $em,
+        protected ReloadableEntityManagerInterface $em,
         protected Serializer $serializer,
         protected ValidatorInterface $validator
     ) {
@@ -104,8 +104,8 @@ abstract class AbstractApiCrudController
             array_merge(
                 $context,
                 [
-                    ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-                    ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                    ObjectNormalizer::ENABLE_MAX_DEPTH           => true,
+                    ObjectNormalizer::MAX_DEPTH_HANDLER          => function (
                         $innerObject,
                         $outerObject,
                         string $attributeName,

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -28,7 +28,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
     public function __construct(
         protected Entity\Repository\StationScheduleRepository $scheduleRepo,
         protected Scheduler $scheduler,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {

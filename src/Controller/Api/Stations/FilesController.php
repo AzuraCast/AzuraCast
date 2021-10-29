@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Flysystem\StationFilesystems;
@@ -12,7 +13,6 @@ use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -35,7 +35,7 @@ class FilesController extends AbstractStationApiCrudController
         protected Entity\Repository\CustomFieldRepository $customFieldsRepo,
         protected Entity\Repository\StationMediaRepository $mediaRepo,
         protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -266,7 +266,7 @@ class FilesController extends AbstractStationApiCrudController
                     $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
                         [
                             'station' => $station,
-                            'id' => $playlist_id,
+                            'id'      => $playlist_id,
                         ]
                     );
 
@@ -322,7 +322,7 @@ class FilesController extends AbstractStationApiCrudController
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,
-                    $field => $id,
+                    $field             => $id,
                 ]
             );
 

@@ -12,8 +12,21 @@
                     </h2>
                 </b-card-header>
 
-                <b-card-body body-class="card-padding-sm">
-                </b-card-body>
+                <b-overlay variant="card" :show="userLoading">
+                    <b-card-body body-class="card-padding-sm">
+                        <b-media right-align vertical-align="center">
+                            <template v-if="user.avatar" #aside>
+                                <b-img :src="user.avatar" alt=""></b-img>
+                            </template>
+
+                            <h2 v-if="user.name" class="card-title mt-2">{{ user.name }}</h2>
+                            <h2 v-else class="card-title mt-2">
+                                <translate key="lang_no_username">AzuraCast User</translate>
+                            </h2>
+                            <h3 class="card-subtitle">{{ user.email }}</h3>
+                        </b-media>
+                    </b-card-body>
+                </b-overlay>
 
                 <div class="card-actions">
                     <a class="btn btn-outline-primary">
@@ -30,8 +43,25 @@
                     </h2>
                 </b-card-header>
 
-                <b-card-body body-class="card-padding-sm">
-                </b-card-body>
+                <b-overlay variant="card" :show="securityLoading">
+                    <b-card-body body-class="card-padding-sm">
+                        <h3 class="card-subtitle text-success">
+
+                        </h3>
+                        <?php
+                    if (null !== $user->getTwoFactorSecret()): ?>
+                        <?=__('Enabled')?></h3>
+                        <?php
+                    else: ?>
+                        <h3 class="card-subtitle text-danger"><?=__('Disabled')?></h3>
+                        <?php
+                    endif; ?>
+
+                        <p class="card-text mt-3">
+                            <translate key="lang_two_factor_info">Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.</translate>
+                        </p>
+                    </b-card-body>
+                </b-overlay>
 
                 <div class="card-actions">
                     <a class="btn btn-outline-primary">
@@ -91,6 +121,21 @@ export default {
         passwordUrl: String,
         twoFactorUrl: String,
         apiKeysApiUrl: String
+    },
+    data() {
+        return {
+            userLoading: true,
+            user: {
+                name: null,
+                email: null,
+
+                avatar: null,
+            },
+            securityLoading: true,
+            security: {
+                twoFactorEnabled: false,
+            }
+        }
     }
 }
 </script>

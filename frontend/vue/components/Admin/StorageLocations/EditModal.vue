@@ -27,17 +27,17 @@ export default {
                 : this.$gettext('Add Storage Location');
         }
     },
-    validations () {
+    validations() {
         let validations = {
             form: {
-                'adapter': { required },
+                'adapter': {required},
                 'storageQuota': {}
             }
         };
 
         switch (this.form.adapter) {
             case 'local':
-                validations.form.path = { required };
+                validations.form.path = {required};
                 validations.form.s3CredentialKey = {};
                 validations.form.s3CredentialSecret = {};
                 validations.form.s3Region = {};
@@ -73,7 +73,7 @@ export default {
         return validations;
     },
     methods: {
-        resetForm () {
+        resetForm() {
             this.form = {
                 'adapter': 'local',
                 'path': '',
@@ -85,6 +85,16 @@ export default {
                 's3Endpoint': null,
                 'dropboxAuthToken': null,
                 'storageQuota': ''
+            };
+        },
+        getSubmittableFormData() {
+            if (this.isEditMode) {
+                return this.form;
+            }
+
+            return {
+                ...this.form,
+                type: this.type
             };
         }
     }

@@ -25,6 +25,10 @@ class ImportCommand extends CommandAbstract
         $jsTranslations = [];
 
         foreach ($locales as $locale_key => $locale_name) {
+            if ($locale_key === Locale::DEFAULT_LOCALE) {
+                continue;
+            }
+
             $locale_source = $locale_base . '/' . $locale_key . '/LC_MESSAGES/default.po';
 
             if (is_file($locale_source)) {
@@ -48,7 +52,20 @@ class ImportCommand extends CommandAbstract
                         continue;
                     }
 
-                    $jsTranslations[$localeJsKey][$translation->getOriginal()] = $translation->getTranslation();
+                    if ($translation->hasPlural()) {
+                        $string = [
+                            $translation->getTranslation(),
+                        ];
+
+                        $pluralStrings = $translation->getPluralTranslations();
+                        if (count($pluralStrings) > 0) {
+                            $string = array_merge($string, $pluralStrings);
+                        }
+                    } else {
+                        $string = $translation->getTranslation();
+                    }
+
+                    $jsTranslations[$localeJsKey][$translation->getOriginal()] = $string;
                 }
 
                 $io->writeln(__('Imported locale: %s', $locale_key . ' (' . $locale_name . ')'));

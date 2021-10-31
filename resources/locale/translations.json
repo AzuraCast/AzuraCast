@@ -810,7 +810,10 @@
         "Unique": "Einzigartig",
         "Download PLS": "PLS herunterladen",
         "Download M3U": "M3U herunterladen",
-        "%{listeners} Listener": "%{listeners} Zuhörer",
+        "%{listeners} Listener": [
+            "%{listeners} Zuhörer",
+            "%{listeners} Zuhörer"
+        ],
         "On the Air": "Auf Sendung",
         "Playing Next": "Als Nächstes",
         "Live": "Live",
@@ -841,8 +844,14 @@
         "Now": "Jetzt",
         "AutoDJ Disabled": "AutoDJ deaktiviert",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "Der AutoDJ wurde für diese Station deaktiviert. Es wird keine Musik automatisch wiedergegeben, wenn keine Quelle live ist.",
-        "%{numSongs} uploaded song": "%{numSongs} hochgeladenes Lied",
-        "%{numPlaylists} playlist": "%{numPlaylists} Wiedergabeliste",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} hochgeladenes Lied",
+            "%{numSongs} hochgeladene Lieder"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} Wiedergabeliste",
+            "%{numPlaylists} Wiedergabelisten"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap mischt derzeit aus %{songs} und %{playlists}.",
         "AutoDJ Service": "AutoDJ Dienst",
         "Running": "Läuft",
@@ -2130,7 +2139,10 @@
         "Unique": "Únicos",
         "Download PLS": "Descargar PLS",
         "Download M3U": "Descargar M3U",
-        "%{listeners} Listener": "%{listeners} oyente",
+        "%{listeners} Listener": [
+            "%{listeners} oyente",
+            "%{listeners} oyentes"
+        ],
         "On the Air": "Emitiendo",
         "Playing Next": "Siguiente Reproducción",
         "Live": "En Vivo",
@@ -2169,8 +2181,14 @@
         "Now": "Ahora",
         "AutoDJ Disabled": "AutoDJ Deshabilitado",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "El AutoDJ se ha desactivado para esta emisora. No se reproducirá música automáticamente cuando una fuente no esté en vivo.",
-        "%{numSongs} uploaded song": "%{numSongs} Canción Subida",
-        "%{numPlaylists} playlist": "%{numPlaylists} Lista de Reproducción",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} Canción Subida",
+            "%{numSongs} Canciones Subidas"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} Lista de Reproducción",
+            "%{numPlaylists} Listas de Reproducción"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap está reproduciendo aleatoriamente %{songs} y %{playlists}.",
         "AutoDJ Service": "Servicio de AutoDJ",
         "Running": "Funcionando",
@@ -3529,7 +3547,10 @@
         "Unique": "Unique",
         "Download PLS": "Télécharger le PLS",
         "Download M3U": "Télécharger M3U",
-        "%{listeners} Listener": "%{listeners} Auditeur",
+        "%{listeners} Listener": [
+            "%{listeners} Auditeur",
+            "%{listeners} Auditeurs"
+        ],
         "On the Air": "À l'antenne",
         "Playing Next": "Lecture suivante",
         "Live": "Live",
@@ -3561,8 +3582,14 @@
         "Now": "Maintenant",
         "AutoDJ Disabled": "AutoDJ Désactivé",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "AutoDJ a été désactivé pour cette station. Aucune musique ne sera automatiquement jouée lorsqu'une source n'est pas en direct.",
-        "%{numSongs} uploaded song": "%{numSongs} chanson téléchargée",
-        "%{numPlaylists} playlist": "%{numPlaylists} playlist",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} chanson téléchargée",
+            "%{numSongs} chansons téléchargées"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} playlist",
+            "%{numPlaylists} playlists"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap est en train de mélanger %{songs} et %{playlists}.",
         "AutoDJ Service": "Service AutoDJ",
         "Running": "Activé",
@@ -4730,7 +4757,10 @@
         "Unique": "Μοναδικό(οι)",
         "Download PLS": "Λήψη PLS",
         "Download M3U": "Λήψη M3U",
-        "%{listeners} Listener": "%{listeners} Ακροατές",
+        "%{listeners} Listener": [
+            "%{listeners} Ακροατές",
+            "%{listeners} Ακροατές"
+        ],
         "On the Air": "Στον αέρα",
         "Playing Next": "Αναπαραγωγή Στο Επόμενο",
         "Live": "Ζωντανά",
@@ -4769,8 +4799,14 @@
         "Now": "Τώρα",
         "AutoDJ Disabled": "Το AutoDJ Απενεργοποιήθηκε",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "Το AutoDJ έχει απενεργοποιηθεί για αυτόν τον σταθμό. Καμία μουσική δεν θα αναπαράγεται αυτόματα όταν μια πηγή δεν είναι ζωντανή.",
-        "%{numSongs} uploaded song": "%{numSongs} ανεβασμένο τραγούδι",
-        "%{numPlaylists} playlist": "%{numPlaylists} λίστα αναπαραγωγής",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} ανεβασμένο τραγούδι",
+            "%{numSongs} ανεβασμένα τραγούδια"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} λίστα αναπαραγωγής",
+            "%{numPlaylists} λίστες αναπαραγωγής"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "Το LiquidSoap ανακατεύεται αυτή τη στιγμή από %{songs} και %{playlists}.",
         "AutoDJ Service": "Υπηρεσία AutoDJ",
         "Running": "Εκτελείται",
@@ -6040,7 +6076,10 @@
         "Unique": "Univoco",
         "Download PLS": "Scarica PLS",
         "Download M3U": "Scarica M3U",
-        "%{listeners} Listener": "%{listeners} Ascoltatore",
+        "%{listeners} Listener": [
+            "%{listeners} Ascoltatore",
+            "%{listeners} Ascoltatori"
+        ],
         "On the Air": "In onda",
         "Playing Next": "Riproduce in seguito",
         "Live": "In diretta",
@@ -6069,8 +6108,14 @@
         "Now": "Adesso",
         "AutoDJ Disabled": "AutoDJ Disabilitato",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "Il dj automatico è stato disattivato per questa stazione. Non verrà riprodotta musica automaticamente quando nessuna fonte è in diretta.",
-        "%{numSongs} uploaded song": "%{numSongs} brano caricato",
-        "%{numPlaylists} playlist": "%{numPlaylists} playlist",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} brano caricato",
+            "%{numSongs} brani caricati"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} playlist",
+            "%{numPlaylists} playlist"
+        ],
         "AutoDJ Service": "Servizio regia automatica",
         "Running": "In esecuzione",
         "Not Running": "Non in esecuzione",
@@ -6902,7 +6947,10 @@
         "Enable AutoDJ": "AutoDJ engedélyezése",
         "Connection Information": "Csatlakozási információk",
         "Song Requests": "Dal kérése",
-        "%{listeners} Listener": "%{listeners} Hallgató",
+        "%{listeners} Listener": [
+            "%{listeners} Hallgató",
+            "%{listeners} Hallgató"
+        ],
         "Skip Song": "Dal kihagyása",
         "Streamers\/DJs": "Stream-ek\/DJ-k",
         "Edit Profile": "Profil szerkesztése",
@@ -6911,8 +6959,14 @@
         "Source Password": "Forrás jelszava",
         "AutoDJ Disabled": "AutoDJ letiltva",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "Az AutoDJ letiltva ezen az állomáson. Amikor a forrás nem aktív, nem lesznek lejátszva zenék.",
-        "%{numSongs} uploaded song": "%{numSongs} feltöltött dal",
-        "%{numPlaylists} playlist": "%{numPlaylists} lista",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} feltöltött dal",
+            "%{numSongs} feltöltött dal"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} lista",
+            "%{numPlaylists} lista"
+        ],
         "Running": "Fut",
         "Not Running": "Nem fut",
         "Mount Points": "Csatolási pontok",
@@ -7413,7 +7467,10 @@
         "Unique": "Uniek",
         "Download PLS": "PLS downloaden",
         "Download M3U": "M3U downloaden",
-        "%{listeners} Listener": "%{listeners} luisteraars",
+        "%{listeners} Listener": [
+            "%{listeners} luisteraars",
+            "%{listeners} luisteraars"
+        ],
         "On the Air": "On the Air",
         "Playing Next": "Speelt hierna",
         "Live": "Live",
@@ -7448,8 +7505,14 @@
         "Now": "Nu",
         "AutoDJ Disabled": "AutoDJ uitgeschakeld",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "AutoDJ is uitgeschakeld. Er zal geen muziek worden afgespeeld wanneer er niet live wordt uitgezonden.",
-        "%{numSongs} uploaded song": "%{numSongs} geüploade nummer",
-        "%{numPlaylists} playlist": "%{numPlaylists} afspeellijst",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} geüploade nummer",
+            "%{numSongs} geüploade nummers"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} afspeellijst",
+            "%{numPlaylists} afspeellijsten"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap wordt momenteel geschuffeld van %{songs} en %{playlists}.",
         "AutoDJ Service": "AutoDJ-service",
         "Running": "Wordt uitgevoerd",
@@ -8821,7 +8884,12 @@
         "Unique": "Unikalne",
         "Download PLS": "Pobierz plik .PLS",
         "Download M3U": "Pobierz plik .M3U",
-        "%{listeners} Listener": "%{listeners} słuchacz",
+        "%{listeners} Listener": [
+            "%{listeners} słuchacz",
+            "%{listeners} słuchaczy",
+            "%{listeners} słuchaczy",
+            "%{listeners} słuchaczy"
+        ],
         "On the Air": "W eterze",
         "Playing Next": "Następne w kolejce",
         "Live": "Na żywo",
@@ -8860,8 +8928,18 @@
         "Now": "Teraz",
         "AutoDJ Disabled": "AutoDJ wyłączony",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "AutoDJ został wyłączony dla tej stacji. Żadna muzyka nie będzie odtwarzana automatycznie, gdy źródło nie będzie aktywne.",
-        "%{numSongs} uploaded song": "%{numSongs} przesłany utwór",
-        "%{numPlaylists} playlist": "%{numPlaylists} playlista",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} przesłany utwór",
+            "%{numSongs} przesłane utwory",
+            "%{numSongs} przesłanych utworów",
+            "%{numSongs} przesłanych utworów"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} playlista",
+            "%{numPlaylists} playlisty",
+            "%{numPlaylists} playlist",
+            "%{numPlaylists} playlisty"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "Obecnie LiquidSoap losuje spośród %{songs} i %{playlists}.",
         "AutoDJ Service": "Usługa autopilota",
         "Running": "Uruchomione",
@@ -10948,7 +11026,10 @@
         "Unique": "Único",
         "Download PLS": "Baixar PLS",
         "Download M3U": "Baixar M3U",
-        "%{listeners} Listener": "%{listeners} Ouvinte",
+        "%{listeners} Listener": [
+            "%{listeners} Ouvinte",
+            "%{listeners} Ouvintes"
+        ],
         "On the Air": "No Ar",
         "Playing Next": "A Seguir",
         "Live": "Ao vivo",
@@ -10987,8 +11068,14 @@
         "Now": "Agora",
         "AutoDJ Disabled": "AutoDJ Desativado",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "AutoDJ foi desativado para esta estação. Nenhuma música será reproduzida automaticamente quando uma fonte não estiver ao vivo.",
-        "%{numSongs} uploaded song": "%{numSongs} música enviada",
-        "%{numPlaylists} playlist": "%{numPlaylists} playlist",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} música enviada",
+            "%{numSongs} músicas enviadas"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} playlist",
+            "%{numPlaylists} playlists"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap está embaralhando %{songs} em %{playlists}.",
         "AutoDJ Service": "Serviço de AutoDj",
         "Running": "Executando",
@@ -12426,7 +12513,12 @@
         "Unique": "Уникальных",
         "Download PLS": "Скачать PLS",
         "Download M3U": "Скачать M3U",
-        "%{listeners} Listener": "%{listeners} Слушатель",
+        "%{listeners} Listener": [
+            "%{listeners} Слушатель",
+            "%{listeners} Слушателя",
+            "%{listeners} Слушателей",
+            "%{listeners} Слушателей"
+        ],
         "On the Air": "В эфире",
         "Playing Next": "Следующее Играет",
         "Live": "Прямая трансляция",
@@ -12465,8 +12557,18 @@
         "Now": "Сейчас",
         "AutoDJ Disabled": "АвтоДиджей Отключен",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "АвтоДиджей отключен для этой станции. Музыка не будет автоматически воспроизводиться, если источник не находится в прямом эфире.",
-        "%{numSongs} uploaded song": "%{numSongs} загруженный трек",
-        "%{numPlaylists} playlist": "%{numPlaylists} плейлист",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} загруженный трек",
+            "%{numSongs} загруженных трека",
+            "%{numSongs} загруженных треков",
+            "%{numSongs} загруженных треков"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} плейлист",
+            "%{numPlaylists} плейлиста",
+            "%{numPlaylists} плейлистов",
+            "%{numPlaylists} плейлистов"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap сейчас перемешивает %{songs} и %{playlists}.",
         "AutoDJ Service": "Сервис АвтоДиджея",
         "Running": "Работает",
@@ -13660,7 +13762,10 @@
         "Unique": "Unika",
         "Download PLS": "Hämta PLS",
         "Download M3U": "Hämta M3U",
-        "%{listeners} Listener": "%{listeners} lyssnare",
+        "%{listeners} Listener": [
+            "%{listeners} lyssnare",
+            "%{listeners} lyssnare"
+        ],
         "On the Air": "On Air just nu",
         "Playing Next": "Nästa låt",
         "Live": "Live",
@@ -14376,7 +14481,10 @@
         "Unique": "Ziyaretçi",
         "Download PLS": "PLS İndir",
         "Download M3U": "M3U İndir",
-        "%{listeners} Listener": "%{listeners} Dinleyici",
+        "%{listeners} Listener": [
+            "%{listeners} Dinleyici",
+            "%{listeners} Dinleyici"
+        ],
         "On the Air": "Yayında",
         "Playing Next": "Sıradaki Şarkı",
         "Live": "Canlı",
@@ -14415,8 +14523,14 @@
         "Now": "Şimdi",
         "AutoDJ Disabled": "AutoDJ Devredışı",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "AutoDJ bu radyoda için devredışı bırakıldı. Canlı yayın olmadığında hiçbir müzik otomatik olarak çalınmaz.",
-        "%{numSongs} uploaded song": "%{numSongs} adet yüklenmiş şarkı",
-        "%{numPlaylists} playlist": "%{numPlaylists} Çalma Listesi",
+        "%{numSongs} uploaded song": [
+            "%{numSongs} adet yüklenmiş şarkı",
+            "%{numSongs} adet yüklenmiş şarkı"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} Çalma Listesi",
+            "%{numPlaylists} Çalma Listesi"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap şu anda %{songs} adet şarkıyı %{playlists} adet çalma listesinden karışık olarak çalıyor.",
         "AutoDJ Service": "AutoDJ Servisi",
         "Running": "Çalışıyor",
@@ -15784,7 +15898,9 @@
         "Unique": "特别听众",
         "Download PLS": "下载PLS",
         "Download M3U": "下载M3U",
-        "%{listeners} Listener": "%{listeners} 听众",
+        "%{listeners} Listener": [
+            "%{listeners} 听众"
+        ],
         "On the Air": "直播中",
         "Playing Next": "播放下一个",
         "Live": "直播",
@@ -15823,8 +15939,12 @@
         "Now": "现在",
         "AutoDJ Disabled": "AutoDJ 禁用",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "本台的AutoDJ已被禁用。当音源不在现场时，不会自动播放音乐。",
-        "%{numSongs} uploaded song": "%{numSongs}上传的歌曲",
-        "%{numPlaylists} playlist": "%{numPlaylists}播放列表",
+        "%{numSongs} uploaded song": [
+            "%{numSongs}上传的歌曲"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists}播放列表"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap目前正在从%{歌曲}和%{播放列表}进行排列。",
         "AutoDJ Service": "自动DJ服务",
         "Running": "运行中",
@@ -17010,7 +17130,9 @@
         "Local Streams": "로컬 스트림",
         "Download PLS": "PLS 다운로드",
         "Download M3U": "M3U 다운로드",
-        "%{listeners} Listener": "%{listeners} 청취자",
+        "%{listeners} Listener": [
+            "%{listeners} 청취자"
+        ],
         "On the Air": "방송중",
         "Playing Next": "다음 재생",
         "Live": "라이브",
@@ -17045,8 +17167,12 @@
         "Now": "지금",
         "AutoDJ Disabled": "AutoDJ 비활성화됨",
         "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.": "이 스테이션의 AutoDJ가 비활성화되었습니다. 소스가 활성화되지 않은 경우 어떤 음악도 자동으로 재생되지 않습니다.",
-        "%{numSongs} uploaded song": "업로드 된 %{numSongs} 개의 곡",
-        "%{numPlaylists} playlist": "%{numPlaylists} 개의 재생 목록",
+        "%{numSongs} uploaded song": [
+            "업로드 된 %{numSongs} 개의 곡"
+        ],
+        "%{numPlaylists} playlist": [
+            "%{numPlaylists} 개의 재생 목록"
+        ],
         "LiquidSoap is currently shuffling from %{songs} and %{playlists}.": "LiquidSoap은 현재 %{songs} 과 %{playlists} 에서 뒤섞고 있습니다.",
         "AutoDJ Service": "AutoDJ 서비스",
         "Running": "실행 중",

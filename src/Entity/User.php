@@ -48,7 +48,7 @@ class User implements Stringable, IdentifiableEntityInterface
     protected string $auth_password = '';
 
     /** @OA\Property(example="") */
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $new_password = null;
 
     /** @OA\Property(example="Demo Account") */

@@ -1,5 +1,5 @@
 <template>
-    <b-modal :size="size" :id="id" ref="modal" :title="title" :busy="loading" @hidden="onHidden">
+    <b-modal :size="size" :centered="centered" :id="id" ref="modal" :title="title" :busy="loading" @hidden="onHidden">
         <template #default="slotProps">
             <b-overlay variant="card" :show="loading">
                 <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
@@ -19,7 +19,9 @@
                     <translate key="lang_btn_close">Close</translate>
                 </b-button>
                 <b-button variant="primary" type="submit" @click="doSubmit" :disabled="disableSaveButton">
-                    <translate key="lang_btn_save_changes">Save Changes</translate>
+                    <slot name="save-button-name">
+                        <translate key="lang_btn_save_changes">Save Changes</translate>
+                    </slot>
                 </b-button>
             </slot>
         </template>
@@ -45,6 +47,10 @@ export default {
         size: {
             type: String,
             default: 'lg'
+        },
+        centered: {
+            type: Boolean,
+            default: false
         },
         id: {
             type: String,

@@ -4,7 +4,7 @@
             <translate key="hdr">My Account</translate>
         </h2>
 
-        <b-row class="mb-3">
+        <div class="card-deck">
             <b-card no-body>
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
@@ -34,7 +34,7 @@
                 </b-overlay>
 
                 <div class="card-actions">
-                    <a class="btn btn-outline-primary">
+                    <a class="btn btn-outline-primary" @click.prevent="doEditProfile">
                         <icon icon="edit"></icon>
                         <translate key="lang_btn_edit_profile">Edit Profile</translate>
                     </a>
@@ -82,7 +82,7 @@
                     </a>
                 </div>
             </b-card>
-        </b-row>
+        </div>
 
         <b-row>
             <b-card no-body>
@@ -115,8 +115,16 @@
             </b-card>
         </b-row>
 
+        <account-edit-modal ref="editModal" :user-url="userUrl" :supported-locales="supportedLocales"
+                            @relist="relist"></account-edit-modal>
+
         <account-change-password-modal ref="changePasswordModal" :change-password-url="changePasswordUrl"
                                        @relist="relist"></account-change-password-modal>
+
+        <account-two-factor-modal ref="twoFactorModal" :two-factor-url="twoFactorUrl"
+                                  @relist="relist"></account-two-factor-modal>
+
+        <account-api-key-modal ref="apiKeyModal" :create-url="apiKeysApiUrl" @relist="relist"></account-api-key-modal>
     </div>
 </template>
 
@@ -124,15 +132,22 @@
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal";
+import AccountApiKeyModal from "~/components/Account/ApiKeyModal";
+import AccountTwoFactorModal from "~/components/Account/TwoFactorModal";
+import AccountEditModal from "~/components/Account/EditModal";
 
 export default {
     name: 'Account',
-    components: {AccountChangePasswordModal, Icon, DataTable},
+    components: {
+        AccountEditModal,
+        AccountTwoFactorModal, AccountApiKeyModal, AccountChangePasswordModal, Icon, DataTable
+    },
     props: {
-        meUrl: String,
+        userUrl: String,
         changePasswordUrl: String,
         twoFactorUrl: String,
-        apiKeysApiUrl: String
+        apiKeysApiUrl: String,
+        supportedLocales: Object
     },
     data() {
         return {
@@ -153,13 +168,32 @@ export default {
     },
     methods: {
         relist() {
+            this.userLoading = true;
+            this.$wrapWithLoading(
+                this.axios.get(this.userUrl)
+            ).then((resp) => {
+                this.user = resp.data;
+                this.userLoading = false;
+            });
+
+            this.securityLoading = true;
+            this.$wrapWithLoading(
+                this.axios.get(this.twoFactorUrl)
+            ).then((resp) => {
+                this.security.twoFactorEnabled = resp.data.twoFactorEnabled;
+                this.securityLoading = false;
+            });
+
             this.$refs.datatable.relist();
+        },
+        doEditProfile() {
+            this.$refs.editModal.open();
         },
         doChangePassword() {
             this.$refs.changePasswordModal.open();
         },
         enableTwoFactor() {
-
+            this.$refs.twoFactorModal.open();
         },
         disableTwoFactor() {
             this.$confirmDelete({
@@ -176,10 +210,10 @@ export default {
             });
         },
         createApiKey() {
-
+            this.$refs.apiKeyModal.create();
         },
         editApiKey(url) {
-
+            this.$refs.apiKeyModal.edit(url);
         },
         deleteApiKey(url) {
             this.$confirmDelete({

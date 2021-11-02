@@ -15,7 +15,7 @@ class PutPasswordAction extends UsersController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $user = $request->getUser();
-        $body = $request->getParsedBody();
+        $body = (array)$request->getParsedBody();
 
         try {
             if (empty($body['current_password'])) {

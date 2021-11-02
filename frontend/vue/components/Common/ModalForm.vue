@@ -1,5 +1,6 @@
 <template>
-    <b-modal :size="size" :centered="centered" :id="id" ref="modal" :title="title" :busy="loading" @hidden="onHidden">
+    <b-modal :size="size" :centered="centered" :id="id" ref="modal" :title="title" :busy="loading" @shown="onShown"
+             @hidden="onHidden">
         <template #default="slotProps">
             <b-overlay variant="card" :show="loading">
                 <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
@@ -38,7 +39,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 
 export default {
     components: {InvisibleSubmitButton},
-    emits: ['submit', 'hidden'],
+    emits: ['submit', 'shown', 'hidden'],
     props: {
         title: {
             type: String,
@@ -80,6 +81,9 @@ export default {
     methods: {
         doSubmit() {
             this.$emit('submit');
+        },
+        onShown() {
+            this.$emit('shown');
         },
         onHidden() {
             this.$emit('hidden');

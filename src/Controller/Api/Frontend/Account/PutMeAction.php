@@ -19,7 +19,7 @@ class PutMeAction extends UsersController
         $user = $request->getUser();
         $user = $this->em->refetch($user);
 
-        $this->fromArray(
+        $this->editRecord(
             (array)$request->getParsedBody(),
             $user,
             [

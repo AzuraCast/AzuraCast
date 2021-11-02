@@ -20,9 +20,9 @@ class PutTwoFactorAction extends UsersController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        try {
-            $params = $request->getParsedBody();
+        $params = (array)$request->getParsedBody();
 
+        try {
             if (!empty($params['secret'])) {
                 $secret = $params['secret'];
                 if (64 !== strlen($secret)) {

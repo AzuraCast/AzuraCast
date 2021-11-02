@@ -46,6 +46,7 @@ class ApiKeysController extends AbstractApiCrudController
             $newKey
         );
 
+        /** @var TEntity $record */
         $this->editRecord((array)$request->getParsedBody(), $record);
 
         $return = $this->viewRecord($record, $request);
@@ -92,22 +93,27 @@ class ApiKeysController extends AbstractApiCrudController
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      *
      * @return TEntity|null
      */
     protected function getRecord(Entity\User $user, string $id): ?object
     {
-        return $this->em->getRepository(Entity\ApiKey::class)->findOneBy([
-            'id' => $id,
+        /** @var TEntity|null $record */
+        $record = $this->em->getRepository(Entity\ApiKey::class)->findOneBy([
+            'id'   => $id,
             'user' => $user,
         ]);
+        return $record;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         $context[AbstractNormalizer::GROUPS] = [
-            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL
+            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL,
         ];
 
         return parent::editRecord($data, $record, $context);

@@ -18,7 +18,7 @@ class GetTwoFactorAction extends UsersController
         $user = $request->getUser();
 
         return $response->withJson([
-            'twoFactorEnabled' => !empty($user->getTwoFactorSecret()),
+            'two_factor_enabled' => !empty($user->getTwoFactorSecret()),
         ]);
     }
 }

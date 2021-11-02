@@ -35,10 +35,10 @@
                 </b-overlay>
 
                 <div class="card-actions">
-                    <a class="btn btn-outline-primary" @click.prevent="doEditProfile">
+                    <b-button variant="outline-primary" @click.prevent="doEditProfile">
                         <icon icon="edit"></icon>
                         <translate key="lang_btn_edit_profile">Edit Profile</translate>
-                    </a>
+                    </b-button>
                 </div>
             </section>
 
@@ -68,19 +68,19 @@
                 </b-overlay>
 
                 <div class="card-actions">
-                    <a class="btn btn-outline-primary" @click.prevent="doChangePassword">
+                    <b-button variant="outline-primary" @click.prevent="doChangePassword">
                         <icon icon="vpn_key"></icon>
                         <translate key="lang_btn_change_password">Change Password</translate>
-                    </a>
-                    <a v-if="security.twoFactorEnabled" class="btn btn-outline-danger"
-                       @click.prevent="disableTwoFactor">
+                    </b-button>
+                    <b-button v-if="security.twoFactorEnabled" variant="outline-danger"
+                              @click.prevent="disableTwoFactor">
                         <icon icon="lock_open"></icon>
                         <translate key="lang_btn_disable_two_factor">Disable Two-Factor</translate>
-                    </a>
-                    <a v-else class="btn btn-outline-success" @click.prevent="enableTwoFactor">
+                    </b-button>
+                    <b-button v-else variant="outline-success" @click.prevent="enableTwoFactor">
                         <icon icon="lock"></icon>
                         <translate key="lang_btn_enable_two_factor">Enable Two-Factor</translate>
-                    </a>
+                    </b-button>
                 </div>
             </section>
         </div>
@@ -205,7 +205,7 @@ export default {
             this.$wrapWithLoading(
                 this.axios.get(this.twoFactorUrl)
             ).then((resp) => {
-                this.security.twoFactorEnabled = resp.data.twoFactorEnabled;
+                this.security.twoFactorEnabled = resp.data.two_factor_enabled;
                 this.securityLoading = false;
             });
 

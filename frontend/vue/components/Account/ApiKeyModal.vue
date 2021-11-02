@@ -1,11 +1,12 @@
 <template>
-    <b-modal size="md centered" id="api_keys_modal" ref="modal" :title="langTitle" @hidden="clearContents">
+    <b-modal size="md centered" id="api_keys_modal" ref="modal" :title="langTitle" @shown="focusInput"
+             @hidden="clearContents">
         <template #default="slotProps">
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
             <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_comments" :field="$v.form.comment">
+                    <b-wrapped-form-group ref="firstElement" id="form_comments" :field="$v.form.comment">
                         <template #label="{lang}">
                             <translate :key="lang">API Key Description/Comments</translate>
                         </template>
@@ -69,6 +70,9 @@ export default {
         }
     },
     methods: {
+        focusInput() {
+            this.$refs.firstElement.focus();
+        },
         create() {
             this.resetForm();
             this.error = null;

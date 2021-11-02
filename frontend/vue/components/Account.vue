@@ -4,7 +4,7 @@
             <translate key="hdr">My Account</translate>
         </h2>
 
-        <div class="card-deck">
+        <div class="card-deck mb-3">
             <b-card no-body>
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
@@ -27,7 +27,7 @@
 
                             <div>
                                 <span v-for="role in user.roles" :key="role.id"
-                                      class="badge badge-scondary">{{ role.name }}</span>
+                                      class="badge badge-secondary">{{ role.name }}</span>
                             </div>
                         </b-media>
                     </b-card-body>
@@ -49,8 +49,8 @@
                 </b-card-header>
 
                 <b-overlay variant="card" :show="securityLoading">
-                    <b-card-body body-class="card-padding-sm">
-                        <h3 class="card-subtitle text-success">
+                    <b-card-body>
+                        <h5>
                             <translate key="lang_two_factor">Two-Factor Authentication</translate>
                             <span v-if="security.twoFactorEnabled" class="badge badge-success">
                                 <translate key="lang_enabled">Enabled</translate>
@@ -58,9 +58,9 @@
                             <span v-else class="badge badge-danger">
                                 <translate key="lang_disabled">Disabled</translate>
                             </span>
-                        </h3>
+                        </h5>
 
-                        <p class="card-text mt-3">
+                        <p class="card-text mt-2">
                             <translate key="lang_two_factor_info">Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.</translate>
                         </p>
                     </b-card-body>
@@ -84,36 +84,34 @@
             </b-card>
         </div>
 
-        <b-row>
-            <b-card no-body>
-                <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title">
-                        <translate key="lang_hdr_api_keys">API Keys</translate>
-                    </h2>
-                </b-card-header>
+        <b-card no-body>
+            <b-card-header header-bg-variant="primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_hdr_api_keys">API Keys</translate>
+                </h2>
+            </b-card-header>
 
-                <b-card-body body-class="card-padding-sm">
-                    <b-button variant="outline-primary" @click.prevent="createApiKey">
-                        <icon icon="add"></icon>
-                        <translate key="lang_add_btn">Add API Key</translate>
-                    </b-button>
-                </b-card-body>
+            <b-card-body body-class="card-padding-sm">
+                <b-button variant="outline-primary" @click.prevent="createApiKey">
+                    <icon icon="add"></icon>
+                    <translate key="lang_add_btn">Add API Key</translate>
+                </b-button>
+            </b-card-body>
 
-                <data-table ref="datatable" id="account_api_keys" :show-toolbar="false" :fields="fields"
-                            :api-url="apiKeysApiUrl">
-                    <template #cell(actions)="row">
-                        <b-button-group size="sm">
-                            <b-button size="sm" variant="primary" @click.prevent="editApiKey(row.item.links.self)">
-                                <translate key="lang_btn_edit">Edit</translate>
-                            </b-button>
-                            <b-button size="sm" variant="danger" @click.prevent="deleteApiKey(row.item.links.self)">
-                                <translate key="lang_btn_delete">Delete</translate>
-                            </b-button>
-                        </b-button-group>
-                    </template>
-                </data-table>
-            </b-card>
-        </b-row>
+            <data-table ref="datatable" id="account_api_keys" :show-toolbar="false" :fields="fields"
+                        :api-url="apiKeysApiUrl">
+                <template #cell(actions)="row">
+                    <b-button-group size="sm">
+                        <b-button size="sm" variant="primary" @click.prevent="editApiKey(row.item.links.self)">
+                            <translate key="lang_btn_edit">Edit</translate>
+                        </b-button>
+                        <b-button size="sm" variant="danger" @click.prevent="deleteApiKey(row.item.links.self)">
+                            <translate key="lang_btn_delete">Delete</translate>
+                        </b-button>
+                    </b-button-group>
+                </template>
+            </data-table>
+        </b-card>
 
         <account-edit-modal ref="editModal" :user-url="userUrl" :supported-locales="supportedLocales"
                             @relist="relist"></account-edit-modal>

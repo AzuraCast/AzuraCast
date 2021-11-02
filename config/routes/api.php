@@ -47,6 +47,16 @@ return static function (RouteCollectorProxy $app) {
 
                             $group->put('/me', Controller\Api\Frontend\Account\PutMeAction::class);
 
+                            $group->put('/password', Controller\Api\Frontend\Account\PutPasswordAction::class)
+                                ->setName('api:frontend:account:password');
+
+                            $group->get('/two-factor', Controller\Api\Frontend\Account\GetTwoFactorAction::class)
+                                ->setName('api:frontend:account:two-factor');
+
+                            $group->put('/two-factor', Controller\Api\Frontend\Account\PutTwoFactorAction::class);
+
+                            $group->delete('/two-factor', Controller\Api\Frontend\Account\DeleteTwoFactorAction::class);
+
                             $group->get(
                                 '/api-keys',
                                 Controller\Api\Frontend\Account\ApiKeysController::class . ':listAction'

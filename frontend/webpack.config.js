@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     entry: {
+        Account: '~/pages/Account.js',
         Dashboard: '~/pages/Dashboard.js',
         AdminAuditLog: '~/pages/Admin/AuditLog.js',
         AdminBranding: '~/pages/Admin/Branding.js',

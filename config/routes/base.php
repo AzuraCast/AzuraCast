@@ -27,41 +27,8 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/profile', Controller\Frontend\Profile\IndexAction::class)
                 ->setName('profile:index');
 
-            $group->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\Profile\EditAction::class)
-                ->setName('profile:edit');
-
-            $group->map(
-                ['GET', 'POST'],
-                '/profile/2fa/enable',
-                Controller\Frontend\Profile\EnableTwoFactorAction::class
-            )
-                ->setName('profile:2fa:enable');
-
-            $group->map(
-                ['GET', 'POST'],
-                '/profile/2fa/disable',
-                Controller\Frontend\Profile\DisableTwoFactorAction::class
-            )
-                ->setName('profile:2fa:disable');
-
             $group->get('/profile/theme', Controller\Frontend\Profile\ThemeAction::class)
                 ->setName('profile:theme');
-
-            $group->get('/api_keys', Controller\Frontend\ApiKeysController::class . ':indexAction')
-                ->setName('api_keys:index');
-
-            $group->map(
-                ['GET', 'POST'],
-                '/api_keys/edit/{id}',
-                Controller\Frontend\ApiKeysController::class . ':editAction'
-            )
-                ->setName('api_keys:edit');
-
-            $group->map(['GET', 'POST'], '/api_keys/add', Controller\Frontend\ApiKeysController::class . ':editAction')
-                ->setName('api_keys:add');
-
-            $group->get('/api_keys/delete/{id}/{csrf}', Controller\Frontend\ApiKeysController::class . ':deleteAction')
-                ->setName('api_keys:delete');
         }
     )->add(Middleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);

@@ -61,6 +61,7 @@ return static function (RouteCollectorProxy $app) {
                                 '/api-keys',
                                 Controller\Api\Frontend\Account\ApiKeysController::class . ':listAction'
                             )->setName('api:frontend:api-keys');
+
                             $group->post(
                                 '/api-keys',
                                 Controller\Api\Frontend\Account\ApiKeysController::class . ':createAction'
@@ -70,10 +71,7 @@ return static function (RouteCollectorProxy $app) {
                                 '/api-key/{id}',
                                 Controller\Api\Frontend\Account\ApiKeysController::class . ':getAction'
                             )->setName('api:frontend:api-key');
-                            $group->put(
-                                '/api-key/{id}',
-                                Controller\Api\Frontend\Account\ApiKeysController::class . ':editAction'
-                            );
+
                             $group->delete(
                                 '/api-key/{id}',
                                 Controller\Api\Frontend\Account\ApiKeysController::class . ':deleteAction'

@@ -5,7 +5,7 @@
         </h2>
 
         <div class="card-deck mb-3">
-            <b-card no-body>
+            <section class="card" role="region">
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
                         <translate key="lang_hdr_profile">My Profile</translate>
@@ -15,17 +15,18 @@
                 <b-overlay variant="card" :show="userLoading">
                     <b-card-body body-class="card-padding-sm">
                         <b-media right-align vertical-align="center">
-                            <template v-if="user.avatar" #aside>
-                                <b-img :src="user.avatar" alt=""></b-img>
+                            <template v-if="user.avatar.url" #aside>
+                                <avatar :avatar="user.avatar.url" :avatar-service-name="user.avatar.service"
+                                        :avatar-service-url="user.avatar.serviceUrl"></avatar>
                             </template>
 
-                            <h2 v-if="user.name" class="card-title mt-2">{{ user.name }}</h2>
-                            <h2 v-else class="card-title mt-2">
+                            <h2 v-if="user.name" class="card-title">{{ user.name }}</h2>
+                            <h2 v-else class="card-title">
                                 <translate key="lang_no_username">AzuraCast User</translate>
                             </h2>
                             <h3 class="card-subtitle">{{ user.email }}</h3>
 
-                            <div>
+                            <div v-if="user.roles.length > 0" class="mt-2">
                                 <span v-for="role in user.roles" :key="role.id"
                                       class="badge badge-secondary">{{ role.name }}</span>
                             </div>
@@ -39,9 +40,9 @@
                         <translate key="lang_btn_edit_profile">Edit Profile</translate>
                     </a>
                 </div>
-            </b-card>
+            </section>
 
-            <b-card no-body>
+            <section class="card" role="region">
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
                         <translate key="lang_hdr_security">Security</translate>
@@ -73,15 +74,15 @@
                     </a>
                     <a v-if="security.twoFactorEnabled" class="btn btn-outline-danger"
                        @click.prevent="disableTwoFactor">
-                        <icon icon="vpn_key"></icon>
+                        <icon icon="lock_open"></icon>
                         <translate key="lang_btn_disable_two_factor">Disable Two-Factor</translate>
                     </a>
                     <a v-else class="btn btn-outline-success" @click.prevent="enableTwoFactor">
-                        <icon icon="vpn_key"></icon>
+                        <icon icon="lock"></icon>
                         <translate key="lang_btn_enable_two_factor">Enable Two-Factor</translate>
                     </a>
                 </div>
-            </b-card>
+            </section>
         </div>
 
         <b-card no-body>
@@ -98,13 +99,10 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="account_api_keys" :show-toolbar="false" :fields="fields"
+            <data-table ref="datatable" id="account_api_keys" :show-toolbar="false" :fields="apiKeyFields"
                         :api-url="apiKeysApiUrl">
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="editApiKey(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="deleteApiKey(row.item.links.self)">
                             <translate key="lang_btn_delete">Delete</translate>
                         </b-button>
@@ -129,16 +127,22 @@
 <script>
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
-import AccountChangePasswordModal from "~/components/Account/ChangePasswordModal";
-import AccountApiKeyModal from "~/components/Account/ApiKeyModal";
-import AccountTwoFactorModal from "~/components/Account/TwoFactorModal";
-import AccountEditModal from "~/components/Account/EditModal";
+import AccountChangePasswordModal from "./Account/ChangePasswordModal";
+import AccountApiKeyModal from "./Account/ApiKeyModal";
+import AccountTwoFactorModal from "./Account/TwoFactorModal";
+import AccountEditModal from "./Account/EditModal";
+import Avatar from "~/components/Common/Avatar";
 
 export default {
     name: 'Account',
     components: {
         AccountEditModal,
-        AccountTwoFactorModal, AccountApiKeyModal, AccountChangePasswordModal, Icon, DataTable
+        AccountTwoFactorModal,
+        AccountApiKeyModal,
+        AccountChangePasswordModal,
+        Icon,
+        DataTable,
+        Avatar
     },
     props: {
         userUrl: String,
@@ -153,12 +157,26 @@ export default {
             user: {
                 name: null,
                 email: null,
-                avatar: null,
+                avatar: {
+                    url: null,
+                    service: null,
+                    serviceUrl: null
+                },
+                roles: [],
             },
             securityLoading: true,
             security: {
                 twoFactorEnabled: false,
-            }
+            },
+            apiKeyFields: [
+                {
+                    key: 'comment',
+                    isRowHeader: true,
+                    label: this.$gettext('API Key Description/Comments'),
+                    sortable: false
+                },
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
+            ]
         }
     },
     mounted() {
@@ -170,7 +188,16 @@ export default {
             this.$wrapWithLoading(
                 this.axios.get(this.userUrl)
             ).then((resp) => {
-                this.user = resp.data;
+                this.user = {
+                    name: resp.data.name,
+                    email: resp.data.email,
+                    roles: resp.data.roles,
+                    avatar: {
+                        url: resp.data.avatar.url_128,
+                        service: resp.data.avatar.service_name,
+                        serviceUrl: resp.data.avatar.service_url
+                    }
+                };
                 this.userLoading = false;
             });
 
@@ -209,9 +236,6 @@ export default {
         },
         createApiKey() {
             this.$refs.apiKeyModal.create();
-        },
-        editApiKey(url) {
-            this.$refs.apiKeyModal.edit(url);
         },
         deleteApiKey(url) {
             this.$confirmDelete({

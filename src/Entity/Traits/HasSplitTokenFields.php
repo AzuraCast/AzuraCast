@@ -31,6 +31,11 @@ trait HasSplitTokenFields
         return $this->id;
     }
 
+    public function getIdRequired(): string
+    {
+        return $this->id;
+    }
+
     public function verify(SplitToken $userSuppliedToken): bool
     {
         return $userSuppliedToken->verify($this->verifier);

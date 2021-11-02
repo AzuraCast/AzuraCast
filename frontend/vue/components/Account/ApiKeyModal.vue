@@ -1,26 +1,23 @@
 <template>
-    <b-modal size="md centered" id="api_keys_modal" ref="modal" :title="langTitle" :busy="loading"
-             @hidden="clearContents">
+    <b-modal size="md centered" id="api_keys_modal" ref="modal" :title="langTitle" @hidden="clearContents">
         <template #default="slotProps">
-            <b-overlay variant="card" :show="loading">
-                <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
-                <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
-                    <b-form-fieldset>
-                        <b-wrapped-form-group id="form_comments" :field="$v.form.comments">
-                            <template #label="{lang}">
-                                <translate :key="lang">API Key Description/Comments</translate>
-                            </template>
-                        </b-wrapped-form-group>
-                    </b-form-fieldset>
+            <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
+                <b-form-fieldset>
+                    <b-wrapped-form-group id="form_comments" :field="$v.form.comment">
+                        <template #label="{lang}">
+                            <translate :key="lang">API Key Description/Comments</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </b-form-fieldset>
 
-                    <invisible-submit-button/>
-                </b-form>
+                <invisible-submit-button/>
+            </b-form>
 
-                <div v-else>
-                    <account-api-key-new-key :key="newKey"></account-api-key-new-key>
-                </div>
-            </b-overlay>
+            <div v-else>
+                <account-api-key-new-key :new-key="newKey"></account-api-key-new-key>
+            </div>
         </template>
 
         <template #modal-footer="slotProps">
@@ -30,8 +27,7 @@
                 </b-button>
                 <b-button v-if="newKey === null" variant="primary" type="submit" @click="doSubmit"
                           :disabled="$v.form.$invalid">
-                    <translate v-if="isEditMode" key="lang_btn_save_changes">Save Changes</translate>
-                    <translate v-else key="lang_btn_create_key">Create New Key</translate>
+                    <translate key="lang_btn_create_key">Create New Key</translate>
                 </b-button>
             </slot>
         </template>
@@ -41,7 +37,6 @@
 <script>
 import {validationMixin} from 'vuelidate';
 import {required} from 'vuelidate/dist/validators.min.js';
-import BaseEditModal from '~/components/Common/BaseEditModal';
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import AccountApiKeyNewKey from "./ApiKeyNewKey";
@@ -50,13 +45,9 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 export default {
     name: 'AccountApiKeyModal',
     components: {BWrappedFormGroup, AccountApiKeyNewKey, InvisibleSubmitButton, BFormFieldset},
-    mixins: [validationMixin, BaseEditModal],
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit API Key')
-                : this.$gettext('Add API Key');
-        }
+    mixins: [validationMixin],
+    props: {
+        createUrl: String
     },
     validations() {
         return {
@@ -67,25 +58,58 @@ export default {
     },
     data() {
         return {
+            error: null,
+            form: {},
             newKey: null,
         }
     },
+    computed: {
+        langTitle() {
+            return this.$gettext('Add API Key');
+        }
+    },
     methods: {
+        create() {
+            this.resetForm();
+            this.error = null;
+
+            this.$refs.modal.show();
+        },
         resetForm() {
             this.newKey = null;
             this.form = {
                 comment: ''
             };
         },
-        onSubmitSuccess(response) {
-            if (this.isEditMode) {
-                this.$notifySuccess();
-                this.close();
-            } else {
-                this.newKey = response.data.key;
+        doSubmit() {
+            this.$v.form.$touch();
+            if (this.$v.form.$anyError) {
+                return;
             }
 
-            this.$emit('relist');
+            this.error = null;
+
+            this.$wrapWithLoading(
+                this.axios({
+                    method: 'POST',
+                    url: this.createUrl,
+                    data: this.form
+                })
+            ).then((resp) => {
+                this.newKey = resp.data.key;
+                this.$emit('relist');
+            }).catch((error) => {
+                this.error = error.response.data.message;
+            });
+        },
+        close() {
+            this.$refs.modal.hide();
+        },
+        clearContents() {
+            this.$v.form.$reset();
+
+            this.error = null;
+            this.resetForm();
         },
     }
 };

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityGroupsInterface;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
@@ -16,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
 ]
-class ApiKey implements JsonSerializable, Stringable
+class ApiKey implements JsonSerializable, Stringable, IdentifiableEntityInterface
 {
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;

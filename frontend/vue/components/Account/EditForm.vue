@@ -2,13 +2,13 @@
     <div>
         <b-form-fieldset>
             <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="form_name" :field="$v.form.name">
+                <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
                     <template #label="{lang}">
                         <translate :key="lang">Name</translate>
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_email" :field="$v.form.email">
+                <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
                     <template #label="{lang}">
                         <translate :key="lang">E-mail Address</translate>
                     </template>

@@ -2,19 +2,19 @@
     <modal-form ref="modal" size="md" centered :title="langTitle" :disable-save-button="$v.form.$invalid"
                 @submit="onSubmit" @hidden="onHidden">
         <b-form-fieldset>
-            <b-wrapped-form-group id="form_current_password" :field="$v.form.current_password">
+            <b-wrapped-form-group id="form_current_password" :field="$v.form.current_password" input-type="password">
                 <template #label="{lang}">
                     <translate :key="lang">Current Password</translate>
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_new_password" :field="$v.form.new_password">
+            <b-wrapped-form-group id="form_new_password" :field="$v.form.new_password" input-type="password">
                 <template #label="{lang}">
                     <translate :key="lang">New Password</translate>
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_current_password" :field="$v.form.new_password2">
+            <b-wrapped-form-group id="form_current_password" :field="$v.form.new_password2" input-type="password">
                 <template #label="{lang}">
                     <translate :key="lang">Confirm New Password</translate>
                 </template>
@@ -57,7 +57,7 @@ export default {
             new_password: {required, validatePassword},
             new_password2: {
                 required,
-                sameAs: sameAs('form.new_password')
+                sameAs: sameAs('new_password')
             }
         }
     },

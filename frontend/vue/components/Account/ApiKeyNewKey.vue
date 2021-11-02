@@ -16,9 +16,9 @@
         </p>
 
         <div class="well">
-            <code id="api_key">{{ key }}</code>
+            <code id="api_key">{{ newKey }}</code>
             <div class="buttons">
-                <copy-to-clipboard-button :text="key"></copy-to-clipboard-button>
+                <copy-to-clipboard-button :text="newKey"></copy-to-clipboard-button>
             </div>
         </div>
 
@@ -39,7 +39,7 @@ export default {
     name: 'AccountApiKeyNewKey',
     components: {CopyToClipboardButton},
     props: {
-        key: String
+        newKey: String
     }
 }
 </script>

@@ -4,17 +4,17 @@
 
         <b-row>
             <b-col md="7">
-                <h3 class="card-title mt-2">
+                <h5 class="mt-2">
                     <translate key="lang_2fa_hdr_1">Step 1: Scan QR Code</translate>
-                </h3>
+                </h5>
 
                 <p class="card-text">
                     <translate key="lang_2fa_1">From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).</translate>
                 </p>
 
-                <h3 class="card-title mt-0">
+                <h5 class="mt-0">
                     <translate key="lang_2fa_hdr_2">Step 2: Verify Generated Code</translate>
-                </h3>
+                </h5>
 
                 <p class="card-text">
                     <translate key="lang_2fa_2">To verify that the code was set up correctly, enter the 6-digit code the app shows you.</translate>
@@ -32,16 +32,13 @@
                 </b-form-fieldset>
             </b-col>
             <b-col md="5">
-                <b-img :src="totp.qr_code" class="float-right"></b-img>
+                <b-img :src="totp.qr_code"></b-img>
 
-                <div class="d-flex">
-                    <div class="flex-fill" style="max-width: 80%">
-                        <code id="totp_uri" class="d-inline-block text-truncate"
-                              style="width: 100%;"><?=$totp_uri?></code>
-                    </div>
-                    <div class="flex-shrink-0">
-                        <copy-to-clipboard-button :text="totp.totp_uri"></copy-to-clipboard-button>
-                    </div>
+                <div v-if="totp.totp_uri" class="mt-2">
+                    <code id="totp_uri" class="d-inline-block text-truncate" style="width: 100%;">
+                        {{ totp.totp_uri }}
+                    </code>
+                    <copy-to-clipboard-button :text="totp.totp_uri"></copy-to-clipboard-button>
                 </div>
             </b-col>
         </b-row>

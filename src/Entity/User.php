@@ -70,7 +70,7 @@ class User implements Stringable, IdentifiableEntityInterface
     /** @OA\Property(example="A1B2C3D4") */
     #[ORM\Column(length: 255, nullable: true)]
     #[Attributes\AuditIgnore]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?string $two_factor_secret = null;
 
     /** @OA\Property(example=1609480800) */

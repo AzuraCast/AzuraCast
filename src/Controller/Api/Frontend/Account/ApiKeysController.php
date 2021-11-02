@@ -77,25 +77,6 @@ class ApiKeysController extends AbstractApiCrudController
      * @param Response $response
      * @param mixed $id
      */
-    public function editAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
-        $record = $this->getRecord($request->getUser(), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $this->editRecord((array)$request->getParsedBody(), $record);
-
-        return $response->withJson(Entity\Api\Status::updated());
-    }
-
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $id
-     */
     public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
     {
         $record = $this->getRecord($request->getUser(), $id);
@@ -126,7 +107,6 @@ class ApiKeysController extends AbstractApiCrudController
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         $context[AbstractNormalizer::GROUPS] = [
-            Entity\Interfaces\EntityGroupsInterface::GROUP_ID,
             Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL
         ];
 

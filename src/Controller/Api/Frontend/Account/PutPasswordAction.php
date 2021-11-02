@@ -24,7 +24,7 @@ class PutPasswordAction extends UsersController
 
             $currentPassword = $body['current_password'];
             if (!$user->verifyPassword($currentPassword)) {
-                throw new \InvalidArgumentException('Invalid password.');
+                throw new \InvalidArgumentException('Invalid current password.');
             }
 
             if (empty($body['new_password'])) {
@@ -39,7 +39,7 @@ class PutPasswordAction extends UsersController
 
             return $response->withJson(Entity\Api\Status::updated());
         } catch (\Throwable $e) {
-            return $response->withStatus(400)->withJson(Error::fromException($e));
+            return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
         }
     }
 }

@@ -54,7 +54,6 @@ import EditModal from './Permissions/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import _ from 'lodash';
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'AdminPermissions',

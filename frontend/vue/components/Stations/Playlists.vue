@@ -135,7 +135,6 @@ import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
 import {DateTime} from 'luxon';
 import humanizeDuration from 'humanize-duration';
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationPlaylists',

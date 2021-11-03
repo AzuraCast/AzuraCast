@@ -63,7 +63,6 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
-import '~/vendor/sweetalert.js';
 
 export const listViewProps = {
     props: {

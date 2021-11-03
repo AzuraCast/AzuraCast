@@ -72,7 +72,6 @@ import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '~/components/Common/ScheduleView';
 import Icon from '~/components/Common/Icon';
 import ConnectionInfo from "./Streamers/ConnectionInfo";
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationStreamers',

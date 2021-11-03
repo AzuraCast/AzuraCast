@@ -50,7 +50,6 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Users/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'AdminPermissions',

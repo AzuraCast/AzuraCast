@@ -54,7 +54,6 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import '~/vendor/sweetalert.js';
 import {StationFormProps} from "./Stations/StationForm";
 import AdminStationsEditModal from "./Stations/EditModal";
 import _ from "lodash";

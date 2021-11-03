@@ -48,7 +48,6 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'AdminStorageLocations',

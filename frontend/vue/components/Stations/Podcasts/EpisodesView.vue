@@ -74,7 +74,6 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
-import '~/vendor/sweetalert.js';
 
 export const episodeViewProps = {
     props: {

@@ -58,7 +58,6 @@ import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationQueue',

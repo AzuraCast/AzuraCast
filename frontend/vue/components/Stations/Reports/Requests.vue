@@ -51,7 +51,6 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationRequests',

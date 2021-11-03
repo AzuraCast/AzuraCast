@@ -64,7 +64,6 @@ import Icon from '~/components/Common/Icon';
 import InfoCard from "~/components/Common/InfoCard";
 import _ from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
-import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationWebhooks',

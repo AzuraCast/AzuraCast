@@ -7,11 +7,12 @@
                                   class="mb-0" v-if="showPagination">
                     </b-pagination>
                 </b-col>
-                <b-col xl="5" md="6" sm="12" class="d-flex">
+                <b-col xl="5" md="6" sm="12" class="d-flex my-2">
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="icon glyphicon input-group-addon search"></span>
-                            <b-form-input debounce="200" v-model="filter" type="search" class="search-field form-control"
+                            <b-form-input debounce="200" v-model="filter" type="search"
+                                          class="search-field form-control"
                                           :placeholder="langSearch"></b-form-input>
                         </div>
                     </div>

@@ -83,7 +83,15 @@ export default {
                 data: this.getSubmittableFormData()
             };
         },
-        doSubmit () {
+        onSubmitSuccess(response) {
+            this.$notifySuccess();
+            this.$emit('relist');
+            this.close();
+        },
+        onSubmitError(error) {
+            this.error = error.response.data.message;
+        },
+        doSubmit() {
             this.$v.form.$touch();
             if (this.$v.form.$anyError) {
                 return;
@@ -94,11 +102,9 @@ export default {
             this.$wrapWithLoading(
                 this.axios(this.buildSubmitRequest())
             ).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('relist');
-                this.close();
+                this.onSubmitSuccess(resp);
             }).catch((error) => {
-                this.error = error.response.data.message;
+                this.onSubmitError(error);
             });
         },
         close() {

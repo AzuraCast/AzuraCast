@@ -9,7 +9,11 @@ export const avatarProps = {
     props: {
         avatar: String,
         avatarServiceUrl: String,
-        avatarServiceName: String
+        avatarServiceName: String,
+        width: {
+            type: Number,
+            default: 128
+        }
     }
 };
 

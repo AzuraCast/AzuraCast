@@ -156,8 +156,6 @@
                 </section>
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -165,13 +163,11 @@
 import TimeSeriesChart from '~/components/Common/TimeSeriesChart';
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
-import Avatar, {avatarProps} from '~/components/Common/Avatar';
 import DayOfWeekChart from './Overview/DayOfWeekChart';
 import HourChart from './Overview/HourChart';
 
 export default {
-    components: {HourChart, DayOfWeekChart, Avatar, Icon, DataTable, TimeSeriesChart},
-    mixins: [avatarProps],
+    components: {HourChart, DayOfWeekChart, Icon, DataTable, TimeSeriesChart},
     props: {
         chartsUrl: String,
         bestAndWorstUrl: String,

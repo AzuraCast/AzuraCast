@@ -1,15 +1,9 @@
 <template>
     <a :href="src" class="album-art" target="_blank" data-fancybox="gallery">
-        <img class="album_art" :src="src" :style="{ width: this.width+'px' }">
+        <b-img class="album_art" :src="src"
+               :style="{ width: this.width+'px', height: 'auto', 'border-radius': '5px' }"></b-img>
     </a>
 </template>
-
-<style lang="scss">
-.album-art img {
-    height: auto;
-    border-radius: 5px;
-}
-</style>
 
 <script>
 export default {

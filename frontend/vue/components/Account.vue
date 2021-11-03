@@ -17,8 +17,8 @@
                         <b-card-body body-class="card-padding-sm">
                             <b-media right-align vertical-align="center">
                                 <template v-if="user.avatar.url" #aside>
-                                    <avatar :avatar="user.avatar.url" :avatar-service-name="user.avatar.service"
-                                            :avatar-service-url="user.avatar.serviceUrl"></avatar>
+                                    <avatar :url="user.avatar.url" :service="user.avatar.service"
+                                            :service-url="user.avatar.serviceUrl"></avatar>
                                 </template>
 
                                 <h2 v-if="user.name" class="card-title">{{ user.name }}</h2>
@@ -205,7 +205,7 @@ export default {
                     email: resp.data.email,
                     roles: resp.data.roles,
                     avatar: {
-                        url: resp.data.avatar.url_128,
+                        url: resp.data.avatar.url_64,
                         service: resp.data.avatar.service_name,
                         serviceUrl: resp.data.avatar.service_url
                     }

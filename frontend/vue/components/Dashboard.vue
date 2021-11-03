@@ -3,7 +3,8 @@
         <section class="card mb-4" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
 
-                <avatar class="flex-shrink-0 mr-3" v-bind="$props"></avatar>
+                <avatar class="flex-shrink-0 mr-3" :url="userAvatar" :service="avatarServiceName"
+                        :service-url="avatarServiceUrl"></avatar>
 
                 <div class="flex-fill">
                     <h2 class="card-title mt-0">{{ userName }}</h2>
@@ -158,16 +159,17 @@ import TimeSeriesChart from '~/components/Common/TimeSeriesChart';
 import DataTable from '~/components/Common/DataTable';
 import store from 'store';
 import Icon from '~/components/Common/Icon';
-import Avatar, {avatarProps} from '~/components/Common/Avatar';
+import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";
 
 export default {
     components: {PlayButton, Avatar, Icon, DataTable, TimeSeriesChart},
-    mixins: [avatarProps],
     props: {
         userName: String,
         userEmail: String,
         userAvatar: String,
+        avatarServiceName: String,
+        avatarServiceUrl: String,
         profileUrl: String,
         adminUrl: String,
         showAdmin: Boolean,

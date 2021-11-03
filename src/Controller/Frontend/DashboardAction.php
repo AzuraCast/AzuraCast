@@ -39,9 +39,9 @@ class DashboardAction
             id: 'dashboard',
             title: __('Dashboard'),
             props: [
-                'avatar'            => $avatar->getAvatar($request->getUser()->getEmail(), 64),
                 'avatarServiceName' => $avatarService->getServiceName(),
                 'avatarServiceUrl'  => $avatarService->getServiceUrl(),
+                'userAvatar'        => $avatar->getAvatar($request->getUser()->getEmail(), 64),
                 'userName'          => $user->getName() ?? __('AzuraCast User'),
                 'userEmail'         => $user->getEmail(),
                 'profileUrl'        => (string)$router->named('profile:index'),

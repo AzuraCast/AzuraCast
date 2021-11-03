@@ -160,6 +160,26 @@ return static function (RouteCollectorProxy $app) {
             $group->group(
                 '/admin',
                 function (RouteCollectorProxy $group) {
+                    $group->group(
+                        '',
+                        function (RouteCollectorProxy $group) {
+                            $group->get(
+                                '/api-keys',
+                                Controller\Api\Admin\ApiKeysController::class . ':listAction'
+                            )->setName('api:admin:api-keys');
+
+                            $group->get(
+                                '/api-key/{id}',
+                                Controller\Api\Admin\ApiKeysController::class . ':getAction'
+                            )->setName('api:admin:api-key');
+
+                            $group->delete(
+                                '/api-key/{id}',
+                                Controller\Api\Admin\ApiKeysController::class . ':deleteAction'
+                            );
+                        }
+                    )->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
+
                     $group->get('/auditlog', Controller\Api\Admin\AuditLogAction::class)
                         ->setName('api:admin:auditlog')
                         ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));

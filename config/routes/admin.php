@@ -65,19 +65,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:auditlog:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 
-            $group->group(
-                '/api',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\ApiController::class . ':indexAction')
-                        ->setName('admin:api:index');
-
-                    $group->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\ApiController::class . ':editAction')
-                        ->setName('admin:api:edit');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Admin\ApiController::class . ':deleteAction')
-                        ->setName('admin:api:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
+            $group->get('/api-keys', Controller\Admin\ApiKeysAction::class)
+                ->setName('admin:api:index')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
 
             $group->group(
                 '/backups',

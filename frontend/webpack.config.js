@@ -8,6 +8,7 @@ module.exports = {
     entry: {
         Account: '~/pages/Account.js',
         Dashboard: '~/pages/Dashboard.js',
+        AdminApiKeys: '~/pages/Admin/ApiKeys.js',
         AdminAuditLog: '~/pages/Admin/AuditLog.js',
         AdminBranding: '~/pages/Admin/Branding.js',
         AdminCustomFields: '~/pages/Admin/CustomFields.js',

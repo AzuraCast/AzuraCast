@@ -118,4 +118,20 @@ class ApiKeysController extends AbstractApiCrudController
 
         return parent::editRecord($data, $record, $context);
     }
+
+    /**
+     * @param TEntity $record
+     * @param array<string, mixed> $context
+     *
+     * @return array<mixed>
+     */
+    protected function toArray(object $record, array $context = []): array
+    {
+        $context[AbstractNormalizer::GROUPS] = [
+            Entity\Interfaces\EntityGroupsInterface::GROUP_ID,
+            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL,
+        ];
+
+        return parent::toArray($record, $context);
+    }
 }

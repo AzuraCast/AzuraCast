@@ -6,10 +6,11 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
-use JsonSerializable;
 use Stringable;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
 ]
-class ApiKey implements JsonSerializable, Stringable, IdentifiableEntityInterface
+class ApiKey implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
@@ -25,6 +26,8 @@ class ApiKey implements JsonSerializable, Stringable, IdentifiableEntityInterfac
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'api_keys')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
     protected User $user;
 
     #[ORM\Column(length: 255, nullable: false)]
@@ -50,17 +53,6 @@ class ApiKey implements JsonSerializable, Stringable, IdentifiableEntityInterfac
     public function setComment(string $comment): void
     {
         $this->comment = $this->truncateString($comment);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'id'      => $this->id,
-            'comment' => $this->comment,
-        ];
     }
 
     public function __toString(): string

@@ -49,6 +49,9 @@ export default {
         };
     },
     methods: {
+        relist() {
+            this.$refs.datatable.relist();
+        },
         doDelete(url) {
             this.$confirmDelete({
                 title: this.$gettext('Delete API Key?'),

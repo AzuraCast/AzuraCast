@@ -167,10 +167,10 @@ class AppFactory
                     return;
                 }
 
-                $errno = $error["type"] ?? E_ERROR;
-                $errfile = $error["file"] ?? 'unknown';
-                $errline = $error["line"] ?? 0;
-                $errstr = $error["message"] ?? 'Shutdown';
+                $errno = $error["type"];
+                $errfile = $error["file"];
+                $errline = $error["line"];
+                $errstr = $error["message"];
 
                 if ($errno &= E_PARSE | E_ERROR | E_USER_ERROR | E_CORE_ERROR | E_COMPILE_ERROR) {
                     $logger->critical(

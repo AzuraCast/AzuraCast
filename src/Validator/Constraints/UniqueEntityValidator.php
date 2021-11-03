@@ -72,7 +72,7 @@ class UniqueEntityValidator extends ConstraintValidator
             return;
         }
 
-        $class = $this->em->getClassMetadata(get_class($value));
+        $class = $this->em->getClassMetadata((string)get_class($value));
 
         $criteria = [];
         $hasNullValue = false;

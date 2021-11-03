@@ -164,9 +164,7 @@ class FilesController extends AbstractStationApiCrudController
         // Validate the UploadFile API record.
         $errors = $this->validator->validate($api_record);
         if (count($errors) > 0) {
-            $e = new ValidationException((string)$errors);
-            $e->setDetailedErrors($errors);
-            throw $e;
+            throw ValidationException::fromValidationErrors($errors);
         }
 
         // Write file to temp path.
@@ -225,9 +223,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new ValidationException((string)$errors);
-            $e->setDetailedErrors($errors);
-            throw $e;
+            throw ValidationException::fromValidationErrors($errors);
         }
 
         if ($record instanceof Entity\StationMedia) {

@@ -202,7 +202,7 @@ class AutoDJ
 
         $startNext = $station->getBackendConfig()->getCrossfadeDuration();
 
-        $now = $now->addSeconds($duration ?? 1);
+        $now = $now->addSeconds($duration);
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;

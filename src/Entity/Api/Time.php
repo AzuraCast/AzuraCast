@@ -52,6 +52,6 @@ class Time
         $this->utc_datetime = $now->format('Y-m-d g:i:s');
         $this->utc_date = $now->format('F j, Y');
         $this->utc_time = $now->format('g:ia');
-        $this->utc_json = $now->toJSON() ?? '';
+        $this->utc_json = $now->toJSON();
     }
 }

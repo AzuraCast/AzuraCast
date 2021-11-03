@@ -72,9 +72,7 @@ class SettingsRepository extends Repository
 
         $errors = $this->validator->validate($settingsObj);
         if (count($errors) > 0) {
-            $e = new ValidationException((string)$errors);
-            $e->setDetailedErrors($errors);
-            throw $e;
+            throw ValidationException::fromValidationErrors($errors);
         }
 
         $this->em->persist($settings);

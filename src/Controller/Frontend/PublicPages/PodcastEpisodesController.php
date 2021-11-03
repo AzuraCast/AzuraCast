@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\PodcastRepository;
 use App\Exception\PodcastNotFoundException;
@@ -45,8 +46,11 @@ class PodcastEpisodesController
         usort(
             $publishedEpisodes,
             static function ($prevEpisode, $nextEpisode) {
-                $prevPublishedAt = $prevEpisode->getPublishedAt ?? $prevEpisode->getCreatedAt();
-                $nextPublishedAt = $nextEpisode->getPublishedAt ?? $nextEpisode->getCreatedAt();
+                /** @var PodcastEpisode $prevEpisode */
+                /** @var PodcastEpisode $nextEpisode */
+
+                $prevPublishedAt = $prevEpisode->getPublishAt() ?? $prevEpisode->getCreatedAt();
+                $nextPublishedAt = $nextEpisode->getPublishAt() ?? $nextEpisode->getCreatedAt();
 
                 return ($nextPublishedAt <=> $prevPublishedAt);
             }

@@ -49,7 +49,7 @@ class Customization
         if (!empty($queryParams['theme']) && in_array($queryParams['theme'], self::THEMES, true)) {
             $this->publicTheme = $this->theme = $queryParams['theme'];
         } else {
-            $this->publicTheme = $this->settings->getPublicTheme() ?? $this->publicTheme;
+            $this->publicTheme = $this->settings->getPublicTheme();
 
             if (null !== $this->user && !empty($this->user->getTheme())) {
                 $this->theme = (string)$this->user->getTheme();

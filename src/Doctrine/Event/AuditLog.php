@@ -220,7 +220,7 @@ class AuditLog implements EventSubscriber
                 Entity\AuditLog::OPER_INSERT,
                 get_class($owner),
                 $ownerIdentifier,
-                get_class($entity),
+                (string)get_class($entity),
                 $entityIdentifier,
                 []
             );
@@ -231,7 +231,7 @@ class AuditLog implements EventSubscriber
                 Entity\AuditLog::OPER_DELETE,
                 get_class($owner),
                 $ownerIdentifier,
-                get_class($entity),
+                (string)get_class($entity),
                 $entityIdentifier,
                 []
             );

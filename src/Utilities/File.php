@@ -50,13 +50,13 @@ class File
         }
 
         $str = str_replace(' ', '_', $str);
-        return mb_strtolower($str) ?? '';
+        return mb_strtolower($str);
     }
 
     public static function generateTempPath(string $pattern = ''): string
     {
-        $prefix = pathinfo($pattern, PATHINFO_FILENAME) ?? 'temp';
-        $extension = pathinfo($pattern, PATHINFO_EXTENSION) ?? 'log';
+        $prefix = pathinfo($pattern, PATHINFO_FILENAME) ?: 'temp';
+        $extension = pathinfo($pattern, PATHINFO_EXTENSION) ?: 'log';
 
         $tempPath = tempnam(sys_get_temp_dir(), $prefix . '_') . '.' . $extension;
         touch($tempPath);

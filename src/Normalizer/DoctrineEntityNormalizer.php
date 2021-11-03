@@ -62,7 +62,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerA
             return $this->handleCircularReference($object, $format, $context);
         }
 
-        $context[self::CLASS_METADATA] = $this->em->getClassMetadata(get_class($object));
+        $context[self::CLASS_METADATA] = $this->em->getClassMetadata((string)get_class($object));
 
         $props = $this->getAllowedAttributes($object, $context);
 
@@ -247,7 +247,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerA
                 if (count($prop_val) > 0) {
                     foreach ($prop_val as $val_obj) {
                         if ($form_mode) {
-                            $id_field = $this->em->getClassMetadata(get_class($val_obj))->identifier;
+                            $id_field = $this->em->getClassMetadata((string)get_class($val_obj))->identifier;
 
                             if ($id_field && count($id_field) === 1) {
                                 $return_val[] = $this->getProperty($val_obj, $id_field[0]);

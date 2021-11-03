@@ -63,9 +63,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new ValidationException((string)$errors);
-            $e->setDetailedErrors($errors);
-            throw $e;
+            throw ValidationException::fromValidationErrors($errors);
         }
 
         $this->em->persist($record);

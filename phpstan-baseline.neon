@@ -1,0 +1,62 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#2 \\$record of method App\\\\Controller\\\\Api\\\\AbstractApiCrudController\\<TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\>\\:\\:fromArray\\(\\) expects \\(TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\)\\|null, \\(TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\)\\|null given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/AbstractScheduledEntityController.php
+
+		-
+			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: src/Entity/Migration/Version20180412055024.php
+
+		-
+			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: src/Entity/Migration/Version20180429013130.php
+
+		-
+			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: src/Entity/Migration/Version20180818223558.php
+
+		-
+			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: src/Entity/Migration/Version20190513163051.php
+
+		-
+			message: "#^Parameter \\#2 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:delete\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: src/Entity/Migration/Version20201204043539.php
+
+		-
+			message: "#^Static property App\\\\Environment\\:\\:\\$instance \\(static\\(App\\\\Environment\\)\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: src/Environment.php
+
+		-
+			message: "#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationListInterface to string\\.$#"
+			count: 1
+			path: src/Exception/ValidationException.php
+
+		-
+			message: "#^Static property App\\\\Session\\\\Csrf\\:\\:\\$instance \\(static\\(App\\\\Session\\\\Csrf\\)\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: src/Session/Csrf.php
+
+		-
+			message: "#^Static property App\\\\Session\\\\Flash\\:\\:\\$instance \\(static\\(App\\\\Session\\\\Flash\\)\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: src/Session/Flash.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\) expects class\\-string\\<object\\>, class\\-string\\|false given\\.$#"
+			count: 1
+			path: src/Validator/Constraints/UniqueEntityValidator.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of method League\\\\Plates\\\\Engine\\:\\:registerFunction\\(\\) expects League\\\\Plates\\\\callback, Closure given\\.$#"
+			count: 7
+			path: src/View.php
+

@@ -258,7 +258,7 @@ class ListAction
                     $row->is_dir = $file->isDir();
                 } else {
                     $row->path = $file;
-                    $row->timestamp = $fs->lastModified($file) ?? 0;
+                    $row->timestamp = $fs->lastModified($file);
                     $row->is_dir = false;
                 }
 

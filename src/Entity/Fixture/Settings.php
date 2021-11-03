@@ -17,7 +17,7 @@ class Settings extends AbstractFixture
         }
 
         $settings = new Entity\Settings();
-        $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?: 'docker.local'));
+        $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?: 'http://docker.local'));
         $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?: 'local test'));
         $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?: ''));
 

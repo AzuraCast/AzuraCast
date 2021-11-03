@@ -7,6 +7,7 @@ namespace App\Http;
 use App\Entity;
 use App\Environment;
 use App\Traits\RequestAwareTrait;
+use GuzzleHttp\Psr7\Exception\MalformedUriException;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
@@ -50,12 +51,16 @@ class Router implements RouterInterface
 
         $settingsBaseUrl = $settings->getBaseUrl();
         if (!empty($settingsBaseUrl)) {
-            if (!str_starts_with($settingsBaseUrl, 'http')) {
-                /** @noinspection HttpUrlsUsage */
-                $settingsBaseUrl = 'http://' . $settingsBaseUrl;
-            }
+            try {
+                if (!str_starts_with($settingsBaseUrl, 'http')) {
+                    /** @noinspection HttpUrlsUsage */
+                    $settingsBaseUrl = 'http://' . $settingsBaseUrl;
+                }
 
-            $baseUrl = new Uri($settingsBaseUrl);
+                $baseUrl = new Uri($settingsBaseUrl);
+            } catch (MalformedUriException $e) {
+                $baseUrl = new Uri('');
+            }
         } else {
             $baseUrl = new Uri('');
         }

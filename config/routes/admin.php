@@ -9,7 +9,7 @@ return static function (RouteCollectorProxy $app) {
     $app->group(
         '/admin',
         function (RouteCollectorProxy $group) {
-            $group->get('', Controller\Admin\IndexController::class)
+            $group->get('', Controller\Admin\IndexAction::class)
                 ->setName('admin:index:index');
 
             $group->group(
@@ -69,32 +69,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:api:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
 
-            $group->group(
-                '/backups',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\BackupsController::class)
-                        ->setName('admin:backups:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/configure',
-                        Controller\Admin\BackupsController::class . ':configureAction'
-                    )
-                        ->setName('admin:backups:configure');
-
-                    $group->map(['GET', 'POST'], '/run', Controller\Admin\BackupsController::class . ':runAction')
-                        ->setName('admin:backups:run');
-
-                    $group->get('/log/{path}', Controller\Admin\BackupsController::class . ':logAction')
-                        ->setName('admin:backups:log');
-
-                    $group->get('/download/{path}', Controller\Admin\BackupsController::class . ':downloadAction')
-                        ->setName('admin:backups:download');
-
-                    $group->get('/delete/{path}/{csrf}', Controller\Admin\BackupsController::class . ':deleteAction')
-                        ->setName('admin:backups:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
+            $group->get('/backups', Controller\Admin\BackupsAction::class)
+                ->setName('admin:backups:index')
+                ->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
 
             $group->get('/branding', Controller\Admin\BrandingAction::class)
                 ->setName('admin:branding:index')
@@ -120,7 +97,7 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:permissions:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
-            $group->get('/relays', Controller\Admin\RelaysController::class)
+            $group->get('/relays', Controller\Admin\RelaysAction::class)
                 ->setName('admin:relays:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 

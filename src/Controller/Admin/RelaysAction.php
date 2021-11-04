@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class RelaysController
+class RelaysAction
 {
     public function __invoke(
         ServerRequest $request,

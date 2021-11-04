@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="md centered" id="api_keys_modal" ref="modal" :title="langTitle" @shown="focusInput"
+    <b-modal size="md" centered id="api_keys_modal" ref="modal" :title="langTitle" @shown="focusInput"
              @hidden="clearContents">
         <template #default="slotProps">
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>

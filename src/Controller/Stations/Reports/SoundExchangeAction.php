@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations\Reports;
 
-use App\Config;
 use App\Entity;
-use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\MusicBrainz;
@@ -18,42 +16,36 @@ use Throwable;
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
  */
-class SoundExchangeController
+class SoundExchangeAction
 {
-    protected array $form_config;
-
     public function __construct(
         protected EntityManagerInterface $em,
-        protected MusicBrainz $musicBrainz,
-        Config $config
+        protected MusicBrainz $musicBrainz
     ) {
-        $this->form_config = $config->get('forms/report/soundexchange');
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-
         $tzObject = $station->getTimezoneObject();
 
-        $startDate = CarbonImmutable::parse('first day of last month', $tzObject);
-        $endDate = CarbonImmutable::parse('last day of last month', $tzObject);
+        $csrf = $request->getCsrf();
 
-        $form = new Form($this->form_config);
-        $form->populate(
-            [
-                'start_date' => $startDate->format('Y-m-d'),
-                'end_date' => $endDate->format('Y-m-d'),
-            ]
-        );
+        $defaultStartDate = CarbonImmutable::parse('first day of last month', $tzObject)->format('Y-m-d');
+        $defaultEndDate = CarbonImmutable::parse('last day of last month', $tzObject)->format('Y-m-d');
 
-        if ($form->isValid($request)) {
-            $data = $form->getValues();
+        if ($request->isPost()) {
+            $data = (array)$request->getParsedBody();
+
+            $csrf->verify($data['csrf'] ?? '', 'soundexchange');
+
+            $data['start_date'] ??= $defaultStartDate;
+            $data['end_date'] ??= $defaultEndDate;
 
             $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject);
             $endDate = CarbonImmutable::parse($data['end_date'] . ' 23:59:59', $tzObject);
 
-            $fetchIsrc = $data['fetch_isrc'];
+            $fetchIsrc = 'true' === ($data['fetch_isrc'] ?? 'false');
 
             $export = [
                 [
@@ -99,6 +91,7 @@ class SoundExchangeController
                 ->setParameter('time_end', $endDate->getTimestamp())
                 ->getArrayResult();
 
+            // TODO: Fix this (not all song rows have a media_id)
             $history_rows_by_id = array_column($history_rows, null, 'media_id');
 
             // Remove any reference to the "Stream Offline" song.
@@ -163,11 +156,17 @@ class SoundExchangeController
             return $response->renderStringAsFile($export_txt, 'text/plain', $export_filename);
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
-            'render_mode' => 'edit',
-            'title' => __('SoundExchange Report'),
-        ]);
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsReportsSoundExchange',
+            id: 'station-report-soundexchange',
+            title: __('SoundExchange Report'),
+            props: [
+                'csrf' => $csrf->generate('soundexchange'),
+                'startDate' => $defaultStartDate,
+                'endDate' => $defaultEndDate,
+            ]
+        );
     }
 
     protected function findISRC(array $song_row): ?string

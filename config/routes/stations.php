@@ -104,7 +104,7 @@ return static function (RouteCollectorProxy $app) {
                     $group->map(
                         ['GET', 'POST'],
                         '/soundexchange',
-                        Controller\Stations\Reports\SoundExchangeController::class
+                        Controller\Stations\Reports\SoundExchangeAction::class
                     )
                         ->setName('stations:reports:soundexchange');
 

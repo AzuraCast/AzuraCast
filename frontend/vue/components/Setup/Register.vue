@@ -28,7 +28,7 @@
 
                 <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
-                <form id="login-form" action="" method="post">
+                <form id="login-form" class="form vue-form" action="" method="post">
                     <input type="hidden" name="csrf" :value="csrf"/>
 
                     <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="$v.form.username"

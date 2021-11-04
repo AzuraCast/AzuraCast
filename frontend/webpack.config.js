@@ -10,6 +10,7 @@ module.exports = {
         Dashboard: '~/pages/Dashboard.js',
         AdminApiKeys: '~/pages/Admin/ApiKeys.js',
         AdminAuditLog: '~/pages/Admin/AuditLog.js',
+        AdminBackups: '~/pages/Admin/Backups.js',
         AdminBranding: '~/pages/Admin/Branding.js',
         AdminCustomFields: '~/pages/Admin/CustomFields.js',
         AdminGeoLite: '~/pages/Admin/GeoLite.js',

@@ -13,7 +13,7 @@ use App\Sync\Runner;
 use Brick\Math\BigInteger;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexController
+class IndexAction
 {
     public function __invoke(
         ServerRequest $request,

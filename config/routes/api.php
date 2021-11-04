@@ -184,6 +184,26 @@ return static function (RouteCollectorProxy $app) {
                         ->setName('api:admin:auditlog')
                         ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 
+                    $group->group(
+                        '/backups',
+                        function (RouteCollectorProxy $group) {
+                            $group->get('', Controller\Api\Admin\Backups\GetAction::class)
+                                ->setName('api:admin:backups');
+
+                            $group->post('/run', Controller\Api\Admin\Backups\RunAction::class)
+                                ->setName('api:admin:backups:run');
+
+                            $group->get('/log/{path}', Controller\Api\Admin\Backups\GetLogAction::class)
+                                ->setName('api:admin:backups:log');
+
+                            $group->get('/download/{path}', Controller\Api\Admin\Backups\DownloadAction::class)
+                                ->setName('api:admin:backups:download');
+
+                            $group->delete('/delete/{path}', Controller\Api\Admin\Backups\DeleteAction::class)
+                                ->setName('api:admin:backups:delete');
+                        }
+                    )->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
+
                     $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                         ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 

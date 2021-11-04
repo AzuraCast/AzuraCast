@@ -6,6 +6,8 @@ namespace App\Controller\Api\Admin\Backups;
 
 use App\Entity;
 use App\Exception\NotFoundException;
+use Azura\Files\ExtendedFilesystemInterface;
+use JetBrains\PhpStorm\ArrayShape;
 
 abstract class AbstractFileAction
 {
@@ -14,11 +16,7 @@ abstract class AbstractFileAction
     ) {
     }
 
-    /**
-     * @param string $rawPath
-     *
-     * @return array{0: string, 1: ExtendedFilesystemInterface}
-     */
+    #[ArrayShape(["string", ExtendedFilesystemInterface::class])]
     protected function getFile(string $rawPath): array
     {
         $pathStr = base64_decode($rawPath);
@@ -41,5 +39,4 @@ abstract class AbstractFileAction
 
         return [$path, $fs];
     }
-
 }

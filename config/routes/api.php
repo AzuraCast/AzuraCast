@@ -319,6 +319,26 @@ return static function (RouteCollectorProxy $app) {
                         ->setName('api:stations:index')
                         ->add(new Middleware\RateLimit('api', 5, 2));
 
+                    $group->group(
+                        '/automation',
+                        function (RouteCollectorProxy $group) {
+                            $group->get(
+                                '/settings',
+                                Controller\Api\Stations\Automation\GetSettingsAction::class
+                            )->setName('api:stations:automation:settings');
+
+                            $group->put(
+                                '/settings',
+                                Controller\Api\Stations\Automation\PutSettingsAction::class
+                            );
+
+                            $group->put(
+                                '/run',
+                                Controller\Api\Stations\Automation\RunAction::class
+                            )->setName('api:stations:automation:run');
+                        }
+                    )->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
+
                     $group->get('/nowplaying', Controller\Api\NowplayingController::class . ':indexAction');
 
                     $group->map(
@@ -731,6 +751,11 @@ return static function (RouteCollectorProxy $app) {
                                 '/overview/most-played',
                                 Controller\Api\Stations\Reports\Overview\MostPlayedAction::class
                             )->setName('api:stations:reports:most-played');
+
+                            $group->get(
+                                '/soundexchange',
+                                Controller\Api\Stations\Reports\SoundExchangeAction::class
+                            )->setName('api:stations:reports:soundexchange');
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 

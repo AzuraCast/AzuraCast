@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * This controller handles the specific "Edit Profile" function on a station's profile, which has different permissions
- * and possible actions than
+ * and possible actions than the Admin Station Edit function.
  */
 class ProfileEditController extends StationsController
 {

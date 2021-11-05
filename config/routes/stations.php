@@ -20,16 +20,11 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->setName('stations:index:index');
 
-            $group->group(
+            $group->get(
                 '/automation',
-                function (RouteCollectorProxy $group) {
-                    $group->map(['GET', 'POST'], '', Controller\Stations\AutomationController::class . ':indexAction')
-                        ->setName('stations:automation:index');
-
-                    $group->get('/run', Controller\Stations\AutomationController::class . ':runAction')
-                        ->setName('stations:automation:run');
-                }
-            )->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
+                Controller\Stations\AutomationAction::class
+            )->setName('stations:automation:index')
+                ->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
 
             $group->get('/files', Controller\Stations\FilesAction::class)
                 ->setName('stations:files:index')

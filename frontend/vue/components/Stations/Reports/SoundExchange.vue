@@ -6,9 +6,7 @@
             </h3>
         </div>
 
-        <form id="report-form" class="form vue-form" method="POST" action="">
-            <input type="hidden" name="csrf" :value="csrf"/>
-
+        <form id="report-form" class="form vue-form" method="GET" :action="apiUrl" target="_blank">
             <div class="card-body">
                 <b-form-fieldset>
                     <p>This report is intended for licensing in the United States only, for webcasters paying royalties
@@ -86,7 +84,7 @@ import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 export default {
     name: 'StationsReportsSoundExchange',
     props: {
-        csrf: String,
+        apiUrl: String,
         startDate: String,
         endDate: String
     },

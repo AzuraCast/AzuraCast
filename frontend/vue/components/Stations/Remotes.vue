@@ -47,8 +47,7 @@
             </data-table>
         </b-card>
 
-        <remote-edit-modal ref="editModal" :create-url="listUrl" :enable-advanced-features="enableAdvancedFeatures"
-                           @relist="relist"></remote-edit-modal>
+        <remote-edit-modal ref="editModal" :create-url="listUrl" @relist="relist"></remote-edit-modal>
     </div>
 </template>
 
@@ -64,8 +63,7 @@ export default {
     name: 'StationMounts',
     components: {RemoteEditModal, InfoCard, Icon, EditModal, DataTable},
     props: {
-        listUrl: String,
-        enableAdvancedFeatures: Boolean
+        listUrl: String
     },
     data() {
         return {

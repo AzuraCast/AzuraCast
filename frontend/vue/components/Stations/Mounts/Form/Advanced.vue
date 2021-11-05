@@ -4,7 +4,7 @@
             <b-form-row class="mb-3">
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_custom_listen_url"
-                                      :field="form.custom_listen_url">
+                                      :field="form.custom_listen_url" advanced>
                     <template #label="{lang}">
                         <translate :key="lang">Mount Point URL</translate>
                     </template>
@@ -17,7 +17,7 @@
             <b-form-row v-if="isIcecast">
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_config" :field="form.frontend_config"
-                                      input-type="textarea" :input-attrs="{class: 'text-preformatted'}">
+                                      input-type="textarea" advanced :input-attrs="{class: 'text-preformatted'}">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Frontend Configuration</translate>
                     </template>

@@ -27,7 +27,6 @@ class RemotesAction
             title: __('Remote Relays'),
             props: [
                 'listUrl' => (string)$router->fromHere('api:stations:remotes'),
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
             ],
         );
     }

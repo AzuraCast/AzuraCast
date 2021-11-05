@@ -27,10 +27,10 @@ class MountsAction
             id: 'station-mounts',
             title: __('Mount Points'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:mounts'),
-                'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
+                'listUrl'             => (string)$router->fromHere('api:stations:mounts'),
+                'newIntroUrl'         => (string)$router->fromHere('api:stations:mounts:new-intro'),
                 'stationFrontendType' => $station->getFrontendType(),
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
+                'showAdvanced'        => $settings->getEnableAdvancedFeatures(),
             ],
         );
     }

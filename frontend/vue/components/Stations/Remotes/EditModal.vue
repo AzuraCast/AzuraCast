@@ -24,9 +24,6 @@ export default {
         RemoteFormAutoDj,
         RemoteFormBasicInfo
     },
-    props: {
-        enableAdvancedFeatures: Boolean
-    },
     validations() {
         return {
             form: {

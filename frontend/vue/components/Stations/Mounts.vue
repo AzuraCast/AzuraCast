@@ -52,8 +52,8 @@
         </b-card>
 
         <edit-modal ref="editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
-                    :enable-advanced-features="enableAdvancedFeatures"
-                    :station-frontend-type="stationFrontendType" @relist="relist"></edit-modal>
+                    :show-advanced="showAdvanced" :station-frontend-type="stationFrontendType"
+                    @relist="relist"></edit-modal>
     </div>
 </template>
 
@@ -70,7 +70,10 @@ export default {
         listUrl: String,
         newIntroUrl: String,
         stationFrontendType: String,
-        enableAdvancedFeatures: Boolean
+        showAdvanced: {
+            type: Boolean,
+            default: true
+        },
     },
     data () {
         return {

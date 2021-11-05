@@ -10,7 +10,7 @@
             <mount-form-intro v-model="$v.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
                               :new-intro-url="newIntroUrl"
                               :edit-intro-url="record.links.intro"></mount-form-intro>
-            <mount-form-advanced v-if="enableAdvancedFeatures" :form="$v.form"
+            <mount-form-advanced v-if="showAdvanced" :form="$v.form"
                                  :station-frontend-type="stationFrontendType"></mount-form-advanced>
         </b-tabs>
 
@@ -34,7 +34,10 @@ export default {
     props: {
         stationFrontendType: String,
         newIntroUrl: String,
-        enableAdvancedFeatures: Boolean
+        showAdvanced: {
+            type: Boolean,
+            default: true
+        },
     },
     data() {
         return {
@@ -58,18 +61,24 @@ export default {
                 enable_autodj: {},
                 autodj_format: {},
                 autodj_bitrate: {},
-                custom_listen_url: {},
                 max_listener_duration: {required},
                 intro_file: {}
             }
         };
+
+        if (this.showAdvanced) {
+            validations.form.custom_listen_url = {};
+        }
 
         if (FRONTEND_SHOUTCAST === this.stationFrontendType) {
             validations.form.authhash = {};
         }
         if (FRONTEND_ICECAST === this.stationFrontendType) {
             validations.form.fallback_mount = {};
-            validations.form.frontend_config = {};
+
+            if (this.showAdvanced) {
+                validations.form.frontend_config = {};
+            }
         }
 
         return validations;

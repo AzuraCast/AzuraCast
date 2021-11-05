@@ -23,6 +23,7 @@ import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
 import {DateTime} from 'luxon';
+import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'EditModal',
@@ -105,28 +106,28 @@ export default {
             let publishDate = '';
             let publishTime = '';
 
-            if (d.publishAt !== null) {
-                let publishDateTime = DateTime.fromSeconds(d.publishAt);
+            if (d.publish_at !== null) {
+                let publishDateTime = DateTime.fromSeconds(d.publish_at);
                 publishDate = publishDateTime.toISODate();
-                publishTime = publishDateTime.toFormat('hh:mm');
+                publishTime = publishDateTime.toISOTime({
+                    suppressMilliseconds: true,
+                    includeOffset: false
+                });
             }
 
-            this.record = d;
-
-            this.form = {
-                'title': d.title,
-                'link': d.link,
-                'description': d.description,
-                'publish_date': publishDate,
-                'publish_time': publishTime,
-                'explicit': d.explicit
-            };
+            this.record = mergeExisting(this.record, d);
+            this.form = mergeExisting(this.form, {
+                ...d,
+                publish_date: publishDate,
+                publish_time: publishTime
+            });
         },
         getSubmittableFormData() {
             let modifiedForm = this.form;
+
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
-                let publishDateTimeString = modifiedForm.publish_date + ' ' + modifiedForm.publish_time;
-                let publishDateTime = DateTime.fromFormat(publishDateTimeString, 'YYYY-mm-dd HH:ss');
+                let publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
+                let publishDateTime = DateTime.fromISO(publishDateTimeString);
 
                 modifiedForm.publish_at = publishDateTime.toSeconds();
             }

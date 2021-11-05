@@ -65,7 +65,7 @@
                 </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_advanced_features"
-                                         :field="form.enable_websockets">
+                                         :field="form.enable_advanced_features">
                     <template #label="{lang}">
                         <translate :key="lang">Enable Advanced Features</translate>
                     </template>

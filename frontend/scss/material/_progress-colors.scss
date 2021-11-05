@@ -1,5 +1,6 @@
 .progress {
   background-color: $progress-bg;
+  color: $white-secondary;
 
   @each $color, $values in $theme-colors {
     &.bg-#{$color} {

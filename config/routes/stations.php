@@ -30,7 +30,7 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:files:index')
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
-            $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
+            $group->get('/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
                 ->setName('stations:util:ls_config')
                 ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 

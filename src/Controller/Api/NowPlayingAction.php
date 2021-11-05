@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NowplayingController implements EventSubscriberInterface
+class NowPlayingAction implements EventSubscriberInterface
 {
     public function __construct(
         protected EntityManagerInterface $em,

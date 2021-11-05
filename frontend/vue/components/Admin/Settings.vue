@@ -128,8 +128,6 @@ export default {
             this.axios.get(this.apiUrl).then((resp) => {
                 this.populateForm(resp.data);
                 this.loading = false;
-            }).catch((error) => {
-                this.close();
             });
         },
         populateForm(data) {
@@ -181,7 +179,6 @@ export default {
                 this.$notifySuccess(this.$gettext('Changes saved.'));
                 this.relist();
             });
-
         }
     }
 }

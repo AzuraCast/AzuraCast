@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 use const ARRAY_FILTER_USE_KEY;
 
-class UpdateMetadataController
+class UpdateMetadataAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {

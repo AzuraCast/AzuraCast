@@ -11,9 +11,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 
 return [
-    /*
-     * Core libraries
-     */
     'jquery' => [
         'order' => 0,
         'files' => [
@@ -25,9 +22,6 @@ return [
         ],
     ],
 
-    /*
-     * Main per-layout dependencies
-     */
     'minimal' => [
         'order' => 2,
         'require' => ['jquery'],
@@ -139,61 +133,6 @@ return [
         ],
     ],
 
-    /*
-     * Asset collections
-     */
-    'forms_common' => [
-        'require' => ['zxcvbn', 'select2', 'dirrty'],
-        'files' => [
-            'js' => [
-                [
-                    'src'   => 'dist/form.js',
-                    'defer' => true,
-                ],
-                [
-                    'src'   => 'dist/lib/autosize/autosize.min.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
-    /*
-     * Individual libraries
-     */
-    'zxcvbn' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/zxcvbn/zxcvbn.js',
-                    'defer' => true,
-                ],
-                [
-                    'src' => 'dist/zxcvbn.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
-    'select2' => [
-        'order' => 10,
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/select2/select2.full.min.js',
-                    'defer' => true,
-                ],
-            ],
-            'css' => [
-                [
-                    'href' => 'dist/lib/select2/select2.min.css',
-                ],
-            ],
-        ],
-    ],
-
     'luxon' => [
         'order' => 8,
         'files' => [
@@ -238,19 +177,6 @@ return [
         'inline' => [
             'js' => [
                 "new ClipboardJS('.btn-copy');",
-            ],
-        ],
-    ],
-
-    'dirrty' => [
-        'order' => 10,
-        'require' => ['jquery'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/dirrty/jquery.dirrty.js',
-                    'defer' => true,
-                ],
             ],
         ],
     ],

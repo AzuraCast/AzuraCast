@@ -16,7 +16,6 @@
         "@fullcalendar/luxon": "^5.9.0",
         "@fullcalendar/timegrid": "^5.9.0",
         "@fullcalendar/vue": "^5.9.0",
-        "autosize": "^5.0",
         "axios": "^0.24",
         "bootstrap": "^4.6.0",
         "bootstrap-notify": "^3.1.3",
@@ -28,7 +27,6 @@
         "codemirror": "^5.62.3",
         "css-loader": "^6.5.0",
         "del": "^6",
-        "dirrty": "^1.0.0",
         "gulp": "^4.0.2",
         "gulp-babel": "^8.0.0",
         "gulp-clean-css": "^4",
@@ -56,8 +54,6 @@
         "roboto-fontface": "^0.10.0",
         "sass": "^1.39.2",
         "sass-loader": "^12.2",
-        "select2": "^4",
-        "sortablejs": "^1.14.0",
         "store": "^1.3.20",
         "sweetalert2": "^11",
         "vue": "^2.6.14",
@@ -2471,11 +2467,6 @@
         "node": ">= 4.5.0"
       }
     },
-    "node_modules/autosize": {
-      "version": "5.0.1",
-      "resolved": "https://registry.npmjs.org/autosize/-/autosize-5.0.1.tgz",
-      "integrity": "sha512-UIWUlE4TOVPNNj2jjrU39wI4hEYbneUypEqcyRmRFIx5CC2gNdg3rQr+Zh7/3h6egbBvm33TDQjNQKtj9Tk1HA=="
-    },
     "node_modules/axios": {
       "version": "0.24.0",
       "resolved": "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz",
@@ -3485,11 +3476,6 @@
       "engines": {
         "node": ">=8"
       }
-    },
-    "node_modules/dirrty": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/dirrty/-/dirrty-1.0.0.tgz",
-      "integrity": "sha512-z2wCoTCjnBBJL+8Tb00DqAhrrUzU0o4aNvZ7bTT5k4hM13ir64I6lSs4L/Ea0R2mL+C8vFfRcCco/9Ev17F7PA=="
     },
     "node_modules/duplexify": {
       "version": "3.7.1",
@@ -7617,11 +7603,6 @@
       "resolved": "https://registry.npmjs.org/select/-/select-1.1.2.tgz",
       "integrity": "sha1-DnNQrN7ICxEIUoeG7B1EGNEbOW0="
     },
-    "node_modules/select2": {
-      "version": "4.0.13",
-      "resolved": "https://registry.npmjs.org/select2/-/select2-4.0.13.tgz",
-      "integrity": "sha512-1JeB87s6oN/TDxQQYCvS5EFoQyvV6eYMZZ0AeA4tdFDYWN3BAGZ8npr17UBFddU0lgAt3H0yjX3X6/ekOj1yjw=="
-    },
     "node_modules/semver": {
       "version": "6.3.0",
       "resolved": "https://registry.npmjs.org/semver/-/semver-6.3.0.tgz",
@@ -7872,11 +7853,6 @@
       "engines": {
         "node": ">=4"
       }
-    },
-    "node_modules/sortablejs": {
-      "version": "1.14.0",
-      "resolved": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.14.0.tgz",
-      "integrity": "sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w=="
     },
     "node_modules/source-map": {
       "version": "0.5.7",
@@ -11067,11 +11043,6 @@
       "resolved": "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz",
       "integrity": "sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg=="
     },
-    "autosize": {
-      "version": "5.0.1",
-      "resolved": "https://registry.npmjs.org/autosize/-/autosize-5.0.1.tgz",
-      "integrity": "sha512-UIWUlE4TOVPNNj2jjrU39wI4hEYbneUypEqcyRmRFIx5CC2gNdg3rQr+Zh7/3h6egbBvm33TDQjNQKtj9Tk1HA=="
-    },
     "axios": {
       "version": "0.24.0",
       "resolved": "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz",
@@ -11874,11 +11845,6 @@
       "requires": {
         "path-type": "^4.0.0"
       }
-    },
-    "dirrty": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/dirrty/-/dirrty-1.0.0.tgz",
-      "integrity": "sha512-z2wCoTCjnBBJL+8Tb00DqAhrrUzU0o4aNvZ7bTT5k4hM13ir64I6lSs4L/Ea0R2mL+C8vFfRcCco/9Ev17F7PA=="
     },
     "duplexify": {
       "version": "3.7.1",
@@ -15024,11 +14990,6 @@
       "resolved": "https://registry.npmjs.org/select/-/select-1.1.2.tgz",
       "integrity": "sha1-DnNQrN7ICxEIUoeG7B1EGNEbOW0="
     },
-    "select2": {
-      "version": "4.0.13",
-      "resolved": "https://registry.npmjs.org/select2/-/select2-4.0.13.tgz",
-      "integrity": "sha512-1JeB87s6oN/TDxQQYCvS5EFoQyvV6eYMZZ0AeA4tdFDYWN3BAGZ8npr17UBFddU0lgAt3H0yjX3X6/ekOj1yjw=="
-    },
     "semver": {
       "version": "6.3.0",
       "resolved": "https://registry.npmjs.org/semver/-/semver-6.3.0.tgz",
@@ -15232,11 +15193,6 @@
       "requires": {
         "is-plain-obj": "^1.0.0"
       }
-    },
-    "sortablejs": {
-      "version": "1.14.0",
-      "resolved": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.14.0.tgz",
-      "integrity": "sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w=="
     },
     "source-map": {
       "version": "0.5.7",

@@ -23,7 +23,6 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
-        "azuracast/azuraforms": "dev-main",
         "azuracast/flysystem-v2-extensions": "dev-main",
         "azuracast/metadata-manager": "dev-main",
         "azuracast/nowplaying": "dev-main",

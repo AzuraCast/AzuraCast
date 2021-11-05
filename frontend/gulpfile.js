@@ -14,15 +14,12 @@ const mode = require('gulp-mode')();
 const run = require('gulp-run-command').default;
 
 var jsFiles = {
-  // Core Libraries
   'jquery': {
     base: 'node_modules/jquery/dist',
     files: [
       'node_modules/jquery/dist/jquery.min.js'
     ]
   },
-
-  // Main per-layout dependencies
   'bootstrap': {
     base: null,
     files: [
@@ -41,12 +38,6 @@ var jsFiles = {
       'node_modules/sweetalert2/dist/sweetalert2.min.js'
     ]
   },
-  'autosize': {
-    base: 'node_modules/autosize/dist',
-    files: [
-      'node_modules/autosize/dist/autosize.min.js'
-    ]
-  },
   'material-icons': {
     files: [
       'font/*'
@@ -57,26 +48,6 @@ var jsFiles = {
     files: [
       'node_modules/roboto-fontface/css/roboto/roboto-fontface.css',
       'node_modules/roboto-fontface/fonts/roboto/*'
-    ]
-  },
-  'dirrty': {
-    base: null,
-    files: [
-      'node_modules/dirrty/dist/jquery.dirrty.js'
-    ]
-  },
-
-  // Individual libraries
-  'zxcvbn': {
-    base: 'node_modules/zxcvbn/dist',
-    files: [
-      'node_modules/zxcvbn/dist/zxcvbn.js'
-    ]
-  },
-  'select2': {
-    files: [
-      'node_modules/select2/dist/css/select2.min.css',
-      'node_modules/select2/dist/js/select2.full.min.js'
     ]
   },
   'luxon': {

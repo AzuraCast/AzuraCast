@@ -1,5 +1,9 @@
 <template>
     <div id="reports-overview">
+        <h2 class="outside-card-header mb-1">
+            <translate key="hdr">Statistics Overview</translate>
+        </h2>
+
         <section class="card mb-4" role="region">
             <b-overlay variant="card" :show="chartsLoading">
                 <div class="card-body py-5" v-if="chartsLoading">

@@ -113,7 +113,7 @@
                             </b-wrapped-form-group>
                         </b-form-row>
 
-                        <b-button size="lg" type="submit" variant="primary">
+                        <b-button size="lg" type="submit" class="mt-3" variant="primary">
                             <translate key="lang_btn_save_changes">Save Changes</translate>
                         </b-button>
                     </b-form-group>

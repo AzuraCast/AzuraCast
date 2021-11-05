@@ -5,14 +5,17 @@
         <b-form class="form vue-form" @submit.prevent="submit">
             <b-tabs :card="!isModal" lazy justified :content-class="tabContentClass">
                 <admin-stations-profile-form :form="$v.form" :tab-class="getTabClass($v.profileTab)"
-                                             :timezones="timezones"></admin-stations-profile-form>
+                                             :timezones="timezones"
+                                             :show-advanced="showAdvanced"></admin-stations-profile-form>
                 <admin-stations-frontend-form :form="$v.form" :tab-class="getTabClass($v.frontendTab)"
                                               :is-shoutcast-installed="isShoutcastInstalled"
-                                              :countries="countries"></admin-stations-frontend-form>
-                <admin-stations-backend-form :form="$v.form"
-                                             :tab-class="getTabClass($v.backendTab)"></admin-stations-backend-form>
+                                              :countries="countries"
+                                              :show-advanced="showAdvanced"></admin-stations-frontend-form>
+                <admin-stations-backend-form :form="$v.form" :tab-class="getTabClass($v.backendTab)"
+                                             :show-advanced="showAdvanced"></admin-stations-backend-form>
                 <admin-stations-admin-form v-if="showAdminTab" :tab-class="getTabClass($v.adminTab)" :form="$v.form"
-                                           :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl">
+                                           :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl"
+                                           :show-advanced="showAdvanced">
                 </admin-stations-admin-form>
             </b-tabs>
 
@@ -44,6 +47,10 @@ export const StationFormProps = {
     props: {
         // Global
         showAdminTab: {
+            type: Boolean,
+            default: true
+        },
+        showAdvanced: {
             type: Boolean,
             default: true
         },
@@ -90,20 +97,12 @@ export default {
                 enable_on_demand: {},
                 default_album_art_url: {},
                 enable_on_demand_download: {},
-                short_name: {},
-                api_history_items: {},
                 frontend_type: {required},
                 frontend_config: {
                     sc_license_id: {},
                     sc_user_id: {},
                     source_pw: {},
                     admin_pw: {},
-                    port: {numeric},
-                    max_listeners: {},
-                    custom_config: {},
-                    banned_ips: {},
-                    banned_countries: {},
-                    allowed_ips: {}
                 },
                 backend_type: {required},
                 backend_config: {
@@ -113,15 +112,7 @@ export default {
                     record_streams: {},
                     record_streams_format: {},
                     record_streams_bitrate: {},
-                    dj_port: {numeric},
-                    telnet_port: {numeric},
                     dj_buffer: {numeric},
-                    dj_mount_point: {},
-                    enable_replaygain_metadata: {},
-                    autodj_queue_length: {},
-                    use_manual_autodj: {},
-                    charset: {},
-                    duplicate_prevention_time_range: {},
                 },
                 enable_requests: {},
                 request_delay: {numeric},
@@ -131,8 +122,7 @@ export default {
             },
             profileTab: [
                 'form.name', 'form.description', 'form.genre', 'form.url', 'form.timezone', 'form.enable_public_page',
-                'form.enable_on_demand', 'form.enable_on_demand_download', 'form.default_album_art_url',
-                'form.short_name', 'form.api_history_items'
+                'form.enable_on_demand', 'form.enable_on_demand_download', 'form.default_album_art_url'
             ],
             frontendTab: [
                 'form.frontend_type', 'form.frontend_config'
@@ -143,23 +133,69 @@ export default {
             ],
         };
 
+        if (this.showAdvanced) {
+            const advancedValidations = {
+                form: {
+                    short_name: {},
+                    api_history_items: {},
+                    frontend_config: {
+                        port: {numeric},
+                        max_listeners: {},
+                        custom_config: {},
+                        banned_ips: {},
+                        banned_countries: {},
+                        allowed_ips: {}
+                    },
+                    backend_config: {
+                        dj_port: {numeric},
+                        telnet_port: {numeric},
+                        dj_mount_point: {},
+                        enable_replaygain_metadata: {},
+                        autodj_queue_length: {},
+                        use_manual_autodj: {},
+                        charset: {},
+                        duplicate_prevention_time_range: {},
+                    },
+                },
+                profileTab: [
+                    'form.short_name', 'form.api_history_items'
+                ],
+            };
+
+            _.merge(formValidations, advancedValidations);
+        }
+
         if (this.showAdminTab) {
-            let adminValidations = {
+            const adminValidations = {
                 form: {
                     media_storage_location_id: {},
                     recordings_storage_location_id: {},
                     podcasts_storage_location_id: {},
                     is_enabled: {},
-                    radio_base_dir: {},
                 },
                 adminTab: [
                     'form.media_storage_location_id', 'form.recordings_storage_location_id',
-                    'form.podcasts_storage_location_id', 'form.is_enabled', 'form.radio_base_dir'
+                    'form.podcasts_storage_location_id', 'form.is_enabled'
                 ]
             };
 
             _.merge(formValidations, adminValidations);
+
+            if (this.showAdvanced) {
+                const advancedAdminValidations = {
+                    form: {
+                        radio_base_dir: {},
+                    },
+                    adminTab: [
+                        'form.radio_base_dir'
+                    ]
+                }
+
+                _.merge(formValidations, advancedAdminValidations);
+            }
         }
+
+        console.log(formValidations);
 
         return formValidations;
     },
@@ -209,20 +245,13 @@ export default {
                 enable_on_demand: false,
                 default_album_art_url: '',
                 enable_on_demand_download: true,
-                short_name: '',
-                api_history_items: 5,
                 frontend_type: FRONTEND_ICECAST,
                 frontend_config: {
                     sc_license_id: '',
                     sc_user_id: '',
                     source_pw: '',
                     admin_pw: '',
-                    port: '',
-                    max_listeners: '',
-                    custom_config: '',
-                    banned_ips: '',
-                    banned_countries: [],
-                    allowed_ips: ''
+
                 },
                 backend_type: BACKEND_LIQUIDSOAP,
                 backend_config: {
@@ -232,15 +261,7 @@ export default {
                     record_streams: false,
                     record_streams_format: 'mp3',
                     record_streams_bitrate: 128,
-                    dj_port: '',
-                    telnet_port: '',
                     dj_buffer: 5,
-                    dj_mount_point: '/',
-                    enable_replaygain_metadata: false,
-                    autodj_queue_length: 3,
-                    use_manual_autodj: false,
-                    charset: 'UTF-8',
-                    duplicate_prevention_time_range: 120,
                 },
                 enable_requests: false,
                 request_delay: 5,
@@ -249,16 +270,47 @@ export default {
                 disconnect_deactivate_streamer: 0,
             };
 
+            if (this.showAdvanced) {
+                const advancedForm = {
+                    short_name: '',
+                    api_history_items: 5,
+                    frontend_config: {
+                        port: '',
+                        max_listeners: '',
+                        custom_config: '',
+                        banned_ips: '',
+                        banned_countries: [],
+                        allowed_ips: ''
+                    },
+                    backend_config: {
+                        dj_port: '',
+                        telnet_port: '',
+                        dj_mount_point: '/',
+                        enable_replaygain_metadata: false,
+                        autodj_queue_length: 3,
+                        use_manual_autodj: false,
+                        charset: 'UTF-8',
+                        duplicate_prevention_time_range: 120,
+                    },
+                };
+                _.merge(form, advancedForm);
+            }
+
             if (this.showAdminTab) {
-                let adminForm = {
+                const adminForm = {
                     media_storage_location_id: '',
                     recordings_storage_location_id: '',
                     podcasts_storage_location_id: '',
                     is_enabled: true,
-                    radio_base_dir: '',
                 };
+                _.merge(form, adminForm);
 
-                form = {...form, ...adminForm};
+                if (this.showAdvanced) {
+                    const adminAdvancedForm = {
+                        radio_base_dir: '',
+                    };
+                    _.merge(form, adminAdvancedForm);
+                }
             }
 
             this.form = form;

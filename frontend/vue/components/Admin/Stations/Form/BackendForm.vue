@@ -20,44 +20,46 @@
         </b-form-fieldset>
 
         <b-form-fieldset v-if="isBackendEnabled">
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-7" id="edit_form_backend_crossfade_type"
-                                      :field="form.backend_config.crossfade_type">
-                    <template #label="{lang}">
-                        <translate :key="lang">Crossfade Method</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.</translate>
-                    </template>
-                    <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="crossfadeOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
-                    </template>
-                </b-wrapped-form-group>
+            <b-form-fieldset>
+                <b-form-row>
+                    <b-wrapped-form-group class="col-md-7" id="edit_form_backend_crossfade_type"
+                                          :field="form.backend_config.crossfade_type">
+                        <template #label="{lang}">
+                            <translate :key="lang">Crossfade Method</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.</translate>
+                        </template>
+                        <template #default="props">
+                            <b-form-radio-group stacked :id="props.id" :options="crossfadeOptions"
+                                                v-model="props.field.$model">
+                            </b-form-radio-group>
+                        </template>
+                    </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-5" id="edit_form_backend_crossfade"
-                                      :field="form.backend_config.crossfade" input-type="number"
-                                      :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }">
-                    <template #label="{lang}">
-                        <translate :key="lang">Crossfade Duration (Seconds)</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Number of seconds to overlap songs.</translate>
-                    </template>
-                </b-wrapped-form-group>
+                    <b-wrapped-form-group class="col-md-5" id="edit_form_backend_crossfade"
+                                          :field="form.backend_config.crossfade" input-type="number"
+                                          :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }">
+                        <template #label="{lang}">
+                            <translate :key="lang">Crossfade Duration (Seconds)</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">Number of seconds to overlap songs.</translate>
+                        </template>
+                    </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-12"
-                                         id="edit_form_backend_config_nrj"
-                                         :field="form.backend_config.nrj">
-                    <template #label="{lang}">
-                        <translate :key="lang">Apply Compression and Normalization</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Compress and normalize your station's audio, producing a more uniform and "full" sound.</translate>
-                    </template>
-                </b-wrapped-form-checkbox>
-            </b-form-row>
+                    <b-wrapped-form-checkbox class="col-md-12"
+                                             id="edit_form_backend_config_nrj"
+                                             :field="form.backend_config.nrj">
+                        <template #label="{lang}">
+                            <translate :key="lang">Apply Compression and Normalization</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">Compress and normalize your station's audio, producing a more uniform and "full" sound.</translate>
+                        </template>
+                    </b-wrapped-form-checkbox>
+                </b-form-row>
+            </b-form-fieldset>
 
             <b-form-fieldset>
                 <template #label>
@@ -67,17 +69,19 @@
                     <translate key="lang_song_requests_desc">Some stream licensing providers may have specific rules regarding song requests. Check your local regulations for more information.</translate>
                 </template>
 
-                <b-form-row>
-                    <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_requests"
-                                             :field="form.enable_requests">
-                        <template #label="{lang}">
-                            <translate :key="lang">Allow Song Requests</translate>
-                        </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.</translate>
-                        </template>
-                    </b-wrapped-form-checkbox>
-                </b-form-row>
+                <b-form-fieldset>
+                    <b-form-row>
+                        <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_requests"
+                                                 :field="form.enable_requests">
+                            <template #label="{lang}">
+                                <translate :key="lang">Allow Song Requests</translate>
+                            </template>
+                            <template #description="{lang}">
+                                <translate :key="lang">Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.</translate>
+                            </template>
+                        </b-wrapped-form-checkbox>
+                    </b-form-row>
+                </b-form-fieldset>
 
                 <b-form-fieldset v-if="form.enable_requests.$model">
                     <b-form-row>
@@ -111,30 +115,34 @@
                     <translate key="lang_hdr_streamers">Streamers / DJs</translate>
                 </template>
 
-                <b-form-row>
-                    <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_streamers"
-                                             :field="form.enable_streamers">
-                        <template #label="{lang}">
-                            <translate :key="lang">Allow Streamers / DJs</translate>
-                        </template>
-                        <template #label="{lang}">
-                            <translate :key="lang">If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.</translate>
-                        </template>
-                    </b-wrapped-form-checkbox>
-                </b-form-row>
-
-                <b-form-fieldset v-if="form.enable_streamers.$model">
+                <b-form-fieldset>
                     <b-form-row>
-                        <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_record_streams"
-                                                 :field="form.backend_config.record_streams">
+                        <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_streamers"
+                                                 :field="form.enable_streamers">
                             <template #label="{lang}">
-                                <translate :key="lang">Record Live Broadcasts</translate>
+                                <translate :key="lang">Allow Streamers / DJs</translate>
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.</translate>
+                                <translate :key="lang">If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.</translate>
                             </template>
                         </b-wrapped-form-checkbox>
                     </b-form-row>
+                </b-form-fieldset>
+
+                <b-form-fieldset v-if="form.enable_streamers.$model">
+                    <b-form-fieldset>
+                        <b-form-row>
+                            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_record_streams"
+                                                     :field="form.backend_config.record_streams">
+                                <template #label="{lang}">
+                                    <translate :key="lang">Record Live Broadcasts</translate>
+                                </template>
+                                <template #description="{lang}">
+                                    <translate :key="lang">If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.</translate>
+                                </template>
+                            </b-wrapped-form-checkbox>
+                        </b-form-row>
+                    </b-form-fieldset>
 
                     <b-form-fieldset v-if="form.backend_config.record_streams.$model">
                         <b-form-row>
@@ -166,57 +174,59 @@
                         </b-form-row>
                     </b-form-fieldset>
 
-                    <b-form-row>
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_disconnect_deactivate_streamer"
-                                              :field="form.disconnect_deactivate_streamer" input-type="number"
-                                              :input-attrs="{ min: '0' }">
-                            <template #label="{lang}">
-                                <translate :key="lang">Deactivate Streamer on Disconnect (Seconds)</translate>
-                            </template>
-                            <template #description="{lang}">
-                                <translate :key="lang">This is the number of seconds until a streamer who has been manually disconnected can reconnect to the stream. Set to 0 to allow the streamer to immediately reconnect.</translate>
-                            </template>
-                        </b-wrapped-form-group>
+                    <b-form-fieldset>
+                        <b-form-row>
+                            <b-wrapped-form-group class="col-md-6" id="edit_form_disconnect_deactivate_streamer"
+                                                  :field="form.disconnect_deactivate_streamer" input-type="number"
+                                                  :input-attrs="{ min: '0' }">
+                                <template #label="{lang}">
+                                    <translate :key="lang">Deactivate Streamer on Disconnect (Seconds)</translate>
+                                </template>
+                                <template #description="{lang}">
+                                    <translate :key="lang">This is the number of seconds until a streamer who has been manually disconnected can reconnect to the stream. Set to 0 to allow the streamer to immediately reconnect.</translate>
+                                </template>
+                            </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_dj_port"
-                                              :field="form.backend_config.dj_port" input-type="number"
-                                              :input-attrs="{ min: '0' }" advanced>
-                            <template #label="{lang}">
-                                <translate :key="lang">Customize DJ/Streamer Port</translate>
-                            </template>
-                            <template #label="{lang}">
-                                <translate :key="lang">No other program can be using this port. Leave blank to automatically assign a port.</translate>
-                                <br>
-                                <translate :key="lang+'2'">Note: the port after this one will automatically be used for legacy connections.</translate>
-                            </template>
-                        </b-wrapped-form-group>
+                            <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_backend_dj_port"
+                                                  :field="form.backend_config.dj_port" input-type="number"
+                                                  :input-attrs="{ min: '0' }" advanced>
+                                <template #label="{lang}">
+                                    <translate :key="lang">Customize DJ/Streamer Port</translate>
+                                </template>
+                                <template #description="{lang}">
+                                    <translate :key="lang">No other program can be using this port. Leave blank to automatically assign a port.</translate>
+                                    <br>
+                                    <translate :key="lang+'2'">Note: the port after this one will automatically be used for legacy connections.</translate>
+                                </template>
+                            </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_dj_buffer"
-                                              :field="form.backend_config.dj_buffer" input-type="number"
-                                              :input-attrs="{ min: '0', max: '60' }">
-                            <template #label="{lang}">
-                                <translate :key="lang">DJ/Streamer Buffer Time (Seconds)</translate>
-                            </template>
-                            <template #description="{lang}">
-                                <translate :key="lang">The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.</translate>
-                            </template>
-                        </b-wrapped-form-group>
+                            <b-wrapped-form-group class="col-md-6" id="edit_form_backend_dj_buffer"
+                                                  :field="form.backend_config.dj_buffer" input-type="number"
+                                                  :input-attrs="{ min: '0', max: '60' }">
+                                <template #label="{lang}">
+                                    <translate :key="lang">DJ/Streamer Buffer Time (Seconds)</translate>
+                                </template>
+                                <template #description="{lang}">
+                                    <translate :key="lang">The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.</translate>
+                                </template>
+                            </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_dj_mount_point"
-                                              :field="form.backend_config.dj_mount_point" advanced>
-                            <template #label="{lang}">
-                                <translate :key="lang">Customize DJ/Streamer Mount Point</translate>
-                            </template>
-                            <template #description="{lang}">
-                                <translate :key="lang">If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.</translate>
-                            </template>
-                        </b-wrapped-form-group>
-
-                    </b-form-row>
+                            <b-wrapped-form-group v-if="showAdvanced" class="col-md-6"
+                                                  id="edit_form_backend_dj_mount_point"
+                                                  :field="form.backend_config.dj_mount_point" advanced>
+                                <template #label="{lang}">
+                                    <translate :key="lang">Customize DJ/Streamer Mount Point</translate>
+                                </template>
+                                <template #description="{lang}">
+                                    <translate :key="lang">If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.</translate>
+                                </template>
+                            </b-wrapped-form-group>
+                        </b-form-row>
+                    </b-form-fieldset>
                 </b-form-fieldset>
             </b-form-fieldset>
 
-            <b-form-fieldset>
+            <b-form-fieldset v-if="showAdvanced">
                 <template #label>
                     <translate key="lang_hdr_advanced">Advanced Configuration</translate>
                 </template>
@@ -311,6 +321,10 @@ export default {
     props: {
         form: Object,
         tabClass: {},
+        showAdvanced: {
+            type: Boolean,
+            default: true
+        },
     },
     computed: {
         langTabTitle() {

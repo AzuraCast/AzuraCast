@@ -53,7 +53,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_short_name" :field="form.short_name" advanced>
+                <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_short_name"
+                                      :field="form.short_name" advanced>
                     <template #label="{lang}">
                         <translate :key="lang">URL Stub</translate>
                     </template>
@@ -62,8 +63,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_api_history_items" :field="form.api_history_items"
-                                      advanced>
+                <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_api_history_items"
+                                      :field="form.api_history_items" advanced>
                     <template #label="{lang}">
                         <translate :key="lang">Number of Visible Recent Songs</translate>
                     </template>
@@ -139,7 +140,11 @@ export default {
     props: {
         form: Object,
         tabClass: {},
-        timezones: Object
+        timezones: Object,
+        showAdvanced: {
+            type: Boolean,
+            default: true
+        },
     },
     computed: {
         langTabTitle() {

@@ -39,96 +39,103 @@
                 </b-form-row>
             </b-form-fieldset>
 
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
-                                      :field="form.frontend_config.source_pw">
-                    <template #label="{lang}">
-                        <translate :key="lang">Customize Source Password</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Leave blank to automatically generate a new password.</translate>
-                    </template>
-                </b-wrapped-form-group>
-
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_admin_pw"
-                                      :field="form.frontend_config.admin_pw">
-                    <template #label="{lang}">
-                        <translate :key="lang">Customize Administrator Password</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Leave blank to automatically generate a new password.</translate>
-                    </template>
-                </b-wrapped-form-group>
-
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_port"
-                                      :field="form.frontend_config.port" input-type="number"
-                                      :input-attrs="{min: '0'}" advanced>
-                    <template #label="{lang}">
-                        <translate :key="lang">Customize Broadcasting Port</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">No other program can be using this port. Leave blank to automatically assign a port.</translate>
-                    </template>
-                </b-wrapped-form-group>
-
-                <b-wrapped-form-group class="col-md-6" id="edit_form_max_listeners"
-                                      :field="form.frontend_config.max_listeners" advanced>
-                    <template #label="{lang}">
-                        <translate :key="lang">Maximum Listeners</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Maximum number of total listeners across all streams. Leave blank to use the default.</translate>
-                    </template>
-                </b-wrapped-form-group>
-            </b-form-row>
-
-            <b-form-row>
-                <b-col md="5">
-                    <b-wrapped-form-group id="edit_form_frontend_banned_ips"
-                                          :field="form.frontend_config.banned_ips" input-type="textarea"
-                                          :input-attrs="{class: 'text-preformatted'}" advanced>
-                        <template #label="{lang}">
-                            <translate :key="lang">Banned IP Addresses</translate>
-                        </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">List one IP address or group (in CIDR format) per line.</translate>
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group id="edit_form_frontend_allowed_ips"
-                                          :field="form.frontend_config.allowed_ips" input-type="textarea"
-                                          :input-attrs="{class: 'text-preformatted'}" advanced>
-                        <template #label="{lang}">
-                            <translate :key="lang">Allowed IP Addresses</translate>
-                        </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">List one IP address or group (in CIDR format) per line.</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </b-col>
-
-                <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
-                                      :field="form.frontend_config.banned_countries"
-                                      advanced>
-                    <template #label="{lang}">
-                        <translate :key="lang">Banned Countries</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate
-                            :key="lang">Select the countries that are not allowed to connect to the streams.</translate>
-                    </template>
-                    <template #default="props">
-                        <b-form-select :id="props.id" v-model="props.field.$model"
-                                       :options="countryOptions" style="min-height: 200px;" multiple></b-form-select>
-
-                        <b-button block variant="outline-primary" @click.prevent="clearCountries">
-                            <translate key="lang_btn_clear_countries">Clear List</translate>
-                        </b-button>
-                    </template>
-                </b-wrapped-form-group>
-            </b-form-row>
-
             <b-form-fieldset>
+                <b-form-row>
+                    <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
+                                          :field="form.frontend_config.source_pw">
+                        <template #label="{lang}">
+                            <translate :key="lang">Customize Source Password</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">Leave blank to automatically generate a new password.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+
+                    <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_admin_pw"
+                                          :field="form.frontend_config.admin_pw">
+                        <template #label="{lang}">
+                            <translate :key="lang">Customize Administrator Password</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">Leave blank to automatically generate a new password.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+
+                    <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_frontend_port"
+                                          :field="form.frontend_config.port" input-type="number"
+                                          :input-attrs="{min: '0'}" advanced>
+                        <template #label="{lang}">
+                            <translate :key="lang">Customize Broadcasting Port</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">No other program can be using this port. Leave blank to automatically assign a port.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+
+                    <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_max_listeners"
+                                          :field="form.frontend_config.max_listeners" advanced>
+                        <template #label="{lang}">
+                            <translate :key="lang">Maximum Listeners</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">Maximum number of total listeners across all streams. Leave blank to use the default.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </b-form-row>
+            </b-form-fieldset>
+
+            <b-form-fieldset v-if="showAdvanced">
+                <b-form-row>
+                    <b-col md="5">
+                        <b-wrapped-form-group id="edit_form_frontend_banned_ips"
+                                              :field="form.frontend_config.banned_ips" input-type="textarea"
+                                              :input-attrs="{class: 'text-preformatted'}" advanced>
+                            <template #label="{lang}">
+                                <translate :key="lang">Banned IP Addresses</translate>
+                            </template>
+                            <template #description="{lang}">
+                                <translate
+                                    :key="lang">List one IP address or group (in CIDR format) per line.</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group id="edit_form_frontend_allowed_ips"
+                                              :field="form.frontend_config.allowed_ips" input-type="textarea"
+                                              :input-attrs="{class: 'text-preformatted'}" advanced>
+                            <template #label="{lang}">
+                                <translate :key="lang">Allowed IP Addresses</translate>
+                            </template>
+                            <template #description="{lang}">
+                                <translate
+                                    :key="lang">List one IP address or group (in CIDR format) per line.</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-col>
+
+                    <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
+                                          :field="form.frontend_config.banned_countries"
+                                          advanced>
+                        <template #label="{lang}">
+                            <translate :key="lang">Banned Countries</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate
+                                :key="lang">Select the countries that are not allowed to connect to the streams.</translate>
+                        </template>
+                        <template #default="props">
+                            <b-form-select :id="props.id" v-model="props.field.$model"
+                                           :options="countryOptions" style="min-height: 200px;"
+                                           multiple></b-form-select>
+
+                            <b-button block variant="outline-primary" @click.prevent="clearCountries">
+                                <translate key="lang_btn_clear_countries">Clear List</translate>
+                            </b-button>
+                        </template>
+                    </b-wrapped-form-group>
+                </b-form-row>
+            </b-form-fieldset>
+
+            <b-form-fieldset v-if="showAdvanced">
                 <template #label>
                     <translate key="lang_hdr_custom_config">Custom Configuration</translate>
                 </template>
@@ -171,7 +178,11 @@ export default {
             type: Boolean,
             default: false
         },
-        countries: Object
+        countries: Object,
+        showAdvanced: {
+            type: Boolean,
+            default: true
+        },
     },
     computed: {
         langTabTitle() {

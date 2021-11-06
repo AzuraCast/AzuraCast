@@ -2,14 +2,14 @@
     <div id="dashboard">
         <section class="card mb-4" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
-
-                <avatar class="flex-shrink-0 mr-3" :url="userAvatar" :service="avatarServiceName"
-                        :service-url="avatarServiceUrl"></avatar>
+                <avatar class="flex-shrink-0 mr-3" v-if="user.avatar.url" :url="user.avatar.url"
+                        :service="user.avatar.service" :service-url="user.avatar.serviceUrl"></avatar>
 
                 <div class="flex-fill">
-                    <h2 class="card-title mt-0">{{ userName }}</h2>
-                    <h3 class="card-subtitle">{{ userEmail }}</h3>
+                    <h2 class="card-title mt-0">{{ user.name }}</h2>
+                    <h3 class="card-subtitle">{{ user.email }}</h3>
                 </div>
+
                 <div class="flex-md-shrink-0 mt-3 mt-md-0">
                     <a class="btn btn-bg" role="button" :href="profileUrl">
                         <icon icon="account_circle"></icon>
@@ -133,12 +133,21 @@
                             <span class="nowplaying-listeners">{{ item.listeners.total }}</span>
                         </td>
                         <td>
-                            <div v-if="item.now_playing.song.title !== ''">
-                                <strong><span class="nowplaying-title">{{ item.now_playing.song.title }}</span></strong><br>
-                                <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
-                            </div>
-                            <div v-else>
-                                <strong><span class="nowplaying-title">{{ item.now_playing.song.text }}</span></strong>
+                            <div class="d-flex align-items-center">
+                                <album-art v-if="showAlbumArt" :src="item.now_playing.song.art"
+                                           class="flex-shrink-0 pr-3"></album-art>
+
+                                <div v-if="item.now_playing.song.title !== ''" class="flex-fill">
+                                    <strong><span class="nowplaying-title">
+                                        {{ item.now_playing.song.title }}
+                                    </span></strong><br>
+                                    <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
+                                </div>
+                                <div v-else class="flex-fill">
+                                    <strong><span class="nowplaying-title">
+                                        {{ item.now_playing.song.text }}
+                                    </span></strong>
+                                </div>
                             </div>
                         </td>
                         <td class="text-right">
@@ -161,15 +170,12 @@ import store from 'store';
 import Icon from '~/components/Common/Icon';
 import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";
+import AlbumArt from "~/components/Common/AlbumArt";
 
 export default {
-    components: {PlayButton, Avatar, Icon, DataTable, TimeSeriesChart},
+    components: {PlayButton, Avatar, Icon, DataTable, TimeSeriesChart, AlbumArt},
     props: {
-        userName: String,
-        userEmail: String,
-        userAvatar: String,
-        avatarServiceName: String,
-        avatarServiceUrl: String,
+        userUrl: String,
         profileUrl: String,
         adminUrl: String,
         showAdmin: Boolean,
@@ -177,10 +183,21 @@ export default {
         showCharts: Boolean,
         chartsUrl: String,
         manageStationsUrl: String,
-        stationsUrl: String
+        stationsUrl: String,
+        showAlbumArt: Boolean
     },
     data () {
         return {
+            userLoading: true,
+            user: {
+                name: this.$gettext('AzuraCast User'),
+                email: null,
+                avatar: {
+                    url: null,
+                    service: null,
+                    serviceUrl: null
+                },
+            },
             chartsLoading: true,
             chartsVisible: null,
             chartsData: {
@@ -219,6 +236,19 @@ export default {
         } else {
             this.chartsVisible = true;
         }
+
+        this.axios.get(this.userUrl).then((resp) => {
+            this.user = {
+                name: resp.data.name,
+                email: resp.data.email,
+                avatar: {
+                    url: resp.data.avatar.url_64,
+                    service: resp.data.avatar.service_name,
+                    serviceUrl: resp.data.avatar.service_url
+                }
+            };
+            this.userLoading = false;
+        });
 
         if (this.showCharts) {
             this.axios.get(this.chartsUrl).then((response) => {

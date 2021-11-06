@@ -22,14 +22,12 @@ class DashboardAction
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
+        $settings = $settingsRepo->readSettings();
+
         // Detect current analytics level.
-        $analyticsLevel = $settingsRepo->readSettings()->getAnalytics();
+        $analyticsLevel = $settings->getAnalytics();
         $showCharts = $analyticsLevel !== Entity\Analytics::LEVEL_NONE;
 
-        // Avatars
-        $avatarService = $avatar->getAvatarService();
-
-        $user = $request->getUser();
         $router = $request->getRouter();
         $acl = $request->getAcl();
 
@@ -39,11 +37,7 @@ class DashboardAction
             id: 'dashboard',
             title: __('Dashboard'),
             props: [
-                'avatarServiceName' => $avatarService->getServiceName(),
-                'avatarServiceUrl'  => $avatarService->getServiceUrl(),
-                'userAvatar'        => $avatar->getAvatar($request->getUser()->getEmail(), 64),
-                'userName'          => $user->getName() ?? __('AzuraCast User'),
-                'userEmail'         => $user->getEmail(),
+                'userUrl'           => (string)$router->named('api:frontend:account:me'),
                 'profileUrl'        => (string)$router->named('profile:index'),
                 'adminUrl'          => (string)$router->named('admin:index:index'),
                 'showAdmin'         => $acl->isAllowed(Acl::GLOBAL_VIEW),
@@ -52,6 +46,7 @@ class DashboardAction
                 'chartsUrl'         => (string)$router->named('api:frontend:dashboard:charts'),
                 'manageStationsUrl' => (string)$router->named('admin:stations:index'),
                 'stationsUrl'       => (string)$router->named('api:frontend:dashboard:stations'),
+                'showAlbumArt'      => !$settings->getHideAlbumArt(),
             ]
         );
     }

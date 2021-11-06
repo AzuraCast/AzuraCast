@@ -112,7 +112,7 @@
 
             <b-form-fieldset>
                 <template #label>
-                    <translate key="lang_hdr_streamers">Streamers / DJs</translate>
+                    <translate key="lang_hdr_streamers">Streamers/DJs</translate>
                 </template>
 
                 <b-form-fieldset>

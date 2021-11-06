@@ -25,7 +25,7 @@ export default {
     },
     computed: {
         langLogView () {
-            return this.$gettext('Log View');
+            return this.$gettext('Log Viewer');
         }
     },
     methods: {

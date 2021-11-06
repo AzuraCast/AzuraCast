@@ -8,9 +8,9 @@
             <b-form-row>
                 <b-form-markup class="col-md-6" id="form_release_channel">
                     <template #label="{lang}">
-                        <translate :key="lang">Current Release Channel</translate>
+                        <translate :key="lang">Release Channel</translate>
                     </template>
-                    <template #label="{lang}">
+                    <template #description="{lang}">
                         <a href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
                            target="_blank">
                             <translate :key="lang">Learn more about release channels in the AzuraCast docs.</translate>
@@ -109,7 +109,7 @@
 
         <b-form-fieldset>
             <template #label>
-                <translate key="lang_section_avatar_services">Avatar Services</translate>
+                <translate key="lang_section_avatar_services">Avatar Service</translate>
             </template>
 
             <b-form-row>
@@ -134,7 +134,7 @@
 
         <b-form-fieldset>
             <template #label>
-                <translate key="lang_section_album_art_services">Album Art Services</translate>
+                <translate key="lang_section_album_art_services">Album Art</translate>
             </template>
 
             <b-form-row>
@@ -156,7 +156,7 @@
                     <template #label="{lang}">
                         <translate :key="lang">Last.fm API Key</translate>
                     </template>
-                    <template #label="{lang}">
+                    <template #description="{lang}">
                         <translate :key="lang">This service can provide album art for tracks where none is available locally.</translate>
                         <br>
                         <a href="https://www.last.fm/api/account/create" target="_blank">

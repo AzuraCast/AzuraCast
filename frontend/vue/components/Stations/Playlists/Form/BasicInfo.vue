@@ -23,7 +23,7 @@
 
                 <b-wrapped-form-checkbox class="col-md-6" id="form_edit_is_enabled" :field="form.is_enabled">
                     <template #label="{lang}">
-                        <translate :key="lang">Is Enabled</translate>
+                        <translate :key="lang">Enable</translate>
                     </template>
                     <template #description="{lang}">
                         <translate :key="lang">If disabled, the playlist will not be included in radio playback, but can still be managed.</translate>

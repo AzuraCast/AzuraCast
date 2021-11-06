@@ -3,7 +3,7 @@
         <section class="card mb-3" role="region">
             <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_hdr_automated_assignment">Automated Playlist Assignment</translate>
+                    <translate key="lang_hdr_automated_assignment">Automated Assignment</translate>
                 </h2>
             </b-card-header>
 

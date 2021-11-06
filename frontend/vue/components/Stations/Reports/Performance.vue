@@ -53,7 +53,7 @@ export default {
             fields: [
                 {key: 'title', label: this.$gettext('Title'), sortable: true},
                 {key: 'artist', label: this.$gettext('Artist'), sortable: true},
-                {key: 'path', label: this.$gettext('Filename'), sortable: false},
+                {key: 'path', label: this.$gettext('File Name'), sortable: false},
                 {key: 'length_raw', label: this.$gettext('Length'), selectable: true, sortable: false},
                 {key: 'length', label: this.$gettext('Length Text'), visible: false, selectable: true, sortable: false},
                 {key: 'playlists', label: this.$gettext('Playlist(s)'), selectable: true, sortable: false},

@@ -56,7 +56,7 @@ class ForgotPasswordAction
                 $email = $mail->createMessage();
                 $email->to($user->getEmail());
 
-                $email->subject(__('Account Recovery Link'));
+                $email->subject(__('Account Recovery'));
 
                 $loginToken = $loginTokenRepo->createToken($user);
                 $email->text(

@@ -30,7 +30,7 @@
                 <b-wrapped-form-checkbox class="col-md-6" id="form_edit_exclude_media"
                                          :field="$v.form.backup_exclude_media">
                     <template #label="{lang}">
-                        <translate :key="lang">Exclude Media from Backups</translate>
+                        <translate :key="lang">Exclude Media from Backup</translate>
                     </template>
                     <template #description="{lang}">
                         <translate :key="lang">Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.</translate>

@@ -68,6 +68,8 @@ class ImportCommand extends CommandAbstract
                     $jsTranslations[$localeJsKey][$translation->getOriginal()] = $string;
                 }
 
+                ksort($jsTranslations[$localeJsKey]);
+
                 $io->writeln(__('Imported locale: %s', $locale_key . ' (' . $locale_name . ')'));
             }
         }

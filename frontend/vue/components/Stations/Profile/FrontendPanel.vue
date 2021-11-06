@@ -18,7 +18,7 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td key="lang_frontend_admin_uri" v-translate>Administration URL</td>
+                    <td key="lang_frontend_admin_uri" v-translate>Administration</td>
                     <td>
                         <a :href="frontendAdminUri">{{ frontendAdminUri }}</a>
                     </td>

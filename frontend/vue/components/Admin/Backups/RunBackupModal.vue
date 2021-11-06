@@ -21,7 +21,7 @@
                         <b-wrapped-form-group class="col-md-12" id="edit_form_path"
                                               :field="$v.form.path">
                             <template #label="{lang}">
-                                <translate :key="lang">Backup Filename</translate>
+                                <translate :key="lang">File Name</translate>
                             </template>
                             <template #description="{lang}">
                                 <translate :key="lang">This will be the file name for your backup, include the file type (.zip or .tar.gz) you wish to use.</translate>

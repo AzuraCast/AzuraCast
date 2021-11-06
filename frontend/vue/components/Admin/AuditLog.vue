@@ -56,7 +56,7 @@
                     <thead>
                     <tr>
                         <th>
-                            <translate key="lang_col_field>">Field</translate>
+                            <translate key="lang_col_field">Field Name</translate>
                         </th>
                         <th>
                             <translate key="lang_col_previous">Previous</translate>

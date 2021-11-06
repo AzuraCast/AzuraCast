@@ -148,7 +148,7 @@ export default {
     },
     computed: {
         langTabTitle() {
-            return this.$gettext('Station Profile');
+            return this.$gettext('Profile');
         },
         timezoneOptions() {
             return objectToFormOptions(this.timezones);

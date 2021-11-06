@@ -13,7 +13,7 @@ export default {
     },
     computed: {
         langTitle() {
-            return this.$gettext('Log View');
+            return this.$gettext('Log Viewer');
         }
     },
     methods: {

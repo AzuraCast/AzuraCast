@@ -20,7 +20,7 @@ class AutomationAction
             response: $response,
             component: 'Vue_StationsAutomation',
             id: 'station-automation',
-            title: __('Automated Playlist Assignment'),
+            title: __('Automated Assignment'),
             props: [
                 'settingsUrl' => (string)$router->fromHere('api:stations:automation:settings'),
                 'runUrl'      => (string)$router->fromHere('api:stations:automation:run'),

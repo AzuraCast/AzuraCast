@@ -10,11 +10,11 @@
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
                             <b-form-radio value="songs">
-                                <translate key="lang_edit_form_source_songs">Song-Based Playlist</translate>
+                                <translate key="lang_edit_form_source_songs">Song-Based</translate>
                                 <translate class="form-text mt-0" key="lang_edit_form_source_songs_desc">A playlist containing media files hosted on this server.</translate>
                             </b-form-radio>
                             <b-form-radio value="remote_url">
-                                <translate key="lang_edit_form_source_remote_url">Remote URL Playlist</translate>
+                                <translate key="lang_edit_form_source_remote_url">Remote URL</translate>
                                 <translate class="form-text mt-0" key="lang_edit_form_source_remote_url_desc">A playlist that instructs the station to play from a remote URL.</translate>
                             </b-form-radio>
                         </b-form-radio-group>

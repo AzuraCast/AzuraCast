@@ -44,7 +44,7 @@
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_author" :field="form.config.author">
                     <template #label="{lang}">
-                        <translate :key="lang">Author Name</translate>
+                        <translate :key="lang">Author</translate>
                     </template>
                 </b-wrapped-form-group>
 

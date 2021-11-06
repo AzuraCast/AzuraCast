@@ -93,11 +93,11 @@ export default {
     data () {
         return {
             fields: [
-                { key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0' },
-                { key: 'title', label: this.$gettext('Episode'), sortable: false },
-                { key: 'podcast_media', label: this.$gettext('File'), sortable: false },
-                { key: 'explicit', label: this.$gettext('Explicit'), sortable: false },
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }
+                {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
+                {key: 'title', label: this.$gettext('Episode'), sortable: false},
+                {key: 'podcast_media', label: this.$gettext('File Name'), sortable: false},
+                {key: 'explicit', label: this.$gettext('Explicit'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
     },

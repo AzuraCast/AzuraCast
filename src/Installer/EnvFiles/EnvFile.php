@@ -32,9 +32,9 @@ class EnvFile extends AbstractEnvFile
                     'required' => true,
                 ],
                 'AZURACAST_VERSION' => [
-                    'name' => __('AzuraCast Release Channel'),
-                    'options' => ['latest', 'stable'],
-                    'default' => 'latest',
+                    'name'     => __('Release Channel'),
+                    'options'  => ['latest', 'stable'],
+                    'default'  => 'latest',
                     'required' => true,
                 ],
                 'AZURACAST_HTTP_PORT' => [

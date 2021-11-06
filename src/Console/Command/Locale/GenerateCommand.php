@@ -59,6 +59,8 @@ class GenerateCommand extends CommandAbstract
             }
         }
 
+        $translations->ksort();
+
         $translations->toPoFile($dest_file);
 
         $io->success('Locales generated.');

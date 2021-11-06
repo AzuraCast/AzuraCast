@@ -9,7 +9,7 @@
                 <section class="card mb-3" role="region">
                     <b-card-header header-bg-variant="primary-dark">
                         <h2 class="card-title">
-                            <translate key="lang_hdr_profile">My Profile</translate>
+                            <translate key="lang_hdr_profile">Profile</translate>
                         </h2>
                     </b-card-header>
 

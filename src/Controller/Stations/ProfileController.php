@@ -29,7 +29,7 @@ class ProfileController
         $station = $request->getStation();
         $view = $request->getView();
 
-        if (!$station->isEnabled()) {
+        if (!$station->getIsEnabled()) {
             return $view->renderToResponse($response, 'stations/profile/disabled');
         }
 

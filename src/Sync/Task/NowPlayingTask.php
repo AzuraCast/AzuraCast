@@ -82,7 +82,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         $nowplaying = [];
 
         foreach ($this->iterateStations() as $station) {
-            if (!$station->isEnabled()) {
+            if (!$station->getIsEnabled()) {
                 continue;
             }
 
@@ -220,7 +220,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 }
             }
 
-            $sq->sentToAutodj();
+            $sq->setSentToAutodj();
 
             $this->em->persist($sq);
             $this->em->flush();

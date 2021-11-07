@@ -287,7 +287,7 @@ class StationPlaylist implements
         $this->is_enabled = $is_enabled;
     }
 
-    public function isJingle(): bool
+    public function getIsJingle(): bool
     {
         return $this->is_jingle;
     }

@@ -64,7 +64,7 @@ class Annotations implements EventSubscriberInterface
         $playlist = $event->getPlaylist();
         if ($playlist instanceof Entity\StationPlaylist) {
             // Handle "Jingle mode" by sending the same metadata as the previous song.
-            if ($playlist->isJingle()) {
+            if ($playlist->getIsJingle()) {
                 $event->addAnnotations([
                     'jingle_mode' => 'true',
                 ]);
@@ -73,8 +73,8 @@ class Annotations implements EventSubscriberInterface
                 if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
                     $event->addAnnotations(
                         [
-                            'title' => $np->now_playing?->song?->title,
-                            'artist' => $np->now_playing?->song?->artist,
+                            'title'       => $np->now_playing?->song?->title,
+                            'artist'      => $np->now_playing?->song?->artist,
                             'playlist_id' => null,
                             'media_id' => null,
                         ]

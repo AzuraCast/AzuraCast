@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Normalizer;
 
 use App\Exception\NoGetterAvailableException;
@@ -10,12 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Proxy\Proxy;
+use Doctrine\Persistence\Proxy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
-use ReflectionMethod;
-use ReflectionNamedType;
-use ReflectionParameter;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
@@ -356,85 +351,14 @@ class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerA
         }
     }
 
-    /**
-     * @param object $entity
-     * @param string $key
-     * @param mixed $value
-     *
-     */
-    protected function setProperty(object $entity, string $key, mixed $value): mixed
+    protected function setProperty(object $entity, string $key, mixed $value): void
     {
         $method_name = $this->getMethodName($key, 'set');
-
         if (!method_exists($entity, $method_name)) {
-            return null;
+            return;
         }
 
-        $method = new ReflectionMethod(get_class($entity), $method_name);
-        $firstParam = $method->getParameters()[0];
-
-        $value = $this->castValue($firstParam, $value);
-        return $entity->$method_name($value);
-    }
-
-    protected function castValue(ReflectionParameter $firstParam, mixed $value): mixed
-    {
-        if (!$firstParam->hasType()) {
-            return $value;
-        }
-
-        $firstParamTypeObj = $firstParam->getType();
-
-        if (
-            !($firstParamTypeObj instanceof ReflectionNamedType)
-            || !$firstParamTypeObj->isBuiltin()
-        ) {
-            return $value;
-        }
-
-        switch ($firstParamTypeObj->getName()) {
-            case 'string':
-                if ($value === null) {
-                    if (!$firstParam->allowsNull()) {
-                        return '';
-                    }
-                } else {
-                    return (string)$value;
-                }
-                break;
-
-            case 'int':
-                if ($value === null) {
-                    if (!$firstParam->allowsNull()) {
-                        return 0;
-                    }
-                } else {
-                    return (int)$value;
-                }
-                break;
-
-            case 'float':
-                if ($value === null) {
-                    if (!$firstParam->allowsNull()) {
-                        return 0.0;
-                    }
-                } else {
-                    return (float)$value;
-                }
-                break;
-
-            case 'bool':
-                if ($value === null) {
-                    if (!$firstParam->allowsNull()) {
-                        return false;
-                    }
-                } else {
-                    return (bool)$value;
-                }
-                break;
-        }
-
-        return $value;
+        $entity->$method_name($value);
     }
 
     protected function isEntity(mixed $class): bool
@@ -445,11 +369,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerA
                 : get_class($class);
         }
 
-        if (!is_string($class)) {
-            return false;
-        }
-
-        if (!class_exists($class)) {
+        if (!is_string($class) || !class_exists($class)) {
             return false;
         }
 

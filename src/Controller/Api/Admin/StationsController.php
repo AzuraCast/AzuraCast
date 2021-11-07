@@ -175,6 +175,7 @@ class StationsController extends AbstractAdminApiCrudController
             if (!empty($data[$idKey])) {
                 $data[$locationKey] = $data[$idKey];
             }
+            unset($data[$idKey]);
         }
 
         return parent::fromArray($data, $record, $context);

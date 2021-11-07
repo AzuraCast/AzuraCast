@@ -28,7 +28,7 @@ class StationsAction
             $em->getRepository(Entity\Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
-                return $station->isEnabled() &&
+                return $station->getIsEnabled() &&
                     $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
             }
         );

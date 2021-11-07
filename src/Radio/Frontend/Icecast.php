@@ -179,7 +179,7 @@ class Icecast extends AbstractFrontend
                 $mount['genre'] = $station->getGenre();
             }
 
-            if (!$mount_row->isVisibleOnPublicPages()) {
+            if (!$mount_row->getIsVisibleOnPublicPages()) {
                 $mount['hidden'] = 1;
             }
 

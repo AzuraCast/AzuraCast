@@ -78,7 +78,7 @@ class Relay implements IdentifiableEntityInterface
         $this->name = $this->truncateNullableString($name, 100);
     }
 
-    public function isIsVisibleOnPublicPages(): bool
+    public function getIsVisibleOnPublicPages(): bool
     {
         return $this->is_visible_on_public_pages;
     }

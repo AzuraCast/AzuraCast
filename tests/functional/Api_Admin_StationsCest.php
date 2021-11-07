@@ -14,11 +14,11 @@ class Api_Admin_StationsCest extends CestAbstract
             $I,
             '/api/admin/stations',
             [
-                'name' => 'Test Station',
+                'name'       => 'Test Station',
                 'short_name' => 'test_station',
             ],
             [
-                'name' => 'Modified Station',
+                'name'          => 'Modified Station',
                 'frontend_type' => \App\Radio\Adapters::FRONTEND_SHOUTCAST,
             ]
         );

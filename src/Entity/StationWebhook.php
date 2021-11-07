@@ -128,14 +128,8 @@ class StationWebhook implements
         return $this->type;
     }
 
-    public function isEnabled(): bool
+    public function getIsEnabled(): bool
     {
-        return $this->is_enabled;
-    }
-
-    public function toggleEnabled(): bool
-    {
-        $this->is_enabled = !$this->is_enabled;
         return $this->is_enabled;
     }
 

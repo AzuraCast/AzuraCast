@@ -136,15 +136,17 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
         $this->duration = $duration;
     }
 
-    public function isSentToAutoDj(): bool
+    public function getSentToAutodj(): bool
     {
         return $this->sent_to_autodj;
     }
 
-    public function sentToAutoDj(): void
+    public function setSentToAutodj(bool $newValue = true): void
     {
-        $this->setTimestampCued(time());
-        $this->sent_to_autodj = true;
+        if ($newValue) {
+            $this->setTimestampCued(time());
+        }
+        $this->sent_to_autodj = $newValue;
     }
 
     /**
@@ -166,7 +168,7 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     public function showInApis(): bool
     {
         if ($this->playlist instanceof StationPlaylist) {
-            return !$this->playlist->isJingle();
+            return !$this->playlist->getIsJingle();
         }
         return true;
     }

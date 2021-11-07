@@ -42,7 +42,7 @@ class StationQueueRepository extends Repository
 
     public function newRecordSentToAutoDj(Entity\StationQueue $queueRow): void
     {
-        $queueRow->sentToAutoDj();
+        $queueRow->setSentToAutodj();
         $this->em->persist($queueRow);
         $this->em->flush();
     }

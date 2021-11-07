@@ -57,7 +57,7 @@ class Dispatcher
             /** @var Entity\StationWebhook[] $enabledWebhooks */
             $enabledWebhooks = $station->getWebhooks()->filter(
                 function (Entity\StationWebhook $webhook) {
-                    return $webhook->isEnabled();
+                    return $webhook->getIsEnabled();
                 }
             );
 

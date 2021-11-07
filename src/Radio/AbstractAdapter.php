@@ -121,7 +121,7 @@ abstract class AbstractAdapter
      */
     public function hasCommand(Entity\Station $station): bool
     {
-        if ($this->environment->isTesting() || !$station->isEnabled()) {
+        if ($this->environment->isTesting() || !$station->getIsEnabled()) {
             return false;
         }
 

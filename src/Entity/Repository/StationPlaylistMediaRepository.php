@@ -286,11 +286,7 @@ class StationPlaylistMediaRepository extends Repository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if ($notQueuedMediaCount === 0) {
-            return true;
-        }
-
-        return false;
+        return $notQueuedMediaCount === 0;
     }
 
     public function isQueueEmpty(Entity\StationPlaylist $playlist): bool
@@ -312,11 +308,7 @@ class StationPlaylistMediaRepository extends Repository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if ($notQueuedMediaCount === $totalMediaCount) {
-            return true;
-        }
-
-        return false;
+        return $notQueuedMediaCount === $totalMediaCount;
     }
 
     protected function getCountPlaylistMediaBaseQuery(Entity\StationPlaylist $playlist): QueryBuilder

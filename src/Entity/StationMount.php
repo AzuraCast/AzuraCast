@@ -159,7 +159,7 @@ class StationMount implements
         $this->display_name = $this->truncateNullableString($display_name);
     }
 
-    public function isVisibleOnPublicPages(): bool
+    public function getIsVisibleOnPublicPages(): bool
     {
         return $this->is_visible_on_public_pages;
     }

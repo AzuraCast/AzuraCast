@@ -771,7 +771,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getEnablePublicPage(): bool
     {
-        return $this->enable_public_page && $this->isEnabled();
+        return $this->enable_public_page && $this->getIsEnabled();
     }
 
     public function setEnablePublicPage(bool $enable_public_page): void
@@ -799,7 +799,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->enable_on_demand_download = $enable_on_demand_download;
     }
 
-    public function isEnabled(): bool
+    public function getIsEnabled(): bool
     {
         return $this->is_enabled;
     }

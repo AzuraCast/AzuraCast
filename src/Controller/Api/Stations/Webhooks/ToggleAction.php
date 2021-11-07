@@ -15,7 +15,8 @@ class ToggleAction extends AbstractWebhooksAction
     {
         $record = $this->requireRecord($request->getStation(), $id);
 
-        $newValue = $record->toggleEnabled();
+        $newValue = !$record->getIsEnabled();
+        $record->setIsEnabled($newValue);
 
         $this->em->persist($record);
         $this->em->flush();

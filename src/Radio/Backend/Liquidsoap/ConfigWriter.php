@@ -304,7 +304,7 @@ class ConfigWriter implements EventSubscriberInterface
             $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                 . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
-            if ($playlist->isJingle()) {
+            if ($playlist->getIsJingle()) {
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
 
@@ -569,7 +569,7 @@ class ConfigWriter implements EventSubscriberInterface
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
             $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
 
-            if ($playlist->isJingle()) {
+            if ($playlist->getIsJingle()) {
                 $mediaAnnotations['is_jingle_mode'] = 'true';
                 unset($mediaAnnotations['media_id']);
             } else {

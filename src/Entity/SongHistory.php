@@ -267,7 +267,7 @@ class SongHistory implements SongInterface, IdentifiableEntityInterface
     public function showInApis(): bool
     {
         if ($this->playlist instanceof StationPlaylist) {
-            return !$this->playlist->isJingle();
+            return !$this->playlist->getIsJingle();
         }
         return true;
     }

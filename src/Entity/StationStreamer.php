@@ -154,7 +154,7 @@ class StationStreamer implements
         $this->comments = $comments;
     }
 
-    public function isActive(): bool
+    public function getIsActive(): bool
     {
         return $this->is_active;
     }

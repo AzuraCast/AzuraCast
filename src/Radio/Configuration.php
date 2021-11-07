@@ -86,7 +86,7 @@ class Configuration
         $supervisorConfig = [];
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
-        if (!$station->isEnabled()) {
+        if (!$station->getIsEnabled()) {
             @unlink($supervisorConfigFile);
             $this->reloadSupervisorForStation($station);
             return;

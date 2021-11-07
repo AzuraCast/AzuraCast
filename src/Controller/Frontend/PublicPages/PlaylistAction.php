@@ -24,7 +24,7 @@ class PlaylistAction
         $fa = $request->getStationFrontend();
         foreach ($station->getMounts() as $mount) {
             /** @var Entity\StationMount $mount */
-            if (!$mount->isVisibleOnPublicPages()) {
+            if (!$mount->getIsVisibleOnPublicPages()) {
                 continue;
             }
 
@@ -41,7 +41,7 @@ class PlaylistAction
             $adapter = $remote_proxy->getAdapter();
             $remote = $remote_proxy->getRemote();
 
-            if (!$remote->isVisibleOnPublicPages()) {
+            if (!$remote->getIsVisibleOnPublicPages()) {
                 continue;
             }
 

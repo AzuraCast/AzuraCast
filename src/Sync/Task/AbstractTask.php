@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractTask

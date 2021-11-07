@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
@@ -12,6 +11,7 @@ use App\Http\ServerRequest;
 use App\Locale;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
+use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\Stream;

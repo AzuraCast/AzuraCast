@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Doctrine;
 
 use App\Environment;
-use App\Normalizer\DoctrineEntityNormalizer;
+use Azura\Normalizer\DoctrineEntityNormalizer;
 use Closure;
 use Doctrine\Persistence\ObjectRepository;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 /**
@@ -122,7 +123,7 @@ class Repository
             get_class($entity),
             null,
             [
-                DoctrineEntityNormalizer::OBJECT_TO_POPULATE => $entity,
+                AbstractNormalizer::OBJECT_TO_POPULATE => $entity,
             ]
         );
     }

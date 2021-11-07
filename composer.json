@@ -23,6 +23,8 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
+        "azuracast/doctrine-batch-utilities": "dev-main",
+        "azuracast/doctrine-entity-normalizer": "dev-main",
         "azuracast/flysystem-v2-extensions": "dev-main",
         "azuracast/metadata-manager": "dev-main",
         "azuracast/nowplaying": "dev-main",

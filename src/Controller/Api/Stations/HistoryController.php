@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Csv;
+use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;

@@ -312,7 +312,7 @@ return [
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new App\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
+            new Azura\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),
         ];
         $encoders = [

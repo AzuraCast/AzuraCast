@@ -51,6 +51,10 @@ export default {
     },
     methods: {
         uploadNewArt () {
+            if (null === this.artFile) {
+                return;
+            }
+
             let formData = new FormData();
             formData.append('art', this.artFile);
 

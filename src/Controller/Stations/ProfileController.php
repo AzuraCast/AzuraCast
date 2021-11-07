@@ -119,69 +119,59 @@ class ProfileController
 
                 // Public Pages
                 'publicPageUri' => (string)$router->named(
-                    'public:index',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:index',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicPageEmbedUri' => (string)$router->named(
-                    'public:index',
-                    ['station_id' => $station->getShortName(), 'embed' => 'embed'],
-                    [],
-                    true
+                    route_name: 'public:index',
+                    route_params: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                    absolute: true
                 ),
                 'publicWebDjUri' => (string)$router->named(
-                    'public:dj',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:dj',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicOnDemandUri' => (string)$router->named(
-                    'public:ondemand',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:ondemand',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicPodcastsUri' => (string)$router->named(
-                    'public:podcasts',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:podcasts',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicScheduleUri' => (string)$router->named(
-                    'public:schedule',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:schedule',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicOnDemandEmbedUri' => (string)$router->named(
-                    'public:ondemand',
-                    ['station_id' => $station->getShortName(), 'embed' => 'embed'],
-                    [],
-                    true
+                    route_name: 'public:ondemand',
+                    route_params: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                    absolute: true
                 ),
                 'publicRequestEmbedUri' => (string)$router->named(
-                    'public:embedrequests',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:embedrequests',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicHistoryEmbedUri' => (string)$router->named(
-                    'public:history',
-                    ['station_id' => $station->getShortName()],
-                    [],
-                    true
+                    route_name: 'public:history',
+                    route_params: ['station_id' => $station->getShortName()],
+                    absolute: true
                 ),
                 'publicScheduleEmbedUri' => (string)$router->named(
-                    'public:schedule',
-                    ['station_id' => $station->getShortName(), 'embed' => 'embed'],
-                    [],
-                    true
+                    route_name: 'public:schedule',
+                    route_params: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+                    absolute: true
                 ),
 
                 'togglePublicPageUri'    => (string)$router->fromHere(
-                    'stations:profile:toggle',
-                    ['feature' => 'public', 'csrf' => $csrf]
+                    route_name: 'stations:profile:toggle',
+                    route_params: ['feature' => 'public', 'csrf' => $csrf]
                 ),
 
                 // Frontend

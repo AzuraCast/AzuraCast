@@ -58,7 +58,7 @@ class Router implements RouterInterface
                 }
 
                 $baseUrl = new Uri($settingsBaseUrl);
-            } catch (MalformedUriException $e) {
+            } catch (MalformedUriException) {
                 $baseUrl = new Uri('');
             }
         } else {

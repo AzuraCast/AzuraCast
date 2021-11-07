@@ -18,8 +18,6 @@ class RemotesAction
     ): ResponseInterface {
         $router = $request->getRouter();
 
-        $settings = $settingsRepo->readSettings();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Vue_StationsRemotes',

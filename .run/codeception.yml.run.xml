@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="codeception.yml" type="CodeceptionConfigurationType" factoryName="Codeception">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="web" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <PhpTestRunnerSettings method="" scope="ConfigurationFile" />
+    <method v="2" />
+  </configuration>
+</component>

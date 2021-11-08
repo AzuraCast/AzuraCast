@@ -435,13 +435,13 @@ class ConfigWriter implements EventSubscriberInterface
                 log("AzuraCast Raw Response: #{uri}")
 
                 if uri == "" or string.match(pattern="Error", uri) then
-                    []
+                    null()
                 else
                     r = request.create(uri)
                     if request.resolve(r) then
-                        [r]
+                        r
                     else
-                        []
+                        null()
                    end
                 end
             end
@@ -466,7 +466,7 @@ class ConfigWriter implements EventSubscriberInterface
                 !delay
             end
 
-            dynamic = request.dynamic.list(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
+            dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
             dynamic = cue_cut(id="cue_next_song", dynamic)
 
             dynamic_startup = fallback(

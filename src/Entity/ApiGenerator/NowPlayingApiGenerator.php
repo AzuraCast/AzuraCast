@@ -219,7 +219,7 @@ class NowPlayingApiGenerator
                 continue;
             }
 
-            if ($lastCued->getTimestampCued() >= $currentSongQueueEntry?->getTimestampCued() ?? 0) {
+            if ($lastCued->getTimestampCued() >= ($currentSongQueueEntry?->getTimestampCued() ?? 0)) {
                 return $lastCued;
             }
         }

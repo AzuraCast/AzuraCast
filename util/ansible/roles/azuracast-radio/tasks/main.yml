@@ -123,7 +123,7 @@
   git :
     repo : https://github.com/savonet/liquidsoap.git
     dest : "{{ app_base }}/liquidsoap-src"
-    version : bd9a2e3531ec03bae4f2812b6d83bdacf2277f0c
+    version : 43aa734dd37595e991ad7d8d9b8560e7d47c19fe
     clone : yes
     update : yes
     force : yes

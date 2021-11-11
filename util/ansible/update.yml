@@ -16,7 +16,7 @@
   roles :
     - init
     - azuracast-config
-    - { role : azuracast-radio, when : update_revision|int < 64 }
+    - { role : azuracast-radio, when : update_revision|int < 66 }
     - { role : supervisord, when : update_revision|int < 13 }
     - { role : mariadb, when : update_revision|int < 63 }
     - { role : nginx, when : update_revision|int < 60 }

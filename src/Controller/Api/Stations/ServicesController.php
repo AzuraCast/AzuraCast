@@ -172,14 +172,6 @@ class ServicesController
         switch ($do) {
             case 'skip':
                 if ($backend instanceof Liquidsoap) {
-                    // Automatically queue the "next" song in the request queue.
-                    if (!$station->useManualAutoDJ()) {
-                        $nextSong = $autodj->annotateNextSong($station, true);
-                        if (!empty($nextSong)) {
-                            $backend->enqueue($station, $nextSong);
-                        }
-                    }
-
                     $backend->skip($station);
                 }
 

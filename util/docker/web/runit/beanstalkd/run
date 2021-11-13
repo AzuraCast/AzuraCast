@@ -2,4 +2,4 @@
 
 echo 'Spinning up Beanstalkd process...'
 
-setuser azuracast beanstalkd -p 11300
+setuser azuracast beanstalkd -p 11300 -z 262140

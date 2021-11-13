@@ -283,7 +283,7 @@ class ConfigWriter implements EventSubscriberInterface
                             $buffer = $playlist->getRemoteBuffer();
                             $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
+                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer='. $buffer . '., input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString($remote_url) . '")))';
                         }
                         break;
                 }

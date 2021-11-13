@@ -264,6 +264,9 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '('
                     . implode(',', $playlistParams) . ')';
+
+                $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
+                    . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -285,9 +288,6 @@ class ConfigWriter implements EventSubscriberInterface
                         break;
                 }
             }
-
-            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
-                . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if ($playlist->getIsJingle()) {
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';

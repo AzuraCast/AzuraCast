@@ -98,7 +98,8 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
     public function processStation(
         Entity\Station $station,
         bool $standalone = false,
-        bool $force = false
+        bool $force = false,
+        ?Entity\StationQueue $upcomingTrack = null
     ): Entity\Api\NowPlaying\NowPlaying {
         $lock = $this->lockFactory->createAndAcquireLock(
             resource: 'nowplaying_station_' . $station->getId(),
@@ -169,7 +170,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 $this->listenerRepo->update($station, $npResult->clients);
             }
 
-            $np = ($this->nowPlayingApiGenerator)($station, $npResult);
+            $np = ($this->nowPlayingApiGenerator)($station, $npResult, $upcomingTrack);
 
             // Trigger the dispatching of webhooks.
             $this->dispatchWebhooks($station, $np);
@@ -198,6 +199,8 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
      */
     public function queueStation(Entity\Station $station, array $extra_metadata = []): void
     {
+        $upcomingTrackId = null;
+
         // Process extra metadata sent by Liquidsoap (if it exists).
         if (!empty($extra_metadata['media_id'])) {
             $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
@@ -221,14 +224,16 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             }
 
             $sq->setSentToAutodj();
-
             $this->em->persist($sq);
             $this->em->flush();
+
+            $upcomingTrackId = $sq->getIdRequired();
         }
 
         // Trigger a delayed Now Playing update.
         $message = new Message\UpdateNowPlayingMessage();
         $message->station_id = $station->getIdRequired();
+        $message->upcoming_track_id = $upcomingTrackId;
 
         $this->messageBus->dispatch(
             $message,
@@ -248,10 +253,15 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         if ($message instanceof Message\UpdateNowPlayingMessage) {
             $station = $this->em->find(Entity\Station::class, $message->station_id);
 
+            $upcomingTrack = (null !== $message->upcoming_track_id)
+                ? $this->em->find(Entity\StationQueue::class, $message->upcoming_track_id)
+                : null;
+
             if ($station instanceof Entity\Station) {
                 $this->processStation(
                     station: $station,
-                    standalone: true
+                    standalone: true,
+                    upcomingTrack: $upcomingTrack
                 );
             }
         }

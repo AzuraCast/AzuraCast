@@ -28,7 +28,8 @@ class NowPlayingApiGenerator
 
     public function __invoke(
         Entity\Station $station,
-        Result $npResult
+        Result $npResult,
+        ?Entity\StationQueue $upcomingTrack = null
     ): Entity\Api\NowPlaying\NowPlaying {
         $baseUri = new Uri('');
 
@@ -59,28 +60,17 @@ class NowPlayingApiGenerator
                     : Entity\Song::createOffline();
             }
 
-            $sh_obj = $this->historyRepo->register($previousHistory, $station, $np);
-
-            $lastUnplayedCuedSong = $this->getLastUnplayedCuedSong($station, $sh_obj);
+            $sh_obj = $this->historyRepo->register($previousHistory, $station, $np, $upcomingTrack);
 
             $np->song_history = $npOld->song_history;
-
-            if (null === $lastUnplayedCuedSong) {
-                $np->playing_next = $npOld->playing_next;
-            } else {
-                $np->playing_next = ($this->stationQueueApiGenerator)(
-                    $lastUnplayedCuedSong,
-                    $baseUri,
-                    true
-                );
-            }
         } else {
             // SongHistory registration must ALWAYS come before the history/nextsong calls
             // otherwise they will not have up-to-date database info!
             $sh_obj = $this->historyRepo->register(
                 Entity\Song::createFromNowPlayingSong($npResult->currentSong),
                 $station,
-                $np
+                $np,
+                $upcomingTrack
             );
 
             $np->song_history = $this->songHistoryApiGenerator->fromArray(
@@ -88,18 +78,17 @@ class NowPlayingApiGenerator
                 $baseUri,
                 true
             );
+        }
 
-            $lastUnplayedCuedSong = $this->getLastUnplayedCuedSong($station, $sh_obj);
-
-            $playingNext = $lastUnplayedCuedSong ?? $npOld?->playing_next;
-
-            if ($playingNext instanceof Entity\StationQueue) {
-                $np->playing_next = ($this->stationQueueApiGenerator)(
-                    $playingNext,
-                    $baseUri,
-                    true
-                );
-            }
+        $nextVisibleSong = $this->queueRepo->getNextVisible($station);
+        if (null === $nextVisibleSong) {
+            $np->playing_next = $npOld->playing_next ?? null;
+        } else {
+            $np->playing_next = ($this->stationQueueApiGenerator)(
+                $nextVisibleSong,
+                $baseUri,
+                true
+            );
         }
 
         // Detect and report live DJ status
@@ -201,29 +190,5 @@ class NowPlayingApiGenerator
     ): bool {
         $current_song_hash = Entity\Song::getSongHash($currentSong);
         return (0 === strcmp($current_song_hash, $oldSongId ?? ''));
-    }
-
-    protected function getLastUnplayedCuedSong(
-        Entity\Station $station,
-        Entity\SongHistory $currentSongHistory
-    ): ?Entity\StationQueue {
-        $lastCuedSongs = $this->queueRepo->getLastCuedSongs($station);
-
-        $currentSongQueueEntry = $this->queueRepo->findRecentlyCuedSong(
-            $station,
-            $currentSongHistory
-        );
-
-        foreach ($lastCuedSongs as $lastCued) {
-            if ($this->tracksMatch($lastCued->getText() ?? '', $currentSongHistory->getSongId())) {
-                continue;
-            }
-
-            if ($lastCued->getTimestampCued() >= ($currentSongQueueEntry?->getTimestampCued() ?? 0)) {
-                return $lastCued;
-            }
-        }
-
-        return null;
     }
 }

@@ -25,6 +25,9 @@ class StationQueueApiGenerator
         $response->cued_at = $record->getTimestampCued();
         $response->duration = (int)$record->getDuration();
         $response->is_request = $record->getRequest() !== null;
+        $response->sent_to_autodj = $record->getSentToAutodj();
+        $response->is_played = $record->getIsPlayed();
+
         if ($record->getPlaylist() instanceof Entity\StationPlaylist) {
             $response->playlist = $record->getPlaylist()->getName();
         } else {

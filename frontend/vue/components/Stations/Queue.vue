@@ -17,7 +17,8 @@
                                   @click.prevent="doShowLogs(row.item.log)">
                             <translate key="lang_btn_logs">Logs</translate>
                         </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        <b-button v-if="!row.item.sent_to_autodj" size="sm" variant="danger"
+                                  @click.prevent="doDelete(row.item.links.self)">
                             <translate key="lang_btn_delete">Delete</translate>
                         </b-button>
                     </b-button-group>

@@ -56,7 +56,7 @@ class AutoDJ
             return '';
         }
 
-        $queueRow = $this->queueRepo->getNextInQueue($station);
+        $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         // Try to rebuild the queue if it's empty.
         if (!($queueRow instanceof Entity\StationQueue)) {
@@ -96,26 +96,18 @@ class AutoDJ
             return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
         }
 
-        // Build adjusted "now" based on the currently playing song before annotating up the next one
-        $adjustedNow = $this->getAdjustedNow(
-            $station,
-            $this->getNowFromCurrentSong($station),
-            $queueRow->getDuration()
-        );
-
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
 
         // Refill station queue while taking into context that LS queues songs 40s before they are played
-        $this->buildQueue($station, true, $adjustedNow);
+        $this->buildQueue($station, true);
 
         return $event->buildAnnotations();
     }
 
     public function buildQueue(
         Entity\Station $station,
-        bool $force = false,
-        CarbonInterface $nowOverride = null
+        bool $force = false
     ): void {
         $lock = $this->lockFactory->createAndAcquireLock(
             resource: 'autodj_queue_' . $station->getId(),
@@ -139,14 +131,15 @@ class AutoDJ
             );
 
             // Adjust "now" time from current queue.
-            $now = $nowOverride ?? $this->getNowFromCurrentSong($station);
+            $tzObject = $station->getTimezoneObject();
+            $now = CarbonImmutable::now($tzObject);
 
             $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
-            if ($maxQueueLength < 1) {
-                $maxQueueLength = 1;
+            if ($maxQueueLength < 2) {
+                $maxQueueLength = 2;
             }
 
-            $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
+            $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
 
             $lastSongId = null;
             $queueLength = 0;
@@ -161,10 +154,18 @@ class AutoDJ
                 $queueLength++;
                 $lastSongId = $queueRow->getSongId();
 
-                $queueRow->setTimestampCued($now->getTimestamp());
-                $this->em->persist($queueRow);
+                if ($queueRow->getSentToAutodj()) {
+                    $now = $this->getAdjustedNow(
+                        $station,
+                        CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
+                        $queueRow->getDuration()
+                    );
+                } else {
+                    $queueRow->setTimestampCued($now->getTimestamp());
+                    $this->em->persist($queueRow);
 
-                $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
+                    $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
+                }
             }
 
             $this->em->flush();
@@ -206,25 +207,6 @@ class AutoDJ
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
-    }
-
-    protected function getNowFromCurrentSong(Entity\Station $station): CarbonInterface
-    {
-        $stationTz = $station->getTimezoneObject();
-        $now = CarbonImmutable::now($stationTz);
-
-        $lastCuedSong = $this->queueRepo->getLastCuedSong($station);
-        if (!($lastCuedSong instanceof Entity\StationQueue)) {
-            return $now;
-        }
-
-        $cuedTimestamp = $lastCuedSong->getTimestampCued();
-        $cued = CarbonImmutable::createFromTimestamp($cuedTimestamp, $stationTz);
-
-        $adjustedNow = $this->getAdjustedNow($station, $cued, $lastCuedSong->getDuration());
-
-        // Return either the current timestamp (if it's later) or the scheduled end time.
-        return max($now, $adjustedNow);
     }
 
     protected function cueNextSong(Entity\Station $station, CarbonInterface $now): ?Entity\StationQueue

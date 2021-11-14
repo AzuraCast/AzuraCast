@@ -103,7 +103,8 @@ class Annotations implements EventSubscriberInterface
         if ($event->isAsAutoDj()) {
             $queueRow = $event->getQueue();
             if ($queueRow instanceof Entity\StationQueue) {
-                $this->queueRepo->newRecordSentToAutoDj($queueRow);
+                $queueRow->setSentToAutodj();
+                $this->em->persist($queueRow);
             }
 
             // The "get next song" function is only called when a streamer is not live.

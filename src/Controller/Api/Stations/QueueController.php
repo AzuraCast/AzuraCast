@@ -54,7 +54,7 @@ class QueueController extends AbstractStationApiCrudController
         Response $response
     ): ResponseInterface {
         $station = $request->getStation();
-        $query = $this->queueRepo->getUpcomingQuery($station);
+        $query = $this->queueRepo->getUnplayedQuery($station);
 
         return $this->listPaginatedFromQuery(
             $request,

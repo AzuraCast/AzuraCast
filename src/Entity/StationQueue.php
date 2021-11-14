@@ -49,6 +49,9 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     #[ORM\Column]
     protected bool $sent_to_autodj = false;
 
+    #[ORM\Column]
+    protected bool $is_played = false;
+
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $autodj_custom_uri = null;
 
@@ -147,6 +150,19 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
             $this->setTimestampCued(time());
         }
         $this->sent_to_autodj = $newValue;
+    }
+
+    public function getIsPlayed(): bool
+    {
+        return $this->is_played;
+    }
+
+    public function setIsPlayed(bool $newValue = true): void
+    {
+        if ($newValue) {
+            $this->sent_to_autodj = true;
+        }
+        $this->is_played = $newValue;
     }
 
     /**

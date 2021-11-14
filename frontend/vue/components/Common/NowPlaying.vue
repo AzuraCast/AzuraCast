@@ -50,11 +50,9 @@ export default {
                 this.axios.get(this.nowPlayingUri).then((response) => {
                     this.setNowPlaying(response.data);
 
-                    setTimeout(this.checkNowPlaying, 15000);
+                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
                 }).catch((error) => {
-                    console.error(error);
-
-                    setTimeout(this.checkNowPlaying, 30000);
+                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
                 });
             }
         },

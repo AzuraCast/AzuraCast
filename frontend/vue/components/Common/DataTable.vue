@@ -348,10 +348,6 @@ export default {
             }
         },
         onRefreshed () {
-            this.$nextTick(() => {
-                this.$eventHub.$emit('content_changed');
-            });
-
             this.$emit('refreshed');
         },
         refresh () {

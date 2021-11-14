@@ -277,13 +277,9 @@ export default {
                 this.stationsLoading = false;
                 this.stations = response.data;
 
-                this.$nextTick(() => {
-                    this.$eventHub.$emit('content_changed');
-                });
-
-                setTimeout(this.updateNowPlaying, 15000);
+                setTimeout(this.updateNowPlaying, (!document.hidden) ? 15000 : 30000);
             }).catch((error) => {
-                setTimeout(this.updateNowPlaying, 30000);
+                setTimeout(this.updateNowPlaying, (!document.hidden) ? 30000 : 120000);
             });
         }
     }

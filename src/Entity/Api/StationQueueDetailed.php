@@ -18,6 +18,22 @@ class StationQueueDetailed extends StationQueue
     use HasLinks;
 
     /**
+     * Indicates whether the song has been sent to the AutoDJ.
+     *
+     * @OA\Property
+     * @var bool
+     */
+    public bool $sent_to_autodj = false;
+
+    /**
+     * Indicates whether the song has already been marked as played.
+     *
+     * @OA\Property
+     * @var bool
+     */
+    public bool $is_played = false;
+
+    /**
      * Custom AutoDJ playback URI, if it exists.
      *
      * @OA\Property(example="")

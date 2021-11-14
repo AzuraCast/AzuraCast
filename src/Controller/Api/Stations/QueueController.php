@@ -124,6 +124,8 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse = new Entity\Api\StationQueueDetailed();
         $apiResponse->fromParentObject($row);
 
+        $apiResponse->sent_to_autodj = $record->getSentToAutodj();
+        $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
         $apiResponse->log = $record->getLog();
 

@@ -28,8 +28,7 @@ class NowPlayingApiGenerator
 
     public function __invoke(
         Entity\Station $station,
-        Result $npResult,
-        ?Entity\StationQueue $upcomingTrack = null
+        Result $npResult
     ): Entity\Api\NowPlaying\NowPlaying {
         $baseUri = new Uri('');
 
@@ -60,7 +59,7 @@ class NowPlayingApiGenerator
                     : Entity\Song::createOffline();
             }
 
-            $sh_obj = $this->historyRepo->register($previousHistory, $station, $np, $upcomingTrack);
+            $sh_obj = $this->historyRepo->register($previousHistory, $station, $np);
 
             $np->song_history = $npOld->song_history;
         } else {
@@ -69,8 +68,7 @@ class NowPlayingApiGenerator
             $sh_obj = $this->historyRepo->register(
                 Entity\Song::createFromNowPlayingSong($npResult->currentSong),
                 $station,
-                $np,
-                $upcomingTrack
+                $np
             );
 
             $np->song_history = $this->songHistoryApiGenerator->fromArray(

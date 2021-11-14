@@ -72,8 +72,7 @@ class SongHistoryRepository extends Repository
     public function register(
         Entity\Interfaces\SongInterface $song,
         Entity\Station $station,
-        Entity\Api\NowPlaying\NowPlaying $np,
-        ?Entity\StationQueue $upcomingTrack = null
+        Entity\Api\NowPlaying\NowPlaying $np
     ): Entity\SongHistory {
         // Pull the most recent history item for this station.
         $last_sh = $this->getCurrent($station);
@@ -81,7 +80,7 @@ class SongHistoryRepository extends Repository
         $listeners = $np->listeners->current;
 
         if ($last_sh instanceof Entity\SongHistory) {
-            if (null === $upcomingTrack && $last_sh->getSongId() === $song->getSongId()) {
+            if ($last_sh->getSongId() === $song->getSongId()) {
                 // Updating the existing SongHistory item with a new data point.
                 $last_sh->addDeltaPoint($listeners);
 
@@ -134,7 +133,7 @@ class SongHistoryRepository extends Repository
         }
 
         // Look for an already cued but unplayed song.
-        $upcomingTrack ??= $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
+        $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
 
         if (null !== $upcomingTrack) {
             $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);

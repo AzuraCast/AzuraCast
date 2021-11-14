@@ -256,7 +256,7 @@
 
                     <b-wrapped-form-group class="col-md-6" id="edit_form_backend_autodj_queue_length"
                                           :field="form.backend_config.autodj_queue_length" input-type="number"
-                                          :input-attrs="{ min: '0', max: '25' }" advanced>
+                                          :input-attrs="{ min: '2', max: '25' }" advanced>
                         <template #label="{lang}">
                             <translate :key="lang">AutoDJ Queue Length</translate>
                         </template>

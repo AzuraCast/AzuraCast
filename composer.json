@@ -1,182 +1,182 @@
 {
-    "name": "azuracast/azuracast",
-    "type": "project",
-    "description": "The AzuraCast self-hosted web radio station management suite.",
-    "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "Buster Neece",
-            "email": "buster@busterneece.com"
-        }
-    ],
-    "require": {
-        "php": "^8.0",
-        "ext-PDO": "*",
-        "ext-fileinfo": "*",
-        "ext-gd": "*",
-        "ext-iconv": "*",
-        "ext-intl": "*",
-        "ext-json": "*",
-        "ext-maxminddb": "*",
-        "ext-mbstring": "*",
-        "ext-redis": "*",
-        "ext-simplexml": "*",
-        "ext-xml": "*",
-        "ext-xmlwriter": "*",
-        "azuracast/doctrine-batch-utilities": "dev-main",
-        "azuracast/doctrine-entity-normalizer": "dev-main",
-        "azuracast/flysystem-v2-extensions": "dev-main",
-        "azuracast/metadata-manager": "dev-main",
-        "azuracast/nowplaying": "dev-main",
-        "azuracast/slim-callable-eventdispatcher": "dev-main",
-        "bacon/bacon-qr-code": "^2.0",
-        "beberlei/doctrineextensions": "^1.2",
-        "brick/math": "^0.9",
-        "composer/ca-bundle": "^1.2",
-        "doctrine/annotations": "^1.6",
-        "doctrine/data-fixtures": "^1.3",
-        "doctrine/dbal": "^2.8",
-        "doctrine/migrations": "^3.0",
-        "doctrine/orm": "~2.6",
-        "gettext/gettext": "^4.4",
-        "guzzlehttp/guzzle": "^7.0",
-        "guzzlehttp/oauth-subscriber": "^0.6.0",
-        "http-interop/http-factory-guzzle": "^1.0",
-        "intervention/image": "^2.6",
-        "laminas/laminas-config": "^3.3",
-        "league/csv": "^9.6",
-        "league/flysystem-aws-s3-v3": "^2.0",
-        "league/mime-type-detection": "^1.7",
-        "league/plates": "^3.1",
-        "lstrojny/fxmlrpc": "dev-master",
-        "marcw/rss-writer": "^0.4.0",
-        "matomo/device-detector": "^4.0",
-        "mezzio/mezzio-session": "^1.3",
-        "mezzio/mezzio-session-cache": "^1.4",
-        "mnapoli/silly-php-di": "^1.2",
-        "monolog/monolog": "^2",
-        "myclabs/deep-copy": "^1.10",
-        "nesbot/carbon": "^2.36",
-        "pagerfanta/doctrine-collections-adapter": "^3",
-        "pagerfanta/doctrine-orm-adapter": "^3",
-        "php-di/php-di": "^6.0",
-        "php-di/slim-bridge": "^3.0",
-        "psr/http-factory": "^1.0",
-        "psr/simple-cache": "^1.0",
-        "ramsey/uuid": "^4.0",
-        "rlanvin/php-ip": "dev-master",
-        "slim/http": "^1.1",
-        "slim/slim": "^4.2",
-        "spatie/flysystem-dropbox": "^2",
-        "spomky-labs/otphp": "^10.0",
-        "supervisorphp/supervisor": "dev-main",
-        "symfony/beanstalkd-messenger": "^5.3",
-        "symfony/cache": "^5.2",
-        "symfony/console": "^5",
-        "symfony/event-dispatcher": "^5",
-        "symfony/finder": "^5",
-        "symfony/intl": "^5.2",
-        "symfony/lock": "^5.1",
-        "symfony/mailer": "^5.2",
-        "symfony/messenger": "^5",
-        "symfony/process": "^5",
-        "symfony/property-access": "^5",
-        "symfony/rate-limiter": "^5.3",
-        "symfony/redis-messenger": "^5",
-        "symfony/serializer": "^5",
-        "symfony/validator": "^5",
-        "symfony/yaml": "^5.3",
-        "theiconic/php-ga-measurement-protocol": "^2.9",
-        "vlucas/phpdotenv": "^5.3",
-        "wikimedia/composer-merge-plugin": "dev-master",
-        "zircote/swagger-php": "^3"
-    },
-    "replace": {
-        "symfony/polyfill-iconv": "1.99",
-        "symfony/polyfill-intl-grapheme": "1.99",
-        "symfony/polyfill-intl-normalizer": "1.99",
-        "symfony/polyfill-mbstring": "1.99",
-        "symfony/polyfill-php71": "1.99",
-        "symfony/polyfill-php72": "1.99",
-        "symfony/polyfill-php73": "1.99",
-        "symfony/polyfill-php74": "1.99",
-        "symfony/polyfill-php80": "1.99"
-    },
-    "conflict": {
-        "gettext/gettext": ">=5"
-    },
-    "require-dev": {
-        "codeception/codeception": "^4.0",
-        "codeception/module-asserts": "^1.1",
-      "codeception/module-cli": "^1.0",
-      "codeception/module-doctrine2": "^1.0",
-      "codeception/module-phpbrowser": "^1.0",
-      "codeception/module-rest": "^1.0",
-      "ergebnis/composer-normalize": "^2.15",
-      "filp/whoops": "^2",
-      "jetbrains/phpstorm-attributes": "^1.0",
-      "mockery/mockery": "^1.0",
-      "php-parallel-lint/php-console-highlighter": "^0.5.0",
-      "php-parallel-lint/php-parallel-lint": "^1.3",
-      "phpstan/phpstan": "^1",
-      "phpstan/phpstan-doctrine": "^1",
-      "phpunit/php-timer": "^5.0",
-      "phpunit/phpunit": "^9.2",
-      "pyrech/composer-changelogs": "^1.7",
-      "roave/security-advisories": "dev-latest",
-      "slevomat/coding-standard": "^7",
-      "softcreatr/jsonpath": "^0.7.2",
-      "squizlabs/php_codesniffer": "^3.5",
-      "symfony/var-dumper": "^5.1"
-    },
-    "config": {
-        "discard-changes": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "merge-plugin": {
-            "ignore-duplicates": false,
-            "include": [
-                "plugins/*/composer.json"
-            ],
-            "merge-dev": true,
-            "merge-extra": false,
-            "merge-extra-deep": false,
-            "merge-scripts": false,
-            "recurse": true,
-            "replace": true
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "bin": [
-        "bin/console"
-    ],
-    "scripts": {
-        "ci-import-locales": [
-            "bin/console locale:import"
-        ],
-        "cleanup-and-test": [
-            "@phpcbf",
-            "@dev-test"
-        ],
-        "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
-        "codeception-no-coverage": "codecept run --no-interaction",
-        "dev-test": [
-            "@phplint",
-            "@phpstan",
-            "@phpcs",
-            "@codeception-no-coverage"
-        ],
-        "phpcbf": "phpcbf",
-        "phpcs": "phpcs",
-        "phplint": "parallel-lint . --exclude vendor",
-        "phpstan": "phpstan analyze --memory-limit=-1"
+  "name": "azuracast/azuracast",
+  "type": "project",
+  "description": "The AzuraCast self-hosted web radio station management suite.",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Buster Neece",
+      "email": "buster@busterneece.com"
     }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-PDO": "*",
+    "ext-fileinfo": "*",
+    "ext-gd": "*",
+    "ext-iconv": "*",
+    "ext-intl": "*",
+    "ext-json": "*",
+    "ext-maxminddb": "*",
+    "ext-mbstring": "*",
+    "ext-redis": "*",
+    "ext-simplexml": "*",
+    "ext-xml": "*",
+    "ext-xmlwriter": "*",
+    "azuracast/doctrine-batch-utilities": "dev-main",
+    "azuracast/doctrine-entity-normalizer": "dev-main",
+    "azuracast/flysystem-v2-extensions": "dev-main",
+    "azuracast/metadata-manager": "dev-main",
+    "azuracast/nowplaying": "dev-main",
+    "azuracast/slim-callable-eventdispatcher": "dev-main",
+    "bacon/bacon-qr-code": "^2.0",
+    "beberlei/doctrineextensions": "^1.2",
+    "brick/math": "^0.9",
+    "composer/ca-bundle": "^1.2",
+    "doctrine/annotations": "^1.6",
+    "doctrine/data-fixtures": "^1.3",
+    "doctrine/dbal": "^2.8",
+    "doctrine/migrations": "^3.0",
+    "doctrine/orm": "~2.6",
+    "gettext/gettext": "^4.4",
+    "guzzlehttp/guzzle": "^7.0",
+    "guzzlehttp/oauth-subscriber": "^0.6.0",
+    "http-interop/http-factory-guzzle": "^1.0",
+    "intervention/image": "^2.6",
+    "laminas/laminas-config": "^3.3",
+    "league/csv": "^9.6",
+    "league/flysystem-aws-s3-v3": "^2.0",
+    "league/mime-type-detection": "^1.7",
+    "league/plates": "^3.1",
+    "lstrojny/fxmlrpc": "dev-master",
+    "marcw/rss-writer": "^0.4.0",
+    "matomo/device-detector": "^5.0",
+    "mezzio/mezzio-session": "^1.3",
+    "mezzio/mezzio-session-cache": "^1.4",
+    "mnapoli/silly-php-di": "^1.2",
+    "monolog/monolog": "^2",
+    "myclabs/deep-copy": "^1.10",
+    "nesbot/carbon": "^2.36",
+    "pagerfanta/doctrine-collections-adapter": "^3",
+    "pagerfanta/doctrine-orm-adapter": "^3",
+    "php-di/php-di": "^6.0",
+    "php-di/slim-bridge": "^3.0",
+    "psr/http-factory": "^1.0",
+    "psr/simple-cache": "^1.0",
+    "ramsey/uuid": "^4.0",
+    "rlanvin/php-ip": "dev-master",
+    "slim/http": "^1.1",
+    "slim/slim": "^4.2",
+    "spatie/flysystem-dropbox": "^2",
+    "spomky-labs/otphp": "^10.0",
+    "supervisorphp/supervisor": "dev-main",
+    "symfony/beanstalkd-messenger": "^5.3",
+    "symfony/cache": "^5.2",
+    "symfony/console": "^5",
+    "symfony/event-dispatcher": "^5",
+    "symfony/finder": "^5",
+    "symfony/intl": "^5.2",
+    "symfony/lock": "^5.1",
+    "symfony/mailer": "^5.2",
+    "symfony/messenger": "^5",
+    "symfony/process": "^5",
+    "symfony/property-access": "^5",
+    "symfony/rate-limiter": "^5.3",
+    "symfony/redis-messenger": "^5",
+    "symfony/serializer": "^5",
+    "symfony/validator": "^5",
+    "symfony/yaml": "^5.3",
+    "theiconic/php-ga-measurement-protocol": "^2.9",
+    "vlucas/phpdotenv": "^5.3",
+    "wikimedia/composer-merge-plugin": "dev-master",
+    "zircote/swagger-php": "^3"
+  },
+  "replace": {
+    "symfony/polyfill-iconv": "1.99",
+    "symfony/polyfill-intl-grapheme": "1.99",
+    "symfony/polyfill-intl-normalizer": "1.99",
+    "symfony/polyfill-mbstring": "1.99",
+    "symfony/polyfill-php71": "1.99",
+    "symfony/polyfill-php72": "1.99",
+    "symfony/polyfill-php73": "1.99",
+    "symfony/polyfill-php74": "1.99",
+    "symfony/polyfill-php80": "1.99"
+  },
+  "conflict": {
+    "gettext/gettext": ">=5"
+  },
+  "require-dev": {
+    "codeception/codeception": "^4.0",
+    "codeception/module-asserts": "^1.1",
+    "codeception/module-cli": "^1.0",
+    "codeception/module-doctrine2": "^1.0",
+    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-rest": "^1.0",
+    "ergebnis/composer-normalize": "^2.15",
+    "filp/whoops": "^2",
+    "jetbrains/phpstorm-attributes": "^1.0",
+    "mockery/mockery": "^1.0",
+    "php-parallel-lint/php-console-highlighter": "^0.5.0",
+    "php-parallel-lint/php-parallel-lint": "^1.3",
+    "phpstan/phpstan": "^1",
+    "phpstan/phpstan-doctrine": "^1",
+    "phpunit/php-timer": "^5.0",
+    "phpunit/phpunit": "^9.2",
+    "pyrech/composer-changelogs": "^1.7",
+    "roave/security-advisories": "dev-latest",
+    "slevomat/coding-standard": "^7",
+    "softcreatr/jsonpath": "^0.7.2",
+    "squizlabs/php_codesniffer": "^3.5",
+    "symfony/var-dumper": "^5.1"
+  },
+  "config": {
+    "discard-changes": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "merge-plugin": {
+      "ignore-duplicates": false,
+      "include": [
+        "plugins/*/composer.json"
+      ],
+      "merge-dev": true,
+      "merge-extra": false,
+      "merge-extra-deep": false,
+      "merge-scripts": false,
+      "recurse": true,
+      "replace": true
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "bin": [
+    "bin/console"
+  ],
+  "scripts": {
+    "ci-import-locales": [
+      "bin/console locale:import"
+    ],
+    "cleanup-and-test": [
+      "@phpcbf",
+      "@dev-test"
+    ],
+    "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
+    "codeception-no-coverage": "codecept run --no-interaction",
+    "dev-test": [
+      "@phplint",
+      "@phpstan",
+      "@phpcs",
+      "@codeception-no-coverage"
+    ],
+    "phpcbf": "phpcbf",
+    "phpcs": "phpcs",
+    "phplint": "parallel-lint . --exclude vendor",
+    "phpstan": "phpstan analyze --memory-limit=-1"
+  }
 }

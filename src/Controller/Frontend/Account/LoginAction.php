@@ -67,8 +67,9 @@ class LoginAction
             $user = $auth->authenticate($request->getParam('username'), $request->getParam('password'));
 
             if ($user instanceof Entity\User) {
-                // If user selects "remember me", extend the cookie/session lifetime.
                 $session = $request->getSession();
+
+                // If user selects "remember me", extend the cookie/session lifetime.
                 if ($session instanceof SessionCookiePersistenceInterface) {
                     $rememberMe = (bool)$request->getParam('remember', 0);
                     /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
@@ -105,12 +106,10 @@ class LoginAction
                     Flash::SUCCESS
                 );
 
-                $referrer = $request->getSession()->get('login_referrer');
-                if (!empty($referrer)) {
-                    return $response->withRedirect($referrer);
-                }
-
-                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+                $referrer = $session->get('login_referrer');
+                return $response->withRedirect(
+                    (!empty($referrer)) ? $referrer : (string)$request->getRouter()->named('dashboard')
+                );
             }
 
             $flash->addMessage(

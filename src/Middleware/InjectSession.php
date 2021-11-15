@@ -11,6 +11,7 @@ use App\Session\Csrf;
 use App\Session\Flash;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\LazySession;
+use Mezzio\Session\SessionPersistenceInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,27 +39,31 @@ class InjectSession implements MiddlewareInterface
         $this->cachePool = new ProxyAdapter($cachePool, 'session.');
     }
 
+    public function getSessionPersistence(ServerRequestInterface $request): SessionPersistenceInterface
+    {
+        $alwaysUseSsl = $this->settingsRepo->readSettings()->getAlwaysUseSsl();
+        $isHttpsUrl = ('https' === $request->getUri()->getScheme());
+
+        return new CacheSessionPersistence(
+            cache: $this->cachePool,
+            cookieName: 'app_session',
+            cookiePath: '/',
+            cacheLimiter: 'nocache',
+            cacheExpire: 43200,
+            lastModified: time(),
+            persistent: true,
+            cookieSecure: $alwaysUseSsl && $isHttpsUrl,
+            cookieHttpOnly: true
+        );
+    }
+
     /**
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $alwaysUseSsl = $this->settingsRepo->readSettings()->getAlwaysUseSsl();
-        $isHttpsUrl = ('https' === $request->getUri()->getScheme());
-
-        $sessionPersistence = new CacheSessionPersistence(
-            cache:          $this->cachePool,
-            cookieName:     'app_session',
-            cookiePath:     '/',
-            cacheLimiter:   'nocache',
-            cacheExpire:    43200,
-            lastModified:   time(),
-            persistent:     true,
-            cookieSecure:   $alwaysUseSsl && $isHttpsUrl,
-            cookieHttpOnly: true
-        );
-
+        $sessionPersistence = $this->getSessionPersistence($request);
         $session = new LazySession($sessionPersistence, $request);
 
         $csrf = new Csrf($session, $this->environment);

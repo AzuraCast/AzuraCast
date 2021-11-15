@@ -174,6 +174,7 @@ class Auth
     {
         $this->session->set(self::SESSION_IS_LOGIN_COMPLETE_KEY, null === $user->getTwoFactorSecret());
         $this->session->set(self::SESSION_USER_ID_KEY, $user->getId());
+        $this->session->regenerate();
 
         $this->user = $user;
     }
@@ -187,6 +188,7 @@ class Auth
             $this->session->clear();
         }
 
+        $this->session->regenerate();
         $this->user = null;
     }
 

@@ -22,6 +22,14 @@ class Error
     public int $code;
 
     /**
+     * The programmatic class of error.
+     *
+     * @OA\Property(example="NotLoggedInException")
+     * @var string
+     */
+    public string $type;
+
+    /**
      * The text description of the error.
      *
      * @OA\Property(example="Error description.")
@@ -57,12 +65,14 @@ class Error
         int $code = 500,
         string $message = 'General Error',
         ?string $formatted_message = null,
-        array $extra_data = []
+        array $extra_data = [],
+        string $type = 'Error'
     ) {
         $this->code = $code;
         $this->message = $message;
         $this->formatted_message = ($formatted_message ?? $message);
         $this->extra_data = $extra_data;
+        $this->type = $type;
         $this->success = false;
     }
 
@@ -94,7 +104,9 @@ class Error
             $code = 500;
         }
 
-        $errorHeader = get_class($e) . ' at ' . $e->getFile() . ' L' . $e->getLine();
+        $className = (new \ReflectionClass($e))->getShortName();
+
+        $errorHeader = $className . ' at ' . $e->getFile() . ' L' . $e->getLine();
         $message = $errorHeader . ': ' . $e->getMessage();
 
         if ($e instanceof Exception) {
@@ -109,6 +121,6 @@ class Error
             $extraData['trace'] = $e->getTrace();
         }
 
-        return new self($code, $message, $messageFormatted, $extraData);
+        return new self($code, $message, $messageFormatted, $extraData, $className);
     }
 }

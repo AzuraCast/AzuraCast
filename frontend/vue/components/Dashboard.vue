@@ -279,7 +279,9 @@ export default {
 
                 setTimeout(this.updateNowPlaying, (!document.hidden) ? 15000 : 30000);
             }).catch((error) => {
-                setTimeout(this.updateNowPlaying, (!document.hidden) ? 30000 : 120000);
+                if (!error.response || error.response.data.code !== 403) {
+                    setTimeout(this.updateNowPlaying, (!document.hidden) ? 30000 : 120000);
+                }
             });
         }
     }

@@ -165,20 +165,22 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         if ($this->exception instanceof NotLoggedInException) {
+            /** @var Response $response */
+            $response = $this->responseFactory->createResponse(403);
+
+            if ($this->returnJson) {
+                $error = Entity\Api\Error::fromException($this->exception);
+                $error->code = 403;
+                $error->message = __('You must be logged in to access this page.');
+
+                return $response->withJson($error);
+            }
+
             /** @var SessionInterface $session */
             $session = $this->request->getAttribute(ServerRequest::ATTR_SESSION);
 
             /** @var Flash $flash */
             $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
-
-            /** @var Response $response */
-            $response = $this->responseFactory->createResponse(403);
-
-            $error_message = __('You must be logged in to access this page.');
-
-            if ($this->returnJson) {
-                return $response->withJson(new Entity\Api\Error(403, $error_message));
-            }
 
             // Redirect to login page for not-logged-in users.
             $flash->addMessage(__('You must be logged in to access this page.'), Flash::ERROR);
@@ -190,17 +192,19 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         if ($this->exception instanceof PermissionDeniedException) {
-            /** @var Flash $flash */
-            $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
-
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
-            $error_message = __('You do not have permission to access this portion of the site.');
-
             if ($this->returnJson) {
-                return $response->withJson(new Entity\Api\Error(403, $error_message));
+                $error = Entity\Api\Error::fromException($this->exception);
+                $error->code = 403;
+                $error->message = __('You do not have permission to access this portion of the site.');
+
+                return $response->withJson($error);
             }
+
+            /** @var Flash $flash */
+            $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
 
             // Bounce back to homepage for permission-denied users.
             $flash->addMessage(

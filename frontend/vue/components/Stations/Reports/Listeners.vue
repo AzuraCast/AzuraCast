@@ -243,11 +243,11 @@ export default {
                 this.listeners = resp.data;
 
                 if (this.isLive) {
-                    setTimeout(this.updateListeners, 15000);
+                    setTimeout(this.updateListeners, (!document.hidden) ? 15000 : 30000);
                 }
             }).catch(() => {
-                if (this.isLive) {
-                    setTimeout(this.updateListeners, 30000);
+                if (this.isLive && (!error.response || error.response.data.code !== 403)) {
+                    setTimeout(this.updateListeners, (!document.hidden) ? 30000 : 120000);
                 }
             });
         }

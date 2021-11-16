@@ -247,7 +247,7 @@ class StationsController extends AbstractAdminApiCrudController
             $this->stationRepo->resetMounts($station, $frontend);
         }
 
-        if ($adapter_changed) {
+        if ($adapter_changed || !$station->getIsEnabled()) {
             $this->configuration->writeConfiguration($station, true);
         }
 

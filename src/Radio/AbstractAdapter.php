@@ -157,6 +157,24 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return bool Whether this adapter supports a non-destructive reload.
+     */
+    public function supportsReload(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Execute a non-destructive reload if the adapter supports it.
+     *
+     * @param Entity\Station $station
+     */
+    public function reload(Entity\Station $station): void
+    {
+        $this->restart($station);
+    }
+
+    /**
      * Stop the executable service.
      *
      * @param Entity\Station $station

@@ -12,6 +12,7 @@ use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
+use Supervisor\Exception\SupervisorException as SupervisorLibException;
 
 class Icecast extends AbstractFrontend
 {
@@ -23,6 +24,28 @@ class Icecast extends AbstractFrontend
     public function supportsMounts(): bool
     {
         return true;
+    }
+
+    public function supportsReload(): bool
+    {
+        return true;
+    }
+
+    public function reload(Entity\Station $station): void
+    {
+        if ($this->hasCommand($station)) {
+            $program_name = $this->getProgramName($station);
+
+            try {
+                $this->supervisor->signalProcess($program_name, 'HUP');
+                $this->logger->info(
+                    'Adapter "' . static::class . '" reloaded.',
+                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                );
+            } catch (SupervisorLibException $e) {
+                $this->handleSupervisorException($e, $program_name, $station);
+            }
+        }
     }
 
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result

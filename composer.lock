@@ -6524,12 +6524,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "535bd4c854a52c692d391e5f2460ae3e327e480d"
+                "reference": "88b83fbcd8136f0ff28ec25bcc16a209282891dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/535bd4c854a52c692d391e5f2460ae3e327e480d",
-                "reference": "535bd4c854a52c692d391e5f2460ae3e327e480d",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/88b83fbcd8136f0ff28ec25bcc16a209282891dc",
+                "reference": "88b83fbcd8136f0ff28ec25bcc16a209282891dc",
                 "shasum": ""
             },
             "require": {
@@ -6586,7 +6586,7 @@
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
                 "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2021-06-28T07:51:26+00:00"
+            "time": "2021-11-16T08:17:56+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

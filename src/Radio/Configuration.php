@@ -88,7 +88,7 @@ class Configuration
 
         if (!$station->getIsEnabled()) {
             @unlink($supervisorConfigFile);
-            $this->reloadSupervisorForStation($station);
+            $this->stopForStation($station);
             return;
         }
 
@@ -98,7 +98,7 @@ class Configuration
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             @unlink($supervisorConfigFile);
-            $this->reloadSupervisorForStation($station);
+            $this->stopForStation($station);
             return;
         }
 
@@ -140,7 +140,28 @@ class Configuration
         $frontend->write($station);
         $backend->write($station);
 
-        $this->reloadSupervisorForStation($station, $forceRestart);
+        // Reload Supervisord and process groups
+        $affected_groups = $this->reloadSupervisor();
+        $was_restarted = in_array($backend_group, $affected_groups, true);
+
+        if (!$was_restarted && $forceRestart) {
+            try {
+                if ($backend->supportsReload() || $frontend->supportsReload()) {
+                    $backend->reload($station);
+                    $frontend->reload($station);
+                } else {
+                    $this->supervisor->stopProcessGroup($backend_group, true);
+                    $this->supervisor->startProcessGroup($backend_group, true);
+                }
+            } catch (SupervisorException) {
+            }
+
+            $was_restarted = true;
+        }
+
+        if ($was_restarted) {
+            $this->markAsStarted($station);
+        }
     }
 
     /**
@@ -152,40 +173,30 @@ class Configuration
         return $configDir . '/supervisord.conf';
     }
 
-    /**
-     * Trigger a supervisord reload/restart for a station, optionally forcing a restart of the station's
-     * service group.
-     *
-     * @param Station $station
-     * @param bool $force_restart
-     */
-    protected function reloadSupervisorForStation(Station $station, bool $force_restart = false): bool
+    protected function stopForStation(Station $station): void
     {
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
 
         $was_restarted = in_array($station_group, $affected_groups, true);
-
-        if (!$was_restarted && $force_restart) {
+        if (!$was_restarted) {
             try {
-                $this->supervisor->stopProcessGroup($station_group, true);
-                $this->supervisor->startProcessGroup($station_group, true);
+                $this->supervisor->stopProcessGroup($station_group, false);
             } catch (SupervisorException) {
             }
-
-            $was_restarted = true;
         }
 
-        if ($was_restarted) {
-            $station->setHasStarted(true);
-            $station->setNeedsRestart(false);
-            $station->clearCache();
+        $this->markAsStarted($station);
+    }
 
-            $this->em->persist($station);
-            $this->em->flush();
-        }
+    protected function markAsStarted(Station $station): void
+    {
+        $station->setHasStarted(true);
+        $station->setNeedsRestart(false);
+        $station->clearCache();
 
-        return $was_restarted;
+        $this->em->persist($station);
+        $this->em->flush();
     }
 
     /**

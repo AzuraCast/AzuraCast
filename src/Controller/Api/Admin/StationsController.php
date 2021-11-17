@@ -165,12 +165,18 @@ class StationsController extends AbstractAdminApiCrudController
             'has_started',
         ];
 
+        foreach (Entity\Station::getStorageLocationTypes() as $storageLocationType => $locationKey) {
+            $context[AbstractNormalizer::CALLBACKS][$locationKey] = fn(
+                array $value
+            ) => $value['id'];
+        }
+
         return parent::toArray($record, $context);
     }
 
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $locationType) {
+        foreach (Entity\Station::getStorageLocationTypes() as $locationKey) {
             $idKey = $locationKey . '_id';
             if (!empty($data[$idKey])) {
                 $data[$locationKey] = $data[$idKey];

@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 
-class ProfileController
+class ProfileAction
 {
     public function __invoke(
         ServerRequest $request,

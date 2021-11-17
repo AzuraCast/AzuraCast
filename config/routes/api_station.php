@@ -42,7 +42,7 @@ return static function (RouteCollectorProxy $group) {
             )
                 ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
-            $group->get('/profile', Controller\Api\Stations\ProfileController::class)
+            $group->get('/profile', Controller\Api\Stations\ProfileAction::class)
                 ->setName('api:stations:profile')
                 ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
@@ -56,6 +56,10 @@ return static function (RouteCollectorProxy $group) {
                 '/profile/edit',
                 Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
             )->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+
+            $group->get('/quota[/{type}]', Controller\Api\Stations\GetQuotaAction::class)
+                ->setName('api:stations:quota')
+                ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');

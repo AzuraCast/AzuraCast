@@ -41,8 +41,6 @@ class FilesAction
         )->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->getSingleScalarResult();
 
-        $mediaStorage = $station->getMediaStorageLocation();
-
         $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
@@ -51,22 +49,22 @@ class FilesAction
             id: 'media-manager',
             title: __('Music Files'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:files:list'),
-                'batchUrl' => (string)$router->fromHere('api:stations:files:batch'),
-                'uploadUrl' => (string)$router->fromHere('api:stations:files:upload'),
+                'listUrl'            => (string)$router->fromHere('api:stations:files:list'),
+                'batchUrl'           => (string)$router->fromHere('api:stations:files:batch'),
+                'uploadUrl'          => (string)$router->fromHere('api:stations:files:upload'),
                 'listDirectoriesUrl' => (string)$router->fromHere('api:stations:files:directories'),
-                'mkdirUrl' => (string)$router->fromHere('api:stations:files:mkdir'),
-                'renameUrl' => (string)$router->fromHere('api:stations:files:rename'),
-                'initialPlaylists' => $playlists,
-                'customFields' => $customFieldRepo->fetchArray(),
-                'validMimeTypes' => MimeType::getProcessableTypes(),
-                'stationTimeZone' => $station->getTimezone(),
-                'spacePercent' => $mediaStorage->getStorageUsePercentage(),
-                'spaceUsed' => $mediaStorage->getStorageUsed(),
-                'spaceTotal' => $mediaStorage->getStorageAvailable(),
-                'filesCount' => (int)$files_count,
-                'showSftp' => SftpGo::isSupportedForStation($station),
-                'sftpUrl' => (string)$router->fromHere('stations:sftp_users:index'),
+                'mkdirUrl'           => (string)$router->fromHere('api:stations:files:mkdir'),
+                'renameUrl'          => (string)$router->fromHere('api:stations:files:rename'),
+                'quotaUrl'           => (string)$router->fromHere('api:stations:quota', [
+                    'type' => Entity\StorageLocation::TYPE_STATION_MEDIA,
+                ]),
+                'initialPlaylists'   => $playlists,
+                'customFields'       => $customFieldRepo->fetchArray(),
+                'validMimeTypes'     => MimeType::getProcessableTypes(),
+                'stationTimeZone'    => $station->getTimezone(),
+                'filesCount'         => (int)$files_count,
+                'showSftp'           => SftpGo::isSupportedForStation($station),
+                'sftpUrl'            => (string)$router->fromHere('stations:sftp_users:index'),
             ],
         );
     }

@@ -21,7 +21,7 @@ class StorageLocationsAction extends StationsController
         $newStorageLocationMessage = __('Create a new storage location based on the base directory.');
 
         $storageLocations = [];
-        foreach (Station::getStorageLocationTypes() as $locationKey => $locationType) {
+        foreach (Station::getStorageLocationTypes() as $locationType => $locationKey) {
             $storageLocations[$locationKey] = $storageLocationRepo->fetchSelectByType(
                 $locationType,
                 true,

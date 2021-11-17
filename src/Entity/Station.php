@@ -15,7 +15,6 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
 use RuntimeException;
@@ -276,10 +275,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OrderBy(['timestamp_start' => 'desc'])]
     protected Collection $history;
 
-    #[ORM\Column(nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
-    protected ?int $media_storage_location_id = null;
-
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(
         name: 'media_storage_location_id',
@@ -289,11 +284,8 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    protected ?StorageLocation $media_storage_location = null;
-
-    #[ORM\Column(nullable: true)]
     #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
-    protected ?int $recordings_storage_location_id = null;
+    protected ?StorageLocation $media_storage_location = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(
@@ -304,11 +296,8 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    protected ?StorageLocation $recordings_storage_location = null;
-
-    #[ORM\Column(nullable: true)]
     #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
-    protected ?int $podcasts_storage_location_id = null;
+    protected ?StorageLocation $recordings_storage_location = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(
@@ -319,6 +308,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
+    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
     protected ?StorageLocation $podcasts_storage_location = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
@@ -894,88 +884,62 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
     }
 
-    public function getMediaStorageLocationId(): ?int
-    {
-        return $this->media_storage_location_id;
-    }
-
-    public function setMediaStorageLocationId(?int $media_storage_location_id): void
-    {
-        $this->media_storage_location_id = $media_storage_location_id;
-    }
-
     public function getMediaStorageLocation(): StorageLocation
     {
-        if (null === $this->media_storage_location) {
-            throw new \RuntimeException('Media storage location has not been configured yet.');
-        }
-
-        return $this->media_storage_location;
+        return $this->getStorageLocation(StorageLocation::TYPE_STATION_MEDIA);
     }
 
     public function setMediaStorageLocation(StorageLocation $storageLocation): void
     {
-        if (StorageLocation::TYPE_STATION_MEDIA !== $storageLocation->getType()) {
-            throw new InvalidArgumentException('Storage location must be for station media.');
-        }
-
-        $this->media_storage_location = $storageLocation;
-    }
-
-    public function getRecordingsStorageLocationId(): ?int
-    {
-        return $this->recordings_storage_location_id;
-    }
-
-    public function setRecordingsStorageLocationId(?int $recordings_storage_location_id): void
-    {
-        $this->recordings_storage_location_id = $recordings_storage_location_id;
+        $this->setStorageLocation(StorageLocation::TYPE_STATION_MEDIA, $storageLocation);
     }
 
     public function getRecordingsStorageLocation(): StorageLocation
     {
-        if (null === $this->recordings_storage_location) {
-            throw new \RuntimeException('Recordings storage location has not been configured yet.');
-        }
-
-        return $this->recordings_storage_location;
+        return $this->getStorageLocation(StorageLocation::TYPE_STATION_RECORDINGS);
     }
 
     public function setRecordingsStorageLocation(StorageLocation $storageLocation): void
     {
-        if (StorageLocation::TYPE_STATION_RECORDINGS !== $storageLocation->getType()) {
-            throw new InvalidArgumentException('Storage location must be for station live recordings.');
-        }
-
-        $this->recordings_storage_location = $storageLocation;
-    }
-
-    public function getPodcastsStorageLocationId(): ?int
-    {
-        return $this->podcasts_storage_location_id;
-    }
-
-    public function setPodcastsStorageLocationId(?int $podcasts_storage_location_id): void
-    {
-        $this->podcasts_storage_location_id = $podcasts_storage_location_id;
+        $this->setStorageLocation(StorageLocation::TYPE_STATION_RECORDINGS, $storageLocation);
     }
 
     public function getPodcastsStorageLocation(): StorageLocation
     {
-        if (null === $this->podcasts_storage_location) {
-            throw new \RuntimeException('Podcasts storage location has not been configured yet.');
-        }
-
-        return $this->podcasts_storage_location;
+        return $this->getStorageLocation(StorageLocation::TYPE_STATION_PODCASTS);
     }
 
     public function setPodcastsStorageLocation(StorageLocation $storageLocation): void
     {
-        if (StorageLocation::TYPE_STATION_PODCASTS !== $storageLocation->getType()) {
-            throw new InvalidArgumentException('Storage location must be for station podcasts.');
+        $this->setStorageLocation(StorageLocation::TYPE_STATION_PODCASTS, $storageLocation);
+    }
+
+    public function getStorageLocation(string $type): StorageLocation
+    {
+        $supportedTypes = self::getStorageLocationTypes();
+        if (!isset($supportedTypes[$type])) {
+            throw new \InvalidArgumentException(sprintf('Invalid type: %s', $type));
         }
 
-        $this->podcasts_storage_location = $storageLocation;
+        $record = $this->{$supportedTypes[$type]};
+        if (null === $record) {
+            throw new \RuntimeException(sprintf('Storage location for type %s has not been configured yet.', $type));
+        }
+        return $record;
+    }
+
+    public function setStorageLocation(string $type, StorageLocation $newStorageLocation): void
+    {
+        if ($type !== $newStorageLocation->getType()) {
+            throw new \InvalidArgumentException(sprintf('Specified location is not of type %s.', $type));
+        }
+
+        $supportedTypes = self::getStorageLocationTypes();
+        if (!isset($supportedTypes[$type])) {
+            throw new \InvalidArgumentException(sprintf('Invalid type: %s', $type));
+        }
+
+        $this->{$supportedTypes[$type]} = $newStorageLocation;
     }
 
     /** @return StorageLocation[] */
@@ -991,9 +955,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     public static function getStorageLocationTypes(): array
     {
         return [
-            'media_storage_location'      => StorageLocation::TYPE_STATION_MEDIA,
-            'recordings_storage_location' => StorageLocation::TYPE_STATION_RECORDINGS,
-            'podcasts_storage_location'   => StorageLocation::TYPE_STATION_PODCASTS,
+            StorageLocation::TYPE_STATION_MEDIA      => 'media_storage_location',
+            StorageLocation::TYPE_STATION_RECORDINGS => 'recordings_storage_location',
+            StorageLocation::TYPE_STATION_PODCASTS   => 'podcasts_storage_location',
         ];
     }
 

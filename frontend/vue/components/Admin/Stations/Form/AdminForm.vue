@@ -28,8 +28,8 @@
             <b-form-fieldset>
                 <b-overlay variant="card" :show="storageLocationsLoading">
                     <b-form-row>
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location_id"
-                                              :field="form.media_storage_location_id">
+                        <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location"
+                                              :field="form.media_storage_location">
                             <template #label="{lang}">
                                 <translate :key="lang">Media Storage Location</translate>
                             </template>
@@ -39,8 +39,8 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location_id"
-                                              :field="form.recordings_storage_location_id">
+                        <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location"
+                                              :field="form.recordings_storage_location">
                             <template #label="{lang}">
                                 <translate :key="lang">Live Recordings Storage Location</translate>
                             </template>
@@ -50,8 +50,8 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location_id"
-                                              :field="form.podcasts_storage_location_id">
+                        <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location"
+                                              :field="form.podcasts_storage_location">
                             <template #label="{lang}">
                                 <translate :key="lang">Podcasts Storage Location</translate>
                             </template>

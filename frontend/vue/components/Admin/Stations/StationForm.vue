@@ -168,14 +168,14 @@ export default {
         if (this.showAdminTab) {
             const adminValidations = {
                 form: {
-                    media_storage_location_id: {},
-                    recordings_storage_location_id: {},
-                    podcasts_storage_location_id: {},
+                    media_storage_location: {},
+                    recordings_storage_location: {},
+                    podcasts_storage_location: {},
                     is_enabled: {},
                 },
                 adminTab: [
-                    'form.media_storage_location_id', 'form.recordings_storage_location_id',
-                    'form.podcasts_storage_location_id', 'form.is_enabled'
+                    'form.media_storage_location', 'form.recordings_storage_location',
+                    'form.podcasts_storage_location', 'form.is_enabled'
                 ]
             };
 
@@ -251,7 +251,6 @@ export default {
                     sc_user_id: '',
                     source_pw: '',
                     admin_pw: '',
-
                 },
                 backend_type: BACKEND_LIQUIDSOAP,
                 backend_config: {
@@ -298,9 +297,9 @@ export default {
 
             if (this.showAdminTab) {
                 const adminForm = {
-                    media_storage_location_id: '',
-                    recordings_storage_location_id: '',
-                    podcasts_storage_location_id: '',
+                    media_storage_location: '',
+                    recordings_storage_location: '',
+                    podcasts_storage_location: '',
                     is_enabled: true,
                 };
                 _.merge(form, adminForm);

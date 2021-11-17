@@ -9,9 +9,10 @@
                                 <translate key="lang_title">Music Files</translate>
                             </h2>
                         </div>
-                        <div class="col-md-5 text-right text-white-50">
-                            <template v-if="spaceTotal">
-                                <b-progress class="mb-1" :value="spacePercent" show-progress height="20px"></b-progress>
+                        <div v-if="!quotaLoading" class="col-md-5 text-right text-white-50">
+                            <template v-if="quota.available">
+                                <b-progress class="mb-1" :value="quota.used_percent" show-progress
+                                            height="20px"></b-progress>
 
                                 {{ langSpaceUsed }}
                             </template>
@@ -159,6 +160,7 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
+import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     components: {
@@ -199,6 +201,10 @@ export default {
             type: String,
             required: true
         },
+        quotaUrl: {
+            type: String,
+            required: true
+        },
         initialPlaylists: {
             type: Array,
             required: false,
@@ -215,12 +221,7 @@ export default {
             default: () => []
         },
         stationTimeZone: String,
-
-        spacePercent: Number,
-        spaceUsed: String,
-        spaceTotal: String,
         filesCount: Number,
-
         showSftp: Boolean,
         sftpUrl: String
     },
@@ -283,6 +284,12 @@ export default {
                 files: [],
                 directories: []
             },
+            quotaLoading: true,
+            quota: {
+                used: null,
+                used_percent: null,
+                available: null
+            },
             currentDirectory: '',
             searchPhrase: null
         };
@@ -294,6 +301,7 @@ export default {
         window.removeEventListener('hashchange', this.onHashChange);
     },
     mounted () {
+        this.loadQuotas();
         this.onHashChange();
     },
     computed: {
@@ -310,22 +318,29 @@ export default {
             return this.$gettext('View tracks in playlist');
         },
         langSpaceUsed() {
-            let lang = (this.spaceTotal)
+            let lang = (this.quota.available)
                 ? this.$gettext('%{spaceUsed} of %{spaceTotal} Used (%{filesCount} Files)')
                 : this.$gettext('%{spaceUsed} Used (%{filesCount} Files)');
 
             return this.$gettextInterpolate(lang, {
-                spaceUsed: this.spaceUsed,
-                spaceTotal: this.spaceTotal,
+                spaceUsed: this.quota.used,
+                spaceTotal: this.quota.available,
                 filesCount: this.filesCount
             });
         },
     },
     methods: {
-        formatFileSize (size) {
+        formatFileSize(size) {
             return formatFileSize(size);
         },
-        onRowSelected (items) {
+        loadQuotas() {
+            this.axios.get(this.quotaUrl)
+                .then((resp) => {
+                    this.quota = mergeExisting(this.quota, resp.data);
+                    this.quotaLoading = false;
+                });
+        },
+        onRowSelected(items) {
             let splitItems = _.partition(items, 'is_dir');
 
             this.selectedItems = {
@@ -334,13 +349,14 @@ export default {
                 directories: _.map(splitItems[0], 'path')
             };
         },
-        onRefreshed () {
+        onRefreshed() {
             this.$eventHub.$emit('refreshed');
         },
         onTriggerNavigate () {
             this.$refs.datatable.navigate();
         },
         onTriggerRelist () {
+            this.loadQuotas();
             this.$refs.datatable.relist();
         },
         onAddPlaylist (row) {

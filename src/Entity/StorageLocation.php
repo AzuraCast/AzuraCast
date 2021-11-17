@@ -311,14 +311,14 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function getStorageAvailable(): string
     {
-        $raw_size = $this->getRawStorageAvailable();
+        $raw_size = $this->getStorageAvailableBytes();
 
         return ($raw_size instanceof BigInteger)
             ? Quota::getReadableSize($raw_size)
             : '';
     }
 
-    public function getRawStorageAvailable(): ?BigInteger
+    public function getStorageAvailableBytes(): ?BigInteger
     {
         $quota = $this->getStorageQuotaBytes();
 
@@ -339,7 +339,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function isStorageFull(): bool
     {
-        $available = $this->getRawStorageAvailable();
+        $available = $this->getStorageAvailableBytes();
         if ($available === null) {
             return false;
         }
@@ -352,7 +352,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function getStorageUsePercentage(): int
     {
         $storageUsed = $this->getStorageUsedBytes();
-        $storageAvailable = $this->getRawStorageAvailable();
+        $storageAvailable = $this->getStorageAvailableBytes();
 
         if (null === $storageAvailable) {
             return 0;

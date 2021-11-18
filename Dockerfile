@@ -4,7 +4,7 @@ FROM ubuntu:focal as base
 ENV TZ="UTC"
 
 # Run base build process
-COPY ./util/docker/web/ /bd_build
+COPY ./util/docker/web /bd_build/
 
 RUN chmod a+x /bd_build/*.sh \
     && /bd_build/prepare.sh \

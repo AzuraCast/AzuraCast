@@ -21,13 +21,17 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Build, Test and Publish
     runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
       NODE_ENV: production
     steps:
       - uses: actions/checkout@master
+
+      - name: Reduce Git repository size.
+        run: |
+          git gc --prune=now --aggressive
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -104,16 +108,24 @@ jobs:
       - name: Build OpenAPI Docs
         run: bin/console azuracast:api:docs
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Web Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          load: true
+          tags: ghcr.io/azuracast/web:latest
+          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
+          outputs: type=docker,dest=/tmp/azuracast_web.tar
+
       - name: Set up functional test environment.
         run: |
           cp sample.env .env
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
-          docker-compose pull web
-
           cp docker-compose.testing.yml docker-compose.override.yml
-          docker-compose build web
-
           docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.
@@ -146,6 +158,12 @@ jobs:
             web/static/assets.json
             web/static/api/openapi.yml
 
+      - name: Upload Docker image as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: myimage
+          path: /tmp/azuracast_web.tar
+
   publish:
     name: Publish
     needs: build
@@ -168,6 +186,16 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+
+      - name: Download artifact from previous step
+        uses: actions/download-artifact@v2
+        with:
+          name: myimage
+          path: /tmp
+      - name: Load image from previous step
+        run: |
+          docker load --input /tmp/azuracast_web.tar
+          docker image ls -a
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -194,12 +222,12 @@ jobs:
             type=ref,event=branch
             type=semver,pattern={{version}}
 
-      - name: Publish to Docker Hub
+      - name: Publish Web Image
         uses: docker/build-push-action@v2
         with:
           context: .
-          # platforms : linux/amd64,linux/arm64
-          cache-from: type=registry,ref=azuracast/azuracast_web_v2:latest
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/azuracast/web:latest
+          cache-to: type=registry,ref=ghcr.io/azuracast/web:buildcache,mode=max

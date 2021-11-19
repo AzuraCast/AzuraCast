@@ -74,17 +74,15 @@ class RequestsController
         $params = $request->getQueryParams();
 
         if (!empty($params['sort'])) {
-            $sort_fields = [
-                'song_title' => 'sm.title',
-                'song_artist' => 'sm.artist',
-                'song_album' => 'sm.album',
-            ];
+            $sortDirection = (($params['sortOrder'] ?? 'ASC') === 'ASC') ? 'ASC' : 'DESC';
 
-            foreach ($params['sort'] as $sort_key => $sort_direction) {
-                if (isset($sort_fields[$sort_key])) {
-                    $qb->addOrderBy($sort_fields[$sort_key], $sort_direction);
-                }
-            }
+            match ($params['sort']) {
+                'name', 'song_title' => $qb->addOrderBy('sm.title', $sortDirection),
+                'song_artist' => $qb->addOrderBy('sm.artist', $sortDirection),
+                'song_album' => $qb->addOrderBy('sm.album', $sortDirection),
+                'song_genre' => $qb->addOrderBy('sm.genre', $sortDirection),
+                default => null,
+            };
         } else {
             $qb->orderBy('sm.artist', 'ASC')
                 ->addOrderBy('sm.title', 'ASC');

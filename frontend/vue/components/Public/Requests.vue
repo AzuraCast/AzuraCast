@@ -66,7 +66,7 @@ export default {
             fields.push({
                 key: 'song_custom_fields_' + field.short_name,
                 label: field.name,
-                sortable: true,
+                sortable: false,
                 selectable: true,
                 visible: false
             });

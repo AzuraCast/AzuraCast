@@ -11,9 +11,11 @@ class SyncCommand extends CommandAbstract
 {
     public function __invoke(
         Runner $sync,
-        string $task = App\Event\GetSyncTasks::SYNC_NOWPLAYING,
+        ?string $task = null,
         bool $force = false
     ): int {
+        $task ??= App\Event\GetSyncTasks::SYNC_NOWPLAYING;
+
         $sync->runSyncTask($task, $force);
         return 0;
     }

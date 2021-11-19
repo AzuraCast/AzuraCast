@@ -32,10 +32,10 @@ update: # Update everything (i.e. after a branch update)
 	$(MAKE) up
 
 test:
-	docker-compose run --rm --user=azuracast web composer run cleanup-and-test
+	docker-compose exec --user=azuracast web composer run cleanup-and-test
 
 bash:
-	docker-compose run --rm --user=azuracast web bash
+	docker-compose exec --user=azuracast web bash
 
 frontend-bash:
 	docker-compose -f frontend/docker-compose.yml build

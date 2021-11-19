@@ -1164,7 +1164,7 @@ class ConfigWriter implements EventSubscriberInterface
         $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str) ?? '';
         $str = str_replace(' ', '_', $str);
         $str = rawurlencode($str);
-        $str = str_replace(['%', '-'], ['', '_'], $str);
+        $str = str_replace(['%', '-', '.'], ['', '_', '_'], $str);
 
         return $str;
     }

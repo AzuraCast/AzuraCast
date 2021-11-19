@@ -302,6 +302,7 @@ export default {
         },
         itemProvider() {
             if (this.items !== null) {
+                this.totalRows = this.items.length;
                 return this.items;
             }
 

@@ -889,7 +889,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->getStorageLocation(StorageLocation::TYPE_STATION_MEDIA);
     }
 
-    public function setMediaStorageLocation(StorageLocation $storageLocation): void
+    public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
         $this->setStorageLocation(StorageLocation::TYPE_STATION_MEDIA, $storageLocation);
     }
@@ -899,7 +899,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->getStorageLocation(StorageLocation::TYPE_STATION_RECORDINGS);
     }
 
-    public function setRecordingsStorageLocation(StorageLocation $storageLocation): void
+    public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
         $this->setStorageLocation(StorageLocation::TYPE_STATION_RECORDINGS, $storageLocation);
     }
@@ -909,7 +909,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->getStorageLocation(StorageLocation::TYPE_STATION_PODCASTS);
     }
 
-    public function setPodcastsStorageLocation(StorageLocation $storageLocation): void
+    public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
         $this->setStorageLocation(StorageLocation::TYPE_STATION_PODCASTS, $storageLocation);
     }
@@ -928,8 +928,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $record;
     }
 
-    public function setStorageLocation(string $type, StorageLocation $newStorageLocation): void
+    public function setStorageLocation(string $type, ?StorageLocation $newStorageLocation): void
     {
+        // Ignore if being set to null.
+        if (null === $newStorageLocation) {
+            return;
+        }
+
         if ($type !== $newStorageLocation->getType()) {
             throw new \InvalidArgumentException(sprintf('Specified location is not of type %s.', $type));
         }

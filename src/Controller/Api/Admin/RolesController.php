@@ -22,6 +22,7 @@ class RolesController extends AbstractAdminApiCrudController
 
     public function __construct(
         protected Acl $acl,
+        protected Entity\Repository\RolePermissionRepository $permissionRepo,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -109,6 +110,20 @@ class RolesController extends AbstractAdminApiCrudController
      *
      * @inheritdoc
      */
+
+    protected function deleteRecord(object $record): void
+    {
+        if (!($record instanceof Entity\Role)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $superAdminRole = $this->permissionRepo->ensureSuperAdministratorRole();
+        if ($superAdminRole->getIdRequired() === $record->getIdRequired()) {
+            throw new \RuntimeException('Cannot remove the Super Administrator role.');
+        }
+
+        parent::deleteRecord($record);
+    }
 
     protected function fromArray(array $data, $record = null, array $context = []): object
     {

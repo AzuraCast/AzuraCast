@@ -4,19 +4,31 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity\StorageLocation;
+use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class GetQuotaAction
 {
+    public function __construct(
+        protected EntityManagerInterface $em
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $type = StorageLocation::TYPE_STATION_MEDIA
+        string $type = Entity\StorageLocation::TYPE_STATION_MEDIA
     ): ResponseInterface {
-        $storageLocation = $request->getStation()->getStorageLocation($type);
+        $station = $request->getStation();
+        $storageLocation = $station->getStorageLocation($type);
+
+        $numFiles = match ($type) {
+            Entity\StorageLocation::TYPE_STATION_MEDIA => $this->getNumStationMedia($station),
+            default => null,
+        };
 
         return $response->withJson([
             'used'            => $storageLocation->getStorageUsed(),
@@ -26,6 +38,19 @@ class GetQuotaAction
             'available_bytes' => (string)$storageLocation->getStorageAvailableBytes(),
             'quota'           => $storageLocation->getStorageQuota(),
             'quota_bytes'     => (string)$storageLocation->getStorageQuotaBytes(),
+            'is_full'         => $storageLocation->isStorageFull(),
+            'num_files'       => $numFiles,
         ]);
+    }
+
+    protected function getNumStationMedia(Entity\Station $station): int
+    {
+        return (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
+                WHERE sm.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->getSingleScalarResult();
     }
 }

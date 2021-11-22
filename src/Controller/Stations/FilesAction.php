@@ -33,14 +33,6 @@ class FilesAction
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
 
-        $files_count = $em->createQuery(
-            <<<'DQL'
-                SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
-                WHERE sm.storage_location = :storageLocation
-            DQL
-        )->setParameter('storageLocation', $station->getMediaStorageLocation())
-            ->getSingleScalarResult();
-
         $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
@@ -62,7 +54,6 @@ class FilesAction
                 'customFields'       => $customFieldRepo->fetchArray(),
                 'validMimeTypes'     => MimeType::getProcessableTypes(),
                 'stationTimeZone'    => $station->getTimezone(),
-                'filesCount'         => (int)$files_count,
                 'showSftp'           => SftpGo::isSupportedForStation($station),
                 'sftpUrl'            => (string)$router->fromHere('stations:sftp_users:index'),
             ],

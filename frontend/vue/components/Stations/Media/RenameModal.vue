@@ -11,7 +11,7 @@
             <b-button variant="default" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <b-button variant="primary" @click="doRename" :disabled="$v.form.$invalid">
+            <b-button :variant="($v.form.$invalid) ? 'danger' : 'primary'" @click="doRename">
                 <translate key="lang_btn_rename">Rename</translate>
             </b-button>
         </template>

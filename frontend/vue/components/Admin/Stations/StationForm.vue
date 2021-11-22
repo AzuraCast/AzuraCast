@@ -21,7 +21,7 @@
 
             <slot name="submitButton">
                 <b-card-body body-class="card-padding-sm">
-                    <b-button size="lg" type="submit" variant="primary" :disabled="!isValid">
+                    <b-button size="lg" type="submit" :variant="(!isValid) ? 'danger' : 'primary'">
                         <slot name="submitButtonText">
                             <translate key="lang_btn_save_changes">Save Changes</translate>
                         </slot>

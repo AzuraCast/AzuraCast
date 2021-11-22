@@ -27,7 +27,7 @@
             </b-overlay>
 
             <b-card-body body-class="card-padding-sm">
-                <b-button size="lg" type="submit" variant="primary" :disabled="$v.form.$invalid">
+                <b-button size="lg" type="submit" :variant="($v.form.$invalid) ? 'danger' : 'primary'">
                     <slot name="submitButtonName">
                         <translate key="lang_btn_save_changes">Save Changes</translate>
                     </slot>

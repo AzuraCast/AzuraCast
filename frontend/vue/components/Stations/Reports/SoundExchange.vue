@@ -65,7 +65,7 @@
                     </b-wrapped-form-checkbox>
                 </b-form-fieldset>
 
-                <b-button type="submit" size="lg" variant="primary" class="mt-2" :disabled="$v.form.$invalid">
+                <b-button type="submit" size="lg" :variant="($v.form.$invalid) ? 'danger' : 'primary'" class="mt-2">
                     <translate key="btn_submit">Generate Report</translate>
                 </b-button>
             </div>

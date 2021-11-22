@@ -26,8 +26,8 @@
                 <b-button variant="default" type="button" @click="close">
                     <translate key="lang_btn_close">Close</translate>
                 </b-button>
-                <b-button v-if="newKey === null" variant="primary" type="submit" @click="doSubmit"
-                          :disabled="$v.form.$invalid">
+                <b-button v-if="newKey === null" :variant="($v.form.$invalid) ? 'danger' : 'primary'" type="submit"
+                          @click="doSubmit">
                     <translate key="lang_btn_create_key">Create New Key</translate>
                 </b-button>
             </slot>

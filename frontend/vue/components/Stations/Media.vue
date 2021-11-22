@@ -2,26 +2,19 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header bg-primary-dark">
-                    <div class="row align-items-center">
-                        <div class="col-md-7">
+                <b-card-header header-bg-variant="primary-dark">
+                    <b-row class="align-items-center">
+                        <b-col md="7">
                             <h2 class="card-title">
                                 <translate key="lang_title">Music Files</translate>
                             </h2>
-                        </div>
-                        <div v-if="!quotaLoading" class="col-md-5 text-right text-white-50">
-                            <template v-if="quota.available">
-                                <b-progress class="mb-1" :value="quota.used_percent" show-progress
-                                            height="20px"></b-progress>
+                        </b-col>
+                        <b-col md="5" class="text-right text-white-50">
+                            <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
+                        </b-col>
+                    </b-row>
+                </b-card-header>
 
-                                {{ langSpaceUsed }}
-                            </template>
-                            <template v-else>
-                                {{ langSpaceUsed }}
-                            </template>
-                        </div>
-                    </div>
-                </div>
                 <div v-if="showSftp" class="card-body alert-info d-flex align-items-center" role="alert">
                     <div class="flex-shrink-0 mr-2">
                         <i class="material-icons" aria-hidden="true">info</i>
@@ -160,10 +153,11 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
-import mergeExisting from "~/functions/mergeExisting";
+import StationsCommonQuota from "~/components/Stations/Common/Quota";
 
 export default {
     components: {
+        StationsCommonQuota,
         PlayButton,
         AlbumArt,
         Icon,
@@ -221,7 +215,6 @@ export default {
             default: () => []
         },
         stationTimeZone: String,
-        filesCount: Number,
         showSftp: Boolean,
         sftpUrl: String
     },
@@ -284,12 +277,7 @@ export default {
                 files: [],
                 directories: []
             },
-            quotaLoading: true,
-            quota: {
-                used: null,
-                used_percent: null,
-                available: null
-            },
+
             currentDirectory: '',
             searchPhrase: null
         };
@@ -301,7 +289,6 @@ export default {
         window.removeEventListener('hashchange', this.onHashChange);
     },
     mounted () {
-        this.loadQuotas();
         this.onHashChange();
     },
     computed: {
@@ -317,28 +304,10 @@ export default {
         langPlaylistSelect() {
             return this.$gettext('View tracks in playlist');
         },
-        langSpaceUsed() {
-            let lang = (this.quota.available)
-                ? this.$gettext('%{spaceUsed} of %{spaceTotal} Used (%{filesCount} Files)')
-                : this.$gettext('%{spaceUsed} Used (%{filesCount} Files)');
-
-            return this.$gettextInterpolate(lang, {
-                spaceUsed: this.quota.used,
-                spaceTotal: this.quota.available,
-                filesCount: this.filesCount
-            });
-        },
     },
     methods: {
         formatFileSize(size) {
             return formatFileSize(size);
-        },
-        loadQuotas() {
-            this.axios.get(this.quotaUrl)
-                .then((resp) => {
-                    this.quota = mergeExisting(this.quota, resp.data);
-                    this.quotaLoading = false;
-                });
         },
         onRowSelected(items) {
             let splitItems = _.partition(items, 'is_dir');
@@ -356,7 +325,7 @@ export default {
             this.$refs.datatable.navigate();
         },
         onTriggerRelist () {
-            this.loadQuotas();
+            this.$refs.quota.update();
             this.$refs.datatable.relist();
         },
         onAddPlaylist (row) {

@@ -11,7 +11,8 @@
             <b-button variant="default" @click="close" key="lang_btn_close" v-translate>
                 Close
             </b-button>
-            <b-button variant="primary" @click="doMkdir" key="lang_btn_create" :disabled="$v.$invalid" v-translate>
+            <b-button :variant="($v.$invalid) ? 'danger' : 'primary'" @click="doMkdir" key="lang_btn_create"
+                      v-translate>
                 Create Directory
             </b-button>
         </template>

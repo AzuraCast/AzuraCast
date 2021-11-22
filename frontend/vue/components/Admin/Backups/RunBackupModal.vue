@@ -53,8 +53,8 @@
                 <b-button variant="default" type="button" @click="close">
                     <translate key="lang_btn_close">Close</translate>
                 </b-button>
-                <b-button v-if="logUrl === null" variant="primary" type="submit" @click="submit"
-                          :disabled="$v.form.$invalid">
+                <b-button v-if="logUrl === null" :variant="($v.form.$invalid) ? 'danger' : 'primary'" type="submit"
+                          @click="submit">
                     <translate key="lang_btn_run_backup">Run Manual Backup</translate>
                 </b-button>
             </slot>

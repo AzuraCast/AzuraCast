@@ -19,7 +19,7 @@
                 <b-button variant="default" type="button" @click="close">
                     <translate key="lang_btn_close">Close</translate>
                 </b-button>
-                <b-button variant="primary" type="submit" @click="doSubmit" :disabled="disableSaveButton">
+                <b-button :variant="(disableSaveButton) ? 'danger' : 'primary'" type="submit" @click="doSubmit">
                     <slot name="save-button-name">
                         <translate key="lang_btn_save_changes">Save Changes</translate>
                     </slot>

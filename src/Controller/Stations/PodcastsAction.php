@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity\PodcastCategory;
+use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +21,7 @@ class PodcastsAction
         $userLocale = (string)$request->getCustomization()->getLocale();
 
         $languageOptions = Languages::getNames($userLocale);
-        $categoriesOptions = PodcastCategory::getAvailableCategories();
+        $categoriesOptions = Entity\PodcastCategory::getAvailableCategories();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -29,12 +29,15 @@ class PodcastsAction
             id: 'station-podcasts',
             title: __('Podcasts'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:podcasts'),
-                'newArtUrl' => (string)$router->fromHere('api:stations:podcasts:new-art'),
-                'stationUrl' => (string)$router->fromHere('stations:index:index'),
-                'locale' => substr((string)$customization->getLocale(), 0, 2),
-                'stationTimeZone' => $station->getTimezone(),
-                'languageOptions' => $languageOptions,
+                'listUrl'           => (string)$router->fromHere('api:stations:podcasts'),
+                'newArtUrl'         => (string)$router->fromHere('api:stations:podcasts:new-art'),
+                'stationUrl'        => (string)$router->fromHere('stations:index:index'),
+                'quotaUrl'          => (string)$router->fromHere('api:stations:quota', [
+                    'type' => Entity\StorageLocation::TYPE_STATION_PODCASTS,
+                ]),
+                'locale'            => substr((string)$customization->getLocale(), 0, 2),
+                'stationTimeZone'   => $station->getTimezone(),
+                'languageOptions'   => $languageOptions,
                 'categoriesOptions' => $categoriesOptions,
             ],
         );

@@ -114,8 +114,21 @@ class StationStreamerRepository extends Repository
             $broadcastPath = $broadcast->getRecordingPath();
 
             if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {
+                $recordingsStorageLocation = $station->getRecordingsStorageLocation();
+
                 $tempPath = $fsTemp->getLocalPath($broadcastPath);
-                $fsRecordings->uploadAndDeleteOriginal($tempPath, $broadcastPath);
+                if ($recordingsStorageLocation->canHoldFile($fsTemp->fileSize($broadcastPath))) {
+                    $fsRecordings->uploadAndDeleteOriginal($tempPath, $broadcastPath);
+                } else {
+                    $this->logger->error(
+                        'Storage location full; broadcast not moved to storage location. '
+                        . 'Check temporary directory at path to recover file.',
+                        [
+                            'storageLocation' => (string)$recordingsStorageLocation,
+                            'path'            => $tempPath,
+                        ]
+                    );
+                }
             }
 
             $broadcast->setTimestampEnd(time());
@@ -126,6 +139,7 @@ class StationStreamerRepository extends Repository
         $station->setCurrentStreamer();
         $this->em->persist($station);
         $this->em->flush();
+
         return true;
     }
 

@@ -6,6 +6,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use Brick\Math\BigInteger;
 
 /**
  * @extends Repository<Entity\StorageLocation>
@@ -17,7 +18,7 @@ class StorageLocationRepository extends Repository
         return $this->repository->findOneBy(
             [
                 'type' => $type,
-                'id' => $id,
+                'id'   => $id,
             ]
         );
     }
@@ -111,5 +112,23 @@ class StorageLocationRepository extends Repository
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    public function addStorageUsed(
+        Entity\StorageLocation $storageLocation,
+        BigInteger|int|string $newStorageAmount
+    ): void {
+        $storageLocation->addStorageUsed($newStorageAmount);
+        $this->em->persist($storageLocation);
+        $this->em->flush();
+    }
+
+    public function removeStorageUsed(
+        Entity\StorageLocation $storageLocation,
+        BigInteger|int|string $amountToRemove
+    ): void {
+        $storageLocation->removeStorageUsed($amountToRemove);
+        $this->em->persist($storageLocation);
+        $this->em->flush();
     }
 }

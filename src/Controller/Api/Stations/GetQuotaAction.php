@@ -27,6 +27,7 @@ class GetQuotaAction
 
         $numFiles = match ($type) {
             Entity\StorageLocation::TYPE_STATION_MEDIA => $this->getNumStationMedia($station),
+            Entity\StorageLocation::TYPE_STATION_PODCASTS => $this->getNumStationPodcastMedia($station),
             default => null,
         };
 
@@ -51,6 +52,17 @@ class GetQuotaAction
                 WHERE sm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->getSingleScalarResult();
+    }
+
+    protected function getNumStationPodcastMedia(Entity\Station $station): int
+    {
+        return (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(pm.id) FROM App\Entity\PodcastMedia pm
+                WHERE pm.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $station->getPodcastsStorageLocation())
             ->getSingleScalarResult();
     }
 }

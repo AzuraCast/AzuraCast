@@ -36,6 +36,7 @@ class TaskLocator
                 Task\CleanupLoginTokensTask::class,
                 Task\CleanupHistoryTask::class,
                 Task\CleanupStorageTask::class,
+                Task\UpdateStorageLocationSizesTask::class,
                 Task\RotateLogsTask::class,
                 Task\UpdateGeoLiteTask::class,
             ],

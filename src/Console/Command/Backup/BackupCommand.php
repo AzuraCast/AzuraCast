@@ -52,6 +52,11 @@ class BackupCommand extends CommandAbstract
                 $io->error('Invalid storage location specified.');
                 return 1;
             }
+
+            if ($storageLocation->isStorageFull()) {
+                $io->error('Storage location is full.');
+                return 1;
+            }
         }
 
         $includeMedia = !$excludeMedia;

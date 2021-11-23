@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Exception\StorageLocationFullException;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;
@@ -347,6 +348,28 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $used = $this->getStorageUsedBytes();
 
         return ($used->compareTo($available) !== -1);
+    }
+
+    public function canHoldFile(BigInteger|int|string $size): bool
+    {
+        if (empty($size)) {
+            return true;
+        }
+
+        $available = $this->getStorageAvailableBytes();
+        if ($available === null) {
+            return true;
+        }
+
+        $newStorageUsed = $this->getStorageUsedBytes()->plus($size);
+        return ($newStorageUsed->compareTo($available) === -1);
+    }
+
+    public function errorIfFull(): void
+    {
+        if ($this->isStorageFull()) {
+            throw new StorageLocationFullException();
+        }
     }
 
     public function getStorageUsePercentage(): int

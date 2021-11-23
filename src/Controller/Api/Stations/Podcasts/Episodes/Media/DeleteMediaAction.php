@@ -14,7 +14,6 @@ class DeleteMediaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\PodcastMediaRepository $mediaRepo,
         Entity\Repository\PodcastEpisodeRepository $episodeRepo,
         string $episode_id
     ): ResponseInterface {
@@ -29,7 +28,7 @@ class DeleteMediaAction
         $podcastMedia = $episode->getMedia();
 
         if ($podcastMedia instanceof Entity\PodcastMedia) {
-            $mediaRepo->delete($podcastMedia);
+            $episodeRepo->deleteMedia($podcastMedia);
         }
 
         return $response->withJson(Entity\Api\Status::deleted());

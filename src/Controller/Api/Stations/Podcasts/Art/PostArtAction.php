@@ -20,6 +20,9 @@ class PostArtAction
     ): ResponseInterface {
         $station = $request->getStation();
 
+        $mediaStorage = $station->getPodcastsStorageLocation();
+        $mediaStorage->errorIfFull();
+
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
         if ($flowResponse instanceof ResponseInterface) {
             return $flowResponse;

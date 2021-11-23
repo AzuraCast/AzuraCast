@@ -8,10 +8,14 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
+use App\Exception\InvalidPodcastMediaFileException;
+use App\Exception\StorageLocationFullException;
+use App\Media\MetadataManager;
 use Azura\Files\ExtendedFilesystemInterface;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -21,11 +25,12 @@ use Symfony\Component\Serializer\Serializer;
 class PodcastEpisodeRepository extends Repository
 {
     public function __construct(
+        protected ImageManager $imageManager,
+        protected MetadataManager $metadataManager,
         ReloadableEntityManagerInterface $entityManager,
         Serializer $serializer,
         Environment $environment,
-        LoggerInterface $logger,
-        protected ImageManager $imageManager
+        LoggerInterface $logger
     ) {
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
@@ -89,13 +94,25 @@ class PodcastEpisodeRepository extends Repository
             }
         );
 
-        $episodeArtworkPath = Entity\PodcastEpisode::getArtPath($episode->getIdRequired());
-        $episodeArtworkStream = $episodeArtwork->stream('jpg');
+        $episodeArtwork->encode('jpg');
+        $episodeArtworkString = $episodeArtwork->getEncoded();
 
-        $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
-        $fsPodcasts->writeStream($episodeArtworkPath, $episodeArtworkStream->detach());
+        $storageLocation = $episode->getPodcast()->getStorageLocation();
+        $fs = $storageLocation->getFilesystem();
+
+        $episodeArtworkSize = strlen($episodeArtworkString);
+        if (!$storageLocation->canHoldFile($episodeArtworkSize)) {
+            throw new StorageLocationFullException();
+        }
+
+        $episodeArtworkPath = Entity\PodcastEpisode::getArtPath($episode->getIdRequired());
+        $fs->write($episodeArtworkPath, $episodeArtworkString);
+
+        $storageLocation->addStorageUsed($episodeArtworkSize);
+        $this->em->persist($storageLocation);
 
         $episode->setArtUpdatedAt(time());
+        $this->em->persist($episode);
     }
 
     public function removeEpisodeArt(
@@ -104,30 +121,129 @@ class PodcastEpisodeRepository extends Repository
     ): void {
         $artworkPath = Entity\PodcastEpisode::getArtPath($episode->getIdRequired());
 
-        $fs ??= $episode->getPodcast()->getStorageLocation()->getFilesystem();
+        $storageLocation = $episode->getPodcast()->getStorageLocation();
+        $fs ??= $storageLocation->getFilesystem();
+
+        try {
+            $size = $fs->fileSize($artworkPath);
+        } catch (UnableToRetrieveMetadata) {
+            $size = 0;
+        }
 
         try {
             $fs->delete($artworkPath);
         } catch (UnableToDeleteFile) {
         }
 
+        $storageLocation->removeStorageUsed($size);
+        $this->em->persist($storageLocation);
+
         $episode->setArtUpdatedAt(0);
+        $this->em->persist($episode);
+    }
+
+    public function uploadMedia(
+        Entity\PodcastEpisode $episode,
+        string $originalPath,
+        string $uploadPath,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $podcast = $episode->getPodcast();
+        $storageLocation = $podcast->getStorageLocation();
+
+        $fs ??= $storageLocation->getFilesystem();
+
+        $size = filesize($uploadPath) ?: 0;
+        if (!$storageLocation->canHoldFile($size)) {
+            throw new StorageLocationFullException();
+        }
+
+        // Do an early metadata check of the new media to avoid replacing a valid file with an invalid one.
+        $metadata = $this->metadataManager->read($uploadPath);
+
+        if (!in_array($metadata->getMimeType(), ['audio/x-m4a', 'audio/mpeg'])) {
+            throw new InvalidPodcastMediaFileException(
+                'Invalid Podcast Media mime type: ' . $metadata->getMimeType()
+            );
+        }
+
+        $existingMedia = $episode->getMedia();
+        if ($existingMedia instanceof Entity\PodcastMedia) {
+            $this->deleteMedia($existingMedia, $fs);
+            $episode->setMedia(null);
+        }
+
+        $ext = pathinfo($originalPath, PATHINFO_EXTENSION);
+        $path = $podcast->getId() . '/' . $episode->getId() . '.' . $ext;
+
+        $podcastMedia = new Entity\PodcastMedia($storageLocation);
+        $podcastMedia->setPath($path);
+        $podcastMedia->setOriginalName(basename($originalPath));
+
+        // Load metadata from local file while it's available.
+        $podcastMedia->setLength($metadata->getDuration());
+        $podcastMedia->setMimeType($metadata->getMimeType());
+
+        // Upload local file remotely.
+        $fs->uploadAndDeleteOriginal($uploadPath, $path);
+
+        $podcastMedia->setEpisode($episode);
+        $this->em->persist($podcastMedia);
+
+        $storageLocation->addStorageUsed($size);
+        $this->em->persist($storageLocation);
+
+        $episode->setMedia($podcastMedia);
+
+        $artwork = $metadata->getArtwork();
+        if (!empty($artwork) && 0 === $episode->getArtUpdatedAt()) {
+            $this->writeEpisodeArt(
+                $episode,
+                $artwork
+            );
+        }
+
+        $this->em->persist($episode);
+        $this->em->flush();
+    }
+
+    public function deleteMedia(
+        Entity\PodcastMedia $media,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $storageLocation = $media->getStorageLocation();
+        $fs ??= $storageLocation->getFilesystem();
+
+        $mediaPath = $media->getPath();
+
+        try {
+            $size = $fs->fileSize($mediaPath);
+        } catch (UnableToRetrieveMetadata) {
+            $size = 0;
+        }
+
+        try {
+            $fs->delete($mediaPath);
+        } catch (UnableToDeleteFile) {
+        }
+
+        $storageLocation->removeStorageUsed($size);
+        $this->em->persist($storageLocation);
+
+        $this->em->remove($media);
+        $this->em->flush();
     }
 
     public function delete(
         Entity\PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= $episode->getPodcast()->getStorageLocation()->getFilesystem();
+        $storageLocation = $episode->getPodcast()->getStorageLocation();
+        $fs ??= $storageLocation->getFilesystem();
 
         $media = $episode->getMedia();
         if (null !== $media) {
-            try {
-                $fs->delete($media->getPath());
-            } catch (UnableToDeleteFile) {
-            }
-
-            $this->em->remove($media);
+            $this->deleteMedia($media, $fs);
         }
 
         $this->removeEpisodeArt($episode, $fs);

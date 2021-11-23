@@ -3,8 +3,11 @@
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
                 <b-row class="align-items-center">
-                    <b-col md="6">
+                    <b-col md="7">
                         <h2 class="card-title" key="lang_podcasts" v-translate>Podcasts</h2>
+                    </b-col>
+                    <b-col md="5" class="text-right text-white-50">
+                        <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
                     </b-col>
                 </b-row>
             </b-card-header>
@@ -63,11 +66,13 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
+import StationsCommonQuota from "~/components/Stations/Common/Quota";
 
 export const listViewProps = {
     props: {
         listUrl: String,
         newArtUrl: String,
+        quotaUrl: String,
         locale: String,
         stationTimeZone: String,
         languageOptions: Object,
@@ -77,16 +82,16 @@ export const listViewProps = {
 
 export default {
     name: 'ListView',
-    components: { AlbumArt, EditModal, DataTable },
+    components: {StationsCommonQuota, AlbumArt, EditModal, DataTable},
     mixins: [listViewProps],
     emits: ['select-podcast'],
-    data () {
+    data() {
         return {
             fields: [
-                { key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0' },
-                { key: 'title', label: this.$gettext('Podcast'), sortable: false },
-                { key: 'num_episodes', label: this.$gettext('# Episodes'), sortable: false },
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }
+                {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
+                {key: 'title', label: this.$gettext('Podcast'), sortable: false},
+                {key: 'num_episodes', label: this.$gettext('# Episodes'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
     },
@@ -100,6 +105,7 @@ export default {
             return episodes.length;
         },
         relist () {
+            this.$refs.quota.update();
             if (this.$refs.datatable) {
                 this.$refs.datatable.refresh();
             }

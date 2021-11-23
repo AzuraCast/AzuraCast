@@ -17,7 +17,6 @@ class PostMediaAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\PodcastEpisodeRepository $episodeRepo,
-        Entity\Repository\PodcastMediaRepository $mediaRepo,
         string $podcast_id,
         ?string $episode_id = null
     ): ResponseInterface {
@@ -37,7 +36,7 @@ class PostMediaAction
             }
 
             $fsStation = new StationFilesystems($station);
-            $mediaRepo->upload(
+            $episodeRepo->uploadMedia(
                 $episode,
                 $flowResponse->getClientFilename(),
                 $flowResponse->getUploadedPath(),

@@ -31,7 +31,6 @@ class PodcastEpisodesController extends AbstractApiCrudController
         ValidatorInterface $validator,
         protected Entity\Repository\StationRepository $stationRepository,
         protected Entity\Repository\PodcastRepository $podcastRepository,
-        protected Entity\Repository\PodcastMediaRepository $podcastMediaRepository,
         protected Entity\Repository\PodcastEpisodeRepository $episodeRepository
     ) {
         parent::__construct($em, $serializer, $validator);
@@ -233,7 +232,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
         if (!empty($parsedBody['media_file'])) {
             $media = UploadedFile::fromArray($parsedBody['media_file'], $station->getRadioTempDir());
 
-            $this->podcastMediaRepository->upload(
+            $this->episodeRepository->uploadMedia(
                 $record,
                 $media->getClientFilename(),
                 $media->getUploadedPath()

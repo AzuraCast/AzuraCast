@@ -1,14 +1,23 @@
 <template>
     <div>
         <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
-                <div class="flex-shrink-0 pr-3">
-                    <album-art :src="podcast.art"></album-art>
-                </div>
-                <div class="flex-fill">
-                    <h2 class="card-title">{{ podcast.title }}</h2>
-                    <h4 class="card-subtitle text-muted" key="lang_episodes" v-translate>Episodes</h4>
-                </div>
+            <b-card-header header-bg-variant="primary-dark">
+                <b-row class="row align-items-center">
+                    <b-col md="7">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 pr-3">
+                                <album-art :src="podcast.art"></album-art>
+                            </div>
+                            <div class="flex-fill">
+                                <h2 class="card-title">{{ podcast.title }}</h2>
+                                <h4 class="card-subtitle text-muted" key="lang_episodes" v-translate>Episodes</h4>
+                            </div>
+                        </div>
+                    </b-col>
+                    <b-col md="5" class="text-right text-white-50">
+                        <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
+                    </b-col>
+                </b-row>
             </b-card-header>
 
             <b-card-body body-class="card-padding-sm">
@@ -74,23 +83,25 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
+import StationsCommonQuota from "~/components/Stations/Common/Quota";
 
 export const episodeViewProps = {
     props: {
         locale: String,
-        stationTimeZone: String
+        stationTimeZone: String,
+        quotaUrl: String
     }
 };
 
 export default {
     name: 'EpisodesView',
-    components: { PodcastCommonArtwork, EpisodeFormBasicInfo, AlbumArt, Icon, EditModal, DataTable },
+    components: {StationsCommonQuota, PodcastCommonArtwork, EpisodeFormBasicInfo, AlbumArt, Icon, EditModal, DataTable},
     mixins: [episodeViewProps],
     props: {
         podcast: Object
     },
     emits: ['clear-podcast'],
-    data () {
+    data() {
         return {
             fields: [
                 {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
@@ -103,6 +114,7 @@ export default {
     },
     methods: {
         relist () {
+            this.$refs.quota.update();
             if (this.$refs.datatable) {
                 this.$refs.datatable.refresh();
             }

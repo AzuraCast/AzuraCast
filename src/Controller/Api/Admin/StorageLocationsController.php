@@ -132,10 +132,18 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     /** @inheritDoc */
     protected function viewRecord(object $record, ServerRequest $request): object
     {
+        /** @var Entity\StorageLocation $record */
         $original = parent::viewRecord($record, $request);
 
         $return = new Entity\Api\Admin\StorageLocation();
         $return->fromParentObject($original);
+
+        $return->storageQuotaBytes = (string)($record->getStorageQuotaBytes() ?? '');
+        $return->storageUsedBytes = (string)$record->getStorageUsedBytes();
+        $return->storageUsedPercent = $record->getStorageUsePercentage();
+        $return->storageAvailable = $record->getStorageAvailable();
+        $return->storageAvailableBytes = (string)($record->getStorageAvailableBytes() ?? '');
+        $return->isFull = $record->isStorageFull();
 
         $return->uri = $record->getUri();
 

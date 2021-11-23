@@ -92,15 +92,9 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
     protected ?string $storageQuota = null;
 
-    // Used for API generation.
-    protected ?string $storageQuotaBytes = null;
-
     #[ORM\Column(name: 'storage_used', type: 'bigint', nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $storageUsed = null;
-
-    // Used for API generation.
-    protected ?string $storageUsedBytes = null;
 
     #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]
     protected Collection $media;

@@ -83,10 +83,46 @@ class StorageLocation
     public ?string $storageQuota = null;
 
     /**
+     * @OA\Property(example="120000")
+     * @var string|null
+     */
+    public ?string $storageQuotaBytes = null;
+
+    /**
      * @OA\Property(example="1 GB")
      * @var string|null
      */
     public ?string $storageUsed = null;
+
+    /**
+     * @OA\Property(example="60000")
+     * @var string|null
+     */
+    public ?string $storageUsedBytes = null;
+
+    /**
+     * @OA\Property(example="1 GB")
+     * @var string|null
+     */
+    public ?string $storageAvailable = null;
+
+    /**
+     * @OA\Property(example="120000")
+     * @var string|null
+     */
+    public ?string $storageAvailableBytes = null;
+
+    /**
+     * @OA\Property(example="75")
+     * @var int|null
+     */
+    public ?int $storageUsedPercent = null;
+
+    /**
+     * @OA\Property(example="true")
+     * @var bool
+     */
+    public bool $isFull = true;
 
     /**
      * The URI associated with the storage location.

@@ -34,6 +34,18 @@
                     <h5 class="m-0">{{ getAdapterName(row.item.adapter) }}</h5>
                     <p class="card-text">{{ row.item.uri }}</p>
                 </template>
+                <template #cell(space)="row">
+                    <template v-if="row.item.storageAvailable">
+                        <b-progress :value="row.item.storageUsedPercent" show-progress height="15px" class="mb-1"
+                                    :variant="getProgressVariant(row.item.storageUsedPercent)">
+                        </b-progress>
+
+                        {{ getSpaceUsed(row.item) }}
+                    </template>
+                    <template v-else>
+                        {{ getSpaceUsed(row.item) }}
+                    </template>
+                </template>
                 <template #cell(stations)="row">
                     {{ row.item.stations.join(', ') }}
                 </template>
@@ -59,9 +71,10 @@ export default {
         return {
             activeType: 'station_media',
             fields: [
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false },
-                { key: 'adapter', label: this.$gettext('Adapter'), sortable: false },
-                { key: 'stations', label: this.$gettext('Station(s)'), sortable: false }
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false},
+                {key: 'adapter', label: this.$gettext('Adapter'), sortable: false},
+                {key: 'space', label: this.$gettext('Space Used'), class: 'text-nowrap', sortable: false},
+                {key: 'stations', label: this.$gettext('Station(s)'), sortable: false}
             ]
         };
     },
@@ -99,16 +112,30 @@ export default {
                     return this.$gettext('Remote: Dropbox');
             }
         },
-        relist () {
+        getSpaceUsed(item) {
+            return (item.storageAvailable)
+                ? item.storageUsed + ' / ' + item.storageAvailable
+                : item.storageUsed;
+        },
+        getProgressVariant(percent) {
+            if (percent > 85) {
+                return 'danger';
+            } else if (percent > 65) {
+                return 'warning';
+            } else {
+                return 'default';
+            }
+        },
+        relist() {
             this.$refs.datatable.refresh();
         },
-        doCreate () {
+        doCreate() {
             this.$refs.editModal.create();
         },
-        doEdit (url) {
+        doEdit(url) {
             this.$refs.editModal.edit(url);
         },
-        doModify (url) {
+        doModify(url) {
             this.$notify(this.$gettext('Applying changes...'), {
                 variant: 'warning'
             });

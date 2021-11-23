@@ -5,23 +5,78 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Liquidsoap 2.0**: This version introduces the latest version of the AutoDJ software we use, Liquidsoap 2.0. This
+  version adds many new features, broad support for the powerful FFMpeg library, and more. If you haven't modified your
+  AutoDJ configuration, you should not notice any impact from the new version; if you have custom code, you may need to
+  migrate it to support the newer syntax. See
+  the [Liquidsoap 2.0 migration guide](https://www.liquidsoap.info/doc-2.0.0/migrating.html) for more information.
+
+- **Vue Components Everywhere**: As part of our Roadmap to 1.0, we've switched a vast majority of the AzuraCast
+  application to be powered by Vue frontend components that connect directly to, and exclusively use, our powerful REST
+  API to perform functions. Not only does this make for more snappy, responsive user experiences, but it also means
+  that _everything_ you can do in the web application is now possible via the API as well; while we haven't documented
+  all of these endpoints yet, you can use your browser's inspector console to see how we call our internal APIs and do
+  the same in your own applications.
+
+- Storage Locations have been overhauled and made more useful:
+    - Quotas are now enforced for all storage location types (media, recordings, podcasts, and backups)
+    - Free space and used space is now shown on the podcast management page
+    - Each storage location shows its space used and available in the storage location management page
+
 - You can now clear the entire upcoming song queue with a single button click.
+
+- If you are using the SHOUTcast broadcasting software, you can input your user ID and license ID directly via the
+  station profile.
 
 ## Code Quality/Technical Changes
 
-- The `moment.js` library, rather bulky in size and now no longer recommended for new application development, has been
-  replaced across the application with the `luxon` library, which relies instead on new JavaScript functionality built
-  directly into the browser to do date/time normalization and localization.
+- Translations are once again merged into a single file that is used by both frontend and backend, making things easier
+  for our much-appreciated crew of localizers.
+
+- Visual contrast has been improved in several areas for light theme users.
+
+- As a result of the Vue migration, all components that use a file upload mechanism now have "chunked" upload support,
+  which splits any uploads into smaller portions and avoids issues with maximum file size limits on the server-side.
+
+- When the browser window is not focused, routine API calls will be slowed down significantly to avoid excess load on
+  the server from inactive users; returning to the page will resume normal update speed.
+
+- Several frontend libraries have been retired or exchanged for new versions as part of the Vue transition:
+    - Replaced `moment.js` with `luxon`
+    - Removed `jQuery Bootgrid`, `autosize`, `dirrty`
+
+- Changes have also been made to backend software libraries as part of our development progress:
+    - Removed and retired `AzuraForms` library
+    - Added [doctrine-entity-normalizer](https://github.com/AzuraCast/doctrine-entity-normalizer)
+    - Added [doctrine-batch-utilities](https://github.com/AzuraCast/doctrine-batch-utilities)
 
 - Our Vue component build process has been completely overhauled to be fully independent of our legacy asset management;
   if you're contributing Vue components to our codebase, it should much more intuitively match the experience you would
   expect from other Vue-based apps using Webpack than before.
 
-- A number of security fixes are being incorporated into the software as of this version. See below for details.
+- Support for cloud-development environments Gitpod and Visual Studio Codespaces has been added, so you can jump
+  directly into contributing without needing to set up a local development instance.
+
+- XDebug is now built into the web image for developers to use; by default, it's disabled, but any tools (including the
+  XDebug browser extensions) can enable it on-demand for specific requests.
 
 ## Bug Fixes
 
+- Sorting now works properly with songs listed on the public request pages. (#4484)
+
+- If a station is marked as disabled, its services will automatically be stopped and kept from restarting.
+
+- The embedded "schedule" pages will now correctly show events throughout the week, not just for the next 48 hours.
+
+- The LetsEncrypt container now remains present even if it originally wasn't configured to be present, which should fix
+  some issues where LetsEncrypt setup doesn't work as expected for some users.
+
+- The default maximum message size supported by Beanstalkd was too small for some of our API responses, particularly
+  those with long fields (i.e. song lyrics); this has been fixed.
+
 ## Security Fixes
+
+- Session identifiers will automatically regenerate when performing certain important actions (i.e. logging in or out).
 
 - Session cookies are now marked as HTTP-only, avoiding possible use by custom JavaScript that may be injected into a
   given page.

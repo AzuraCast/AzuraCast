@@ -71,10 +71,10 @@ export default {
         return {
             activeType: 'station_media',
             fields: [
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false},
                 {key: 'adapter', label: this.$gettext('Adapter'), sortable: false},
                 {key: 'space', label: this.$gettext('Space Used'), class: 'text-nowrap', sortable: false},
-                {key: 'stations', label: this.$gettext('Station(s)'), sortable: false}
+                {key: 'stations', label: this.$gettext('Station(s)'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), class: 'shrink', sortable: false}
             ]
         };
     },

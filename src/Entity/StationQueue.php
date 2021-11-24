@@ -58,6 +58,9 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     #[ORM\Column]
     protected int $timestamp_cued;
 
+    #[ORM\Column]
+    protected int $timestamp_played;
+
     #[ORM\Column(nullable: true)]
     protected ?int $duration = null;
 
@@ -161,8 +164,19 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     {
         if ($newValue) {
             $this->sent_to_autodj = true;
+            $this->setTimestampPlayed(time());
         }
         $this->is_played = $newValue;
+    }
+
+    public function getTimestampPlayed(): int
+    {
+        return $this->timestamp_played;
+    }
+
+    public function setTimestampPlayed(int $timestamp_played): void
+    {
+        $this->timestamp_played = $timestamp_played;
     }
 
     /**

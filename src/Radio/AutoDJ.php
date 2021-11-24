@@ -130,9 +130,25 @@ class AutoDJ
                 }
             );
 
-            // Adjust "now" time from current queue.
+            // Adjust "expectedCueTime" time from current queue.
             $tzObject = $station->getTimezoneObject();
-            $now = CarbonImmutable::now($tzObject);
+            $expectedCueTime = CarbonImmutable::now($tzObject);
+
+            // Get expected play time of each item.
+            $currentSong = $this->songHistoryRepo->getCurrent($station);
+            if (null !== $currentSong) {
+                $expectedPlayTime = $this->addDurationToTime(
+                    $station,
+                    CarbonImmutable::createFromTimestamp($currentSong->getTimestampStart(), $tzObject),
+                    $currentSong->getDuration()
+                );
+
+                if ($expectedPlayTime < $expectedCueTime) {
+                    $expectedPlayTime = $expectedCueTime;
+                }
+            } else {
+                $expectedPlayTime = $expectedCueTime;
+            }
 
             $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
             if ($maxQueueLength < 2) {
@@ -155,24 +171,27 @@ class AutoDJ
                 $lastSongId = $queueRow->getSongId();
 
                 if ($queueRow->getSentToAutodj()) {
-                    $now = $this->getAdjustedNow(
+                    $expectedCueTime = $this->addDurationToTime(
                         $station,
                         CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
                         $queueRow->getDuration()
                     );
                 } else {
-                    $queueRow->setTimestampCued($now->getTimestamp());
+                    $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+                    $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
                     $this->em->persist($queueRow);
 
-                    $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
+                    $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
                 }
+
+                $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
             }
 
             $this->em->flush();
 
             // Build the remainder of the queue.
             while ($queueLength < $maxQueueLength) {
-                $queueRow = $this->cueNextSong($station, $now);
+                $queueRow = $this->cueNextSong($station, $expectedCueTime, $expectedPlayTime);
                 if ($queueRow instanceof Entity\StationQueue) {
                     $this->em->persist($queueRow);
 
@@ -181,7 +200,17 @@ class AutoDJ
                         $this->em->remove($queueRow);
                     } else {
                         $lastSongId = $queueRow->getSongId();
-                        $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
+
+                        $expectedCueTime = $this->addDurationToTime(
+                            $station,
+                            $expectedCueTime,
+                            $queueRow->getDuration()
+                        );
+                        $expectedPlayTime = $this->addDurationToTime(
+                            $station,
+                            $expectedPlayTime,
+                            $queueRow->getDuration()
+                        );
                     }
                 } else {
                     break;
@@ -197,7 +226,7 @@ class AutoDJ
         }
     }
 
-    protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
+    protected function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
     {
         $duration ??= 1;
 
@@ -209,12 +238,15 @@ class AutoDJ
             : $now;
     }
 
-    protected function cueNextSong(Entity\Station $station, CarbonInterface $now): ?Entity\StationQueue
-    {
+    protected function cueNextSong(
+        Entity\Station $station,
+        CarbonInterface $expectedCueTime,
+        CarbonInterface $expectedPlayTime
+    ): ?Entity\StationQueue {
         $this->logger->debug(
             'Adding to station queue.',
             [
-                'now' => (string)$now,
+                'now' => (string)$expectedPlayTime,
             ]
         );
 
@@ -222,13 +254,16 @@ class AutoDJ
         $testHandler = new TestHandler($this->environment->getLogLevel(), true);
         $this->logger->pushHandler($testHandler);
 
-        $event = new BuildQueue($station, $now);
+        $event = new BuildQueue($station, $expectedCueTime, $expectedPlayTime);
         $this->dispatcher->dispatch($event);
 
         $this->logger->popHandler();
 
         $queueRow = $event->getNextSong();
         if ($queueRow instanceof Entity\StationQueue) {
+            $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+
             $queueRow->setLog($testHandler->getRecords());
         }
 

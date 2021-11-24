@@ -67,10 +67,10 @@ class StationQueueRepository extends Repository
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.timestamp_cued, sq.playlist_id
+                SELECT sq.timestamp_played, sq.playlist_id
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
-                ORDER BY sq.timestamp_cued DESC
+                ORDER BY sq.timestamp_played DESC
             DQL
         )->setParameter('station', $station)
             ->setMaxResults($rows)
@@ -89,11 +89,11 @@ class StationQueueRepository extends Repository
 
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.song_id, sq.timestamp_cued, sq.title, sq.artist
+                SELECT sq.song_id, sq.timestamp_played, sq.title, sq.artist
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
-                AND sq.timestamp_cued >= :threshold
-                ORDER BY sq.timestamp_cued DESC
+                AND sq.timestamp_played >= :threshold
+                ORDER BY sq.timestamp_played DESC
             DQL
         )->setParameter('station', $station)
             ->setParameter('threshold', $threshold)

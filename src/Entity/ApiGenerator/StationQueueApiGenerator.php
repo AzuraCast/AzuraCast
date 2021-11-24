@@ -23,6 +23,7 @@ class StationQueueApiGenerator
     ): Entity\Api\NowPlaying\StationQueue {
         $response = new Entity\Api\NowPlaying\StationQueue();
         $response->cued_at = $record->getTimestampCued();
+        $response->played_at = $record->getTimestampPlayed();
         $response->duration = (int)$record->getDuration();
         $response->is_request = $record->getRequest() !== null;
 

@@ -35,8 +35,9 @@
                         {{ row.item.song.text }}
                     </div>
                 </template>
-                <template #cell(cued_at)="row">
-                    {{ formatTime(row.item.cued_at) }}
+                <template #cell(played_at)="row">
+                    {{ formatTime(row.item.played_at) }}<br>
+                    <small>{{ formatRelativeTime(row.item.played_at) }}</small>
                 </template>
                 <template #cell(source)="row">
                     <div v-if="row.item.is_request">
@@ -73,19 +74,25 @@ export default {
             fields: [
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false},
                 {key: 'song_title', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
-                {key: 'cued_at', label: this.$gettext('Cued On'), sortable: false},
+                {key: 'played_at', label: this.$gettext('Expected to Play at'), sortable: false},
                 {key: 'source', label: this.$gettext('Source'), sortable: false}
             ]
         };
     },
     methods: {
-        formatTime (time) {
-            return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
+        formatTime(time) {
+            return this.getDateTime(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
         },
-        doShowLogs (logs) {
+        formatRelativeTime(time) {
+            return this.getDateTime(time).toRelative();
+        },
+        getDateTime(timestamp) {
+            return DateTime.fromSeconds(timestamp).setZone(this.stationTimeZone);
+        },
+        doShowLogs(logs) {
             this.$refs.logs_modal.show(logs);
         },
-        doDelete (url) {
+        doDelete(url) {
             this.$confirmDelete({
                 title: this.$gettext('Delete Queue Item?'),
             }).then((result) => {

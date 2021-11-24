@@ -15,12 +15,20 @@ use Psr\Http\Message\UriInterface;
 class StationQueue implements ResolvableUrlInterface
 {
     /**
-     * UNIX timestamp when playback is expected to start.
+     * UNIX timestamp when the AutoDJ is expected to queue the song for playback.
      *
      * @OA\Property(example=1609480800)
      * @var int
      */
     public int $cued_at = 0;
+
+    /**
+     * UNIX timestamp when playback is expected to start.
+     *
+     * @OA\Property(example=1609480800)
+     * @var int
+     */
+    public int $played_at = 0;
 
     /**
      * Duration of the song in seconds

@@ -16,6 +16,7 @@ use Carbon\CarbonInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LogLevel;
 
 class AutoDJ
 {
@@ -161,15 +162,6 @@ class AutoDJ
             $queueLength = 0;
 
             foreach ($upcomingQueue as $queueRow) {
-                // Prevent the exact same track from being played twice during this loop
-                if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
-                    $this->em->remove($queueRow);
-                    continue;
-                }
-
-                $queueLength++;
-                $lastSongId = $queueRow->getSongId();
-
                 if ($queueRow->getSentToAutodj()) {
                     $expectedCueTime = $this->addDurationToTime(
                         $station,
@@ -177,6 +169,12 @@ class AutoDJ
                         $queueRow->getDuration()
                     );
                 } else {
+                    // Prevent the exact same track from being played twice during this loop
+                    if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
+                        $this->em->remove($queueRow);
+                        continue;
+                    }
+
                     $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                     $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
                     $this->em->persist($queueRow);
@@ -184,7 +182,9 @@ class AutoDJ
                     $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
                 }
 
+                $lastSongId = $queueRow->getSongId();
                 $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+                $queueLength++;
             }
 
             $this->em->flush();
@@ -251,7 +251,7 @@ class AutoDJ
         );
 
         // Push another test handler specifically for this one queue task.
-        $testHandler = new TestHandler($this->environment->getLogLevel(), true);
+        $testHandler = new TestHandler(LogLevel::DEBUG, true);
         $this->logger->pushHandler($testHandler);
 
         $event = new BuildQueue($station, $expectedCueTime, $expectedPlayTime);

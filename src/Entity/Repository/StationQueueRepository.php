@@ -70,7 +70,7 @@ class StationQueueRepository extends Repository
                 SELECT sq.timestamp_played, sq.playlist_id
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
-                ORDER BY sq.timestamp_played DESC
+                ORDER BY sq.sent_to_autodj ASC, sq.timestamp_played DESC
             DQL
         )->setParameter('station', $station)
             ->setMaxResults($rows)

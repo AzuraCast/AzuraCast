@@ -221,6 +221,8 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             }
 
             $sq->setSentToAutodj();
+            $sq->setTimestampPlayed(time());
+
             $this->em->persist($sq);
             $this->em->flush();
         }

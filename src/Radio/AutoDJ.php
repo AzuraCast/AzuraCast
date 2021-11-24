@@ -176,14 +176,15 @@ class AutoDJ
                     }
 
                     $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
-                    $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
-                    $this->em->persist($queueRow);
-
                     $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
                 }
 
-                $lastSongId = $queueRow->getSongId();
+                $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                $this->em->persist($queueRow);
+
                 $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+
+                $lastSongId = $queueRow->getSongId();
                 $queueLength++;
             }
 

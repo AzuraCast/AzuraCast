@@ -128,7 +128,7 @@
                                 <translate :key="lang">Number of Songs Between Plays</translate>
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">This playlist will play every $x songs, where $x is specified below.</translate>
+                                <translate :key="lang">This playlist will play every $x songs, where $x is specified here.</translate>
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>
@@ -153,7 +153,7 @@
                                 <translate :key="lang">Number of Minutes Between Plays</translate>
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">This playlist will play every $x minutes, where $x is specified below.</translate>
+                                <translate :key="lang">This playlist will play every $x minutes, where $x is specified here.</translate>
                             </template>
                         </b-wrapped-form-group>
 

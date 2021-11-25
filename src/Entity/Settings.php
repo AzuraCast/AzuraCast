@@ -9,9 +9,11 @@ use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity;
 use App\Event\GetSyncTasks;
 use App\Service\Avatar;
+use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,6 +66,11 @@ class Settings implements Stringable
     public function getBaseUrl(): ?string
     {
         return $this->base_url;
+    }
+
+    public function getBaseUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->base_url);
     }
 
     public function setBaseUrl(?string $baseUrl): void
@@ -373,6 +380,11 @@ class Settings implements Stringable
         return $this->homepage_redirect_url;
     }
 
+    public function getHomepageRedirectUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->homepage_redirect_url);
+    }
+
     public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
     {
         $this->homepage_redirect_url = $this->truncateNullableString($homepageRedirectUrl);
@@ -391,6 +403,11 @@ class Settings implements Stringable
     public function getDefaultAlbumArtUrl(): ?string
     {
         return $this->default_album_art_url;
+    }
+
+    public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->default_album_art_url);
     }
 
     public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Assets;
 
 use Intervention\Image\Image;
+use Psr\Http\Message\UriInterface;
 
 interface CustomAssetInterface
 {
@@ -15,6 +16,8 @@ interface CustomAssetInterface
     public function isUploaded(): bool;
 
     public function getUrl(): string;
+
+    public function getUri(): UriInterface;
 
     public function upload(Image $image): void;
 

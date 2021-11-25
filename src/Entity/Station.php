@@ -9,6 +9,7 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Environment;
 use App\Radio\Adapters;
 use App\Utilities\File;
+use App\Utilities\Urls;
 use App\Validator\Constraints as AppAssert;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use DateTimeZone;
@@ -17,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -846,6 +848,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getDefaultAlbumArtUrl(): ?string
     {
         return $this->default_album_art_url;
+    }
+
+    public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->default_album_art_url);
     }
 
     /**

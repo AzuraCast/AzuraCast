@@ -11,7 +11,6 @@ use App\Entity;
 use App\Environment;
 use App\Radio\Frontend\AbstractFrontend;
 use Closure;
-use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -157,21 +156,17 @@ class StationRepository extends Repository
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
         if (null !== $station) {
-            $stationCustomUrl = trim($station->getDefaultAlbumArtUrl() ?? '');
-
-            if (!empty($stationCustomUrl)) {
-                return new Uri($stationCustomUrl);
+            $stationCustomUri = $station->getDefaultAlbumArtUrlAsUri();
+            if (null !== $stationCustomUri) {
+                return $stationCustomUri;
             }
         }
 
-        $settings = $this->settingsRepo->readSettings();
-        $custom_url = trim($settings->getDefaultAlbumArtUrl() ?? '');
-
-        if (!empty($custom_url)) {
-            return new Uri($custom_url);
+        $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
+        if (null !== $customUrl) {
+            return $customUrl;
         }
 
-        $systemAlbumArt = AssetFactory::createAlbumArt($this->environment);
-        return new Uri($systemAlbumArt->getUrl());
+        return AssetFactory::createAlbumArt($this->environment)->getUri();
     }
 }

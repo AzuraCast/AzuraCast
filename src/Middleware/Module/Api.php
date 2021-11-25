@@ -8,7 +8,7 @@ use App\Entity;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use GuzzleHttp\Psr7\Uri;
+use App\Utilities\Urls;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
@@ -71,12 +71,14 @@ class Api
 
                     $origins = [];
                     foreach ($rawOrigins as $rawOrigin) {
-                        $uri = new Uri($rawOrigin);
-                        if (empty($uri->getScheme())) {
-                            $origins[] = (string)($uri->withScheme('http'));
-                            $origins[] = (string)($uri->withScheme('https'));
-                        } else {
-                            $origins[] = (string)$uri;
+                        $uri = Urls::getUri($rawOrigin);
+                        if (null !== $uri) {
+                            if (empty($uri->getScheme())) {
+                                $origins[] = (string)($uri->withScheme('http'));
+                                $origins[] = (string)($uri->withScheme('https'));
+                            } else {
+                                $origins[] = (string)$uri;
+                            }
                         }
                     }
 

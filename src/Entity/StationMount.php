@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
@@ -204,6 +205,11 @@ class StationMount implements
         return $this->relay_url;
     }
 
+    public function getRelayUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->relay_url);
+    }
+
     public function setRelayUrl(?string $relay_url = null): void
     {
         $this->relay_url = $this->truncateNullableString($relay_url);
@@ -262,6 +268,11 @@ class StationMount implements
     public function getCustomListenUrl(): ?string
     {
         return $this->custom_listen_url;
+    }
+
+    public function getCustomListenUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->custom_listen_url);
     }
 
     public function setCustomListenUrl(?string $custom_listen_url = null): void

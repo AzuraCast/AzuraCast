@@ -110,12 +110,8 @@ class Icecast extends AbstractFrontend
 
         $settings = $this->settingsRepo->readSettings();
 
-        $settingsBaseUrl = $settings->getBaseUrl() ?: 'http://localhost';
-        if (!str_starts_with($settingsBaseUrl, 'http')) {
-            /** @noinspection HttpUrlsUsage */
-            $settingsBaseUrl = 'http://' . $settingsBaseUrl;
-        }
-        $baseUrl = new Uri($settingsBaseUrl);
+        $settingsBaseUrl = $settings->getBaseUrl() ?: '';
+        $baseUrl = Utilities\Urls::getUri($settingsBaseUrl) ?? new Uri('http://localhost');
 
         $certPaths = CertificateLocator::findCertificate();
 
@@ -124,23 +120,23 @@ class Icecast extends AbstractFrontend
             : '127.0.0.1';
 
         $config = [
-            'location' => 'AzuraCast',
-            'admin' => 'icemaster@localhost',
-            'hostname' => $baseUrl->getHost(),
-            'limits' => [
-                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
-                'sources' => $station->getMounts()->count(),
-                'queue-size' => 524288,
+            'location'       => 'AzuraCast',
+            'admin'          => 'icemaster@localhost',
+            'hostname'       => $baseUrl->getHost(),
+            'limits'         => [
+                'clients'        => $frontendConfig->getMaxListeners() ?? 2500,
+                'sources'        => $station->getMounts()->count(),
+                'queue-size'     => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
                 'source-timeout' => 10,
-                'burst-size' => 65535,
+                'burst-size'     => 65535,
             ],
             'authentication' => [
                 'source-password' => $frontendConfig->getSourcePassword(),
-                'relay-password' => $frontendConfig->getRelayPassword(),
-                'admin-user' => 'admin',
-                'admin-password' => $frontendConfig->getAdminPassword(),
+                'relay-password'  => $frontendConfig->getRelayPassword(),
+                'admin-user'      => 'admin',
+                'admin-password'  => $frontendConfig->getAdminPassword(),
             ],
 
             'listen-socket' => [
@@ -229,14 +225,12 @@ class Icecast extends AbstractFrontend
                 }
             }
 
-            $mountRelayUrl = $mount_row->getRelayUrl();
-            if (!empty($mountRelayUrl)) {
-                $mountRelayUri = new Uri($mountRelayUrl);
-
+            $mountRelayUri = $mount_row->getRelayUrlAsUri();
+            if (null !== $mountRelayUri) {
                 $config['relay'][] = [
-                    'server' => $mountRelayUri->getHost(),
-                    'port' => $mountRelayUri->getPort(),
-                    'mount' => $mountRelayUri->getPath(),
+                    'server'      => $mountRelayUri->getHost(),
+                    'port'        => $mountRelayUri->getPort(),
+                    'mount'       => $mountRelayUri->getPath(),
                     'local-mount' => $mount_row->getName(),
                 ];
             }

@@ -12,7 +12,6 @@ use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
@@ -94,12 +93,12 @@ abstract class AbstractFrontend extends AbstractAdapter
             return $this->getPublicUrl($station, $base_url);
         }
 
-        if (!empty($mount->getCustomListenUrl())) {
-            return new Uri($mount->getCustomListenUrl());
+        $customListenUri = $mount->getCustomListenUrlAsUri();
+        if (null !== $customListenUri) {
+            return $customListenUri;
         }
 
         $public_url = $this->getPublicUrl($station, $base_url);
-
         return $public_url->withPath($public_url->getPath() . $mount->getName());
     }
 

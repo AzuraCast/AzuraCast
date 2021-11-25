@@ -71,6 +71,9 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     {
         $this->setSong($song);
         $this->station = $station;
+
+        $this->timestamp_cued = time();
+        $this->timestamp_played = time();
     }
 
     public function getStation(): Station

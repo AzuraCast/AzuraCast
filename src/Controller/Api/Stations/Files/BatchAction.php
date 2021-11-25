@@ -265,8 +265,6 @@ class BatchAction
                 $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
 
                 $newQueue = Entity\StationQueue::fromMedia($stationRef, $media);
-                $newQueue->setTimestampCued(time());
-
                 $this->em->persist($newQueue);
             } catch (Throwable $e) {
                 $result->errors[] = $media->getPath() . ': ' . $e->getMessage();

@@ -124,6 +124,11 @@ return function (Application $console) {
     )->setDescription('List all accounts in the system.');
 
     $console->command(
+        'azuracast:account:login-token email',
+        Command\Users\LoginTokenCommand::class
+    )->setDescription('Create a unique login recovery URL for the specified account.');
+
+    $console->command(
         'azuracast:account:reset-password email',
         Command\Users\ResetPasswordCommand::class
     )->setDescription('Reset the password of the specified account.');

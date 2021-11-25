@@ -47,7 +47,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button type="submit" size="lg" block :variant="($v.form.$invalid) ? 'danger' : 'primary'"
+                    <b-button type="submit" size="lg" block variant="primary" :disabled="$v.form.$invalid"
                               class="mt-2">
                         <translate key="btn_create_acct">Create Account</translate>
                     </b-button>

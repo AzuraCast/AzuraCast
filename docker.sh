@@ -344,8 +344,8 @@ run-installer() {
   touch docker-compose.new.yml
 
   curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
-  COMPOSE_IGNORE_ORPHANS=True docker-compose -f docker-compose.installer.yml pull
-  COMPOSE_IGNORE_ORPHANS=True docker-compose -f docker-compose.installer.yml run --rm installer install "$@"
+  docker-compose -p azuracast_installer -f docker-compose.installer.yml pull
+  docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
 
   rm docker-compose.installer.yml
 }

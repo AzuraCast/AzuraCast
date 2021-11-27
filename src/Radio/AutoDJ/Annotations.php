@@ -69,16 +69,19 @@ class Annotations implements EventSubscriberInterface
                     'jingle_mode' => 'true',
                 ]);
 
-                $np = $event->getStation()->getNowplaying();
-                if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
-                    $event->addAnnotations(
-                        [
-                            'title'       => $np->now_playing?->song?->title,
-                            'artist'      => $np->now_playing?->song?->artist,
-                            'playlist_id' => null,
-                            'media_id' => null,
-                        ]
-                    );
+                $queue = $event->getQueue();
+                if (null !== $queue) {
+                    $lastCued = $this->queueRepo->getLatestSentToAutoDj($event->getStation());
+                    if (null !== $lastCued) {
+                        $event->addAnnotations(
+                            [
+                                'title'       => $lastCued->getTitle(),
+                                'artist'      => $lastCued->getArtist(),
+                                'playlist_id' => null,
+                                'media_id'    => null,
+                            ]
+                        );
+                    }
                 }
             } else {
                 $event->addAnnotations([

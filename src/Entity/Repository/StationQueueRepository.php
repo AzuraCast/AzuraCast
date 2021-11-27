@@ -127,6 +127,16 @@ class StationQueueRepository extends Repository
             ->execute();
     }
 
+    public function getLatestSentToAutoDj(Entity\Station $station): ?Entity\StationQueue
+    {
+        return $this->getBaseQuery($station)
+            ->andWhere('sq.sent_to_autodj = 1')
+            ->orderBy('sq.timestamp_cued', 'DESC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
     public function getNextToSendToAutoDj(Entity\Station $station): ?Entity\StationQueue
     {
         return $this->getBaseQuery($station)

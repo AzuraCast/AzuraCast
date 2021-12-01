@@ -66,6 +66,7 @@ class CheckRequests extends AbstractTask
             // Log the item in SongHistory.
             $sq = Entity\StationQueue::fromRequest($request);
             $sq->setSentToAutodj();
+            $sq->setTimestampCued(time());
 
             $this->em->persist($sq);
             $this->em->flush();

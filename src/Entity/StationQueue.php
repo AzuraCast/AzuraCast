@@ -152,9 +152,6 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
 
     public function setSentToAutodj(bool $newValue = true): void
     {
-        if ($newValue) {
-            $this->setTimestampCued(time());
-        }
         $this->sent_to_autodj = $newValue;
     }
 
@@ -193,6 +190,13 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     public function setLog(?array $log): void
     {
         $this->log = $log;
+    }
+
+    public function appendToLog(?array $log): void
+    {
+        if (null !== $log) {
+            $this->log = array_merge($this->log ?? [], $log);
+        }
     }
 
     /**

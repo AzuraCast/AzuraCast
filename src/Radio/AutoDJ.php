@@ -49,7 +49,7 @@ class AutoDJ
                 'Too many attempts to get next song; giving up.',
                 [
                     'station' => [
-                        'id' => $station->getId(),
+                        'id'   => $station->getId(),
                         'name' => $station->getName(),
                     ],
                 ]
@@ -60,12 +60,12 @@ class AutoDJ
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         // Try to rebuild the queue if it's empty.
-        if (!($queueRow instanceof Entity\StationQueue)) {
+        if (null === $queueRow) {
             $this->logger->info(
                 'Queue is empty; rebuilding before attempting to get next song.',
                 [
                     'station' => [
-                        'id' => $station->getId(),
+                        'id'   => $station->getId(),
                         'name' => $station->getName(),
                     ],
                 ]
@@ -75,35 +75,17 @@ class AutoDJ
             return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
         }
 
-        // Check that the song coming up isn't the same song as what's currently being played.
-        $currentSong = $this->songHistoryRepo->getCurrent($station);
-        if (
-            ($currentSong instanceof Entity\SongHistory)
-            && $queueRow->getSongId() === $currentSong->getSongId()
-        ) {
-            $this->em->remove($queueRow);
-            $this->em->flush();
-
-            $this->logger->info(
-                'Queue would play the same song again; removing and attempting to get next song.',
-                [
-                    'station' => [
-                        'id' => $station->getId(),
-                        'name' => $station->getName(),
-                    ],
-                ]
-            );
-
-            return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
-        }
-
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
 
-        // Refill station queue while taking into context that LS queues songs 40s before they are played
-        $this->buildQueue($station, true);
+        $annotation = $event->buildAnnotations();
+        $queueRow->appendToLog(['Annotated as: ' . $annotation]);
+        $this->em->persist($queueRow);
+        $this->em->flush();
 
-        return $event->buildAnnotations();
+        $this->buildQueue($station);
+
+        return $annotation;
     }
 
     public function buildQueue(
@@ -124,7 +106,7 @@ class AutoDJ
             $this->logger->pushProcessor(
                 function ($record) use ($station) {
                     $record['extra']['station'] = [
-                        'id' => $station->getId(),
+                        'id'   => $station->getId(),
                         'name' => $station->getName(),
                     ];
                     return $record;

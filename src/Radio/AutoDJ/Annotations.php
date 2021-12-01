@@ -62,32 +62,34 @@ class Annotations implements EventSubscriberInterface
     public function annotatePlaylist(AnnotateNextSong $event): void
     {
         $playlist = $event->getPlaylist();
-        if ($playlist instanceof Entity\StationPlaylist) {
-            // Handle "Jingle mode" by sending the same metadata as the previous song.
-            if ($playlist->getIsJingle()) {
-                $event->addAnnotations([
-                    'jingle_mode' => 'true',
-                ]);
+        if (null === $playlist) {
+            return;
+        }
 
-                $queue = $event->getQueue();
-                if (null !== $queue) {
-                    $lastCued = $this->queueRepo->getLatestSentToAutoDj($event->getStation());
-                    if (null !== $lastCued) {
-                        $event->addAnnotations(
-                            [
-                                'title'       => $lastCued->getTitle(),
-                                'artist'      => $lastCued->getArtist(),
-                                'playlist_id' => null,
-                                'media_id'    => null,
-                            ]
-                        );
-                    }
+        // Handle "Jingle mode" by sending the same metadata as the previous song.
+        if ($playlist->getIsJingle()) {
+            $event->addAnnotations([
+                'jingle_mode' => 'true',
+            ]);
+
+            $queue = $event->getQueue();
+            if (null !== $queue) {
+                $lastCued = $this->queueRepo->getLatestSentToAutoDj($event->getStation());
+                if (null !== $lastCued) {
+                    $event->addAnnotations(
+                        [
+                            'title'       => $lastCued->getTitle(),
+                            'artist'      => $lastCued->getArtist(),
+                            'playlist_id' => null,
+                            'media_id'    => null,
+                        ]
+                    );
                 }
-            } else {
-                $event->addAnnotations([
-                    'playlist_id' => $playlist->getId(),
-                ]);
             }
+        } else {
+            $event->addAnnotations([
+                'playlist_id' => $playlist->getId(),
+            ]);
         }
     }
 
@@ -107,6 +109,7 @@ class Annotations implements EventSubscriberInterface
             $queueRow = $event->getQueue();
             if ($queueRow instanceof Entity\StationQueue) {
                 $queueRow->setSentToAutodj();
+                $queueRow->setTimestampCued(time());
                 $this->em->persist($queueRow);
             }
 

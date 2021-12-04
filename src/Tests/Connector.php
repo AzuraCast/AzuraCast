@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -33,6 +34,9 @@ class Connector extends AbstractBrowser
         $_COOKIE = $request->getCookies();
         $_SERVER = $request->getServer();
         $_FILES = $this->remapFiles($request->getFiles());
+
+        // Temporary fix, see https://github.com/symfony/symfony/issues/44457
+        $_SERVER['PHP_SELF'] = __FILE__;
 
         $uri = str_replace('http://localhost', '', $request->getUri());
 

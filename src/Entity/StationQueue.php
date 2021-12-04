@@ -7,6 +7,9 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Psr\Log\LogLevel;
 
 #[
     ORM\Entity,
@@ -192,11 +195,15 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
         $this->log = $log;
     }
 
-    public function appendToLog(?array $log): void
+    public function addLogRecord(string|int $level, string $message, array $context = []): void
     {
-        if (null !== $log) {
-            $this->log = array_merge($this->log ?? [], $log);
-        }
+        $testHandler = new TestHandler(LogLevel::DEBUG, false);
+        $testLogger = new Logger('AzuraCast', [$testHandler]);
+
+        /** @phpstan-ignore-next-line */
+        $testLogger->addRecord(Logger::toMonologLevel($level), $message, $context);
+
+        $this->log = array_merge($this->log ?? [], $testHandler->getRecords());
     }
 
     /**

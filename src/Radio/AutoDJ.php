@@ -79,7 +79,7 @@ class AutoDJ
         $this->dispatcher->dispatch($event);
 
         $annotation = $event->buildAnnotations();
-        $queueRow->appendToLog(['Annotated as: ' . $annotation]);
+        $queueRow->addLogRecord(LogLevel::INFO, 'Annotation: ' . $annotation);
         $this->em->persist($queueRow);
         $this->em->flush();
 

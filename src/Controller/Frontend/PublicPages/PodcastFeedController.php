@@ -158,6 +158,7 @@ class PodcastFeedController
         $itunesChannel->setImage($rssImage->getUrl());
         $itunesChannel->setCategories($this->buildItunesCategoriesForPodcast($podcast));
         $itunesChannel->setOwner($this->buildItunesOwner($podcast));
+        $itunesChannel->setAuthor($podcast->getAuthor());
 
         $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());

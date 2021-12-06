@@ -838,12 +838,7 @@ class ConfigWriter implements EventSubscriberInterface
                 <<< EOF
             # Record Live Broadcasts
             stop_recording_f = ref (fun () -> ())
-
-            def start_recording(path) =
-                output_live_recording = output.file({$formatString}, fallible=true, reopen_on_metadata=false, "#{path}", live)
-                stop_recording_f := fun () -> output_live_recording.shutdown()
-            end
-
+            
             def stop_recording() =
                 f = !stop_recording_f
                 f ()
@@ -851,6 +846,16 @@ class ConfigWriter implements EventSubscriberInterface
                 stop_recording_f := fun () -> ()
             end
 
+            def start_recording(path) =
+                stop_recording ()
+            
+                output_live_recording = output.file({$formatString}, fallible=true, reopen_on_metadata=false, "#{path}.tmp", live)
+                stop_recording_f := fun() -> begin
+                    output_live_recording.shutdown()
+                    process.run("mv #{path}.tmp #{path}")
+                end
+            end
+            
             server.register(namespace="recording", description="Start recording.", usage="recording.start filename", "start", fun (s) -> begin start_recording(s) "Done!" end)
             server.register(namespace="recording", description="Stop recording.", usage="recording.stop", "stop", fun (s) -> begin stop_recording() "Done!" end)
             EOF

@@ -20,17 +20,18 @@ class TaskLocator
                 Task\NowPlayingTask::class,
                 Task\ReactivateStreamerTask::class,
             ],
-            GetSyncTasks::SYNC_SHORT => [
+            GetSyncTasks::SYNC_SHORT      => [
                 Task\CheckRequests::class,
                 Task\RunBackupTask::class,
                 Task\CleanupRelaysTask::class,
             ],
-            GetSyncTasks::SYNC_MEDIUM => [
+            GetSyncTasks::SYNC_MEDIUM     => [
                 Task\CheckMediaTask::class,
                 Task\CheckFolderPlaylistsTask::class,
                 Task\CheckUpdatesTask::class,
+                Task\MoveBroadcastsTask::class,
             ],
-            GetSyncTasks::SYNC_LONG => [
+            GetSyncTasks::SYNC_LONG       => [
                 Task\RunAnalyticsTask::class,
                 Task\RunAutomatedAssignmentTask::class,
                 Task\CleanupLoginTokensTask::class,

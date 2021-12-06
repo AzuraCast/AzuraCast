@@ -24,6 +24,8 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
+    public const PATH_PREFIX = 'stream';
+
     #[ORM\ManyToOne(inversedBy: 'streamer_broadcasts')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
@@ -92,7 +94,9 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
             $this->timestampStart,
             $this->station->getTimezoneObject()
         );
-        $this->recordingPath = $this->streamer->getStreamerUsername() . '/' . $now->format('Ymd-His') . '.' . $ext;
+
+        $this->recordingPath = $this->streamer->getStreamerUsername()
+            . '/' . self::PATH_PREFIX . '_' . $now->format('Ymd-His') . '.' . $ext;
 
         return $this->recordingPath;
     }

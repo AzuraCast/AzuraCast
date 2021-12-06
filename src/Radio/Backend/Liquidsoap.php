@@ -8,6 +8,7 @@ use App\Entity;
 use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
+use App\Flysystem\StationFilesystems;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
@@ -341,7 +342,9 @@ class Liquidsoap extends AbstractBackend
         $resp = $this->streamerRepo->onConnect($station, $user);
 
         if (is_string($resp)) {
-            $this->command($station, 'recording.start ' . $resp);
+            $finalPath = (new StationFilesystems($station))->getTempFilesystem()->getLocalPath($resp);
+
+            $this->command($station, 'recording.start ' . $finalPath);
             return 'recording';
         }
 

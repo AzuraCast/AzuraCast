@@ -57,8 +57,16 @@ class StationStreamerBroadcastRepository extends Repository
     public function getActiveBroadcasts(Entity\Station $station): array
     {
         return $this->repository->findBy([
-            'station' => $station,
+            'station'      => $station,
             'timestampEnd' => 0,
+        ]);
+    }
+
+    public function findByPath(Entity\Station $station, string $path): ?Entity\StationStreamerBroadcast
+    {
+        return $this->repository->findOneBy([
+            'station'       => $station,
+            'recordingPath' => $path,
         ]);
     }
 }

@@ -84,20 +84,18 @@ class StationStreamerRepository extends Repository
         $record = new Entity\StationStreamerBroadcast($streamer);
         $this->em->persist($record);
 
-        if (Adapters::BACKEND_LIQUIDSOAP === $station->getBackendType()) {
-            $backendConfig = $station->getBackendConfig();
-            $recordStreams = $backendConfig->recordStreams();
+        $backendConfig = $station->getBackendConfig();
+        $recordStreams = $backendConfig->recordStreams();
 
-            if ($recordStreams) {
-                $format = $backendConfig->getRecordStreamsFormat(
-                ) ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
-                $recordingPath = $record->generateRecordingPath($format);
-                $this->em->persist($record);
-                $this->em->flush();
+        if ($recordStreams) {
+            $format = $backendConfig->getRecordStreamsFormat()
+                ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
+            $recordingPath = $record->generateRecordingPath($format);
 
-                return (new StationFilesystems($station))->getTempFilesystem()
-                    ->getLocalPath($recordingPath);
-            }
+            $this->em->persist($record);
+            $this->em->flush();
+
+            return $recordingPath;
         }
 
         $this->em->flush();
@@ -111,26 +109,6 @@ class StationStreamerRepository extends Repository
         $fsRecordings = $fs->getRecordingsFilesystem();
 
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
-            $broadcastPath = $broadcast->getRecordingPath();
-
-            if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {
-                $recordingsStorageLocation = $station->getRecordingsStorageLocation();
-
-                $tempPath = $fsTemp->getLocalPath($broadcastPath);
-                if ($recordingsStorageLocation->canHoldFile($fsTemp->fileSize($broadcastPath))) {
-                    $fsRecordings->uploadAndDeleteOriginal($tempPath, $broadcastPath);
-                } else {
-                    $this->logger->error(
-                        'Storage location full; broadcast not moved to storage location. '
-                        . 'Check temporary directory at path to recover file.',
-                        [
-                            'storageLocation' => (string)$recordingsStorageLocation,
-                            'path'            => $tempPath,
-                        ]
-                    );
-                }
-            }
-
             $broadcast->setTimestampEnd(time());
             $this->em->persist($broadcast);
         }

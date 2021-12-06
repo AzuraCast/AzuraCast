@@ -191,10 +191,6 @@ export default {
         frontendTypeOptions() {
             let frontendOptions = [
                 {
-                    text: this.$gettext('Only connect to a remote server.'),
-                    value: FRONTEND_REMOTE
-                },
-                {
                     text: this.$gettext('Use Icecast 2.4 on this server.'),
                     value: FRONTEND_ICECAST
                 },
@@ -206,6 +202,11 @@ export default {
                     value: FRONTEND_SHOUTCAST
                 });
             }
+
+            frontendOptions.push({
+                text: this.$gettext('Only connect to a remote server.'),
+                value: FRONTEND_REMOTE
+            });
 
             return frontendOptions;
         },

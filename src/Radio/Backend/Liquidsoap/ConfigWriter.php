@@ -144,7 +144,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
         settings.encoder.metadata.export.set(["artist","title","album","song"])
-        
+
         settings.decoder.priorities.ogg.set(15)
         settings.decoder.priorities.mad.set(15)
         settings.decoder.priorities.flac.set(15)
@@ -222,19 +222,6 @@ class ConfigWriter implements EventSubscriberInterface
 
             $playlistVarNames[] = $playlistVarName;
 
-            $usesRandom = true;
-            $usesReloadMode = true;
-
-            if ($playlist->backendLoopPlaylistOnce()) {
-                $playlistFuncName = 'playlist.once';
-            } elseif ($playlist->backendMerge()) {
-                $playlistFuncName = 'playlist.merge';
-                $usesReloadMode = false;
-            } else {
-                $playlistFuncName = 'playlist';
-                $usesRandom = false;
-            }
-
             $playlistConfigLines = [];
 
             if (Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
@@ -243,40 +230,40 @@ class ConfigWriter implements EventSubscriberInterface
                     continue;
                 }
 
-                // Liquidsoap's playlist functions support very different argument patterns. :/
                 $playlistParams = [
                     'id="' . self::cleanUpString($playlistVarName) . '"',
                 ];
 
-                if ($usesRandom) {
-                    if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()) {
-                        $playlistParams[] = 'random=true';
-                    }
+                $playlistModes = [
+                    Entity\StationPlaylist::ORDER_SEQUENTIAL => 'normal',
+                    Entity\StationPlaylist::ORDER_SHUFFLE => 'randomize',
+                    Entity\StationPlaylist::ORDER_RANDOM => 'random',
+                ];
+
+                $playlistParams[] = 'mode="' . $playlistModes[$playlist->getOrder()] . '"';
+
+                if ($playlist->backendLoopPlaylistOnce()) {
+                    $playlistParams[] = 'reload_mode="never"';
                 } else {
-                    $playlistModes = [
-                        Entity\StationPlaylist::ORDER_SEQUENTIAL => 'normal',
-                        Entity\StationPlaylist::ORDER_SHUFFLE => 'randomize',
-                        Entity\StationPlaylist::ORDER_RANDOM => 'random',
-                    ];
-
-                    $playlistParams[] = 'mode="' . $playlistModes[$playlist->getOrder()] . '"';
-                }
-
-                if ($usesReloadMode) {
                     $playlistParams[] = 'reload_mode="watch"';
                 }
 
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
-                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '('
+                $playlistConfigLines[] = $playlistVarName . ' = playlist('
                     . implode(',', $playlistParams) . ')';
+
+                if ($playlist->backendMerge()) {
+                    $playlistConfigLines[] = $playlistVarName . ' = merge_tracks(id="merge_'
+                        . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+                }
 
                 $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                     . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
-                        $playlistFunc = $playlistFuncName . '("'
+                        $playlistFunc = 'playlist("'
                             . self::cleanUpString($playlist->getRemoteUrl())
                             . '")';
                         $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;

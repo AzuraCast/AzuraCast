@@ -84,7 +84,7 @@ jobs:
 
       - name: Pull latest translations.
         if: github.event_name == 'push' || github.event_name == 'schedule'
-        uses: crowdin/github-action@1.0.18
+        uses: crowdin/github-action@1.4.1
         with:
           upload_sources: true
           download_translations: true

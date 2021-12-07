@@ -102,7 +102,6 @@ class StationQueueRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     *
      * @return Entity\StationQueue[]
      */
     public function getUnplayedQueue(Entity\Station $station): array
@@ -115,6 +114,15 @@ class StationQueueRepository extends Repository
         return $this->getUnplayedBaseQuery($station)->getQuery();
     }
 
+    /**
+     * @param Entity\Station $station
+     * @return Entity\StationQueue[]
+     */
+    public function getCuedButUnplayed(Entity\Station $station): array
+    {
+        return $this->getCuedButUnplayedBaseQuery($station)->getQuery()->execute();
+    }
+
     public function clearUpcomingQueue(Entity\Station $station): void
     {
         $this->em->createQuery(
@@ -125,16 +133,6 @@ class StationQueueRepository extends Repository
             DQL
         )->setParameter('station', $station)
             ->execute();
-    }
-
-    public function getLatestSentToAutoDj(Entity\Station $station): ?Entity\StationQueue
-    {
-        return $this->getBaseQuery($station)
-            ->andWhere('sq.sent_to_autodj = 1')
-            ->orderBy('sq.timestamp_cued', 'DESC')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
     }
 
     public function getNextToSendToAutoDj(Entity\Station $station): ?Entity\StationQueue
@@ -151,9 +149,7 @@ class StationQueueRepository extends Repository
         Entity\Station $station,
         Entity\Interfaces\SongInterface $song
     ): ?Entity\StationQueue {
-        return $this->getRecentBaseQuery($station)
-            ->andWhere('sq.sent_to_autodj = 1')
-            ->andWhere('sq.is_played = 0')
+        return $this->getCuedButUnplayedBaseQuery($station)
             ->andWhere('sq.song_id = :song_id')
             ->setParameter('song_id', $song->getSongId())
             ->getQuery()
@@ -187,6 +183,12 @@ class StationQueueRepository extends Repository
             ->andWhere('sq.is_played = 0')
             ->orderBy('sq.sent_to_autodj', 'DESC')
             ->addOrderBy('sq.timestamp_cued', 'ASC');
+    }
+
+    protected function getCuedButUnplayedBaseQuery(Entity\Station $station): QueryBuilder
+    {
+        return $this->getUnplayedBaseQuery($station)
+            ->andWhere('sq.sent_to_autodj = 1');
     }
 
     protected function getBaseQuery(Entity\Station $station): QueryBuilder

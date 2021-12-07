@@ -70,14 +70,31 @@ class ImportAction extends AbstractPlaylistsAction
                 // De-Windows paths (if applicable)
                 $path_raw = str_replace('\\', '/', $path_raw);
 
-                // Work backwards from the basename to try to find matches.
+                // split path into parts
                 $path_parts = explode('/', $path_raw);
-                for ($i = 1, $iMax = count($path_parts); $i <= $iMax; $i++) {
+                $path_parts_length = count($path_parts);
+                
+                // no parts; skipping path
+                if( $path_parts_length < 1 ) {
+                    continue;
+                }
+                
+                // uploaded filenames are sanitized (tolowercase and space to _)
+                // maybe use UploadedFile->filterOriginalFilename(filename) instead of code below
+                $path_parts[$path_parts_length - 1] = strtolower( 
+                    str_replace(' ', '_', $path_parts[$path_parts_length - 1]) 
+                );
+
+                // Work backwards from the basename to try to find matches.
+                for ($i = 1; $i <= $path_parts_length; $i++) {
                     $path_attempt = implode('/', array_slice($path_parts, 0 - $i));
                     $path_hash = md5($path_attempt);
 
                     if (isset($media_lookup[$path_hash])) {
                         $matches[] = $media_lookup[$path_hash];
+
+                        // breaking loop, no need to add a single playlistentry twice.
+                        break 1;
                     }
                 }
             }

@@ -123,6 +123,7 @@
     "phpunit/php-timer": "^5.0",
     "phpunit/phpunit": "^9.2",
     "pyrech/composer-changelogs": "^1.7",
+    "ramsey/composer-repl": "^1.2",
     "roave/security-advisories": "dev-latest",
     "slevomat/coding-standard": "^7",
     "softcreatr/jsonpath": "^0.7.2",
@@ -146,6 +147,9 @@
       "merge-scripts": false,
       "recurse": true,
       "replace": true
+    },
+    "ramsey/composer-repl": {
+        "includes": [ "util/psysh.php" ]
     }
   },
   "autoload": {

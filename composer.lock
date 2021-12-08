@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a8836530db679597bd7dec23e0e67ae",
+    "content-hash": "5d81344ed4333d3ae86c09cf51982f28",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -12287,6 +12287,81 @@
             "time": "2021-09-25T07:38:51+00:00"
         },
         {
+            "name": "psy/psysh",
+            "version": "v0.10.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/psysh.git",
+                "reference": "a0d9981aa07ecfcbea28e4bfa868031cca121e7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/a0d9981aa07ecfcbea28e4bfa868031cca121e7d",
+                "reference": "a0d9981aa07ecfcbea28e4bfa868031cca121e7d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "nikic/php-parser": "~4.0|~3.0|~2.0|~1.3",
+                "php": "^8.0 || ^7.0 || ^5.5.9",
+                "symfony/console": "~5.0|~4.0|~3.0|^2.4.2|~2.3.10",
+                "symfony/var-dumper": "~5.0|~4.0|~3.0|~2.7"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.2",
+                "hoa/console": "3.17.*"
+            },
+            "suggest": {
+                "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
+                "ext-pdo-sqlite": "The doc command requires SQLite to work.",
+                "ext-posix": "If you have PCNTL, you'll want the POSIX extension as well.",
+                "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history.",
+                "hoa/console": "A pure PHP readline implementation. You'll want this if your PHP install doesn't already support readline or libedit."
+            },
+            "bin": [
+                "bin/psysh"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.10.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Psy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Hileman",
+                    "email": "justin@justinhileman.info",
+                    "homepage": "http://justinhileman.com"
+                }
+            ],
+            "description": "An interactive shell for modern PHP.",
+            "homepage": "http://psysh.org",
+            "keywords": [
+                "REPL",
+                "console",
+                "interactive",
+                "shell"
+            ],
+            "support": {
+                "issues": "https://github.com/bobthecow/psysh/issues",
+                "source": "https://github.com/bobthecow/psysh/tree/v0.10.12"
+            },
+            "time": "2021-11-30T14:05:36+00:00"
+        },
+        {
             "name": "pyrech/composer-changelogs",
             "version": "v1.8.1",
             "source": {
@@ -12341,6 +12416,89 @@
                 "source": "https://github.com/pyrech/composer-changelogs/tree/v1.8.1"
             },
             "time": "2021-10-12T22:14:22+00:00"
+        },
+        {
+            "name": "ramsey/composer-repl",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramsey/composer-repl.git",
+                "reference": "01ee7a904363b339cfb96a278268d107b593b56c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramsey/composer-repl/zipball/01ee7a904363b339cfb96a278268d107b593b56c",
+                "reference": "01ee7a904363b339cfb96a278268d107b593b56c",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1 || ^2",
+                "php": "^7.4 || ^8",
+                "phpunit/phpunit": "^6 || ^7 || ^8 || ^9",
+                "psy/psysh": "^0.10.4",
+                "symfony/process": "^3 || ^4 || ^5"
+            },
+            "require-dev": {
+                "composer/composer": "^1.10.22 || ^2.0.13",
+                "ramsey/devtools": "^1.3"
+            },
+            "bin": [
+                "bin/repl"
+            ],
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                },
+                "captainhook": {
+                    "force-install": true
+                },
+                "class": "Ramsey\\Dev\\Repl\\Composer\\ReplPlugin",
+                "ramsey/composer-repl": {
+                    "includes": [
+                        "repl.php"
+                    ]
+                },
+                "ramsey/conventional-commits": {
+                    "configFile": "conventional-commits.json"
+                },
+                "ramsey/devtools": {
+                    "command-prefix": "dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ramsey\\Dev\\Repl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Ramsey",
+                    "email": "ben@benramsey.com",
+                    "homepage": "https://benramsey.com"
+                }
+            ],
+            "description": "A REPL for PHP built into Composer.",
+            "keywords": [
+                "REPL",
+                "psysh",
+                "shell"
+            ],
+            "support": {
+                "issues": "https://github.com/ramsey/composer-repl/issues",
+                "source": "https://github.com/ramsey/composer-repl/tree/1.2.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ramsey",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-08-07T19:42:27+00:00"
         },
         {
             "name": "roave/security-advisories",

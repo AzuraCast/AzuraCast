@@ -74,22 +74,13 @@ class Annotations implements EventSubscriberInterface
 
             $queue = $event->getQueue();
             if (null !== $queue) {
-                $allLastCued = array_filter(
-                    $this->queueRepo->getCuedButUnplayed(
-                        $event->getStation()
-                    ),
-                    static function (Entity\StationQueue $row): bool {
-                        $playlist = $row->getPlaylist();
-                        return null === $playlist || !$playlist->getIsJingle();
-                    }
-                );
-                $lastCued = reset($allLastCued) ?: null;
+                $lastVisible = $this->queueRepo->getLatestVisibleRow($event->getStation());
 
-                if (null !== $lastCued) {
+                if (null !== $lastVisible) {
                     $event->addAnnotations(
                         [
-                            'title'       => $lastCued->getTitle(),
-                            'artist'      => $lastCued->getArtist(),
+                            'title'       => $lastVisible->getTitle(),
+                            'artist'      => $lastVisible->getArtist(),
                             'playlist_id' => null,
                             'media_id'    => null,
                         ]

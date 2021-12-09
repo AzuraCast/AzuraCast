@@ -436,7 +436,7 @@ class ConfigWriter implements EventSubscriberInterface
                 autodj_ping_attempts := !autodj_ping_attempts + 1
                 delay = ref(0.5)
 
-                if source.is_ready(!autodj) then
+                if source.is_ready(autodj) then
                     log("AutoDJ is ready!")
 
                     autodj_is_loading := false
@@ -468,7 +468,7 @@ class ConfigWriter implements EventSubscriberInterface
             radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
 
             ref_dynamic = ref(dynamic);
-            thread.run.recurrent(delay=0.25, { wait_for_next_song(ref_dynamic) })
+            thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
             EOF
             );
         }
@@ -845,15 +845,6 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<< EOF
             # Record Live Broadcasts
-            def recording_stopped(tempPath) =
-                path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
-
-                log("Recording stopped: Switching from #{tempPath} to #{path}")
-
-                process.run("mv #{tempPath} #{path}")
-                ()
-            end
-
             output.file(
                 {$formatString}, 
                 fun () -> begin
@@ -866,7 +857,14 @@ class ConfigWriter implements EventSubscriberInterface
                 end, 
                 live, 
                 fallible=true, 
-                on_close=recording_stopped
+                on_close=fun (tempPath) -> begin
+                    path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
+
+                    log("Recording stopped: Switching from #{tempPath} to #{path}")
+
+                    process.run("mv #{tempPath} #{path}")
+                    ()
+                end
             )
             EOF
             );

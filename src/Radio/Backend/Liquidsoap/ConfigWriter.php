@@ -741,6 +741,8 @@ class ConfigWriter implements EventSubscriberInterface
         last_authenticated_dj = ref("")
         live_dj = ref("")
 
+        live_record_path = ref("")
+
         def dj_auth(login) =
             user = ref("")
             password = ref("")
@@ -777,6 +779,10 @@ class ConfigWriter implements EventSubscriberInterface
 
             ret = {$djonCommand}
             log("AzuraCast Live Connected Response: #{ret}")
+
+            if (string.contains(prefix="/", ret)) then
+                live_record_path := ret
+            end
         end
 
         def live_disconnected() =
@@ -790,6 +796,8 @@ class ConfigWriter implements EventSubscriberInterface
             live_enabled := false
             last_authenticated_dj := ""
             live_dj := ""
+
+            live_record_path := ""
         end
         EOF
         );
@@ -837,27 +845,29 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<< EOF
             # Record Live Broadcasts
-            stop_recording_f = ref (fun () -> ())
-            
-            def stop_recording() =
-                f = !stop_recording_f
-                f ()
+            def recording_stopped(tempPath) =
+                path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
 
-                stop_recording_f := fun () -> ()
+                log("Recording stopped: Switching from #{tempPath} to #{path}")
+
+                process.run("mv #{tempPath} #{path}")
+                ()
             end
 
-            def start_recording(path) =
-                stop_recording ()
-            
-                output_live_recording = output.file({$formatString}, fallible=true, reopen_on_metadata=false, "#{path}.tmp", live)
-                stop_recording_f := fun() -> begin
-                    output_live_recording.shutdown()
-                    process.run("mv #{path}.tmp #{path}")
-                end
-            end
-            
-            server.register(namespace="recording", description="Start recording.", usage="recording.start filename", "start", fun (s) -> begin start_recording(s) "Done!" end)
-            server.register(namespace="recording", description="Stop recording.", usage="recording.stop", "stop", fun (s) -> begin stop_recording() "Done!" end)
+            output.file(
+                {$formatString}, 
+                fun () -> begin
+                    path = !live_record_path
+                    if (path != "") then
+                        "#{path}.tmp"
+                    else
+                        ""
+                    end
+                end, 
+                live, 
+                fallible=true, 
+                on_close=recording_stopped
+            )
             EOF
             );
         }

@@ -343,9 +343,7 @@ class Liquidsoap extends AbstractBackend
 
         if (is_string($resp)) {
             $finalPath = (new StationFilesystems($station))->getTempFilesystem()->getLocalPath($resp);
-
-            $this->command($station, 'recording.start ' . $finalPath);
-            return 'recording';
+            return $finalPath;
         }
 
         return $resp ? 'true' : 'false';
@@ -355,12 +353,6 @@ class Liquidsoap extends AbstractBackend
         Entity\Station $station,
         string $user = ''
     ): string {
-        $recordStreams = $station->getBackendConfig()->recordStreams();
-
-        if ($recordStreams) {
-            $this->command($station, 'recording.stop');
-        }
-
         return $this->streamerRepo->onDisconnect($station)
             ? 'true'
             : 'false';

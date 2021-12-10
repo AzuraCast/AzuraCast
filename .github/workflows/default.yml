@@ -119,7 +119,6 @@ jobs:
         with:
           context: .
           load: true
-          platforms : linux/amd64,linux/arm64
           tags: ghcr.io/azuracast/web:latest
           cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
 
@@ -184,4 +183,5 @@ jobs:
           platforms : linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
           cache-to: type=registry,ref=ghcr.io/azuracast/web:buildcache,mode=max

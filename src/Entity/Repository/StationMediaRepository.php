@@ -66,7 +66,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'id' => $id,
+                'id'               => $id,
             ]
         );
 
@@ -86,7 +86,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'path' => $path,
+                'path'             => $path,
             ]
         );
 
@@ -120,7 +120,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'unique_id' => $uniqueId,
+                'unique_id'        => $uniqueId,
             ]
         );
 
@@ -382,12 +382,8 @@ class StationMediaRepository extends Repository
         return $fs->withLocalFile(
             $media->getPath(),
             function ($path) use ($metadata) {
-                try {
-                    $this->metadataManager->write($metadata, $path);
-                    return true;
-                } catch (CannotProcessMediaException $e) {
-                    throw $e;
-                }
+                $this->metadataManager->write($metadata, $path);
+                return true;
             }
         );
     }

@@ -14,6 +14,7 @@ use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -208,7 +209,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
         if (null === $podcast) {
-            throw new \RuntimeException('Podcast not found.');
+            throw new RuntimeException('Podcast not found.');
         }
 
         $parsedBody = (array)$request->getParsedBody();

@@ -18,6 +18,7 @@ use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 class ListenersAction
 {
@@ -240,7 +241,7 @@ class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = tmpfile() ?: throw new \RuntimeException('Could not create temp file.');
+        $tempFile = tmpfile() ?: throw new RuntimeException('Could not create temp file.');
         $csv = Writer::createFromStream($tempFile);
 
         $tz = $station->getTimezoneObject();

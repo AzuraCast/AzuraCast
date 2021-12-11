@@ -7,7 +7,9 @@ namespace App\Controller\Api\Admin;
 use App\Acl;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
+use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -114,12 +116,12 @@ class RolesController extends AbstractAdminApiCrudController
     protected function deleteRecord(object $record): void
     {
         if (!($record instanceof Entity\Role)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $superAdminRole = $this->permissionRepo->ensureSuperAdministratorRole();
         if ($superAdminRole->getIdRequired() === $record->getIdRequired()) {
-            throw new \RuntimeException('Cannot remove the Super Administrator role.');
+            throw new RuntimeException('Cannot remove the Super Administrator role.');
         }
 
         parent::deleteRecord($record);

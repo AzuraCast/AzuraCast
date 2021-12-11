@@ -6,6 +6,7 @@ namespace App\Entity\Api;
 
 use App\Exception;
 use OpenApi\Annotations as OA;
+use ReflectionClass;
 use Throwable;
 
 /**
@@ -104,7 +105,7 @@ class Error
             $code = 500;
         }
 
-        $className = (new \ReflectionClass($e))->getShortName();
+        $className = (new ReflectionClass($e))->getShortName();
 
         $errorHeader = $className . ' at ' . $e->getFile() . ' L' . $e->getLine();
         $message = $errorHeader . ': ' . $e->getMessage();

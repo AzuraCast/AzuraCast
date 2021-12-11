@@ -14,8 +14,10 @@ use App\Session\Flash;
 use App\Version;
 use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 class SetupController
 {
@@ -65,7 +67,7 @@ class SetupController
                 $csrf->verify($data['csrf'] ?? null, 'register');
 
                 if (empty($data['username']) || empty($data['password'])) {
-                    throw new \InvalidArgumentException('Username and password required.');
+                    throw new InvalidArgumentException('Username and password required.');
                 }
 
                 $role = $permissionRepo->ensureSuperAdministratorRole();
@@ -92,7 +94,7 @@ class SetupController
                 $acl->reload();
 
                 return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $error = $e->getMessage();
             }
         }

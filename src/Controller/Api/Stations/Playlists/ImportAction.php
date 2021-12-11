@@ -82,7 +82,7 @@ class ImportAction extends AbstractPlaylistsAction
                 // Work backwards from the basename to try to find matches.
                 $pathParts = explode('/', $path_raw);
                 $basename = File::sanitizeFileName(array_pop($pathParts));
-                array_push($pathParts, $basename);
+                $pathParts[] = $basename;
 
                 // Attempt full path matching if possible
                 if (count($pathParts) >= 2) {
@@ -98,7 +98,6 @@ class ImportAction extends AbstractPlaylistsAction
                 // Attempt basename-only matching
                 if (isset($basenameLookup[$basename])) {
                     $matches[] = $basenameLookup[$basename];
-                    continue;
                 }
             }
 

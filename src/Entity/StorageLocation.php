@@ -22,6 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use RuntimeException;
 use Spatie\Dropbox\Client;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -443,7 +444,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
             case self::ADAPTER_S3:
                 $bucket = $this->s3Bucket;
                 if (null === $bucket) {
-                    throw new \RuntimeException('Amazon S3 bucket is empty.');
+                    throw new RuntimeException('Amazon S3 bucket is empty.');
                 }
                 return new AwsS3Adapter($this->getS3Client(), $bucket, $filteredPath);
 

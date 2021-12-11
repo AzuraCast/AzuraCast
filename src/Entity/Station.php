@@ -16,6 +16,7 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
@@ -925,12 +926,12 @@ class Station implements Stringable, IdentifiableEntityInterface
     {
         $supportedTypes = self::getStorageLocationTypes();
         if (!isset($supportedTypes[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid type: %s', $type));
+            throw new InvalidArgumentException(sprintf('Invalid type: %s', $type));
         }
 
         $record = $this->{$supportedTypes[$type]};
         if (null === $record) {
-            throw new \RuntimeException(sprintf('Storage location for type %s has not been configured yet.', $type));
+            throw new RuntimeException(sprintf('Storage location for type %s has not been configured yet.', $type));
         }
         return $record;
     }
@@ -943,12 +944,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
 
         if ($type !== $newStorageLocation->getType()) {
-            throw new \InvalidArgumentException(sprintf('Specified location is not of type %s.', $type));
+            throw new InvalidArgumentException(sprintf('Specified location is not of type %s.', $type));
         }
 
         $supportedTypes = self::getStorageLocationTypes();
         if (!isset($supportedTypes[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid type: %s', $type));
+            throw new InvalidArgumentException(sprintf('Invalid type: %s', $type));
         }
 
         $this->{$supportedTypes[$type]} = $newStorageLocation;

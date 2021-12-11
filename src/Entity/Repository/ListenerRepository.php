@@ -70,7 +70,7 @@ class ListenerRepository extends Repository
      */
     public function update(Entity\Station $station, array $clients): void
     {
-        $this->em->transactional(
+        $this->em->wrapInTransaction(
             function () use ($station, $clients): void {
                 $existingClientsRaw = $this->em->createQuery(
                     <<<'DQL'
@@ -102,18 +102,18 @@ class ListenerRepository extends Repository
                     } else {
                         // Create a new record.
                         $record = [
-                            'station_id' => $station->getId(),
-                            'timestamp_start' => time(),
-                            'timestamp_end' => 0,
-                            'listener_uid' => (int)$client->uid,
+                            'station_id'          => $station->getId(),
+                            'timestamp_start'     => time(),
+                            'timestamp_end'       => 0,
+                            'listener_uid'        => (int)$client->uid,
                             'listener_user_agent' => mb_substr(
                                 $client->userAgent ?? '',
                                 0,
                                 255,
                                 'UTF-8'
                             ),
-                            'listener_ip' => $client->ip,
-                            'listener_hash' => Entity\Listener::calculateListenerHash($client),
+                            'listener_ip'         => $client->ip,
+                            'listener_hash'       => Entity\Listener::calculateListenerHash($client),
                         ];
 
                         if (!empty($client->mount)) {

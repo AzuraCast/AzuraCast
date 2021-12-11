@@ -9,6 +9,7 @@ use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use RuntimeException;
 
 #[
     ORM\Entity(readOnly: true),
@@ -98,7 +99,7 @@ class Analytics implements IdentifiableEntityInterface
     public function getMomentInStationTimeZone(): CarbonImmutable
     {
         if (null === $this->station) {
-            throw new \RuntimeException('Cannot get moment in station timezone; no station associated.');
+            throw new RuntimeException('Cannot get moment in station timezone; no station associated.');
         }
 
         $tz = $this->station->getTimezoneObject();

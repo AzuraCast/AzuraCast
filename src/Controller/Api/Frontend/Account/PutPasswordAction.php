@@ -8,7 +8,9 @@ use App\Controller\Api\Admin\UsersController;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class PutPasswordAction extends UsersController
 {
@@ -19,16 +21,16 @@ class PutPasswordAction extends UsersController
 
         try {
             if (empty($body['current_password'])) {
-                throw new \InvalidArgumentException('Current password not provided (current_password).');
+                throw new InvalidArgumentException('Current password not provided (current_password).');
             }
 
             $currentPassword = $body['current_password'];
             if (!$user->verifyPassword($currentPassword)) {
-                throw new \InvalidArgumentException('Invalid current password.');
+                throw new InvalidArgumentException('Invalid current password.');
             }
 
             if (empty($body['new_password'])) {
-                throw new \InvalidArgumentException('New password not provided (new_password).');
+                throw new InvalidArgumentException('New password not provided (new_password).');
             }
 
             $user = $this->em->refetch($user);
@@ -38,7 +40,7 @@ class PutPasswordAction extends UsersController
             $this->em->flush();
 
             return $response->withJson(Entity\Api\Status::updated());
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
         }
     }

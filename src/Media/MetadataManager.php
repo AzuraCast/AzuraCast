@@ -14,6 +14,7 @@ use Azura\MetadataManager\Metadata;
 use Azura\MetadataManager\MetadataInterface;
 use GuzzleHttp\Client;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -65,7 +66,7 @@ class MetadataManager implements EventSubscriberInterface
         try {
             $phpBinaryPath = (new PhpExecutableFinder())->find();
             if (false === $phpBinaryPath) {
-                throw new \RuntimeException('Could not find PHP executable path.');
+                throw new RuntimeException('Could not find PHP executable path.');
             }
 
             $scriptPath = $this->environment->getBaseDirectory() . '/vendor/bin/metadata-manager';
@@ -134,7 +135,7 @@ class MetadataManager implements EventSubscriberInterface
             // Run remote process.
             $phpBinaryPath = (new PhpExecutableFinder())->find();
             if (false === $phpBinaryPath) {
-                throw new \RuntimeException('Could not find PHP executable path.');
+                throw new RuntimeException('Could not find PHP executable path.');
             }
 
             $scriptPath = $this->environment->getBaseDirectory() . '/vendor/bin/metadata-manager';

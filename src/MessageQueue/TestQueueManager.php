@@ -11,7 +11,7 @@ class TestQueueManager extends AbstractQueueManager
 {
     public function clearQueue(string $queueName): void
     {
-        return; // Noop
+        // Noop
     }
 
     public function getTransport(string $queueName): TransportInterface

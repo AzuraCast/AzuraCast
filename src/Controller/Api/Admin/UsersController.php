@@ -8,6 +8,7 @@ use App\Controller\Frontend\Account\MasqueradeAction;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -84,7 +85,7 @@ class UsersController extends AbstractAdminApiCrudController
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof Entity\User)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $return = $this->toArray($record);

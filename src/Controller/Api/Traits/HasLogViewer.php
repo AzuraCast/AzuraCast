@@ -8,6 +8,7 @@ use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 trait HasLogViewer
 {
@@ -58,7 +59,7 @@ trait HasLogViewer
         if ($log_visible_size > 0) {
             $fp = fopen($log_path, 'rb');
             if (false === $fp) {
-                throw new \RuntimeException(sprintf('Could not open file at path "%s".', $log_path));
+                throw new RuntimeException(sprintf('Could not open file at path "%s".', $log_path));
             }
 
             fseek($fp, -$log_visible_size, SEEK_END);

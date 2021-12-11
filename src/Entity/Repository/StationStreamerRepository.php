@@ -8,8 +8,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
-use App\Flysystem\StationFilesystems;
-use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -104,10 +102,6 @@ class StationStreamerRepository extends Repository
 
     public function onDisconnect(Entity\Station $station): bool
     {
-        $fs = new StationFilesystems($station);
-        $fsTemp = $fs->getTempFilesystem();
-        $fsRecordings = $fs->getRecordingsFilesystem();
-
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
             $broadcast->setTimestampEnd(time());
             $this->em->persist($broadcast);

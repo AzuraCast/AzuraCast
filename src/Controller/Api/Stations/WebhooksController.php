@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Http\ServerRequest;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 
 /**
@@ -103,7 +104,7 @@ class WebhooksController extends AbstractStationApiCrudController
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof Entity\StationWebhook)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $return = $this->toArray($record);

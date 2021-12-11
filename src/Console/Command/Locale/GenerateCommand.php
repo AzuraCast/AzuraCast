@@ -31,12 +31,12 @@ class GenerateCommand extends CommandAbstract
         $directory = new RecursiveDirectoryIterator($environment->getBaseDirectory() . '/frontend/vue');
         $iterator = new RecursiveIteratorIterator($directory);
 
-        $vueRegex = new RegexIterator($iterator, '/^.+\.(vue)$/i', RecursiveRegexIterator::GET_MATCH);
+        $vueRegex = new RegexIterator($iterator, '/^.+\.(vue)$/i', RegexIterator::GET_MATCH);
         foreach ($vueRegex as $pathMatch) {
             $translations->addFromVueJsFile($pathMatch[0]);
         }
 
-        $jsRegex = new RegexIterator($iterator, '/^.+\.(js)$/i', RecursiveRegexIterator::GET_MATCH);
+        $jsRegex = new RegexIterator($iterator, '/^.+\.(js)$/i', RegexIterator::GET_MATCH);
         foreach ($jsRegex as $pathMatch) {
             $translations->addFromJsCodeFile($pathMatch[0]);
         }
@@ -51,7 +51,7 @@ class GenerateCommand extends CommandAbstract
         foreach ($translatable_folders as $folder) {
             $directory = new RecursiveDirectoryIterator($folder);
             $iterator = new RecursiveIteratorIterator($directory);
-            $regex = new RegexIterator($iterator, '/^.+\.(phtml|php)$/i', RecursiveRegexIterator::GET_MATCH);
+            $regex = new RegexIterator($iterator, '/^.+\.(phtml|php)$/i', RegexIterator::GET_MATCH);
 
             foreach ($regex as $path_match) {
                 $path = $path_match[0];

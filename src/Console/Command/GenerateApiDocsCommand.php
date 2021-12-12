@@ -7,7 +7,6 @@ namespace App\Console\Command;
 use App\Console\Application;
 use App\Environment;
 use App\Version;
-use Monolog\Logger;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
@@ -27,7 +26,7 @@ class GenerateApiDocsCommand extends CommandAbstract
 
     public function __invoke(SymfonyStyle $io): int
     {
-        $yaml = $this->generate()->toYaml();
+        $yaml = $this->generate()?->toYaml();
         $yaml_path = $this->environment->getBaseDirectory() . '/web/static/api/openapi.yml';
 
         file_put_contents($yaml_path, $yaml);
@@ -39,7 +38,7 @@ class GenerateApiDocsCommand extends CommandAbstract
     public function generate(
         bool $useCurrentVersion = false,
         string $apiBaseUrl = 'https://demo.azuracast.com/api'
-    ): OpenApi {
+    ): ?OpenApi {
         define('AZURACAST_API_URL', $apiBaseUrl);
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define(
@@ -61,7 +60,7 @@ class GenerateApiDocsCommand extends CommandAbstract
         );
 
         return Generator::scan($finder, [
-            'logger' => $this->logger
+            'logger' => $this->logger,
         ]);
     }
 }

@@ -116,7 +116,7 @@ class ServicesController
     public function frontendAction(
         ServerRequest $request,
         Response $response,
-        $do = 'restart'
+        string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
         $frontend = $request->getStationFrontend();
@@ -156,7 +156,7 @@ class ServicesController
         ServerRequest $request,
         Response $response,
         AutoDJ $autodj,
-        $do = 'restart'
+        string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();

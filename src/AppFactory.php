@@ -225,7 +225,11 @@ class AppFactory
 
     protected static function applyPhpSettings(Environment $environment): void
     {
-        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+        error_reporting(
+            $environment->isProduction()
+                ? E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED
+                : E_ALL & ~E_NOTICE
+        );
 
         $displayStartupErrors = (!$environment->isProduction() || $environment->isCli())
             ? '1'

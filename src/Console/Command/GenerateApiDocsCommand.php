@@ -7,9 +7,11 @@ namespace App\Console\Command;
 use App\Console\Application;
 use App\Environment;
 use App\Version;
+use Monolog\Logger;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateApiDocsCommand extends CommandAbstract
@@ -17,7 +19,8 @@ class GenerateApiDocsCommand extends CommandAbstract
     public function __construct(
         Application $application,
         protected Environment $environment,
-        protected Version $version
+        protected Version $version,
+        protected LoggerInterface $logger
     ) {
         parent::__construct($application);
     }
@@ -57,6 +60,8 @@ class GenerateApiDocsCommand extends CommandAbstract
             ]
         );
 
-        return Generator::scan($finder);
+        return Generator::scan($finder, [
+            'logger' => $this->logger
+        ]);
     }
 }

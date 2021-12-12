@@ -15,6 +15,40 @@ use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @OA\Get(path="/station/{station_id}/history",
+ *   operationId="getStationHistory",
+ *   tags={"Stations: History"},
+ *   description="Return song playback history items for a given station.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="start",
+ *     description="The start date for records, in YYYY-MM-DD format.",
+ *     in="query",
+ *     required=false,
+ *     @OA\Schema(
+ *         type="string"
+ *     )
+ *   ),
+ *   @OA\Parameter(
+ *     name="end",
+ *     description="The end date for records, in YYYY-MM-DD format.",
+ *     in="query",
+ *     required=false,
+ *     @OA\Schema(
+ *         type="string"
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Success",
+ *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_DetailedSongHistory"))
+ *   ),
+ *   @OA\Response(response=404, description="Station not found"),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ */
 class HistoryController
 {
     public function __construct(
@@ -24,38 +58,6 @@ class HistoryController
     }
 
     /**
-     * @OA\Get(path="/station/{station_id}/history",
-     *   tags={"Stations: History"},
-     *   description="Return song playback history items for a given station.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="start",
-     *     description="The start date for records, in YYYY-MM-DD format.",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(
-     *         type="string"
-     *     )
-     *   ),
-     *   @OA\Parameter(
-     *     name="end",
-     *     description="The end date for records, in YYYY-MM-DD format.",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(
-     *         type="string"
-     *     )
-     *   ),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_DetailedSongHistory"))
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
      * @param ServerRequest $request
      * @param Response $response
      */

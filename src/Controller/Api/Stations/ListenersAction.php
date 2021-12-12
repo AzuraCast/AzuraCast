@@ -20,23 +20,24 @@ use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
+/**
+ * @OA\Get(path="/station/{station_id}/listeners",
+ *   operationId="getStationListeners",
+ *   tags={"Stations: Listeners"},
+ *   description="Return detailed information about current listeners.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Success",
+ *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Listener"))
+ *   ),
+ *   @OA\Response(response=404, description="Station not found"),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ */
 class ListenersAction
 {
-    /**
-     * @OA\Get(path="/station/{station_id}/listeners",
-     *   tags={"Stations: Listeners"},
-     *   description="Return detailed information about current listeners.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Listener"))
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     */
     public function __invoke(
         ServerRequest $request,
         Response $response,

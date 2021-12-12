@@ -22,6 +22,93 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * @OA\Get(path="/station/{station_id}/files",
+ *   operationId="getFiles",
+ *   tags={"Stations: Media"},
+ *   description="List all current uploaded files.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationMedia"))
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Post(path="/station/{station_id}/files",
+ *   operationId="addFile",
+ *   tags={"Stations: Media"},
+ *   description="Upload a new file.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/Api_UploadFile")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Get(path="/station/{station_id}/file/{id}",
+ *   operationId="getFile",
+ *   tags={"Stations: Media"},
+ *   description="Retrieve details for a single file.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Media ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Put(path="/station/{station_id}/file/{id}",
+ *   operationId="editFile",
+ *   tags={"Stations: Media"},
+ *   description="Update details of a single file.",
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
+ *   ),
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Media ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Delete(path="/station/{station_id}/file/{id}",
+ *   operationId="deleteFile",
+ *   tags={"Stations: Media"},
+ *   description="Delete a single file.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Media ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
  * @extends AbstractStationApiCrudController<Entity\StationMedia>
  */
 class FilesController extends AbstractStationApiCrudController
@@ -42,95 +129,6 @@ class FilesController extends AbstractStationApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    /**
-     * @OA\Get(path="/station/{station_id}/files",
-     *   tags={"Stations: Media"},
-     *   description="List all current uploaded files.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationMedia"))
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Post(path="/station/{station_id}/files",
-     *   tags={"Stations: Media"},
-     *   description="Upload a new file.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Api_UploadFile")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Get(path="/station/{station_id}/file/{id}",
-     *   tags={"Stations: Media"},
-     *   description="Retrieve details for a single file.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Media ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Put(path="/station/{station_id}/file/{id}",
-     *   tags={"Stations: Media"},
-     *   description="Update details of a single file.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
-     *   ),
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Media ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Delete(path="/station/{station_id}/file/{id}",
-     *   tags={"Stations: Media"},
-     *   description="Delete a single file.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Media ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     */
-
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();

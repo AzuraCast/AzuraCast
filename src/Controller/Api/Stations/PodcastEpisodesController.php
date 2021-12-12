@@ -13,12 +13,135 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
 use InvalidArgumentException;
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * @OA\Get(path="/station/{station_id}/podcast/{podcast_id}/episodes",
+ *   operationId="getEpisodes",
+ *   tags={"Stations: Podcasts"},
+ *   description="List all current episodes for a given podcast ID.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="podcast_id",
+ *     in="path",
+ *     description="Podcast ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_PodcastEpisode"))
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Post(path="/station/{station_id}/podcast/{podcast_id}/episodes",
+ *   operationId="addEpisode",
+ *   tags={"Stations: Podcasts"},
+ *   description="Create a new podcast episode.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="podcast_id",
+ *     in="path",
+ *     description="Podcast ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Get(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
+ *   operationId="getEpisode",
+ *   tags={"Stations: Podcasts"},
+ *   description="Retrieve details for a single podcast episode.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="podcast_id",
+ *     in="path",
+ *     description="Podcast ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Podcast Episode ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Put(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
+ *   operationId="editEpisode",
+ *   tags={"Stations: Podcasts"},
+ *   description="Update details of a single podcast episode.",
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+ *   ),
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="podcast_id",
+ *     in="path",
+ *     description="Podcast ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Podcast Episode ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Delete(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
+ *   operationId="deleteEpisode",
+ *   tags={"Stations: Podcasts"},
+ *   description="Delete a single podcast episode.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="podcast_id",
+ *     in="path",
+ *     description="Podcast ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Podcast Episode ID",
+ *     required=true,
+ *     @OA\Schema(type="string")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
  * @extends AbstractApiCrudController<Entity\PodcastEpisode>
  */
 class PodcastEpisodesController extends AbstractApiCrudController
@@ -36,125 +159,6 @@ class PodcastEpisodesController extends AbstractApiCrudController
     ) {
         parent::__construct($em, $serializer, $validator);
     }
-
-    /**
-     * @OA\Get(path="/station/{station_id}/podcast/{podcast_id}/episodes",
-     *   tags={"Stations: Podcasts"},
-     *   description="List all current episodes for a given podcast ID.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="podcast_id",
-     *     in="path",
-     *     description="Podcast ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_PodcastEpisode"))
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Post(path="/station/{station_id}/podcast/{podcast_id}/episodes",
-     *   tags={"Stations: Podcasts"},
-     *   description="Create a new podcast episode.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="podcast_id",
-     *     in="path",
-     *     description="Podcast ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Get(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
-     *   tags={"Stations: Podcasts"},
-     *   description="Retrieve details for a single podcast episode.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="podcast_id",
-     *     in="path",
-     *     description="Podcast ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Podcast Episode ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Put(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
-     *   tags={"Stations: Podcasts"},
-     *   description="Update details of a single podcast episode.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
-     *   ),
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="podcast_id",
-     *     in="path",
-     *     description="Podcast ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Podcast Episode ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Delete(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
-     *   tags={"Stations: Podcasts"},
-     *   description="Delete a single podcast episode.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="podcast_id",
-     *     in="path",
-     *     description="Podcast ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Podcast Episode ID",
-     *     required=true,
-     *     @OA\Schema(type="string")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     */
 
     public function listAction(
         ServerRequest $request,

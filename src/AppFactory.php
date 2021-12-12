@@ -244,13 +244,16 @@ class AppFactory
                 ? '/dev/stderr'
                 : $environment->getTempDirectory() . '/php_errors.log'
         );
-        ini_set('session.use_only_cookies', '1');
-        ini_set('session.cookie_httponly', '1');
-        ini_set('session.cookie_lifetime', '86400');
-        ini_set('session.use_strict_mode', '1');
+
+        if (!headers_sent()) {
+            ini_set('session.use_only_cookies', '1');
+            ini_set('session.cookie_httponly', '1');
+            ini_set('session.cookie_lifetime', '86400');
+            ini_set('session.use_strict_mode', '1');
+
+            session_cache_limiter('');
+        }
 
         date_default_timezone_set('UTC');
-
-        session_cache_limiter('');
     }
 }

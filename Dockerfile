@@ -40,6 +40,7 @@ RUN composer install \
 COPY --chown=azuracast:azuracast . .
 
 RUN composer dump-autoload --optimize --classmap-authoritative \
+    && touch /var/azuracast/www/vendor/.gitkeep \
     && touch /var/azuracast/.docker
 
 VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist"]

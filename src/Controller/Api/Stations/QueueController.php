@@ -15,6 +15,61 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * @OA\Get(path="/station/{station_id}/queue",
+ *   operationId="getQueue",
+ *   tags={"Stations: Queue"},
+ *   description="Return information about the upcoming song playback queue.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(type="array",
+ *       @OA\Items(ref="#/components/schemas/Api_StationQueueDetailed")
+ *     )
+ *   ),
+ *   @OA\Response(response=404, description="Station not found"),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}}
+ * )
+ *
+ * @OA\Get(path="/station/{station_id}/queue/{id}",
+ *   operationId="getQueueItem",
+ *   tags={"Stations: Queue"},
+ *   description="Retrieve details of a single queued item.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Queue Item ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_StationQueueDetailed")
+ *   ),
+ *   @OA\Response(response=404, description="Station or Queue ID not found"),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}}
+ * )
+ *
+ * @OA\Delete(path="/station/{station_id}/queue/{id}",
+ *   operationId="deleteQueueItem",
+ *   tags={"Stations: Queue"},
+ *   description="Delete a single queued item.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Queue Item ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=404, description="Station or Queue ID not found"),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}}
+ * )
+ *
  * @extends AbstractStationApiCrudController<Entity\StationQueue>
  */
 class QueueController extends AbstractStationApiCrudController
@@ -32,23 +87,6 @@ class QueueController extends AbstractStationApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    /**
-     * @OA\Get(path="/station/{station_id}/queue",
-     *   tags={"Stations: Queue"},
-     *   description="Return information about the upcoming song playback queue.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_StationQueueDetailed")
-     *     )
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}}
-     * )
-     *
-     * @inheritdoc
-     */
     public function listAction(
         ServerRequest $request,
         Response $response
@@ -62,46 +100,6 @@ class QueueController extends AbstractStationApiCrudController
             $query
         );
     }
-
-    /**
-     * @OA\Get(path="/station/{station_id}/queue/{id}",
-     *   tags={"Stations: Queue"},
-     *   description="Retrieve details of a single queued item.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Queue Item ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_StationQueueDetailed")
-     *   ),
-     *   @OA\Response(response=404, description="Station or Queue ID not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}}
-     * )
-     *
-     * @OA\Delete(path="/station/{station_id}/queue/{id}",
-     *   tags={"Stations: Queue"},
-     *   description="Delete a single queued item.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Queue Item ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=404, description="Station or Queue ID not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}}
-     * )
-     */
 
     /**
      * @param object $record

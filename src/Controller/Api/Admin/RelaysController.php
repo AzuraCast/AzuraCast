@@ -13,6 +13,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @OA\Get(path="/internal/relays",
+ *   operationId="internalGetRelayDetails",
+ *   tags={"Administration: Relays"},
+ *   description="Returns all necessary information to relay all 'relayable' stations.",
+ *   parameters={},
+ *   @OA\Response(
+ *     response=200,
+ *     description="Success",
+ *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Admin_Relay"))
+ *   )
+ * )
+ */
 class RelaysController
 {
     public function __construct(
@@ -21,21 +34,6 @@ class RelaysController
     ) {
     }
 
-    /**
-     * @OA\Get(path="/internal/relays",
-     *   tags={"Administration: Relays"},
-     *   description="Returns all necessary information to relay all 'relayable' stations.",
-     *   parameters={},
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Admin_Relay"))
-     *   )
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $stations = $this->getManageableStations($request);

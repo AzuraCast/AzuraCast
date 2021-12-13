@@ -14,96 +14,99 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
+ * @OA\Get(path="/station/{station_id}/playlists",
+ *   operationId="getPlaylists",
+ *   tags={"Stations: Playlists"},
+ *   description="List all current playlists.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationPlaylist"))
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Post(path="/station/{station_id}/playlists",
+ *   operationId="addPlaylist",
+ *   tags={"Stations: Playlists"},
+ *   description="Create a new playlist.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Get(path="/station/{station_id}/playlist/{id}",
+ *   operationId="getPlaylist",
+ *   tags={"Stations: Playlists"},
+ *   description="Retrieve details for a single playlist.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Playlist ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Put(path="/station/{station_id}/playlist/{id}",
+ *   operationId="editPlaylist",
+ *   tags={"Stations: Playlists"},
+ *   description="Update details of a single playlist.",
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
+ *   ),
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Playlist ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Delete(path="/station/{station_id}/playlist/{id}",
+ *   operationId="deletePlaylist",
+ *   tags={"Stations: Playlists"},
+ *   description="Delete a single playlist relay.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="Playlist ID",
+ *     required=true,
+ *     @OA\Schema(type="integer", format="int64")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
  * @extends AbstractScheduledEntityController<Entity\StationPlaylist>
  */
 class PlaylistsController extends AbstractScheduledEntityController
 {
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
-
-    /**
-     * @OA\Get(path="/station/{station_id}/playlists",
-     *   tags={"Stations: Playlists"},
-     *   description="List all current playlists.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationPlaylist"))
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Post(path="/station/{station_id}/playlists",
-     *   tags={"Stations: Playlists"},
-     *   description="Create a new playlist.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Get(path="/station/{station_id}/playlist/{id}",
-     *   tags={"Stations: Playlists"},
-     *   description="Retrieve details for a single playlist.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Playlist ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Put(path="/station/{station_id}/playlist/{id}",
-     *   tags={"Stations: Playlists"},
-     *   description="Update details of a single playlist.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationPlaylist")
-     *   ),
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Playlist ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Delete(path="/station/{station_id}/playlist/{id}",
-     *   tags={"Stations: Playlists"},
-     *   description="Delete a single playlist relay.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Playlist ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     */
 
     /**
      * @inheritDoc

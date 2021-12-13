@@ -159,7 +159,7 @@ class StationPlaylistMediaRepository extends Repository
             DQL
         )->setParameter('playlist_id', $playlist->getId());
 
-        $this->em->transactional(
+        $this->em->wrapInTransaction(
             function () use ($update_query, $mapping): void {
                 foreach ($mapping as $id => $weight) {
                     $update_query->setParameter('id', $id)

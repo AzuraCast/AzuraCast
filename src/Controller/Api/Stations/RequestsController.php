@@ -14,6 +14,43 @@ use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @OA\Get(path="/station/{station_id}/requests",
+ *   operationId="getRequestableSongs",
+ *   tags={"Stations: Song Requests"},
+ *   description="Return a list of requestable songs.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Success",
+ *     @OA\Schema(
+ *       type="array",
+ *       @OA\Items(ref="#/components/schemas/Api_StationRequest")
+ *     )
+ *   ),
+ *   @OA\Response(response=404, description="Station not found"),
+ *   @OA\Response(response=403, description="Station does not support requests")
+ * )
+ *
+ * @OA\Post(path="/station/{station_id}/request/{request_id}",
+ *   operationId="submitSongRequest",
+ *   tags={"Stations: Song Requests"},
+ *   description="Submit a song request.",
+ *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+ *   @OA\Parameter(
+ *     name="request_id",
+ *     description="The requestable song ID",
+ *     in="path",
+ *     required=true,
+ *     @OA\Schema(
+ *         type="string"
+ *     )
+ *   ),
+ *   @OA\Response(response=200, description="Success"),
+ *   @OA\Response(response=404, description="Station not found"),
+ *   @OA\Response(response=403, description="Station does not support requests")
+ * )
+ */
 class RequestsController
 {
     public function __construct(
@@ -23,29 +60,6 @@ class RequestsController
     ) {
     }
 
-    /**
-     * @OA\Get(path="/station/{station_id}/requests",
-     *   tags={"Stations: Song Requests"},
-     *   description="Return a list of requestable songs.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_StationRequest")
-     *     )
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Station does not support requests")
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws Exception
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
@@ -125,31 +139,6 @@ class RequestsController
         return $paginator->write($response);
     }
 
-    /**
-     * @OA\Post(path="/station/{station_id}/request/{request_id}",
-     *   tags={"Stations: Song Requests"},
-     *   description="Submit a song request.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="request_id",
-     *     description="The requestable song ID",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(
-     *         type="string"
-     *     )
-     *   ),
-     *   @OA\Response(response=200, description="Success"),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Station does not support requests")
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param string $media_id
-     *
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function submitAction(ServerRequest $request, Response $response, string $media_id): ResponseInterface
     {
         $station = $request->getStation();

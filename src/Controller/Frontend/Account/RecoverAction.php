@@ -9,7 +9,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class RecoverAction
 {
@@ -45,7 +47,7 @@ class RecoverAction
                 $csrf->verify($data['csrf'] ?? null, 'recover');
 
                 if (empty($data['password'])) {
-                    throw new \InvalidArgumentException('Password required.');
+                    throw new InvalidArgumentException('Password required.');
                 }
 
                 $user = $request->getUser();
@@ -69,7 +71,7 @@ class RecoverAction
                 );
 
                 return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $error = $e->getMessage();
             }
         }

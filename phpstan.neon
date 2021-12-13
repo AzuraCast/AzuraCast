@@ -16,6 +16,9 @@ parameters:
     bootstrapFiles:
         - ./util/phpstan.php
 
+    scanDirectories:
+       - ./vendor/zircote/swagger-php/src/Annotations
+
     universalObjectCratesClasses:
         - App\Session\NamespaceInterface
         - App\View

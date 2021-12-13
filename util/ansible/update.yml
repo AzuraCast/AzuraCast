@@ -22,7 +22,7 @@
     - { role : nginx, when : update_revision|int < 60 }
     - { role : redis, when : update_revision|int < 57 }
     - { role: beanstalkd, when: update_revision|int < 67 }
-    - { role : php, when : update_revision|int < 62 }
+    - { role : php, when : update_revision|int < 68 }
     - composer
     - { role : influxdb, when : update_revision|int < 58 }
     - { role : ufw, when : update_revision|int < 12 }

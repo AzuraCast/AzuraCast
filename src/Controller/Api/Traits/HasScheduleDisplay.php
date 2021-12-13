@@ -9,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use InvalidArgumentException;
 
 trait HasScheduleDisplay
 {
@@ -21,7 +22,7 @@ trait HasScheduleDisplay
         $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz);
 
         if (false === $startDate) {
-            throw new \InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
+            throw new InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
         }
 
         $startDate = $startDate->startOf('day');
@@ -30,7 +31,7 @@ trait HasScheduleDisplay
         $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
 
         if (false === $endDate) {
-            throw new \InvalidArgumentException(sprintf('Could not parse end date: "%s"', $endDateStr));
+            throw new InvalidArgumentException(sprintf('Could not parse end date: "%s"', $endDateStr));
         }
 
         $endDate = $endDate->endOf('day');

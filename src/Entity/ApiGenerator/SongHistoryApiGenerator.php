@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
+use App\Entity\Api\NowPlaying\SongHistory;
 use Psr\Http\Message\UriInterface;
 
 class SongHistoryApiGenerator
@@ -20,8 +21,8 @@ class SongHistoryApiGenerator
         Entity\SongHistory $record,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false
-    ): Entity\Api\NowPlaying\SongHistory {
-        $response = new Entity\Api\NowPlaying\SongHistory();
+    ): SongHistory {
+        $response = new SongHistory();
         $response->sh_id = $record->getIdRequired();
         $response->played_at = (0 === $record->getTimestampStart())
             ? 0
@@ -64,7 +65,7 @@ class SongHistoryApiGenerator
      * @param UriInterface|null $baseUri
      * @param bool $allowRemoteArt
      *
-     * @return \App\Entity\Api\NowPlaying\SongHistory[]
+     * @return SongHistory[]
      */
     public function fromArray(
         array $records,

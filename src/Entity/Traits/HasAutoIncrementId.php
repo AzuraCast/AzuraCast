@@ -7,6 +7,7 @@ namespace App\Entity\Traits;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -28,7 +29,7 @@ trait HasAutoIncrementId
     public function getIdRequired(): int
     {
         if (null === $this->id) {
-            throw new \RuntimeException('An ID was not generated for this object.');
+            throw new RuntimeException('An ID was not generated for this object.');
         }
 
         return $this->id;

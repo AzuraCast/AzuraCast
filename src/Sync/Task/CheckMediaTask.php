@@ -12,6 +12,7 @@ use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Quota;
 use Azura\Files\Attributes\FileAttributes;
 use Brick\Math\BigInteger;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
@@ -182,7 +183,7 @@ class CheckMediaTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $storageLocation);
 
-        foreach ($existingMediaQuery->toIterable([], Query::HYDRATE_ARRAY) as $mediaRow) {
+        foreach ($existingMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY) as $mediaRow) {
             // Check if media file still exists.
             $path = $mediaRow['path'];
             $pathHash = md5($path);
@@ -236,7 +237,7 @@ class CheckMediaTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $storageLocation);
 
-        $unprocessableRecords = $unprocessableMediaQuery->toIterable([], Query::HYDRATE_ARRAY);
+        $unprocessableRecords = $unprocessableMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY);
 
         foreach ($unprocessableRecords as $unprocessableRow) {
             $pathHash = md5($unprocessableRow['path']);

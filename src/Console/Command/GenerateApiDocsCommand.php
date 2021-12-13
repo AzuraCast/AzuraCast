@@ -10,6 +10,7 @@ use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateApiDocsCommand extends CommandAbstract
@@ -17,14 +18,15 @@ class GenerateApiDocsCommand extends CommandAbstract
     public function __construct(
         Application $application,
         protected Environment $environment,
-        protected Version $version
+        protected Version $version,
+        protected LoggerInterface $logger
     ) {
         parent::__construct($application);
     }
 
     public function __invoke(SymfonyStyle $io): int
     {
-        $yaml = $this->generate()->toYaml();
+        $yaml = $this->generate()?->toYaml();
         $yaml_path = $this->environment->getBaseDirectory() . '/web/static/api/openapi.yml';
 
         file_put_contents($yaml_path, $yaml);
@@ -36,7 +38,7 @@ class GenerateApiDocsCommand extends CommandAbstract
     public function generate(
         bool $useCurrentVersion = false,
         string $apiBaseUrl = 'https://demo.azuracast.com/api'
-    ): OpenApi {
+    ): ?OpenApi {
         define('AZURACAST_API_URL', $apiBaseUrl);
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define(
@@ -57,6 +59,8 @@ class GenerateApiDocsCommand extends CommandAbstract
             ]
         );
 
-        return Generator::scan($finder);
+        return Generator::scan($finder, [
+            'logger' => $this->logger,
+        ]);
     }
 }

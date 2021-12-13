@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\Task\RunAutomatedAssignmentTask;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class RunAction extends StationsController
 {
@@ -23,7 +24,7 @@ class RunAction extends StationsController
         try {
             $syncTask->runStation($station, true);
             return $response->withJson(Entity\Api\Status::success());
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
         }
     }

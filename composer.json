@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "ext-PDO": "*",
     "ext-fileinfo": "*",
     "ext-gd": "*",
@@ -89,7 +89,7 @@
     "theiconic/php-ga-measurement-protocol": "^2.9",
     "vlucas/phpdotenv": "^5.3",
     "wikimedia/composer-merge-plugin": "dev-master",
-    "zircote/swagger-php": "^3"
+    "zircote/swagger-php": "^4"
   },
   "replace": {
     "symfony/polyfill-iconv": "1.99",

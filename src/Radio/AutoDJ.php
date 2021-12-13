@@ -152,7 +152,7 @@ class AutoDJ
                     );
                 } else {
                     // Prevent the exact same track from being played twice during this loop
-                    if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
+                    if ($lastSongId === $queueRow->getSongId()) {
                         $this->em->remove($queueRow);
                         continue;
                     }
@@ -179,7 +179,7 @@ class AutoDJ
                     $this->em->persist($queueRow);
 
                     // Prevent the exact same track from being played twice during this loop
-                    if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
+                    if ($lastSongId === $queueRow->getSongId()) {
                         $this->em->remove($queueRow);
                     } else {
                         $lastSongId = $queueRow->getSongId();

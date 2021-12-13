@@ -10,23 +10,21 @@ use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @OA\Get(path="/admin/permissions",
+ *   operationId="getPermissions",
+ *   tags={"Administration: Roles"},
+ *   description="Return a list of all available permissions.",
+ *   @OA\Response(
+ *     response=200,
+ *     description="Success",
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ */
 class PermissionsController
 {
-    /**
-     * @OA\Get(path="/admin/permissions",
-     *   tags={"Administration: Roles"},
-     *   description="Return a list of all available permissions.",
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     */
     public function __invoke(
         ServerRequest $request,
         Response $response,

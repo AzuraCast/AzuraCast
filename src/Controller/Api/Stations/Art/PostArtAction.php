@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
+use App\Exception\NoFileUploadedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
@@ -21,7 +22,7 @@ class PostArtAction
      * @param int|string $media_id
      *
      * @return ResponseInterface
-     * @throws \App\Exception\NoFileUploadedException
+     * @throws NoFileUploadedException
      */
     public function __invoke(
         ServerRequest $request,

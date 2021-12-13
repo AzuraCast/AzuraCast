@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 
@@ -25,7 +26,7 @@ class Application extends \Silly\Edition\PhpDi\Application
 
         $temp_stream = fopen($outputFile, 'wb+');
         if (false === $temp_stream) {
-            throw new \RuntimeException(sprintf('Could not open output file: "%s"', $outputFile));
+            throw new RuntimeException(sprintf('Could not open output file: "%s"', $outputFile));
         }
 
         $output = new StreamOutput($temp_stream);

@@ -16,6 +16,7 @@ paths:
       tags:
         - 'Administration: Custom Fields'
       description: 'List all current custom fields in the system.'
+      operationId: getCustomFields
       responses:
         '200':
           description: Success
@@ -34,6 +35,7 @@ paths:
       tags:
         - 'Administration: Custom Fields'
       description: 'Create a new custom field.'
+      operationId: addCustomField
       requestBody:
         content:
           application/json:
@@ -56,6 +58,7 @@ paths:
       tags:
         - 'Administration: Custom Fields'
       description: 'Retrieve details for a single custom field.'
+      operationId: getCustomField
       parameters:
         -
           name: id
@@ -81,6 +84,7 @@ paths:
       tags:
         - 'Administration: Custom Fields'
       description: 'Update details of a single custom field.'
+      operationId: editCustomField
       parameters:
         -
           name: id
@@ -111,6 +115,7 @@ paths:
       tags:
         - 'Administration: Custom Fields'
       description: 'Delete a single custom field.'
+      operationId: deleteCustomField
       parameters:
         -
           name: id
@@ -137,7 +142,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Return a list of all available permissions.'
-      operationId: d5b93c0462b0833fa0e840b1f5e346c3
+      operationId: getPermissions
       responses:
         '200':
           description: Success
@@ -151,7 +156,7 @@ paths:
       tags:
         - 'Administration: Relays'
       description: 'Returns all necessary information to relay all ''relayable'' stations.'
-      operationId: 8a95959aa86cede6b49a943ea6744d46
+      operationId: internalGetRelayDetails
       parameters: []
       responses:
         '200':
@@ -167,7 +172,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'List all current roles in the system.'
-      operationId: b117c9dc01aa525d0ddd9344f4d30cac
+      operationId: getRoles
       responses:
         '200':
           description: Success
@@ -186,7 +191,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Create a new role.'
-      operationId: b3ae4432841b4e93c412d12ec0c664a9
+      operationId: addRole
       requestBody:
         content:
           application/json:
@@ -209,7 +214,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Retrieve details for a single current role.'
-      operationId: 353f4f6816f3ca15b207ccd360f743bf
+      operationId: getRole
       parameters:
         -
           name: id
@@ -235,7 +240,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Update details of a single role.'
-      operationId: 4337def90cce91c8c2d90f4dd44d74c6
+      operationId: editRole
       parameters:
         -
           name: id
@@ -266,7 +271,7 @@ paths:
       tags:
         - 'Administration: Roles'
       description: 'Delete a single role.'
-      operationId: c9f6273421106c4bc2542e8f624d6cfd
+      operationId: deleteRole
       parameters:
         -
           name: id
@@ -293,7 +298,7 @@ paths:
       tags:
         - 'Administration: Settings'
       description: 'List the current values of all editable system settings.'
-      operationId: f6bfa4aab7bc91da0a78d9edbc4b449f
+      operationId: getSettings
       responses:
         '200':
           description: Success
@@ -310,7 +315,7 @@ paths:
       tags:
         - 'Administration: Settings'
       description: 'Update settings to modify any settings provided.'
-      operationId: bd9bccac1cce3ba2951e4dfbf1ef8f6f
+      operationId: editSettings
       requestBody:
         content:
           application/json:
@@ -333,6 +338,7 @@ paths:
       tags:
         - 'Administration: Stations'
       description: 'List all current stations in the system.'
+      operationId: adminGetStations
       responses:
         '200':
           description: Success
@@ -351,6 +357,7 @@ paths:
       tags:
         - 'Administration: Stations'
       description: 'Create a new station.'
+      operationId: adminAddStation
       requestBody:
         content:
           application/json:
@@ -373,6 +380,7 @@ paths:
       tags:
         - 'Administration: Stations'
       description: 'Retrieve details for a single station.'
+      operationId: adminGetStation
       parameters:
         -
           name: id
@@ -398,6 +406,7 @@ paths:
       tags:
         - 'Administration: Stations'
       description: 'Update details of a single station.'
+      operationId: adminEditStation
       parameters:
         -
           name: id
@@ -428,6 +437,7 @@ paths:
       tags:
         - 'Administration: Stations'
       description: 'Delete a single station.'
+      operationId: adminDeleteStation
       parameters:
         -
           name: id
@@ -454,7 +464,7 @@ paths:
       tags:
         - 'Administration: Storage Locations'
       description: 'List all current storage locations in the system.'
-      operationId: acdefb6bde5fef7807c9090a54ae35f4
+      operationId: getStorageLocations
       responses:
         '200':
           description: Success
@@ -473,7 +483,7 @@ paths:
       tags:
         - 'Administration: Storage Locations'
       description: 'Create a new storage location.'
-      operationId: 690615420ccff1ff93dfc65d75a223a8
+      operationId: addStorageLocation
       requestBody:
         content:
           application/json:
@@ -496,7 +506,7 @@ paths:
       tags:
         - 'Administration: Storage Locations'
       description: 'Retrieve details for a single storage location.'
-      operationId: 87704196f58bd67d40c31dd8facd1ac6
+      operationId: getStorageLocation
       parameters:
         -
           name: id
@@ -522,7 +532,7 @@ paths:
       tags:
         - 'Administration: Storage Locations'
       description: 'Update details of a single storage location.'
-      operationId: 6182e6410f5b30e7de42de094be837f8
+      operationId: editStorageLocation
       parameters:
         -
           name: id
@@ -553,7 +563,7 @@ paths:
       tags:
         - 'Administration: Storage Locations'
       description: 'Delete a single storage location.'
-      operationId: 54b173c6d3f00230c9bf903599106110
+      operationId: deleteStorageLocation
       parameters:
         -
           name: id
@@ -580,6 +590,7 @@ paths:
       tags:
         - 'Administration: Users'
       description: 'List all current users in the system.'
+      operationId: getUsers
       responses:
         '200':
           description: Success
@@ -598,6 +609,7 @@ paths:
       tags:
         - 'Administration: Users'
       description: 'Create a new user.'
+      operationId: addUser
       requestBody:
         content:
           application/json:
@@ -620,6 +632,7 @@ paths:
       tags:
         - 'Administration: Users'
       description: 'Retrieve details for a single current user.'
+      operationId: getUser
       parameters:
         -
           name: id
@@ -645,6 +658,7 @@ paths:
       tags:
         - 'Administration: Users'
       description: 'Update details of a single user.'
+      operationId: editUser
       parameters:
         -
           name: id
@@ -675,7 +689,7 @@ paths:
       tags:
         - 'Administration: Users'
       description: 'Delete a single user.'
-      operationId: 45bfe78420f35ac6dd36a33efaecbdbe
+      operationId: deleteUser
       parameters:
         -
           name: id
@@ -730,7 +744,7 @@ paths:
       tags:
         - 'Now Playing'
       description: 'Returns a full summary of all stations'' current state.'
-      operationId: fc7ba75e1ae504860545914b115414ad
+      operationId: 2ac086b9720325236f99cd3c185cc5c8
       parameters: []
       responses:
         '200':
@@ -746,7 +760,7 @@ paths:
       tags:
         - 'Now Playing'
       description: 'Returns a full summary of the specified station''s current state.'
-      operationId: 96fc53c2baaace0eaec655bcfba86065
+      operationId: 4ffcbe7b5873aecdb0872e3b312c6791
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -785,6 +799,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'List all current uploaded files.'
+      operationId: getFiles
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -806,6 +821,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Upload a new file.'
+      operationId: addFile
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -831,6 +847,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Retrieve details for a single file.'
+      operationId: getFile
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -858,6 +875,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Update details of a single file.'
+      operationId: editFile
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -890,6 +908,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Delete a single file.'
+      operationId: deleteFile
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -918,7 +937,7 @@ paths:
       tags:
         - 'Stations: History'
       description: 'Return song playback history items for a given station.'
-      operationId: fe481989a4419d377f2c698951d33cb9
+      operationId: getStationHistory
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -957,7 +976,7 @@ paths:
       tags:
         - 'Stations: General'
       description: 'Returns a list of stations.'
-      operationId: ad7bc9e8a7d8356cc3fda373eaa731db
+      operationId: getStations
       parameters: []
       responses:
         '200':
@@ -973,7 +992,7 @@ paths:
       tags:
         - 'Stations: General'
       description: 'Return information about a single station.'
-      operationId: dd934e9386f9fbd6ff1e3001f6b48da9
+      operationId: getStation
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -991,7 +1010,7 @@ paths:
       tags:
         - 'Stations: Listeners'
       description: 'Return detailed information about current listeners.'
-      operationId: 55f8ec17b4cf8b8339589705a4d7da24
+      operationId: getStationListeners
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1016,7 +1035,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'List all current mount points.'
-      operationId: 146531e6ded994eeaa2a306d92d8b90e
+      operationId: getStationMounts
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1038,7 +1057,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Create a new mount point.'
-      operationId: 8e558e6f9f222bee4ca2157ce699f097
+      operationId: addMount
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1064,7 +1083,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Retrieve details for a single mount point.'
-      operationId: 3d9eedb16ec362816994b6d8599f0727
+      operationId: getMount
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1092,7 +1111,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Update details of a single mount point.'
-      operationId: 738b845333262f4aac393c95f50aa1f8
+      operationId: editMount
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1125,7 +1144,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Delete a single mount point.'
-      operationId: 0b2bce55d0fa09ab6ad8142d84aabda0
+      operationId: deleteMount
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1154,6 +1173,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       description: 'List all current playlists.'
+      operationId: getPlaylists
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1175,6 +1195,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       description: 'Create a new playlist.'
+      operationId: addPlaylist
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1200,6 +1221,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       description: 'Retrieve details for a single playlist.'
+      operationId: getPlaylist
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1227,6 +1249,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       description: 'Update details of a single playlist.'
+      operationId: editPlaylist
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1259,6 +1282,7 @@ paths:
       tags:
         - 'Stations: Playlists'
       description: 'Delete a single playlist relay.'
+      operationId: deletePlaylist
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1287,7 +1311,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'List all current episodes for a given podcast ID.'
-      operationId: dfc3e15b5f248268049b3385273c9fcd
+      operationId: getEpisodes
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1316,7 +1340,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Create a new podcast episode.'
-      operationId: 6180faa6d38da9d2940e915ac52afe3d
+      operationId: addEpisode
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1349,7 +1373,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Retrieve details for a single podcast episode.'
-      operationId: 42b633bfbff63bba34e9be9d70b7f396
+      operationId: getEpisode
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1383,7 +1407,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Update details of a single podcast episode.'
-      operationId: ad714f969f4b06e41f9ac3e321bf98dc
+      operationId: editEpisode
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1422,7 +1446,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Delete a single podcast episode.'
-      operationId: 5a3d46510c6c700332d8a30b83d53eb5
+      operationId: deleteEpisode
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1457,6 +1481,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'List all current podcasts.'
+      operationId: getPodcasts
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1478,6 +1503,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Create a new podcast.'
+      operationId: addPodcast
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1503,6 +1529,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Retrieve details for a single podcast.'
+      operationId: getPodcast
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1529,6 +1556,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Update details of a single podcast.'
+      operationId: editPodcast
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1560,6 +1588,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Delete a single podcast.'
+      operationId: deletePodcast
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1587,7 +1616,7 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Return information about the upcoming song playback queue.'
-      operationId: 9ddb577c2cf0cd64ece8c75d8f524ddd
+      operationId: getQueue
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1612,6 +1641,7 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Retrieve details of a single queued item.'
+      operationId: getQueueItem
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1641,6 +1671,7 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Delete a single queued item.'
+      operationId: deleteQueueItem
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1671,7 +1702,7 @@ paths:
       tags:
         - 'Stations: Remote Relays'
       description: 'List all current remote relays.'
-      operationId: 005ce9b8c00c7a437492a648a0af8add
+      operationId: getRelays
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1693,7 +1724,7 @@ paths:
       tags:
         - 'Stations: Remote Relays'
       description: 'Create a new remote relay.'
-      operationId: e87d5475bff8a1d992302771d7e61359
+      operationId: addRelay
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1719,7 +1750,7 @@ paths:
       tags:
         - 'Stations: Remote Relays'
       description: 'Retrieve details for a single remote relay.'
-      operationId: 8f060eba2e4b605fb39feac089b2b104
+      operationId: getRelay
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1747,7 +1778,7 @@ paths:
       tags:
         - 'Stations: Remote Relays'
       description: 'Update details of a single remote relay.'
-      operationId: 06ffd28899e83b38f4b7c8fe9b27e24e
+      operationId: editRelay
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1780,7 +1811,7 @@ paths:
       tags:
         - 'Stations: Remote Relays'
       description: 'Delete a single remote relay.'
-      operationId: b205d96d717b9b099b53b33324ea95b7
+      operationId: deleteRelay
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1809,7 +1840,7 @@ paths:
       tags:
         - 'Stations: Song Requests'
       description: 'Return a list of requestable songs.'
-      operationId: d97d958c5c0c3daec1415a0070be0f2e
+      operationId: getRequestableSongs
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1825,7 +1856,7 @@ paths:
       tags:
         - 'Stations: Song Requests'
       description: 'Submit a song request.'
-      operationId: 3242e46d9bc44e60804789a12ad7f895
+      operationId: submitSongRequest
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1848,7 +1879,7 @@ paths:
       tags:
         - 'Stations: Schedules'
       description: 'Return upcoming and currently ongoing schedule entries.'
-      operationId: c4bd8a99f5774d5549127a5825745f05
+      operationId: getSchedule
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1884,7 +1915,7 @@ paths:
       tags:
         - 'Stations: Service Control'
       description: 'Retrieve the current status of all serivces associated with the radio broadcast.'
-      operationId: 745ceb49eea34152e8178ea44199654e
+      operationId: getServiceStatus
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1901,7 +1932,7 @@ paths:
       tags:
         - 'Stations: Service Control'
       description: 'Restart all services associated with the radio broadcast.'
-      operationId: 718d2799a60687f9e1a38378aca6a87e
+      operationId: restartServices
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1918,7 +1949,7 @@ paths:
       tags:
         - 'Stations: Service Control'
       description: 'Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)'
-      operationId: 1ef21fbec5e30787b422fc110218d607
+      operationId: doFrontendServiceAction
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1943,7 +1974,7 @@ paths:
       tags:
         - 'Stations: Service Control'
       description: 'Perform service control actions on the radio backend (Liquidsoap)'
-      operationId: 996770a2522ed05a9f1e6540fd239fcc
+      operationId: doBackendServiceAction
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1963,11 +1994,150 @@ paths:
       security:
         -
           api_key: []
+  '/station/{station_id}/sftp-users':
+    get:
+      tags:
+        - 'Stations: SFTP Users'
+      description: 'List all current SFTP users.'
+      operationId: getSftpUsers
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SftpUser'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: SFTP Users'
+      description: 'Create a new SFTP user.'
+      operationId: addSftpUser
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SftpUser'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SftpUser'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/sftp-user/{id}':
+    get:
+      tags:
+        - 'Stations: SFTP Users'
+      description: 'Retrieve details for a single SFTP user.'
+      operationId: getSftpUser
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'SFTP User ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SftpUser'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Stations: SFTP Users'
+      description: 'Update details of a single SFTP user.'
+      operationId: editSftpUser
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Remote Relay ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SftpUser'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: SFTP Users'
+      description: 'Delete a single remote relay.'
+      operationId: deleteSftpUser
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Remote Relay ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   '/station/{station_id}/streamers':
     get:
       tags:
         - 'Stations: Streamers/DJs'
       description: 'List all current Streamer/DJ accounts for the specified station.'
+      operationId: getStreamers
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1989,6 +2159,7 @@ paths:
       tags:
         - 'Stations: Streamers/DJs'
       description: 'Create a new Streamer/DJ account.'
+      operationId: addStreamer
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2014,6 +2185,7 @@ paths:
       tags:
         - 'Stations: Streamers/DJs'
       description: 'Retrieve details for a single Streamer/DJ account.'
+      operationId: getStreamer
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2041,6 +2213,7 @@ paths:
       tags:
         - 'Stations: Streamers/DJs'
       description: 'Update details of a single Streamer/DJ account.'
+      operationId: editStreamer
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2073,6 +2246,7 @@ paths:
       tags:
         - 'Stations: Streamers/DJs'
       description: 'Delete a single Streamer/DJ account.'
+      operationId: deleteStreamer
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2101,6 +2275,7 @@ paths:
       tags:
         - 'Stations: Web Hooks'
       description: 'List all current web hooks.'
+      operationId: getWebhooks
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2122,6 +2297,7 @@ paths:
       tags:
         - 'Stations: Web Hooks'
       description: 'Create a new web hook.'
+      operationId: addWebhook
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2147,6 +2323,7 @@ paths:
       tags:
         - 'Stations: Web Hooks'
       description: 'Retrieve details for a single web hook.'
+      operationId: getWebhook
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2174,6 +2351,7 @@ paths:
       tags:
         - 'Stations: Web Hooks'
       description: 'Update details of a single web hook.'
+      operationId: editWebhook
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2206,6 +2384,7 @@ paths:
       tags:
         - 'Stations: Web Hooks'
       description: 'Delete a single web hook relay.'
+      operationId: deleteWebhook
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2238,40 +2417,40 @@ components:
           type: integer
           example: 1
         name:
-          nullable: true
           description: 'Station name'
           type: string
           example: 'AzuraTest Radio'
-        shortcode:
           nullable: true
+        shortcode:
           description: 'Station "short code", used for URL and folder paths'
           type: string
           example: azuratest_radio
-        description:
           nullable: true
+        description:
           description: 'Station description'
           type: string
           example: 'An AzuraCast station!'
-        url:
           nullable: true
+        url:
           description: 'Station homepage URL'
           type: string
           example: 'https://www.azuracast.com/'
-        genre:
           nullable: true
+        genre:
           description: 'The genre of the station'
           type: string
           example: Variety
-        type:
           nullable: true
+        type:
           description: 'Which broadcasting software (frontend) the station uses'
           type: string
           example: shoutcast2
-        port:
           nullable: true
+        port:
           description: 'The port used by this station to serve its broadcasts.'
           type: integer
           example: 8000
+          nullable: true
         relay_pw:
           description: 'The relay password for the frontend (if applicable).'
           type: string
@@ -2282,76 +2461,102 @@ components:
           example: p4ssw0rd
         mounts:
           type: array
-          items:
-            $ref: '#/components/schemas/Api_NowPlaying_StationMount'
+          items: {  }
       type: object
     Api_Admin_StorageLocation:
+      properties:
+        id:
+          type: integer
+          example: 1
+        type:
+          description: 'The type of storage location.'
+          type: string
+          example: station_media
+        adapter:
+          description: 'The storage adapter to use for this location.'
+          type: string
+          example: local
+        path:
+          description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
+          type: string
+          example: /var/azuracast/stations/azuratest_radio/media
+          nullable: true
+        s3CredentialKey:
+          description: 'The credential key for S3 adapters.'
+          type: string
+          example: your-key-here
+          nullable: true
+        s3CredentialSecret:
+          description: 'The credential secret for S3 adapters.'
+          type: string
+          example: your-secret-here
+          nullable: true
+        s3Region:
+          description: 'The region for S3 adapters.'
+          type: string
+          example: your-region
+          nullable: true
+        s3Version:
+          description: 'The API version for S3 adapters.'
+          type: string
+          example: latest
+          nullable: true
+        s3Bucket:
+          description: 'The S3 bucket name for S3 adapters.'
+          type: string
+          example: your-bucket-name
+          nullable: true
+        s3Endpoint:
+          description: 'The optional custom S3 endpoint S3 adapters.'
+          type: string
+          example: 'https://your-region.digitaloceanspaces.com'
+          nullable: true
+        storageQuota:
+          type: string
+          example: '50 GB'
+          nullable: true
+        storageQuotaBytes:
+          type: string
+          example: '120000'
+          nullable: true
+        storageUsed:
+          type: string
+          example: '1 GB'
+          nullable: true
+        storageUsedBytes:
+          type: string
+          example: '60000'
+          nullable: true
+        storageAvailable:
+          type: string
+          example: '1 GB'
+          nullable: true
+        storageAvailableBytes:
+          type: string
+          example: '120000'
+          nullable: true
+        storageUsedPercent:
+          type: integer
+          example: '75'
+          nullable: true
+        isFull:
+          type: boolean
+          example: 'true'
+        uri:
+          description: 'The URI associated with the storage location.'
+          type: string
+          example: /var/azuracast/www
+        stations:
+          description: 'The stations using this storage location, if any.'
+          type: array
+          items:
+            type: string
+            example: 'AzuraTest Radio'
+          nullable: true
+      type: object
+    Api_DetailedSongHistory:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasLinks'
-        -
-          properties:
-            id:
-              type: integer
-              example: 1
-            type:
-              type: string
-              example: station_media
-            adapter:
-              type: string
-              example: local
-            path:
-              nullable: true
-              type: string
-              example: /var/azuracast/stations/azuratest_radio/media
-            s3CredentialKey:
-              nullable: true
-              type: string
-              example: your-key-here
-            s3CredentialSecret:
-              nullable: true
-              type: string
-              example: your-secret-here
-            s3Region:
-              nullable: true
-              type: string
-              example: your-region
-            s3Version:
-              nullable: true
-              type: string
-              example: latest
-            s3Bucket:
-              nullable: true
-              type: string
-              example: your-bucket-name
-            s3Endpoint:
-              nullable: true
-              type: string
-              example: 'https://your-region.digitaloceanspaces.com'
-            storageQuota:
-              nullable: true
-              type: string
-              example: '50 GB'
-            storageUsed:
-              nullable: true
-              type: string
-              example: '1 GB'
-            uri:
-              description: 'The URI associated with the storage location.'
-              type: string
-              example: /var/azuracast/www
-            stations:
-              nullable: true
-              description: 'The stations using this storage location, if any.'
-              type: array
-              items:
-                type: string
-                example: 'AzuraTest Radio'
-    Api_DetailedSongHistory:
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
         -
           properties:
             listeners_start:
@@ -2366,22 +2571,27 @@ components:
               description: 'The sum total change of listeners between the song''s start and ending.'
               type: integer
               example: 11
-          type: object
+        -
+          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
     Api_Error:
       properties:
         code:
           description: 'The numeric code of the error.'
           type: integer
           example: 500
+        type:
+          description: 'The programmatic class of error.'
+          type: string
+          example: NotLoggedInException
         message:
           description: 'The text description of the error.'
           type: string
           example: 'Error description.'
         formatted_message:
-          nullable: true
           description: 'The HTML-formatted text description of the error.'
           type: string
           example: '<b>Error description.</b><br>Detailed error text.'
+          nullable: true
         extra_data:
           description: 'Stack traces and other supplemental data.'
           type: array
@@ -2401,6 +2611,10 @@ components:
           description: "The listener's HTTP User-Agent\n\nphpcs:disable Generic.Files.LineLength"
           type: string
           example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
+        hash:
+          description: 'A unique identifier for this instance of this listener on this user agent (used for unique calculations).'
+          type: string
+          example: ''
         client:
           description: 'The listener''s client details (extracted from user-agent)'
           type: string
@@ -2435,9 +2649,8 @@ components:
           items: {  }
       type: object
     Api_NewRecord:
+      type: object
       allOf:
-        -
-          $ref: '#/components/schemas/Api_Status'
         -
           properties:
             links:
@@ -2445,11 +2658,11 @@ components:
               items:
                 type: string
                 example: 'http://localhost/api/record/1'
-          type: object
-    Api_NowPlaying_CurrentSong:
-      allOf:
         -
-          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
+          $ref: '#/components/schemas/Api_Status'
+    Api_NowPlaying_CurrentSong:
+      type: object
+      allOf:
         -
           properties:
             elapsed:
@@ -2460,7 +2673,8 @@ components:
               description: 'Remaining time in the song, in seconds.'
               type: integer
               example: 155
-          type: object
+        -
+          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
     Api_NowPlaying_Listeners:
       properties:
         total:
@@ -2487,10 +2701,10 @@ components:
           type: string
           example: 'DJ Jazzy Jeff'
         broadcast_start:
-          nullable: true
           description: 'The start timestamp of the current broadcast, if one is available.'
           type: integer
           example: '1591548318'
+          nullable: true
       type: object
     Api_NowPlaying:
       properties:
@@ -2501,17 +2715,9 @@ components:
         live:
           $ref: '#/components/schemas/Api_NowPlaying_Live'
         now_playing:
-          nullable: true
-          description: 'Current Song'
-          oneOf:
-            -
-              $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
+          $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
         playing_next:
-          nullable: true
-          description: 'Next Playing Song'
-          oneOf:
-            -
-              $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
+          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
         song_history:
           type: array
           items:
@@ -2521,13 +2727,13 @@ components:
           type: boolean
           example: true
         cache:
-          nullable: true
           description: 'Debugging information about where the now playing data comes from.'
           type: string
           enum:
             - hit
             - database
             - station
+          nullable: true
       type: object
     Api_NowPlaying_SongHistory:
       properties:
@@ -2543,15 +2749,15 @@ components:
           type: integer
           example: 180
         playlist:
-          nullable: true
           description: 'Indicates the playlist that the song was played from, if available, or empty string if not.'
           type: string
           example: 'Top 100'
-        streamer:
           nullable: true
+        streamer:
           description: 'Indicates the current streamer that was connected, if available, or empty string if not.'
           type: string
           example: 'Test DJ'
+          nullable: true
         is_request:
           description: 'Indicates whether the song is a listener request.'
           type: boolean
@@ -2588,10 +2794,10 @@ components:
           description: 'The full URL to listen to the default mount of the station'
           example: 'http://localhost:8000/radio.mp3'
         url:
-          nullable: true
           description: 'The public URL of the station.'
           type: string
           example: 'https://example.com/'
+          nullable: true
         public_player_url:
           description: 'The public player URL for the station.'
           example: 'https://example.com/public/example_station'
@@ -2615,9 +2821,8 @@ components:
             $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
       type: object
     Api_NowPlaying_StationMount:
+      type: object
       allOf:
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
         -
           properties:
             path:
@@ -2628,10 +2833,15 @@ components:
               description: 'If the mount is the default mount for the parent station'
               type: boolean
               example: true
-          type: object
+        -
+          $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
     Api_NowPlaying_StationQueue:
       properties:
         cued_at:
+          description: 'UNIX timestamp when the AutoDJ is expected to queue the song for playback.'
+          type: integer
+          example: 1609480800
+        played_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
           example: 1609480800
@@ -2640,10 +2850,10 @@ components:
           type: integer
           example: 180
         playlist:
-          nullable: true
           description: 'Indicates the playlist that the song was played from, if available, or empty string if not.'
           type: string
           example: 'Top 100'
+          nullable: true
         is_request:
           description: 'Indicates whether the song is a listener request.'
           type: boolean
@@ -2664,15 +2874,15 @@ components:
           description: 'Full listening URL specific to this mount'
           example: 'http://localhost:8000/radio.mp3'
         bitrate:
-          nullable: true
           description: 'Bitrate (kbps) of the broadcasted audio (if known)'
           type: integer
           example: 128
-        format:
           nullable: true
+        format:
           description: 'Audio encoding format of broadcasted audio (if known)'
           type: string
           example: mp3
+          nullable: true
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
       type: object
@@ -2680,38 +2890,36 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/HasLinks'
-        -
           properties:
             id:
-              nullable: true
               type: string
+              nullable: true
             storage_location_id:
-              nullable: true
               type: integer
+              nullable: true
             title:
-              nullable: true
               type: string
+              nullable: true
             link:
-              nullable: true
               type: string
+              nullable: true
             description:
-              nullable: true
               type: string
+              nullable: true
             language:
-              nullable: true
               type: string
+              nullable: true
             author:
-              nullable: true
               type: string
+              nullable: true
             email:
-              nullable: true
               type: string
+              nullable: true
             has_custom_art:
               type: boolean
             art:
-              nullable: true
               type: string
+              nullable: true
             art_updated_at:
               type: integer
             categories:
@@ -2722,27 +2930,27 @@ components:
               type: array
               items:
                 type: string
+        -
+          $ref: '#/components/schemas/HasLinks'
     Api_PodcastEpisode:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/HasLinks'
-        -
           properties:
             id:
-              nullable: true
               type: string
+              nullable: true
             title:
-              nullable: true
               type: string
+              nullable: true
             description:
-              nullable: true
               type: string
+              nullable: true
             explicit:
               type: boolean
             publish_at:
-              nullable: true
               type: integer
+              nullable: true
             has_media:
               type: boolean
             media:
@@ -2750,27 +2958,29 @@ components:
             has_custom_art:
               type: boolean
             art:
-              nullable: true
               type: string
+              nullable: true
             art_updated_at:
               type: integer
+        -
+          $ref: '#/components/schemas/HasLinks'
     Api_PodcastMedia:
       properties:
         id:
-          nullable: true
           type: string
+          nullable: true
         original_name:
-          nullable: true
           type: string
+          nullable: true
         length:
           type: number
           format: float
         length_text:
-          nullable: true
           type: string
+          nullable: true
         path:
-          nullable: true
           type: string
+          nullable: true
       type: object
     Api_Song:
       properties:
@@ -2829,10 +3039,10 @@ components:
     Api_StationPlaylistQueue:
       properties:
         spm_id:
-          nullable: true
           description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
           type: integer
           example: 1
+          nullable: true
         media_id:
           description: 'ID of the StationPlaylistMedia record associating this track with the playlist'
           type: integer
@@ -2854,30 +3064,34 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
-        -
-          $ref: '#/components/schemas/HasLinks'
-        -
           properties:
+            sent_to_autodj:
+              description: 'Indicates whether the song has been sent to the AutoDJ.'
+              type: boolean
+            is_played:
+              description: 'Indicates whether the song has already been marked as played.'
+              type: boolean
             autodj_custom_uri:
-              nullable: true
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
               example: ''
+              nullable: true
+        -
+          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
+        -
+          $ref: '#/components/schemas/HasLinks'
     Api_StationRemote:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/HasLinks'
-        -
           properties:
             id:
-              nullable: true
               type: integer
-            display_name:
               nullable: true
+            display_name:
               type: string
               example: '128kbps MP3'
+              nullable: true
             is_visible_on_public_pages:
               type: boolean
               example: true
@@ -2891,44 +3105,44 @@ components:
               type: boolean
               example: false
             autodj_format:
-              nullable: true
               type: string
               example: mp3
-            autodj_bitrate:
               nullable: true
+            autodj_bitrate:
               type: integer
               example: 128
-            custom_listen_url:
               nullable: true
+            custom_listen_url:
               type: string
               example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
             url:
               type: string
               example: 'https://custom-url.example.com'
             mount:
-              nullable: true
               type: string
               example: /stream.mp3
-            admin_password:
               nullable: true
+            admin_password:
               type: string
               example: password
-            source_port:
               nullable: true
+            source_port:
               type: integer
               example: 8000
-            source_mount:
               nullable: true
+            source_mount:
               type: string
               example: /
-            source_username:
               nullable: true
+            source_username:
               type: string
               example: source
-            source_password:
               nullable: true
+            source_password:
               type: string
               example: password
+              nullable: true
             is_public:
               type: boolean
               example: false
@@ -2940,6 +3154,8 @@ components:
               description: 'The most recent number of total (non-unique) listeners.'
               type: integer
               example: 12
+        -
+          $ref: '#/components/schemas/HasLinks'
     Api_StationRequest:
       properties:
         request_id:
@@ -2970,6 +3186,10 @@ components:
           description: 'Either the playlist or streamer''s display name.'
           type: string
           example: 'Example Schedule Entry'
+        title:
+          description: 'The full name of the type and name combined.'
+          type: string
+          example: 'Playlist: Example Schedule Entry'
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
@@ -2997,6 +3217,12 @@ components:
           type: boolean
           example: true
         frontend_running:
+          type: boolean
+          example: true
+        station_has_started:
+          type: boolean
+          example: true
+        station_needs_restart:
           type: boolean
           example: true
       type: object
@@ -3053,17 +3279,17 @@ components:
     Api_UploadFile:
       properties:
         path:
+          description: 'The destination path of the uploaded file.'
           type: string
           example: relative/path/to/file.mp3
         file:
+          description: 'The base64-encoded contents of the file to upload.'
           type: string
           example: ''
       type: object
     CustomField:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -3072,23 +3298,23 @@ components:
               description: 'The programmatic name for the field. Can be auto-generated from the full name.'
               type: string
             auto_assign:
-              nullable: true
               description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
               type: string
+              nullable: true
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     Relay:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             base_url:
               type: string
               example: 'https://custom-url.example.com'
             name:
-              nullable: true
               type: string
               example: Relay
+              nullable: true
             is_visible_on_public_pages:
               type: boolean
               example: true
@@ -3098,11 +3324,11 @@ components:
             updated_at:
               type: integer
               example: 1609480800
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     Role:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -3111,20 +3337,22 @@ components:
             permissions:
               type: array
               items: {  }
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     Settings:
       properties:
         app_unique_identifier:
           type: string
         base_url:
-          nullable: true
           description: 'Site Base URL'
           type: string
           example: 'https://your.azuracast.site'
-        instance_name:
           nullable: true
+        instance_name:
           description: 'AzuraCast Instance Name'
           type: string
           example: 'My AzuraCast Instance'
+          nullable: true
         prefer_browser_url:
           description: 'Prefer Browser URL (If Available)'
           type: boolean
@@ -3141,48 +3369,51 @@ components:
           type: boolean
           example: 'false'
         api_access_control:
-          nullable: true
           description: 'API ''Access-Control-Allow-Origin'' header'
           type: string
           example: '*'
+          nullable: true
         enable_websockets:
           description: 'Whether to use Websockets for Now Playing data updates.'
           type: boolean
           example: 'false'
         analytics:
-          nullable: true
           description: 'Listener Analytics Collection'
           type: string
+          nullable: true
         check_for_updates:
           description: 'Check for Updates and Announcements'
           type: boolean
           example: 'true'
         update_results:
           description: 'Results of the latest update check.'
+          type: array
+          items: {  }
           example: ''
+          nullable: true
         update_last_run:
           description: 'The UNIX timestamp when updates were last checked.'
           type: integer
           example: 1609480800
         public_theme:
-          nullable: true
           description: 'Base Theme for Public Pages'
           type: string
           example: light
+          nullable: true
         hide_album_art:
           description: 'Hide Album Art on Public Pages'
           type: boolean
           example: 'false'
         homepage_redirect_url:
-          nullable: true
           description: 'Homepage Redirect URL'
           type: string
           example: 'https://example.com/'
-        default_album_art_url:
           nullable: true
+        default_album_art_url:
           description: 'Default Album Art URL'
           type: string
           example: 'https://example.com/image.jpg'
+          nullable: true
         use_external_album_art_when_processing_media:
           description: 'Attempt to fetch album art from external sources when processing media.'
           type: boolean
@@ -3192,38 +3423,38 @@ components:
           type: boolean
           example: 'false'
         last_fm_api_key:
-          nullable: true
           description: 'An API key to connect to Last.fm services, if provided.'
           type: string
           example: SAMPLE-API-KEY
+          nullable: true
         hide_product_name:
           description: 'Hide AzuraCast Branding on Public Pages'
           type: boolean
           example: 'false'
         public_custom_css:
-          nullable: true
           description: 'Custom CSS for Public Pages'
           type: string
           example: ''
-        public_custom_js:
           nullable: true
+        public_custom_js:
           description: 'Custom JS for Public Pages'
           type: string
           example: ''
-        internal_custom_css:
           nullable: true
+        internal_custom_css:
           description: 'Custom CSS for Internal Pages'
           type: string
           example: ''
+          nullable: true
         backup_enabled:
           description: 'Whether backup is enabled.'
           type: boolean
           example: 'false'
         backup_time_code:
-          nullable: true
           description: 'The timecode (i.e. 400 for 4:00AM) when automated backups should run.'
           type: string
           example: 400
+          nullable: true
         backup_exclude_media:
           description: 'Whether to exclude media in automated backups.'
           type: boolean
@@ -3233,26 +3464,29 @@ components:
           type: integer
           example: 2
         backup_storage_location:
-          nullable: true
           description: 'The storage location ID for automated backups.'
           type: integer
           example: 1
+          nullable: true
         backup_last_run:
           description: 'The UNIX timestamp when automated backup was last run.'
           type: integer
           example: 1609480800
         backup_last_output:
-          nullable: true
           description: 'The output of the latest automated backup task.'
           type: string
           example: ''
+          nullable: true
         setup_complete_time:
           description: 'The UNIX timestamp when setup was last completed.'
           type: integer
           example: 1609480800
         nowplaying:
           description: 'The current cached now playing data.'
+          type: array
+          items: {  }
           example: ''
+          nullable: true
         sync_nowplaying_last_run:
           description: 'The UNIX timestamp when the now playing sync task was last run.'
           type: integer
@@ -3270,15 +3504,15 @@ components:
           type: integer
           example: 1609480800
         external_ip:
-          nullable: true
           description: 'This installation''s external IP.'
           type: string
           example: 192.168.1.1
-        geolite_license_key:
           nullable: true
+        geolite_license_key:
           description: 'The license key for the Maxmind Geolite download.'
           type: string
           example: ''
+          nullable: true
         geolite_last_run:
           description: 'The UNIX timestamp when the Maxmind Geolite was last downloaded.'
           type: integer
@@ -3292,54 +3526,66 @@ components:
           type: boolean
           example: 'true'
         mail_sender_name:
-          nullable: true
           description: 'The name of the sender of system e-mails.'
           type: string
           example: AzuraCast
-        mail_sender_email:
           nullable: true
+        mail_sender_email:
           description: 'The e-mail address of the sender of system e-mails.'
           type: string
           example: example@example.com
-        mail_smtp_host:
           nullable: true
+        mail_smtp_host:
           description: 'The host to send outbound SMTP mail.'
           type: string
           example: smtp.example.com
+          nullable: true
         mail_smtp_port:
           description: 'The port for sending outbound SMTP mail.'
           type: integer
           example: 465
         mail_smtp_username:
-          nullable: true
           description: 'The username when connecting to SMTP mail.'
           type: string
           example: username
-        mail_smtp_password:
           nullable: true
+        mail_smtp_password:
           description: 'The password when connecting to SMTP mail.'
           type: string
           example: password
+          nullable: true
         mail_smtp_secure:
           description: 'Whether to use a secure (TLS) connection when sending SMTP mail.'
           type: boolean
           example: 'true'
         avatar_service:
-          nullable: true
           description: 'The external avatar service to use when fetching avatars.'
           type: string
           example: libravatar
-        avatar_default_url:
           nullable: true
+        avatar_default_url:
           description: 'The default avatar URL.'
           type: string
           example: ''
+          nullable: true
       type: object
-    Station:
+    SftpUser:
       type: object
       allOf:
         -
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+            publicKeys:
+              type: string
+              nullable: true
+        -
           $ref: '#/components/schemas/HasAutoIncrementId'
+    Station:
+      type: object
+      allOf:
         -
           properties:
             name:
@@ -3355,39 +3601,39 @@ components:
               type: boolean
               example: true
             frontend_type:
-              nullable: true
               description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
               type: string
               example: icecast
+              nullable: true
             frontend_config:
               description: 'An array containing station-specific frontend configuration'
               type: array
               items: {  }
             backend_type:
-              nullable: true
               description: 'The backend adapter (liquidsoap,etc)'
               type: string
               example: liquidsoap
+              nullable: true
             backend_config:
               description: 'An array containing station-specific backend configuration'
               type: array
               items: {  }
             description:
-              nullable: true
               type: string
               example: 'A sample radio station.'
-            url:
               nullable: true
+            url:
               type: string
               example: 'https://demo.azuracast.com/'
-            genre:
               nullable: true
+            genre:
               type: string
               example: Various
-            radio_base_dir:
               nullable: true
+            radio_base_dir:
               type: string
               example: /var/azuracast/stations/azuratest_radio
+              nullable: true
             automation_settings:
               type: array
               items: {  }
@@ -3396,17 +3642,17 @@ components:
               type: boolean
               example: true
             request_delay:
-              nullable: true
               type: integer
               example: 5
-            request_threshold:
               nullable: true
+            request_threshold:
               type: integer
               example: 15
-            disconnect_deactivate_streamer:
               nullable: true
+            disconnect_deactivate_streamer:
               type: integer
               example: 0
+              nullable: true
             enable_streamers:
               description: 'Whether streamers are allowed to broadcast to this station at all.'
               type: boolean
@@ -3432,105 +3678,103 @@ components:
               type: integer
               example: 5
             timezone:
-              nullable: true
               description: 'The time zone that station operations should take place in.'
               type: string
               example: UTC
-            default_album_art_url:
               nullable: true
+            default_album_art_url:
               description: 'The station-specific default album artwork URL.'
               type: string
               example: 'https://example.com/image.jpg'
+              nullable: true
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     StationMedia:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/HasAutoIncrementId'
-        -
-          $ref: '#/components/schemas/HasSongFields'
-        -
           properties:
             unique_id:
-              nullable: true
               description: 'A unique identifier associated with this record.'
               type: string
               example: 69b536afc7ebbf16457b8645
-            album:
               nullable: true
+            album:
               description: 'The name of the media file''s album.'
               type: string
               example: 'Test Album'
-            genre:
               nullable: true
+            genre:
               description: 'The genre of the media file.'
               type: string
               example: Rock
-            lyrics:
               nullable: true
+            lyrics:
               description: 'Full lyrics of the track, if available.'
               type: string
               example: '...Never gonna give you up...'
-            isrc:
               nullable: true
+            isrc:
               description: 'The track ISRC (International Standard Recording Code), used for licensing purposes.'
               type: string
               example: GBARL0600786
-            length:
               nullable: true
+            length:
               description: 'The song duration in seconds.'
               type: number
               format: float
               example: 240
-            length_text:
               nullable: true
+            length_text:
               description: 'The formatted song duration (in mm:ss format)'
               type: string
               example: '4:00'
+              nullable: true
             path:
               description: 'The relative path of the media file.'
               type: string
               example: test.mp3
             mtime:
-              nullable: true
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
               example: 1609480800
-            amplify:
               nullable: true
+            amplify:
               description: 'The amount of amplification (in dB) to be applied to the radio source (liq_amplify)'
               type: number
               format: float
               example: -14
-            fade_overlap:
               nullable: true
+            fade_overlap:
               description: 'The length of time (in seconds) before the next song starts in the fade (liq_start_next)'
               type: number
               format: float
               example: 2
-            fade_in:
               nullable: true
+            fade_in:
               description: 'The length of time (in seconds) to fade in the next track (liq_fade_in)'
               type: number
               format: float
               example: 3
-            fade_out:
               nullable: true
+            fade_out:
               description: 'The length of time (in seconds) to fade out the previous track (liq_fade_out)'
               type: number
               format: float
               example: 3
-            cue_in:
               nullable: true
+            cue_in:
               description: 'The length of time (in seconds) from the start of the track to start playing (liq_cue_in)'
               type: number
               format: float
               example: 30
-            cue_out:
               nullable: true
+            cue_out:
               description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)'
               type: number
               format: float
               example: 30
+              nullable: true
             art_updated_at:
               description: 'The latest time (UNIX timestamp) when album art was updated.'
               type: integer
@@ -3538,20 +3782,22 @@ components:
             playlists:
               type: array
               items: {  }
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          $ref: '#/components/schemas/HasSongFields'
     StationMount:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
               type: string
               example: /radio.mp3
             display_name:
-              nullable: true
               type: string
               example: '128kbps MP3'
+              nullable: true
             is_visible_on_public_pages:
               type: boolean
               example: true
@@ -3562,17 +3808,17 @@ components:
               type: boolean
               example: false
             fallback_mount:
-              nullable: true
               type: string
               example: /error.mp3
-            relay_url:
               nullable: true
+            relay_url:
               type: string
               example: 'https://radio.example.com:8000/radio.mp3'
-            authhash:
               nullable: true
+            authhash:
               type: string
               example: ''
+              nullable: true
             max_listener_duration:
               type: integer
               example: 43200
@@ -3580,17 +3826,17 @@ components:
               type: boolean
               example: true
             autodj_format:
-              nullable: true
               type: string
               example: mp3
-            autodj_bitrate:
               nullable: true
+            autodj_bitrate:
               type: integer
               example: 128
-            custom_listen_url:
               nullable: true
+            custom_listen_url:
               type: string
               example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
             frontend_config:
               type: array
               items: {  }
@@ -3602,11 +3848,11 @@ components:
               description: 'The most recent number of total (non-unique) listeners.'
               type: integer
               example: 12
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     StationPlaylist:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -3622,13 +3868,13 @@ components:
               type: string
               example: shuffle
             remote_url:
-              nullable: true
               type: string
               example: 'https://remote-url.example.com/stream.mp3'
-            remote_type:
               nullable: true
+            remote_type:
               type: string
               example: stream
+              nullable: true
             remote_buffer:
               description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
               type: integer
@@ -3663,20 +3909,20 @@ components:
               type: boolean
               example: false
             backend_options:
-              nullable: true
               type: string
               example: 'interrupt,loop_once,single_track,merge'
+              nullable: true
             avoid_duplicates:
               type: boolean
               example: true
             schedule_items:
               type: array
               items: {  }
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     StationSchedule:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             start_time:
@@ -3686,19 +3932,19 @@ components:
               type: integer
               example: 2200
             days:
-              nullable: true
               description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
               type: string
               example: '0,1,2,3'
+              nullable: true
             loop_once:
               type: boolean
               example: false
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     StationStreamer:
       description: 'Station streamers (DJ accounts) allowed to broadcast to a station.'
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             streamer_username:
@@ -3708,13 +3954,13 @@ components:
               type: string
               example: ''
             display_name:
-              nullable: true
               type: string
               example: 'Test DJ'
-            comments:
               nullable: true
+            comments:
               type: string
               example: 'This is a test DJ account.'
+              nullable: true
             is_active:
               type: boolean
               example: true
@@ -3722,12 +3968,14 @@ components:
               type: boolean
               example: false
             reactivate_at:
-              nullable: true
               type: integer
               example: 1609480800
+              nullable: true
             schedule_items:
               type: array
               items: {  }
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     StationStreamerBroadcast:
       description: 'Each individual broadcast associated with a streamer.'
       type: object
@@ -3738,14 +3986,12 @@ components:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/HasAutoIncrementId'
-        -
           properties:
             name:
-              nullable: true
               description: 'The nickname of the webhook connector.'
               type: string
               example: 'Twitter Post'
+              nullable: true
             type:
               description: 'The type of webhook connector to use.'
               type: string
@@ -3765,62 +4011,62 @@ components:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
               items: {  }
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     HasAutoIncrementId:
       properties:
         id:
-          nullable: true
           type: integer
+          nullable: true
       type: object
     HasSongFields:
       properties:
         song_id:
           type: string
         text:
-          nullable: true
           type: string
+          nullable: true
         artist:
-          nullable: true
           type: string
+          nullable: true
         title:
-          nullable: true
           type: string
+          nullable: true
       type: object
     HasUniqueId:
       properties:
         id:
-          nullable: true
           type: string
+          nullable: true
       type: object
     User:
       type: object
       allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             email:
               type: string
               example: demo@azuracast.com
             new_password:
-              nullable: true
               type: string
               example: ''
-            name:
               nullable: true
+            name:
               type: string
               example: 'Demo Account'
-            locale:
               nullable: true
+            locale:
               type: string
               example: en_US
-            theme:
               nullable: true
+            theme:
               type: string
               example: dark
-            two_factor_secret:
               nullable: true
+            two_factor_secret:
               type: string
               example: A1B2C3D4
+              nullable: true
             created_at:
               type: integer
               example: 1609480800
@@ -3830,14 +4076,15 @@ components:
             roles:
               type: array
               items: {  }
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
   responses:
     todo:
       description: 'This API call has no documented response (yet)'
   parameters:
     station_id_required:
-      name: station_id
+      name: station_id_required
       in: path
-      description: 'The station ID'
       required: true
       schema:
         anyOf:
@@ -3847,7 +4094,6 @@ components:
           -
             type: string
             format: string
-      example: 1
   securitySchemes:
     api_key:
       type: apiKey
@@ -3881,6 +4127,8 @@ tags:
     name: 'Stations: Queue'
   -
     name: 'Stations: Remote Relays'
+  -
+    name: 'Stations: SFTP Users'
   -
     name: 'Stations: Streamers/DJs'
   -

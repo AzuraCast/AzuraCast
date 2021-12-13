@@ -6,6 +6,7 @@ namespace App\Assets;
 
 use App\Utilities\File;
 use Intervention\Image\Image;
+use RuntimeException;
 
 class BrowserIconCustomAsset extends AbstractCustomAsset
 {
@@ -42,7 +43,7 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
     {
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
         if (!mkdir($uploadsDir) && !is_dir($uploadsDir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadsDir));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $uploadsDir));
         }
 
         $newImage = clone $image;

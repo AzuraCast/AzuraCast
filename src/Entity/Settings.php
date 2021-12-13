@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 use Stringable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,7 +48,7 @@ class Settings implements Stringable
     public function getAppUniqueIdentifier(): string
     {
         if (!isset($this->app_unique_identifier)) {
-            throw new \RuntimeException('Application Unique ID not generated yet.');
+            throw new RuntimeException('Application Unique ID not generated yet.');
         }
 
         return $this->app_unique_identifier;

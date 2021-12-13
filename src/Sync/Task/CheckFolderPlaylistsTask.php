@@ -62,7 +62,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
                 continue;
             }
 
-            $this->em->transactional(
+            $this->em->wrapInTransaction(
                 function () use ($station, $playlist, $fsMedia, $mediaInPlaylistQuery, $mediaInFolderQuery): void {
                     $this->processPlaylist(
                         $station,

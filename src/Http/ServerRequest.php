@@ -15,6 +15,7 @@ use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
+use RuntimeException;
 
 final class ServerRequest extends \Slim\Http\ServerRequest
 {
@@ -170,7 +171,7 @@ final class ServerRequest extends \Slim\Http\ServerRequest
             ?? null;
 
         if (null === $ip) {
-            throw new \RuntimeException('No IP address attached to this request.');
+            throw new RuntimeException('No IP address attached to this request.');
         }
 
         // Handle the IP being separated by commas.

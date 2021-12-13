@@ -61,7 +61,7 @@ class RunAnalyticsTask extends AbstractTask
         $this->analyticsRepo->cleanup();
 
         while ($day < $now) {
-            $this->em->transactional(
+            $this->em->wrapInTransaction(
                 function () use ($day, $stations, $withListeners): void {
                     $this->processDay($day, $stations, $withListeners);
                 }

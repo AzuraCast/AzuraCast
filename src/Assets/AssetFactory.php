@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Assets;
 
 use App\Environment;
+use InvalidArgumentException;
 
 class AssetFactory
 {
@@ -33,7 +34,7 @@ class AssetFactory
             self::TYPE_ALBUM_ART => self::createAlbumArt($environment),
             self::TYPE_BACKGROUND => self::createBackground($environment),
             self::TYPE_BROWSER_ICON => self::createBrowserIcon($environment),
-            default => throw new \InvalidArgumentException('Invalid type specified.')
+            default => throw new InvalidArgumentException('Invalid type specified.')
         };
     }
 }

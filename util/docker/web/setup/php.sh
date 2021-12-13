@@ -3,7 +3,7 @@ set -e
 source /bd_build/buildconfig
 set -x
 
-PHP_VERSION=8.0
+PHP_VERSION=8.1
 
 add-apt-repository -y ppa:ondrej/php
 apt-get update

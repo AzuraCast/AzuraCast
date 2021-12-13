@@ -6,11 +6,14 @@ namespace App\Service\Flow;
 
 use App\Utilities\File;
 use GuzzleHttp\Psr7\LazyOpenStream;
+use InvalidArgumentException;
 use JsonSerializable;
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use League\MimeTypeDetection\GeneratedExtensionToMimeTypeMap;
+use Normalizer;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use RuntimeException;
 
 final class UploadedFile implements UploadedFileInterface, JsonSerializable
 {
@@ -29,7 +32,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
         $clientFilename ??= tempnam($tempDir, 'upload');
 
         if (!$clientFilename || !$tempDir) {
-            throw new \RuntimeException('Could not generate original filename.');
+            throw new RuntimeException('Could not generate original filename.');
         }
 
         $clientFilename = self::filterOriginalFilename($clientFilename);
@@ -41,14 +44,14 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
         } else {
             $uploadedPath = realpath($uploadedPath);
             if (false === $uploadedPath) {
-                throw new \InvalidArgumentException('Could not determine real path of specified path.');
+                throw new InvalidArgumentException('Could not determine real path of specified path.');
             }
             if (!str_starts_with($uploadedPath, $tempDir)) {
-                throw new \InvalidArgumentException('Uploaded path is not inside specified temporary directory.');
+                throw new InvalidArgumentException('Uploaded path is not inside specified temporary directory.');
             }
 
             if (!is_file($uploadedPath)) {
-                throw new \InvalidArgumentException(sprintf('File does not exist at path: %s', $uploadedPath));
+                throw new InvalidArgumentException(sprintf('File does not exist at path: %s', $uploadedPath));
             }
 
             $this->file = $uploadedPath;
@@ -71,7 +74,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
 
         $size = filesize($this->file);
         if (false === $size) {
-            throw new \RuntimeException('Could not get file size of uploaded path.');
+            throw new RuntimeException('Could not get file size of uploaded path.');
         }
 
         return $size;
@@ -119,7 +122,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
         $this->moved = rename($this->file, $targetPath);
 
         if (false === $this->moved) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('Uploaded file could not be moved to %s', $targetPath)
             );
         }
@@ -133,7 +136,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
     private function validateActive(): void
     {
         if ($this->moved) {
-            throw new \RuntimeException('Cannot retrieve stream after it has already been moved');
+            throw new RuntimeException('Cannot retrieve stream after it has already been moved');
         }
     }
 
@@ -149,7 +152,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
     public static function fromArray(array $input, string $tempDir): self
     {
         if (!isset($input['originalFilename'], $input['uploadedPath'])) {
-            throw new \InvalidArgumentException('Uploaded file array is malformed.');
+            throw new InvalidArgumentException('Uploaded file array is malformed.');
         }
 
         return new self($input['originalFilename'], $input['uploadedPath'], $tempDir);
@@ -158,7 +161,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
     public static function filterOriginalFilename(string $name): string
     {
         $name = basename($name);
-        $normalizedName = \Normalizer::normalize($name, \Normalizer::FORM_KD);
+        $normalizedName = Normalizer::normalize($name, Normalizer::FORM_KD);
         if (false !== $normalizedName) {
             $name = $normalizedName;
         }

@@ -96,11 +96,7 @@ class NowPlayingApiGenerator
                 ? $current_streamer->getDisplayName()
                 : 'Live DJ';
 
-            $broadcastStart = null;
-            $broadcast = $this->broadcastRepo->getLatestBroadcast($station);
-            if (null !== $broadcast) {
-                $broadcastStart = $broadcast->getTimestampStart();
-            }
+            $broadcastStart = $this->broadcastRepo->getLatestBroadcast($station)?->getTimestampStart();
 
             $np->live = new Entity\Api\NowPlaying\Live(true, $streamer_name, $broadcastStart);
         } else {

@@ -7,7 +7,6 @@ namespace App\Controller\Api\Admin;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
@@ -17,6 +16,31 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * @OA\Get(path="/admin/settings",
+ *   operationId="getSettings",
+ *   tags={"Administration: Settings"},
+ *   description="List the current values of all editable system settings.",
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Settings")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
+ * @OA\Put(path="/admin/settings",
+ *   operationId="editSettings",
+ *   tags={"Administration: Settings"},
+ *   description="Update settings to modify any settings provided.",
+ *   @OA\RequestBody(
+ *     @OA\JsonContent(ref="#/components/schemas/Settings")
+ *   ),
+ *   @OA\Response(response=200, description="Success",
+ *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+ *   ),
+ *   @OA\Response(response=403, description="Access denied"),
+ *   security={{"api_key": {}}},
+ * )
+ *
  * @extends AbstractApiCrudController<Entity\Settings>
  */
 class SettingsController extends AbstractApiCrudController
@@ -32,20 +56,6 @@ class SettingsController extends AbstractApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    /**
-     * @OA\Get(path="/admin/settings",
-     *   tags={"Administration: Settings"},
-     *   description="List the current values of all editable system settings.",
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Settings")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     */
     public function listAction(
         ServerRequest $request,
         Response $response,
@@ -60,25 +70,6 @@ class SettingsController extends AbstractApiCrudController
         return $response->withJson($this->toArray($settings, $context));
     }
 
-    /**
-     * @OA\Put(path="/admin/settings",
-     *   tags={"Administration: Settings"},
-     *   description="Update settings to modify any settings provided.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Settings")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws ValidationException
-     */
     public function updateAction(
         ServerRequest $request,
         Response $response,

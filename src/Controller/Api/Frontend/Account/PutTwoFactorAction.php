@@ -10,9 +10,11 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use BaconQrCode;
+use InvalidArgumentException;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class PutTwoFactorAction extends UsersController
 {
@@ -26,7 +28,7 @@ class PutTwoFactorAction extends UsersController
             if (!empty($params['secret'])) {
                 $secret = $params['secret'];
                 if (64 !== strlen($secret)) {
-                    throw new \InvalidArgumentException('Secret is not the correct length.');
+                    throw new InvalidArgumentException('Secret is not the correct length.');
                 }
             } else {
                 // Generate new TOTP secret.
@@ -52,7 +54,7 @@ class PutTwoFactorAction extends UsersController
                     return $response->withJson(Entity\Api\Status::success());
                 }
 
-                throw new \InvalidArgumentException('Could not verify TOTP code.');
+                throw new InvalidArgumentException('Could not verify TOTP code.');
             }
 
             // Further customize TOTP code (with metadata that won't be stored in the DB)
@@ -74,7 +76,7 @@ class PutTwoFactorAction extends UsersController
                 'totp_uri' => $totp_uri,
                 'qr_code'  => $qrCodeBase64,
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
         }
     }

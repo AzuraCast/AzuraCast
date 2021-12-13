@@ -43,6 +43,20 @@ class RestoreCommand extends CommandAbstract
         $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         switch ($file_ext) {
+            case 'tzst':
+                $this->passThruProcess(
+                    $io,
+                    [
+                        'tar',
+                        '-I',
+                        'unzstd',
+                        '-xvf',
+                        $path,
+                    ],
+                    '/'
+                );
+                break;
+
             case 'gz':
             case 'tgz':
                 $this->passThruProcess(

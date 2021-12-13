@@ -135,6 +135,23 @@ class BackupCommand extends CommandAbstract
         );
 
         switch ($file_ext) {
+            case 'tzst':
+                $this->passThruProcess(
+                    $io,
+                    array_merge(
+                        [
+                            'tar',
+                            '-I',
+                            'zstd',
+                            '-cf',
+                            $tmpPath,
+                        ],
+                        $files_to_backup
+                    ),
+                    '/'
+                );
+                break;
+
             case 'gz':
             case 'tgz':
                 $this->passThruProcess(

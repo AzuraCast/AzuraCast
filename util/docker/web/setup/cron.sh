@@ -3,8 +3,7 @@ set -e
 source /bd_build/buildconfig
 set -x
 
-# Prevent systemd auto-startup
-ln -s /dev/null /etc/systemd/system/cron.service
+export RUNLEVEL=1
 
 $minimal_apt_get_install cron
 

@@ -148,8 +148,10 @@ jobs:
             resources/locale/compiled
             resources/locale/translations.json
             web/static/dist
+            web/static/webpack_dist
             web/static/webpack.json
             web/static/assets.json
+            web/static/api/openapi.yml
 
   publish:
     name: Publish

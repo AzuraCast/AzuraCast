@@ -61,9 +61,14 @@ use OpenApi\Annotations as OA;
         name: "station_id_required",
         in: "path",
         required: true,
-        schema: new OA\Schema(),
-        // new OA\Schema(type: "integer", format: "int64"),
-        // new OA\Schema(type: "string", format: "string"),
+        schema: new OA\Schema(
+            properties: [
+                'anyOf' => [
+                    new OA\Schema(type: "integer", format: "int64"),
+                    new OA\Schema(type: "string", format: "string")
+                ]
+            ]
+        ),
     ),
     OA\Response(
         response: "todo",

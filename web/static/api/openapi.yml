@@ -4086,7 +4086,14 @@ components:
       name: station_id_required
       in: path
       required: true
-      schema: {  }
+      schema:
+        anyOf:
+          -
+            type: integer
+            format: int64
+          -
+            type: string
+            format: string
   securitySchemes:
     api_key:
       type: apiKey

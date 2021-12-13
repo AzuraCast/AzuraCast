@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e9f976588b4012a62481a6e95a806e1",
+    "content-hash": "f3b70c89a57b5a42eed110a80873993d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6528,12 +6528,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "88b83fbcd8136f0ff28ec25bcc16a209282891dc"
+                "reference": "32cfcc4f907475b8fec0c28cb25eadd6850766f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/88b83fbcd8136f0ff28ec25bcc16a209282891dc",
-                "reference": "88b83fbcd8136f0ff28ec25bcc16a209282891dc",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/32cfcc4f907475b8fec0c28cb25eadd6850766f1",
+                "reference": "32cfcc4f907475b8fec0c28cb25eadd6850766f1",
                 "shasum": ""
             },
             "require": {
@@ -6590,7 +6590,7 @@
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
                 "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2021-11-16T08:17:56+00:00"
+            "time": "2021-12-13T00:43:12+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -14506,7 +14506,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-pdo": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",

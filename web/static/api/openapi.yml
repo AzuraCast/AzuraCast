@@ -4086,6 +4086,7 @@ components:
       name: station_id_required
       in: path
       required: true
+      schema: {  }
   securitySchemes:
     api_key:
       type: apiKey

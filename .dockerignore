@@ -3,5 +3,4 @@
 .run
 frontend/node_modules
 vendor
-!vendor/.gitkeep
 resources/*.mp3

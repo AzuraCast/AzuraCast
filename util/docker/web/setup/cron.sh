@@ -3,9 +3,10 @@ set -e
 source /bd_build/buildconfig
 set -x
 
-$minimal_apt_get_install cron
+# Prevent systemd auto-startup
+ln -s /dev/null /etc/systemd/system/cron.service
 
-service cron stop
+$minimal_apt_get_install cron
 
 chmod 600 /etc/crontab
 

@@ -123,7 +123,7 @@ jobs:
           context: .
           load: true
           tags: ghcr.io/azuracast/web:latest
-          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
+          cache-from: type=gha
 
       - name: Set up functional test environment.
         run: |
@@ -183,8 +183,8 @@ jobs:
         with:
           context: .
           push: true
-          platforms : linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
-          cache-to: type=registry,ref=ghcr.io/azuracast/web:buildcache,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -22,11 +22,11 @@ class StationSchedule implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\ManyToOne(inversedBy: 'schedule_items')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationPlaylist $playlist = null;
 
-    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\ManyToOne(inversedBy: 'schedule_items')]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationStreamer $streamer = null;
 

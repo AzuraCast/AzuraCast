@@ -6528,12 +6528,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "32cfcc4f907475b8fec0c28cb25eadd6850766f1"
+                "reference": "a66e9b6bc9c85c4fefc090d41fd7e8582e99888b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/32cfcc4f907475b8fec0c28cb25eadd6850766f1",
-                "reference": "32cfcc4f907475b8fec0c28cb25eadd6850766f1",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/a66e9b6bc9c85c4fefc090d41fd7e8582e99888b",
+                "reference": "a66e9b6bc9c85c4fefc090d41fd7e8582e99888b",
                 "shasum": ""
             },
             "require": {
@@ -6553,11 +6553,11 @@
                 "php-http/message": "^1.8",
                 "php-parallel-lint/php-console-highlighter": "^0.5.0",
                 "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpspec/phpspec": "^6.2",
-                "phpstan/phpstan": "^0.12.32",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
+                "phpspec/phpspec": "^7",
+                "phpstan/phpstan": "^1",
+                "phpstan/phpstan-strict-rules": "^1",
                 "roave/security-advisories": "dev-master",
-                "supervisorphp/configuration": "^0.2"
+                "supervisorphp/configuration": "^0.3"
             },
             "default-branch": true,
             "type": "library",
@@ -6590,7 +6590,7 @@
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
                 "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2021-12-13T00:43:12+00:00"
+            "time": "2021-12-13T01:34:40+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -9919,16 +9919,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "4.1.22",
+            "version": "4.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "9777ec3690ceedc4bce2ed13af7af4ca4ee3088f"
+                "reference": "27d18cd5d5a1d77d3f1b01ea776238676faf5dcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/9777ec3690ceedc4bce2ed13af7af4ca4ee3088f",
-                "reference": "9777ec3690ceedc4bce2ed13af7af4ca4ee3088f",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/27d18cd5d5a1d77d3f1b01ea776238676faf5dcc",
+                "reference": "27d18cd5d5a1d77d3f1b01ea776238676faf5dcc",
                 "shasum": ""
             },
             "require": {
@@ -9978,7 +9978,10 @@
                 "psr-4": {
                     "Codeception\\": "src/Codeception",
                     "Codeception\\Extension\\": "ext"
-                }
+                },
+                "files": [
+                    "functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10002,7 +10005,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-                "source": "https://github.com/Codeception/Codeception/tree/4.1.22"
+                "source": "https://github.com/Codeception/Codeception/tree/4.1.23"
             },
             "funding": [
                 {
@@ -10010,7 +10013,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-08-06T17:15:34+00:00"
+            "time": "2021-12-11T18:05:26+00:00"
         },
         {
             "name": "codeception/lib-asserts",

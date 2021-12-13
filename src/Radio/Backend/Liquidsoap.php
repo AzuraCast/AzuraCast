@@ -237,13 +237,6 @@ class Liquidsoap extends AbstractBackend
      */
     public function getBinary(): ?string
     {
-        // Docker revisions 3 and later use the `radio` container.
-        $environment = Environment::getInstance();
-
-        if ($environment->isDocker() && !$environment->isDockerRevisionAtLeast(3)) {
-            return '/var/azuracast/.opam/system/bin/liquidsoap';
-        }
-
         return '/usr/local/bin/liquidsoap';
     }
 

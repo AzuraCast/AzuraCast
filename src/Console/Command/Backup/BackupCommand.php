@@ -143,7 +143,7 @@ class BackupCommand extends CommandAbstract
                             'tar',
                             '-I',
                             'zstd',
-                            '-cf',
+                            '-cvf',
                             $tmpPath,
                         ],
                         $files_to_backup

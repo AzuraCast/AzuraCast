@@ -89,7 +89,7 @@ class StationQueueRepository extends Repository
 
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.song_id, sq.timestamp_played, sq.title, sq.artist
+                SELECT sq.song_id, sq.timestamp_cued, sq.timestamp_played, sq.title, sq.artist
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND sq.timestamp_played >= :threshold

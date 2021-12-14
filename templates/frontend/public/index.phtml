@@ -53,23 +53,23 @@ $assets->addInlineJs(
 
 $this->push('head');
 ?>
-<link rel="manifest" href="<?=$router->fromHere('public:manifest')?>">
+<link rel="manifest" href="<?= $router->fromHere('public:manifest') ?>">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="<?=$this->e($station->getName())?>">
+<meta name="apple-mobile-web-app-title" content="<?= $this->e($station->getName() ?? '') ?>">
 
-<meta property="og:title" content="<?=$this->e($station->getName())?>">
-<meta property="og:url" content="<?=$this->e($station->getUrl())?>">
-<meta property="og:image" content="<?=$defaultAlbumArt?>">
+<meta property="og:title" content="<?= $this->e($station->getName() ?? '') ?>">
+<meta property="og:url" content="<?= $this->e($station->getUrl() ?? '') ?>">
+<meta property="og:image" content="<?= $defaultAlbumArt ?>">
 
 <meta property="twitter:card" content="player">
-<meta property="twitter:player" content="<?=(string)$router->named(
+<meta property="twitter:player" content="<?= $router->named(
     'public:index',
     ['station_id' => $station->getShortName(), 'embed' => 'social'],
     [],
     true
-)?>">
+) ?>">
 <meta property="twitter:player:width" content="400">
 <meta property="twitter:player:height" content="125">
 <?php

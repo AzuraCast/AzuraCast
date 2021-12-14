@@ -153,12 +153,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-batch-utilities.git",
-                "reference": "87041ef806e346812095a86a1d0e7cf88112a784"
+                "reference": "cc58090104b7357e7f17b2b134ee724503ca4666"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-batch-utilities/zipball/87041ef806e346812095a86a1d0e7cf88112a784",
-                "reference": "87041ef806e346812095a86a1d0e7cf88112a784",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-batch-utilities/zipball/cc58090104b7357e7f17b2b134ee724503ca4666",
+                "reference": "cc58090104b7357e7f17b2b134ee724503ca4666",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-07T07:03:43+00:00"
+            "time": "2021-12-14T16:28:07+00:00"
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
@@ -208,12 +208,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "5b672f5e62c5f569d770091a5ca5f81f18c65383"
+                "reference": "192e71902594ad572c21f24c109467af9a28a36b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/5b672f5e62c5f569d770091a5ca5f81f18c65383",
-                "reference": "5b672f5e62c5f569d770091a5ca5f81f18c65383",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/192e71902594ad572c21f24c109467af9a28a36b",
+                "reference": "192e71902594ad572c21f24c109467af9a28a36b",
                 "shasum": ""
             },
             "require": {
@@ -259,7 +259,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-04T04:30:46+00:00"
+            "time": "2021-12-14T16:28:28+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",

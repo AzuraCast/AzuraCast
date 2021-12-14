@@ -5,6 +5,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Docker ARM64 Images**: Thanks to advances in our build process and upstream software, we are now able to build our
+  Docker images for both AMD64(X86_64) and ARM64 architectures. This means many devices that run 64-bit ARM
+  architecture, like the Raspberry Pi 4 and other comparable devices, can now support the default installation method.
+  We will continue to maintain the Ansible installation for the foreseeable future.
+
 - **Liquidsoap 2.0**: This version introduces the latest version of the AutoDJ software we use, Liquidsoap 2.0. This
   version adds many new features, broad support for the powerful FFMpeg library, and more. If you haven't modified your
   AutoDJ configuration, you should not notice any impact from the new version; if you have custom code, you may need to
@@ -13,8 +18,7 @@ release channel, you can take advantage of these new features and fixes.
 
 - **Vue Components Everywhere**: As part of our Roadmap to 1.0, we've switched a vast majority of the AzuraCast
   application to be powered by Vue frontend components that connect directly to, and exclusively use, our powerful REST
-  API to perform functions. Not only does this make for more snappy, responsive user experiences, but it also means
-  that _everything_ you can do in the web application is now possible via the API as well; while we haven't documented
+  API to perform functions. Not only does this make for more snappy, responsive user experiences, but it also means that _everything_ you can do in the web application is now possible via the API as well; while we haven't documented
   all of these endpoints yet, you can use your browser's inspector console to see how we call our internal APIs and do
   the same in your own applications.
 

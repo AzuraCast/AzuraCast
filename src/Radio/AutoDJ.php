@@ -134,8 +134,8 @@ class AutoDJ
             }
 
             $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
-            if ($maxQueueLength < 1) {
-                $maxQueueLength = 1;
+            if ($maxQueueLength < 2) {
+                $maxQueueLength = 2;
             }
 
             $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
@@ -150,6 +150,10 @@ class AutoDJ
                         CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
                         $queueRow->getDuration()
                     );
+
+                    if (0 === $queueLength) {
+                        $queueLength = 1;
+                    }
                 } else {
                     // Prevent the exact same track from being played twice during this loop
                     if ($lastSongId === $queueRow->getSongId()) {

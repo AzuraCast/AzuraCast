@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
-# Constants
-export COMPOSE_VERSION=1.29.2
-
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -526,12 +523,23 @@ update() {
     fi
 
     # Check for update to Docker Compose
-    local CURRENT_COMPOSE_VERSION
-    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
-
-    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
-      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
-        install-docker-compose
+    if [[ $(command -v docker-compose) ]]; then
+      # Check for `docker compose` command.
+      error=$(docker compose version 2>&1 >/dev/null)
+      if [ $? -ne 0 ]; then
+        if ask "Your version of Docker is out of date. Attempt to update it automatically?" Y; then
+          install-docker
+          install-docker-compose
+        fi
+      else
+        COMPOSE=$(command -v docker-compose)
+        if [ "$COMPOSE" = /usr/local/bin/docker-compose ]; then
+          if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+            install-docker-compose
+          fi
+        else
+          echo "Docker Compose is installed and up-to-date!"
+        fi
       fi
     fi
 

@@ -54,6 +54,7 @@ export default {
     components: {InfoCard, BFormFieldset, BWrappedFormGroup, BFormMarkup},
     props: {
         settingsUrl: String,
+        restartStatusUrl: String,
         config: Array,
         sections: Array,
     },
@@ -108,9 +109,18 @@ export default {
                 })
             ).then((resp) => {
                 this.$notifySuccess();
+
+                this.mayNeedRestart();
                 this.relist();
             });
-        }
+        },
+        mayNeedRestart() {
+            this.axios.get(this.restartStatusUrl).then((resp) => {
+                if (resp.data.needs_restart) {
+                    document.dispatchEvent(new CustomEvent("station-needs-restart"));
+                }
+            });
+        },
     }
 }
 </script>

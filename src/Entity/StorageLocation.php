@@ -22,6 +22,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 use RuntimeException;
 use Spatie\Dropbox\Client;
 use Stringable;
@@ -490,7 +492,10 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $adapter = $this->getStorageAdapter();
 
         return ($adapter instanceof LocalAdapterInterface)
-            ? new LocalFilesystem($adapter)
+            ? new LocalFilesystem(
+                adapter: $adapter,
+                visibilityConverter: new PortableVisibilityConverter(defaultForDirectories: Visibility::PUBLIC)
+            )
             : new RemoteFilesystem($adapter);
     }
 

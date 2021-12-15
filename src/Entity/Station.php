@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
@@ -625,7 +626,9 @@ class Station implements Stringable, IdentifiableEntityInterface
             return;
         }
 
-        $visibility = (new PortableVisibilityConverter())->defaultForDirectories();
+        $visibility = (new PortableVisibilityConverter(
+            defaultForDirectories: Visibility::PUBLIC
+        ))->defaultForDirectories();
         if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
         }

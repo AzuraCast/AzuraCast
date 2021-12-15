@@ -247,6 +247,8 @@ check-install-requirements() {
   CURRENT_ARCH=$(uname -m)
   if [[ $CURRENT_ARCH == "x86_64" ]]; then
     echo -en "\e[32m[PASS]\e[0m Architecture: ${CURRENT_ARCH}\n"
+  elif [[ $CURRENT_ARCH == "aarch64" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Architecture: ${CURRENT_ARCH}\n"
   else
     echo -en "\e[41m[FAIL]\e[0m Architecture: ${CURRENT_ARCH}\n"
 

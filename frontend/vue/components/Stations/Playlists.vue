@@ -115,12 +115,13 @@
         </b-card>
 
         <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
-                    :enable-advanced-features="enableAdvancedFeatures" @relist="relist"></edit-modal>
+                    :enable-advanced-features="enableAdvancedFeatures"
+                    @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
         <queue-modal ref="queueModal"></queue-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
         <import-modal ref="importModal" @relist="relist"></import-modal>
-        <clone-modal ref="cloneModal" @relist="relist"></clone-modal>
+        <clone-modal ref="cloneModal" @relist="relist" @needs-restart="mayNeedRestart"></clone-modal>
     </div>
 </template>
 
@@ -143,7 +144,9 @@ export default {
         listUrl: String,
         scheduleUrl: String,
         filesUrl: String,
+        restartStatusUrl: String,
         stationTimeZone: String,
+        useManualAutoDj: Boolean,
         enableAdvancedFeatures: Boolean
     },
     data () {
@@ -256,6 +259,8 @@ export default {
             this.$wrapWithLoading(
                 this.axios.put(url)
             ).then((resp) => {
+                this.needsRestart();
+
                 this.$notifySuccess(resp.data.message);
                 this.relist();
             });
@@ -268,11 +273,31 @@ export default {
                     this.$wrapWithLoading(
                         this.axios.delete(url)
                     ).then((resp) => {
+                        this.needsRestart();
+
                         this.$notifySuccess(resp.data.message);
                         this.relist();
                     });
                 }
             });
+        },
+        mayNeedRestart() {
+            if (!this.useManualAutoDj) {
+                return;
+            }
+
+            this.axios.get(this.restartStatusUrl).then((resp) => {
+                if (resp.data.needs_restart) {
+                    this.needsRestart();
+                }
+            });
+        },
+        needsRestart() {
+            if (!this.useManualAutoDj) {
+                return;
+            }
+
+            document.dispatchEvent(new CustomEvent("station-needs-restart"));
         }
     }
 };

@@ -33,10 +33,12 @@ class PlaylistsAction
             id: 'station-playlist',
             title: __('Playlists'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:playlists'),
-                'scheduleUrl' => (string)$router->fromHere('api:stations:playlists:schedule'),
-                'filesUrl' => (string)$router->fromHere('stations:files:index'),
-                'stationTimeZone' => $station->getTimezone(),
+                'listUrl'                => (string)$router->fromHere('api:stations:playlists'),
+                'scheduleUrl'            => (string)$router->fromHere('api:stations:playlists:schedule'),
+                'filesUrl'               => (string)$router->fromHere('stations:files:index'),
+                'restartStatusUrl'       => (string)$router->fromHere('api:stations:restart-status'),
+                'stationTimeZone'        => $station->getTimezone(),
+                'useManualAutoDj'        => $station->useManualAutoDJ(),
                 'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
             ],
         );

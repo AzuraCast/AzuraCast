@@ -28,13 +28,14 @@ return function (App\Event\BuildStationMenu $e) {
                 'permission' => Acl::STATION_BROADCASTING,
             ],
             'restart_station' => [
-                'label' => __('Restart to Apply Changes'),
-                'title' => __('Click to restart your station and apply configuration changes.'),
-                'icon' => 'refresh',
-                'url' => (string)$router->fromHere('api:stations:restart'),
-                'class' => 'api-call text-warning',
-                'confirm' => __('Restart broadcasting? This will disconnect any current listeners.'),
-                'visible' => $station->getHasStarted() && $station->getNeedsRestart(),
+                'label'      => __('Restart to Apply Changes'),
+                'title'      => __('Click to restart your station and apply configuration changes.'),
+                'icon'       => 'refresh',
+                'url'        => (string)$router->fromHere('api:stations:restart'),
+                'class'      => 'api-call text-warning btn-restart-station '
+                    . (!$station->getNeedsRestart() ? 'd-none' : ''),
+                'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
+                'visible'    => $station->getHasStarted(),
                 'permission' => Acl::STATION_BROADCASTING,
             ],
             'profile' => [

@@ -19,6 +19,7 @@ import {REMOTE_ICECAST} from "~/components/Entity/RadioAdapters";
 
 export default {
     name: 'RemoteEditModal',
+    emits: ['needs-restart'],
     mixins: [BaseEditModal],
     components: {
         RemoteFormAutoDj,
@@ -71,7 +72,15 @@ export default {
                 source_password: null,
                 is_public: false
             };
-        }
+        },
+        onSubmitSuccess(response) {
+            this.$notifySuccess();
+
+            this.$emit('needs-restart');
+            this.$emit('relist');
+
+            this.close();
+        },
     }
 };
 </script>

@@ -39,7 +39,7 @@ import ModalForm from "~/components/Common/ModalForm";
 export default {
     name: 'CloneModal',
     components: {ModalForm, BWrappedFormGroup, InvisibleSubmitButton},
-    emits: ['relist'],
+    emits: ['relist', 'needs-restart'],
     mixins: [
         validationMixin
     ],
@@ -95,6 +95,7 @@ export default {
                 })
             ).then((resp) => {
                 this.$notifySuccess();
+                this.$emit('needs-restart');
                 this.$emit('relist');
                 this.$refs.modal.hide();
             });

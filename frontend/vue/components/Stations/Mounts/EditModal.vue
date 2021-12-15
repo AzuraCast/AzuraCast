@@ -29,6 +29,7 @@ import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'EditModal',
+    emits: ['needs-restart'],
     mixins: [BaseEditModal],
     components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo},
     props: {
@@ -116,10 +117,18 @@ export default {
                 intro_file: null
             };
         },
-        populateForm (d) {
+        populateForm(d) {
             this.record = d;
             this.form = mergeExisting(this.form, d);
-        }
+        },
+        onSubmitSuccess(response) {
+            this.$notifySuccess();
+
+            this.$emit('needs-restart');
+            this.$emit('relist');
+
+            this.close();
+        },
     }
 };
 </script>

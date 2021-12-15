@@ -509,6 +509,10 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
+            $group->get('/restart-status', Controller\Api\Stations\GetRestartStatusAction::class)
+                ->setName('api:stations:restart-status')
+                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
+
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')
                 ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));

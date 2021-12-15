@@ -47,7 +47,8 @@
             </data-table>
         </b-card>
 
-        <remote-edit-modal ref="editModal" :create-url="listUrl" @relist="relist"></remote-edit-modal>
+        <remote-edit-modal ref="editModal" :create-url="listUrl"
+                           @relist="relist" @needs-restart="mayNeedRestart"></remote-edit-modal>
     </div>
 </template>
 
@@ -63,7 +64,8 @@ export default {
     name: 'StationMounts',
     components: {RemoteEditModal, InfoCard, Icon, EditModal, DataTable},
     props: {
-        listUrl: String
+        listUrl: String,
+        restartStatusUrl: String
     },
     data() {
         return {
@@ -102,10 +104,21 @@ export default {
                         this.axios.delete(url)
                     ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
+                        this.needsRestart();
                         this.relist();
                     });
                 }
             });
+        },
+        mayNeedRestart() {
+            this.axios.get(this.restartStatusUrl).then((resp) => {
+                if (resp.data.needs_restart) {
+                    this.needsRestart();
+                }
+            });
+        },
+        needsRestart() {
+            document.dispatchEvent(new CustomEvent("station-needs-restart"));
         }
     }
 };

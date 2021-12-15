@@ -23,6 +23,7 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 
 export default {
     name: 'EditModal',
+    emits: ['needs-restart'],
     components: {FormSchedule, FormSource, FormBasicInfo, FormAdvanced},
     mixins: [BaseEditModal],
     props: {
@@ -91,7 +92,15 @@ export default {
                 'backend_options': [],
                 'schedule_items': []
             };
-        }
+        },
+        onSubmitSuccess(response) {
+            this.$notifySuccess();
+
+            this.$emit('needs-restart');
+            this.$emit('relist');
+
+            this.close();
+        },
     }
 };
 </script>

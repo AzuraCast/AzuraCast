@@ -53,7 +53,7 @@
 
         <edit-modal ref="editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
                     :show-advanced="showAdvanced" :station-frontend-type="stationFrontendType"
-                    @relist="relist"></edit-modal>
+                    @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
     </div>
 </template>
 
@@ -69,6 +69,7 @@ export default {
     props: {
         listUrl: String,
         newIntroUrl: String,
+        restartStatusUrl: String,
         stationFrontendType: String,
         showAdvanced: {
             type: Boolean,
@@ -85,7 +86,7 @@ export default {
         };
     },
     filters: {
-        upper (data) {
+        upper(data) {
             let upper = [];
             data.split(' ').forEach((word) => {
                 upper.push(word.toUpperCase());
@@ -94,13 +95,13 @@ export default {
         }
     },
     methods: {
-        relist () {
+        relist() {
             this.$refs.datatable.refresh();
         },
-        doCreate () {
+        doCreate() {
             this.$refs.editModal.create();
         },
-        doEdit (url) {
+        doEdit(url) {
             this.$refs.editModal.edit(url);
         },
         doDelete (url) {
@@ -112,10 +113,21 @@ export default {
                         this.axios.delete(url)
                     ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
+                        this.needsRestart();
                         this.relist();
                     });
                 }
             });
+        },
+        mayNeedRestart() {
+            this.axios.get(this.restartStatusUrl).then((resp) => {
+                if (resp.data.needs_restart) {
+                    this.needsRestart();
+                }
+            });
+        },
+        needsRestart() {
+            document.dispatchEvent(new CustomEvent("station-needs-restart"));
         }
     }
 };

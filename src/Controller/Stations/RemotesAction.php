@@ -24,7 +24,8 @@ class RemotesAction
             id: 'station-remotes',
             title: __('Remote Relays'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:remotes'),
+                'listUrl'          => (string)$router->fromHere('api:stations:remotes'),
+                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
             ],
         );
     }

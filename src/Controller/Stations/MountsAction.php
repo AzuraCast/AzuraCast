@@ -29,6 +29,7 @@ class MountsAction
             props: [
                 'listUrl'             => (string)$router->fromHere('api:stations:mounts'),
                 'newIntroUrl'         => (string)$router->fromHere('api:stations:mounts:new-intro'),
+                'restartStatusUrl'    => (string)$router->fromHere('api:stations:restart-status'),
                 'stationFrontendType' => $station->getFrontendType(),
                 'showAdvanced'        => $settings->getEnableAdvancedFeatures(),
             ],

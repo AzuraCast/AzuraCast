@@ -134,8 +134,8 @@ class AutoDJ
             }
 
             $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
-            if ($maxQueueLength < 2) {
-                $maxQueueLength = 2;
+            if ($maxQueueLength < 1) {
+                $maxQueueLength = 1;
             }
 
             $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
@@ -159,6 +159,9 @@ class AutoDJ
 
                     $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                     $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
+
+                    // Only append to queue length for uncued songs.
+                    $queueLength++;
                 }
 
                 $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
@@ -167,7 +170,6 @@ class AutoDJ
                 $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
 
                 $lastSongId = $queueRow->getSongId();
-                $queueLength++;
             }
 
             $this->em->flush();

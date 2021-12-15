@@ -318,7 +318,7 @@ install-docker() {
 }
 
 install-docker-compose() {
-  curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o docker-compose
+  curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-$(uname -m) -o docker-compose
   curl -fsSL https://raw.githubusercontent.com/docker/compose-switch/master/install_on_linux.sh -o install-compose-switch.sh
 
   if [[ $EUID -ne 0 ]]; then

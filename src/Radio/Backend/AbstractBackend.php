@@ -6,7 +6,6 @@ namespace App\Radio\Backend;
 
 use App\Entity;
 use App\Radio\AbstractAdapter;
-use JetBrains\PhpStorm\Pure;
 
 abstract class AbstractBackend extends AbstractAdapter
 {
@@ -45,7 +44,7 @@ abstract class AbstractBackend extends AbstractAdapter
         return [];
     }
 
-    #[Pure] public function getProgramName(Entity\Station $station): string
+    public function getProgramName(Entity\Station $station): string
     {
         return 'station_' . $station->getId() . ':station_' . $station->getId() . '_backend';
     }

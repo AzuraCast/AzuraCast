@@ -315,15 +315,15 @@ install-docker() {
 }
 
 install-docker-compose() {
-  curl -fsSL https://raw.githubusercontent.com/docker/compose-switch/master/install_on_linux.sh -o install-docker-compose.sh
-
   if [[ $EUID -ne 0 ]]; then
-    sudo sh install-docker-compose.sh
+    sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
   else
-    sh install-docker-compose.sh
+    curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
   fi
-
-  rm install-docker-compose.sh
 }
 
 run-installer() {
@@ -364,23 +364,17 @@ install() {
     fi
   fi
 
-  if [[ $(command -v docker-compose) ]]; then
-    # Check for `docker compose` command.
-    error=$(docker compose version 2>&1 >/dev/null)
-    if [ $? -ne 0 ]; then
-      if ask "Your version of Docker is out of date. Attempt to update it automatically?" Y; then
-        install-docker
+  if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
         install-docker-compose
       fi
     else
-      COMPOSE=$(command -v docker-compose)
-      if [ "$COMPOSE" = /usr/local/bin/docker-compose ]; then
-        if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
-          install-docker-compose
-        fi
-      else
-        echo "Docker Compose is installed and up-to-date!"
-      fi
+      echo "Docker Compose is already installed and up to date! Continuing..."
     fi
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
@@ -422,23 +416,21 @@ install-dev() {
     fi
   fi
 
-  if [[ $(command -v docker-compose) ]]; then
-    # Check for `docker compose` command.
-    error=$(docker compose version 2>&1 >/dev/null)
-    if [ $? -ne 0 ]; then
-      if ask "Your version of Docker is out of date. Attempt to update it automatically?" Y; then
-        install-docker
+  if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
         install-docker-compose
       fi
     else
-      COMPOSE=$(command -v docker-compose)
-      if [ "$COMPOSE" = /usr/local/bin/docker-compose ]; then
-        if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
-          install-docker-compose
-        fi
-      else
-        echo "Docker Compose is installed and up-to-date!"
-      fi
+      echo "Docker Compose is already installed and up to date! Continuing..."
+    fi
+  else
+    if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+      install-docker-compose
     fi
   fi
 

@@ -333,7 +333,7 @@ install-docker-compose() {
     sh install-compose-switch.sh
   fi
 
-  rm install-composee-switch.sh
+  rm install-compose-switch.sh
 }
 
 run-installer() {

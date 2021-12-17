@@ -40,6 +40,7 @@ class TaskLocator
                 Task\UpdateStorageLocationSizesTask::class,
                 Task\RotateLogsTask::class,
                 Task\UpdateGeoLiteTask::class,
+                Task\ReloadFrontendAfterSslChangeTask::class,
             ],
         ];
     }

@@ -24,7 +24,20 @@
                                 <translate :key="lang">File Name</translate>
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">This will be the file name for your backup, include the file type (.zip or .tar.gz) you wish to use.</translate>
+                                <translate :key="lang">This will be the file name for your backup, include the extension for file type you wish to use.</translate>
+                                <br>
+                                <strong>
+                                    <translate :key="lang+'2'">Supported file formats:</translate>
+                                </strong>
+                                <br>
+                                <ul class="m-0">
+                                    <li>.zip</li>
+                                    <li>.tar.gz</li>
+                                    <li>.tzst (
+                                        <translate :key="lang+'zstd'">ZStandard compression</translate>
+                                        )
+                                    </li>
+                                </ul>
                             </template>
                         </b-wrapped-form-group>
 

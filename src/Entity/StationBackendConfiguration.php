@@ -142,11 +142,6 @@ class StationBackendConfiguration extends ArrayCollection
         return $this->get(self::CROSSFADE_TYPE) ?? self::CROSSFADE_NORMAL;
     }
 
-    public function isCrossfadeEnabled(): bool
-    {
-        return self::CROSSFADE_DISABLED !== $this->getCrossfadeType();
-    }
-
     public function setCrossfadeType(string $crossfadeType): void
     {
         $this->set(self::CROSSFADE_TYPE, $crossfadeType);
@@ -176,6 +171,11 @@ class StationBackendConfiguration extends ArrayCollection
         }
 
         return 0;
+    }
+
+    public function isCrossfadeEnabled(): bool
+    {
+        return $this->getCrossfadeDuration() > 0;
     }
 
     public const DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';

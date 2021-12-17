@@ -26,10 +26,6 @@ class ConfigWriter implements EventSubscriberInterface
     public const CUSTOM_PRE_BROADCAST = 'custom_config';
     public const CUSTOM_BOTTOM = 'custom_config_bottom';
 
-    public const CROSSFADE_NORMAL = 'normal';
-    public const CROSSFADE_DISABLED = 'none';
-    public const CROSSFADE_SMART = 'smart';
-
     public function __construct(
         protected EntityManagerInterface $em,
         protected Entity\Repository\SettingsRepository $settingsRepo,
@@ -201,7 +197,7 @@ class ConfigWriter implements EventSubscriberInterface
         $genPlaylistVars = [];
 
         $specialPlaylists = [
-            'once_per_x_songs' => [
+            'once_per_x_songs'   => [
                 '# Once per x Songs Playlists',
             ],
             'once_per_x_minutes' => [
@@ -236,8 +232,8 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistModes = [
                     Entity\StationPlaylist::ORDER_SEQUENTIAL => 'normal',
-                    Entity\StationPlaylist::ORDER_SHUFFLE => 'randomize',
-                    Entity\StationPlaylist::ORDER_RANDOM => 'random',
+                    Entity\StationPlaylist::ORDER_SHUFFLE    => 'randomize',
+                    Entity\StationPlaylist::ORDER_RANDOM     => 'random',
                 ];
 
                 $playlistParams[] = 'mode="' . $playlistModes[$playlist->getOrder()] . '"';
@@ -276,7 +272,9 @@ class ConfigWriter implements EventSubscriberInterface
                             $buffer = $playlist->getRemoteBuffer();
                             $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString($remote_url) . '")))';
+                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString(
+                                $remote_url
+                            ) . '")))';
                         }
                         break;
                 }
@@ -522,7 +520,7 @@ class ConfigWriter implements EventSubscriberInterface
         $this->logger->info(
             'Writing playlist file to disk...',
             [
-                'station' => $station->getName(),
+                'station'  => $station->getName(),
                 'playlist' => $playlist->getName(),
             ]
         );
@@ -571,9 +569,9 @@ class ConfigWriter implements EventSubscriberInterface
                 $this->logger->error(
                     'Could not reload playlist with AutoDJ.',
                     [
-                        'message' => $e->getMessage(),
+                        'message'  => $e->getMessage(),
                         'playlist' => $playlistVarName,
-                        'station' => $station->getId(),
+                        'station'  => $station->getId(),
                     ]
                 );
             }
@@ -699,16 +697,15 @@ class ConfigWriter implements EventSubscriberInterface
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
         $crossfade_type = $settings->getCrossfadeType();
         $crossfade = $settings->getCrossfade();
-
         $crossDuration = $settings->getCrossfadeDuration();
-        if ($crossDuration > 0) {
+
+        if ($settings->isCrossfadeEnabled()) {
             $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
             $event->appendLines([
                 sprintf(
-                    'radio = crossfade(smart=%s, duration=%s, fade_out=%s, fade_in=%s, radio)',
+                    'radio = crossfade(smart=%1$s, duration=%2$s, fade_out=%3$s, fade_in=%3$s, minimum=1., conservative=false, radio)',
                     $crossfadeIsSmart,
                     self::toFloat($crossDuration),
-                    self::toFloat($crossfade),
                     self::toFloat($crossfade)
                 ),
             ]);
@@ -831,10 +828,31 @@ class ConfigWriter implements EventSubscriberInterface
         # Live Broadcasting
         live = input.harbor(${harborParams})
         ignore(output.dummy(live, fallible=true))
-
-        radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])
         EOF
         );
+
+        if ($settings->isCrossfadeEnabled()) {
+            $event->appendBlock(
+                <<<EOF
+                radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])
+                EOF
+            );
+        } else {
+            $event->appendBlock(
+                <<<EOF
+                def live_in(a,b)
+                    sequence([a, b])
+                end
+                
+                def live_out(a,b)
+                    source.skip(a)
+                    sequence([b, a])
+                end
+                
+                radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, transitions=[live_out, live_in], [live, radio])
+                EOF
+            );
+        }
 
         if ($recordLiveStreams) {
             $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;

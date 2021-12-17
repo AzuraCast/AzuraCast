@@ -34,7 +34,7 @@ class ReloadFrontendAfterSslChangeTask extends AbstractTask
 
         $certsUpdated = false;
         foreach ($pathsToCheck as $path) {
-            if (filemtime($path) > $threshold) {
+            if (file_exists($path) && filemtime($path) > $threshold) {
                 $certsUpdated = true;
                 break;
             }

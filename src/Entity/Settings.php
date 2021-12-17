@@ -124,7 +124,7 @@ class Settings implements Stringable
      */
     #[ORM\Column]
     #[Groups(self::GROUP_GENERAL)]
-    protected bool $prefer_browser_url = false;
+    protected bool $prefer_browser_url = true;
 
     public function getPreferBrowserUrl(): bool
     {
@@ -144,7 +144,7 @@ class Settings implements Stringable
      */
     #[ORM\Column]
     #[Groups(self::GROUP_GENERAL)]
-    protected bool $use_radio_proxy = false;
+    protected bool $use_radio_proxy = true;
 
     public function getUseRadioProxy(): bool
     {

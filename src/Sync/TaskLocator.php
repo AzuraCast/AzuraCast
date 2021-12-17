@@ -24,12 +24,12 @@ class TaskLocator
                 Task\CheckRequests::class,
                 Task\RunBackupTask::class,
                 Task\CleanupRelaysTask::class,
+                Task\MoveBroadcastsTask::class,
             ],
             GetSyncTasks::SYNC_MEDIUM     => [
                 Task\CheckMediaTask::class,
                 Task\CheckFolderPlaylistsTask::class,
                 Task\CheckUpdatesTask::class,
-                Task\MoveBroadcastsTask::class,
             ],
             GetSyncTasks::SYNC_LONG       => [
                 Task\RunAnalyticsTask::class,

@@ -141,12 +141,6 @@ class ConfigWriter implements EventSubscriberInterface
         settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
         settings.encoder.metadata.export.set(["artist","title","album","song"])
 
-        settings.decoder.priorities.ogg.set(15)
-        settings.decoder.priorities.mad.set(15)
-        settings.decoder.priorities.flac.set(15)
-        settings.decoder.priorities.aac.set(15)
-        settings.decoder.priorities.ffmpeg.set(10)
-
         setenv("TZ", "${stationTz}")
 
         azuracast_api_auth = ref("${stationApiAuth}")

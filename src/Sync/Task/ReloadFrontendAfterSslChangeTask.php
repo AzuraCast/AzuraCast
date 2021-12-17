@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Repository\SettingsRepository;
 use App\Radio\Adapters;
 use App\Radio\CertificateLocator;
 use Psr\Log\LoggerInterface;
@@ -13,6 +14,7 @@ class ReloadFrontendAfterSslChangeTask extends AbstractTask
 {
     public function __construct(
         protected Adapters $adapters,
+        protected SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {
@@ -21,7 +23,7 @@ class ReloadFrontendAfterSslChangeTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $threshold = time() - 60 * 60; // An hour ago
+        $threshold = $this->settingsRepo->readSettings()->getSyncLongLastRun();
 
         $certs = CertificateLocator::findCertificate();
 

@@ -7,29 +7,27 @@
             <b-table-simple striped class="sortable mb-0">
                 <b-thead>
                     <tr>
-                        <th style="width: 34%;" key="lang_col_title" v-translate>Title</th>
-                        <th style="width: 23%;" key="lang_col_artist" v-translate>Artist</th>
-                        <th style="width: 23%;" key="lang_col_album" v-translate>Album</th>
+                        <th style="width: 5%">&nbsp;</th>
+                        <th style="width: 25%;" key="lang_col_title" v-translate>Title</th>
+                        <th style="width: 25%;" key="lang_col_artist" v-translate>Artist</th>
+                        <th style="width: 25%;" key="lang_col_album" v-translate>Album</th>
                         <th style="width: 20%;" key="lang_col_actions" v-translate>Actions</th>
                     </tr>
                 </b-thead>
                 <draggable v-model="media" tag="tbody" @change="save">
                     <tr class="align-middle" v-for="(row,index) in media" :key="media.id">
-                        <td>
-                            <div style="display: flex; align-items: center; justify-content: flex-start;">
-                                <div style="font-size: 1.1rem; margin-right: 1rem;">
-                                    <play-button :url="row.media.links.play" icon-class="outlined"></play-button>
-                                </div>
-                                <div class="flex-fill">
-                                    <big>{{ row.media.title }}</big>
-                                </div>
-                            </div>
+                        <td class="pr-2">
+                            <play-button :url="row.media.links.play" icon-class="lg outlined"></play-button>
+                        </td>
+                        <td class="pl-2">
+                            <big>{{ row.media.title }}</big>
                         </td>
                         <td>{{ row.media.artist }}</td>
                         <td>{{ row.media.album }}</td>
                         <td>
                             <b-button-group size="sm">
-                                <b-button size="sm" variant="primary" @click.prevent="moveDown(index)" :title="langDownBtn"
+                                <b-button size="sm" variant="primary" @click.prevent="moveDown(index)"
+                                          :title="langDownBtn"
                                           v-if="index+1 < media.length">
                                     <icon icon="arrow_downward"></icon>
                                 </b-button>
@@ -56,7 +54,7 @@ table.sortable {
 import Draggable from 'vuedraggable';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
-import InlinePlayer from '../../InlinePlayer';
+import InlinePlayer from '~/components/InlinePlayer';
 
 export default {
     name: 'ReorderModal',

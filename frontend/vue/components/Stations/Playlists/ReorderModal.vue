@@ -1,8 +1,8 @@
 <template>
     <b-modal size="lg" id="reorder_modal" ref="modal" :title="langTitle" :busy="loading" hide-footer>
         <b-overlay variant="card" :show="loading">
-            <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded">
-              <inline-player ref="player"></inline-player>
+            <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
+                <inline-player ref="player"></inline-player>
             </div>
             <b-table-simple striped class="sortable mb-0">
                 <b-thead>
@@ -18,7 +18,7 @@
                         <td>
                             <div style="display: flex; align-items: center; justify-content: flex-start;">
                                 <div style="font-size: 1.1rem; margin-right: 1rem;">
-                                    <play-button :url="row.playback_url" icon-class="outlined"></play-button>
+                                    <play-button :url="row.media.links.play" icon-class="outlined"></play-button>
                                 </div>
                                 <div class="flex-fill">
                                     <big>{{ row.media.title }}</big>
@@ -91,27 +91,7 @@ export default {
             this.loading = true;
 
             this.axios.get(this.reorderUrl).then((resp) => {
-                // this is a bit of a hack to get the api_url & station_id; suggetions welcome.
-                let playbackBaseUrl = "";
-                if (this.reorderUrl.includes("://")) {
-                    playbackBaseUrl = this.reorderUrl.match(/.*\/station\/(\d+)\//i)?.[0] || "";
-                } else {
-                    playbackBaseUrl = 
-                      window.location.protocol 
-                      + "//" 
-                      + window.location.host 
-                      + this.reorderUrl.match(/.*\/station\/(\d+)\//i)?.[0] || ""; // selects all after domain return "/api/station/{id}/" or ""
-                }
-                playbackBaseUrl += "files/play/";
-
-                // add playback url to each media object
-                this.media = resp.data.map( obj => {
-                  const playbackUrl = playbackBaseUrl + obj.media_id;
-                  return {
-                    ...obj, 
-                    playback_url: playbackUrl
-                  }
-                });
+                this.media = resp.data;
                 this.loading = false;
             });
         },

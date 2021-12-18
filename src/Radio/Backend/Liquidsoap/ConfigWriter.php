@@ -408,8 +408,9 @@ class ConfigWriter implements EventSubscriberInterface
                 <<< EOF
             # AutoDJ Next Song Script
             def autodj_next_song() =
+                log("autodj_next_song: Sending AzuraCast API Call...")
                 uri = {$nextsongCommand}
-                log("AzuraCast Raw Response: #{uri}")
+                log("autodj_next_song: AzuraCast API Response: #{uri}")
 
                 if uri == "" or string.match(pattern="Error", uri) then
                     null()
@@ -747,11 +748,10 @@ class ConfigWriter implements EventSubscriberInterface
                 user := login.user
                 password := login.password
             end
-
-            log("Authenticating DJ: #{!user}")
-
+            
+            log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{!user}")
             ret = {$authCommand}
-            log("AzuraCast DJ Auth Response: #{ret}")
+            log("dj_auth: AzuraCast API Response: #{ret}")
 
             authed = bool_of_string(ret)
             if (authed) then
@@ -767,9 +767,10 @@ class ConfigWriter implements EventSubscriberInterface
 
             live_enabled := true
             live_dj := dj
-
+            
+            log("live_connected: Sending AzuraCast API DJ onConnect command...")
             ret = {$djonCommand}
-            log("AzuraCast Live Connected Response: #{ret}")
+            log("live_connected: AzuraCast API Response: #{ret}")
 
             if (string.contains(prefix="/", ret)) then
                 live_record_path := ret
@@ -780,9 +781,10 @@ class ConfigWriter implements EventSubscriberInterface
             dj = !live_dj
 
             log("DJ Source disconnected! Current live DJ: #{dj}")
-
+            
+            log("live_disconnected: Sending AzuraCast API DJ onDisconnect command...")
             ret = {$djoffCommand}
-            log("AzuraCast Live Disconnected Response: #{ret}")
+            log("live_disconnected: AzuraCast API Response: #{ret}")
 
             live_enabled := false
             last_authenticated_dj := ""

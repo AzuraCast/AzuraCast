@@ -1,7 +1,7 @@
 <template>
     <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="langHeader">
         <template v-if="listUrl">
-            <div class="card-header bg-primary-dark" v-show="now_playing_url != null">
+            <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
                 <inline-player ref="player"></inline-player>
             </div>
 

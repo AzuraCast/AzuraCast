@@ -17,7 +17,8 @@ class GetOrderAction extends AbstractPlaylistsAction
         Response $response,
         int $id
     ): ResponseInterface {
-        $record = $this->requireRecord($request->getStation(), $id);
+        $station = $request->getStation();
+        $record = $this->requireRecord($station, $id);
 
         if (
             $record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
@@ -37,6 +38,23 @@ class GetOrderAction extends AbstractPlaylistsAction
         )->setParameter('playlist_id', $id)
             ->getArrayResult();
 
-        return $response->withJson($media_items);
+        $router = $request->getRouter();
+
+        return $response->withJson(
+            array_map(
+                function (array $row) use ($router, $station): array {
+                    $row['media']['links'] = [
+                        'play' => (string)$router->named(
+                            'api:stations:files:play',
+                            ['station_id' => $station->getIdRequired(), 'id' => $row['media']['unique_id']],
+                            [],
+                            true
+                        ),
+                    ];
+                    return $row;
+                },
+                $media_items
+            )
+        );
     }
 }

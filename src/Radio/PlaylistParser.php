@@ -31,10 +31,10 @@ class PlaylistParser
         // Process as a simple list of files or M3U-style playlist.
         $lines = preg_split(
             "/[\r\n]+/",        // regex supports Windows, Linux/Unix & Old Macs EOL's
-            $playlistRaw, 
-            -1,               
+            $playlistRaw,
+            -1,
             PREG_SPLIT_NO_EMPTY
-        ); 
+        );
         if (false === $lines) {
             return [];
         }

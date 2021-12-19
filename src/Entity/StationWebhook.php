@@ -9,10 +9,8 @@ use OpenApi\Annotations as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(type="object")
- */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
     Attributes\Auditable
@@ -39,62 +37,66 @@ class StationWebhook implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'webhooks')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'webhooks'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /**
-     * @OA\Property(
-     *     description="The nickname of the webhook connector.",
-     *     example="Twitter Post"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(
+            description: "The nickname of the webhook connector.",
+            example: "Twitter Post"
+        ),
+        ORM\Column(length: 100, nullable: true)
+    ]
     protected ?string $name = null;
 
-    /**
-     * @OA\Property(
-     *     description="The type of webhook connector to use.",
-     *     example="twitter"
-     * )
-     */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(
+            description: "The type of webhook connector to use.",
+            example: "twitter"
+        ),
+        ORM\Column(length: 100),
+        Assert\NotBlank
+    ]
     protected string $type;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_enabled = true;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="List of events that should trigger the webhook notification.",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(
+            type: "array",
+            description: "List of events that should trigger the webhook notification.",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true)
+    ]
     protected ?array $triggers = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="Detailed webhook configuration (if applicable)",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(
+            type: "array",
+            description: "Detailed webhook configuration (if applicable)",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true)
+    ]
     protected ?array $config = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="Internal details used by the webhook to preserve state.",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            type: "array",
+            description: "Internal details used by the webhook to preserve state.",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?array $metadata = null;
 
     public function __construct(Station $station, string $type)

@@ -20,8 +20,8 @@ use OpenApi\Annotations as OA;
 use RuntimeException;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_media'),
     ORM\Index(columns: ['title', 'artist', 'album'], name: 'search_idx'),
@@ -38,161 +38,165 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public const DIR_ALBUM_ART = '.albumart';
     public const DIR_WAVEFORMS = '.waveforms';
 
-    /**
-     * @OA\Property(
-     *     description="A unique identifier associated with this record.",
-     *     example="69b536afc7ebbf16457b8645"
-     * )
-     */
-    #[ORM\Column(length: 25, nullable: true)]
+    #[
+        OA\Property(
+            description: "A unique identifier associated with this record.",
+            example: "69b536afc7ebbf16457b8645"
+        ),
+        ORM\Column(length: 25, nullable: true)
+    ]
     protected ?string $unique_id = null;
 
     #[ORM\Column(nullable: false)]
     protected int $storage_location_id;
 
-    #[ORM\ManyToOne(inversedBy: 'media')]
-    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'media'),
+        ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected StorageLocation $storage_location;
 
-    /**
-     * @OA\Property(
-     *     description="The name of the media file's album.",
-     *     example="Test Album"
-     * )
-     */
-    #[ORM\Column(length: 200, nullable: true)]
+    #[
+        OA\Property(
+            description: "The name of the media file's album.",
+            example: "Test Album"
+        ),
+        ORM\Column(length: 200, nullable: true)
+    ]
     protected ?string $album = null;
 
-    /**
-     * @OA\Property(
-     *     description="The genre of the media file.",
-     *     example="Rock"
-     * )
-     */
-    #[ORM\Column(length: 30, nullable: true)]
+    #[
+        OA\Property(
+            description: "The genre of the media file.",
+            example: "Rock"
+        ),
+        ORM\Column(length: 30, nullable: true)
+    ]
     protected ?string $genre = null;
 
-    /**
-     * @OA\Property(
-     *     description="Full lyrics of the track, if available.",
-     *     example="...Never gonna give you up..."
-     * )
-     */
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[
+        OA\Property(
+            description: "Full lyrics of the track, if available.",
+            example: "...Never gonna give you up..."
+        ),
+        ORM\Column(type: 'text', nullable: true)
+    ]
     protected ?string $lyrics = null;
 
-    /**
-     * @OA\Property(
-     *     description="The track ISRC (International Standard Recording Code), used for licensing purposes.",
-     *     example="GBARL0600786"
-     * )
-     */
-    #[ORM\Column(length: 15, nullable: true)]
+    #[
+        OA\Property(
+            description: "The track ISRC (International Standard Recording Code), used for licensing purposes.",
+            example: "GBARL0600786"
+        ),
+        ORM\Column(length: 15, nullable: true)
+    ]
     protected ?string $isrc = null;
 
-    /**
-     * @OA\Property(
-     *     description="The song duration in seconds.",
-     *     example=240.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: true)]
+    #[
+        OA\Property(
+            description: "The song duration in seconds.",
+            example: 240.00
+        ),
+        ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: true)
+    ]
     protected ?float $length = 0.00;
 
-    /**
-     * @OA\Property(
-     *     description="The formatted song duration (in mm:ss format)",
-     *     example="4:00"
-     * )
-     */
-    #[ORM\Column(length: 10, nullable: true)]
+    #[
+        OA\Property(
+            description: "The formatted song duration (in mm:ss format)",
+            example: "4:00"
+        ),
+        ORM\Column(length: 10, nullable: true)
+    ]
     protected ?string $length_text = '0:00';
 
-    /**
-     * @OA\Property(
-     *     description="The relative path of the media file.",
-     *     example="test.mp3"
-     * )
-     */
-    #[ORM\Column(length: 500)]
+    #[
+        OA\Property(
+            description: "The relative path of the media file.",
+            example: "test.mp3"
+        ),
+        ORM\Column(length: 500)
+    ]
     protected string $path;
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when the database was last modified.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column(nullable: true)]
+    #[
+        OA\Property(
+            description: "The UNIX timestamp when the database was last modified.",
+            example: 1609480800
+        ),
+        ORM\Column(nullable: true)
+    ]
     protected ?int $mtime = 0;
 
-    /**
-     * @OA\Property(
-     *     description="The amount of amplification (in dB) to be applied to the radio source (liq_amplify)",
-     *     example=-14.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
+    #[
+        OA\Property(
+            description: "The amount of amplification (in dB) to be applied to the radio source (liq_amplify)",
+            example: -14.00
+        ),
+        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
+    ]
     protected ?float $amplify = null;
 
-    /**
-     * @OA\Property(
-     *     description="The length of time (in seconds) before the next song starts in the fade (liq_start_next)",
-     *     example=2.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
+    #[
+        OA\Property(
+            description: "The length of time (in seconds) before the next song starts in the fade (liq_start_next)",
+            example: 2.00
+        ),
+        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
+    ]
     protected ?float $fade_overlap = null;
 
-    /**
-     * @OA\Property(
-     *     description="The length of time (in seconds) to fade in the next track (liq_fade_in)",
-     *     example=3.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
+    #[
+        OA\Property(
+            description: "The length of time (in seconds) to fade in the next track (liq_fade_in)",
+            example: 3.00
+        ),
+        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
+    ]
     protected ?float $fade_in = null;
 
-    /**
-     * @OA\Property(
-     *     description="The length of time (in seconds) to fade out the previous track (liq_fade_out)",
-     *     example=3.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
+    #[
+        OA\Property(
+            description: "The length of time (in seconds) to fade out the previous track (liq_fade_out)",
+            example: 3.00
+        ),
+        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
+    ]
     protected ?float $fade_out = null;
 
-    /**
-     * @OA\Property(
-     *     description="The length of time (in seconds) from the start of the track to start playing (liq_cue_in)",
-     *     example=30.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
+    #[
+        OA\Property(
+            description: "The length of time (in seconds) from the start of the track to start playing (liq_cue_in)",
+            example: 30.00
+        ),
+        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
+    ]
     protected ?float $cue_in = null;
 
-    /**
-     * @OA\Property(
-     *     description="The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)",
-     *     example=30.00
-     * )
-     */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
+    #[
+        OA\Property(
+            description: "The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)",
+            example: 30.00
+        ),
+        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
+    ]
     protected ?float $cue_out = null;
 
-    /**
-     * @OA\Property(
-     *     description="The latest time (UNIX timestamp) when album art was updated.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "The latest time (UNIX timestamp) when album art was updated.",
+            example: 1609480800
+        ),
+        ORM\Column
+    ]
     protected int $art_updated_at = 0;
 
-    /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class)]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
     protected Collection $playlists;
 
     #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationMediaCustomField::class)]

@@ -13,8 +13,8 @@ use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
@@ -32,88 +32,118 @@ class StationMount implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'mounts')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'mounts'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /** @OA\Property(example="/radio.mp3") */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(example: "/radio.mp3"),
+        ORM\Column(length: 100),
+        Assert\NotBlank
+    ]
     protected string $name = '';
 
-    /** @OA\Property(example="128kbps MP3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "128kbps MP3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $display_name = null;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_visible_on_public_pages = true;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $is_default = false;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $is_public = false;
 
-    /** @OA\Property(example="/error.mp3") */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(example: "/error.mp3"),
+        ORM\Column(length: 100, nullable: true)
+    ]
     protected ?string $fallback_mount = null;
 
-    /** @OA\Property(example="https://radio.example.com:8000/radio.mp3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://radio.example.com:8000/radio.mp3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $relay_url = null;
 
-    /** @OA\Property(example="") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: ""),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $authhash = null;
 
-    /** @OA\Property(example=43200) */
-    #[ORM\Column(type: 'integer', nullable: false)]
+    #[
+        OA\Property(example: 43200),
+        ORM\Column(type: 'integer', nullable: false)
+    ]
     protected int $max_listener_duration = 0;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $enable_autodj = true;
 
-    /** @OA\Property(example="mp3") */
-    #[ORM\Column(length: 10, nullable: true)]
+    #[
+        OA\Property(example: "mp3"),
+        ORM\Column(length: 10, nullable: true)
+    ]
     protected ?string $autodj_format = 'mp3';
 
-    /** @OA\Property(example=128) */
-    #[ORM\Column(type: 'smallint', nullable: true)]
+    #[
+        OA\Property(example: 128),
+        ORM\Column(type: 'smallint', nullable: true)
+    ]
     protected ?int $autodj_bitrate = 128;
 
-    /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://custom-listen-url.example.com/stream.mp3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $custom_listen_url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $intro_path = null;
 
-    /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\Column(type: 'text', nullable: true)
+    ]
     protected ?string $frontend_config = null;
 
-    /**
-     * @OA\Property(
-     *     description="The most recent number of unique listeners.",
-     *     example=10
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The most recent number of unique listeners.",
+            example: 10
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $listeners_unique = 0;
 
-    /**
-     * @OA\Property(
-     *     description="The most recent number of total (non-unique) listeners.",
-     *     example=12
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The most recent number of total (non-unique) listeners.",
+            example: 12
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $listeners_total = 0;
 
     public function __construct(Station $station)

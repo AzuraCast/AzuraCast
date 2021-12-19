@@ -19,9 +19,12 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object", schema="Settings") */
-#[ORM\Entity, ORM\Table(name: 'settings')]
-#[Attributes\Auditable]
+#[
+    OA\Schema(type: "object", schema: "Settings"),
+    ORM\Entity,
+    ORM\Table(name: 'settings'),
+    Attributes\Auditable
+]
 class Settings implements Stringable
 {
     use Entity\Traits\TruncateStrings;
@@ -40,9 +43,13 @@ class Settings implements Stringable
         self::GROUP_GEO_IP,
     ];
 
-    /** @OA\Property() */
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class)]
+    #[
+        OA\Property,
+        ORM\Column(type: 'guid', unique: true),
+        ORM\Id,
+        ORM\GeneratedValue(strategy: 'CUSTOM'),
+        ORM\CustomIdGenerator(UuidV6Generator::class)
+    ]
     protected string $app_unique_identifier;
 
     public function getAppUniqueIdentifier(): string
@@ -54,14 +61,11 @@ class Settings implements Stringable
         return $this->app_unique_identifier;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Site Base URL",
-     *     example="https://your.azuracast.site"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Site Base URL", example: "https://your.azuracast.site"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $base_url = '';
 
     public function getBaseUrl(): ?string
@@ -96,14 +100,11 @@ class Settings implements Stringable
         $this->base_url = $this->truncateNullableString((string)$baseUri);
     }
 
-    /**
-     * @OA\Property(
-     *     description="AzuraCast Instance Name",
-     *     example="My AzuraCast Instance"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "AzuraCast Instance Name", example: "My AzuraCast Instance"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $instance_name = null;
 
     public function getInstanceName(): ?string
@@ -116,14 +117,11 @@ class Settings implements Stringable
         $this->instance_name = $this->truncateNullableString($instanceName);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Prefer Browser URL (If Available)",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Prefer Browser URL (If Available)", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $prefer_browser_url = true;
 
     public function getPreferBrowserUrl(): bool
@@ -136,14 +134,11 @@ class Settings implements Stringable
         $this->prefer_browser_url = $preferBrowserUrl;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Use Web Proxy for Radio",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Use Web Proxy for Radio", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $use_radio_proxy = true;
 
     public function getUseRadioProxy(): bool
@@ -156,14 +151,12 @@ class Settings implements Stringable
         $this->use_radio_proxy = $useRadioProxy;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Days of Playback History to Keep"
-     * )
-     */
-    #[ORM\Column(type: 'smallint')]
-    #[Assert\Choice([0, 14, 30, 60, 365, 730])]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Days of Playback History to Keep"),
+        ORM\Column(type: 'smallint'),
+        Assert\Choice([0, 14, 30, 60, 365, 730]),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected int $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
 
     public function getHistoryKeepDays(): int
@@ -176,14 +169,11 @@ class Settings implements Stringable
         $this->history_keep_days = $this->truncateSmallInt($historyKeepDays);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Always Use HTTPS",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Always Use HTTPS", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $always_use_ssl = false;
 
     public function getAlwaysUseSsl(): bool
@@ -196,14 +186,11 @@ class Settings implements Stringable
         $this->always_use_ssl = $alwaysUseSsl;
     }
 
-    /**
-     * @OA\Property(
-     *     description="API 'Access-Control-Allow-Origin' header",
-     *     example="*"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "API 'Access-Control-Allow-Origin' header", example: "*"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $api_access_control = '';
 
     public function getApiAccessControl(): string
@@ -216,14 +203,11 @@ class Settings implements Stringable
         $this->api_access_control = $this->truncateNullableString($apiAccessControl);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Whether to use Websockets for Now Playing data updates.",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Whether to use Websockets for Now Playing data updates.", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $enable_websockets = false;
 
     public function getEnableWebsockets(): bool
@@ -236,14 +220,12 @@ class Settings implements Stringable
         $this->enable_websockets = $enableWebsockets;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Listener Analytics Collection"
-     * )
-     */
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Choice([Analytics::LEVEL_NONE, Analytics::LEVEL_NO_IP, Analytics::LEVEL_ALL])]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Listener Analytics Collection"),
+        ORM\Column(length: 50, nullable: true),
+        Assert\Choice([Analytics::LEVEL_NONE, Analytics::LEVEL_NO_IP, Analytics::LEVEL_ALL]),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $analytics = Analytics::LEVEL_ALL;
 
     public function getAnalytics(): string
@@ -256,14 +238,11 @@ class Settings implements Stringable
         $this->analytics = $this->truncateNullableString($analytics, 50);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Check for Updates and Announcements",
-     *     example="true"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Check for Updates and Announcements", example: "true"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $check_for_updates = true;
 
     public function getCheckForUpdates(): bool
@@ -277,14 +256,13 @@ class Settings implements Stringable
     }
 
     /**
-     * @OA\Property(
-     *     description="Results of the latest update check.",
-     *     example=""
-     * )
      * @var mixed[]|null
      */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(description: "Results of the latest update check.", example: ""),
+        ORM\Column(type: 'json', nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?array $update_results = null;
 
     /**
@@ -300,14 +278,11 @@ class Settings implements Stringable
         $this->update_results = $updateResults;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when updates were last checked.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(description: "The UNIX timestamp when updates were last checked.", example: 1609480800),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $update_last_run = 0;
 
     public function getUpdateLastRun(): int
@@ -325,15 +300,12 @@ class Settings implements Stringable
         $this->setUpdateLastRun(time());
     }
 
-    /**
-     * @OA\Property(
-     *     description="Base Theme for Public Pages",
-     *     example="light"
-     * )
-     */
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Choice([Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK])]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Base Theme for Public Pages", example: "light"),
+        ORM\Column(length: 50, nullable: true),
+        Assert\Choice([Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK]),
+        Groups(self::GROUP_BRANDING)
+    ]
     protected ?string $public_theme = Customization::DEFAULT_THEME;
 
     public function getPublicTheme(): string
@@ -346,14 +318,11 @@ class Settings implements Stringable
         $this->public_theme = $publicTheme;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Hide Album Art on Public Pages",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Hide Album Art on Public Pages", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_BRANDING)
+    ]
     protected bool $hide_album_art = false;
 
     public function getHideAlbumArt(): bool
@@ -366,14 +335,11 @@ class Settings implements Stringable
         $this->hide_album_art = $hideAlbumArt;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Homepage Redirect URL",
-     *     example="https://example.com/"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Homepage Redirect URL", example: "https://example.com/"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_BRANDING)
+    ]
     protected ?string $homepage_redirect_url = null;
 
     public function getHomepageRedirectUrl(): ?string
@@ -391,14 +357,11 @@ class Settings implements Stringable
         $this->homepage_redirect_url = $this->truncateNullableString($homepageRedirectUrl);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Default Album Art URL",
-     *     example="https://example.com/image.jpg"
-     * )
-     */
-    #[ORM\Column(nullable: true)]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Default Album Art URL", example: "https://example.com/image.jpg"),
+        ORM\Column(nullable: true),
+        Groups(self::GROUP_BRANDING)
+    ]
     protected ?string $default_album_art_url = null;
 
     public function getDefaultAlbumArtUrl(): ?string
@@ -416,14 +379,14 @@ class Settings implements Stringable
         $this->default_album_art_url = $this->truncateNullableString($defaultAlbumArtUrl);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Attempt to fetch album art from external sources when processing media.",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(
+            description: "Attempt to fetch album art from external sources when processing media.",
+            example: "false"
+        ),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $use_external_album_art_when_processing_media = false;
 
     public function getUseExternalAlbumArtWhenProcessingMedia(): bool
@@ -436,14 +399,14 @@ class Settings implements Stringable
         $this->use_external_album_art_when_processing_media = $useExternalAlbumArtWhenProcessingMedia;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Attempt to fetch album art from external sources in API requests.",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(
+            description: "Attempt to fetch album art from external sources in API requests.",
+            example: "false"
+        ),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $use_external_album_art_in_apis = false;
 
     public function getUseExternalAlbumArtInApis(): bool
@@ -456,14 +419,14 @@ class Settings implements Stringable
         $this->use_external_album_art_in_apis = $useExternalAlbumArtInApis;
     }
 
-    /**
-     * @OA\Property(
-     *     description="An API key to connect to Last.fm services, if provided.",
-     *     example="SAMPLE-API-KEY"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(
+            description: "An API key to connect to Last.fm services, if provided.",
+            example: "SAMPLE-API-KEY"
+        ),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $last_fm_api_key = null;
 
     public function getLastFmApiKey(): ?string
@@ -479,14 +442,11 @@ class Settings implements Stringable
         $this->last_fm_api_key = $this->truncateNullableString($lastFmApiKey);
     }
 
-    /**
-     * @OA\Property(
-     *     description="Hide AzuraCast Branding on Public Pages",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Hide AzuraCast Branding on Public Pages", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_BRANDING)
+    ]
     protected bool $hide_product_name = false;
 
     public function getHideProductName(): bool
@@ -499,14 +459,11 @@ class Settings implements Stringable
         $this->hide_product_name = $hideProductName;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Custom CSS for Public Pages",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Custom CSS for Public Pages", example: ""),
+        ORM\Column(type: 'text', nullable: true),
+        Groups(self::GROUP_BRANDING)
+    ]
     protected ?string $public_custom_css = null;
 
     public function getPublicCustomCss(): ?string
@@ -519,14 +476,11 @@ class Settings implements Stringable
         $this->public_custom_css = $publicCustomCss;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Custom JS for Public Pages",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Custom JS for Public Pages", example: ""),
+        ORM\Column(type: 'text', nullable: true),
+        Groups(self::GROUP_BRANDING)
+    ]
     protected ?string $public_custom_js = null;
 
     public function getPublicCustomJs(): ?string
@@ -539,14 +493,11 @@ class Settings implements Stringable
         $this->public_custom_js = $publicCustomJs;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Custom CSS for Internal Pages",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(self::GROUP_BRANDING)]
+    #[
+        OA\Property(description: "Custom CSS for Internal Pages", example: ""),
+        ORM\Column(type: 'text', nullable: true),
+        Groups(self::GROUP_BRANDING)
+    ]
     protected ?string $internal_custom_css = null;
 
     public function getInternalCustomCss(): ?string
@@ -559,14 +510,11 @@ class Settings implements Stringable
         $this->internal_custom_css = $internalCustomCss;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Whether backup is enabled.",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(description: "Whether backup is enabled.", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_BACKUP)
+    ]
     protected bool $backup_enabled = false;
 
     public function getBackupEnabled(): bool
@@ -579,14 +527,14 @@ class Settings implements Stringable
         $this->backup_enabled = $backupEnabled;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The timecode (i.e. 400 for 4:00AM) when automated backups should run.",
-     *     example=400
-     * )
-     */
-    #[ORM\Column(length: 4, nullable: true)]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(
+            description: "The timecode (i.e. 400 for 4:00AM) when automated backups should run.",
+            example: 400
+        ),
+        ORM\Column(length: 4, nullable: true),
+        Groups(self::GROUP_BACKUP)
+    ]
     protected ?string $backup_time_code = null;
 
     public function getBackupTimeCode(): ?string
@@ -599,14 +547,11 @@ class Settings implements Stringable
         $this->backup_time_code = $backupTimeCode;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Whether to exclude media in automated backups.",
-     *     example="false"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(description: "Whether to exclude media in automated backups.", example: "false"),
+        ORM\Column,
+        Groups(self::GROUP_BACKUP)
+    ]
     protected bool $backup_exclude_media = false;
 
     public function getBackupExcludeMedia(): bool
@@ -619,14 +564,11 @@ class Settings implements Stringable
         $this->backup_exclude_media = $backupExcludeMedia;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Number of backups to keep, or infinite if zero/null.",
-     *     example=2
-     * )
-     */
-    #[ORM\Column(type: 'smallint')]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(description: "Number of backups to keep, or infinite if zero/null.", example: 2),
+        ORM\Column(type: 'smallint'),
+        Groups(self::GROUP_BACKUP)
+    ]
     protected int $backup_keep_copies = 0;
 
     public function getBackupKeepCopies(): int
@@ -639,14 +581,11 @@ class Settings implements Stringable
         $this->backup_keep_copies = $this->truncateSmallInt($backupKeepCopies);
     }
 
-    /**
-     * @OA\Property(
-     *     description="The storage location ID for automated backups.",
-     *     example=1
-     * )
-     */
-    #[ORM\Column(nullable: true)]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(description: "The storage location ID for automated backups.", example: 1),
+        ORM\Column(nullable: true),
+        Groups(self::GROUP_BACKUP)
+    ]
     protected ?int $backup_storage_location = null;
 
     public function getBackupStorageLocation(): ?int
@@ -659,15 +598,12 @@ class Settings implements Stringable
         $this->backup_storage_location = $backupStorageLocation;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when automated backup was last run.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(description: "The UNIX timestamp when automated backup was last run.", example: 1609480800),
+        ORM\Column,
+        Attributes\AuditIgnore,
+        Groups(self::GROUP_BACKUP)
+    ]
     protected int $backup_last_run = 0;
 
     public function getBackupLastRun(): int
@@ -685,15 +621,12 @@ class Settings implements Stringable
         $this->setBackupLastRun(time());
     }
 
-    /**
-     * @OA\Property(
-     *     description="The output of the latest automated backup task.",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Attributes\AuditIgnore]
-    #[Groups(self::GROUP_BACKUP)]
+    #[
+        OA\Property(description: "The output of the latest automated backup task.", example: ""),
+        ORM\Column(type: 'text', nullable: true),
+        Attributes\AuditIgnore,
+        Groups(self::GROUP_BACKUP)
+    ]
     protected ?string $backup_last_output = null;
 
     public function getBackupLastOutput(): ?string
@@ -706,13 +639,10 @@ class Settings implements Stringable
         $this->backup_last_output = $backupLastOutput;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when setup was last completed.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(description: "The UNIX timestamp when setup was last completed.", example: 1609480800),
+        ORM\Column
+    ]
     protected int $setup_complete_time = 0;
 
     public function getSetupCompleteTime(): int
@@ -736,14 +666,13 @@ class Settings implements Stringable
     }
 
     /**
-     * @OA\Property(
-     *     description="The current cached now playing data.",
-     *     example=""
-     * )
      * @var mixed[]|null
      */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(description: "The current cached now playing data.", example: ""),
+        ORM\Column(type: 'json', nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?array $nowplaying = null;
 
     /**
@@ -759,14 +688,14 @@ class Settings implements Stringable
         $this->nowplaying = $nowplaying;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when the now playing sync task was last run.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The UNIX timestamp when the now playing sync task was last run.",
+            example: 1609480800
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $sync_nowplaying_last_run = 0;
 
     public function getSyncNowplayingLastRun(): int
@@ -779,14 +708,14 @@ class Settings implements Stringable
         $this->sync_nowplaying_last_run = $syncNowplayingLastRun;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when the 60-second 'short' sync task was last run.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The UNIX timestamp when the 60-second 'short' sync task was last run.",
+            example: 1609480800
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $sync_short_last_run = 0;
 
     public function getSyncShortLastRun(): int
@@ -799,14 +728,14 @@ class Settings implements Stringable
         $this->sync_short_last_run = $syncShortLastRun;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when the 5-minute 'medium' sync task was last run.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The UNIX timestamp when the 5-minute 'medium' sync task was last run.",
+            example: 1609480800
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $sync_medium_last_run = 0;
 
     public function getSyncMediumLastRun(): int
@@ -819,14 +748,14 @@ class Settings implements Stringable
         $this->sync_medium_last_run = $syncMediumLastRun;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when the 1-hour 'long' sync task was last run.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The UNIX timestamp when the 1-hour 'long' sync task was last run.",
+            example: 1609480800
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $sync_long_last_run = 0;
 
     public function getSyncLongLastRun(): int
@@ -872,14 +801,11 @@ class Settings implements Stringable
         }
     }
 
-    /**
-     * @OA\Property(
-     *     description="This installation's external IP.",
-     *     example="192.168.1.1"
-     * )
-     */
-    #[ORM\Column(length: 45, nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(description: "This installation's external IP.", example: "192.168.1.1"),
+        ORM\Column(length: 45, nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?string $external_ip = null;
 
     public function getExternalIp(): ?string
@@ -892,14 +818,11 @@ class Settings implements Stringable
         $this->external_ip = $externalIp;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The license key for the Maxmind Geolite download.",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GEO_IP)]
+    #[
+        OA\Property(description: "The license key for the Maxmind Geolite download.", example: ""),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GEO_IP)
+    ]
     protected ?string $geolite_license_key = null;
 
     public function getGeoliteLicenseKey(): ?string
@@ -914,15 +837,15 @@ class Settings implements Stringable
         $this->geolite_license_key = $geoliteLicenseKey;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The UNIX timestamp when the Maxmind Geolite was last downloaded.",
-     *     example=1609480800
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
-    #[Groups(self::GROUP_GEO_IP)]
+    #[
+        OA\Property(
+            description: "The UNIX timestamp when the Maxmind Geolite was last downloaded.",
+            example: 1609480800
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore,
+        Groups(self::GROUP_GEO_IP)
+    ]
     protected int $geolite_last_run = 0;
 
     public function getGeoliteLastRun(): int
@@ -940,14 +863,14 @@ class Settings implements Stringable
         $this->setGeoliteLastRun(time());
     }
 
-    /**
-     * @OA\Property(
-     *     description="Whether to enable 'advanced' functionality in the system that is intended for power users.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(
+            description: "Whether to enable 'advanced' functionality in the system that is intended for power users.",
+            example: false
+        ),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $enable_advanced_features = false;
 
     public function getEnableAdvancedFeatures(): bool
@@ -960,14 +883,11 @@ class Settings implements Stringable
         $this->enable_advanced_features = $enableAdvancedFeatures;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Enable e-mail delivery across the application.",
-     *     example="true"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Enable e-mail delivery across the application.", example: "true"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $mail_enabled = false;
 
     public function getMailEnabled(): bool
@@ -980,14 +900,11 @@ class Settings implements Stringable
         $this->mail_enabled = $mailEnabled;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The name of the sender of system e-mails.",
-     *     example="AzuraCast"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The name of the sender of system e-mails.", example: "AzuraCast"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $mail_sender_name = '';
 
     public function getMailSenderName(): string
@@ -1000,14 +917,14 @@ class Settings implements Stringable
         $this->mail_sender_name = $mailSenderName;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The e-mail address of the sender of system e-mails.",
-     *     example="example@example.com"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(
+            description: "The e-mail address of the sender of system e-mails.",
+            example: "example@example.com"
+        ),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $mail_sender_email = '';
 
     public function getMailSenderEmail(): string
@@ -1020,14 +937,11 @@ class Settings implements Stringable
         $this->mail_sender_email = $mailSenderEmail;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The host to send outbound SMTP mail.",
-     *     example="smtp.example.com"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The host to send outbound SMTP mail.", example: "smtp.example.com"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $mail_smtp_host = '';
 
     public function getMailSmtpHost(): string
@@ -1040,14 +954,11 @@ class Settings implements Stringable
         $this->mail_smtp_host = $mailSmtpHost;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The port for sending outbound SMTP mail.",
-     *     example=465
-     * )
-     */
-    #[ORM\Column(type: 'smallint')]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The port for sending outbound SMTP mail.", example: 465),
+        ORM\Column(type: 'smallint'),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected int $mail_smtp_port = 0;
 
     public function getMailSmtpPort(): int
@@ -1060,14 +971,11 @@ class Settings implements Stringable
         $this->mail_smtp_port = $this->truncateSmallInt($mailSmtpPort);
     }
 
-    /**
-     * @OA\Property(
-     *     description="The username when connecting to SMTP mail.",
-     *     example="username"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The username when connecting to SMTP mail.", example: "username"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $mail_smtp_username = '';
 
     public function getMailSmtpUsername(): string
@@ -1080,14 +988,11 @@ class Settings implements Stringable
         $this->mail_smtp_username = $this->truncateNullableString($mailSmtpUsername);
     }
 
-    /**
-     * @OA\Property(
-     *     description="The password when connecting to SMTP mail.",
-     *     example="password"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The password when connecting to SMTP mail.", example: "password"),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $mail_smtp_password = '';
 
     public function getMailSmtpPassword(): string
@@ -1100,14 +1005,11 @@ class Settings implements Stringable
         $this->mail_smtp_password = $mailSmtpPassword;
     }
 
-    /**
-     * @OA\Property(
-     *     description="Whether to use a secure (TLS) connection when sending SMTP mail.",
-     *     example="true"
-     * )
-     */
-    #[ORM\Column]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "Whether to use a secure (TLS) connection when sending SMTP mail.", example: "true"),
+        ORM\Column,
+        Groups(self::GROUP_GENERAL)
+    ]
     protected bool $mail_smtp_secure = true;
 
     public function getMailSmtpSecure(): bool
@@ -1120,14 +1022,11 @@ class Settings implements Stringable
         $this->mail_smtp_secure = $mailSmtpSecure;
     }
 
-    /**
-     * @OA\Property(
-     *     description="The external avatar service to use when fetching avatars.",
-     *     example="libravatar"
-     * )
-     */
-    #[ORM\Column(length: 25, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The external avatar service to use when fetching avatars.", example: "libravatar"),
+        ORM\Column(length: 25, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $avatar_service = null;
 
     public function getAvatarService(): string
@@ -1140,14 +1039,11 @@ class Settings implements Stringable
         $this->avatar_service = $this->truncateNullableString($avatarService, 25);
     }
 
-    /**
-     * @OA\Property(
-     *     description="The default avatar URL.",
-     *     example=""
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(self::GROUP_GENERAL)]
+    #[
+        OA\Property(description: "The default avatar URL.", example: ""),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
     protected ?string $avatar_default_url = null;
 
     public function getAvatarDefaultUrl(): string

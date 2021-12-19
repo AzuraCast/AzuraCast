@@ -10,8 +10,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'relays'),
     ORM\HasLifecycleCallbacks
@@ -21,27 +21,37 @@ class Relay implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /** @OA\Property(example="https://custom-url.example.com") */
-    #[ORM\Column(length: 255)]
+    #[
+        OA\Property(example: "https://custom-url.example.com"),
+        ORM\Column(length: 255)
+    ]
     protected string $base_url;
 
-    /** @OA\Property(example="Relay") */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(example: "Relay"),
+        ORM\Column(length: 100, nullable: true)
+    ]
     protected ?string $name = 'Relay';
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_visible_on_public_pages = true;
 
     #[ORM\Column(type: 'array', nullable: true)]
     protected mixed $nowplaying;
 
-    /** @OA\Property(example=1609480800) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: 1609480800),
+        ORM\Column
+    ]
     protected int $created_at;
 
-    /** @OA\Property(example=1609480800) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: 1609480800),
+        ORM\Column
+    ]
     protected int $updated_at;
 
     #[ORM\OneToMany(mappedBy: 'relay', targetEntity: StationRemote::class)]

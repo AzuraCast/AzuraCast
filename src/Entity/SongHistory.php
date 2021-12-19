@@ -8,9 +8,12 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity, ORM\Table(name: 'song_history')]
-#[ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start')]
-#[ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'song_history'),
+    ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start'),
+    ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')
+]
 class SongHistory implements SongInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;

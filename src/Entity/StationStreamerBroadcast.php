@@ -10,12 +10,11 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
-/**
- * Each individual broadcast associated with a streamer.
- *
- * @OA\Schema(type="object")
- */
 #[
+    OA\Schema(
+        description: 'Each individual broadcast associated with a streamer.',
+        type: "object"
+    ),
     ORM\Entity,
     ORM\Table(name: 'station_streamer_broadcasts')
 ]
@@ -26,12 +25,16 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
 
     public const PATH_PREFIX = 'stream';
 
-    #[ORM\ManyToOne(inversedBy: 'streamer_broadcasts')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'streamer_broadcasts'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    #[ORM\ManyToOne(inversedBy: 'broadcasts')]
-    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'broadcasts'),
+        ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected StationStreamer $streamer;
 
     #[ORM\Column(name: 'timestamp_start')]

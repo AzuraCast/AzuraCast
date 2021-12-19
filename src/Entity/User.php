@@ -22,8 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_BCRYPT;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'users'),
     ORM\HasLifecycleCallbacks,
@@ -36,73 +36,90 @@ class User implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /** @OA\Property(example="demo@azuracast.com") */
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Email]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "demo@azuracast.com"),
+        ORM\Column(length: 100, nullable: false),
+        Assert\NotBlank,
+        Assert\Email,
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $email;
 
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(length: 255, nullable: false),
+        Attributes\AuditIgnore
+    ]
     protected string $auth_password = '';
 
-    /** @OA\Property(example="") */
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: ""),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $new_password = null;
 
-    /** @OA\Property(example="Demo Account") */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "Demo Account"),
+        ORM\Column(length: 100, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $name = null;
 
-    /** @OA\Property(example="en_US") */
-    #[ORM\Column(length: 25, nullable: true)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "en_US"),
+        ORM\Column(length: 25, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $locale = null;
 
-    /** @OA\Property(example="dark") */
-    #[ORM\Column(length: 25, nullable: true)]
-    #[Attributes\AuditIgnore]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "dark"),
+        ORM\Column(length: 25, nullable: true),
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $theme = null;
 
-    /** @OA\Property(example="A1B2C3D4") */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Attributes\AuditIgnore]
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "A1B2C3D4"),
+        ORM\Column(length: 255, nullable: true),
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $two_factor_secret = null;
 
-    /** @OA\Property(example=1609480800) */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: 1609480800),
+        ORM\Column,
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected int $created_at;
 
-    /** @OA\Property(example=1609480800) */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: 1609480800),
+        ORM\Column,
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected int $updated_at;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER')]
-    #[ORM\JoinTable(name: 'user_has_role')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER'),
+        ORM\JoinTable(name: 'user_has_role'),
+        ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
     protected Collection $roles;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class)]
-    #[Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
-    #[DeepNormalize(true)]
+    #[
+        ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true)
+    ]
     protected Collection $api_keys;
 
     public function __construct()

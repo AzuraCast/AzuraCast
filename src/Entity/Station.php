@@ -26,8 +26,8 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object", schema="Station") */
 #[
+    OA\Schema(type: "object", schema: "Station"),
     ORM\Entity,
     ORM\Table(name: 'station'),
     ORM\Index(columns: ['short_name'], name: 'idx_short_name'),
@@ -44,275 +44,308 @@ class Station implements Stringable, IdentifiableEntityInterface
     // Taxonomical groups for permission-based serialization.
     public const GROUP_AUTOMATION = 'automation';
 
-    /**
-     * @OA\Property(
-     *     description="The full display name of the station.",
-     *     example="AzuraTest Radio"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(description: "The full display name of the station.", example: "AzuraTest Radio"),
+        ORM\Column(length: 100, nullable: false),
+        Assert\NotBlank,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $name = '';
 
-    /**
-     * @OA\Property(
-     *     description="The URL-friendly name for the station, typically auto-generated from the full station name.",
-     *     example="azuratest_radio"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "The URL-friendly name for the station, typically auto-generated from the full station name.",
+            example: "azuratest_radio"
+        ),
+        ORM\Column(length: 100, nullable: false),
+        Assert\NotBlank,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $short_name = '';
 
-    /**
-     * @OA\Property(
-     *     description="If set to 'false', prevents the station from broadcasting but leaves it in the database.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "If set to 'false', prevents the station from broadcasting but leaves it in the database.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $is_enabled = true;
 
-    /**
-     * @OA\Property(
-     *     description="The frontend adapter (icecast,shoutcast,remote,etc)",
-     *     example="icecast"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST])]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "The frontend adapter (icecast,shoutcast,remote,etc)",
+            example: "icecast"
+        ),
+        ORM\Column(length: 100, nullable: true),
+        Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $frontend_type = Adapters::FRONTEND_ICECAST;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="An array containing station-specific frontend configuration",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            type: "array",
+            description: "An array containing station-specific frontend configuration",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?array $frontend_config = null;
 
-    /**
-     * @OA\Property(
-     *     description="The backend adapter (liquidsoap,etc)",
-     *     example="liquidsoap"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE])]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "The backend adapter (liquidsoap,etc)",
+            example: "liquidsoap"
+        ),
+        ORM\Column(length: 100, nullable: true),
+        Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="An array containing station-specific backend configuration",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            type: "array",
+            description: "An array containing station-specific backend configuration",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?array $backend_config = null;
 
-    #[ORM\Column(length: 150, nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(length: 150, nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?string $adapter_api_key = null;
 
-    /** @OA\Property(example="A sample radio station.") */
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "A sample radio station."),
+        ORM\Column(type: 'text', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $description = null;
 
-    /** @OA\Property(example="https://demo.azuracast.com/") */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "https://demo.azuracast.com/"),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $url = null;
 
-    /** @OA\Property(example="Various") */
-    #[ORM\Column(length: 150, nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "Various"),
+        ORM\Column(length: 150, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $genre = null;
 
-    /** @OA\Property(example="/var/azuracast/stations/azuratest_radio") */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $radio_base_dir = null;
 
-    #[ORM\Column(type: 'array', nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(type: 'array', nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected mixed $nowplaying;
 
-    #[ORM\Column(nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?int $nowplaying_timestamp = null;
 
-    /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\Column(type: 'json', nullable: true),
+        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?array $automation_settings = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Attributes\AuditIgnore]
-    #[Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore,
+        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?int $automation_timestamp = 0;
 
-    /**
-     * @OA\Property(
-     *     description="Whether listeners can request songs to play on this station.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "Whether listeners can request songs to play on this station.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_requests = false;
 
-    /** @OA\Property(example=5) */
-    #[ORM\Column(nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: 5),
+        ORM\Column(nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?int $request_delay = 5;
 
-    /** @OA\Property(example=15) */
-    #[ORM\Column(nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: 15),
+        ORM\Column(nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?int $request_threshold = 15;
 
-    /** @OA\Property(example=0) */
-    #[ORM\Column(nullable: true, options: ['default' => 0])]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(example: 0),
+        ORM\Column(nullable: true, options: ['default' => 0]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?int $disconnect_deactivate_streamer = 0;
 
-    /**
-     * @OA\Property(
-     *     description="Whether streamers are allowed to broadcast to this station at all.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "Whether streamers are allowed to broadcast to this station at all.",
+            example: false
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_streamers = false;
 
-    /**
-     * @OA\Property(
-     *     description="Whether a streamer is currently active on the station.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "Whether a streamer is currently active on the station.",
+            example: false
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected bool $is_streamer_live = false;
 
-    /**
-     * @OA\Property(
-     *     description="Whether this station is visible as a public page and in a now-playing API response.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "Whether this station is visible as a public page and in a now-playing API response.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_public_page = true;
 
-    /**
-     * @OA\Property(
-     *     description="Whether this station has a public 'on-demand' streaming and download page.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "Whether this station has a public 'on-demand' streaming and download page.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_on_demand = false;
 
-    /**
-     * @OA\Property(
-     *     description="Whether the 'on-demand' page offers download capability.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "Whether the 'on-demand' page offers download capability.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_on_demand_download = true;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected bool $needs_restart = false;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected bool $has_started = false;
 
-    /**
-     * @OA\Property(
-     *     description="The number of 'last played' history items to show for a station in API responses.",
-     *     example=5
-     * )
-     */
-    #[ORM\Column(type: 'smallint')]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "The number of 'last played' history items to show for a station in API responses.",
+            example: 5
+        ),
+        ORM\Column(type: 'smallint'),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected int $api_history_items = 5;
 
-    /**
-     * @OA\Property(
-     *     description="The time zone that station operations should take place in.",
-     *     example="UTC"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "The time zone that station operations should take place in.",
+            example: "UTC"
+        ),
+        ORM\Column(length: 100, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $timezone = 'UTC';
 
-    /**
-     * @OA\Property(
-     *     description="The station-specific default album artwork URL.",
-     *     example="https://example.com/image.jpg"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(
+            description: "The station-specific default album artwork URL.",
+            example: "https://example.com/image.jpg"
+        ),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $default_album_art_url = null;
 
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
-    #[ORM\OrderBy(['timestamp_start' => 'desc'])]
+    #[
+        ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class),
+        ORM\OrderBy(['timestamp_start' => 'desc'])
+    ]
     protected Collection $history;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(
-        name: 'media_storage_location_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(
+            name: 'media_storage_location_id',
+            referencedColumnName: 'id',
+            nullable: true,
+            onDelete: 'SET NULL'
+        ),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?StorageLocation $media_storage_location = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(
-        name: 'recordings_storage_location_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(
+            name: 'recordings_storage_location_id',
+            referencedColumnName: 'id',
+            nullable: true,
+            onDelete: 'SET NULL'
+        ),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?StorageLocation $recordings_storage_location = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(
-        name: 'podcasts_storage_location_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
-    #[Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(
+            name: 'podcasts_storage_location_id',
+            referencedColumnName: 'id',
+            nullable: true,
+            onDelete: 'SET NULL'
+        ),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?StorageLocation $podcasts_storage_location = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
@@ -321,15 +354,19 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(nullable: true)]
     protected ?int $current_streamer_id = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')
+    ]
     protected ?StationStreamer $current_streamer = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class)]
-    #[ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])]
+    #[
+        ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class),
+        ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
+    ]
     protected Collection $playlists;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationMount::class)]

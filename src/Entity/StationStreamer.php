@@ -16,12 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;
 
-/**
- * Station streamers (DJ accounts) allowed to broadcast to a station.
- *
- * @OA\Schema(type="object")
- */
 #[
+    OA\Schema(
+        description: 'Station streamers (DJ accounts) allowed to broadcast to a station.',
+        type: "object"
+    ),
     ORM\Entity,
     ORM\Table(name: 'station_streamers'),
     ORM\UniqueConstraint(name: 'username_unique_idx', columns: ['station_id', 'streamer_username']),
@@ -40,51 +39,64 @@ class StationStreamer implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'streamers')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'streamers'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /** @OA\Property(example="dj_test") */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(example: "dj_test"),
+        ORM\Column(length: 50),
+        Assert\NotBlank
+    ]
     protected string $streamer_username;
 
-    /** @OA\Property(example="") */
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(example: ""),
+        ORM\Column(length: 255),
+        Assert\NotBlank,
+        Attributes\AuditIgnore
+    ]
     protected string $streamer_password;
 
-    /** @OA\Property(example="Test DJ") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "Test DJ"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $display_name = null;
 
-    /** @OA\Property(example="This is a test DJ account.") */
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[
+        OA\Property(example: "This is a test DJ account."),
+        ORM\Column(type: 'text', nullable: true)
+    ]
     protected ?string $comments = null;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_active = true;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $enforce_schedule = false;
 
-    /** @OA\Property(example=1609480800) */
-    #[ORM\Column(nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(example: 1609480800),
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?int $reactivate_at = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\OneToMany(mappedBy: 'streamer', targetEntity: StationSchedule::class)]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(mappedBy: 'streamer', targetEntity: StationSchedule::class),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
     protected Collection $schedule_items;
 
     public function __construct(Station $station)

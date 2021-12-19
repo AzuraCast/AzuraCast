@@ -13,8 +13,8 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_playlists'),
     ORM\HasLifecycleCallbacks,
@@ -55,132 +55,169 @@ class StationPlaylist implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'playlists')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'playlists'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /** @OA\Property(example="Test Playlist") */
-    #[ORM\Column(length: 200)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(example: "Test Playlist"),
+        ORM\Column(length: 200),
+        Assert\NotBlank
+    ]
     protected string $name;
 
-    /** @OA\Property(example="default") */
-    #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [
-        self::TYPE_DEFAULT,
-        self::TYPE_ONCE_PER_X_SONGS,
-        self::TYPE_ONCE_PER_X_MINUTES,
-        self::TYPE_ONCE_PER_HOUR,
-        self::TYPE_ADVANCED,
-    ])]
+    #[
+        OA\Property(example: "default"),
+        ORM\Column(length: 50),
+        Assert\Choice(choices: [
+            self::TYPE_DEFAULT,
+            self::TYPE_ONCE_PER_X_SONGS,
+            self::TYPE_ONCE_PER_X_MINUTES,
+            self::TYPE_ONCE_PER_HOUR,
+            self::TYPE_ADVANCED,
+        ])
+    ]
     protected string $type = self::TYPE_DEFAULT;
 
-    /** @OA\Property(example="songs") */
-    #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [self::SOURCE_SONGS, self::SOURCE_REMOTE_URL])]
+    #[
+        OA\Property(example: "songs"),
+        ORM\Column(length: 50),
+        Assert\Choice(choices: [self::SOURCE_SONGS, self::SOURCE_REMOTE_URL])
+    ]
     protected string $source = self::SOURCE_SONGS;
 
-    /** @OA\Property(example="shuffle") */
-    #[ORM\Column(name: 'playback_order', length: 50)]
-    #[Assert\Choice(choices: [self::ORDER_RANDOM, self::ORDER_SHUFFLE, self::ORDER_SEQUENTIAL])]
+    #[
+        OA\Property(example: "shuffle"),
+        ORM\Column(name: 'playback_order', length: 50),
+        Assert\Choice(choices: [self::ORDER_RANDOM, self::ORDER_SHUFFLE, self::ORDER_SEQUENTIAL])
+    ]
     protected string $order = self::ORDER_SHUFFLE;
 
-    /** @OA\Property(example="https://remote-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://remote-url.example.com/stream.mp3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $remote_url = null;
 
-    /** @OA\Property(example="stream") */
-    #[ORM\Column(length: 25, nullable: true)]
-    #[Assert\Choice(choices: [self::REMOTE_TYPE_STREAM, self::REMOTE_TYPE_PLAYLIST])]
+    #[
+        OA\Property(example: "stream"),
+        ORM\Column(length: 25, nullable: true),
+        Assert\Choice(choices: [self::REMOTE_TYPE_STREAM, self::REMOTE_TYPE_PLAYLIST])
+    ]
     protected ?string $remote_type = self::REMOTE_TYPE_STREAM;
 
-    /**
-     * @OA\Property(
-     *     description="The total time (in seconds) that Liquidsoap should buffer remote URL streams.",
-     *     example=0
-     * )
-     */
-    #[ORM\Column(name: 'remote_timeout', type: 'smallint')]
+    #[
+        OA\Property(
+            description: "The total time (in seconds) that Liquidsoap should buffer remote URL streams.",
+            example: 0
+        ),
+        ORM\Column(name: 'remote_timeout', type: 'smallint')
+    ]
     protected int $remote_buffer = 0;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_enabled = true;
 
-    /**
-     * @OA\Property(
-     *     description="If yes, do not send jingle metadata to AutoDJ or trigger web hooks.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "If yes, do not send jingle metadata to AutoDJ or trigger web hooks.",
+            example: false
+        ),
+        ORM\Column
+    ]
     protected bool $is_jingle = false;
 
-    /** @OA\Property(example=5) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 5),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $play_per_songs = 0;
 
-    /** @OA\Property(example=120) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 120),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $play_per_minutes = 0;
 
-    /** @OA\Property(example=15) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 15),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $play_per_hour_minute = 0;
 
-    /** @OA\Property(example=3) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 3),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $weight = self::DEFAULT_WEIGHT;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $include_in_requests = true;
 
-    /**
-     * @OA\Property(
-     *     description="Whether this playlist's media is included in 'on demand' download/streaming if enabled.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether this playlist's media is included in 'on demand' download/streaming if enabled.",
+            example: true
+        ),
+        ORM\Column
+    ]
     protected bool $include_in_on_demand = false;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $include_in_automation = false;
 
-    /** @OA\Property(example="interrupt,loop_once,single_track,merge") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "interrupt,loop_once,single_track,merge"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $backend_options = '';
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $avoid_duplicates = true;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $played_at = 0;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $queue_reset_at = 0;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY')]
-    #[ORM\OrderBy(['weight' => 'ASC'])]
+    #[
+        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY'),
+        ORM\OrderBy(['weight' => 'ASC'])
+    ]
     protected Collection $media_items;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')]
+    #[
+        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')
+    ]
     protected Collection $folders;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY')]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY'),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
     protected Collection $schedule_items;
 
     public function __construct(Station $station)

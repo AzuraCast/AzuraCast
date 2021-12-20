@@ -179,7 +179,7 @@ class StationMount implements
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
+            return $this->name . ' (' . $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '') . ')';
         }
 
         return $this->name;

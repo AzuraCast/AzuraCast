@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\Frontend\Account\MasqueradeAction;
 use App\Entity;
 use App\Http\Response;
@@ -99,8 +100,38 @@ use Psr\Http\Message\ResponseInterface;
  */
 class UsersController extends AbstractAdminApiCrudController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\User::class;
     protected string $resourceRouteName = 'api:admin:user';
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\User::class, 'e');
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'name' => 'e.name',
+            ],
+            'e.name'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(e.name LIKE :name OR e.email LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
+    }
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {

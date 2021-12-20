@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSortResults;
 use App\Entity;
 use App\Exception\PermissionDeniedException;
+use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @OA\Get(path="/station/{station_id}/remotes",
@@ -102,8 +105,43 @@ use OpenApi\Annotations as OA;
  */
 class RemotesController extends AbstractStationApiCrudController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\StationRemote::class;
     protected string $resourceRouteName = 'api:stations:remote';
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\StationRemote::class, 'e')
+            ->where('e.station = :station')
+            ->setParameter('station', $station);
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'display_name'  => 'e.display_name',
+                'enable_autodj' => 'e.enable_autodj',
+            ],
+            'e.display_name'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(e.display_name LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
+    }
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {

@@ -16,7 +16,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="station_webhooks" :show-toolbar="false" :fields="fields"
+            <data-table ref="datatable" id="station_webhooks" :fields="fields"
                         :api-url="listUrl">
                 <template #cell(name)="row">
                     <big>{{ row.item.name }}</big><br>
@@ -76,7 +76,7 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name/Type'), sortable: false},
+                {key: 'name', isRowHeader: true, label: this.$gettext('Name/Type'), sortable: true},
                 {key: 'triggers', label: this.$gettext('Triggers'), sortable: false},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]

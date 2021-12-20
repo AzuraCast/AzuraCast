@@ -18,13 +18,13 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="station_remotes" :show-toolbar="false" :fields="fields" :api-url="listUrl">
-                <template #cell(name)="row">
+            <data-table ref="datatable" id="station_remotes" :fields="fields" :api-url="listUrl">
+                <template #cell(display_name)="row">
                     <h5 class="m-0">
                         <a :href="row.item.url" target="_blank">{{ row.item.display_name }}</a>
                     </h5>
                 </template>
-                <template #cell(autodj)="row">
+                <template #cell(enable_autodj)="row">
                     <template v-if="row.item.enable_autodj">
                         <translate key="lang_autodj_enabled">Enabled</translate>
                         -
@@ -70,8 +70,8 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: false},
-                {key: 'autodj', label: this.$gettext('AutoDJ'), sortable: false},
+                {key: 'display_name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
+                {key: 'enable_autodj', label: this.$gettext('AutoDJ'), sortable: true},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };

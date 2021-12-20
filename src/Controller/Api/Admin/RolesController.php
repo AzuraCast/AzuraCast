@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
+use App\Controller\Api\Traits\CanSortResults;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -101,6 +105,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RolesController extends AbstractAdminApiCrudController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\Role::class;
     protected string $resourceRouteName = 'api:admin:role';
 
@@ -112,6 +118,35 @@ class RolesController extends AbstractAdminApiCrudController
         ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('r, rp')
+            ->from(Entity\Role::class, 'r')
+            ->leftJoin('r.permissions', 'rp');
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'name' => 'r.name',
+            ],
+            'r.name'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(r.name LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
     protected function deleteRecord(object $record): void

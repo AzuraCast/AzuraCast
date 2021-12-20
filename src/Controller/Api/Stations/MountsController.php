@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSortResults;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
@@ -108,6 +109,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class MountsController extends AbstractStationApiCrudController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\StationMount::class;
     protected string $resourceRouteName = 'api:stations:mount';
 
@@ -118,6 +121,39 @@ class MountsController extends AbstractStationApiCrudController
         protected Entity\Repository\StationMountRepository $mountRepo
     ) {
         parent::__construct($em, $serializer, $validator);
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\StationMount::class, 'e')
+            ->where('e.station = :station')
+            ->setParameter('station', $station);
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'display_name'  => 'e.display_name',
+                'enable_autodj' => 'e.enable_autodj',
+            ],
+            'e.display_name'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(e.name LIKE :name OR e.display_name LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
     protected function viewRecord(object $record, ServerRequest $request): mixed

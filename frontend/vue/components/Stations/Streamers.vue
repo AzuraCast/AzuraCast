@@ -22,7 +22,7 @@
                             </b-button>
                         </b-card-body>
 
-                        <data-table ref="datatable" id="station_streamers" :show-toolbar="false" :fields="fields"
+                        <data-table ref="datatable" id="station_streamers" :fields="fields"
                                     :api-url="listUrl">
                             <template #cell(streamer_username)="row">
                                 <code>{{ row.item.streamer_username }}</code>
@@ -86,8 +86,8 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'display_name', label: this.$gettext('Display Name'), sortable: false},
-                {key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: false},
+                {key: 'display_name', label: this.$gettext('Display Name'), sortable: true},
+                {key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: true},
                 {key: 'comments', label: this.$gettext('Notes'), sortable: false},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]

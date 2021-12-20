@@ -18,9 +18,9 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="station_mounts" :show-toolbar="false" :fields="fields"
+            <data-table ref="datatable" id="station_mounts" :fields="fields"
                         :api-url="listUrl">
-                <template #cell(name)="row">
+                <template #cell(display_name)="row">
                     <h5 class="m-0">
                         <a :href="row.item.links.listen">{{ row.item.display_name }}</a>
                     </h5>
@@ -28,7 +28,7 @@
                         <span class="badge badge-success" key="lang_default_mount" v-translate>Default Mount</span>
                     </div>
                 </template>
-                <template #cell(autodj)="row">
+                <template #cell(enable_autodj)="row">
                     <template v-if="row.item.enable_autodj">
                         <translate key="lang_autodj_enabled">Enabled</translate>
                         -
@@ -79,9 +79,9 @@ export default {
     data () {
         return {
             fields: [
-                { key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: false },
-                { key: 'autodj', label: this.$gettext('AutoDJ'), sortable: false },
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }
+                {key: 'display_name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
+                {key: 'enable_autodj', label: this.$gettext('AutoDJ'), sortable: true},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
     },

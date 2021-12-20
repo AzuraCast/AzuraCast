@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\Traits\CanSortResults;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
+use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -104,6 +107,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class StationsController extends AbstractAdminApiCrudController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\Station::class;
     protected string $resourceRouteName = 'api:admin:station';
 
@@ -117,6 +122,34 @@ class StationsController extends AbstractAdminApiCrudController
         ValidatorInterface $validator
     ) {
         parent::__construct($reloadableEm, $serializer, $validator);
+    }
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\Station::class, 'e');
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'name' => 'e.name',
+            ],
+            'e.name'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(e.name LIKE :name OR e.short_name LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
     protected function viewRecord(object $record, ServerRequest $request): mixed

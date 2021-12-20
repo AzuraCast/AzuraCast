@@ -18,10 +18,11 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="permissions" :fields="fields" :show-toolbar="false" :api-url="listUrl">
+            <data-table ref="datatable" id="permissions" :fields="fields" :api-url="listUrl">
                 <template #cell(permissions)="row">
                     <div v-if="row.item.permissions.global.length > 0">
-                        <translate key="lang_permissions_global">Global</translate>:
+                        <translate key="lang_permissions_global">Global</translate>
+                        :
                         {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
                     </div>
                     <div v-for="(permissions, stationId) in row.item.permissions.station" :key="stationId">
@@ -67,7 +68,7 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Role Name'), sortable: false},
+                {key: 'name', isRowHeader: true, label: this.$gettext('Role Name'), sortable: true},
                 {key: 'permissions', label: this.$gettext('Permissions'), sortable: false},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]

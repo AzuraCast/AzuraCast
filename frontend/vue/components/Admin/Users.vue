@@ -12,7 +12,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="users" :fields="fields" :show-toolbar="false" :api-url="listUrl">
+            <data-table ref="datatable" id="users" :fields="fields" :api-url="listUrl">
                 <template #cell(name)="row">
                     <h5 class="mb-0" v-if="row.item.name !== ''">{{ row.item.name }}</h5>
                     <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>
@@ -61,7 +61,7 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('User Name'), sortable: false},
+                {key: 'name', isRowHeader: true, label: this.$gettext('User Name'), sortable: true},
                 {key: 'roles', label: this.$gettext('Roles'), sortable: false},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]

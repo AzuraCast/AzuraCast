@@ -47,7 +47,7 @@
                 <data-table ref="datatable" id="station_media" selectable paginated select-fields
                             @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
                             :request-config="requestConfig">
-                    <template #cell(name)="row">
+                    <template #cell(path)="row">
                         <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
                             <album-art v-if="row.item.media_art" :src="row.item.media_art"
                                        class="float-right pl-3"></album-art>
@@ -220,8 +220,8 @@ export default {
     },
     data () {
         let fields = [
-            { key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true },
-            { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
+            {key: 'path', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
+            {key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false},
             {
                 key: 'media_artist',
                 label: this.$gettext('Artist'),
@@ -229,9 +229,9 @@ export default {
                 selectable: true,
                 visible: false
             },
-            { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
-            { key: 'media_genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false },
-            { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true }
+            {key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
+            {key: 'media_genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false},
+            {key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true}
         ];
 
         _.forEach(this.customFields.slice(), (field) => {
@@ -262,7 +262,7 @@ export default {
             {
                 key: 'playlists',
                 label: this.$gettext('Playlists'),
-                sortable: true,
+                sortable: false,
                 selectable: true,
                 visible: true
             },

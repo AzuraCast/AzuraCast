@@ -12,7 +12,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="permissions" :fields="fields" :show-toolbar="false" :api-url="listUrl">
+            <data-table ref="datatable" id="permissions" :fields="fields" :api-url="listUrl">
                 <template #cell(name)="row">
                     <big>{{ row.item.name }}</big><br>
                     <code>{{ row.item.short_name }}</code>
@@ -73,7 +73,7 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: false},
+                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
                 {key: 'frontend_type', label: this.$gettext('Broadcasting'), sortable: false},
                 {key: 'backend_type', label: this.$gettext('AutoDJ'), sortable: false},
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}

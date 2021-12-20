@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSortResults;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
@@ -104,8 +105,43 @@ use Psr\Http\Message\ResponseInterface;
  */
 class StreamersController extends AbstractScheduledEntityController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
+
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\StationStreamer::class, 'e')
+            ->where('e.station = :station')
+            ->setParameter('station', $station);
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'display_name'      => 'e.display_name',
+                'streamer_username' => 'e.streamer_username',
+            ],
+            'e.streamer_username'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(e.streamer_username LIKE :name OR e.display_name LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
+    }
 
     public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -137,10 +173,10 @@ class StreamersController extends AbstractScheduledEntityController
                 $streamer = $scheduleItem->getStreamer();
 
                 return [
-                    'id' => $streamer->getId(),
-                    'title' => $streamer->getDisplayName(),
-                    'start' => $start->toIso8601String(),
-                    'end' => $end->toIso8601String(),
+                    'id'       => $streamer->getId(),
+                    'title'    => $streamer->getDisplayName(),
+                    'start'    => $start->toIso8601String(),
+                    'end'      => $end->toIso8601String(),
                     'edit_url' => (string)$request->getRouter()->named(
                         'api:stations:streamer',
                         ['station_id' => $station->getId(), 'id' => $streamer->getId()]

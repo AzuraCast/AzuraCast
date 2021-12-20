@@ -12,7 +12,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="users" :fields="fields" :api-url="listUrl">
+            <data-table ref="datatable" id="users" paginated :fields="fields" :api-url="listUrl">
                 <template #cell(name)="row">
                     <h5 class="mb-0" v-if="row.item.name !== ''">{{ row.item.name }}</h5>
                     <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>

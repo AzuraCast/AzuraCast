@@ -18,7 +18,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="station_remotes" :fields="fields" :api-url="listUrl">
+            <data-table ref="datatable" id="station_remotes" paginated :fields="fields" :api-url="listUrl">
                 <template #cell(display_name)="row">
                     <h5 class="m-0">
                         <a :href="row.item.url" target="_blank">{{ row.item.display_name }}</a>

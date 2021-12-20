@@ -12,7 +12,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="permissions" :fields="fields" :api-url="listUrl">
+            <data-table ref="datatable" id="stations" paginated :fields="fields" :api-url="listUrl">
                 <template #cell(name)="row">
                     <big>{{ row.item.name }}</big><br>
                     <code>{{ row.item.short_name }}</code>

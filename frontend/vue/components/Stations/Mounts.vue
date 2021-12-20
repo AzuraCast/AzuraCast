@@ -18,7 +18,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="station_mounts" :fields="fields"
+            <data-table ref="datatable" id="station_mounts" :fields="fields" paginated
                         :api-url="listUrl">
                 <template #cell(display_name)="row">
                     <h5 class="m-0">

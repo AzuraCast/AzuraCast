@@ -18,7 +18,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="permissions" :fields="fields" :api-url="listUrl">
+            <data-table ref="datatable" id="permissions" paginated :fields="fields" :api-url="listUrl">
                 <template #cell(permissions)="row">
                     <div v-if="row.item.permissions.global.length > 0">
                         <translate key="lang_permissions_global">Global</translate>

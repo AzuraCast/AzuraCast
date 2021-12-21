@@ -118,6 +118,12 @@ export default {
 
                 this.audio.src = this.current.url;
 
+                // Firefox caches the downloaded stream, this causes playback issues.
+                // Giving the browser a new url on each start bypasses the old cache/buffer
+                if (navigator.userAgent.includes("Firefox")) {
+                  this.audio.src += "?refresh=" + Date.now();
+                }
+
                 this.audio.load();
                 this.audio.play();
             });

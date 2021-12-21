@@ -345,17 +345,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/metadata-manager.git",
-                "reference": "36638b7dfe52e3d2a502e9269b02b4d885820ddd"
+                "reference": "49c0afcd20f10213f9dde705966c9d13537d5690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/metadata-manager/zipball/36638b7dfe52e3d2a502e9269b02b4d885820ddd",
-                "reference": "36638b7dfe52e3d2a502e9269b02b4d885820ddd",
+                "url": "https://api.github.com/repos/AzuraCast/metadata-manager/zipball/49c0afcd20f10213f9dde705966c9d13537d5690",
+                "reference": "49c0afcd20f10213f9dde705966c9d13537d5690",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "james-heinrich/getid3": "dev-master#0bc9aca",
+                "james-heinrich/getid3": "v2.0.0-beta4",
                 "php": ">=7.4",
                 "symfony/console": ">5.0",
                 "voku/portable-utf8": "^5.4"
@@ -407,7 +407,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-08-24T03:19:30+00:00"
+            "time": "2021-12-21T13:22:23+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -3182,23 +3182,24 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "dev-master",
+            "version": "v2.0.0-beta4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "16afffd37def26c4d3e6cdbdbbbe606387dcf89f"
+                "reference": "5ad79104e937e7d9c8a9141a97e1f063dd1123f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/16afffd37def26c4d3e6cdbdbbbe606387dcf89f",
-                "reference": "16afffd37def26c4d3e6cdbdbbbe606387dcf89f",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/5ad79104e937e7d9c8a9141a97e1f063dd1123f8",
+                "reference": "5ad79104e937e7d9c8a9141a97e1f063dd1123f8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "php-parallel-lint/php-parallel-lint": "^1.0"
+                "php-parallel-lint/php-parallel-lint": "^1.0",
+                "phpunit/phpunit": "^4.8 || ^5.0 || ^6.1 || ^7.5 || ^8.5"
             },
             "suggest": {
                 "ext-SimpleXML": "SimpleXML extension is required to analyze RIFF/WAV/BWF audio files (also requires `ext-libxml`).",
@@ -3217,17 +3218,16 @@
                 "ext-xml": "XML extension is required for graphic modules to analyze the XML metadata.",
                 "ext-zlib": "Zlib extension is required for archive modules and compressed metadata."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
-                "classmap": [
-                    "getid3/"
-                ]
+                "psr-4": {
+                    "JamesHeinrich\\GetID3\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3235,18 +3235,35 @@
                 "LGPL-3.0-only",
                 "MPL-2.0"
             ],
-            "description": "PHP script that extracts useful information from popular multimedia file formats",
+            "authors": [
+                {
+                    "name": "James Heinrich",
+                    "email": "info@getid3.org",
+                    "homepage": "https://github.com/JamesHeinrich",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Craig Duncan",
+                    "email": "git@duncanc.co.uk",
+                    "homepage": "https://github.com/duncan3dc",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Extract and write useful information to/from popular multimedia file formats",
             "homepage": "https://www.getid3.org/",
             "keywords": [
+                "audio",
                 "codecs",
-                "php",
-                "tags"
+                "id3",
+                "metadata",
+                "tags",
+                "video"
             ],
             "support": {
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
-                "source": "https://github.com/JamesHeinrich/getID3/tree/master"
+                "source": "https://github.com/JamesHeinrich/getID3/tree/v2.0.0-beta4"
             },
-            "time": "2021-11-21T15:55:57+00:00"
+            "time": "2021-10-06T16:23:45+00:00"
         },
         {
             "name": "laminas/laminas-code",

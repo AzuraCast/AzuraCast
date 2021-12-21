@@ -229,6 +229,7 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistParams = [
                     'id="' . self::cleanUpString($playlistVarName) . '"',
+                    'mime_type="audio/x-mpegurl"',
                 ];
 
                 $playlistModes = [

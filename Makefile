@@ -38,10 +38,10 @@ bash:
 	docker-compose exec --user=azuracast web bash
 
 frontend-bash:
-	docker-compose -f frontend/docker-compose.yml build
-	docker-compose --env-file=.env -f frontend/docker-compose.yml run -e NODE_ENV=development --rm frontend
+	docker-compose -p azuracast_frontend -f frontend/docker-compose.yml build
+	docker-compose -p azuracast_frontend --env-file=.env -f frontend/docker-compose.yml run -e NODE_ENV=development --rm frontend
 
 frontend-build:
-	docker-compose -f frontend/docker-compose.yml build
-	docker-compose --env-file=.env -f frontend/docker-compose.yml run -e NODE_ENV=development --rm frontend npm run dev-build
+	docker-compose -p azuracast_frontend -f frontend/docker-compose.yml build
+	docker-compose -p azuracast_frontend --env-file=.env -f frontend/docker-compose.yml run -e NODE_ENV=development --rm frontend npm run dev-build
 

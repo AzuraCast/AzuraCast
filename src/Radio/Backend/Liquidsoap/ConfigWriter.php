@@ -687,7 +687,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
         $envVarsStr = 'env=[' . implode(', ', $envVarsParts) . ']';
 
-        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\'), timeout=10., default="")';
+        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\', timeout=10.), default="")';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void

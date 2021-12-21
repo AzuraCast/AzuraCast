@@ -59,7 +59,7 @@ return static function (RouteCollectorProxy $group) {
 
             $group->get('/quota[/{type}]', Controller\Api\Stations\GetQuotaAction::class)
                 ->setName('api:stations:quota')
-                ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');

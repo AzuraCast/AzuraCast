@@ -133,6 +133,7 @@ class ConfigWriter implements EventSubscriberInterface
         init.daemon.pidfile.path.set("${pidfile}")
         log.stdout.set(true)
         log.file.set(false)
+        settings.server.log.level.set(4)
         settings.server.telnet.set(true)
         settings.server.telnet.bind_addr.set("${telnetBindAddr}")
         settings.server.telnet.port.set(${telnetPort})

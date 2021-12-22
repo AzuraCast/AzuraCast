@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
-# Constants
-export COMPOSE_VERSION=2.2.2
-
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -318,22 +315,27 @@ install-docker() {
 }
 
 install-docker-compose() {
-  curl -fsSL https://github.com/docker/compose/releases/download/v${COMPOSE_VERSION}/docker-compose-linux-$(uname -m) -o docker-compose
-  curl -fsSL https://raw.githubusercontent.com/docker/compose-switch/master/install_on_linux.sh -o install-compose-switch.sh
+  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-$(uname -m)
+
+  ARCHITECTURE=amd64
+  if [ "$(uname -m)" = "aarch64" ]; then
+    ARCHITECTURE=arm64
+  fi
+  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.2/docker-compose-linux-${ARCHITECTURE}
 
   if [[ $EUID -ne 0 ]]; then
     sudo chmod a+x ./docker-compose
-    sudo mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+    sudo chmod a+x ./docker-compose-switch
 
-    sudo sh install-compose-switch.sh
+    sudo mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+    sudo mv ./docker-compose-switch /usr/local/bin/docker-compose
   else
     chmod a+x ./docker-compose
+    chmod a+x ./docker-compose-switch
+
     mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
-
-    sh install-compose-switch.sh
+    mv ./docker-compose-switch /usr/local/bin/docker-compose
   fi
-
-  rm install-compose-switch.sh
 }
 
 run-installer() {

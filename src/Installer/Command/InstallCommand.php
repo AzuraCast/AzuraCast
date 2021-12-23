@@ -12,29 +12,49 @@ use App\Locale;
 use App\Radio\Configuration;
 use App\Utilities\Strings;
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 
-class InstallCommand
+#[AsCommand(
+    name: 'install'
+)]
+class InstallCommand extends Command
 {
     public const DEFAULT_BASE_DIRECTORY = '/installer';
 
     public function __construct(
         protected Environment $environment
     ) {
+        parent::__construct();
     }
 
-    public function __invoke(
-        SymfonyStyle $io,
-        OutputInterface $output,
-        bool $update,
-        bool $defaults,
-        ?int $httpPort = null,
-        ?int $httpsPort = null,
-        ?string $releaseChannel = null,
-        string $baseDir = self::DEFAULT_BASE_DIRECTORY
-    ): int {
+    protected function configure(): void
+    {
+        $this->addArgument('base-dir', InputArgument::OPTIONAL)
+            ->addOption('update', null, InputOption::VALUE_NONE)
+            ->addOption('defaults', null, InputOption::VALUE_NONE)
+            ->addOption('http-port', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('https-port', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('release-channel', null, InputOption::VALUE_OPTIONAL);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $baseDir = $input->getArgument('base-dir') ?? self::DEFAULT_BASE_DIRECTORY;
+        $update = (bool)$input->getOption('update');
+        $defaults = (bool)$input->getOption('defaults');
+        $httpPort = $input->getOption('http-port');
+        $httpsPort = $input->getOption('https-port');
+        $releaseChannel = $input->getOption('release-channel');
+
         $devMode = ($baseDir !== self::DEFAULT_BASE_DIRECTORY);
 
         // Initialize all the environment variables.

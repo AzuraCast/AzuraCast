@@ -2,6 +2,7 @@
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
 set -e
+set -x
 
 # Functions to manage .env files
 __dotenv=
@@ -312,11 +313,13 @@ install-docker() {
 
     echo "You must log out or restart to apply necessary Docker permissions changes."
     echo "Restart, then continue installing using this script."
-    exit
+    exit 1
   fi
 }
 
 install-docker-compose() {
+  echo "Installing Docker Compose..."
+
   curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-$(uname -m)
 
   ARCHITECTURE=amd64
@@ -338,6 +341,8 @@ install-docker-compose() {
     mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
     mv ./docker-compose-switch /usr/local/bin/docker-compose
   fi
+
+  echo "Docker Compose updated!"
 }
 
 run-installer() {

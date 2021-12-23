@@ -16,8 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'locale:generate',
+    name: 'azuracast:locale:generate',
     description: 'Generate the translation locale file.',
+    aliases: ['locale:generate']
 )]
 class GenerateCommand extends CommandAbstract
 {

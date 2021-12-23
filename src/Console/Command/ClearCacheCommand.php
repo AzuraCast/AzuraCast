@@ -13,8 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'cache:clear',
+    name: 'azuracast:cache:clear',
     description: 'Clear all application caches.',
+    aliases: ['cache:clear']
 )]
 class ClearCacheCommand extends CommandAbstract
 {

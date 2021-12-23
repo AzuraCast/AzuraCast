@@ -13,8 +13,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'sync:run',
+    name: 'azuracast:sync:run',
     description: 'Run one or more scheduled synchronization tasks.',
+    aliases: ['sync:run']
 )]
 class SyncCommand extends CommandAbstract
 {

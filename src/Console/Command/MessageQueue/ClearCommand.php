@@ -14,8 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'queue:clear',
+    name: 'azuracast:queue:clear',
     description: 'Clear the contents of the message queue.',
+    aliases: ['queue:clear']
 )]
 class ClearCommand extends CommandAbstract
 {

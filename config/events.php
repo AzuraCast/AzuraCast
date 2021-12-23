@@ -1,6 +1,5 @@
 <?php
 
-use App\Console\Command;
 use App\Environment;
 use App\Event;
 use App\Middleware;
@@ -12,10 +11,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {
             $console = $event->getConsole();
             $di = $event->getContainer();
-
-            $event->addAliases([
-                'cache:clear' => Command\ClearCacheCommand::class,
-            ]);
 
             // Doctrine ORM/DBAL
             Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);

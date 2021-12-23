@@ -23,8 +23,9 @@ use Symfony\Component\Messenger\Worker;
 use Throwable;
 
 #[AsCommand(
-    name: 'queue:process',
+    name: 'azuracast:queue:process',
     description: 'Process the message queue.',
+    aliases: ['queue:process']
 )]
 class ProcessCommand extends CommandAbstract
 {

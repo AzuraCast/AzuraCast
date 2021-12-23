@@ -39,5 +39,6 @@ return function (App\Event\BuildConsoleCommands $event) {
         'queue:process'                       => Command\MessageQueue\ProcessCommand::class,
         'queue:clear'                         => Command\MessageQueue\ClearCommand::class,
         'cache:clear'                         => Command\ClearCacheCommand::class,
+        'sync:run'                            => Command\SyncCommand::class,
     ]);
 };

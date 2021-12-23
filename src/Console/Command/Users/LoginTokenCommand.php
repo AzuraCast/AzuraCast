@@ -8,30 +8,49 @@ use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Http\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:account:login-token',
+    description: 'Create a unique login recovery URL for the specified account.',
+)]
 class LoginTokenCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
-        RouterInterface $router,
-        string $email
-    ): int {
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        protected RouterInterface $router,
+    ) {
+        parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        $this->addArgument('email', InputArgument::REQUIRED);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $email = $input->getArgument('email');
+
         $io->title('Generate Account Login Recovery URL');
 
-        $user = $em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(Entity\User::class)
             ->findOneBy(['email' => $email]);
 
         if ($user instanceof Entity\User) {
-            $loginToken = $loginTokenRepo->createToken($user);
+            $loginToken = $this->loginTokenRepo->createToken($user);
 
-            $url = $router->named(
-                'account:recover',
-                ['token' => $loginToken],
-                [],
-                true
+            $url = $this->router->named(
+                route_name: 'account:recover',
+                route_params: ['token' => $loginToken],
+                absolute: true
             );
 
             $io->text([

@@ -12,20 +12,32 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:setup:fixtures',
+    description: 'Install fixtures for demo / local development.',
+)]
 class SetupFixturesCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        ContainerInterface $di,
-        Environment $environment
-    ): int {
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected ContainerInterface $di,
+        protected Environment $environment,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
         $loader = new Loader();
 
         // Dependency-inject the fixtures and load them.
-        $fixturesDir = $environment->getBaseDirectory() . '/src/Entity/Fixture';
+        $fixturesDir = $this->environment->getBaseDirectory() . '/src/Entity/Fixture';
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($fixturesDir),
@@ -39,13 +51,13 @@ class SetupFixturesCommand extends CommandAbstract
             }
 
             $className = 'App\\Entity\\Fixture\\' . $fileName;
-            $fixture = $di->get($className);
+            $fixture = $this->di->get($className);
 
             $loader->addFixture($fixture);
         }
 
-        $purger = new ORMPurger($em);
-        $executor = new ORMExecutor($em, $purger);
+        $purger = new ORMPurger($this->em);
+        $executor = new ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
 
         $io->success(__('Fixtures loaded.'));

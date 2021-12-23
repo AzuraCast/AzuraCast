@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Internal;
 
-use App\Console\Application;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Media\BatchUtilities;
@@ -12,42 +11,57 @@ use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBus;
 
+#[AsCommand(
+    name: 'azuracast:internal:sftp-event',
+    description: 'Send upcoming song feedback from the AutoDJ back to AzuraCast.',
+)]
 class SftpEventCommand extends CommandAbstract
 {
     public function __construct(
-        Application $application,
+        protected EntityManagerInterface $em,
         protected MessageBus $messageBus,
         protected LoggerInterface $logger,
-        protected BatchUtilities $batchUtilities
+        protected BatchUtilities $batchUtilities,
     ) {
-        parent::__construct($application);
+        parent::__construct();
     }
 
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        string $action = null,
-        string $username = null,
-        string $path = null,
-        string $targetPath = null,
-        string $sshCmd = null
-    ): int {
+    protected function configure(): void
+    {
+        $this->addArgument('action', InputArgument::REQUIRED)
+            ->addArgument('username', InputArgument::REQUIRED)
+            ->addArgument('path', InputArgument::REQUIRED)
+            ->addArgument('target-path', InputArgument::OPTIONAL)
+            ->addArgument('ssh-cmd', InputArgument::OPTIONAL);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $action = $input->getArgument('action');
+        $username = $input->getArgument('username');
+        $path = $input->getArgument('path');
+        $targetPath = $input->getArgument('target-path');
+        $sshCmd = $input->getArgument('ssh-cmd');
+
         $this->logger->notice(
             'SFTP file event triggered',
             [
-                'action' => $action,
-                'username' => $username,
-                'path' => $path,
+                'action'     => $action,
+                'username'   => $username,
+                'path'       => $path,
                 'targetPath' => $targetPath,
-                'sshCmd' => $sshCmd,
+                'sshCmd'     => $sshCmd,
             ]
         );
 
         // Determine which station the username belongs to.
-        $sftpUser = $em->getRepository(Entity\SftpUser::class)->findOneBy(
+        $sftpUser = $this->em->getRepository(Entity\SftpUser::class)->findOneBy(
             [
                 'username' => $username,
             ]
@@ -101,7 +115,7 @@ class SftpEventCommand extends CommandAbstract
             'Processing new SFTP upload.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'path' => $relativePath,
+                'path'            => $relativePath,
             ]
         );
 
@@ -125,7 +139,7 @@ class SftpEventCommand extends CommandAbstract
             'Processing SFTP file/folder deletion.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'path' => $relativePath,
+                'path'            => $relativePath,
             ]
         );
 
@@ -182,8 +196,8 @@ class SftpEventCommand extends CommandAbstract
             'Processing SFTP file/folder rename.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'from' => $from,
-                'to' => $to,
+                'from'            => $from,
+                'to'              => $to,
             ]
         );
 

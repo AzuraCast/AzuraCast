@@ -9,26 +9,37 @@ use App\Environment;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use RecursiveRegexIterator;
 use RegexIterator;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'locale:generate',
+    description: 'Generate the translation locale file.',
+)]
 class GenerateCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        Environment $environment
-    ): int {
+    public function __construct(
+        protected Environment $environment
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
         $io->title('Generate Locales');
 
-        $exportDir = $environment->getBaseDirectory() . '/resources/locale';
+        $exportDir = $this->environment->getBaseDirectory() . '/resources/locale';
 
         $dest_file = $exportDir . '/default.pot';
 
         $translations = new Translations();
 
         // Find all JS/Vue file translations.
-        $directory = new RecursiveDirectoryIterator($environment->getBaseDirectory() . '/frontend/vue');
+        $directory = new RecursiveDirectoryIterator($this->environment->getBaseDirectory() . '/frontend/vue');
         $iterator = new RecursiveIteratorIterator($directory);
 
         $vueRegex = new RegexIterator($iterator, '/^.+\.(vue)$/i', RegexIterator::GET_MATCH);
@@ -43,9 +54,9 @@ class GenerateCommand extends CommandAbstract
 
         // Find all PHP/PHTML files in the application's code.
         $translatable_folders = [
-            $environment->getBaseDirectory() . '/src',
-            $environment->getBaseDirectory() . '/config',
-            $environment->getViewsDirectory(),
+            $this->environment->getBaseDirectory() . '/src',
+            $this->environment->getBaseDirectory() . '/config',
+            $this->environment->getViewsDirectory(),
         ];
 
         foreach ($translatable_folders as $folder) {

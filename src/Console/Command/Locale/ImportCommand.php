@@ -9,18 +9,30 @@ use App\Environment;
 use App\Locale;
 use Gettext\Translation;
 use Gettext\Translations;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'locale:import',
+    description: 'Convert translated locale files into PHP arrays.',
+)]
 class ImportCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        Environment $environment
-    ): int {
+    public function __construct(
+        protected Environment $environment
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
         $io->title('Import Locales');
 
         $locales = Locale::SUPPORTED_LOCALES;
-        $locale_base = $environment->getBaseDirectory() . '/resources/locale';
+        $locale_base = $this->environment->getBaseDirectory() . '/resources/locale';
 
         $jsTranslations = [];
 

@@ -232,14 +232,19 @@ return [
     ) {
         $console = new App\Console\Application(
             $environment->getAppName() . ' Command Line Tools (' . $environment->getAppEnvironment() . ')',
-            $version->getVersion(),
-            $di
+            $version->getVersion()
         );
         $console->setDispatcher($dispatcher);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
-        $event = new App\Event\BuildConsoleCommands($console);
+        $event = new Event\BuildConsoleCommands($console, $di);
         $dispatcher->dispatch($event);
+
+        $commandLoader = new Symfony\Component\Console\CommandLoader\ContainerCommandLoader(
+            $di,
+            $event->getAliases()
+        );
+        $console->setCommandLoader($commandLoader);
 
         return $console;
     },

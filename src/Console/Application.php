@@ -8,7 +8,7 @@ use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 
-class Application extends \Silly\Edition\PhpDi\Application
+class Application extends \Symfony\Component\Console\Application
 {
     /**
      * Run a one-off command from elsewhere in the application, and pass through the results.

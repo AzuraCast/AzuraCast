@@ -4,28 +4,35 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Console\Application;
 use App\Environment;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:api:docs',
+    description: 'Trigger regeneration of AzuraCast API documentation.',
+)]
 class GenerateApiDocsCommand extends CommandAbstract
 {
     public function __construct(
-        Application $application,
         protected Environment $environment,
         protected Version $version,
         protected LoggerInterface $logger
     ) {
-        parent::__construct($application);
+        parent::__construct();
     }
 
-    public function __invoke(SymfonyStyle $io): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $yaml = $this->generate()?->toYaml();
         $yaml_path = $this->environment->getBaseDirectory() . '/web/static/api/openapi.yml';
 

@@ -11,13 +11,11 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         Event\BuildConsoleCommands::class,
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {
             $console = $event->getConsole();
-            $di = $console->getContainer();
+            $di = $event->getContainer();
 
-            /** @var Environment $environment */
-            $environment = $di->get(Environment::class);
-
-            $console->command('cache:clear', Command\ClearCacheCommand::class)
-                ->setDescription('Clear all application caches.');
+            $event->addAliases([
+                'cache:clear' => Command\ClearCacheCommand::class,
+            ]);
 
             // Doctrine ORM/DBAL
             Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
@@ -25,6 +23,9 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             // Add Doctrine Migrations
             /** @var Doctrine\ORM\EntityManagerInterface $em */
             $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
+
+            /** @var Environment $environment */
+            $environment = $di->get(Environment::class);
 
             $helper_set = $console->getHelperSet();
             $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
@@ -59,7 +60,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             );
             Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
-            call_user_func(include(__DIR__ . '/cli.php'), $console);
+            call_user_func(include(__DIR__ . '/cli.php'), $event);
         }
     );
 

@@ -7,31 +7,51 @@ namespace App\Console\Command\Users;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:account:set-administrator',
+    description: 'Set the account specified as a global administrator.',
+)]
 class SetAdministratorCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        Entity\Repository\RolePermissionRepository $perms_repo,
-        string $email
-    ): int {
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\RolePermissionRepository $permsRepo,
+    ) {
+        parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        $this->addArgument('email', InputArgument::REQUIRED);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $email = $input->getArgument('email');
+
         $io->title('Set Administrator');
 
-        $user = $em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(Entity\User::class)
             ->findOneBy(['email' => $email]);
 
         if ($user instanceof Entity\User) {
-            $adminRole = $perms_repo->ensureSuperAdministratorRole();
+            $adminRole = $this->permsRepo->ensureSuperAdministratorRole();
 
             $user_roles = $user->getRoles();
             if (!$user_roles->contains($adminRole)) {
                 $user_roles->add($adminRole);
             }
 
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             $io->text(
                 __(

@@ -2,7 +2,6 @@
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
 set -e
-set -x
 
 # Functions to manage .env files
 __dotenv=

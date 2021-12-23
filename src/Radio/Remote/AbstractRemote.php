@@ -8,7 +8,6 @@ use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
@@ -89,14 +88,19 @@ abstract class AbstractRemote
      * Format and return a URL for the remote path.
      *
      * @param Entity\StationRemote $remote
-     * @param string|null $custom_path
+     * @param string|null $customPath
      */
-    protected function getRemoteUrl(Entity\StationRemote $remote, ?string $custom_path = null): string
+    protected function getRemoteUrl(Entity\StationRemote $remote, ?string $customPath = null): string
     {
-        $uri = new Uri($remote->getUrl());
+        $uri = $remote->getUrlAsUri();
 
-        return (null !== $custom_path)
-            ? (string)$uri->withPath($custom_path)
-            : (string)$uri;
+        if (!empty($customPath)) {
+            if (!str_starts_with($customPath, '/')) {
+                $customPath = '/' . $customPath;
+            }
+            return (string)$uri->withPath($customPath);
+        }
+
+        return (string)$uri;
     }
 }

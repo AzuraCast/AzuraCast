@@ -159,12 +159,12 @@ class StationSchedule implements IdentifiableEntityInterface
     }
 
     /**
-     * @return int[]|null
+     * @return int[]
      */
-    public function getDays(): ?array
+    public function getDays(): array
     {
         if (empty($this->days)) {
-            return null;
+            return [];
         }
 
         $days = [];

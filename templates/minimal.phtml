@@ -13,18 +13,20 @@
  * @var App\Environment $environment
  */
 
+$title ??= null;
+$hide_footer ??= false;
 ?>
-<html data-theme="<?=$customization->getPublicTheme()?>">
+<html data-theme="<?= $customization->getPublicTheme() ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?=$customization->getPageTitle($title)?></title>
+    <title><?= $customization->getPageTitle($title) ?></title>
 
-    <?=$this->fetch('partials/icons')?>
+    <?= $this->fetch('partials/icons') ?>
 
-    <?=$this->section('head')?>
+    <?= $this->section('head') ?>
 
     <?php
     $assets

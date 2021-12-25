@@ -401,7 +401,7 @@ class Scheduler
         int $dayToCheck
     ): bool {
         $playOnceDays = $schedule->getDays();
-        return null === $playOnceDays
+        return empty($playOnceDays)
             || in_array($dayToCheck, $playOnceDays, true);
     }
 }

@@ -8,6 +8,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class PostArtAction
@@ -16,6 +17,7 @@ class PostArtAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\PodcastRepository $podcastRepo,
+        EntityManagerInterface $em,
         ?string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -40,6 +42,8 @@ class PostArtAction
                 $podcast,
                 $flowResponse->readAndDeleteUploadedFile()
             );
+
+            $em->flush();
 
             return $response->withJson(Entity\Api\Status::updated());
         }

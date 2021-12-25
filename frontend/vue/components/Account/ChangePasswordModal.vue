@@ -1,9 +1,9 @@
 <template>
     <modal-form ref="modal" size="md" centered :title="langTitle" :disable-save-button="$v.form.$invalid"
-                @submit="onSubmit" @shown="focusInput" @hidden="onHidden">
+                @submit="onSubmit" @hidden="onHidden">
         <b-form-fieldset>
-            <b-wrapped-form-group ref="firstElement" id="form_current_password" :field="$v.form.current_password"
-                                  input-type="password">
+            <b-wrapped-form-group id="form_current_password" :field="$v.form.current_password"
+                                  input-type="password" autofocus>
                 <template #label="{lang}">
                     <translate :key="lang">Current Password</translate>
                 </template>
@@ -68,9 +68,6 @@ export default {
         }
     },
     methods: {
-        focusInput() {
-            this.$refs.firstElement.focus();
-        },
         open() {
             this.$refs.modal.show();
         },

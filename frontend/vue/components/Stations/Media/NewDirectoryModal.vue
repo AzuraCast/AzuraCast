@@ -1,7 +1,7 @@
 <template>
     <b-modal id="create_directory" centered ref="modal" :title="langNewDirectory">
         <b-form @submit.prevent="doMkdir">
-            <b-wrapped-form-group id="new_directory_name" :field="$v.newDirectory">
+            <b-wrapped-form-group id="new_directory_name" :field="$v.newDirectory" autofocus>
                 <template #label="{lang}">
                     <translate :key="lang">Directory Name</translate>
                 </template>

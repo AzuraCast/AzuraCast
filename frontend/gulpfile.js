@@ -84,7 +84,7 @@ defaultTasks.forEach(function (libName) {
   });
 });
 
-gulp.task('bundle_deps', gulp.parallel(
+gulp.task('bundle-deps', gulp.parallel(
   defaultTasks.map(function (name) {
     return 'scripts:' + name;
   })
@@ -130,11 +130,17 @@ gulp.task('build-css', function () {
     .pipe(gulp.dest('../web/static/dist'));
 });
 
-gulp.task('default', gulp.series('clean', gulp.parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle_deps'), function () {
+gulp.task('watch', function () {
+  gulp.watch(['./vue/**', './js/**/*.js'], buildAll);
+});
+
+const buildAll = gulp.series('clean', gulp.parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle-deps'), function () {
   return gulp.src(['../web/static/dist/**/*.{js,css}'], { base: '../web/static/' })
     .pipe(rev())
     .pipe(revdel())
     .pipe(gulp.dest('../web/static/'))
     .pipe(rev.manifest('assets.json'))
     .pipe(gulp.dest('../web/static/'));
-}));
+});
+
+exports.default = buildAll

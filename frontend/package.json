@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "npm ci && bash",
     "dev-build": "npm ci && npm run build",
-    "build": "gulp"
+    "build": "gulp",
+    "watch": "gulp watch"
   },
   "dependencies": {
     "@babel/core": "^7.15.5",

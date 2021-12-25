@@ -131,7 +131,11 @@ gulp.task('build-css', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['./vue/**', './js/**/*.js'], buildAll);
+    gulp.watch([
+        './vue/**',
+        './js/**/*.js',
+        './scss/**',
+    ], buildAll);
 });
 
 const buildAll = gulp.series('clean', gulp.parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle-deps'), function () {

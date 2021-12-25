@@ -14,7 +14,7 @@
                                      @input="uploadNewArt"></b-form-file>
                     </b-form-group>
                 </b-col>
-                <b-col md="4" v-if="src">
+                <b-col md="4" v-if="src && src !== ''">
                     <b-img :src="src" :alt="langTitle" rounded fluid></b-img>
 
                     <div class="buttons pt-3">
@@ -36,27 +36,30 @@ export default {
         value: Object,
         artworkSrc: String,
         editArtUrl: String,
-        newArtUrl: String
+        newArtUrl: String,
     },
-    data () {
+    data() {
         return {
-            src: this.artworkSrc
+            localSrc: null,
         };
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Artwork');
+        },
+        src() {
+            return this.localSrc ?? this.artworkSrc;
         }
     },
     methods: {
-        uploadNewArt (file) {
+        uploadNewArt(file) {
             if (!(file instanceof File)) {
                 return;
             }
 
             let fileReader = new FileReader();
             fileReader.addEventListener('load', () => {
-                this.src = fileReader.result;
+                this.localSrc = fileReader.result;
             }, false);
             fileReader.readAsDataURL(file);
 
@@ -71,10 +74,10 @@ export default {
         deleteArt () {
             if (this.editArtUrl) {
                 this.axios.delete(this.editArtUrl).then((resp) => {
-                    this.src = null;
+                    this.localSrc = '';
                 });
             } else {
-                this.src = null;
+                this.localSrc = '';
             }
         }
     }

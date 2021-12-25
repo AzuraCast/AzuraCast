@@ -5,10 +5,10 @@
                 <b-form-textarea v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
                                  v-model="field.$model"
                                  :required="isRequired" :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
-                                 :state="fieldState"></b-form-textarea>
+                                 :autofocus="autofocus" :state="fieldState"></b-form-textarea>
                 <b-form-input v-else ref="input" :type="inputType" :id="id" :name="name" v-model="field.$model"
                               :required="isRequired" :number="isNumeric" :trim="inputTrim"
-                              v-bind="inputAttrs" :state="fieldState"></b-form-input>
+                              :autofocus="autofocus" v-bind="inputAttrs" :state="fieldState"></b-form-input>
             </slot>
 
             <b-form-invalid-feedback :state="fieldState">
@@ -73,6 +73,10 @@ export default {
             default() {
                 return {};
             }
+        },
+        autofocus: {
+            type: Boolean,
+            default: false
         },
         advanced: {
             type: Boolean,

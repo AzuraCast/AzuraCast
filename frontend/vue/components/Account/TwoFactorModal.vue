@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @shown="focusInput" @hidden="clearContents">
+                @submit="doSubmit" @hidden="clearContents">
 
         <b-row>
             <b-col md="7">
@@ -21,7 +21,7 @@
                 </p>
 
                 <b-form-fieldset>
-                    <b-wrapped-form-group ref="firstElement" id="form_otp" :field="$v.form.otp">
+                    <b-wrapped-form-group id="form_otp" :field="$v.form.otp" autofocus>
                         <template #label="{lang}">
                             <translate :key="lang">Code from Authenticator App</translate>
                         </template>
@@ -96,9 +96,6 @@ export default {
         }
     },
     methods: {
-        focusInput() {
-            this.$refs.firstElement.focus();
-        },
         resetForm() {
             this.totp = {
                 secret: null,

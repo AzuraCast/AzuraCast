@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35c0b92cca0c601500d532dbb909a7b0",
+    "content-hash": "a2801a551591a3d7b981e12ab81e7b8a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6520,26 +6520,26 @@
         },
         {
             "name": "symfony/beanstalkd-messenger",
-            "version": "v5.4.0",
+            "version": "v6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/beanstalkd-messenger.git",
-                "reference": "30eea87bd29a56bda708ed70dba8bb52823efe73"
+                "reference": "314e2ee5461fdd44fc833e9e63dd074f4f8bb8bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/beanstalkd-messenger/zipball/30eea87bd29a56bda708ed70dba8bb52823efe73",
-                "reference": "30eea87bd29a56bda708ed70dba8bb52823efe73",
+                "url": "https://api.github.com/repos/symfony/beanstalkd-messenger/zipball/314e2ee5461fdd44fc833e9e63dd074f4f8bb8bb",
+                "reference": "314e2ee5461fdd44fc833e9e63dd074f4f8bb8bb",
                 "shasum": ""
             },
             "require": {
                 "pda/pheanstalk": "^4.0",
-                "php": ">=7.2.5",
-                "symfony/messenger": "^4.4|^5.0|^6.0"
+                "php": ">=8.0.2",
+                "symfony/messenger": "^5.4|^6.0"
             },
             "require-dev": {
-                "symfony/property-access": "^4.4|^5.0|^6.0",
-                "symfony/serializer": "^4.4|^5.0|^6.0"
+                "symfony/property-access": "^5.4|^6.0",
+                "symfony/serializer": "^5.4|^6.0"
             },
             "type": "symfony-messenger-bridge",
             "autoload": {
@@ -6563,7 +6563,7 @@
             "description": "Symfony Beanstalkd Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/beanstalkd-messenger/tree/v5.4.0"
+                "source": "https://github.com/symfony/beanstalkd-messenger/tree/v6.0.1"
             },
             "funding": [
                 {
@@ -6579,7 +6579,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-09T11:03:34+00:00"
+            "time": "2021-12-08T15:13:44+00:00"
         },
         {
             "name": "symfony/cache",
@@ -7841,21 +7841,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.0",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "5be20b3830f726e019162b26223110c8f47cf274"
+                "reference": "d970c45c2186aa4331d1656950a82df64e232580"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/5be20b3830f726e019162b26223110c8f47cf274",
-                "reference": "5be20b3830f726e019162b26223110c8f47cf274",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d970c45c2186aa4331d1656950a82df64e232580",
+                "reference": "d970c45c2186aa4331d1656950a82df64e232580",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.0.2"
             },
             "type": "library",
             "autoload": {
@@ -7883,7 +7882,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.0"
+                "source": "https://github.com/symfony/process/tree/v6.0.0"
             },
             "funding": [
                 {
@@ -7899,7 +7898,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-28T15:25:38+00:00"
+            "time": "2021-11-28T15:34:37+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -11943,29 +11942,29 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.10.12",
+            "version": "v0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "a0d9981aa07ecfcbea28e4bfa868031cca121e7d"
+                "reference": "c9a85cd388afde68721d304bbb3257a068f5ab05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/a0d9981aa07ecfcbea28e4bfa868031cca121e7d",
-                "reference": "a0d9981aa07ecfcbea28e4bfa868031cca121e7d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/c9a85cd388afde68721d304bbb3257a068f5ab05",
+                "reference": "c9a85cd388afde68721d304bbb3257a068f5ab05",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-tokenizer": "*",
-                "nikic/php-parser": "~4.0|~3.0|~2.0|~1.3",
-                "php": "^8.0 || ^7.0 || ^5.5.9",
-                "symfony/console": "~5.0|~4.0|~3.0|^2.4.2|~2.3.10",
-                "symfony/var-dumper": "~5.0|~4.0|~3.0|~2.7"
+                "nikic/php-parser": "^4.0 || ^3.1",
+                "php": "^8.0 || ^7.0.8",
+                "symfony/console": "^6.0 || ^5.0 || ^4.0 || ^3.4",
+                "symfony/var-dumper": "^6.0 || ^5.0 || ^4.0 || ^3.4"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
-                "hoa/console": "3.17.*"
+                "hoa/console": "3.17.05.02"
             },
             "suggest": {
                 "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
@@ -11980,7 +11979,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.10.x-dev"
+                    "dev-main": "0.11.x-dev"
                 }
             },
             "autoload": {
@@ -12012,9 +12011,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.10.12"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.0"
             },
-            "time": "2021-11-30T14:05:36+00:00"
+            "time": "2021-12-05T06:09:05+00:00"
         },
         {
             "name": "pyrech/composer-changelogs",
@@ -12071,89 +12070,6 @@
                 "source": "https://github.com/pyrech/composer-changelogs/tree/v1.8.1"
             },
             "time": "2021-10-12T22:14:22+00:00"
-        },
-        {
-            "name": "ramsey/composer-repl",
-            "version": "1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ramsey/composer-repl.git",
-                "reference": "01ee7a904363b339cfb96a278268d107b593b56c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/composer-repl/zipball/01ee7a904363b339cfb96a278268d107b593b56c",
-                "reference": "01ee7a904363b339cfb96a278268d107b593b56c",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1 || ^2",
-                "php": "^7.4 || ^8",
-                "phpunit/phpunit": "^6 || ^7 || ^8 || ^9",
-                "psy/psysh": "^0.10.4",
-                "symfony/process": "^3 || ^4 || ^5"
-            },
-            "require-dev": {
-                "composer/composer": "^1.10.22 || ^2.0.13",
-                "ramsey/devtools": "^1.3"
-            },
-            "bin": [
-                "bin/repl"
-            ],
-            "type": "composer-plugin",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.x-dev"
-                },
-                "captainhook": {
-                    "force-install": true
-                },
-                "class": "Ramsey\\Dev\\Repl\\Composer\\ReplPlugin",
-                "ramsey/composer-repl": {
-                    "includes": [
-                        "repl.php"
-                    ]
-                },
-                "ramsey/conventional-commits": {
-                    "configFile": "conventional-commits.json"
-                },
-                "ramsey/devtools": {
-                    "command-prefix": "dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Ramsey\\Dev\\Repl\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ben Ramsey",
-                    "email": "ben@benramsey.com",
-                    "homepage": "https://benramsey.com"
-                }
-            ],
-            "description": "A REPL for PHP built into Composer.",
-            "keywords": [
-                "REPL",
-                "psysh",
-                "shell"
-            ],
-            "support": {
-                "issues": "https://github.com/ramsey/composer-repl/issues",
-                "source": "https://github.com/ramsey/composer-repl/tree/1.2.3"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/ramsey",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-08-07T19:42:27+00:00"
         },
         {
             "name": "roave/security-advisories",

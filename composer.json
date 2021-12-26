@@ -75,7 +75,7 @@
     "symfony/event-dispatcher": "^5.4|^6",
     "symfony/finder": "^5.4|^6",
     "symfony/intl": "^6",
-    "symfony/lock": "^5.4",
+    "symfony/lock": "^6",
     "symfony/mailer": "^6",
     "symfony/messenger": "^6",
     "symfony/process": "^5.4|^6",

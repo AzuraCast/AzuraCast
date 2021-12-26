@@ -63,13 +63,17 @@ export default {
                     title: np_new.now_playing.song.title,
                     artist: np_new.now_playing.song.artist,
                     artwork: [
-                        { src: np_new.now_playing.song.art }
+                        {src: np_new.now_playing.song.art}
                     ]
                 });
             }
 
             this.$emit('np_updated', np_new);
             this.$eventHub.$emit('np_updated', np_new);
+
+            document.dispatchEvent(new CustomEvent("now-playing", {
+                detail: np_new
+            }));
         }
     }
 };

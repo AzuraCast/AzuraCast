@@ -42,13 +42,7 @@ class UniqueEntityValidator extends ConstraintValidator
     ) {
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @throws UnexpectedTypeException
-     * @throws ConstraintDefinitionException
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);

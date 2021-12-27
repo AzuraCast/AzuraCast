@@ -834,6 +834,16 @@ class ConfigWriter implements EventSubscriberInterface
             
             # Live Broadcasting
             live = input.harbor(${harborParams})
+            
+            def insert_missing(m) =
+                if m == [] then
+                    [("title", "Live Broadcast")]
+                else
+                    m
+                end
+            end
+            live = map_metadata(insert_missing, live)
+            
             radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
             EOF
         );

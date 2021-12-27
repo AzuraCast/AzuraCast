@@ -232,19 +232,30 @@ export default {
                 });
             }
 
-            this.getStream().webcast.connectSocket(encoder, this.uri);
-            this.isStreaming = true;
+            let socket = this.getStream().webcast.connectSocket(encoder, this.uri);
+            socket.addEventListener("open", () => {
+                this.$notifySuccess(this.$gettext('Live stream connected.'));
+                this.isStreaming = true;
+                this.updateMetadata(false);
+            });
+            socket.addEventListener("close", () => {
+                this.$notifyError(this.$gettext('Live stream disconnected.'));
+                this.isStreaming = false;
+            });
         },
         stopStreaming () {
             this.getStream().webcast.close();
             this.isStreaming = false;
         },
-        updateMetadata () {
+        updateMetadata(alert = true) {
             this.$root.$emit('metadata-update', {
                 title: this.metadata.title,
                 artist: this.metadata.artist
             });
-            this.$notifySuccess(this.$gettext('Metadata updated!'));
+
+            if (alert) {
+                this.$notifySuccess(this.$gettext('Metadata updated!'));
+            }
         },
         onMetadataUpdate (new_metadata) {
             this.metadata.title = new_metadata.title;

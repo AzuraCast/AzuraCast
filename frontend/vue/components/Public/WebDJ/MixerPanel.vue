@@ -14,7 +14,8 @@
                         </div>
                         <div class="flex-fill px-2">
                             <input type="range" min="0" max="1" step="0.01" class="custom-range slider"
-                                   v-model="position" style="width: 200px; height: 10px;">
+                                   v-model="position" @click.right.prevent="position = 0.5"
+                                   style="width: 200px; height: 10px;">
                         </div>
                         <div class="flex-shrink-0">
                             <translate key="lang_playlist_2">Playlist 2</translate>

@@ -158,6 +158,10 @@ class ConfigWriter implements EventSubscriberInterface
 
         autodj_ping_attempts = ref(0)
         ignore(autodj_ping_attempts)
+        
+        # Track live-enabled status script-wide for fades.
+        live_enabled = ref(false)
+        ignore(live_enabled)
         EOF
         );
     }
@@ -737,7 +741,6 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<< EOF
         # DJ Authentication
-        live_enabled = ref(false)
         last_authenticated_dj = ref("")
         live_dj = ref("")
 
@@ -823,40 +826,29 @@ class ConfigWriter implements EventSubscriberInterface
 
         $harborParams = implode(', ', $harbor_params);
 
+        $skipThreshold = self::toFloat(max($djBuffer, 2) + 1);
+
         $event->appendBlock(
             <<<EOF
-        # A Pre-DJ source of radio that can be broadcast if needed',
-        radio_without_live = radio
-        ignore(radio_without_live)
+            # A Pre-DJ source of radio that can be broadcast if needed',
+            radio_without_live = radio
+            ignore(radio_without_live)
+            
+            # Live Broadcasting
+            live = input.harbor(${harborParams})
+            
+            def live_in(a,b)
+                thread.run.recurrent(delay=${skipThreshold}, { source.skip(a) ; -1. })
+                sequence([a, b])
+            end
 
-        # Live Broadcasting
-        live = input.harbor(${harborParams})
-        ignore(output.dummy(live, fallible=true))
-        EOF
+            def live_out(a,b)
+                sequence([a, b])
+            end
+
+            radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, transitions=[live_in, live_out], [live, radio])
+            EOF
         );
-
-        if ($settings->isCrossfadeEnabled()) {
-            $event->appendBlock(
-                <<<EOF
-                radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])
-                EOF
-            );
-        } else {
-            $event->appendBlock(
-                <<<EOF
-                def live_in(a,b)
-                    sequence([a, b])
-                end
-                
-                def live_out(a,b)
-                    source.skip(a)
-                    sequence([b, a])
-                end
-                
-                radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, transitions=[live_out, live_in], [live, radio])
-                EOF
-            );
-        }
 
         if ($recordLiveStreams) {
             $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;

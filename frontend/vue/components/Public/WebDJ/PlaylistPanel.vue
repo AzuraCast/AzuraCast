@@ -1,13 +1,14 @@
 <template>
     <div class="card">
         <div class="card-header bg-primary-dark">
-            <h5 class="card-title">
-                {{ lang_header }}
-
-                <div class="float-right">
-                    <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
+            <div class="d-flex align-items-center">
+                <div class="flex-fill text-nowrap">
+                    <h5 class="card-title">{{ lang_header }}</h5>
                 </div>
-            </h5>
+                <div class="flex-shrink-0 pl-3">
+                    <volume-slider v-model.number="volume"></volume-slider>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="control-group d-flex justify-content-center">
@@ -66,18 +67,20 @@
             </div>
 
             <div class="form-group mb-0">
-                <div class="custom-control custom-checkbox">
-                    <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
-                           v-model="playThrough">
-                    <label v-bind:for="id + '_playthrough'" class="custom-control-label">
-                        <translate key="lang_continuous_play">Continuous Play</translate>
-                    </label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
-                    <label v-bind:for="id + '_loop'" class="custom-control-label">
-                        <translate key="lang_repeat_playlist">Repeat Playlist</translate>
-                    </label>
+                <div class="controls">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
+                               v-model="playThrough">
+                        <label v-bind:for="id + '_playthrough'" class="custom-control-label">
+                            <translate key="lang_continuous_play">Continuous Play</translate>
+                        </label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
+                        <label v-bind:for="id + '_loop'" class="custom-control-label">
+                            <translate key="lang_repeat_playlist">Repeat</translate>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,11 +105,12 @@
 import track from './Track.js';
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
+import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 
 export default {
-    components: { Icon },
+    components: {VolumeSlider, Icon},
     extends: track,
-    data () {
+    data() {
         return {
             'fileIndex': -1,
             'files': [],

@@ -112,7 +112,7 @@ export default {
     },
 
     setTrackGain: function (new_gain) {
-      return this.trackGainObj.gain.value = parseFloat(new_gain) / 100.0;
+        return (this.trackGainObj) && (this.trackGainObj.gain.value = parseFloat(new_gain) / 100.0);
     },
 
     togglePause: function () {

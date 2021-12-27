@@ -1,44 +1,54 @@
 <template>
     <div class="card">
         <div class="card-header bg-primary-dark">
-            <h5 class="card-title">
-                <translate key="lang_mic_title">Microphone</translate>
-
-                <div class="float-right">
-                    <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
+            <div class="d-flex align-items-center">
+                <div class="flex-fill">
+                    <h5 class="card-title">
+                        <translate key="lang_mic_title">Microphone</translate>
+                    </h5>
                 </div>
-            </h5>
+                <div class="flex-shrink-0 pl-3">
+                    <volume-slider v-model.number="volume"></volume-slider>
+                </div>
+            </div>
         </div>
 
         <div class="card-body">
-            <div class="control-group d-flex justify-content-center mb-3">
-                <div class="btn-group btn-group-sm">
-                    <button class="btn btn-danger" v-on:click="toggleRecording" v-bind:class="{ active: playing }">
-                        <icon icon="mic"></icon>
-                    </button>
-                    <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
-                        <translate key="lang_btn_cue">Cue</translate>
-                    </button>
+            <div class="d-flex align-items-center">
+                <div class="d-flex-shrink-0">
+                    <div class="control-group">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-danger" v-on:click="toggleRecording"
+                                    v-bind:class="{ active: playing }">
+                                <icon icon="mic"></icon>
+                            </button>
+                            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
+                                <translate key="lang_btn_cue">Cue</translate>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-fill pl-3">
+                    <div class="form-group microphone-entry mb-0">
+                        <label for="select_microphone_source" class="mb-2" key="lang_mic_source" v-translate>Microphone
+                            Source</label>
+                        <div class="controls">
+                            <select id="select_microphone_source" v-model="device" class="form-control">
+                                <option v-for="device_row in devices" v-bind:value="device_row.deviceId">
+                                    {{ device_row.label }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div v-if="playing">
+            <div v-if="playing" class="mt-3">
                 <div class="progress mb-1">
                     <div class="progress-bar" v-bind:style="{ width: volumeLeft+'%' }"></div>
                 </div>
                 <div class="progress mb-2">
                     <div class="progress-bar" v-bind:style="{ width: volumeRight+'%' }"></div>
-                </div>
-            </div>
-
-            <div class="form-group microphone-entry">
-                <label for="select_microphone_source" class="mb-2" key="lang_mic_source" v-translate>Microphone Source</label>
-                <div class="controls">
-                    <select id="select_microphone_source" v-model="device" class="form-control">
-                        <option v-for="device_row in devices" v-bind:value="device_row.deviceId">
-                            {{ device_row.label }}
-                        </option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -48,9 +58,10 @@
 import track from './Track.js';
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
+import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 
 export default {
-    components: { Icon },
+    components: {VolumeSlider, Icon},
     extends: track,
 
     data: function () {

@@ -1,22 +1,23 @@
 <template>
     <section id="content" role="main" style="height: 100vh;">
         <div class="container pt-5">
-            <div class="row">
+            <div class="form-row">
                 <div class="col-md-4 mb-sm-4">
                     <settings-panel v-bind="{ stationName, baseUri, libUrls }"></settings-panel>
                 </div>
 
                 <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-8 mb-sm-4">
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
                             <microphone-panel></microphone-panel>
                         </div>
-
-                        <div class="col-md-4 mb-sm-4">
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
                             <mixer-panel></mixer-panel>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="form-row mb-4">
                         <div class="col-md-6 mb-sm-4">
                             <playlist-panel id="playlist_1"></playlist-panel>
                         </div>

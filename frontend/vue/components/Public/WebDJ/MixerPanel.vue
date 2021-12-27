@@ -1,17 +1,26 @@
 <template>
     <div class="mixer card">
         <div class="card-header bg-primary-dark">
-            <h5 class="card-title">
-                <translate key="lang_mixer_title">Mixer</translate>
-            </h5>
-        </div>
-        <div class="card-body">
-            <div class="d-flex flex-row">
-                <div class="flex-shrink-0 pt-1 pr-2">1</div>
+            <div class="d-flex align-items-center">
                 <div class="flex-fill">
-                    <input type="range" min="0" max="1" step="0.01" class="custom-range slider" v-model="position">
+                    <h5 class="card-title">
+                        <translate key="lang_mixer_title">Mixer</translate>
+                    </h5>
                 </div>
-                <div class="flex-shrink-0 pt-1 pl-2">2</div>
+                <div class="flex-shrink-0 pl-3">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="flex-shrink-0">
+                            <translate key="lang_playlist_1">Playlist 1</translate>
+                        </div>
+                        <div class="flex-fill px-2">
+                            <input type="range" min="0" max="1" step="0.01" class="custom-range slider"
+                                   v-model="position" style="width: 200px; height: 10px;">
+                        </div>
+                        <div class="flex-shrink-0">
+                            <translate key="lang_playlist_2">Playlist 2</translate>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

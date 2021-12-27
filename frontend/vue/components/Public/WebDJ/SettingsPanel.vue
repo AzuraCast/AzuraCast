@@ -1,10 +1,14 @@
 <template>
     <div class="card settings">
         <div class="card-header bg-primary-dark">
-            <h5 class="card-title">{{ stationName }}</h5>
+            <h5 class="card-title">
+                <translate key="lang_title">WebDJ</translate>
+                <br>
+                <small>{{ stationName }}</small>
+            </h5>
         </div>
         <div class="card-body pt-0">
-            <div class="row pb-4">
+            <div class="form-row pb-4">
                 <div class="col-sm-12">
                     <ul class="nav nav-tabs card-header-tabs mt-0">
                         <li class="nav-item">
@@ -20,7 +24,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="row">
+            <div class="form-row">
                 <div class="col-sm-12">
                     <div class="tab-content mt-1">
                         <div class="tab-pane active" id="settings">
@@ -30,7 +34,8 @@
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3"
                                                class="custom-control-input">
-                                        <label for="encoder_mp3" class="custom-control-label" key="lang_encoder_mp3" v-translate>MP3</label>
+                                        <label for="encoder_mp3" class="custom-control-label" key="lang_encoder_mp3"
+                                               v-translate>MP3</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input id="encoder_raw" type="radio" v-model="encoder" value="raw"
@@ -83,7 +88,7 @@
                             <div class="form-group">
                                 <label class="mb-2" key="lang_dj_creds" v-translate>DJ Credentials</label>
 
-                                <div class="row">
+                                <div class="form-row">
                                     <div class="col-6">
                                         <input type="text" v-model="djUsername" class="form-control"
                                                v-bind:placeholder="langDjUsername">

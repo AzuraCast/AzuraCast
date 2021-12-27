@@ -129,40 +129,40 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<EOF
-        init.daemon.set(false)
-        init.daemon.pidfile.path.set("${pidfile}")
-        log.stdout.set(true)
-        log.file.set(false)
-        settings.server.log.level.set(4)
-        settings.server.telnet.set(true)
-        settings.server.telnet.bind_addr.set("${telnetBindAddr}")
-        settings.server.telnet.port.set(${telnetPort})
-        settings.harbor.bind_addrs.set(["0.0.0.0"])
-
-        settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
-        settings.encoder.metadata.export.set(["artist","title","album","song"])
-
-        settings.decoder.priorities.ogg.set(15)
-        settings.decoder.priorities.mad.set(15)
-        settings.decoder.priorities.flac.set(15)
-        settings.decoder.priorities.aac.set(15)
-        settings.decoder.priorities.ffmpeg.set(10)
-
-        setenv("TZ", "${stationTz}")
-
-        azuracast_api_auth = ref("${stationApiAuth}")
-        ignore(azuracast_api_auth)
-
-        autodj_is_loading = ref(true)
-        ignore(autodj_is_loading)
-
-        autodj_ping_attempts = ref(0)
-        ignore(autodj_ping_attempts)
-        
-        # Track live-enabled status script-wide for fades.
-        live_enabled = ref(false)
-        ignore(live_enabled)
-        EOF
+            init.daemon.set(false)
+            init.daemon.pidfile.path.set("${pidfile}")
+            log.stdout.set(true)
+            log.file.set(false)
+            settings.server.log.level.set(4)
+            settings.server.telnet.set(true)
+            settings.server.telnet.bind_addr.set("${telnetBindAddr}")
+            settings.server.telnet.port.set(${telnetPort})
+            settings.harbor.bind_addrs.set(["0.0.0.0"])
+            
+            settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
+            settings.encoder.metadata.export.set(["artist","title","album","song"])
+            
+            settings.decoder.priorities.ogg.set(15)
+            settings.decoder.priorities.mad.set(15)
+            settings.decoder.priorities.flac.set(15)
+            settings.decoder.priorities.aac.set(15)
+            settings.decoder.priorities.ffmpeg.set(10)
+            
+            setenv("TZ", "${stationTz}")
+            
+            azuracast_api_auth = ref("${stationApiAuth}")
+            ignore(azuracast_api_auth)
+            
+            autodj_is_loading = ref(true)
+            ignore(autodj_is_loading)
+            
+            autodj_ping_attempts = ref(0)
+            ignore(autodj_ping_attempts)
+            
+            # Track live-enabled status script-wide for fades.
+            live_enabled = ref(false)
+            ignore(live_enabled)
+            EOF
         );
     }
 
@@ -418,63 +418,63 @@ class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<< EOF
-            # AutoDJ Next Song Script
-            def autodj_next_song() =
-                log("autodj_next_song: Sending AzuraCast API Call...")
-                uri = {$nextsongCommand}
-                log("autodj_next_song: AzuraCast API Response: #{uri}")
-
-                if uri == "" or string.match(pattern="Error", uri) then
-                    null()
-                else
-                    r = request.create(uri)
-                    if request.resolve(r) then
-                        r
-                    else
+                # AutoDJ Next Song Script
+                def autodj_next_song() =
+                    log("autodj_next_song: Sending AzuraCast API Call...")
+                    uri = {$nextsongCommand}
+                    log("autodj_next_song: AzuraCast API Response: #{uri}")
+                
+                    if uri == "" or string.match(pattern="Error", uri) then
                         null()
-                   end
+                    else
+                        r = request.create(uri)
+                        if request.resolve(r) then
+                            r
+                        else
+                            null()
+                       end
+                    end
                 end
-            end
-
-            # Delayed ping for AutoDJ Next Song
-            def wait_for_next_song(autodj)
-                autodj_ping_attempts := !autodj_ping_attempts + 1
-                delay = ref(0.5)
-
-                if source.is_ready(autodj) then
-                    log("AutoDJ is ready!")
-
-                    autodj_is_loading := false
-                    delay := -1.0
-                elsif !autodj_ping_attempts > 200 then
-                    log("AutoDJ could not be initialized within the specified timeout.")
-
-                    autodj_is_loading := false
-                    delay := -1.0
+                
+                # Delayed ping for AutoDJ Next Song
+                def wait_for_next_song(autodj)
+                    autodj_ping_attempts := !autodj_ping_attempts + 1
+                    delay = ref(0.5)
+                    
+                    if source.is_ready(autodj) then
+                        log("AutoDJ is ready!")
+                        
+                        autodj_is_loading := false
+                        delay := -1.0
+                    elsif !autodj_ping_attempts > 200 then
+                        log("AutoDJ could not be initialized within the specified timeout.")
+                        
+                        autodj_is_loading := false
+                        delay := -1.0
+                    end
+                    
+                    !delay
                 end
-
-                !delay
-            end
-
-            dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
-            dynamic = cue_cut(id="cue_next_song", dynamic)
-
-            dynamic_startup = fallback(
-                id = "dynamic_startup",
-                track_sensitive = false,
-                [
-                    dynamic,
-                    source.available(
-                        blank(id = "autodj_startup_blank", duration = 120.),
-                        predicate.activates({!autodj_is_loading})
-                    )
-                ]
-            )
-            radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
-
-            ref_dynamic = ref(dynamic);
-            thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
-            EOF
+                
+                dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
+                dynamic = cue_cut(id="cue_next_song", dynamic)
+                
+                dynamic_startup = fallback(
+                    id = "dynamic_startup",
+                    track_sensitive = false,
+                    [
+                        dynamic,
+                        source.available(
+                            blank(id = "autodj_startup_blank", duration = 120.),
+                            predicate.activates({!autodj_is_loading})
+                        )
+                    ]
+                )
+                radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
+                
+                ref_dynamic = ref(dynamic);
+                thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
+                EOF
             );
         }
 
@@ -494,12 +494,12 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<< EOF
-        requests = request.queue(id="requests")
-        requests = cue_cut(id="cue_requests", requests)
-
-        radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
-        add_skip_command(radio)
-        EOF
+            requests = request.queue(id="requests")
+            requests = cue_cut(id="cue_requests", requests)
+            
+            radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
+            add_skip_command(radio)
+            EOF
         );
     }
 
@@ -740,70 +740,70 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<< EOF
-        # DJ Authentication
-        last_authenticated_dj = ref("")
-        live_dj = ref("")
-
-        live_record_path = ref("")
-
-        def dj_auth(login) =
-            user = ref("")
-            password = ref("")
-
-            if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
-                auth_string = string.split(separator="(:|,)", login.password)
-
-                user := list.nth(default="", auth_string, 0)
-                password := list.nth(default="", auth_string, 2)
-            else
-                user := login.user
-                password := login.password
+            # DJ Authentication
+            last_authenticated_dj = ref("")
+            live_dj = ref("")
+            
+            live_record_path = ref("")
+            
+            def dj_auth(login) =
+                user = ref("")
+                password = ref("")
+                
+                if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
+                    auth_string = string.split(separator="(:|,)", login.password)
+                    
+                    user := list.nth(default="", auth_string, 0)
+                    password := list.nth(default="", auth_string, 2)
+                else
+                    user := login.user
+                    password := login.password
+                end
+                
+                log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{!user}")
+                ret = {$authCommand}
+                log("dj_auth: AzuraCast API Response: #{ret}")
+                
+                authed = bool_of_string(ret)
+                if (authed) then
+                    last_authenticated_dj := !user
+                end
+                
+                authed
             end
             
-            log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{!user}")
-            ret = {$authCommand}
-            log("dj_auth: AzuraCast API Response: #{ret}")
-
-            authed = bool_of_string(ret)
-            if (authed) then
-                last_authenticated_dj := !user
-            end
-
-            authed
-        end
-
-        def live_connected(header) =
-            dj = !last_authenticated_dj
-            log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
-
-            live_enabled := true
-            live_dj := dj
+            def live_connected(header) =
+                dj = !last_authenticated_dj
+                log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
             
-            log("live_connected: Sending AzuraCast API DJ onConnect command...")
-            ret = {$djonCommand}
-            log("live_connected: AzuraCast API Response: #{ret}")
-
-            if (string.contains(prefix="/", ret)) then
-                live_record_path := ret
-            end
-        end
-
-        def live_disconnected() =
-            dj = !live_dj
-
-            log("DJ Source disconnected! Current live DJ: #{dj}")
+                live_enabled := true
+                live_dj := dj
+                
+                log("live_connected: Sending AzuraCast API DJ onConnect command...")
+                ret = {$djonCommand}
+                log("live_connected: AzuraCast API Response: #{ret}")
             
-            log("live_disconnected: Sending AzuraCast API DJ onDisconnect command...")
-            ret = {$djoffCommand}
-            log("live_disconnected: AzuraCast API Response: #{ret}")
-
-            live_enabled := false
-            last_authenticated_dj := ""
-            live_dj := ""
-
-            live_record_path := ""
-        end
-        EOF
+                if (string.contains(prefix="/", ret)) then
+                    live_record_path := ret
+                end
+            end
+            
+            def live_disconnected() =
+                dj = !live_dj
+                
+                log("DJ Source disconnected! Current live DJ: #{dj}")
+                
+                log("live_disconnected: Sending AzuraCast API DJ onDisconnect command...")
+                ret = {$djoffCommand}
+                log("live_disconnected: AzuraCast API Response: #{ret}")
+                
+                live_enabled := false
+                last_authenticated_dj := ""
+                live_dj := ""
+                
+                live_record_path := ""
+            end
+            EOF
         );
 
         $harbor_params = [
@@ -826,8 +826,6 @@ class ConfigWriter implements EventSubscriberInterface
 
         $harborParams = implode(', ', $harbor_params);
 
-        $skipThreshold = self::toFloat(max($djBuffer, 2) + 1);
-
         $event->appendBlock(
             <<<EOF
             # A Pre-DJ source of radio that can be broadcast if needed',
@@ -836,17 +834,7 @@ class ConfigWriter implements EventSubscriberInterface
             
             # Live Broadcasting
             live = input.harbor(${harborParams})
-            
-            def live_in(a,b)
-                thread.run.recurrent(delay=${skipThreshold}, { source.skip(a) ; -1. })
-                sequence([a, b])
-            end
-
-            def live_out(a,b)
-                sequence([a, b])
-            end
-
-            radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, transitions=[live_in, live_out], [live, radio])
+            radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
             EOF
         );
 
@@ -858,29 +846,29 @@ class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<< EOF
-            # Record Live Broadcasts
-            output.file(
-                {$formatString}, 
-                fun () -> begin
-                    path = !live_record_path
-                    if (path != "") then
-                        "#{path}.tmp"
-                    else
-                        ""
+                # Record Live Broadcasts
+                output.file(
+                    {$formatString}, 
+                    fun () -> begin
+                        path = !live_record_path
+                        if (path != "") then
+                            "#{path}.tmp"
+                        else
+                            ""
+                        end
+                    end, 
+                    live, 
+                    fallible=true, 
+                    on_close=fun (tempPath) -> begin
+                        path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
+                    
+                        log("Recording stopped: Switching from #{tempPath} to #{path}")
+                        
+                        process.run("mv #{tempPath} #{path}")
+                        ()
                     end
-                end, 
-                live, 
-                fallible=true, 
-                on_close=fun (tempPath) -> begin
-                    path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
-
-                    log("Recording stopped: Switching from #{tempPath} to #{path}")
-
-                    process.run("mv #{tempPath} #{path}")
-                    ()
-                end
-            )
-            EOF
+                )
+                EOF
             );
         }
     }
@@ -890,49 +878,46 @@ class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
         $settings = $station->getBackendConfig();
 
-        $event->appendLines(
-            [
-                '# Allow for Telnet-driven insertion of custom metadata.',
-                'radio = server.insert_metadata(id="custom_metadata", radio)',
-                '',
-                '# Apply amplification metadata (if supplied)',
-                'radio = amplify(override="liq_amplify", 1., radio)',
-            ]
+        $event->appendBlock(
+            <<<EOF
+            # Allow for Telnet-driven insertion of custom metadata.
+            radio = server.insert_metadata(id="custom_metadata", radio)
+            
+            # Apply amplification metadata (if supplied)
+            radio = amplify(override="liq_amplify", 1., radio)
+            EOF
         );
 
         // NRJ normalization
         if ($settings->useNormalizer()) {
-            $event->appendLines(
-                [
-                    '# Normalization and Compression',
-                    'radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)',
-                    'radio = compress.exponential(radio, mu = 1.0)',
-                ]
+            $event->appendBlock(
+                <<<EOF
+                # Normalization and Compression
+                radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
+                radio = compress.exponential(radio, mu = 1.0)
+                EOF
             );
         }
 
         // Replaygain metadata
         if ($settings->useReplayGain()) {
-            $event->appendLines(
-                [
-                    '# Replaygain Metadata',
-                    'enable_replaygain_metadata()',
-                ]
+            $event->appendBlock(
+                <<<EOF
+                # Replaygain Metadata
+                enable_replaygain_metadata()
+                EOF
             );
         }
 
         // Write fallback to safety file to ensure infallible source for the broadcast outputs.
-        $error_file = $this->environment->isDocker()
+        $errorFile = $this->environment->isDocker()
             ? '/usr/local/share/icecast/web/error.mp3'
             : $this->environment->getBaseDirectory() . '/resources/error.mp3';
 
-        $event->appendLines(
-            [
-                sprintf(
-                    'radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "%s")])',
-                    $error_file
-                ),
-            ]
+        $event->appendBlock(
+            <<<EOF
+            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "${errorFile}")])
+            EOF
         );
 
         // Custom configuration
@@ -946,21 +931,21 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<EOF
-        # Send metadata changes back to AzuraCast
-        def metadata_updated(m) =
-            def f() =
-                if (m["song_id"] != "") then
-                    ret = {$feedbackCommand}
-                    log("AzuraCast Feedback Response: #{ret}")
+            # Send metadata changes back to AzuraCast
+            def metadata_updated(m) =
+                def f() =
+                    if (m["song_id"] != "") then
+                        ret = {$feedbackCommand}
+                        log("AzuraCast Feedback Response: #{ret}")
+                    end
+                    (-1.)
                 end
-                (-1.)
+                
+                thread.run.recurrent(fast=false, delay=0., f)
             end
-
-            thread.run.recurrent(fast=false, delay=0., f)
-        end
-
-        radio.on_metadata(metadata_updated)
-        EOF
+            
+            radio.on_metadata(metadata_updated)
+            EOF
         );
     }
 

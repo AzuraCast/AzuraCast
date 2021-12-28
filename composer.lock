@@ -9457,16 +9457,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.0.5",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "31210d89e8c4df86e01a428bdbd2943fc8fc09b2"
+                "reference": "faafa3535c11c05e17f05f21a541b96a837a55a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/31210d89e8c4df86e01a428bdbd2943fc8fc09b2",
-                "reference": "31210d89e8c4df86e01a428bdbd2943fc8fc09b2",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/faafa3535c11c05e17f05f21a541b96a837a55a2",
+                "reference": "faafa3535c11c05e17f05f21a541b96a837a55a2",
                 "shasum": ""
             },
             "require": {
@@ -9526,9 +9526,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.0.5"
+                "source": "https://github.com/zircote/swagger-php/tree/4.1.0"
             },
-            "time": "2021-12-20T01:09:47+00:00"
+            "time": "2021-12-23T01:28:48+00:00"
         }
     ],
     "packages-dev": [
@@ -14091,5 +14091,5 @@
         "ext-xmlwriter": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

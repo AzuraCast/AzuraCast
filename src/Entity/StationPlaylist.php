@@ -8,7 +8,7 @@ use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -417,7 +417,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection|StationPlaylistMedia[]
+     * @return Collection<StationPlaylistMedia>
      */
     public function getMediaItems(): Collection
     {
@@ -425,7 +425,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection|StationPlaylistFolder[]
+     * @return Collection<StationPlaylistFolder>
      */
     public function getFolders(): Collection
     {
@@ -433,7 +433,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection|StationSchedule[]
+     * @return Collection<StationSchedule>
      */
     public function getScheduleItems(): Collection
     {

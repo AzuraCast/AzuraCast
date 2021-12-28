@@ -382,7 +382,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection|StationMedia[]
+     * @return Collection<StationMedia>
      */
     public function getMedia(): Collection
     {

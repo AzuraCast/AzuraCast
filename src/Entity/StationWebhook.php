@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -70,8 +70,8 @@ class StationWebhook implements
 
     #[
         OA\Property(
-            type: "array",
             description: "List of events that should trigger the webhook notification.",
+            type: "array",
             items: new OA\Items()
         ),
         ORM\Column(type: 'json', nullable: true)
@@ -80,8 +80,8 @@ class StationWebhook implements
 
     #[
         OA\Property(
-            type: "array",
             description: "Detailed webhook configuration (if applicable)",
+            type: "array",
             items: new OA\Items()
         ),
         ORM\Column(type: 'json', nullable: true)
@@ -90,8 +90,8 @@ class StationWebhook implements
 
     #[
         OA\Property(
-            type: "array",
             description: "Internal details used by the webhook to preserve state.",
+            type: "array",
             items: new OA\Items()
         ),
         ORM\Column(type: 'json', nullable: true),
@@ -170,9 +170,9 @@ class StationWebhook implements
      * Set the value of a given metadata key.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed|null $value
      */
-    public function setMetadataKey(string $key, $value = null): void
+    public function setMetadataKey(string $key, mixed $value = null): void
     {
         if (null === $value) {
             unset($this->metadata[$key]);

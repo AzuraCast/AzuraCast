@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
-    OA\Schema(type: "object", schema: "Station"),
+    OA\Schema(schema: "Station", type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station'),
     ORM\Index(columns: ['short_name'], name: 'idx_short_name'),
@@ -86,8 +86,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(
-            type: "array",
             description: "An array containing station-specific frontend configuration",
+            type: "array",
             items: new OA\Items()
         ),
         ORM\Column(type: 'json', nullable: true),
@@ -108,8 +108,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(
-            type: "array",
             description: "An array containing station-specific backend configuration",
+            type: "array",
             items: new OA\Items()
         ),
         ORM\Column(type: 'json', nullable: true),

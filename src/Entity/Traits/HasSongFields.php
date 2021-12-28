@@ -8,33 +8,40 @@ use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\Song;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @OA\Schema(type="object")
- */
+#[OA\Schema(type: 'object')]
 trait HasSongFields
 {
     use TruncateStrings;
 
-    /** @OA\Property() */
-    #[ORM\Column(length: 50)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property(),
+        ORM\Column(length: 50),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $song_id;
 
-    /** @OA\Property() */
-    #[ORM\Column(length: 303, nullable: true)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property,
+        ORM\Column(length: 303, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $text = null;
 
-    /** @OA\Property() */
-    #[ORM\Column(length: 150, nullable: true)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property,
+        ORM\Column(length: 150, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $artist = null;
 
-    /** @OA\Property() */
-    #[ORM\Column(length: 150, nullable: true)]
-    #[Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])]
+    #[
+        OA\Property,
+        ORM\Column(length: 150, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $title = null;
 
     public function setSong(SongInterface $song): void

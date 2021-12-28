@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: AzuraCast
   description: 'AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by AzuraCast expose a public API for viewing now playing data, making requests and more.'
@@ -2710,14 +2710,19 @@ components:
       properties:
         station:
           $ref: '#/components/schemas/Api_NowPlaying_Station'
+          description: Station
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
+          description: 'Listener details'
         live:
           $ref: '#/components/schemas/Api_NowPlaying_Live'
+          description: 'Live broadcast details'
         now_playing:
           $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
+          description: 'Current Song'
         playing_next:
           $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
+          description: 'Next Playing Song'
         song_history:
           type: array
           items:
@@ -2763,6 +2768,7 @@ components:
           type: boolean
         song:
           $ref: '#/components/schemas/Api_Song'
+          description: Song
       type: object
     Api_NowPlaying_Station:
       properties:
@@ -2859,6 +2865,7 @@ components:
           type: boolean
         song:
           $ref: '#/components/schemas/Api_Song'
+          description: Song
       type: object
     Api_NowPlaying_StationRemote:
       properties:
@@ -2885,6 +2892,7 @@ components:
           nullable: true
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
+          description: 'Listener details'
       type: object
     Api_Podcast:
       type: object
@@ -3033,6 +3041,7 @@ components:
           example: /api/station/1/ondemand/download/1
         media:
           $ref: '#/components/schemas/Api_Song'
+          description: Song
         playlist:
           type: string
       type: object
@@ -3168,6 +3177,7 @@ components:
           example: /api/station/1/request/1
         song:
           $ref: '#/components/schemas/Api_Song'
+          description: Song
       type: object
     Api_StationSchedule:
       properties:

@@ -8,7 +8,7 @@ use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;

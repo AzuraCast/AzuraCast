@@ -12,7 +12,7 @@ use App\Service\Avatar;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
-    OA\Schema(type: "object", schema: "Settings"),
+    OA\Schema(schema: "Settings", type: "object"),
     ORM\Entity,
     ORM\Table(name: 'settings'),
     Attributes\Auditable

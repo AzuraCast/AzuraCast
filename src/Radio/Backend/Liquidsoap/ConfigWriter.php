@@ -844,7 +844,7 @@ class ConfigWriter implements EventSubscriberInterface
             end
             live = map_metadata(insert_missing, live)
             
-            radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
+            radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])
             EOF
         );
 

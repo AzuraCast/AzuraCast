@@ -51,7 +51,7 @@ class SongHistory implements SongInterface, IdentifiableEntityInterface
     protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationMedia $media = null;
 
     #[ORM\Column(nullable: true)]

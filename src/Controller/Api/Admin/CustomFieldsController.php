@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 
 /** @extends AbstractAdminApiCrudController<Entity\CustomField> */
@@ -13,7 +14,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_fields',
         operationId: 'getCustomFields',
         description: 'List all current custom fields in the system.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Custom Fields'],
         responses: [
             new OA\Response(
@@ -31,7 +32,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_fields',
         operationId: 'addCustomField',
         description: 'Create a new custom field.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Custom Fields'],
         responses: [
             new OA\RequestBody(
@@ -52,7 +53,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_field/{id}',
         operationId: 'getCustomField',
         description: 'Retrieve details for a single custom field.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Custom Fields'],
         parameters: [
             new OA\Parameter(
@@ -79,7 +80,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_field/{id}',
         operationId: 'editCustomField',
         description: 'Update details of a single custom field.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
         ),
@@ -109,7 +110,7 @@ use OpenApi\Attributes as OA;
         path: '/admin/custom_field/{id}',
         operationId: 'deleteCustomField',
         description: 'Delete a single custom field.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Custom Fields'],
         parameters: [
             new OA\Parameter(

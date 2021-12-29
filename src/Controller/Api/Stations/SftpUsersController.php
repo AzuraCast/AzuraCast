@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 
 /** @extends AbstractStationApiCrudController<Entity\SftpUser> */
@@ -13,10 +14,10 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-users',
         operationId: 'getSftpUsers',
         description: 'List all current SFTP users.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -37,13 +38,13 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-users',
         operationId: 'addSftpUser',
         description: 'Create a new SFTP user.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
         ),
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -61,10 +62,10 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'getSftpUser',
         description: 'Retrieve details for a single SFTP user.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'SFTP User ID',
@@ -89,13 +90,13 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'editSftpUser',
         description: 'Update details of a single SFTP user.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
         ),
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',
@@ -120,10 +121,10 @@ use OpenApi\Attributes as OA;
         path: '/station/{station_id}/sftp-user/{id}',
         operationId: 'deleteSftpUser',
         description: 'Delete a single remote relay.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',

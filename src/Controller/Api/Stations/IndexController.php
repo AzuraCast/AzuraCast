@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -35,7 +36,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Return information about a single station.',
         tags: ['Stations: General'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(

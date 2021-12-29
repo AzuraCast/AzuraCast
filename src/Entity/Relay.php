@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\OpenApi;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,13 +44,13 @@ class Relay implements IdentifiableEntityInterface
     protected mixed $nowplaying;
 
     #[
-        OA\Property(example: 1609480800),
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column
     ]
     protected int $created_at;
 
     #[
-        OA\Property(example: 1609480800),
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column
     ]
     protected int $updated_at;

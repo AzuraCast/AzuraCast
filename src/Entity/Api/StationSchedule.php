@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -45,7 +46,7 @@ class StationSchedule
 
     #[OA\Property(
         description: 'The start time of the schedule entry, in UNIX format.',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $start_timestamp;
 
@@ -57,7 +58,7 @@ class StationSchedule
 
     #[OA\Property(
         description: 'The end time of the schedule entry, in UNIX format.',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $end_timestamp;
 

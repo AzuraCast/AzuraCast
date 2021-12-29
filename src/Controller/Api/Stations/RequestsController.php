@@ -8,6 +8,7 @@ use App\Entity;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Return a list of requestable songs.',
         tags: ['Stations: Song Requests'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -48,7 +49,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Submit a song request.',
         tags: ['Stations: Song Requests'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'request_id',
                 description: 'The requestable song ID',

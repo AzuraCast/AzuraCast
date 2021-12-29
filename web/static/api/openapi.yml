@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: AzuraCast
   description: 'AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by AzuraCast expose a public API for viewing now playing data, making requests and more.'
@@ -1925,13 +1925,13 @@ paths:
           content:
             application/json:
               schema:
-                schema: '#/components/schemas/Api_StationServiceStatus'
+                $ref: '#/components/schemas/Api_StationServiceStatus'
         '403':
           description: 'Access Forbidden'
           content:
             application/json:
               schema:
-                schema: '#/components/schemas/Api_Error'
+                $ref: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []

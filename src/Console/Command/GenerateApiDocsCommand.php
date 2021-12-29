@@ -55,7 +55,7 @@ class GenerateApiDocsCommand extends CommandAbstract
 
         $finder = Util::finder(
             [
-                $this->environment->getBaseDirectory() . '/util/openapi.php',
+                $this->environment->getBaseDirectory() . '/src/OpenApi.php',
                 $this->environment->getBaseDirectory() . '/src/Entity',
                 $this->environment->getBaseDirectory() . '/src/Controller/Api',
             ],

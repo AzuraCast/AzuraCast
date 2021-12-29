@@ -8,6 +8,7 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Interfaces\ProcessableMediaInterface;
 use App\Entity\Interfaces\SongInterface;
+use App\OpenApi;
 use App\Utilities\Time;
 use Azura\MetadataManager\Metadata;
 use Azura\MetadataManager\MetadataInterface;
@@ -121,7 +122,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     #[
         OA\Property(
             description: "The UNIX timestamp when the database was last modified.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column(nullable: true)
     ]
@@ -184,7 +185,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     #[
         OA\Property(
             description: "The latest time (UNIX timestamp) when album art was updated.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column
     ]

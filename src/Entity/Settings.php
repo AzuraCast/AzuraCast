@@ -8,6 +8,7 @@ use App\Customization;
 use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity;
 use App\Event\GetSyncTasks;
+use App\OpenApi;
 use App\Service\Avatar;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
@@ -279,7 +280,10 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "The UNIX timestamp when updates were last checked.", example: 1609480800),
+        OA\Property(
+            description: "The UNIX timestamp when updates were last checked.",
+            example: OpenApi::SAMPLE_TIMESTAMP
+        ),
         ORM\Column,
         Attributes\AuditIgnore
     ]
@@ -599,7 +603,10 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "The UNIX timestamp when automated backup was last run.", example: 1609480800),
+        OA\Property(
+            description: "The UNIX timestamp when automated backup was last run.",
+            example: OpenApi::SAMPLE_TIMESTAMP
+        ),
         ORM\Column,
         Attributes\AuditIgnore,
         Groups(self::GROUP_BACKUP)
@@ -640,7 +647,10 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "The UNIX timestamp when setup was last completed.", example: 1609480800),
+        OA\Property(
+            description: "The UNIX timestamp when setup was last completed.",
+            example: OpenApi::SAMPLE_TIMESTAMP
+        ),
         ORM\Column
     ]
     protected int $setup_complete_time = 0;
@@ -691,7 +701,7 @@ class Settings implements Stringable
     #[
         OA\Property(
             description: "The UNIX timestamp when the now playing sync task was last run.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column,
         Attributes\AuditIgnore
@@ -711,7 +721,7 @@ class Settings implements Stringable
     #[
         OA\Property(
             description: "The UNIX timestamp when the 60-second 'short' sync task was last run.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column,
         Attributes\AuditIgnore
@@ -731,7 +741,7 @@ class Settings implements Stringable
     #[
         OA\Property(
             description: "The UNIX timestamp when the 5-minute 'medium' sync task was last run.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column,
         Attributes\AuditIgnore
@@ -751,7 +761,7 @@ class Settings implements Stringable
     #[
         OA\Property(
             description: "The UNIX timestamp when the 1-hour 'long' sync task was last run.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column,
         Attributes\AuditIgnore
@@ -840,7 +850,7 @@ class Settings implements Stringable
     #[
         OA\Property(
             description: "The UNIX timestamp when the Maxmind Geolite was last downloaded.",
-            example: 1609480800
+            example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column,
         Attributes\AuditIgnore,

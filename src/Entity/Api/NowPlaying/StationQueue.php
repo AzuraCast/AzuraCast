@@ -6,6 +6,7 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
 use App\Entity\Api\Song;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
@@ -17,13 +18,13 @@ class StationQueue implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'UNIX timestamp when the AutoDJ is expected to queue the song for playback.',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $cued_at = 0;
 
     #[OA\Property(
         description: 'UNIX timestamp when playback is expected to start.',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $played_at = 0;
 

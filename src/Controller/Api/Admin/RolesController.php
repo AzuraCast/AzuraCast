@@ -10,6 +10,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/roles',
         operationId: 'getRoles',
         description: 'List all current roles in the system.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Roles'],
         responses: [
             new OA\Response(
@@ -45,7 +46,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/roles',
         operationId: 'addRole',
         description: 'Create a new role.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Role')
         ),
@@ -66,7 +67,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/role/{id}',
         operationId: 'getRole',
         description: 'Retrieve details for a single current role.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Roles'],
         parameters: [
             new OA\Parameter(
@@ -93,7 +94,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/role/{id}',
         operationId: 'editRole',
         description: 'Update details of a single role.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Role')
         ),
@@ -123,7 +124,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/role/{id}',
         operationId: 'deleteRole',
         description: 'Delete a single role.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Roles'],
         parameters: [
             new OA\Parameter(

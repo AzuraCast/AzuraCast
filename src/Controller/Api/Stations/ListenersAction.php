@@ -9,6 +9,7 @@ use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Locale;
+use App\OpenApi;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
@@ -25,10 +26,10 @@ use RuntimeException;
         path: '/station/{station_id}/listeners',
         operationId: 'getStationListeners',
         description: 'Return detailed information about current listeners.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Listeners'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(

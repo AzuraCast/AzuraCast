@@ -10,6 +10,7 @@ use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Utilities\File;
@@ -26,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/stations',
         operationId: 'adminGetStations',
         description: 'List all current stations in the system.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Stations'],
         responses: [
             new OA\Response(
@@ -47,7 +48,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/stations',
         operationId: 'adminAddStation',
         description: 'Create a new station.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Station')
         ),
@@ -68,7 +69,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/station/{id}',
         operationId: 'adminGetStation',
         description: 'Retrieve details for a single station.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Stations'],
         parameters: [
             new OA\Parameter(
@@ -95,7 +96,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/station/{id}',
         operationId: 'adminEditStation',
         description: 'Update details of a single station.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Station')
         ),
@@ -125,7 +126,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/station/{id}',
         operationId: 'adminDeleteStation',
         description: 'Delete a single station.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Stations'],
         parameters: [
             new OA\Parameter(

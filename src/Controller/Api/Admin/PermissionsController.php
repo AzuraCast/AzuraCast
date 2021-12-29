@@ -7,6 +7,7 @@ namespace App\Controller\Api\Admin;
 use App\Acl;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
         path: '/admin/permissions',
         operationId: 'getPermissions',
         description: 'Return a list of all available permissions.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Roles'],
         responses: [
             new OA\Response(response: 200, description: 'Success'),

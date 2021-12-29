@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\OpenApi;
 use App\Validator\Constraints\UniqueEntity;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -85,7 +86,7 @@ class StationStreamer implements
     protected bool $enforce_schedule = false;
 
     #[
-        OA\Property(example: 1609480800),
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column(nullable: true),
         Attributes\AuditIgnore
     ]

@@ -11,6 +11,7 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\Flow\UploadedFile;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -25,10 +26,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcasts',
         operationId: 'getPodcasts',
         description: 'List all current podcasts.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Podcasts'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -49,13 +50,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcasts',
         operationId: 'addPodcast',
         description: 'Create a new podcast.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
         ),
         tags: ['Stations: Podcasts'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -73,10 +74,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'getPodcast',
         description: 'Retrieve details for a single podcast.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Podcasts'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Podcast ID',
@@ -101,13 +102,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'editPodcast',
         description: 'Update details of a single podcast.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
         ),
         tags: ['Stations: Podcasts'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Podcast ID',
@@ -132,10 +133,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/podcast/{id}',
         operationId: 'deletePodcast',
         description: 'Delete a single podcast.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Podcasts'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Podcast ID',

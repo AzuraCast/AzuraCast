@@ -8,6 +8,7 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Csv;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
@@ -20,10 +21,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/history',
         operationId: 'getStationHistory',
         description: 'Return song playback history items for a given station.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: History'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'start',
                 description: 'The start date for records, in YYYY-MM-DD format.',

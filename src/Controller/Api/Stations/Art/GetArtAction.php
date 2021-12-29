@@ -8,6 +8,7 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     description: 'Returns the album art for a song, or a generic image.',
     tags: ['Stations: Media'],
     parameters: [
-        new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         new OA\Parameter(
             name: 'media_id',
             description: 'The station media unique ID',

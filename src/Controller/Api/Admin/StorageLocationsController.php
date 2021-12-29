@@ -8,6 +8,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_locations',
         operationId: 'getStorageLocations',
         description: 'List all current storage locations in the system.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Storage Locations'],
         responses: [
             new OA\Response(
@@ -42,7 +43,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_locations',
         operationId: 'addStorageLocation',
         description: 'Create a new storage location.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
         ),
@@ -63,7 +64,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_location/{id}',
         operationId: 'getStorageLocation',
         description: 'Retrieve details for a single storage location.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Storage Locations'],
         parameters: [
             new OA\Parameter(
@@ -90,7 +91,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_location/{id}',
         operationId: 'editStorageLocation',
         description: 'Update details of a single storage location.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
         ),
@@ -120,7 +121,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/admin/storage_location/{id}',
         operationId: 'deleteStorageLocation',
         description: 'Delete a single storage location.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Storage Locations'],
         parameters: [
             new OA\Parameter(

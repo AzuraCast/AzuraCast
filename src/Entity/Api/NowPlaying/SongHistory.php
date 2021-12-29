@@ -6,6 +6,7 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
 use App\Entity\Api\Song;
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
@@ -22,7 +23,7 @@ class SongHistory implements ResolvableUrlInterface
 
     #[OA\Property(
         description: 'UNIX timestamp when playback started.',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $played_at = 0;
 

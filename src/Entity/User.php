@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\OpenApi;
 use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
 use Azura\Normalizer\Attributes\DeepNormalize;
@@ -88,7 +89,7 @@ class User implements Stringable, IdentifiableEntityInterface
     protected ?string $two_factor_secret = null;
 
     #[
-        OA\Property(example: 1609480800),
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column,
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
@@ -96,7 +97,7 @@ class User implements Stringable, IdentifiableEntityInterface
     protected int $created_at;
 
     #[
-        OA\Property(example: 1609480800),
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column,
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])

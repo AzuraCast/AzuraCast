@@ -11,6 +11,7 @@ use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\Flow\UploadedFile;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -23,10 +24,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mounts',
         operationId: 'getStationMounts',
         description: 'List all current mount points.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Mount Points'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -47,13 +48,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mounts',
         operationId: 'addMount',
         description: 'Create a new mount point.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
         ),
         tags: ['Stations: Mount Points'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -71,10 +72,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'getMount',
         description: 'Retrieve details for a single mount point.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Mount Points'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Streamer ID',
@@ -99,13 +100,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'editMount',
         description: 'Update details of a single mount point.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
         ),
         tags: ['Stations: Mount Points'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Streamer ID',
@@ -130,10 +131,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/mount/{id}',
         operationId: 'deleteMount',
         description: 'Delete a single mount point.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Mount Points'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'StationMount ID',

@@ -8,6 +8,7 @@ use App\Entity;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
@@ -20,24 +21,24 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/status',
         operationId: 'getServiceStatus',
         description: 'Retrieve the current status of all serivces associated with the radio broadcast.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(
-                    schema: '#/components/schemas/Api_StationServiceStatus'
+                    ref: '#/components/schemas/Api_StationServiceStatus'
                 )
             ),
             new OA\Response(
                 response: 403,
                 description: 'Access Forbidden',
                 content: new OA\JsonContent(
-                    schema: '#/components/schemas/Api_Error'
+                    ref: '#/components/schemas/Api_Error'
                 )
             ),
         ]
@@ -46,10 +47,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/restart',
         operationId: 'restartServices',
         description: 'Restart all services associated with the radio broadcast.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -68,10 +69,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/frontend/{action}',
         operationId: 'doFrontendServiceAction',
         description: 'Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
                 description: 'The action to perform (start, stop, restart)',
@@ -99,10 +100,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/backend/{action}',
         operationId: 'doBackendServiceAction',
         description: 'Perform service control actions on the radio backend (Liquidsoap)',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
                 description: 'The action to perform (for all: start, stop, restart, skip, disconnect)',

@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App;
+
 use OpenApi\Attributes as OA;
 
 #[
     OA\OpenApi(
+        openapi: '3.0.0',
         info: new OA\Info(
             version: AZURACAST_VERSION,
-            description: "AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by AzuraCast expose a public API for viewing now playing data, making requests and more.",
+            description: "AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by"
+            . " AzuraCast expose a public API for viewing now playing data, making requests and more.",
             title: 'AzuraCast',
             license: new OA\License(
                 name: 'Apache 2.0',
@@ -81,7 +87,9 @@ use OpenApi\Attributes as OA;
 ]
 class OpenApi
 {
+    public const SAMPLE_TIMESTAMP = 1609480800;
+
+    public const API_KEY_SECURITY = [['api_key' => []]];
+
+    public const STATION_ID_REQUIRED = '#/components/parameters/station_id_required';
 }
-
-
-

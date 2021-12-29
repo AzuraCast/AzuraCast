@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\OpenApi;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -57,13 +58,13 @@ class Listener
 
     #[OA\Property(
         description: 'UNIX timestamp that the user first connected.',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $connected_on;
 
     #[OA\Property(
         description: 'UNIX timestamp that the user disconnected (or the latest timestamp if they are still connected).',
-        example: 1609480800
+        example: OpenApi::SAMPLE_TIMESTAMP
     )]
     public int $connected_until;
 

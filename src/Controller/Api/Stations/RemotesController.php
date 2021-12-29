@@ -9,6 +9,7 @@ use App\Entity;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -19,10 +20,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remotes',
         operationId: 'getRelays',
         description: 'List all current remote relays.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Remote Relays'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -43,13 +44,13 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remotes',
         operationId: 'addRelay',
         description: 'Create a new remote relay.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
         ),
         tags: ['Stations: Remote Relays'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -67,10 +68,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remote/{id}',
         operationId: 'getRelay',
         description: 'Retrieve details for a single remote relay.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Remote Relays'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',
@@ -95,13 +96,13 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remote/{id}',
         operationId: 'editRelay',
         description: 'Update details of a single remote relay.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_StationRemote')
         ),
         tags: ['Stations: Remote Relays'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',
@@ -126,10 +127,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/remote/{id}',
         operationId: 'deleteRelay',
         description: 'Delete a single remote relay.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Remote Relays'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',

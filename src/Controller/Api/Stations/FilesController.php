@@ -11,6 +11,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
+use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use InvalidArgumentException;
@@ -27,10 +28,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/files',
         operationId: 'getFiles',
         description: 'List all current uploaded files.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Media'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -51,13 +52,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/files',
         operationId: 'addFile',
         description: 'Upload a new file.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/Api_UploadFile')
         ),
         tags: ['Stations: Media'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -75,10 +76,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'getFile',
         description: 'Retrieve details for a single file.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Media'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Media ID',
@@ -103,13 +104,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'editFile',
         description: 'Update details of a single file.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
         ),
         tags: ['Stations: Media'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Media ID',
@@ -134,10 +135,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/file/{id}',
         operationId: 'deleteFile',
         description: 'Delete a single file.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Media'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Media ID',

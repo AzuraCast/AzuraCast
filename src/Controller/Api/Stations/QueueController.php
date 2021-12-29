@@ -8,6 +8,7 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -20,10 +21,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/queue',
         operationId: 'getQueue',
         description: 'Return information about the upcoming song playback queue.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Queue'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -48,10 +49,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/queue/{id}',
         operationId: 'getQueueItem',
         description: 'Retrieve details of a single queued item.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Queue'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Queue Item ID',
@@ -80,10 +81,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         path: '/station/{station_id}/queue/{id}',
         operationId: 'deleteQueueItem',
         description: 'Delete a single queued item.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Queue'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Queue Item ID',

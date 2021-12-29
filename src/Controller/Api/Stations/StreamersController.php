@@ -9,6 +9,7 @@ use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Carbon\CarbonInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -19,10 +20,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/streamers',
         operationId: 'getStreamers',
         description: 'List all current Streamer/DJ accounts for the specified station.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Streamers/DJs'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -43,13 +44,13 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/streamers',
         operationId: 'addStreamer',
         description: 'Create a new Streamer/DJ account.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
         ),
         tags: ['Stations: Streamers/DJs'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -67,10 +68,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'getStreamer',
         description: 'Retrieve details for a single Streamer/DJ account.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Streamers/DJs'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Streamer ID',
@@ -95,13 +96,13 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'editStreamer',
         description: 'Update details of a single Streamer/DJ account.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
         ),
         tags: ['Stations: Streamers/DJs'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Streamer ID',
@@ -126,10 +127,10 @@ use Psr\Http\Message\ResponseInterface;
         path: '/station/{station_id}/streamer/{id}',
         operationId: 'deleteStreamer',
         description: 'Delete a single Streamer/DJ account.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Streamers/DJs'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'StationStreamer ID',

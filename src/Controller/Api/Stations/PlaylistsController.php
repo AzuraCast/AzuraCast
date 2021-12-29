@@ -8,6 +8,7 @@ use App\Controller\Api\Traits\CanSortResults;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Carbon\CarbonInterface;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -20,10 +21,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlists',
         operationId: 'getPlaylists',
         description: 'List all current playlists.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -44,13 +45,13 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlists',
         operationId: 'addPlaylist',
         description: 'Create a new playlist.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
         ),
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -68,10 +69,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'getPlaylist',
         description: 'Retrieve details for a single playlist.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Playlist ID',
@@ -96,13 +97,13 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'editPlaylist',
         description: 'Update details of a single playlist.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
         ),
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Playlist ID',
@@ -127,10 +128,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         path: '/station/{station_id}/playlist/{id}',
         operationId: 'deletePlaylist',
         description: 'Delete a single playlist relay.',
-        security: [['api_key' => []]],
+        security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Playlist ID',

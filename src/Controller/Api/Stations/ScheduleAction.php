@@ -8,6 +8,7 @@ use App\Controller\Api\Traits\HasScheduleDisplay;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,7 @@ use Symfony\Contracts\Cache\CacheInterface;
     description: 'Return upcoming and currently ongoing schedule entries.',
     tags: ['Stations: Schedules'],
     parameters: [
-        new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
         new OA\Parameter(
             name: 'now',
             description: 'The date/time to compare schedule items to. Defaults to the current date and time.',

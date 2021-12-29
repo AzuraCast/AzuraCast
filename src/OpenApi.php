@@ -34,6 +34,7 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: "Stations: General"),
             new OA\Tag(name: "Stations: Song Requests"),
             new OA\Tag(name: "Stations: Service Control"),
+            new OA\Tag(name: "Stations: Automation"),
 
             new OA\Tag(name: "Stations: History"),
             new OA\Tag(name: "Stations: Listeners"),

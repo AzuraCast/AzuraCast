@@ -789,6 +789,118 @@ paths:
           description: 'The requested album artwork'
         '404':
           description: 'Image not found; generic filler image.'
+    post:
+      tags:
+        - 'Stations: Media'
+      description: 'Sets the album art for a track.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            anyOf:
+              -
+                type: integer
+                format: int64
+              -
+                type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Media'
+      description: 'Removes the album art for a track.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Media ID'
+          required: true
+          schema:
+            anyOf:
+              -
+                type: integer
+                format: int64
+              -
+                type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/automation/run':
+    put:
+      tags:
+        - 'Stations: Automation'
+      description: 'Run automated assignment.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
   '/station/{station_id}/files':
     get:
       tags:
@@ -1021,6 +1133,114 @@ paths:
           description: 'Station not found'
         '403':
           description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/mount/{id}/intro':
+    get:
+      tags:
+        - 'Stations: Mount Points'
+      description: 'Get the intro track for a mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Mount Point ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Mount Points'
+      description: 'Update the intro track for a mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Mount Point ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Mount Points'
+      description: 'Removes the intro track for a mount point.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: id
+          in: path
+          description: 'Mount Point ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []
@@ -1467,6 +1687,359 @@ paths:
                 $ref: '#/components/schemas/Api_Status'
         '403':
           description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/podcast/{podcast_id}/art':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Gets the album art for a podcast.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Sets the album art for a podcast.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Removes the album art for a podcast.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Gets the album art for a podcast episode.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Sets the album art for a podcast episode.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Removes the album art for a podcast episode.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+  '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media':
+    get:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Gets the media for a podcast episode.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Sets the media for a podcast episode.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Stations: Podcasts'
+      description: 'Removes the media for a podcast episode.'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: podcast_id
+          in: path
+          description: 'Podcast ID'
+          required: true
+          schema:
+            type: string
+        -
+          name: episode_id
+          in: path
+          description: 'Podcast Episode ID'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '404':
+          description: 'Record not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
+        '403':
+          description: 'Access denied'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []
@@ -4156,6 +4729,8 @@ tags:
     name: 'Stations: Song Requests'
   -
     name: 'Stations: Service Control'
+  -
+    name: 'Stations: Automation'
   -
     name: 'Stations: History'
   -

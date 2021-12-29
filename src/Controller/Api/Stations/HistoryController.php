@@ -12,43 +12,53 @@ use App\Utilities\Csv;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @OA\Get(path="/station/{station_id}/history",
- *   operationId="getStationHistory",
- *   tags={"Stations: History"},
- *   description="Return song playback history items for a given station.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="start",
- *     description="The start date for records, in YYYY-MM-DD format.",
- *     in="query",
- *     required=false,
- *     @OA\Schema(
- *         type="string"
- *     )
- *   ),
- *   @OA\Parameter(
- *     name="end",
- *     description="The end date for records, in YYYY-MM-DD format.",
- *     in="query",
- *     required=false,
- *     @OA\Schema(
- *         type="string"
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_DetailedSongHistory"))
- *   ),
- *   @OA\Response(response=404, description="Station not found"),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- */
+#[
+    OA\Get(
+        path: '/station/{station_id}/history',
+        operationId: 'getStationHistory',
+        description: 'Return song playback history items for a given station.',
+        security: [['api_key' => []]],
+        tags: ['Stations: History'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'start',
+                description: 'The start date for records, in YYYY-MM-DD format.',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'end',
+                description: 'The end date for records, in YYYY-MM-DD format.',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_DetailedSongHistory')
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Station not found'
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class HistoryController
 {
     public function __construct(

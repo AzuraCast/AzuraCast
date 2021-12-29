@@ -14,103 +14,151 @@ use App\Message\WritePlaylistFileMessage;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use InvalidArgumentException;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @OA\Get(path="/station/{station_id}/files",
- *   operationId="getFiles",
- *   tags={"Stations: Media"},
- *   description="List all current uploaded files.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationMedia"))
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Post(path="/station/{station_id}/files",
- *   operationId="addFile",
- *   tags={"Stations: Media"},
- *   description="Upload a new file.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/Api_UploadFile")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Get(path="/station/{station_id}/file/{id}",
- *   operationId="getFile",
- *   tags={"Stations: Media"},
- *   description="Retrieve details for a single file.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Media ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Put(path="/station/{station_id}/file/{id}",
- *   operationId="editFile",
- *   tags={"Stations: Media"},
- *   description="Update details of a single file.",
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/StationMedia")
- *   ),
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Media ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Delete(path="/station/{station_id}/file/{id}",
- *   operationId="deleteFile",
- *   tags={"Stations: Media"},
- *   description="Delete a single file.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Media ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @extends AbstractStationApiCrudController<Entity\StationMedia>
- */
+/** @extends AbstractStationApiCrudController<Entity\StationMedia> */
+#[
+    OA\Get(
+        path: '/station/{station_id}/files',
+        operationId: 'getFiles',
+        description: 'List all current uploaded files.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Media'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/StationMedia')
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/files',
+        operationId: 'addFile',
+        description: 'Upload a new file.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_UploadFile')
+        ),
+        tags: ['Stations: Media'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/file/{id}',
+        operationId: 'getFile',
+        description: 'Retrieve details for a single file.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Media'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Media ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Put(
+        path: '/station/{station_id}/file/{id}',
+        operationId: 'editFile',
+        description: 'Update details of a single file.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+        ),
+        tags: ['Stations: Media'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Media ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/file/{id}',
+        operationId: 'deleteFile',
+        description: 'Delete a single file.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Media'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Media ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class FilesController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationMedia::class;

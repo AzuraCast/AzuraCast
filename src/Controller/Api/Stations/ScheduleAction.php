@@ -11,40 +11,52 @@ use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
-/**
- * @OA\Get(path="/station/{station_id}/schedule",
- *   operationId="getSchedule",
- *   tags={"Stations: Schedules"},
- *   description="Return upcoming and currently ongoing schedule entries.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="now",
- *     description="The date/time to compare schedule items to. Defaults to the current date and time.",
- *     in="query",
- *     required=false,
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Parameter(
- *     name="rows",
- *     description="The number of upcoming/ongoing schedule entries to return. Defaults to 5.",
- *     in="query",
- *     required=false,
- *     @OA\Schema(type="integer")
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_StationSchedule"))
- *   ),
- *   @OA\Response(response=404, description="Station not found"),
- *   @OA\Response(response=403, description="Access denied")
- * )
- */
+#[OA\Get(
+    path: '/station/{station_id}/schedule',
+    operationId: 'getSchedule',
+    description: 'Return upcoming and currently ongoing schedule entries.',
+    tags: ['Stations: Schedules'],
+    parameters: [
+        new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        new OA\Parameter(
+            name: 'now',
+            description: 'The date/time to compare schedule items to. Defaults to the current date and time.',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(type: 'string')
+        ),
+        new OA\Parameter(
+            name: 'rows',
+            description: 'The number of upcoming/ongoing schedule entries to return. Defaults to 5.',
+            in: 'query',
+            required: false,
+            schema: new OA\Schema(type: 'integer')
+        ),
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Success',
+            content: new OA\JsonContent(
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/Api_StationSchedule')
+            )
+        ),
+        new OA\Response(
+            response: 404,
+            description: 'Station not found'
+        ),
+        new OA\Response(
+            response: 403,
+            description: 'Access denied'
+        ),
+    ]
+)]
 class ScheduleAction
 {
     use HasScheduleDisplay;

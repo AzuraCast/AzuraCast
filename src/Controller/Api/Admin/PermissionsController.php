@@ -7,22 +7,22 @@ namespace App\Controller\Api\Admin;
 use App\Acl;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @OA\Get(path="/admin/permissions",
- *   operationId="getPermissions",
- *   tags={"Administration: Roles"},
- *   description="Return a list of all available permissions.",
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- */
+#[
+    OA\Get(
+        path: '/admin/permissions',
+        operationId: 'getPermissions',
+        description: 'Return a list of all available permissions.',
+        security: [['api_key' => []]],
+        tags: ['Administration: Roles'],
+        responses: [
+            new OA\Response(response: 200, description: 'Success'),
+            new OA\Response(response: 403, description: 'Access denied'),
+        ]
+    )
+]
 class PermissionsController
 {
     public function __invoke(

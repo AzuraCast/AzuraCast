@@ -5,93 +5,134 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Get(path="/admin/custom_fields",
- *   operationId="getCustomFields",
- *   tags={"Administration: Custom Fields"},
- *   description="List all current custom fields in the system.",
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CustomField"))
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Post(path="/admin/custom_fields",
- *   operationId="addCustomField",
- *   tags={"Administration: Custom Fields"},
- *   description="Create a new custom field.",
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/CustomField")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/CustomField")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Get(path="/admin/custom_field/{id}",
- *   operationId="getCustomField",
- *   tags={"Administration: Custom Fields"},
- *   description="Retrieve details for a single custom field.",
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/CustomField")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Put(path="/admin/custom_field/{id}",
- *   operationId="editCustomField",
- *   tags={"Administration: Custom Fields"},
- *   description="Update details of a single custom field.",
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/CustomField")
- *   ),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Delete(path="/admin/custom_field/{id}",
- *   operationId="deleteCustomField",
- *   tags={"Administration: Custom Fields"},
- *   description="Delete a single custom field.",
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @extends AbstractAdminApiCrudController<Entity\CustomField>
- */
+/** @extends AbstractAdminApiCrudController<Entity\CustomField> */
+#[
+    OA\Get(
+        path: '/admin/custom_fields',
+        operationId: 'getCustomFields',
+        description: 'List all current custom fields in the system.',
+        security: [['api_key' => []]],
+        tags: ['Administration: Custom Fields'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: '#/components/schemas/CustomField'))
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Post(
+        path: '/admin/custom_fields',
+        operationId: 'addCustomField',
+        description: 'Create a new custom field.',
+        security: [['api_key' => []]],
+        tags: ['Administration: Custom Fields'],
+        responses: [
+            new OA\RequestBody(
+                content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+            ),
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/admin/custom_field/{id}',
+        operationId: 'getCustomField',
+        description: 'Retrieve details for a single custom field.',
+        security: [['api_key' => []]],
+        tags: ['Administration: Custom Fields'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Put(
+        path: '/admin/custom_field/{id}',
+        operationId: 'editCustomField',
+        description: 'Update details of a single custom field.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+        ),
+        tags: ['Administration: Custom Fields'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Delete(
+        path: '/admin/custom_field/{id}',
+        operationId: 'deleteCustomField',
+        description: 'Delete a single custom field.',
+        security: [['api_key' => []]],
+        tags: ['Administration: Custom Fields'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class CustomFieldsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\CustomField::class;

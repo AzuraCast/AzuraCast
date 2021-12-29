@@ -13,102 +13,150 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
 use InvalidArgumentException;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @OA\Get(path="/station/{station_id}/podcasts",
- *   operationId="getPodcasts",
- *   tags={"Stations: Podcasts"},
- *   description="List all current podcasts.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Podcast"))
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Post(path="/station/{station_id}/podcasts",
- *   operationId="addPodcast",
- *   tags={"Stations: Podcasts"},
- *   description="Create a new podcast.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Get(path="/station/{station_id}/podcast/{id}",
- *   operationId="getPodcast",
- *   tags={"Stations: Podcasts"},
- *   description="Retrieve details for a single podcast.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Podcast ID",
- *     required=true,
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Put(path="/station/{station_id}/podcast/{id}",
- *   operationId="editPodcast",
- *   tags={"Stations: Podcasts"},
- *   description="Update details of a single podcast.",
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
- *   ),
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Podcast ID",
- *     required=true,
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Delete(path="/station/{station_id}/podcast/{id}",
- *   operationId="deletePodcast",
- *   tags={"Stations: Podcasts"},
- *   description="Delete a single podcast.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Podcast ID",
- *     required=true,
- *     @OA\Schema(type="string")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @extends AbstractApiCrudController<Entity\Podcast>
- */
+/** @extends AbstractApiCrudController<Entity\Podcast> */
+#[
+    OA\Get(
+        path: '/station/{station_id}/podcasts',
+        operationId: 'getPodcasts',
+        description: 'List all current podcasts.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Podcasts'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_Podcast')
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/podcasts',
+        operationId: 'addPodcast',
+        description: 'Create a new podcast.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+        ),
+        tags: ['Stations: Podcasts'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/podcast/{id}',
+        operationId: 'getPodcast',
+        description: 'Retrieve details for a single podcast.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Podcasts'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Podcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Put(
+        path: '/station/{station_id}/podcast/{id}',
+        operationId: 'editPodcast',
+        description: 'Update details of a single podcast.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_Podcast')
+        ),
+        tags: ['Stations: Podcasts'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Podcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/podcast/{id}',
+        operationId: 'deletePodcast',
+        description: 'Delete a single podcast.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Podcasts'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Podcast ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class PodcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Podcast::class;

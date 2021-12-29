@@ -10,22 +10,28 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @OA\Get(path="/internal/relays",
- *   operationId="internalGetRelayDetails",
- *   tags={"Administration: Relays"},
- *   description="Returns all necessary information to relay all 'relayable' stations.",
- *   parameters={},
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Admin_Relay"))
- *   )
- * )
- */
+#[
+    OA\Get(
+        path: '/internal/relays',
+        operationId: 'internalGetRelayDetails',
+        description: "Returns all necessary information to relay all 'relayable' stations.",
+        tags: ['Administration: Relays'],
+        parameters: [],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_Relay')
+                )
+            ),
+        ]
+    )
+]
 class RelaysController
 {
     public function __construct(
@@ -33,7 +39,6 @@ class RelaysController
         protected Adapters $adapters
     ) {
     }
-
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $stations = $this->getManageableStations($request);

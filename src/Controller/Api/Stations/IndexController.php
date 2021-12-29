@@ -8,33 +8,48 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @OA\Get(path="/stations",
- *   operationId="getStations",
- *   tags={"Stations: General"},
- *   description="Returns a list of stations.",
- *   parameters={},
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(type="array",
- *       @OA\Items(ref="#/components/schemas/Api_NowPlaying_Station")
- *     )
- *   )
- * )
- *
- * @OA\Get(path="/station/{station_id}",
- *   operationId="getStation",
- *   tags={"Stations: General"},
- *   description="Return information about a single station.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_NowPlaying_Station")
- *   ),
- *   @OA\Response(response=404, description="Station not found")
- * )
- */
+#[
+    OA\Get(
+        path: '/stations',
+        operationId: 'getStations',
+        description: 'Returns a list of stations.',
+        tags: ['Stations: General'],
+        parameters: [],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying_Station')
+                )
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}',
+        operationId: 'getStation',
+        description: 'Return information about a single station.',
+        tags: ['Stations: General'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying_Station')
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Station not found'
+            ),
+        ]
+    )
+]
 class IndexController
 {
     public function __construct(
@@ -42,7 +57,6 @@ class IndexController
         protected Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
     ) {
     }
-
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $stations_raw = $this->em->getRepository(Entity\Station::class)
@@ -61,7 +75,6 @@ class IndexController
 
         return $response->withJson($stations);
     }
-
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();

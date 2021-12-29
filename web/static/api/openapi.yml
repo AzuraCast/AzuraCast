@@ -157,7 +157,6 @@ paths:
         - 'Administration: Relays'
       description: 'Returns all necessary information to relay all ''relayable'' stations.'
       operationId: internalGetRelayDetails
-      parameters: []
       responses:
         '200':
           description: Success
@@ -717,7 +716,6 @@ paths:
         - Miscellaneous
       description: 'Returns an affirmative response if the API is active.'
       operationId: bc32a129ca3e8ad2060b71bdd90da78d
-      parameters: []
       responses:
         '200':
           description: Success
@@ -731,7 +729,6 @@ paths:
         - Miscellaneous
       description: 'Returns the time (with formatting) in GMT and the user''s local time zone, if logged in.'
       operationId: 3092a8238a915a0b6b324f2a90942a94
-      parameters: []
       responses:
         '200':
           description: Success
@@ -745,7 +742,6 @@ paths:
         - 'Now Playing'
       description: 'Returns a full summary of all stations'' current state.'
       operationId: 2ac086b9720325236f99cd3c185cc5c8
-      parameters: []
       responses:
         '200':
           description: Success
@@ -778,7 +774,6 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Returns the album art for a song, or a generic image.'
-      operationId: 1b9853f0af3c8fbe4d3af9af0e6d1a45
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -977,7 +972,6 @@ paths:
         - 'Stations: General'
       description: 'Returns a list of stations.'
       operationId: getStations
-      parameters: []
       responses:
         '200':
           description: Success
@@ -1847,6 +1841,12 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Api_StationRequest'
         '404':
           description: 'Station not found'
         '403':
@@ -1922,8 +1922,16 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                schema: '#/components/schemas/Api_StationServiceStatus'
         '403':
           description: 'Access Forbidden'
+          content:
+            application/json:
+              schema:
+                schema: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []
@@ -1939,8 +1947,16 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
         '403':
           description: 'Access Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []
@@ -1964,8 +1980,16 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                schema: '#/components/schemas/Api_Status'
         '403':
           description: 'Access Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []
@@ -1981,7 +2005,7 @@ paths:
         -
           name: action
           in: path
-          description: 'The action to perform (for all: start, stop, restart; for Liquidsoap only: skip, disconnect)'
+          description: 'The action to perform (for all: start, stop, restart, skip, disconnect)'
           required: false
           schema:
             type: string
@@ -1989,8 +2013,16 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
         '403':
           description: 'Access Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Error'
       security:
         -
           api_key: []

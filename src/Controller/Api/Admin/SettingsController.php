@@ -9,40 +9,54 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @OA\Get(path="/admin/settings",
- *   operationId="getSettings",
- *   tags={"Administration: Settings"},
- *   description="List the current values of all editable system settings.",
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Settings")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Put(path="/admin/settings",
- *   operationId="editSettings",
- *   tags={"Administration: Settings"},
- *   description="Update settings to modify any settings provided.",
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/Settings")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @extends AbstractApiCrudController<Entity\Settings>
- */
+/** @extends AbstractApiCrudController<Entity\Settings> */
+#[
+    OA\Get(
+        path: '/admin/settings',
+        operationId: 'getSettings',
+        description: 'List the current values of all editable system settings.',
+        security: [['api_key' => []]],
+        tags: ['Administration: Settings'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Settings')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Put(
+        path: '/admin/settings',
+        operationId: 'editSettings',
+        description: 'Update settings to modify any settings provided.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Settings')
+        ),
+        tags: ['Administration: Settings'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class SettingsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Settings::class;

@@ -8,29 +8,37 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/art/{media_id}',
+    description: 'Returns the album art for a song, or a generic image.',
+    tags: ['Stations: Media'],
+    parameters: [
+        new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        new OA\Parameter(
+            name: 'media_id',
+            description: 'The station media unique ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'The requested album artwork'
+        ),
+        new OA\Response(
+            response: 404,
+            description: 'Image not found; generic filler image.'
+        ),
+    ]
+)]
 class GetArtAction
 {
     /**
-     * @OA\Get(path="/station/{station_id}/art/{media_id}",
-     *   tags={"Stations: Media"},
-     *   description="Returns the album art for a song, or a generic image.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="media_id",
-     *     description="The station media unique ID",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(
-     *         type="string"
-     *     )
-     *   ),
-     *   @OA\Response(response=200, description="The requested album artwork"),
-     *   @OA\Response(response=404, description="Image not found; generic filler image.")
-     * )
-     *
      * @param ServerRequest $request
      * @param Response $response
      * @param Entity\Repository\StationRepository $stationRepo

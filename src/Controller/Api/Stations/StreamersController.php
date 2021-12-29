@@ -10,99 +10,147 @@ use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @OA\Get(path="/station/{station_id}/streamers",
- *   operationId="getStreamers",
- *   tags={"Stations: Streamers/DJs"},
- *   description="List all current Streamer/DJ accounts for the specified station.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationStreamer"))
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Post(path="/station/{station_id}/streamers",
- *   operationId="addStreamer",
- *   tags={"Stations: Streamers/DJs"},
- *   description="Create a new Streamer/DJ account.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/StationStreamer")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/StationStreamer")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Get(path="/station/{station_id}/streamer/{id}",
- *   operationId="getStreamer",
- *   tags={"Stations: Streamers/DJs"},
- *   description="Retrieve details for a single Streamer/DJ account.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Streamer ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/StationStreamer")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Put(path="/station/{station_id}/streamer/{id}",
- *   operationId="editStreamer",
- *   tags={"Stations: Streamers/DJs"},
- *   description="Update details of a single Streamer/DJ account.",
- *   @OA\RequestBody(
- *     @OA\JsonContent(ref="#/components/schemas/StationStreamer")
- *   ),
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="Streamer ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @OA\Delete(path="/station/{station_id}/streamer/{id}",
- *   operationId="deleteStreamer",
- *   tags={"Stations: Streamers/DJs"},
- *   description="Delete a single Streamer/DJ account.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="id",
- *     in="path",
- *     description="StationStreamer ID",
- *     required=true,
- *     @OA\Schema(type="integer", format="int64")
- *   ),
- *   @OA\Response(response=200, description="Success",
- *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
- *   ),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- *
- * @extends AbstractScheduledEntityController<Entity\StationStreamer>
- */
+/** @extends AbstractScheduledEntityController<Entity\StationStreamer> */
+#[
+    OA\Get(
+        path: '/station/{station_id}/streamers',
+        operationId: 'getStreamers',
+        description: 'List all current Streamer/DJ accounts for the specified station.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Streamers/DJs'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/StationStreamer')
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/streamers',
+        operationId: 'addStreamer',
+        description: 'Create a new Streamer/DJ account.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+        ),
+        tags: ['Stations: Streamers/DJs'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/streamer/{id}',
+        operationId: 'getStreamer',
+        description: 'Retrieve details for a single Streamer/DJ account.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Streamers/DJs'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Put(
+        path: '/station/{station_id}/streamer/{id}',
+        operationId: 'editStreamer',
+        description: 'Update details of a single Streamer/DJ account.',
+        security: [['api_key' => []]],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/StationStreamer')
+        ),
+        tags: ['Stations: Streamers/DJs'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/streamer/{id}',
+        operationId: 'deleteStreamer',
+        description: 'Delete a single Streamer/DJ account.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Streamers/DJs'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'id',
+                description: 'StationStreamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class StreamersController extends AbstractScheduledEntityController
 {
     use CanSortResults;

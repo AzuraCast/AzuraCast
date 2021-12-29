@@ -9,7 +9,7 @@ use App\Event\Radio\LoadNowPlaying;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -55,38 +55,49 @@ class NowPlayingAction implements EventSubscriberInterface
     }
 
     /**
-     * @OA\Get(path="/nowplaying",
-     *   tags={"Now Playing"},
-     *   description="Returns a full summary of all stations' current state.",
-     *   parameters={},
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_NowPlaying"))
-     *   )
-     * )
-     *
-     * @OA\Get(path="/nowplaying/{station_id}",
-     *   tags={"Now Playing"},
-     *   description="Returns a full summary of the specified station's current state.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_NowPlaying")
-     *   ),
-     *   @OA\Response(response=404, description="Station not found")
-     * )
-     *
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string|null $station_id
      */
-    public function __invoke(
-        ServerRequest $request,
-        Response $response,
-        $station_id = null
-    ): ResponseInterface {
+    #[
+        OA\Get(
+            path: '/nowplaying',
+            description: "Returns a full summary of all stations' current state.",
+            tags: ['Now Playing'],
+            parameters: [],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Success',
+                    content: new OA\JsonContent(
+                        type: 'array',
+                        items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying')
+                    )
+                ),
+            ]
+        ),
+        OA\Get(
+            path: '/nowplaying/{station_id}',
+            description: "Returns a full summary of the specified station's current state.",
+            tags: ['Now Playing'],
+            parameters: [
+                new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            ],
+            responses: [
+                new OA\Response(
+                    response: 200,
+                    description: 'Success',
+                    content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying')
+                ),
+                new OA\Response(
+                    response: 404,
+                    description: 'Station not found'
+                ),
+            ]
+        )
+    ]
+    public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
+    {
         $router = $request->getRouter();
 
         // Pull NP data from the fastest/first available source using the EventDispatcher.

@@ -16,26 +16,40 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-/**
- * @OA\Get(path="/station/{station_id}/listeners",
- *   operationId="getStationListeners",
- *   tags={"Stations: Listeners"},
- *   description="Return detailed information about current listeners.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Listener"))
- *   ),
- *   @OA\Response(response=404, description="Station not found"),
- *   @OA\Response(response=403, description="Access denied"),
- *   security={{"api_key": {}}},
- * )
- */
+#[
+    OA\Get(
+        path: '/station/{station_id}/listeners',
+        operationId: 'getStationListeners',
+        description: 'Return detailed information about current listeners.',
+        security: [['api_key' => []]],
+        tags: ['Stations: Listeners'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_Listener')
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Station not found'
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Access denied'
+            ),
+        ]
+    )
+]
 class ListenersAction
 {
     public function __invoke(

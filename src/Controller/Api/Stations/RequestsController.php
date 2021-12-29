@@ -11,46 +11,68 @@ use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @OA\Get(path="/station/{station_id}/requests",
- *   operationId="getRequestableSongs",
- *   tags={"Stations: Song Requests"},
- *   description="Return a list of requestable songs.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *     @OA\Schema(
- *       type="array",
- *       @OA\Items(ref="#/components/schemas/Api_StationRequest")
- *     )
- *   ),
- *   @OA\Response(response=404, description="Station not found"),
- *   @OA\Response(response=403, description="Station does not support requests")
- * )
- *
- * @OA\Post(path="/station/{station_id}/request/{request_id}",
- *   operationId="submitSongRequest",
- *   tags={"Stations: Song Requests"},
- *   description="Submit a song request.",
- *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
- *   @OA\Parameter(
- *     name="request_id",
- *     description="The requestable song ID",
- *     in="path",
- *     required=true,
- *     @OA\Schema(
- *         type="string"
- *     )
- *   ),
- *   @OA\Response(response=200, description="Success"),
- *   @OA\Response(response=404, description="Station not found"),
- *   @OA\Response(response=403, description="Station does not support requests")
- * )
- */
+#[
+    OA\Get(
+        path: '/station/{station_id}/requests',
+        operationId: 'getRequestableSongs',
+        description: 'Return a list of requestable songs.',
+        tags: ['Stations: Song Requests'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Station not found'
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Station does not support requests'
+            ),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/request/{request_id}',
+        operationId: 'submitSongRequest',
+        description: 'Submit a song request.',
+        tags: ['Stations: Song Requests'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/station_id_required'),
+            new OA\Parameter(
+                name: 'request_id',
+                description: 'The requestable song ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success'
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Station not found'
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Station does not support requests'
+            ),
+        ]
+    )
+]
 class RequestsController
 {
     public function __construct(

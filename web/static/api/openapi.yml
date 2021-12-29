@@ -2460,6 +2460,7 @@ components:
           type: string
           example: p4ssw0rd
         mounts:
+          description: '*/'
           type: array
           items: {  }
       type: object
@@ -2608,11 +2609,11 @@ components:
           type: string
           example: 127.0.0.1
         user_agent:
-          description: "The listener's HTTP User-Agent\n\nphpcs:disable Generic.Files.LineLength"
+          description: 'The listener''s HTTP User-Agent'
           type: string
           example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
         hash:
-          description: 'A unique identifier for this instance of this listener on this user agent (used for unique calculations).'
+          description: 'A unique identifier for this listener/user agent (used for unique calculations).'
           type: string
           example: ''
         client:
@@ -2710,20 +2711,22 @@ components:
       properties:
         station:
           $ref: '#/components/schemas/Api_NowPlaying_Station'
-          description: Station
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
-          description: 'Listener details'
         live:
           $ref: '#/components/schemas/Api_NowPlaying_Live'
-          description: 'Live broadcast details'
         now_playing:
-          $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
-          description: 'Current Song'
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_NowPlaying_CurrentSong'
         playing_next:
-          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
-          description: 'Next Playing Song'
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
         song_history:
+          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
@@ -2768,7 +2771,6 @@ components:
           type: boolean
         song:
           $ref: '#/components/schemas/Api_Song'
-          description: Song
       type: object
     Api_NowPlaying_Station:
       properties:
@@ -2818,10 +2820,12 @@ components:
           type: boolean
           example: true
         mounts:
+          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationMount'
         remotes:
+          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
@@ -2865,7 +2869,6 @@ components:
           type: boolean
         song:
           $ref: '#/components/schemas/Api_Song'
-          description: Song
       type: object
     Api_NowPlaying_StationRemote:
       properties:
@@ -2892,7 +2895,6 @@ components:
           nullable: true
         listeners:
           $ref: '#/components/schemas/Api_NowPlaying_Listeners'
-          description: 'Listener details'
       type: object
     Api_Podcast:
       type: object
@@ -3041,7 +3043,6 @@ components:
           example: /api/station/1/ondemand/download/1
         media:
           $ref: '#/components/schemas/Api_Song'
-          description: Song
         playlist:
           type: string
       type: object
@@ -3084,6 +3085,11 @@ components:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
               example: ''
+              nullable: true
+            log:
+              description: 'Log entries on how the specific queue item was picked by the AutoDJ.'
+              type: array
+              items: {  }
               nullable: true
         -
           $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
@@ -3177,7 +3183,6 @@ components:
           example: /api/station/1/request/1
         song:
           $ref: '#/components/schemas/Api_Song'
-          description: Song
       type: object
     Api_StationSchedule:
       properties:

@@ -4,59 +4,46 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_StationRemote")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_StationRemote',
+    type: 'object'
+)]
 class StationRemote
 {
-    /**
-     * Mount/Remote ID number.
-     *
-     * @OA\Property(example=1)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Mount/Remote ID number.',
+        example: 1
+    )]
     public int $id;
 
-    /**
-     * Mount point name/URL
-     *
-     * @OA\Property(example="/radio.mp3")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'Mount point name/URL',
+        example: '/radio.mp3'
+    )]
     public string $name;
 
-    /**
-     * Full listening URL specific to this mount
-     *
-     * @OA\Property(example="http://localhost:8000/radio.mp3")
-     * @var string|UriInterface
-     */
+    /** @var string|UriInterface */
+    #[OA\Property(
+        description: 'Full listening URL specific to this mount',
+        example: 'http://localhost:8000/radio.mp3'
+    )]
     public $url;
 
-    /**
-     * Bitrate (kbps) of the broadcasted audio (if known)
-     *
-     * @OA\Property(example=128)
-     * @var int|null
-     */
+    #[OA\Property(
+        description: 'Bitrate (kbps) of the broadcasted audio (if known)',
+        example: 128
+    )]
     public ?int $bitrate = null;
 
-    /**
-     * Audio encoding format of broadcasted audio (if known)
-     *
-     * @OA\Property(example="mp3")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Audio encoding format of broadcasted audio (if known)',
+        example: 'mp3'
+    )]
     public ?string $format = null;
 
-    /**
-     * Listener details
-     *
-     * @OA\Property
-     * @var Listeners
-     */
+    #[OA\Property]
     public Listeners $listeners;
 }

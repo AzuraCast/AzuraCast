@@ -5,88 +5,77 @@ declare(strict_types=1);
 namespace App\Entity\Api\Admin;
 
 use App\Entity;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_Admin_Relay")
- */
+#[OA\Schema(
+    schema: 'Api_Admin_Relay',
+    type: 'object'
+)]
 class Relay implements Entity\Api\ResolvableUrlInterface
 {
-    /**
-     * Station ID
-     * @OA\Property(example=1)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Station ID',
+        example: 1
+    )]
     public int $id;
 
-    /**
-     * Station name
-     * @OA\Property(example="AzuraTest Radio")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Station name',
+        example: 'AzuraTest Radio'
+    )]
     public ?string $name = null;
 
-    /**
-     * Station "short code", used for URL and folder paths
-     * @OA\Property(example="azuratest_radio")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Station "short code", used for URL and folder paths',
+        example: 'azuratest_radio'
+    )]
     public ?string $shortcode = null;
 
-    /**
-     * Station description
-     * @OA\Property(example="An AzuraCast station!")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Station description',
+        example: 'An AzuraCast station!'
+    )]
     public ?string $description;
 
-    /**
-     * Station homepage URL
-     * @OA\Property(example="https://www.azuracast.com/")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Station homepage URL',
+        example: 'https://www.azuracast.com/'
+    )]
     public ?string $url;
 
-    /**
-     * The genre of the station
-     * @OA\Property(example="Variety")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'The genre of the station',
+        example: 'Variety'
+    )]
     public ?string $genre;
 
-    /**
-     * Which broadcasting software (frontend) the station uses
-     * @OA\Property(example="shoutcast2")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Which broadcasting software (frontend) the station uses',
+        example: 'shoutcast2'
+    )]
     public ?string $type = null;
 
-    /**
-     * The port used by this station to serve its broadcasts.
-     * @OA\Property(example=8000)
-     * @var int|null
-     */
+    #[OA\Property(
+        description: 'The port used by this station to serve its broadcasts.',
+        example: 8000
+    )]
     public ?int $port = null;
 
-    /**
-     * The relay password for the frontend (if applicable).
-     * @OA\Property(example="p4ssw0rd")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The relay password for the frontend (if applicable).',
+        example: 'p4ssw0rd'
+    )]
     public string $relay_pw;
 
-    /**
-     * The administrator password for the frontend (if applicable).
-     * @OA\Property(example="p4ssw0rd")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The administrator password for the frontend (if applicable).',
+        example: 'p4ssw0rd'
+    )]
     public string $admin_pw;
 
-    /**
-     * @OA\Property()
-     * @var Entity\Api\NowPlaying\StationMount[]
-     */
+    /** @var Entity\Api\NowPlaying\StationMount[] */
+    #[OA\Property]
     public array $mounts = [];
 
     /**

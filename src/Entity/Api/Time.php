@@ -5,43 +5,30 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use Carbon\CarbonImmutable;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_Time")
- */
+#[OA\Schema(
+    schema: 'Api_Time',
+    type: 'object'
+)]
 class Time
 {
-    /**
-     * The current UNIX timestamp
-     *
-     * @OA\Property(example=1497652397)
-     * @var int
-     */
-    public $timestamp;
+    #[OA\Property(
+        description: 'The current UNIX timestamp',
+        example: 1497652397
+    )]
+    public int $timestamp;
 
-    /**
-     * @OA\Property(example="2017-06-16 10:33:17")
-     * @var string
-     */
+    #[OA\Property(example: '2017-06-16 10:33:17')]
     public string $utc_datetime;
 
-    /**
-     * @OA\Property(example="June 16, 2017")
-     * @var string
-     */
+    #[OA\Property(example: 'June 16, 2017')]
     public string $utc_date;
 
-    /**
-     * @OA\Property(example="10:33pm")
-     * @var string
-     */
+    #[OA\Property(example: '10:33pm')]
     public string $utc_time;
 
-    /**
-     * @OA\Property(example="2012-12-25T16:30:00.000000Z")
-     * @var string
-     */
+    #[OA\Property(example: '2012-12-25T16:30:00.000000Z')]
     public string $utc_json;
 
     public function __construct()

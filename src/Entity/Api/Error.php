@@ -5,61 +5,50 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\Exception;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use ReflectionClass;
 use Throwable;
 
-/**
- * @OA\Schema(type="object", schema="Api_Error")
- */
+#[OA\Schema(
+    schema: 'Api_Error',
+    type: 'object'
+)]
 class Error
 {
-    /**
-     * The numeric code of the error.
-     *
-     * @OA\Property(example=500)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'The numeric code of the error.',
+        example: 500
+    )]
     public int $code;
 
-    /**
-     * The programmatic class of error.
-     *
-     * @OA\Property(example="NotLoggedInException")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The programmatic class of error.',
+        example: 'NotLoggedInException'
+    )]
     public string $type;
 
-    /**
-     * The text description of the error.
-     *
-     * @OA\Property(example="Error description.")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The text description of the error.',
+        example: 'Error description.',
+    )]
     public string $message;
 
-    /**
-     * The HTML-formatted text description of the error.
-     *
-     * @OA\Property(example="<b>Error description.</b><br>Detailed error text.")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The HTML-formatted text description of the error.',
+        example: '<b>Error description.</b><br>Detailed error text.'
+    )]
     public ?string $formatted_message;
 
-    /**
-     * Stack traces and other supplemental data.
-     *
-     * @OA\Property(@OA\Items)
-     * @var array
-     */
+    #[OA\Property(
+        description: 'Stack traces and other supplemental data.',
+        items: new OA\Items()
+    )]
     public array $extra_data;
 
-    /**
-     * Used for API calls that expect an \Entity\Api\Status type response.
-     *
-     * @OA\Property(example=false)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Used for API calls that expect an \Entity\Api\Status type response.',
+        example: false
+    )]
     public bool $success;
 
     public function __construct(

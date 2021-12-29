@@ -6,28 +6,25 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
 use App\Http\Router;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_StationMount")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_StationMount',
+    type: 'object'
+)]
 class StationMount extends StationRemote implements ResolvableUrlInterface
 {
-    /**
-     * The relative path that corresponds to this mount point
-     *
-     * @OA\Property(example="/radio.mp3")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The relative path that corresponds to this mount point',
+        example: '/radio.mp3'
+    )]
     public string $path;
 
-    /**
-     * If the mount is the default mount for the parent station
-     *
-     * @OA\Property(example=true)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'If the mount is the default mount for the parent station',
+        example: true
+    )]
     public bool $is_default;
 
     /**

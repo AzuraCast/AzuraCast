@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_NewRecord")
- */
+#[OA\Schema(
+    schema: 'Api_NewRecord',
+    type: 'object'
+)]
 class NewRecord extends Status
 {
-    /**
-     * @OA\Property(@OA\Items(
-     *      type="string",
-     *      example="http://localhost/api/record/1"
-     * ))
-     * @var array
-     */
+    #[OA\Property(
+        items: new OA\Items(type: 'string', example: 'http://localhost/api/record/1')
+    )]
     public array $links = [];
 }

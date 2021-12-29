@@ -4,99 +4,78 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_Listener")
- */
+#[OA\Schema(
+    schema: 'Api_Listener',
+    type: 'object'
+)]
 class Listener
 {
-    /**
-     * The listener's IP address
-     *
-     * @OA\Property(example="127.0.0.1")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The listener\'s IP address',
+        example: '127.0.0.1'
+    )]
     public string $ip;
 
-    /**
-     * The listener's HTTP User-Agent
-     *
-     * phpcs:disable Generic.Files.LineLength
-     * @OA\Property(example="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36")
-     * @var string
-     * phpcs:enable
-     */
+    #[OA\Property(
+        description: 'The listener\'s HTTP User-Agent',
+        example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'
+        . ' Chrome/59.0.3071.86 Safari/537.36'
+    )]
     public string $user_agent = '';
 
-    /**
-     * A unique identifier for this instance of this listener on this user agent (used for unique calculations).
-     *
-     * @OA\Property(example="")
-     */
+    #[OA\Property(
+        description: 'A unique identifier for this listener/user agent (used for unique calculations).',
+        example: ''
+    )]
     public string $hash = '';
 
-    /**
-     * The listener's client details (extracted from user-agent)
-     *
-     * @OA\Property(example="")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The listener\'s client details (extracted from user-agent)',
+        example: ''
+    )]
     public string $client = '';
 
-    /**
-     * Whether the user-agent is likely a mobile browser.
-     *
-     * @OA\Property(example=true)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Whether the user-agent is likely a mobile browser.',
+        example: true
+    )]
     public bool $is_mobile = false;
 
-    /**
-     * Whether the user is connected to a local mount point or a remote one.
-     *
-     * @OA\Property(example=false)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Whether the user is connected to a local mount point or a remote one.',
+        example: false
+    )]
     public bool $mount_is_local = false;
 
-    /**
-     * The display name of the mount point.
-     *
-     * @OA\Property(example="/radio.mp3")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The display name of the mount point.',
+        example: '/radio.mp3'
+    )]
     public string $mount_name = '';
 
-    /**
-     * UNIX timestamp that the user first connected.
-     *
-     * @OA\Property(example=1609480800)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'UNIX timestamp that the user first connected.',
+        example: 1609480800
+    )]
     public int $connected_on;
 
-    /**
-     * UNIX timestamp that the user disconnected (or the latest timestamp if they are still connected).
-     *
-     * @OA\Property(example=1609480800)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'UNIX timestamp that the user disconnected (or the latest timestamp if they are still connected).',
+        example: 1609480800
+    )]
     public int $connected_until;
 
-    /**
-     * Number of seconds that the user has been connected.
-     *
-     * @OA\Property(example=30)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Number of seconds that the user has been connected.',
+        example: 30
+    )]
     public int $connected_time = 0;
 
-    /**
-     * Location metadata, if available
-     *
-     * @OA\Property(@OA\Items)
-     * @var array
-     */
+    #[OA\Property(
+        description: 'Location metadata, if available',
+        items: new OA\Items()
+    )]
     public array $location = [];
 }

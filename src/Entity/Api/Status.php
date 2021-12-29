@@ -4,29 +4,18 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_Status")
- */
+#[OA\Schema(schema: 'Api_Status', type: 'object')]
 class Status
 {
-    /**
-     * @OA\Property(example=true)
-     * @var bool
-     */
+    #[OA\Property(example: true)]
     public bool $success;
 
-    /**
-     * @OA\Property(example="Changes saved successfully.")
-     * @var string
-     */
+    #[OA\Property(example: 'Changes saved successfully.')]
     public string $message;
 
-    /**
-     * @OA\Property(example="<b>Changes saved successfully.</b>")
-     * @var string
-     */
+    #[OA\Property(example: '<b>Changes saved successfully.</b>')]
     public string $formatted_message;
 
     public function __construct(

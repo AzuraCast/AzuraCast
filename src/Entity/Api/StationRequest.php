@@ -4,36 +4,28 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_StationRequest")
- */
+#[OA\Schema(
+    schema: 'Api_StationRequest',
+    type: 'object'
+)]
 class StationRequest implements ResolvableUrlInterface
 {
-    /**
-     * Requestable ID unique identifier
-     *
-     * @OA\Property(example=1)
-     * @var string
-     */
+    #[OA\Property(
+        description: 'Requestable ID unique identifier',
+        example: 1
+    )]
     public string $request_id;
 
-    /**
-     * URL to directly submit request
-     *
-     * @OA\Property(example="/api/station/1/request/1")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'URL to directly submit request',
+        example: '/api/station/1/request/1'
+    )]
     public string $request_url;
 
-    /**
-     * Song
-     *
-     * @OA\Property
-     * @var Song
-     */
+    #[OA\Property]
     public Song $song;
 
     /**

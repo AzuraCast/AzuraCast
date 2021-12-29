@@ -6,68 +6,50 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
 use App\Entity\Api\Song;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_SongHistory")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_SongHistory',
+    type: 'object'
+)]
 class SongHistory implements ResolvableUrlInterface
 {
-    /**
-     * Song history unique identifier
-     *
-     * @OA\Property
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Song history unique identifier'
+    )]
     public int $sh_id;
 
-    /**
-     * UNIX timestamp when playback started.
-     *
-     * @OA\Property(example=1609480800)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'UNIX timestamp when playback started.',
+        example: 1609480800
+    )]
     public int $played_at = 0;
 
-    /**
-     * Duration of the song in seconds
-     *
-     * @OA\Property(example=180)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Duration of the song in seconds',
+        example: 180
+    )]
     public int $duration = 0;
 
-    /**
-     * Indicates the playlist that the song was played from, if available, or empty string if not.
-     *
-     * @OA\Property(example="Top 100")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Indicates the playlist that the song was played from, if available, or empty string if not.',
+        example: 'Top 100'
+    )]
     public ?string $playlist = null;
 
-    /**
-     * Indicates the current streamer that was connected, if available, or empty string if not.
-     *
-     * @OA\Property(example="Test DJ")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Indicates the current streamer that was connected, if available, or empty string if not.',
+        example: 'Test DJ'
+    )]
     public ?string $streamer = null;
 
-    /**
-     * Indicates whether the song is a listener request.
-     *
-     * @OA\Property
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Indicates whether the song is a listener request.',
+    )]
     public bool $is_request = false;
 
-    /**
-     * Song
-     *
-     * @OA\Property()
-     * @var Song
-     */
+    #[OA\Property]
     public Song $song;
 
     /**

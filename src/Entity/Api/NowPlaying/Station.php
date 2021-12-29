@@ -6,100 +6,97 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
 use App\Http\Router;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_Station")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_Station',
+    type: 'object'
+)]
 class Station implements ResolvableUrlInterface
 {
-    /**
-     * Station ID
-     * @OA\Property(example=1)
-     */
+    #[OA\Property(
+        description: 'Station ID',
+        example: 1
+    )]
     public int $id;
 
-    /**
-     * Station name
-     * @OA\Property(example="AzuraTest Radio")
-     */
+    #[OA\Property(
+        description: 'Station name',
+        example: 'AzuraTest Radio'
+    )]
     public string $name;
 
-    /**
-     * Station "short code", used for URL and folder paths
-     * @OA\Property(example="azuratest_radio")
-     */
+    #[OA\Property(
+        description: 'Station "short code", used for URL and folder paths',
+        example: 'azuratest_radio'
+    )]
     public string $shortcode = '';
 
-    /**
-     * Station description
-     * @OA\Property(example="An AzuraCast station!")
-     */
+    #[OA\Property(
+        description: 'Station description',
+        example: 'An AzuraCast station!'
+    )]
     public string $description = '';
 
-    /**
-     * Which broadcasting software (frontend) the station uses
-     * @OA\Property(example="shoutcast2")
-     */
+    #[OA\Property(
+        description: 'Which broadcasting software (frontend) the station uses',
+        example: 'shoutcast2'
+    )]
     public string $frontend = '';
 
-    /**
-     * Which AutoDJ software (backend) the station uses
-     * @OA\Property(example="liquidsoap")
-     */
+    #[OA\Property(
+        description: 'Which AutoDJ software (backend) the station uses',
+        example: 'liquidsoap'
+    )]
     public string $backend = '';
 
-    /**
-     * The full URL to listen to the default mount of the station
-     * @OA\Property(example="http://localhost:8000/radio.mp3")
-     * @var string|UriInterface
-     */
+    /** @var string|UriInterface */
+    #[OA\Property(
+        description: 'The full URL to listen to the default mount of the station',
+        example: 'http://localhost:8000/radio.mp3'
+    )]
     public $listen_url;
 
-    /**
-     * The public URL of the station.
-     * @OA\Property(example="https://example.com/")
-     */
+    #[OA\Property(
+        description: 'The public URL of the station.',
+        example: 'https://example.com/'
+    )]
     public ?string $url = null;
 
-    /**
-     * The public player URL for the station.
-     * @OA\Property(example="https://example.com/public/example_station")
-     * @var string|UriInterface
-     */
+    /** @var string|UriInterface */
+    #[OA\Property(
+        description: 'The public player URL for the station.',
+        example: 'https://example.com/public/example_station'
+    )]
     public $public_player_url;
 
-    /**
-     * The playlist download URL in PLS format.
-     * @OA\Property(example="https://example.com/public/example_station/playlist.pls")
-     * @var string|UriInterface
-     */
+    /** @var string|UriInterface */
+    #[OA\Property(
+        description: 'The playlist download URL in PLS format.',
+        example: 'https://example.com/public/example_station/playlist.pls'
+    )]
     public $playlist_pls_url;
 
-    /**
-     * The playlist download URL in M3U format.
-     * @OA\Property(example="https://example.com/public/example_station/playlist.m3u")
-     * @var string|UriInterface
-     */
+    /** @var string|UriInterface */
+    #[OA\Property(
+        description: 'The playlist download URL in M3U format.',
+        example: 'https://example.com/public/example_station/playlist.m3u'
+    )]
     public $playlist_m3u_url;
 
-    /**
-     * If the station is public (i.e. should be shown in listings of all stations)
-     * @OA\Property(example=true)
-     */
+    #[OA\Property(
+        description: 'If the station is public (i.e. should be shown in listings of all stations)',
+        example: true
+    )]
     public bool $is_public = false;
 
-    /**
-     * @OA\Property()
-     * @var StationMount[]
-     */
+    /** @var StationMount[] */
+    #[OA\Property]
     public array $mounts = [];
 
-    /**
-     * @OA\Property()
-     * @var StationRemote[]
-     */
+    /** @var StationRemote[] */
+    #[OA\Property]
     public array $remotes = [];
 
     /**

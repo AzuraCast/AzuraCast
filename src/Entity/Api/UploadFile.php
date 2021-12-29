@@ -5,30 +5,31 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\Utilities\File;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(type="object", schema="Api_UploadFile")
- */
+#[OA\Schema(
+    schema: 'Api_UploadFile',
+    type: 'object'
+)]
 class UploadFile
 {
-    /**
-     * @OA\Property(example="relative/path/to/file.mp3")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string The destination path of the uploaded file.
-     */
+    #[
+        OA\Property(
+            description: 'The destination path of the uploaded file.',
+            example: 'relative/path/to/file.mp3'
+        ),
+        Assert\NotBlank
+    ]
     public string $path;
 
-    /**
-     * @OA\Property(example="")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string The base64-encoded contents of the file to upload.
-     */
+    #[
+        OA\Property(
+            description: 'The base64-encoded contents of the file to upload.',
+            example: ''
+        ),
+        Assert\NotBlank
+    ]
     public string $file;
 
     public function getSanitizedFilename(): string

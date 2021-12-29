@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_StationServiceStatus")
- */
+#[OA\Schema(
+    schema: 'Api_StationServiceStatus',
+    type: 'object'
+)]
 class StationServiceStatus
 {
-    /** @OA\Property(example=true) */
+    #[OA\Property(example: true)]
     public bool $backend_running;
 
-    /** @OA\Property(example=true) */
+    #[OA\Property(example: true)]
     public bool $frontend_running;
 
-    /** @OA\Property(example=true) */
+    #[OA\Property(example: true)]
     public bool $station_has_started;
 
-    /** @OA\Property(example=true) */
+    #[OA\Property(example: true)]
     public bool $station_needs_restart;
 
     public function __construct(

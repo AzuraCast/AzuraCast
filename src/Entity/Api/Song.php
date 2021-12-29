@@ -5,88 +5,69 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\Http\Router;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_Song")
- */
+#[OA\Schema(
+    schema: 'Api_Song',
+    type: 'object'
+)]
 class Song implements ResolvableUrlInterface
 {
-    /**
-     * The song's 32-character unique identifier hash
-     *
-     * @OA\Property(example="9f33bbc912c19603e51be8e0987d076b")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song\'s 32-character unique identifier hash',
+        example: '9f33bbc912c19603e51be8e0987d076b'
+    )]
     public string $id = '';
 
-    /**
-     * The song title, usually "Artist - Title"
-     *
-     * @OA\Property(example="Chet Porter - Aluko River")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song title, usually "Artist - Title"',
+        example: 'Chet Porter - Aluko River'
+    )]
     public string $text = '';
 
-    /**
-     * The song artist.
-     *
-     * @OA\Property(example="Chet Porter")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song artist.',
+        example: 'Chet Porter'
+    )]
     public string $artist = '';
 
-    /**
-     * The song title.
-     *
-     * @OA\Property(example="Aluko River")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song title.',
+        example: 'Aluko River'
+    )]
     public string $title = '';
 
-    /**
-     * The song album.
-     *
-     * @OA\Property(example="Moving Castle")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song album.',
+        example: 'Moving Castle'
+    )]
     public string $album = '';
 
-    /**
-     * The song genre.
-     *
-     * @OA\Property(example="Rock")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song genre.',
+        example: 'Rock'
+    )]
     public string $genre = '';
 
-    /**
-     * Lyrics to the song.
-     *
-     * @OA\Property(example="")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'Lyrics to the song.',
+        example: ''
+    )]
     public string $lyrics = '';
 
-    /**
-     * URL to the album artwork (if available).
-     *
-     * @OA\Property(example="https://picsum.photos/1200/1200")
-     * @var string|UriInterface
-     */
+    /** @var string|UriInterface */
+    #[OA\Property(
+        description: 'URL to the album artwork (if available).',
+        example: 'https://picsum.photos/1200/1200'
+    )]
     public $art = '';
 
-    /**
-     * @OA\Property(
-     *     @OA\Items(
-     *         type="string",
-     *         example="custom_field_value"
-     *     )
-     * )
-     * @var array
-     */
-    public $custom_fields = [];
+    #[OA\Property(
+        type: 'array',
+        items: new OA\Items(type: 'string', example: 'custom_field_value')
+    )]
+    public array $custom_fields = [];
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

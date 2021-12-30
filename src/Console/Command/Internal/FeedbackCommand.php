@@ -6,7 +6,7 @@ namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
 use App\Entity;
-use App\Sync\Task\NowPlayingTask;
+use App\Radio\Backend\Liquidsoap\Feedback;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,7 +24,7 @@ class FeedbackCommand extends CommandAbstract
 {
     public function __construct(
         protected EntityManagerInterface $em,
-        protected NowPlayingTask $nowPlaying,
+        protected Feedback $feedback,
     ) {
         parent::__construct();
     }
@@ -54,7 +54,7 @@ class FeedbackCommand extends CommandAbstract
         }
 
         try {
-            $this->nowPlaying->queueStation($station, [
+            ($this->feedback)($station, [
                 'song_id'     => $song,
                 'media_id'    => $media,
                 'playlist_id' => $playlist,

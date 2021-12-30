@@ -23,7 +23,7 @@ class NextSongCommand extends CommandAbstract
 {
     public function __construct(
         protected EntityManagerInterface $em,
-        protected AutoDJ $autoDJ,
+        protected AutoDJ\Annotations $annotations,
     ) {
         parent::__construct();
     }
@@ -48,7 +48,7 @@ class NextSongCommand extends CommandAbstract
             return 0;
         }
 
-        $io->write($this->autoDJ->annotateNextSong($station, $asAutodj));
+        $io->write($this->annotations->annotateNextSong($station, $asAutodj));
         return 0;
     }
 }

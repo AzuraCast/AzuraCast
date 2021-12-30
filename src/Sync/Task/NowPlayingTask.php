@@ -13,7 +13,6 @@ use App\Http\RouterInterface;
 use App\LockFactory;
 use App\Message;
 use App\Radio\Adapters;
-use App\Radio\AutoDJ;
 use DeepCopy\DeepCopy;
 use Exception;
 use Monolog\Logger;
@@ -23,20 +22,17 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 {
     public function __construct(
         protected Adapters $adapters,
-        protected AutoDJ $autodj,
         protected CacheInterface $cache,
         protected EventDispatcherInterface $eventDispatcher,
         protected MessageBus $messageBus,
         protected LockFactory $lockFactory,
         protected RouterInterface $router,
         protected Entity\Repository\ListenerRepository $listenerRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
         ReloadableEntityManagerInterface $em,
@@ -60,6 +56,25 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 ['addToRawFromRemotes', 0],
             ],
         ];
+    }
+
+    /**
+     * Handle event dispatch.
+     *
+     * @param Message\AbstractMessage $message
+     */
+    public function __invoke(Message\AbstractMessage $message): void
+    {
+        if ($message instanceof Message\UpdateNowPlayingMessage) {
+            $station = $this->em->find(Entity\Station::class, $message->station_id);
+
+            if ($station instanceof Entity\Station) {
+                $this->processStation(
+                    station: $station,
+                    standalone: true
+                );
+            }
+        }
     }
 
     public function run(bool $force = false): void
@@ -191,74 +206,6 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         }
     }
 
-    /**
-     * Queue an individual station for processing its "Now Playing" metadata.
-     *
-     * @param Entity\Station $station
-     * @param array $extra_metadata
-     */
-    public function queueStation(Entity\Station $station, array $extra_metadata = []): void
-    {
-        // Process extra metadata sent by Liquidsoap (if it exists).
-        if (!empty($extra_metadata['media_id'])) {
-            $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
-            if (!$media instanceof Entity\StationMedia) {
-                return;
-            }
-
-            $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
-
-            if (!$sq instanceof Entity\StationQueue) {
-                $sq = Entity\StationQueue::fromMedia($station, $media);
-            } elseif (null === $sq->getMedia()) {
-                $sq->setMedia($media);
-            }
-
-            if (!empty($extra_metadata['playlist_id']) && null === $sq->getPlaylist()) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $extra_metadata['playlist_id']);
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $sq->setPlaylist($playlist);
-                }
-            }
-
-            $sq->setSentToAutodj();
-            $sq->setTimestampPlayed(time());
-
-            $this->em->persist($sq);
-            $this->em->flush();
-        }
-
-        // Trigger a delayed Now Playing update.
-        $message = new Message\UpdateNowPlayingMessage();
-        $message->station_id = $station->getIdRequired();
-
-        $this->messageBus->dispatch(
-            $message,
-            [
-                new DelayStamp(2000),
-            ]
-        );
-    }
-
-    /**
-     * Handle event dispatch.
-     *
-     * @param Message\AbstractMessage $message
-     */
-    public function __invoke(Message\AbstractMessage $message): void
-    {
-        if ($message instanceof Message\UpdateNowPlayingMessage) {
-            $station = $this->em->find(Entity\Station::class, $message->station_id);
-
-            if ($station instanceof Entity\Station) {
-                $this->processStation(
-                    station: $station,
-                    standalone: true
-                );
-            }
-        }
-    }
-
     public function loadRawFromFrontend(GenerateRawNowPlaying $event): void
     {
         try {
@@ -319,9 +266,9 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 $triggers[] = Entity\StationWebhook::TRIGGER_LISTENER_GAINED;
             }
 
-            if ($npOld->live->is_live === false && $np->live->is_live === true) {
+            if (!$npOld->live->is_live && $np->live->is_live) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_LIVE_CONNECT;
-            } elseif ($npOld->live->is_live === true && $np->live->is_live === false) {
+            } elseif ($npOld->live->is_live && !$np->live->is_live) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_LIVE_DISCONNECT;
             }
 

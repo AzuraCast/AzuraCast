@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 class BuildQueueTask extends AbstractTask
 {
     public function __construct(
-        protected AutoDJ $autoDJ,
+        protected AutoDJ\Queue $queue,
         protected LockFactory $lockFactory,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
@@ -40,6 +40,6 @@ class BuildQueueTask extends AbstractTask
             return;
         }
 
-        $this->autoDJ->buildQueue($station, $force);
+        $this->queue->buildQueue($station, $force);
     }
 }

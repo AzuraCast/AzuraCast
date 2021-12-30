@@ -97,7 +97,7 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        AutoDJ $autoDJ
+        AutoDJ\Queue $queue
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
@@ -112,7 +112,7 @@ class DebugController extends AbstractLogViewerController
 
         $this->logger->debug('Current queue cleared.');
 
-        $autoDJ->buildQueue($station, true);
+        $queue->buildQueue($station, true);
 
         $this->logger->popHandler();
 
@@ -120,8 +120,8 @@ class DebugController extends AbstractLogViewerController
             $response,
             'system/log_view',
             [
-                'sidebar' => null,
-                'title' => __('Debug Output'),
+                'sidebar'     => null,
+                'title'       => __('Debug Output'),
                 'log_records' => $this->testHandler->getRecords(),
             ]
         );

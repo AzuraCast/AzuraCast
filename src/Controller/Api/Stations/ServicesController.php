@@ -9,7 +9,6 @@ use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
@@ -201,7 +200,6 @@ class ServicesController
     public function backendAction(
         ServerRequest $request,
         Response $response,
-        AutoDJ $autodj,
         string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();

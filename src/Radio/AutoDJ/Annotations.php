@@ -7,9 +7,14 @@ namespace App\Radio\AutoDJ;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Flysystem\StationFilesystems;
+use App\Message\BuildStationQueue;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBus;
 
 class Annotations implements EventSubscriberInterface
 {
@@ -17,7 +22,10 @@ class Annotations implements EventSubscriberInterface
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Entity\Repository\StationStreamerRepository $streamerRepo,
-        protected Adapters $adapters
+        protected Adapters $adapters,
+        protected LoggerInterface $logger,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected MessageBus $messageBus
     ) {
     }
 
@@ -34,6 +42,48 @@ class Annotations implements EventSubscriberInterface
                 ['postAnnotation', -10],
             ],
         ];
+    }
+
+    /**
+     * Pulls the next song from the AutoDJ, dispatches the AnnotateNextSong event and returns the built result.
+     *
+     * @param Entity\Station $station
+     * @param bool $asAutoDj
+     */
+    public function annotateNextSong(
+        Entity\Station $station,
+        bool $asAutoDj = false,
+    ): string {
+        $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
+
+        // Try to rebuild the queue if it's empty.
+        if (null === $queueRow) {
+            $this->logger->info(
+                'Queue is empty!',
+                [
+                    'station' => [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ],
+                ]
+            );
+
+            $message = new BuildStationQueue();
+            $message->station_id = $station->getIdRequired();
+            $this->messageBus->dispatch($message);
+
+            return '';
+        }
+
+        $event = new AnnotateNextSong($queueRow, $asAutoDj);
+        $this->eventDispatcher->dispatch($event);
+
+        $annotation = $event->buildAnnotations();
+        $queueRow->addLogRecord(LogLevel::INFO, 'Annotation: ' . $annotation);
+        $this->em->persist($queueRow);
+        $this->em->flush();
+
+        return $annotation;
     }
 
     public function annotateSongPath(AnnotateNextSong $event): void

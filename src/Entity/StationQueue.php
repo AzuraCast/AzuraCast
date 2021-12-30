@@ -55,6 +55,9 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     #[ORM\Column]
     protected bool $is_played = false;
 
+    #[ORM\Column]
+    protected bool $is_visible = true;
+
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $autodj_custom_uri = null;
 
@@ -172,6 +175,23 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
         $this->is_played = $newValue;
     }
 
+    public function getIsVisible(): bool
+    {
+        return $this->is_visible;
+    }
+
+    public function setIsVisible(bool $is_visible): void
+    {
+        $this->is_visible = $is_visible;
+    }
+
+    public function updateVisibility(): void
+    {
+        $this->is_visible = ($this->playlist instanceof StationPlaylist)
+            ? !$this->playlist->getIsJingle()
+            : true;
+    }
+
     public function getTimestampPlayed(): int
     {
         return $this->timestamp_played;
@@ -204,17 +224,6 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
         $testLogger->addRecord(Logger::toMonologLevel($level), $message, $context);
 
         $this->log = array_merge($this->log ?? [], $testHandler->getRecords());
-    }
-
-    /**
-     * @return bool Whether the record should be shown in APIs (i.e. is not a jingle)
-     */
-    public function showInApis(): bool
-    {
-        if ($this->playlist instanceof StationPlaylist) {
-            return !$this->playlist->getIsJingle();
-        }
-        return true;
     }
 
     public function __toString(): string

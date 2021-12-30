@@ -247,6 +247,7 @@ class Queue implements EventSubscriberInterface
         if ($queueRow instanceof Entity\StationQueue) {
             $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
             $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $queueRow->updateVisibility();
 
             $queueRow->setLog($testHandler->getRecords());
         }

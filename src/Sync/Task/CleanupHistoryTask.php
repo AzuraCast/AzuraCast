@@ -21,6 +21,11 @@ class CleanupHistoryTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '17 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $daysToKeep = $this->settingsRepo->readSettings()->getHistoryKeepDays();

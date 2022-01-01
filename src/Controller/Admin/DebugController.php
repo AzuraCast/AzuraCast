@@ -15,7 +15,7 @@ use App\MessageQueue\QueueManagerInterface;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
-use App\Sync\Runner;
+use App\Sync\LegacyRunner;
 use App\Utilities\File;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
@@ -39,7 +39,7 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        Runner $sync,
+        LegacyRunner $sync,
         QueueManagerInterface $queueManager
     ): ResponseInterface {
         $queues = AbstractQueueManager::getAllQueues();

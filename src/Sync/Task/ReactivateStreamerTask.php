@@ -18,6 +18,11 @@ class ReactivateStreamerTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_MINUTE;
+    }
+
     public function run(bool $force = false): void
     {
         foreach ($this->streamerRepo->getStreamersDueForReactivation() as $streamer) {

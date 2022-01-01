@@ -8,12 +8,12 @@ use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
 use App\Session\Flash;
-use App\Sync\Runner;
+use App\Sync\LegacyRunner;
 
 class SyncTaskCheck
 {
     public function __construct(
-        protected Runner $syncRunner,
+        protected LegacyRunner $syncRunner,
         protected Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }

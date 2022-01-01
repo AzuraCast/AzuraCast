@@ -25,6 +25,11 @@ class RunBackupTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_MINUTE;
+    }
+
     /**
      * Handle event dispatch.
      *

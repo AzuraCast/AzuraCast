@@ -9,7 +9,7 @@ use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Quota;
-use App\Sync\Runner;
+use App\Sync\LegacyRunner;
 use Brick\Math\BigInteger;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,7 +18,7 @@ class IndexAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Runner $sync,
+        LegacyRunner $sync,
         Environment $environment
     ): ResponseInterface {
         $view = $request->getView();

@@ -9,7 +9,7 @@ use App\Entity;
 use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractTask
+abstract class AbstractTask implements ScheduledTaskInterface
 {
     public function __construct(
         protected ReloadableEntityManagerInterface $em,

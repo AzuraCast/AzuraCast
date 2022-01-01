@@ -5,54 +5,59 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Entity;
-use App\Event\Radio\LoadNowPlaying;
 use App\Http\Response;
+use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NowPlayingAction implements EventSubscriberInterface
+#[
+    OA\Get(
+        path: '/nowplaying',
+        description: "Returns a full summary of all stations' current state.",
+        tags: ['Now Playing'],
+        parameters: [],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying')
+                )
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/nowplaying/{station_id}',
+        description: "Returns a full summary of the specified station's current state.",
+        tags: ['Now Playing'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying')
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Station not found'
+            ),
+        ]
+    )
+]
+class NowPlayingAction
 {
     public function __construct(
         protected EntityManagerInterface $em,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected CacheInterface $cache,
-        protected EventDispatcherInterface $dispatcher
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected CacheInterface $cache
     ) {
-    }
-
-    /**
-     * Returns an array of event names this subscriber wants to listen to.
-     *
-     * The array keys are event names and the value can be:
-     *
-     *  * The method name to call (priority defaults to 0)
-     *  * An array composed of the method name to call and the priority
-     *  * An array of arrays composed of the method names to call and respective
-     *    priorities, or 0 if unset
-     *
-     * For instance:
-     *
-     *  * array('eventName' => 'methodName')
-     *  * array('eventName' => array('methodName', $priority))
-     *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
-     *
-     * @return mixed[] The event names to listen to
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            LoadNowPlaying::class => [
-                ['loadFromCache', 5],
-                ['loadFromSettings', 0],
-                ['loadFromStations', -5],
-            ],
-        ];
     }
 
     /**
@@ -60,103 +65,91 @@ class NowPlayingAction implements EventSubscriberInterface
      * @param Response $response
      * @param int|string|null $station_id
      */
-    #[
-        OA\Get(
-            path: '/nowplaying',
-            description: "Returns a full summary of all stations' current state.",
-            tags: ['Now Playing'],
-            parameters: [],
-            responses: [
-                new OA\Response(
-                    response: 200,
-                    description: 'Success',
-                    content: new OA\JsonContent(
-                        type: 'array',
-                        items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying')
-                    )
-                ),
-            ]
-        ),
-        OA\Get(
-            path: '/nowplaying/{station_id}',
-            description: "Returns a full summary of the specified station's current state.",
-            tags: ['Now Playing'],
-            parameters: [
-                new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
-            ],
-            responses: [
-                new OA\Response(
-                    response: 200,
-                    description: 'Success',
-                    content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying')
-                ),
-                new OA\Response(
-                    response: 404,
-                    description: 'Station not found'
-                ),
-            ]
-        )
-    ]
     public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
     {
         $router = $request->getRouter();
 
-        // Pull NP data from the fastest/first available source using the EventDispatcher.
-        $event = new LoadNowPlaying();
-        $this->dispatcher->dispatch($event);
-
-        if (!$event->hasNowPlaying()) {
-            return $response->withStatus(408)
-                ->withJson(new Entity\Api\Error(408, 'Now Playing data has not loaded yet. Please try again later.'));
-        }
-
         if (!empty($station_id)) {
-            $npStation = $event->getForStation($station_id);
-            if (null !== $npStation) {
-                $npStation->resolveUrls($router->getBaseUrl());
-                return $response->withJson($npStation);
+            $np = $this->getForStation($station_id, $router);
+
+            if (null !== $np) {
+                return $response->withJson($np);
             }
 
             return $response->withStatus(404)
                 ->withJson(Entity\Api\Error::notFound());
         }
+        
+        return $response->withJson(
+            $this->getForAllStations(
+                $router,
+                $request->getAttribute('user') === null // If unauthenticated, hide non-public stations from full view.
+            )
+        );
+    }
 
-        // If unauthenticated, hide non-public stations from full view.
-        $np = ($request->getAttribute('user') === null)
-            ? $event->getAllPublic()
-            : $event->getNowPlaying();
+    protected function getForStation(
+        string|int $station,
+        RouterInterface $router
+    ): ?Entity\Api\NowPlaying\NowPlaying {
+        // Check cache first.
+        $np = $this->cache->get('nowplaying.' . $station);
 
-        foreach ($np as $npRow) {
-            $npRow->resolveUrls($router->getBaseUrl());
+        if (!($np instanceof Entity\Api\NowPlaying\NowPlaying)) {
+            // Pull from DB if possible.
+            if (is_numeric($station)) {
+                $dql = <<<'DQL'
+                    SELECT s.nowplaying FROM App\Entity\Station s
+                    WHERE s.id = :id
+                DQL;
+            } else {
+                $dql = <<<'DQL'
+                    SELECT s.nowplaying FROM App\Entity\Station s
+                    WHERE s.short_name = :id
+                DQL;
+            }
+
+            $np = $this->em->createQuery($dql)
+                ->setParameter('id', $station)
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
         }
 
-        return $response->withJson($np);
+        if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
+            $np->resolveUrls($router->getBaseUrl());
+            return $np;
+        }
+
+        return null;
     }
 
-    public function loadFromCache(LoadNowPlaying $event): void
-    {
-        $event->setNowPlaying((array)$this->cache->get('nowplaying'), 'redis');
-    }
-
-    public function loadFromSettings(LoadNowPlaying $event): void
-    {
-        $settings = $this->settingsRepo->readSettings();
-        $event->setNowPlaying((array)$settings->getNowplaying(), 'settings');
-    }
-
-    public function loadFromStations(LoadNowPlaying $event): void
-    {
-        $nowplaying_db = $this->em->createQuery(
-            <<<'DQL'
-                SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1
-            DQL
-        )->getArrayResult();
+    protected function getForAllStations(
+        RouterInterface $router,
+        bool $publicOnly = false,
+    ): array {
+        if ($publicOnly) {
+            $dql = <<<'DQL'
+                SELECT s.nowplaying FROM App\Entity\Station s 
+                WHERE s.is_enabled = 1 AND s.enable_public_page = 1
+            DQL;
+        } else {
+            $dql = <<<'DQL'
+                SELECT s.nowplaying FROM App\Entity\Station s 
+                WHERE s.is_enabled = 1
+            DQL;
+        }
 
         $np = [];
-        foreach ($nowplaying_db as $np_row) {
-            $np[] = $np_row['nowplaying'];
+        $baseUrl = $router->getBaseUrl();
+
+        foreach ($this->em->createQuery($dql)->getArrayResult() as $row) {
+            $npRow = $row['nowplaying'];
+            if ($npRow instanceof Entity\Api\NowPlaying\NowPlaying) {
+                $npRow->resolveUrls($baseUrl);
+                $np[] = $npRow;
+            }
         }
 
-        $event->setNowPlaying($np, 'station');
+        return $np;
     }
 }

@@ -14,6 +14,11 @@ use League\Flysystem\StorageAttributes;
 
 class UpdateStorageLocationSizesTask extends AbstractTask
 {
+    public static function getSchedulePattern(): string
+    {
+        return '27 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $iterator = ReadWriteBatchIteratorAggregate::fromQuery(

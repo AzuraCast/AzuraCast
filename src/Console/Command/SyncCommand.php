@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App;
-use App\Sync\Runner;
+use App\Sync\LegacyRunner;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SyncCommand extends CommandAbstract
 {
     public function __construct(
-        protected Runner $sync,
+        protected LegacyRunner $sync,
     ) {
         parent::__construct();
     }

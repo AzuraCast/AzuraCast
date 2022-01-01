@@ -29,6 +29,11 @@ class UpdateGeoLiteTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '43 */3 * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $settings = $this->settingsRepo->readSettings();

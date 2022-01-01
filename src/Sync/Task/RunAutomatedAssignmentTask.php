@@ -12,6 +12,8 @@ use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
 
+use function App\Sync\Task\count;
+
 class RunAutomatedAssignmentTask extends AbstractTask
 {
     public const DEFAULT_THRESHOLD_DAYS = 14;
@@ -23,6 +25,11 @@ class RunAutomatedAssignmentTask extends AbstractTask
         LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
+    }
+
+    public static function getSchedulePattern(): string
+    {
+        return '7 * * * *';
     }
 
     /**

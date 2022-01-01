@@ -124,12 +124,32 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         }
     );
 
-    // Other event subscribers from across the application.
-    $dispatcher->addCallableListener(
-        Event\GetSyncTasks::class,
-        App\Sync\TaskLocator::class
+    $dispatcher->addListener(
+        App\Event\GetSyncTasks::class,
+        function (App\Event\GetSyncTasks $e) {
+            $e->addTasks([
+                App\Sync\Task\CheckFolderPlaylistsTask::class,
+                App\Sync\Task\CheckMediaTask::class,
+                App\Sync\Task\CheckRequestsTask::class,
+                App\Sync\Task\CheckUpdatesTask::class,
+                App\Sync\Task\CleanupHistoryTask::class,
+                App\Sync\Task\CleanupLoginTokensTask::class,
+                App\Sync\Task\CleanupRelaysTask::class,
+                App\Sync\Task\CleanupStorageTask::class,
+                App\Sync\Task\MoveBroadcastsTask::class,
+                App\Sync\Task\ReactivateStreamerTask::class,
+                App\Sync\Task\ReloadFrontendAfterSslChangeTask::class,
+                App\Sync\Task\RotateLogsTask::class,
+                App\Sync\Task\RunAnalyticsTask::class,
+                App\Sync\Task\RunAutomatedAssignmentTask::class,
+                App\Sync\Task\RunBackupTask::class,
+                App\Sync\Task\UpdateGeoLiteTask::class,
+                App\Sync\Task\UpdateStorageLocationSizesTask::class,
+            ]);
+        }
     );
 
+    // Other event subscribers from across the application.
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
         App\Notification\Check\ComposeVersionCheck::class
@@ -171,8 +191,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             App\Radio\AutoDJ\Queue::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,
-            App\Sync\Task\NowPlayingTask::class,
-            App\Controller\Api\NowPlayingAction::class,
         ]
     );
 };

@@ -12,7 +12,7 @@ use App\Radio\Backend\Liquidsoap;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
-class CheckRequests extends AbstractTask
+class CheckRequestsTask extends AbstractTask
 {
     public function __construct(
         protected Entity\Repository\StationRequestRepository $requestRepo,
@@ -22,6 +22,11 @@ class CheckRequests extends AbstractTask
         LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
+    }
+
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_MINUTE;
     }
 
     /**

@@ -24,6 +24,11 @@ class CheckUpdatesTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_FIVE_MINUTES;
+    }
+
     public function run(bool $force = false): void
     {
         $settings = $this->settingsRepo->readSettings();

@@ -7,6 +7,7 @@ namespace App\Console\Command\Sync;
 use App\Console\Command\CommandAbstract;
 use App\Sync\Task\AbstractTask;
 use Psr\Container\ContainerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +24,7 @@ class SingleTaskCommand extends CommandAbstract
 
     public function __construct(
         protected ContainerInterface $di,
+        protected CacheInterface $cache
     ) {
         parent::__construct();
     }
@@ -37,19 +39,42 @@ class SingleTaskCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
         $task = $input->getArgument('task');
 
-        if (!$this->di->has($task)) {
-            $io->error('Task not found.');
+        try {
+            $this->runTask($task);
+        } catch (\InvalidArgumentException $e) {
+            $io->error($e->getMessage());
             return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param class-string $task
+     */
+    public function runTask(string $task): void
+    {
+        if (!$this->di->has($task)) {
+            throw new \InvalidArgumentException('Task not found.');
         }
 
         $taskClass = $this->di->get($task);
-
         if (!($taskClass instanceof AbstractTask)) {
-            $io->error('Specified class is not a synchronized task.');
-            return 1;
+            throw new \InvalidArgumentException('Specified class is not a synchronized task.');
         }
 
         $taskClass->run();
-        return 0;
+
+        $this->cache->set(self::getCacheKey($task), time(), 86400);
+    }
+
+    /**
+     * @param class-string $taskClass
+     * @return string
+     */
+    public static function getCacheKey(string $taskClass): string
+    {
+        $taskShortName = (new \ReflectionClass($taskClass))->getShortName();
+        return 'sync_last_run.' . $taskShortName;
     }
 }

@@ -27,7 +27,7 @@ return static function (RouteCollectorProxy $app) {
                     )
                         ->setName('admin:debug:clear-queue');
 
-                    $group->get('/sync/{type}', Controller\Admin\DebugController::class . ':syncAction')
+                    $group->get('/sync/{task}', Controller\Admin\DebugController::class . ':syncAction')
                         ->setName('admin:debug:sync');
 
                     $group->get('/log/{path}', Controller\Admin\DebugController::class . ':logAction')
@@ -36,6 +36,13 @@ return static function (RouteCollectorProxy $app) {
                     $group->group(
                         '/station/{station_id}',
                         function (RouteCollectorProxy $group) {
+                            $group->map(
+                                ['GET', 'POST'],
+                                '/nowplaying',
+                                Controller\Admin\DebugController::class . ':nowplayingAction'
+                            )
+                                ->setName('admin:debug:nowplaying');
+
                             $group->map(
                                 ['GET', 'POST'],
                                 '/nextsong',

@@ -9,10 +9,6 @@ $this->layout('main', [
     'manual' => true,
     'page_class' => 'page-admin',
 ]);
-
-$assets
-    ->load('luxon')
-    ->addInlineJs($this->fetch('admin/index/index.js'), 99);
 ?>
 
 <h2 class="outside-card-header mb-1"><?=__('Administration')?></h2>

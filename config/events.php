@@ -191,6 +191,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             App\Radio\AutoDJ\Queue::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,
+            App\Sync\NowPlaying\Task\NowPlayingTask::class,
         ]
     );
 };

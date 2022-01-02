@@ -7,13 +7,10 @@ namespace App\Notification\Check;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
-use App\Session\Flash;
-use App\Sync\LegacyRunner;
 
 class SyncTaskCheck
 {
     public function __construct(
-        protected LegacyRunner $syncRunner,
         protected Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
@@ -26,7 +23,8 @@ class SyncTaskCheck
         if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
             return;
         }
-
+        /*
+         * TODO
         $setupComplete = $this->settingsRepo->readSettings()->getSetupCompleteTime();
         foreach ($this->syncRunner->getSyncTimes() as $taskKey => $task) {
             $interval = $task['interval'];
@@ -57,5 +55,6 @@ class SyncTaskCheck
                 $event->addNotification($notification);
             }
         }
+        */
     }
 }

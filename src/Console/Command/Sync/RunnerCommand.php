@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
+use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Event\GetSyncTasks;
 use App\LockFactory;
@@ -32,6 +33,7 @@ class RunnerCommand extends CommandAbstract
         protected LockFactory $lockFactory,
         protected Environment $environment,
         protected LoggerInterface $logger,
+        protected SettingsRepository $settingsRepo
     ) {
         parent::__construct();
     }
@@ -39,6 +41,12 @@ class RunnerCommand extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+
+        $settings = $this->settingsRepo->readSettings();
+        if ($settings->getSyncDisabled()) {
+            $io->error('Automated synchronization is temporarily disabled.');
+            return 1;
+        }
 
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
@@ -55,9 +63,17 @@ class RunnerCommand extends CommandAbstract
         }
 
         $this->manageStartedEvents($io);
+
+        $settings->updateSyncLastRun();
+        $this->settingsRepo->writeSettings($settings);
+
         return 0;
     }
 
+    /**
+     * @param class-string $taskClass
+     * @param SymfonyStyle $io
+     */
     protected function start(
         string $taskClass,
         SymfonyStyle $io

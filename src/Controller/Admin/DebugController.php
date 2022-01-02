@@ -9,13 +9,11 @@ use App\Controller\AbstractLogViewerController;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Message\RunSyncTaskMessage;
 use App\MessageQueue\AbstractQueueManager;
 use App\MessageQueue\QueueManagerInterface;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
-use App\Sync\LegacyRunner;
 use App\Utilities\File;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
@@ -39,7 +37,6 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        LegacyRunner $sync,
         QueueManagerInterface $queueManager
     ): ResponseInterface {
         $queues = AbstractQueueManager::getAllQueues();
@@ -53,7 +50,6 @@ class DebugController extends AbstractLogViewerController
             $response,
             'admin/debug/index',
             [
-                'sync_times' => $sync->getSyncTimes(),
                 'queue_totals' => $queueTotals,
                 'stations' => $stationRepo->fetchArray(),
             ]
@@ -67,11 +63,14 @@ class DebugController extends AbstractLogViewerController
     ): ResponseInterface {
         $tempFile = File::generateTempPath('sync_task_' . $type . '.log');
 
+        /*
+         * TODO
         $message = new RunSyncTaskMessage();
         $message->type = $type;
         $message->outputPath = $tempFile;
 
         $this->messageBus->dispatch($message);
+        */
 
         return $request->getView()->renderToResponse(
             $response,

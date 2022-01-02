@@ -10,6 +10,7 @@ use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -79,7 +80,7 @@ class NowPlayingAction
             return $response->withStatus(404)
                 ->withJson(Entity\Api\Error::notFound());
         }
-        
+
         return $response->withJson(
             $this->getForAllStations(
                 $router,
@@ -109,10 +110,16 @@ class NowPlayingAction
                 DQL;
             }
 
-            $np = $this->em->createQuery($dql)
-                ->setParameter('id', $station)
-                ->setMaxResults(1)
-                ->getSingleScalarResult();
+            try {
+                $npResult = $this->em->createQuery($dql)
+                    ->setParameter('id', $station)
+                    ->setMaxResults(1)
+                    ->getSingleResult();
+
+                $np = $npResult['nowplaying'] ?? null;
+            } catch (NoResultException $e) {
+                return null;
+            }
         }
 
         if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {

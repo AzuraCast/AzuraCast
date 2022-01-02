@@ -31,7 +31,7 @@ class NowPlayingPerStationCommand extends CommandAbstract
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('station', InputArgument::REQUIRED);
     }

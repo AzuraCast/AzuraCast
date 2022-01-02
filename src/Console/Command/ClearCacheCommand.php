@@ -43,7 +43,6 @@ class ClearCacheCommand extends CommandAbstract
 
         // Clear cached system settings.
         $settings = $this->settingsRepo->readSettings();
-        $settings->setNowplaying(null);
         $settings->updateUpdateLastRun();
         $settings->setUpdateResults(null);
 

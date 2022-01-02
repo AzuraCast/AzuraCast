@@ -28,7 +28,7 @@ class ReloadFrontendAfterSslChangeTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $threshold = $this->settingsRepo->readSettings()->getSyncLongLastRun();
+        $threshold = time() - 15;
 
         $certs = CertificateLocator::findCertificate();
 

@@ -27,7 +27,7 @@ class SingleTaskCommand extends CommandAbstract
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('task', InputArgument::REQUIRED);
     }

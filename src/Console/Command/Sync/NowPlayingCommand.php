@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
-use App\Event\GetSyncTasks;
-use App\Sync\Task\ScheduledTaskInterface;
-use Carbon\CarbonImmutable;
-use Cron\CronExpression;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Environment;
+use App\LockFactory;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Lock\Lock;
 use Symfony\Component\Process\Process;
 
 #[AsCommand(
@@ -24,50 +27,132 @@ class NowPlayingCommand extends CommandAbstract
     protected array $processes = [];
 
     public function __construct(
-        protected EventDispatcherInterface $dispatcher,
+        protected EntityManagerInterface $em,
+        protected SettingsRepository $settingsRepo,
+        protected LockFactory $lockFactory,
+        protected LoggerInterface $logger,
+        protected Environment $environment,
     ) {
         parent::__construct();
     }
 
+    protected function configure(): void
+    {
+        $this->addOption(
+            'timeout',
+            't',
+            InputOption::VALUE_OPTIONAL,
+            'Amount of time (in seconds) to run the worker process.',
+            600
+        );
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $syncTasksEvent = new GetSyncTasks();
-        $this->dispatcher->dispatch($syncTasksEvent);
+        $io = new SymfonyStyle($input, $output);
 
-        $now = CarbonImmutable::now(new \DateTimeZone('UTC'));
-
-        /** @var class-string<ScheduledTaskInterface> $taskClass */
-        foreach ($syncTasksEvent->getTasks() as $taskClass) {
-            $schedulePattern = $taskClass::getSchedulePattern();
-            $cronExpression = new CronExpression($schedulePattern);
-
-            if ($cronExpression->isDue($now)) {
-            }
+        $settings = $this->settingsRepo->readSettings();
+        if ($settings->getSyncDisabled()) {
+            $io->error('Automated synchronization is temporarily disabled.');
+            return 1;
         }
 
-        $this->manageStartedEvents();
+        $timeout = (int)$input->getOption('timeout');
+        $this->loop($io, $timeout);
+
         return 0;
     }
 
-    protected function start(
-        string $taskClass,
-        OutputInterface $output
-    ): void {
-        set_time_limit($timeout);
+    protected function loop(SymfonyStyle $io, int $timeout): void
+    {
+        $threshold = time() + $timeout;
 
-        if (is_array($cmd)) {
-            $process = new Process($cmd, $cwd);
-        } else {
-            $process = Process::fromShellCommandline($cmd, $cwd);
+        while (time() < $threshold || !empty($this->processes)) {
+            // Check existing processes.
+            foreach ($this->processes as $processName => $processGroup) {
+                /** @var Lock $lock */
+                $lock = $processGroup['lock'];
+
+                /** @var Process $process */
+                $process = $processGroup['process'];
+
+                // 10% chance that refresh will be called
+                if (\random_int(1, 100) <= 10) {
+                    $lock->refresh();
+                }
+
+                if ($process->isRunning()) {
+                    continue;
+                }
+
+                if ($process->isSuccessful()) {
+                    $io->success('Task completed: ' . $processName);
+                } else {
+                    $io->error('Task failed: ' . $processName);
+                }
+
+                $lock->release();
+                unset($this->processes[$processName]);
+            }
+
+            // Ensure a process is running for every active station.
+            if (time() < $threshold - 5) {
+                $activeStations = $this->em->createQuery(
+                    <<<'DQL'
+                SELECT s.id, s.short_name, s.nowplaying_timestamp
+                FROM App\Entity\Station s
+                WHERE s.is_enabled = 1
+                DQL
+                )->getArrayResult();
+
+                foreach ($activeStations as $activeStation) {
+                    $shortName = $activeStation['short_name'];
+
+                    if (!isset($this->processes[$shortName])) {
+                        $npTimestamp = (int)$activeStation['nowplaying_timestamp'];
+                        if (time() > $npTimestamp + \random_int(5, 15)) {
+                            $this->start($shortName, $io);
+                        }
+                    }
+                }
+            }
+
+            $this->em->clear();
+            gc_collect_cycles();
+            \usleep(1500000);
+        }
+    }
+
+    protected function start(
+        string $shortName,
+        SymfonyStyle $io
+    ): void {
+        $lockName = 'nowplaying_' . $shortName;
+
+        $lock = $this->lockFactory->createAndAcquireLock($lockName, 30);
+        if (false === $lock) {
+            $this->logger->error(
+                sprintf('Could not obtain lock for task "%s"; skipping it.', $shortName)
+            );
+            return;
         }
 
-        $process->setTimeout($timeout - 60);
-        $process->setIdleTimeout(3600);
+        $process = new Process([
+            'php',
+            $this->environment->getBaseDirectory() . '/bin/console',
+            'azuracast:sync:nowplaying:station',
+            $shortName,
+        ], $this->environment->getBaseDirectory());
+
+        $process->setTimeout(60);
+        $process->setIdleTimeout(60);
 
         $stdout = [];
         $stderr = [];
 
-        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr): void {
+        $io->info('Starting task: ' . $shortName);
+
+        $process->run(function ($type, $data) use ($process, $io, &$stdout, &$stderr): void {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
                 $stderr[] = $data;
@@ -75,100 +160,11 @@ class NowPlayingCommand extends CommandAbstract
                 $io->write($data);
                 $stdout[] = $data;
             }
-        }, $env);
+        }, getenv());
 
-        $this->logger = $this->loggerFactory
-            ->create();
-
-        // if sendOutputTo or appendOutputTo have been specified
-        if (!$event->nullOutput()) {
-            // if sendOutputTo then truncate the log file if it exists
-            if (!$event->shouldAppendOutput) {
-                $f = @\fopen($event->output, 'r+');
-                if (false !== $f) {
-                    \ftruncate($f, 0);
-                    \fclose($f);
-                }
-            }
-            // Create an instance of the Logger specific to the event
-            $event->logger = $this->loggerFactory->createEvent($event->output);
-        }
-
-        $this->consoleLogger
-            ->debug("Invoke Event's ping before.");
-
-        $this->pingBefore($event);
-
-        // Running the before-callbacks
-        $event->outputStream = ($this->invoke($event->beforeCallbacks()));
-        $event->start();
-    }
-
-    protected function manageStartedEvents(): void
-    {
-        while ($this->schedules) {
-            foreach ($this->schedules as $scheduleKey => $schedule) {
-                $events = $schedule->events();
-                // 10% chance that refresh will be called
-                $refreshLocks = (\mt_rand(1, 100) <= 10);
-
-                /** @var Event $event */
-                foreach ($events as $eventKey => $event) {
-                    if ($refreshLocks) {
-                        $event->refreshLock();
-                    }
-
-                    $proc = $event->getProcess();
-                    if ($proc->isRunning()) {
-                        continue;
-                    }
-
-                    $runStatus = '';
-
-                    if ($proc->isSuccessful()) {
-                        $this->consoleLogger
-                            ->debug("Invoke Event's ping after.");
-                        $this->pingAfter($event);
-
-                        $runStatus = '<info>success</info>';
-
-                        $event->outputStream .= $event->wholeOutput();
-                        $event->outputStream .= $this->invoke($event->afterCallbacks());
-
-                        $this->handleOutput($event);
-                    } else {
-                        $runStatus = '<error>fail</error>';
-
-                        // Invoke error callbacks
-                        $this->invoke($event->errorCallbacks());
-                        // Calling registered error callbacks with an instance of $event as argument
-                        $this->invoke($schedule->errorCallbacks(), [$event]);
-                        $this->handleError($event);
-                    }
-
-                    $id = $event->description ?: $event->getId();
-
-                    $this->consoleLogger
-                        ->debug("Task <info>${id}</info> status: {$runStatus}.");
-
-                    // Dismiss the event if it's finished
-                    $schedule->dismissEvent($eventKey);
-                }
-
-                // If there's no event left for the Schedule instance,
-                // run the schedule's after-callbacks and remove
-                // the Schedule from list of active schedules.                                                                                                                           zzzwwscxqqqAAAQ11
-                if (!\count($schedule->events())) {
-                    $this->consoleLogger
-                        ->debug("Invoke Schedule's ping after.");
-
-                    $this->pingAfter($schedule);
-                    $this->invoke($schedule->afterCallbacks());
-                    unset($this->schedules[$scheduleKey]);
-                }
-            }
-
-            \usleep(250000);
-        }
+        $this->processes[$shortName] = [
+            'process' => $process,
+            'lock'    => $lock,
+        ];
     }
 }

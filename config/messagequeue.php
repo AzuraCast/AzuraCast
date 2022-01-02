@@ -11,11 +11,7 @@ return [
 
     Message\WritePlaylistFileMessage::class => Liquidsoap\ConfigWriter::class,
 
-    Message\UpdateNowPlayingMessage::class => \App\Sync\NowPlaying\Task\NowPlayingTask::class,
-
     Message\BackupMessage::class => Task\RunBackupTask::class,
-
-    Message\RunSyncTaskMessage::class => App\Sync\LegacyRunner::class,
 
     Message\DispatchWebhookMessage::class => App\Webhook\Dispatcher::class,
     Message\TestWebhookMessage::class     => App\Webhook\Dispatcher::class,

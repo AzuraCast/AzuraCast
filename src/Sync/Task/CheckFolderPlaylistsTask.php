@@ -24,7 +24,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return self::SCHEDULE_EVERY_FIVE_MINUTES;
+        return '*/5 * * * *';
     }
 
     public function run(bool $force = false): void

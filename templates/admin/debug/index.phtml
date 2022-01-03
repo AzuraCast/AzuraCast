@@ -54,44 +54,57 @@ $assets
     <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?= __('Synchronization Tasks') ?></h2>
     </div>
-    <div class="card-body">
-        <table class="table">
-            <colgroup>
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-            </colgroup>
-            <?php
-            foreach ($sync_times as $task => $time): ?>
-                <tr>
-                    <td>
-                        <big><?= $task ?></big>
-                    </td>
-                    <td>
-                        <?php
-                        if (0 === $time): ?>
-                            <?= __('Not Run') ?>
-                        <?php
-                        else: ?>
-                            <time data-duration="<?= $time ?>"></time>
-                        <?php
-                        endif; ?>
-                    </td>
-                    <td>
-                        <div class="buttons">
-                            <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
-                                'admin:debug:sync',
-                                ['task' => $task]
-                            ) ?>">
-                                <?= __('Run Task') ?>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            <?php
-            endforeach; ?>
-        </table>
-    </div>
+    <table class="table">
+        <colgroup>
+            <col width="40%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th><?= __('Task Name') ?></th>
+            <th><?= __('Last Run') ?></th>
+            <th><?= __('Next Run') ?></th>
+            <th><?= __('Actions') ?></th>
+        </tr>
+        </thead>
+        <?php
+        foreach ($sync_times as $task => $taskInfo): ?>
+            <tr>
+                <td>
+                    <big><?= $task ?></big><br>
+                    <?= $taskInfo['pattern'] ?>
+                </td>
+                <td>
+                    <?php
+                    if (0 === $taskInfo['time']): ?>
+                        <?= __('Not Run') ?>
+                    <?php
+                    else: ?>
+                        <time <?php
+                              if ($taskInfo['time'] < time() - (60 * 60 * 3)): ?>class="text-danger"<?php
+                        endif; ?> data-duration="<?= $taskInfo['time'] ?>"></time>
+                    <?php
+                    endif; ?>
+                </td>
+                <td>
+                    <time data-duration="<?= $taskInfo['nextRun'] ?>"></time>
+                </td>
+                <td>
+                    <div class="buttons">
+                        <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
+                            'admin:debug:sync',
+                            ['task' => $task]
+                        ) ?>">
+                            <?= __('Run Task') ?>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        <?php
+        endforeach; ?>
+    </table>
 </div>
 
 <div class="card mb-3">

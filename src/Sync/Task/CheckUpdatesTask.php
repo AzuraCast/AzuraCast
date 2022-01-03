@@ -26,7 +26,7 @@ class CheckUpdatesTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return self::SCHEDULE_EVERY_FIVE_MINUTES;
+        return '3-59/5 * * * *';
     }
 
     public function run(bool $force = false): void

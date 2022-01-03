@@ -35,7 +35,7 @@ class CheckMediaTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return self::SCHEDULE_EVERY_FIVE_MINUTES;
+        return '1-59/5 * * * *';
     }
 
     /**

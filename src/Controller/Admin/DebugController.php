@@ -75,18 +75,28 @@ class DebugController extends AbstractLogViewerController
      * @param ServerRequest $request
      * @param Response $response
      * @param SingleTaskCommand $taskCommand
-     * @param class-string $task
+     * @param class-string|string $task
      * @return ResponseInterface
      */
     public function syncAction(
         ServerRequest $request,
         Response $response,
         SingleTaskCommand $taskCommand,
+        EventDispatcherInterface $eventDispatcher,
         string $task
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
-        $taskCommand->runTask($task);
+        if ('all' === $task) {
+            $syncTasksEvent = new GetSyncTasks();
+            $eventDispatcher->dispatch($syncTasksEvent);
+            foreach ($syncTasksEvent->getTasks() as $taskClass) {
+                $taskCommand->runTask($taskClass);
+            }
+        } else {
+            /** @var class-string $task */
+            $taskCommand->runTask($task);
+        }
 
         $this->logger->popHandler();
 

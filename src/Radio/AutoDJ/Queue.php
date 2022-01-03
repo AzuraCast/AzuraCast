@@ -7,7 +7,6 @@ namespace App\Radio\AutoDJ;
 use App\Entity;
 use App\Event\Radio\BuildQueue;
 use App\LockFactory;
-use App\Message;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -57,25 +56,6 @@ class Queue implements EventSubscriberInterface
                 ['calculateNextSong', 0],
             ],
         ];
-    }
-
-    /**
-     * Handle event dispatch.
-     *
-     * @param Message\AbstractMessage $message
-     */
-    public function __invoke(Message\AbstractMessage $message): void
-    {
-        if ($message instanceof Message\BuildStationQueue) {
-            $station = $this->em->find(Entity\Station::class, $message->station_id);
-
-            if ($station instanceof Entity\Station) {
-                $this->buildQueue(
-                    station: $station,
-                    force: $message->force
-                );
-            }
-        }
     }
 
     public function buildQueue(

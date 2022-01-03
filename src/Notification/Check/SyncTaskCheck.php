@@ -7,6 +7,7 @@ namespace App\Notification\Check;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
+use App\Session\Flash;
 
 class SyncTaskCheck
 {
@@ -23,38 +24,45 @@ class SyncTaskCheck
         if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
             return;
         }
-        /*
-         * TODO
-        $setupComplete = $this->settingsRepo->readSettings()->getSetupCompleteTime();
-        foreach ($this->syncRunner->getSyncTimes() as $taskKey => $task) {
-            $interval = $task['interval'];
-            $diff = $task['diff'];
 
-            // Don't show notification if this installation is freshly installed.
-            $threshold = time() - ($interval * 5);
-            if ($setupComplete >= $threshold) {
-                continue;
-            }
+        $settings = $this->settingsRepo->readSettings();
 
-            if ($diff > ($interval * 5)) {
-                // phpcs:disable Generic.Files.LineLength
-                $notification = new Entity\Api\Notification();
-                $notification->title = __('Synchronized Task Not Recently Run');
-                $notification->body = __(
-                    'The "%s" synchronization task has not run recently. This may indicate an error with your installation.',
-                    $task['name']
-                );
-                $notification->type = Flash::ERROR;
-
-                $router = $request->getRouter();
-
-                $notification->actionLabel = __('Manually Run Task');
-                $notification->actionUrl = (string)$router->named('admin:debug:sync', ['type' => $taskKey]);
-                // phpcs:enable
-
-                $event->addNotification($notification);
-            }
+        $setupComplete = $settings->getSetupCompleteTime();
+        if ($setupComplete > (time() - 60 * 60 * 2)) {
+            return;
         }
-        */
+
+        if ($settings->getSyncDisabled()) {
+            // phpcs:disable Generic.Files.LineLength
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('Synchronization Disabled');
+            $notification->body = __(
+                'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.'
+            );
+            $notification->type = Flash::ERROR;
+            // phpcs:enable
+
+            $event->addNotification($notification);
+            return;
+        }
+
+        $syncLastRun = $settings->getSyncLastRun();
+        if ($syncLastRun < (time() - 60 * 5)) {
+            // phpcs:disable Generic.Files.LineLength
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('Synchronization Not Recently Run');
+            $notification->body = __(
+                'The routine synchronization task has not run recently. This may indicate an error with your installation.'
+            );
+            $notification->type = Flash::ERROR;
+
+            $router = $request->getRouter();
+
+            $notification->actionLabel = __('System Debugger');
+            $notification->actionUrl = (string)$router->named('admin:debug:index');
+            // phpcs:enable
+
+            $event->addNotification($notification);
+        }
     }
 }

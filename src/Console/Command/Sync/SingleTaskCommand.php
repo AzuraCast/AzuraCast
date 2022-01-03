@@ -7,6 +7,7 @@ namespace App\Console\Command\Sync;
 use App\Console\Command\CommandAbstract;
 use App\Sync\Task\AbstractTask;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,7 +25,8 @@ class SingleTaskCommand extends CommandAbstract
 
     public function __construct(
         protected ContainerInterface $di,
-        protected CacheInterface $cache
+        protected CacheInterface $cache,
+        protected LoggerInterface $logger,
     ) {
         parent::__construct();
     }
@@ -63,9 +65,18 @@ class SingleTaskCommand extends CommandAbstract
             throw new \InvalidArgumentException('Specified class is not a synchronized task.');
         }
 
+        $cacheKey = self::getCacheKey($task);
+
+        $startTime = microtime(true);
+        $this->logger->debug('Starting sync task: ' . $cacheKey);
+
         $taskClass->run();
 
-        $this->cache->set(self::getCacheKey($task), time(), 86400);
+        $this->logger->debug('Sync task completed: ' . $cacheKey, [
+            'time' => microtime(true) - $startTime,
+        ]);
+
+        $this->cache->set($cacheKey, time(), 86400);
     }
 
     /**

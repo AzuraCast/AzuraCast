@@ -7,14 +7,12 @@ namespace App\Radio\AutoDJ;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Flysystem\StationFilesystems;
-use App\Message\BuildStationQueue;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Messenger\MessageBus;
 
 class Annotations implements EventSubscriberInterface
 {
@@ -25,7 +23,6 @@ class Annotations implements EventSubscriberInterface
         protected Adapters $adapters,
         protected LoggerInterface $logger,
         protected EventDispatcherInterface $eventDispatcher,
-        protected MessageBus $messageBus
     ) {
     }
 
@@ -67,11 +64,6 @@ class Annotations implements EventSubscriberInterface
                     ],
                 ]
             );
-
-            $message = new BuildStationQueue();
-            $message->station_id = $station->getIdRequired();
-            $this->messageBus->dispatch($message);
-
             return '';
         }
 

@@ -20,7 +20,7 @@ class CleanupLoginTokensTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return '13 * * * *';
+        return '12 * * * *';
     }
 
     public function run(bool $force = false): void

@@ -23,7 +23,7 @@ class ReloadFrontendAfterSslChangeTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return '*/15 * * * *';
+        return '2,19,32,47 * * * *';
     }
 
     public function run(bool $force = false): void

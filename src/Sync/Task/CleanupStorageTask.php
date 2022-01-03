@@ -13,7 +13,7 @@ class CleanupStorageTask extends AbstractTask
 {
     public static function getSchedulePattern(): string
     {
-        return '23 * * * *';
+        return '24 * * * *';
     }
 
     public function run(bool $force = false): void

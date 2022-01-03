@@ -31,7 +31,7 @@ class UpdateGeoLiteTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return '43 */3 * * *';
+        return '42 */3 * * *';
     }
 
     public function run(bool $force = false): void

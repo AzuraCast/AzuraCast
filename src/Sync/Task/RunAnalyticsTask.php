@@ -24,7 +24,7 @@ class RunAnalyticsTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return '3 * * * *';
+        return '4 * * * *';
     }
 
     public function run(bool $force = false): void

@@ -29,7 +29,7 @@ class RotateLogsTask extends AbstractTask
 
     public static function getSchedulePattern(): string
     {
-        return '33 * * * *';
+        return '34 * * * *';
     }
 
     public function run(bool $force = false): void

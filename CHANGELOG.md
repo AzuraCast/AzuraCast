@@ -18,9 +18,17 @@ release channel, you can take advantage of these new features and fixes.
 
 - **Vue Components Everywhere**: As part of our Roadmap to 1.0, we've switched a vast majority of the AzuraCast
   application to be powered by Vue frontend components that connect directly to, and exclusively use, our powerful REST
-  API to perform functions. Not only does this make for more snappy, responsive user experiences, but it also means that _everything_ you can do in the web application is now possible via the API as well; while we haven't documented
+  API to perform functions. Not only does this make for more snappy, responsive user experiences, but it also means
+  that _everything_ you can do in the web application is now possible via the API as well; while we haven't documented
   all of these endpoints yet, you can use your browser's inspector console to see how we call our internal APIs and do
   the same in your own applications.
+
+- The routine synchronization process has been completely rebuilt from the ground up to be concurrent and asynchronous:
+    - The 1-minute, 5-minute and 1-hour sync tasks have been merged into a single task manager that staggers the tasks
+      across the hour to ensure CPU load never has huge peaks at the top of the hour.
+    - Each synchronized task is isolated in its own process, so any failure won't cause a failure for subsequent tasks.
+    - The "Now Playing" synchronization is now isolated and runs per-station, so an outage on a single station won't
+      affect other stations; this new worker-process method also ensures station metadata is checked more frequently.
 
 - Storage Locations have been overhauled and made more useful:
     - Quotas are now enforced for all storage location types (media, recordings, podcasts, and backups)

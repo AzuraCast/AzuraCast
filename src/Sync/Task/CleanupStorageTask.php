@@ -11,6 +11,11 @@ use Symfony\Component\Finder\Finder;
 
 class CleanupStorageTask extends AbstractTask
 {
+    public static function getSchedulePattern(): string
+    {
+        return '24 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {

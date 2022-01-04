@@ -22,6 +22,11 @@ class CheckFolderPlaylistsTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '*/5 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {

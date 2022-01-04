@@ -9,10 +9,6 @@ $this->layout('main', [
     'manual' => true,
     'page_class' => 'page-admin',
 ]);
-
-$assets
-    ->load('luxon')
-    ->addInlineJs($this->fetch('admin/index/index.js'), 99);
 ?>
 
 <h2 class="outside-card-header mb-1"><?=__('Administration')?></h2>
@@ -86,33 +82,4 @@ $assets
             <h3><small><?= __('%s of %s Used', $space_used, $space_total) ?></small></h3>
         </div>
     </div>
-</div>
-
-<h2 class="outside-card-header mb-1"><?= __('Synchronization Tasks') ?></h2>
-
-<div class="card-deck">
-    <?php
-    foreach ($sync_times as $sync_key => $sync_info): ?>
-        <section class="card" role="region">
-            <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?= $sync_info['name'] ?></h2>
-                <h3 class="card-subtitle"><?= implode(', ', $sync_info['contents']) ?></h3>
-            </div>
-            <div class="card-body">
-                <p class="card-text"><?= __(
-                        'Last run: %s',
-                        '<time data-duration="' . $sync_info['latest'] . '"></time>'
-                    )?></p>
-            </div>
-            <div class="card-actions">
-                <a class="btn btn-outline-primary" role="button" href="<?=$router->named(
-                    'admin:debug:sync',
-                    ['type' => $sync_key]
-                )?>">
-                    <i class="material-icons" aria-hidden="true">send</i>
-                    <?=__('Run Task')?>
-                </a>
-            </div>
-        </section>
-    <?php endforeach; ?>
 </div>

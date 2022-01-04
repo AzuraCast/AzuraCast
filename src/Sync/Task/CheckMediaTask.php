@@ -13,7 +13,6 @@ use App\Radio\Quota;
 use Azura\Files\Attributes\FileAttributes;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\Query;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
@@ -32,6 +31,11 @@ class CheckMediaTask extends AbstractTask
         LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
+    }
+
+    public static function getSchedulePattern(): string
+    {
+        return '1-59/5 * * * *';
     }
 
     /**

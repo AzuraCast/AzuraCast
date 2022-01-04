@@ -11,6 +11,11 @@ use Symfony\Component\Finder\Finder;
 
 class MoveBroadcastsTask extends AbstractTask
 {
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_MINUTE;
+    }
+
     public function __construct(
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,

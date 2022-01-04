@@ -25,6 +25,11 @@ class RunAutomatedAssignmentTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '7 * * * *';
+    }
+
     /**
      * Iterate through all stations and attempt to run automated assignment.
      *

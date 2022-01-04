@@ -6,19 +6,15 @@ use App\Sync\Task;
 use Symfony\Component\Mailer;
 
 return [
-    Message\AddNewMediaMessage::class => Task\CheckMediaTask::class,
+    Message\AddNewMediaMessage::class    => Task\CheckMediaTask::class,
     Message\ReprocessMediaMessage::class => Task\CheckMediaTask::class,
 
     Message\WritePlaylistFileMessage::class => Liquidsoap\ConfigWriter::class,
 
-    Message\UpdateNowPlayingMessage::class => Task\NowPlayingTask::class,
-
     Message\BackupMessage::class => Task\RunBackupTask::class,
 
-    Message\RunSyncTaskMessage::class => App\Sync\Runner::class,
-
     Message\DispatchWebhookMessage::class => App\Webhook\Dispatcher::class,
-    Message\TestWebhookMessage::class => App\Webhook\Dispatcher::class,
+    Message\TestWebhookMessage::class     => App\Webhook\Dispatcher::class,
 
     Mailer\Messenger\SendEmailMessage::class => Mailer\Messenger\MessageHandler::class,
 ];

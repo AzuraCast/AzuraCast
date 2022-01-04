@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Acl;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Quota;
-use App\Sync\Runner;
 use Brick\Math\BigInteger;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,24 +16,12 @@ class IndexAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Runner $sync,
         Environment $environment
     ): ResponseInterface {
         $view = $request->getView();
 
         // Remove the sidebar on the homepage.
         $view->addData(['sidebar' => null]);
-
-        // Synchronization statuses
-        $acl = $request->getAcl();
-
-        if ($acl->isAllowed(Acl::GLOBAL_ALL)) {
-            $view->addData(
-                [
-                    'sync_times' => $sync->getSyncTimes(),
-                ]
-            );
-        }
 
         $stationsBaseDir = $environment->getStationDirectory();
 

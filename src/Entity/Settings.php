@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Customization;
 use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity;
-use App\Event\GetSyncTasks;
 use App\OpenApi;
 use App\Service\Avatar;
 use App\Utilities\Urls;
@@ -675,140 +674,41 @@ class Settings implements Stringable
         $this->setSetupCompleteTime(time());
     }
 
-    /**
-     * @var mixed[]|null
-     */
     #[
-        OA\Property(description: "The current cached now playing data.", example: ""),
-        ORM\Column(type: 'json', nullable: true),
+        OA\Property(description: "Temporarily disable all sync tasks.", example: "false"),
+        ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected ?array $nowplaying = null;
+    protected bool $sync_disabled = false;
 
-    /**
-     * @return mixed[]|null
-     */
-    public function getNowplaying(): ?array
+    public function getSyncDisabled(): bool
     {
-        return $this->nowplaying;
+        return $this->sync_disabled;
     }
 
-    public function setNowplaying(?array $nowplaying): void
+    public function setSyncDisabled(bool $sync_disabled): void
     {
-        $this->nowplaying = $nowplaying;
+        $this->sync_disabled = $sync_disabled;
     }
 
     #[
         OA\Property(
-            description: "The UNIX timestamp when the now playing sync task was last run.",
+            description: "The last run timestamp for the unified sync task.",
             example: OpenApi::SAMPLE_TIMESTAMP
         ),
         ORM\Column,
         Attributes\AuditIgnore
     ]
-    protected int $sync_nowplaying_last_run = 0;
+    protected int $sync_last_run = 0;
 
-    public function getSyncNowplayingLastRun(): int
+    public function updateSyncLastRun(): void
     {
-        return $this->sync_nowplaying_last_run;
+        $this->sync_last_run = time();
     }
 
-    public function setSyncNowplayingLastRun(int $syncNowplayingLastRun): void
+    public function getSyncLastRun(): int
     {
-        $this->sync_nowplaying_last_run = $syncNowplayingLastRun;
-    }
-
-    #[
-        OA\Property(
-            description: "The UNIX timestamp when the 60-second 'short' sync task was last run.",
-            example: OpenApi::SAMPLE_TIMESTAMP
-        ),
-        ORM\Column,
-        Attributes\AuditIgnore
-    ]
-    protected int $sync_short_last_run = 0;
-
-    public function getSyncShortLastRun(): int
-    {
-        return $this->sync_short_last_run;
-    }
-
-    public function setSyncShortLastRun(int $syncShortLastRun): void
-    {
-        $this->sync_short_last_run = $syncShortLastRun;
-    }
-
-    #[
-        OA\Property(
-            description: "The UNIX timestamp when the 5-minute 'medium' sync task was last run.",
-            example: OpenApi::SAMPLE_TIMESTAMP
-        ),
-        ORM\Column,
-        Attributes\AuditIgnore
-    ]
-    protected int $sync_medium_last_run = 0;
-
-    public function getSyncMediumLastRun(): int
-    {
-        return $this->sync_medium_last_run;
-    }
-
-    public function setSyncMediumLastRun(int $syncMediumLastRun): void
-    {
-        $this->sync_medium_last_run = $syncMediumLastRun;
-    }
-
-    #[
-        OA\Property(
-            description: "The UNIX timestamp when the 1-hour 'long' sync task was last run.",
-            example: OpenApi::SAMPLE_TIMESTAMP
-        ),
-        ORM\Column,
-        Attributes\AuditIgnore
-    ]
-    protected int $sync_long_last_run = 0;
-
-    public function getSyncLongLastRun(): int
-    {
-        return $this->sync_long_last_run;
-    }
-
-    public function setSyncLongLastRun(int $syncLongLastRun): void
-    {
-        $this->sync_long_last_run = $syncLongLastRun;
-    }
-
-    public function getSyncLastRunTime(string $type): int
-    {
-        $timesByType = [
-            GetSyncTasks::SYNC_NOWPLAYING => $this->sync_nowplaying_last_run,
-            GetSyncTasks::SYNC_SHORT => $this->sync_short_last_run,
-            GetSyncTasks::SYNC_MEDIUM => $this->sync_medium_last_run,
-            GetSyncTasks::SYNC_LONG => $this->sync_long_last_run,
-        ];
-
-        return $timesByType[$type] ?? 0;
-    }
-
-    public function updateSyncLastRunTime(string $type): void
-    {
-        switch ($type) {
-            case GetSyncTasks::SYNC_NOWPLAYING:
-                $this->sync_nowplaying_last_run = time();
-                break;
-
-            case GetSyncTasks::SYNC_SHORT:
-                $this->sync_short_last_run = time();
-                break;
-
-            case GetSyncTasks::SYNC_MEDIUM:
-                $this->sync_medium_last_run = time();
-                break;
-
-            case GetSyncTasks::SYNC_LONG:
-                $this->sync_long_last_run = time();
-                break;
-        }
+        return $this->sync_last_run;
     }
 
     #[

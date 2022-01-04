@@ -21,9 +21,14 @@ class ReloadFrontendAfterSslChangeTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '2,19,32,47 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
-        $threshold = $this->settingsRepo->readSettings()->getSyncLongLastRun();
+        $threshold = time() - 15;
 
         $certs = CertificateLocator::findCertificate();
 

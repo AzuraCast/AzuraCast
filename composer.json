@@ -38,6 +38,7 @@
     "doctrine/dbal": "^2.8",
     "doctrine/migrations": "^3.0",
     "doctrine/orm": "~2.6",
+    "dragonmantank/cron-expression": "^3.1",
     "gettext/gettext": "^4.4",
     "guzzlehttp/guzzle": "^7.0",
     "guzzlehttp/oauth-subscriber": "^0.6.0",

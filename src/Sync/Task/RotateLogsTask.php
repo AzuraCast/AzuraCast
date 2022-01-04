@@ -27,6 +27,11 @@ class RotateLogsTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '34 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         // Rotate logs for individual stations.

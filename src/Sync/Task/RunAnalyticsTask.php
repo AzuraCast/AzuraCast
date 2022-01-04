@@ -22,6 +22,11 @@ class RunAnalyticsTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '4 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $analytics_level = $this->settingsRepo->readSettings()->getAnalytics();

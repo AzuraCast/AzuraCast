@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
-use App\Event\Radio\LoadNowPlaying;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
@@ -126,10 +125,7 @@ class NowPlayingApiGenerator
         Entity\Station $station,
         ?UriInterface $baseUri = null
     ): Entity\Api\NowPlaying\NowPlaying {
-        $event = new LoadNowPlaying();
-        $this->eventDispatcher->dispatch($event);
-
-        $np = $event->getForStation($station);
+        $np = $station->getNowplaying();
         if (null !== $np) {
             return $np;
         }

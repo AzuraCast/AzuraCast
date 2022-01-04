@@ -31,7 +31,10 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:setup:fixtures'            => Command\SetupFixturesCommand::class,
         'azuracast:setup'                     => Command\SetupCommand::class,
         'azuracast:radio:restart'             => Command\RestartRadioCommand::class,
-        'azuracast:sync:run'                  => Command\SyncCommand::class,
+        'azuracast:sync:nowplaying'           => Command\Sync\NowPlayingCommand::class,
+        'azuracast:sync:nowplaying:station'   => Command\Sync\NowPlayingPerStationCommand::class,
+        'azuracast:sync:run'                  => Command\Sync\RunnerCommand::class,
+        'azuracast:sync:task'                 => Command\Sync\SingleTaskCommand::class,
         'azuracast:media:reprocess'           => Command\ReprocessMediaCommand::class,
         'azuracast:api:docs'                  => Command\GenerateApiDocsCommand::class,
         'locale:generate'                     => Command\Locale\GenerateCommand::class,
@@ -39,6 +42,5 @@ return function (App\Event\BuildConsoleCommands $event) {
         'queue:process'                       => Command\MessageQueue\ProcessCommand::class,
         'queue:clear'                         => Command\MessageQueue\ClearCommand::class,
         'cache:clear'                         => Command\ClearCacheCommand::class,
-        'sync:run'                            => Command\SyncCommand::class,
     ]);
 };

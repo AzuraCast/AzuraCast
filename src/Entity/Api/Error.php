@@ -89,7 +89,7 @@ class Error
 
     public static function fromException(Throwable $e, bool $includeTrace = false): self
     {
-        $code = $e->getCode();
+        $code = (int)$e->getCode();
         if (0 === $code) {
             $code = 500;
         }

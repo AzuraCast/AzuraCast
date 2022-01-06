@@ -773,7 +773,10 @@ uninstall() {
 #
 letsencrypt-create() {
   setup-letsencrypt
-
+  echo "If nothing happens when executing this command, go to your .env file and modify the LETSENCRYPT_HOST= and #LETSENCRYPT_EMAIL=" 
+  echo "After filling in these fields, restart your installation via docker-compose down && docker-compose up -d" 
+  # Temorary workaround for issue 4954
+  
   docker-compose down
   docker-compose up -d
   exit

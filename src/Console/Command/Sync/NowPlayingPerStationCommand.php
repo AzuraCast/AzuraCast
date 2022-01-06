@@ -9,6 +9,7 @@ use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Sync\NowPlaying\Task\BuildQueueTask;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
+use Monolog\Logger;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +28,7 @@ class NowPlayingPerStationCommand extends CommandAbstract
         protected StationRepository $stationRepo,
         protected BuildQueueTask $buildQueueTask,
         protected NowPlayingTask $nowPlayingTask,
+        protected Logger $logger,
     ) {
         parent::__construct();
     }
@@ -47,8 +49,24 @@ class NowPlayingPerStationCommand extends CommandAbstract
             return 1;
         }
 
+        $this->logger->pushProcessor(
+            function ($record) use ($station) {
+                $record['extra']['station'] = [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                ];
+                return $record;
+            }
+        );
+
+        $this->logger->info('Starting Now Playing sync task.');
+
         $this->nowPlayingTask->run($station);
         $this->buildQueueTask->run($station);
+
+        $this->logger->info('Now Playing sync task complete.');
+        $this->logger->popProcessor();
+
         return 0;
     }
 }

@@ -18,6 +18,7 @@ use Exception;
 use Monolog\Logger;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
@@ -34,7 +35,7 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
         protected ReloadableEntityManagerInterface $em,
-        protected Logger $logger,
+        protected LoggerInterface $logger,
     ) {
     }
 
@@ -55,21 +56,11 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         ];
     }
 
-    public function run(Station $station, bool $force = false): void
+    public function run(Station $station): void
     {
         if (!$station->getIsEnabled()) {
             return;
         }
-
-        $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
-                    'id'   => $station->getId(),
-                    'name' => $station->getName(),
-                ];
-                return $record;
-            }
-        );
 
         $settings = $this->settingsRepo->readSettings();
         $include_clients = (Entity\Analytics::LEVEL_NONE !== $settings->getAnalytics());
@@ -128,8 +119,6 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         $station->setNowplaying($np);
         $this->em->persist($station);
         $this->em->flush();
-
-        $this->logger->popProcessor();
     }
 
     public function loadRawFromFrontend(GenerateRawNowPlaying $event): void

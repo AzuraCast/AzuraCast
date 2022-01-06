@@ -8,5 +8,5 @@ use App\Entity\Station;
 
 interface NowPlayingTaskInterface
 {
-    public function run(Station $station, bool $force = false): void;
+    public function run(Station $station): void;
 }

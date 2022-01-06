@@ -6,7 +6,6 @@ namespace App\Radio\AutoDJ;
 
 use App\Entity;
 use App\Event\Radio\BuildQueue;
-use App\LockFactory;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -36,7 +35,6 @@ class Queue implements EventSubscriberInterface
         protected Logger $logger,
         protected Scheduler $scheduler,
         protected CacheInterface $cache,
-        protected LockFactory $lockFactory,
         protected EventDispatcherInterface $dispatcher,
         protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         protected Entity\Repository\StationRequestRepository $requestRepo,
@@ -46,7 +44,7 @@ class Queue implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed[]
+     * @inheritDoc
      */
     public static function getSubscribedEvents(): array
     {
@@ -58,135 +56,112 @@ class Queue implements EventSubscriberInterface
         ];
     }
 
-    public function buildQueue(
-        Entity\Station $station,
-        bool $force = false
-    ): void {
-        $lock = $this->lockFactory->createAndAcquireLock(
-            resource: 'autodj_queue_' . $station->getId(),
-            ttl: 60,
-            force: $force
-        );
-
-        if (false === $lock) {
+    public function buildQueue(Entity\Station $station): void
+    {
+        // Early-fail if the station is disabled.
+        if (!$station->getIsEnabled()) {
+            $this->logger->notice('Cannot build queue: station broadcasting is disabled.');
+            return;
+        }
+        if ($station->useManualAutoDJ()) {
+            $this->logger->notice('This station uses manual AutoDJ mode.');
             return;
         }
 
-        $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
-                ];
-                return $record;
-            }
-        );
+        // Adjust "expectedCueTime" time from current queue.
+        $tzObject = $station->getTimezoneObject();
+        $expectedCueTime = CarbonImmutable::now($tzObject);
 
-        try {
-            // Early-fail if the station is disabled.
-            if (!$station->getIsEnabled()) {
-                $this->logger->notice('Cannot build queue: station broadcasting is disabled.');
-                return;
-            }
+        // Get expected play time of each item.
+        $currentSong = $this->historyRepo->getCurrent($station);
+        if (null !== $currentSong) {
+            $expectedPlayTime = $this->addDurationToTime(
+                $station,
+                CarbonImmutable::createFromTimestamp($currentSong->getTimestampStart(), $tzObject),
+                $currentSong->getDuration()
+            );
 
-            // Adjust "expectedCueTime" time from current queue.
-            $tzObject = $station->getTimezoneObject();
-            $expectedCueTime = CarbonImmutable::now($tzObject);
-
-            // Get expected play time of each item.
-            $currentSong = $this->historyRepo->getCurrent($station);
-            if (null !== $currentSong) {
-                $expectedPlayTime = $this->addDurationToTime(
-                    $station,
-                    CarbonImmutable::createFromTimestamp($currentSong->getTimestampStart(), $tzObject),
-                    $currentSong->getDuration()
-                );
-
-                if ($expectedPlayTime < $expectedCueTime) {
-                    $expectedPlayTime = $expectedCueTime;
-                }
-            } else {
+            if ($expectedPlayTime < $expectedCueTime) {
                 $expectedPlayTime = $expectedCueTime;
             }
+        } else {
+            $expectedPlayTime = $expectedCueTime;
+        }
 
-            $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
-            if ($maxQueueLength < 2) {
-                $maxQueueLength = 2;
-            }
+        $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
+        if ($maxQueueLength < 2) {
+            $maxQueueLength = 2;
+        }
 
-            $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
+        $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
 
-            $lastSongId = null;
-            $queueLength = 0;
+        $lastSongId = null;
+        $queueLength = 0;
 
-            foreach ($upcomingQueue as $queueRow) {
-                if ($queueRow->getSentToAutodj()) {
-                    $expectedCueTime = $this->addDurationToTime(
-                        $station,
-                        CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
-                        $queueRow->getDuration()
-                    );
+        foreach ($upcomingQueue as $queueRow) {
+            if ($queueRow->getSentToAutodj()) {
+                $expectedCueTime = $this->addDurationToTime(
+                    $station,
+                    CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
+                    $queueRow->getDuration()
+                );
 
-                    if (0 === $queueLength) {
-                        $queueLength = 1;
-                    }
-                } else {
-                    // Prevent the exact same track from being played twice during this loop
-                    if ($lastSongId === $queueRow->getSongId()) {
-                        $this->em->remove($queueRow);
-                        continue;
-                    }
-
-                    $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
-                    $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
-
-                    // Only append to queue length for uncued songs.
-                    $queueLength++;
+                if (0 === $queueLength) {
+                    $queueLength = 1;
+                }
+            } else {
+                // Prevent the exact same track from being played twice during this loop
+                if ($lastSongId === $queueRow->getSongId()) {
+                    $this->em->remove($queueRow);
+                    continue;
                 }
 
-                $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+                $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
+
+                // Only append to queue length for uncued songs.
+                $queueLength++;
+            }
+
+            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $this->em->persist($queueRow);
+
+            $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+
+            $lastSongId = $queueRow->getSongId();
+        }
+
+        $this->em->flush();
+
+        // Build the remainder of the queue.
+        while ($queueLength < $maxQueueLength) {
+            $queueRow = $this->cueNextSong($station, $expectedCueTime, $expectedPlayTime);
+            if ($queueRow instanceof Entity\StationQueue) {
                 $this->em->persist($queueRow);
 
-                $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+                // Prevent the exact same track from being played twice during this loop
+                if ($lastSongId === $queueRow->getSongId()) {
+                    $this->em->remove($queueRow);
+                } else {
+                    $lastSongId = $queueRow->getSongId();
 
-                $lastSongId = $queueRow->getSongId();
+                    $expectedCueTime = $this->addDurationToTime(
+                        $station,
+                        $expectedCueTime,
+                        $queueRow->getDuration()
+                    );
+                    $expectedPlayTime = $this->addDurationToTime(
+                        $station,
+                        $expectedPlayTime,
+                        $queueRow->getDuration()
+                    );
+                }
+            } else {
+                break;
             }
 
             $this->em->flush();
-
-            // Build the remainder of the queue.
-            while ($queueLength < $maxQueueLength) {
-                $queueRow = $this->cueNextSong($station, $expectedCueTime, $expectedPlayTime);
-                if ($queueRow instanceof Entity\StationQueue) {
-                    $this->em->persist($queueRow);
-
-                    // Prevent the exact same track from being played twice during this loop
-                    if ($lastSongId === $queueRow->getSongId()) {
-                        $this->em->remove($queueRow);
-                    } else {
-                        $lastSongId = $queueRow->getSongId();
-
-                        $expectedCueTime = $this->addDurationToTime(
-                            $station,
-                            $expectedCueTime,
-                            $queueRow->getDuration()
-                        );
-                        $expectedPlayTime = $this->addDurationToTime(
-                            $station,
-                            $expectedPlayTime,
-                            $queueRow->getDuration()
-                        );
-                    }
-                } else {
-                    break;
-                }
-
-                $this->em->flush();
-                $queueLength++;
-            }
-        } finally {
-            $lock->release();
-            $this->logger->popProcessor();
+            $queueLength++;
         }
     }
 
@@ -655,7 +630,7 @@ class Queue implements EventSubscriberInterface
             $songId = $playedTrack['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'];
             }
         }
 

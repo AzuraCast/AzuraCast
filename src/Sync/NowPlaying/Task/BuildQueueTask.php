@@ -14,12 +14,8 @@ class BuildQueueTask implements NowPlayingTaskInterface
     ) {
     }
 
-    public function run(Station $station, bool $force = false): void
+    public function run(Station $station): void
     {
-        if ($station->useManualAutoDJ()) {
-            return;
-        }
-
-        $this->queue->buildQueue($station, $force);
+        $this->queue->buildQueue($station);
     }
 }

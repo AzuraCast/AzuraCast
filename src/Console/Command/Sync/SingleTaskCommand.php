@@ -6,8 +6,8 @@ namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
 use App\Sync\Task\AbstractTask;
+use Monolog\Logger;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,7 +26,7 @@ class SingleTaskCommand extends CommandAbstract
     public function __construct(
         protected ContainerInterface $di,
         protected CacheInterface $cache,
-        protected LoggerInterface $logger,
+        protected Logger $logger,
     ) {
         parent::__construct();
     }
@@ -65,16 +65,25 @@ class SingleTaskCommand extends CommandAbstract
             throw new \InvalidArgumentException('Specified class is not a synchronized task.');
         }
 
+        $taskShortName = self::getClassShortName($task);
         $cacheKey = self::getCacheKey($task);
 
         $startTime = microtime(true);
-        $this->logger->debug('Starting sync task: ' . $cacheKey);
+        $this->logger->pushProcessor(
+            function ($record) use ($taskShortName) {
+                $record['extra']['task'] = $taskShortName;
+                return $record;
+            }
+        );
+
+        $this->logger->info('Starting sync task.');
 
         $taskClass->run();
 
-        $this->logger->debug('Sync task completed: ' . $cacheKey, [
+        $this->logger->info('Sync task completed.', [
             'time' => microtime(true) - $startTime,
         ]);
+        $this->logger->popProcessor();
 
         $this->cache->set($cacheKey, time(), 86400);
     }
@@ -85,7 +94,15 @@ class SingleTaskCommand extends CommandAbstract
      */
     public static function getCacheKey(string $taskClass): string
     {
-        $taskShortName = (new \ReflectionClass($taskClass))->getShortName();
-        return 'sync_last_run.' . $taskShortName;
+        return 'sync_last_run.' . self::getClassShortName($taskClass);
+    }
+
+    /**
+     * @param class-string $taskClass
+     * @return string
+     */
+    public static function getClassShortName(string $taskClass): string
+    {
+        return (new \ReflectionClass($taskClass))->getShortName();
     }
 }

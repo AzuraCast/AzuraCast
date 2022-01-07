@@ -772,11 +772,12 @@ uninstall() {
 # Usage: ./docker.sh letsencrypt-create
 #
 letsencrypt-create() {
+  echo "This script will automatically attempt to update your .env file, but if you see no response, you can:"
+  echo "  - Manually edit .env and provide a LETSENCRYPT_HOST and LETSENCRYPT_EMAIL"
+  echo "  - Stop existing services by running docker-compose down"
+  echo "  - Start services again by running docker-compose up -d"
+
   setup-letsencrypt
-  echo "If nothing happens when executing this command, go to your .env file and modify the LETSENCRYPT_HOST= and #LETSENCRYPT_EMAIL=" 
-  echo "After filling in these fields, restart your installation via docker-compose down && docker-compose up -d" 
-  # Temorary workaround for issue 4954
-  
   docker-compose down
   docker-compose up -d
   exit

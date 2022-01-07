@@ -4,34 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Acl;
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Enums\GlobalPermissions;
 
 /**
  * @extends Repository<Entity\RolePermission>
  */
 class RolePermissionRepository extends Repository
 {
-    /**
-     * @return mixed[]
-     */
-    public function getActionsForAllRoles(): array
-    {
-        $all_permissions = $this->fetchArray();
-
-        $roles = [];
-        foreach ($all_permissions as $row) {
-            if ($row['station_id']) {
-                $roles[$row['role_id']]['stations'][$row['station_id']][] = $row['action_name'];
-            } else {
-                $roles[$row['role_id']]['global'][] = $row['action_name'];
-            }
-        }
-
-        return $roles;
-    }
-
     /**
      * @param Entity\Role $role
      *
@@ -68,7 +49,7 @@ class RolePermissionRepository extends Repository
             App\Entity\Role r LEFT JOIN r.permissions rp
             WHERE rp.station IS NULL AND rp.action_name = :action
             DQL
-        )->setParameter('action', Acl::GLOBAL_ALL)
+        )->setParameter('action', GlobalPermissions::All->value)
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
@@ -80,7 +61,7 @@ class RolePermissionRepository extends Repository
         $newRole->setName('Super Administrator');
         $this->em->persist($newRole);
 
-        $newPerm = new Entity\RolePermission($newRole, null, Acl::GLOBAL_ALL);
+        $newPerm = new Entity\RolePermission($newRole, null, GlobalPermissions::All);
         $this->em->persist($newPerm);
 
         $this->em->flush();

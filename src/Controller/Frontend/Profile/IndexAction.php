@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Profile;
 
+use App\Enums\SupportedLocales;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Locale;
 use Psr\Http\Message\ResponseInterface;
 
 class IndexAction
@@ -16,6 +16,11 @@ class IndexAction
         Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
+
+        $supportedLocales = [];
+        foreach (SupportedLocales::cases() as $supportedLocale) {
+            $supportedLocales[$supportedLocale->value] = $supportedLocale->getLocalName();
+        }
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -27,7 +32,7 @@ class IndexAction
                 'changePasswordUrl' => (string)$router->named('api:frontend:account:password'),
                 'twoFactorUrl' => (string)$router->named('api:frontend:account:two-factor'),
                 'apiKeysApiUrl' => (string)$router->named('api:frontend:api-keys'),
-                'supportedLocales' => Locale::SUPPORTED_LOCALES,
+                'supportedLocales' => $supportedLocales,
             ]
         );
     }

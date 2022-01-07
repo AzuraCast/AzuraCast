@@ -68,7 +68,7 @@ class BackupCommand extends CommandAbstract
             }
 
             $storageLocation = $this->storageLocationRepo->findByType(
-                Entity\StorageLocation::TYPE_BACKUP,
+                Entity\Enums\StorageLocationTypes::Backup,
                 $storageLocationId
             );
             if (!($storageLocation instanceof Entity\StorageLocation)) {

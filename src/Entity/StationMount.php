@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Radio\Adapters;
+use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\StreamFormats;
+use App\Radio\Enums\StreamProtocols;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
@@ -280,6 +283,13 @@ class StationMount implements
         return $this->autodj_format;
     }
 
+    public function getAutodjFormatEnum(): ?StreamFormats
+    {
+        return (null !== $this->autodj_format)
+            ? StreamFormats::from(strtolower($this->autodj_format))
+            : null;
+    }
+
     public function setAutodjFormat(?string $autodj_format = null): void
     {
         $this->autodj_format = $this->truncateNullableString($autodj_format, 10);
@@ -360,11 +370,12 @@ class StationMount implements
         return $this->getStation()->getFrontendConfig()->getPort();
     }
 
-    public function getAutodjProtocol(): ?string
+    public function getAutodjProtocolEnum(): ?StreamProtocols
     {
-        return Adapters::FRONTEND_SHOUTCAST === $this->getAutodjAdapterType()
-            ? self::PROTOCOL_ICY
-            : null;
+        return match ($this->getAutodjAdapterTypeEnum()) {
+            FrontendAdapters::SHOUTcast => StreamProtocols::Icy,
+            default => null
+        };
     }
 
     public function getAutodjUsername(): ?string
@@ -382,15 +393,9 @@ class StationMount implements
         return $this->getName();
     }
 
-    public function getAutodjAdapterType(): string
+    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface
     {
-        $adapterLookup = [
-            Adapters::FRONTEND_ICECAST => Adapters::REMOTE_ICECAST,
-            Adapters::FRONTEND_SHOUTCAST => Adapters::REMOTE_SHOUTCAST2,
-        ];
-
-        $frontendType = $this->getStation()->getFrontendType();
-        return $adapterLookup[$frontendType];
+        return $this->getStation()->getFrontendTypeEnum();
     }
 
     /**

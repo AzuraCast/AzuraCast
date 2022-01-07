@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Installer\Command;
 
+use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Installer\EnvFiles\AbstractEnvFile;
 use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Installer\EnvFiles\EnvFile;
-use App\Locale;
 use App\Radio\Configuration;
 use App\Utilities\Strings;
 use InvalidArgumentException;
@@ -88,19 +88,19 @@ class InstallCommand extends Command
         // Initialize locale for translated installer/updater.
         if (!$defaults && ($isNewInstall || empty($azuracastEnv[Environment::LANG]))) {
             $langOptions = [];
-            foreach (Locale::SUPPORTED_LOCALES as $langKey => $langName) {
-                $langOptions[Locale::stripLocaleEncoding($langKey)] = $langName;
+            foreach (SupportedLocales::cases() as $supportedLocale) {
+                $langOptions[$supportedLocale->getLocaleWithoutEncoding()] = $supportedLocale->getLocalName();
             }
 
             $azuracastEnv[Environment::LANG] = $io->choice(
                 'Select Language',
                 $langOptions,
-                Locale::stripLocaleEncoding(Locale::DEFAULT_LOCALE)
+                SupportedLocales::default()->getLocaleWithoutEncoding()
             );
         }
 
-        $locale = new Locale($this->environment, $azuracastEnv[Environment::LANG] ?? Locale::DEFAULT_LOCALE);
-        $locale->register();
+        $locale = SupportedLocales::getValidLocale($azuracastEnv[Environment::LANG] ?? null);
+        $locale->register($this->environment);
 
         $envConfig = EnvFile::getConfiguration();
         $env->setFromDefaults();

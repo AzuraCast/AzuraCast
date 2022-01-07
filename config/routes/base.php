@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller;
+use App\Enums\GlobalPermissions;
 use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -19,7 +20,7 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/login-as/{id}/{csrf}', Controller\Frontend\Account\MasqueradeAction::class)
                 ->setName('account:masquerade')
-                ->add(new Middleware\Permissions(App\Acl::GLOBAL_ALL));
+                ->add(new Middleware\Permissions(GlobalPermissions::All));
 
             $group->get('/endsession', Controller\Frontend\Account\EndMasqueradeAction::class)
                 ->setName('account:endmasquerade');

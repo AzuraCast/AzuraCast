@@ -6,6 +6,7 @@ namespace App\Event;
 
 use App\Entity\Settings;
 use App\Entity\Station;
+use App\Enums\PermissionInterface;
 use App\Http\ServerRequest;
 
 class BuildStationMenu extends AbstractBuildMenu
@@ -23,7 +24,7 @@ class BuildStationMenu extends AbstractBuildMenu
         return $this->station;
     }
 
-    public function checkPermission(string $permission_name): bool
+    public function checkPermission(string|PermissionInterface $permission_name): bool
     {
         return $this->request->getAcl()->isAllowed($permission_name, $this->station->getId());
     }

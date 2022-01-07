@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistRemoteTypes;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Enums\PlaylistTypes;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,22 +35,6 @@ class StationPlaylist implements
     public const DEFAULT_WEIGHT = 3;
     public const DEFAULT_REMOTE_BUFFER = 20;
 
-    public const TYPE_DEFAULT = 'default';
-    public const TYPE_ONCE_PER_X_SONGS = 'once_per_x_songs';
-    public const TYPE_ONCE_PER_X_MINUTES = 'once_per_x_minutes';
-    public const TYPE_ONCE_PER_HOUR = 'once_per_hour';
-    public const TYPE_ADVANCED = 'custom';
-
-    public const SOURCE_SONGS = 'songs';
-    public const SOURCE_REMOTE_URL = 'remote_url';
-
-    public const REMOTE_TYPE_STREAM = 'stream';
-    public const REMOTE_TYPE_PLAYLIST = 'playlist';
-
-    public const ORDER_RANDOM = 'random';
-    public const ORDER_SHUFFLE = 'shuffle';
-    public const ORDER_SEQUENTIAL = 'sequential';
-
     public const OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
     public const OPTION_LOOP_PLAYLIST_ONCE = 'loop_once';
     public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
@@ -70,30 +58,21 @@ class StationPlaylist implements
 
     #[
         OA\Property(example: "default"),
-        ORM\Column(length: 50),
-        Assert\Choice(choices: [
-            self::TYPE_DEFAULT,
-            self::TYPE_ONCE_PER_X_SONGS,
-            self::TYPE_ONCE_PER_X_MINUTES,
-            self::TYPE_ONCE_PER_HOUR,
-            self::TYPE_ADVANCED,
-        ])
+        ORM\Column(length: 50)
     ]
-    protected string $type = self::TYPE_DEFAULT;
+    protected string $type;
 
     #[
         OA\Property(example: "songs"),
-        ORM\Column(length: 50),
-        Assert\Choice(choices: [self::SOURCE_SONGS, self::SOURCE_REMOTE_URL])
+        ORM\Column(length: 50)
     ]
-    protected string $source = self::SOURCE_SONGS;
+    protected string $source;
 
     #[
         OA\Property(example: "shuffle"),
-        ORM\Column(name: 'playback_order', length: 50),
-        Assert\Choice(choices: [self::ORDER_RANDOM, self::ORDER_SHUFFLE, self::ORDER_SEQUENTIAL])
+        ORM\Column(name: 'playback_order', length: 50)
     ]
-    protected string $order = self::ORDER_SHUFFLE;
+    protected string $order;
 
     #[
         OA\Property(example: "https://remote-url.example.com/stream.mp3"),
@@ -103,10 +82,9 @@ class StationPlaylist implements
 
     #[
         OA\Property(example: "stream"),
-        ORM\Column(length: 25, nullable: true),
-        Assert\Choice(choices: [self::REMOTE_TYPE_STREAM, self::REMOTE_TYPE_PLAYLIST])
+        ORM\Column(length: 25, nullable: true)
     ]
-    protected ?string $remote_type = self::REMOTE_TYPE_STREAM;
+    protected ?string $remote_type;
 
     #[
         OA\Property(
@@ -224,6 +202,11 @@ class StationPlaylist implements
     {
         $this->station = $station;
 
+        $this->type = PlaylistTypes::default()->value;
+        $this->source = PlaylistSources::Songs->value;
+        $this->order = PlaylistOrders::Shuffle->value;
+        $this->remote_type = PlaylistRemoteTypes::Stream->value;
+
         $this->media_items = new ArrayCollection();
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
@@ -259,8 +242,17 @@ class StationPlaylist implements
         return $this->type;
     }
 
+    public function getTypeEnum(): PlaylistTypes
+    {
+        return PlaylistTypes::from($this->type);
+    }
+
     public function setType(string $type): void
     {
+        if (null === PlaylistTypes::tryFrom($type)) {
+            throw new \InvalidArgumentException('Invalid playlist type.');
+        }
+
         $this->type = $type;
     }
 
@@ -269,8 +261,17 @@ class StationPlaylist implements
         return $this->source;
     }
 
+    public function getSourceEnum(): PlaylistSources
+    {
+        return PlaylistSources::from($this->source);
+    }
+
     public function setSource(string $source): void
     {
+        if (null === PlaylistSources::tryFrom($source)) {
+            throw new \InvalidArgumentException('Invalid playlist source.');
+        }
+
         $this->source = $source;
     }
 
@@ -279,8 +280,17 @@ class StationPlaylist implements
         return $this->order;
     }
 
+    public function getOrderEnum(): PlaylistOrders
+    {
+        return PlaylistOrders::from($this->order);
+    }
+
     public function setOrder(string $order): void
     {
+        if (null === PlaylistOrders::tryFrom($order)) {
+            throw new \InvalidArgumentException('Invalid playlist order.');
+        }
+
         $this->order = $order;
     }
 
@@ -299,8 +309,17 @@ class StationPlaylist implements
         return $this->remote_type;
     }
 
+    public function getRemoteTypeEnum(): ?PlaylistRemoteTypes
+    {
+        return PlaylistRemoteTypes::tryFrom($this->remote_type ?? '');
+    }
+
     public function setRemoteType(?string $remote_type): void
     {
+        if (null !== $remote_type && null === PlaylistRemoteTypes::tryFrom($remote_type)) {
+            throw new \InvalidArgumentException('Invalid playlist remote type.');
+        }
+
         $this->remote_type = $remote_type;
     }
 
@@ -456,12 +475,12 @@ class StationPlaylist implements
             return false;
         }
 
-        if (self::SOURCE_SONGS === $this->source) {
+        if (PlaylistSources::Songs === $this->getSourceEnum()) {
             return $this->media_items->count() > 0;
         }
 
         // Remote stream playlists aren't supported by the AzuraCast AutoDJ.
-        return self::REMOTE_TYPE_PLAYLIST === $this->remote_type;
+        return PlaylistRemoteTypes::Playlist === $this->getRemoteTypeEnum();
     }
 
     /**

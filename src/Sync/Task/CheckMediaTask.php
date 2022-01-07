@@ -63,7 +63,7 @@ class CheckMediaTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
+        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
 
         foreach ($storageLocations as $storageLocation) {
             $this->logger->info(

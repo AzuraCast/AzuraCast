@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Radio\Adapters;
+use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\Enums\RemoteAdapters;
+use App\Radio\Enums\StreamFormats;
+use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Stringable;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ORM\Entity,
@@ -48,7 +50,6 @@ class StationRemote implements
     protected bool $is_visible_on_public_pages = true;
 
     #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [Adapters::REMOTE_ICECAST, Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2])]
     protected string $type;
 
     #[ORM\Column]
@@ -145,6 +146,13 @@ class StationRemote implements
         return $this->autodj_format;
     }
 
+    public function getAutodjFormatEnum(): ?StreamFormats
+    {
+        return (null !== $this->autodj_format)
+            ? StreamFormats::from(strtolower($this->autodj_format))
+            : null;
+    }
+
     public function setAutodjFormat(string $autodj_format = null): void
     {
         $this->autodj_format = $autodj_format;
@@ -189,7 +197,7 @@ class StationRemote implements
     {
         $password = $this->getSourcePassword();
 
-        if (Adapters::REMOTE_SHOUTCAST2 === $this->getType()) {
+        if (RemoteAdapters::SHOUTcast2 === $this->getTypeEnum()) {
             $mount = $this->getSourceMount();
             if (empty($mount)) {
                 $mount = $this->getMount();
@@ -218,8 +226,17 @@ class StationRemote implements
         return $this->type;
     }
 
+    public function getTypeEnum(): RemoteAdapters
+    {
+        return RemoteAdapters::from($this->type);
+    }
+
     public function setType(string $type): void
     {
+        if (null === RemoteAdapters::tryFrom($type)) {
+            throw new \InvalidArgumentException('Invalid type specified.');
+        }
+
         $this->type = $type;
     }
 
@@ -256,7 +273,7 @@ class StationRemote implements
     /** @inheritdoc */
     public function getAutodjMount(): ?string
     {
-        if (Adapters::REMOTE_ICECAST !== $this->getType()) {
+        if (RemoteAdapters::Icecast !== $this->getTypeEnum()) {
             return null;
         }
 
@@ -317,19 +334,19 @@ class StationRemote implements
         $this->source_port = $source_port;
     }
 
-    public function getAutodjProtocol(): ?string
+    public function getAutodjProtocolEnum(): ?StreamProtocols
     {
         $urlScheme = $this->getUrlAsUri()->getScheme();
 
-        return match ($this->getAutodjAdapterType()) {
-            Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2 => self::PROTOCOL_ICY,
-            default => ('https' === $urlScheme) ? self::PROTOCOL_HTTPS : self::PROTOCOL_HTTP
+        return match ($this->getAutodjAdapterTypeEnum()) {
+            RemoteAdapters::SHOUTcast1, RemoteAdapters::SHOUTcast2 => StreamProtocols::Icy,
+            default => ('https' === $urlScheme) ? StreamProtocols::Https : StreamProtocols::Http
         };
     }
 
-    public function getAutodjAdapterType(): string
+    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface
     {
-        return $this->getType();
+        return $this->getTypeEnum();
     }
 
     public function getIsPublic(): bool
@@ -367,7 +384,7 @@ class StationRemote implements
      */
     public function isEditable(): bool
     {
-        return (Adapters::REMOTE_AZURARELAY !== $this->type);
+        return (RemoteAdapters::AzuraRelay !== $this->getTypeEnum());
     }
 
     /**
@@ -389,7 +406,7 @@ class StationRemote implements
             unique: $this->listeners_unique
         );
 
-        if ($this->enable_autodj || (Adapters::REMOTE_AZURARELAY === $this->type)) {
+        if ($this->enable_autodj || (RemoteAdapters::AzuraRelay === $this->getTypeEnum())) {
             $response->bitrate = (int)$this->autodj_bitrate;
             $response->format = (string)$this->autodj_format;
         }

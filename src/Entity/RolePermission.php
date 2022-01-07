@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enums\PermissionInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -36,8 +37,11 @@ class RolePermission implements
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
 
-    public function __construct(Role $role, Station $station = null, ?string $action_name = null)
-    {
+    public function __construct(
+        Role $role,
+        Station $station = null,
+        string|PermissionInterface|null $action_name = null
+    ) {
         $this->role = $role;
         $this->station = $station;
 
@@ -71,8 +75,12 @@ class RolePermission implements
         return $this->action_name;
     }
 
-    public function setActionName(string $action_name): void
+    public function setActionName(string|PermissionInterface $action_name): void
     {
+        if ($action_name instanceof PermissionInterface) {
+            $action_name = $action_name->getValue();
+        }
+
         $this->action_name = $action_name;
     }
 
@@ -82,7 +90,7 @@ class RolePermission implements
     public function jsonSerialize(): array
     {
         return [
-            'action' => $this->action_name,
+            'action'     => $this->action_name,
             'station_id' => $this->station_id,
         ];
     }

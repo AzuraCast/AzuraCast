@@ -17,7 +17,7 @@ $title ??= null;
 $header ??= null;
 ?>
 <!DOCTYPE html>
-<html data-theme="<?= $customization->getTheme() ?>">
+<html data-theme="<?= $customization->getTheme()->value ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,11 +80,11 @@ endif; ?>">
             </li>
             <li class="dropdown-divider">&nbsp;</li>
             <?php
-            if ($acl->isAllowed(App\Acl::GLOBAL_VIEW)): ?>
+            if ($acl->isAllowed(App\Enums\GlobalPermissions::View)): ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('admin:index:index')?>">
+                    <a class="dropdown-item" href="<?= $router->named('admin:index:index') ?>">
                         <i class="material-icons" aria-hidden="true">settings</i>
-                        <?=__('System Administration')?>
+                        <?= __('System Administration') ?>
                     </a>
                 </li>
             <?php

@@ -8,8 +8,8 @@ use App\Acl;
 use App\Auth;
 use App\Customization;
 use App\Entity;
+use App\Enums\SupportedLocales;
 use App\Exception;
-use App\Locale;
 use App\Radio;
 use App\RateLimit;
 use App\Session;
@@ -65,9 +65,9 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         return $this->getAttributeOfClass(self::ATTR_RATE_LIMIT, RateLimit::class);
     }
 
-    public function getLocale(): Locale
+    public function getLocale(): SupportedLocales
     {
-        return $this->getAttributeOfClass(self::ATTR_LOCALE, Locale::class);
+        return $this->getAttributeOfClass(self::ATTR_LOCALE, SupportedLocales::class);
     }
 
     public function getCustomization(): Customization

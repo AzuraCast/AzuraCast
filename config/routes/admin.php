@@ -1,7 +1,7 @@
 <?php
 
-use App\Acl;
 use App\Controller;
+use App\Enums\GlobalPermissions;
 use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -55,7 +55,7 @@ return static function (RouteCollectorProxy $app) {
                         }
                     )->add(Middleware\GetStation::class);
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+            )->add(new Middleware\Permissions(GlobalPermissions::All));
 
             $group->group(
                 '/install',
@@ -66,27 +66,27 @@ return static function (RouteCollectorProxy $app) {
                     $group->get('/geolite', Controller\Admin\GeoLiteAction::class)
                         ->setName('admin:install_geolite:index');
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
+            )->add(new Middleware\Permissions(GlobalPermissions::Settings));
 
             $group->get('/auditlog', Controller\Admin\AuditLogAction::class)
                 ->setName('admin:auditlog:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Logs));
 
             $group->get('/api-keys', Controller\Admin\ApiKeysAction::class)
                 ->setName('admin:api:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
+                ->add(new Middleware\Permissions(GlobalPermissions::ApiKeys));
 
             $group->get('/backups', Controller\Admin\BackupsAction::class)
                 ->setName('admin:backups:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Backups));
 
             $group->get('/branding', Controller\Admin\BrandingAction::class)
                 ->setName('admin:branding:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Settings));
 
             $group->get('/custom_fields', Controller\Admin\CustomFieldsAction::class)
                 ->setName('admin:custom_fields:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_CUSTOM_FIELDS));
+                ->add(new Middleware\Permissions(GlobalPermissions::CustomFields));
 
             $group->group(
                 '/logs',
@@ -98,35 +98,35 @@ return static function (RouteCollectorProxy $app) {
                         ->setName('admin:logs:view')
                         ->add(Middleware\GetStation::class);
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
+            )->add(new Middleware\Permissions(GlobalPermissions::Logs));
 
             $group->get('/permissions', Controller\Admin\PermissionsAction::class)
                 ->setName('admin:permissions:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+                ->add(new Middleware\Permissions(GlobalPermissions::All));
 
             $group->get('/relays', Controller\Admin\RelaysAction::class)
                 ->setName('admin:relays:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Stations));
 
             $group->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsAction::class)
                 ->setName('admin:settings:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Settings));
 
             $group->get('/stations', Controller\Admin\StationsAction::class)
                 ->setName('admin:stations:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Stations));
 
             $group->get('/storage_locations', Controller\Admin\StorageLocationsAction::class)
                 ->setName('admin:storage_locations:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_STORAGE_LOCATIONS));
+                ->add(new Middleware\Permissions(GlobalPermissions::StorageLocations));
 
             $group->get('/users', Controller\Admin\UsersAction::class)
                 ->setName('admin:users:index')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+                ->add(new Middleware\Permissions(GlobalPermissions::All));
         }
     )
         ->add(Middleware\Module\Admin::class)
         ->add(Middleware\EnableView::class)
-        ->add(new Middleware\Permissions(Acl::GLOBAL_VIEW))
+        ->add(new Middleware\Permissions(GlobalPermissions::View))
         ->add(Middleware\RequireLogin::class);
 };

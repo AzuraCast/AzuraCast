@@ -16,7 +16,7 @@ class Api_Stations_RemotesCest extends CestAbstract
             $I,
             '/api/station/' . $station->getId() . '/remotes',
             [
-                'type' => \App\Radio\Adapters::REMOTE_ICECAST,
+                'type'         => \App\Radio\Enums\RemoteAdapters::Icecast->value,
                 'display_name' => 'Test Remote Relay',
             ],
             [

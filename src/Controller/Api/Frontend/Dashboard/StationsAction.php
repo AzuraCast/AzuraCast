@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
@@ -29,7 +29,7 @@ class StationsAction
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->getIsEnabled() &&
-                    $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
+                    $acl->isAllowed(StationPermissions::View, $station->getId());
             }
         );
 

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Fixture;
 
 use App\Entity;
-use App\Radio\Adapters;
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\FrontendAdapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -17,8 +18,8 @@ class Station extends AbstractFixture
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);
-        $station->setFrontendType(Adapters::FRONTEND_ICECAST);
-        $station->setBackendType(Adapters::BACKEND_LIQUIDSOAP);
+        $station->setFrontendType(FrontendAdapters::Icecast->value);
+        $station->setBackendType(BackendAdapters::Liquidsoap->value);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
 
         $station->ensureDirectoriesExist();

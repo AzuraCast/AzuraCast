@@ -9,6 +9,7 @@ use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastRepository;
 use App\Entity\Station;
 use App\Entity\User;
+use App\Enums\StationPermissions;
 use App\Exception\PodcastNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -66,7 +67,7 @@ class RequirePublishedPodcastEpisodeMiddleware
 
     protected function canUserManageStationPodcasts(User $user, Station $station, Acl $acl): bool
     {
-        return $acl->userAllowed($user, Acl::STATION_PODCASTS, $station->getId());
+        return $acl->userAllowed($user, StationPermissions::Podcasts, $station->getId());
     }
 
     protected function getPodcastIdFromRequest(ServerRequest $request): ?string

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\Flash;
 
@@ -21,7 +21,7 @@ class SyncTaskCheck
         // This notification is for full administrators only.
         $request = $event->getRequest();
         $acl = $request->getAcl();
-        if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
+        if (!$acl->isAllowed(GlobalPermissions::All)) {
             return;
         }
 

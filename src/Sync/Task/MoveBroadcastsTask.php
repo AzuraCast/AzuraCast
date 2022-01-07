@@ -27,7 +27,11 @@ class MoveBroadcastsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        foreach ($this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_RECORDINGS) as $storageLocation) {
+        foreach (
+            $this->iterateStorageLocations(
+                Entity\Enums\StorageLocationTypes::StationRecordings
+            ) as $storageLocation
+        ) {
             $this->processForStorageLocation($storageLocation);
         }
     }

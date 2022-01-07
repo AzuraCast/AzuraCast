@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Avatar;
@@ -40,7 +40,7 @@ class DashboardAction
                 'userUrl'           => (string)$router->named('api:frontend:account:me'),
                 'profileUrl'        => (string)$router->named('profile:index'),
                 'adminUrl'          => (string)$router->named('admin:index:index'),
-                'showAdmin'         => $acl->isAllowed(Acl::GLOBAL_VIEW),
+                'showAdmin'         => $acl->isAllowed(GlobalPermissions::View),
                 'notificationsUrl'  => (string)$router->named('api:frontend:dashboard:notifications'),
                 'showCharts'        => $showCharts,
                 'chartsUrl'         => (string)$router->named('api:frontend:dashboard:charts'),

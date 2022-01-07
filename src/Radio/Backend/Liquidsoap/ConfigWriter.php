@@ -10,8 +10,10 @@ use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Flysystem\StationFilesystems;
 use App\Message;
-use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\StreamFormats;
+use App\Radio\Enums\StreamProtocols;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
@@ -225,7 +227,7 @@ class ConfigWriter implements EventSubscriberInterface
 
             $playlistConfigLines = [];
 
-            if (Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
+            if (Entity\Enums\PlaylistSources::Songs === $playlist->getSourceEnum()) {
                 $playlistFilePath = $this->writePlaylistFile($playlist, false);
                 if (!$playlistFilePath) {
                     continue;
@@ -236,13 +238,12 @@ class ConfigWriter implements EventSubscriberInterface
                     'mime_type="audio/x-mpegurl"',
                 ];
 
-                $playlistModes = [
-                    Entity\StationPlaylist::ORDER_SEQUENTIAL => 'normal',
-                    Entity\StationPlaylist::ORDER_SHUFFLE    => 'randomize',
-                    Entity\StationPlaylist::ORDER_RANDOM     => 'random',
-                ];
-
-                $playlistParams[] = 'mode="' . $playlistModes[$playlist->getOrder()] . '"';
+                $playlistMode = match ($playlist->getOrderEnum()) {
+                    Entity\Enums\PlaylistOrders::Sequential => 'normal',
+                    Entity\Enums\PlaylistOrders::Shuffle => 'randomize',
+                    Entity\Enums\PlaylistOrders::Random => 'random'
+                };
+                $playlistParams[] = 'mode="' . $playlistMode . '"';
 
                 if ($playlist->backendLoopPlaylistOnce()) {
                     $playlistParams[] = 'reload_mode="never"';
@@ -263,15 +264,15 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                     . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
             } else {
-                switch ($playlist->getRemoteType()) {
-                    case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
+                switch ($playlist->getRemoteTypeEnum()) {
+                    case Entity\Enums\PlaylistRemoteTypes::Playlist:
                         $playlistFunc = 'playlist("'
                             . self::cleanUpString($playlist->getRemoteUrl())
                             . '")';
                         $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
                         break;
 
-                    case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
+                    case Entity\Enums\PlaylistRemoteTypes::Stream:
                     default:
                         $remote_url = $playlist->getRemoteUrl();
                         if (null !== $remote_url) {
@@ -290,7 +291,7 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
 
-            if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
+            if (Entity\Enums\PlaylistTypes::Advanced === $playlist->getTypeEnum()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
             }
 
@@ -302,8 +303,8 @@ class ConfigWriter implements EventSubscriberInterface
 
             $scheduleItems = $playlist->getScheduleItems();
 
-            switch ($playlist->getType()) {
-                case Entity\StationPlaylist::TYPE_DEFAULT:
+            switch ($playlist->getTypeEnum()) {
+                case Entity\Enums\PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
                             $play_time = $this->getScheduledPlaylistPlayTime($scheduleItem);
@@ -321,9 +322,9 @@ class ConfigWriter implements EventSubscriberInterface
                     }
                     break;
 
-                case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
-                case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
-                    if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $playlist->getType()) {
+                case Entity\Enums\PlaylistTypes::OncePerXSongs:
+                case Entity\Enums\PlaylistTypes::OncePerXMinutes:
+                    if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getTypeEnum()) {
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
                     } else {
@@ -349,7 +350,7 @@ class ConfigWriter implements EventSubscriberInterface
                     }
                     break;
 
-                case Entity\StationPlaylist::TYPE_ONCE_PER_HOUR:
+                case Entity\Enums\PlaylistTypes::OncePerHour:
                     $minutePlayTime = $playlist->getPlayPerHourMinute() . 'm';
 
                     if ($scheduleItems->count() > 0) {
@@ -849,7 +850,7 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         if ($recordLiveStreams) {
-            $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
+            $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum() ?? StreamFormats::Mp3;
             $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
@@ -963,7 +964,7 @@ class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (Adapters::FRONTEND_REMOTE === $station->getFrontendType()) {
+        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
             return;
         }
 
@@ -998,8 +999,9 @@ class ConfigWriter implements EventSubscriberInterface
     ): string {
         $charset = $station->getBackendConfig()->getCharset();
 
+        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::Mp3;
         $output_format = $this->getOutputFormatString(
-            $mount->getAutodjFormat() ?? $mount::FORMAT_MP3,
+            $format,
             $mount->getAutodjBitrate() ?? 128
         );
 
@@ -1015,16 +1017,16 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'user = "' . self::cleanUpString($username) . '"';
         }
 
+        $protocol = $mount->getAutodjProtocolEnum();
+
         $password = self::cleanUpString($mount->getAutodjPassword());
-        if (Adapters::REMOTE_SHOUTCAST2 === $mount->getAutodjAdapterType()) {
+        if (StreamProtocols::Icy === $protocol) {
             $password .= ':#' . $id;
         }
         $output_params[] = 'password = "' . $password . '"';
 
-        $protocol = $mount->getAutodjProtocol();
-
         if (!empty($mount->getAutodjMount())) {
-            if ($mount::PROTOCOL_ICY === $protocol) {
+            if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;
             } else {
                 $output_params[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
@@ -1043,13 +1045,10 @@ class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'encoding = "' . $charset . '"';
 
         if (null !== $protocol) {
-            $output_params[] = 'protocol="' . $protocol . '"';
+            $output_params[] = 'protocol="' . $protocol->value . '"';
         }
 
-        if (
-            Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()
-            || Entity\Interfaces\StationMountInterface::FORMAT_FLAC === $mount->getAutodjFormat()
-        ) {
+        if ($format->sendIcyMetadata()) {
             $output_params[] = 'icy_metadata="true"';
         }
 
@@ -1058,25 +1057,25 @@ class ConfigWriter implements EventSubscriberInterface
         return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
-    protected function getOutputFormatString(string $format, int $bitrate = 128): string
+    protected function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
     {
-        switch (strtolower($format)) {
-            case Entity\Interfaces\StationMountInterface::FORMAT_AAC:
+        switch ($format) {
+            case StreamFormats::Aac:
                 $afterburner = ($bitrate >= 160) ? 'true' : 'false';
                 $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
 
                 return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
 
-            case Entity\Interfaces\StationMountInterface::FORMAT_OGG:
+            case StreamFormats::Ogg:
                 return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
 
-            case Entity\Interfaces\StationMountInterface::FORMAT_OPUS:
+            case StreamFormats::Opus:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
 
-            case Entity\Interfaces\StationMountInterface::FORMAT_FLAC:
+            case StreamFormats::Flac:
                 return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
 
-            case Entity\Interfaces\StationMountInterface::FORMAT_MP3:
+            case StreamFormats::Mp3:
             default:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
         }

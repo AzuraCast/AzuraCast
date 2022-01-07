@@ -21,11 +21,11 @@ class GetQueueAction extends AbstractPlaylistsAction
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 
-        if (Entity\StationPlaylist::SOURCE_SONGS !== $record->getSource()) {
+        if (Entity\Enums\PlaylistSources::Songs !== $record->getSourceEnum()) {
             throw new InvalidArgumentException('This playlist does not have songs as its primary source.');
         }
 
-        if (Entity\StationPlaylist::ORDER_RANDOM === $record->getOrder()) {
+        if (Entity\Enums\PlaylistOrders::Random === $record->getOrderEnum()) {
             throw new InvalidArgumentException('This playlist is always shuffled and has no visible queue.');
         }
 

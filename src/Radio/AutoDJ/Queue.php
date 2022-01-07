@@ -19,17 +19,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Queue implements EventSubscriberInterface
 {
-    protected const TYPES_TO_PLAY_BY_PRIORITY = [
-        Entity\StationPlaylist::TYPE_ONCE_PER_HOUR . '_scheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_HOUR . '_unscheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS . '_scheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS . '_unscheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES . '_scheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES . '_unscheduled',
-        Entity\StationPlaylist::TYPE_DEFAULT . '_scheduled',
-        Entity\StationPlaylist::TYPE_DEFAULT . '_unscheduled',
-    ];
-
     public function __construct(
         protected EntityManagerInterface $em,
         protected Logger $logger,
@@ -245,7 +234,19 @@ class Queue implements EventSubscriberInterface
             $recentSongHistoryForDuplicatePrevention
         );
 
-        foreach (self::TYPES_TO_PLAY_BY_PRIORITY as $currentPlaylistType) {
+        $typesToPlay = [
+            Entity\Enums\PlaylistTypes::OncePerHour->value,
+            Entity\Enums\PlaylistTypes::OncePerXSongs->value,
+            Entity\Enums\PlaylistTypes::OncePerXMinutes->value,
+            Entity\Enums\PlaylistTypes::Standard->value,
+        ];
+        $typesToPlayByPriority = [];
+        foreach ($typesToPlay as $type) {
+            $typesToPlayByPriority[] = $type . '_scheduled';
+            $typesToPlayByPriority[] = $type . '_unscheduled';
+        }
+
+        foreach ($typesToPlayByPriority as $currentPlaylistType) {
             if (empty($activePlaylistsByType[$currentPlaylistType])) {
                 continue;
             }
@@ -313,7 +314,7 @@ class Queue implements EventSubscriberInterface
             if ($playlist->isPlayable()) {
                 $type = $playlist->getType();
 
-                if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $type) {
+                if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getTypeEnum()) {
                     $oncePerXSongHistoryCount = max($oncePerXSongHistoryCount, $playlist->getPlayPerSongs());
                 }
 
@@ -432,23 +433,22 @@ class Queue implements EventSubscriberInterface
         CarbonInterface $expectedPlayTime,
         bool $allowDuplicates = false
     ): ?Entity\StationQueue {
-        if (Entity\StationPlaylist::SOURCE_REMOTE_URL === $playlist->getSource()) {
+        if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSourceEnum()) {
             return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
         }
 
-        $validTrack = match ($playlist->getOrder()) {
-            $playlist::ORDER_RANDOM => $this->getRandomMediaIdFromPlaylist(
+        $validTrack = match ($playlist->getOrderEnum()) {
+            Entity\Enums\PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates
             ),
-            $playlist::ORDER_SEQUENTIAL => $this->getSequentialMediaIdFromPlaylist($playlist),
-            $playlist::ORDER_SHUFFLE => $this->getShuffledMediaIdFromPlaylist(
+            Entity\Enums\PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist($playlist),
+            Entity\Enums\PlaylistOrders::Shuffle => $this->getShuffledMediaIdFromPlaylist(
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates
-            ),
-            default => null
+            )
         };
 
         if (null === $validTrack) {
@@ -521,10 +521,10 @@ class Queue implements EventSubscriberInterface
      */
     protected function getMediaFromRemoteUrl(Entity\StationPlaylist $playlist): ?array
     {
-        $remoteType = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
+        $remoteType = $playlist->getRemoteTypeEnum() ?? Entity\Enums\PlaylistRemoteTypes::Stream;
 
         // Handle a raw stream URL of possibly indeterminate length.
-        if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remoteType) {
+        if (Entity\Enums\PlaylistRemoteTypes::Stream === $remoteType) {
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
             $duration = $this->scheduler->getPlaylistScheduleDuration($playlist);
             return [$playlist->getRemoteUrl(), $duration];

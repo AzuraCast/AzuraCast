@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Acl;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Enums\StationPermissions;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -409,7 +409,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $acl = $request->getAcl();
         $station = $request->getStation();
 
-        if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
+        if ($acl->isAllowed(StationPermissions::Podcasts, $station)) {
             $return->links['art'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episode:art-internal',
                 route_params: ['episode_id' => $record->getId()],

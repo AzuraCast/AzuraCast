@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
-use App\Acl;
 use App\Entity\Api\Notification;
+use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\Flash;
@@ -22,7 +22,7 @@ class ComposeVersionCheck
     {
         // This notification is for full administrators only.
         $acl = $event->getRequest()->getAcl();
-        if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
+        if (!$acl->isAllowed(GlobalPermissions::All)) {
             return;
         }
 

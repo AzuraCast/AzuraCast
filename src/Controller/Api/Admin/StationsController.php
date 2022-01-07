@@ -168,6 +168,7 @@ class StationsController extends AbstractAdminApiCrudController
     ) {
         parent::__construct($reloadableEm, $serializer, $validator);
     }
+
     /**
      * @param ServerRequest $request
      * @param Response $response
@@ -195,6 +196,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
+
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof $this->entityClass)) {
@@ -226,6 +228,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         return $return;
     }
+
     /**
      * @param Entity\Station $record
      * @param array<string, mixed> $context
@@ -243,7 +246,7 @@ class StationsController extends AbstractAdminApiCrudController
             'has_started',
         ];
 
-        foreach (Entity\Station::getStorageLocationTypes() as $storageLocationType => $locationKey) {
+        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $context[AbstractNormalizer::CALLBACKS][$locationKey] = fn(
                 array $value
             ) => $value['id'];
@@ -251,9 +254,10 @@ class StationsController extends AbstractAdminApiCrudController
 
         return parent::toArray($record, $context);
     }
+
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        foreach (Entity\Station::getStorageLocationTypes() as $locationKey) {
+        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $idKey = $locationKey . '_id';
             if (!empty($data[$idKey])) {
                 $data[$locationKey] = $data[$idKey];
@@ -263,6 +267,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         return parent::fromArray($data, $record, $context);
     }
+
     /**
      * @param array<mixed>|null $data
      * @param Entity\Station|null $record
@@ -289,6 +294,7 @@ class StationsController extends AbstractAdminApiCrudController
             ? $this->handleCreate($record)
             : $this->handleEdit($record);
     }
+
     /**
      * @param Entity\Station $record
      */
@@ -296,6 +302,7 @@ class StationsController extends AbstractAdminApiCrudController
     {
         $this->handleDelete($record);
     }
+
     protected function handleEdit(Entity\Station $station): Entity\Station
     {
         $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
@@ -333,6 +340,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         return $station;
     }
+
     protected function handleCreate(Entity\Station $station): Entity\Station
     {
         $station->generateAdapterApiKey();
@@ -348,6 +356,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         return $station;
     }
+
     protected function handleDelete(Entity\Station $station): void
     {
         $this->configuration->removeConfiguration($station);

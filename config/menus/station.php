@@ -3,7 +3,7 @@
  * Administrative dashboard configuration.
  */
 
-use App\Acl;
+use App\Enums\StationPermissions;
 
 return function (App\Event\BuildStationMenu $e) {
     $request = $e->getRequest();
@@ -25,7 +25,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'class'      => 'api-call text-success',
                 'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
                 'visible'    => !$station->getHasStarted(),
-                'permission' => Acl::STATION_BROADCASTING,
+                'permission' => StationPermissions::Broadcasting,
             ],
             'restart_station' => [
                 'label'      => __('Restart to Apply Changes'),
@@ -36,7 +36,7 @@ return function (App\Event\BuildStationMenu $e) {
                     . (!$station->getNeedsRestart() ? 'd-none' : ''),
                 'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
                 'visible'    => $station->getHasStarted(),
-                'permission' => Acl::STATION_BROADCASTING,
+                'permission' => StationPermissions::Broadcasting,
             ],
             'profile'         => [
                 'label' => __('Profile'),
@@ -62,27 +62,27 @@ return function (App\Event\BuildStationMenu $e) {
                 'icon'       => 'library_music',
                 'url'        => (string)$router->fromHere('stations:files:index'),
                 'visible'    => $backend->supportsMedia(),
-                'permission' => Acl::STATION_MEDIA,
+                'permission' => StationPermissions::Media,
             ],
             'playlists'       => [
                 'label'      => __('Playlists'),
                 'icon'       => 'queue_music',
                 'url'        => (string)$router->fromHere('stations:playlists:index'),
                 'visible'    => $backend->supportsMedia(),
-                'permission' => Acl::STATION_MEDIA,
+                'permission' => StationPermissions::Media,
             ],
             'podcasts'        => [
                 'label'      => __('Podcasts'),
                 'icon'       => 'cast',
                 'url'        => (string)$router->fromHere('stations:podcasts:index'),
-                'permission' => Acl::STATION_PODCASTS,
+                'permission' => StationPermissions::Podcasts,
             ],
             'streamers'       => [
                 'label'      => __('Streamer/DJ Accounts'),
                 'icon'       => 'mic',
                 'url'        => (string)$router->fromHere('stations:streamers:index'),
                 'visible'    => $backend->supportsStreamers(),
-                'permission' => Acl::STATION_STREAMERS,
+                'permission' => StationPermissions::Streamers,
             ],
             'web_dj'          => [
                 'label'    => __('Web DJ'),
@@ -97,24 +97,24 @@ return function (App\Event\BuildStationMenu $e) {
                 'icon'       => 'wifi_tethering',
                 'url'        => (string)$router->fromHere('stations:mounts:index'),
                 'visible'    => $frontend->supportsMounts(),
-                'permission' => Acl::STATION_MOUNTS,
+                'permission' => StationPermissions::MountPoints,
             ],
             'remotes'         => [
                 'label'      => __('Remote Relays'),
                 'icon'       => 'router',
                 'url'        => (string)$router->fromHere('stations:remotes:index'),
-                'permission' => Acl::STATION_REMOTES,
+                'permission' => StationPermissions::RemoteRelays,
             ],
             'webhooks'        => [
                 'label'      => __('Web Hooks'),
                 'icon'       => 'code',
                 'url'        => (string)$router->fromHere('stations:webhooks:index'),
-                'permission' => Acl::STATION_WEB_HOOKS,
+                'permission' => StationPermissions::WebHooks,
             ],
             'reports'         => [
                 'label'      => __('Reports'),
                 'icon'       => 'assignment',
-                'permission' => Acl::STATION_REPORTS,
+                'permission' => StationPermissions::Reports,
                 'items'      => [
                     'reports_overview'      => [
                         'label' => __('Statistics Overview'),
@@ -162,37 +162,37 @@ return function (App\Event\BuildStationMenu $e) {
                         'label'      => __('SFTP Users'),
                         'url'        => (string)$router->fromHere('stations:sftp_users:index'),
                         'visible'    => App\Service\SftpGo::isSupportedForStation($station),
-                        'permission' => Acl::STATION_MEDIA,
+                        'permission' => StationPermissions::Media,
                     ],
                     'automation' => [
                         'label'      => __('Automated Assignment'),
                         'url'        => (string)$router->fromHere('stations:automation:index'),
                         'visible'    => $backend->supportsMedia(),
-                        'permission' => Acl::STATION_AUTOMATION,
+                        'permission' => StationPermissions::Automation,
                     ],
                     'ls_config'  => [
                         'label'      => __('Edit Liquidsoap Configuration'),
                         'url'        => (string)$router->fromHere('stations:util:ls_config'),
                         'visible'    => $settings->getEnableAdvancedFeatures()
                             && $backend instanceof App\Radio\Backend\Liquidsoap,
-                        'permission' => Acl::STATION_BROADCASTING,
+                        'permission' => StationPermissions::Broadcasting,
                     ],
                     'logs'       => [
                         'label'      => __('Log Viewer'),
                         'url'        => (string)$router->fromHere('stations:logs:index'),
-                        'permission' => Acl::STATION_LOGS,
+                        'permission' => StationPermissions::Logs,
                     ],
                     'queue'      => [
                         'label'      => __('Upcoming Song Queue'),
                         'url'        => (string)$router->fromHere('stations:queue:index'),
-                        'permission' => Acl::STATION_BROADCASTING,
+                        'permission' => StationPermissions::Broadcasting,
                     ],
                     'restart'    => [
                         'label'      => __('Restart Broadcasting'),
                         'url'        => (string)$router->fromHere('api:stations:restart'),
                         'class'      => 'api-call',
                         'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
-                        'permission' => Acl::STATION_BROADCASTING,
+                        'permission' => StationPermissions::Broadcasting,
                     ],
                 ],
             ],

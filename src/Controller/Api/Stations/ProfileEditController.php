@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Acl;
 use App\Controller\Api\Admin\StationsController;
 use App\Entity;
 use App\Entity\Interfaces\EntityGroupsInterface;
+use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -50,7 +50,7 @@ class ProfileEditController extends StationsController
             ],
         ];
 
-        if ($request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS)) {
+        if ($request->getAcl()->isAllowed(GlobalPermissions::Stations)) {
             $context[AbstractNormalizer::GROUPS][] = EntityGroupsInterface::GROUP_ALL;
         }
 

@@ -20,14 +20,17 @@ class GetQuotaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $type = Entity\StorageLocation::TYPE_STATION_MEDIA
+        string $type = null
     ): ResponseInterface {
-        $station = $request->getStation();
-        $storageLocation = $station->getStorageLocation($type);
+        $typeEnum = Entity\Enums\StorageLocationTypes::tryFrom($type ?? '')
+            ?? Entity\Enums\StorageLocationTypes::StationMedia;
 
-        $numFiles = match ($type) {
-            Entity\StorageLocation::TYPE_STATION_MEDIA => $this->getNumStationMedia($station),
-            Entity\StorageLocation::TYPE_STATION_PODCASTS => $this->getNumStationPodcastMedia($station),
+        $station = $request->getStation();
+        $storageLocation = $station->getStorageLocation($typeEnum);
+
+        $numFiles = match ($typeEnum) {
+            Entity\Enums\StorageLocationTypes::StationMedia => $this->getNumStationMedia($station),
+            Entity\Enums\StorageLocationTypes::StationPodcasts => $this->getNumStationPodcastMedia($station),
             default => null,
         };
 

@@ -21,8 +21,8 @@ class PutOrderAction extends AbstractPlaylistsAction
         $record = $this->requireRecord($request->getStation(), $id);
 
         if (
-            $record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
-            || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL
+            Entity\Enums\PlaylistSources::Songs !== $record->getSourceEnum()
+            || Entity\Enums\PlaylistOrders::Sequential !== $record->getOrderEnum()
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }

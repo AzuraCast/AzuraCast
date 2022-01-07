@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Locale;
 use App\OpenApi;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
@@ -111,8 +111,8 @@ class ListenersAction
                 ->setParameter('time_end', $endTimestamp);
         }
 
-        /** @var Locale $locale */
-        $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE);
+        $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE)
+            ?? SupportedLocales::default();
 
         $mountNames = $mountRepo->getDisplayNames($station);
         $remoteNames = $remoteRepo->getDisplayNames($station);
@@ -190,7 +190,7 @@ class ListenersAction
                 $api->mount_name = $remoteNames[$remoteId];
             }
 
-            $api->location = $geoLite->getLocationInfo($api->ip, $locale->getLocale());
+            $api->location = $geoLite->getLocationInfo($api->ip, $locale);
 
             if ($groupByUnique) {
                 $listenersByHash[$hash] = [

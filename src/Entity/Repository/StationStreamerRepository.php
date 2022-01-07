@@ -9,6 +9,7 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Radio\AutoDJ\Scheduler;
+use App\Radio\Enums\StreamFormats;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -86,8 +87,7 @@ class StationStreamerRepository extends Repository
         $recordStreams = $backendConfig->recordStreams();
 
         if ($recordStreams) {
-            $format = $backendConfig->getRecordStreamsFormat()
-                ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
+            $format = $backendConfig->getRecordStreamsFormatEnum() ?? StreamFormats::Mp3;
             $recordingPath = $record->generateRecordingPath($format);
 
             $this->em->persist($record);

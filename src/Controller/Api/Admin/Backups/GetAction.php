@@ -22,7 +22,7 @@ class GetAction
         $router = $request->getRouter();
 
         $backups = [];
-        $storageLocations = $storageLocationRepo->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
+        $storageLocations = $storageLocationRepo->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
 
         foreach ($storageLocations as $storageLocation) {
             /** @var StorageAttributes $file */

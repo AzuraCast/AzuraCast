@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Customization;
 use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity;
+use App\Enums\SupportedThemes;
 use App\OpenApi;
 use App\Service\Avatar;
 use App\Utilities\Urls;
@@ -306,18 +306,27 @@ class Settings implements Stringable
     #[
         OA\Property(description: "Base Theme for Public Pages", example: "light"),
         ORM\Column(length: 50, nullable: true),
-        Assert\Choice([Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK]),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $public_theme = Customization::DEFAULT_THEME;
+    protected ?string $public_theme = null;
 
     public function getPublicTheme(): string
     {
-        return $this->public_theme ?? Customization::DEFAULT_THEME;
+        return $this->getPublicThemeEnum()->value;
+    }
+
+    public function getPublicThemeEnum(): SupportedThemes
+    {
+        return SupportedThemes::tryFrom($this->public_theme ?? '')
+            ?? SupportedThemes::default();
     }
 
     public function setPublicTheme(?string $publicTheme): void
     {
+        if (null !== $publicTheme && null === SupportedThemes::tryFrom($publicTheme)) {
+            throw new \InvalidArgumentException('Unsupported theme specified.');
+        }
+
         $this->public_theme = $publicTheme;
     }
 

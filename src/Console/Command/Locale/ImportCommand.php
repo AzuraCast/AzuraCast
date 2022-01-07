@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
+use App\Enums\SupportedLocales;
 use App\Environment;
-use App\Locale;
 use Gettext\Translation;
 use Gettext\Translations;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -32,32 +32,34 @@ class ImportCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
         $io->title('Import Locales');
 
-        $locales = Locale::SUPPORTED_LOCALES;
-        $locale_base = $this->environment->getBaseDirectory() . '/resources/locale';
+        $localeBase = $this->environment->getBaseDirectory() . '/resources/locale';
 
         $jsTranslations = [];
 
-        foreach ($locales as $locale_key => $locale_name) {
-            if ($locale_key === Locale::DEFAULT_LOCALE) {
+        $supportedLocales = SupportedLocales::cases();
+        $defaultLocale = SupportedLocales::default();
+
+        foreach ($supportedLocales as $supportedLocale) {
+            if ($supportedLocale === $defaultLocale) {
                 continue;
             }
 
-            $locale_source = $locale_base . '/' . $locale_key . '/LC_MESSAGES/default.po';
+            $locale_source = $localeBase . '/' . $supportedLocale->value . '/LC_MESSAGES/default.po';
 
             if (is_file($locale_source)) {
                 $translations = Translations::fromPoFile($locale_source);
 
                 // Temporary inclusion of frontend translations
-                $frontendTranslations = $locale_base . '/' . $locale_key . '/LC_MESSAGES/frontend.po';
+                $frontendTranslations = $localeBase . '/' . $supportedLocale->value . '/LC_MESSAGES/frontend.po';
                 if (is_file($frontendTranslations)) {
                     $frontendTranslations = Translations::fromPoFile($frontendTranslations);
                     $translations->mergeWith($frontendTranslations);
                 }
 
-                $locale_dest = $locale_base . '/compiled/' . $locale_key . '.php';
+                $locale_dest = $localeBase . '/compiled/' . $supportedLocale->value . '.php';
                 $translations->toPhpArrayFile($locale_dest);
 
-                $localeJsKey = str_replace('.UTF-8', '', $locale_key);
+                $localeJsKey = str_replace('.UTF-8', '', $supportedLocale->value);
 
                 /** @var Translation $translation */
                 foreach ($translations as $translation) {
@@ -83,7 +85,9 @@ class ImportCommand extends CommandAbstract
 
                 ksort($jsTranslations[$localeJsKey]);
 
-                $io->writeln(__('Imported locale: %s', $locale_key . ' (' . $locale_name . ')'));
+                $io->writeln(
+                    __('Imported locale: %s', $supportedLocale->value . ' (' . $supportedLocale->getLocalName() . ')')
+                );
             }
         }
 
@@ -91,7 +95,7 @@ class ImportCommand extends CommandAbstract
             $jsTranslations,
             JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         );
-        $jsTranslationsPath = $locale_base . '/translations.json';
+        $jsTranslationsPath = $localeBase . '/translations.json';
 
         file_put_contents($jsTranslationsPath, $jsTranslations);
 

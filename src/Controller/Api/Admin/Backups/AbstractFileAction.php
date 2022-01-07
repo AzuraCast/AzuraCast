@@ -21,7 +21,7 @@ abstract class AbstractFileAction
         [$storageLocationId, $path] = explode('|', $pathStr);
 
         $storageLocation = $this->storageLocationRepo->findByType(
-            Entity\StorageLocation::TYPE_BACKUP,
+            Entity\Enums\StorageLocationTypes::Backup,
             (int)$storageLocationId
         );
 

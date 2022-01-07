@@ -17,7 +17,7 @@ class Api_Admin_RolesCest extends CestAbstract
                 'name' => 'Super Administrator',
                 'permissions' => [
                     'global' => [
-                        \App\Acl::GLOBAL_ALL,
+                        App\Enums\GlobalPermissions::All->value,
                     ],
                 ],
             ],

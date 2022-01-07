@@ -1,7 +1,7 @@
 <?php
 
-use App\Acl;
 use App\Controller;
+use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Middleware;
@@ -29,11 +29,11 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\ApiKeysController::class . ':deleteAction'
                     );
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_API_KEYS));
+            )->add(new Middleware\Permissions(GlobalPermissions::ApiKeys));
 
             $group->get('/auditlog', Controller\Api\Admin\AuditLogAction::class)
                 ->setName('api:admin:auditlog')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Logs));
 
             $group->group(
                 '/backups',
@@ -53,10 +53,10 @@ return static function (RouteCollectorProxy $group) {
                     $group->delete('/delete/{path}', Controller\Api\Admin\Backups\DeleteAction::class)
                         ->setName('api:admin:backups:delete');
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
+            )->add(new Middleware\Permissions(GlobalPermissions::Backups));
 
             $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
-                ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
+                ->add(new Middleware\Permissions(GlobalPermissions::All));
 
             $group->map(
                 ['GET', 'POST'],
@@ -115,23 +115,23 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\Shoutcast\PostAction::class
                     );
                 }
-            )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
+            )->add(new Middleware\Permissions(GlobalPermissions::Settings));
 
             $admin_api_endpoints = [
                 [
                     'custom_field',
                     'custom_fields',
                     Controller\Api\Admin\CustomFieldsController::class,
-                    Acl::GLOBAL_CUSTOM_FIELDS,
+                    GlobalPermissions::CustomFields,
                 ],
-                ['role', 'roles', Controller\Api\Admin\RolesController::class, Acl::GLOBAL_ALL],
-                ['station', 'stations', Controller\Api\Admin\StationsController::class, Acl::GLOBAL_STATIONS],
-                ['user', 'users', Controller\Api\Admin\UsersController::class, Acl::GLOBAL_ALL],
+                ['role', 'roles', Controller\Api\Admin\RolesController::class, GlobalPermissions::All],
+                ['station', 'stations', Controller\Api\Admin\StationsController::class, GlobalPermissions::Stations],
+                ['user', 'users', Controller\Api\Admin\UsersController::class, GlobalPermissions::All],
                 [
                     'storage_location',
                     'storage_locations',
                     Controller\Api\Admin\StorageLocationsController::class,
-                    Acl::GLOBAL_STORAGE_LOCATIONS,
+                    GlobalPermissions::StorageLocations,
                 ],
             ];
 
@@ -153,13 +153,13 @@ return static function (RouteCollectorProxy $group) {
 
             $group->post('/station/{id}/clone', Controller\Api\Admin\Stations\CloneAction::class)
                 ->setName('api:admin:station:clone')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Stations));
 
             $group->get(
                 '/stations/storage-locations',
                 Controller\Api\Admin\Stations\StorageLocationsAction::class
             )->setName('api:admin:stations:storage-locations')
-                ->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
+                ->add(new Middleware\Permissions(GlobalPermissions::Stations));
         }
     );
 };

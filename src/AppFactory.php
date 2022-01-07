@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Console\Application;
+use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use Composer\Autoload\ClassLoader;
@@ -60,8 +61,8 @@ class AppFactory
         self::buildAppFromContainer($di);
 
         $env = $di->get(Environment::class);
-        $locale = Locale::createForCli($env);
-        $locale->register();
+
+        SupportedLocales::createForCli($env);
 
         return $di->get(Application::class);
     }

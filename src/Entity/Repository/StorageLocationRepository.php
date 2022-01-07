@@ -13,8 +13,14 @@ use Brick\Math\BigInteger;
  */
 class StorageLocationRepository extends Repository
 {
-    public function findByType(string $type, int $id): ?Entity\StorageLocation
-    {
+    public function findByType(
+        string|Entity\Enums\StorageLocationTypes $type,
+        int $id
+    ): ?Entity\StorageLocation {
+        if ($type instanceof Entity\Enums\StorageLocationTypes) {
+            $type = $type->value;
+        }
+
         return $this->repository->findOneBy(
             [
                 'type' => $type,
@@ -24,12 +30,16 @@ class StorageLocationRepository extends Repository
     }
 
     /**
-     * @param string $type
+     * @param string|Entity\Enums\StorageLocationTypes $type
      *
      * @return Entity\StorageLocation[]
      */
-    public function findAllByType(string $type): array
+    public function findAllByType(string|Entity\Enums\StorageLocationTypes $type): array
     {
+        if ($type instanceof Entity\Enums\StorageLocationTypes) {
+            $type = $type->value;
+        }
+
         return $this->repository->findBy(
             [
                 'type' => $type,
@@ -38,14 +48,14 @@ class StorageLocationRepository extends Repository
     }
 
     /**
-     * @param string $type
+     * @param string|Entity\Enums\StorageLocationTypes $type
      * @param bool $addBlank
      * @param string|null $emptyString
      *
      * @return string[]
      */
     public function fetchSelectByType(
-        string $type,
+        string|Entity\Enums\StorageLocationTypes $type,
         bool $addBlank = false,
         ?string $emptyString = null
     ): array {
@@ -65,12 +75,12 @@ class StorageLocationRepository extends Repository
 
     public function createDefaultStorageLocations(): void
     {
-        $backupLocations = $this->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
+        $backupLocations = $this->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
 
         if (0 === count($backupLocations)) {
             $record = new Entity\StorageLocation(
-                Entity\StorageLocation::TYPE_BACKUP,
-                Entity\StorageLocation::ADAPTER_LOCAL
+                Entity\Enums\StorageLocationTypes::Backup,
+                Entity\Enums\StorageLocationAdapters::Local
             );
             $record->setPath(Entity\StorageLocation::DEFAULT_BACKUPS_PATH);
             $this->em->persist($record);
@@ -90,24 +100,23 @@ class StorageLocationRepository extends Repository
             ->select('s')
             ->from(Entity\Station::class, 's');
 
-        switch ($storageLocation->getType()) {
-            case Entity\StorageLocation::TYPE_STATION_MEDIA:
+        switch ($storageLocation->getTypeEnum()) {
+            case Entity\Enums\StorageLocationTypes::StationMedia:
                 $qb->where('s.media_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
-            case Entity\StorageLocation::TYPE_STATION_RECORDINGS:
+            case Entity\Enums\StorageLocationTypes::StationRecordings:
                 $qb->where('s.recordings_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
-            case Entity\StorageLocation::TYPE_STATION_PODCASTS:
+            case Entity\Enums\StorageLocationTypes::StationPodcasts:
                 $qb->where('s.podcasts_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
-            case Entity\StorageLocation::TYPE_BACKUP:
-            default:
+            case Entity\Enums\StorageLocationTypes::Backup:
                 return [];
         }
 

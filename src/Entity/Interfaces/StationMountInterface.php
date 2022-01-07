@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Interfaces;
 
+use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\Enums\StreamFormats;
+use App\Radio\Enums\StreamProtocols;
+
 interface StationMountInterface
 {
-    public const FORMAT_MP3 = 'mp3';
-    public const FORMAT_OGG = 'ogg';
-    public const FORMAT_AAC = 'aac';
-    public const FORMAT_OPUS = 'opus';
-    public const FORMAT_FLAC = 'flac';
-
-    public const PROTOCOL_ICY = 'icy';
-    public const PROTOCOL_HTTP = 'http';
-    public const PROTOCOL_HTTPS = 'https';
-
     public function getEnableAutodj(): bool;
 
     public function getAutodjUsername(): ?string;
@@ -24,17 +18,17 @@ interface StationMountInterface
 
     public function getAutodjBitrate(): ?int;
 
-    public function getAutodjFormat(): ?string;
+    public function getAutodjFormatEnum(): ?StreamFormats;
 
     public function getAutodjHost(): ?string;
 
     public function getAutodjPort(): ?int;
 
-    public function getAutodjProtocol(): ?string;
+    public function getAutodjProtocolEnum(): ?StreamProtocols;
 
     public function getAutodjMount(): ?string;
 
-    public function getAutodjAdapterType(): string;
+    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface;
 
     public function getIsPublic(): bool;
 }

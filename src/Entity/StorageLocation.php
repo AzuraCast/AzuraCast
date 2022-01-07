@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\StorageLocationAdapters;
+use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\StorageLocationFullException;
 use App\Radio\Quota;
@@ -27,7 +29,6 @@ use League\Flysystem\Visibility;
 use RuntimeException;
 use Spatie\Dropbox\Client;
 use Stringable;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ORM\Entity,
@@ -40,33 +41,13 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const TYPE_BACKUP = 'backup';
-    public const TYPE_STATION_MEDIA = 'station_media';
-    public const TYPE_STATION_RECORDINGS = 'station_recordings';
-    public const TYPE_STATION_PODCASTS = 'station_podcasts';
-
-    public const ADAPTER_LOCAL = 'local';
-    public const ADAPTER_S3 = 's3';
-    public const ADAPTER_DROPBOX = 'dropbox';
-
     public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
 
     #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [
-        StorageLocation::TYPE_BACKUP,
-        StorageLocation::TYPE_STATION_MEDIA,
-        StorageLocation::TYPE_STATION_RECORDINGS,
-        StorageLocation::TYPE_STATION_PODCASTS,
-    ])]
     protected string $type;
 
     #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [
-        StorageLocation::ADAPTER_LOCAL,
-        StorageLocation::ADAPTER_S3,
-        StorageLocation::ADAPTER_DROPBOX,
-    ])]
-    protected string $adapter = self::ADAPTER_LOCAL;
+    protected string $adapter;
 
     #[ORM\Column(length: 255, nullable: false)]
     protected string $path = '';
@@ -102,10 +83,19 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]
     protected Collection $media;
 
-    public function __construct(string $type, string $adapter)
-    {
-        $this->type = $type;
-        $this->adapter = $adapter;
+    public function __construct(
+        string|StorageLocationTypes $type,
+        string|StorageLocationAdapters $adapter
+    ) {
+        if (!($type instanceof StorageLocationTypes)) {
+            $type = StorageLocationTypes::from($type);
+        }
+        if (!($adapter instanceof StorageLocationAdapters)) {
+            $adapter = StorageLocationAdapters::from($adapter);
+        }
+
+        $this->type = $type->value;
+        $this->adapter = $adapter->value;
 
         $this->media = new ArrayCollection();
     }
@@ -115,9 +105,19 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         return $this->type;
     }
 
+    public function getTypeEnum(): StorageLocationTypes
+    {
+        return StorageLocationTypes::from($this->type);
+    }
+
     public function getAdapter(): string
     {
         return $this->adapter;
+    }
+
+    public function getAdapterEnum(): StorageLocationAdapters
+    {
+        return StorageLocationAdapters::from($this->adapter);
     }
 
     public function getPath(): string
@@ -127,8 +127,8 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function getFilteredPath(): string
     {
-        return match ($this->adapter) {
-            self::ADAPTER_S3, self::ADAPTER_DROPBOX => trim($this->path, '/'),
+        return match ($this->getAdapterEnum()) {
+            StorageLocationAdapters::S3, StorageLocationAdapters::Dropbox => trim($this->path, '/'),
             default => rtrim($this->path, '/')
         };
     }
@@ -219,7 +219,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function isLocal(): bool
     {
-        return self::ADAPTER_LOCAL === $this->adapter;
+        return $this->getAdapterEnum()->isLocal();
     }
 
     public function getStorageQuota(): ?string
@@ -393,9 +393,9 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $path = $this->applyPath($suffix);
 
-        return match ($this->adapter) {
-            self::ADAPTER_S3 => $this->getS3ObjectUri($suffix),
-            self::ADAPTER_DROPBOX => 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/'),
+        return match ($this->getAdapterEnum()) {
+            StorageLocationAdapters::S3 => $this->getS3ObjectUri($suffix),
+            StorageLocationAdapters::Dropbox => 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/'),
             default => $path,
         };
     }
@@ -424,11 +424,11 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function validate(): void
     {
-        if (self::ADAPTER_S3 === $this->adapter) {
+        if (StorageLocationAdapters::S3 === $this->getAdapterEnum()) {
             $client = $this->getS3Client();
             $client->listObjectsV2(
                 [
-                    'Bucket' => $this->s3Bucket,
+                    'Bucket'   => $this->s3Bucket,
                     'max-keys' => 1,
                 ]
             );
@@ -442,15 +442,15 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $filteredPath = $this->getFilteredPath();
 
-        switch ($this->adapter) {
-            case self::ADAPTER_S3:
+        switch ($this->getAdapterEnum()) {
+            case StorageLocationAdapters::S3:
                 $bucket = $this->s3Bucket;
                 if (null === $bucket) {
                     throw new RuntimeException('Amazon S3 bucket is empty.');
                 }
                 return new AwsS3Adapter($this->getS3Client(), $bucket, $filteredPath);
 
-            case self::ADAPTER_DROPBOX:
+            case StorageLocationAdapters::Dropbox:
                 return new DropboxAdapter($this->getDropboxClient(), $filteredPath);
 
             default:
@@ -460,19 +460,19 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     protected function getS3Client(): S3Client
     {
-        if (self::ADAPTER_S3 !== $this->adapter) {
+        if (StorageLocationAdapters::S3 !== $this->getAdapterEnum()) {
             throw new InvalidArgumentException('This storage location is not using the S3 adapter.');
         }
 
         $s3Options = array_filter(
             [
                 'credentials' => [
-                    'key' => $this->s3CredentialKey,
+                    'key'    => $this->s3CredentialKey,
                     'secret' => $this->s3CredentialSecret,
                 ],
-                'region' => $this->s3Region,
-                'version' => $this->s3Version,
-                'endpoint' => $this->s3Endpoint,
+                'region'      => $this->s3Region,
+                'version'     => $this->s3Version,
+                'endpoint'    => $this->s3Endpoint,
             ]
         );
         return new S3Client($s3Options);
@@ -480,7 +480,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     protected function getDropboxClient(): Client
     {
-        if (self::ADAPTER_DROPBOX !== $this->adapter) {
+        if (StorageLocationAdapters::Dropbox !== $this->getAdapterEnum()) {
             throw new InvalidArgumentException('This storage location is not using the Dropbox adapter.');
         }
 
@@ -501,11 +501,6 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function __toString(): string
     {
-        $adapterNames = [
-            self::ADAPTER_LOCAL => 'Local',
-            self::ADAPTER_S3 => 'S3',
-            self::ADAPTER_DROPBOX => 'Dropbox',
-        ];
-        return $adapterNames[$this->adapter] . ': ' . $this->getUri();
+        return $this->getAdapterEnum()->getName() . ': ' . $this->getUri();
     }
 }

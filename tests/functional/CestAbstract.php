@@ -76,7 +76,7 @@ abstract class CestAbstract
         $this->em->persist($role);
 
         $rha = new Entity\RolePermission($role);
-        $rha->setActionName(App\Acl::GLOBAL_ALL);
+        $rha->setActionName(App\Enums\GlobalPermissions::All);
         $this->em->persist($rha);
 
         // Create user account.

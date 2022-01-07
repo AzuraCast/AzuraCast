@@ -177,7 +177,7 @@ $assets
                         </div>
                     </div>
                     <?php
-                    if ($station['backend_type'] === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
+                    if ($station['backend_type'] === \App\Radio\Enums\BackendAdapters::Liquidsoap->value): ?>
                         <div class="col-md-6">
                             <h5><?= __('Send Liquidsoap Telnet Command') ?></h5>
 

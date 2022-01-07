@@ -51,41 +51,50 @@ class Scheduler
 
         $shouldPlay = true;
 
-        switch ($playlist->getType()) {
-            case Entity\StationPlaylist::TYPE_ONCE_PER_HOUR:
+        switch ($playlist->getTypeEnum()) {
+            case Entity\Enums\PlaylistTypes::OncePerHour:
                 $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $now);
 
-                $this->logger->debug(sprintf(
-                    'Once-per-hour playlist %s been played yet this hour.',
-                    $shouldPlay ? 'HAS NOT' : 'HAS'
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Once-per-hour playlist %s been played yet this hour.',
+                        $shouldPlay ? 'HAS NOT' : 'HAS'
+                    )
+                );
                 break;
 
-            case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
+            case Entity\Enums\PlaylistTypes::OncePerXSongs:
                 $playPerSongs = $playlist->getPlayPerSongs();
                 $shouldPlay = !$this->wasPlaylistPlayedRecently($playlist, $recentPlaylistHistory, $playPerSongs);
 
-                $this->logger->debug(sprintf(
-                    'Once-per-X-songs playlist %s been played within the last %d song(s).',
-                    $shouldPlay ? 'HAS NOT' : 'HAS',
-                    $playPerSongs
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Once-per-X-songs playlist %s been played within the last %d song(s).',
+                        $shouldPlay ? 'HAS NOT' : 'HAS',
+                        $playPerSongs
+                    )
+                );
                 break;
 
-            case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
+            case Entity\Enums\PlaylistTypes::OncePerXMinutes:
                 $playPerMinutes = $playlist->getPlayPerMinutes();
                 $shouldPlay = !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, $playPerMinutes);
 
-                $this->logger->debug(sprintf(
-                    'Once-per-X-minutes playlist %s been played within the last %d minute(s).',
-                    $shouldPlay ? 'HAS NOT' : 'HAS',
-                    $playPerMinutes
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Once-per-X-minutes playlist %s been played within the last %d minute(s).',
+                        $shouldPlay ? 'HAS NOT' : 'HAS',
+                        $playPerMinutes
+                    )
+                );
                 break;
 
-            case Entity\StationPlaylist::TYPE_ADVANCED:
+            case Entity\Enums\PlaylistTypes::Advanced:
                 $this->logger->debug('Playlist is "Advanced" type and is not managed by the AutoDJ.');
                 $shouldPlay = false;
+                break;
+
+            case Entity\Enums\PlaylistTypes::Standard:
                 break;
         }
 

@@ -32,7 +32,9 @@ class BackupsAction
                     'group' => Entity\Settings::GROUP_BACKUP,
                 ]),
                 'isDocker'         => $environment->isDocker(),
-                'storageLocations' => $storageLocationRepo->fetchSelectByType(Entity\StorageLocation::TYPE_BACKUP),
+                'storageLocations' => $storageLocationRepo->fetchSelectByType(
+                    Entity\Enums\StorageLocationTypes::Backup
+                ),
             ],
         );
     }

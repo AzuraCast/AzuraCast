@@ -23,7 +23,7 @@ class CleanupStorageTask extends AbstractTask
             $this->cleanStationTempFiles($station);
         }
 
-        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
+        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
         foreach ($storageLocations as $storageLocation) {
             /** @var Entity\StorageLocation $storageLocation */
             $this->cleanMediaStorageLocation($storageLocation);

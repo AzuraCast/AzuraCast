@@ -1,7 +1,7 @@
 <?php
 
-use App\Acl;
 use App\Controller;
+use App\Enums\StationPermissions;
 use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -31,7 +31,7 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Stations\Automation\RunAction::class
                     )->setName('api:stations:automation:run');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
+            )->add(new Middleware\Permissions(StationPermissions::Automation, true));
 
             $group->get('/nowplaying', Controller\Api\NowPlayingAction::class . ':indexAction');
 
@@ -40,33 +40,33 @@ return static function (RouteCollectorProxy $group) {
                 '/nowplaying/update',
                 Controller\Api\Stations\UpdateMetadataAction::class
             )
-                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/profile', Controller\Api\Stations\ProfileAction::class)
                 ->setName('api:stations:profile')
-                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
+                ->add(new Middleware\Permissions(StationPermissions::View, true));
 
             $group->get(
                 '/profile/edit',
                 Controller\Api\Stations\ProfileEditController::class . ':getProfileAction'
             )->setName('api:stations:profile:edit')
-                ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+                ->add(new Middleware\Permissions(StationPermissions::Profile, true));
 
             $group->put(
                 '/profile/edit',
                 Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
-            )->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+            )->add(new Middleware\Permissions(StationPermissions::Profile, true));
 
             $group->get('/quota[/{type}]', Controller\Api\Stations\GetQuotaAction::class)
                 ->setName('api:stations:quota')
-                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
+                ->add(new Middleware\Permissions(StationPermissions::View, true));
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');
 
             $group->get('/history', Controller\Api\Stations\HistoryController::class)
                 ->setName('api:stations:history')
-                ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
+                ->add(new Middleware\Permissions(StationPermissions::Reports, true));
 
             $group->group(
                 '/queue',
@@ -80,7 +80,7 @@ return static function (RouteCollectorProxy $group) {
                     $group->delete('/{id}', Controller\Api\Stations\QueueController::class . ':deleteAction')
                         ->setName('api:stations:queue:record');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+            )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/requests', Controller\Api\Stations\RequestsController::class . ':listAction')
                 ->setName('api:requests:list');
@@ -102,7 +102,7 @@ return static function (RouteCollectorProxy $group) {
 
             $group->get('/listeners', Controller\Api\Stations\ListenersAction::class)
                 ->setName('api:listeners:index')
-                ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
+                ->add(new Middleware\Permissions(StationPermissions::Reports, true));
 
             $group->get(
                 '/waveform/{media_id:[a-zA-Z0-9\-]+}.json',
@@ -117,10 +117,10 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:media:art-internal');
 
             $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)
-                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->delete('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\DeleteArtAction::class)
-                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->group(
                 '/liquidsoap-config',
@@ -135,7 +135,7 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Stations\LiquidsoapConfig\PutAction::class
                     );
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+            )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             // Public and private podcast pages
             $group->group(
@@ -188,7 +188,7 @@ return static function (RouteCollectorProxy $group) {
                     $group->post('/art', Controller\Api\Stations\Podcasts\Art\PostArtAction::class)
                         ->setName('api:stations:podcasts:new-art');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+            )->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
 
             $group->group(
                 '/podcast/{podcast_id}',
@@ -257,35 +257,50 @@ return static function (RouteCollectorProxy $group) {
                         }
                     );
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+            )->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
 
             $station_api_endpoints = [
-                ['file', 'files', Controller\Api\Stations\FilesController::class, Acl::STATION_MEDIA],
-                ['mount', 'mounts', Controller\Api\Stations\MountsController::class, Acl::STATION_MOUNTS],
+                [
+                    'file',
+                    'files',
+                    Controller\Api\Stations\FilesController::class,
+                    StationPermissions::Media,
+                ],
+                [
+                    'mount',
+                    'mounts',
+                    Controller\Api\Stations\MountsController::class,
+                    StationPermissions::MountPoints,
+                ],
                 [
                     'playlist',
                     'playlists',
                     Controller\Api\Stations\PlaylistsController::class,
-                    Acl::STATION_MEDIA,
+                    StationPermissions::Media,
                 ],
-                ['remote', 'remotes', Controller\Api\Stations\RemotesController::class, Acl::STATION_REMOTES],
+                [
+                    'remote',
+                    'remotes',
+                    Controller\Api\Stations\RemotesController::class,
+                    StationPermissions::RemoteRelays,
+                ],
                 [
                     'sftp-user',
                     'sftp-users',
                     Controller\Api\Stations\SftpUsersController::class,
-                    Acl::STATION_MEDIA,
+                    StationPermissions::Media,
                 ],
                 [
                     'streamer',
                     'streamers',
                     Controller\Api\Stations\StreamersController::class,
-                    Acl::STATION_STREAMERS,
+                    StationPermissions::Streamers,
                 ],
                 [
                     'webhook',
                     'webhooks',
                     Controller\Api\Stations\WebhooksController::class,
-                    Acl::STATION_WEB_HOOKS,
+                    StationPermissions::WebHooks,
                 ],
             ];
 
@@ -337,13 +352,13 @@ return static function (RouteCollectorProxy $group) {
                 }
             )
                 ->add(Middleware\Module\StationFiles::class)
-                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->post(
                 '/mounts/intro',
                 Controller\Api\Stations\Mounts\Intro\PostIntroAction::class
             )->setName('api:stations:mounts:new-intro')
-                ->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+                ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
 
             $group->group(
                 '/mount/{id}',
@@ -363,14 +378,14 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Stations\Mounts\Intro\DeleteIntroAction::class
                     );
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+            )->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
 
             $group->get(
                 '/playlists/schedule',
                 Controller\Api\Stations\PlaylistsController::class . ':scheduleAction'
             )
                 ->setName('api:stations:playlists:schedule')
-                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->group(
                 '/playlist/{id}',
@@ -420,7 +435,7 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Stations\Playlists\ExportAction::class
                     )->setName('api:stations:playlist:export');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+            )->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->group(
                 '/reports',
@@ -443,7 +458,7 @@ return static function (RouteCollectorProxy $group) {
                                 Controller\Api\Stations\Reports\RequestsController::class . ':deleteAction'
                             )->setName('api:stations:reports:requests:delete');
                         }
-                    )->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+                    )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
                     $group->get(
                         '/performance',
@@ -470,21 +485,21 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Stations\Reports\SoundExchangeAction::class
                     )->setName('api:stations:reports:soundexchange');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
+            )->add(new Middleware\Permissions(StationPermissions::Reports, true));
 
             $group->get(
                 '/streamers/schedule',
                 Controller\Api\Stations\StreamersController::class . ':scheduleAction'
             )
                 ->setName('api:stations:streamers:schedule')
-                ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+                ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
 
             $group->get(
                 '/streamers/broadcasts',
                 Controller\Api\Stations\Streamers\BroadcastsController::class . ':listAction'
             )
                 ->setName('api:stations:streamers:broadcasts')
-                ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+                ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
 
             $group->group(
                 '/streamer/{id}',
@@ -507,30 +522,30 @@ return static function (RouteCollectorProxy $group) {
                     )
                         ->setName('api:stations:streamer:broadcast:delete');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+            )->add(new Middleware\Permissions(StationPermissions::Streamers, true));
 
             $group->get('/restart-status', Controller\Api\Stations\GetRestartStatusAction::class)
                 ->setName('api:stations:restart-status')
-                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
+                ->add(new Middleware\Permissions(StationPermissions::View, true));
 
             $group->get('/status', Controller\Api\Stations\ServicesController::class . ':statusAction')
                 ->setName('api:stations:status')
-                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
+                ->add(new Middleware\Permissions(StationPermissions::View, true));
 
             $group->post('/backend/{do}', Controller\Api\Stations\ServicesController::class . ':backendAction')
                 ->setName('api:stations:backend')
-                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->post(
                 '/frontend/{do}',
                 Controller\Api\Stations\ServicesController::class . ':frontendAction'
             )
                 ->setName('api:stations:frontend')
-                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->post('/restart', Controller\Api\Stations\ServicesController::class . ':restartAction')
                 ->setName('api:stations:restart')
-                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->group(
                 '/webhook/{id}',
@@ -550,7 +565,7 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Stations\Webhooks\TestLogAction::class
                     )->setName('api:stations:webhook:test-log');
                 }
-            )->add(new Middleware\Permissions(Acl::STATION_WEB_HOOKS, true));
+            )->add(new Middleware\Permissions(StationPermissions::WebHooks, true));
         }
     )->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);

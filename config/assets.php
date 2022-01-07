@@ -70,20 +70,19 @@ return [
                     return '$(function () { ' . implode('', $notifies) . ' });';
                 },
                 function (Request $request) {
-                    /** @var App\Locale|null $locale */
                     $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
-                    $locale = ($localeObj instanceof App\Locale)
-                        ? (string)$localeObj
-                        : App\Locale::DEFAULT_LOCALE;
+                    $locale = ($localeObj instanceof App\Enums\SupportedLocales)
+                        ? $localeObj->value
+                        : App\Enums\SupportedLocales::default()->value;
 
                     $locale = explode('.', $locale, 2)[0];
                     $localeShort = substr($locale, 0, 2);
                     $localeWithDashes = str_replace('_', '-', $locale);
 
                     $app = [
-                        'lang' => [
-                            'confirm' => __('Are you sure?'),
+                        'lang'               => [
+                            'confirm'  => __('Are you sure?'),
                             'advanced' => __('Advanced'),
                         ],
                         'locale' => $locale,

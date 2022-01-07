@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\StorageLocationAdapters;
+use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Environment;
-use App\Radio\Adapters;
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
 use App\Utilities\Urls;
 use App\Validator\Constraints as AppAssert;
@@ -16,7 +19,6 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
@@ -79,10 +81,9 @@ class Station implements Stringable, IdentifiableEntityInterface
             example: "icecast"
         ),
         ORM\Column(length: 100, nullable: true),
-        Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST]),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $frontend_type = Adapters::FRONTEND_ICECAST;
+    protected ?string $frontend_type = null;
 
     #[
         OA\Property(
@@ -101,10 +102,9 @@ class Station implements Stringable, IdentifiableEntityInterface
             example: "liquidsoap"
         ),
         ORM\Column(length: 100, nullable: true),
-        Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE]),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $backend_type = Adapters::BACKEND_LIQUIDSOAP;
+    protected ?string $backend_type = null;
 
     #[
         OA\Property(
@@ -388,6 +388,9 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function __construct()
     {
+        $this->frontend_type = FrontendAdapters::Icecast->value;
+        $this->backend_type = BackendAdapters::Liquidsoap->value;
+
         $this->history = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->mounts = new ArrayCollection();
@@ -444,8 +447,19 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->frontend_type;
     }
 
+    public function getFrontendTypeEnum(): FrontendAdapters
+    {
+        return (null !== $this->frontend_type)
+            ? FrontendAdapters::from($this->frontend_type)
+            : FrontendAdapters::default();
+    }
+
     public function setFrontendType(?string $frontend_type = null): void
     {
+        if (null !== $frontend_type && null === FrontendAdapters::tryFrom($frontend_type)) {
+            throw new \InvalidArgumentException('Invalid frontend type specified.');
+        }
+
         $this->frontend_type = $frontend_type;
     }
 
@@ -488,8 +502,19 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->backend_type;
     }
 
+    public function getBackendTypeEnum(): BackendAdapters
+    {
+        return (null !== $this->backend_type)
+            ? BackendAdapters::from($this->backend_type)
+            : BackendAdapters::default();
+    }
+
     public function setBackendType(string $backend_type = null): void
     {
+        if (null !== $backend_type && null === BackendAdapters::tryFrom($backend_type)) {
+            throw new \InvalidArgumentException('Invalid frontend type specified.');
+        }
+
         $this->backend_type = $backend_type;
     }
 
@@ -619,8 +644,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         if (null === $this->media_storage_location) {
             $storageLocation = new StorageLocation(
-                StorageLocation::TYPE_STATION_MEDIA,
-                StorageLocation::ADAPTER_LOCAL
+                StorageLocationTypes::StationMedia,
+                StorageLocationAdapters::Local
             );
 
             $mediaPath = $this->getRadioBaseDir() . '/media';
@@ -632,8 +657,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         if (null === $this->recordings_storage_location) {
             $storageLocation = new StorageLocation(
-                StorageLocation::TYPE_STATION_RECORDINGS,
-                StorageLocation::ADAPTER_LOCAL
+                StorageLocationTypes::StationRecordings,
+                StorageLocationAdapters::Local
             );
 
             $recordingsPath = $this->getRadioBaseDir() . '/recordings';
@@ -645,8 +670,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         if (null === $this->podcasts_storage_location) {
             $storageLocation = new StorageLocation(
-                StorageLocation::TYPE_STATION_PODCASTS,
-                StorageLocation::ADAPTER_LOCAL
+                StorageLocationTypes::StationPodcasts,
+                StorageLocationAdapters::Local
             );
 
             $podcastsPath = $this->getRadioBaseDir() . '/podcasts';
@@ -934,65 +959,63 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getMediaStorageLocation(): StorageLocation
     {
-        return $this->getStorageLocation(StorageLocation::TYPE_STATION_MEDIA);
+        if (null === $this->media_storage_location) {
+            throw new \RuntimeException('Media storage location not initialized.');
+        }
+        return $this->media_storage_location;
     }
 
     public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        $this->setStorageLocation(StorageLocation::TYPE_STATION_MEDIA, $storageLocation);
+        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getTypeEnum()) {
+            throw new \RuntimeException('Invalid storage location.');
+        }
+
+        $this->media_storage_location = $storageLocation;
     }
 
     public function getRecordingsStorageLocation(): StorageLocation
     {
-        return $this->getStorageLocation(StorageLocation::TYPE_STATION_RECORDINGS);
+        if (null === $this->recordings_storage_location) {
+            throw new \RuntimeException('Recordings storage location not initialized.');
+        }
+        return $this->recordings_storage_location;
     }
 
     public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        $this->setStorageLocation(StorageLocation::TYPE_STATION_RECORDINGS, $storageLocation);
+        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getTypeEnum()) {
+            throw new \RuntimeException('Invalid storage location.');
+        }
+
+        $this->recordings_storage_location = $storageLocation;
     }
 
     public function getPodcastsStorageLocation(): StorageLocation
     {
-        return $this->getStorageLocation(StorageLocation::TYPE_STATION_PODCASTS);
+        if (null === $this->podcasts_storage_location) {
+            throw new \RuntimeException('Podcasts storage location not initialized.');
+        }
+        return $this->podcasts_storage_location;
     }
 
     public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        $this->setStorageLocation(StorageLocation::TYPE_STATION_PODCASTS, $storageLocation);
+        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getTypeEnum()) {
+            throw new \RuntimeException('Invalid storage location.');
+        }
+
+        $this->podcasts_storage_location = $storageLocation;
     }
 
-    public function getStorageLocation(string $type): StorageLocation
+    public function getStorageLocation(StorageLocationTypes $type): StorageLocation
     {
-        $supportedTypes = self::getStorageLocationTypes();
-        if (!isset($supportedTypes[$type])) {
-            throw new InvalidArgumentException(sprintf('Invalid type: %s', $type));
-        }
-
-        $record = $this->{$supportedTypes[$type]};
-        if (null === $record) {
-            throw new RuntimeException(sprintf('Storage location for type %s has not been configured yet.', $type));
-        }
-        return $record;
-    }
-
-    public function setStorageLocation(string $type, ?StorageLocation $newStorageLocation): void
-    {
-        // Ignore if being set to null.
-        if (null === $newStorageLocation) {
-            return;
-        }
-
-        if ($type !== $newStorageLocation->getType()) {
-            throw new InvalidArgumentException(sprintf('Specified location is not of type %s.', $type));
-        }
-
-        $supportedTypes = self::getStorageLocationTypes();
-        if (!isset($supportedTypes[$type])) {
-            throw new InvalidArgumentException(sprintf('Invalid type: %s', $type));
-        }
-
-        $this->{$supportedTypes[$type]} = $newStorageLocation;
+        return match ($type) {
+            StorageLocationTypes::StationMedia => $this->getMediaStorageLocation(),
+            StorageLocationTypes::StationRecordings => $this->getRecordingsStorageLocation(),
+            StorageLocationTypes::StationPodcasts => $this->getPodcastsStorageLocation(),
+            default => throw new \InvalidArgumentException('Invalid storage location.')
+        };
     }
 
     /** @return StorageLocation[] */
@@ -1005,12 +1028,15 @@ class Station implements Stringable, IdentifiableEntityInterface
         ];
     }
 
+    /**
+     * @return array<string, StorageLocationTypes>
+     */
     public static function getStorageLocationTypes(): array
     {
         return [
-            StorageLocation::TYPE_STATION_MEDIA      => 'media_storage_location',
-            StorageLocation::TYPE_STATION_RECORDINGS => 'recordings_storage_location',
-            StorageLocation::TYPE_STATION_PODCASTS   => 'podcasts_storage_location',
+            'media_storage_location'      => StorageLocationTypes::StationMedia,
+            'recordings_storage_location' => StorageLocationTypes::StationRecordings,
+            'podcasts_storage_location'   => StorageLocationTypes::StationPodcasts,
         ];
     }
 

@@ -69,11 +69,11 @@ class Environment
     // Default settings
     protected array $defaults = [
         self::APP_NAME => 'AzuraCast',
-        self::APP_ENV => self::ENV_PRODUCTION,
+        self::APP_ENV  => self::ENV_PRODUCTION,
 
         self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
-        self::IS_CLI => ('cli' === PHP_SAPI),
+        self::IS_CLI    => ('cli' === PHP_SAPI),
 
         self::ASSET_URL => '/static',
 
@@ -83,13 +83,11 @@ class Environment
         self::ENABLE_REDIS => true,
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
-        self::SYNC_LONG_EXECUTION_TIME => 1800,
+        self::SYNC_LONG_EXECUTION_TIME  => 1800,
 
-        self::PROFILING_EXTENSION_ENABLED => 0,
+        self::PROFILING_EXTENSION_ENABLED   => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
-        self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
-
-        self::LANG => Locale::DEFAULT_LOCALE,
+        self::PROFILING_EXTENSION_HTTP_KEY  => 'dev',
     ];
 
     public function __construct(array $elements = [])
@@ -285,10 +283,10 @@ class Environment
     public function getDatabaseSettings(): array
     {
         return [
-            'host' => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
-            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
-            'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
-            'user' => $this->data[self::DB_USER] ?? 'azuracast',
+            'host'     => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
+            'port'     => (int)($this->data[self::DB_PORT] ?? 3306),
+            'dbname'   => $this->data[self::DB_NAME] ?? 'azuracast',
+            'user'     => $this->data[self::DB_USER] ?? 'azuracast',
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
     }
@@ -306,7 +304,7 @@ class Environment
         return [
             'host' => $this->data[self::REDIS_HOST] ?? ($this->isDocker() ? 'redis' : 'localhost'),
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
-            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
+            'db'   => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
     }
 

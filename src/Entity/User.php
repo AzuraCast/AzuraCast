@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Enums\SupportedThemes;
 use App\OpenApi;
 use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
@@ -212,6 +213,18 @@ class User implements Stringable, IdentifiableEntityInterface
     public function getTheme(): ?string
     {
         return $this->theme;
+    }
+
+    public function getThemeEnum(): SupportedThemes
+    {
+        if (null !== $this->theme) {
+            $theme = SupportedThemes::tryFrom($this->theme);
+            if (null !== $theme) {
+                return $theme;
+            }
+        }
+
+        return SupportedThemes::default();
     }
 
     public function setTheme(?string $theme = null): void

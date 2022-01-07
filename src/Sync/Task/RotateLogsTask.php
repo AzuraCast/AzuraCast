@@ -53,7 +53,7 @@ class RotateLogsTask extends AbstractTask
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(
-                    Entity\StorageLocation::TYPE_BACKUP,
+                    Entity\Enums\StorageLocationTypes::Backup,
                     $backupStorageId
                 );
 

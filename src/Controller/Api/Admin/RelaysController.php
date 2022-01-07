@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\RemoteAdapters;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -39,6 +41,7 @@ class RelaysController
         protected Adapters $adapters
     ) {
     }
+
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $stations = $this->getManageableStations($request);
@@ -96,7 +99,7 @@ class RelaysController
                 WHERE s.is_enabled = 1
                 AND s.frontend_type != :remote_frontend
             DQL
-        )->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
+        )->setParameter('remote_frontend', FrontendAdapters::Remote->value)
             ->execute();
 
         $acl = $request->getAcl();
@@ -104,7 +107,7 @@ class RelaysController
         return array_filter(
             $all_stations,
             static function (Entity\Station $station) use ($acl) {
-                return $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId());
+                return $acl->isAllowed(StationPermissions::Broadcasting, $station->getId());
             }
         );
     }
@@ -160,7 +163,7 @@ class RelaysController
                 }
 
                 $remote->setRelay($relay);
-                $remote->setType(Adapters::REMOTE_AZURARELAY);
+                $remote->setType(RemoteAdapters::AzuraRelay->value);
                 $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->getName() . ')');
                 $remote->setIsVisibleOnPublicPages($relay->getIsVisibleOnPublicPages());
                 $remote->setAutodjBitrate($mount->getAutodjBitrate());

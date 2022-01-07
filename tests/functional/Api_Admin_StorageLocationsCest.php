@@ -14,9 +14,9 @@ class Api_Admin_StorageLocationsCest extends CestAbstract
             $I,
             '/api/admin/storage_locations',
             [
-                'type' => \App\Entity\StorageLocation::TYPE_STATION_MEDIA,
-                'adapter' => \App\Entity\StorageLocation::ADAPTER_LOCAL,
-                'path' => '/tmp/test_storage_location',
+                'type'    => App\Entity\Enums\StorageLocationTypes::StationMedia->value,
+                'adapter' => App\Entity\Enums\StorageLocationAdapters::Local->value,
+                'path'    => '/tmp/test_storage_location',
             ],
             [
                 'path' => '/tmp/test_storage_location_2',

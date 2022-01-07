@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\GlobalPermissions;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
@@ -31,7 +32,7 @@ class ChartsAction
         $acl = $request->getAcl();
 
         // Don't show stations the user can't manage.
-        $showAdmin = $acl->isAllowed(Acl::GLOBAL_VIEW);
+        $showAdmin = $acl->isAllowed(GlobalPermissions::View);
 
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
@@ -39,7 +40,7 @@ class ChartsAction
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->getIsEnabled() &&
-                    $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
+                    $acl->isAllowed(StationPermissions::View, $station->getId());
             }
         );
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\StationFormComponent;
@@ -73,39 +73,39 @@ class ProfileController
             title: __('Profile'),
             props: [
                 // Common
-                'backendType' => $station->getBackendType(),
-                'frontendType' => $station->getFrontendType(),
-                'stationTimeZone' => $station->getTimezone(),
-                'stationSupportsRequests' => $backend->supportsRequests(),
-                'stationSupportsStreamers' => $backend->supportsStreamers(),
-                'enableRequests' => $station->getEnableRequests(),
-                'enableStreamers' => $station->getEnableStreamers(),
-                'enablePublicPage' => $station->getEnablePublicPage(),
-                'enableOnDemand' => $station->getEnableOnDemand(),
-                'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
+                'backendType'                  => $station->getBackendType(),
+                'frontendType'                 => $station->getFrontendType(),
+                'stationTimeZone'              => $station->getTimezone(),
+                'stationSupportsRequests'      => $backend->supportsRequests(),
+                'stationSupportsStreamers'     => $backend->supportsStreamers(),
+                'enableRequests'               => $station->getEnableRequests(),
+                'enableStreamers'              => $station->getEnableStreamers(),
+                'enablePublicPage'             => $station->getEnablePublicPage(),
+                'enableOnDemand'               => $station->getEnableOnDemand(),
+                'profileApiUri'                => (string)$router->fromHere('api:stations:profile'),
 
                 // ACL
-                'userCanManageMedia' => $acl->isAllowed(Acl::STATION_MEDIA, $station->getId()),
-                'userCanManageBroadcasting' => $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId()),
-                'userCanManageProfile' => $acl->isAllowed(Acl::STATION_PROFILE, $station->getId()),
-                'userCanManageReports' => $acl->isAllowed(Acl::STATION_REPORTS, $station->getId()),
-                'userCanManageStreamers' => $acl->isAllowed(Acl::STATION_STREAMERS, $station->getId()),
+                'userCanManageMedia'           => $acl->isAllowed(StationPermissions::Media, $station->getId()),
+                'userCanManageBroadcasting'    => $acl->isAllowed(StationPermissions::Broadcasting, $station->getId()),
+                'userCanManageProfile'         => $acl->isAllowed(StationPermissions::Profile, $station->getId()),
+                'userCanManageReports'         => $acl->isAllowed(StationPermissions::Reports, $station->getId()),
+                'userCanManageStreamers'       => $acl->isAllowed(StationPermissions::Streamers, $station->getId()),
 
                 // Header
-                'stationName' => $station->getName(),
-                'stationDescription' => $station->getDescription(),
-                'manageProfileUri' => (string)$router->fromHere('stations:profile:edit'),
+                'stationName'                  => $station->getName(),
+                'stationDescription'           => $station->getDescription(),
+                'manageProfileUri'             => (string)$router->fromHere('stations:profile:edit'),
 
                 // Now Playing
-                'backendSkipSongUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
+                'backendSkipSongUri'           => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
                 'backendDisconnectStreamerUri' => (string)$router->fromHere(
                     'api:stations:backend',
                     ['do' => 'disconnect']
                 ),
 
                 // Requests
-                'requestsViewUri' => (string)$router->fromHere('stations:reports:requests'),
-                'requestsToggleUri' => (string)$router->fromHere(
+                'requestsViewUri'              => (string)$router->fromHere('stations:reports:requests'),
+                'requestsToggleUri'            => (string)$router->fromHere(
                     'stations:profile:toggle',
                     ['feature' => 'requests', 'csrf' => $csrf]
                 ),

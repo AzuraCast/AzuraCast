@@ -6,7 +6,8 @@ namespace App\Controller;
 
 use App\Controller\Api\Traits\HasLogViewer;
 use App\Entity;
-use App\Radio\Adapters;
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\FrontendAdapters;
 
 abstract class AbstractLogViewerController
 {
@@ -21,8 +22,8 @@ abstract class AbstractLogViewerController
 
         $stationConfigDir = $station->getRadioConfigDir();
 
-        switch ($station->getBackendType()) {
-            case Adapters::BACKEND_LIQUIDSOAP:
+        switch ($station->getBackendTypeEnum()) {
+            case BackendAdapters::Liquidsoap:
                 $log_paths['liquidsoap_log'] = [
                     'name' => __('Liquidsoap Log'),
                     'path' => $stationConfigDir . '/liquidsoap.log',
@@ -36,8 +37,8 @@ abstract class AbstractLogViewerController
                 break;
         }
 
-        switch ($station->getFrontendType()) {
-            case Adapters::FRONTEND_ICECAST:
+        switch ($station->getFrontendTypeEnum()) {
+            case FrontendAdapters::Icecast:
                 $log_paths['icecast_access_log'] = [
                     'name' => __('Icecast Access Log'),
                     'path' => $stationConfigDir . '/icecast_access.log',
@@ -55,7 +56,7 @@ abstract class AbstractLogViewerController
                 ];
                 break;
 
-            case Adapters::FRONTEND_SHOUTCAST:
+            case FrontendAdapters::SHOUTcast:
                 $log_paths['shoutcast_log'] = [
                     'name' => __('SHOUTcast Log'),
                     'path' => $stationConfigDir . '/shoutcast.log',

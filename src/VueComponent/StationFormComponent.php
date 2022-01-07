@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\VueComponent;
 
-use App\Acl;
 use App\Entity\Repository\SettingsRepository;
+use App\Enums\GlobalPermissions;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use App\Radio\Enums\FrontendAdapters;
 use DateTime;
 use DateTimeZone;
 use Symfony\Component\Intl\Countries;
@@ -27,10 +28,10 @@ class StationFormComponent implements VueComponentInterface
         $settings = $this->settingsRepo->readSettings();
 
         return [
-            'showAdminTab'          => $request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS),
+            'showAdminTab'          => $request->getAcl()->isAllowed(GlobalPermissions::Stations),
             'showAdvanced'          => $settings->getEnableAdvancedFeatures(),
             'timezones'             => $this->getTimezones(),
-            'isShoutcastInstalled'  => isset($installedFrontends[Adapters::FRONTEND_SHOUTCAST]),
+            'isShoutcastInstalled'  => isset($installedFrontends[FrontendAdapters::SHOUTcast->value]),
             'countries'             => Countries::getNames(),
             'storageLocationApiUrl' => (string)$request->getRouter()->named('api:admin:stations:storage-locations'),
         ];

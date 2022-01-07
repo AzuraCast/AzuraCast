@@ -85,7 +85,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             /** @var Entity\StationPlaylist $playlist */
             if (
                 $playlist->getIsEnabled()
-                && $playlist->getType() === Entity\StationPlaylist::TYPE_DEFAULT
+                && Entity\Enums\PlaylistTypes::Standard === $playlist->getTypeEnum()
                 && $playlist->getIncludeInAutomation()
             ) {
                 $playlists[] = $playlist->getId();

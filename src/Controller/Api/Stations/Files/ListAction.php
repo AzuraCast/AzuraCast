@@ -141,7 +141,7 @@ class ListAction
                             'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
                             . 'WHERE spm2.playlist = :playlist)'
                         )->setParameter('playlist', $playlist);
-                    } else {
+                    } elseif (!in_array($searchPhrase, ['*', '%'], true)) {
                         $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
                             ->setParameter('query', '%' . $searchPhrase . '%');
                     }

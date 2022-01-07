@@ -69,9 +69,7 @@ class StationBackendConfiguration extends ArrayCollection
     public function getRecordStreamsFormatEnum(): ?StreamFormats
     {
         $recordStreamsFormat = $this->getRecordStreamsFormat();
-        return (null !== $recordStreamsFormat)
-            ? StreamFormats::from(strtolower($recordStreamsFormat))
-            : null;
+        return StreamFormats::tryFrom(strtolower($recordStreamsFormat ?? ''));
     }
 
     public function setRecordStreamsFormat(?string $format): void

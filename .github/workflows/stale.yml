@@ -23,8 +23,8 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 20
         days-before-close: 7
-        exempt-issue-labels: 'security,bug,in-progress'
-        stale-issue-label: 'stale'        
+        exempt-issue-labels: 'security,enhancement,bug,in progress'
+        stale-issue-label: 'stale'
         stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
         close-issue-label: 'wontfix'
         close-issue-message: 'Thank you for your bug report, this issue has been closed due to inactivity. Should this issue persist, please re-open the bug report.'

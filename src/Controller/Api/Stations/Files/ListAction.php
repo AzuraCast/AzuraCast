@@ -353,33 +353,33 @@ class ListAction
             return $isDirComp;
         }
 
-        if (!empty($sort)) {
-            if (str_starts_with($sort, 'media_custom_fields_')) {
-                $property = str_replace('media_custom_fields_', '', $sort);
-                $aVal = $a->media->custom_fields[$property] ?? null;
-                $bVal = $b->media->custom_fields[$property] ?? null;
-            } elseif (str_starts_with($sort, 'media_')) {
-                $property = str_replace('media_', '', $sort);
-                $aVal = property_exists($a->media, $property) ? $a->media->{$property} : null;
-                $bVal = property_exists($b->media, $property) ? $b->media->{$property} : null;
-            } else {
-                $aVal = property_exists($a, $sort) ? $a->{$sort} : null;
-                $bVal = property_exists($b, $sort) ? $b->{$sort} : null;
-            }
-
-            if (is_string($aVal)) {
-                $aVal = mb_strtolower($aVal, 'UTF-8');
-            }
-            if (is_string($bVal)) {
-                $bVal = mb_strtolower($bVal, 'UTF-8');
-            }
-
-            return (Criteria::ASC === $sortOrder)
-                ? $aVal <=> $bVal
-                : $bVal <=> $aVal;
+        $sort ??= '';
+        if (str_starts_with($sort, 'media_custom_fields_')) {
+            $property = str_replace('media_custom_fields_', '', $sort);
+            $aVal = $a->media->custom_fields[$property] ?? null;
+            $bVal = $b->media->custom_fields[$property] ?? null;
+        } elseif (str_starts_with($sort, 'media_')) {
+            $property = str_replace('media_', '', $sort);
+            $aVal = property_exists($a->media, $property) ? $a->media->{$property} : null;
+            $bVal = property_exists($b->media, $property) ? $b->media->{$property} : null;
+        } elseif (!empty($sort)) {
+            $aVal = property_exists($a, $sort) ? $a->{$sort} : null;
+            $bVal = property_exists($b, $sort) ? $b->{$sort} : null;
+        } else {
+            $aVal = $a->path;
+            $bVal = $b->path;
         }
 
-        return $a->path <=> $b->path;
+        if (is_string($aVal)) {
+            $aVal = mb_strtolower($aVal, 'UTF-8');
+        }
+        if (is_string($bVal)) {
+            $bVal = mb_strtolower($bVal, 'UTF-8');
+        }
+
+        return (Criteria::ASC === $sortOrder)
+            ? $aVal <=> $bVal
+            : $bVal <=> $aVal;
     }
 
     protected static function postProcessRow(

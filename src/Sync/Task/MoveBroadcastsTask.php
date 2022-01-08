@@ -32,7 +32,14 @@ class MoveBroadcastsTask extends AbstractTask
                 Entity\Enums\StorageLocationTypes::StationRecordings
             ) as $storageLocation
         ) {
-            $this->processForStorageLocation($storageLocation);
+            try {
+                /** @var Entity\StorageLocation $storageLocation */
+                $this->processForStorageLocation($storageLocation);
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [
+                    'storageLocation' => (string)$storageLocation,
+                ]);
+            }
         }
     }
 

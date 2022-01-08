@@ -37,11 +37,17 @@ class RotateLogsTask extends AbstractTask
         // Rotate logs for individual stations.
         foreach ($this->iterateStations() as $station) {
             $this->logger->info(
-                'Processing logs for station.',
-                ['id' => $station->getId(), 'name' => $station->getName()]
+                'Rotating logs for station.',
+                ['station' => (string)$station]
             );
 
-            $this->rotateStationLogs($station);
+            try {
+                $this->rotateStationLogs($station);
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [
+                    'station' => (string)$station,
+                ]);
+            }
         }
 
         // Rotate the automated backups.

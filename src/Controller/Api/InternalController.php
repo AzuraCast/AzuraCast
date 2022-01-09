@@ -209,7 +209,7 @@ class InternalController
         if ('success' === $listenerLocation['status']) {
             $listenerCountry = $listenerLocation['country'];
 
-            $countries = Countries::getNames(SupportedLocales::default()->name);
+            $countries = Countries::getNames(SupportedLocales::default()->value);
 
             $listenerCountryCode = '';
             foreach ($countries as $countryCode => $countryName) {

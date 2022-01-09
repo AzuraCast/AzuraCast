@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
-set -e
-
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -214,6 +212,7 @@ setup-letsencrypt() {
 # Configure release mode settings.
 #
 setup-release() {
+  set -e
   if [[ ! -f .env ]]; then
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
   fi
@@ -222,12 +221,15 @@ setup-release() {
   if ask "Prefer stable release versions of AzuraCast?" N; then
     AZURACAST_VERSION="stable"
   fi
+  set +e
 
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
 check-install-requirements() {
   local CURRENT_OS CURRENT_ARCH REQUIRED_COMMANDS SCRIPT_DIR
+
+  set -e
 
   echo "Checking installation requirements for AzuraCast..."
 
@@ -300,9 +302,13 @@ check-install-requirements() {
   fi
 
   echo -en "\e[32m[PASS]\e[0m All requirements met!\n"
+
+  set +e
 }
 
 install-docker() {
+  set -e
+
   curl -fsSL get.docker.com -o get-docker.sh
   sh get-docker.sh
   rm get-docker.sh
@@ -314,9 +320,12 @@ install-docker() {
     echo "Restart, then continue installing using this script."
     exit 1
   fi
+
+  set +e
 }
 
 install-docker-compose() {
+  set -e
   echo "Installing Docker Compose..."
 
   curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-$(uname -m)
@@ -342,6 +351,7 @@ install-docker-compose() {
   fi
 
   echo "Docker Compose updated!"
+  set +e
 }
 
 run-installer() {
@@ -772,11 +782,6 @@ uninstall() {
 # Usage: ./docker.sh letsencrypt-create
 #
 letsencrypt-create() {
-  echo "This script will automatically attempt to update your .env file, but if you see no response, you can:"
-  echo "  - Manually edit .env and provide a LETSENCRYPT_HOST and LETSENCRYPT_EMAIL"
-  echo "  - Stop existing services by running docker-compose down"
-  echo "  - Start services again by running docker-compose up -d"
-
   setup-letsencrypt
   docker-compose down
   docker-compose up -d

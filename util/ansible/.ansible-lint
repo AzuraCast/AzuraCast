@@ -1,0 +1,76 @@
+# .ansible-lint
+# exclude_paths included in this file are parsed relative to this file's location
+# and not relative to the CWD of execution. CLI arguments passed to the --exclude
+# option will be parsed relative to the CWD of execution.
+exclude_paths:
+  - .cache/  # implicit unless exclude_paths is defined in config
+  - .github/
+  - keys/
+  - secrets/
+  - tests/
+  - roles/to_remove/
+  - requirements.yml
+  - molecule.yml
+parseable: true
+quiet: false
+verbosity: 1
+
+# Mock modules or roles in order to pass ansible-playbook --syntax-check
+mock_modules:
+  - zuul_return
+  - zuul_console
+mock_roles:
+  - mocked_role
+  - author.role_name  # old standalone galaxy role
+
+# Enable checking of loop variable prefixes in roles
+loop_var_prefix: "{role}_"
+
+# Enforce variable names to follow pattern below, in addition to Ansible own
+# requirements, like avoiding python identifiers. To disable add `var-naming`
+# to skip_list.
+# var_naming_pattern: "^[a-z_][a-z0-9_]*$"
+
+use_default_rules: true
+# Load custom rules from this specific folder
+# rulesdir:
+#   - ./rule/directory/
+
+# This makes linter to fully ignore rules/tags listed below
+skip_list:
+  - fqcn-builtins
+  - meta-no-info  # No 'galaxy_info' found
+  - no-changed-when  # Commands should not change things if nothing needs doing
+  - no-tabs  # Most files should not contain tabs
+  - role-name  # Role name does not match ``^[a-z][a-z0-9_]+$`` pattern
+
+# Any rule that has the 'opt-in' tag will not be loaded unless its 'id' is
+# mentioned in the enable_list:
+enable_list:
+  - no-log-password  # opt-in
+  - no-same-owner  # opt-in
+  # add yaml here if you want to avoid ignoring yaml checks when yamllint
+  # library is missing. Normally its absence just skips using that rule.
+  - yaml
+# Report only a subset of tags and fully ignore any others
+# tags:
+#   - var-spacing
+
+# This makes the linter display but not fail for rules/tags listed below:
+warn_list:
+  - skip_this_tag
+  - git-latest
+  - experimental  # experimental is included in the implicit list
+  # - role-name
+
+# Offline mode disables installation of requirements.yml
+offline: true
+
+# Define required Ansible's variables to satisfy syntax check
+extra_vars:
+  scope: lint
+  workspace: lint
+  receiver: lint
+  cert_src: lint
+  cert_dst: lint
+

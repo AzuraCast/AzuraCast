@@ -60,3 +60,6 @@ tmp/cache/*---*
 /plugins/*
 /plugins/**/*
 !/plugins/.gitkeep
+
+# Direnv
+.direnv

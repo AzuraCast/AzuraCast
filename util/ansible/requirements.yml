@@ -1,0 +1,5 @@
+---
+collections:
+  - name: community.general
+  - name: community.crypto
+  - name: community.docker

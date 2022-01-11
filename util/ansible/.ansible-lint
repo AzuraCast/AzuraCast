@@ -74,4 +74,4 @@ extra_vars:
   cert_src: lint
   cert_dst: lint
 
-# Finished with 175 failure(s), 21 warning(s) on 66 files.
+# Finished with 97 failure(s), 21 warning(s) on 66 files.

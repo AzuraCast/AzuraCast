@@ -130,7 +130,15 @@
                             </a>
                         </td>
                         <td class="text-center">
-                            <span class="nowplaying-listeners">{{ item.listeners.total }}</span>
+                            <icon class="sm align-middle" icon="headset"></icon>
+                            <template v-if="item.links.listeners">
+                                <a :href="item.links.listeners">
+                                    {{ item.listeners.total }}
+                                </a>
+                            </template>
+                            <template v-else>
+                                {{ item.listeners.total }}
+                            </template>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">

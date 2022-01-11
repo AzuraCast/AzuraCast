@@ -233,6 +233,11 @@ class Settings implements Stringable
         return $this->analytics ?? Analytics::LEVEL_ALL;
     }
 
+    public function isAnalyticsEnabled(): bool
+    {
+        return Analytics::LEVEL_NONE !== $this->getAnalytics();
+    }
+
     public function setAnalytics(?string $analytics): void
     {
         $this->analytics = $this->truncateNullableString($analytics, 50);

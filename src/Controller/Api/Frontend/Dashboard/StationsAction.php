@@ -18,6 +18,7 @@ class StationsAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
     ): ResponseInterface {
         $router = $request->getRouter();
@@ -33,6 +34,8 @@ class StationsAction
             }
         );
 
+        $listenersEnabled = $settingsRepo->readSettings()->isAnalyticsEnabled();
+
         $viewStations = [];
         foreach ($stations as $station) {
             $np = $npApiGenerator->currentOrEmpty($station);
@@ -45,6 +48,13 @@ class StationsAction
                 'public' => (string)$router->named('public:index', ['station_id' => $station->getShortName()]),
                 'manage' => (string)$router->named('stations:index:index', ['station_id' => $station->getId()]),
             ];
+
+            if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $station->getId())) {
+                $row->links['listeners'] = (string)$router->named(
+                    'stations:reports:listeners',
+                    ['station_id' => $station->getId()]
+                );
+            }
 
             $viewStations[] = $row;
         }

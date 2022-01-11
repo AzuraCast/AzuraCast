@@ -7,8 +7,7 @@
 - name: Install Liquidsoap Dependencies
   apt:
     name: "{{ packages }}"
-    state: latest
-    install_recommends: no
+    install_recommends: false
   vars:
     packages:
       - libao-dev
@@ -53,8 +52,7 @@
 - name: Install Optional Audio Plugins
   apt:
     name: "{{ packages }}"
-    state: latest
-    install_recommends: no
+    install_recommends: false
   vars:
     packages:
       - frei0r-plugins-dev
@@ -67,7 +65,7 @@
 - name: Get the DPKG Architecture
   shell: dpkg --print-architecture
   register: dpkg_arch
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Install Liquidsoap
   apt:
@@ -78,4 +76,4 @@
     src: "/usr/bin/liquidsoap"
     dest: /usr/local/bin/liquidsoap
     state: link
-    force: yes
+    force: true

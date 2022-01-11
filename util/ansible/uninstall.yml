@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: true
+
   vars:
     util_base: "{{ playbook_dir | dirname }}"
     www_base: "{{ util_base | dirname }}"
@@ -10,4 +11,4 @@
     update_revision: 1
 
   roles:
-    - uninstall
+    - "uninstall"

@@ -1,16 +1,21 @@
 ---
-- name : Update MariaDB Dependencies
-  shell : curl -sSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash -s -- --mariadb-server-version="mariadb-10.5"
+- name: Update MariaDB Dependencies
+  shell: >-
+    curl -sSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+    | bash -s -- --mariadb-server-version="mariadb-10.5"
 
-- name : Install MariaDB
-  apt :
-    name : "{{ packages }}"
-    state : latest
-    update_cache : yes
-  vars :
-    packages :
+- name: Install MariaDB
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+  vars:
+    packages:
       - mariadb-server
       - mariadb-client
 
-- name : Start and enable service
-  service : name=mysql state=started enabled=yes
+- name: Start and enable service
+  service:
+    name: mysql
+    state: started
+    enabled: true

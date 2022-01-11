@@ -2,7 +2,10 @@
 - name: Install Beanstalkd
   apt:
     name: beanstalkd
-    state: latest
 
 - name: Extend default message size.
-  template: src=etc_default_beanstalkd.j2 dest=/etc/default/beanstalkd force=yes
+  template:
+    src: etc_default_beanstalkd.j2
+    dest: /etc/default/beanstalkd
+    force: true
+    mode: 0644

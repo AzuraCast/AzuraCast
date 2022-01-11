@@ -67,6 +67,7 @@
     section: "configuration"
     option: "{{ azure_db_install_env_ini.option }}"
     value: "{{ azure_db_install_env_ini.value }}"
+    mode: 0644
   loop:
     - option: 'MYSQL_HOST'
       value: 'localhost'

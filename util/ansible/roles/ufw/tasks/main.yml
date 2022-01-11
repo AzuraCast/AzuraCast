@@ -2,7 +2,6 @@
 - name: Install UFW Firewall
   apt:
     name: ufw
-    state: latest
 
 - name: UFW - Disable all other incoming by default
   ufw:
@@ -17,12 +16,14 @@
 - name: UFW - Enable AzuraCast TCP Ports
   ufw:
     rule: allow
-    port: "{{ item }}"
+    port: "{{ ufw_allow_rule }}"
     proto: tcp
-  with_items:
-   - 80
-   - 443
-   - '8000:8999'
+  loop:
+    - 80
+    - 443
+    - '8000:8999'
+  loop_control:
+    loop_var: ufw_allow_rule
 
 - name: UFW - Enable SSH
   ufw:

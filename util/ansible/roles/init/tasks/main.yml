@@ -1,38 +1,44 @@
 ---
-- debug:
-    msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
+- name: Running context
+  debug:
+    msg: >-
+      Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }}
+      {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
 
-- fail:
+- name: Sanity check
+  fail:
     msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu."
   when: ansible_distribution != 'Ubuntu'
 
-- fail:
+- name: Sanity check
+  fail:
     msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu 16.04, 18.04 or 20.04 LTS."
-  when: 
+  when:
     - ansible_distribution_release != 'bionic'
     - ansible_distribution_release != 'xenial'
     - ansible_distribution_release != 'focal'
 
 - name: Add multiverse repository
   apt_repository:
-    repo: "{{item}}"
-    update_cache: no
+    repo: "{{ init_repo_to_add }}"
+    update_cache: false
   when:
     - ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
-  with_items:
-    - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
-    - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}} multiverse"
-    - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse"
-    - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}}-updates multiverse"
+  loop:
+    - "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse"
+    - "deb-src http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} multiverse"
+    - "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-updates multiverse"
+    - "deb-src http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates multiverse"
+  loop_control:
+    loop_var: init_repo_to_add
 
 - name: Update apt
   apt:
-    update_cache: yes
+    update_cache: true
 
 - name: Install system packages
   apt:
     name: "{{ packages }}"
-    state: latest
   vars:
     packages:
       - apt-transport-https
@@ -49,30 +55,21 @@
 
 - name: Install Focal Packages (20.04)
   apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
+    name:
       - software-properties-common
       - python3-pip
   when: ansible_distribution_release == 'focal'
 
 - name: Install Bionic Packages (18.04 only)
   apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
+    name:
       - software-properties-common
       - python-pip
   when: ansible_distribution_release == 'bionic'
 
 - name: Install Xenial Packages (16.04 only)
   apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
+    name:
       - python-software-properties
       - python-pip
   when: ansible_distribution_release == 'xenial'
@@ -80,4 +77,3 @@
 - name: Update pip components
   pip:
     name: pip
-    state: latest

@@ -46,6 +46,7 @@
     src: fpmpool.j2
     dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
     force: true
+    mode: 0644
 
 - name: Configure php-fpm php.ini
   ini_file:
@@ -53,6 +54,7 @@
     section: PHP
     option: "{{ php_init_option.option }}"
     value: "{{ php_init_option.value }}"
+    mode: 0644
   loop:
     - option: "post_max_size"
       value: "50M"
@@ -67,7 +69,6 @@
   ini_file:
     dest: "/etc/php/{{ php_version }}/cli/php.ini"
     section: PHP
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  with_items:
-    - { option: 'short_open_tag',      value: "On" }
+    option: "short_open_tag"
+    value: "On"
+    mode: 0644

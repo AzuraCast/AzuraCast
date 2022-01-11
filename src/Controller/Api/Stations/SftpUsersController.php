@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -28,10 +28,9 @@ use OpenApi\Attributes as OA;
                     items: new OA\Items(ref: '#/components/schemas/SftpUser')
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -44,7 +43,7 @@ use OpenApi\Attributes as OA;
         ),
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -52,10 +51,9 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Get(
@@ -65,7 +63,7 @@ use OpenApi\Attributes as OA;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'SFTP User ID',
@@ -80,10 +78,9 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/SftpUser')
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Put(
@@ -96,7 +93,7 @@ use OpenApi\Attributes as OA;
         ),
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',
@@ -106,15 +103,10 @@ use OpenApi\Attributes as OA;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Delete(
@@ -124,7 +116,7 @@ use OpenApi\Attributes as OA;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: SFTP Users'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Remote Relay ID',
@@ -134,15 +126,10 @@ use OpenApi\Attributes as OA;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

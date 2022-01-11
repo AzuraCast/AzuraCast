@@ -65,7 +65,7 @@ use OpenApi\Attributes as OA;
         )
     ),
     OA\Parameter(
-        name: "station_id_required",
+        name: "StationIdRequired",
         in: "path",
         required: true,
         schema: new OA\Schema(
@@ -76,11 +76,27 @@ use OpenApi\Attributes as OA;
         ),
     ),
     OA\Response(
-        response: "todo",
-        description: "This API call has no documented response (yet)",
+        response: 'Success',
+        description: 'Success',
+        content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
+    ),
+    OA\Response(
+        response: 'AccessDenied',
+        description: 'Access denied.',
+        content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
+    ),
+    OA\Response(
+        response: 'RecordNotFound',
+        description: 'Record not found.',
+        content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
+    ),
+    OA\Response(
+        response: 'GenericError',
+        description: 'A generic exception has occurred.',
+        content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
     ),
     OA\SecurityScheme(
-        securityScheme: "api_key",
+        securityScheme: "ApiKey",
         type: "apiKey",
         name: "X-API-Key",
         in: "header"
@@ -90,7 +106,12 @@ class OpenApi
 {
     public const SAMPLE_TIMESTAMP = 1609480800;
 
-    public const API_KEY_SECURITY = [['api_key' => []]];
+    public const API_KEY_SECURITY = [['ApiKey' => []]];
 
-    public const STATION_ID_REQUIRED = '#/components/parameters/station_id_required';
+    public const REF_STATION_ID_REQUIRED = '#/components/parameters/StationIdRequired';
+
+    public const REF_RESPONSE_SUCCESS = '#/components/responses/Success';
+    public const REF_RESPONSE_ACCESS_DENIED = '#/components/responses/AccessDenied';
+    public const REF_RESPONSE_NOT_FOUND = '#/components/responses/RecordNotFound';
+    public const REF_RESPONSE_GENERIC_ERROR = '#/components/responses/GenericError';
 }

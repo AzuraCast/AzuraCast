@@ -37,7 +37,7 @@ use Psr\SimpleCache\CacheInterface;
         description: "Returns a full summary of the specified station's current state.",
         tags: ['Now Playing'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -45,10 +45,7 @@ use Psr\SimpleCache\CacheInterface;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying')
             ),
-            new OA\Response(
-                response: 404,
-                description: 'Station not found'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
         ]
     )
 ]

@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
     description: 'Returns the album art for a song, or a generic image.',
     tags: ['Stations: Media'],
     parameters: [
-        new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
             name: 'media_id',
             description: 'The station media unique ID',

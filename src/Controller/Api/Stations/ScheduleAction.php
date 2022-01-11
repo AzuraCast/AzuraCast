@@ -23,7 +23,7 @@ use Symfony\Contracts\Cache\CacheInterface;
     description: 'Return upcoming and currently ongoing schedule entries.',
     tags: ['Stations: Schedules'],
     parameters: [
-        new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
             name: 'now',
             description: 'The date/time to compare schedule items to. Defaults to the current date and time.',
@@ -48,14 +48,8 @@ use Symfony\Contracts\Cache\CacheInterface;
                 items: new OA\Items(ref: '#/components/schemas/Api_StationSchedule')
             )
         ),
-        new OA\Response(
-            response: 404,
-            description: 'Station not found'
-        ),
-        new OA\Response(
-            response: 403,
-            description: 'Access denied'
-        ),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
 class ScheduleAction

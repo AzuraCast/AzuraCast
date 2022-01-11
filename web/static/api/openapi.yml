@@ -27,10 +27,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/CustomField'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Administration: Custom Fields'
@@ -49,10 +51,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomField'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/admin/custom_field/{id}':
     get:
       tags:
@@ -76,10 +80,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomField'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Administration: Custom Fields'
@@ -101,16 +109,16 @@ paths:
               $ref: '#/components/schemas/CustomField'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Administration: Custom Fields'
@@ -127,16 +135,17 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey:
+            - 'administer stations'
   /admin/permissions:
     get:
       tags:
@@ -147,10 +156,14 @@ paths:
         '200':
           description: Success
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /internal/relays:
     get:
       tags:
@@ -181,11 +194,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Role'
-        '403':
-          description: 'Access denied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Administration: Roles'
@@ -203,11 +218,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Role'
-        '403':
-          description: 'Access denied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/admin/role/{id}':
     get:
       tags:
@@ -231,10 +248,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Role'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Administration: Roles'
@@ -256,16 +277,16 @@ paths:
               $ref: '#/components/schemas/Role'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Administration: Roles'
@@ -282,16 +303,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /admin/settings:
     get:
       tags:
@@ -306,10 +327,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Settings'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Administration: Settings'
@@ -322,16 +345,14 @@ paths:
               $ref: '#/components/schemas/Settings'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /admin/stations:
     get:
       tags:
@@ -348,10 +369,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/Station'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Administration: Stations'
@@ -370,10 +393,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Station'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/admin/station/{id}':
     get:
       tags:
@@ -397,10 +422,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Station'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Administration: Stations'
@@ -422,16 +451,16 @@ paths:
               $ref: '#/components/schemas/Station'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Administration: Stations'
@@ -448,16 +477,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /admin/storage_locations:
     get:
       tags:
@@ -474,10 +503,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/Api_Admin_StorageLocation'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Administration: Storage Locations'
@@ -496,10 +527,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_Admin_StorageLocation'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/admin/storage_location/{id}':
     get:
       tags:
@@ -523,10 +556,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_Admin_StorageLocation'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Administration: Storage Locations'
@@ -548,16 +585,16 @@ paths:
               $ref: '#/components/schemas/Api_Admin_StorageLocation'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Administration: Storage Locations'
@@ -574,16 +611,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /admin/users:
     get:
       tags:
@@ -600,10 +637,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Administration: Users'
@@ -622,10 +661,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/admin/user/{id}':
     get:
       tags:
@@ -649,10 +690,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Administration: Users'
@@ -674,16 +719,16 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Administration: Users'
@@ -700,16 +745,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /status:
     get:
       tags:
@@ -741,7 +786,6 @@ paths:
       tags:
         - 'Now Playing'
       description: 'Returns a full summary of all stations'' current state.'
-      operationId: 2ac086b9720325236f99cd3c185cc5c8
       responses:
         '200':
           description: Success
@@ -756,10 +800,9 @@ paths:
       tags:
         - 'Now Playing'
       description: 'Returns a full summary of the specified station''s current state.'
-      operationId: 4ffcbe7b5873aecdb0872e3b312c6791
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -768,7 +811,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_NowPlaying'
         '404':
-          description: 'Station not found'
+          $ref: '#/components/responses/RecordNotFound'
   '/station/{station_id}/art/{media_id}':
     get:
       tags:
@@ -776,7 +819,7 @@ paths:
       description: 'Returns the album art for a song, or a generic image.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: media_id
           in: path
@@ -795,7 +838,7 @@ paths:
       description: 'Sets the album art for a track.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -810,33 +853,23 @@ paths:
                 type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Media'
       description: 'Removes the album art for a track.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -851,26 +884,16 @@ paths:
                 type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/automation/run':
     put:
       tags:
@@ -878,29 +901,19 @@ paths:
       description: 'Run automated assignment.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/files':
     get:
       tags:
@@ -909,7 +922,7 @@ paths:
       operationId: getFiles
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -920,10 +933,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/StationMedia'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Media'
@@ -931,7 +946,7 @@ paths:
       operationId: addFile
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -945,10 +960,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationMedia'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/file/{id}':
     get:
       tags:
@@ -957,7 +974,7 @@ paths:
       operationId: getFile
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -974,10 +991,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationMedia'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Media'
@@ -985,7 +1006,7 @@ paths:
       operationId: editFile
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1001,16 +1022,16 @@ paths:
               $ref: '#/components/schemas/StationMedia'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Media'
@@ -1018,7 +1039,7 @@ paths:
       operationId: deleteFile
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1029,16 +1050,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/history':
     get:
       tags:
@@ -1047,7 +1068,7 @@ paths:
       operationId: getStationHistory
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: start
           in: query
@@ -1071,13 +1092,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_DetailedSongHistory'
-        '404':
-          description: 'Station not found'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   /stations:
     get:
       tags:
@@ -1101,7 +1124,7 @@ paths:
       operationId: getStation
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -1110,7 +1133,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_NowPlaying_Station'
         '404':
-          description: 'Station not found'
+          $ref: '#/components/responses/RecordNotFound'
   '/station/{station_id}/listeners':
     get:
       tags:
@@ -1119,7 +1142,7 @@ paths:
       operationId: getStationListeners
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -1129,13 +1152,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_Listener'
-        '404':
-          description: 'Station not found'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/mount/{id}/intro':
     get:
       tags:
@@ -1143,7 +1168,7 @@ paths:
       description: 'Get the intro track for a mount point.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1155,28 +1180,22 @@ paths:
       responses:
         '200':
           description: Success
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Mount Points'
       description: 'Update the intro track for a mount point.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1187,33 +1206,23 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Mount Points'
       description: 'Removes the intro track for a mount point.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1224,26 +1233,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/mounts':
     get:
       tags:
@@ -1252,7 +1251,7 @@ paths:
       operationId: getStationMounts
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -1263,10 +1262,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/StationMount'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Mount Points'
@@ -1274,7 +1275,7 @@ paths:
       operationId: addMount
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -1288,10 +1289,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationMount'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/mount/{id}':
     get:
       tags:
@@ -1300,7 +1303,7 @@ paths:
       operationId: getMount
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1317,10 +1320,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationMount'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Mount Points'
@@ -1328,7 +1335,7 @@ paths:
       operationId: editMount
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1344,16 +1351,16 @@ paths:
               $ref: '#/components/schemas/StationMount'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Mount Points'
@@ -1361,7 +1368,7 @@ paths:
       operationId: deleteMount
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1372,16 +1379,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/playlists':
     get:
       tags:
@@ -1390,7 +1397,7 @@ paths:
       operationId: getPlaylists
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -1401,10 +1408,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/StationPlaylist'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Playlists'
@@ -1412,7 +1421,7 @@ paths:
       operationId: addPlaylist
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -1426,10 +1435,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationPlaylist'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/playlist/{id}':
     get:
       tags:
@@ -1438,7 +1449,7 @@ paths:
       operationId: getPlaylist
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1455,10 +1466,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationPlaylist'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Playlists'
@@ -1466,7 +1481,7 @@ paths:
       operationId: editPlaylist
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1482,16 +1497,16 @@ paths:
               $ref: '#/components/schemas/StationPlaylist'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Playlists'
@@ -1499,7 +1514,7 @@ paths:
       operationId: deletePlaylist
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -1510,16 +1525,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episodes':
     get:
       tags:
@@ -1528,7 +1543,7 @@ paths:
       operationId: getEpisodes
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1546,10 +1561,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/Api_PodcastEpisode'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -1557,7 +1576,7 @@ paths:
       operationId: addEpisode
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1578,10 +1597,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_PodcastEpisode'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{id}':
     get:
       tags:
@@ -1590,7 +1613,7 @@ paths:
       operationId: getEpisode
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1613,10 +1636,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_PodcastEpisode'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Podcasts'
@@ -1624,7 +1651,7 @@ paths:
       operationId: editEpisode
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1646,16 +1673,16 @@ paths:
               $ref: '#/components/schemas/Api_PodcastEpisode'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -1663,7 +1690,7 @@ paths:
       operationId: deleteEpisode
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1680,16 +1707,16 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/art':
     get:
       tags:
@@ -1697,7 +1724,7 @@ paths:
       description: 'Gets the album art for a podcast.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1708,28 +1735,22 @@ paths:
       responses:
         '200':
           description: Success
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
       description: 'Sets the album art for a podcast.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1739,29 +1760,23 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
       description: 'Removes the album art for a podcast.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1771,26 +1786,16 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art':
     get:
       tags:
@@ -1798,7 +1803,7 @@ paths:
       description: 'Gets the album art for a podcast episode.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1816,28 +1821,22 @@ paths:
       responses:
         '200':
           description: Success
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
       description: 'Sets the album art for a podcast episode.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1854,33 +1853,23 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
       description: 'Removes the album art for a podcast episode.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1916,7 +1905,7 @@ paths:
                 $ref: '#/components/schemas/Api_Error'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media':
     get:
       tags:
@@ -1924,7 +1913,7 @@ paths:
       description: 'Gets the media for a podcast episode.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1942,28 +1931,22 @@ paths:
       responses:
         '200':
           description: Success
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
       description: 'Sets the media for a podcast episode.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -1980,33 +1963,23 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
       description: 'Removes the media for a podcast episode.'
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: podcast_id
           in: path
@@ -2023,26 +1996,16 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Record not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcasts':
     get:
       tags:
@@ -2051,7 +2014,7 @@ paths:
       operationId: getPodcasts
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2062,10 +2025,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/Api_Podcast'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Podcasts'
@@ -2073,7 +2040,7 @@ paths:
       operationId: addPodcast
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -2087,10 +2054,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_Podcast'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/podcast/{id}':
     get:
       tags:
@@ -2099,7 +2070,7 @@ paths:
       operationId: getPodcast
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2115,10 +2086,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_Podcast'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Podcasts'
@@ -2126,7 +2101,7 @@ paths:
       operationId: editPodcast
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2141,16 +2116,16 @@ paths:
               $ref: '#/components/schemas/Api_Podcast'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Podcasts'
@@ -2158,7 +2133,7 @@ paths:
       operationId: deletePodcast
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2168,16 +2143,16 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/queue':
     get:
       tags:
@@ -2186,7 +2161,7 @@ paths:
       operationId: getQueue
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2196,13 +2171,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_StationQueueDetailed'
-        '404':
-          description: 'Station not found'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/queue/{id}':
     get:
       tags:
@@ -2211,7 +2188,7 @@ paths:
       operationId: getQueueItem
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2227,13 +2204,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Api_StationQueueDetailed'
-        '404':
-          description: 'Station or Queue ID not found'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Queue'
@@ -2241,7 +2220,7 @@ paths:
       operationId: deleteQueueItem
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2252,18 +2231,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
-        '404':
-          description: 'Station or Queue ID not found'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/remotes':
     get:
       tags:
@@ -2272,7 +2249,7 @@ paths:
       operationId: getRelays
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2283,10 +2260,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/Api_StationRemote'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Remote Relays'
@@ -2294,7 +2275,7 @@ paths:
       operationId: addRelay
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -2308,10 +2289,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_StationRemote'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/remote/{id}':
     get:
       tags:
@@ -2320,7 +2305,7 @@ paths:
       operationId: getRelay
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2337,10 +2322,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_StationRemote'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Remote Relays'
@@ -2348,7 +2337,7 @@ paths:
       operationId: editRelay
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2364,16 +2353,16 @@ paths:
               $ref: '#/components/schemas/Api_StationRemote'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Remote Relays'
@@ -2381,7 +2370,7 @@ paths:
       operationId: deleteRelay
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2392,16 +2381,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/requests':
     get:
       tags:
@@ -2410,7 +2399,7 @@ paths:
       operationId: getRequestableSongs
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2420,10 +2409,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_StationRequest'
-        '404':
-          description: 'Station not found'
         '403':
-          description: 'Station does not support requests'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/request/{request_id}':
     post:
       tags:
@@ -2432,7 +2423,7 @@ paths:
       operationId: submitSongRequest
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: request_id
           in: path
@@ -2442,11 +2433,13 @@ paths:
             type: string
       responses:
         '200':
-          description: Success
-        '404':
-          description: 'Station not found'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Station does not support requests'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/schedule':
     get:
       tags:
@@ -2455,7 +2448,7 @@ paths:
       operationId: getSchedule
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: now
           in: query
@@ -2480,9 +2473,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Api_StationSchedule'
         '404':
-          description: 'Station not found'
-        '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
   '/station/{station_id}/status':
     get:
       tags:
@@ -2491,7 +2484,7 @@ paths:
       operationId: getServiceStatus
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2500,14 +2493,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Api_StationServiceStatus'
         '403':
-          description: 'Access Forbidden'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/restart':
     post:
       tags:
@@ -2516,23 +2509,19 @@ paths:
       operationId: restartServices
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access Forbidden'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/frontend/{action}':
     post:
       tags:
@@ -2541,7 +2530,7 @@ paths:
       operationId: doFrontendServiceAction
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: action
           in: path
@@ -2552,20 +2541,16 @@ paths:
             default: restart
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                schema: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access Forbidden'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/backend/{action}':
     post:
       tags:
@@ -2574,7 +2559,7 @@ paths:
       operationId: doBackendServiceAction
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: action
           in: path
@@ -2585,20 +2570,16 @@ paths:
             default: restart
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access Forbidden'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Error'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/sftp-users':
     get:
       tags:
@@ -2607,7 +2588,7 @@ paths:
       operationId: getSftpUsers
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2618,10 +2599,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/SftpUser'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: SFTP Users'
@@ -2629,7 +2614,7 @@ paths:
       operationId: addSftpUser
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -2643,10 +2628,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/SftpUser'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/sftp-user/{id}':
     get:
       tags:
@@ -2655,7 +2644,7 @@ paths:
       operationId: getSftpUser
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2672,10 +2661,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/SftpUser'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: SFTP Users'
@@ -2683,7 +2676,7 @@ paths:
       operationId: editSftpUser
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2699,16 +2692,16 @@ paths:
               $ref: '#/components/schemas/SftpUser'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: SFTP Users'
@@ -2716,7 +2709,7 @@ paths:
       operationId: deleteSftpUser
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2727,16 +2720,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/streamers':
     get:
       tags:
@@ -2745,7 +2738,7 @@ paths:
       operationId: getStreamers
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2756,10 +2749,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/StationStreamer'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Streamers/DJs'
@@ -2767,7 +2764,7 @@ paths:
       operationId: addStreamer
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -2781,10 +2778,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationStreamer'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/streamer/{id}':
     get:
       tags:
@@ -2793,7 +2794,7 @@ paths:
       operationId: getStreamer
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2810,10 +2811,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationStreamer'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Streamers/DJs'
@@ -2821,7 +2826,7 @@ paths:
       operationId: editStreamer
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2837,16 +2842,16 @@ paths:
               $ref: '#/components/schemas/StationStreamer'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Streamers/DJs'
@@ -2854,7 +2859,7 @@ paths:
       operationId: deleteStreamer
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2865,16 +2870,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/webhooks':
     get:
       tags:
@@ -2883,7 +2888,7 @@ paths:
       operationId: getWebhooks
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           description: Success
@@ -2894,10 +2899,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/StationWebhook'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     post:
       tags:
         - 'Stations: Web Hooks'
@@ -2905,7 +2914,7 @@ paths:
       operationId: addWebhook
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
       requestBody:
         content:
           application/json:
@@ -2919,10 +2928,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationWebhook'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
   '/station/{station_id}/webhook/{id}':
     get:
       tags:
@@ -2931,7 +2944,7 @@ paths:
       operationId: getWebhook
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2948,10 +2961,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/StationWebhook'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     put:
       tags:
         - 'Stations: Web Hooks'
@@ -2959,7 +2976,7 @@ paths:
       operationId: editWebhook
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -2975,16 +2992,16 @@ paths:
               $ref: '#/components/schemas/StationWebhook'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
     delete:
       tags:
         - 'Stations: Web Hooks'
@@ -2992,7 +3009,7 @@ paths:
       operationId: deleteWebhook
       parameters:
         -
-          $ref: '#/components/parameters/station_id_required'
+          $ref: '#/components/parameters/StationIdRequired'
         -
           name: id
           in: path
@@ -3003,16 +3020,16 @@ paths:
             format: int64
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Api_Status'
+          $ref: '#/components/responses/Success'
         '403':
-          description: 'Access denied'
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
       security:
         -
-          api_key: []
+          ApiKey: []
 components:
   schemas:
     Api_Admin_Relay:
@@ -4101,26 +4118,12 @@ components:
           description: 'The UNIX timestamp when setup was last completed.'
           type: integer
           example: 1609480800
-        nowplaying:
-          description: 'The current cached now playing data.'
-          type: array
-          items: {  }
-          example: ''
-          nullable: true
-        sync_nowplaying_last_run:
-          description: 'The UNIX timestamp when the now playing sync task was last run.'
-          type: integer
-          example: 1609480800
-        sync_short_last_run:
-          description: 'The UNIX timestamp when the 60-second ''short'' sync task was last run.'
-          type: integer
-          example: 1609480800
-        sync_medium_last_run:
-          description: 'The UNIX timestamp when the 5-minute ''medium'' sync task was last run.'
-          type: integer
-          example: 1609480800
-        sync_long_last_run:
-          description: 'The UNIX timestamp when the 1-hour ''long'' sync task was last run.'
+        sync_disabled:
+          description: 'Temporarily disable all sync tasks.'
+          type: boolean
+          example: 'false'
+        sync_last_run:
+          description: 'The last run timestamp for the unified sync task.'
           type: integer
           example: 1609480800
         external_ip:
@@ -4699,11 +4702,33 @@ components:
         -
           $ref: '#/components/schemas/HasAutoIncrementId'
   responses:
-    todo:
-      description: 'This API call has no documented response (yet)'
+    Success:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Api_Status'
+    AccessDenied:
+      description: 'Access denied.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Api_Error'
+    RecordNotFound:
+      description: 'Record not found.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Api_Error'
+    GenericError:
+      description: 'A generic exception has occurred.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Api_Error'
   parameters:
-    station_id_required:
-      name: station_id_required
+    StationIdRequired:
+      name: StationIdRequired
       in: path
       required: true
       schema:
@@ -4715,7 +4740,7 @@ components:
             type: string
             format: string
   securitySchemes:
-    api_key:
+    ApiKey:
       type: apiKey
       name: X-API-Key
       in: header

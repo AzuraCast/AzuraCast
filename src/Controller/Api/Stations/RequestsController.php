@@ -22,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Return a list of requestable songs.',
         tags: ['Stations: Song Requests'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -33,14 +33,9 @@ use Psr\Http\Message\ResponseInterface;
                     items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
                 )
             ),
-            new OA\Response(
-                response: 404,
-                description: 'Station not found'
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Station does not support requests'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -49,7 +44,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Submit a song request.',
         tags: ['Stations: Song Requests'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'request_id',
                 description: 'The requestable song ID',
@@ -59,18 +54,10 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-            new OA\Response(
-                response: 404,
-                description: 'Station not found'
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Station does not support requests'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

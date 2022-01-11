@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b6bbb42f740ddb4d9916438a261865d",
+    "content-hash": "e58cb3a544325558326c3be7f2ad8ea1",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -9580,16 +9580,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.1.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "47bc50f88a8a2be7a3048112344dacd6cfba1926"
+                "reference": "8f53ded4c90ec7cccb18333c1d7d8a4c16f0c3c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/47bc50f88a8a2be7a3048112344dacd6cfba1926",
-                "reference": "47bc50f88a8a2be7a3048112344dacd6cfba1926",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/8f53ded4c90ec7cccb18333c1d7d8a4c16f0c3c8",
+                "reference": "8f53ded4c90ec7cccb18333c1d7d8a4c16f0c3c8",
                 "shasum": ""
             },
             "require": {
@@ -9605,6 +9605,7 @@
                 "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
                 "phpunit/phpunit": ">=8"
             },
+            "default-branch": true,
             "bin": [
                 "bin/openapi"
             ],
@@ -9649,9 +9650,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.1.1"
+                "source": "https://github.com/zircote/swagger-php/tree/master"
             },
-            "time": "2022-01-01T02:07:33+00:00"
+            "time": "2022-01-10T22:04:03+00:00"
         }
     ],
     "packages-dev": [
@@ -14198,6 +14199,7 @@
         "rlanvin/php-ip": 20,
         "supervisorphp/supervisor": 20,
         "wikimedia/composer-merge-plugin": 20,
+        "zircote/swagger-php": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

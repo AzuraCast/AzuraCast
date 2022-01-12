@@ -1,7 +1,0 @@
-ansible-core==2.11.6
-ansible-lint
-docker
-molecule==3.5.2
-molecule[docker]
-passlib
-yamllint

@@ -16,17 +16,23 @@ class MountsAction
         Response $response,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
+        $router = $request->getRouter();
         $station = $request->getStation();
 
         $settings = $settingsRepo->readSettings();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'stations/mounts/index',
-            [
-                'station' => $station,
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsMounts',
+            id: 'station-mounts',
+            title: __('Mount Points'),
+            props: [
+                'listUrl'             => (string)$router->fromHere('api:stations:mounts'),
+                'newIntroUrl'         => (string)$router->fromHere('api:stations:mounts:new-intro'),
+                'restartStatusUrl'    => (string)$router->fromHere('api:stations:restart-status'),
+                'stationFrontendType' => $station->getFrontendType(),
+                'showAdvanced'        => $settings->getEnableAdvancedFeatures(),
+            ],
         );
     }
 }

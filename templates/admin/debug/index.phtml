@@ -1,23 +1,32 @@
 <?php
+/**
+ * @var \App\Assets $assets
+ */
+
 $this->layout('main', [
     'title' => __('System Debugger'),
     'manual' => true,
 ]);
+
+$assets
+    ->load('luxon')
+    ->addInlineJs($this->fetch('admin/debug/index.js'), 99);
 ?>
 
-<h2 class="outside-card-header mb-1"><?=__('System Debugger')?></h2>
+<h2 class="outside-card-header mb-1"><?= __('System Debugger') ?></h2>
 
 <div class="row">
     <div class="col-md-6">
         <div class="card mb-3">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Clear Cache')?></h2>
+                <h2 class="card-title"><?= __('Clear Cache') ?></h2>
             </div>
             <div class="card-body">
-                <p><?=__('Clearing the application cache may log you out of your session.')?></p>
+                <p><?= __('Clearing the application cache may log you out of your session.') ?></p>
                 <div class="buttons">
-                    <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-cache')?>">
-                        <?=__('Clear Cache')?>
+                    <a class="btn btn-sm btn-primary" role="button"
+                       href="<?= $router->named('admin:debug:clear-cache') ?>">
+                        <?= __('Clear Cache') ?>
                     </a>
                 </div>
             </div>
@@ -26,13 +35,14 @@ $this->layout('main', [
     <div class="col-md-6">
         <div class="card mb-3">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Clear All Message Queues')?></h2>
+                <h2 class="card-title"><?= __('Clear All Message Queues') ?></h2>
             </div>
             <div class="card-body">
-                <p><?=__('This will clear any pending unprocessed messages in all message queues.')?></p>
+                <p><?= __('This will clear any pending unprocessed messages in all message queues.') ?></p>
                 <div class="buttons">
-                    <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-queue')?>">
-                        <?=__('Clear All Message Queues')?>
+                    <a class="btn btn-sm btn-primary" role="button"
+                       href="<?= $router->named('admin:debug:clear-queue') ?>">
+                        <?= __('Clear All Message Queues') ?>
                     </a>
                 </div>
             </div>
@@ -42,42 +52,79 @@ $this->layout('main', [
 
 <div class="card mb-3">
     <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=__('Synchronization Tasks')?></h2>
+        <h2 class="card-title"><?= __('Synchronization Tasks') ?></h2>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <?php foreach ($sync_times as $sync_key => $sync_info): ?>
-                <div class="col">
-                    <h5 class="mb-0"><?=$sync_info['name']?></h5>
-                    <p><?=implode(', ', $sync_info['contents'])?></p>
-
+    <table class="table">
+        <colgroup>
+            <col width="40%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th><?= __('Task Name') ?></th>
+            <th><?= __('Last Run') ?></th>
+            <th><?= __('Next Run') ?></th>
+            <th><?= __('Actions') ?></th>
+        </tr>
+        </thead>
+        <?php
+        foreach ($sync_times as $task => $taskInfo): ?>
+            <tr>
+                <td>
+                    <big><?= $task ?></big><br>
+                    <?= $taskInfo['pattern'] ?>
+                </td>
+                <td>
+                    <?php
+                    if (0 === $taskInfo['time']): ?>
+                        <?= __('Not Run') ?>
+                    <?php
+                    else: ?>
+                        <time <?php
+                              if ($taskInfo['time'] < time() - (60 * 60 * 3)): ?>class="text-danger"<?php
+                        endif; ?> data-duration="<?= $taskInfo['time'] ?>"></time>
+                    <?php
+                    endif; ?>
+                </td>
+                <td>
+                    <time data-duration="<?= $taskInfo['nextRun'] ?>"></time>
+                </td>
+                <td>
                     <div class="buttons">
-                        <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:sync',
-                            ['type' => $sync_key])?>">
-                            <?=__('Run Task')?>
+                        <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
+                            'admin:debug:sync',
+                            ['task' => $task]
+                        ) ?>">
+                            <?= __('Run Task') ?>
                         </a>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
+                </td>
+            </tr>
+        <?php
+        endforeach; ?>
+    </table>
 </div>
 
 <div class="card mb-3">
     <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=__('Message Queues')?></h2>
+        <h2 class="card-title"><?= __('Message Queues') ?></h2>
     </div>
     <div class="card-body">
         <div class="row">
-            <?php foreach ($queue_totals as $queueType => $queueTotal): ?>
+            <?php
+            foreach ($queue_totals as $queueType => $queueTotal): ?>
                 <div class="col">
-                    <h5 class="mb-0"><?=$queueType?></h5>
-                    <p><?=__('%d queued messages', $queueTotal)?></p>
+                    <h5 class="mb-0"><?= $queueType ?></h5>
+                    <p><?= __('%d queued messages', $queueTotal) ?></p>
 
                     <div class="buttons">
-                        <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-queue',
-                            ['queue' => $queueType])?>">
-                            <?=__('Clear Queue')?>
+                        <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
+                            'admin:debug:clear-queue',
+                            ['queue' => $queueType]
+                        ) ?>">
+                            <?= __('Clear Queue') ?>
                         </a>
                     </div>
                 </div>
@@ -101,32 +148,50 @@ $this->layout('main', [
     </div>
     <div class="tab-content">
         <?php foreach ($stations as $station): ?>
-            <div class="card-body card-padding-sm tab-pane" id="debug_station_<?=$station['id']?>">
-                <h3><?=$station['name']?></h3>
+            <div class="card-body card-padding-sm tab-pane" id="debug_station_<?= $station['id'] ?>">
+                <h3><?= $station['name'] ?></h3>
 
                 <div class="row">
-                    <div class="col">
-                        <h5><?=__('Rebuild AutoDJ Queue')?></h5>
+                    <div class="col-md-3">
+                        <h5><?= __('Rebuild AutoDJ Queue') ?></h5>
 
                         <div class="buttons">
-                            <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:nextsong',
-                                ['station_id' => $station['id']])?>">
-                                <?=__('Run Test')?>
+                            <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
+                                'admin:debug:nextsong',
+                                ['station_id' => $station['id']]
+                            ) ?>">
+                                <?= __('Run Task') ?>
                             </a>
                         </div>
                     </div>
-                    <?php if ($station['backend_type'] === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
-                        <div class="col">
-                            <h5><?=__('Send Liquidsoap Telnet Command')?></h5>
+                    <div class="col-md-3">
+                        <h5><?= __('Get Now Playing') ?></h5>
 
-                            <form class="form" method="POST" action="<?=$router->named('admin:debug:telnet',
-                                ['station_id' => $station['id']])?>">
+                        <div class="buttons">
+                            <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
+                                'admin:debug:nowplaying',
+                                ['station_id' => $station['id']]
+                            ) ?>">
+                                <?= __('Run Task') ?>
+                            </a>
+                        </div>
+                    </div>
+                    <?php
+                    if ($station['backend_type'] === \App\Radio\Enums\BackendAdapters::Liquidsoap->value): ?>
+                        <div class="col-md-6">
+                            <h5><?= __('Send Liquidsoap Telnet Command') ?></h5>
+
+                            <form class="form" method="POST" action="<?= $router->named(
+                                'admin:debug:telnet',
+                                ['station_id' => $station['id']]
+                            ) ?>">
                                 <div class="form-group">
-                                    <label for="<?=$station['id']?>_command"><?=__('Command')?>:</label>
-                                    <input id="<?=$station['id']?>_command" name="command" class="form-control" type="text">
+                                    <label for="<?= $station['id'] ?>_command"><?= __('Command') ?>:</label>
+                                    <input id="<?= $station['id'] ?>_command" name="command" class="form-control"
+                                           type="text">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary"><?=__('Execute Command')?></button>
+                                <button type="submit" class="btn btn-primary"><?= __('Execute Command') ?></button>
                             </form>
                         </div>
                     <?php endif; ?>

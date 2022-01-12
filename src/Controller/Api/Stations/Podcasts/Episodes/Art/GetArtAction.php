@@ -8,8 +8,42 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[OA\Get(
+    path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
+    description: 'Gets the album art for a podcast episode.',
+    security: OpenApi::API_KEY_SECURITY,
+    tags: ['Stations: Podcasts'],
+    parameters: [
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        new OA\Parameter(
+            name: 'podcast_id',
+            description: 'Podcast ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+        new OA\Parameter(
+            name: 'episode_id',
+            description: 'Podcast Episode ID',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(type: 'string')
+        ),
+    ],
+    responses: [
+        new OA\Response(
+            response: 200,
+            description: 'Success'
+        ),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+        new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+    ]
+)]
 class GetArtAction
 {
     public function __invoke(

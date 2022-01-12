@@ -3,6 +3,6 @@ set -e
 source /bd_build/buildconfig
 set -x
 
-apt-get update
+$minimal_apt_get_install netbase
 
-$minimal_apt_get_install beanstalkd
+install_without_postinst beanstalkd

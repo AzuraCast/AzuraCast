@@ -1,7 +1,7 @@
-FROM library/node:lts-alpine
+FROM library/node:16-alpine
 
 RUN apk update \
-    && apk add bash python make curl g++ shadow
+    && apk add bash python3 make curl g++ shadow git
 
 RUN groupdel dialout
 
@@ -23,6 +23,8 @@ WORKDIR /data/frontend
 USER node:node
 
 VOLUME /data/frontend/node_modules
+
+ENV NODE_ENV=production
 
 # Define default command.
 ENTRYPOINT ["fixuid"]

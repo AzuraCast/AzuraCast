@@ -6,6 +6,7 @@ namespace App\Message;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 
 class DispatchWebhookMessage extends AbstractUniqueMessage
 {
@@ -23,6 +24,6 @@ class DispatchWebhookMessage extends AbstractUniqueMessage
 
     public function getQueue(): string
     {
-        return QueueManager::QUEUE_HIGH_PRIORITY;
+        return QueueManagerInterface::QUEUE_HIGH_PRIORITY;
     }
 }

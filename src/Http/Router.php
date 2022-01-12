@@ -48,18 +48,7 @@ class Router implements RouterInterface
     {
         $settings = $this->settingsRepo->readSettings();
 
-        $settingsBaseUrl = $settings->getBaseUrl();
-        if (!empty($settingsBaseUrl)) {
-            if (!str_starts_with($settingsBaseUrl, 'http')) {
-                /** @noinspection HttpUrlsUsage */
-                $settingsBaseUrl = 'http://' . $settingsBaseUrl;
-            }
-
-            $baseUrl = new Uri($settingsBaseUrl);
-        } else {
-            $baseUrl = new Uri('');
-        }
-
+        $baseUrl = $settings->getBaseUrlAsUri() ?? new Uri('');
         $useHttps = $settings->getAlwaysUseSsl();
 
         if ($this->request instanceof ServerRequestInterface) {

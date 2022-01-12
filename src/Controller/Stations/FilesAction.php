@@ -30,32 +30,33 @@ class FilesAction
                 ORDER BY sp.name ASC
             DQL
         )->setParameter('station_id', $station->getId())
-            ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
+            ->setParameter('source', Entity\Enums\PlaylistSources::Songs->value)
             ->getArrayResult();
 
-        $files_count = $em->createQuery(
-            <<<'DQL'
-                SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
-                WHERE sm.storage_location = :storageLocation
-            DQL
-        )->setParameter('storageLocation', $station->getMediaStorageLocation())
-            ->getSingleScalarResult();
+        $router = $request->getRouter();
 
-        $mediaStorage = $station->getMediaStorageLocation();
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'stations/files/index',
-            [
-                'show_sftp' => SftpGo::isSupportedForStation($station),
-                'playlists' => $playlists,
-                'custom_fields' => $customFieldRepo->fetchArray(),
-                'mime_types' => MimeType::getProcessableTypes(),
-                'space_used' => $mediaStorage->getStorageUsed(),
-                'space_total' => $mediaStorage->getStorageAvailable(),
-                'space_percent' => $mediaStorage->getStorageUsePercentage(),
-                'files_count' => $files_count,
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsMedia',
+            id: 'media-manager',
+            title: __('Music Files'),
+            props: [
+                'listUrl'            => (string)$router->fromHere('api:stations:files:list'),
+                'batchUrl'           => (string)$router->fromHere('api:stations:files:batch'),
+                'uploadUrl'          => (string)$router->fromHere('api:stations:files:upload'),
+                'listDirectoriesUrl' => (string)$router->fromHere('api:stations:files:directories'),
+                'mkdirUrl'           => (string)$router->fromHere('api:stations:files:mkdir'),
+                'renameUrl'          => (string)$router->fromHere('api:stations:files:rename'),
+                'quotaUrl'           => (string)$router->fromHere('api:stations:quota', [
+                    'type' => Entity\Enums\StorageLocationTypes::StationMedia->value,
+                ]),
+                'initialPlaylists'   => $playlists,
+                'customFields'       => $customFieldRepo->fetchArray(),
+                'validMimeTypes'     => MimeType::getProcessableTypes(),
+                'stationTimeZone'    => $station->getTimezone(),
+                'showSftp'           => SftpGo::isSupportedForStation($station),
+                'sftpUrl'            => (string)$router->fromHere('stations:sftp_users:index'),
+            ],
         );
     }
 }

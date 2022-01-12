@@ -143,7 +143,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         $this->editRecord((array)$request->getParsedBody(), $record);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
+        return $response->withJson(Entity\Api\Status::updated());
     }
 
     /**
@@ -167,6 +167,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         $this->deleteRecord($record);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 }

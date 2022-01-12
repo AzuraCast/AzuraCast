@@ -1,0 +1,35 @@
+---
+- name: Install IceCast-KH-AC Dependencies
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: no
+  vars:
+    packages:
+      - libxml2
+      - libxslt1-dev
+      - libvorbis-dev
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - pkg-config
+
+- name: Download IceCast-KH-AC Source
+  get_url:
+    url: https://github.com/AzuraCast/icecast-kh-ac/archive/2.4.0-kh13-ac2.tar.gz
+    dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+    force: yes
+
+- name: Extract IceCast-KH-AC Source
+  unarchive:
+    src: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+    dest: "{{ app_base }}/servers/icecast2"
+    remote_src: yes
+    mode: "u=rwx,g=rx,o=rx"
+    owner: "azuracast"
+    group: "www-data"
+    extra_opts: "--strip-components=1"
+
+- name: Build IceCast-KH-AC
+  shell: "cd {{ app_base }}/servers/icecast2 && ./configure && make && make install"
+  args:
+    chdir: "{{ app_base }}/servers/icecast2"

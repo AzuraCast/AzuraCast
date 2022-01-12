@@ -9,11 +9,10 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_schedules'),
     Attributes\Auditable
@@ -22,20 +21,28 @@ class StationSchedule implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(inversedBy: 'schedules')]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'schedule_items'),
+        ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')
+    ]
     protected ?StationPlaylist $playlist = null;
 
-    #[ORM\ManyToOne(inversedBy: 'schedules')]
-    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'schedule_items'),
+        ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')
+    ]
     protected ?StationStreamer $streamer = null;
 
-    /** @OA\Property(example=900) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 900),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $start_time = 0;
 
-    /** @OA\Property(example=2200) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 2200),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $end_time = 0;
 
     #[ORM\Column(length: 10, nullable: true)]
@@ -44,27 +51,27 @@ class StationSchedule implements IdentifiableEntityInterface
     #[ORM\Column(length: 10, nullable: true)]
     protected ?string $end_date = null;
 
-    /**
-     * @OA\Property(
-     *     description="Array of ISO-8601 days (1 for Monday, 7 for Sunday)",
-     *     example="0,1,2,3"
-     * )
-     */
-    #[ORM\Column(length: 50, nullable: true)]
+    #[
+        OA\Property(
+            description: "Array of ISO-8601 days (1 for Monday, 7 for Sunday)",
+            example: "0,1,2,3"
+        ),
+        ORM\Column(length: 50, nullable: true)
+    ]
     protected ?string $days = null;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $loop_once = false;
 
     public function __construct(StationPlaylist|StationStreamer $relation)
     {
         if ($relation instanceof StationPlaylist) {
             $this->playlist = $relation;
-        } elseif ($relation instanceof StationStreamer) {
-            $this->streamer = $relation;
         } else {
-            throw new InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
+            $this->streamer = $relation;
         }
     }
 
@@ -149,12 +156,12 @@ class StationSchedule implements IdentifiableEntityInterface
     }
 
     /**
-     * @return int[]|null
+     * @return int[]
      */
-    public function getDays(): ?array
+    public function getDays(): array
     {
         if (empty($this->days)) {
-            return null;
+            return [];
         }
 
         $days = [];

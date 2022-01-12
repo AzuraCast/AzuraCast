@@ -9,11 +9,11 @@ use App\Environment;
 use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
+use App\Middleware\InjectSession;
 use App\Session\Flash;
 use App\View;
 use DI\FactoryInterface;
 use Gettext\Translator;
-use Mezzio\Session\SessionInterface;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,6 +35,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
     public function __construct(
         protected FactoryInterface $factory,
         protected Router $router,
+        protected InjectSession $injectSession,
         protected Environment $environment,
         App $app,
         Logger $logger,
@@ -56,7 +57,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         if ($exception instanceof Exception) {
             $this->loggerLevel = $exception->getLoggerLevel();
         } elseif ($exception instanceof HttpException) {
-            $this->loggerLevel = LogLevel::WARNING;
+            $this->loggerLevel = LogLevel::INFO;
         }
 
         $this->showDetailed = (!$this->environment->isProduction() && !in_array(
@@ -165,49 +166,58 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         if ($this->exception instanceof NotLoggedInException) {
-            /** @var SessionInterface $session */
-            $session = $this->request->getAttribute(ServerRequest::ATTR_SESSION);
-
-            /** @var Flash $flash */
-            $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
-
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
-            $error_message = __('You must be logged in to access this page.');
-
             if ($this->returnJson) {
-                return $response->withJson(new Entity\Api\Error(403, $error_message));
+                $error = Entity\Api\Error::fromException($this->exception);
+                $error->code = 403;
+                $error->message = __('You must be logged in to access this page.');
+
+                return $response->withJson($error);
             }
 
             // Redirect to login page for not-logged-in users.
+            $sessionPersistence = $this->injectSession->getSessionPersistence($this->request);
+            $session = $sessionPersistence->initializeSessionFromRequest($this->request);
+
+            $flash = new Flash($session);
             $flash->addMessage(__('You must be logged in to access this page.'), Flash::ERROR);
 
             // Set referrer for login redirection.
             $session->set('login_referrer', $this->request->getUri()->getPath());
 
+            $response = $sessionPersistence->persistSession($session, $response);
+
+            /** @var Response $response */
             return $response->withRedirect((string)$this->router->named('account:login'));
         }
 
         if ($this->exception instanceof PermissionDeniedException) {
-            /** @var Flash $flash */
-            $flash = $this->request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
-
             /** @var Response $response */
             $response = $this->responseFactory->createResponse(403);
 
-            $error_message = __('You do not have permission to access this portion of the site.');
-
             if ($this->returnJson) {
-                return $response->withJson(new Entity\Api\Error(403, $error_message));
+                $error = Entity\Api\Error::fromException($this->exception);
+                $error->code = 403;
+                $error->message = __('You do not have permission to access this portion of the site.');
+
+                return $response->withJson($error);
             }
 
-            // Bounce back to homepage for permission-denied users.
+            $sessionPersistence = $this->injectSession->getSessionPersistence($this->request);
+            $session = $sessionPersistence->initializeSessionFromRequest($this->request);
+
+            $flash = new Flash($session);
             $flash->addMessage(
                 __('You do not have permission to access this portion of the site.'),
                 Flash::ERROR
             );
 
+            $response = $sessionPersistence->persistSession($session, $response);
+
+            // Bounce back to homepage for permission-denied users.
+            /** @var Response $response */
             return $response->withRedirect((string)$this->router->named('home'));
         }
 

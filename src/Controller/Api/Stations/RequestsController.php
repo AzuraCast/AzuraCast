@@ -8,12 +8,59 @@ use App\Entity;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/requests',
+        operationId: 'getRequestableSongs',
+        description: 'Return a list of requestable songs.',
+        tags: ['Stations: Song Requests'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/request/{request_id}',
+        operationId: 'submitSongRequest',
+        description: 'Submit a song request.',
+        tags: ['Stations: Song Requests'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'request_id',
+                description: 'The requestable song ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class RequestsController
 {
     public function __construct(
@@ -23,29 +70,6 @@ class RequestsController
     ) {
     }
 
-    /**
-     * @OA\Get(path="/station/{station_id}/requests",
-     *   tags={"Stations: Song Requests"},
-     *   description="Return a list of requestable songs.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_StationRequest")
-     *     )
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Station does not support requests")
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws Exception
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
@@ -74,17 +98,15 @@ class RequestsController
         $params = $request->getQueryParams();
 
         if (!empty($params['sort'])) {
-            $sort_fields = [
-                'song_title' => 'sm.title',
-                'song_artist' => 'sm.artist',
-                'song_album' => 'sm.album',
-            ];
+            $sortDirection = (($params['sortOrder'] ?? 'ASC') === 'ASC') ? 'ASC' : 'DESC';
 
-            foreach ($params['sort'] as $sort_key => $sort_direction) {
-                if (isset($sort_fields[$sort_key])) {
-                    $qb->addOrderBy($sort_fields[$sort_key], $sort_direction);
-                }
-            }
+            match ($params['sort']) {
+                'name', 'song_title' => $qb->addOrderBy('sm.title', $sortDirection),
+                'song_artist' => $qb->addOrderBy('sm.artist', $sortDirection),
+                'song_album' => $qb->addOrderBy('sm.album', $sortDirection),
+                'song_genre' => $qb->addOrderBy('sm.genre', $sortDirection),
+                default => null,
+            };
         } else {
             $qb->orderBy('sm.artist', 'ASC')
                 ->addOrderBy('sm.title', 'ASC');
@@ -127,32 +149,7 @@ class RequestsController
         return $paginator->write($response);
     }
 
-    /**
-     * @OA\Post(path="/station/{station_id}/request/{request_id}",
-     *   tags={"Stations: Song Requests"},
-     *   description="Submit a song request.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="request_id",
-     *     description="The requestable song ID",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(
-     *         type="integer", format="int64"
-     *     )
-     *   ),
-     *   @OA\Response(response=200, description="Success"),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Station does not support requests")
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $media_id
-     *
-     * @throws Exception\InvalidRequestAttribute
-     */
-    public function submitAction(ServerRequest $request, Response $response, mixed $media_id): ResponseInterface
+    public function submitAction(ServerRequest $request, Response $response, string $media_id): ResponseInterface
     {
         $station = $request->getStation();
 
@@ -180,7 +177,7 @@ class RequestsController
                 $request->getHeaderLine('User-Agent')
             );
 
-            return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
+            return $response->withJson(Entity\Api\Status::success());
         } catch (Exception $e) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Error(400, $e->getMessage()));

@@ -73,16 +73,10 @@ class Assets
                         'files' => [],
                     ];
 
-                if (!in_array('vue-component-common', $library['require'], true)) {
-                    $library['require'][] = 'vue-component-common';
-                }
-
-                foreach ($componentDeps['js'] as $componentDep) {
-                    if ('dist/vendor.js' !== $componentDep) {
-                        $library['files']['js'][] = [
-                            'src' => $componentDep,
-                        ];
-                    }
+                foreach ($componentDeps['assets']['js'] as $componentDep) {
+                    $library['files']['js'][] = [
+                        'src' => $componentDep,
+                    ];
                 }
 
                 $this->addLibrary($library, $componentName);
@@ -259,16 +253,8 @@ class Assets
         $this->addInlineJs(
             <<<JS
                 let ${name};
-
                 $(function () {
-                    ${name} = new Vue({
-                        el: '${elementId}',
-                        render: function (createElement) {
-                            return createElement(${nameWithoutPrefix}.default, {
-                                props: ${propsJson}
-                            });
-                        }
-                    });
+                    ${name} = ${nameWithoutPrefix}.default('${elementId}', ${propsJson});
                 });
             JS
         );
@@ -330,7 +316,7 @@ class Assets
         foreach ($this->loaded as $item) {
             if (!empty($item['files']['css'])) {
                 foreach ($item['files']['css'] as $file) {
-                    $compiled_attributes = $this->compileAttributes(
+                    $attributes = $this->resolveAttributes(
                         $file,
                         [
                             'rel' => 'stylesheet',
@@ -338,7 +324,12 @@ class Assets
                         ]
                     );
 
-                    $result[] = '<link ' . implode(' ', $compiled_attributes) . ' />';
+                    $key = $attributes['href'];
+                    if (isset($result[$key])) {
+                        continue;
+                    }
+
+                    $result[$key] = '<link ' . implode(' ', $this->compileAttributes($attributes)) . ' />';
                 }
             }
 
@@ -372,14 +363,19 @@ class Assets
         foreach ($this->loaded as $item) {
             if (!empty($item['files']['js'])) {
                 foreach ($item['files']['js'] as $file) {
-                    $compiled_attributes = $this->compileAttributes(
+                    $attributes = $this->resolveAttributes(
                         $file,
                         [
                             'type' => 'text/javascript',
                         ]
                     );
 
-                    $result[] = '<script ' . implode(' ', $compiled_attributes) . '></script>';
+                    $key = $attributes['src'];
+                    if (isset($result[$key])) {
+                        continue;
+                    }
+
+                    $result[$key] = '<script ' . implode(' ', $this->compileAttributes($attributes)) . '></script>';
                 }
             }
         }
@@ -434,15 +430,7 @@ class Assets
         }
     }
 
-    /**
-     * Build the proper include tag for a JS/CSS include.
-     *
-     * @param array $file
-     * @param array $defaults
-     *
-     * @return string[]
-     */
-    protected function compileAttributes(array $file, array $defaults = []): array
+    protected function resolveAttributes(array $file, array $defaults): array
     {
         if (isset($file['src'])) {
             $defaults['src'] = $this->getUrl($file['src']);
@@ -458,8 +446,18 @@ class Assets
             $defaults['crossorigin'] = 'anonymous';
         }
 
-        $attributes = array_merge($defaults, $file);
+        return array_merge($defaults, $file);
+    }
 
+    /**
+     * Build the proper include tag for a JS/CSS include.
+     *
+     * @param array $attributes
+     *
+     * @return string[]
+     */
+    protected function compileAttributes(array $attributes): array
+    {
         $compiled_attributes = [];
         foreach ($attributes as $attr_key => $attr_val) {
             // Check for attributes like "defer"
@@ -517,6 +515,10 @@ class Assets
 
         if (str_starts_with($resource_uri, 'http')) {
             $this->addDomainToCsp($resource_uri);
+            return $resource_uri;
+        }
+
+        if (str_starts_with($resource_uri, '/')) {
             return $resource_uri;
         }
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Assets;
 
 use App\Environment;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 
 abstract class AbstractCustomAsset implements CustomAssetInterface
 {
@@ -37,6 +39,11 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
         }
 
         return $this->getDefaultUrl();
+    }
+
+    public function getUri(): UriInterface
+    {
+        return new Uri($this->getUrl());
     }
 
     public function isUploaded(): bool

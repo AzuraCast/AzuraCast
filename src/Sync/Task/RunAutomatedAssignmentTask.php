@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception;
 use App\Radio\Adapters;
+use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
 
@@ -23,6 +23,11 @@ class RunAutomatedAssignmentTask extends AbstractTask
         LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
+    }
+
+    public static function getSchedulePattern(): string
+    {
+        return '7 * * * *';
     }
 
     /**
@@ -80,7 +85,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             /** @var Entity\StationPlaylist $playlist */
             if (
                 $playlist->getIsEnabled()
-                && $playlist->getType() === Entity\StationPlaylist::TYPE_DEFAULT
+                && Entity\Enums\PlaylistTypes::Standard === $playlist->getTypeEnum()
                 && $playlist->getIncludeInAutomation()
             ) {
                 $playlists[] = $playlist->getId();

@@ -19,6 +19,8 @@ services :
       - ./util/local_ssl:/etc/nginx/certs:ro
       - ./vendor:/var/azuracast/www/vendor
       - .:/var/azuracast/www
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   mariadb :
     build :

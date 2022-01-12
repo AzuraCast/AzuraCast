@@ -5,76 +5,96 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @extends AbstractApiCrudController<Entity\Settings>
- */
+/** @extends AbstractApiCrudController<Entity\Settings> */
+#[
+    OA\Get(
+        path: '/admin/settings',
+        operationId: 'getSettings',
+        description: 'List the current values of all editable system settings.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: Settings'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Settings')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Put(
+        path: '/admin/settings',
+        operationId: 'editSettings',
+        description: 'Update settings to modify any settings provided.',
+        security: OpenApi::API_KEY_SECURITY,
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Settings')
+        ),
+        tags: ['Administration: Settings'],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class SettingsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Settings::class;
 
     public function __construct(
         protected Entity\Repository\SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
     }
 
-    /**
-     * @OA\Get(path="/admin/settings",
-     *   tags={"Administration: Settings"},
-     *   description="List the current values of all editable system settings.",
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Settings")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        ?string $group = null
+    ): ResponseInterface {
+        $context = [];
+        if (null !== $group && in_array($group, Entity\Settings::VALID_GROUPS, true)) {
+            $context[AbstractNormalizer::GROUPS] = [$group];
+        }
+
         $settings = $this->settingsRepo->readSettings();
-        return $response->withJson($this->toArray($settings));
+        return $response->withJson($this->toArray($settings, $context));
     }
 
-    /**
-     * @OA\Put(path="/admin/settings",
-     *   tags={"Administration: Settings"},
-     *   description="Update settings to modify any settings provided.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Settings")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws ValidationException
-     */
-    public function updateAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $settings = $this->settingsRepo->readSettings();
-        $this->editRecord((array)$request->getParsedBody(), $settings);
+    public function updateAction(
+        ServerRequest $request,
+        Response $response,
+        ?string $group = null
+    ): ResponseInterface {
+        $context = [];
+        if (null !== $group && in_array($group, Entity\Settings::VALID_GROUPS, true)) {
+            $context[AbstractNormalizer::GROUPS] = [$group];
+        }
 
-        return $response->withJson(new Entity\Api\Status());
+        $settings = $this->settingsRepo->readSettings();
+
+        if ($group === Entity\Settings::GROUP_GENERAL && !$settings->isSetupComplete()) {
+            $settings->updateSetupComplete();
+        }
+
+        $this->editRecord((array)$request->getParsedBody(), $settings, $context);
+
+        return $response->withJson(Entity\Api\Status::success());
     }
 }

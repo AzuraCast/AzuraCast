@@ -3,11 +3,11 @@ services :
     container_name : azuracast_frontend
     build :
       context : .
-    user : "${PUID:-1000}:${PGID:-1000}"
+    user : "${AZURACAST_PUID:-1000}:${AZURACAST_PGID:-1000}"
     volumes :
-      - .:/data/frontend
-      - ../resources/locale:/data/resources/locale
-      - ../web/static:/data/web/static
+      - ${LOCAL_WORKSPACE_FOLDER:-..}/frontend:/data/frontend
+      - ${LOCAL_WORKSPACE_FOLDER:-..}/resources/locale:/data/resources/locale
+      - ${LOCAL_WORKSPACE_FOLDER:-..}/web/static:/data/web/static
       - frontend_node_modules:/data/frontend/node_modules
 
 volumes :

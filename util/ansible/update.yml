@@ -16,18 +16,18 @@
   roles :
     - init
     - azuracast-config
-    - { role : azuracast-radio, when : update_revision|int < 64 }
+    - { role: azuracast-radio, when: update_revision|int < 70 }
     - { role : supervisord, when : update_revision|int < 13 }
     - { role : mariadb, when : update_revision|int < 63 }
     - { role : nginx, when : update_revision|int < 60 }
     - { role : redis, when : update_revision|int < 57 }
-    - { role : beanstalkd, when : update_revision|int < 65 }
-    - { role : php, when : update_revision|int < 62 }
+    - { role: beanstalkd, when: update_revision|int < 67 }
+    - { role : php, when : update_revision|int < 68 }
     - composer
     - { role : influxdb, when : update_revision|int < 58 }
     - { role : ufw, when : update_revision|int < 12 }
     - { role : dbip, when : update_revision|int < 51 }
     - { role : services, when : update_revision|int < 13 }
-    - { role : azuracast-cron, when : update_revision|int < 48 }
+    - { role: azuracast-cron, when: update_revision|int < 71 }
     - azuracast-build
     - azuracast-setup

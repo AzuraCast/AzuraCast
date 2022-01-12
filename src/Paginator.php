@@ -25,7 +25,7 @@ class Paginator implements IteratorAggregate, Countable
 {
     protected RouterInterface $router;
 
-    /** @var int The maximum number of records that can be viewed per page for unauthenticated users. */
+    /** @var int<1,max> The maximum number of records that can be viewed per page for unauthenticated users. */
     protected int $maxPerPage = 25;
 
     /** @var bool Whether the current request is from jQuery Bootgrid */
@@ -98,11 +98,12 @@ class Paginator implements IteratorAggregate, Countable
             $perPage = PHP_INT_MAX;
         }
 
-        $this->paginator->setMaxPerPage(
-            $this->isAuthenticated
-                ? $perPage
-                : min($perPage, $this->maxPerPage)
-        );
+        /** @var int<1,max> $maxPerPage */
+        $maxPerPage = $this->isAuthenticated
+            ? $perPage
+            : min($perPage, $this->maxPerPage);
+
+        $this->paginator->setMaxPerPage($maxPerPage);
 
         $this->isDisabled = false;
     }
@@ -140,8 +141,11 @@ class Paginator implements IteratorAggregate, Countable
     public function write(Response $response): ResponseInterface
     {
         if ($this->isDisabled) {
+            /** @var int<1,max> $maxPerPage */
+            $maxPerPage = PHP_INT_MAX;
+
             $this->paginator->setCurrentPage(1);
-            $this->paginator->setMaxPerPage(PHP_INT_MAX);
+            $this->paginator->setMaxPerPage($maxPerPage);
         }
 
         $iterator = $this->getIterator();
@@ -176,21 +180,21 @@ class Paginator implements IteratorAggregate, Countable
 
         $pageLinks = [];
         if ($this->router instanceof Router) {
-            $pageLinks['first'] = $this->router->fromHereWithQuery(null, [], ['page' => 1]);
+            $pageLinks['first'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => 1]);
 
             $prevPage = $this->paginator->hasPreviousPage()
                 ? $this->paginator->getPreviousPage()
                 : 1;
 
-            $pageLinks['previous'] = $this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
+            $pageLinks['previous'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
 
             $nextPage = $this->paginator->hasNextPage()
                 ? $this->paginator->getNextPage()
                 : $this->paginator->getNbPages();
 
-            $pageLinks['next'] = $this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
+            $pageLinks['next'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
 
-            $pageLinks['last'] = $this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
+            $pageLinks['last'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
         }
 
         return $response->withJson(

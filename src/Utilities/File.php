@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use FilesystemIterator;
 use InvalidArgumentException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RuntimeException;
 use SplFileInfo;
 
 use function stripos;
@@ -41,22 +43,22 @@ class File
     {
         $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
         if (null === $str || false === $str) {
-            throw new \RuntimeException('Cannot parse input string.');
+            throw new RuntimeException('Cannot parse input string.');
         }
 
         $str = mb_ereg_replace("([\.]{2,})", '.', $str);
         if (null === $str || false === $str) {
-            throw new \RuntimeException('Cannot parse input string.');
+            throw new RuntimeException('Cannot parse input string.');
         }
 
         $str = str_replace(' ', '_', $str);
-        return mb_strtolower($str) ?? '';
+        return mb_strtolower($str);
     }
 
     public static function generateTempPath(string $pattern = ''): string
     {
-        $prefix = pathinfo($pattern, PATHINFO_FILENAME) ?? 'temp';
-        $extension = pathinfo($pattern, PATHINFO_EXTENSION) ?? 'log';
+        $prefix = pathinfo($pattern, PATHINFO_FILENAME) ?: 'temp';
+        $extension = pathinfo($pattern, PATHINFO_EXTENSION) ?: 'log';
 
         $tempPath = tempnam(sys_get_temp_dir(), $prefix . '_') . '.' . $extension;
         touch($tempPath);
@@ -98,7 +100,7 @@ class File
         }
 
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator($source, FilesystemIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
 

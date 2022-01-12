@@ -4,37 +4,57 @@ declare(strict_types=1);
 
 namespace App\Installer\Command;
 
+use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Installer\EnvFiles\AbstractEnvFile;
 use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Installer\EnvFiles\EnvFile;
-use App\Locale;
 use App\Radio\Configuration;
 use App\Utilities\Strings;
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 
-class InstallCommand
+#[AsCommand(
+    name: 'install'
+)]
+class InstallCommand extends Command
 {
     public const DEFAULT_BASE_DIRECTORY = '/installer';
 
     public function __construct(
         protected Environment $environment
     ) {
+        parent::__construct();
     }
 
-    public function __invoke(
-        SymfonyStyle $io,
-        OutputInterface $output,
-        bool $update,
-        bool $defaults,
-        ?int $httpPort = null,
-        ?int $httpsPort = null,
-        ?string $releaseChannel = null,
-        string $baseDir = self::DEFAULT_BASE_DIRECTORY
-    ): int {
+    protected function configure(): void
+    {
+        $this->addArgument('base-dir', InputArgument::OPTIONAL)
+            ->addOption('update', null, InputOption::VALUE_NONE)
+            ->addOption('defaults', null, InputOption::VALUE_NONE)
+            ->addOption('http-port', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('https-port', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('release-channel', null, InputOption::VALUE_OPTIONAL);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $baseDir = $input->getArgument('base-dir') ?? self::DEFAULT_BASE_DIRECTORY;
+        $update = (bool)$input->getOption('update');
+        $defaults = (bool)$input->getOption('defaults');
+        $httpPort = $input->getOption('http-port');
+        $httpsPort = $input->getOption('https-port');
+        $releaseChannel = $input->getOption('release-channel');
+
         $devMode = ($baseDir !== self::DEFAULT_BASE_DIRECTORY);
 
         // Initialize all the environment variables.
@@ -68,19 +88,19 @@ class InstallCommand
         // Initialize locale for translated installer/updater.
         if (!$defaults && ($isNewInstall || empty($azuracastEnv[Environment::LANG]))) {
             $langOptions = [];
-            foreach (Locale::SUPPORTED_LOCALES as $langKey => $langName) {
-                $langOptions[Locale::stripLocaleEncoding($langKey)] = $langName;
+            foreach (SupportedLocales::cases() as $supportedLocale) {
+                $langOptions[$supportedLocale->getLocaleWithoutEncoding()] = $supportedLocale->getLocalName();
             }
 
             $azuracastEnv[Environment::LANG] = $io->choice(
                 'Select Language',
                 $langOptions,
-                Locale::stripLocaleEncoding(Locale::DEFAULT_LOCALE)
+                SupportedLocales::default()->getLocaleWithoutEncoding()
             );
         }
 
-        $locale = new Locale($this->environment, $azuracastEnv[Environment::LANG] ?? Locale::DEFAULT_LOCALE);
-        $locale->register();
+        $locale = SupportedLocales::getValidLocale($azuracastEnv[Environment::LANG] ?? null);
+        $locale->register($this->environment);
 
         $envConfig = EnvFile::getConfiguration();
         $env->setFromDefaults();
@@ -219,12 +239,12 @@ class InstallCommand
             if ($customizeLetsEncrypt) {
                 $env['LETSENCRYPT_HOST'] = $io->ask(
                     $envConfig['LETSENCRYPT_HOST']['description'],
-                    $env['LETSENCRYPT_HOST']
+                    $env['LETSENCRYPT_HOST'] ?? ''
                 );
 
                 $env['LETSENCRYPT_EMAIL'] = $io->ask(
                     $envConfig['LETSENCRYPT_EMAIL']['description'],
-                    $env['LETSENCRYPT_EMAIL']
+                    $env['LETSENCRYPT_EMAIL'] ?? ''
                 );
             }
         }
@@ -312,23 +332,6 @@ class InstallCommand
         $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
         if (!$enableRedis) {
             unset($yaml['services']['redis']);
-        }
-
-        // Remove LetsEncrypt if it's not enabled.
-        $letsEncryptHost = $env['LETSENCRYPT_HOST'] ?? null;
-        $letsEncryptEmail = $env['LETSENCRYPT_EMAIL'] ?? null;
-
-        if (empty($letsEncryptHost)) {
-            unset(
-                $yaml['services']['nginx_proxy_letsencrypt'],
-                $yaml['services']['web']['environment']['LETSENCRYPT_HOST'],
-                $yaml['services']['web']['environment']['LETSENCRYPT_EMAIL']
-            );
-        } elseif (empty($letsEncryptEmail)) {
-            unset(
-                $yaml['services']['web']['environment']['LETSENCRYPT_EMAIL'],
-                $yaml['services']['nginx_proxy_letsencrypt']['environment']['DEFAULT_EMAIL']
-            );
         }
 
         // Remove privileged-mode settings if not enabled.

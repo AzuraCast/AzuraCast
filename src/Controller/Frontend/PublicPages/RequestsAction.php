@@ -26,13 +26,26 @@ class RequestsAction
             throw new StationNotFoundException();
         }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/public/embedrequests',
-            [
-                'station' => $station,
+        $router = $request->getRouter();
+        $customization = $request->getCustomization();
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicRequests',
+            id: 'song-requests',
+            layout: 'minimal',
+            title: __('Requests') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => 'embed station-' . $station->getShortName(),
+                'hide_footer' => true,
+            ],
+            props: [
                 'customFields' => $customFieldRepo->fetchArray(),
-            ]
+                'showAlbumArt' => !$customization->hideAlbumArt(),
+                'requestListUri' => (string)$router->named('api:requests:list', [
+                    'station_id' => $station->getId(),
+                ]),
+            ],
         );
     }
 }

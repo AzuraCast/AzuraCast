@@ -4,42 +4,31 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_StationOnDemand")
- */
+#[OA\Schema(
+    schema: 'Api_StationOnDemand',
+    type: 'object'
+)]
 class StationOnDemand implements ResolvableUrlInterface
 {
-    /**
-     * Track ID unique identifier
-     *
-     * @OA\Property(example=1)
-     * @var string
-     */
+    #[OA\Property(
+        description: 'Track ID unique identifier',
+        example: 1
+    )]
     public string $track_id;
 
-    /**
-     * URL to download/play track.
-     *
-     * @OA\Property(example="/api/station/1/ondemand/download/1")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'URL to download/play track.',
+        example: '/api/station/1/ondemand/download/1'
+    )]
     public string $download_url;
 
-    /**
-     * Song
-     *
-     * @OA\Property
-     * @var Song
-     */
+    #[OA\Property]
     public Song $media;
 
-    /**
-     * @OA\Property
-     * @var string
-     */
+    #[OA\Property]
     public string $playlist;
 
     /**

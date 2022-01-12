@@ -11,15 +11,19 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildQueue extends Event
 {
-    protected ?Entity\StationQueue $next_song = null;
+    protected ?Entity\StationQueue $nextSong = null;
 
-    protected CarbonInterface $now;
+    protected CarbonInterface $expectedCueTime;
+
+    protected CarbonInterface $expectedPlayTime;
 
     public function __construct(
         protected Entity\Station $station,
-        ?CarbonInterface $now = null
+        ?CarbonInterface $expectedCueTime = null,
+        ?CarbonInterface $expectedPlayTime = null
     ) {
-        $this->now = $now ?? CarbonImmutable::now($station->getTimezoneObject());
+        $this->expectedCueTime = $expectedCueTime ?? CarbonImmutable::now($station->getTimezoneObject());
+        $this->expectedPlayTime = $expectedPlayTime ?? CarbonImmutable::now($station->getTimezoneObject());
     }
 
     public function getStation(): Entity\Station
@@ -27,21 +31,26 @@ class BuildQueue extends Event
         return $this->station;
     }
 
-    public function getNow(): CarbonInterface
+    public function getExpectedCueTime(): CarbonInterface
     {
-        return $this->now;
+        return $this->expectedCueTime;
+    }
+
+    public function getExpectedPlayTime(): CarbonInterface
+    {
+        return $this->expectedPlayTime;
     }
 
     public function getNextSong(): ?Entity\StationQueue
     {
-        return $this->next_song;
+        return $this->nextSong;
     }
 
-    public function setNextSong(?Entity\StationQueue $next_song): bool
+    public function setNextSong(?Entity\StationQueue $nextSong): bool
     {
-        $this->next_song = $next_song;
+        $this->nextSong = $nextSong;
 
-        if (null !== $next_song) {
+        if (null !== $nextSong) {
             $this->stopPropagation();
             return true;
         }
@@ -51,13 +60,13 @@ class BuildQueue extends Event
 
     public function hasNextSong(): bool
     {
-        return (null !== $this->next_song);
+        return (null !== $this->nextSong);
     }
 
     public function __toString(): string
     {
-        return (null !== $this->next_song)
-            ? (string)$this->next_song
+        return (null !== $this->nextSong)
+            ? (string)$this->nextSong
             : 'No Song';
     }
 }

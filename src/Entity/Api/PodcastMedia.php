@@ -4,35 +4,26 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_PodcastMedia")
- */
+#[OA\Schema(
+    schema: 'Api_PodcastMedia',
+    type: 'object'
+)]
 class PodcastMedia
 {
-    /**
-     * @OA\Property()
-     */
+    #[OA\Property]
     public ?string $id = null;
 
-    /**
-     * @OA\Property()
-     */
+    #[OA\Property]
     public ?string $original_name = null;
 
-    /**
-     * @OA\Property()
-     */
+    #[OA\Property]
     public float $length = 0.0;
 
-    /**
-     * @OA\Property()
-     */
+    #[OA\Property]
     public ?string $length_text = null;
 
-    /**
-     * @OA\Property()
-     */
+    #[OA\Property]
     public ?string $path = null;
 }

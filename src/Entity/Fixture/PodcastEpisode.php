@@ -12,11 +12,9 @@ use Symfony\Component\Finder\Finder;
 
 class PodcastEpisode extends AbstractFixture implements DependentFixtureInterface
 {
-    protected Entity\Repository\PodcastMediaRepository $mediaRepo;
-
-    public function __construct(Entity\Repository\PodcastMediaRepository $mediaRepo)
-    {
-        $this->mediaRepo = $mediaRepo;
+    public function __construct(
+        protected Entity\Repository\PodcastEpisodeRepository $episodeRepo
+    ) {
     }
 
     public function load(ObjectManager $manager): void
@@ -76,7 +74,7 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
             $manager->persist($episode);
             $manager->flush();
 
-            $this->mediaRepo->upload(
+            $this->episodeRepo->uploadMedia(
                 $episode,
                 $fileBaseName,
                 $tempPath,

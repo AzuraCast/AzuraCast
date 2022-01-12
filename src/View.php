@@ -10,6 +10,7 @@ use App\Traits\RequestAwareTrait;
 use Doctrine\Inflector\InflectorFactory;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
+use League\Plates\Template\Template;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -161,8 +162,53 @@ class View extends Engine
         array $templateArgs = []
     ): ResponseInterface {
         $template = $this->render($templateName, $templateArgs);
+        return $this->writeStringToResponse($response, $template);
+    }
 
-        $response->getBody()->write($template);
+    public function renderVuePage(
+        ResponseInterface $response,
+        string $component,
+        ?string $id = null,
+        string $layout = 'main',
+        ?string $title = null,
+        array $layoutParams = [],
+        array $props = [],
+    ): ResponseInterface {
+        $id ??= $component;
+
+        $vueTemplate = new class ($this, 'vue') extends Template {
+            public function render(array $data = []): string
+            {
+                $this->data($data);
+                unset($data);
+
+                $content = '<div id="' . $this->data['id'] . '"></div>';
+
+                $layout = $this->engine->make($this->layoutName);
+                $layout->sections = array_merge($this->sections, ['content' => $content]);
+                return $layout->render($this->layoutData);
+            }
+        };
+
+        $vueTemplate->layout($layout, array_merge(
+            [
+                'title' => $title,
+                'manual' => true,
+            ],
+            $layoutParams
+        ));
+
+        $this->assets->addVueRender($component, '#' . $id, $props);
+
+        $body = $vueTemplate->render(['id' => $id]);
+        return $this->writeStringToResponse($response, $body);
+    }
+
+    protected function writeStringToResponse(
+        ResponseInterface $response,
+        string $body
+    ): ResponseInterface {
+        $response->getBody()->write($body);
         $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
 
         return $this->assets->writeCsp($response);

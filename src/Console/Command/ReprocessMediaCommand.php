@@ -5,19 +5,38 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Entity;
-use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:media:reprocess',
+    description: 'Manually reload all media metadata from file.',
+)]
 class ReprocessMediaCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        StationRepository $stationRepo,
-        ?string $stationName = null
-    ): int {
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\StationRepository $stationRepo,
+    ) {
+        parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        $this->addArgument('station-name', InputArgument::OPTIONAL);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $stationName = $input->getArgument('station-name');
+
         $io->title('Manually Reprocess Media');
 
         if (empty($stationName)) {
@@ -25,7 +44,7 @@ class ReprocessMediaCommand extends CommandAbstract
 
             $storageLocation = null;
         } else {
-            $station = $stationRepo->findByIdentifier($stationName);
+            $station = $this->stationRepo->findByIdentifier($stationName);
             if (!$station instanceof Station) {
                 $io->error('Station not found.');
                 return 1;
@@ -36,7 +55,7 @@ class ReprocessMediaCommand extends CommandAbstract
             $io->writeln(sprintf('Reprocessing media for station: %s', $station->getName()));
         }
 
-        $reprocessMediaQueue = $em->createQueryBuilder()
+        $reprocessMediaQueue = $this->em->createQueryBuilder()
             ->update(Entity\StationMedia::class, 'sm')
             ->set('sm.mtime', 'NULL');
 

@@ -25,6 +25,11 @@ class RunBackupTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_MINUTE;
+    }
+
     /**
      * Handle event dispatch.
      *
@@ -45,8 +50,9 @@ class RunBackupTask extends AbstractTask
                 $message->storageLocationId
             );
 
+            $result_output = 'Exited with code ' . $result_code . ":\n" . $result_output;
+
             $settings = $this->settingsRepo->readSettings();
-            $settings->setBackupLastResult($result_code);
             $settings->setBackupLastOutput($result_output);
             $this->settingsRepo->writeSettings($settings);
         }

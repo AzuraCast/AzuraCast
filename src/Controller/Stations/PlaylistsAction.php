@@ -25,14 +25,22 @@ class PlaylistsAction
         }
 
         $settings = $settingsRepo->readSettings();
+        $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'stations/playlists/index',
-            [
-                'station_tz' => $station->getTimezone(),
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsPlaylists',
+            id: 'station-playlist',
+            title: __('Playlists'),
+            props: [
+                'listUrl'                => (string)$router->fromHere('api:stations:playlists'),
+                'scheduleUrl'            => (string)$router->fromHere('api:stations:playlists:schedule'),
+                'filesUrl'               => (string)$router->fromHere('stations:files:index'),
+                'restartStatusUrl'       => (string)$router->fromHere('api:stations:restart-status'),
+                'stationTimeZone'        => $station->getTimezone(),
+                'useManualAutoDj'        => $station->useManualAutoDJ(),
                 'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-            ]
+            ],
         );
     }
 }

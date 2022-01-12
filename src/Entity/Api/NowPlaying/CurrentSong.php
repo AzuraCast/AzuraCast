@@ -6,29 +6,26 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity;
 use App\Traits\LoadFromParentObject;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_CurrentSong")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_CurrentSong',
+    type: 'object'
+)]
 class CurrentSong extends SongHistory
 {
     use LoadFromParentObject;
 
-    /**
-     * Elapsed time of the song's playback since it started.
-     *
-     * @OA\Property(example=25)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Elapsed time of the song\'s playback since it started.',
+        example: 25
+    )]
     public int $elapsed = 0;
 
-    /**
-     * Remaining time in the song, in seconds.
-     *
-     * @OA\Property(example=155)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Remaining time in the song, in seconds.',
+        example: 155
+    )]
     public int $remaining = 0;
 
     /**

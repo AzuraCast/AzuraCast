@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractTask
+abstract class AbstractTask implements ScheduledTaskInterface
 {
     public function __construct(
         protected ReloadableEntityManagerInterface $em,
@@ -35,11 +35,11 @@ abstract class AbstractTask
     }
 
     /**
-     * @param string $type
+     * @param Entity\Enums\StorageLocationTypes $type
      *
      * @return ReadWriteBatchIteratorAggregate|Entity\StorageLocation[]
      */
-    protected function iterateStorageLocations(string $type): ReadWriteBatchIteratorAggregate
+    protected function iterateStorageLocations(Entity\Enums\StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
     {
         return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
@@ -48,7 +48,7 @@ abstract class AbstractTask
                     FROM App\Entity\StorageLocation sl
                     WHERE sl.type = :type
                 DQL
-            )->setParameter('type', $type),
+            )->setParameter('type', $type->value),
             1
         );
     }

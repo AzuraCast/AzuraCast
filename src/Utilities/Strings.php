@@ -61,10 +61,10 @@ class Strings
      *
      * @param string $str
      * @param int $width
-     * @param string $break
+     * @param non-empty-string $break
      * @param bool $cut
      */
-    public static function mbWordwrap(string $str, $width = 75, $break = "\n", $cut = false): string
+    public static function mbWordwrap(string $str, int $width = 75, string $break = "\n", bool $cut = false): string
     {
         $lines = explode($break, $str);
         foreach ($lines as &$line) {

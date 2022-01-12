@@ -22,6 +22,11 @@ class RunAnalyticsTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '4 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $analytics_level = $this->settingsRepo->readSettings()->getAnalytics();
@@ -61,7 +66,7 @@ class RunAnalyticsTask extends AbstractTask
         $this->analyticsRepo->cleanup();
 
         while ($day < $now) {
-            $this->em->transactional(
+            $this->em->wrapInTransaction(
                 function () use ($day, $stations, $withListeners): void {
                     $this->processDay($day, $stations, $withListeners);
                 }

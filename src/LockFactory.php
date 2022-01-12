@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Lock\RetryTillSaveStore;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\LockFactory as SymfonyLockFactory;
 use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Lock\PersistingStoreInterface;
-use Symfony\Component\Lock\Store\RetryTillSaveStore;
 
 class LockFactory extends SymfonyLockFactory
 {

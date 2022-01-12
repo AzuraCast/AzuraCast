@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Radio\Adapters;
+use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\StreamFormats;
+use App\Radio\Enums\StreamProtocols;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
@@ -31,88 +35,118 @@ class StationMount implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'mounts')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'mounts'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /** @OA\Property(example="/radio.mp3") */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(example: "/radio.mp3"),
+        ORM\Column(length: 100),
+        Assert\NotBlank
+    ]
     protected string $name = '';
 
-    /** @OA\Property(example="128kbps MP3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "128kbps MP3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $display_name = null;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_visible_on_public_pages = true;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $is_default = false;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $is_public = false;
 
-    /** @OA\Property(example="/error.mp3") */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(example: "/error.mp3"),
+        ORM\Column(length: 100, nullable: true)
+    ]
     protected ?string $fallback_mount = null;
 
-    /** @OA\Property(example="https://radio.example.com:8000/radio.mp3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://radio.example.com:8000/radio.mp3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $relay_url = null;
 
-    /** @OA\Property(example="") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: ""),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $authhash = null;
 
-    /** @OA\Property(example=43200) */
-    #[ORM\Column(type: 'integer', nullable: false)]
+    #[
+        OA\Property(example: 43200),
+        ORM\Column(type: 'integer', nullable: false)
+    ]
     protected int $max_listener_duration = 0;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $enable_autodj = true;
 
-    /** @OA\Property(example="mp3") */
-    #[ORM\Column(length: 10, nullable: true)]
+    #[
+        OA\Property(example: "mp3"),
+        ORM\Column(length: 10, nullable: true)
+    ]
     protected ?string $autodj_format = 'mp3';
 
-    /** @OA\Property(example=128) */
-    #[ORM\Column(type: 'smallint', nullable: true)]
+    #[
+        OA\Property(example: 128),
+        ORM\Column(type: 'smallint', nullable: true)
+    ]
     protected ?int $autodj_bitrate = 128;
 
-    /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://custom-listen-url.example.com/stream.mp3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $custom_listen_url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $intro_path = null;
 
-    /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\Column(type: 'text', nullable: true)
+    ]
     protected ?string $frontend_config = null;
 
-    /**
-     * @OA\Property(
-     *     description="The most recent number of unique listeners.",
-     *     example=10
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The most recent number of unique listeners.",
+            example: 10
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $listeners_unique = 0;
 
-    /**
-     * @OA\Property(
-     *     description="The most recent number of total (non-unique) listeners.",
-     *     example=12
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "The most recent number of total (non-unique) listeners.",
+            example: 12
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $listeners_total = 0;
 
     public function __construct(Station $station)
@@ -148,7 +182,7 @@ class StationMount implements
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
+            return $this->name . ' (' . $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '') . ')';
         }
 
         return $this->name;
@@ -159,7 +193,7 @@ class StationMount implements
         $this->display_name = $this->truncateNullableString($display_name);
     }
 
-    public function isVisibleOnPublicPages(): bool
+    public function getIsVisibleOnPublicPages(): bool
     {
         return $this->is_visible_on_public_pages;
     }
@@ -204,6 +238,11 @@ class StationMount implements
         return $this->relay_url;
     }
 
+    public function getRelayUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->relay_url);
+    }
+
     public function setRelayUrl(?string $relay_url = null): void
     {
         $this->relay_url = $this->truncateNullableString($relay_url);
@@ -244,6 +283,13 @@ class StationMount implements
         return $this->autodj_format;
     }
 
+    public function getAutodjFormatEnum(): ?StreamFormats
+    {
+        return (null !== $this->autodj_format)
+            ? StreamFormats::from(strtolower($this->autodj_format))
+            : null;
+    }
+
     public function setAutodjFormat(?string $autodj_format = null): void
     {
         $this->autodj_format = $this->truncateNullableString($autodj_format, 10);
@@ -262,6 +308,11 @@ class StationMount implements
     public function getCustomListenUrl(): ?string
     {
         return $this->custom_listen_url;
+    }
+
+    public function getCustomListenUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->custom_listen_url);
     }
 
     public function setCustomListenUrl(?string $custom_listen_url = null): void
@@ -319,11 +370,12 @@ class StationMount implements
         return $this->getStation()->getFrontendConfig()->getPort();
     }
 
-    public function getAutodjProtocol(): ?string
+    public function getAutodjProtocolEnum(): ?StreamProtocols
     {
-        return Adapters::FRONTEND_SHOUTCAST === $this->getAutodjAdapterType()
-            ? self::PROTOCOL_ICY
-            : null;
+        return match ($this->getAutodjAdapterTypeEnum()) {
+            FrontendAdapters::SHOUTcast => StreamProtocols::Icy,
+            default => null
+        };
     }
 
     public function getAutodjUsername(): ?string
@@ -341,15 +393,9 @@ class StationMount implements
         return $this->getName();
     }
 
-    public function getAutodjAdapterType(): string
+    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface
     {
-        $adapterLookup = [
-            Adapters::FRONTEND_ICECAST => Adapters::REMOTE_ICECAST,
-            Adapters::FRONTEND_SHOUTCAST => Adapters::REMOTE_SHOUTCAST2,
-        ];
-
-        $frontendType = $this->getStation()->getFrontendType();
-        return $adapterLookup[$frontendType];
+        return $this->getStation()->getFrontendTypeEnum();
     }
 
     /**

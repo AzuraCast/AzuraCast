@@ -9,6 +9,9 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Annotations implements EventSubscriberInterface
@@ -17,7 +20,9 @@ class Annotations implements EventSubscriberInterface
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Entity\Repository\StationStreamerRepository $streamerRepo,
-        protected Adapters $adapters
+        protected Adapters $adapters,
+        protected LoggerInterface $logger,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -34,6 +39,43 @@ class Annotations implements EventSubscriberInterface
                 ['postAnnotation', -10],
             ],
         ];
+    }
+
+    /**
+     * Pulls the next song from the AutoDJ, dispatches the AnnotateNextSong event and returns the built result.
+     *
+     * @param Entity\Station $station
+     * @param bool $asAutoDj
+     */
+    public function annotateNextSong(
+        Entity\Station $station,
+        bool $asAutoDj = false,
+    ): string {
+        $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
+
+        // Try to rebuild the queue if it's empty.
+        if (null === $queueRow) {
+            $this->logger->info(
+                'Queue is empty!',
+                [
+                    'station' => [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ],
+                ]
+            );
+            return '';
+        }
+
+        $event = new AnnotateNextSong($queueRow, $asAutoDj);
+        $this->eventDispatcher->dispatch($event);
+
+        $annotation = $event->buildAnnotations();
+        $queueRow->addLogRecord(LogLevel::INFO, 'Annotation: ' . $annotation);
+        $this->em->persist($queueRow);
+        $this->em->flush();
+
+        return $annotation;
     }
 
     public function annotateSongPath(AnnotateNextSong $event): void
@@ -62,29 +104,35 @@ class Annotations implements EventSubscriberInterface
     public function annotatePlaylist(AnnotateNextSong $event): void
     {
         $playlist = $event->getPlaylist();
-        if ($playlist instanceof Entity\StationPlaylist) {
-            // Handle "Jingle mode" by sending the same metadata as the previous song.
-            if ($playlist->isJingle()) {
-                $event->addAnnotations([
-                    'jingle_mode' => 'true',
-                ]);
+        if (null === $playlist) {
+            return;
+        }
 
-                $np = $event->getStation()->getNowplaying();
-                if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
+        // Handle "Jingle mode" by sending the same metadata as the previous song.
+        if ($playlist->getIsJingle()) {
+            $event->addAnnotations([
+                'jingle_mode' => 'true',
+            ]);
+
+            $queue = $event->getQueue();
+            if (null !== $queue) {
+                $lastVisible = $this->queueRepo->getLatestVisibleRow($event->getStation());
+
+                if (null !== $lastVisible) {
                     $event->addAnnotations(
                         [
-                            'title' => $np->now_playing?->song?->title,
-                            'artist' => $np->now_playing?->song?->artist,
+                            'title'       => $lastVisible->getTitle(),
+                            'artist'      => $lastVisible->getArtist(),
                             'playlist_id' => null,
-                            'media_id' => null,
+                            'media_id'    => null,
                         ]
                     );
                 }
-            } else {
-                $event->addAnnotations([
-                    'playlist_id' => $playlist->getId(),
-                ]);
             }
+        } else {
+            $event->addAnnotations([
+                'playlist_id' => $playlist->getId(),
+            ]);
         }
     }
 
@@ -103,7 +151,9 @@ class Annotations implements EventSubscriberInterface
         if ($event->isAsAutoDj()) {
             $queueRow = $event->getQueue();
             if ($queueRow instanceof Entity\StationQueue) {
-                $this->queueRepo->newRecordSentToAutoDj($queueRow);
+                $queueRow->setSentToAutodj();
+                $queueRow->setTimestampCued(time());
+                $this->em->persist($queueRow);
             }
 
             // The "get next song" function is only called when a streamer is not live.

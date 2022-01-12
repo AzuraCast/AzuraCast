@@ -5,34 +5,47 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Environment;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:config:migrate',
+    description: 'Migrate existing configuration to new INI format if any exists.',
+)]
 class MigrateConfigCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        Environment $environment
-    ): int {
+    public function __construct(
+        protected Environment $environment,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
         $envSettings = [];
 
-        $iniPath = $environment->getBaseDirectory() . '/env.ini';
+        $iniPath = $this->environment->getBaseDirectory() . '/env.ini';
         if (is_file($iniPath)) {
             $envSettings = (array)parse_ini_file($iniPath);
         }
 
         // Migrate from existing legacy config files.
-        $legacyIniPath = $environment->getBaseDirectory() . '/app/env.ini';
+        $legacyIniPath = $this->environment->getBaseDirectory() . '/app/env.ini';
         if (is_file($legacyIniPath)) {
             $iniSettings = parse_ini_file($legacyIniPath);
             $envSettings = array_merge($envSettings, (array)$iniSettings);
         }
 
-        $legacyAppEnvFile = $environment->getBaseDirectory() . '/app/.env';
+        $legacyAppEnvFile = $this->environment->getBaseDirectory() . '/app/.env';
         if (is_file($legacyAppEnvFile)) {
             $envSettings[Environment::APP_ENV] ??= file_get_contents($legacyAppEnvFile);
         }
 
-        $legacyDbConfFile = $environment->getBaseDirectory() . '/app/config/db.conf.php';
+        $legacyDbConfFile = $this->environment->getBaseDirectory() . '/app/config/db.conf.php';
         if (is_file($legacyDbConfFile)) {
             $dbConf = include($legacyDbConfFile);
 
@@ -45,11 +58,11 @@ class MigrateConfigCommand extends CommandAbstract
         // Migrate from older environment variable names to new ones.
         $settingsToMigrate = [
             'application_env' => Environment::APP_ENV,
-            'db_host' => Environment::DB_HOST,
-            'db_port' => Environment::DB_PORT,
-            'db_name' => Environment::DB_NAME,
-            'db_username' => Environment::DB_USER,
-            'db_password' => Environment::DB_PASSWORD,
+            'db_host'         => Environment::DB_HOST,
+            'db_port'         => Environment::DB_PORT,
+            'db_name'         => Environment::DB_NAME,
+            'db_username'     => Environment::DB_USER,
+            'db_password'     => Environment::DB_PASSWORD,
         ];
 
         foreach ($settingsToMigrate as $oldSetting => $newSetting) {

@@ -8,33 +8,49 @@ use App\Entity\Attributes\Auditable;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;
 
-#[ORM\Entity, ORM\Table(name: 'sftp_user')]
-#[ORM\UniqueConstraint(name: 'username_idx', columns: ['username'])]
-#[UniqueEntity(fields: ['username'])]
-#[Auditable]
+#[
+    OA\Schema(type: "object"),
+    ORM\Entity,
+    ORM\Table(name: 'sftp_user'),
+    ORM\UniqueConstraint(name: 'username_idx', columns: ['username']),
+    UniqueEntity(fields: ['username']),
+    Auditable
+]
 class SftpUser implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(inversedBy: 'sftp_users')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'sftp_users'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    #[ORM\Column(length: 32)]
-    #[Assert\Length(min: 1, max: 32)]
-    #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^[a-zA-Z0-9-_.~]+$/')]
+    #[
+        OA\Property,
+        ORM\Column(length: 32),
+        Assert\Length(min: 1, max: 32),
+        Assert\NotBlank,
+        Assert\Regex(pattern: '/^[a-zA-Z0-9-_.~]+$/')
+    ]
     protected string $username;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property,
+        ORM\Column(length: 255),
+        Assert\NotBlank
+    ]
     protected string $password;
 
-    #[ORM\Column(name: 'public_keys', type: 'text', nullable: true)]
+    #[
+        OA\Property,
+        ORM\Column(name: 'public_keys', type: 'text', nullable: true)
+    ]
     protected ?string $publicKeys = null;
 
     public function __construct(Station $station)

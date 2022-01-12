@@ -12,7 +12,7 @@ use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Quota;
 use Azura\Files\Attributes\FileAttributes;
 use Brick\Math\BigInteger;
-use Doctrine\ORM\Query;
+use Doctrine\ORM\AbstractQuery;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
@@ -31,6 +31,11 @@ class CheckMediaTask extends AbstractTask
         LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
+    }
+
+    public static function getSchedulePattern(): string
+    {
+        return '1-59/5 * * * *';
     }
 
     /**
@@ -58,7 +63,7 @@ class CheckMediaTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
+        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
 
         foreach ($storageLocations as $storageLocation) {
             $this->logger->info(
@@ -182,7 +187,7 @@ class CheckMediaTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $storageLocation);
 
-        foreach ($existingMediaQuery->toIterable([], Query::HYDRATE_ARRAY) as $mediaRow) {
+        foreach ($existingMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY) as $mediaRow) {
             // Check if media file still exists.
             $path = $mediaRow['path'];
             $pathHash = md5($path);
@@ -236,7 +241,7 @@ class CheckMediaTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $storageLocation);
 
-        $unprocessableRecords = $unprocessableMediaQuery->toIterable([], Query::HYDRATE_ARRAY);
+        $unprocessableRecords = $unprocessableMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY);
 
         foreach ($unprocessableRecords as $unprocessableRow) {
             $pathHash = md5($unprocessableRow['path']);

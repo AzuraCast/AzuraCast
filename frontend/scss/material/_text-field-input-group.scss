@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .input-group {
   align-items: center;
   display: flex;
@@ -58,7 +60,7 @@
   white-space: nowrap;
 
   + .input-group-text {
-    margin-left: ($input-group-inner-spacer-x / 2);
+    margin-left: ($input-group-inner-spacer-x * 0.5);
   }
 }
 
@@ -80,7 +82,7 @@
 .input-group-icon {
   @include transition-standard(color);
 
-  font-size: ($font-size-base / 1rem * $textfield-font-size);
+  font-size: (math.div($font-size-base, 1rem) * $textfield-font-size);
   margin-right: $input-group-inner-spacer-x;
   order: -1;
 
@@ -142,7 +144,7 @@
   }
 
   > .input-group-icon {
-    font-size: ($font-size-base / 1rem * $textfield-font-size-lg);
+    font-size: (math.div($font-size-base, 1rem) * $textfield-font-size-lg);
     line-height: $textfield-line-height-lg;
   }
 
@@ -202,7 +204,7 @@
   }
 
   > .input-group-icon {
-    font-size: ($font-size-base / 1rem * $textfield-font-size-sm);
+    font-size: (math.div($font-size-base, 1rem) * $textfield-font-size-sm);
     line-height: $textfield-line-height-sm;
   }
 

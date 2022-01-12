@@ -12,19 +12,22 @@
  * @var App\Environment $environment
  */
 
+$manual ??= false;
+$title ??= null;
+$header ??= null;
 ?>
 <!DOCTYPE html>
-<html data-theme="<?=$customization->getTheme()?>">
+<html data-theme="<?= $customization->getTheme()->value ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?=$customization->getPageTitle($title)?></title>
+    <title><?= $customization->getPageTitle($title) ?></title>
 
-    <?=$this->fetch('partials/icons')?>
+    <?= $this->fetch('partials/icons') ?>
 
-    <?=$this->section('head')?>
+    <?= $this->section('head') ?>
 
     <?php
     $assets
@@ -77,11 +80,11 @@ endif; ?>">
             </li>
             <li class="dropdown-divider">&nbsp;</li>
             <?php
-            if ($acl->isAllowed(App\Acl::GLOBAL_VIEW)): ?>
+            if ($acl->isAllowed(App\Enums\GlobalPermissions::View)): ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('admin:index:index')?>">
+                    <a class="dropdown-item" href="<?= $router->named('admin:index:index') ?>">
                         <i class="material-icons" aria-hidden="true">settings</i>
-                        <?=__('System Administration')?>
+                        <?= __('System Administration') ?>
                     </a>
                 </li>
             <?php
@@ -96,12 +99,6 @@ endif; ?>">
                 <a class="dropdown-item" href="<?=$router->named('profile:theme')?>">
                     <i class="material-icons" aria-hidden="true">invert_colors</i>
                     <?=__('Switch Theme')?>
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="<?=$router->named('api_keys:index')?>">
-                    <i class="material-icons" aria-hidden="true">vpn_key</i>
-                    <?=__('My API Keys')?>
                 </a>
             </li>
             <li>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Controller\Api\Traits\CanSortResults;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -20,6 +21,8 @@ use Psr\SimpleCache\CacheInterface;
 
 class ListAction
 {
+    use CanSortResults;
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -125,7 +128,7 @@ class ListAction
                             ->findOneBy(
                                 [
                                     'station' => $station,
-                                    'name' => $playlistName,
+                                    'name'    => $playlistName,
                                 ]
                             );
 
@@ -138,7 +141,7 @@ class ListAction
                             'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
                             . 'WHERE spm2.playlist = :playlist)'
                         )->setParameter('playlist', $playlist);
-                    } else {
+                    } elseif (!in_array($searchPhrase, ['*', '%'], true)) {
                         $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
                             ->setParameter('query', '%' . $searchPhrase . '%');
                     }
@@ -201,15 +204,15 @@ class ListAction
                         $playlists[$playlistId]['count']++;
                     } else {
                         $playlists[$playlistId] = [
-                            'id' => $playlistId,
-                            'name' => $spmRow['playlist']['name'],
+                            'id'    => $playlistId,
+                            'name'  => $spmRow['playlist']['name'],
                             'count' => 1,
                         ];
                     }
                 }
 
                 $mediaInDir[$row['path']] = [
-                    'media' => $media,
+                    'media'     => $media,
                     'playlists' => array_values($playlists),
                 ];
             }
@@ -223,7 +226,7 @@ class ListAction
                 }
 
                 $foldersInDir[$folderRow['path']]['playlists'][] = [
-                    'id' => $folderRow['playlist']['id'],
+                    'id'   => $folderRow['playlist']['id'],
                     'name' => $folderRow['playlist']['name'],
                 ];
             }
@@ -258,7 +261,7 @@ class ListAction
                     $row->is_dir = $file->isDir();
                 } else {
                     $row->path = $file;
-                    $row->timestamp = $fs->lastModified($file) ?? 0;
+                    $row->timestamp = $fs->lastModified($file);
                     $row->is_dir = false;
                 }
 
@@ -302,14 +305,18 @@ class ListAction
         }
 
         // Apply sorting
-        $sort = $request->getParam('sort');
-        $sortOrder = ('desc' === strtolower($request->getParam('sortOrder', 'asc')))
-            ? Criteria::DESC
-            : Criteria::ASC;
+        [$sort, $sortOrder] = $this->getSortFromRequest($request);
 
         usort(
             $result,
-            static function (Entity\Api\FileList $a, Entity\Api\FileList $b) use ($searchPhrase, $sort, $sortOrder) {
+            static function (
+                Entity\Api\FileList $a,
+                Entity\Api\FileList $b
+            ) use (
+                $searchPhrase,
+                $sort,
+                $sortOrder
+            ) {
                 return self::sortRows($a, $b, $searchPhrase, $sort, $sortOrder);
             }
         );
@@ -346,36 +353,33 @@ class ListAction
             return $isDirComp;
         }
 
-        if (!empty($sort)) {
-            if (str_starts_with($sort, 'media_custom_fields_')) {
-                $property = str_replace('media_custom_fields_', '', $sort);
-                $aVal = $a->media->custom_fields[$property] ?? null;
-                $bVal = $b->media->custom_fields[$property] ?? null;
-
-                return (Criteria::ASC === $sortOrder)
-                    ? $aVal <=> $bVal
-                    : $bVal <=> $aVal;
-            }
-
-            if (str_starts_with($sort, 'media_')) {
-                $property = str_replace('media_', '', $sort);
-                $aVal = property_exists($a->media, $property) ? $a->media->{$property} : null;
-                $bVal = property_exists($b->media, $property) ? $b->media->{$property} : null;
-
-                return (Criteria::ASC === $sortOrder)
-                    ? $aVal <=> $bVal
-                    : $bVal <=> $aVal;
-            }
-
+        $sort ??= '';
+        if (str_starts_with($sort, 'media_custom_fields_')) {
+            $property = str_replace('media_custom_fields_', '', $sort);
+            $aVal = $a->media->custom_fields[$property] ?? null;
+            $bVal = $b->media->custom_fields[$property] ?? null;
+        } elseif (str_starts_with($sort, 'media_')) {
+            $property = str_replace('media_', '', $sort);
+            $aVal = property_exists($a->media, $property) ? $a->media->{$property} : null;
+            $bVal = property_exists($b->media, $property) ? $b->media->{$property} : null;
+        } elseif (!empty($sort)) {
             $aVal = property_exists($a, $sort) ? $a->{$sort} : null;
             $bVal = property_exists($b, $sort) ? $b->{$sort} : null;
-
-            return (Criteria::ASC === $sortOrder)
-                ? $aVal <=> $bVal
-                : $bVal <=> $aVal;
+        } else {
+            $aVal = $a->path;
+            $bVal = $b->path;
         }
 
-        return $a->path <=> $b->path;
+        if (is_string($aVal)) {
+            $aVal = mb_strtolower($aVal, 'UTF-8');
+        }
+        if (is_string($bVal)) {
+            $bVal = mb_strtolower($bVal, 'UTF-8');
+        }
+
+        return (Criteria::ASC === $sortOrder)
+            ? $aVal <=> $bVal
+            : $bVal <=> $aVal;
     }
 
     protected static function postProcessRow(
@@ -392,22 +396,22 @@ class ListAction
                     'api:stations:media:art',
                     [
                         'station_id' => $stationId,
-                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
+                        'media_id'   => $row->media->unique_id . '-' . $row->media->art_updated_at,
                     ]
                 );
 
             $row->media->links = [
-                'play' => (string)$router->named(
+                'play'     => (string)$router->named(
                     'api:stations:files:play',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                     [],
                     true
                 ),
-                'edit' => (string)$router->named(
+                'edit'     => (string)$router->named(
                     'api:stations:file',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                 ),
-                'art' => (string)$router->named(
+                'art'      => (string)$router->named(
                     'api:stations:media:art-internal',
                     ['station_id' => $stationId, 'media_id' => $row->media->media_id]
                 ),
@@ -415,7 +419,7 @@ class ListAction
                     'api:stations:media:waveform',
                     [
                         'station_id' => $stationId,
-                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
+                        'media_id'   => $row->media->unique_id . '-' . $row->media->art_updated_at,
                     ]
                 ),
             ];
@@ -427,7 +431,7 @@ class ListAction
                 ['station_id' => $stationId],
                 ['file' => $row->path]
             ),
-            'rename' => (string)$router->named(
+            'rename'   => (string)$router->named(
                 'api:stations:files:rename',
                 ['station_id' => $stationId],
                 ['file' => $row->path]

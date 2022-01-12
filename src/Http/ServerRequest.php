@@ -8,13 +8,14 @@ use App\Acl;
 use App\Auth;
 use App\Customization;
 use App\Entity;
+use App\Enums\SupportedLocales;
 use App\Exception;
-use App\Locale;
 use App\Radio;
 use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
+use RuntimeException;
 
 final class ServerRequest extends \Slim\Http\ServerRequest
 {
@@ -64,9 +65,9 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         return $this->getAttributeOfClass(self::ATTR_RATE_LIMIT, RateLimit::class);
     }
 
-    public function getLocale(): Locale
+    public function getLocale(): SupportedLocales
     {
-        return $this->getAttributeOfClass(self::ATTR_LOCALE, Locale::class);
+        return $this->getAttributeOfClass(self::ATTR_LOCALE, SupportedLocales::class);
     }
 
     public function getCustomization(): Customization
@@ -170,7 +171,7 @@ final class ServerRequest extends \Slim\Http\ServerRequest
             ?? null;
 
         if (null === $ip) {
-            throw new \RuntimeException('No IP address attached to this request.');
+            throw new RuntimeException('No IP address attached to this request.');
         }
 
         // Handle the IP being separated by commas.

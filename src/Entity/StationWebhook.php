@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(type="object")
- */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
     Attributes\Auditable
@@ -39,62 +37,66 @@ class StationWebhook implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'webhooks')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'webhooks'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /**
-     * @OA\Property(
-     *     description="The nickname of the webhook connector.",
-     *     example="Twitter Post"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(
+            description: "The nickname of the webhook connector.",
+            example: "Twitter Post"
+        ),
+        ORM\Column(length: 100, nullable: true)
+    ]
     protected ?string $name = null;
 
-    /**
-     * @OA\Property(
-     *     description="The type of webhook connector to use.",
-     *     example="twitter"
-     * )
-     */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(
+            description: "The type of webhook connector to use.",
+            example: "twitter"
+        ),
+        ORM\Column(length: 100),
+        Assert\NotBlank
+    ]
     protected string $type;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_enabled = true;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="List of events that should trigger the webhook notification.",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(
+            description: "List of events that should trigger the webhook notification.",
+            type: "array",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true)
+    ]
     protected ?array $triggers = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="Detailed webhook configuration (if applicable)",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(
+            description: "Detailed webhook configuration (if applicable)",
+            type: "array",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true)
+    ]
     protected ?array $config = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="Internal details used by the webhook to preserve state.",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "Internal details used by the webhook to preserve state.",
+            type: "array",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?array $metadata = null;
 
     public function __construct(Station $station, string $type)
@@ -128,14 +130,8 @@ class StationWebhook implements
         return $this->type;
     }
 
-    public function isEnabled(): bool
+    public function getIsEnabled(): bool
     {
-        return $this->is_enabled;
-    }
-
-    public function toggleEnabled(): bool
-    {
-        $this->is_enabled = !$this->is_enabled;
         return $this->is_enabled;
     }
 
@@ -174,9 +170,9 @@ class StationWebhook implements
      * Set the value of a given metadata key.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed|null $value
      */
-    public function setMetadataKey(string $key, $value = null): void
+    public function setMetadataKey(string $key, mixed $value = null): void
     {
         if (null === $value) {
             unset($this->metadata[$key]);

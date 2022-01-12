@@ -1,6 +1,5 @@
 <?php
 
-use App\Console\Command;
 use App\Environment;
 use App\Event;
 use App\Middleware;
@@ -11,13 +10,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         Event\BuildConsoleCommands::class,
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {
             $console = $event->getConsole();
-            $di = $console->getContainer();
-
-            /** @var Environment $environment */
-            $environment = $di->get(Environment::class);
-
-            $console->command('cache:clear', Command\ClearCacheCommand::class)
-                ->setDescription('Clear all application caches.');
+            $di = $event->getContainer();
 
             // Doctrine ORM/DBAL
             Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
@@ -25,6 +18,9 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             // Add Doctrine Migrations
             /** @var Doctrine\ORM\EntityManagerInterface $em */
             $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
+
+            /** @var Environment $environment */
+            $environment = $di->get(Environment::class);
 
             $helper_set = $console->getHelperSet();
             $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
@@ -59,7 +55,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             );
             Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
-            call_user_func(include(__DIR__ . '/cli.php'), $console);
+            call_user_func(include(__DIR__ . '/cli.php'), $event);
         }
     );
 
@@ -83,7 +79,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             $app->add(Middleware\WrapExceptionsWithRequestData::class);
 
             $app->add(Middleware\EnforceSecurity::class);
-            $app->add(Middleware\GetCurrentUser::class);
 
             // Request injection middlewares.
             $app->add(Middleware\InjectRouter::class);
@@ -129,12 +124,32 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         }
     );
 
-    // Other event subscribers from across the application.
-    $dispatcher->addCallableListener(
-        Event\GetSyncTasks::class,
-        App\Sync\TaskLocator::class
+    $dispatcher->addListener(
+        App\Event\GetSyncTasks::class,
+        function (App\Event\GetSyncTasks $e) {
+            $e->addTasks([
+                App\Sync\Task\CheckFolderPlaylistsTask::class,
+                App\Sync\Task\CheckMediaTask::class,
+                App\Sync\Task\CheckRequestsTask::class,
+                App\Sync\Task\CheckUpdatesTask::class,
+                App\Sync\Task\CleanupHistoryTask::class,
+                App\Sync\Task\CleanupLoginTokensTask::class,
+                App\Sync\Task\CleanupRelaysTask::class,
+                App\Sync\Task\CleanupStorageTask::class,
+                App\Sync\Task\MoveBroadcastsTask::class,
+                App\Sync\Task\ReactivateStreamerTask::class,
+                App\Sync\Task\ReloadFrontendAfterSslChangeTask::class,
+                App\Sync\Task\RotateLogsTask::class,
+                App\Sync\Task\RunAnalyticsTask::class,
+                App\Sync\Task\RunAutomatedAssignmentTask::class,
+                App\Sync\Task\RunBackupTask::class,
+                App\Sync\Task\UpdateGeoLiteTask::class,
+                App\Sync\Task\UpdateStorageLocationSizesTask::class,
+            ]);
+        }
     );
 
+    // Other event subscribers from across the application.
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
         App\Notification\Check\ComposeVersionCheck::class
@@ -176,8 +191,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             App\Radio\AutoDJ\Queue::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,
-            App\Sync\Task\NowPlayingTask::class,
-            App\Controller\Api\NowplayingController::class,
+            App\Sync\NowPlaying\Task\NowPlayingTask::class,
         ]
     );
 };

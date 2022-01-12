@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
-# Constants
-export COMPOSE_VERSION=1.29.2
-
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -215,6 +212,7 @@ setup-letsencrypt() {
 # Configure release mode settings.
 #
 setup-release() {
+  set -e
   if [[ ! -f .env ]]; then
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
   fi
@@ -223,11 +221,94 @@ setup-release() {
   if ask "Prefer stable release versions of AzuraCast?" N; then
     AZURACAST_VERSION="stable"
   fi
+  set +e
 
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
+check-install-requirements() {
+  local CURRENT_OS CURRENT_ARCH REQUIRED_COMMANDS SCRIPT_DIR
+
+  set -e
+
+  echo "Checking installation requirements for AzuraCast..."
+
+  CURRENT_OS=$(uname -s)
+  if [[ $CURRENT_OS == "Linux" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Operating System: ${CURRENT_OS}\n"
+  else
+    echo -en "\e[41m[FAIL]\e[0m Operating System: ${CURRENT_OS}\n"
+
+    echo "       You are running an unsupported operating system."
+    echo "       Automated AzuraCast installation is not currently supported on this"
+    echo "       operating system."
+    exit 1
+  fi
+
+  CURRENT_ARCH=$(uname -m)
+  if [[ $CURRENT_ARCH == "x86_64" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Architecture: ${CURRENT_ARCH}\n"
+  elif [[ $CURRENT_ARCH == "aarch64" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Architecture: ${CURRENT_ARCH}\n"
+  else
+    echo -en "\e[41m[FAIL]\e[0m Architecture: ${CURRENT_ARCH}\n"
+
+    echo "       You are running an unsupported processor architecture."
+    echo "       Automated AzuraCast installation is not currently supported on this "
+    echo "       operating system."
+    exit 1
+  fi
+
+  REQUIRED_COMMANDS=(curl awk)
+  for COMMAND in "${REQUIRED_COMMANDS[@]}" ; do
+    if [[ $(command -v "$COMMAND") ]]; then
+      echo -en "\e[32m[PASS]\e[0m Command Present: ${COMMAND}\n"
+    else
+      echo -en "\e[41m[FAIL]\e[0m Command Present: ${COMMAND}\n"
+
+      echo "       ${COMMAND} does not appear to be installed."
+      echo "       Install ${COMMAND} using your host's package manager,"
+      echo "       then continue installing using this script."
+      exit 1
+    fi
+  done
+
+  if [[ $EUID -ne 0 ]]; then
+    if [[ $(command -v sudo) ]]; then
+      echo -en "\e[32m[PASS]\e[0m User Permissions\n"
+    else
+      echo -en "\e[41m[FAIL]\e[0m User Permissions\n"
+
+      echo "       You are not currently the root user, and "
+      echo "       'sudo' does not appear to be installed."
+      echo "       Install sudo using your host's package manager,"
+      echo "       then continue installing using this script."
+      exit 1
+    fi
+  else
+    echo -en "\e[32m[PASS]\e[0m User Permissions\n"
+  fi
+
+  SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+  if [[ $SCRIPT_DIR == "/var/azuracast" ]]; then
+    echo -en "\e[32m[PASS]\e[0m Installation Directory\n"
+  else
+    echo -en "\e[93m[WARN]\e[0m Installation Directory\n"
+    echo "       AzuraCast is not installed in /var/azuracast, as is recommended"
+    echo "       for most installations. This will not prevent AzuraCast from"
+    echo "       working, but you will need to update any instructions in our"
+    echo "       documentation to reflect your current directory:"
+    echo "       $SCRIPT_DIR"
+  fi
+
+  echo -en "\e[32m[PASS]\e[0m All requirements met!\n"
+
+  set +e
+}
+
 install-docker() {
+  set -e
+
   curl -fsSL get.docker.com -o get-docker.sh
   sh get-docker.sh
   rm get-docker.sh
@@ -237,27 +318,40 @@ install-docker() {
 
     echo "You must log out or restart to apply necessary Docker permissions changes."
     echo "Restart, then continue installing using this script."
-    exit
+    exit 1
   fi
+
+  set +e
 }
 
 install-docker-compose() {
-  if [[ $EUID -ne 0 ]]; then
-    if [[ ! $(command -v sudo) ]]; then
-      echo "Sudo does not appear to be installed."
-      echo "Install sudo using your host's package manager,"
-      echo "then continue installing using this script."
-      exit 1
-    fi
+  set -e
+  echo "Installing Docker Compose..."
 
-    sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
-    sudo chmod +x /usr/local/bin/docker-compose
-    sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
-  else
-    curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-    curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-$(uname -m)
+
+  ARCHITECTURE=amd64
+  if [ "$(uname -m)" = "aarch64" ]; then
+    ARCHITECTURE=arm64
   fi
+  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.2/docker-compose-linux-${ARCHITECTURE}
+
+  if [[ $EUID -ne 0 ]]; then
+    sudo chmod a+x ./docker-compose
+    sudo chmod a+x ./docker-compose-switch
+
+    sudo mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+    sudo mv ./docker-compose-switch /usr/local/bin/docker-compose
+  else
+    chmod a+x ./docker-compose
+    chmod a+x ./docker-compose-switch
+
+    mv ./docker-compose /usr/libexec/docker/cli-plugins/docker-compose
+    mv ./docker-compose-switch /usr/local/bin/docker-compose
+  fi
+
+  echo "Docker Compose updated!"
+  set +e
 }
 
 run-installer() {
@@ -277,8 +371,8 @@ run-installer() {
   touch docker-compose.new.yml
 
   curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
-  COMPOSE_IGNORE_ORPHANS=True docker-compose -f docker-compose.installer.yml pull
-  COMPOSE_IGNORE_ORPHANS=True docker-compose -f docker-compose.installer.yml run --rm installer install "$@"
+  docker-compose -p azuracast_installer -f docker-compose.installer.yml pull
+  docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
 
   rm docker-compose.installer.yml
 }
@@ -288,12 +382,7 @@ run-installer() {
 # Usage: ./docker.sh install
 #
 install() {
-  if [[ ! $(command -v curl) ]]; then
-    echo "cURL does not appear to be installed."
-    echo "Install curl using your host's package manager,"
-    echo "then continue installing using this script."
-    exit 1
-  fi
+  check-install-requirements
 
   if [[ $(command -v docker) && $(docker --version) ]]; then
     echo "Docker is already installed! Continuing..."
@@ -303,18 +392,8 @@ install() {
     fi
   fi
 
-  if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
-    # Check for update to Docker Compose
-    local CURRENT_COMPOSE_VERSION
-    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
-
-    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
-      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
-        install-docker-compose
-      fi
-    else
-      echo "Docker Compose is already installed and up to date! Continuing..."
-    fi
+  if [[ $(command -v docker-compose) ]]; then
+    echo "Docker Compose is already installed. Continuing..."
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
       install-docker-compose
@@ -355,30 +434,22 @@ install-dev() {
     fi
   fi
 
-  if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
-    # Check for update to Docker Compose
-    local CURRENT_COMPOSE_VERSION
-    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
-
-    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
-      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
-        install-docker-compose
-      fi
-    else
-      echo "Docker Compose is already installed and up to date! Continuing..."
-    fi
+  if [[ $(command -v docker-compose) ]]; then
+    echo "Docker Compose is already installed. Continuing..."
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
       install-docker-compose
     fi
   fi
 
-  if ask "Clone related repositories?" Y; then
-    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
-    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
-    git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
-    git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
-    git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
+  if [[ ! -d ../docker-azuracast-nginx-proxy ]]; then
+    if ask "Clone related repositories?" Y; then
+      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
+      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
+      git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
+      git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
+      git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
+    fi
   fi
 
   if [[ ! -f docker-compose.yml ]]; then
@@ -407,7 +478,7 @@ install-dev() {
   docker-compose run --rm --user="azuracast" web azuracast_install "$@"
 
   docker-compose -f frontend/docker-compose.yml build
-  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
+  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
 
   docker-compose up -d
   exit
@@ -451,12 +522,8 @@ update() {
       rm docker.new.sh
     fi
 
-    # Check for update to Docker Compose
-    local CURRENT_COMPOSE_VERSION
-    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
-
-    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
-      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+    if ! docker-compose config; then
+      if ask "Docker Compose needs to be updated to continue. Update to latest version?" Y; then
         install-docker-compose
       fi
     fi
@@ -571,7 +638,7 @@ db() {
 #
 backup() {
   local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
-  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_PATH=$(readlink -f ${1:-"./backup.tar.gz"})
   BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
@@ -587,8 +654,8 @@ backup() {
 
   # Move from Docker volume to local filesystem
   docker run --rm -v "azuracast_backups:/backup_src" \
-      -v "$BACKUP_DIR:/backup_dest" \
-      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+  -v "$BACKUP_DIR:/backup_dest" \
+  busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 }
 
 #
@@ -598,7 +665,7 @@ backup() {
 #
 restore() {
   local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
-  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_PATH=$(readlink -f ${1:-"./backup.tar.gz"})
   BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
@@ -688,13 +755,9 @@ restore-legacy() {
 # Usage: ./docker.sh static [static_container_command]
 #
 static() {
-  local PUID PGID
-  PUID=$(id -u)
-  PGID=$(id -g)
-
   docker-compose -f frontend/docker-compose.yml down -v
   docker-compose -f frontend/docker-compose.yml build
-  PUID=$PUID PGID=$PGID docker-compose -f frontend/docker-compose.yml run --rm frontend "$@"
+  docker-compose --env-file=.env -f frontend/docker-compose.yml run --rm frontend "$@"
   exit
 }
 
@@ -726,7 +789,6 @@ uninstall() {
 #
 letsencrypt-create() {
   setup-letsencrypt
-
   docker-compose down
   docker-compose up -d
   exit

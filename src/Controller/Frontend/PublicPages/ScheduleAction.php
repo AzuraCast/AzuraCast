@@ -25,14 +25,30 @@ class ScheduleAction
             throw new StationNotFoundException();
         }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/public/schedule',
-            [
-                'embed' => $embed,
-                'station' => $station,
-                'station_tz' => $station->getTimezone(),
-            ]
+        $router = $request->getRouter();
+
+        $pageClass = 'schedule station-' . $station->getShortName();
+        if ($embed) {
+            $pageClass .= ' embed';
+        }
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicSchedule',
+            id: 'station-schedule',
+            layout: 'minimal',
+            title: __('Schedule') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => $pageClass,
+                'hide_footer' => true,
+            ],
+            props: [
+                'scheduleUrl' => (string)$router->named('api:stations:schedule', [
+                    'station_id' => $station->getId(),
+                ]),
+                'stationName' => $station->getName(),
+                'stationTimeZone' => $station->getTimezone(),
+            ],
         );
     }
 }

@@ -6,6 +6,11 @@ namespace App\Sync\Task;
 
 class CleanupRelaysTask extends AbstractTask
 {
+    public static function getSchedulePattern(): string
+    {
+        return self::SCHEDULE_EVERY_MINUTE;
+    }
+
     public function run(bool $force = false): void
     {
         // Relays should update every 15 seconds, so be fairly aggressive with this.

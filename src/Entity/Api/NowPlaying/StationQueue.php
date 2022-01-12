@@ -6,52 +6,46 @@ namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
 use App\Entity\Api\Song;
-use OpenApi\Annotations as OA;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_StationQueue")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_StationQueue',
+    type: 'object'
+)]
 class StationQueue implements ResolvableUrlInterface
 {
-    /**
-     * UNIX timestamp when playback is expected to start.
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'UNIX timestamp when the AutoDJ is expected to queue the song for playback.',
+        example: OpenApi::SAMPLE_TIMESTAMP
+    )]
     public int $cued_at = 0;
 
-    /**
-     * Duration of the song in seconds
-     *
-     * @OA\Property(example=180)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'UNIX timestamp when playback is expected to start.',
+        example: OpenApi::SAMPLE_TIMESTAMP
+    )]
+    public int $played_at = 0;
+
+    #[OA\Property(
+        description: 'Duration of the song in seconds',
+        example: 180
+    )]
     public int $duration = 0;
 
-    /**
-     * Indicates the playlist that the song was played from, if available, or empty string if not.
-     *
-     * @OA\Property(example="Top 100")
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Indicates the playlist that the song was played from, if available, or empty string if not.',
+        example: 'Top 100'
+    )]
     public ?string $playlist = null;
 
-    /**
-     * Indicates whether the song is a listener request.
-     *
-     * @OA\Property
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Indicates whether the song is a listener request.',
+    )]
     public bool $is_request = false;
 
-    /**
-     * Song
-     *
-     * @OA\Property()
-     * @var Song
-     */
+    #[OA\Property]
     public Song $song;
 
     /**

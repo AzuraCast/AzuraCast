@@ -6,19 +6,34 @@ namespace App\Console\Command\Debug;
 
 use App\Console\Command\CommandAbstract;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:debug:optimize-tables',
+    description: 'Optimize all tables in the database.',
+)]
 class OptimizeTablesCommand extends CommandAbstract
 {
-    public function __invoke(SymfonyStyle $io, Connection $db): int
+    public function __construct(
+        protected Connection $db
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+
         $io->title('Optimizing Database Tables...');
 
-        foreach ($db->fetchAllAssociative('SHOW TABLES') as $tableRow) {
+        foreach ($this->db->fetchAllAssociative('SHOW TABLES') as $tableRow) {
             $table = reset($tableRow);
 
             $io->listing([$table]);
-            $db->executeQuery('OPTIMIZE TABLE ' . $db->quoteIdentifier($table));
+            $this->db->executeQuery('OPTIMIZE TABLE ' . $this->db->quoteIdentifier($table));
         }
 
         $io->success('All tables optimized.');

@@ -7,30 +7,46 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Environment;
 use App\Service\AzuraCastCentral;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:setup',
+    description: 'Run all general AzuraCast setup steps.',
+)]
 class SetupCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        OutputInterface $output,
-        Environment $environment,
-        ContainerInterface $di,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        AzuraCastCentral $acCentral,
-        bool $update = false,
-        bool $loadFixtures = false
-    ): int {
+    public function __construct(
+        protected Environment $environment,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected AzuraCastCentral $acCentral,
+    ) {
+        parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        $this->addOption('update', null, InputOption::VALUE_NONE)
+            ->addOption('load-fixtures', null, InputOption::VALUE_NONE)
+            ->addOption('release', null, InputOption::VALUE_NONE);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $update = (bool)$input->getOption('update');
+        $loadFixtures = (bool)$input->getOption('load-fixtures');
+
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
         $this->runCommand($output, 'azuracast:setup:initialize');
 
-        if ($loadFixtures || (!$environment->isProduction() && !$update)) {
+        if ($loadFixtures || (!$this->environment->isProduction() && !$update)) {
             $io->newLine();
             $io->section(__('Installing Data Fixtures'));
 
@@ -43,9 +59,9 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:radio:restart');
 
         // Update system setting logging when updates were last run.
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
         $settings->updateUpdateLastRun();
-        $settingsRepo->writeSettings($settings);
+        $this->settingsRepo->writeSettings($settings);
 
         if ($update) {
             $io->success(
@@ -54,7 +70,7 @@ class SetupCommand extends CommandAbstract
                 ]
             );
         } else {
-            $public_ip = $acCentral->getIp(false);
+            $public_ip = $this->acCentral->getIp(false);
 
             /** @noinspection HttpUrlsUsage */
             $io->success(

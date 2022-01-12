@@ -4,10 +4,7 @@
  * @var \App\Assets $assets
  */
 
-$assets
-    ->load('moment')
-    ->load('moment_timezone')
-    ->addInlineJs($this->fetch('stations/sidebar.js', ['station' => $station]), 95);
+$assets->addInlineJs($this->fetch('stations/sidebar.js', ['station' => $station]), 95);
 ?>
 
 <div class="navdrawer-header">

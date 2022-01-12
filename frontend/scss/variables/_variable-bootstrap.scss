@@ -265,3 +265,15 @@ $spinner-border-width: .25em !default;
 $spinner-width-sm: 1rem !default;
 $spinner-height-sm: $spinner-width-sm !default;
 $spinner-border-width-sm: .2em !default;
+
+// Toast
+
+$toast-max-width: 350px !default;
+$toast-padding-x: .75rem !default;
+$toast-padding-y: .25rem !default;
+$toast-font-size: .875rem !default;
+$toast-border-width: 1px !default;
+$toast-border-color: rgba(0, 0, 0, .1) !default;
+$toast-border-radius: .25rem !default;
+$toast-box-shadow: 0 .25rem .75rem rgba($black, .1) !default;
+$toast-header-border-color: rgba(0, 0, 0, .05) !default;

@@ -80,7 +80,7 @@
   line-height: 1;
   margin-top: 0;
   margin-bottom: 0;
-  padding: (($navdrawer-subheader-height - $navdrawer-subheader-font-size) / 2) $navdrawer-inner-spacer-x;
+  padding: (($navdrawer-subheader-height - $navdrawer-subheader-font-size) * 0.5) $navdrawer-inner-spacer-x;
 
   .navdrawer-divider + & {
     margin-top: ($navdrawer-inner-spacer-y * -1);
@@ -109,7 +109,7 @@
     font-size: $navdrawer-nav-link-font-size;
     font-weight: $navdrawer-nav-link-font-weight;
     line-height: 1;
-    padding: (($navdrawer-nav-link-height - $navdrawer-nav-link-font-size) / 2) $navdrawer-inner-spacer-x;
+    padding: (($navdrawer-nav-link-height - $navdrawer-nav-link-font-size) * 0.5) $navdrawer-inner-spacer-x;
 
     &:focus {
       outline: 0;

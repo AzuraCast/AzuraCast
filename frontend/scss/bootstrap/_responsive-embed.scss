@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .embed-responsive {
   display: block;
   overflow: hidden;
@@ -27,24 +29,24 @@
 
 .embed-responsive-1by1 {
   &::before {
-    padding-top: percentage(1 / 1);
+    padding-top: percentage(math.div(1, 1));
   }
 }
 
 .embed-responsive-4by3 {
   &::before {
-    padding-top: percentage(3 / 4);
+    padding-top: percentage(3 * 0.25);
   }
 }
 
 .embed-responsive-16by9 {
   &::before {
-    padding-top: percentage(9 / 16);
+    padding-top: percentage(math.div(9, 16));
   }
 }
 
 .embed-responsive-21by9 {
   &::before {
-    padding-top: percentage(9 / 21);
+    padding-top: percentage(math.div(9, 21));
   }
 }

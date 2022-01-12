@@ -7,14 +7,26 @@ namespace App\Console\Command\Settings;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Utilities;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:settings:list',
+    description: 'List all settings in the AzuraCast settings database.',
+)]
 class ListCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        Entity\Repository\SettingsRepository $settingsTableRepo
-    ): int {
+    public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsTableRepo,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
         $io->title(__('AzuraCast Settings'));
 
         $headers = [
@@ -23,8 +35,8 @@ class ListCommand extends CommandAbstract
         ];
         $rows = [];
 
-        $settings = $settingsTableRepo->readSettings();
-        foreach ($settingsTableRepo->toArray($settings) as $setting_key => $setting_value) {
+        $settings = $this->settingsTableRepo->readSettings();
+        foreach ($this->settingsTableRepo->toArray($settings) as $setting_key => $setting_value) {
             $value = print_r($setting_value, true);
             $value = Utilities\Strings::truncateText($value, 600);
 

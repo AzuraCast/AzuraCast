@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Normalizer\Attributes\DeepNormalize;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistRemoteTypes;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Enums\PlaylistTypes;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_playlists'),
     ORM\HasLifecycleCallbacks,
@@ -31,22 +35,6 @@ class StationPlaylist implements
     public const DEFAULT_WEIGHT = 3;
     public const DEFAULT_REMOTE_BUFFER = 20;
 
-    public const TYPE_DEFAULT = 'default';
-    public const TYPE_ONCE_PER_X_SONGS = 'once_per_x_songs';
-    public const TYPE_ONCE_PER_X_MINUTES = 'once_per_x_minutes';
-    public const TYPE_ONCE_PER_HOUR = 'once_per_hour';
-    public const TYPE_ADVANCED = 'custom';
-
-    public const SOURCE_SONGS = 'songs';
-    public const SOURCE_REMOTE_URL = 'remote_url';
-
-    public const REMOTE_TYPE_STREAM = 'stream';
-    public const REMOTE_TYPE_PLAYLIST = 'playlist';
-
-    public const ORDER_RANDOM = 'random';
-    public const ORDER_SHUFFLE = 'shuffle';
-    public const ORDER_SEQUENTIAL = 'sequential';
-
     public const OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
     public const OPTION_LOOP_PLAYLIST_ONCE = 'loop_once';
     public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
@@ -55,137 +43,169 @@ class StationPlaylist implements
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 
-    #[ORM\ManyToOne(inversedBy: 'playlists')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'playlists'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    /** @OA\Property(example="Test Playlist") */
-    #[ORM\Column(length: 200)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(example: "Test Playlist"),
+        ORM\Column(length: 200),
+        Assert\NotBlank
+    ]
     protected string $name;
 
-    /** @OA\Property(example="default") */
-    #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [
-        self::TYPE_DEFAULT,
-        self::TYPE_ONCE_PER_X_SONGS,
-        self::TYPE_ONCE_PER_X_MINUTES,
-        self::TYPE_ONCE_PER_HOUR,
-        self::TYPE_ADVANCED,
-    ])]
-    protected string $type = self::TYPE_DEFAULT;
+    #[
+        OA\Property(example: "default"),
+        ORM\Column(length: 50)
+    ]
+    protected string $type;
 
-    /** @OA\Property(example="songs") */
-    #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: [self::SOURCE_SONGS, self::SOURCE_REMOTE_URL])]
-    protected string $source = self::SOURCE_SONGS;
+    #[
+        OA\Property(example: "songs"),
+        ORM\Column(length: 50)
+    ]
+    protected string $source;
 
-    /** @OA\Property(example="shuffle") */
-    #[ORM\Column(name: 'playback_order', length: 50)]
-    #[Assert\Choice(choices: [self::ORDER_RANDOM, self::ORDER_SHUFFLE, self::ORDER_SEQUENTIAL])]
-    protected string $order = self::ORDER_SHUFFLE;
+    #[
+        OA\Property(example: "shuffle"),
+        ORM\Column(name: 'playback_order', length: 50)
+    ]
+    protected string $order;
 
-    /** @OA\Property(example="https://remote-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://remote-url.example.com/stream.mp3"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $remote_url = null;
 
-    /** @OA\Property(example="stream") */
-    #[ORM\Column(length: 25, nullable: true)]
-    #[Assert\Choice(choices: [self::REMOTE_TYPE_STREAM, self::REMOTE_TYPE_PLAYLIST])]
-    protected ?string $remote_type = self::REMOTE_TYPE_STREAM;
+    #[
+        OA\Property(example: "stream"),
+        ORM\Column(length: 25, nullable: true)
+    ]
+    protected ?string $remote_type;
 
-    /**
-     * @OA\Property(
-     *     description="The total time (in seconds) that Liquidsoap should buffer remote URL streams.",
-     *     example=0
-     * )
-     */
-    #[ORM\Column(name: 'remote_timeout', type: 'smallint')]
+    #[
+        OA\Property(
+            description: "The total time (in seconds) that Liquidsoap should buffer remote URL streams.",
+            example: 0
+        ),
+        ORM\Column(name: 'remote_timeout', type: 'smallint')
+    ]
     protected int $remote_buffer = 0;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $is_enabled = true;
 
-    /**
-     * @OA\Property(
-     *     description="If yes, do not send jingle metadata to AutoDJ or trigger web hooks.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "If yes, do not send jingle metadata to AutoDJ or trigger web hooks.",
+            example: false
+        ),
+        ORM\Column
+    ]
     protected bool $is_jingle = false;
 
-    /** @OA\Property(example=5) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 5),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $play_per_songs = 0;
 
-    /** @OA\Property(example=120) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 120),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $play_per_minutes = 0;
 
-    /** @OA\Property(example=15) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 15),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $play_per_hour_minute = 0;
 
-    /** @OA\Property(example=3) */
-    #[ORM\Column(type: 'smallint')]
+    #[
+        OA\Property(example: 3),
+        ORM\Column(type: 'smallint')
+    ]
     protected int $weight = self::DEFAULT_WEIGHT;
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $include_in_requests = true;
 
-    /**
-     * @OA\Property(
-     *     description="Whether this playlist's media is included in 'on demand' download/streaming if enabled.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether this playlist's media is included in 'on demand' download/streaming if enabled.",
+            example: true
+        ),
+        ORM\Column
+    ]
     protected bool $include_in_on_demand = false;
 
-    /** @OA\Property(example=false) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: false),
+        ORM\Column
+    ]
     protected bool $include_in_automation = false;
 
-    /** @OA\Property(example="interrupt,loop_once,single_track,merge") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "interrupt,loop_once,single_track,merge"),
+        ORM\Column(length: 255, nullable: true)
+    ]
     protected ?string $backend_options = '';
 
-    /** @OA\Property(example=true) */
-    #[ORM\Column]
+    #[
+        OA\Property(example: true),
+        ORM\Column
+    ]
     protected bool $avoid_duplicates = true;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $played_at = 0;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected int $queue_reset_at = 0;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY')]
-    #[ORM\OrderBy(['weight' => 'ASC'])]
+    #[
+        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY'),
+        ORM\OrderBy(['weight' => 'ASC'])
+    ]
     protected Collection $media_items;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')]
+    #[
+        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')
+    ]
     protected Collection $folders;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY')]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY'),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
     protected Collection $schedule_items;
 
     public function __construct(Station $station)
     {
         $this->station = $station;
+
+        $this->type = PlaylistTypes::default()->value;
+        $this->source = PlaylistSources::Songs->value;
+        $this->order = PlaylistOrders::Shuffle->value;
+        $this->remote_type = PlaylistRemoteTypes::Stream->value;
 
         $this->media_items = new ArrayCollection();
         $this->folders = new ArrayCollection();
@@ -222,8 +242,17 @@ class StationPlaylist implements
         return $this->type;
     }
 
+    public function getTypeEnum(): PlaylistTypes
+    {
+        return PlaylistTypes::from($this->type);
+    }
+
     public function setType(string $type): void
     {
+        if (null === PlaylistTypes::tryFrom($type)) {
+            throw new \InvalidArgumentException('Invalid playlist type.');
+        }
+
         $this->type = $type;
     }
 
@@ -232,8 +261,17 @@ class StationPlaylist implements
         return $this->source;
     }
 
+    public function getSourceEnum(): PlaylistSources
+    {
+        return PlaylistSources::from($this->source);
+    }
+
     public function setSource(string $source): void
     {
+        if (null === PlaylistSources::tryFrom($source)) {
+            throw new \InvalidArgumentException('Invalid playlist source.');
+        }
+
         $this->source = $source;
     }
 
@@ -242,8 +280,17 @@ class StationPlaylist implements
         return $this->order;
     }
 
+    public function getOrderEnum(): PlaylistOrders
+    {
+        return PlaylistOrders::from($this->order);
+    }
+
     public function setOrder(string $order): void
     {
+        if (null === PlaylistOrders::tryFrom($order)) {
+            throw new \InvalidArgumentException('Invalid playlist order.');
+        }
+
         $this->order = $order;
     }
 
@@ -262,8 +309,17 @@ class StationPlaylist implements
         return $this->remote_type;
     }
 
+    public function getRemoteTypeEnum(): ?PlaylistRemoteTypes
+    {
+        return PlaylistRemoteTypes::tryFrom($this->remote_type ?? '');
+    }
+
     public function setRemoteType(?string $remote_type): void
     {
+        if (null !== $remote_type && null === PlaylistRemoteTypes::tryFrom($remote_type)) {
+            throw new \InvalidArgumentException('Invalid playlist remote type.');
+        }
+
         $this->remote_type = $remote_type;
     }
 
@@ -287,7 +343,7 @@ class StationPlaylist implements
         $this->is_enabled = $is_enabled;
     }
 
-    public function isJingle(): bool
+    public function getIsJingle(): bool
     {
         return $this->is_jingle;
     }
@@ -380,7 +436,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection|StationPlaylistMedia[]
+     * @return Collection<StationPlaylistMedia>
      */
     public function getMediaItems(): Collection
     {
@@ -388,7 +444,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection|StationPlaylistFolder[]
+     * @return Collection<StationPlaylistFolder>
      */
     public function getFolders(): Collection
     {
@@ -396,7 +452,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection|StationSchedule[]
+     * @return Collection<StationSchedule>
      */
     public function getScheduleItems(): Collection
     {
@@ -419,12 +475,12 @@ class StationPlaylist implements
             return false;
         }
 
-        if (self::SOURCE_SONGS === $this->source) {
+        if (PlaylistSources::Songs === $this->getSourceEnum()) {
             return $this->media_items->count() > 0;
         }
 
         // Remote stream playlists aren't supported by the AzuraCast AutoDJ.
-        return self::REMOTE_TYPE_PLAYLIST === $this->remote_type;
+        return PlaylistRemoteTypes::Playlist === $this->getRemoteTypeEnum();
     }
 
     /**

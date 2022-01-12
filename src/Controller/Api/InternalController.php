@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Acl;
+use App\Enums\StationPermissions;
+use App\Enums\SupportedLocales;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Locale;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Service\IpGeolocation;
-use App\Sync\Task\NowPlayingTask;
 use InvalidArgumentException;
 use Monolog\Logger;
 use PhpIP\IP;
@@ -23,8 +22,8 @@ use Symfony\Component\Intl\Countries;
 class InternalController
 {
     public function __construct(
-        protected NowPlayingTask $syncNowPlaying,
-        protected AutoDJ $autodj,
+        protected Liquidsoap\Feedback $feedback,
+        protected AutoDJ\Annotations $annotations,
         protected Logger $logger,
         protected IpGeolocation $ipGeolocation
     ) {
@@ -67,7 +66,7 @@ class InternalController
         $station = $request->getStation();
 
         $acl = $request->getAcl();
-        if ($acl->isAllowed(Acl::GLOBAL_VIEW, $station->getId())) {
+        if ($acl->isAllowed(StationPermissions::View, $station->getId())) {
             return;
         }
 
@@ -93,7 +92,7 @@ class InternalController
         $params = $request->getParams();
         $as_autodj = isset($params['api_auth']);
 
-        $response->getBody()->write($this->autodj->annotateNextSong($request->getStation(), $as_autodj));
+        $response->getBody()->write($this->annotations->annotateNextSong($request->getStation(), $as_autodj));
         return $response;
     }
 
@@ -157,11 +156,11 @@ class InternalController
 
         $body = $request->getParams();
 
-        $this->syncNowPlaying->queueStation(
+        ($this->feedback)(
             $station,
             [
-                'song_id' => $body['song'] ?? null,
-                'media_id' => $body['media'] ?? null,
+                'song_id'     => $body['song'] ?? null,
+                'media_id'    => $body['media'] ?? null,
                 'playlist_id' => $body['playlist'] ?? null,
             ]
         );
@@ -183,7 +182,7 @@ class InternalController
         }
 
         $listenerIp = $request->getParam('ip') ?? '';
-        $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp, Locale::DEFAULT_LOCALE);
+        $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp, SupportedLocales::default());
 
         $allowedIps = $frontendConfig->getAllowedIps();
         if (!empty($allowedIps)) {
@@ -210,7 +209,7 @@ class InternalController
         if ('success' === $listenerLocation['status']) {
             $listenerCountry = $listenerLocation['country'];
 
-            $countries = Countries::getNames(Locale::DEFAULT_LOCALE);
+            $countries = Countries::getNames(SupportedLocales::default()->value);
 
             $listenerCountryCode = '';
             foreach ($countries as $countryCode => $countryName) {

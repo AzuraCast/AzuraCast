@@ -20,7 +20,7 @@ class StorageLocationValidator extends ConstraintValidator
     ) {
     }
 
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof StorageLocation) {
             throw new UnexpectedTypeException($constraint, StorageLocation::class);

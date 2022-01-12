@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
-use App\Event\Radio\LoadNowPlaying;
 use GuzzleHttp\Psr7\Uri;
+use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
@@ -46,7 +46,10 @@ class NowPlayingApiGenerator
         );
 
         // Pull from current NP data if song details haven't changed .
-        if ($npOld instanceof Entity\Api\NowPlaying\NowPlaying && $this->tracksMatch($npResult, $npOld)) {
+        if (
+            $npOld instanceof Entity\Api\NowPlaying\NowPlaying
+            && $this->tracksMatch($npResult->currentSong, $npOld->now_playing?->song->id)
+        ) {
             $previousHistory = $this->historyRepo->getCurrent($station);
 
             if (null === $previousHistory) {
@@ -58,7 +61,6 @@ class NowPlayingApiGenerator
             $sh_obj = $this->historyRepo->register($previousHistory, $station, $np);
 
             $np->song_history = $npOld->song_history;
-            $np->playing_next = $npOld->playing_next;
         } else {
             // SongHistory registration must ALWAYS come before the history/nextsong calls
             // otherwise they will not have up-to-date database info!
@@ -73,15 +75,17 @@ class NowPlayingApiGenerator
                 $baseUri,
                 true
             );
+        }
 
-            $nextVisible = $this->queueRepo->getNextVisible($station);
-            if ($nextVisible instanceof Entity\StationQueue) {
-                $np->playing_next = ($this->stationQueueApiGenerator)(
-                    $nextVisible,
-                    $baseUri,
-                    true
-                );
-            }
+        $nextVisibleSong = $this->queueRepo->getNextVisible($station);
+        if (null === $nextVisibleSong) {
+            $np->playing_next = $npOld->playing_next ?? null;
+        } else {
+            $np->playing_next = ($this->stationQueueApiGenerator)(
+                $nextVisibleSong,
+                $baseUri,
+                true
+            );
         }
 
         // Detect and report live DJ status
@@ -91,11 +95,7 @@ class NowPlayingApiGenerator
                 ? $current_streamer->getDisplayName()
                 : 'Live DJ';
 
-            $broadcastStart = null;
-            $broadcast = $this->broadcastRepo->getLatestBroadcast($station);
-            if (null !== $broadcast) {
-                $broadcastStart = $broadcast->getTimestampStart();
-            }
+            $broadcastStart = $this->broadcastRepo->getLatestBroadcast($station)?->getTimestampStart();
 
             $np->live = new Entity\Api\NowPlaying\Live(true, $streamer_name, $broadcastStart);
         } else {
@@ -125,10 +125,7 @@ class NowPlayingApiGenerator
         Entity\Station $station,
         ?UriInterface $baseUri = null
     ): Entity\Api\NowPlaying\NowPlaying {
-        $event = new LoadNowPlaying();
-        $this->eventDispatcher->dispatch($event);
-
-        $np = $event->getForStation($station);
+        $np = $station->getNowplaying();
         if (null !== $np) {
             return $np;
         }
@@ -178,10 +175,10 @@ class NowPlayingApiGenerator
     }
 
     protected function tracksMatch(
-        Result $npResult,
-        Entity\Api\NowPlaying\NowPlaying $npOld
+        Entity\Song|array|string|CurrentSong $currentSong,
+        ?string $oldSongId
     ): bool {
-        $current_song_hash = Entity\Song::getSongHash($npResult->currentSong);
-        return (0 === strcmp($current_song_hash, $npOld->now_playing?->song?->id ?? ''));
+        $current_song_hash = Entity\Song::getSongHash($currentSong);
+        return (0 === strcmp($current_song_hash, $oldSongId ?? ''));
     }
 }

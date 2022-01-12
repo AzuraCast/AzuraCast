@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @mixin _assert-ascending($map, $map-name) {
   $prev-key: null;
   $prev-num: null;
@@ -31,7 +33,7 @@
   $g: green($color);
   $b: blue($color);
 
-  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) * 0.001;
 
   @if ($yiq >= $yiq-contrasted-threshold) {
     @return $yiq-text-dark;
@@ -73,5 +75,5 @@
 // Strip unit
 
 @function strip-unit($val) {
-  @return $val / ($val * 0 + 1);
+  @return math.div($val, $val * 0 + 1);
 }

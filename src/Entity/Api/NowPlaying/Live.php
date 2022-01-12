@@ -4,35 +4,31 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_Live")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_Live',
+    type: 'object'
+)]
 class Live
 {
-    /**
-     * Whether the stream is known to currently have a live DJ.
-     *
-     * @OA\Property(example=false)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Whether the stream is known to currently have a live DJ.',
+        example: false
+    )]
     public bool $is_live = false;
 
-    /**
-     * The current active streamer/DJ, if one is available.
-     *
-     * @OA\Property(example="DJ Jazzy Jeff")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The current active streamer/DJ, if one is available.',
+        example: 'DJ Jazzy Jeff'
+    )
+    ]
     public string $streamer_name = '';
 
-    /**
-     * The start timestamp of the current broadcast, if one is available.
-     *
-     * @OA\Property(example="1591548318")
-     * @var int|null
-     */
+    #[OA\Property(
+        description: 'The start timestamp of the current broadcast, if one is available.',
+        example: '1591548318'
+    )]
     public ?int $broadcast_start = null;
 
     public function __construct(

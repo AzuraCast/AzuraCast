@@ -21,7 +21,13 @@ class QueueManager extends AbstractQueueManager
     {
         $pheanstalk = $this->pheanstalk->useTube($queueName);
 
-        while ($job = $pheanstalk->reserve()) {
+        while ($job = $pheanstalk->peekReady()) {
+            $pheanstalk->delete($job);
+        }
+        while ($job = $pheanstalk->peekBuried()) {
+            $pheanstalk->delete($job);
+        }
+        while ($job = $pheanstalk->peekDelayed()) {
             $pheanstalk->delete($job);
         }
     }

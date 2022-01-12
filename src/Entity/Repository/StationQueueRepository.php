@@ -11,6 +11,9 @@ use Carbon\CarbonInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @extends Repository<Entity\StationQueue>
+ */
 class StationQueueRepository extends Repository
 {
     public function clearForMediaAndPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
@@ -28,20 +31,29 @@ class StationQueueRepository extends Repository
 
     public function getNextVisible(Entity\Station $station): ?Entity\StationQueue
     {
-        foreach ($this->getUpcomingQueue($station) as $sh) {
-            if ($sh->showInApis()) {
-                return $sh;
-            }
-        }
-
-        return null;
+        return $this->getUnplayedBaseQuery($station)
+            ->andWhere('sq.is_visible = 1')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
     }
 
-    public function newRecordSentToAutoDj(Entity\StationQueue $queueRow): void
-    {
-        $queueRow->sentToAutoDj();
-        $this->em->persist($queueRow);
-        $this->em->flush();
+    public function trackPlayed(
+        Entity\Station $station,
+        Entity\StationQueue $row
+    ): void {
+        $this->em->createQuery(
+            <<<'DQL'
+            UPDATE App\Entity\StationQueue sq
+            SET sq.is_played=1, sq.sent_to_autodj=1
+            WHERE sq.station = :station 
+            AND sq.is_played = 0 
+            AND (sq.id = :id OR sq.timestamp_cued < :cued)
+        DQL
+        )->setParameter('station', $station)
+            ->setParameter('id', $row->getIdRequired())
+            ->setParameter('cued', $row->getTimestampCued())
+            ->execute();
     }
 
     /**
@@ -53,10 +65,10 @@ class StationQueueRepository extends Repository
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.timestamp_cued, sq.playlist_id
+                SELECT sq.timestamp_played, sq.playlist_id
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
-                ORDER BY sq.timestamp_cued DESC
+                ORDER BY sq.sent_to_autodj ASC, sq.timestamp_played DESC
             DQL
         )->setParameter('station', $station)
             ->setMaxResults($rows)
@@ -75,11 +87,11 @@ class StationQueueRepository extends Repository
 
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT sq.song_id, sq.timestamp_cued, sq.title, sq.artist
+                SELECT sq.song_id, sq.timestamp_played, sq.title, sq.artist
                 FROM App\Entity\StationQueue sq
                 WHERE sq.station = :station
-                AND sq.timestamp_cued >= :threshold
-                ORDER BY sq.timestamp_cued DESC
+                AND (sq.is_played = 0 OR sq.timestamp_played >= :threshold)
+                ORDER BY sq.timestamp_played DESC
             DQL
         )->setParameter('station', $station)
             ->setParameter('threshold', $threshold)
@@ -88,31 +100,45 @@ class StationQueueRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     *
      * @return Entity\StationQueue[]
      */
-    public function getUpcomingQueue(Entity\Station $station): array
+    public function getUnplayedQueue(Entity\Station $station): array
     {
-        return $this->getUpcomingQuery($station)->execute();
+        return $this->getUnplayedQuery($station)->execute();
     }
 
-    public function getUpcomingQuery(Entity\Station $station): Query
+    public function getUnplayedQuery(Entity\Station $station): Query
     {
-        return $this->getUpcomingBaseQuery($station)->getQuery();
+        return $this->getUnplayedBaseQuery($station)->getQuery();
     }
 
-    public function getNextInQueue(Entity\Station $station): ?Entity\StationQueue
+    public function getLatestVisibleRow(Entity\Station $station): ?Entity\StationQueue
     {
-        return $this->getUpcomingBaseQuery($station)
+        return $this->getRecentBaseQuery($station)
+            ->andWhere('sq.sent_to_autodj = 1')
+            ->andWhere('sq.is_visible = 1')
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
     }
 
-    public function getLastCuedSong(Entity\Station $station): ?Entity\StationQueue
+    public function clearUpcomingQueue(Entity\Station $station): void
     {
-        return $this->getRecentBaseQuery($station)
-            ->andWhere('sq.sent_to_autodj = 1')
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                AND sq.sent_to_autodj = 0
+            DQL
+        )->setParameter('station', $station)
+            ->execute();
+    }
+
+    public function getNextToSendToAutoDj(Entity\Station $station): ?Entity\StationQueue
+    {
+        return $this->getBaseQuery($station)
+            ->andWhere('sq.sent_to_autodj = 0')
+            ->orderBy('sq.timestamp_cued', 'ASC')
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -122,7 +148,7 @@ class StationQueueRepository extends Repository
         Entity\Station $station,
         Entity\Interfaces\SongInterface $song
     ): ?Entity\StationQueue {
-        return $this->getRecentBaseQuery($station)
+        return $this->getUnplayedBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 1')
             ->andWhere('sq.song_id = :song_id')
             ->setParameter('song_id', $song->getSongId())
@@ -135,19 +161,14 @@ class StationQueueRepository extends Repository
     {
         $station = $playlist->getStation();
 
-        $cuedPlaylistContentCountQuery = $this->getUpcomingBaseQuery($station)
+        $cuedPlaylistContentCountQuery = $this->getUnplayedBaseQuery($station)
             ->select('count(sq.id)')
             ->andWhere('sq.playlist = :playlist')
             ->setParameter('playlist', $playlist)
             ->getQuery();
 
         $cuedPlaylistContentCount = $cuedPlaylistContentCountQuery->getSingleScalarResult();
-
-        if ($cuedPlaylistContentCount > 0) {
-            return true;
-        }
-
-        return false;
+        return $cuedPlaylistContentCount > 0;
     }
 
     protected function getRecentBaseQuery(Entity\Station $station): QueryBuilder
@@ -156,11 +177,12 @@ class StationQueueRepository extends Repository
             ->orderBy('sq.timestamp_cued', 'DESC');
     }
 
-    protected function getUpcomingBaseQuery(Entity\Station $station): QueryBuilder
+    protected function getUnplayedBaseQuery(Entity\Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)
-            ->andWhere('sq.sent_to_autodj = 0')
-            ->orderBy('sq.timestamp_cued', 'ASC');
+            ->andWhere('sq.is_played = 0')
+            ->orderBy('sq.sent_to_autodj', 'DESC')
+            ->addOrderBy('sq.timestamp_cued', 'ASC');
     }
 
     protected function getBaseQuery(Entity\Station $station): QueryBuilder

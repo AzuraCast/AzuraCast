@@ -6,21 +6,30 @@ namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\Admin\UsersController;
 use App\Entity;
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class PutMeAction extends UsersController
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $user = $request->getUser();
-        $this->editRecord((array)$request->getParsedBody(), $user);
+        $user = $this->em->refetch($user);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
+        $this->editRecord(
+            (array)$request->getParsedBody(),
+            $user,
+            [
+                AbstractNormalizer::GROUPS => [
+                    EntityGroupsInterface::GROUP_ID,
+                    EntityGroupsInterface::GROUP_GENERAL,
+                ],
+            ]
+        );
+
+        return $response->withJson(Entity\Api\Status::updated());
     }
 }

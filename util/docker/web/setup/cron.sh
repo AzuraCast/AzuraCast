@@ -3,9 +3,7 @@ set -e
 source /bd_build/buildconfig
 set -x
 
-$minimal_apt_get_install cron
-
-service cron stop
+install_without_postinst cron
 
 chmod 600 /etc/crontab
 

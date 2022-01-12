@@ -32,7 +32,7 @@ class RenameAction
 
         // No-op if paths match
         if ($from === $to) {
-            return $response->withJson(new Entity\Api\Status());
+            return $response->withJson(Entity\Api\Status::updated());
         }
 
         $station = $request->getStation();
@@ -44,6 +44,6 @@ class RenameAction
 
         $batchUtilities->handleRename($from, $to, $storageLocation, $fsMedia);
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::updated());
     }
 }

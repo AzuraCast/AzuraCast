@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Stringable;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -30,7 +32,7 @@ abstract class AbstractApiCrudController
     protected string $resourceRouteName;
 
     public function __construct(
-        protected EntityManagerInterface $em,
+        protected ReloadableEntityManagerInterface $em,
         protected Serializer $serializer,
         protected ValidatorInterface $validator
     ) {
@@ -44,14 +46,14 @@ abstract class AbstractApiCrudController
     ): ResponseInterface {
         $paginator = Paginator::fromQuery($query, $request);
 
-        $is_bootgrid = $paginator->isFromBootgrid();
-        $is_internal = ('true' === $request->getParam('internal', 'false'));
+        $isBootgrid = $paginator->isFromBootgrid();
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
 
-        $postProcessor ??= function ($row) use ($is_bootgrid, $is_internal, $request) {
+        $postProcessor ??= function ($row) use ($isBootgrid, $isInternal, $request) {
             $return = $this->viewRecord($row, $request);
 
             // Older jQuery Bootgrid requests should be "flattened".
-            if ($is_bootgrid && !$is_internal) {
+            if ($isBootgrid && !$isInternal) {
                 return Utilities\Arrays::flattenArray($return, '_');
             }
 
@@ -81,13 +83,13 @@ abstract class AbstractApiCrudController
         if ($record instanceof IdentifiableEntityInterface) {
             $return['links'] = [
                 'self' => (string)$router->fromHere(
-                    $this->resourceRouteName,
-                    ['id' => $record->getIdRequired()],
-                    [],
-                    !$isInternal
+                    route_name: $this->resourceRouteName,
+                    route_params: ['id' => $record->getIdRequired()],
+                    absolute: !$isInternal
                 ),
             ];
         }
+
         return $return;
     }
 
@@ -105,8 +107,8 @@ abstract class AbstractApiCrudController
             array_merge(
                 $context,
                 [
-                    ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-                    ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                    AbstractObjectNormalizer::ENABLE_MAX_DEPTH   => true,
+                    AbstractObjectNormalizer::MAX_DEPTH_HANDLER    => function (
                         $innerObject,
                         $outerObject,
                         string $attributeName,
@@ -115,7 +117,7 @@ abstract class AbstractApiCrudController
                     ) {
                         return $this->displayShortenedObject($innerObject);
                     },
-                    ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
+                    AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
                         $object,
                         string $format = null,
                         array $context = []
@@ -141,7 +143,7 @@ abstract class AbstractApiCrudController
             return $object->getIdRequired();
         }
 
-        if ($object instanceof \Stringable) {
+        if ($object instanceof Stringable) {
             return (string)$object;
         }
 
@@ -165,9 +167,7 @@ abstract class AbstractApiCrudController
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
-            $e = new ValidationException((string)$errors);
-            $e->setDetailedErrors($errors);
-            throw $e;
+            throw ValidationException::fromValidationErrors($errors);
         }
 
         $this->em->persist($record);
@@ -186,7 +186,7 @@ abstract class AbstractApiCrudController
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
         if (null !== $record) {
-            $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
+            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $record;
         }
 
         return $this->serializer->denormalize($data, $this->entityClass, null, $context);

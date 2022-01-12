@@ -9,7 +9,6 @@
 #   docker-compose.override.yml
 # with any changes you need to make.
 #
-version : '2.2'
 
 services :
   nginx_proxy :
@@ -30,7 +29,7 @@ services :
       - frontend
     depends_on :
       - web
-    restart : always
+    restart : unless-stopped
 
   nginx_proxy_letsencrypt :
     container_name : nginx_proxy_letsencrypt
@@ -41,10 +40,10 @@ services :
       - letsencrypt_acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment :
-      DEFAULT_EMAIL : ${LETSENCRYPT_EMAIL}
+      DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL:-}
     networks :
       - frontend
-    restart : always
+    restart : unless-stopped
 
   web :
     container_name : azuracast_web
@@ -59,16 +58,16 @@ services :
       - redis
     env_file : azuracast.env
     environment :
-      LANG : ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION : 12
-      AZURACAST_VERSION : ${AZURACAST_VERSION:-latest}
-      AZURACAST_SFTP_PORT : ${AZURACAST_SFTP_PORT:-2022}
-      VIRTUAL_HOST : ${LETSENCRYPT_HOST:-azuracast.local}
-      NGINX_TIMEOUT : ${NGINX_TIMEOUT:-1800}
-      LETSENCRYPT_HOST : ${LETSENCRYPT_HOST}
-      LETSENCRYPT_EMAIL : ${LETSENCRYPT_EMAIL}
-      PUID : ${AZURACAST_PUID:-1000}
-      PGID : ${AZURACAST_PGID:-1000}
+      LANG: ${LANG:-en_US.UTF-8}
+      AZURACAST_DC_REVISION: 12
+      AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
+      AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
+      VIRTUAL_HOST: ${LETSENCRYPT_HOST:-azuracast.local}
+      NGINX_TIMEOUT: ${NGINX_TIMEOUT:-1800}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-}
+      PUID: ${AZURACAST_PUID:-1000}
+      PGID: ${AZURACAST_PGID:-1000}
     volumes :
       - letsencrypt:/etc/nginx/certs:ro
       - www_vendor:/var/azuracast/www/vendor
@@ -82,7 +81,7 @@ services :
     networks :
       - frontend
       - backend
-    restart : always
+    restart : unless-stopped
     ulimits : &default-ulimits
       nofile :
         soft : 65536
@@ -100,7 +99,7 @@ services :
     env_file : azuracast.env
     networks :
       - backend
-    restart : always
+    restart : unless-stopped
     logging : *default-logging
 
   redis :
@@ -112,7 +111,7 @@ services :
       - redis_data:/data
     networks :
       - backend
-    restart : always
+    restart : unless-stopped
     logging : *default-logging
 
   stations :
@@ -282,7 +281,7 @@ services :
       - frontend
       - backend
     init : true
-    restart : always
+    restart : unless-stopped
     ulimits : *default-ulimits
     logging : *default-logging
 

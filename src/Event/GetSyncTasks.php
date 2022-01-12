@@ -9,45 +9,28 @@ use Generator;
 
 class GetSyncTasks
 {
-    public const SYNC_NOWPLAYING = 'nowplaying';
-    public const SYNC_SHORT = 'short';
-    public const SYNC_MEDIUM = 'medium';
-    public const SYNC_LONG = 'long';
-
     protected array $tasks = [];
 
-    public function __construct(
-        protected string $type
-    ) {
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
     /**
-     * @return Generator|AbstractTask[]
+     * @return Generator|class-string<AbstractTask>[]
      */
     public function getTasks(): Generator
     {
         yield from $this->tasks;
     }
 
-    public function addTask(AbstractTask $task, ?string $key = null): void
+    /**
+     * @param class-string<AbstractTask> $className
+     */
+    public function addTask(string $className): void
     {
-        if (null === $key) {
-            $taskClassParts = explode("\\", get_class($task));
-            $key = array_pop($taskClassParts);
-        }
-
-        $this->tasks[$key] = $task;
+        $this->tasks[] = $className;
     }
 
-    public function removeTask(string $key): void
+    public function addTasks(array $classNames): void
     {
-        if (isset($this->tasks[$key])) {
-            unset($this->tasks[$key]);
+        foreach ($classNames as $className) {
+            $this->addTask($className);
         }
     }
 }

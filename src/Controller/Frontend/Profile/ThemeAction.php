@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Profile;
 
-use App\Customization;
+use App\Enums\SupportedThemes;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,16 +19,12 @@ class ThemeAction
     ): ResponseInterface {
         $user = $request->getUser();
 
-        $currentTheme = $user->getTheme();
-        if (empty($currentTheme)) {
-            $currentTheme = Customization::DEFAULT_THEME;
-        }
-
-        $user->setTheme(
-            (Customization::THEME_LIGHT === $currentTheme)
-                ? Customization::THEME_DARK
-                : Customization::THEME_LIGHT
-        );
+        $currentTheme = $user->getThemeEnum();
+        $newTheme = match ($currentTheme) {
+            SupportedThemes::Dark => SupportedThemes::Light,
+            default => SupportedThemes::Dark
+        };
+        $user->setTheme($newTheme->value);
 
         $em->persist($user);
         $em->flush();

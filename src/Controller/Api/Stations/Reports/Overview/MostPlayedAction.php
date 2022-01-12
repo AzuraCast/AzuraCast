@@ -24,9 +24,7 @@ class MostPlayedAction
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $analytics_level = $settingsRepo->readSettings()->getAnalytics();
-
-        if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
+        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
         }

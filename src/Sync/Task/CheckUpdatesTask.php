@@ -24,6 +24,11 @@ class CheckUpdatesTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '3-59/5 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $settings = $this->settingsRepo->readSettings();

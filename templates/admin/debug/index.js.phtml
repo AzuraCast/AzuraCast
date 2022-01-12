@@ -1,0 +1,5 @@
+jQuery(function ($) {
+    $('time[data-duration]').each(function () {
+        $(this).text(luxon.DateTime.fromSeconds($(this).data('duration')).toRelative());
+    });
+});

@@ -8,12 +8,14 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
-use App\Flysystem\StationFilesystems;
-use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
+use App\Radio\Enums\StreamFormats;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\StationStreamer>
+ */
 class StationStreamerRepository extends Repository
 {
     protected Scheduler $scheduler;
@@ -81,20 +83,17 @@ class StationStreamerRepository extends Repository
         $record = new Entity\StationStreamerBroadcast($streamer);
         $this->em->persist($record);
 
-        if (Adapters::BACKEND_LIQUIDSOAP === $station->getBackendType()) {
-            $backendConfig = $station->getBackendConfig();
-            $recordStreams = $backendConfig->recordStreams();
+        $backendConfig = $station->getBackendConfig();
+        $recordStreams = $backendConfig->recordStreams();
 
-            if ($recordStreams) {
-                $format = $backendConfig->getRecordStreamsFormat(
-                ) ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
-                $recordingPath = $record->generateRecordingPath($format);
-                $this->em->persist($record);
-                $this->em->flush();
+        if ($recordStreams) {
+            $format = $backendConfig->getRecordStreamsFormatEnum() ?? StreamFormats::Mp3;
+            $recordingPath = $record->generateRecordingPath($format);
 
-                return (new StationFilesystems($station))->getTempFilesystem()
-                    ->getLocalPath($recordingPath);
-            }
+            $this->em->persist($record);
+            $this->em->flush();
+
+            return $recordingPath;
         }
 
         $this->em->flush();
@@ -103,18 +102,7 @@ class StationStreamerRepository extends Repository
 
     public function onDisconnect(Entity\Station $station): bool
     {
-        $fs = new StationFilesystems($station);
-        $fsTemp = $fs->getTempFilesystem();
-        $fsRecordings = $fs->getRecordingsFilesystem();
-
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
-            $broadcastPath = $broadcast->getRecordingPath();
-
-            if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {
-                $tempPath = $fsTemp->getLocalPath($broadcastPath);
-                $fsRecordings->uploadAndDeleteOriginal($tempPath, $broadcastPath);
-            }
-
             $broadcast->setTimestampEnd(time());
             $this->em->persist($broadcast);
         }
@@ -123,6 +111,7 @@ class StationStreamerRepository extends Repository
         $station->setCurrentStreamer();
         $this->em->persist($station);
         $this->em->flush();
+
         return true;
     }
 

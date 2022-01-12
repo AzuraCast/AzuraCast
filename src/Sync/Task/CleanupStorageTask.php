@@ -11,17 +11,34 @@ use Symfony\Component\Finder\Finder;
 
 class CleanupStorageTask extends AbstractTask
 {
+    public static function getSchedulePattern(): string
+    {
+        return '24 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            /** @var Entity\Station $station */
-            $this->cleanStationTempFiles($station);
+            try {
+                /** @var Entity\Station $station */
+                $this->cleanStationTempFiles($station);
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [
+                    'station' => (string)$station,
+                ]);
+            }
         }
 
-        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
+        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
         foreach ($storageLocations as $storageLocation) {
-            /** @var Entity\StorageLocation $storageLocation */
-            $this->cleanMediaStorageLocation($storageLocation);
+            try {
+                /** @var Entity\StorageLocation $storageLocation */
+                $this->cleanMediaStorageLocation($storageLocation);
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [
+                    'storageLocation' => (string)$storageLocation,
+                ]);
+            }
         }
     }
 

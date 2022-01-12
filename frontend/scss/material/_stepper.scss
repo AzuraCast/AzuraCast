@@ -22,6 +22,12 @@
   &:last-child::after {
     display: none;
   }
+
+  &.active {
+    .stepper-text {
+      font-weight: bolder;
+    }
+  }
 }
 
 .stepper-horiz {
@@ -64,7 +70,7 @@
     &::after,
     &::before {
       height: ($stepper-padding-y - $stepper-inner-spacer);
-      left: ($stepper-icon-height / 2 + $stepper-padding-x);
+      left: ($stepper-icon-height * 0.5 + $stepper-padding-x);
     }
 
     &::after {
@@ -100,8 +106,4 @@
   font-size: $stepper-text-font-size;
   font-weight: $stepper-text-font-weight;
   position: relative;
-
-  .stepper.active & {
-    font-weight: bolder;
-  }
 }

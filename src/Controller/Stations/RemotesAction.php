@@ -16,17 +16,17 @@ class RemotesAction
         Response $response,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
-        $station = $request->getStation();
+        $router = $request->getRouter();
 
-        $settings = $settingsRepo->readSettings();
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'stations/remotes/index',
-            [
-                'station' => $station,
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
-            ]
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsRemotes',
+            id: 'station-remotes',
+            title: __('Remote Relays'),
+            props: [
+                'listUrl'          => (string)$router->fromHere('api:stations:remotes'),
+                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
+            ],
         );
     }
 }

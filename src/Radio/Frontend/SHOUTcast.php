@@ -114,17 +114,19 @@ class SHOUTcast extends AbstractFrontend
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
 
-        $config = [
-            'password' => $frontendConfig->getSourcePassword(),
-            'adminpassword' => $frontendConfig->getAdminPassword(),
-            'logfile' => $configPath . '/sc_serv.log',
-            'w3clog' => $configPath . '/sc_w3c.log',
-            'banfile' => $this->writeIpBansFile($station),
-            'ripfile' => $configPath . '/sc_serv.rip',
-            'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
-            'portbase' => $frontendConfig->getPort(),
+        $config = array_filter([
+            'password'             => $frontendConfig->getSourcePassword(),
+            'adminpassword'        => $frontendConfig->getAdminPassword(),
+            'logfile'              => $configPath . '/sc_serv.log',
+            'w3clog'               => $configPath . '/sc_w3c.log',
+            'banfile'              => $this->writeIpBansFile($station),
+            'ripfile'              => $configPath . '/sc_serv.rip',
+            'maxuser'              => $frontendConfig->getMaxListeners() ?? 250,
+            'portbase'             => $frontendConfig->getPort(),
             'requirestreamconfigs' => 1,
-        ];
+            'licenceid'            => $frontendConfig->getScLicenseId(),
+            'userid'               => $frontendConfig->getScUserId(),
+        ]);
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {

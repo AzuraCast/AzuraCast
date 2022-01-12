@@ -9,12 +9,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'role'),
     Attributes\Auditable
@@ -24,18 +24,20 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
-
-    /** @OA\Property(example="Super Administrator") */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(example: "Super Administrator"),
+        ORM\Column(length: 100),
+        Assert\NotBlank
+    ]
     protected string $name;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
     protected Collection $users;
 
-    /** @OA\Property(type="array", @OA\Items) */
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)
+    ]
     protected Collection $permissions;
 
     public function __construct()

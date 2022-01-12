@@ -6,24 +6,35 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Environment;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:setup:initialize',
+    description: 'Ensure key settings are initialized within AzuraCast.',
+)]
 class InitializeCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        OutputInterface $output,
-        Environment $environment,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
-    ): int {
+    public function __construct(
+        protected Environment $environment,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
         $io->title(__('Initialize AzuraCast'));
         $io->writeln(__('Initializing essential settings...'));
 
         $io->listing(
             [
-                __('Environment: %s', ucfirst($environment->getAppEnvironment())),
-                __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
+                __('Environment: %s', ucfirst($this->environment->getAppEnvironment())),
+                __('Installation Method: %s', $this->environment->isDocker() ? 'Docker' : 'Ansible'),
             ]
         );
 
@@ -49,7 +60,7 @@ class InitializeCommand extends CommandAbstract
         $this->runCommand($output, 'cache:clear');
 
         // Ensure default storage locations exist.
-        $storageLocationRepo->createDefaultStorageLocations();
+        $this->storageLocationRepo->createDefaultStorageLocations();
 
         $io->newLine();
         $io->success(

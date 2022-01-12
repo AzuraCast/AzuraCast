@@ -12,5 +12,4 @@ use App\Entity;
  */
 class RoleRepository extends Repository
 {
-
 }

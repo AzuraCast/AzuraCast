@@ -95,7 +95,7 @@ class PodcastMedia implements IdentifiableEntityInterface
     public function setLength(float $length): self
     {
         $lengthMin = floor($length / 60);
-        $lengthSec = $length % 60;
+        $lengthSec = (int)$length % 60;
 
         $this->length = $length;
         $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);

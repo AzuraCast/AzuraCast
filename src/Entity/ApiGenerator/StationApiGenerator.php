@@ -52,7 +52,7 @@ class StationApiGenerator
         $mounts = [];
         if ($fa->supportsMounts() && $station->getMounts()->count() > 0) {
             foreach ($station->getMounts() as $mount) {
-                if ($showAllMounts || $mount->isVisibleOnPublicPages()) {
+                if ($showAllMounts || $mount->getIsVisibleOnPublicPages()) {
                     $mounts[] = $mount->api($fa, $baseUri);
                 }
             }
@@ -62,7 +62,7 @@ class StationApiGenerator
         $remotes = [];
         foreach ($remoteAdapters as $ra_proxy) {
             $remote = $ra_proxy->getRemote();
-            if ($showAllMounts || $remote->isVisibleOnPublicPages()) {
+            if ($showAllMounts || $remote->getIsVisibleOnPublicPages()) {
                 $remotes[] = $remote->api($ra_proxy->getAdapter());
             }
         }

@@ -19,6 +19,7 @@ use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
@@ -31,6 +32,7 @@ class BatchAction
         protected QueueManagerInterface $queueManager,
         protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
     ) {
     }
 
@@ -132,7 +134,7 @@ class BatchAction
                 $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
                     [
                         'station_id' => $station->getId(),
-                        'id' => (int)$playlistId,
+                        'id'         => (int)$playlistId,
                     ]
                 );
 
@@ -259,18 +261,26 @@ class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
+        $nextCuedItem = $this->queueRepo->getNextToSendToAutoDj($station);
+        $cuedTimestamp = (null !== $nextCuedItem)
+            ? $nextCuedItem->getTimestampCued() - 10
+            : time();
+
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             try {
                 /** @var Entity\Station $stationRef */
                 $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
 
                 $newQueue = Entity\StationQueue::fromMedia($stationRef, $media);
-                $newQueue->setTimestampCued(time());
+                $newQueue->setTimestampCued($cuedTimestamp);
+                $newQueue->addLogRecord(LogLevel::INFO, 'Manually queued via media manager.');
 
                 $this->em->persist($newQueue);
             } catch (Throwable $e) {
                 $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
             }
+
+            $cuedTimestamp -= 10;
         }
 
         return $result;

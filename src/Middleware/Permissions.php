@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Enums\PermissionInterface;
 use App\Exception\PermissionDeniedException;
 use App\Http\ServerRequest;
 use Exception;
@@ -16,7 +17,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class Permissions
 {
     public function __construct(
-        protected string $action,
+        protected string|PermissionInterface $action,
         protected bool $use_station = false
     ) {
     }

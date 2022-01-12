@@ -7,14 +7,17 @@ namespace App\Controller\Frontend;
 use App\Entity;
 use App\Environment;
 use App\Exception\NotLoggedInException;
-use App\Form\SettingsForm;
-use App\Form\StationForm;
+use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use DI\FactoryInterface;
+use App\Version;
+use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 class SetupController
 {
@@ -35,6 +38,153 @@ class SetupController
     {
         $current_step = $this->getSetupStep($request);
         return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+    }
+
+    /**
+     * Setup Step 1:
+     * Create Super Administrator Account
+     */
+    public function registerAction(
+        ServerRequest $request,
+        Response $response,
+        Entity\Repository\RolePermissionRepository $permissionRepo,
+        ValidatorInterface $validator
+    ): ResponseInterface {
+        // Verify current step.
+        $current_step = $this->getSetupStep($request);
+        if ($current_step !== 'register' && $this->environment->isProduction()) {
+            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+        }
+
+        $csrf = $request->getCsrf();
+
+        $error = null;
+
+        if ($request->isPost()) {
+            try {
+                $data = $request->getParams();
+
+                $csrf->verify($data['csrf'] ?? null, 'register');
+
+                if (empty($data['username']) || empty($data['password'])) {
+                    throw new InvalidArgumentException('Username and password required.');
+                }
+
+                $role = $permissionRepo->ensureSuperAdministratorRole();
+
+                // Create user account.
+                $user = new Entity\User();
+                $user->setEmail($data['username']);
+                $user->setNewPassword($data['password']);
+                $user->getRoles()->add($role);
+
+                $errors = $validator->validate($user);
+                if (count($errors) > 0) {
+                    throw ValidationException::fromValidationErrors($errors);
+                }
+
+                $this->em->persist($user);
+                $this->em->flush();
+
+                // Log in the newly created user.
+                $auth = $request->getAuth();
+                $auth->authenticate($data['username'], $data['password']);
+
+                $acl = $request->getAcl();
+                $acl->reload();
+
+                return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+            } catch (Throwable $e) {
+                $error = $e->getMessage();
+            }
+        }
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_SetupRegister',
+            id: 'setup-register',
+            layout: 'minimal',
+            title: __('Set Up AzuraCast'),
+            props: [
+                'csrf'  => $csrf->generate('register'),
+                'error' => $error,
+            ]
+        );
+    }
+
+    /**
+     * Setup Step 2:
+     * Create Station and Parse Metadata
+     */
+    public function stationAction(
+        ServerRequest $request,
+        Response $response,
+        StationFormComponent $stationFormComponent
+    ): ResponseInterface {
+        // Verify current step.
+        $current_step = $this->getSetupStep($request);
+        if ($current_step !== 'station' && $this->environment->isProduction()) {
+            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+        }
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_SetupStation',
+            id: 'setup-station',
+            title: __('Create a New Radio Station'),
+            props: array_merge(
+                $stationFormComponent->getProps($request),
+                [
+                    'createUrl' => (string)$request->getRouter()->named('api:admin:stations'),
+                    'continueUrl' => (string)$request->getRouter()->named('setup:settings'),
+                ]
+            )
+        );
+    }
+
+    /**
+     * Setup Step 3:
+     * Set site settings.
+     */
+    public function settingsAction(
+        ServerRequest $request,
+        Response $response,
+        Version $version
+    ): ResponseInterface {
+        $router = $request->getRouter();
+
+        // Verify current step.
+        $current_step = $this->getSetupStep($request);
+        if ($current_step !== 'settings' && $this->environment->isProduction()) {
+            return $response->withRedirect((string)$router->named('setup:' . $current_step));
+        }
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_SetupSettings',
+            id: 'setup-settings',
+            title: __('System Settings'),
+            props: [
+                'apiUrl'         => (string)$router->named('api:admin:settings', [
+                    'group' => Entity\Settings::GROUP_GENERAL,
+                ]),
+                'releaseChannel' => $version->getReleaseChannel(),
+                'continueUrl'    => (string)$router->named('dashboard'),
+            ],
+        );
+    }
+
+    /**
+     * Placeholder function for "setup complete" redirection.
+     *
+     * @param ServerRequest $request
+     * @param Response $response
+     */
+    public function completeAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
+
+        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
     }
 
     /**
@@ -79,144 +229,5 @@ class SetupController
 
         // Step 3: System Settings
         return 'settings';
-    }
-
-    /**
-     * Placeholder function for "setup complete" redirection.
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function completeAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
-
-        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
-    }
-
-    /**
-     * Setup Step 1:
-     * Create Super Administrator Account
-     */
-    public function registerAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'register' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
-        }
-
-        // Create first account form.
-        $data = $request->getParams();
-
-        if (!empty($data['username']) && !empty($data['password'])) {
-            // Create actions and roles supporting Super Admninistrator.
-            $role = new Entity\Role();
-            $role->setName(__('Super Administrator'));
-
-            $this->em->persist($role);
-            $this->em->flush();
-
-            $rha = new Entity\RolePermission($role);
-            $rha->setActionName('administer all');
-
-            $this->em->persist($rha);
-
-            // Create user account.
-            $user = new Entity\User();
-            $user->setEmail($data['username']);
-            $user->setNewPassword($data['password']);
-            $user->getRoles()->add($role);
-            $this->em->persist($user);
-
-            // Write to DB.
-            $this->em->flush();
-
-            // Log in the newly created user.
-            $auth = $request->getAuth();
-            $auth->authenticate($data['username'], $data['password']);
-
-            $acl = $request->getAcl();
-            $acl->reload();
-
-            return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
-        }
-
-        return $request->getView()
-            ->renderToResponse($response, 'frontend/setup/register');
-    }
-
-    /**
-     * Setup Step 2:
-     * Create Station and Parse Metadata
-     */
-    public function stationAction(
-        ServerRequest $request,
-        Response $response,
-        FactoryInterface $factory
-    ): ResponseInterface {
-        $stationForm = $factory->make(StationForm::class);
-
-        // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'station' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
-        }
-
-        if (false !== $stationForm->process($request)) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:settings'));
-        }
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/setup/station',
-            [
-                'form' => $stationForm,
-            ]
-        );
-    }
-
-    /**
-     * Setup Step 3:
-     * Set site settings.
-     */
-    public function settingsAction(
-        ServerRequest $request,
-        Response $response,
-        FactoryInterface $factory
-    ): ResponseInterface {
-        $settingsForm = $factory->make(SettingsForm::class);
-
-        // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'settings' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
-        }
-
-        if ($settingsForm->process($request)) {
-            $settings = $this->settingsRepo->readSettings();
-            $settings->updateSetupComplete();
-            $this->settingsRepo->writeSettings($settings);
-
-            // Notify the user and redirect to homepage.
-            $request->getFlash()->addMessage(
-                sprintf(
-                    '<b>%s</b><br>%s',
-                    __('Setup is now complete!'),
-                    __('Continue setting up your station in the main AzuraCast app.')
-                ),
-                Flash::SUCCESS
-            );
-
-            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
-        }
-
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/setup/settings',
-            [
-                'form' => $settingsForm,
-            ]
-        );
     }
 }

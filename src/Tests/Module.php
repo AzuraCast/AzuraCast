@@ -17,6 +17,7 @@ use Codeception\Lib\ModuleContainer;
 use Codeception\TestInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 use Slim\App;
 
 class Module extends Framework implements DoctrineProvider
@@ -51,7 +52,7 @@ class Module extends Framework implements DoctrineProvider
 
         $container = $this->app->getContainer();
         if (null === $container) {
-            throw new \RuntimeException('Container was not set on App.');
+            throw new RuntimeException('Container was not set on App.');
         }
 
         $this->container = $container;

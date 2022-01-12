@@ -5,23 +5,27 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Auth;
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Normalizer\Attributes\DeepNormalize;
+use App\Enums\SupportedThemes;
+use App\OpenApi;
 use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use OTPHP\Factory;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_BCRYPT;
 
-/** @OA\Schema(type="object") */
 #[
+    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'users'),
     ORM\HasLifecycleCallbacks,
@@ -34,63 +38,90 @@ class User implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /** @OA\Property(example="demo@azuracast.com") */
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Email]
+    #[
+        OA\Property(example: "demo@azuracast.com"),
+        ORM\Column(length: 100, nullable: false),
+        Assert\NotBlank,
+        Assert\Email,
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $email;
 
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(length: 255, nullable: false),
+        Attributes\AuditIgnore
+    ]
     protected string $auth_password = '';
 
-    /** @OA\Property(example="") */
+    #[
+        OA\Property(example: ""),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $new_password = null;
 
-    /** @OA\Property(example="Demo Account") */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(example: "Demo Account"),
+        ORM\Column(length: 100, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $name = null;
 
-    /** @OA\Property(example="en_US") */
-    #[ORM\Column(length: 25, nullable: true)]
+    #[
+        OA\Property(example: "en_US"),
+        ORM\Column(length: 25, nullable: true),
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $locale = null;
 
-    /** @OA\Property(example="dark") */
-    #[ORM\Column(length: 25, nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(example: "dark"),
+        ORM\Column(length: 25, nullable: true),
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $theme = null;
 
-    /** @OA\Property(example="A1B2C3D4") */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(example: "A1B2C3D4"),
+        ORM\Column(length: 255, nullable: true),
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $two_factor_secret = null;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
+        ORM\Column,
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected int $created_at;
 
-    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
+        ORM\Column,
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected int $updated_at;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER')]
-    #[ORM\JoinTable(name: 'user_has_role')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER'),
+        ORM\JoinTable(name: 'user_has_role'),
+        ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE'),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
     protected Collection $roles;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class)]
-    #[DeepNormalize(true)]
+    #[
+        ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true)
+    ]
     protected Collection $api_keys;
 
     public function __construct()
@@ -182,6 +213,18 @@ class User implements Stringable, IdentifiableEntityInterface
     public function getTheme(): ?string
     {
         return $this->theme;
+    }
+
+    public function getThemeEnum(): SupportedThemes
+    {
+        if (null !== $this->theme) {
+            $theme = SupportedThemes::tryFrom($this->theme);
+            if (null !== $theme) {
+                return $theme;
+            }
+        }
+
+        return SupportedThemes::default();
     }
 
     public function setTheme(?string $theme = null): void

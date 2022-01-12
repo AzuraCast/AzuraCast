@@ -4,28 +4,26 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use App\OpenApi;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_SystemStatus")
- */
+#[OA\Schema(
+    schema: 'Api_SystemStatus',
+    type: 'object'
+)]
 class SystemStatus
 {
-    /**
-     * Whether the service is online or not (should always be true)
-     *
-     * @OA\Property(example=true)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Whether the service is online or not (should always be true)',
+        example: true
+    )]
     public bool $online = true;
 
-    /**
-     * The current UNIX timestamp
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
-    public $timestamp;
+    #[OA\Property(
+        description: 'The current UNIX timestamp',
+        example: OpenApi::SAMPLE_TIMESTAMP
+    )]
+    public int $timestamp;
 
     public function __construct()
     {

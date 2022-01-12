@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\Interfaces\StationMountInterface;
+use App\Radio\Enums\StreamFormats;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * Each individual broadcast associated with a streamer.
- *
- * @OA\Schema(type="object")
- */
 #[
+    OA\Schema(
+        description: 'Each individual broadcast associated with a streamer.',
+        type: "object"
+    ),
     ORM\Entity,
     ORM\Table(name: 'station_streamer_broadcasts')
 ]
@@ -24,12 +23,18 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\ManyToOne(inversedBy: 'streamer_broadcasts')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    public const PATH_PREFIX = 'stream';
+
+    #[
+        ORM\ManyToOne(inversedBy: 'streamer_broadcasts'),
+        ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected Station $station;
 
-    #[ORM\ManyToOne(inversedBy: 'broadcasts')]
-    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(inversedBy: 'broadcasts'),
+        ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
+    ]
     protected StationStreamer $streamer;
 
     #[ORM\Column(name: 'timestamp_start')]
@@ -79,20 +84,15 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
         return $this->recordingPath;
     }
 
-    public function generateRecordingPath(string $format = StationMountInterface::FORMAT_MP3): string
+    public function generateRecordingPath(StreamFormats $format): string
     {
-        $ext = match (strtolower($format)) {
-            StationMountInterface::FORMAT_AAC => 'mp4',
-            StationMountInterface::FORMAT_OGG => 'ogg',
-            StationMountInterface::FORMAT_OPUS => 'opus',
-            default => 'mp3',
-        };
-
         $now = CarbonImmutable::createFromTimestamp(
             $this->timestampStart,
             $this->station->getTimezoneObject()
         );
-        $this->recordingPath = $this->streamer->getStreamerUsername() . '/' . $now->format('Ymd-His') . '.' . $ext;
+
+        $this->recordingPath = $this->streamer->getStreamerUsername()
+            . '/' . self::PATH_PREFIX . '_' . $now->format('Ymd-His') . '.' . $format->getExtension();
 
         return $this->recordingPath;
     }

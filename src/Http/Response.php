@@ -23,7 +23,7 @@ final class Response extends \Slim\Http\Response
      * Send headers that expire the content immediately and prevent caching.
      * @return static
      */
-    public function withNoCache(): static
+    public function withNoCache(): Response
     {
         $response = $this->response
             ->withHeader('Pragma', 'no-cache')
@@ -31,7 +31,7 @@ final class Response extends \Slim\Http\Response
             ->withHeader('Cache-Control', 'private, no-cache, no-store')
             ->withHeader('X-Accel-Expires', '0'); // CloudFlare
 
-        return new static($response, $this->streamFactory);
+        return new Response($response, $this->streamFactory);
     }
 
     /**
@@ -41,7 +41,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH): static
+    public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH): Response
     {
         $response = $this->response
             ->withHeader('Pragma', '')
@@ -49,7 +49,7 @@ final class Response extends \Slim\Http\Response
             ->withHeader('Cache-Control', 'public, must-revalidate, max-age=' . $seconds)
             ->withHeader('X-Accel-Expires', (string)$seconds); // CloudFlare
 
-        return new static($response, $this->streamFactory);
+        return new Response($response, $this->streamFactory);
     }
 
     /**
@@ -88,7 +88,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function renderFile(string $file_path, $file_name = null): static
+    public function renderFile(string $file_path, $file_name = null): Response
     {
         set_time_limit(600);
 
@@ -107,7 +107,7 @@ final class Response extends \Slim\Http\Response
             ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name)
             ->withBody($stream);
 
-        return new static($response, $this->streamFactory);
+        return new Response($response, $this->streamFactory);
     }
 
     /**
@@ -119,7 +119,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function renderStringAsFile(string $file_data, string $content_type, ?string $file_name = null): static
+    public function renderStringAsFile(string $file_data, string $content_type, ?string $file_name = null): Response
     {
         $response = $this->response
             ->withHeader('Pragma', 'public')
@@ -133,7 +133,7 @@ final class Response extends \Slim\Http\Response
 
         $response->getBody()->write($file_data);
 
-        return new static($response, $this->streamFactory);
+        return new Response($response, $this->streamFactory);
     }
 
     /**
@@ -149,7 +149,7 @@ final class Response extends \Slim\Http\Response
         StreamInterface $fileStream,
         string $contentType,
         ?string $fileName = null
-    ): static {
+    ): Response {
         set_time_limit(600);
 
         $response = $this->response
@@ -164,7 +164,7 @@ final class Response extends \Slim\Http\Response
 
         $response = $response->withBody($fileStream);
 
-        return new static($response, $this->streamFactory);
+        return new Response($response, $this->streamFactory);
     }
 
     public function streamFilesystemFile(

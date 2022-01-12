@@ -16,6 +16,9 @@ use Carbon\CarbonInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\StationRequest>
+ */
 class StationRequestRepository extends Repository
 {
     protected StationMediaRepository $mediaRepo;
@@ -34,6 +37,29 @@ class StationRequestRepository extends Repository
 
         $this->mediaRepo = $mediaRepo;
         $this->deviceDetector = $deviceDetector;
+    }
+
+    public function getPendingRequest(int $id, Entity\Station $station): ?Entity\StationRequest
+    {
+        return $this->repository->findOneBy(
+            [
+                'id' => $id,
+                'station' => $station,
+                'played_at' => 0,
+            ]
+        );
+    }
+
+    public function clearPendingRequests(Entity\Station $station): void
+    {
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationRequest sr
+                WHERE sr.station = :station
+                AND sr.played_at = 0
+            DQL
+        )->setParameter('station', $station)
+            ->execute();
     }
 
     public function submit(

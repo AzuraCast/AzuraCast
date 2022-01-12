@@ -13,6 +13,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends Repository<Entity\Settings>
+ */
 class SettingsRepository extends Repository
 {
     protected ValidatorInterface $validator;
@@ -69,9 +72,7 @@ class SettingsRepository extends Repository
 
         $errors = $this->validator->validate($settingsObj);
         if (count($errors) > 0) {
-            $e = new ValidationException((string)$errors);
-            $e->setDetailedErrors($errors);
-            throw $e;
+            throw ValidationException::fromValidationErrors($errors);
         }
 
         $this->em->persist($settings);

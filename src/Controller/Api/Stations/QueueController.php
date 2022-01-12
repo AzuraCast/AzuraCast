@@ -8,16 +8,89 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
+use App\OpenApi;
 use InvalidArgumentException;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @extends AbstractStationApiCrudController<Entity\StationQueue>
- */
+/** @extends AbstractStationApiCrudController<Entity\StationQueue> */
+#[
+    OA\Get(
+        path: '/station/{station_id}/queue',
+        operationId: 'getQueue',
+        description: 'Return information about the upcoming song playback queue.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Queue'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_StationQueueDetailed')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/queue/{id}',
+        operationId: 'getQueueItem',
+        description: 'Retrieve details of a single queued item.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Queue'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Queue Item ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationQueueDetailed')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/queue/{id}',
+        operationId: 'deleteQueueItem',
+        description: 'Delete a single queued item.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Queue'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Queue Item ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class QueueController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationQueue::class;
@@ -26,36 +99,19 @@ class QueueController extends AbstractStationApiCrudController
     public function __construct(
         protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
         protected Entity\Repository\StationQueueRepository $queueRepo,
-        EntityManagerInterface $em,
+        App\Doctrine\ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {
         parent::__construct($em, $serializer, $validator);
     }
 
-    /**
-     * @OA\Get(path="/station/{station_id}/queue",
-     *   tags={"Stations: Queue"},
-     *   description="Return information about the upcoming song playback queue.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_StationQueueDetailed")
-     *     )
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}}
-     * )
-     *
-     * @inheritdoc
-     */
     public function listAction(
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
         $station = $request->getStation();
-        $query = $this->queueRepo->getUpcomingQuery($station);
+        $query = $this->queueRepo->getUnplayedQuery($station);
 
         return $this->listPaginatedFromQuery(
             $request,
@@ -63,46 +119,6 @@ class QueueController extends AbstractStationApiCrudController
             $query
         );
     }
-
-    /**
-     * @OA\Get(path="/station/{station_id}/queue/{id}",
-     *   tags={"Stations: Queue"},
-     *   description="Retrieve details of a single queued item.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Queue Item ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_StationQueueDetailed")
-     *   ),
-     *   @OA\Response(response=404, description="Station or Queue ID not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}}
-     * )
-     *
-     * @OA\Delete(path="/station/{station_id}/queue/{id}",
-     *   tags={"Stations: Queue"},
-     *   description="Delete a single queued item.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Queue Item ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=404, description="Station or Queue ID not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}}
-     * )
-     */
 
     /**
      * @param object $record
@@ -125,6 +141,8 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse = new Entity\Api\StationQueueDetailed();
         $apiResponse->fromParentObject($row);
 
+        $apiResponse->sent_to_autodj = $record->getSentToAutodj();
+        $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
         $apiResponse->log = $record->getLog();
 
@@ -133,5 +151,13 @@ class QueueController extends AbstractStationApiCrudController
         ];
 
         return $apiResponse;
+    }
+
+    public function clearAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+        $this->queueRepo->clearUpcomingQueue($station);
+
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 }

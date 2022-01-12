@@ -9,22 +9,45 @@ use App\Console\Command\Traits;
 use App\Entity;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use const PATHINFO_EXTENSION;
 
+#[AsCommand(
+    name: 'azuracast:backup',
+    description: 'Back up the AzuraCast database and statistics (and optionally media).',
+)]
 class BackupCommand extends CommandAbstract
 {
     use Traits\PassThruProcess;
 
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ?string $path = '',
-        bool $excludeMedia = false,
-        ?int $storageLocationId = null
-    ): int {
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+    ) {
+        parent::__construct();
+    }
+
+    protected function configure(): void
+    {
+        $this->addArgument('path', InputArgument::REQUIRED)
+            ->addOption('storage-location-id', null, InputOption::VALUE_OPTIONAL, '', '')
+            ->addOption('exclude-media', null, InputOption::VALUE_NONE);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $path = $input->getArgument('path');
+        $excludeMedia = (bool)$input->getOption('exclude-media');
+        $storageLocationId = $input->getOption('storage-location-id');
+
         $start_time = microtime(true);
 
         if (empty($path)) {
@@ -44,12 +67,17 @@ class BackupCommand extends CommandAbstract
                 return 1;
             }
 
-            $storageLocation = $storageLocationRepo->findByType(
-                Entity\StorageLocation::TYPE_BACKUP,
+            $storageLocation = $this->storageLocationRepo->findByType(
+                Entity\Enums\StorageLocationTypes::Backup,
                 $storageLocationId
             );
             if (!($storageLocation instanceof Entity\StorageLocation)) {
                 $io->error('Invalid storage location specified.');
+                return 1;
+            }
+
+            if ($storageLocation->isStorageFull()) {
+                $io->error('Storage location is full.');
                 return 1;
             }
         }
@@ -76,7 +104,7 @@ class BackupCommand extends CommandAbstract
 
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
-        $conn = $em->getConnection();
+        $conn = $this->em->getConnection();
         $connParams = $conn->getParams();
 
         // phpcs:disable Generic.Files.LineLength
@@ -99,7 +127,7 @@ class BackupCommand extends CommandAbstract
 
         // Include station media if specified.
         if ($includeMedia) {
-            $stations = $em->createQuery(
+            $stations = $this->em->createQuery(
                 <<<'DQL'
                     SELECT s FROM App\Entity\Station s
                 DQL
@@ -130,6 +158,23 @@ class BackupCommand extends CommandAbstract
         );
 
         switch ($file_ext) {
+            case 'tzst':
+                $this->passThruProcess(
+                    $io,
+                    array_merge(
+                        [
+                            'tar',
+                            '-I',
+                            'zstd',
+                            '-cvf',
+                            $tmpPath,
+                        ],
+                        $files_to_backup
+                    ),
+                    '/'
+                );
+                break;
+
             case 'gz':
             case 'tgz':
                 $this->passThruProcess(

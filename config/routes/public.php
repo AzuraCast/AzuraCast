@@ -1,13 +1,26 @@
 <?php
 
 use App\Controller;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Middleware;
-use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
-return function (App $app) {
-    $app->get('/sw.js', Controller\Frontend\PWA\ServiceWorkerAction::class)
-        ->setName('public:sw');
+return static function (RouteCollectorProxy $app) {
+    $app->get('/public/sw.js',
+        function (ServerRequest $request, Response $response) {
+            return $response
+                ->withHeader('Content-Type', 'text/javascript')
+                ->write(
+                    <<<'JS'
+                    self.addEventListener('install', event => {
+                      // Kick out the old service worker
+                      self.skipWaiting();
+                    });
+                    JS
+                );
+        }
+    )->setName('public:sw');
 
     $app->group(
         '/public/{station_id}',

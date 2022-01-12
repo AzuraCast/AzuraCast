@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\GlobalPermissions;
+use App\Enums\StationPermissions;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,18 +20,18 @@ class RolePermission extends AbstractFixture implements DependentFixtureInterfac
 
         $permissions = [
             'admin_role' => [
-                [Acl::GLOBAL_ALL, null],
+                [GlobalPermissions::All, null],
             ],
             'demo_role' => [
-                [Acl::STATION_VIEW, $station],
-                [Acl::STATION_REPORTS, $station],
-                [Acl::STATION_PROFILE, $station],
-                [Acl::STATION_STREAMERS, $station],
-                [Acl::STATION_MOUNTS, $station],
-                [Acl::STATION_REMOTES, $station],
-                [Acl::STATION_MEDIA, $station],
-                [Acl::STATION_AUTOMATION, $station],
-                [Acl::STATION_WEB_HOOKS, $station],
+                [StationPermissions::View, $station],
+                [StationPermissions::Reports, $station],
+                [StationPermissions::Profile, $station],
+                [StationPermissions::Streamers, $station],
+                [StationPermissions::MountPoints, $station],
+                [StationPermissions::RemoteRelays, $station],
+                [StationPermissions::Media, $station],
+                [StationPermissions::Automation, $station],
+                [StationPermissions::WebHooks, $station],
             ],
         ];
 

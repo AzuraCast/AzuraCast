@@ -18,6 +18,11 @@ class CleanupLoginTokensTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '12 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         $this->loginTokenRepo->cleanup();

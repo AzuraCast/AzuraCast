@@ -19,18 +19,15 @@ use Symfony\Component\Serializer\Serializer;
  */
 class StationScheduleRepository extends Repository
 {
-    protected Scheduler $scheduler;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        Scheduler $scheduler
+        protected Scheduler $scheduler,
+        protected Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
-
-        $this->scheduler = $scheduler;
     }
 
     /**
@@ -87,6 +84,26 @@ class StationScheduleRepository extends Repository
 
     /**
      * @param Entity\Station $station
+     *
+     * @return Entity\StationSchedule[]
+     */
+    public function getAllScheduledItemsForStation(Entity\Station $station): array
+    {
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT ssc, sp, sst
+                FROM App\Entity\StationSchedule ssc
+                LEFT JOIN ssc.playlist sp
+                LEFT JOIN ssc.streamer sst
+                WHERE (sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1)
+                OR (sst.station = :station AND sst.is_active = 1)
+            DQL
+        )->setParameter('station', $station)
+            ->execute();
+    }
+
+    /**
+     * @param Entity\Station $station
      * @param CarbonInterface|null $now
      *
      * @return Entity\Api\StationSchedule[]
@@ -102,19 +119,7 @@ class StationScheduleRepository extends Repository
 
         $events = [];
 
-        $scheduleItems = $this->em->createQuery(
-            <<<'DQL'
-                SELECT ssc, sp, sst
-                FROM App\Entity\StationSchedule ssc
-                LEFT JOIN ssc.playlist sp
-                LEFT JOIN ssc.streamer sst
-                WHERE (sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1)
-                OR (sst.station = :station AND sst.is_active = 1)
-            DQL
-        )->setParameter('station', $station)
-            ->execute();
-
-        foreach ($scheduleItems as $scheduleItem) {
+        foreach ($this->getAllScheduledItemsForStation($station) as $scheduleItem) {
             /** @var Entity\StationSchedule $scheduleItem */
             $i = $startDate;
 
@@ -139,26 +144,12 @@ class StationScheduleRepository extends Repository
                         continue;
                     }
 
-                    $row = new Entity\Api\StationSchedule();
-                    $row->id = $scheduleItem->getIdRequired();
-                    $row->start_timestamp = $start->getTimestamp();
-                    $row->start = $start->toIso8601String();
-                    $row->end_timestamp = $end->getTimestamp();
-                    $row->end = $end->toIso8601String();
-                    $row->is_now = $start->lessThanOrEqualTo($now);
-
-                    $playlist = $scheduleItem->getPlaylist();
-                    $streamer = $scheduleItem->getStreamer();
-
-                    if ($playlist instanceof Entity\StationPlaylist) {
-                        $row->type = Entity\Api\StationSchedule::TYPE_PLAYLIST;
-                        $row->name = $playlist->getName();
-                    } elseif ($streamer instanceof Entity\StationStreamer) {
-                        $row->type = Entity\Api\StationSchedule::TYPE_STREAMER;
-                        $row->name = $streamer->getDisplayName();
-                    }
-
-                    $events[] = $row;
+                    $events[] = ($this->scheduleApiGenerator)(
+                        $scheduleItem,
+                        $start,
+                        $end,
+                        $now
+                    );
                 }
 
                 $i = $i->addDay();

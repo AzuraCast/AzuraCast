@@ -17,9 +17,9 @@ class Settings extends AbstractFixture
         }
 
         $settings = new Entity\Settings();
-        $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?? 'docker.local'));
-        $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?? 'local test'));
-        $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?? ''));
+        $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?: 'http://docker.local'));
+        $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?: 'local test'));
+        $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?: ''));
 
         $settings->setSetupCompleteTime(time());
         $settings->setPreferBrowserUrl(true);
@@ -28,7 +28,7 @@ class Settings extends AbstractFixture
         $settings->setExternalIp('127.0.0.1');
         $settings->setEnableAdvancedFeatures(true);
 
-        $isDemoMode = (!empty(getenv('INIT_DEMO_API_KEY') ?? ''));
+        $isDemoMode = (!empty(getenv('INIT_DEMO_API_KEY') ?: ''));
         if ($isDemoMode) {
             $settings->setAnalytics(Entity\Analytics::LEVEL_NO_IP);
             $settings->setCheckForUpdates(false);

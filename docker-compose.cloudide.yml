@@ -1,0 +1,99 @@
+services :
+  nginx_proxy :
+    container_name : nginx_proxy
+    image : "ghcr.io/azuracast/nginx_proxy:latest"
+    ports :
+      - '10080:80'
+    volumes :
+      - nginx_proxy_vhosts:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment :
+      DEFAULT_HOST : azuracast.local
+    depends_on :
+      - web
+    restart : always
+
+  web :
+    container_name : azuracast_web
+    build :
+      context : .
+    ports :
+      - '10022:2022'
+    depends_on :
+      - mariadb
+      - stations
+      - redis
+    env_file : azuracast.env
+    environment :
+      AZURACAST_DC_REVISION : 12
+      AZURACAST_VERSION : latest
+      AZURACAST_SFTP_PORT : 2022
+      VIRTUAL_HOST : azuracast.local
+      PUID : ${AZURACAST_PUID:-1000}
+      PGID : ${AZURACAST_PGID:-1000}
+    volumes :
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/vendor:/var/azuracast/www/vendor
+      - ${LOCAL_WORKSPACE_FOLDER:-.}:/var/azuracast/www
+      - www_uploads:/var/azuracast/uploads
+      - tmp_data:/var/azuracast/www_tmp
+      - station_data:/var/azuracast/stations
+      - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - geolite_install:/var/azuracast/geoip
+      - sftpgo_data:/var/azuracast/sftpgo/persist
+      - backups:/var/azuracast/backups
+    restart : always
+    logging : &default-logging
+      options :
+        max-size : "1m"
+        max-file : "5"
+
+  mariadb :
+    container_name : azuracast_mariadb
+    image : "ghcr.io/azuracast/db:latest"
+    volumes :
+      - db_data:/var/lib/mysql
+    ports :
+      - "13306:3306"
+    env_file : azuracast.env
+    restart : always
+    logging : *default-logging
+
+  redis :
+    container_name : azuracast_redis
+    image : "ghcr.io/azuracast/redis:latest"
+    ports :
+      - "16379:6379"
+    restart : always
+    logging : *default-logging
+
+  stations :
+    container_name : azuracast_stations
+    image : "ghcr.io/azuracast/radio:latest"
+    environment :
+      PUID : ${AZURACAST_PUID:-1000}
+      PGID : ${AZURACAST_PGID:-1000}
+    ports :
+      - '8000:8000'
+      - '8005:8005'
+      - '8006:8006'
+      - '8010:8010'
+      - '8015:8015'
+      - '8016:8016'
+    volumes :
+      - station_data:/var/azuracast/stations
+      - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - tmp_data:/var/azuracast/www_tmp
+    init : true
+    restart : always
+    logging : *default-logging
+
+volumes :
+  nginx_proxy_vhosts : { }
+  db_data : { }
+  shoutcast2_install : { }
+  geolite_install : { }
+  sftpgo_data : { }
+  station_data : { }
+  www_uploads : { }
+  tmp_data : { }
+  backups : { }

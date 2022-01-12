@@ -9,7 +9,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class RecoverAction
 {
@@ -20,9 +22,8 @@ class RecoverAction
         Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
         EntityManagerInterface $em
     ): ResponseInterface {
-        $flash = $request->getFlash();
-
         $user = $loginTokenRepo->authenticate($token);
+        $flash = $request->getFlash();
 
         if (!$user instanceof Entity\User) {
             $flash->addMessage(
@@ -36,29 +37,55 @@ class RecoverAction
             return $response->withRedirect((string)$request->getRouter()->named('account:login'));
         }
 
+        $csrf = $request->getCsrf();
+        $error = null;
+
         if ($request->isPost()) {
-            $newPassword = $request->getParsedBodyParam('password');
+            try {
+                $data = $request->getParams();
 
-            $user->setNewPassword($newPassword);
-            $em->persist($user);
-            $em->flush();
+                $csrf->verify($data['csrf'] ?? null, 'recover');
 
-            $request->getAuth()->setUser($user);
+                if (empty($data['password'])) {
+                    throw new InvalidArgumentException('Password required.');
+                }
 
-            $loginTokenRepo->revokeForUser($user);
+                $user = $request->getUser();
+                $user->setNewPassword($data['password']);
+                $user->setTwoFactorSecret();
 
-            $flash->addMessage(
-                sprintf(
-                    '<b>%s</b><br>%s',
-                    __('Logged in using account recovery token'),
-                    __('Your password has been updated.')
-                ),
-                Flash::SUCCESS
-            );
+                $em->persist($user);
+                $em->flush();
 
-            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+                $request->getAuth()->setUser($user);
+
+                $loginTokenRepo->revokeForUser($user);
+
+                $flash->addMessage(
+                    sprintf(
+                        '<b>%s</b><br>%s',
+                        __('Logged in using account recovery token'),
+                        __('Your password has been updated.')
+                    ),
+                    Flash::SUCCESS
+                );
+
+                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+            } catch (Throwable $e) {
+                $error = $e->getMessage();
+            }
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/account/recover');
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_Recover',
+            id: 'account-recover',
+            layout: 'minimal',
+            title: __('Recover Account'),
+            props: [
+                'csrf' => $csrf->generate('recover'),
+                'error' => $error,
+            ]
+        );
     }
 }

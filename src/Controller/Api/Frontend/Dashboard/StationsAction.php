@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
@@ -18,6 +18,7 @@ class StationsAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
     ): ResponseInterface {
         $router = $request->getRouter();
@@ -28,10 +29,12 @@ class StationsAction
             $em->getRepository(Entity\Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
-                return $station->isEnabled() &&
-                    $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
+                return $station->getIsEnabled() &&
+                    $acl->isAllowed(StationPermissions::View, $station->getId());
             }
         );
+
+        $listenersEnabled = $settingsRepo->readSettings()->isAnalyticsEnabled();
 
         $viewStations = [];
         foreach ($stations as $station) {
@@ -45,6 +48,13 @@ class StationsAction
                 'public' => (string)$router->named('public:index', ['station_id' => $station->getShortName()]),
                 'manage' => (string)$router->named('stations:index:index', ['station_id' => $station->getId()]),
             ];
+
+            if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $station->getId())) {
+                $row->links['listeners'] = (string)$router->named(
+                    'stations:reports:listeners',
+                    ['station_id' => $station->getId()]
+                );
+            }
 
             $viewStations[] = $row;
         }

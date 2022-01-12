@@ -1,9 +1,3 @@
-0 * * * * php {{ www_base }}/bin/console sync:run long
-*/5 * * * * php {{ www_base }}/bin/console sync:run medium
-*/5 * * * * php {{ www_base }}/bin/console queue:process 275
-* * * * * php {{ www_base }}/bin/console sync:run short
-* * * * * php {{ www_base }}/bin/console sync:run nowplaying
-* * * * * sleep 15; php {{ www_base }}/bin/console sync:run nowplaying
-* * * * * sleep 30; php {{ www_base }}/bin/console sync:run nowplaying
-* * * * * sleep 45; php {{ www_base }}/bin/console sync:run nowplaying
+* * * * * php {{ www_base }}/bin/console azuracast:sync:run
+*/5 * * * * php {{ www_base }}/bin/console azuracast:sync:nowplaying --timeout=300
 0 */6 * * * tmpreaper 12h /var/azuracast/stations/*/temp

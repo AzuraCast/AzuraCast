@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\GlobalPermissions;
+use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
@@ -22,8 +23,7 @@ class ChartsAction
         CacheInterface $cache,
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
-        $analyticsLevel = $settingsRepo->readSettings()->getAnalytics();
-        if ($analyticsLevel === Entity\Analytics::LEVEL_NONE) {
+        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(403, 'Forbidden')
                 ->withJson(new Entity\Api\Error(403, 'Analytics are disabled for this installation.'));
         }
@@ -31,15 +31,15 @@ class ChartsAction
         $acl = $request->getAcl();
 
         // Don't show stations the user can't manage.
-        $showAdmin = $acl->isAllowed(Acl::GLOBAL_VIEW);
+        $showAdmin = $acl->isAllowed(GlobalPermissions::View);
 
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
             $em->getRepository(Entity\Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
-                return $station->isEnabled() &&
-                    $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
+                return $station->getIsEnabled() &&
+                    $acl->isAllowed(StationPermissions::View, $station->getId());
             }
         );
 
@@ -161,7 +161,7 @@ class ChartsAction
 
                     foreach ($statRows[$stationId] as $sortableKey => [$jsTimestamp, $value]) {
                         $series['data'][] = [
-                            't' => $jsTimestamp,
+                            'x' => $jsTimestamp,
                             'y' => $value,
                         ];
 

@@ -2,6 +2,7 @@
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Security\SplitToken;
 use Psr\Container\ContainerInterface;
 
 abstract class CestAbstract
@@ -18,6 +19,9 @@ abstract class CestAbstract
 
     protected string $login_username = 'azuracast@azuracast.com';
     protected string $login_password = 'AzuraCastFunctionalTests!';
+
+    protected ?string $login_api_key = null;
+
     private ?Entity\Station $test_station = null;
 
     protected function _inject(App\Tests\Module $tests_module): void
@@ -35,10 +39,7 @@ abstract class CestAbstract
         $this->em->clear();
 
         if (null !== $this->test_station) {
-            $testStation = $this->getTestStation();
-
-            $this->stationRepo->destroy($testStation);
-            $this->test_station = null;
+            $I->sendDelete('/api/admin/station/' . $this->test_station->getId());
 
             $this->em->clear();
         }
@@ -62,13 +63,20 @@ abstract class CestAbstract
 
         /* Walk through the steps of completing setup automatically. */
 
+        $this->setupCompleteUser($I);
+        $this->setupCompleteStations($I);
+        $this->setupCompleteSettings($I);
+    }
+
+    protected function setupCompleteUser(FunctionalTester $I): void
+    {
         // Create administrator account.
         $role = new Entity\Role;
         $role->setName('Super Administrator');
         $this->em->persist($role);
 
         $rha = new Entity\RolePermission($role);
-        $rha->setActionName(App\Acl::GLOBAL_ALL);
+        $rha->setActionName(App\Enums\GlobalPermissions::All);
         $this->em->persist($rha);
 
         // Create user account.
@@ -80,23 +88,44 @@ abstract class CestAbstract
         $user->setLocale('en_US.UTF-8');
 
         $this->em->persist($user);
+
+        // Create API key
+        $key = SplitToken::generate();
+
+        $apiKey = new Entity\ApiKey($user, $key);
+        $apiKey->setComment('Test Suite');
+
+        $this->em->persist($apiKey);
         $this->em->flush();
 
+        $this->login_api_key = (string)$key;
+        $I->amBearerAuthenticated($this->login_api_key);
+
         $this->di->get(App\Acl::class)->reload();
+    }
 
-        $test_station = new Entity\Station();
-        $test_station->setName('Functional Test Radio');
-        $test_station->setDescription('Test radio station.');
-        $test_station->setFrontendType(App\Radio\Adapters::DEFAULT_FRONTEND);
-        $test_station->setBackendType(App\Radio\Adapters::DEFAULT_BACKEND);
+    protected function setupCompleteStations(FunctionalTester $I): void
+    {
+        $I->sendPost(
+            '/api/admin/stations',
+            [
+                'name' => 'Functional Test Radio',
+                'description' => 'Test radio station.',
+            ]
+        );
 
-        $this->test_station = $this->stationRepo->create($test_station);
+        $stationId = $I->grabDataFromResponseByJsonPath('id');
+        $this->test_station = $this->em->find(Entity\Station::class, $stationId[0]);
+    }
 
-        // Set settings.
-        $settings = $this->settingsRepo->readSettings();
-        $settings->updateSetupComplete();
-        $settings->setBaseUrl('http://localhost');
-        $this->settingsRepo->writeSettings($settings);
+    protected function setupCompleteSettings(FunctionalTester $I): void
+    {
+        $I->sendPut(
+            '/api/admin/settings/' . Entity\Settings::GROUP_GENERAL,
+            [
+                'base_url' => 'http://localhost',
+            ]
+        );
     }
 
     protected function getTestStation(): Entity\Station

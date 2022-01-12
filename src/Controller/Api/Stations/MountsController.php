@@ -4,28 +4,152 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSortResults;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Service\Flow\UploadedFile;
-use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @extends AbstractStationApiCrudController<Entity\StationMount>
- */
+/** @extends AbstractStationApiCrudController<Entity\StationMount> */
+#[
+    OA\Get(
+        path: '/station/{station_id}/mounts',
+        operationId: 'getStationMounts',
+        description: 'List all current mount points.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Mount Points'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/StationMount')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Post(
+        path: '/station/{station_id}/mounts',
+        operationId: 'addMount',
+        description: 'Create a new mount point.',
+        security: OpenApi::API_KEY_SECURITY,
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+        ),
+        tags: ['Stations: Mount Points'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}/mount/{id}',
+        operationId: 'getMount',
+        description: 'Retrieve details for a single mount point.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Mount Points'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Put(
+        path: '/station/{station_id}/mount/{id}',
+        operationId: 'editMount',
+        description: 'Update details of a single mount point.',
+        security: OpenApi::API_KEY_SECURITY,
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/StationMount')
+        ),
+        tags: ['Stations: Mount Points'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'Streamer ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Delete(
+        path: '/station/{station_id}/mount/{id}',
+        operationId: 'deleteMount',
+        description: 'Delete a single mount point.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Mount Points'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'id',
+                description: 'StationMount ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class MountsController extends AbstractStationApiCrudController
 {
+    use CanSortResults;
+
     protected string $entityClass = Entity\StationMount::class;
     protected string $resourceRouteName = 'api:stations:mount';
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         protected Entity\Repository\StationMountRepository $mountRepo
@@ -34,88 +158,37 @@ class MountsController extends AbstractStationApiCrudController
     }
 
     /**
-     * @OA\Get(path="/station/{station_id}/mounts",
-     *   tags={"Stations: Mount Points"},
-     *   description="List all current mount points.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/StationMount"))
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Post(path="/station/{station_id}/mounts",
-     *   tags={"Stations: Mount Points"},
-     *   description="Create a new mount point.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Get(path="/station/{station_id}/mount/{id}",
-     *   tags={"Stations: Mount Points"},
-     *   description="Retrieve details for a single mount point.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Streamer ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Put(path="/station/{station_id}/mount/{id}",
-     *   tags={"Stations: Mount Points"},
-     *   description="Update details of a single mount point.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StationMount")
-     *   ),
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Streamer ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Delete(path="/station/{station_id}/mount/{id}",
-     *   tags={"Stations: Mount Points"},
-     *   description="Delete a single mount point.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="StationMount ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
+     * @param ServerRequest $request
+     * @param Response $response
      */
+    public function listAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(Entity\StationMount::class, 'e')
+            ->where('e.station = :station')
+            ->setParameter('station', $station);
+
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'display_name'  => 'e.display_name',
+                'enable_autodj' => 'e.enable_autodj',
+            ],
+            'e.display_name'
+        );
+
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(e.name LIKE :name OR e.display_name LIKE :name)')
+                ->setParameter('name', '%' . $searchPhrase . '%');
+        }
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
+    }
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
@@ -176,7 +249,7 @@ class MountsController extends AbstractStationApiCrudController
 
         $this->mountRepo->destroy($record);
 
-        return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
+        return $response->withJson(Entity\Api\Status::deleted());
     }
 
     /**

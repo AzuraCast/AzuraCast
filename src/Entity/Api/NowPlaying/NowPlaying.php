@@ -5,74 +5,41 @@ declare(strict_types=1);
 namespace App\Entity\Api\NowPlaying;
 
 use App\Entity\Api\ResolvableUrlInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying")
- */
+#[OA\Schema(schema: 'Api_NowPlaying', type: 'object')]
 class NowPlaying implements ResolvableUrlInterface
 {
-    /**
-     * Station
-     *
-     * @OA\Property
-     * @var Station
-     */
+    #[OA\Property]
     public Station $station;
 
-    /**
-     * Listener details
-     *
-     * @OA\Property
-     * @var Listeners
-     */
+    #[OA\Property]
     public Listeners $listeners;
 
-    /**
-     * Live broadcast details
-     *
-     * @OA\Property
-     * @var Live
-     */
+    #[OA\Property]
     public Live $live;
 
-    /**
-     * Current Song
-     *
-     * @OA\Property
-     * @var CurrentSong|null
-     */
+    #[OA\Property]
     public ?CurrentSong $now_playing = null;
 
-    /**
-     * Next Playing Song
-     *
-     * @OA\Property
-     * @var StationQueue|null
-     */
+    #[OA\Property]
     public ?StationQueue $playing_next = null;
 
-    /**
-     * @OA\Property
-     * @var SongHistory[]
-     */
+    /** @var SongHistory[] */
+    #[OA\Property]
     public array $song_history = [];
 
-    /**
-     * Whether the stream is currently online.
-     *
-     * @OA\Property(example=true)
-     * @var bool
-     */
+    #[OA\Property(
+        description: 'Whether the stream is currently online.',
+        example: true
+    )]
     public bool $is_online = false;
 
-    /**
-     * Debugging information about where the now playing data comes from.
-     *
-     * @OA\Property(enum={"hit", "database", "station"})
-     * @var string|null
-     */
+    #[OA\Property(
+        description: 'Debugging information about where the now playing data comes from.',
+        enum: ['hit', 'database', 'station']
+    )]
     public ?string $cache = null;
 
     /**

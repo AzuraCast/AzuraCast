@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Internal;
 
-use App\Console\Application;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Media\BatchUtilities;
@@ -12,42 +11,47 @@ use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBus;
 
+#[AsCommand(
+    name: 'azuracast:internal:sftp-event',
+    description: 'Send upcoming song feedback from the AutoDJ back to AzuraCast.',
+)]
 class SftpEventCommand extends CommandAbstract
 {
     public function __construct(
-        Application $application,
+        protected EntityManagerInterface $em,
         protected MessageBus $messageBus,
         protected LoggerInterface $logger,
-        protected BatchUtilities $batchUtilities
+        protected BatchUtilities $batchUtilities,
     ) {
-        parent::__construct($application);
+        parent::__construct();
     }
 
-    public function __invoke(
-        SymfonyStyle $io,
-        EntityManagerInterface $em,
-        string $action = null,
-        string $username = null,
-        string $path = null,
-        string $targetPath = null,
-        string $sshCmd = null
-    ): int {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $action = getenv('SFTPGO_ACTION') ?: null;
+        $username = getenv('SFTPGO_ACTION_USERNAME') ?: null;
+        $path = getenv('SFTPGO_ACTION_PATH') ?: null;
+        $targetPath = getenv('SFTPGO_ACTION_TARGET') ?: null;
+        $sshCmd = getenv('SFTPGO_ACTION_SSH_CMD') ?: null;
+
         $this->logger->notice(
             'SFTP file event triggered',
             [
-                'action' => $action,
-                'username' => $username,
-                'path' => $path,
+                'action'     => $action,
+                'username'   => $username,
+                'path'       => $path,
                 'targetPath' => $targetPath,
-                'sshCmd' => $sshCmd,
+                'sshCmd'     => $sshCmd,
             ]
         );
 
         // Determine which station the username belongs to.
-        $sftpUser = $em->getRepository(Entity\SftpUser::class)->findOneBy(
+        $sftpUser = $this->em->getRepository(Entity\SftpUser::class)->findOneBy(
             [
                 'username' => $username,
             ]
@@ -85,23 +89,11 @@ class SftpEventCommand extends CommandAbstract
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
-        /*
-        $sanitizedRelativePath = File::sanitizeFileName($relativePath);
-
-        if ($relativePath !== $sanitizedRelativePath) {
-            // Rename file to sanitized version.
-            $sanitizedFullPath = $pathPrefixer->prefixPath($sanitizedRelativePath);
-            rename($path, $sanitizedFullPath);
-
-            $relativePath = $sanitizedRelativePath;
-        }
-        */
-
         $this->logger->notice(
             'Processing new SFTP upload.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'path' => $relativePath,
+                'path'            => $relativePath,
             ]
         );
 
@@ -125,7 +117,7 @@ class SftpEventCommand extends CommandAbstract
             'Processing SFTP file/folder deletion.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'path' => $relativePath,
+                'path'            => $relativePath,
             ]
         );
 
@@ -167,23 +159,12 @@ class SftpEventCommand extends CommandAbstract
         $from = $pathPrefixer->stripPrefix($path);
         $to = $pathPrefixer->stripPrefix($newPath);
 
-        /*
-        $sanitizedTo = File::sanitizeFileName($to);
-
-        if ($to !== $sanitizedTo) {
-            $sanitizedNewPath = $pathPrefixer->prefixPath($sanitizedTo);
-            rename($newPath, $sanitizedNewPath);
-
-            $to = $sanitizedTo;
-        }
-        */
-
         $this->logger->notice(
             'Processing SFTP file/folder rename.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'from' => $from,
-                'to' => $to,
+                'from'            => $from,
+                'to'              => $to,
             ]
         );
 

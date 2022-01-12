@@ -7,9 +7,9 @@
 .progress-circular-gap {
   position: absolute;
   top: 0;
-  right: ($progress-circular-height / 2 - $progress-circular-spinner-width / 4);
+  right: ($progress-circular-height * 0.5 - $progress-circular-spinner-width * 0.25);
   bottom: 0;
-  left: ($progress-circular-height / 2 - $progress-circular-spinner-width / 4);
+  left: ($progress-circular-height * 0.5 - $progress-circular-spinner-width * 0.25);
 }
 
 .progress-circular-inner {
@@ -25,7 +25,7 @@
   overflow: hidden;
   position: absolute;
   top: 0;
-  width: ($progress-circular-height / 2);
+  width: ($progress-circular-height * 0.5);
 }
 
 .progress-circular-left {
@@ -45,20 +45,20 @@
   width: $progress-circular-height;
 
   .progress-circular-left & {
-    animation: progress-circular-spinner-left ($progress-circular-animation-duration / 4) $transition-timing-function-standard infinite;
+    animation: progress-circular-spinner-left ($progress-circular-animation-duration * 0.25) $transition-timing-function-standard infinite;
     border-right-color: transparent;
     left: 0;
   }
 
   .progress-circular-right & {
-    animation: progress-circular-spinner-right ($progress-circular-animation-duration / 4) $transition-timing-function-standard infinite;
+    animation: progress-circular-spinner-right ($progress-circular-animation-duration * 0.25) $transition-timing-function-standard infinite;
     border-left-color: transparent;
     right: 0;
   }
 }
 
 .progress-circular-wrapper {
-  animation: progress-circular-wrapper-rotate ($progress-circular-animation-duration / 2) linear infinite;
+  animation: progress-circular-wrapper-rotate ($progress-circular-animation-duration * 0.5) linear infinite;
 }
 
 @keyframes progress-circular-inner-rotate {

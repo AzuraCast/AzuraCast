@@ -4,38 +4,50 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
+use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Locale;
+use App\OpenApi;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
+use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/listeners',
+        operationId: 'getStationListeners',
+        description: 'Return detailed information about current listeners.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: Listeners'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_Listener')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class ListenersAction
 {
-    /**
-     * @OA\Get(path="/station/{station_id}/listeners",
-     *   tags={"Stations: Listeners"},
-     *   description="Return detailed information about current listeners.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Listener"))
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     */
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -94,8 +106,8 @@ class ListenersAction
                 ->setParameter('time_end', $endTimestamp);
         }
 
-        /** @var Locale $locale */
-        $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE);
+        $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE)
+            ?? SupportedLocales::default();
 
         $mountNames = $mountRepo->getDisplayNames($station);
         $remoteNames = $remoteRepo->getDisplayNames($station);
@@ -157,6 +169,7 @@ class ListenersAction
             $api = new Entity\Api\Listener();
             $api->ip = $listener->getListenerIp();
             $api->user_agent = $userAgent;
+            $api->hash = $hash;
             $api->client = $client;
             $api->is_mobile = $dd->isMobile();
 
@@ -172,7 +185,7 @@ class ListenersAction
                 $api->mount_name = $remoteNames[$remoteId];
             }
 
-            $api->location = $geoLite->getLocationInfo($api->ip, $locale->getLocale());
+            $api->location = $geoLite->getLocationInfo($api->ip, $locale);
 
             if ($groupByUnique) {
                 $listenersByHash[$hash] = [
@@ -239,7 +252,7 @@ class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = tmpfile() ?: throw new \RuntimeException('Could not create temp file.');
+        $tempFile = tmpfile() ?: throw new RuntimeException('Could not create temp file.');
         $csv = Writer::createFromStream($tempFile);
 
         $tz = $station->getTimezoneObject();

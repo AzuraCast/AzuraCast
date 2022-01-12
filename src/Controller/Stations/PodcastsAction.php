@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity\PodcastCategory;
+use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -14,22 +14,32 @@ class PodcastsAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $router = $request->getRouter();
         $station = $request->getStation();
 
-        $userLocale = (string)$request->getCustomization()->getLocale();
+        $locale = $request->getCustomization()->getLocale();
+        $userLocale = $locale->value;
 
         $languageOptions = Languages::getNames($userLocale);
-        $categoriesOptions = PodcastCategory::getAvailableCategories();
+        $categoriesOptions = Entity\PodcastCategory::getAvailableCategories();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'stations/podcasts/index',
-            [
-                'stationId' => $station->getId(),
-                'stationTz' => $station->getTimezone(),
-                'languageOptions' => $languageOptions,
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_StationsPodcasts',
+            id: 'station-podcasts',
+            title: __('Podcasts'),
+            props: [
+                'listUrl'           => (string)$router->fromHere('api:stations:podcasts'),
+                'newArtUrl'         => (string)$router->fromHere('api:stations:podcasts:new-art'),
+                'stationUrl'        => (string)$router->fromHere('stations:index:index'),
+                'quotaUrl'          => (string)$router->fromHere('api:stations:quota', [
+                    'type' => Entity\Enums\StorageLocationTypes::StationPodcasts->value,
+                ]),
+                'locale'            => substr($locale->value, 0, 2),
+                'stationTimeZone'   => $station->getTimezone(),
+                'languageOptions'   => $languageOptions,
                 'categoriesOptions' => $categoriesOptions,
-            ]
+            ],
         );
     }
 }

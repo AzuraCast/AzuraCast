@@ -10,8 +10,20 @@ input, textarea {
 
     div.fieldset-legend,
     legend.col-form-label {
+      p {
+        margin-bottom: 0.5rem;
+      }
+
       border-bottom: 2px dotted;
-      margin-bottom: 10px;
+      margin-bottom: 0.75rem;
+    }
+
+    .row {
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
 
     .form-group {

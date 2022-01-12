@@ -22,6 +22,11 @@ class CheckFolderPlaylistsTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '*/5 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
@@ -58,11 +63,11 @@ class CheckFolderPlaylistsTask extends AbstractTask
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         foreach ($station->getPlaylists() as $playlist) {
-            if (Entity\StationPlaylist::SOURCE_SONGS !== $playlist->getSource()) {
+            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
                 continue;
             }
 
-            $this->em->transactional(
+            $this->em->wrapInTransaction(
                 function () use ($station, $playlist, $fsMedia, $mediaInPlaylistQuery, $mediaInFolderQuery): void {
                     $this->processPlaylist(
                         $station,

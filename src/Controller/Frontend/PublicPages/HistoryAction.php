@@ -29,13 +29,29 @@ class HistoryAction
         $np = $npApiGenerator->currentOrEmpty($station);
         $np->resolveUrls($request->getRouter()->getBaseUrl());
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/public/embedhistory',
-            [
-                'station' => $station,
-                'nowplaying' => $np,
-            ]
+        $customization = $request->getCustomization();
+        $router = $request->getRouter();
+
+        $useNChan = $customization->useWebSocketsForNowPlaying();
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicHistory',
+            id: 'song-history',
+            layout: 'minimal',
+            title: __('History') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => 'embed station-' . $station->getShortName(),
+                'hide_footer' => true,
+            ],
+            props: [
+                'initialNowPlaying' => $np,
+                'showAlbumArt' => !$customization->hideAlbumArt(),
+                'useNchan' => $useNChan,
+                'nowPlayingUri' => $useNChan
+                    ? '/api/live/nowplaying/' . urlencode($station->getShortName())
+                    : (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]),
+            ],
         );
     }
 }

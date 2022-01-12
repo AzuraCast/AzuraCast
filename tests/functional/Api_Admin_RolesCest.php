@@ -14,16 +14,39 @@ class Api_Admin_RolesCest extends CestAbstract
             $I,
             '/api/admin/roles',
             [
-                'name' => 'Super Administrator',
+                'name' => 'Generic Admin',
                 'permissions' => [
                     'global' => [
-                        \App\Acl::GLOBAL_ALL,
+                        App\Enums\GlobalPermissions::All->value,
                     ],
                 ],
             ],
             [
-                'name' => 'Test Super Administrator',
+                'name' => 'Test Generic Administrator',
             ]
         );
+    }
+
+    public function checkSuperAdminRole(FunctionalTester $I): void
+    {
+        $I->wantTo('Ensure super administrator is not editable.');
+
+        $permissionRepo = $this->di->get(App\Entity\Repository\RolePermissionRepository::class);
+        $superAdminRole = $permissionRepo->ensureSuperAdministratorRole();
+
+        $I->sendPut(
+            '/api/admin/role/' . $superAdminRole->getIdRequired(),
+            [
+                'name' => 'Edited Role',
+            ]
+        );
+
+        $I->seeResponseCodeIsClientError();
+
+        $I->sendDelete(
+            '/api/admin/role/' . $superAdminRole->getIdRequired(),
+        );
+
+        $I->seeResponseCodeIsClientError();
     }
 }

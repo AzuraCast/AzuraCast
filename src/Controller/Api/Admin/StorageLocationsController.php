@@ -4,20 +4,132 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
+use App\OpenApi;
 use InvalidArgumentException;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @extends AbstractAdminApiCrudController<Entity\StorageLocation>
- */
+/** @extends AbstractAdminApiCrudController<Entity\StorageLocation> */
+#[
+    OA\Get(
+        path: '/admin/storage_locations',
+        operationId: 'getStorageLocations',
+        description: 'List all current storage locations in the system.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: Storage Locations'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_Admin_StorageLocation')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Post(
+        path: '/admin/storage_locations',
+        operationId: 'addStorageLocation',
+        description: 'Create a new storage location.',
+        security: OpenApi::API_KEY_SECURITY,
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+        ),
+        tags: ['Administration: Storage Locations'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Get(
+        path: '/admin/storage_location/{id}',
+        operationId: 'getStorageLocation',
+        description: 'Retrieve details for a single storage location.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: Storage Locations'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'User ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Put(
+        path: '/admin/storage_location/{id}',
+        operationId: 'editStorageLocation',
+        description: 'Update details of a single storage location.',
+        security: OpenApi::API_KEY_SECURITY,
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_Admin_StorageLocation')
+        ),
+        tags: ['Administration: Storage Locations'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Storage Location ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    ),
+    OA\Delete(
+        path: '/admin/storage_location/{id}',
+        operationId: 'deleteStorageLocation',
+        description: 'Delete a single storage location.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Administration: Storage Locations'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Storage Location ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', format: 'int64')
+            ),
+        ],
+        responses: [
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class StorageLocationsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\StorageLocation::class;
@@ -25,91 +137,12 @@ class StorageLocationsController extends AbstractAdminApiCrudController
 
     public function __construct(
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
     }
-
-    /**
-     * @OA\Get(path="/admin/storage_locations",
-     *   tags={"Administration: Storage Locations"},
-     *   description="List all current storage locations in the system.",
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Admin_StorageLocation"))
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Post(path="/admin/storage_locations",
-     *   tags={"Administration: Storage Locations"},
-     *   description="Create a new storage location.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Get(path="/admin/storage_location/{id}",
-     *   tags={"Administration: Storage Locations"},
-     *   description="Retrieve details for a single storage location.",
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="User ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Put(path="/admin/storage_location/{id}",
-     *   tags={"Administration: Storage Locations"},
-     *   description="Update details of a single storage location.",
-     *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
-     *   ),
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Storage Location ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
-     * @OA\Delete(path="/admin/storage_location/{id}",
-     *   tags={"Administration: Storage Locations"},
-     *   description="Delete a single storage location.",
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Storage Location ID",
-     *     required=true,
-     *     @OA\Schema(type="integer", format="int64")
-     *   ),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
-     *   ),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     */
 
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -132,10 +165,18 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     /** @inheritDoc */
     protected function viewRecord(object $record, ServerRequest $request): object
     {
+        /** @var Entity\StorageLocation $record */
         $original = parent::viewRecord($record, $request);
 
         $return = new Entity\Api\Admin\StorageLocation();
         $return->fromParentObject($original);
+
+        $return->storageQuotaBytes = (string)($record->getStorageQuotaBytes() ?? '');
+        $return->storageUsedBytes = (string)$record->getStorageUsedBytes();
+        $return->storageUsedPercent = $record->getStorageUsePercentage();
+        $return->storageAvailable = $record->getStorageAvailable();
+        $return->storageAvailableBytes = (string)($record->getStorageAvailableBytes() ?? '');
+        $return->isFull = $record->isStorageFull();
 
         $return->uri = $record->getUri();
 

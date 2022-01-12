@@ -50,7 +50,7 @@ class Flow
         if (null === $tempDir) {
             $tempDir = sys_get_temp_dir() . '/uploads';
             if (!mkdir($tempDir) && !is_dir($tempDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDir));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $tempDir));
             }
         }
 
@@ -155,6 +155,7 @@ class Flow
 
         $uploadedFile = new UploadedFile($file->getClientFilename(), null, $tempDir);
         $file->moveTo($uploadedFile->getUploadedPath());
+
         return $uploadedFile;
     }
 
@@ -194,7 +195,7 @@ class Flow
         $fp = fopen($finalPath, 'wb+');
 
         if (false === $fp) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Could not open final path "%s" for writing.',
                     $finalPath
@@ -205,7 +206,7 @@ class Flow
         for ($i = 1; $i <= $numChunks; $i++) {
             $chunkContents = file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i);
             if (empty($chunkContents)) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     sprintf(
                         'Could not load chunk "%d" for writing.',
                         $i
@@ -247,7 +248,6 @@ class Flow
                     unlink($dir . '/' . $object);
                 }
             }
-            reset($objects);
             rmdir($dir);
         }
     }

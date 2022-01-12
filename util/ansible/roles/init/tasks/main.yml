@@ -45,6 +45,7 @@
       - gzip
       - zip
       - unzip
+      - zstd
 
 - name: Install Focal Packages (20.04)
   apt:

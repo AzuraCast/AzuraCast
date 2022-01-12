@@ -7,29 +7,42 @@ namespace App\Console\Command;
 use App\Entity\Repository\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'azuracast:cache:clear',
+    description: 'Clear all application caches.',
+    aliases: ['cache:clear']
+)]
 class ClearCacheCommand extends CommandAbstract
 {
-    public function __invoke(
-        SymfonyStyle $io,
-        AdapterInterface $cache,
-        EntityManagerInterface $em,
-        SettingsRepository $settingsRepo,
-    ): int {
+    public function __construct(
+        protected AdapterInterface $cache,
+        protected EntityManagerInterface $em,
+        protected SettingsRepository $settingsRepo,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $io = new SymfonyStyle($input, $output);
+
         // Flush all Redis entries.
-        $cache->clear();
+        $this->cache->clear();
 
         // Clear "Now Playing" cache on all station rows.
-        $em->createQuery(
+        $this->em->createQuery(
             <<<'DQL'
                 UPDATE App\Entity\Station s SET s.nowplaying=null
             DQL
         )->execute();
 
         // Clear cached system settings.
-        $settings = $settingsRepo->readSettings();
-        $settings->setNowplaying(null);
+        $settings = $this->settingsRepo->readSettings();
         $settings->updateUpdateLastRun();
         $settings->setUpdateResults(null);
 
@@ -37,7 +50,7 @@ class ClearCacheCommand extends CommandAbstract
             $settings->setExternalIp(null);
         }
 
-        $settingsRepo->writeSettings($settings);
+        $this->settingsRepo->writeSettings($settings);
 
         $io->success('Local cache flushed.');
         return 0;

@@ -23,6 +23,6 @@ class DeleteCustomAssetAction
 
         $customAsset->delete();
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::success());
     }
 }

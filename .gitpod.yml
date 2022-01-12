@@ -1,0 +1,44 @@
+tasks :
+  - name : Docker Build
+    init : |
+      make install-cloud-ide
+      gp sync-done docker-build
+    command : |
+      make up
+      make bash
+
+  - name : Static Service
+    openMode : split-right
+    init : |
+      gp sync-await docker-build
+    command : |
+      make frontend-bash
+
+image :
+  file : .gitpod.Dockerfile
+
+ports :
+  - port : 10080 # nginx-proxy
+    visibility : public
+    onOpen : open-preview
+  - port : 10022 # SFTP
+    visibility : private
+    onOpen : ignore
+  - port : 13306 # MariaDB debug
+    visibility : private
+    onOpen : ignore
+  - port : 16379 #Redis debug
+    visibility : private
+    onOpen : ignore
+  - port : 8000-8500
+    visibility : public
+    onOpen : ignore
+
+github :
+  prebuilds :
+    addCheck : false
+
+vscode :
+  extensions :
+    - bmewburn.vscode-intelephense-client
+    - editorconfig.editorconfig

@@ -41,11 +41,5 @@ class Station_ReportsCest extends CestAbstract
         $I->amOnPage('/station/' . $station_id . '/reports/soundexchange');
         $I->seeResponseCodeIs(200);
         $I->see('SoundExchange Report');
-
-        $I->submitForm(
-            'form#azuraforms_form',
-            ['azuraforms_form_start_date' => '11/01/2020', 'azuraforms_form_end_date' => '11/30/2020']
-        );
-        $I->seeResponseCodeIs(200);
     }
 }

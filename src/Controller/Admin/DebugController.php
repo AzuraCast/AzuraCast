@@ -5,22 +5,26 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Console\Application;
+use App\Console\Command\Sync\SingleTaskCommand;
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
+use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Message\RunSyncTaskMessage;
 use App\MessageQueue\AbstractQueueManager;
 use App\MessageQueue\QueueManagerInterface;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
-use App\Sync\Runner;
-use App\Utilities\File;
+use App\Sync\NowPlaying\Task\NowPlayingTask;
+use Carbon\CarbonImmutable;
+use Cron\CronExpression;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 class DebugController extends AbstractLogViewerController
@@ -39,8 +43,9 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        Runner $sync,
-        QueueManagerInterface $queueManager
+        QueueManagerInterface $queueManager,
+        EventDispatcherInterface $dispatcher,
+        CacheInterface $cache,
     ): ResponseInterface {
         $queues = AbstractQueueManager::getAllQueues();
 
@@ -49,55 +54,103 @@ class DebugController extends AbstractLogViewerController
             $queueTotals[$queue] = $queueManager->getQueueCount($queue);
         }
 
+        $syncTimes = [];
+        $now = CarbonImmutable::now(new \DateTimeZone('UTC'));
+        $syncTasksEvent = new GetSyncTasks();
+        $dispatcher->dispatch($syncTasksEvent);
+
+        foreach ($syncTasksEvent->getTasks() as $task) {
+            $cacheKey = SingleTaskCommand::getCacheKey($task);
+            $pattern = $task::getSchedulePattern();
+
+            $cronExpression = new CronExpression($pattern);
+
+            $syncTimes[$task] = [
+                'pattern' => $pattern,
+                'time'    => $cache->get($cacheKey, 0),
+                'nextRun' => $cronExpression->getNextRunDate($now)->getTimestamp(),
+            ];
+        }
+
         return $request->getView()->renderToResponse(
             $response,
             'admin/debug/index',
             [
-                'sync_times' => $sync->getSyncTimes(),
                 'queue_totals' => $queueTotals,
-                'stations' => $stationRepo->fetchArray(),
+                'sync_times'   => $syncTimes,
+                'stations'     => $stationRepo->fetchArray(),
             ]
         );
     }
 
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     * @param SingleTaskCommand $taskCommand
+     * @param class-string|string $task
+     * @return ResponseInterface
+     */
     public function syncAction(
         ServerRequest $request,
         Response $response,
-        string $type
+        SingleTaskCommand $taskCommand,
+        EventDispatcherInterface $eventDispatcher,
+        string $task
     ): ResponseInterface {
-        $tempFile = File::generateTempPath('sync_task_' . $type . '.log');
+        $this->logger->pushHandler($this->testHandler);
 
-        $message = new RunSyncTaskMessage();
-        $message->type = $type;
-        $message->outputPath = $tempFile;
+        if ('all' === $task) {
+            $syncTasksEvent = new GetSyncTasks();
+            $eventDispatcher->dispatch($syncTasksEvent);
+            foreach ($syncTasksEvent->getTasks() as $taskClass) {
+                $taskCommand->runTask($taskClass);
+            }
+        } else {
+            /** @var class-string $task */
+            $taskCommand->runTask($task);
+        }
 
-        $this->messageBus->dispatch($message);
+        $this->logger->popHandler();
 
         return $request->getView()->renderToResponse(
             $response,
-            'admin/debug/sync',
+            'system/log_view',
             [
-                'title' => __('Run Synchronized Task'),
-                'outputLog' => basename($tempFile),
+                'sidebar'     => null,
+                'title'       => __('Debug Output'),
+                'log_records' => $this->testHandler->getRecords(),
             ]
         );
     }
 
-    public function logAction(
+    public function nowplayingAction(
         ServerRequest $request,
         Response $response,
-        string $path
+        NowPlayingTask $nowPlayingTask
     ): ResponseInterface {
-        $logPath = File::validateTempPath($path);
+        $this->logger->pushHandler($this->testHandler);
 
-        return $this->view($request, $response, $logPath, true);
+        $station = $request->getStation();
+        $nowPlayingTask->run($station);
+
+        $this->logger->popHandler();
+
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/log_view',
+            [
+                'sidebar'     => null,
+                'title'       => __('Debug Output'),
+                'log_records' => $this->testHandler->getRecords(),
+            ]
+        );
     }
 
     public function nextsongAction(
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        AutoDJ $autoDJ
+        AutoDJ\Queue $queue
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
@@ -112,7 +165,7 @@ class DebugController extends AbstractLogViewerController
 
         $this->logger->debug('Current queue cleared.');
 
-        $autoDJ->buildQueue($station, true);
+        $queue->buildQueue($station);
 
         $this->logger->popHandler();
 
@@ -120,8 +173,8 @@ class DebugController extends AbstractLogViewerController
             $response,
             'system/log_view',
             [
-                'sidebar' => null,
-                'title' => __('Debug Output'),
+                'sidebar'     => null,
+                'title'       => __('Debug Output'),
                 'log_records' => $this->testHandler->getRecords(),
             ]
         );

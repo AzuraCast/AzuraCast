@@ -4,50 +4,41 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_StationPlaylistQueue")
- */
+#[OA\Schema(
+    schema: 'Api_StationPlaylistQueue',
+    type: 'object'
+)]
 class StationPlaylistQueue
 {
-    /**
-     * ID of the StationPlaylistMedia record associating this track with the playlist
-     *
-     * @OA\Property(example=1)
-     * @var int|null
-     */
+    #[OA\Property(
+        description: 'ID of the StationPlaylistMedia record associating this track with the playlist',
+        example: 1
+    )]
     public ?int $spm_id = null;
 
-    /**
-     * ID of the StationPlaylistMedia record associating this track with the playlist
-     *
-     * @OA\Property(example=1)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'ID of the StationPlaylistMedia record associating this track with the playlist',
+        example: 1
+    )]
     public int $media_id;
 
-    /**
-     * The song's 32-character unique identifier hash
-     *
-     * @OA\Property(example="9f33bbc912c19603e51be8e0987d076b")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song\'s 32-character unique identifier hash',
+        example: '9f33bbc912c19603e51be8e0987d076b'
+    )]
     public string $song_id;
 
-    /**
-     * The song artist.
-     *
-     * @OA\Property(example="Chet Porter")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song artist.',
+        example: 'Chet Porter'
+    )]
     public string $artist = '';
 
-    /**
-     * The song title.
-     *
-     * @OA\Property(example="Aluko River")
-     * @var string
-     */
+    #[OA\Property(
+        description: 'The song title.',
+        example: 'Aluko River'
+    )]
     public string $title = '';
 }

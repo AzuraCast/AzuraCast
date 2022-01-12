@@ -7,30 +7,24 @@ namespace App\Radio\AutoDJ;
 use App\Entity;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LogLevel;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Queue implements EventSubscriberInterface
 {
-    protected const TYPES_TO_PLAY_BY_PRIORITY = [
-        Entity\StationPlaylist::TYPE_ONCE_PER_HOUR . '_scheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_HOUR . '_unscheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS . '_scheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS . '_unscheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES . '_scheduled',
-        Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES . '_unscheduled',
-        Entity\StationPlaylist::TYPE_DEFAULT . '_scheduled',
-        Entity\StationPlaylist::TYPE_DEFAULT . '_unscheduled',
-    ];
-
     public function __construct(
         protected EntityManagerInterface $em,
-        protected LoggerInterface $logger,
+        protected Logger $logger,
         protected Scheduler $scheduler,
         protected CacheInterface $cache,
+        protected EventDispatcherInterface $dispatcher,
         protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         protected Entity\Repository\StationRequestRepository $requestRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
@@ -39,7 +33,7 @@ class Queue implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed[]
+     * @inheritDoc
      */
     public static function getSubscribedEvents(): array
     {
@@ -49,6 +43,160 @@ class Queue implements EventSubscriberInterface
                 ['calculateNextSong', 0],
             ],
         ];
+    }
+
+    public function buildQueue(Entity\Station $station): void
+    {
+        // Early-fail if the station is disabled.
+        if (!$station->getIsEnabled()) {
+            $this->logger->notice('Cannot build queue: station broadcasting is disabled.');
+            return;
+        }
+        if ($station->useManualAutoDJ()) {
+            $this->logger->notice('This station uses manual AutoDJ mode.');
+            return;
+        }
+
+        // Adjust "expectedCueTime" time from current queue.
+        $tzObject = $station->getTimezoneObject();
+        $expectedCueTime = CarbonImmutable::now($tzObject);
+
+        // Get expected play time of each item.
+        $currentSong = $this->historyRepo->getCurrent($station);
+        if (null !== $currentSong) {
+            $expectedPlayTime = $this->addDurationToTime(
+                $station,
+                CarbonImmutable::createFromTimestamp($currentSong->getTimestampStart(), $tzObject),
+                $currentSong->getDuration()
+            );
+
+            if ($expectedPlayTime < $expectedCueTime) {
+                $expectedPlayTime = $expectedCueTime;
+            }
+        } else {
+            $expectedPlayTime = $expectedCueTime;
+        }
+
+        $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
+        if ($maxQueueLength < 2) {
+            $maxQueueLength = 2;
+        }
+
+        $upcomingQueue = $this->queueRepo->getUnplayedQueue($station);
+
+        $lastSongId = null;
+        $queueLength = 0;
+
+        foreach ($upcomingQueue as $queueRow) {
+            if ($queueRow->getSentToAutodj()) {
+                $expectedCueTime = $this->addDurationToTime(
+                    $station,
+                    CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $tzObject),
+                    $queueRow->getDuration()
+                );
+
+                if (0 === $queueLength) {
+                    $queueLength = 1;
+                }
+            } else {
+                // Prevent the exact same track from being played twice during this loop
+                if ($lastSongId === $queueRow->getSongId()) {
+                    $this->em->remove($queueRow);
+                    continue;
+                }
+
+                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+                $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
+
+                // Only append to queue length for uncued songs.
+                $queueLength++;
+            }
+
+            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $this->em->persist($queueRow);
+
+            $expectedPlayTime = $this->addDurationToTime($station, $expectedPlayTime, $queueRow->getDuration());
+
+            $lastSongId = $queueRow->getSongId();
+        }
+
+        $this->em->flush();
+
+        // Build the remainder of the queue.
+        while ($queueLength < $maxQueueLength) {
+            $queueRow = $this->cueNextSong($station, $expectedCueTime, $expectedPlayTime);
+            if ($queueRow instanceof Entity\StationQueue) {
+                $this->em->persist($queueRow);
+
+                // Prevent the exact same track from being played twice during this loop
+                if ($lastSongId === $queueRow->getSongId()) {
+                    $this->em->remove($queueRow);
+                } else {
+                    $lastSongId = $queueRow->getSongId();
+
+                    $expectedCueTime = $this->addDurationToTime(
+                        $station,
+                        $expectedCueTime,
+                        $queueRow->getDuration()
+                    );
+                    $expectedPlayTime = $this->addDurationToTime(
+                        $station,
+                        $expectedPlayTime,
+                        $queueRow->getDuration()
+                    );
+                }
+            } else {
+                break;
+            }
+
+            $this->em->flush();
+            $queueLength++;
+        }
+    }
+
+    protected function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
+    {
+        $duration ??= 1;
+
+        $startNext = $station->getBackendConfig()->getCrossfadeDuration();
+
+        $now = $now->addSeconds($duration);
+        return ($duration >= $startNext)
+            ? $now->subMilliseconds((int)($startNext * 1000))
+            : $now;
+    }
+
+    protected function cueNextSong(
+        Entity\Station $station,
+        CarbonInterface $expectedCueTime,
+        CarbonInterface $expectedPlayTime
+    ): ?Entity\StationQueue {
+        $this->logger->debug(
+            'Adding to station queue.',
+            [
+                'now' => (string)$expectedPlayTime,
+            ]
+        );
+
+        // Push another test handler specifically for this one queue task.
+        $testHandler = new TestHandler(LogLevel::DEBUG, true);
+        $this->logger->pushHandler($testHandler);
+
+        $event = new BuildQueue($station, $expectedCueTime, $expectedPlayTime);
+        $this->dispatcher->dispatch($event);
+
+        $this->logger->popHandler();
+
+        $queueRow = $event->getNextSong();
+        if ($queueRow instanceof Entity\StationQueue) {
+            $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+            $queueRow->updateVisibility();
+
+            $queueRow->setLog($testHandler->getRecords());
+        }
+
+        return $queueRow;
     }
 
     /**
@@ -61,7 +209,7 @@ class Queue implements EventSubscriberInterface
         $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
 
         $station = $event->getStation();
-        $now = $event->getNow();
+        $expectedPlayTime = $event->getExpectedPlayTime();
 
         [$activePlaylistsByType, $oncePerXSongHistoryCount] = $this->getActivePlaylistsSortedByType($station);
 
@@ -77,17 +225,28 @@ class Queue implements EventSubscriberInterface
 
         $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
-            $now,
+            $expectedPlayTime,
             $station->getBackendConfig()->getDuplicatePreventionTimeRange()
         );
 
         $this->logRecentSongHistory(
-            $now,
             $recentPlaylistHistory,
             $recentSongHistoryForDuplicatePrevention
         );
 
-        foreach (self::TYPES_TO_PLAY_BY_PRIORITY as $currentPlaylistType) {
+        $typesToPlay = [
+            Entity\Enums\PlaylistTypes::OncePerHour->value,
+            Entity\Enums\PlaylistTypes::OncePerXSongs->value,
+            Entity\Enums\PlaylistTypes::OncePerXMinutes->value,
+            Entity\Enums\PlaylistTypes::Standard->value,
+        ];
+        $typesToPlayByPriority = [];
+        foreach ($typesToPlay as $type) {
+            $typesToPlayByPriority[] = $type . '_scheduled';
+            $typesToPlayByPriority[] = $type . '_unscheduled';
+        }
+
+        foreach ($typesToPlayByPriority as $currentPlaylistType) {
             if (empty($activePlaylistsByType[$currentPlaylistType])) {
                 continue;
             }
@@ -95,7 +254,7 @@ class Queue implements EventSubscriberInterface
             [$eligiblePlaylists, $logPlaylists] = $this->filterEligiblePlaylists(
                 $activePlaylistsByType,
                 $currentPlaylistType,
-                $now,
+                $expectedPlayTime,
                 $recentPlaylistHistory
             );
 
@@ -119,7 +278,7 @@ class Queue implements EventSubscriberInterface
                     $eligiblePlaylists,
                     $activePlaylistsByType,
                     $recentSongHistoryForDuplicatePrevention,
-                    $now,
+                    $expectedPlayTime,
                     $allowDuplicates
                 );
 
@@ -155,7 +314,7 @@ class Queue implements EventSubscriberInterface
             if ($playlist->isPlayable()) {
                 $type = $playlist->getType();
 
-                if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $type) {
+                if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getTypeEnum()) {
                     $oncePerXSongHistoryCount = max($oncePerXSongHistoryCount, $playlist->getPlayPerSongs());
                 }
 
@@ -177,7 +336,7 @@ class Queue implements EventSubscriberInterface
     protected function filterEligiblePlaylists(
         array $playlistsByType,
         string $type,
-        CarbonInterface $now,
+        CarbonInterface $expectedPlayTime,
         array $recentPlaylistHistory
     ): array {
         $eligiblePlaylists = [];
@@ -185,7 +344,7 @@ class Queue implements EventSubscriberInterface
 
         foreach ($playlistsByType[$type] as $playlistId => $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $now, $recentPlaylistHistory)) {
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime, $recentPlaylistHistory)) {
                 continue;
             }
 
@@ -239,7 +398,7 @@ class Queue implements EventSubscriberInterface
         array $eligiblePlaylists,
         array $activePlaylistsByType,
         array $recentSongHistoryForDuplicatePrevention,
-        CarbonInterface $now,
+        CarbonInterface $expectedPlayTime,
         bool $allowDuplicates
     ): ?Entity\StationQueue {
         foreach ($eligiblePlaylists as $playlistId => $weight) {
@@ -248,7 +407,7 @@ class Queue implements EventSubscriberInterface
             $nextSong = $this->playSongFromPlaylist(
                 $playlist,
                 $recentSongHistoryForDuplicatePrevention,
-                $now,
+                $expectedPlayTime,
                 $allowDuplicates
             );
 
@@ -265,32 +424,31 @@ class Queue implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
-     * @param CarbonInterface $now
+     * @param CarbonInterface $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      */
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
-        CarbonInterface $now,
+        CarbonInterface $expectedPlayTime,
         bool $allowDuplicates = false
     ): ?Entity\StationQueue {
-        if (Entity\StationPlaylist::SOURCE_REMOTE_URL === $playlist->getSource()) {
-            return $this->getSongFromRemotePlaylist($playlist, $now);
+        if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSourceEnum()) {
+            return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
         }
 
-        $validTrack = match ($playlist->getOrder()) {
-            $playlist::ORDER_RANDOM => $this->getRandomMediaIdFromPlaylist(
+        $validTrack = match ($playlist->getOrderEnum()) {
+            Entity\Enums\PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates
             ),
-            $playlist::ORDER_SEQUENTIAL => $this->getSequentialMediaIdFromPlaylist($playlist),
-            $playlist::ORDER_SHUFFLE => $this->getShuffledMediaIdFromPlaylist(
+            Entity\Enums\PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist($playlist),
+            Entity\Enums\PlaylistOrders::Shuffle => $this->getShuffledMediaIdFromPlaylist(
                 $playlist,
                 $recentSongHistory,
                 $allowDuplicates
-            ),
-            default => null
+            )
         };
 
         if (null === $validTrack) {
@@ -312,33 +470,30 @@ class Queue implements EventSubscriberInterface
 
         $spm = $this->em->find(Entity\StationPlaylistMedia::class, $validTrack->spm_id);
         if ($spm instanceof Entity\StationPlaylistMedia) {
-            $spm->played($now->getTimestamp());
+            $spm->played($expectedPlayTime->getTimestamp());
             $this->em->persist($spm);
         }
 
-        $playlist->setPlayedAt($now->getTimestamp());
+        $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
         $this->em->persist($playlist);
 
         $stationQueueEntry = Entity\StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
         $stationQueueEntry->setPlaylist($playlist);
-        $stationQueueEntry->setTimestampCued($now->getTimestamp());
-
         $this->em->persist($stationQueueEntry);
-        $this->em->flush();
 
         return $stationQueueEntry;
     }
 
     protected function getSongFromRemotePlaylist(
         Entity\StationPlaylist $playlist,
-        CarbonInterface $now
+        CarbonInterface $expectedPlayTime
     ): ?Entity\StationQueue {
         $mediaToPlay = $this->getMediaFromRemoteUrl($playlist);
 
         if (is_array($mediaToPlay)) {
             [$mediaUri, $mediaDuration] = $mediaToPlay;
 
-            $playlist->setPlayedAt($now->getTimestamp());
+            $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
             $this->em->persist($playlist);
 
             $stationQueueEntry = new Entity\StationQueue(
@@ -349,10 +504,8 @@ class Queue implements EventSubscriberInterface
             $stationQueueEntry->setPlaylist($playlist);
             $stationQueueEntry->setAutodjCustomUri($mediaUri);
             $stationQueueEntry->setDuration($mediaDuration);
-            $stationQueueEntry->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($stationQueueEntry);
-            $this->em->flush();
 
             return $stationQueueEntry;
         }
@@ -368,10 +521,10 @@ class Queue implements EventSubscriberInterface
      */
     protected function getMediaFromRemoteUrl(Entity\StationPlaylist $playlist): ?array
     {
-        $remoteType = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
+        $remoteType = $playlist->getRemoteTypeEnum() ?? Entity\Enums\PlaylistRemoteTypes::Stream;
 
         // Handle a raw stream URL of possibly indeterminate length.
-        if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remoteType) {
+        if (Entity\Enums\PlaylistRemoteTypes::Stream === $remoteType) {
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
             $duration = $this->scheduler->getPlaylistScheduleDuration($playlist);
             return [$playlist->getRemoteUrl(), $duration];
@@ -477,7 +630,7 @@ class Queue implements EventSubscriberInterface
             $songId = $playedTrack['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'];
             }
         }
 
@@ -547,9 +700,9 @@ class Queue implements EventSubscriberInterface
      */
     public function getNextSongFromRequests(BuildQueue $event): void
     {
-        $now = $event->getNow();
+        $expectedPlayTime = $event->getExpectedPlayTime();
 
-        $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $now);
+        $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $expectedPlayTime);
         if (null === $request) {
             return;
         }
@@ -557,13 +710,10 @@ class Queue implements EventSubscriberInterface
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
         $stationQueueEntry = Entity\StationQueue::fromRequest($request);
-        $stationQueueEntry->setTimestampCued($now->getTimestamp());
         $this->em->persist($stationQueueEntry);
 
-        $request->setPlayedAt($now->getTimestamp());
+        $request->setPlayedAt($expectedPlayTime->getTimestamp());
         $this->em->persist($request);
-
-        $this->em->flush();
 
         $event->setNextSong($stationQueueEntry);
     }
@@ -614,7 +764,7 @@ class Queue implements EventSubscriberInterface
 
             $songId = $playedTrack['song_id'];
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'];
             }
         }
 
@@ -662,7 +812,6 @@ class Queue implements EventSubscriberInterface
     }
 
     protected function logRecentSongHistory(
-        CarbonInterface $now,
         array $recentPlaylistHistory,
         array $recentSongHistoryForDuplicatePrevention
     ): void {

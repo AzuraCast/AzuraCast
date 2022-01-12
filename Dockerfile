@@ -1,10 +1,20 @@
-# Base install step (done first for caching purposes).
-FROM ubuntu:focal as base
+FROM golang:1.17-buster AS dockerize
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssl git
+
+RUN go install github.com/jwilder/dockerize@latest
+
+# Final build image
+FROM ubuntu:focal
 
 ENV TZ="UTC"
 
+# Add Dockerize
+COPY --from=dockerize /go/bin/dockerize /usr/local/bin
+
 # Run base build process
-COPY ./util/docker/web/ /bd_build
+COPY ./util/docker/web /bd_build/
 
 RUN chmod a+x /bd_build/*.sh \
     && /bd_build/prepare.sh \

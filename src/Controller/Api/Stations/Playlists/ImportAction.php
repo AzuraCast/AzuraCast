@@ -8,6 +8,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
+use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
@@ -47,7 +48,8 @@ class ImportAction extends AbstractPlaylistsAction
             $storageLocation = $request->getStation()->getMediaStorageLocation();
 
             // Assemble list of station media to match against.
-            $media_lookup = [];
+            $mediaLookup = [];
+            $basenameLookup = [];
 
             $media_info_raw = $this->em->createQuery(
                 <<<'DQL'
@@ -59,8 +61,15 @@ class ImportAction extends AbstractPlaylistsAction
                 ->getArrayResult();
 
             foreach ($media_info_raw as $row) {
-                $path_hash = md5($row['path']);
-                $media_lookup[$path_hash] = $row['id'];
+                $pathParts = explode('/', $row['path']);
+                $basename = File::sanitizeFileName(array_pop($pathParts));
+
+                $path = (!empty($pathParts))
+                    ? implode('/', $pathParts) . '/' . $basename
+                    : $basename;
+
+                $mediaLookup[$path] = $row['id'];
+                $basenameLookup[$basename] = $row['id'];
             }
 
             // Run all paths against the lookup list of hashes.
@@ -71,14 +80,24 @@ class ImportAction extends AbstractPlaylistsAction
                 $path_raw = str_replace('\\', '/', $path_raw);
 
                 // Work backwards from the basename to try to find matches.
-                $path_parts = explode('/', $path_raw);
-                for ($i = 1, $iMax = count($path_parts); $i <= $iMax; $i++) {
-                    $path_attempt = implode('/', array_slice($path_parts, 0 - $i));
-                    $path_hash = md5($path_attempt);
+                $pathParts = explode('/', $path_raw);
+                $basename = File::sanitizeFileName(array_pop($pathParts));
+                $pathParts[] = $basename;
 
-                    if (isset($media_lookup[$path_hash])) {
-                        $matches[] = $media_lookup[$path_hash];
+                // Attempt full path matching if possible
+                if (count($pathParts) >= 2) {
+                    for ($i = 2, $iMax = count($pathParts); $i <= $iMax; $i++) {
+                        $path = implode('/', array_slice($pathParts, 0 - $i));
+                        if (isset($mediaLookup[$path])) {
+                            $matches[] = $mediaLookup[$path];
+                            continue 2;
+                        }
                     }
+                }
+
+                // Attempt basename-only matching
+                if (isset($basenameLookup[$basename])) {
+                    $matches[] = $basenameLookup[$basename];
                 }
             }
 

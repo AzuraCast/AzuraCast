@@ -62,7 +62,7 @@ class StationPlaylistTest extends \Codeception\Test\Unit
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
-        $playlist->setType(Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES);
+        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerXMinutes->value);
         $playlist->setPlayPerMinutes(30);
 
         $utc = new \DateTimeZone('UTC');
@@ -88,7 +88,7 @@ class StationPlaylistTest extends \Codeception\Test\Unit
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
-        $playlist->setType(Entity\StationPlaylist::TYPE_ONCE_PER_HOUR);
+        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerHour->value);
         $playlist->setPlayPerHourMinute(50);
 
         $utc = new \DateTimeZone('UTC');

@@ -7,6 +7,9 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 
+/**
+ * @extends Repository<Entity\StationPlaylistFolder>
+ */
 class StationPlaylistFolderRepository extends Repository
 {
     /**
@@ -35,8 +38,8 @@ class StationPlaylistFolderRepository extends Repository
         foreach ($playlists as $playlistId => $playlistRecord) {
             /** @var Entity\StationPlaylist $playlistRecord */
             if (
-                Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlistRecord->getOrder()
-                && Entity\StationPlaylist::SOURCE_SONGS === $playlistRecord->getSource()
+                Entity\Enums\PlaylistOrders::Sequential !== $playlistRecord->getOrderEnum()
+                && Entity\Enums\PlaylistSources::Songs === $playlistRecord->getSourceEnum()
             ) {
                 /** @var Entity\StationPlaylist $playlist */
                 $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);

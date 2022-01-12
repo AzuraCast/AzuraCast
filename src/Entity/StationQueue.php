@@ -7,6 +7,9 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Psr\Log\LogLevel;
 
 #[
     ORM\Entity,
@@ -49,11 +52,20 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     #[ORM\Column]
     protected bool $sent_to_autodj = false;
 
+    #[ORM\Column]
+    protected bool $is_played = false;
+
+    #[ORM\Column]
+    protected bool $is_visible = true;
+
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $autodj_custom_uri = null;
 
     #[ORM\Column]
     protected int $timestamp_cued;
+
+    #[ORM\Column]
+    protected int $timestamp_played;
 
     #[ORM\Column(nullable: true)]
     protected ?int $duration = null;
@@ -65,6 +77,9 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     {
         $this->setSong($song);
         $this->station = $station;
+
+        $this->timestamp_cued = time();
+        $this->timestamp_played = time();
     }
 
     public function getStation(): Station
@@ -136,15 +151,55 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
         $this->duration = $duration;
     }
 
-    public function isSentToAutoDj(): bool
+    public function getSentToAutodj(): bool
     {
         return $this->sent_to_autodj;
     }
 
-    public function sentToAutoDj(): void
+    public function setSentToAutodj(bool $newValue = true): void
     {
-        $this->setTimestampCued(time());
-        $this->sent_to_autodj = true;
+        $this->sent_to_autodj = $newValue;
+    }
+
+    public function getIsPlayed(): bool
+    {
+        return $this->is_played;
+    }
+
+    public function setIsPlayed(bool $newValue = true): void
+    {
+        if ($newValue) {
+            $this->sent_to_autodj = true;
+            $this->setTimestampPlayed(time());
+        }
+        $this->is_played = $newValue;
+    }
+
+    public function getIsVisible(): bool
+    {
+        return $this->is_visible;
+    }
+
+    public function setIsVisible(bool $is_visible): void
+    {
+        $this->is_visible = $is_visible;
+    }
+
+    public function updateVisibility(): void
+    {
+        $this->is_visible = ($this->playlist instanceof StationPlaylist)
+            ? !$this->playlist->getIsJingle()
+            : true;
+    }
+
+    public function getTimestampPlayed(): int
+    {
+        return $this->timestamp_played;
+    }
+
+    public function setTimestampPlayed(int $timestamp_played): void
+    {
+        $this->timestamp_played = $timestamp_played;
     }
 
     /**
@@ -160,15 +215,15 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
         $this->log = $log;
     }
 
-    /**
-     * @return bool Whether the record should be shown in APIs (i.e. is not a jingle)
-     */
-    public function showInApis(): bool
+    public function addLogRecord(string|int $level, string $message, array $context = []): void
     {
-        if ($this->playlist instanceof StationPlaylist) {
-            return !$this->playlist->isJingle();
-        }
-        return true;
+        $testHandler = new TestHandler(LogLevel::DEBUG, false);
+        $testLogger = new Logger('AzuraCast', [$testHandler]);
+
+        /** @phpstan-ignore-next-line */
+        $testLogger->addRecord(Logger::toMonologLevel($level), $message, $context);
+
+        $this->log = array_merge($this->log ?? [], $testHandler->getRecords());
     }
 
     public function __toString(): string

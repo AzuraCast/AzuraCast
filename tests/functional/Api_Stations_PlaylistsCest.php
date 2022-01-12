@@ -16,14 +16,14 @@ class Api_Stations_PlaylistsCest extends CestAbstract
             $I,
             '/api/station/' . $station->getId() . '/playlists',
             [
-                'name' => 'General Rotation Playlist',
-                'source' => \App\Entity\StationPlaylist::SOURCE_SONGS,
-                'type' => \App\Entity\StationPlaylist::TYPE_DEFAULT,
+                'name'   => 'General Rotation Playlist',
+                'source' => App\Entity\Enums\PlaylistSources::Songs->value,
+                'type'   => App\Entity\Enums\PlaylistTypes::Standard->value,
                 'weight' => 5,
             ],
             [
                 'name' => 'Modified Playlist',
-                'type' => \App\Entity\StationPlaylist::TYPE_ADVANCED,
+                'type' => App\Entity\Enums\PlaylistTypes::Advanced->value,
             ]
         );
     }

@@ -1,7 +1,7 @@
 .chip {
   align-items: center;
   border: 0;
-  border-radius: ($chip-height / 2);
+  border-radius: ($chip-height * 0.5);
   display: inline-flex;
   font-size: $chip-font-size;
   font-weight: $chip-font-weight;
@@ -46,7 +46,7 @@
   @include text-truncate;
 
   align-items: center;
-  border-radius: ($chip-height / 2);
+  border-radius: ($chip-height * 0.5);
   display: inline-flex;
   flex-shrink: 0;
   font-size: $chip-icon-font-size;
@@ -62,7 +62,7 @@
 }
 
 .chip-img {
-  border-radius: ($chip-height / 2);
+  border-radius: ($chip-height * 0.5);
   flex-shrink: 0;
   height: $chip-height;
   margin-right: ($chip-inner-spacer-x * 2);

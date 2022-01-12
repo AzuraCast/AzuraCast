@@ -4,32 +4,30 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_NowPlaying_Listeners")
- */
+#[OA\Schema(
+    schema: 'Api_NowPlaying_Listeners',
+    type: 'object'
+)]
 class Listeners
 {
-    /**
-     * Total non-unique current listeners
-     * @OA\Property(example=20)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Total non-unique current listeners',
+        example: 20
+    )]
     public int $total = 0;
 
-    /**
-     * Total unique current listeners
-     * @OA\Property(example=15)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Total unique current listeners',
+        example: 15
+    )]
     public int $unique = 0;
 
-    /**
-     * Total non-unique current listeners (Legacy field, may be retired in the future.)
-     * @OA\Property(example=20)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Total non-unique current listeners (Legacy field, may be retired in the future.)',
+        example: 20
+    )]
     public int $current = 0;
 
     public function __construct(

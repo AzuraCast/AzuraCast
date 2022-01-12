@@ -12,6 +12,9 @@ use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\SongHistory>
+ */
 class SongHistoryRepository extends Repository
 {
     protected ListenerRepository $listenerRepository;
@@ -114,9 +117,9 @@ class SongHistoryRepository extends Repository
                 }
             }
 
-            $last_sh->setDeltaPositive($delta_positive);
-            $last_sh->setDeltaNegative($delta_negative);
-            $last_sh->setDeltaTotal($delta_total);
+            $last_sh->setDeltaPositive((int)$delta_positive);
+            $last_sh->setDeltaNegative((int)$delta_negative);
+            $last_sh->setDeltaTotal((int)$delta_total);
 
             $last_sh->setUniqueListeners(
                 $this->listenerRepository->getUniqueListeners(
@@ -130,10 +133,11 @@ class SongHistoryRepository extends Repository
         }
 
         // Look for an already cued but unplayed song.
-        $sq = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
+        $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
 
-        if ($sq instanceof Entity\StationQueue) {
-            $sh = Entity\SongHistory::fromQueue($sq);
+        if (null !== $upcomingTrack) {
+            $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);
+            $sh = Entity\SongHistory::fromQueue($upcomingTrack);
         } else {
             // Processing a new SongHistory item.
             $sh = new Entity\SongHistory($station, $song);

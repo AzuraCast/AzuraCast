@@ -6,6 +6,10 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Exception\NotFoundException;
+use App\Radio\Enums\AdapterTypeInterface;
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\RemoteAdapters;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -13,21 +17,6 @@ use Psr\Container\ContainerInterface;
  */
 class Adapters
 {
-    public const FRONTEND_ICECAST = 'icecast';
-    public const FRONTEND_SHOUTCAST = 'shoutcast2';
-    public const FRONTEND_REMOTE = 'remote';
-
-    public const BACKEND_LIQUIDSOAP = 'liquidsoap';
-    public const BACKEND_NONE = 'none';
-
-    public const REMOTE_SHOUTCAST1 = 'shoutcast1';
-    public const REMOTE_SHOUTCAST2 = 'shoutcast2';
-    public const REMOTE_ICECAST = 'icecast';
-    public const REMOTE_AZURARELAY = 'azurarelay';
-
-    public const DEFAULT_FRONTEND = self::FRONTEND_ICECAST;
-    public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;
-
     public function __construct(
         protected ContainerInterface $adapters
     ) {
@@ -40,16 +29,7 @@ class Adapters
      */
     public function getFrontendAdapter(Entity\Station $station): Frontend\AbstractFrontend
     {
-        $adapters = $this->listFrontendAdapters();
-
-        $frontend_type = $station->getFrontendType();
-
-        if (!isset($adapters[$frontend_type])) {
-            throw new NotFoundException('Adapter not found: ' . $frontend_type);
-        }
-
-        $class_name = $adapters[$frontend_type]['class'];
-
+        $class_name = $station->getFrontendTypeEnum()->getClass();
         if ($this->adapters->has($class_name)) {
             return $this->adapters->get($class_name);
         }
@@ -58,39 +38,12 @@ class Adapters
     }
 
     /**
-     * @param bool $check_installed
-     *
+     * @param bool $checkInstalled
      * @return mixed[]
      */
-    public function listFrontendAdapters(bool $check_installed = false): array
+    public function listFrontendAdapters(bool $checkInstalled = false): array
     {
-        $adapters = [
-            self::FRONTEND_ICECAST => [
-                'name' => __('Use <b>%s</b> on this server', 'Icecast 2.4'),
-                'class' => Frontend\Icecast::class,
-            ],
-            self::FRONTEND_SHOUTCAST => [
-                'name' => __('Use <b>%s</b> on this server', 'SHOUTcast DNAS 2'),
-                'class' => Frontend\SHOUTcast::class,
-            ],
-            self::FRONTEND_REMOTE => [
-                'name' => __('Connect to a <b>remote radio server</b>'),
-                'class' => Frontend\Remote::class,
-            ],
-        ];
-
-        if ($check_installed) {
-            return array_filter(
-                $adapters,
-                function ($adapter_info) {
-                    /** @var AbstractAdapter $adapter */
-                    $adapter = $this->adapters->get($adapter_info['class']);
-                    return $adapter->isInstalled();
-                }
-            );
-        }
-
-        return $adapters;
+        return $this->listAdaptersFromEnum(FrontendAdapters::cases(), $checkInstalled);
     }
 
     /**
@@ -100,16 +53,7 @@ class Adapters
      */
     public function getBackendAdapter(Entity\Station $station): Backend\AbstractBackend
     {
-        $adapters = $this->listBackendAdapters();
-
-        $backend_type = $station->getBackendType();
-
-        if (!isset($adapters[$backend_type])) {
-            throw new NotFoundException('Adapter not found: ' . $backend_type);
-        }
-
-        $class_name = $adapters[$backend_type]['class'];
-
+        $class_name = $station->getBackendTypeEnum()->getClass();
         if ($this->adapters->has($class_name)) {
             return $this->adapters->get($class_name);
         }
@@ -118,35 +62,12 @@ class Adapters
     }
 
     /**
-     * @param bool $check_installed
-     *
+     * @param bool $checkInstalled
      * @return mixed[]
      */
-    public function listBackendAdapters(bool $check_installed = false): array
+    public function listBackendAdapters(bool $checkInstalled = false): array
     {
-        $adapters = [
-            self::BACKEND_LIQUIDSOAP => [
-                'name' => __('Use <b>%s</b> on this server', 'Liquidsoap'),
-                'class' => Backend\Liquidsoap::class,
-            ],
-            self::BACKEND_NONE => [
-                'name' => __('<b>Do not use</b> an AutoDJ service'),
-                'class' => Backend\None::class,
-            ],
-        ];
-
-        if ($check_installed) {
-            return array_filter(
-                $adapters,
-                function ($adapter_info) {
-                    /** @var AbstractAdapter $adapter */
-                    $adapter = $this->adapters->get($adapter_info['class']);
-                    return $adapter->isInstalled();
-                }
-            );
-        }
-
-        return $adapters;
+        return $this->listAdaptersFromEnum(BackendAdapters::cases(), $checkInstalled);
     }
 
     /**
@@ -158,34 +79,15 @@ class Adapters
     public function getRemoteAdapters(Entity\Station $station): array
     {
         $remote_adapters = [];
-
         foreach ($station->getRemotes() as $remote) {
             $remote_adapters[] = new Remote\AdapterProxy($this->getRemoteAdapter($station, $remote), $remote);
         }
-
         return $remote_adapters;
     }
 
-    /**
-     * Assemble an array of ready-to-operate
-     *
-     * @param Entity\Station $station
-     * @param Entity\StationRemote $remote
-     *
-     * @throws NotFoundException
-     */
     public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
     {
-        $adapters = $this->listRemoteAdapters();
-
-        $remote_type = $remote->getType();
-
-        if (!isset($adapters[$remote_type])) {
-            throw new NotFoundException('Adapter not found: ' . $remote_type);
-        }
-
-        $class_name = $adapters[$remote_type]['class'];
-
+        $class_name = $remote->getTypeEnum()->getClass();
         if ($this->adapters->has($class_name)) {
             return $this->adapters->get($class_name);
         }
@@ -198,23 +100,36 @@ class Adapters
      */
     public function listRemoteAdapters(): array
     {
-        return [
-            self::REMOTE_SHOUTCAST1 => [
-                'name' => 'SHOUTcast 1',
-                'class' => Remote\SHOUTcast1::class,
-            ],
-            self::REMOTE_SHOUTCAST2 => [
-                'name' => 'SHOUTcast 2',
-                'class' => Remote\SHOUTcast2::class,
-            ],
-            self::REMOTE_ICECAST => [
-                'name' => 'Icecast',
-                'class' => Remote\Icecast::class,
-            ],
-            self::REMOTE_AZURARELAY => [
-                'name' => 'AzuraRelay',
-                'class' => Remote\AzuraRelay::class,
-            ],
-        ];
+        return $this->listAdaptersFromEnum(RemoteAdapters::cases());
+    }
+
+    /**
+     * @param array<AdapterTypeInterface> $cases
+     * @param bool $checkInstalled
+     * @return mixed[]
+     */
+    protected function listAdaptersFromEnum(array $cases, bool $checkInstalled = false): array
+    {
+        $adapters = [];
+        foreach ($cases as $adapter) {
+            $adapters[$adapter->getValue()] = [
+                'enum'  => $adapter,
+                'name'  => $adapter->getName(),
+                'class' => $adapter->getClass(),
+            ];
+        }
+
+        if ($checkInstalled) {
+            return array_filter(
+                $adapters,
+                function ($adapter_info) {
+                    /** @var AbstractAdapter $adapter */
+                    $adapter = $this->adapters->get($adapter_info['class']);
+                    return $adapter->isInstalled();
+                }
+            );
+        }
+
+        return $adapters;
     }
 }

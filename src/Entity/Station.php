@@ -4,26 +4,32 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\StorageLocationAdapters;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Environment;
-use App\Normalizer\Attributes\DeepNormalize;
-use App\Radio\Adapters;
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
+use App\Utilities\Urls;
 use App\Validator\Constraints as AppAssert;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
-use OpenApi\Annotations as OA;
+use League\Flysystem\Visibility;
+use OpenApi\Attributes as OA;
+use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @OA\Schema(type="object", schema="Station") */
 #[
+    OA\Schema(schema: "Station", type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station'),
     ORM\Index(columns: ['short_name'], name: 'idx_short_name'),
@@ -37,253 +43,309 @@ class Station implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const DEFAULT_REQUEST_DELAY = 5;
-    public const DEFAULT_REQUEST_THRESHOLD = 15;
-    public const DEFAULT_DISCONNECT_DEACTIVATE_STREAMER = 0;
-    public const DEFAULT_API_HISTORY_ITEMS = 5;
+    // Taxonomical groups for permission-based serialization.
+    public const GROUP_AUTOMATION = 'automation';
 
-    /**
-     * @OA\Property(
-     *     description="The full display name of the station.",
-     *     example="AzuraTest Radio"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(description: "The full display name of the station.", example: "AzuraTest Radio"),
+        ORM\Column(length: 100, nullable: false),
+        Assert\NotBlank,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $name = '';
 
-    /**
-     * @OA\Property(
-     *     description="The URL-friendly name for the station, typically auto-generated from the full station name.",
-     *     example="azuratest_radio"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank]
+    #[
+        OA\Property(
+            description: "The URL-friendly name for the station, typically auto-generated from the full station name.",
+            example: "azuratest_radio"
+        ),
+        ORM\Column(length: 100, nullable: false),
+        Assert\NotBlank,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected string $short_name = '';
 
-    /**
-     * @OA\Property(
-     *     description="If set to 'false', prevents the station from broadcasting but leaves it in the database.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "If set to 'false', prevents the station from broadcasting but leaves it in the database.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $is_enabled = true;
 
-    /**
-     * @OA\Property(
-     *     description="The frontend adapter (icecast,shoutcast,remote,etc)",
-     *     example="icecast"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST])]
-    protected ?string $frontend_type = Adapters::FRONTEND_ICECAST;
+    #[
+        OA\Property(
+            description: "The frontend adapter (icecast,shoutcast,remote,etc)",
+            example: "icecast"
+        ),
+        ORM\Column(length: 100, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?string $frontend_type = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="An array containing station-specific frontend configuration",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(
+            description: "An array containing station-specific frontend configuration",
+            type: "array",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?array $frontend_config = null;
 
-    /**
-     * @OA\Property(
-     *     description="The backend adapter (liquidsoap,etc)",
-     *     example="liquidsoap"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE])]
-    protected ?string $backend_type = Adapters::BACKEND_LIQUIDSOAP;
+    #[
+        OA\Property(
+            description: "The backend adapter (liquidsoap,etc)",
+            example: "liquidsoap"
+        ),
+        ORM\Column(length: 100, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?string $backend_type = null;
 
-    /**
-     * @OA\Property(
-     *     type="array",
-     *     description="An array containing station-specific backend configuration",
-     *     @OA\Items()
-     * )
-     */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(
+            description: "An array containing station-specific backend configuration",
+            type: "array",
+            items: new OA\Items()
+        ),
+        ORM\Column(type: 'json', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?array $backend_config = null;
 
-    #[ORM\Column(length: 150, nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(length: 150, nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?string $adapter_api_key = null;
 
-    /** @OA\Property(example="A sample radio station.") */
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[
+        OA\Property(example: "A sample radio station."),
+        ORM\Column(type: 'text', nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $description = null;
 
-    /** @OA\Property(example="https://demo.azuracast.com/") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "https://demo.azuracast.com/"),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $url = null;
 
-    /** @OA\Property(example="Various") */
-    #[ORM\Column(length: 150, nullable: true)]
+    #[
+        OA\Property(example: "Various"),
+        ORM\Column(length: 150, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $genre = null;
 
-    /** @OA\Property(example="/var/azuracast/stations/azuratest_radio") */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $radio_base_dir = null;
 
-    #[ORM\Column(type: 'array', nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(type: 'array', nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected mixed $nowplaying;
 
-    #[ORM\Column(nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?int $nowplaying_timestamp = null;
 
-    /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\Column(type: 'json', nullable: true),
+        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?array $automation_settings = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore,
+        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?int $automation_timestamp = 0;
 
-    /**
-     * @OA\Property(
-     *     description="Whether listeners can request songs to play on this station.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether listeners can request songs to play on this station.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_requests = false;
 
-    /** @OA\Property(example=5) */
-    #[ORM\Column(nullable: true)]
-    protected ?int $request_delay = self::DEFAULT_REQUEST_DELAY;
+    #[
+        OA\Property(example: 5),
+        ORM\Column(nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?int $request_delay = 5;
 
-    /** @OA\Property(example=15) */
-    #[ORM\Column(nullable: true)]
-    protected ?int $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
+    #[
+        OA\Property(example: 15),
+        ORM\Column(nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?int $request_threshold = 15;
 
-    /** @OA\Property(example=0) */
-    #[ORM\Column(nullable: true, options: ['default' => 0])]
-    protected ?int $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
+    #[
+        OA\Property(example: 0),
+        ORM\Column(nullable: true, options: ['default' => 0]),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?int $disconnect_deactivate_streamer = 0;
 
-    /**
-     * @OA\Property(
-     *     description="Whether streamers are allowed to broadcast to this station at all.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether streamers are allowed to broadcast to this station at all.",
+            example: false
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_streamers = false;
 
-    /**
-     * @OA\Property(
-     *     description="Whether a streamer is currently active on the station.",
-     *     example=false
-     * )
-     */
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        OA\Property(
+            description: "Whether a streamer is currently active on the station.",
+            example: false
+        ),
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected bool $is_streamer_live = false;
 
-    /**
-     * @OA\Property(
-     *     description="Whether this station is visible as a public page and in a now-playing API response.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether this station is visible as a public page and in a now-playing API response.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_public_page = true;
 
-    /**
-     * @OA\Property(
-     *     description="Whether this station has a public 'on-demand' streaming and download page.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether this station has a public 'on-demand' streaming and download page.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_on_demand = false;
 
-    /**
-     * @OA\Property(
-     *     description="Whether the 'on-demand' page offers download capability.",
-     *     example=true
-     * )
-     */
-    #[ORM\Column]
+    #[
+        OA\Property(
+            description: "Whether the 'on-demand' page offers download capability.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected bool $enable_on_demand_download = true;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected bool $needs_restart = false;
 
-    #[ORM\Column]
-    #[Attributes\AuditIgnore]
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
     protected bool $has_started = false;
 
-    /**
-     * @OA\Property(
-     *     description="The number of 'last played' history items to show for a station in API responses.",
-     *     example=5
-     * )
-     */
-    #[ORM\Column(type: 'smallint')]
-    protected int $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
+    #[
+        OA\Property(
+            description: "The number of 'last played' history items to show for a station in API responses.",
+            example: 5
+        ),
+        ORM\Column(type: 'smallint'),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $api_history_items = 5;
 
-    /**
-     * @OA\Property(
-     *     description="The time zone that station operations should take place in.",
-     *     example="UTC"
-     * )
-     */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[
+        OA\Property(
+            description: "The time zone that station operations should take place in.",
+            example: "UTC"
+        ),
+        ORM\Column(length: 100, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $timezone = 'UTC';
 
-    /**
-     * @OA\Property(
-     *     description="The station-specific default album artwork URL.",
-     *     example="https://example.com/image.jpg"
-     * )
-     */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[
+        OA\Property(
+            description: "The station-specific default album artwork URL.",
+            example: "https://example.com/image.jpg"
+        ),
+        ORM\Column(length: 255, nullable: true),
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?string $default_album_art_url = null;
 
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
-    #[ORM\OrderBy(['timestamp_start' => 'desc'])]
+    #[
+        ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class),
+        ORM\OrderBy(['timestamp_start' => 'desc'])
+    ]
     protected Collection $history;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(
-        name: 'media_storage_location_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(
+            name: 'media_storage_location_id',
+            referencedColumnName: 'id',
+            nullable: true,
+            onDelete: 'SET NULL'
+        ),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?StorageLocation $media_storage_location = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(
-        name: 'recordings_storage_location_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(
+            name: 'recordings_storage_location_id',
+            referencedColumnName: 'id',
+            nullable: true,
+            onDelete: 'SET NULL'
+        ),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?StorageLocation $recordings_storage_location = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(
-        name: 'podcasts_storage_location_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    #[DeepNormalize(true)]
-    #[Serializer\MaxDepth(1)]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(
+            name: 'podcasts_storage_location_id',
+            referencedColumnName: 'id',
+            nullable: true,
+            onDelete: 'SET NULL'
+        ),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
     protected ?StorageLocation $podcasts_storage_location = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
@@ -292,15 +354,19 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(nullable: true)]
     protected ?int $current_streamer_id = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')
+    ]
     protected ?StationStreamer $current_streamer = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class)]
-    #[ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])]
+    #[
+        ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class),
+        ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
+    ]
     protected Collection $playlists;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationMount::class)]
@@ -322,6 +388,9 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function __construct()
     {
+        $this->frontend_type = FrontendAdapters::Icecast->value;
+        $this->backend_type = BackendAdapters::Liquidsoap->value;
+
         $this->history = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->mounts = new ArrayCollection();
@@ -378,8 +447,19 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->frontend_type;
     }
 
+    public function getFrontendTypeEnum(): FrontendAdapters
+    {
+        return (null !== $this->frontend_type)
+            ? FrontendAdapters::from($this->frontend_type)
+            : FrontendAdapters::default();
+    }
+
     public function setFrontendType(?string $frontend_type = null): void
     {
+        if (null !== $frontend_type && null === FrontendAdapters::tryFrom($frontend_type)) {
+            throw new \InvalidArgumentException('Invalid frontend type specified.');
+        }
+
         $this->frontend_type = $frontend_type;
     }
 
@@ -422,8 +502,19 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->backend_type;
     }
 
+    public function getBackendTypeEnum(): BackendAdapters
+    {
+        return (null !== $this->backend_type)
+            ? BackendAdapters::from($this->backend_type)
+            : BackendAdapters::default();
+    }
+
     public function setBackendType(string $backend_type = null): void
     {
+        if (null !== $backend_type && null === BackendAdapters::tryFrom($backend_type)) {
+            throw new \InvalidArgumentException('Invalid frontend type specified.');
+        }
+
         $this->backend_type = $backend_type;
     }
 
@@ -553,8 +644,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         if (null === $this->media_storage_location) {
             $storageLocation = new StorageLocation(
-                StorageLocation::TYPE_STATION_MEDIA,
-                StorageLocation::ADAPTER_LOCAL
+                StorageLocationTypes::StationMedia,
+                StorageLocationAdapters::Local
             );
 
             $mediaPath = $this->getRadioBaseDir() . '/media';
@@ -566,8 +657,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         if (null === $this->recordings_storage_location) {
             $storageLocation = new StorageLocation(
-                StorageLocation::TYPE_STATION_RECORDINGS,
-                StorageLocation::ADAPTER_LOCAL
+                StorageLocationTypes::StationRecordings,
+                StorageLocationAdapters::Local
             );
 
             $recordingsPath = $this->getRadioBaseDir() . '/recordings';
@@ -579,8 +670,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         if (null === $this->podcasts_storage_location) {
             $storageLocation = new StorageLocation(
-                StorageLocation::TYPE_STATION_PODCASTS,
-                StorageLocation::ADAPTER_LOCAL
+                StorageLocationTypes::StationPodcasts,
+                StorageLocationAdapters::Local
             );
 
             $podcastsPath = $this->getRadioBaseDir() . '/podcasts';
@@ -597,7 +688,9 @@ class Station implements Stringable, IdentifiableEntityInterface
             return;
         }
 
-        $visibility = (new PortableVisibilityConverter())->defaultForDirectories();
+        $visibility = (new PortableVisibilityConverter(
+            defaultForDirectories: Visibility::PUBLIC
+        ))->defaultForDirectories();
         if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
         }
@@ -736,7 +829,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getEnablePublicPage(): bool
     {
-        return $this->enable_public_page && $this->isEnabled();
+        return $this->enable_public_page && $this->getIsEnabled();
     }
 
     public function setEnablePublicPage(bool $enable_public_page): void
@@ -764,7 +857,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->enable_on_demand_download = $enable_on_demand_download;
     }
 
-    public function isEnabled(): bool
+    public function getIsEnabled(): bool
     {
         return $this->is_enabled;
     }
@@ -791,7 +884,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getApiHistoryItems(): int
     {
-        return $this->api_history_items ?? self::DEFAULT_API_HISTORY_ITEMS;
+        return $this->api_history_items ?? 5;
     }
 
     public function setApiHistoryItems(int $api_history_items): void
@@ -821,6 +914,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getDefaultAlbumArtUrl(): ?string
     {
         return $this->default_album_art_url;
+    }
+
+    public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
+    {
+        return Urls::getUri($this->default_album_art_url);
     }
 
     /**
@@ -862,16 +960,15 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getMediaStorageLocation(): StorageLocation
     {
         if (null === $this->media_storage_location) {
-            throw new \RuntimeException('Media storage location has not been configured yet.');
+            throw new \RuntimeException('Media storage location not initialized.');
         }
-
         return $this->media_storage_location;
     }
 
-    public function setMediaStorageLocation(StorageLocation $storageLocation): void
+    public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (StorageLocation::TYPE_STATION_MEDIA !== $storageLocation->getType()) {
-            throw new InvalidArgumentException('Storage location must be for station media.');
+        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getTypeEnum()) {
+            throw new \RuntimeException('Invalid storage location.');
         }
 
         $this->media_storage_location = $storageLocation;
@@ -880,16 +977,15 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRecordingsStorageLocation(): StorageLocation
     {
         if (null === $this->recordings_storage_location) {
-            throw new \RuntimeException('Recordings storage location has not been configured yet.');
+            throw new \RuntimeException('Recordings storage location not initialized.');
         }
-
         return $this->recordings_storage_location;
     }
 
-    public function setRecordingsStorageLocation(StorageLocation $storageLocation): void
+    public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (StorageLocation::TYPE_STATION_RECORDINGS !== $storageLocation->getType()) {
-            throw new InvalidArgumentException('Storage location must be for station live recordings.');
+        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getTypeEnum()) {
+            throw new \RuntimeException('Invalid storage location.');
         }
 
         $this->recordings_storage_location = $storageLocation;
@@ -898,19 +994,28 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getPodcastsStorageLocation(): StorageLocation
     {
         if (null === $this->podcasts_storage_location) {
-            throw new \RuntimeException('Podcasts storage location has not been configured yet.');
+            throw new \RuntimeException('Podcasts storage location not initialized.');
         }
-
         return $this->podcasts_storage_location;
     }
 
-    public function setPodcastsStorageLocation(StorageLocation $storageLocation): void
+    public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (StorageLocation::TYPE_STATION_PODCASTS !== $storageLocation->getType()) {
-            throw new InvalidArgumentException('Storage location must be for station podcasts.');
+        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getTypeEnum()) {
+            throw new \RuntimeException('Invalid storage location.');
         }
 
         $this->podcasts_storage_location = $storageLocation;
+    }
+
+    public function getStorageLocation(StorageLocationTypes $type): StorageLocation
+    {
+        return match ($type) {
+            StorageLocationTypes::StationMedia => $this->getMediaStorageLocation(),
+            StorageLocationTypes::StationRecordings => $this->getRecordingsStorageLocation(),
+            StorageLocationTypes::StationPodcasts => $this->getPodcastsStorageLocation(),
+            default => throw new \InvalidArgumentException('Invalid storage location.')
+        };
     }
 
     /** @return StorageLocation[] */
@@ -920,6 +1025,18 @@ class Station implements Stringable, IdentifiableEntityInterface
             $this->getMediaStorageLocation(),
             $this->getRecordingsStorageLocation(),
             $this->getPodcastsStorageLocation(),
+        ];
+    }
+
+    /**
+     * @return array<string, StorageLocationTypes>
+     */
+    public static function getStorageLocationTypes(): array
+    {
+        return [
+            'media_storage_location'      => StorageLocationTypes::StationMedia,
+            'recordings_storage_location' => StorageLocationTypes::StationRecordings,
+            'podcasts_storage_location'   => StorageLocationTypes::StationPodcasts,
         ];
     }
 

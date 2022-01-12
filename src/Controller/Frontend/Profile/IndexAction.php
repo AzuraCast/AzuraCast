@@ -4,34 +4,35 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Profile;
 
-use App\Form\UserProfileForm;
+use App\Enums\SupportedLocales;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\Avatar;
-use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class IndexAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Avatar $avatar,
-        FactoryInterface $factory
+        Response $response
     ): ResponseInterface {
-        // Avatars
-        $avatarService = $avatar->getAvatarService();
+        $router = $request->getRouter();
 
-        $userProfileForm = $factory->make(UserProfileForm::class);
+        $supportedLocales = [];
+        foreach (SupportedLocales::cases() as $supportedLocale) {
+            $supportedLocales[$supportedLocale->value] = $supportedLocale->getLocalName();
+        }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/profile/index',
-            [
-                'user' => $request->getUser(),
-                'avatar' => $avatar->getAvatar($request->getUser()->getEmail(), 64),
-                'avatarServiceUrl' => $avatarService->getServiceUrl(),
-                'profileView' => $userProfileForm->getView($request),
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_Account',
+            id: 'account',
+            title: __('My Account'),
+            props: [
+                'userUrl' => (string)$router->named('api:frontend:account:me'),
+                'changePasswordUrl' => (string)$router->named('api:frontend:account:password'),
+                'twoFactorUrl' => (string)$router->named('api:frontend:account:two-factor'),
+                'apiKeysApiUrl' => (string)$router->named('api:frontend:api-keys'),
+                'supportedLocales' => $supportedLocales,
             ]
         );
     }

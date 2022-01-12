@@ -5,16 +5,56 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Utilities\Csv;
+use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/history',
+        operationId: 'getStationHistory',
+        description: 'Return song playback history items for a given station.',
+        security: OpenApi::API_KEY_SECURITY,
+        tags: ['Stations: History'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+            new OA\Parameter(
+                name: 'start',
+                description: 'The start date for records, in YYYY-MM-DD format.',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'end',
+                description: 'The end date for records, in YYYY-MM-DD format.',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_DetailedSongHistory')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 class HistoryController
 {
     public function __construct(
@@ -24,38 +64,6 @@ class HistoryController
     }
 
     /**
-     * @OA\Get(path="/station/{station_id}/history",
-     *   tags={"Stations: History"},
-     *   description="Return song playback history items for a given station.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Parameter(
-     *     name="start",
-     *     description="The start date for records, in YYYY-MM-DD format.",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(
-     *         type="string"
-     *     )
-     *   ),
-     *   @OA\Parameter(
-     *     name="end",
-     *     description="The end date for records, in YYYY-MM-DD format.",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(
-     *         type="string"
-     *     )
-     *   ),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_DetailedSongHistory"))
-     *   ),
-     *   @OA\Response(response=404, description="Station not found"),
-     *   @OA\Response(response=403, description="Access denied"),
-     *   security={{"api_key": {}}},
-     * )
-     *
      * @param ServerRequest $request
      * @param Response $response
      */
@@ -151,18 +159,13 @@ class HistoryController
 
         $paginator = App\Paginator::fromQueryBuilder($qb, $request);
 
-        $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(
-            function ($sh_row) use ($is_bootgrid, $router) {
+            function ($sh_row) use ($router) {
                 /** @var Entity\SongHistory $sh_row */
                 $row = $this->songHistoryApiGenerator->detailed($sh_row);
                 $row->resolveUrls($router->getBaseUrl());
-
-                if ($is_bootgrid) {
-                    return App\Utilities\Arrays::flattenArray($row, '_');
-                }
 
                 return $row;
             }

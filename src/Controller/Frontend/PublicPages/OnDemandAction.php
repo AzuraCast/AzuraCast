@@ -49,13 +49,28 @@ class OnDemandAction
             ];
         }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'frontend/public/ondemand',
-            [
-                'embed' => $embed,
-                'station' => $station,
-                'custom_fields' => $customFields,
+        $router = $request->getRouter();
+
+        $pageClass = 'ondemand station-' . $station->getShortName();
+        if ($embed) {
+            $pageClass .= ' embed';
+        }
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_PublicOnDemand',
+            id: 'station-on-demand',
+            layout: 'minimal',
+            title: __('On-Demand Media') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => $pageClass,
+                'hide_footer' => true,
+            ],
+            props: [
+                'listUrl' => (string)$router->fromHere('api:stations:ondemand:list'),
+                'showDownloadButton' => $station->getEnableOnDemandDownload(),
+                'customFields' => $customFields,
+                'stationName' => $station->getName(),
             ]
         );
     }

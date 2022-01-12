@@ -34,6 +34,9 @@ tmp/cache/*---*
 /web/static/dist/*
 /web/static/dist/**/*
 !/web/static/dist/.gitkeep
+/web/static/webpack_dist/*
+/web/static/webpack_dist/**/*
+!/web/static/webpack_dist/.gitkeep
 /web/static/assets.json
 /web/static/webpack.json
 

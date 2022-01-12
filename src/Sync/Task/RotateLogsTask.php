@@ -27,16 +27,27 @@ class RotateLogsTask extends AbstractTask
         parent::__construct($em, $logger);
     }
 
+    public static function getSchedulePattern(): string
+    {
+        return '34 * * * *';
+    }
+
     public function run(bool $force = false): void
     {
         // Rotate logs for individual stations.
         foreach ($this->iterateStations() as $station) {
             $this->logger->info(
-                'Processing logs for station.',
-                ['id' => $station->getId(), 'name' => $station->getName()]
+                'Rotating logs for station.',
+                ['station' => (string)$station]
             );
 
-            $this->rotateStationLogs($station);
+            try {
+                $this->rotateStationLogs($station);
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [
+                    'station' => (string)$station,
+                ]);
+            }
         }
 
         // Rotate the automated backups.
@@ -48,7 +59,7 @@ class RotateLogsTask extends AbstractTask
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(
-                    Entity\StorageLocation::TYPE_BACKUP,
+                    Entity\Enums\StorageLocationTypes::Backup,
                     $backupStorageId
                 );
 

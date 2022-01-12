@@ -10,80 +10,46 @@
     state: absent
   vars:
     packages:
-      - php5-common
-      - php5-fpm
-      - php5-cli
-      - php5-phalcon
-      - php7.0-fpm
-      - php7.0-cli
-      - php7.0-gd
-      - php7.0-curl
-      - php7.0-xml
-      - php7.0-zip
-      - php7.0-mysqlnd
-      - php7.0-mbstring
-      - php7.0-intl
-      - php7.0-phalcon
-      - php7.1-fpm
-      - php7.1-cli
-      - php7.1-gd
-      - php7.1-curl
-      - php7.1-xml
-      - php7.1-zip
-      - php7.1-mysqlnd
-      - php7.1-mbstring
-      - php7.1-intl
-      - php7.1-redis
-      - php7.2-fpm
-      - php7.2-cli
-      - php7.2-gd
-      - php7.2-curl
-      - php7.2-xml
-      - php7.2-zip
-      - php7.2-mysqlnd
-      - php7.2-mbstring
-      - php7.2-intl
-      - php7.2-redis
-      - php7.4-fpm
-      - php7.4-cli
-      - php7.4-gd
-      - php7.4-curl
-      - php7.4-xml
-      - php7.4-zip
-      - php7.4-mysqlnd
-      - php7.4-mbstring
-      - php7.4-intl
-      - php7.4-redis
-      - php7.4-bcmath
-      - php7.4-gmp
-      - php7.4-maxminddb
+      - "php5-*"
+      - "php7.0-*"
+      - "php7.1-*"
+      - "php7.2-*"
+      - "php7.4-*"
+      - "php8.0-*"
 
-- name : Install PHP 8.0
-  apt :
-    name : "{{ packages }}"
-    state : latest
-  vars :
-    packages :
-      - php8.0-fpm
-      - php8.0-cli
-      - php8.0-gd
-      - php8.0-curl
-      - php8.0-xml         # IceCast XML config
-      - php8.0-zip         # Composer installs
-      - php8.0-mysqlnd     # MySQL Native Driver (Doctrine)
-      - php8.0-mbstring    # Codeception Tests
-      - php8.0-intl        # Localization
-      - php8.0-redis       # Cache
-      - php8.0-bcmath      # BigInteger
-      - php8.0-gmp         # BigInteger and PHP-IP
-      - php8.0-maxminddb   # Maxmind (GeoIP) DB native ext
+- name: Set PHP Version
+  set_fact:
+    php_version: 8.1
+
+- name: "Install PHP {{ php_version }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - "php{{ php_version }}-fpm"
+      - "php{{ php_version }}-cli"
+      - "php{{ php_version }}-gd"
+      - "php{{ php_version }}-curl"
+      - "php{{ php_version }}-xml"         # IceCast XML config
+      - "php{{ php_version }}-zip"         # Composer installs
+      - "php{{ php_version }}-mysqlnd"     # MySQL Native Driver (Doctrine)
+      - "php{{ php_version }}-mbstring"    # Codeception Tests
+      - "php{{ php_version }}-intl"        # Localization
+      - "php{{ php_version }}-redis"       # Cache
+      - "php{{ php_version }}-bcmath"      # BigInteger
+      - "php{{ php_version }}-gmp"         # BigInteger and PHP-IP
+      - "php{{ php_version }}-maxminddb"   # Maxmind (GeoIP) DB native ext
 
 - name: Configure PHP FPM Pool
-  template : src=fpmpool.j2 dest=/etc/php/8.0/fpm/pool.d/www.conf force=true
+  template:
+    src: fpmpool.j2
+    dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
+    force: True
 
 - name: Configure php-fpm php.ini
   ini_file:
-    dest : /etc/php/8.0/fpm/php.ini
+    dest: "/etc/php/{{ php_version }}/fpm/php.ini"
     section: PHP
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -94,7 +60,7 @@
 
 - name: Configure php-cli php.ini
   ini_file:
-    dest : /etc/php/8.0/cli/php.ini
+    dest: "/etc/php/{{ php_version }}/cli/php.ini"
     section: PHP
     option: "{{ item.option }}"
     value: "{{ item.value }}"

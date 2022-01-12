@@ -1,0 +1,81 @@
+---
+- name: Clear OPAM directory
+  file:
+    path: "{{ app_base }}/.opam"
+    state: absent
+
+- name: Install Liquidsoap Dependencies
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: no
+  vars:
+    packages:
+      - libao-dev
+      - libasound2-dev
+      - libavcodec-dev
+      - libavdevice-dev
+      - libavfilter-dev
+      - libavformat-dev
+      - libavutil-dev
+      - libfaad-dev
+      - libfdk-aac-dev
+      - libflac-dev
+      - libfreetype-dev
+      - libgd-dev
+      - libjack-dev
+      - libjpeg-dev
+      - liblo-dev
+      - libmad0-dev
+      - libmagic-dev
+      - libmp3lame-dev
+      - libopus-dev
+      - libpng-dev
+      - libportaudio2
+      - libpulse-dev
+      - libsamplerate0-dev
+      - libsdl2-dev
+      - libsdl2-ttf-dev
+      - libsdl2-image-dev
+      - libshine-dev
+      - libsoundtouch-dev
+      - libspeex-dev
+      - libsrt-dev
+      - libswresample-dev
+      - libswscale-dev
+      - libtag1-dev
+      - libtheora-dev
+      - libtiff-dev
+      - libx11-dev
+      - libxpm-dev
+      - bubblewrap
+
+- name: Install Optional Audio Plugins
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: no
+  vars:
+    packages:
+      - frei0r-plugins-dev
+      - ladspa-sdk
+      - multimedia-audio-plugins
+      - swh-plugins
+      - tap-plugins
+      - lsp-plugins-ladspa
+
+- name: Get the DPKG Architecture
+  shell: dpkg --print-architecture
+  register: dpkg_arch
+  ignore_errors: True
+
+- name: Install Liquidsoap
+  apt:
+    deb: "https://github.com/savonet/liquidsoap/releases/download/v2.0.2/liquidsoap_2.0.2-ubuntu-focal-1_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
+
+- name: Link Liquidsoap binary
+  file:
+    src: "/usr/bin/liquidsoap"
+    dest: /usr/local/bin/liquidsoap
+    state: link
+    force: yes

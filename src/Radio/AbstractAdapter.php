@@ -121,7 +121,7 @@ abstract class AbstractAdapter
      */
     public function hasCommand(Entity\Station $station): bool
     {
-        if ($this->environment->isTesting() || !$station->isEnabled()) {
+        if ($this->environment->isTesting() || !$station->getIsEnabled()) {
             return false;
         }
 
@@ -154,6 +154,24 @@ abstract class AbstractAdapter
     {
         $this->stop($station);
         $this->start($station);
+    }
+
+    /**
+     * @return bool Whether this adapter supports a non-destructive reload.
+     */
+    public function supportsReload(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Execute a non-destructive reload if the adapter supports it.
+     *
+     * @param Entity\Station $station
+     */
+    public function reload(Entity\Station $station): void
+    {
+        $this->restart($station);
     }
 
     /**

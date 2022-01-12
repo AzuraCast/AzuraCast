@@ -14,11 +14,11 @@ $environment = App\AppFactory::buildEnvironment(
         ]
 );
 
-$console = new Silly\Application('AzuraCast installer', App\Version::FALLBACK_VERSION);
-
-$console->command(
-        'install [--update] [--defaults] [--http-port=] [--https-port=] [--release-channel=] [base-dir]',
-        new App\Installer\Command\InstallCommand($environment)
+$console = new Symfony\Component\Console\Application(
+        'AzuraCast installer',
+        App\Version::FALLBACK_VERSION
 );
+
+$console->add(new App\Installer\Command\InstallCommand($environment));
 
 $console->run();

@@ -5,14 +5,49 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Exception;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/stations',
+        operationId: 'getStations',
+        description: 'Returns a list of stations.',
+        tags: ['Stations: General'],
+        parameters: [],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_NowPlaying_Station')
+                )
+            ),
+        ]
+    ),
+    OA\Get(
+        path: '/station/{station_id}',
+        operationId: 'getStation',
+        description: 'Return information about a single station.',
+        tags: ['Stations: General'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying_Station')
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+        ]
+    )
+]
 class IndexController
 {
     public function __construct(
@@ -20,24 +55,6 @@ class IndexController
         protected Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
     ) {
     }
-
-    /**
-     * @OA\Get(path="/stations",
-     *   tags={"Stations: General"},
-     *   description="Returns a list of stations.",
-     *   parameters={},
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_NowPlaying_Station")
-     *     )
-     *   )
-     * )
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws NotFoundException
-     * @throws Exception
-     */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $stations_raw = $this->em->getRepository(Entity\Station::class)
@@ -56,22 +73,6 @@ class IndexController
 
         return $response->withJson($stations);
     }
-
-    /**
-     * @OA\Get(path="/station/{station_id}",
-     *   tags={"Stations: General"},
-     *   description="Return information about a single station.",
-     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_NowPlaying_Station")
-     *   ),
-     *   @OA\Response(response=404, description="Station not found")
-     * )
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws Exception
-     */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();

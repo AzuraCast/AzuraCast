@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class StationBackendConfiguration extends ArrayCollection
@@ -65,8 +66,22 @@ class StationBackendConfiguration extends ArrayCollection
         return $this->get(self::RECORD_STREAMS_FORMAT);
     }
 
+    public function getRecordStreamsFormatEnum(): ?StreamFormats
+    {
+        $recordStreamsFormat = $this->getRecordStreamsFormat();
+        return StreamFormats::tryFrom(strtolower($recordStreamsFormat ?? ''));
+    }
+
     public function setRecordStreamsFormat(?string $format): void
     {
+        if (null !== $format) {
+            $format = strtolower($format);
+        }
+
+        if (null !== $format && null === StreamFormats::tryFrom($format)) {
+            throw new \InvalidArgumentException('Invalid recording type specified.');
+        }
+
         $this->set(self::RECORD_STREAMS_FORMAT, $format);
     }
 
@@ -142,11 +157,6 @@ class StationBackendConfiguration extends ArrayCollection
         return $this->get(self::CROSSFADE_TYPE) ?? self::CROSSFADE_NORMAL;
     }
 
-    public function isCrossfadeEnabled(): bool
-    {
-        return self::CROSSFADE_DISABLED !== $this->getCrossfadeType();
-    }
-
     public function setCrossfadeType(string $crossfadeType): void
     {
         $this->set(self::CROSSFADE_TYPE, $crossfadeType);
@@ -158,7 +168,7 @@ class StationBackendConfiguration extends ArrayCollection
 
     public function getCrossfade(): float
     {
-        return round($this->get(self::CROSSFADE) ?? self::DEFAULT_CROSSFADE_DURATION, 1);
+        return round((float)($this->get(self::CROSSFADE) ?? self::DEFAULT_CROSSFADE_DURATION), 1);
     }
 
     public function setCrossfade(?float $crossfade): void
@@ -178,13 +188,20 @@ class StationBackendConfiguration extends ArrayCollection
         return 0;
     }
 
+    public function isCrossfadeEnabled(): bool
+    {
+        return $this->getCrossfadeDuration() > 0;
+    }
+
     public const DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';
 
     public const DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
     public function getDuplicatePreventionTimeRange(): int
     {
-        return $this->get(self::DUPLICATE_PREVENTION_TIME_RANGE) ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE;
+        return (int)(
+            $this->get(self::DUPLICATE_PREVENTION_TIME_RANGE) ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE
+        );
     }
 
     public function setDuplicatePreventionTimeRange(?int $duplicatePreventionTimeRange): void

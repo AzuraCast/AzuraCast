@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enums\SupportedLocales;
 use App\Service\IpGeolocator;
 use Exception;
 use MaxMind\Db\Reader;
@@ -71,7 +72,7 @@ class IpGeolocation
     /**
      * @return mixed[]
      */
-    public function getLocationInfo(string $ip, string $locale): array
+    public function getLocationInfo(string $ip, SupportedLocales $locale): array
     {
         if (!$this->isInitialized) {
             $this->initialize();
@@ -80,7 +81,7 @@ class IpGeolocation
         $reader = $this->reader;
         if (null === $reader) {
             return [
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => $this->getAttribution(),
             ];
         }
@@ -100,12 +101,12 @@ class IpGeolocation
                     }
 
                     return [
-                        'status' => 'error',
+                        'status'  => 'error',
                         'message' => 'Internal/Reserved IP',
                     ];
                 } catch (Exception $e) {
                     return [
-                        'status' => 'error',
+                        'status'  => 'error',
                         'message' => $e->getMessage(),
                     ];
                 }
@@ -117,25 +118,25 @@ class IpGeolocation
         }
 
         return [
-            'status' => 'success',
-            'lat' => $ipInfo['location']['latitude'] ?? 0.0,
-            'lon' => $ipInfo['location']['longitude'] ?? 0.0,
+            'status'   => 'success',
+            'lat'      => $ipInfo['location']['latitude'] ?? 0.0,
+            'lon'      => $ipInfo['location']['longitude'] ?? 0.0,
             'timezone' => $ipInfo['location']['time_zone'] ?? '',
-            'region' => $this->getLocalizedString($ipInfo['subdivisions'][0]['names'] ?? null, $locale),
-            'country' => $this->getLocalizedString($ipInfo['country']['names'] ?? null, $locale),
-            'city' => $this->getLocalizedString($ipInfo['city']['names'] ?? null, $locale),
-            'message' => $this->attribution,
+            'region'   => $this->getLocalizedString($ipInfo['subdivisions'][0]['names'] ?? null, $locale),
+            'country'  => $this->getLocalizedString($ipInfo['country']['names'] ?? null, $locale),
+            'city'     => $this->getLocalizedString($ipInfo['city']['names'] ?? null, $locale),
+            'message'  => $this->attribution,
         ];
     }
 
-    protected function getLocalizedString(?array $names, string $locale): string
+    protected function getLocalizedString(?array $names, SupportedLocales $locale): string
     {
         if (empty($names)) {
             return '';
         }
 
         // Convert "en_US" to "en-US", the format MaxMind uses.
-        $locale = str_replace('_', '-', $locale);
+        $locale = str_replace('_', '-', $locale->value);
 
         // Check for an exact match.
         if (isset($names[$locale])) {

@@ -8,9 +8,12 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity, ORM\Table(name: 'song_history')]
-#[ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start')]
-#[ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'song_history'),
+    ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start'),
+    ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')
+]
 class SongHistory implements SongInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
@@ -48,7 +51,7 @@ class SongHistory implements SongInterface, IdentifiableEntityInterface
     protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationMedia $media = null;
 
     #[ORM\Column(nullable: true)]
@@ -267,7 +270,7 @@ class SongHistory implements SongInterface, IdentifiableEntityInterface
     public function showInApis(): bool
     {
         if ($this->playlist instanceof StationPlaylist) {
-            return !$this->playlist->isJingle();
+            return !$this->playlist->getIsJingle();
         }
         return true;
     }

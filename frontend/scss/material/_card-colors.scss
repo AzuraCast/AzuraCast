@@ -26,6 +26,10 @@
 .card-header.bg-primary-dark {
   .card-title,
   .card-subtitle {
-    color: #fff;
+    color: $white-primary;
+  }
+
+  .text-muted {
+    color: $white-hint !important;
   }
 }

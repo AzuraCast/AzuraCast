@@ -2,7 +2,7 @@
 /** @var App\Entity\Station $station */
 
 $pageClasses = [];
-$pageClasses[] = 'station-' . $station->getShortName();
+$pageClasses[] = 'page-station-public-player-embed station-' . $station->getShortName();
 $pageClasses[] = ($isSocial) ? 'embed-social' : 'embed';
 
 $this->layout(

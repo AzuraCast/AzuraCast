@@ -6,36 +6,31 @@ namespace App\Entity\Api;
 
 use App\Entity\Api\NowPlaying\SongHistory;
 use App\Traits\LoadFromParentObject;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="object", schema="Api_DetailedSongHistory")
- */
+#[OA\Schema(
+    schema: 'Api_DetailedSongHistory',
+    type: 'object'
+)]
 class DetailedSongHistory extends SongHistory
 {
     use LoadFromParentObject;
 
-    /**
-     * Number of listeners when the song playback started.
-     *
-     * @OA\Property(example=94)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Number of listeners when the song playback started.',
+        example: 94
+    )]
     public int $listeners_start = 0;
 
-    /**
-     * Number of listeners when song playback ended.
-     *
-     * @OA\Property(example=105)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'Number of listeners when song playback ended.',
+        example: 105
+    )]
     public int $listeners_end = 0;
 
-    /**
-     * The sum total change of listeners between the song's start and ending.
-     *
-     * @OA\Property(example=11)
-     * @var int
-     */
+    #[OA\Property(
+        description: 'The sum total change of listeners between the song\'s start and ending.',
+        example: 11
+    )]
     public int $delta_total = 0;
 }

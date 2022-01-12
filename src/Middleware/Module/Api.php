@@ -8,7 +8,7 @@ use App\Entity;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use GuzzleHttp\Psr7\Uri;
+use App\Utilities\Urls;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
@@ -22,7 +22,7 @@ use Symfony\Component\VarDumper\VarDumper;
 class Api
 {
     public function __construct(
-        protected Entity\Repository\ApiKeyRepository $api_repo,
+        protected Entity\Repository\ApiKeyRepository $apiKeyRepo,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Environment $environment
     ) {
@@ -43,35 +43,26 @@ class Api
         }
 
         // Attempt API key auth if a key exists.
-        $api_key = $this->getApiKey($request);
-        $api_user = (!empty($api_key)) ? $this->api_repo->authenticate($api_key) : null;
-
-        // Override the request's "user" variable if API authentication is supplied and valid.
-        if ($api_user instanceof Entity\User) {
-            $request = $request->withAttribute(ServerRequest::ATTR_USER, $api_user);
-            $request->getAcl()->setRequest($request);
-
-            Entity\AuditLog::setCurrentUser($api_user);
-        }
+        $apiUser = $request->getAttribute(ServerRequest::ATTR_USER);
 
         // Set default cache control for API pages.
         $settings = $this->settingsRepo->readSettings();
 
-        $prefer_browser_url = $settings->getPreferBrowserUrl();
+        $preferBrowserUrl = $settings->getPreferBrowserUrl();
 
         $response = $handler->handle($request);
 
         // Check for a user-set CORS header override.
-        $acao_header = trim($settings->getApiAccessControl());
-        if (!empty($acao_header)) {
-            if ('*' === $acao_header) {
+        $acaoHeader = trim($settings->getApiAccessControl());
+        if (!empty($acaoHeader)) {
+            if ('*' === $acaoHeader) {
                 $response = $response->withHeader('Access-Control-Allow-Origin', '*');
             } else {
                 // Return the proper ACAO header matching the origin (if one exists).
                 $origin = $request->getHeaderLine('Origin');
 
                 if (!empty($origin)) {
-                    $rawOrigins = array_map('trim', explode(',', $acao_header));
+                    $rawOrigins = array_map('trim', explode(',', $acaoHeader));
 
                     $baseUrl = $settings->getBaseUrl();
                     if (null !== $baseUrl) {
@@ -80,12 +71,14 @@ class Api
 
                     $origins = [];
                     foreach ($rawOrigins as $rawOrigin) {
-                        $uri = new Uri($rawOrigin);
-                        if (empty($uri->getScheme())) {
-                            $origins[] = (string)($uri->withScheme('http'));
-                            $origins[] = (string)($uri->withScheme('https'));
-                        } else {
-                            $origins[] = (string)$uri;
+                        $uri = Urls::getUri($rawOrigin);
+                        if (null !== $uri) {
+                            if (empty($uri->getScheme())) {
+                                $origins[] = (string)($uri->withScheme('http'));
+                                $origins[] = (string)($uri->withScheme('https'));
+                            } else {
+                                $origins[] = (string)$uri;
+                            }
                         }
                     }
 
@@ -97,7 +90,7 @@ class Api
                     }
                 }
             }
-        } elseif ($api_user instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
+        } elseif ($apiUser instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
             // Default behavior:
             // Only set global CORS for GET requests and API-authenticated requests;
             // Session-authenticated, non-GET requests should only be made in a same-host situation.
@@ -105,7 +98,7 @@ class Api
         }
 
         if ($response instanceof Response && !$response->hasCacheLifetime()) {
-            if ($prefer_browser_url || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
+            if ($preferBrowserUrl || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
                 $response = $response->withNoCache();
             } else {
                 $response = $response->withCacheLifetime(15);
@@ -113,39 +106,5 @@ class Api
         }
 
         return $response;
-    }
-
-    /**
-     * @param ServerRequest $request
-     */
-    protected function getApiKey(ServerRequest $request): ?string
-    {
-        // Check authorization header
-        $auth_headers = $request->getHeader('Authorization');
-        $auth_header = $auth_headers[0] ?? '';
-
-        if (preg_match("/Bearer\s+(.*)$/i", $auth_header, $matches)) {
-            return $matches[1];
-        }
-
-        // Check API key header
-        $api_key_headers = $request->getHeader('X-API-Key');
-        if (!empty($api_key_headers[0])) {
-            return $api_key_headers[0];
-        }
-
-        // Check cookies
-        $cookieParams = $request->getCookieParams();
-        if (!empty($cookieParams['token'])) {
-            return $cookieParams['token'];
-        }
-
-        // Check URL parameters as last resort
-        $queryApiKey = $request->getQueryParam('api-key');
-        if (!empty($queryApiKey)) {
-            return $queryApiKey;
-        }
-
-        return null;
     }
 }

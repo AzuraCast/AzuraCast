@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
 use App\Exception\CannotProcessMediaException;
+use App\Exception\StorageLocationFullException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
@@ -27,11 +28,7 @@ class FlowUploadAction
         $station = $request->getStation();
 
         $mediaStorage = $station->getMediaStorageLocation();
-
-        if ($mediaStorage->isStorageFull()) {
-            return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
-        }
+        $mediaStorage->errorIfFull();
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
         if ($flowResponse instanceof ResponseInterface) {
@@ -40,12 +37,16 @@ class FlowUploadAction
 
         $currentDir = $request->getParam('currentDirectory', '');
 
-        $destPath = $flowResponse->getOriginalFilename();
+        $destPath = $flowResponse->getClientFilename();
         if (!empty($currentDir)) {
             $destPath = $currentDir . '/' . $destPath;
         }
 
-        $uploadedSize = $flowResponse->getUploadedSize();
+        $uploadedSize = $flowResponse->getSize();
+
+        if (!$mediaStorage->canHoldFile($uploadedSize)) {
+            throw new StorageLocationFullException();
+        }
 
         try {
             $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse->getUploadedPath());
@@ -85,6 +86,6 @@ class FlowUploadAction
         $em->persist($mediaStorage);
         $em->flush();
 
-        return $response->withJson(new Entity\Api\Status());
+        return $response->withJson(Entity\Api\Status::created());
     }
 }

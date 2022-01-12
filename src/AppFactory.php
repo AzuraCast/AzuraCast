@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Console\Application;
+use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use Composer\Autoload\ClassLoader;
@@ -60,8 +61,8 @@ class AppFactory
         self::buildAppFromContainer($di);
 
         $env = $di->get(Environment::class);
-        $locale = Locale::createForCli($env);
-        $locale->register();
+
+        SupportedLocales::createForCli($env);
 
         return $di->get(Application::class);
     }
@@ -128,9 +129,6 @@ class AppFactory
 
         self::applyPhpSettings($environment);
 
-        // Helper constants for annotations.
-        define('SAMPLE_TIMESTAMP', random_int(time() - 86400, time() + 86400));
-
         // Override DI definitions for settings.
         $diDefinitions[Environment::class] = $environment;
 
@@ -170,10 +168,10 @@ class AppFactory
                     return;
                 }
 
-                $errno = $error["type"] ?? E_ERROR;
-                $errfile = $error["file"] ?? 'unknown';
-                $errline = $error["line"] ?? 0;
-                $errstr = $error["message"] ?? 'Shutdown';
+                $errno = $error["type"];
+                $errfile = $error["file"];
+                $errline = $error["line"];
+                $errstr = $error["message"];
 
                 if ($errno &= E_PARSE | E_ERROR | E_USER_ERROR | E_CORE_ERROR | E_COMPILE_ERROR) {
                     $logger->critical(
@@ -228,7 +226,11 @@ class AppFactory
 
     protected static function applyPhpSettings(Environment $environment): void
     {
-        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+        error_reporting(
+            $environment->isProduction()
+                ? E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED
+                : E_ALL & ~E_NOTICE
+        );
 
         $displayStartupErrors = (!$environment->isProduction() || $environment->isCli())
             ? '1'
@@ -243,13 +245,16 @@ class AppFactory
                 ? '/dev/stderr'
                 : $environment->getTempDirectory() . '/php_errors.log'
         );
-        ini_set('session.use_only_cookies', '1');
-        ini_set('session.cookie_httponly', '1');
-        ini_set('session.cookie_lifetime', '86400');
-        ini_set('session.use_strict_mode', '1');
+
+        if (!headers_sent()) {
+            ini_set('session.use_only_cookies', '1');
+            ini_set('session.cookie_httponly', '1');
+            ini_set('session.cookie_lifetime', '86400');
+            ini_set('session.use_strict_mode', '1');
+
+            session_cache_limiter('');
+        }
 
         date_default_timezone_set('UTC');
-
-        session_cache_limiter('');
     }
 }

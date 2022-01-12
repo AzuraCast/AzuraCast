@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Event\Media;
 
-use App\Entity;
+use Azura\MetadataManager\MetadataInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class WriteMetadata extends Event
 {
     public function __construct(
-        protected Entity\Metadata $metadata,
+        protected MetadataInterface $metadata,
         protected string $path
     ) {
     }
 
-    public function getMetadata(): ?Entity\Metadata
+    public function getMetadata(): ?MetadataInterface
     {
         return $this->metadata;
     }

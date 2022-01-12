@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
-use App\Acl;
 use App\Entity;
+use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\Flash;
@@ -24,7 +24,7 @@ class RecentBackupCheck
         // This notification is for backup administrators only.
         $request = $event->getRequest();
         $acl = $request->getAcl();
-        if (!$acl->isAllowed(Acl::GLOBAL_BACKUPS)) {
+        if (!$acl->isAllowed(GlobalPermissions::Backups)) {
             return;
         }
 

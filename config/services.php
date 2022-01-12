@@ -92,9 +92,13 @@ return [
         try {
             // Fetch and store entity manager.
             $config = Doctrine\ORM\Tools\Setup::createConfiguration(
-                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS,
+                !$environment->isProduction(),
                 $environment->getTempDirectory() . '/proxies',
                 $doctrineCache
+            );
+            
+            $config->setAutoGenerateProxyClasses(
+                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS
             );
 
             $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
@@ -219,28 +223,6 @@ return [
         return $store;
     },
 
-    // Session save handler middleware
-    Mezzio\Session\SessionPersistenceInterface::class => static function (
-        Environment $environment,
-        Psr\Cache\CacheItemPoolInterface $cachePool
-    ) {
-        if ($environment->isCli()) {
-            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        }
-
-        $cachePool = new Symfony\Component\Cache\Adapter\ProxyAdapter($cachePool, 'session.');
-
-        return new Mezzio\Session\Cache\CacheSessionPersistence(
-            $cachePool,
-            'app_session',
-            '/',
-            'nocache',
-            43200,
-            time(),
-            true
-        );
-    },
-
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
@@ -250,14 +232,19 @@ return [
     ) {
         $console = new App\Console\Application(
             $environment->getAppName() . ' Command Line Tools (' . $environment->getAppEnvironment() . ')',
-            $version->getVersion(),
-            $di
+            $version->getVersion()
         );
         $console->setDispatcher($dispatcher);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
-        $event = new App\Event\BuildConsoleCommands($console);
+        $event = new Event\BuildConsoleCommands($console, $di);
         $dispatcher->dispatch($event);
+
+        $commandLoader = new Symfony\Component\Console\CommandLoader\ContainerCommandLoader(
+            $di,
+            $event->getAliases()
+        );
+        $console->setCommandLoader($commandLoader);
 
         return $console;
     },
@@ -330,7 +317,7 @@ return [
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new App\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
+            new Azura\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),
         ];
         $encoders = [

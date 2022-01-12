@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.14.1
+  version: 0.15.0
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -144,8 +144,7 @@ paths:
           $ref: '#/components/responses/GenericError'
       security:
         -
-          ApiKey:
-            - 'administer stations'
+          ApiKey: []
   /admin/permissions:
     get:
       tags:

@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.15.0 (Jan 12, 2022)
+
+## New Features/Changes
+
 - **Docker ARM64 Images**: Thanks to advances in our build process and upstream software, we are now able to build our
   Docker images for both AMD64(X86_64) and ARM64 architectures. This means many devices that run 64-bit ARM
   architecture, like the Raspberry Pi 4 and other comparable devices, can now support the default installation method.

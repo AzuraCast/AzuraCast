@@ -31,7 +31,7 @@
                     </div>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button-group size="sm">
+                    <b-button-group size="sm" v-if="!row.item.is_super_admin">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                             <translate key="lang_btn_edit">Edit</translate>
                         </b-button>

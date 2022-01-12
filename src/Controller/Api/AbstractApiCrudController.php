@@ -17,7 +17,6 @@ use Psr\Http\Message\ResponseInterface;
 use Stringable;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -90,6 +89,7 @@ abstract class AbstractApiCrudController
                 ),
             ];
         }
+
         return $return;
     }
 

@@ -140,6 +140,8 @@ class RolesController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\Role::class;
     protected string $resourceRouteName = 'api:admin:role';
 
+    protected Entity\Role $superAdminRole;
+
     public function __construct(
         protected Acl $acl,
         protected Entity\Repository\RolePermissionRepository $permissionRepo,
@@ -148,6 +150,8 @@ class RolesController extends AbstractAdminApiCrudController
         ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
+
+        $this->superAdminRole = $permissionRepo->ensureSuperAdministratorRole();
     }
 
     /**
@@ -179,14 +183,36 @@ class RolesController extends AbstractAdminApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        $result = parent::viewRecord($record, $request);
+
+        if ($record instanceof Entity\Role) {
+            $result['is_super_admin'] = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
+        }
+
+        return $result;
+    }
+
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
+    {
+        if (
+            $record instanceof Entity\Role
+            && $this->superAdminRole->getIdRequired() === $record->getIdRequired()
+        ) {
+            throw new RuntimeException('Cannot modify the Super Administrator role.');
+        }
+
+        return parent::editRecord($data, $record, $context);
+    }
+
     protected function deleteRecord(object $record): void
     {
         if (!($record instanceof Entity\Role)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $superAdminRole = $this->permissionRepo->ensureSuperAdministratorRole();
-        if ($superAdminRole->getIdRequired() === $record->getIdRequired()) {
+        if ($this->superAdminRole->getIdRequired() === $record->getIdRequired()) {
             throw new RuntimeException('Cannot remove the Super Administrator role.');
         }
 

@@ -29,7 +29,7 @@ use RuntimeException;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Listeners'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -40,14 +40,9 @@ use RuntimeException;
                     items: new OA\Items(ref: '#/components/schemas/Api_Listener')
                 )
             ),
-            new OA\Response(
-                response: 404,
-                description: 'Station not found'
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

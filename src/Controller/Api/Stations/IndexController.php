@@ -36,7 +36,7 @@ use Psr\Http\Message\ResponseInterface;
         description: 'Return information about a single station.',
         tags: ['Stations: General'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -44,10 +44,7 @@ use Psr\Http\Message\ResponseInterface;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/Api_NowPlaying_Station')
             ),
-            new OA\Response(
-                response: 404,
-                description: 'Station not found'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
         ]
     )
 ]

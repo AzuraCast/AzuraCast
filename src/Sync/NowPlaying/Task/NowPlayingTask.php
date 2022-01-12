@@ -62,8 +62,7 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
             return;
         }
 
-        $settings = $this->settingsRepo->readSettings();
-        $include_clients = (Entity\Analytics::LEVEL_NONE !== $settings->getAnalytics());
+        $include_clients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
 
         $frontend_adapter = $this->adapters->getFrontendAdapter($station);
         $remote_adapters = $this->adapters->getRemoteAdapters($station);

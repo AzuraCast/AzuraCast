@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -35,10 +35,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                     items: new OA\Items(ref: '#/components/schemas/StationPlaylist')
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -51,7 +49,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         ),
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -59,10 +57,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Get(
@@ -72,7 +68,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Playlist ID',
@@ -87,10 +83,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/StationPlaylist')
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Put(
@@ -103,7 +98,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         ),
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Playlist ID',
@@ -113,15 +108,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Delete(
@@ -131,7 +121,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Playlists'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'id',
                 description: 'Playlist ID',
@@ -141,15 +131,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

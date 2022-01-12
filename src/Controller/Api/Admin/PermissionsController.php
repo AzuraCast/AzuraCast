@@ -19,8 +19,13 @@ use Psr\Http\Message\ResponseInterface;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: Roles'],
         responses: [
-            new OA\Response(response: 200, description: 'Success'),
-            new OA\Response(response: 403, description: 'Access denied'),
+            new OA\Response(
+                response: 200,
+                description: 'Success' // TODO: Response Body
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

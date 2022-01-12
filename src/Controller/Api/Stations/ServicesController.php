@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
             new OA\Response(
@@ -33,13 +33,9 @@ use Psr\Http\Message\ResponseInterface;
                     ref: '#/components/schemas/Api_StationServiceStatus'
                 )
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access Forbidden',
-                content: new OA\JsonContent(
-                    ref: '#/components/schemas/Api_Error'
-                )
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -49,19 +45,13 @@ use Psr\Http\Message\ResponseInterface;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access Forbidden',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -71,7 +61,7 @@ use Psr\Http\Message\ResponseInterface;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
                 description: 'The action to perform (start, stop, restart)',
@@ -81,18 +71,10 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(
-                    schema: '#/components/schemas/Api_Status'
-                )
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access Forbidden',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -102,7 +84,7 @@ use Psr\Http\Message\ResponseInterface;
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [
-            new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'action',
                 description: 'The action to perform (for all: start, stop, restart, skip, disconnect)',
@@ -112,16 +94,10 @@ use Psr\Http\Message\ResponseInterface;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access Forbidden',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Error')
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

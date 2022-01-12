@@ -17,9 +17,7 @@ class OverviewAction
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
         // Get current analytics level.
-        $analytics_level = $settingsRepo->readSettings()->getAnalytics();
-
-        if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
+        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
             return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
         }

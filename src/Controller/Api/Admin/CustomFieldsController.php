@@ -22,10 +22,8 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: '#/components/schemas/CustomField'))
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Post(
@@ -33,20 +31,18 @@ use OpenApi\Attributes as OA;
         operationId: 'addCustomField',
         description: 'Create a new custom field.',
         security: OpenApi::API_KEY_SECURITY,
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
+        ),
         tags: ['Administration: Custom Fields'],
         responses: [
-            new OA\RequestBody(
-                content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
-            ),
             new OA\Response(
                 response: 200,
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Get(
@@ -70,10 +66,9 @@ use OpenApi\Attributes as OA;
                 description: 'Success',
                 content: new OA\JsonContent(ref: '#/components/schemas/CustomField')
             ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Put(
@@ -95,15 +90,10 @@ use OpenApi\Attributes as OA;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     ),
     OA\Delete(
@@ -122,15 +112,10 @@ use OpenApi\Attributes as OA;
             ),
         ],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Api_Status')
-            ),
-            new OA\Response(
-                response: 403,
-                description: 'Access denied'
-            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_SUCCESS, response: 200),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
         ]
     )
 ]

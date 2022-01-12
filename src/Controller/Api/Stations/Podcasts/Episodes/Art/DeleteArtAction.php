@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
     security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: Podcasts'],
     parameters: [
-        new OA\Parameter(ref: OpenApi::STATION_ID_REQUIRED),
+        new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
         new OA\Parameter(
             name: 'podcast_id',
             description: 'Podcast ID',

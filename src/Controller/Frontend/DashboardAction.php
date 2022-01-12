@@ -25,8 +25,7 @@ class DashboardAction
         $settings = $settingsRepo->readSettings();
 
         // Detect current analytics level.
-        $analyticsLevel = $settings->getAnalytics();
-        $showCharts = $analyticsLevel !== Entity\Analytics::LEVEL_NONE;
+        $showCharts = $settings->isAnalyticsEnabled();
 
         $router = $request->getRouter();
         $acl = $request->getAcl();

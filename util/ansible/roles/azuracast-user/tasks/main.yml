@@ -22,7 +22,7 @@
     shell: /bin/bash
     groups: 'sudo,admin,www-data'
     password: "{{ prod_azuracast_user_password.stdout|password_hash('sha512') }}"
-  notify: send user notification
+  notify: Send user notification
 
 - name: Modify www-data User
   user:

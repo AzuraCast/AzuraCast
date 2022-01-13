@@ -1,19 +1,23 @@
 ---
 - name: Install cron-related packages
   apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
+    name:
       - cron
       - tmpreaper
 
 - name: Generate Cron Template
-  template: src=azuracast_cron.j2 dest="{{ tmp_base }}/azuracast_cron" force=true
+  template:
+    src: azuracast_cron.j2
+    dest: "{{ tmp_base }}/azuracast_cron"
+    force: true
+    mode: 0644
 
 - name: Install Cron file
-  shell: "crontab -u azuracast {{ tmp_base }}/azuracast_cron"
+  command: >-
+    crontab -u azuracast {{ tmp_base }}/azuracast_cron
   notify: restart cron
 
 - name: Clean up temp Cron file
-  file: path="{{ tmp_base }}/azuracast_cron" state=absent
+  file:
+    path: "{{ tmp_base }}/azuracast_cron"
+    state: absent

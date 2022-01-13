@@ -16,21 +16,26 @@
 - name: Pull Node Dependencies
   become: true
   become_user: azuracast
-  shell: npm ci
+  command: >-
+    npm ci
   args:
     chdir: "{{ www_base }}/frontend"
 
 - name: Build AzuraCast Frontend Scripts
   become: true
   become_user: azuracast
-  shell: npm run build
+  command: >-
+    npm run build
   args:
     chdir: "{{ www_base }}/frontend"
 
 - name: Set permissions of generated frontend content
-  shell: "{{ item }}"
-  with_items:
+  command: >-
+    {{ azuracast_build_perm_command }}
+  loop:
     - "chown -R azuracast:www-data {{ www_base }}"
     - "find {{ www_base }} -type d -exec chmod 755 {} \\;"
     - "find {{ www_base }} -type f -exec chmod 644 {} \\;"
+  loop_control:
+    loop_var: azuracast_build_perm_command
   # Note: Don't add warn: false here, it's incompatible with the earlier Ansibles used in 16.04/18.04.

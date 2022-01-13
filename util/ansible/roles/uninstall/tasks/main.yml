@@ -1,58 +1,70 @@
 ---
-  - debug:
-      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
+- name: "Running context"
+  debug:
+    msg: >-
+      Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }}
+      {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})
 
-  - name: Shut down all services
-    service:
-      name: "{{ item }}"
-      state: stopped
-    with_items:
-     - influxdb
-     - mysql
-     - php7.4-fpm
-     - nginx
-     - redis-server
-     - supervisor
-    ignore_errors: True
+- name: "Shut down all services"
+  service:
+    name: "{{ uninstall_svc_to_stop }}"
+    state: stopped
+  loop:
+    - "influxdb"
+    - "mysql"
+    - "php7.4-fpm"
+    - "nginx"
+    - "redis-server"
+    - "supervisor"
+  loop_control:
+    loop_var: uninstall_svc_to_stop
+  ignore_errors: true
 
-  - name: Kill all processes owned by AzuraCast user
-    command: pkill -9 -u azuracast
-    ignore_errors: true
+- name: Kill all processes owned by AzuraCast user
+  command: pkill -9 -u azuracast
+  ignore_errors: true
 
-  - name: Update apt
-    apt:
-      update_cache: yes
+- name: Update apt
+  apt:
+    update_cache: true
 
-  - name: Remove AzuraCast User
-    user:
-      name: azuracast
-      state: absent
+- name: Remove AzuraCast User
+  user:
+    name: azuracast
+    state: absent
 
-  - name: Remove AzuraCast folders
-    file: path="{{ item }}" state=absent
-    with_items:
-     - "{{ tmp_base }}"
-     - "{{ app_base }}/servers"
+- name: "Remove AzuraCast folders"
+  file:
+    path: "{{ uninstall_file_to_delete }}"
+    state: absent
+  loop:
+    - "{{ tmp_base }}"
+    - "{{ app_base }}/servers"
+  loop_control:
+    loop_var: uninstall_file_to_delete
 
-  - name: Remove PPAs
-    apt_repository: repo="{{ item }}" state=absent
-    with_items:
-      - ppa:avsm/ppa
+- name: Remove PPAs
+  apt_repository:
+    repo: "{{ item }}"
+    state: absent
+  loop:
+    - "ppa:avsm/ppa"
+  loop_control:
+    loop_var: uninstall_repo_to_delete
 
-  - name: UFW - Turn off Firewall
-    ufw:
-      state: disabled
-    ignore_errors: True
+- name: UFW - Turn off Firewall
+  ufw:
+    state: disabled
+  ignore_errors: true
 
-  - name: Remove software
-
-    apt:
-      name: "{{ packages }}"
-      state: absent
-      force: yes
-      purge: yes
-    vars:
-      packages:
+- name: Remove software
+  apt:
+    name: "{{ packages }}"
+    state: absent
+    force: true
+    purge: true
+  vars:
+    packages:
       # Radio software
       - icecast2
       - liquidsoap

@@ -2,9 +2,9 @@
 - name: Enable and restart all core services
   service:
     name: "{{ item }}"
-    enabled: yes
+    enabled: true
     state: restarted
-  ignore_errors: True
+  ignore_errors: true
   with_items:
     - "mysql"
     - "php8.1-fpm"

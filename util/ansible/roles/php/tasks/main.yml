@@ -2,7 +2,7 @@
 - name: Add PHP PPA repository
   apt_repository:
     repo: "ppa:ondrej/php"
-    update_cache: yes
+    update_cache: true
 
 - name: Remove Old PHP Libraries
   apt:
@@ -24,7 +24,7 @@
 - name: "Install PHP {{ php_version }}"
   apt:
     name: "{{ packages }}"
-    state: latest
+    state: present
   vars:
     packages:
       - "php{{ php_version }}-fpm"
@@ -45,24 +45,30 @@
   template:
     src: fpmpool.j2
     dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
-    force: True
+    force: true
+    mode: 0644
 
 - name: Configure php-fpm php.ini
   ini_file:
     dest: "/etc/php/{{ php_version }}/fpm/php.ini"
     section: PHP
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  with_items:
-    - { option: 'post_max_size',       value: "50M" }
-    - { option: 'short_open_tag',      value: "On" }
-    - { option: 'upload_max_filesize', value: "50M" }
+    option: "{{ php_init_option.option }}"
+    value: "{{ php_init_option.value }}"
+    mode: 0644
+  loop:
+    - option: "post_max_size"
+      value: "50M"
+    - option: "short_open_tag"
+      value: "On"
+    - option: "upload_max_filesize"
+      value: "50M"
+  loop_control:
+    loop_var: php_init_option
 
 - name: Configure php-cli php.ini
   ini_file:
     dest: "/etc/php/{{ php_version }}/cli/php.ini"
     section: PHP
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  with_items:
-    - { option: 'short_open_tag',      value: "On" }
+    option: "short_open_tag"
+    value: "On"
+    mode: 0644

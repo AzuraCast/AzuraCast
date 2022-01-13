@@ -10,6 +10,7 @@ use App\Entity;
 use App\Environment;
 use App\Exception\CsrfValidationException;
 use App\Http\ServerRequest;
+use App\Security\SplitToken;
 use App\Session\Csrf;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -85,29 +86,32 @@ class ApiAuth extends AbstractAuth
     protected function getApiKey(ServerRequestInterface $request): ?string
     {
         // Check authorization header
-        $auth_headers = $request->getHeader('Authorization');
-        $auth_header = $auth_headers[0] ?? '';
+        $authHeaders = $request->getHeader('Authorization');
+        $authHeader = $authHeaders[0] ?? '';
 
-        if (preg_match("/Bearer\s+(.*)$/i", $auth_header, $matches)) {
-            return $matches[1];
+        if (preg_match("/Bearer\s+(.*)$/i", $authHeader, $matches)) {
+            $apiKey = $matches[1];
+            if (SplitToken::isValidKeyString($apiKey)) {
+                return $apiKey;
+            }
         }
 
         // Check API key header
-        $api_key_headers = $request->getHeader('X-API-Key');
-        if (!empty($api_key_headers[0])) {
-            return $api_key_headers[0];
+        $apiKeyHeaders = $request->getHeader('X-API-Key');
+        if (!empty($apiKeyHeaders[0]) && SplitToken::isValidKeyString($apiKeyHeaders[0])) {
+            return $apiKeyHeaders[0];
         }
 
         // Check cookies
         $cookieParams = $request->getCookieParams();
-        if (!empty($cookieParams['token'])) {
+        if (!empty($cookieParams['token']) && SplitToken::isValidKeyString($cookieParams['token'])) {
             return $cookieParams['token'];
         }
 
         // Check URL parameters as last resort
         $queryParams = $request->getQueryParams();
         $queryApiKey = $queryParams['api_key'] ?? null;
-        if (!empty($queryApiKey)) {
+        if (!empty($queryApiKey) && SplitToken::isValidKeyString($queryApiKey)) {
             return $queryApiKey;
         }
 

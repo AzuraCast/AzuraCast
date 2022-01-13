@@ -44,6 +44,11 @@ class SplitToken
         return $token;
     }
 
+    public static function isValidKeyString(string $key): bool
+    {
+        return str_contains($key, self::SEPARATOR);
+    }
+
     public static function generate(): self
     {
         $random_str = hash('sha256', random_bytes(32));

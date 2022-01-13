@@ -29,20 +29,18 @@ class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $analytics_level = $this->settingsRepo->readSettings()->getAnalytics();
-
-        switch ($analytics_level) {
-            case Entity\Analytics::LEVEL_NONE:
+        switch ($this->settingsRepo->readSettings()->getAnalyticsEnum()) {
+            case Entity\Enums\AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();
                 break;
 
-            case Entity\Analytics::LEVEL_NO_IP:
+            case Entity\Enums\AnalyticsLevel::NoIp:
                 $this->purgeListeners();
                 $this->updateAnalytics(false);
                 break;
 
-            case Entity\Analytics::LEVEL_ALL:
+            case Entity\Enums\AnalyticsLevel::All:
                 $this->updateAnalytics(true);
                 break;
         }

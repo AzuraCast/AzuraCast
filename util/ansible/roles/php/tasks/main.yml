@@ -16,6 +16,7 @@
       - "php7.2-*"
       - "php7.4-*"
       - "php8.0-*"
+  ignore_errors: true
 
 - name: Set PHP Version
   set_fact:

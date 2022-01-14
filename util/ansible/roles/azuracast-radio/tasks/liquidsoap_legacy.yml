@@ -24,6 +24,7 @@
       - libavformat-dev
       - libavresample-dev
       - libavutil-dev
+      - libcurl4-gnutls-dev
       - libfaad-dev
       - libfdk-aac-dev
       - libflac-dev

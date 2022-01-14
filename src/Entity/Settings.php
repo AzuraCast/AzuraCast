@@ -223,24 +223,32 @@ class Settings implements Stringable
     #[
         OA\Property(description: "Listener Analytics Collection"),
         ORM\Column(length: 50, nullable: true),
-        Assert\Choice([Analytics::LEVEL_NONE, Analytics::LEVEL_NO_IP, Analytics::LEVEL_ALL]),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $analytics = Analytics::LEVEL_ALL;
+    protected ?string $analytics = null;
 
     public function getAnalytics(): string
     {
-        return $this->analytics ?? Analytics::LEVEL_ALL;
+        return $this->analytics ?? Entity\Enums\AnalyticsLevel::default()->value;
+    }
+
+    public function getAnalyticsEnum(): Entity\Enums\AnalyticsLevel
+    {
+        return Entity\Enums\AnalyticsLevel::tryFrom($this->analytics ?? '') ?? Entity\Enums\AnalyticsLevel::default();
     }
 
     public function isAnalyticsEnabled(): bool
     {
-        return Analytics::LEVEL_NONE !== $this->getAnalytics();
+        return Entity\Enums\AnalyticsLevel::None !== $this->getAnalyticsEnum();
     }
 
     public function setAnalytics(?string $analytics): void
     {
-        $this->analytics = $this->truncateNullableString($analytics, 50);
+        if (null !== $analytics && null === Entity\Enums\AnalyticsLevel::tryFrom($analytics)) {
+            throw new \InvalidArgumentException('Invalid analytics level.');
+        }
+
+        $this->analytics = $analytics;
     }
 
     #[

@@ -25,6 +25,16 @@ tmp/cache/*---*
 /web/static/yarn-error.log
 /util/package_usage_report*
 
+# Local Ansible development files
+/util/ansible/.direnv
+/util/ansible/.envrc
+/util/ansible/Makefile
+/util/ansible/.ansible-lint
+/util/ansible/requirements.txt
+/util/ansible/requirements.yml
+/util/ansible/roles/**/molecule/*
+
+
 # Composer-generated content
 /vendor/*
 /vendor/**/*

@@ -152,6 +152,10 @@ return function (CallableEventDispatcherInterface $dispatcher) {
     // Other event subscribers from across the application.
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
+        App\Notification\Check\BaseUrlCheck::class
+    );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
         App\Notification\Check\ComposeVersionCheck::class
     );
     $dispatcher->addCallableListener(

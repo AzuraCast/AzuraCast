@@ -13,7 +13,7 @@ interface RouterInterface
 
     public function withRequest(?ServerRequestInterface $request): self;
 
-    public function getBaseUrl(): UriInterface;
+    public function getBaseUrl(?bool $useRequest = null): UriInterface;
 
     /**
      * Simpler format for calling "named" routes with parameters.

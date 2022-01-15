@@ -1,0 +1,2 @@
+---
+init_app_env: "{{ app_env | default('production') }}"

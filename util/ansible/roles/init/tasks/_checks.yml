@@ -1,0 +1,15 @@
+---
+- name: Check architecture is supported
+  assert:
+    that:
+      - ansible_architecture in init_supported_architecture
+    msg: >-
+      Your architecture is not supported.
+
+- name: Check os is supported
+  assert:
+    that:
+      - ansible_distribution_release in (init_supported_os | map(attribute='distribution_release'))
+      - ansible_distribution_version in (init_supported_os | map(attribute='version'))
+    msg: >-
+      Your os distribution or version is not supported.

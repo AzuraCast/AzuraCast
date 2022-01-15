@@ -150,7 +150,7 @@ class CheckMediaTask extends AbstractTask
                 $message instanceof Message\AddNewMediaMessage
                 && $message->storage_location_id === $storageLocation->getId()
             ) {
-                $queuedNewFiles[$message->path] = true;
+                $queuedNewFiles[md5($message->path)] = true;
             }
         }
 
@@ -275,7 +275,7 @@ class CheckMediaTask extends AbstractTask
         array $musicFiles,
         array &$stats
     ): void {
-        foreach ($musicFiles as $newMusicFile) {
+        foreach ($musicFiles as $pathHash => $newMusicFile) {
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
             if (!MimeType::isPathProcessable($path)) {
@@ -290,7 +290,7 @@ class CheckMediaTask extends AbstractTask
                 $stats['not_processable']++;
             }
 
-            if (isset($queuedNewFiles[$path])) {
+            if (isset($queuedNewFiles[$pathHash])) {
                 $stats['already_queued']++;
             } else {
                 $message = new Message\AddNewMediaMessage();

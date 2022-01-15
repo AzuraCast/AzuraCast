@@ -157,14 +157,10 @@ class CheckMediaTask extends AbstractTask
         // Check queue for existing pending processing entries.
         $this->processExistingMediaRows($storageLocation, $queuedMediaUpdates, $musicFiles, $stats);
 
-        gc_collect_cycles();
-
         $storageLocation = $this->em->refetch($storageLocation);
 
         // Loop through currently unprocessable media.
         $this->processUnprocessableMediaRows($storageLocation, $musicFiles, $stats);
-
-        gc_collect_cycles();
 
         $storageLocation = $this->em->refetch($storageLocation);
 
@@ -226,6 +222,8 @@ class CheckMediaTask extends AbstractTask
                 $stats['deleted']++;
             }
         }
+
+        $this->em->clear();
     }
 
     protected function processUnprocessableMediaRows(
@@ -267,6 +265,8 @@ class CheckMediaTask extends AbstractTask
                 $this->unprocessableMediaRepo->clearForPath($storageLocation, $unprocessableRow['path']);
             }
         }
+
+        $this->em->clear();
     }
 
     protected function processNewFiles(

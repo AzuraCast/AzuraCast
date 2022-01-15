@@ -3,8 +3,6 @@ init_supported_architecture:
   - i386
   - x86_64
 init_supported_os:
-  - distribution_release: "xenial"
-    version: "16.04"
   - distribution_release: "bionic"
     version: "18.04"
   - distribution_release: "focal"

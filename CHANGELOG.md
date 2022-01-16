@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed an issue on Ansible installations preventing message queues from being processed correctly.
+
 ---
 
 # AzuraCast 0.15.0 (Jan 12, 2022)

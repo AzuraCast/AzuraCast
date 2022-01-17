@@ -36,7 +36,7 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
     protected function getDefaultUrl(): string
     {
         $assetUrl = $this->environment->getAssetUrl();
-        return $assetUrl . '/icons/' . $this->environment->getAppEnvironment() . '/original.png';
+        return $assetUrl . '/icons/' . $this->environment->getAppEnvironmentEnum()->value . '/original.png';
     }
 
     public function upload(Image $image): void
@@ -75,6 +75,6 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
             return $assetUrl . '/uploads/browser_icon/' . $size . '.' . $mtime . '.png';
         }
 
-        return $assetUrl . '/icons/' . $this->environment->getAppEnvironment() . '/' . $size . '.png';
+        return $assetUrl . '/icons/' . $this->environment->getAppEnvironmentEnum()->value . '/' . $size . '.png';
     }
 }

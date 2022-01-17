@@ -231,7 +231,8 @@ return [
         Environment $environment
     ) {
         $console = new App\Console\Application(
-            $environment->getAppName() . ' Command Line Tools (' . $environment->getAppEnvironment() . ')',
+            $environment->getAppName() . ' Command Line Tools ('
+            . $environment->getAppEnvironmentEnum()->getName() . ')',
             $version->getVersion()
         );
         $console->setDispatcher($dispatcher);

@@ -28,7 +28,7 @@ class SettingsAction
                 'apiUrl'         => (string)$router->named('api:admin:settings', [
                     'group' => Settings::GROUP_GENERAL,
                 ]),
-                'releaseChannel' => $version->getReleaseChannel(),
+                'releaseChannel' => $version->getReleaseChannelEnum()->value,
             ],
         );
     }

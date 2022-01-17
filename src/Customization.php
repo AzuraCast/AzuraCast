@@ -168,7 +168,7 @@ class Customization
         }
 
         if (!$this->environment->isProduction()) {
-            $title = '(' . ucfirst($this->environment->getAppEnvironment()) . ') ' . $title;
+            $title = '(' . $this->environment->getAppEnvironmentEnum()->getName() . ') ' . $title;
         }
 
         return $title ?? '';

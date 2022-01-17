@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Enums\ApplicationEnvironment;
 use App\Environment;
 use Codeception\Configuration;
 use Codeception\Lib\Framework;
@@ -46,7 +47,7 @@ class Module extends Framework implements DoctrineProvider
             $autoloader,
             [
                 Environment::BASE_DIR => Configuration::projectDir(),
-                Environment::APP_ENV => Environment::ENV_TESTING,
+                Environment::APP_ENV  => ApplicationEnvironment::Testing->value,
             ]
         );
 

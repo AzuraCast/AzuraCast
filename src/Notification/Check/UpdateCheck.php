@@ -6,6 +6,7 @@ namespace App\Notification\Check;
 
 use App\Entity;
 use App\Enums\GlobalPermissions;
+use App\Enums\ReleaseChannel;
 use App\Event\GetNotifications;
 use App\Session\Flash;
 use App\Version;
@@ -41,9 +42,9 @@ class UpdateCheck
         $actionLabel = __('Update Instructions');
         $actionUrl = Version::UPDATE_URL;
 
-        $releaseChannel = $this->version->getReleaseChannel();
+        $releaseChannel = $this->version->getReleaseChannelEnum();
 
-        if (Version::RELEASE_CHANNEL_STABLE === $releaseChannel && $updateData['needs_release_update']) {
+        if (ReleaseChannel::Stable === $releaseChannel && $updateData['needs_release_update']) {
             $notificationParts = [
                 '<b>' . __(
                     'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.',
@@ -67,7 +68,7 @@ class UpdateCheck
             return;
         }
 
-        if (Version::RELEASE_CHANNEL_ROLLING === $releaseChannel && $updateData['needs_rolling_update']) {
+        if (ReleaseChannel::RollingRelease === $releaseChannel && $updateData['needs_rolling_update']) {
             $notificationParts = [];
 
             $notificationParts[] = '<b>' . __(

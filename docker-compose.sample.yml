@@ -30,14 +30,13 @@ services:
       AZURACAST_DC_REVISION: 13
       AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
       AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
-      VIRTUAL_HOST: ${LETSENCRYPT_HOST:-azuracast.local}
       NGINX_TIMEOUT: ${NGINX_TIMEOUT:-1800}
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-}
       PUID: ${AZURACAST_PUID:-1000}
       PGID: ${AZURACAST_PGID:-1000}
     volumes:
-      - letsencrypt:/etc/nginx/certs:ro
+      - letsencrypt:/etc/nginx/certs
       - www_vendor:/var/azuracast/www/vendor
       - www_uploads:/var/azuracast/uploads
       - tmp_data:/var/azuracast/www_tmp

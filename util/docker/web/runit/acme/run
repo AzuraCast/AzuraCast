@@ -169,7 +169,9 @@ function update_cert {
     acme.sh --issue "${params_issue_arr[@]}"
 }
 
-if [ ! -z "$LETSENCRYPT_HOST" -a "$LETSENCRYPT_HOST" != " " ]; then
+if [ ! -z "$VIRTUAL_HOST" ]; then
+    echo "Multi-site configuration detected; skipping local ACME setup."
+elif [ ! -z "$LETSENCRYPT_HOST" -a "$LETSENCRYPT_HOST" != " " ]; then
     update_cert "$@"
 fi
 

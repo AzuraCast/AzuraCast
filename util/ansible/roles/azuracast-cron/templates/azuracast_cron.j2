@@ -1,4 +1,0 @@
-* * * * * php {{ www_base }}/bin/console azuracast:sync:run
-*/5 * * * * php {{ www_base }}/bin/console azuracast:sync:nowplaying --timeout=300
-*/5 * * * * php {{ www_base }}/bin/console queue:process 275
-0 */6 * * * tmpreaper 12h /var/azuracast/stations/*/temp

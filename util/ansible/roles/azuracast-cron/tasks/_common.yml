@@ -1,0 +1,6 @@
+---
+- name: Create ansible directory
+  file:
+    path: "/etc/ansible/facts.d"
+    state: directory
+    mode: 0755

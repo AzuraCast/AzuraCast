@@ -10,12 +10,11 @@
 
 - name: Enable and restart all core services
   service:
-    name: "{{ redis_service_to_restart }}"
+    name: "{{ _current_service }}"
     enabled: true
     state: restarted
-  ignore_errors: true
   loop:
     - "redis-server"
     - "redis"
   loop_control:
-    loop_var: redis_service_to_restart
+    loop_var: _current_service

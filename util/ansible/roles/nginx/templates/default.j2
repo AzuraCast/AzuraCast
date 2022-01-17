@@ -37,8 +37,8 @@ server {
     add_header X-Content-Type-Options nosniff;
     add_header Referrer-Policy no-referrer-when-downgrade;
 
-    access_log {{ app_base }}/www_tmp/access.log;
-    error_log {{ app_base }}/www_tmp/error.log;
+    access_log /var/log/nginx/azuracast.access.log;
+    error_log /var/log/nginx/azuracast.error.log;
 
     # Serve a static version of the nowplaying data for non-PHP-blocking delivery.
     location /api/nowplaying_static {

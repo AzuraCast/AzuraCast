@@ -18,10 +18,12 @@ init_system_packages:
   - apt-transport-https
   - build-essential
   - curl
+  - git
   - gzip
   - pwgen
   - python3
   - python3-pip
+  - python3-pymysql
   - python3-setuptools
   - python3-venv
   - python3-wheel

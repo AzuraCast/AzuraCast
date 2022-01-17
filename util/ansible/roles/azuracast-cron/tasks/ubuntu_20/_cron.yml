@@ -1,0 +1,18 @@
+---
+- name: Install cron system dependencies
+  apt:
+    name: "{{ azuracast_cron_system_packages }}"
+
+- name: Install azuracast cron jobs
+  cron:
+    name: "{{ _current_cron.name }}"
+    job: "{{ _current_cron.job }}"
+    minute: "{{ _current_cron.minute | default(omit) }}"
+    hour: "{{ _current_cron.hour | default(omit) }}"
+    day: "{{ _current_cron.day | default(omit) }}"
+    weekday: "{{ _current_cron.weekday | default(omit) }}"
+    month: "{{ _current_cron.month | default(omit) }}"
+  loop: "{{ azuracast_cron_jobs }}"
+  loop_control:
+    loop_var: _current_cron
+    label: " {{ _current_cron.name }}"

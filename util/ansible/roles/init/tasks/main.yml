@@ -45,5 +45,13 @@
   loop_control:
     loop_var: _current_detected_env
 
+
+- name: Get azuracast sources
+  git:
+    repo: https://github.com/AzuraCast/AzuraCast.git
+    dest: /var/azuracast/www
+    force: true
+    version: main
+
 - name: Flush before leaving
   meta: flush_handlers

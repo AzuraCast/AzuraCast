@@ -1,0 +1,43 @@
+---
+- name: Make update scripts executable
+  file:
+    path: "{{ _current_update_script }}"
+    state: file
+    mode: "0755"
+  loop:
+    - "{{ azuracast_src_dir }}/update.sh"
+    - "{{ azuracast_src_dir }}/bin/console"
+  loop_control:
+    loop_var: _current_update_script
+
+- name: Setup database schema
+  become: true
+  become_user: "{{ azuracast_user }}"
+  command: >-
+    php {{ azuracast_src_dir }}/bin/console azuracast:setup
+  register: _azuracast_setup_cmd
+  when:
+    - not (ansible_local.azuracast_setup_done | default(false))
+    - not (force_update | default(false))
+
+- name: Mark system as setup done
+  copy:
+    dest: /etc/ansible/facts.d/azuracast_setup_done.fact
+    content: "True"
+    mode: 0644
+
+- name: UPDATE - Migrate legacy configuration
+  become: true
+  become_user: "{{ azuracast_user }}"
+  command: >-
+    php {{ azuracast_src_dir }}/bin/console azuracast:config:migrate
+  when:
+    - force_update | default(update_mode|bool) | default(false)
+
+- name: UPDATE - Database schema
+  become: true
+  become_user: "{{ azuracast_user }}"
+  command: >-
+    php {{ azuracast_src_dir }}/bin/console azuracast:setup --update
+  when:
+    - force_update | default(update_mode|bool) | default(false)

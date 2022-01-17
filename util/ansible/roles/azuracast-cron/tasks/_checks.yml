@@ -1,0 +1,21 @@
+---
+- name: Detected environment
+  debug:
+    msg: "Detected env: {{ azuracast_env_marker }} ({{ ansible_architecture }})"
+
+- name: Check architecture is supported
+  assert:
+    quiet: true
+    that:
+      - azuracast_arch_is_supported
+    success_msg: "Your architecture is supported."
+    msg: >-
+      Your architecture is not supported. Supporting only: {{ azuracast_supported_architecture | join(', ') }}
+
+- name: Check system is supported
+  assert:
+    quiet: true
+    that:
+      - azuracast_system_is_supported
+    msg: >-
+      Your system is not supported. Supporting only: {{ azuracast_supported_env_markers | join(', ') }}

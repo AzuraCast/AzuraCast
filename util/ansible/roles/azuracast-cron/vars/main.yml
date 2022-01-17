@@ -1,0 +1,38 @@
+---
+azuracast_env_marker: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
+azuracast_supported_architecture:
+  - i386
+  - x86_64
+azuracast_supported_env_markers:
+  - "Ubuntu 20.04"
+
+azuracast_arch_is_supported: "{{ ansible_architecture in azuracast_supported_architecture }}"
+azuracast_system_is_supported: "{{ azuracast_env_marker in azuracast_supported_env_markers }}"
+
+azuracast_user: azuracast
+azuracast_group: azuracast
+
+azuracast_home_dir: /var/azuracast
+azuracast_src_dir: "{{ azuracast_home_dir }}/www"
+azuracast_util_dir: "{{ azuracast_src_dir }}/util"
+
+##
+# ***************** CRON *****************
+##
+azuracast_cron_system_packages:
+  - cron
+  - tmpreaper
+azuracast_cron_jobs:
+  - name: "azuracast_sync"
+    user: "{{ azuracast_user }}"
+    job: "php {{ www_base }}/bin/console azuracast:sync:run"
+
+  - name: "azuracast_sync_nowplaying"
+    user: "{{ azuracast_user }}"
+    job: "php {{ www_base }}/bin/console azuracast:sync:nowplaying --timeout=300"
+    minute: "*/5"
+
+  - name: "azuracast_tmpreaper"
+    user: "{{ azuracast_user }}"
+    hour: "*/6"
+    job: "tmpreaper 12h /var/azuracast/stations/*/temp"

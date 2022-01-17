@@ -35,6 +35,7 @@
     password: "{{ mysql_user_password }}"
     priv: "azuracast.*:ALL,GRANT"
     state: present
+    login_unix_socket: "/run/mysqld/mysqld.sock"
   notify: send mysql notification
 
 - name: Add .my.cnf
@@ -53,12 +54,13 @@
 
 # Create Database
 - name: Create MySQL Database
-  mysql_db:
+  community.mysql.mysql_db:
     config_file: "/root/.my.cnf"
     name: azuracast
     state: present
     collation: utf8mb4_unicode_ci
     encoding: utf8mb4
+    login_unix_socket: "/run/mysqld/mysqld.sock"
   register: azuracast_db_created
 
 - name: Set up environment file
@@ -75,7 +77,7 @@
       value: '3306'
     - option: 'MYSQL_USER'
       value: 'azuracast'
-    - option: 'MYSQL_DB'
+    - option: 'MYSQL_DB' 
       value: 'azuracast'
     - option: 'MYSQL_PASSWORD'
       value: "{{ mysql_user_password }}"

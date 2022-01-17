@@ -10,7 +10,7 @@
     state: absent
   vars:
     packages:
-      - "php5-*"
+      - "php5*"
       - "php7.0-*"
       - "php7.1-*"
       - "php7.2-*"

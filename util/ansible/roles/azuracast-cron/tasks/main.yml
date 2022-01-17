@@ -1,23 +1,32 @@
 ---
-- name: Install cron-related packages
-  apt:
-    name:
-      - cron
-      - tmpreaper
+- name: Sanity checks
+  import_tasks: _checks.yml
 
-- name: Generate Cron Template
-  template:
-    src: azuracast_cron.j2
-    dest: "{{ tmp_base }}/azuracast_cron"
-    force: true
-    mode: 0644
+- name: Common tasks
+  import_tasks: _common.yml
 
-- name: Install Cron file
-  command: >-
-    crontab -u azuracast {{ tmp_base }}/azuracast_cron
-  notify: restart cron
+- name: Load distro-specific vars
+  include_vars: "{{ _current_distribution_vars }}"
+  with_first_found:
+    - skip: true
+      files:
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}_{{ ansible_architecture | lower }}.yml"
+        - "{{ ansible_distribution | lower }}_{{ ansible_architecture | lower }}.yml"
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution | lower }}.yml"
+        - "{{ ansible_os_family | lower }}.yml"
+  loop_control:
+    loop_var: _current_distribution_vars
 
-- name: Clean up temp Cron file
-  file:
-    path: "{{ tmp_base }}/azuracast_cron"
-    state: absent
+- name: Execute distro-specific tasks
+  include_tasks: "{{ _current_detected_env }}"
+  with_first_found:
+    - skip: true
+      files:
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}_{{ ansible_architecture | lower }}/main.yml"
+        - "{{ ansible_distribution | lower }}_{{ ansible_architecture | lower }}/main.yml"
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}/main.yml"
+        - "{{ ansible_distribution | lower }}/main.yml"
+        - "{{ ansible_os_family | lower }}/main.yml"
+  loop_control:
+    loop_var: _current_detected_env

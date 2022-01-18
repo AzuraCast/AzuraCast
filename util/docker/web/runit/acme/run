@@ -4,6 +4,10 @@
 # Uses code from:
 # https://github.com/nginx-proxy/acme-companion/blob/main/app/letsencrypt_service
 
+# We set a "LOG_LEVEL" that is incompatible with acme.sh. Overwrite it.
+export LOG_LEVEL=2
+export DEBUG=1
+
 shopt -s expand_aliases
 . /usr/local/acme.sh/acme.sh.env
 
@@ -88,6 +92,7 @@ function update_cert {
         # Use default or user provided ACME end point
         acme_ca_uri="$ACME_CA_URI"
     fi
+
     # LETSENCRYPT_TEST overrides LETSENCRYPT_ACME_CA_URI
     local -n test_certificate="LETSENCRYPT_TEST"
     if [[ $(lc "$test_certificate") == true ]]; then

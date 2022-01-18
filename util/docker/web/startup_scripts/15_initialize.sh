@@ -2,4 +2,4 @@
 
 set -ex
 
-setuser azuracast azuracast_cli azuracast:setup:initialize
+exec sudo -E -u azuracast azuracast_cli azuracast:setup:initialize

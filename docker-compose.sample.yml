@@ -37,6 +37,7 @@ services:
       PGID: ${AZURACAST_PGID:-1000}
     volumes:
       - letsencrypt:/etc/nginx/certs
+      - letsencrypt_acme:/etc/acme.sh
       - www_vendor:/var/azuracast/www/vendor
       - www_uploads:/var/azuracast/uploads
       - tmp_data:/var/azuracast/www_tmp

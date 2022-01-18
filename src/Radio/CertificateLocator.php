@@ -12,18 +12,19 @@ class CertificateLocator
     {
         $environment = Environment::getInstance();
 
-        if (!empty($_ENV['VIRTUAL_HOST']) && $environment->isDockerRevisionAtLeast(10)) {
-            $vhost = $_ENV['VIRTUAL_HOST'];
-
+        if ($environment->isDockerRevisionAtLeast(10)) {
             // Check environment variable for a virtual host.
             $certBase = '/etc/nginx/certs';
 
             if (is_dir($certBase)) {
-                $domainKey = $certBase . '/' . $vhost . '.key';
-                $domainCert = $certBase . '/' . $vhost . '.crt';
+                if (!empty($_ENV['VIRTUAL_HOST'])) {
+                    $vhost = $_ENV['VIRTUAL_HOST'];
+                    $domainKey = $certBase . '/' . $vhost . '.key';
+                    $domainCert = $certBase . '/' . $vhost . '.crt';
 
-                if (file_exists($domainKey) && file_exists($domainCert)) {
-                    return new Certificate($domainKey, $domainCert);
+                    if (file_exists($domainKey) && file_exists($domainCert)) {
+                        return new Certificate($domainKey, $domainCert);
+                    }
                 }
 
                 $defaultKey = $certBase . '/default.key';

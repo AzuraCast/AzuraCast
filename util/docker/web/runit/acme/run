@@ -110,7 +110,7 @@ function update_cert {
     params_issue_arr+=( \
         --cert-file "${certificate_dir}/default.crt" \
         --key-file "${certificate_dir}/default.key" \
-        --reloadcmd "sv restart nginx" \
+        --reloadcmd "/usr/local/bin/on_ssl_renewal" \
     )
 
     [[ ! -d "$config_home" ]] && mkdir -p "$config_home"

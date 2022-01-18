@@ -4,6 +4,8 @@
 # Uses code from:
 # https://github.com/nginx-proxy/acme-companion/blob/main/app/letsencrypt_service
 
+. /usr/local/acme.sh/acme.sh.env
+
 # Convert argument to lowercase (bash 4 only)
 function lc() {
 	echo "${@,,}"

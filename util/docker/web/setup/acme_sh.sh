@@ -12,7 +12,7 @@ cd /src/acme.sh
 ./acme.sh --install \
   --nocron \
   --auto-upgrade 0 \
-  --home /app \
+  --home /usr/local/acme.sh \
   --config-home /etc/acme.sh/default
 
 # Make house cleaning

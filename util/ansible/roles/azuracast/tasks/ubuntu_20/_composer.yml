@@ -22,21 +22,14 @@
         group: "{{ azuracast_www_group }}"
         mode: 0755
 
-    - name: Ensure composer.lock exists
-      file:
-        path: "{{ azuracast_src_dir }}/composer.lock"
-        state: file
-        owner: "{{ azuracast_user }}"
-        group: "{{ azuracast_www_group }}"
-        mode: 0644
-
     - name: Install composer dependencies
       become: true
       become_user: "{{ azuracast_user }}"
-      command: >-
-        composer install --ignore-platform-req=php {{ azuracast_composer_options[app_env] }}
-      args:
-        chdir: "{{ azuracast_src_dir }}"
+      composer:
+        ignore_platform_reqs: true
+        no_dev: "{{ app_env == 'production' | ternary('true','false') }}"
+        optimize_autoloader: "{{ app_env == 'production' | ternary('true','false') }}"
+        working_dir: "{{ azuracast_src_dir }}"
 
     - name: Mark composer setup done
       copy:

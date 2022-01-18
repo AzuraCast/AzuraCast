@@ -1,0 +1,36 @@
+---
+- name: Generate azuracast password
+  command: >-
+    pwgen 16 -sn 1
+  changed_when: false
+  register: _azuracast_user_password
+
+- name: Create groups
+  group:
+    name: "{{ _current_group }}"
+    system: true
+    state: present
+  loop:
+    - "{{ azuracast_www_group }}"
+    - admin
+  loop_control:
+    loop_var: _current_group
+
+- name: Create azuracast user
+  user:
+    name: azuracast
+    home: "{{ azuracast_home_dir }}"
+    comment: "azuracast"
+    shell: /bin/bash
+    groups:
+      - sudo
+      - admin
+      - "{{ azuracast_www_group }}"
+    password: "{{ _azuracast_user_password.stdout | password_hash('sha512') }}"
+
+- name: Modify www-data User
+  user:
+    name: "{{ azuracast_www_group }}"
+    groups:
+      - "{{ azuracast_user }}"
+    append: true

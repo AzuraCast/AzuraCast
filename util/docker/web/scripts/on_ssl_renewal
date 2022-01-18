@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sv restart nginx
+
+azuracast_cli azuracast:internal:on-ssl-renewal

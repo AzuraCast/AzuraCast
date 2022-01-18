@@ -14,6 +14,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:internal:sftp-event'       => Command\Internal\SftpEventCommand::class,
         'azuracast:internal:sftp-auth'        => Command\Internal\SftpAuthCommand::class,
         'azuracast:internal:nextsong'         => Command\Internal\NextSongCommand::class,
+        'azuracast:internal:on-ssl-renewal'   => Command\Internal\OnSslRenewal::class,
         'azuracast:internal:ip'               => Command\Internal\GetIpCommand::class,
         'azuracast:locale:generate'           => Command\Locale\GenerateCommand::class,
         'azuracast:locale:import'             => Command\Locale\ImportCommand::class,

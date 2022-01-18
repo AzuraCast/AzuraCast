@@ -2,4 +2,4 @@
 
 source /etc/php/.version
 
-/usr/sbin/php-fpm${PHP_VERSION} -F --fpm-config /etc/php/${PHP_VERSION}/fpm/php-fpm.conf -c /etc/php/${PHP_VERSION}/fpm/
+exec /usr/sbin/php-fpm${PHP_VERSION} -F --fpm-config /etc/php/${PHP_VERSION}/fpm/php-fpm.conf -c /etc/php/${PHP_VERSION}/fpm/

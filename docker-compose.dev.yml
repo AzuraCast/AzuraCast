@@ -1,17 +1,4 @@
 services :
-  nginx_proxy :
-    build :
-      context : ../docker-azuracast-nginx-proxy
-    volumes :
-      - ./util/local_ssl:/etc/nginx/certs
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  nginx_proxy_letsencrypt :
-    build :
-      context : ../docker-azuracast-nginx-proxy-letsencrypt
-    volumes :
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
   web :
     build :
       context : .

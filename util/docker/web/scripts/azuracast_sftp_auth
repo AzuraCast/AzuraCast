@@ -2,4 +2,4 @@
 
 source /etc/container_environment.sh
 
-azuracast_cli azuracast:internal:sftp-auth "$@"
+exec azuracast_cli azuracast:internal:sftp-auth "$@"

@@ -115,7 +115,7 @@ function update_cert {
         # Prefix test certificate directory with _test_
         certificate_dir="/etc/nginx/certs/_test_"
     else
-        certificate_dir="/etc/nginx/certs/"
+        certificate_dir="/etc/nginx/certs"
     fi
 
     params_issue_arr+=( \

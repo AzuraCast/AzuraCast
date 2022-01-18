@@ -27,29 +27,39 @@
   loop_control:
     loop_var: _current_directory
 
-- name: Pull Node Dependencies
-  become: true
-  become_user: "{{ azuracast_user }}"
-  command: >-
-    npm ci
-  args:
-    chdir: "{{ azuracast_src_dir }}/frontend"
+- name: Install node dependencies
+  block:
+    - name: Pull Node Dependencies
+      become: true
+      become_user: "{{ azuracast_user }}"
+      command: >-
+        npm ci
+      args:
+        chdir: "{{ azuracast_src_dir }}/frontend"
 
-- name: Build AzuraCast Frontend Scripts
-  become: true
-  become_user: "{{ azuracast_user }}"
-  command: >-
-    npm run build
-  args:
-    chdir: "{{ azuracast_src_dir }}/frontend"
+    - name: Build AzuraCast Frontend Scripts
+      become: true
+      become_user: "{{ azuracast_user }}"
+      command: >-
+        npm run build
+      args:
+        chdir: "{{ azuracast_src_dir }}/frontend"
 
-- name: Set permissions of generated frontend content
-  command: >-
-    {{ _current_perm_command }}
-  loop:
-    - "chown -R azuracast:www-data {{ azuracast_src_dir }}"
-    - "find {{ azuracast_src_dir }} -type d -exec chmod 755 {} \\;"
-    - "find {{ azuracast_src_dir }} -type f -exec chmod 644 {} \\;"
-  loop_control:
-    loop_var: _current_perm_command
-  # Note: Don't add warn: false here, it's incompatible with the earlier Ansibles used in 16.04/18.04.
+    - name: Set permissions of generated frontend content
+      command: >-
+        {{ _current_perm_command }}
+      loop:
+        - "chown -R azuracast:www-data {{ azuracast_src_dir }}"
+        - "find {{ azuracast_src_dir }} -type d -exec chmod 755 {} \\;"
+        - "find {{ azuracast_src_dir }} -type f -exec chmod 644 {} \\;"
+      loop_control:
+        loop_var: _current_perm_command
+
+    - name: Mark nodejs setup done
+      copy:
+        dest: /etc/ansible/facts.d/azuracast_nodejs_done.fact
+        content: "True"
+        mode: 0644
+  when: >-
+    not (ansible_local.azuracast_nodejs_done | default(false))
+    or (force_update | default(false))

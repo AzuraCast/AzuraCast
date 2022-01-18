@@ -16,9 +16,9 @@
   command: >-
     php {{ azuracast_src_dir }}/bin/console azuracast:setup
   register: _azuracast_setup_cmd
-  when:
-    - not (ansible_local.azuracast_setup_done | default(false))
-    - not (force_update | default(false))
+  when: >-
+    not (ansible_local.azuracast_setup_done | default(false))
+    or (force_update | default(false))
 
 - name: Mark system as setup done
   copy:

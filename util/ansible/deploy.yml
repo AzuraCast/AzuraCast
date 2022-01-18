@@ -38,9 +38,5 @@
     - beanstalkd
     - mariadb
     - azuracast-db-install
-    - ufw
-    - dbip
-    - composer
     - services
-    - azuracast-build
     - azuracast

@@ -168,7 +168,7 @@ class SetupController
                 'apiUrl'         => (string)$router->named('api:admin:settings', [
                     'group' => Entity\Settings::GROUP_GENERAL,
                 ]),
-                'releaseChannel' => $version->getReleaseChannel(),
+                'releaseChannel' => $version->getReleaseChannelEnum()->value,
                 'continueUrl'    => (string)$router->named('dashboard'),
             ],
         );

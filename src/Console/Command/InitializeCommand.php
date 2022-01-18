@@ -33,7 +33,7 @@ class InitializeCommand extends CommandAbstract
 
         $io->listing(
             [
-                __('Environment: %s', ucfirst($this->environment->getAppEnvironment())),
+                __('Environment: %s', $this->environment->getAppEnvironmentEnum()->getName()),
                 __('Installation Method: %s', $this->environment->isDocker() ? 'Docker' : 'Ansible'),
             ]
         );

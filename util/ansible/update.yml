@@ -55,7 +55,7 @@
       when: update_revision|int < 13
 
     - role: "azuracast-cron"
-      when: update_revision|int < 71
+      when: update_revision|int < 72
 
     - role: "azuracast-build"
 

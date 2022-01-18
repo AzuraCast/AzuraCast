@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Installer\EnvFiles;
 
+use App\Enums\ApplicationEnvironment;
 use App\Enums\SupportedLocales;
 use App\Environment;
 use Psr\Log\LogLevel;
@@ -42,11 +43,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'name'     => __(
                         'The application environment.',
                     ),
-                    'options'  => [
-                        Environment::ENV_PRODUCTION,
-                        Environment::ENV_DEVELOPMENT,
-                        Environment::ENV_TESTING,
-                    ],
+                    'options'  => ApplicationEnvironment::toSelect(),
                     'required' => true,
                 ],
                 Environment::LOG_LEVEL                     => [

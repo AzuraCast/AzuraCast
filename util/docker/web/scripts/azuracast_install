@@ -32,4 +32,4 @@ else
     composer install
 fi
 
-azuracast_cli azuracast:setup "$@"
+exec azuracast_cli azuracast:setup "$@"

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Enums\ApplicationEnvironment;
+use App\Enums\ReleaseChannel;
 use App\Radio\Configuration;
 use App\Traits\AvailableStaticallyTrait;
 use Psr\Log\LogLevel;
@@ -13,11 +15,6 @@ class Environment
     use AvailableStaticallyTrait;
 
     protected array $data = [];
-
-    // Environments
-    public const ENV_DEVELOPMENT = 'development';
-    public const ENV_TESTING = 'testing';
-    public const ENV_PRODUCTION = 'production';
 
     // Core settings values
     public const APP_NAME = 'APP_NAME';
@@ -69,7 +66,6 @@ class Environment
     // Default settings
     protected array $defaults = [
         self::APP_NAME => 'AzuraCast',
-        self::APP_ENV  => self::ENV_PRODUCTION,
 
         self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
@@ -103,24 +99,25 @@ class Environment
         return $this->data;
     }
 
-    public function getAppEnvironment(): string
+    public function getAppEnvironmentEnum(): ApplicationEnvironment
     {
-        return $this->data[self::APP_ENV] ?? self::ENV_PRODUCTION;
+        return ApplicationEnvironment::tryFrom($this->data[self::APP_ENV] ?? '')
+            ?? ApplicationEnvironment::default();
     }
 
     public function isProduction(): bool
     {
-        return self::ENV_PRODUCTION === $this->getAppEnvironment();
+        return ApplicationEnvironment::Production === $this->getAppEnvironmentEnum();
     }
 
     public function isTesting(): bool
     {
-        return self::ENV_TESTING === $this->getAppEnvironment();
+        return ApplicationEnvironment::Testing === $this->getAppEnvironmentEnum();
     }
 
     public function isDevelopment(): bool
     {
-        return self::ENV_DEVELOPMENT === $this->getAppEnvironment();
+        return ApplicationEnvironment::Development === $this->getAppEnvironmentEnum();
     }
 
     public function isDocker(): bool
@@ -214,13 +211,10 @@ class Environment
         return $this->data[self::LANG];
     }
 
-    public function getReleaseChannel(): string
+    public function getReleaseChannelEnum(): ReleaseChannel
     {
-        $channel = $this->data[self::RELEASE_CHANNEL] ?? 'latest';
-
-        return ('stable' === $channel)
-            ? Version::RELEASE_CHANNEL_STABLE
-            : Version::RELEASE_CHANNEL_ROLLING;
+        return ReleaseChannel::tryFrom($this->data[self::RELEASE_CHANNEL] ?? '')
+            ?? ReleaseChannel::default();
     }
 
     public function getSftpPort(): int

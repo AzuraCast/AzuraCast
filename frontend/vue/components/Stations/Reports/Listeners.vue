@@ -14,7 +14,7 @@
                             </a>
 
                             <date-range-dropdown time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :tz="stationTimeZone" :ranges="dateRanges"
+                                                 :tz="stationTimeZone" :custom-ranges="dateRanges"
                                                  v-model="dateRange" @update="updateListeners">
                                 <template #input="datePicker">
                                     <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">

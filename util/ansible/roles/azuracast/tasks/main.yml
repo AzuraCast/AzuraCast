@@ -30,3 +30,6 @@
         - "{{ ansible_os_family | lower }}/main.yml"
   loop_control:
     loop_var: _current_detected_env
+
+- name: Flush before leaving
+  meta: flush_handlers

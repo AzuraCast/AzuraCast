@@ -55,6 +55,7 @@ tmp/cache/*---*
 /util/ansible/deploy.retry
 /util/ansible/update.retry
 /tests/_output/*
+tags
 
 # Docker files
 /docker-compose.yml

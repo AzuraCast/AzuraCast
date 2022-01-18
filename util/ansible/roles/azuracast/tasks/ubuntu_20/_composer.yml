@@ -1,0 +1,37 @@
+---
+- name: Install Composer   # noqa: risky-shell-pipe
+  shell: >-
+    curl -fsSL https://getcomposer.org/installer
+    | php -- --install-dir=/usr/bin --filename=composer
+  args:
+    warn: false
+    creates: /usr/bin/composer
+
+- name: Clear existing vendor folder
+  file:
+    path: "{{ azuracast_src_dir }}/vendor"
+    state: absent
+
+- name: Recreate vendor folder
+  file:
+    path: "{{ azuracast_src_dir }}/vendor"
+    state: directory
+    owner: "{{ azuracast_user }}"
+    group: "{{ azuracast_www_group }}"
+    mode: 0755
+
+- name: Ensure composer.lock exists
+  file:
+    path: "{{ azuracast_src_dir }}/composer.lock"
+    state: file
+    owner: "{{ azuracast_user }}"
+    group: "{{ azuracast_www_group }}"
+    mode: 0644
+
+- name: Install composer dependencies
+  become: true
+  become_user: "{{ azuracast_user }}"
+  command: >-
+    composer install --ignore-platform-req=php {{ azuracast_composer_options[app_env] }}
+  args:
+    chdir: "{{ azuracast_src_dir }}"

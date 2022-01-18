@@ -1,0 +1,21 @@
+---
+azuracast_www_group: "www-data"
+azuracast_www_directories:
+  - "{{ azuracast_src_dir }}/frontend/node_modules"
+  - "{{ azuracast_src_dir }}/web/static"
+  - "{{ azuracast_src_dir }}/web/static/dist"
+  - "{{ azuracast_src_dir }}/web/static/webpack_dist"
+
+azuracast_composer_options:
+  development: ""
+  production: "--no-dev --optimize-autoloader"
+azuracast_build_system_packages:
+  - nodejs
+
+azuracast_build_node_version: 16
+azuracast_build_node_repo: "https://deb.nodesource.com/node_{{ azuracast_build_node_version }}.x"
+azuracast_build_node_keyring_url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+azuracast_build_node_keyring_path: "/usr/share/keyrings/nodesource.gpg"
+azuracast_build_node_repositories:
+  - "deb [signed-by={{ azuracast_build_node_keyring_path }}] {{ azuracast_build_node_repo }} {{ ansible_lsb.codename }} main"
+  - "deb-src [signed-by={{ azuracast_build_node_keyring_path }}] {{ azuracast_build_node_repo }} {{ ansible_lsb.codename }} main"

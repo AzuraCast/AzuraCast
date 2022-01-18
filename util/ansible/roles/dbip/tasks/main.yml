@@ -13,6 +13,6 @@
   file:
     path: "{{ app_base }}/dbip/dbip-city-lite.mmdb"
     state: file
-    mode: "u=rwx,g=rx,o=rx"
-    owner: "azuracast"
-    group: "www-data"
+    mode: 0755
+    owner: "{{ azuracast_user }}"
+    group: "{{ azuracast_www_group }}"

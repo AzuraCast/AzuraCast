@@ -43,5 +43,4 @@
     - composer
     - services
     - azuracast-build
-    - azuracast-setup
-    - azuracast-cron
+    - azuracast

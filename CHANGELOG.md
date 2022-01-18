@@ -7,6 +7,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- For Docker installations, we have removed our built-in multisite configuration in favor of a simpler default installation with fewer containers. If you are not using the multi-site setup (i.e. hosting another site on the same Docker installation), no changes are required to your installation. If you want to continue using the multi-site installation, you can follow the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
+
 ## Bug Fixes
 
 - Fixed an issue on Ansible installations preventing message queues from being processed correctly.

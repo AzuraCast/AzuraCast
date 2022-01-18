@@ -444,8 +444,6 @@ install-dev() {
 
   if [[ ! -d ../docker-azuracast-nginx-proxy ]]; then
     if ask "Clone related repositories?" Y; then
-      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
-      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
       git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
       git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
       git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio

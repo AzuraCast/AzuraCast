@@ -26,4 +26,4 @@ else
     composer install
 fi
 
-azuracast_cli azuracast:restore "$@"
+exec azuracast_cli azuracast:restore "$@"

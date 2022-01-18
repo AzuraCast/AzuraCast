@@ -5,7 +5,7 @@
 # https://github.com/nginx-proxy/acme-companion/blob/main/app/letsencrypt_service
 
 # We set a "LOG_LEVEL" that is incompatible with acme.sh. Overwrite it.
-export LOG_LEVEL=2
+export LOG_LEVEL=1
 export DEBUG=1
 
 shopt -s expand_aliases
@@ -103,7 +103,6 @@ function update_cert {
     # Set relevant --server parameter and ca folder name
     params_base_arr+=(--server "$acme_ca_uri")
     local ca_dir="${acme_ca_uri##*://}" \
-        && ca_dir="${ca_dir%%/*}" \
         && ca_dir="${ca_dir%%:*}"
 
     local certificate_dir
@@ -141,6 +140,7 @@ function update_cert {
         [[ "$DEBUG" == 1 ]] && echo "Calling acme.sh --register-account with the following parameters : ${params_register_arr[*]}"
         acme.sh --register-account "${params_register_arr[@]}"
     fi
+
     if [[ -n "${accountemail// }" ]] && ! grep -q "mailto:$accountemail" "$account_file"; then
         local -a params_update_arr=("${params_base_arr[@]}" --accountemail "$accountemail")
         [[ "$DEBUG" == 1 ]] && echo "Calling acme.sh --update-account with the following parameters : ${params_update_arr[*]}"

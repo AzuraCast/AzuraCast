@@ -45,7 +45,7 @@
 
 - name: Remove PPAs
   apt_repository:
-    repo: "{{ item }}"
+    repo: "{{ uninstall_repo_to_delete }}"
     state: absent
   loop:
     - "ppa:avsm/ppa"

@@ -10,7 +10,7 @@
 
 - name: Enable and restart all core services
   service:
-    name: "{{ item }}"
+    name: "{{ redis_service_to_restart }}"
     enabled: true
     state: restarted
   ignore_errors: true

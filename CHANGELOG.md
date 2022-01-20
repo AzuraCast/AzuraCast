@@ -13,6 +13,10 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed an issue on Ansible installations preventing message queues from being processed correctly.
 
+- Fixed a bug preventing Ansible installations or updates from completing successfully.
+
+- Fixed a bug where album art on the song requests page wouldn't respect "Prefer Browser URL" setting.
+
 ---
 
 # AzuraCast 0.15.0 (Jan 12, 2022)

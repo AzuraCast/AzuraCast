@@ -9,8 +9,7 @@ bool() {
 
 if [ $(whoami) != 'azuracast' ]; then
     echo 'This script must be run as the "azuracast" user. Rerunning...'
-    setuser azuracast azuracast_install "$@"
-    exit $?
+    exec sudo -E -u azuracast azuracast_install "$@"
 fi
 
 echo "AzuraCast Setup"

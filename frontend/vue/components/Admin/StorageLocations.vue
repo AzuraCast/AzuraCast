@@ -5,10 +5,8 @@
                 <h2 class="card-title" key="lang_storage_locations" v-translate>Storage Locations</h2>
             </b-card-header>
             <b-tabs pills card lazy>
-                <b-tab :active="activeType === 'station_media'" @click="setType('station_media')" :title="langStationMediaTab" no-body></b-tab>
-                <b-tab :active="activeType === 'station_recordings'" @click="setType('station_recordings')" :title="langStationRecordingsTab" no-body></b-tab>
-                <b-tab :active="activeType === 'station_podcasts'" @click="setType('station_podcasts')" :title="langStationPodcastsTab" no-body></b-tab>
-                <b-tab :active="activeType === 'backup'" @click="setType('backup')" :title="langBackupsTab" no-body></b-tab>
+                <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
+                       :title="tab.title" no-body></b-tab>
             </b-tabs>
 
             <b-card-body body-class="card-padding-sm">
@@ -79,19 +77,27 @@ export default {
         };
     },
     computed: {
-        langStationMediaTab () {
-            return this.$gettext('Station Media');
+        tabs() {
+            return [
+                {
+                    type: 'station_media',
+                    title: this.$gettext('Station Media')
+                },
+                {
+                    type: 'station_recordings',
+                    title: this.$gettext('Station Recordings')
+                },
+                {
+                    type: 'station_podcasts',
+                    title: this.$gettext('Station Podcasts'),
+                },
+                {
+                    type: 'backup',
+                    title: this.$gettext('Backups')
+                }
+            ]
         },
-        langStationRecordingsTab () {
-            return this.$gettext('Station Recordings');
-        },
-        langStationPodcastsTab () {
-            return this.$gettext('Station Podcasts');
-        },
-        langBackupsTab () {
-            return this.$gettext('Backups');
-        },
-        listUrlForType () {
+        listUrlForType() {
             return this.listUrl + '?type=' + this.activeType;
         }
     },

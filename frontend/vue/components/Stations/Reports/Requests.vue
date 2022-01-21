@@ -4,13 +4,19 @@
             <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title" key="lang_queue" v-translate>Song Requests</h2>
             </b-card-header>
-            <div class="card-actions">
+            <b-tabs pills card lazy>
+                <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
+                       :title="tab.title" no-body></b-tab>
+            </b-tabs>
+
+            <div class="card-actions" v-if="activeType === 'pending'">
                 <b-button variant="outline-danger" @click="doClear()">
                     <icon icon="remove"></icon>
                     <translate key="lang_btn_clear_requests">Clear Pending Requests</translate>
                 </b-button>
             </div>
-            <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl">
+
+            <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrlForType">
                 <template #cell(timestamp)="row">
                     {{ formatTime(row.item.timestamp) }}
                 </template>
@@ -60,8 +66,26 @@ export default {
         clearUrl: String,
         stationTimeZone: String
     },
+    computed: {
+        tabs() {
+            return [
+                {
+                    type: 'pending',
+                    title: this.$gettext('Pending Requests')
+                },
+                {
+                    type: 'history',
+                    title: this.$gettext('Request History')
+                }
+            ]
+        },
+        listUrlForType() {
+            return this.listUrl + '?type=' + this.activeType;
+        }
+    },
     data() {
         return {
+            activeType: 'pending',
             fields: [
                 {key: 'timestamp', label: this.$gettext('Date Requested'), sortable: false},
                 {key: 'played_at', label: this.$gettext('Date Played'), sortable: false},
@@ -72,6 +96,13 @@ export default {
         }
     },
     methods: {
+        setType(type) {
+            this.activeType = type;
+            this.relist();
+        },
+        relist() {
+            this.$refs.datatable.refresh();
+        },
         formatTime(time) {
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
         },
@@ -84,7 +115,7 @@ export default {
                         this.axios.delete(url)
                     ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
-                        this.$refs.datatable.refresh();
+                        this.relist();
                     });
                 }
             });
@@ -99,7 +130,7 @@ export default {
                         this.axios.post(this.clearUrl)
                     ).then((resp) => {
                         this.$notifySuccess(resp.data.message);
-                        this.$refs.datatable.refresh();
+                        this.relist();
                     });
                 }
             });

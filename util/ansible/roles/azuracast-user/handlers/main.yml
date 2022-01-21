@@ -1,5 +1,5 @@
 ---
-- name: Send user notification
+- name: send user notification
   debug:
     msg: >-
       A user account named 'azuracast' has been created. The password associated with this

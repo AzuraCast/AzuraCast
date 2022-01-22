@@ -1,7 +1,7 @@
 ---
 - name: Write environment configuration file
   template:
-    src: env.ini.j2
+    src: config/env.ini.j2
     dest: "{{ www_base }}/env.ini"
     owner: azuracast
     group: www-data

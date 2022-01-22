@@ -1,10 +1,11 @@
 ---
 - import_tasks: _user.yml
 
-- name: TBD
-  debug:
-    msg: >-
-      Port here azuracast-db-install role.
+- import_tasks: _config.yml
+
+- import_tasks: _radio.yml
+
+- import_tasks: _db_install.yml
 
 - import_tasks: _ufw.yml
 

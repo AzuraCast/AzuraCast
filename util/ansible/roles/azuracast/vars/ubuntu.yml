@@ -19,3 +19,44 @@ azuracast_build_node_keyring_path: "/usr/share/keyrings/nodesource.gpg"
 azuracast_build_node_repositories:
   - "deb [signed-by={{ azuracast_build_node_keyring_path }}] {{ azuracast_build_node_repo }} {{ ansible_lsb.codename }} main"
   - "deb-src [signed-by={{ azuracast_build_node_keyring_path }}] {{ azuracast_build_node_repo }} {{ ansible_lsb.codename }} main"
+
+azuracast_opam_switch_version: "4.12.0"
+azuracast_liquidsoap_system_packages:
+  - ffmpeg
+  - opam
+  - ocaml
+  - libavcodec-dev
+  - libavdevice-dev
+  - libavfilter-dev
+  - libavformat-dev
+  - libavresample-dev
+  - libavutil-dev
+  - libcurl4-gnutls-dev
+  - libfaad-dev
+  - libfdk-aac-dev
+  - libflac-dev
+  - libmad0-dev
+  - libmp3lame-dev
+  - libogg-dev
+  - libopus-dev
+  - libpcre3-dev
+  - libpostproc-dev
+  - libsamplerate0-dev
+  - libswresample-dev
+  - libswscale-dev
+  - libssl-dev
+  - libtag1-dev
+  - libvorbis-dev
+  - autoconf
+  - automake
+  - m4
+  - pkg-config
+  - unzip
+  - bubblewrap
+  - frei0r-plugins-dev
+  - ladspa-sdk
+  - multimedia-audio-plugins
+  - swh-plugins
+  - tap-plugins
+
+

@@ -16,16 +16,13 @@
 
 - name: MariaDB Cleanup
   command: >-
-    mysql --defaults-extra-file=/root/.my.cnf -ne "{{ azure_db_install_sql_cleanup_query }}"
+    mysql --defaults-extra-file=/root/.my.cnf -ne "{{ _current_sql_cleanup_query }}"
   loop:
     - "DELETE FROM mysql.user WHERE User=''"
     - "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
-    - "DROP DATABASE test"
-    - "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
   loop_control:
-    loop_var: azure_db_install_sql_cleanup_query
+    loop_var: _current_sql_cleanup_query
   changed_when: false
-  ignore_errors: true
 
 # MySQL Secure Installation
 - name: Set up AzuraCast database user

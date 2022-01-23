@@ -4,43 +4,27 @@
     repo: "ppa:ondrej/php"
     update_cache: true
 
-- name: Remove Old PHP Libraries
-  apt:
-    name: "{{ packages }}"
-    state: absent
-  vars:
-    packages:
-      - "php5*"
-      - "php7.0-*"
-      - "php7.1-*"
-      - "php7.2-*"
-      - "php7.4-*"
-      - "php8.0-*"
-  ignore_errors: true
+- name: Gather existing php version    # noqa: risky-shell-pipe
+  shell: >-
+    (php -v | head -n 1 | cut -d " " -f2) || echo 0.0.0
+  changed_when: false
+  register:
+    _php_current_version_sh
 
-- name: Set PHP Version
+- name: Cook variables
   set_fact:
-    php_version: 8.1
+    php_expected_version_found: "{{ _php_current_version_sh.stdout is match(php_version + '.*') }}"
 
-- name: "Install PHP {{ php_version }}"
+- name: Remove unexpected php
   apt:
-    name: "{{ packages }}"
+    name: "php*"
+    state: absent
+  when: not php_expected_version_found
+
+- name: Install php
+  apt:
+    name: "{{ php_sys_packages }}"
     state: present
-  vars:
-    packages:
-      - "php{{ php_version }}-fpm"
-      - "php{{ php_version }}-cli"
-      - "php{{ php_version }}-gd"
-      - "php{{ php_version }}-curl"
-      - "php{{ php_version }}-xml"         # IceCast XML config
-      - "php{{ php_version }}-zip"         # Composer installs
-      - "php{{ php_version }}-mysqlnd"     # MySQL Native Driver (Doctrine)
-      - "php{{ php_version }}-mbstring"    # Codeception Tests
-      - "php{{ php_version }}-intl"        # Localization
-      - "php{{ php_version }}-redis"       # Cache
-      - "php{{ php_version }}-bcmath"      # BigInteger
-      - "php{{ php_version }}-gmp"         # BigInteger and PHP-IP
-      - "php{{ php_version }}-maxminddb"   # Maxmind (GeoIP) DB native ext
 
 - name: Configure PHP FPM Pool
   template:
@@ -53,8 +37,8 @@
   ini_file:
     dest: "/etc/php/{{ php_version }}/fpm/php.ini"
     section: PHP
-    option: "{{ php_init_option.option }}"
-    value: "{{ php_init_option.value }}"
+    option: "{{ _current_php_init_option.option }}"
+    value: "{{ _current_php_init_option.value }}"
     mode: 0644
   loop:
     - option: "post_max_size"
@@ -64,7 +48,7 @@
     - option: "upload_max_filesize"
       value: "50M"
   loop_control:
-    loop_var: php_init_option
+    loop_var: _current_php_init_option
 
 - name: Configure php-cli php.ini
   ini_file:

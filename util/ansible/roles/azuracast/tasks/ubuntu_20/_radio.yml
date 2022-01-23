@@ -2,15 +2,8 @@
 - name: Build Icecast
   include_tasks: radio/icecast.yml
 
-- name: Build Liquidsoap (Legacy Ubuntu Versions)
-  include_tasks: radio/liquidsoap_legacy.yml
-  when:
-    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
-
 - name: Install Liquidsoap (Focal)
   include_tasks: radio/liquidsoap.yml
-  when:
-    - ansible_distribution_release == 'focal'
 
 - name: Add Audiowaveform PPA
   apt_repository:

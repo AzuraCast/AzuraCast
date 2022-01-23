@@ -169,6 +169,8 @@ server {
 
         proxy_set_header Host localhost:$1;
         proxy_pass http://stations:$1/$3?$args;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
     # Reverse proxy the Liquidsoap harbor inputs to allow for streaming.

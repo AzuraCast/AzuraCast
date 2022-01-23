@@ -68,8 +68,13 @@ server {
     listen 80;
     listen 443 default_server http2 ssl;
 
+{{if exists "/etc/nginx/certs/ssl.crt"}}
+    ssl_certificate        /etc/nginx/certs/ssl.crt;
+    ssl_certificate_key    /etc/nginx/certs/ssl.key;
+{{else}}
     ssl_certificate        /etc/nginx/certs/default.crt;
     ssl_certificate_key    /etc/nginx/certs/default.key;
+{{end}}
 
     ssl_protocols TLSv1.3 TLSv1.2;
     ssl_prefer_server_ciphers on;

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
 exec /usr/sbin/tmpreaper 12h --protect '.tmpreaper' --verbose \
-    /tmp/azuracast_nginx_client \
-    /tmp/azuracast_fastcgi_temp \
+    /tmp/app_nginx_client \
+    /tmp/app_fastcgi_temp \
     > /proc/1/fd/1 2> /proc/1/fd/2

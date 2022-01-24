@@ -1,0 +1,62 @@
+user  azuracast;
+worker_processes  auto;
+worker_rlimit_nofile 65000;
+
+error_log  /dev/stderr warn;
+pid        /var/run/nginx.pid;
+
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+    worker_connections 65000;
+    multi_accept on;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log off;
+    server_tokens off;
+    keepalive_timeout 65;
+
+{{if eq .Env.APPLICATION_ENV "production"}}
+    sendfile on;
+{{else}}
+    sendfile off;
+{{end}}
+
+    client_max_body_size 50M;
+    client_body_temp_path /tmp/app_nginx_client 1 1;
+
+    fastcgi_temp_path /tmp/app_fastcgi_temp 1 1;
+
+    proxy_max_temp_file_size 0;
+
+    map $http_x_forwarded_proto $proxy_x_forwarded_proto {
+      default $http_x_forwarded_proto;
+      ''      $scheme;
+    }
+
+    map $http_x_forwarded_port $proxy_x_forwarded_port {
+      default $http_x_forwarded_port;
+      ''      $server_port;
+    }
+
+    map $http_upgrade $proxy_connection {
+      default upgrade;
+      '' close;
+    }
+
+    map $scheme $proxy_x_forwarded_ssl {
+      default off;
+      https on;
+    }
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}

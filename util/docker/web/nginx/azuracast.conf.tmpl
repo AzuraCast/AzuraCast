@@ -6,42 +6,6 @@ upstream redis_server {
 
 resolver 127.0.0.11;
 
-map $http_x_forwarded_proto $proxy_x_forwarded_proto {
-  default $http_x_forwarded_proto;
-  ''      $scheme;
-}
-
-map $http_x_forwarded_port $proxy_x_forwarded_port {
-  default $http_x_forwarded_port;
-  ''      $server_port;
-}
-
-map $http_upgrade $proxy_connection {
-  default upgrade;
-  '' close;
-}
-
-map $scheme $proxy_x_forwarded_ssl {
-  default off;
-  https on;
-}
-
-# HTTP 1.1 support
-proxy_http_version 1.1;
-proxy_buffering off;
-proxy_set_header Origin $http_origin;
-proxy_set_header Host $http_host;
-proxy_set_header Upgrade $http_upgrade;
-proxy_set_header Connection $proxy_connection;
-proxy_set_header X-Real-IP $remote_addr;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
-proxy_set_header X-Forwarded-Ssl $proxy_x_forwarded_ssl;
-proxy_set_header X-Forwarded-Port $proxy_x_forwarded_port;
-
-# Mitigate httpoxy attack (see README for details)
-proxy_set_header Proxy "";
-
 server {
     listen 9010;
 
@@ -158,14 +122,12 @@ server {
 {{ else }}
     location ~ ^/radio/{{ .Env.NGINX_RADIO_PORTS }}(/?)(.*)$ {
 {{ end }}
-        proxy_buffering           off;
-        proxy_ignore_client_abort off;
+        include proxy_params;
+
         proxy_intercept_errors    on;
         proxy_next_upstream       error timeout invalid_header;
         proxy_redirect            off;
         proxy_connect_timeout     60;
-        proxy_send_timeout        21600;
-        proxy_read_timeout        21600;
 
         proxy_set_header Host localhost:$1;
         proxy_pass http://stations:$1/$3?$args;
@@ -180,10 +142,7 @@ server {
 
         resolver 127.0.0.11;
 
-        proxy_buffering           off;
-        proxy_ignore_client_abort off;
-        proxy_send_timeout        21600;
-        proxy_read_timeout        21600;
+        include proxy_params;
 
         proxy_pass http://stations:$1/$3;
     }

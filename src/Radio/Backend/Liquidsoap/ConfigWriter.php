@@ -144,12 +144,6 @@ class ConfigWriter implements EventSubscriberInterface
             settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
             settings.encoder.metadata.export.set(["artist","title","album","song"])
             
-            settings.decoder.priorities.ogg.set(15)
-            settings.decoder.priorities.mad.set(15)
-            settings.decoder.priorities.flac.set(15)
-            settings.decoder.priorities.aac.set(15)
-            settings.decoder.priorities.ffmpeg.set(10)
-            
             setenv("TZ", "${stationTz}")
             
             azuracast_api_auth = ref("${stationApiAuth}")
@@ -440,21 +434,18 @@ class ConfigWriter implements EventSubscriberInterface
                 # Delayed ping for AutoDJ Next Song
                 def wait_for_next_song(autodj)
                     autodj_ping_attempts := !autodj_ping_attempts + 1
-                    delay = ref(0.5)
                     
                     if source.is_ready(autodj) then
                         log("AutoDJ is ready!")
-                        
                         autodj_is_loading := false
-                        delay := -1.0
+                        -1.0
                     elsif !autodj_ping_attempts > 200 then
                         log("AutoDJ could not be initialized within the specified timeout.")
-                        
                         autodj_is_loading := false
-                        delay := -1.0
+                        -1.0
+                    else
+                        0.5
                     end
-                    
-                    !delay
                 end
                 
                 dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
@@ -692,7 +683,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
         $envVarsStr = 'env=[' . implode(', ', $envVarsParts) . ']';
 
-        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\', timeout=10.), default="")';
+        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\', timeout=2.), default="")';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -735,7 +726,11 @@ class ConfigWriter implements EventSubscriberInterface
         $dj_mount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
 
-        $authCommand = $this->getApiUrlCommand($station, 'auth', ['dj-user' => '!user', 'dj-password' => '!password']);
+        $authCommand = $this->getApiUrlCommand(
+            $station,
+            'auth',
+            ['dj-user' => 'auth_info.user', 'dj-password' => 'auth_info.password']
+        );
         $djonCommand = $this->getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
         $djoffCommand = $this->getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']);
 
@@ -748,29 +743,26 @@ class ConfigWriter implements EventSubscriberInterface
             live_record_path = ref("")
             
             def dj_auth(login) =
-                user = ref("")
-                password = ref("")
+                auth_info =
+                    if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
+                        auth_string = string.split(separator="(:|,)", login.password)
+                        {user = list.nth(default="", auth_string, 0),
+                        password = list.nth(default="", auth_string, 2)}
+                    else
+                        {user = login.user, password = login.password}
+                    end
                 
-                if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
-                    auth_string = string.split(separator="(:|,)", login.password)
-                    
-                    user := list.nth(default="", auth_string, 0)
-                    password := list.nth(default="", auth_string, 2)
-                else
-                    user := login.user
-                    password := login.password
-                end
+                log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{auth_info.user}")
                 
-                log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{!user}")
                 ret = {$authCommand}
                 log("dj_auth: AzuraCast API Response: #{ret}")
                 
-                authed = bool_of_string(ret)
-                if (authed) then
-                    last_authenticated_dj := !user
+                if bool_of_string(ret) then
+                    last_authenticated_dj := auth_info.user
+                    true
+                else
+                    false
                 end
-                
-                authed
             end
             
             def live_connected(header) =
@@ -949,10 +941,9 @@ class ConfigWriter implements EventSubscriberInterface
                         ret = {$feedbackCommand}
                         log("AzuraCast Feedback Response: #{ret}")
                     end
-                    (-1.)
                 end
                 
-                thread.run.recurrent(fast=false, delay=0., f)
+                thread.run(f)
             end
             
             radio.on_metadata(metadata_updated)

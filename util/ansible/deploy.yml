@@ -4,10 +4,6 @@
   gather_facts: false
 
   vars:
-    util_base: "{{ playbook_dir | dirname }}"
-    www_base: "{{ util_base | dirname }}"
-    app_base: "{{ www_base | dirname }}"
-    tmp_base: "{{ app_base }}/www_tmp"
     app_env: "production"
     update_mode: false
     dev_azuracast_user_password: "azuracast"
@@ -16,27 +12,11 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
 
-  pre_tasks:
-    - debug:
-        msg: "{{ item }}"
-      loop: 
-        - "{{ util_base }}"
-        - "{{ www_base }}"
-        - "{{ app_base }}"
-        - "{{ tmp_base }}"
-
-    - meta: end_play
   roles:
     - init
-    - azuracast-user
-    - azuracast-config
-    - azuracast-radio
-    - supervisord
-    - nginx
-    - php
     - redis
+    - nginx
+    - supervisord
     - beanstalkd
     - mariadb
-    - azuracast-db-install
-    - services
     - azuracast

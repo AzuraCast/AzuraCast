@@ -1,18 +1,28 @@
 ---
-- name: (Prod) Generate MariaDB User Password
-  command: pwgen 8 -sn 1
-  register: prod_mysql_user_password
-  when: app_env == "production"
-
 - name: Assign User Password
   set_fact:
-    mysql_user_password: "{{ prod_mysql_user_password.stdout if app_env == 'production' else dev_mysql_user_password }}"
+    mysql_user_password: >-
+      {{
+        (app_env == 'production')
+        | ternary(azuracast_mysql_password, dev_mysql_user_password)
+      }}
 
 - name: Add configuration
-  template: src=db_install/my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
+  template:
+    src: db_install/my.cnf.j2
+    dest: /etc/mysql/conf.d/my.cnf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Add empty root .my.cnf (if none exists)
-  template: src=db_install/root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=no
+  template:
+    src: db_install/root_empty_my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+    force: false
 
 - name: MariaDB Cleanup
   command: >-
@@ -64,8 +74,8 @@
   ini_file:
     dest: "{{ www_base }}/env.ini"
     section: "configuration"
-    option: "{{ azure_db_install_env_ini.option }}"
-    value: "{{ azure_db_install_env_ini.value }}"
+    option: "{{ _current_db_install_env_ini.option }}"
+    value: "{{ _current_db_install_env_ini.value }}"
     mode: 0644
   loop:
     - option: 'MYSQL_HOST'
@@ -74,9 +84,10 @@
       value: '3306'
     - option: 'MYSQL_USER'
       value: 'azuracast'
-    - option: 'MYSQL_DB' 
+    - option: 'MYSQL_DB'
       value: 'azuracast'
     - option: 'MYSQL_PASSWORD'
       value: "{{ mysql_user_password }}"
+  no_log: true
   loop_control:
-    loop_var: azure_db_install_env_ini
+    loop_var: _current_db_install_env_ini

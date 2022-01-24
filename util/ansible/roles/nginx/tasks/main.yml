@@ -6,26 +6,6 @@
       - lighttpd
     state: absent
 
-- name: Unhold nginx-related packages for updates
-  dpkg_selections:
-    name: "{{ nginx_pkg_select }}"
-    selection: install
-  loop:
-    - "nginx"
-    - "nginx-common"
-    - "nginx-extras"
-  loop_control:
-    loop_var: nginx_pkg_select
-
-- name: Remove any older nginx
-  apt:
-    name:
-      - nginx
-      - nginx-common
-      - nginx-extras
-    state: absent
-    purge: true
-
 - name: Install nginx
   apt:
     name:
@@ -77,6 +57,13 @@
 - name: Turn sendfile off on nginx for local development
   replace:
     dest: /etc/nginx/nginx.conf
-    regexp: 'sendfile on;'
-    replace: 'sendfile off;'
+    regexp: "sendfile on;"
+    replace: "sendfile off;"
   when: app_env == "development"
+  notify: Reload nginx
+
+- name: Enable nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: true

@@ -63,9 +63,10 @@
       - lsp-plugins-ladspa
 
 - name: Get the DPKG Architecture
-  shell: dpkg --print-architecture
+  command: >-
+    dpkg --print-architecture
   register: dpkg_arch
-  ignore_errors: true
+  changed_when: false
 
 - name: Install Liquidsoap
   apt:

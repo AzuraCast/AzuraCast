@@ -1,6 +1,8 @@
 ---
 - import_tasks: _user.yml
 
+- import_tasks: _php.yml
+
 - import_tasks: _config.yml
 
 - import_tasks: _radio.yml

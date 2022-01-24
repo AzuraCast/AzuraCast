@@ -6,6 +6,12 @@ azuracast_www_directories:
   - "{{ azuracast_src_dir }}/web/static/dist"
   - "{{ azuracast_src_dir }}/web/static/webpack_dist"
 
+azuracast_user_password_file: "{{ azuracast_secrets_dir }}/user.password"
+azuracast_user_password: "{{ lookup('password', azuracast_user_password_file + ' length=16') }}"
+
+azuracast_mysql_password_file: "{{ azuracast_secrets_dir }}/mysql.password"
+azuracast_mysql_password: "{{ lookup('password', azuracast_mysql_password_file + ' length=16') }}"
+
 azuracast_composer_options:
   development: ""
   production: "--no-dev --optimize-autoloader"
@@ -59,4 +65,18 @@ azuracast_liquidsoap_system_packages:
   - swh-plugins
   - tap-plugins
 
-
+azuracast_php_version: "8.1"
+azuracast_php_sys_packages:
+  - "php{{ azuracast_php_version }}-fpm"
+  - "php{{ azuracast_php_version }}-cli"
+  - "php{{ azuracast_php_version }}-gd"
+  - "php{{ azuracast_php_version }}-curl"
+  - "php{{ azuracast_php_version }}-xml"         # IceCast XML config
+  - "php{{ azuracast_php_version }}-zip"         # Composer installs
+  - "php{{ azuracast_php_version }}-mysqlnd"     # MySQL Native Driver (Doctrine)
+  - "php{{ azuracast_php_version }}-mbstring"    # Codeception Tests
+  - "php{{ azuracast_php_version }}-intl"        # Localization
+  - "php{{ azuracast_php_version }}-redis"       # Cache
+  - "php{{ azuracast_php_version }}-bcmath"      # BigInteger
+  - "php{{ azuracast_php_version }}-gmp"         # BigInteger and PHP-IP
+  - "php{{ azuracast_php_version }}-maxminddb"   # Maxmind (GeoIP) DB native ext

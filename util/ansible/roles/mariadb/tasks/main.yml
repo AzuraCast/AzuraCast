@@ -1,18 +1,16 @@
 ---
-- name: Update MariaDB Dependencies
+- name: Update MariaDB Dependencies    # noqa: risky-shell-pipe
   shell: >-
     curl -sSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
     | bash -s -- --mariadb-server-version="mariadb-10.5"
+  changed_when: false
 
 - name: Install MariaDB
   apt:
-    name: "{{ packages }}"
-    state: present
-    update_cache: true
-  vars:
-    packages:
+    name:
       - mariadb-server
       - mariadb-client
+    update_cache: true
 
 - name: Start and enable service
   service:

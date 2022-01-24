@@ -1,0 +1,2 @@
+---
+azuracast_secrets_dir: "{{ (playbook_dir ) | realpath }}/secrets"

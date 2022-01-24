@@ -8,11 +8,11 @@
   apt:
     name: redis-server
 
-- name: Enable and restart all core services
+- name: Enable and start all core services
   service:
     name: "{{ _current_service }}"
     enabled: true
-    state: restarted
+    state: started
   loop:
     - "redis-server"
     - "redis"

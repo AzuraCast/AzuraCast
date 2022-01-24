@@ -1,13 +1,18 @@
 ---
 - name: restart cron
-  service: name=cron enabled=yes state=restarted
+  service:
+    name: cron
+    enabled: true
+    state: restarted
 
 - name: send user notification
   debug:
     msg: >-
-      A user account named 'azuracast' has been created. The password associated with this
-      account is: {{ prod_azuracast_user_password.stdout }}
+      A user account named 'azuracast' has been created. The password value is
+      in the file: {{ azuracast_user_password_file }}
 
 - name: send mysql notification
   debug:
-    msg: "The MySQL 'azuracast'@'localhost' account has been created. Its password is: {{ mysql_user_password }}"
+    msg: >-
+      The MySQL 'azuracast'@'localhost' account has been created. The password value is
+      in the file: {{ azuracast_mysql_password_file }}

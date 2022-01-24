@@ -1,10 +1,4 @@
 ---
-- name: Generate azuracast password
-  command: >-
-    pwgen 16 -sn 1
-  changed_when: false
-  register: _azuracast_user_password
-
 - name: Create groups
   group:
     name: "{{ _current_group }}"
@@ -26,7 +20,7 @@
       - sudo
       - admin
       - "{{ azuracast_www_group }}"
-    password: "{{ _azuracast_user_password.stdout | password_hash('sha512') }}"
+    password: "{{ azuracast_user_password | password_hash('sha512') }}"
 
 - name: Modify www-data User
   user:

@@ -13,7 +13,7 @@
 
 - name: Cook variables
   set_fact:
-    php_expected_version_found: "{{ _php_current_version_sh.stdout is match(php_version + '.*') }}"
+    php_expected_version_found: "{{ _php_current_version_sh.stdout is match(azuracast_php_version + '.*') }}"
 
 - name: Remove unexpected php
   apt:
@@ -23,19 +23,19 @@
 
 - name: Install php
   apt:
-    name: "{{ php_sys_packages }}"
+    name: "{{ azuracast_php_sys_packages }}"
     state: present
 
 - name: Configure PHP FPM Pool
   template:
     src: fpmpool.j2
-    dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
+    dest: "/etc/php/{{ azuracast_php_version }}/fpm/pool.d/www.conf"
     force: true
     mode: 0644
 
 - name: Configure php-fpm php.ini
   ini_file:
-    dest: "/etc/php/{{ php_version }}/fpm/php.ini"
+    dest: "/etc/php/{{ azuracast_php_version }}/fpm/php.ini"
     section: PHP
     option: "{{ _current_php_init_option.option }}"
     value: "{{ _current_php_init_option.value }}"
@@ -52,8 +52,14 @@
 
 - name: Configure php-cli php.ini
   ini_file:
-    dest: "/etc/php/{{ php_version }}/cli/php.ini"
+    dest: "/etc/php/{{ azuracast_php_version }}/cli/php.ini"
     section: PHP
     option: "short_open_tag"
     value: "On"
     mode: 0644
+
+- name: Enable php-fpm service
+  systemd:
+    name: php{{ azuracast_php_version }}-fpm
+    state: started
+    enabled: true

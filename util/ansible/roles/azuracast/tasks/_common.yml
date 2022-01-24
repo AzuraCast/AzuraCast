@@ -1,6 +1,16 @@
 ---
+- name: Create local secrets directory
+  file:
+    path: "{{ azuracast_secrets_dir }}"
+    state: directory
+    mode: 0700
+  become: false
+  delegate_to: localhost
+
 - name: Create ansible directory
   file:
     path: "/etc/ansible/facts.d"
     state: directory
     mode: 0755
+
+

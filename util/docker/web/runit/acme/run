@@ -16,6 +16,47 @@ function lc() {
 	echo "${@,,}"
 }
 
+function create_link {
+    local -r source=${1?missing source argument}
+    local -r target=${2?missing target argument}
+
+    if [[ -f "$target" ]] && [[ "$(readlink "$target")" == "$source" ]]; then
+        [[ "$DEBUG" == 1 ]] && echo "$target already linked to $source"
+        return 1
+    else
+        ln -sf "$source" "$target"
+    fi
+}
+
+function create_links {
+    local -r base_domain=${1?missing base_domain argument}
+
+    if [[ ! -f "/etc/nginx/certs/$base_domain/fullchain.pem" || \
+          ! -f "/etc/nginx/certs/$base_domain/key.pem" ]]; then
+        return 1
+    fi
+
+    local return_code=1
+
+    create_link "./$base_domain/fullchain.pem" "/etc/nginx/certs/ssl.crt"
+    return_code=$(( return_code & $? ))
+
+    create_link "./$base_domain/key.pem" "/etc/nginx/certs/ssl.key"
+    return_code=$(( return_code & $? ))
+
+    if [[ -f "/etc/nginx/certs/dhparam.pem" ]]; then
+        create_link ./dhparam.pem "/etc/nginx/certs/ssl.dhparam.pem"
+        return_code=$(( return_code & $? ))
+    fi
+
+    if [[ -f "/etc/nginx/certs/$base_domain/chain.pem" ]]; then
+        create_link "./$base_domain/chain.pem" "/etc/nginx/certs/ssl.chain.pem"
+        return_code=$(( return_code & $? ))
+    fi
+
+    return $return_code
+}
+
 CERTS_UPDATE_INTERVAL="${CERTS_UPDATE_INTERVAL:-3600}"
 ACME_CA_URI="${ACME_CA_URI:-"https://acme-v02.api.letsencrypt.org/directory"}"
 ACME_CA_TEST_URI="https://acme-staging-v02.api.letsencrypt.org/directory"
@@ -113,15 +154,16 @@ function update_cert {
         unset accountemail
         config_home="/etc/acme.sh/staging"
         # Prefix test certificate directory with _test_
-        certificate_dir="/etc/nginx/certs/_test_"
+        certificate_dir="/etc/nginx/certs/_test_$base_domain"
     else
-        certificate_dir="/etc/nginx/certs"
+        certificate_dir="/etc/nginx/certs/$base_domain"
     fi
 
     params_issue_arr+=( \
-        --cert-file "${certificate_dir}/default.crt" \
-        --key-file "${certificate_dir}/default.key" \
-        --reloadcmd "/usr/local/bin/on_ssl_renewal" \
+        --cert-file "${certificate_dir}/cert.pem" \
+        --key-file "${certificate_dir}/key.pem" \
+        --ca-file "${certificate_dir}/chain.pem" \
+        --fullchain-file "${certificate_dir}/fullchain.pem" \
     )
 
     [[ ! -d "$config_home" ]] && mkdir -p "$config_home"
@@ -176,6 +218,28 @@ function update_cert {
     [[ "$DEBUG" == 1 ]] && echo "Calling acme.sh --issue with the following parameters : ${params_issue_arr[*]}"
     echo "Creating/renewal $base_domain certificates... (${hosts_array[*]})"
     acme.sh --issue "${params_issue_arr[@]}"
+
+    local acmesh_return=$?
+    local should_reload_nginx='false'
+
+    # 0 = success, 2 = RENEW_SKIP
+    if [[ $acmesh_return == 0 || $acmesh_return == 2 ]]; then
+        if [[ $acme_ca_uri =~ ^https://acme-staging.* ]]; then
+            create_links "_test_$base_domain" \
+                && should_reload_nginx='true'
+        else
+            create_links "$base_domain" \
+                && should_reload_nginx='true'
+        fi
+
+        [[ $acmesh_return -eq 0 ]] \
+            && should_reload_nginx='true'
+    fi
+
+    if [[ "$should_reload_nginx" == 'true' ]]; then
+        echo "Reloading nginx..."
+        on_ssl_renewal
+    fi
 }
 
 if [ ! -z "$VIRTUAL_HOST" ]; then

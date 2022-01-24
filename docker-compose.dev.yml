@@ -3,7 +3,7 @@ services :
     build :
       context : .
     volumes :
-      - ./util/local_ssl:/etc/nginx/certs:ro
+      - ./util/local_ssl:/etc/nginx/certs
       - ./vendor:/var/azuracast/www/vendor
       - .:/var/azuracast/www
     extra_hosts:

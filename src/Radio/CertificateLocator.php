@@ -27,9 +27,14 @@ class CertificateLocator
                     }
                 }
 
+                $generatedKey = $certBase . '/ssl.key';
+                $generatedCert = $certBase . '/ssl.crt';
+                if (file_exists($generatedKey) && file_exists($generatedCert)) {
+                    return new Certificate($generatedKey, $generatedCert);
+                }
+
                 $defaultKey = $certBase . '/default.key';
                 $defaultCert = $certBase . '/default.crt';
-
                 if (file_exists($defaultKey) && file_exists($defaultCert)) {
                     return new Certificate($defaultKey, $defaultCert);
                 }

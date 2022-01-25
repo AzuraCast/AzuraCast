@@ -316,16 +316,14 @@ class Liquidsoap extends AbstractBackend
         Entity\Station $station,
         string $user = '',
         string $pass = ''
-    ): string {
+    ): bool {
         // Allow connections using the exact broadcast source password.
         $sourcePw = $station->getFrontendConfig()->getSourcePassword();
         if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
-            return 'true';
+            return true;
         }
 
-        return $this->streamerRepo->authenticate($station, $user, $pass)
-            ? 'true'
-            : 'false';
+        return $this->streamerRepo->authenticate($station, $user, $pass);
     }
 
     public function onConnect(

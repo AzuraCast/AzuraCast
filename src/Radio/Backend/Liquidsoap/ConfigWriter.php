@@ -129,6 +129,15 @@ class ConfigWriter implements EventSubscriberInterface
         $stationTz = self::cleanUpString($station->getTimezone());
         $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
 
+        if ($this->environment->isDocker()) {
+            $apiServiceUrl = ($this->environment->isDockerRevisionAtLeast(5))
+                ? 'web'
+                : 'nginx';
+        } else {
+            $apiServiceUrl = 'localhost';
+        }
+        $stationApiUrl = self::cleanUpString('http://' . $apiServiceUrl . '/api/internal/' . $station->getId());
+
         $event->appendBlock(
             <<<EOF
             init.daemon.set(false)
@@ -146,9 +155,6 @@ class ConfigWriter implements EventSubscriberInterface
             
             setenv("TZ", "${stationTz}")
             
-            azuracast_api_auth = ref("${stationApiAuth}")
-            ignore(azuracast_api_auth)
-            
             autodj_is_loading = ref(true)
             ignore(autodj_is_loading)
             
@@ -158,6 +164,26 @@ class ConfigWriter implements EventSubscriberInterface
             # Track live-enabled status script-wide for fades.
             live_enabled = ref(false)
             ignore(live_enabled)
+            
+            azuracast_api_url = "${stationApiUrl}"
+            azuracast_api_key = "${stationApiAuth}"
+            
+            def azuracast_api_call(~timeout=2, url, payload) =
+                full_url = "#{azuracast_api_url}/#{url}"
+                
+                log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
+                response = http.post(full_url,
+                    headers=[
+                        ("Content-Type", "application/json"),
+                        ("User-Agent", "Liquidsoap AzuraCast"),
+                        ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
+                    ],
+                    timeout=timeout,
+                    data=payload
+                )
+                log("API #{url} - Response (#{response.status_code}): #{response}")
+                response
+            end
             EOF
         );
     }
@@ -409,20 +435,18 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         if (!$station->useManualAutoDJ()) {
-            $nextsongCommand = $this->getApiUrlCommand($station, 'nextsong');
-
             $event->appendBlock(
                 <<< EOF
                 # AutoDJ Next Song Script
                 def autodj_next_song() =
-                    log("autodj_next_song: Sending AzuraCast API Call...")
-                    uri = {$nextsongCommand}
-                    log("autodj_next_song: AzuraCast API Response: #{uri}")
-                
-                    if uri == "" or string.match(pattern="Error", uri) then
+                    response = azuracast_api_call(
+                        "nextsong",
+                        ""
+                    )
+                    if (response.status_code != 200) or (response == "") or (string.match(pattern="Error", response)) then
                         null()
                     else
-                        r = request.create(uri)
+                        r = request.create(response)
                         if request.resolve(r) then
                             r
                         else
@@ -637,55 +661,6 @@ class ConfigWriter implements EventSubscriberInterface
         return $play_time;
     }
 
-    /**
-     * Returns the URL that LiquidSoap should call when attempting to execute AzuraCast API commands.
-     *
-     * @param Entity\Station $station
-     * @param string $endpoint
-     * @param array $params
-     */
-    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, array $params = []): string
-    {
-        // Docker cURL-based API URL call with API authentication.
-        if ($this->environment->isDocker()) {
-            $params = (array)$params;
-            $params['api_auth'] = '!azuracast_api_auth';
-
-            $service_uri = ($this->environment->isDockerRevisionAtLeast(5)) ? 'web' : 'nginx';
-
-            /** @noinspection HttpUrlsUsage */
-            $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
-            $command = 'curl -s --request POST --url ' . $api_url;
-            foreach ($params as $paramKey => $paramVal) {
-                $envVarKey = strtoupper(str_replace('-', '_', $paramKey));
-                $command .= ' --form ' . $paramKey . '="$' . $envVarKey . '"';
-            }
-        } else {
-            // Ansible shell-script call.
-            $shell_path = '/usr/bin/php ' . $this->environment->getBaseDirectory() . '/bin/console';
-
-            $shell_args = [];
-            $shell_args[] = 'azuracast:internal:' . $endpoint;
-            $shell_args[] = $station->getId();
-
-            foreach ((array)$params as $paramKey => $paramVal) {
-                $envVarKey = strtoupper(str_replace('-', '_', $paramKey));
-                $shell_args [] = '--' . $paramKey . '="$' . $envVarKey . '"';
-            }
-
-            $command = $shell_path . ' ' . implode(' ', $shell_args);
-        }
-
-        $envVarsParts = [];
-        foreach ($params as $envVarName => $envVarValue) {
-            $envVarKey = strtoupper(str_replace('-', '_', $envVarName));
-            $envVarsParts[] = '("' . $envVarKey . '", ' . $envVarValue . ')';
-        }
-        $envVarsStr = 'env=[' . implode(', ', $envVarsParts) . ']';
-
-        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\', timeout=2.), default="")';
-    }
-
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $settings = $event->getStation()->getBackendConfig();
@@ -726,14 +701,6 @@ class ConfigWriter implements EventSubscriberInterface
         $dj_mount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
 
-        $authCommand = $this->getApiUrlCommand(
-            $station,
-            'auth',
-            ['dj-user' => 'auth_info.user', 'dj-password' => 'auth_info.password']
-        );
-        $djonCommand = $this->getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
-        $djoffCommand = $this->getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']);
-
         $event->appendBlock(
             <<< EOF
             # DJ Authentication
@@ -754,10 +721,11 @@ class ConfigWriter implements EventSubscriberInterface
                 
                 log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{auth_info.user}")
                 
-                ret = {$authCommand}
-                log("dj_auth: AzuraCast API Response: #{ret}")
-                
-                if bool_of_string(ret) then
+                response = azuracast_api_call(
+                    "auth",
+                    json.stringify(auth_info)
+                )
+                if response.status_code == 200 then
                     last_authenticated_dj := auth_info.user
                     true
                 else
@@ -772,23 +740,28 @@ class ConfigWriter implements EventSubscriberInterface
                 live_enabled := true
                 live_dj := dj
                 
-                log("live_connected: Sending AzuraCast API DJ onConnect command...")
-                ret = {$djonCommand}
-                log("live_connected: AzuraCast API Response: #{ret}")
-            
-                if (string.contains(prefix="/", ret)) then
-                    live_record_path := ret
+                j = json()
+                j.add("user", dj)
+                
+                response = azuracast_api_call(
+                    "djon",
+                    json.stringify(j)
+                )
+                if response.status_code == 200 and string.contains(prefix="/", response) then
+                    live_record_path := response
                 end
             end
             
             def live_disconnected() =
                 dj = !live_dj
                 
-                log("DJ Source disconnected! Current live DJ: #{dj}")
+                j = json()
+                j.add("user", dj)
                 
-                log("live_disconnected: Sending AzuraCast API DJ onDisconnect command...")
-                ret = {$djoffCommand}
-                log("live_disconnected: AzuraCast API Response: #{ret}")
+                _ = azuracast_api_call(
+                    "djoff",
+                    json.stringify(j)
+                )
                 
                 live_enabled := false
                 last_authenticated_dj := ""
@@ -926,20 +899,21 @@ class ConfigWriter implements EventSubscriberInterface
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
-        $feedbackCommand = $this->getApiUrlCommand(
-            $station,
-            'feedback',
-            ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']
-        );
-
         $event->appendBlock(
             <<<EOF
             # Send metadata changes back to AzuraCast
             def metadata_updated(m) =
                 def f() =
                     if (m["song_id"] != "") then
-                        ret = {$feedbackCommand}
-                        log("AzuraCast Feedback Response: #{ret}")
+                        j = json()
+                        j.add("song_id", m["song_id"])
+                        j.add("media_id", m["media_id"])
+                        j.add("playlist_id", m["playlist_id"])
+                    
+                        _ = azuracast_api_call(
+                            "feedback",
+                            json.stringify(j)
+                        )
                     end
                 end
                 

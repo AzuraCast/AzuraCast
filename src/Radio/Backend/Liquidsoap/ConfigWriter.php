@@ -172,17 +172,23 @@ class ConfigWriter implements EventSubscriberInterface
                 full_url = "#{azuracast_api_url}/#{url}"
                 
                 log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
-                response = http.post(full_url,
-                    headers=[
-                        ("Content-Type", "application/json"),
-                        ("User-Agent", "Liquidsoap AzuraCast"),
-                        ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
-                    ],
-                    timeout=timeout,
-                    data=payload
-                )
-                log("API #{url} - Response (#{response.status_code}): #{response}")
-                response
+                try
+                    response = http.post(full_url,
+                        headers=[
+                            ("Content-Type", "application/json"),
+                            ("User-Agent", "Liquidsoap AzuraCast"),
+                            ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
+                        ],
+                        timeout=timeout,
+                        data=payload
+                    )
+                    
+                    log("API #{url} - Response (#{response.status_code}): #{response}")
+                    {success = response.status_code == 200, data = "#{response}"}
+                catch err do
+                    log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
+                    {success = false, data = ""}
+                end
             end
             EOF
         );
@@ -443,10 +449,10 @@ class ConfigWriter implements EventSubscriberInterface
                         "nextsong",
                         ""
                     )
-                    if (response.status_code != 200) or (response == "") or (string.match(pattern="Error", response)) then
+                    if (response.success != true) or (response.data == "") or (string.match(pattern="Error", response.data)) then
                         null()
                     else
-                        r = request.create(response)
+                        r = request.create(response.data)
                         if request.resolve(r) then
                             r
                         else
@@ -725,7 +731,7 @@ class ConfigWriter implements EventSubscriberInterface
                     "auth",
                     json.stringify(auth_info)
                 )
-                if response.status_code == 200 then
+                if response.success then
                     last_authenticated_dj := auth_info.user
                     true
                 else
@@ -747,8 +753,8 @@ class ConfigWriter implements EventSubscriberInterface
                     "djon",
                     json.stringify(j)
                 )
-                if response.status_code == 200 and string.contains(prefix="/", response) then
-                    live_record_path := response
+                if response.success and string.contains(prefix="/", response.data) then
+                    live_record_path := response.data
                 end
             end
             

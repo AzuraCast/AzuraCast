@@ -5,9 +5,19 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Zero-Downtime Broadcasting Restarts**: If you're using our default configuration (Liquidsoap as your AutoDJ and
+  Icecast as your Broadcasting software), you no longer need to fear the "Restart to Apply Changes" button, as we've
+  incorporated several soft-reload improvements that allow us to rebuild configuration files without disconnecting
+  listeners. Both the "Restart to Apply Changes" and the "Restart System Broadcasting" link inside the 'Utilities'
+  submenu will now soft-reload, which will not disconnect listeners on Icecast.
+
 ## Code Quality/Technical Changes
 
-- For Docker installations, we have removed our built-in multisite configuration in favor of a simpler default installation with fewer containers. If you are not using the multi-site setup (i.e. hosting another site on the same Docker installation), no changes are required to your installation. If you want to continue using the multi-site installation, you can follow the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
+- For Docker installations, we have removed our built-in multisite configuration in favor of a simpler default
+  installation with fewer containers. If you are not using the multi-site setup (i.e. hosting another site on the same
+  Docker installation), no changes are required to your installation. If you want to continue using the multi-site
+  installation, you can follow
+  the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
 
 ## Bug Fixes
 

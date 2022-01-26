@@ -6,6 +6,7 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Radio\CertificateLocator;
+use App\Radio\Enums\StreamFormats;
 use App\Utilities;
 use App\Xml\Writer;
 use Exception;
@@ -210,6 +211,12 @@ class Icecast extends AbstractFrontend
 
             if (!empty($mount_row->getFallbackMount())) {
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
+                $mount['fallback-override'] = 1;
+            } elseif ($mount_row->getEnableAutodj()) {
+                $autoDjFormat = $mount_row->getAutodjFormatEnum() ?? StreamFormats::default();
+                $autoDjBitrate = $mount_row->getAutodjBitrate();
+
+                $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();
                 $mount['fallback-override'] = 1;
             }
 

@@ -970,7 +970,7 @@ class ConfigWriter implements EventSubscriberInterface
     ): string {
         $charset = $station->getBackendConfig()->getCharset();
 
-        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::Mp3;
+        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::default();
         $output_format = $this->getOutputFormatString(
             $format,
             $mount->getAutodjBitrate() ?? 128

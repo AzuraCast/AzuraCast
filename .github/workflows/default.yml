@@ -5,6 +5,7 @@ on:
       - main
   push:
     paths-ignore:
+      - '*.md'
       - '.github/*.yml'
       - '.github/ISSUE_TEMPLATE/*.md'
       - 'install.sh' # Ansible-only scripts and folders

@@ -31,7 +31,7 @@ class InternalController
 
     public function authAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->checkStationAuth($request);
+        $this->checkLiquidsoapAuth($request);
 
         $station = $request->getStation();
         if ($station->getEnableStreamers()) {
@@ -60,7 +60,7 @@ class InternalController
 
     public function nextsongAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->checkStationAuth($request);
+        $this->checkLiquidsoapAuth($request);
 
         $response->getBody()->write(
             $this->annotations->annotateNextSong(
@@ -73,7 +73,7 @@ class InternalController
 
     public function djonAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->checkStationAuth($request);
+        $this->checkLiquidsoapAuth($request);
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
@@ -99,7 +99,7 @@ class InternalController
 
     public function djoffAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->checkStationAuth($request);
+        $this->checkLiquidsoapAuth($request);
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
@@ -125,7 +125,7 @@ class InternalController
 
     public function feedbackAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->checkStationAuth($request);
+        $this->checkLiquidsoapAuth($request);
 
         ($this->feedback)(
             $request->getStation(),
@@ -136,9 +136,48 @@ class InternalController
         return $response;
     }
 
+    protected function checkLiquidsoapAuth(ServerRequest $request): void
+    {
+        $station = $request->getStation();
+
+        $acl = $request->getAcl();
+        if ($acl->isAllowed(StationPermissions::View, $station->getId())) {
+            return;
+        }
+
+        $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
+        if (!$station->validateAdapterApiKey($authKey)) {
+            $this->logger->error(
+                'Invalid API key supplied for internal API call.',
+                [
+                    'station_id'   => $station->getId(),
+                    'station_name' => $station->getName(),
+                ]
+            );
+
+            throw new PermissionDeniedException();
+        }
+    }
+
     public function listenerAuthAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->checkStationAuth($request);
+        $station = $request->getStation();
+
+        $acl = $request->getAcl();
+        if (!$acl->isAllowed(StationPermissions::View, $station->getId())) {
+            $authKey = $request->getQueryParam('api_auth', '');
+            if (!$station->validateAdapterApiKey($authKey)) {
+                $this->logger->error(
+                    'Invalid API key supplied for internal API call.',
+                    [
+                        'station_id'   => $station->getId(),
+                        'station_name' => $station->getName(),
+                    ]
+                );
+
+                throw new PermissionDeniedException();
+            }
+        }
 
         $station = $request->getStation();
         $frontendConfig = $station->getFrontendConfig();
@@ -204,28 +243,5 @@ class InternalController
         return $response
             ->withHeader('icecast-auth-user', '0')
             ->withHeader('icecast-auth-message', 'geo-blocked');
-    }
-
-    protected function checkStationAuth(ServerRequest $request): void
-    {
-        $station = $request->getStation();
-
-        $acl = $request->getAcl();
-        if ($acl->isAllowed(StationPermissions::View, $station->getId())) {
-            return;
-        }
-
-        $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
-        if (!$station->validateAdapterApiKey($authKey)) {
-            $this->logger->error(
-                'Invalid API key supplied for internal API call.',
-                [
-                    'station_id'   => $station->getId(),
-                    'station_name' => $station->getName(),
-                ]
-            );
-
-            throw new PermissionDeniedException();
-        }
     }
 }

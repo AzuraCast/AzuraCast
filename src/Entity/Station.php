@@ -25,6 +25,7 @@ use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -627,8 +628,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         $newDir = $this->truncateNullableString(trim($newDir ?? ''));
 
         if (empty($newDir)) {
-            $stationsBaseDir = Environment::getInstance()->getStationDirectory();
-            $newDir = $stationsBaseDir . '/' . $this->getShortName();
+            $newDir = $this->getShortName();
+        }
+
+        if (Path::isRelative($newDir)) {
+            $newDir = Path::makeAbsolute(
+                $newDir,
+                Environment::getInstance()->getStationDirectory()
+            );
         }
 
         $this->radio_base_dir = $newDir;

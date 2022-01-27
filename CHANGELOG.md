@@ -21,6 +21,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed a bug where station base directories created with relative names would end up in `/var/azuracast/www/web`.
+
 - Fixed an issue on Ansible installations preventing message queues from being processed correctly.
 
 - Fixed a bug preventing Ansible installations or updates from completing successfully.

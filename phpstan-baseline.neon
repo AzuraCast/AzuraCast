@@ -1,9 +1,409 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/CustomFieldsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Admin/CustomFieldsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/CustomFieldsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/CustomFieldsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/PermissionsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/RolesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Admin/RolesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/RolesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/RolesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/SettingsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/SettingsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/StationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Admin/StationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/StationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/StationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/StorageLocationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Admin/StorageLocationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/StorageLocationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/StorageLocationsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/UsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Admin/UsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/UsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Admin/UsersController.php
+
+		-
 			message: "#^Parameter \\#2 \\$record of method App\\\\Controller\\\\Api\\\\AbstractApiCrudController\\<TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\>\\:\\:fromArray\\(\\) expects \\(TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\)\\|null, \\(TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\)\\|null given\\.$#"
 			count: 1
 			path: src/Controller/Api/Stations/AbstractScheduledEntityController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Art/DeleteArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Art/PostArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Automation/RunAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/FilesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/FilesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/FilesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/FilesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/HistoryController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/ListenersAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Mounts/Intro/DeleteIntroAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Mounts/Intro/GetIntroAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Mounts/Intro/PostIntroAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/MountsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/MountsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/MountsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/MountsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PlaylistsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/PlaylistsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PlaylistsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PlaylistsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PodcastEpisodesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/PodcastEpisodesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PodcastEpisodesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PodcastEpisodesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Art/DeleteArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Art/GetArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Art/PostArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Episodes/Art/DeleteArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Episodes/Art/GetArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Episodes/Art/PostArtAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Episodes/Media/DeleteMediaAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Episodes/Media/GetMediaAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/Podcasts/Episodes/Media/PostMediaAction.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PodcastsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/PodcastsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PodcastsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/PodcastsController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/QueueController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/QueueController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/RemotesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/RemotesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/RemotesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/RemotesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/ServicesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 3
+			path: src/Controller/Api/Stations/ServicesController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/SftpUsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/SftpUsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/SftpUsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/SftpUsersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/StreamersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/StreamersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/StreamersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/StreamersController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Delete constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/WebhooksController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Get constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 2
+			path: src/Controller/Api/Stations/WebhooksController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Post constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/WebhooksController.php
+
+		-
+			message: "#^Parameter \\$security of attribute class OpenApi\\\\Attributes\\\\Put constructor expects array\\<string\\>\\|null, array\\<int, array\\<string, array\\>\\> given\\.$#"
+			count: 1
+			path: src/Controller/Api/Stations/WebhooksController.php
 
 		-
 			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"

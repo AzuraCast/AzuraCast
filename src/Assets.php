@@ -177,6 +177,7 @@ class Assets
             throw new InvalidArgumentException(sprintf('Library %s not found!', $data));
         }
 
+        /** @var string $name */
         $name = $item['name'];
 
         // Check if a library is "replaced" by other libraries already loaded.

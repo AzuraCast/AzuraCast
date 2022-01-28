@@ -195,9 +195,12 @@ class Liquidsoap extends AbstractBackend
      */
     public function command(Entity\Station $station, string $command_str): array
     {
-        $hostname = ($this->environment->isDocker() ? 'stations' : 'localhost');
+        $uri = $this->environment->getUriToStations()
+            ->withScheme('tcp')
+            ->withPort($this->getTelnetPort($station));
+
         $fp = stream_socket_client(
-            'tcp://' . $hostname . ':' . $this->getTelnetPort($station),
+            (string)$uri,
             $errno,
             $errstr,
             20

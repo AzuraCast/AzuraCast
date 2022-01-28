@@ -479,10 +479,16 @@ return [
     ),
 
     // Supervisor manager
-    Supervisor\Supervisor::class => static function (Environment $settings, Psr\Log\LoggerInterface $logger) {
-        /** @noinspection HttpUrlsUsage */
+    Supervisor\Supervisor::class => static function (
+        Environment $environment,
+        Psr\Log\LoggerInterface $logger
+    ) {
+        $uri = $environment->getUriToStations()
+            ->withPort(9001)
+            ->withPath('/RPC2');
+
         $client = new fXmlRpc\Client(
-            'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
+            (string)$uri,
             new fXmlRpc\Transport\PsrTransport(
                 new Http\Factory\Guzzle\RequestFactory,
                 new GuzzleHttp\Client

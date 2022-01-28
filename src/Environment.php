@@ -8,6 +8,8 @@ use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
 use App\Radio\Configuration;
 use App\Traits\AvailableStaticallyTrait;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 use Psr\Log\LogLevel;
 
 class Environment
@@ -204,6 +206,24 @@ class Environment
 
         $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
         return ($compareVersion >= $version);
+    }
+
+    public function getUriToWeb(): UriInterface
+    {
+        if ($this->isDocker()) {
+            return $this->isDockerRevisionAtLeast(5)
+                ? new Uri('http://web')
+                : new Uri('http://nginx');
+        }
+
+        return new Uri('http://127.0.0.1');
+    }
+
+    public function getUriToStations(): UriInterface
+    {
+        return $this->isDocker()
+            ? new Uri('http://stations')
+            : new Uri('http://127.0.0.1');
     }
 
     public function getLang(): ?string

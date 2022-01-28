@@ -129,14 +129,10 @@ class ConfigWriter implements EventSubscriberInterface
         $stationTz = self::cleanUpString($station->getTimezone());
         $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
 
-        if ($this->environment->isDocker()) {
-            $apiServiceUrl = ($this->environment->isDockerRevisionAtLeast(5))
-                ? 'web'
-                : 'nginx';
-        } else {
-            $apiServiceUrl = 'localhost';
-        }
-        $stationApiUrl = self::cleanUpString('http://' . $apiServiceUrl . '/api/internal/' . $station->getId());
+        $stationApiUrl = self::cleanUpString(
+            (string)$this->environment->getUriToWeb()
+                ->withPath('/api/internal/' . $station->getId())
+        );
 
         $event->appendBlock(
             <<<EOF

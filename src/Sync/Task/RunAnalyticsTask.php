@@ -27,6 +27,11 @@ class RunAnalyticsTask extends AbstractTask
         return '4 * * * *';
     }
 
+    public static function isLongTask(): bool
+    {
+        return true;
+    }
+
     public function run(bool $force = false): void
     {
         switch ($this->settingsRepo->readSettings()->getAnalyticsEnum()) {

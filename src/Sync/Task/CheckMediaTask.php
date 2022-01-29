@@ -38,6 +38,11 @@ class CheckMediaTask extends AbstractTask
         return '1-59/5 * * * *';
     }
 
+    public static function isLongTask(): bool
+    {
+        return true;
+    }
+
     /**
      * Handle event dispatch.
      *

@@ -84,6 +84,11 @@ class RunnerCommand extends AbstractSyncCommand
     ): void {
         $taskShortName = SingleTaskCommand::getClassShortName($taskClass);
 
+        $isLongTask = $taskClass::isLongTask();
+        $timeout = ($isLongTask)
+            ? $this->environment->getSyncLongExecutionTime()
+            : $this->environment->getSyncShortExecutionTime();
+
         $this->lockAndRunConsoleCommand(
             $io,
             $taskShortName,
@@ -92,7 +97,7 @@ class RunnerCommand extends AbstractSyncCommand
                 'azuracast:sync:task',
                 $taskClass,
             ],
-            600
+            $timeout
         );
     }
 }

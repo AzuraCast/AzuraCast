@@ -46,7 +46,7 @@
     "intervention/image": "^2.6",
     "laminas/laminas-config": "^3.3",
     "league/csv": "^9.6",
-    "league/flysystem-aws-s3-v3": "^2.0",
+    "league/flysystem-aws-s3-v3": "^3.0",
     "league/mime-type-detection": "^1.7",
     "league/plates": "^3.1",
     "lstrojny/fxmlrpc": "dev-master",

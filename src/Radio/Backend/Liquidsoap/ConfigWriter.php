@@ -721,9 +721,8 @@ class ConfigWriter implements EventSubscriberInterface
                         {user = login.user, password = login.password}
                     end
                 
-                log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{auth_info.user}")
-                
                 response = azuracast_api_call(
+                    timeout=5,
                     "auth",
                     json.stringify(auth_info)
                 )
@@ -746,6 +745,7 @@ class ConfigWriter implements EventSubscriberInterface
                 j.add("user", dj)
                 
                 response = azuracast_api_call(
+                    timeout=5,
                     "djon",
                     json.stringify(j)
                 )
@@ -761,6 +761,7 @@ class ConfigWriter implements EventSubscriberInterface
                 j.add("user", dj)
                 
                 _ = azuracast_api_call(
+                    timeout=5,
                     "djoff",
                     json.stringify(j)
                 )

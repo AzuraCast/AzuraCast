@@ -64,7 +64,8 @@
                      :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
                      :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
-                     :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
+                     :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed"
+                     :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="onSortChanged">
                 <template #head(selected)="data">
                     <b-form-checkbox :aria-label="langSelectAll" :checked="allSelected"
                                      @change="toggleSelected"></b-form-checkbox>
@@ -223,6 +224,8 @@ export default {
         return {
             allFields: allFields,
             selected: [],
+            sortBy: null,
+            sortDesc: false,
             storeKey: 'datatable_' + this.id + '_settings',
             filter: null,
             perPage: (this.paginated) ? this.defaultPerPage : 0,
@@ -324,6 +327,11 @@ export default {
                 _.forEach(this.selectableFields, (field) => {
                     field.visible = _.includes(settings.visibleFields, field.key);
                 });
+
+                if (settings.sortBy) {
+                    this.sortBy = settings.sortBy;
+                    this.sortDesc = settings.sortDesc;
+                }
             }
         },
         storeSettings () {
@@ -333,8 +341,11 @@ export default {
 
             let settings = {
                 'perPage': this.perPage,
+                'sortBy': this.sortBy,
+                'sortDesc': this.sortDesc,
                 'visibleFields': _.map(this.visibleFields, 'key')
             };
+
             store.set(this.storeKey, settings);
         },
         getPerPageLabel (num) {
@@ -344,20 +355,25 @@ export default {
             this.perPage = num;
             this.storeSettings();
         },
-        onClickRefresh (e) {
+        onClickRefresh(e) {
             if (e.shiftKey) {
                 this.relist();
             } else {
                 this.refresh();
             }
         },
-        onRefreshed () {
+        onSortChanged() {
+            this.$nextTick(() => {
+                this.storeSettings();
+            });
+        },
+        onRefreshed() {
             this.$emit('refreshed');
         },
-        refresh () {
+        refresh() {
             this.$refs.table.refresh();
         },
-        navigate () {
+        navigate() {
             this.filter = null;
             this.currentPage = 1;
             this.flushCache = true;

@@ -804,4 +804,7 @@ change-ports() {
   docker-compose up -d
 }
 
+# Ensure we're in the same directory as this script.
+cd "${BASH_SOURCE%/*}/" || exit
+
 "$@"

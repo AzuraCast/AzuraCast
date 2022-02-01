@@ -10,6 +10,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SplFileInfo;
+use Symfony\Component\Filesystem\Path;
 
 use function stripos;
 
@@ -41,41 +42,61 @@ class File
      */
     public static function sanitizeFileName(string $str): string
     {
-        $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
-        if (null === $str || false === $str) {
+        $result = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
+        if (null === $result || false === $result) {
             throw new RuntimeException('Cannot parse input string.');
         }
 
-        $str = mb_ereg_replace("([\.]{2,})", '.', $str);
-        if (null === $str || false === $str) {
+        $result = mb_ereg_replace("([\.]{2,})", '.', $result);
+        if (null === $result || false === $result) {
             throw new RuntimeException('Cannot parse input string.');
         }
 
-        $str = str_replace(' ', '_', $str);
-        return mb_strtolower($str);
+        $result = str_replace(' ', '_', $result);
+        return mb_strtolower($result);
     }
 
     public static function generateTempPath(string $pattern = ''): string
     {
-        $prefix = pathinfo($pattern, PATHINFO_FILENAME) ?: 'temp';
-        $extension = pathinfo($pattern, PATHINFO_EXTENSION) ?: 'log';
+        $prefix = Path::getFilenameWithoutExtension($pattern) ?: 'temp';
+        $extension = Path::getExtension($pattern) ?: 'log';
 
-        $tempPath = tempnam(sys_get_temp_dir(), $prefix . '_') . '.' . $extension;
-        touch($tempPath);
+        return self::createTempFile(
+            prefix: $prefix . '_',
+            suffix: '.' . $extension
+        );
+    }
 
-        return $tempPath;
+    public static function createTempFile(
+        string $prefix = 'tmp_',
+        string $suffix = '.tmp',
+        string $dir = null
+    ): string {
+        $dir ??= sys_get_temp_dir();
+
+        $tries = 1;
+        while ($tries <= 5) {
+            $rand = substr(uniqid('', true), -5);
+            $path = $prefix . $rand . $suffix;
+
+            $fullPath = Path::makeAbsolute($path, $dir);
+            if (!is_file($fullPath)) {
+                touch($fullPath);
+                return $fullPath;
+            }
+
+            $tries++;
+        }
+
+        throw new \RuntimeException('Could not generate temp path.');
     }
 
     public static function validateTempPath(string $path): string
     {
         $tempDir = sys_get_temp_dir();
-        $fullPath = realpath($tempDir . '/' . $path);
+        $fullPath = Path::makeAbsolute($tempDir, $path);
 
-        if (false === $fullPath) {
-            throw new InvalidArgumentException(sprintf('Invalid path: "%s"', $path));
-        }
-
-        if (!str_starts_with($fullPath, $tempDir)) {
+        if (!Path::isBasePath($tempDir, $fullPath)) {
             throw new InvalidArgumentException(
                 sprintf('Path "%s" is not within "%s".', $fullPath, $tempDir)
             );

@@ -24,7 +24,7 @@ final class Version20171208093239 extends AbstractMigration
             $this->connection->update(
                 'station',
                 [
-                    'short_name' => Station::getStationShortName($record['name']),
+                    'short_name' => Station::generateShortName($record['name']),
                 ],
                 [
                     'id' => $record['id'],

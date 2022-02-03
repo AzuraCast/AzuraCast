@@ -411,7 +411,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->name = $this->truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(self::getStationShortName($name));
+            $this->setShortName(self::generateShortName($name));
         }
     }
 
@@ -419,7 +419,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     {
         return (!empty($this->short_name))
             ? $this->short_name
-            : self::getStationShortName($this->name);
+            : self::generateShortName($this->name);
     }
 
     public function setShortName(string $shortName): void
@@ -429,13 +429,8 @@ class Station implements Stringable, IdentifiableEntityInterface
             $shortName = $this->name;
         }
 
-        $shortName = self::getStationShortName($shortName);
+        $shortName = self::generateShortName($shortName);
         $this->short_name = $this->truncateString($shortName, 100);
-    }
-
-    public static function getStationShortName(string $str): string
-    {
-        return File::sanitizeFileName($str);
     }
 
     public function setIsEnabled(bool $is_enabled): void
@@ -1147,5 +1142,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         $be_config->setDjPort(null);
         $be_config->setTelnetPort(null);
         $this->setBackendConfig($be_config);
+    }
+
+    public static function generateShortName(string $str): string
+    {
+        $str = File::sanitizeFileName($str);
+
+        return (is_numeric($str))
+            ? 'station_' . $str
+            : $str;
     }
 }

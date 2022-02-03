@@ -8,6 +8,7 @@ use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
+use App\Utilities\File;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -234,7 +235,7 @@ class StationPlaylist implements
 
     public function getShortName(): string
     {
-        return Station::getStationShortName($this->name);
+        return self::generateShortName($this->name);
     }
 
     public function getType(): string
@@ -567,5 +568,14 @@ class StationPlaylist implements
     public function __toString(): string
     {
         return $this->getStation() . ' Playlist: ' . $this->getName();
+    }
+
+    public static function generateShortName(string $str): string
+    {
+        $str = File::sanitizeFileName($str);
+
+        return (is_numeric($str))
+            ? 'playlist_' . $str
+            : $str;
     }
 }

@@ -14,6 +14,8 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
@@ -329,7 +331,7 @@ class ConfigWriter implements EventSubscriberInterface
                 case Entity\Enums\PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $play_time = $this->getScheduledPlaylistPlayTime($scheduleItem);
+                            $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -358,7 +360,7 @@ class ConfigWriter implements EventSubscriberInterface
 
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $play_time = $this->getScheduledPlaylistPlayTime($scheduleItem);
+                            $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistScheduleVar . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -378,7 +380,7 @@ class ConfigWriter implements EventSubscriberInterface
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
                             $playTime = '(' . $minutePlayTime . ') and ('
-                                . $this->getScheduledPlaylistPlayTime($scheduleItem) . ')';
+                                . $this->getScheduledPlaylistPlayTime($event, $scheduleItem) . ')';
 
                             $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -608,10 +610,14 @@ class ConfigWriter implements EventSubscriberInterface
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
+     * @param WriteLiquidsoapConfiguration $event
      * @param Entity\StationSchedule $playlistSchedule
+     * @return string
      */
-    protected function getScheduledPlaylistPlayTime(Entity\StationSchedule $playlistSchedule): string
-    {
+    protected function getScheduledPlaylistPlayTime(
+        WriteLiquidsoapConfiguration $event,
+        Entity\StationSchedule $playlistSchedule
+    ): string {
         $start_time = $playlistSchedule->getStartTime();
         $end_time = $playlistSchedule->getEndTime();
 
@@ -656,11 +662,77 @@ class ConfigWriter implements EventSubscriberInterface
             foreach ($playlist_schedule_days as $day) {
                 $play_days[] = (($day === 7) ? '0' : $day) . 'w';
             }
-
             $play_time = '(' . implode(' or ', $play_days) . ') and ' . $play_time;
         }
 
+        // Handle start-date and end-date boundaries.
+        $startDate = $playlistSchedule->getStartDate();
+        $endDate = $playlistSchedule->getEndDate();
+
+        if (!empty($startDate) || !empty($endDate)) {
+            $tzObject = $event->getStation()->getTimezoneObject();
+
+            $customFunctionBody = [];
+
+            $scheduleMethod = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
+            $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
+
+            $conditions = [];
+
+            if (!empty($startDate)) {
+                $startDateObj = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tzObject);
+
+                if (false !== $startDateObj) {
+                    $startDateObj = $startDateObj->setTime(0, 0);
+
+                    $customFunctionBody[] = '    # ' . $startDateObj->__toString();
+                    $customFunctionBody[] = '    range_start = ' . $startDateObj->getTimestamp() . '.';
+                    $conditions[] = 'range_start <= current_time';
+                }
+            }
+
+            if (!empty($endDate)) {
+                $endDateObj = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $tzObject);
+
+                if (false !== $endDateObj) {
+                    $endDateObj = $endDateObj->setTime(23, 59, 59);
+
+                    $customFunctionBody[] = '    # ' . $endDateObj->__toString();
+                    $customFunctionBody[] = '    range_end = ' . $endDateObj->getTimestamp() . '.';
+
+                    $conditions[] = 'current_time <= range_end';
+                }
+            }
+
+            $customFunctionBody[] = '    current_time = time()';
+            $customFunctionBody[] = '    ' . implode(' and ', $conditions);
+            $customFunctionBody[] = 'end';
+            $event->appendLines($customFunctionBody);
+
+            $play_time = $scheduleMethod . '() and ' . $play_time;
+        }
+
         return $play_time;
+    }
+
+    protected function getTimeAsLiquidsoapVariable(CarbonInterface $time): string
+    {
+        $params = [
+            'isdst' => 'null()',
+            'year' => $time->year,
+            'month' => $time->month,
+            'day' => $time->day,
+            'hour' => $time->hour,
+            'min' => $time->minute,
+            'sec' => $time->second,
+        ];
+
+        $returnParams = [];
+        foreach ($params as $k => $v) {
+            $returnParams[] = $k . '=' . $v;
+        }
+
+        return 'time.make({' . implode(', ', $returnParams) . '})';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void

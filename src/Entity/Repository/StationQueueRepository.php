@@ -45,6 +45,18 @@ class StationQueueRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
             UPDATE App\Entity\StationQueue sq
+            SET sq.timestamp_played = :timestamp
+            WHERE sq.station = :station
+            AND sq.id = :id
+            DQL
+        )->setParameter('timestamp', time())
+            ->setParameter('station', $station)
+            ->setParameter('id', $row->getIdRequired())
+            ->execute();
+
+        $this->em->createQuery(
+            <<<'DQL'
+            UPDATE App\Entity\StationQueue sq
             SET sq.is_played=1, sq.sent_to_autodj=1
             WHERE sq.station = :station 
             AND sq.is_played = 0 

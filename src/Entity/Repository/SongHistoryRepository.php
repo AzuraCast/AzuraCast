@@ -8,6 +8,8 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
+use App\Radio\Backend\Liquidsoap\Feedback;
+use App\Radio\Enums\BackendAdapters;
 use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -17,21 +19,15 @@ use Symfony\Component\Serializer\Serializer;
  */
 class SongHistoryRepository extends Repository
 {
-    protected ListenerRepository $listenerRepository;
-
-    protected StationQueueRepository $stationQueueRepository;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        ListenerRepository $listenerRepository,
-        StationQueueRepository $stationQueueRepository
+        protected ListenerRepository $listenerRepository,
+        protected StationQueueRepository $stationQueueRepository,
+        protected Feedback $liquidsoapFeedback,
     ) {
-        $this->listenerRepository = $listenerRepository;
-        $this->stationQueueRepository = $stationQueueRepository;
-
         parent::__construct($em, $serializer, $environment, $logger);
     }
 
@@ -132,20 +128,11 @@ class SongHistoryRepository extends Repository
             $this->em->persist($last_sh);
         }
 
-        // Look for an already cued but unplayed song.
-        $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
+        $sh = $this->newSongHistoryEntry($station, $song);
 
-        if (null !== $upcomingTrack) {
-            $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);
-            $sh = Entity\SongHistory::fromQueue($upcomingTrack);
-        } else {
-            // Processing a new SongHistory item.
-            $sh = new Entity\SongHistory($station, $song);
-
-            $currentStreamer = $station->getCurrentStreamer();
-            if ($currentStreamer instanceof Entity\StationStreamer) {
-                $sh->setStreamer($currentStreamer);
-            }
+        $currentStreamer = $station->getCurrentStreamer();
+        if ($currentStreamer instanceof Entity\StationStreamer) {
+            $sh->setStreamer($currentStreamer);
         }
 
         $sh->setTimestampStart(time());
@@ -156,6 +143,29 @@ class SongHistoryRepository extends Repository
         $this->em->flush();
 
         return $sh;
+    }
+
+    protected function newSongHistoryEntry(
+        Entity\Station $station,
+        Entity\Interfaces\SongInterface $song
+    ): Entity\SongHistory {
+        // Look for an already cued but unplayed song.
+        $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
+
+        if (null !== $upcomingTrack) {
+            $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);
+            return Entity\SongHistory::fromQueue($upcomingTrack);
+        }
+
+        // Check Liquidsoap's feedback cache for a record.
+        if (BackendAdapters::Liquidsoap === $station->getBackendTypeEnum()) {
+            $sh = $this->liquidsoapFeedback->registerFromFeedback($station, $song);
+            if (null !== $sh) {
+                return $sh;
+            }
+        }
+
+        return new Entity\SongHistory($station, $song);
     }
 
     public function getCurrent(Entity\Station $station): ?Entity\SongHistory

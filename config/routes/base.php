@@ -2,7 +2,10 @@
 
 use App\Controller;
 use App\Enums\GlobalPermissions;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Middleware;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
@@ -24,6 +27,13 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/endsession', Controller\Frontend\Account\EndMasqueradeAction::class)
                 ->setName('account:endmasquerade');
+
+            $group->get(
+                '/api_keys',
+                function (ServerRequest $request, Response $response): ResponseInterface {
+                    return $response->withRedirect('/profile');
+                }
+            );
 
             $group->get('/profile', Controller\Frontend\Profile\IndexAction::class)
                 ->setName('profile:index');

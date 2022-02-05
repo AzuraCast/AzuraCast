@@ -805,6 +805,6 @@ change-ports() {
 }
 
 # Ensure we're in the same directory as this script.
-cd "${BASH_SOURCE%/*}/" || exit
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
 "$@"

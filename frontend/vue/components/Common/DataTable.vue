@@ -2,15 +2,15 @@
     <div :id="id" style="display: contents">
         <div class="datatable-toolbar-top card-body" v-if="showToolbar">
             <b-row class="align-items-center mb-2">
-                <b-col xl="7" md="6" sm="12" v-if="showPagination">
+                <b-col xl="6" lg="5" md="12" sm="12" v-if="showPagination">
                     <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
                                   class="mb-0" v-if="showPagination">
                     </b-pagination>
                 </b-col>
-                <b-col xl="6" md="6" sm="12" v-else>
+                <b-col xl="6" lg="5" md="12" sm="12" v-else>
                     &nbsp;
                 </b-col>
-                <b-col :xl="showPagination ? 5 : 6" md="6" sm="12" class="d-flex my-2">
+                <b-col xl="6" lg="7" md="12" sm="12" class="d-flex my-2">
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="icon glyphicon input-group-addon search"></span>

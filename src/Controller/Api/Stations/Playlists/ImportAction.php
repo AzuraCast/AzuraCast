@@ -44,6 +44,8 @@ class ImportAction extends AbstractPlaylistsAction
         $totalPaths = count($paths);
         $foundPaths = 0;
 
+        $importResults = [];
+
         if (!empty($paths)) {
             $storageLocation = $request->getStation()->getMediaStorageLocation();
 
@@ -75,7 +77,7 @@ class ImportAction extends AbstractPlaylistsAction
             // Run all paths against the lookup list of hashes.
             $matches = [];
 
-            foreach ($paths as $path_raw) {
+            $matchFunction = static function ($path_raw) use ($mediaLookup, $basenameLookup) {
                 // De-Windows paths (if applicable)
                 $path_raw = str_replace('\\', '/', $path_raw);
 
@@ -89,15 +91,29 @@ class ImportAction extends AbstractPlaylistsAction
                     for ($i = 2, $iMax = count($pathParts); $i <= $iMax; $i++) {
                         $path = implode('/', array_slice($pathParts, 0 - $i));
                         if (isset($mediaLookup[$path])) {
-                            $matches[] = $mediaLookup[$path];
-                            continue 2;
+                            return [$path, $mediaLookup[$path]];
                         }
                     }
                 }
 
                 // Attempt basename-only matching
                 if (isset($basenameLookup[$basename])) {
-                    $matches[] = $basenameLookup[$basename];
+                    return [$basename, $basenameLookup[$basename]];
+                }
+
+                return [null, null];
+            };
+
+            foreach ($paths as $path_raw) {
+                [$matchedPath, $match] = $matchFunction($path_raw);
+
+                $importResults[] = [
+                    'path' => $path_raw,
+                    'match' => $matchedPath,
+                ];
+
+                if (null !== $match) {
+                    $matches[] = $match;
                 }
             }
 
@@ -105,7 +121,7 @@ class ImportAction extends AbstractPlaylistsAction
             if (!empty($matches)) {
                 $matchedMediaRaw = $this->em->createQuery(
                     <<<'DQL'
-                        SELECT sm
+                        SELECT sm 
                         FROM App\Entity\StationMedia sm
                         WHERE sm.storage_location = :storageLocation AND sm.id IN (:matched_ids)
                     DQL
@@ -137,13 +153,15 @@ class ImportAction extends AbstractPlaylistsAction
         }
 
         return $response->withJson(
-            new Entity\Api\Status(
+            new Entity\Api\StationPlaylistImportResult(
                 true,
                 __(
                     'Playlist successfully imported; %d of %d files were successfully matched.',
                     $foundPaths,
                     $totalPaths
-                )
+                ),
+                null,
+                $importResults
             )
         );
     }

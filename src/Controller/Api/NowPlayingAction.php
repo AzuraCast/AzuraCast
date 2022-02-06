@@ -121,6 +121,7 @@ class NowPlayingAction
 
         if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
             $np->resolveUrls($router->getBaseUrl());
+            $np->update();
             return $np;
         }
 
@@ -150,6 +151,7 @@ class NowPlayingAction
             $npRow = $row['nowplaying'];
             if ($npRow instanceof Entity\Api\NowPlaying\NowPlaying) {
                 $npRow->resolveUrls($baseUrl);
+                $npRow->update();
                 $np[] = $npRow;
             }
         }

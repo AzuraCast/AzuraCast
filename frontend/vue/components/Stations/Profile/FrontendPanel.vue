@@ -11,41 +11,66 @@
         </div>
 
         <template v-if="userCanManageBroadcasting">
-            <table class="table table-striped table-responsive mb-0">
-                <colgroup>
-                    <col width="30%">
-                    <col width="70%">
-                </colgroup>
+            <b-table-simple striped responsive>
                 <tbody>
-                <tr>
-                    <td key="lang_frontend_admin_uri" v-translate>Administration</td>
+                <tr class="align-middle">
                     <td>
-                        <a :href="frontendAdminUri">{{ frontendAdminUri }}</a>
+                        <a :href="frontendAdminUri" target="_blank">
+                            <translate key="lang_frontend_admin">Administration</translate>
+                        </a>
                     </td>
-                </tr>
-                <tr>
-                    <td key="lang_frontend_admin_pw" v-translate>Administrator Password</td>
-                    <td>
-                        {{ frontendAdminPassword }}
+                    <td class="px-0">
+                        <div>
+                            <translate key="lang_username">Username:</translate>
+                            <span class="text-monospace">admin</span>
+                        </div>
+                        <div>
+                            <translate key="lang_password">Password:</translate>
+                            <span class="text-monospace">{{ frontendAdminPassword }}</span>
+                        </div>
+                    </td>
+                    <td class="px-0">
                         <copy-to-clipboard-button :text="frontendAdminPassword" hide-text></copy-to-clipboard-button>
                     </td>
                 </tr>
-                <tr>
-                    <td key="lang_frontend_source_pw" v-translate>Source Password</td>
+                <tr class="align-middle">
                     <td>
-                        {{ frontendSourcePassword }}
+                        <translate key="lang_frontend_source">Source</translate>
+                    </td>
+                    <td class="px-0">
+                        <div>
+                            <translate key="lang_username">Username:</translate>
+                            <span class="text-monospace">source</span>
+                        </div>
+                        <div>
+                            <translate key="lang_password">Password:</translate>
+                            <span class="text-monospace">{{ frontendSourcePassword }}</span>
+                        </div>
+                    </td>
+                    <td class="px-0">
                         <copy-to-clipboard-button :text="frontendSourcePassword" hide-text></copy-to-clipboard-button>
                     </td>
                 </tr>
-                <tr v-if="isIcecast">
-                    <td key="lang_frontend_relay_pw" v-translate>Relay Password</td>
+                <tr class="align-middle">
                     <td>
-                        {{ frontendRelayPassword }}
+                        <translate key="lang_frontend_relay">Relay</translate>
+                    </td>
+                    <td class="px-0">
+                        <div>
+                            <translate key="lang_username">Username:</translate>
+                            <span class="text-monospace">relay</span>
+                        </div>
+                        <div>
+                            <translate key="lang_password">Password:</translate>
+                            <span class="text-monospace">{{ frontendRelayPassword }}</span>
+                        </div>
+                    </td>
+                    <td class="px-0">
                         <copy-to-clipboard-button :text="frontendRelayPassword" hide-text></copy-to-clipboard-button>
                     </td>
                 </tr>
                 </tbody>
-            </table>
+            </b-table-simple>
 
             <div class="card-actions">
                 <a class="api-call no-reload btn btn-outline-secondary" :href="frontendRestartUri">

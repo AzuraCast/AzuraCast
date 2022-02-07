@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Radio\CertificateLocator;
 use Exception;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class SHOUTcast extends AbstractFrontend
+class Shoutcast extends AbstractFrontend
 {
     public function supportsMounts(): bool
     {
@@ -114,19 +115,23 @@ class SHOUTcast extends AbstractFrontend
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
 
-        $config = array_filter([
-            'password'             => $frontendConfig->getSourcePassword(),
-            'adminpassword'        => $frontendConfig->getAdminPassword(),
-            'logfile'              => $configPath . '/sc_serv.log',
-            'w3clog'               => $configPath . '/sc_w3c.log',
-            'banfile'              => $this->writeIpBansFile($station),
-            'ripfile'              => $configPath . '/sc_serv.rip',
-            'maxuser'              => $frontendConfig->getMaxListeners() ?? 250,
-            'portbase'             => $frontendConfig->getPort(),
+        $certPaths = CertificateLocator::findCertificate();
+
+        $config = [
+            'password' => $frontendConfig->getSourcePassword(),
+            'adminpassword' => $frontendConfig->getAdminPassword(),
+            'logfile' => $configPath . '/sc_serv.log',
+            'w3clog' => $configPath . '/sc_w3c.log',
+            'banfile' => $this->writeIpBansFile($station),
+            'ripfile' => $configPath . '/sc_serv.rip',
+            'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
+            'portbase' => $frontendConfig->getPort(),
             'requirestreamconfigs' => 1,
-            'licenceid'            => $frontendConfig->getScLicenseId(),
-            'userid'               => $frontendConfig->getScUserId(),
-        ]);
+            'licenceid' => $frontendConfig->getScLicenseId(),
+            'userid' => $frontendConfig->getScUserId(),
+            'sslCertificateFile' => $certPaths->getCertPath(),
+            'sslCertificateKeyFile' => $certPaths->getKeyPath(),
+        ];
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
@@ -136,6 +141,8 @@ class SHOUTcast extends AbstractFrontend
                 $config = array_merge($config, $custom_conf);
             }
         }
+
+        $config = array_filter($config);
 
         $i = 0;
         foreach ($station->getMounts() as $mount_row) {

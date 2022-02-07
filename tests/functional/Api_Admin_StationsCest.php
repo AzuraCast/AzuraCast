@@ -19,7 +19,7 @@ class Api_Admin_StationsCest extends CestAbstract
             ],
             [
                 'name'          => 'Modified Station',
-                'frontend_type' => \App\Radio\Enums\FrontendAdapters::SHOUTcast->value,
+                'frontend_type' => \App\Radio\Enums\FrontendAdapters::Shoutcast->value,
             ]
         );
     }

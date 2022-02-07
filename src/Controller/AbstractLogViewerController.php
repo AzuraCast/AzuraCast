@@ -56,7 +56,7 @@ abstract class AbstractLogViewerController
                 ];
                 break;
 
-            case FrontendAdapters::SHOUTcast:
+            case FrontendAdapters::Shoutcast:
                 $log_paths['shoutcast_log'] = [
                     'name' => __('SHOUTcast Log'),
                     'path' => $stationConfigDir . '/shoutcast.log',

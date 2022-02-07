@@ -6,7 +6,7 @@ namespace App\Controller\Api\Admin\Shoutcast;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Frontend\SHOUTcast;
+use App\Radio\Frontend\Shoutcast;
 use Psr\Http\Message\ResponseInterface;
 
 class GetAction
@@ -14,7 +14,7 @@ class GetAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        SHOUTcast $shoutcast
+        Shoutcast $shoutcast
     ): ResponseInterface {
         return $response->withJson(
             [

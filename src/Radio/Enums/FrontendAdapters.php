@@ -8,12 +8,12 @@ namespace App\Radio\Enums;
 
 use App\Radio\Frontend\Icecast;
 use App\Radio\Frontend\Remote;
-use App\Radio\Frontend\SHOUTcast;
+use App\Radio\Frontend\Shoutcast;
 
 enum FrontendAdapters: string implements AdapterTypeInterface
 {
     case Icecast = 'icecast';
-    case SHOUTcast = 'shoutcast2';
+    case Shoutcast = 'shoutcast2';
     case Remote = 'remote';
 
     public function getValue(): string
@@ -25,7 +25,7 @@ enum FrontendAdapters: string implements AdapterTypeInterface
     {
         return match ($this) {
             self::Icecast => 'Icecast 2.4',
-            self::SHOUTcast => 'SHOUTcast DNAS 2',
+            self::Shoutcast => 'SHOUTcast DNAS 2',
             self::Remote => 'Remote',
         };
     }
@@ -34,7 +34,7 @@ enum FrontendAdapters: string implements AdapterTypeInterface
     {
         return match ($this) {
             self::Icecast => Icecast::class,
-            self::SHOUTcast => SHOUTcast::class,
+            self::Shoutcast => Shoutcast::class,
             self::Remote => Remote::class,
         };
     }

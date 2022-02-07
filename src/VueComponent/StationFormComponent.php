@@ -31,7 +31,7 @@ class StationFormComponent implements VueComponentInterface
             'showAdminTab'          => $request->getAcl()->isAllowed(GlobalPermissions::Stations),
             'showAdvanced'          => $settings->getEnableAdvancedFeatures(),
             'timezones'             => $this->getTimezones(),
-            'isShoutcastInstalled'  => isset($installedFrontends[FrontendAdapters::SHOUTcast->value]),
+            'isShoutcastInstalled'  => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
             'countries'             => Countries::getNames(),
             'storageLocationApiUrl' => (string)$request->getRouter()->named('api:admin:stations:storage-locations'),
         ];

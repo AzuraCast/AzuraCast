@@ -956,6 +956,7 @@ class ConfigWriter implements EventSubscriberInterface
                 <<<EOF
                 # Replaygain Metadata
                 enable_replaygain_metadata()
+                radio = replaygain(radio)
                 EOF
             );
         }

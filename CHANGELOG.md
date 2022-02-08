@@ -29,6 +29,10 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug where album art on the song requests page wouldn't respect "Prefer Browser URL" setting.
 
+- Fixed a bug where Liquidsoap wasn't calculating the ReplayGain values of tracks due to a missing binary
+
+- Added a missing Liquidsoap operator call to apply calculated ReplayGain values on the stream
+
 ---
 
 # AzuraCast 0.15.0 (Jan 12, 2022)

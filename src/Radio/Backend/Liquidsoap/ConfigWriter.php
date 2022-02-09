@@ -1057,17 +1057,17 @@ class ConfigWriter implements EventSubscriberInterface
         if (!empty($username)) {
             $output_params[] = 'user = "' . self::cleanUpString($username) . '"';
         }
-        
+
         $password = self::cleanUpString($mount->getAutodjPassword());
-        
+
         $adapterType = $mount->getAutodjAdapterTypeEnum();
         if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
-        
+
         $output_params[] = 'password = "' . $password . '"';
 
-        $protocol = $mount->getAutodjProtocolEnum();        
+        $protocol = $mount->getAutodjProtocolEnum();
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;

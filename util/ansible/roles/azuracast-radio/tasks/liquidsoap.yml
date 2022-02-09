@@ -48,6 +48,7 @@
       - libx11-dev
       - libxpm-dev
       - bubblewrap
+      - ffmpeg
 
 - name: Install Optional Audio Plugins
   apt:

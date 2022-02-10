@@ -111,7 +111,7 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group v-if="!isShoutcastFrontend" id="edit_form_frontend_banned_user_agents"
+                        <b-wrapped-form-group id="edit_form_frontend_banned_user_agents"
                                               :field="form.frontend_config.banned_user_agents" input-type="textarea"
                                               :input-attrs="{class: 'text-preformatted'}" advanced>
                             <template #label="{lang}">

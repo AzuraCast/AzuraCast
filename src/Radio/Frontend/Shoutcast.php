@@ -123,6 +123,7 @@ class Shoutcast extends AbstractFrontend
             'logfile' => $configPath . '/sc_serv.log',
             'w3clog' => $configPath . '/sc_w3c.log',
             'banfile' => $this->writeIpBansFile($station),
+            'agentfile' => $this->writeUserAgentBansFile($station),
             'ripfile' => $configPath . '/sc_serv.rip',
             'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
             'portbase' => $frontendConfig->getPort(),

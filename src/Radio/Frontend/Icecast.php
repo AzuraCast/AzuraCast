@@ -293,23 +293,6 @@ class Icecast extends AbstractFrontend
         return substr($configString, strpos($configString, "\n") + 1);
     }
 
-    protected function writeUserAgentBansFile(Entity\Station $station): string
-    {
-        $bannedUserAgents = array_filter(
-            array_map(
-                'trim',
-                explode("\n", $station->getFrontendConfig()->getBannedUserAgents() ?? '')
-            )
-        );
-
-        $configDir = $station->getRadioConfigDir();
-        $bansFile = $configDir . '/user_agent_bans.txt';
-
-        file_put_contents($bansFile, implode("\n", $bannedUserAgents));
-
-        return $bansFile;
-    }
-
     public function getCommand(Entity\Station $station): ?string
     {
         if ($binary = $this->getBinary()) {

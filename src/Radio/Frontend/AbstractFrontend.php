@@ -179,6 +179,23 @@ abstract class AbstractFrontend extends AbstractAdapter
         return false;
     }
 
+    protected function writeUserAgentBansFile(Entity\Station $station): string
+    {
+        $bannedUserAgents = array_filter(
+            array_map(
+                'trim',
+                explode("\n", $station->getFrontendConfig()->getBannedUserAgents() ?? '')
+            )
+        );
+
+        $configDir = $station->getRadioConfigDir();
+        $bansFile = $configDir . '/user_agent_bans.txt';
+
+        file_put_contents($bansFile, implode("\n", $bannedUserAgents));
+
+        return $bansFile;
+    }
+
     protected function writeIpBansFile(Entity\Station $station): string
     {
         $ips = [];

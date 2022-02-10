@@ -110,6 +110,18 @@
                                     :key="lang">List one IP address or group (in CIDR format) per line.</translate>
                             </template>
                         </b-wrapped-form-group>
+
+                        <b-wrapped-form-group v-if="!isShoutcastFrontend" id="edit_form_frontend_banned_user_agents"
+                                              :field="form.frontend_config.banned_user_agents" input-type="textarea"
+                                              :input-attrs="{class: 'text-preformatted'}" advanced>
+                            <template #label="{lang}">
+                                <translate :key="lang">Banned User Agents</translate>
+                            </template>
+                            <template #description="{lang}">
+                                <translate
+                                    :key="lang">List one user agent per line. Wildcards (*) are allowed.</translate>
+                            </template>
+                        </b-wrapped-form-group>
                     </b-col>
 
                     <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
@@ -124,7 +136,7 @@
                         </template>
                         <template #default="props">
                             <b-form-select :id="props.id" v-model="props.field.$model"
-                                           :options="countryOptions" style="min-height: 200px;"
+                                           :options="countryOptions" style="min-height: 300px;"
                                            multiple></b-form-select>
 
                             <b-button block variant="outline-primary" @click.prevent="clearCountries">

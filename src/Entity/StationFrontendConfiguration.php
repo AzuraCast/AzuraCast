@@ -126,6 +126,18 @@ class StationFrontendConfiguration extends ArrayCollection
         $this->set(self::BANNED_IPS, $ips);
     }
 
+    public const BANNED_USER_AGENTS = 'banned_user_agents';
+
+    public function getBannedUserAgents(): ?string
+    {
+        return $this->get(self::BANNED_USER_AGENTS);
+    }
+
+    public function setBannedUserAgents(?string $userAgents): void
+    {
+        $this->set(self::BANNED_USER_AGENTS, $userAgents);
+    }
+
     public const BANNED_COUNTRIES = 'banned_countries';
 
     public function getBannedCountries(): ?array

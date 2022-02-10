@@ -164,6 +164,7 @@ class Icecast extends AbstractFrontend
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
+                'deny-agents' => $this->writeUserAgentBansFile($station),
                 'x-forwarded-for' => $xForwardedFor,
             ],
             'logging' => [
@@ -290,6 +291,23 @@ class Icecast extends AbstractFrontend
 
         // Strip the first line (the XML charset)
         return substr($configString, strpos($configString, "\n") + 1);
+    }
+
+    protected function writeUserAgentBansFile(Entity\Station $station): string
+    {
+        $bannedUserAgents = array_filter(
+            array_map(
+                'trim',
+                explode("\n", $station->getFrontendConfig()->getBannedUserAgents() ?? '')
+            )
+        );
+
+        $configDir = $station->getRadioConfigDir();
+        $bansFile = $configDir . '/user_agent_bans.txt';
+
+        file_put_contents($bansFile, implode("\n", $bannedUserAgents));
+
+        return $bansFile;
     }
 
     public function getCommand(Entity\Station $station): ?string

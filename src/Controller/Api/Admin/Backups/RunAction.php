@@ -21,6 +21,7 @@ class RunAction
         $data = (array)$request->getParsedBody();
 
         $tempFile = File::generateTempPath('backup.log');
+        touch($tempFile);
 
         $storageLocationId = (int)$data['storage_location'];
         if ($storageLocationId <= 0) {

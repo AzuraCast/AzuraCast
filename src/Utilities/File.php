@@ -81,7 +81,6 @@ class File
 
             $fullPath = Path::makeAbsolute($path, $dir);
             if (!is_file($fullPath)) {
-                touch($fullPath);
                 return $fullPath;
             }
 
@@ -94,7 +93,7 @@ class File
     public static function validateTempPath(string $path): string
     {
         $tempDir = sys_get_temp_dir();
-        $fullPath = Path::makeAbsolute($tempDir, $path);
+        $fullPath = Path::makeAbsolute($path, $tempDir);
 
         if (!Path::isBasePath($tempDir, $fullPath)) {
             throw new InvalidArgumentException(

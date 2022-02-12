@@ -199,7 +199,7 @@ jobs:
 
       - name: Build Docker Metadata
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v3
         with:
           images: |
             azuracast/azuracast_web_v2

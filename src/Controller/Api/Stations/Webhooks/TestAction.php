@@ -22,6 +22,7 @@ class TestAction extends AbstractWebhooksAction
         $this->requireRecord($request->getStation(), $id);
 
         $tempFile = File::generateTempPath('webhook_test_' . $id . '.log');
+        touch($tempFile);
 
         $message = new TestWebhookMessage();
         $message->webhookId = $id;

@@ -179,8 +179,10 @@ abstract class AbstractFrontend extends AbstractAdapter
         return false;
     }
 
-    protected function writeUserAgentBansFile(Entity\Station $station): string
-    {
+    protected function writeUserAgentBansFile(
+        Entity\Station $station,
+        string $fileName = 'user_agent_bans.txt',
+    ): string {
         $bannedUserAgents = array_filter(
             array_map(
                 'trim',
@@ -189,15 +191,17 @@ abstract class AbstractFrontend extends AbstractAdapter
         );
 
         $configDir = $station->getRadioConfigDir();
-        $bansFile = $configDir . '/user_agent_bans.txt';
+        $bansFile = $configDir . '/' . $fileName;
 
         file_put_contents($bansFile, implode("\n", $bannedUserAgents));
 
         return $bansFile;
     }
 
-    protected function writeIpBansFile(Entity\Station $station): string
-    {
+    protected function writeIpBansFile(
+        Entity\Station $station,
+        string $fileName = 'ip_bans.txt',
+    ): string {
         $ips = [];
         $bannedIps = $station->getFrontendConfig()->getBannedIps();
 
@@ -219,7 +223,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         }
 
         $configDir = $station->getRadioConfigDir();
-        $bansFile = $configDir . '/ip_bans.txt';
+        $bansFile = $configDir . '/' . $fileName;
 
         file_put_contents($bansFile, implode("\n", $ips));
 

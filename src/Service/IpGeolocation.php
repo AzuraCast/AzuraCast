@@ -9,8 +9,6 @@ use App\Service\IpGeolocator;
 use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\Cache\Adapter\ChainAdapter;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -29,13 +27,7 @@ class IpGeolocation
 
     public function __construct(CacheItemPoolInterface $psr6Cache)
     {
-        $this->cache = new ProxyAdapter(
-            new ChainAdapter([
-                new ArrayAdapter(),
-                $psr6Cache,
-            ]),
-            'ip_geo.'
-        );
+        $this->cache = new ProxyAdapter($psr6Cache, 'ip_geo.');
     }
 
     protected function initialize(): void

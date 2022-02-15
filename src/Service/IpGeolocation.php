@@ -9,6 +9,8 @@ use App\Service\IpGeolocator;
 use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\ChainAdapter;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -25,9 +27,15 @@ class IpGeolocation
 
     protected CacheInterface $cache;
 
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(CacheItemPoolInterface $psr6Cache)
     {
-        $this->cache = new ProxyAdapter($cache, 'ip_geo.');
+        $this->cache = new ProxyAdapter(
+            new ChainAdapter([
+                new ArrayAdapter(),
+                $psr6Cache,
+            ]),
+            'ip_geo.'
+        );
     }
 
     protected function initialize(): void
@@ -136,15 +144,15 @@ class IpGeolocation
         }
 
         // Convert "en_US" to "en-US", the format MaxMind uses.
-        $locale = str_replace('_', '-', $locale->value);
+        $localeStr = str_replace('_', '-', $locale->value);
 
         // Check for an exact match.
-        if (isset($names[$locale])) {
-            return $names[$locale];
+        if (isset($names[$localeStr])) {
+            return $names[$localeStr];
         }
 
         // Check for a match of the first portion, i.e. "en"
-        $locale = strtolower(substr($locale, 0, 2));
-        return $names[$locale] ?? $names['en'];
+        $localeStr = strtolower(substr($localeStr, 0, 2));
+        return $names[$localeStr] ?? $names['en'];
     }
 }

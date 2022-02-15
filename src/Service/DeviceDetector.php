@@ -18,7 +18,8 @@ class DeviceDetector
         $this->dd = new \DeviceDetector\DeviceDetector();
     }
 
-    public function parse(string $userAgent): \DeviceDetector\DeviceDetector {
+    public function parse(string $userAgent): \DeviceDetector\DeviceDetector
+    {
         $userAgentHash = md5($userAgent);
         if (isset($this->parsedUserAgents[$userAgentHash])) {
             return $this->parsedUserAgents[$userAgentHash];

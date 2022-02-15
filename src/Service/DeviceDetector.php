@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use DeviceDetector\Cache\CacheInterface;
-use DeviceDetector\Cache\PSR6Bridge;
-use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
-
 class DeviceDetector
 {
-    protected CacheInterface $cache;
+    /**
+     * @var array<string, \DeviceDetector\DeviceDetector>
+     */
+    protected array $parsedUserAgents = [];
 
-    public function __construct(CacheItemPoolInterface $cache)
+    protected \DeviceDetector\DeviceDetector $dd;
+
+    public function __construct()
     {
-        $wrappedCache = new ProxyAdapter($cache, 'device.');
-        $this->cache = new PSR6Bridge($wrappedCache);
+        $this->dd = new \DeviceDetector\DeviceDetector();
     }
 
-    public function parse(string $userAgent): \DeviceDetector\DeviceDetector
-    {
-        $dd = new \DeviceDetector\DeviceDetector($userAgent);
-        $dd->setCache($this->cache);
-        $dd->parse();
+    public function parse(string $userAgent): \DeviceDetector\DeviceDetector {
+        $userAgentHash = md5($userAgent);
+        if (isset($this->parsedUserAgents[$userAgentHash])) {
+            return $this->parsedUserAgents[$userAgentHash];
+        }
 
-        return $dd;
+        $this->dd->setUserAgent($userAgent);
+        $this->dd->parse();
+
+        $this->parsedUserAgents[$userAgentHash] = $this->dd;
+
+        return $this->dd;
     }
 }

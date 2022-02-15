@@ -29,13 +29,7 @@ class IpGeolocation
 
     public function __construct(CacheItemPoolInterface $psr6Cache)
     {
-        $this->cache = new ProxyAdapter(
-            new ChainAdapter([
-                new ArrayAdapter(),
-                $psr6Cache,
-            ]),
-            'ip_geo.'
-        );
+        $this->cache = new ProxyAdapter($psr6Cache, 'ip_geo.');
     }
 
     protected function initialize(): void

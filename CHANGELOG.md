@@ -11,9 +11,9 @@ release channel, you can take advantage of these new features and fixes.
   listeners. Both the "Restart to Apply Changes" and the "Restart System Broadcasting" link inside the 'Utilities'
   submenu will now soft-reload, which will not disconnect listeners on Icecast.
   
-- **Blocking User Aggents**: A long standing feature we've had, this allows users on IceCast and ShoutCast to block user
-  agents with ease. This should help system admins and server owners to restrict bots and/or malicious user agents from
-  sucking up bandwidth. 
+- **Blocking User Aggents**: A long standing suggestion we've had has now been implemented, this allows users on 
+  IceCast and ShoutCast to block user agents with ease. This should help system admins and server owners to 
+  restrict bots and/or malicious user agents from sucking up bandwidth. 
 
 ## Code Quality/Technical Changes
 

@@ -124,16 +124,6 @@ class StationQueueRepository extends Repository
         return $this->getUnplayedBaseQuery($station)->getQuery();
     }
 
-    public function getLatestVisibleRow(Entity\Station $station): ?Entity\StationQueue
-    {
-        return $this->getRecentBaseQuery($station)
-            ->andWhere('sq.sent_to_autodj = 1')
-            ->andWhere('sq.is_visible = 1')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-    }
-
     public function clearUpcomingQueue(Entity\Station $station): void
     {
         $this->em->createQuery(

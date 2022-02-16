@@ -11,9 +11,9 @@ release channel, you can take advantage of these new features and fixes.
   listeners. Both the "Restart to Apply Changes" and the "Restart System Broadcasting" link inside the 'Utilities'
   submenu will now soft-reload, which will not disconnect listeners on Icecast.
   
-- **Blocking User Aggents**: A long standing suggestion we've had has now been implemented, this allows users on 
-  IceCast and ShoutCast to block user agents with ease. This should help system admins and server owners to 
-  restrict bots and/or malicious user agents from sucking up bandwidth. 
+- **Blocking User Agents**: Station owners can now block specific user agents (or user-agent patterns, with wildcards)
+  from connecting to their streams. This will prevent bots or malicious users from consuming excess bandwidth and appearing
+  in system-wide reports.
 
 ## Code Quality/Technical Changes
 
@@ -23,8 +23,8 @@ release channel, you can take advantage of these new features and fixes.
   installation, you can follow
   the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
 
-- We have done significant backend changes to how we process and handle all Listener Reports. We have cut down the memory
-  usage significantly. This should allow users to see better performence when loading large volumes of listener data. 
+- We have updated how we handle Listener Reports to significantly reduce both memory and overall processing times,
+  meaning stations with large listener counts can now more easily view and export reports for long time periods.
 
 - Updated to Liquidsoap version 2.0.3 on Ansible and Docker, this change includes some stability fixes and a patch for a 
   memory leak within Liquidsoap version 2.0.2. We are still working on resolving some minor issues with it. Refer to our
@@ -40,11 +40,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug where album art on the song requests page wouldn't respect "Prefer Browser URL" setting.
 
-- Fixed a bug where Liquidsoap wasn't calculating the ReplayGain values of tracks due to a missing binary
+- Fixed a bug where Liquidsoap wasn't calculating the ReplayGain values of tracks due to a missing binary.
 
-- Added a missing Liquidsoap operator call to apply calculated ReplayGain values on the stream
+- Added a missing Liquidsoap operator call to apply calculated ReplayGain values on the stream.
 
-- Fixed an issue with backups failing to run 
+- Fixed an issue with backups failing to run and certain logs failing to view correctly.
 
 ---
 

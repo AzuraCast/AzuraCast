@@ -962,6 +962,21 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<EOF
+            # Handle "Jingle Mode" tracks by replaying the previous metadata.
+            last_title = ref("")
+            last_artist = ref("")
+            
+            def handle_jingle_mode(m) = 
+                if (m["jingle_mode"] == "true") then
+                    [("title", !last_title), ("artist", !last_artist)]                
+                else
+                    last_title := m["title"]
+                    last_artist := m["artist"]
+                    m
+                end
+            end
+            radio = map_metadata(handle_jingle_mode, radio)
+            
             # Send metadata changes back to AzuraCast
             def metadata_updated(m) =
                 def f() =

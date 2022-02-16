@@ -53,9 +53,12 @@ class SingleTaskCommand extends CommandAbstract
 
     /**
      * @param class-string $task
+     * @param bool $force
      */
-    public function runTask(string $task): void
-    {
+    public function runTask(
+        string $task,
+        bool $force = false
+    ): void {
         if (!$this->di->has($task)) {
             throw new \InvalidArgumentException('Task not found.');
         }
@@ -78,7 +81,7 @@ class SingleTaskCommand extends CommandAbstract
 
         $this->logger->info('Starting sync task.');
 
-        $taskClass->run();
+        $taskClass->run($force);
 
         $this->logger->info('Sync task completed.', [
             'time' => microtime(true) - $startTime,

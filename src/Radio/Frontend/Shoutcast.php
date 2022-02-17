@@ -145,8 +145,6 @@ class Shoutcast extends AbstractFrontend
             }
         }
 
-        $config = array_filter($config);
-
         $i = 0;
         foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */

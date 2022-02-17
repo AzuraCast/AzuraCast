@@ -122,12 +122,14 @@ class Shoutcast extends AbstractFrontend
             'adminpassword' => $frontendConfig->getAdminPassword(),
             'logfile' => $configPath . '/sc_serv.log',
             'w3clog' => $configPath . '/sc_w3c.log',
-            'banfile' => $this->writeIpBansFile($station, 'sc_serv.ban'),
+            'banfile' => $this->writeIpBansFile($station),
             'agentfile' => $this->writeUserAgentBansFile($station, 'sc_serv.agent'),
             'ripfile' => $configPath . '/sc_serv.rip',
             'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
             'portbase' => $frontendConfig->getPort(),
             'requirestreamconfigs' => 1,
+            'savebanlistonexit' => '0',
+            'saveagentlistonexit' => '0',
             'licenceid' => $frontendConfig->getScLicenseId(),
             'userid' => $frontendConfig->getScUserId(),
             'sslCertificateFile' => $certPaths->getCertPath(),
@@ -191,5 +193,25 @@ class Shoutcast extends AbstractFrontend
         $public_url = $this->getPublicUrl($station, $base_url);
         return $public_url
             ->withPath($public_url->getPath() . '/admin.cgi');
+    }
+
+    protected function writeIpBansFile(
+        Entity\Station $station,
+        string $fileName = 'sc_serv.ban',
+        string $ipsSeparator = ";255;\n"
+    ): string {
+        $ips = $this->getBannedIps($station);
+
+        $configDir = $station->getRadioConfigDir();
+        $bansFile = $configDir . '/' . $fileName;
+
+        $bannedIpsString = implode($ipsSeparator, $ips);
+        if (!empty($bannedIpsString)) {
+            $bannedIpsString .= $ipsSeparator;
+        }
+
+        file_put_contents($bansFile, $bannedIpsString);
+
+        return $bansFile;
     }
 }

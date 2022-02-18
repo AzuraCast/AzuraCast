@@ -144,7 +144,8 @@ export default {
                         custom_config: {},
                         banned_ips: {},
                         banned_countries: {},
-                        allowed_ips: {}
+                        allowed_ips: {},
+                        banned_user_agents: {}
                     },
                     backend_config: {
                         dj_port: {numeric},
@@ -279,7 +280,8 @@ export default {
                         custom_config: '',
                         banned_ips: '',
                         banned_countries: [],
-                        allowed_ips: ''
+                        allowed_ips: '',
+                        banned_user_agents: '',
                     },
                     backend_config: {
                         dj_port: '',

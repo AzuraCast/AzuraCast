@@ -6,6 +6,7 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Radio\CertificateLocator;
+use App\Radio\Enums\StreamFormats;
 use App\Utilities;
 use App\Xml\Writer;
 use Exception;
@@ -53,8 +54,8 @@ class Icecast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        /** @noinspection HttpUrlsUsage */
-        $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrl = $this->environment->getUriToStations()
+            ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getIcecastAdapter($baseUrl);
 
@@ -163,6 +164,7 @@ class Icecast extends AbstractFrontend
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
+                'deny-agents' => $this->writeUserAgentBansFile($station),
                 'x-forwarded-for' => $xForwardedFor,
             ],
             'logging' => [
@@ -210,6 +212,12 @@ class Icecast extends AbstractFrontend
 
             if (!empty($mount_row->getFallbackMount())) {
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
+                $mount['fallback-override'] = 1;
+            } elseif ($mount_row->getEnableAutodj()) {
+                $autoDjFormat = $mount_row->getAutodjFormatEnum() ?? StreamFormats::default();
+                $autoDjBitrate = $mount_row->getAutodjBitrate();
+
+                $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();
                 $mount['fallback-override'] = 1;
             }
 

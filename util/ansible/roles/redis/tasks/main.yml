@@ -2,19 +2,20 @@
 - name: Add Redis PPA repository
   apt_repository:
     repo: "ppa:chris-lea/redis-server"
-    update_cache: yes
+    update_cache: true
 
 - name: Install Redis
   apt:
     name: redis-server
-    state: latest
 
 - name: Enable and restart all core services
   service:
-    name: "{{ item }}"
-    enabled: yes
+    name: "{{ redis_service_to_restart }}"
+    enabled: true
     state: restarted
-  ignore_errors: True
-  with_items:
+  ignore_errors: true
+  loop:
     - "redis-server"
     - "redis"
+  loop_control:
+    loop_var: redis_service_to_restart

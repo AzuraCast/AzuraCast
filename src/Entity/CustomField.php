@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Utilities\File;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -54,7 +55,7 @@ class CustomField implements Stringable, IdentifiableEntityInterface
         $this->name = $this->truncateString($name);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(Station::getStationShortName($name));
+            $this->setShortName(self::generateShortName($name));
         }
     }
 
@@ -62,7 +63,7 @@ class CustomField implements Stringable, IdentifiableEntityInterface
     {
         return (!empty($this->short_name))
             ? $this->short_name
-            : Station::getStationShortName($this->name);
+            : self::generateShortName($this->name);
     }
 
     public function setShortName(string $short_name): void
@@ -91,5 +92,14 @@ class CustomField implements Stringable, IdentifiableEntityInterface
     public function __toString(): string
     {
         return $this->short_name;
+    }
+
+    public static function generateShortName(string $str): string
+    {
+        $str = File::sanitizeFileName($str);
+
+        return (is_numeric($str))
+            ? 'custom_field_' . $str
+            : $str;
     }
 }

@@ -764,7 +764,7 @@ class Queue implements EventSubscriberInterface
 
             $songId = $playedTrack['song_id'];
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'] ?? $playedTrack['timestamp_end'];
             }
         }
 

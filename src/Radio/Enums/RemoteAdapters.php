@@ -8,8 +8,8 @@ namespace App\Radio\Enums;
 
 use App\Radio\Remote\AzuraRelay;
 use App\Radio\Remote\Icecast;
-use App\Radio\Remote\SHOUTcast1;
-use App\Radio\Remote\SHOUTcast2;
+use App\Radio\Remote\Shoutcast1;
+use App\Radio\Remote\Shoutcast2;
 
 enum RemoteAdapters: string implements AdapterTypeInterface
 {
@@ -36,8 +36,8 @@ enum RemoteAdapters: string implements AdapterTypeInterface
     public function getClass(): string
     {
         return match ($this) {
-            self::SHOUTcast1 => SHOUTcast1::class,
-            self::SHOUTcast2 => SHOUTcast2::class,
+            self::SHOUTcast1 => Shoutcast1::class,
+            self::SHOUTcast2 => Shoutcast2::class,
             self::Icecast => Icecast::class,
             self::AzuraRelay => AzuraRelay::class,
         };

@@ -32,11 +32,12 @@ class PlayerAction
             throw new StationNotFoundException();
         }
 
+        $baseUrl = $request->getRouter()->getBaseUrl();
+
         $np = $npApiGenerator->currentOrEmpty($station);
-        $np->resolveUrls($request->getRouter()->getBaseUrl());
+        $np->resolveUrls($baseUrl);
 
         $defaultAlbumArtUri = $stationRepo->getDefaultAlbumArtUrl($station);
-        $baseUrl = $request->getRouter()->getBaseUrl();
         $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
 
         $autoplay = !empty($request->getQueryParam('autoplay'));

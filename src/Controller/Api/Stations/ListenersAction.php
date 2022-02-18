@@ -149,28 +149,11 @@ class ListenersAction
             $userAgent = $listener->getListenerUserAgent();
             $dd = $deviceDetector->parse($userAgent);
 
-            if ($dd->isBot()) {
-                $clientBot = (array)$dd->getBot();
-
-                $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
-                $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
-                $client = $clientBotName . ' (' . $clientBotType . ')';
-            } else {
-                $clientInfo = (array)$dd->getClient();
-                $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
-                $clientVersion = $clientInfo['version'] ?? '0.00';
-
-                $clientOsInfo = (array)$dd->getOs();
-                $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
-
-                $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
-            }
-
             $api = new Entity\Api\Listener();
             $api->ip = $listener->getListenerIp();
             $api->user_agent = $userAgent;
             $api->hash = $hash;
-            $api->client = $client;
+            $api->client = $dd->getClient() ?? 'Unknown';
             $api->is_mobile = $dd->isMobile();
 
             if ($listener->getMountId()) {

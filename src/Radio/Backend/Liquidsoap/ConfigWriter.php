@@ -14,6 +14,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
@@ -129,6 +130,11 @@ class ConfigWriter implements EventSubscriberInterface
         $stationTz = self::cleanUpString($station->getTimezone());
         $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
 
+        $stationApiUrl = self::cleanUpString(
+            (string)$this->environment->getUriToWeb()
+                ->withPath('/api/internal/' . $station->getId())
+        );
+
         $event->appendBlock(
             <<<EOF
             init.daemon.set(false)
@@ -144,16 +150,7 @@ class ConfigWriter implements EventSubscriberInterface
             settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
             settings.encoder.metadata.export.set(["artist","title","album","song"])
             
-            settings.decoder.priorities.ogg.set(15)
-            settings.decoder.priorities.mad.set(15)
-            settings.decoder.priorities.flac.set(15)
-            settings.decoder.priorities.aac.set(15)
-            settings.decoder.priorities.ffmpeg.set(10)
-            
             setenv("TZ", "${stationTz}")
-            
-            azuracast_api_auth = ref("${stationApiAuth}")
-            ignore(azuracast_api_auth)
             
             autodj_is_loading = ref(true)
             ignore(autodj_is_loading)
@@ -164,6 +161,32 @@ class ConfigWriter implements EventSubscriberInterface
             # Track live-enabled status script-wide for fades.
             live_enabled = ref(false)
             ignore(live_enabled)
+            
+            azuracast_api_url = "${stationApiUrl}"
+            azuracast_api_key = "${stationApiAuth}"
+            
+            def azuracast_api_call(~timeout=2, url, payload) =
+                full_url = "#{azuracast_api_url}/#{url}"
+                
+                log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
+                try
+                    response = http.post(full_url,
+                        headers=[
+                            ("Content-Type", "application/json"),
+                            ("User-Agent", "Liquidsoap AzuraCast"),
+                            ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
+                        ],
+                        timeout=timeout,
+                        data=payload
+                    )
+                    
+                    log("API #{url} - Response (#{response.status_code}): #{response}")
+                    {success = response.status_code == 200, data = "#{response}"}
+                catch err do
+                    log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
+                    {success = false, data = ""}
+                end
+            end
             EOF
         );
     }
@@ -307,7 +330,7 @@ class ConfigWriter implements EventSubscriberInterface
                 case Entity\Enums\PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $play_time = $this->getScheduledPlaylistPlayTime($scheduleItem);
+                            $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -336,7 +359,7 @@ class ConfigWriter implements EventSubscriberInterface
 
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $play_time = $this->getScheduledPlaylistPlayTime($scheduleItem);
+                            $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistScheduleVar . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -356,7 +379,7 @@ class ConfigWriter implements EventSubscriberInterface
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
                             $playTime = '(' . $minutePlayTime . ') and ('
-                                . $this->getScheduledPlaylistPlayTime($scheduleItem) . ')';
+                                . $this->getScheduledPlaylistPlayTime($event, $scheduleItem) . ')';
 
                             $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -415,20 +438,18 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         if (!$station->useManualAutoDJ()) {
-            $nextsongCommand = $this->getApiUrlCommand($station, 'nextsong');
-
             $event->appendBlock(
                 <<< EOF
                 # AutoDJ Next Song Script
                 def autodj_next_song() =
-                    log("autodj_next_song: Sending AzuraCast API Call...")
-                    uri = {$nextsongCommand}
-                    log("autodj_next_song: AzuraCast API Response: #{uri}")
-                
-                    if uri == "" or string.match(pattern="Error", uri) then
+                    response = azuracast_api_call(
+                        "nextsong",
+                        ""
+                    )
+                    if (response.success != true) or (response.data == "") or (string.match(pattern="Error", response.data)) then
                         null()
                     else
-                        r = request.create(uri)
+                        r = request.create(response.data)
                         if request.resolve(r) then
                             r
                         else
@@ -440,21 +461,18 @@ class ConfigWriter implements EventSubscriberInterface
                 # Delayed ping for AutoDJ Next Song
                 def wait_for_next_song(autodj)
                     autodj_ping_attempts := !autodj_ping_attempts + 1
-                    delay = ref(0.5)
                     
                     if source.is_ready(autodj) then
                         log("AutoDJ is ready!")
-                        
                         autodj_is_loading := false
-                        delay := -1.0
+                        -1.0
                     elsif !autodj_ping_attempts > 200 then
                         log("AutoDJ could not be initialized within the specified timeout.")
-                        
                         autodj_is_loading := false
-                        delay := -1.0
+                        -1.0
+                    else
+                        0.5
                     end
-                    
-                    !delay
                 end
                 
                 dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
@@ -591,10 +609,14 @@ class ConfigWriter implements EventSubscriberInterface
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
+     * @param WriteLiquidsoapConfiguration $event
      * @param Entity\StationSchedule $playlistSchedule
+     * @return string
      */
-    protected function getScheduledPlaylistPlayTime(Entity\StationSchedule $playlistSchedule): string
-    {
+    protected function getScheduledPlaylistPlayTime(
+        WriteLiquidsoapConfiguration $event,
+        Entity\StationSchedule $playlistSchedule
+    ): string {
         $start_time = $playlistSchedule->getStartTime();
         $end_time = $playlistSchedule->getEndTime();
 
@@ -639,60 +661,63 @@ class ConfigWriter implements EventSubscriberInterface
             foreach ($playlist_schedule_days as $day) {
                 $play_days[] = (($day === 7) ? '0' : $day) . 'w';
             }
-
             $play_time = '(' . implode(' or ', $play_days) . ') and ' . $play_time;
         }
 
+        // Handle start-date and end-date boundaries.
+        $startDate = $playlistSchedule->getStartDate();
+        $endDate = $playlistSchedule->getEndDate();
+
+        if (!empty($startDate) || !empty($endDate)) {
+            $tzObject = $event->getStation()->getTimezoneObject();
+
+            $customFunctionBody = [];
+
+            $scheduleVar = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
+
+            $scheduleMethod = 'check_schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
+
+            $customFunctionBody[] = $scheduleVar . ' = ref(false)';
+            $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
+
+            $conditions = [];
+
+            if (!empty($startDate)) {
+                $startDateObj = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tzObject);
+
+                if (false !== $startDateObj) {
+                    $startDateObj = $startDateObj->setTime(0, 0);
+
+                    $customFunctionBody[] = '    # ' . $startDateObj->__toString();
+                    $customFunctionBody[] = '    range_start = ' . $startDateObj->getTimestamp() . '.';
+                    $conditions[] = 'range_start <= current_time';
+                }
+            }
+
+            if (!empty($endDate)) {
+                $endDateObj = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $tzObject);
+
+                if (false !== $endDateObj) {
+                    $endDateObj = $endDateObj->setTime(23, 59, 59);
+
+                    $customFunctionBody[] = '    # ' . $endDateObj->__toString();
+                    $customFunctionBody[] = '    range_end = ' . $endDateObj->getTimestamp() . '.';
+
+                    $conditions[] = 'current_time <= range_end';
+                }
+            }
+
+            $customFunctionBody[] = '    current_time = time()';
+            $customFunctionBody[] = '    ' . $scheduleVar . ' := ' . implode(' and ', $conditions);
+            $customFunctionBody[] = 'end';
+            $customFunctionBody[] = 'thread.run(every=60., ' . $scheduleMethod . ')';
+
+            $event->appendLines($customFunctionBody);
+
+            $play_time = '!' . $scheduleVar . ' and ' . $play_time;
+        }
+
         return $play_time;
-    }
-
-    /**
-     * Returns the URL that LiquidSoap should call when attempting to execute AzuraCast API commands.
-     *
-     * @param Entity\Station $station
-     * @param string $endpoint
-     * @param array $params
-     */
-    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, array $params = []): string
-    {
-        // Docker cURL-based API URL call with API authentication.
-        if ($this->environment->isDocker()) {
-            $params = (array)$params;
-            $params['api_auth'] = '!azuracast_api_auth';
-
-            $service_uri = ($this->environment->isDockerRevisionAtLeast(5)) ? 'web' : 'nginx';
-
-            /** @noinspection HttpUrlsUsage */
-            $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
-            $command = 'curl -s --request POST --url ' . $api_url;
-            foreach ($params as $paramKey => $paramVal) {
-                $envVarKey = strtoupper(str_replace('-', '_', $paramKey));
-                $command .= ' --form ' . $paramKey . '="$' . $envVarKey . '"';
-            }
-        } else {
-            // Ansible shell-script call.
-            $shell_path = '/usr/bin/php ' . $this->environment->getBaseDirectory() . '/bin/console';
-
-            $shell_args = [];
-            $shell_args[] = 'azuracast:internal:' . $endpoint;
-            $shell_args[] = $station->getId();
-
-            foreach ((array)$params as $paramKey => $paramVal) {
-                $envVarKey = strtoupper(str_replace('-', '_', $paramKey));
-                $shell_args [] = '--' . $paramKey . '="$' . $envVarKey . '"';
-            }
-
-            $command = $shell_path . ' ' . implode(' ', $shell_args);
-        }
-
-        $envVarsParts = [];
-        foreach ($params as $envVarName => $envVarValue) {
-            $envVarKey = strtoupper(str_replace('-', '_', $envVarName));
-            $envVarsParts[] = '("' . $envVarKey . '", ' . $envVarValue . ')';
-        }
-        $envVarsStr = 'env=[' . implode(', ', $envVarsParts) . ']';
-
-        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\', timeout=10.), default="")';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -735,10 +760,6 @@ class ConfigWriter implements EventSubscriberInterface
         $dj_mount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
 
-        $authCommand = $this->getApiUrlCommand($station, 'auth', ['dj-user' => '!user', 'dj-password' => '!password']);
-        $djonCommand = $this->getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
-        $djoffCommand = $this->getApiUrlCommand($station, 'djoff', ['dj-user' => 'dj']);
-
         $event->appendBlock(
             <<< EOF
             # DJ Authentication
@@ -748,29 +769,26 @@ class ConfigWriter implements EventSubscriberInterface
             live_record_path = ref("")
             
             def dj_auth(login) =
-                user = ref("")
-                password = ref("")
+                auth_info =
+                    if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
+                        auth_string = string.split(separator="(:|,)", login.password)
+                        {user = list.nth(default="", auth_string, 0),
+                        password = list.nth(default="", auth_string, 2)}
+                    else
+                        {user = login.user, password = login.password}
+                    end
                 
-                if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
-                    auth_string = string.split(separator="(:|,)", login.password)
-                    
-                    user := list.nth(default="", auth_string, 0)
-                    password := list.nth(default="", auth_string, 2)
+                response = azuracast_api_call(
+                    timeout=5,
+                    "auth",
+                    json.stringify(auth_info)
+                )
+                if response.success then
+                    last_authenticated_dj := auth_info.user
+                    true
                 else
-                    user := login.user
-                    password := login.password
+                    false
                 end
-                
-                log("dj_auth: Sending AzuraCast API DJ Auth command for user: #{!user}")
-                ret = {$authCommand}
-                log("dj_auth: AzuraCast API Response: #{ret}")
-                
-                authed = bool_of_string(ret)
-                if (authed) then
-                    last_authenticated_dj := !user
-                end
-                
-                authed
             end
             
             def live_connected(header) =
@@ -780,23 +798,30 @@ class ConfigWriter implements EventSubscriberInterface
                 live_enabled := true
                 live_dj := dj
                 
-                log("live_connected: Sending AzuraCast API DJ onConnect command...")
-                ret = {$djonCommand}
-                log("live_connected: AzuraCast API Response: #{ret}")
-            
-                if (string.contains(prefix="/", ret)) then
-                    live_record_path := ret
+                j = json()
+                j.add("user", dj)
+                
+                response = azuracast_api_call(
+                    timeout=5,
+                    "djon",
+                    json.stringify(j)
+                )
+                if response.success and string.contains(prefix="/", response.data) then
+                    live_record_path := response.data
                 end
             end
             
             def live_disconnected() =
                 dj = !live_dj
                 
-                log("DJ Source disconnected! Current live DJ: #{dj}")
+                j = json()
+                j.add("user", dj)
                 
-                log("live_disconnected: Sending AzuraCast API DJ onDisconnect command...")
-                ret = {$djoffCommand}
-                log("live_disconnected: AzuraCast API Response: #{ret}")
+                _ = azuracast_api_call(
+                    timeout=5,
+                    "djoff",
+                    json.stringify(j)
+                )
                 
                 live_enabled := false
                 last_authenticated_dj := ""
@@ -845,7 +870,7 @@ class ConfigWriter implements EventSubscriberInterface
             end
             live = map_metadata(insert_missing, live)
             
-            radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])
+            radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
             EOF
         );
 
@@ -916,6 +941,7 @@ class ConfigWriter implements EventSubscriberInterface
                 <<<EOF
                 # Replaygain Metadata
                 enable_replaygain_metadata()
+                radio = replaygain(radio)
                 EOF
             );
         }
@@ -934,25 +960,40 @@ class ConfigWriter implements EventSubscriberInterface
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
-        $feedbackCommand = $this->getApiUrlCommand(
-            $station,
-            'feedback',
-            ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']
-        );
-
         $event->appendBlock(
             <<<EOF
+            # Handle "Jingle Mode" tracks by replaying the previous metadata.
+            last_title = ref("")
+            last_artist = ref("")
+            
+            def handle_jingle_mode(m) = 
+                if (m["jingle_mode"] == "true") then
+                    [("title", !last_title), ("artist", !last_artist)]                
+                else
+                    last_title := m["title"]
+                    last_artist := m["artist"]
+                    m
+                end
+            end
+            radio = map_metadata(handle_jingle_mode, radio)
+            
             # Send metadata changes back to AzuraCast
             def metadata_updated(m) =
                 def f() =
                     if (m["song_id"] != "") then
-                        ret = {$feedbackCommand}
-                        log("AzuraCast Feedback Response: #{ret}")
+                        j = json()
+                        j.add("song_id", m["song_id"])
+                        j.add("media_id", m["media_id"])
+                        j.add("playlist_id", m["playlist_id"])
+                    
+                        _ = azuracast_api_call(
+                            "feedback",
+                            json.stringify(j)
+                        )
                     end
-                    (-1.)
                 end
                 
-                thread.run.recurrent(fast=false, delay=0., f)
+                thread.run(f)
             end
             
             radio.on_metadata(metadata_updated)
@@ -999,7 +1040,7 @@ class ConfigWriter implements EventSubscriberInterface
     ): string {
         $charset = $station->getBackendConfig()->getCharset();
 
-        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::Mp3;
+        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::default();
         $output_format = $this->getOutputFormatString(
             $format,
             $mount->getAutodjBitrate() ?? 128
@@ -1017,14 +1058,16 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'user = "' . self::cleanUpString($username) . '"';
         }
 
-        $protocol = $mount->getAutodjProtocolEnum();
-
         $password = self::cleanUpString($mount->getAutodjPassword());
-        if (StreamProtocols::Icy === $protocol) {
+
+        $adapterType = $mount->getAutodjAdapterTypeEnum();
+        if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
+
         $output_params[] = 'password = "' . $password . '"';
 
+        $protocol = $mount->getAutodjProtocolEnum();
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;

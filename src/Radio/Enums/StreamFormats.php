@@ -32,4 +32,9 @@ enum StreamFormats: string
             default => false,
         };
     }
+
+    public static function default(): self
+    {
+        return self::Mp3;
+    }
 }

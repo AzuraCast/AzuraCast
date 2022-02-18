@@ -122,21 +122,22 @@ class RequestsController
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
+        $baseUrl = $router->getBaseUrl();
 
         $paginator->setPostprocessor(
-            function (Entity\StationMedia $media_row) use ($station, $is_bootgrid, $router) {
+            function (Entity\StationMedia $media_row) use ($station, $is_bootgrid, $baseUrl, $router) {
                 $row = new Entity\Api\StationRequest();
-                $row->song = ($this->songApiGenerator)($media_row, $station);
+                $row->song = ($this->songApiGenerator)($media_row, $station, $baseUrl);
                 $row->request_id = $media_row->getUniqueId();
                 $row->request_url = (string)$router->named(
                     'api:requests:submit',
                     [
                         'station_id' => $station->getId(),
-                        'media_id' => $media_row->getUniqueId(),
+                        'media_id'   => $media_row->getUniqueId(),
                     ]
                 );
 
-                $row->resolveUrls($router->getBaseUrl());
+                $row->resolveUrls($baseUrl);
 
                 if ($is_bootgrid) {
                     return Utilities\Arrays::flattenArray($row, '_');

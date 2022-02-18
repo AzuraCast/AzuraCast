@@ -1,7 +1,59 @@
 # Rolling Release Changes
 
-These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
-release channel, you can take advantage of these new features and fixes.
+These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling release channel, you can take advantage of these new features and fixes.
+
+The Rolling Release version has no new changes from the latest Stable release.
+
+---
+
+# AzuraCast 0.15.1 (Feb 18, 2022)
+
+## New Features/Changes
+
+- **Zero-Downtime Broadcasting Restarts**: If you're using our default configuration (Liquidsoap as your AutoDJ and
+  Icecast as your Broadcasting software), you no longer need to fear the "Restart to Apply Changes" button, as we've
+  incorporated several soft-reload improvements that allow us to rebuild configuration files without disconnecting
+  listeners. Both the "Restart to Apply Changes" and the "Restart System Broadcasting" link inside the 'Utilities'
+  submenu will now soft-reload, which will not disconnect listeners on Icecast.
+  
+- **Blocking User Agents**: Station owners can now block specific user agents (or user-agent patterns, with wildcards)
+  from connecting to their streams. This will prevent bots or malicious users from consuming excess bandwidth and appearing
+  in system-wide reports.
+
+## Code Quality/Technical Changes
+
+- For Docker installations, we have removed our built-in multisite configuration in favor of a simpler default
+  installation with fewer containers. If you are not using the multi-site setup (i.e. hosting another site on the same
+  Docker installation), no changes are required to your installation. If you want to continue using the multi-site
+  installation, you can follow
+  the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
+
+- We have updated how we handle Listener Reports to significantly reduce both memory and overall processing times,
+  meaning stations with large listener counts can now more easily view and export reports for long time periods.
+
+- Updated to Liquidsoap version 2.0.3 on Ansible and Docker, this change includes some stability fixes and a patch for a 
+  memory leak within Liquidsoap version 2.0.2. We are still working on resolving some minor issues with it. Refer to our
+  megathread for more information [#5017](https://github.com/AzuraCast/AzuraCast/issues/5017)
+
+## Bug Fixes
+
+- Fixed a bug where station base directories created with relative names would end up in `/var/azuracast/www/web`.
+
+- Fixed an issue on Ansible installations preventing message queues from being processed correctly.
+
+- Fixed a bug preventing Ansible installations or updates from completing successfully.
+
+- Fixed a bug where album art on the song requests page wouldn't respect "Prefer Browser URL" setting.
+
+- Fixed a bug where Liquidsoap wasn't calculating the ReplayGain values of tracks due to a missing binary.
+
+- Added a missing Liquidsoap operator call to apply calculated ReplayGain values on the stream.
+
+- Fixed an issue with backups failing to run and certain logs failing to view correctly.
+
+---
+
+# AzuraCast 0.15.0 (Jan 12, 2022)
 
 ## New Features/Changes
 

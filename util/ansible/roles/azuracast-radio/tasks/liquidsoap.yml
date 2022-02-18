@@ -7,8 +7,7 @@
 - name: Install Liquidsoap Dependencies
   apt:
     name: "{{ packages }}"
-    state: latest
-    install_recommends: no
+    install_recommends: false
   vars:
     packages:
       - libao-dev
@@ -49,12 +48,12 @@
       - libx11-dev
       - libxpm-dev
       - bubblewrap
+      - ffmpeg
 
 - name: Install Optional Audio Plugins
   apt:
     name: "{{ packages }}"
-    state: latest
-    install_recommends: no
+    install_recommends: false
   vars:
     packages:
       - frei0r-plugins-dev
@@ -67,15 +66,15 @@
 - name: Get the DPKG Architecture
   shell: dpkg --print-architecture
   register: dpkg_arch
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Install Liquidsoap
   apt:
-    deb: "https://github.com/savonet/liquidsoap/releases/download/v2.0.2/liquidsoap_2.0.2-ubuntu-focal-1_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
+    deb: "https://github.com/savonet/liquidsoap/releases/download/v2.0.3/liquidsoap_2.0.3-ubuntu-focal-1_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
 
 - name: Link Liquidsoap binary
   file:
     src: "/usr/bin/liquidsoap"
     dest: /usr/local/bin/liquidsoap
     state: link
-    force: yes
+    force: true

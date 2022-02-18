@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Enums\ReleaseChannel;
 use DateTime;
 use DateTimeZone;
 use Psr\SimpleCache\CacheInterface;
@@ -15,10 +16,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.15.0';
-
-    public const RELEASE_CHANNEL_ROLLING = 'rolling';
-    public const RELEASE_CHANNEL_STABLE = 'stable';
+    public const FALLBACK_VERSION = '0.15.1';
 
     // phpcs:disable Generic.Files.LineLength
     public const LATEST_COMPOSE_REVISION = 12;
@@ -37,17 +35,16 @@ class Version
         $this->repoDir = $environment->getBaseDirectory();
     }
 
-    public function getReleaseChannel(): string
+    public function getReleaseChannelEnum(): ReleaseChannel
     {
         if ($this->environment->isDocker()) {
-            return $this->environment->getReleaseChannel();
+            return $this->environment->getReleaseChannelEnum();
         }
 
         $details = $this->getDetails();
-
         return ('stable' === $details['branch'])
-            ? self::RELEASE_CHANNEL_STABLE
-            : self::RELEASE_CHANNEL_ROLLING;
+            ? ReleaseChannel::Stable
+            : ReleaseChannel::RollingRelease;
     }
 
     /**
@@ -162,8 +159,8 @@ class Version
                 $details['commit_date']
             );
 
-            $releaseChannel = $this->getReleaseChannel();
-            if (self::RELEASE_CHANNEL_ROLLING === $releaseChannel) {
+            $releaseChannel = $this->getReleaseChannelEnum();
+            if (ReleaseChannel::RollingRelease === $releaseChannel) {
                 return 'Rolling Release ' . $commitText;
             }
             return 'v' . $details['tag'] . ' Stable';

@@ -14,8 +14,8 @@ Language-Team: Swedish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:15
 Language: sv_SE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -294,10 +294,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Administration',
       ),
-      'Administrator Password' => 
-      array (
-        0 => 'Administratörens lösenord',
-      ),
       'Advanced' => 
       array (
         0 => 'Avancerat',
@@ -428,7 +424,7 @@ X-Crowdin-File-ID: 4
       ),
       'Are you sure?' => 
       array (
-        0 => '',
+        0 => 'Är du säker ?',
       ),
       'Art' => 
       array (
@@ -560,7 +556,7 @@ X-Crowdin-File-ID: 4
       ),
       'AzuraCast Backup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Kopia',
       ),
       'AzuraCast First-Time Setup' => 
       array (
@@ -576,11 +572,11 @@ X-Crowdin-File-ID: 4
       ),
       'AzuraCast Settings' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Miljö',
       ),
       'AzuraCast Setup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast Konfiguration',
       ),
       'AzuraCast Update Checks' => 
       array (
@@ -661,6 +657,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Förbjudna IP-adresser',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -2226,6 +2226,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => '',
@@ -2522,6 +2526,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => '',
@@ -2751,6 +2759,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Markdown' => 
+      array (
+        0 => '',
+      ),
+      'Matched' => 
       array (
         0 => '',
       ),
@@ -3043,6 +3055,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => '',
@@ -3291,6 +3307,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ursprunglig text',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Ursprunglig releasetid',
@@ -3348,6 +3368,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Path/Suffix' => 
+      array (
+        0 => '',
+      ),
+      'Pending Requests' => 
       array (
         0 => '',
       ),
@@ -3707,10 +3731,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Relay lösenord',
-      ),
       'Relay Stream URL' => 
       array (
         0 => '',
@@ -3854,6 +3874,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Önska',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4495,10 +4519,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Källa',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Source lösenord',
-      ),
       'Space Used' => 
       array (
         0 => '',
@@ -4538,10 +4558,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Starttid',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => '',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5555,6 +5571,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Användarnamn',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => '',
@@ -5847,6 +5867,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => '',
@@ -5860,6 +5884,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'You will not be able to retrieve it again.' => 
+      array (
+        0 => '',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
         0 => '',
       ),

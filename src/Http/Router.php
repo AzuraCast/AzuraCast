@@ -35,16 +35,21 @@ class Router implements RouterInterface
         $this->baseUrl = null;
     }
 
-    public function getBaseUrl(bool $useRequest = true): UriInterface
+    public function getBaseUrl(?bool $useRequest = null): UriInterface
     {
-        if (null === $this->baseUrl) {
-            $this->baseUrl = $this->buildBaseUrl();
+        if (null === $useRequest) {
+            if (null === $this->baseUrl) {
+                $settings = $this->settingsRepo->readSettings();
+                $this->baseUrl = $this->buildBaseUrl($settings->getPreferBrowserUrl());
+            }
+
+            return $this->baseUrl;
         }
 
-        return $this->baseUrl;
+        return $this->buildBaseUrl($useRequest);
     }
 
-    protected function buildBaseUrl(): UriInterface
+    protected function buildBaseUrl(bool $useRequest = true): UriInterface
     {
         $settings = $this->settingsRepo->readSettings();
 
@@ -58,8 +63,7 @@ class Router implements RouterInterface
                 $useHttps = true;
             }
 
-            $preferBrowserUrl = $settings->getPreferBrowserUrl();
-            if ($preferBrowserUrl || $baseUrl->getHost() === '') {
+            if ($useRequest || $baseUrl->getHost() === '') {
                 $ignoredHosts = ['web', 'nginx', 'localhost'];
                 if (!in_array($currentUri->getHost(), $ignoredHosts, true)) {
                     $baseUrl = (new Uri())

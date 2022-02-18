@@ -8,6 +8,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,31 +20,40 @@ class RequestsController
     ) {
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $station = $request->getStation();
 
-        $requests = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sr, sm
-                FROM App\Entity\StationRequest sr
-                JOIN sr.track sm
-                WHERE sr.station = :station
-                ORDER BY sr.timestamp DESC
-            DQL
-        )->setParameter('station', $station)
-            ->getArrayResult();
+        $qb = $this->em->createQueryBuilder()
+            ->select('sr, sm')
+            ->from(Entity\StationRequest::class, 'sr')
+            ->join('sr.track', 'sm')
+            ->where('sr.station = :station')
+            ->setParameter('station', $station)
+            ->orderBy('sr.timestamp', 'DESC');
 
-        $paginator = Paginator::fromArray($requests, $request);
+        $qb = match ($request->getParam('type', 'recent')) {
+            'history' => $qb->andWhere('sr.played_at != 0'),
+            default => $qb->andWhere('sr.played_at = 0'),
+        };
+
+        $query = $qb->getQuery()
+            ->setHydrationMode(AbstractQuery::HYDRATE_ARRAY);
+
+        $paginator = Paginator::fromQuery($query, $request);
 
         $router = $request->getRouter();
         $postProcessor = function ($row) use ($router) {
-            $row['links'] = [
-                'delete' => (string)$router->fromHere(
+            $row['links'] = [];
+
+            if (0 === $row['played_at']) {
+                $row['links']['delete'] = (string)$router->fromHere(
                     'api:stations:reports:requests:delete',
                     ['request_id' => $row['id']]
-                ),
-            ];
+                );
+            }
 
             return $row;
         };

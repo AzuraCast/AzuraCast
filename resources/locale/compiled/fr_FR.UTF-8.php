@@ -14,8 +14,8 @@ Language-Team: French
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
 X-Crowdin-Project: azuracast
@@ -111,7 +111,7 @@ X-Crowdin-File-ID: 4
       ),
       '(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers.' => 
       array (
-        0 => '(Docker Compose) Le temps d\'attente avant l\'échec d\'une opération Docker Compose. Augmentez cela sur les ordinateurs moins performants.',
+        0 => '(Docker Compose) Le délai d\'attente avant une opération Docker Compose a été dépassé. Augmentez cette valeur sur les ordinateurs moins performants.',
       ),
       '(in seconds)' => 
       array (
@@ -296,10 +296,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administration',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Mot de passe de l\'administrateur',
       ),
       'Advanced' => 
       array (
@@ -664,6 +660,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Adresses IP bannies',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -2139,7 +2139,7 @@ X-Crowdin-File-ID: 4
       ),
       'If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.' => 
       array (
-        0 => 'Si activé, AzuraCast se connectera à la base de données MusicBrainz pour tenter de trouver un ISRC pour tous les fichiers manquants. Désactiver ceci peut améliorer les performances.',
+        0 => 'Si activé, AzuraCast se connectera à la base de données MusicBrainz pour tenter de trouver un ISRC pour tous les fichiers manquants. Désactiver cette option peut améliorer les performances du système.',
       ),
       'If enabled, a download button will also be present on the public "On-Demand" page.' => 
       array (
@@ -2228,6 +2228,10 @@ X-Crowdin-File-ID: 4
       'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
       array (
         0 => 'Si vous maintenez ce fichier manuellement, consultez la <a href="%s" target="_blank">dernière version du fichier</a> et apportez les modifications nécessaires.',
+      ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => 'Si vous utilisez régulièrement différentes URL pour accéder à AzuraCast, vous devriez activer l\'option "URL du navigateur préféré".',
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
@@ -2525,6 +2529,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Indiquez une adresse IP ou un groupe (au format CIDR) par ligne.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Enregistrement des analyses des auditeurs',
@@ -2756,6 +2764,10 @@ X-Crowdin-File-ID: 4
       'Markdown' => 
       array (
         0 => 'Markdown',
+      ),
+      'Matched' => 
+      array (
+        0 => 'Compatible',
       ),
       'Matomo API Token' => 
       array (
@@ -3047,6 +3059,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Aucune limite',
       ),
+      'No Match' => 
+      array (
+        0 => 'Non compatible',
+      ),
       'No directory specified' => 
       array (
         0 => 'Aucun dossier spécifié',
@@ -3295,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Paroles originales',
       ),
+      'Original Path' => 
+      array (
+        0 => 'Chemin d\'origine',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Date de sortie originale',
@@ -3354,6 +3374,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Chemin/Suffixe',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => 'Demandes en attente',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3711,10 +3735,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Relais',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Mot de passe du relais',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'URL du flux a relayer',
@@ -3858,6 +3878,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Demander',
+      ),
+      'Request History' => 
+      array (
+        0 => 'Historique des demandes',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4499,10 +4523,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Source',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Mot de passe source',
-      ),
       'Space Used' => 
       array (
         0 => 'Espace utilisé',
@@ -4542,10 +4562,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Heure de départ',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'La date de début/fin ne peut pas être utilisée sur les playlists avec des paramètres avancés !',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5559,6 +5575,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Nom d’utilisateur',
       ),
+      'Username:' => 
+      array (
+        0 => 'Nom d\'utilisateur :',
+      ),
       'Users' => 
       array (
         0 => 'Utilisateurs',
@@ -5851,6 +5871,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Vous devrez peut-être vous connecter directement via votre adresse IP :',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => 'Vous pouvez mettre à jour l\'URL de base afin de vérifier qu\'elle soit correcte.',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Vous devez être connecté pour accéder à cette page.',
@@ -5866,6 +5890,10 @@ X-Crowdin-File-ID: 4
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Vous ne pourrez plus le récupérer.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => 'L\'URL de base (%s) sélectionnée dans les paramètres ne correspond pas à l\'URL que vous utilisez actuellement (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

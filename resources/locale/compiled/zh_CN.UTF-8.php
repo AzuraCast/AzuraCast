@@ -14,8 +14,8 @@ Language-Team: Chinese Simplified
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: zh_CN
 Plural-Forms: nplurals=1; plural=0;
 X-Crowdin-Project: azuracast
@@ -292,10 +292,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => '管理',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => '管理员 密码',
       ),
       'Advanced' => 
       array (
@@ -660,6 +656,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => '被禁止的IP地址',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -2225,6 +2225,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '如果您手动维护此文件，请查看<a href="%s" target="_blank">文件的最新版本</a>，并进行任何必要的更改。',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => '如果您遇到bug或错误，您可以使用下面的链接提交一个GitHub问题。',
@@ -2521,6 +2525,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '每行列出一个IP地址或组（CIDR格式）。',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => '听众分析系列',
@@ -2752,6 +2760,10 @@ X-Crowdin-File-ID: 4
       'Markdown' => 
       array (
         0 => '降价',
+      ),
+      'Matched' => 
+      array (
+        0 => '',
       ),
       'Matomo API Token' => 
       array (
@@ -3042,6 +3054,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '没有限制',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => '没有指定目录',
@@ -3290,6 +3306,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '原始作词家',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => '原始发行时间',
@@ -3349,6 +3369,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => '路径/后缀',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => '',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3706,10 +3730,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '中继',
       ),
-      'Relay Password' => 
-      array (
-        0 => '中继密码',
-      ),
       'Relay Stream URL' => 
       array (
         0 => '流媒体中继 URL',
@@ -3853,6 +3873,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => '请求',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4494,10 +4518,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '源',
       ),
-      'Source Password' => 
-      array (
-        0 => '源密码',
-      ),
       'Space Used' => 
       array (
         0 => '',
@@ -4537,10 +4557,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => '开始时间',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => '开始/结束日期不能用于具有高级设置的播放列表!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5554,6 +5570,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '用户名',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => '用户',
@@ -5846,6 +5866,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '您可能需要通过您的IP地址直接连接：',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => '您必须先登录才能访问本页面。',
@@ -5861,6 +5885,10 @@ X-Crowdin-File-ID: 4
       'You will not be able to retrieve it again.' => 
       array (
         0 => '您将无法再次检索到它。',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => '',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

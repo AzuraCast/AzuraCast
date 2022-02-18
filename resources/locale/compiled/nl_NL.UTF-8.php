@@ -14,8 +14,8 @@ Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -296,10 +296,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administratie',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Administrator wachtwoord',
       ),
       'Advanced' => 
       array (
@@ -664,6 +660,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Geblokkeerde e-mailadressen',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -2229,6 +2229,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Als je dit bestand handmatig onderhoudt, bekijk dan de <a href="%s" target="_blank">nieuwste versie van het bestand</a> en breng de nodige wijzigingen aan.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Als je een bug of fout ontdekt, kun je een GitHub issue indienen met behulp van de onderstaande link.',
@@ -2525,6 +2529,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Geef één IP-adres of groep (in CIDR formaat) per regel aan.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Luisteraars statistieken',
@@ -2756,6 +2764,10 @@ X-Crowdin-File-ID: 4
       'Markdown' => 
       array (
         0 => 'Markdown',
+      ),
+      'Matched' => 
+      array (
+        0 => '',
       ),
       'Matomo API Token' => 
       array (
@@ -3046,6 +3058,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Geen limiet',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => 'Geen map opgegeven',
@@ -3294,6 +3310,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Originele tekstschrijver',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Originele Release Tijd',
@@ -3353,6 +3373,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Pad/achtervoegsel',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => '',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3711,10 +3735,6 @@ Afspeellijst: %s',
       array (
         0 => 'Relay',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Relay wachtwoord',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Relay stream URL',
@@ -3858,6 +3878,10 @@ Afspeellijst: %s',
       'Request' => 
       array (
         0 => 'Aanvragen',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4499,10 +4523,6 @@ Afspeellijst: %s',
       array (
         0 => 'Bron',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Source wachtwoord',
-      ),
       'Space Used' => 
       array (
         0 => 'Gebruikte ruimte',
@@ -4542,10 +4562,6 @@ Afspeellijst: %s',
       'Start Time' => 
       array (
         0 => 'Starttijd',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'Start-/einddatum kan niet worden gebruikt in afspeellijsten met geavanceerde instellingen!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5559,6 +5575,10 @@ Afspeellijst: %s',
       array (
         0 => 'Gebruikersnaam',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => 'Gebruikers',
@@ -5851,6 +5871,10 @@ Afspeellijst: %s',
       array (
         0 => 'Mogelijk moet u direct verbinding maken met uw IP-adres:',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'U moet ingelogd zijn om toegang te krijgen tot deze pagina.',
@@ -5866,6 +5890,10 @@ Afspeellijst: %s',
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Je kunt deze niet opnieuw ophalen.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => '',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

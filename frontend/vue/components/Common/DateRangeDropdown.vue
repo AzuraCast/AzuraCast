@@ -1,7 +1,7 @@
 <template>
     <date-range-picker
         ref="picker" controlContainerClass="" opens="left" show-dropdowns
-        v-bind="$props" @update="onUpdate">
+        v-bind="$props" :ranges="ranges" @update="onUpdate">
         <template #input="datePicker">
             <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                 <icon icon="date_range"></icon>
@@ -58,52 +58,58 @@ export default {
             default: null,
             required: true
         },
-        ranges: {
+        customRanges: {
             type: [Object, Boolean],
-            default() {
-                let nowTz = DateTime.now().setZone(this.tz);
-                let nowTzDate = nowTz.toJSDate();
-
-                let ranges = {};
-                ranges[this.$gettext('Today')] = [
-                    nowTzDate,
-                    nowTzDate
-                ];
-                ranges[this.$gettext('Yesterday')] = [
-                    nowTz.minus({days: 1}).toJSDate(),
-                    nowTz.minus({days: 1}).toJSDate()
-                ];
-                ranges[this.$gettext('Last 7 Days')] = [
-                    nowTz.minus({days: 6}).toJSDate(),
-                    nowTzDate
-                ];
-                ranges[this.$gettext('Last 14 Days')] = [
-                    nowTz.minus({days: 13}).toJSDate(),
-                    nowTzDate
-                ];
-                ranges[this.$gettext('Last 30 Days')] = [
-                    nowTz.minus({days: 29}).toJSDate(),
-                    nowTzDate
-                ];
-                ranges[this.$gettext('This Month')] = [
-                    nowTz.startOf('month').toJSDate(),
-                    nowTz.endOf('month').toJSDate()
-                ];
-                ranges[this.$gettext('Last Month')] = [
-                    nowTz.minus({months: 1}).startOf('month').toJSDate(),
-                    nowTz.minus({months: 1}).endOf('month').toJSDate()
-                ];
-
-                return ranges;
-            }
+            default: null,
         },
+    },
+    data() {
+        let ranges = {};
+
+        if (null !== this.customRanges) {
+            ranges = this.customRanges;
+        } else {
+            let nowTz = DateTime.now().setZone(this.tz);
+            let nowTzDate = nowTz.toJSDate();
+
+            ranges[this.$gettext('Today')] = [
+                nowTzDate,
+                nowTzDate
+            ];
+            ranges[this.$gettext('Yesterday')] = [
+                nowTz.minus({days: 1}).toJSDate(),
+                nowTz.minus({days: 1}).toJSDate()
+            ];
+            ranges[this.$gettext('Last 7 Days')] = [
+                nowTz.minus({days: 6}).toJSDate(),
+                nowTzDate
+            ];
+            ranges[this.$gettext('Last 14 Days')] = [
+                nowTz.minus({days: 13}).toJSDate(),
+                nowTzDate
+            ];
+            ranges[this.$gettext('Last 30 Days')] = [
+                nowTz.minus({days: 29}).toJSDate(),
+                nowTzDate
+            ];
+            ranges[this.$gettext('This Month')] = [
+                nowTz.startOf('month').toJSDate(),
+                nowTz.endOf('month').toJSDate()
+            ];
+            ranges[this.$gettext('Last Month')] = [
+                nowTz.minus({months: 1}).startOf('month').toJSDate(),
+                nowTz.minus({months: 1}).endOf('month').toJSDate()
+            ];
+        }
+
+        return {
+            ranges: ranges
+        };
     },
     methods: {
         onUpdate(newValue) {
             this.$emit('update', newValue);
         }
     }
-
-
 }
 </script>

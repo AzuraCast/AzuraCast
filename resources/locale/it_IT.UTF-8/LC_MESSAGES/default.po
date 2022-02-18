@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-11T08:45:41+00:00\n"
-"PO-Revision-Date: 2022-01-12 10:48\n"
+"POT-Creation-Date: 2022-02-15T23:07:32+00:00\n"
+"PO-Revision-Date: 2022-02-18 18:14\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
@@ -52,20 +52,20 @@ msgstr "%s di %s Utilizzato"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:107
 msgid "%{ days } Days"
-msgstr ""
+msgstr "%{ days } Giorni"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Twitter.vue:102
 msgid "%{ minutes } minutes"
-msgstr ""
+msgstr "%{ minutes } minuti"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Twitter.vue:99
 msgid "%{ seconds } seconds"
-msgstr ""
+msgstr "%{ seconds } secondi"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Common/Quota.vue:67
 msgid "%{filesCount} File"
 msgid_plural "%{filesCount} Files"
-msgstr[0] ""
+msgstr[0] "%{filesCount} File"
 msgstr[1] ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:137
@@ -92,25 +92,25 @@ msgstr[1] "%{numSongs} brani caricati"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Common/Quota.vue:59
 msgid "%{spaceUsed} Used"
-msgstr ""
+msgstr "%{spaceUsed} Usato"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Common/Quota.vue:58
 msgid "%{spaceUsed} of %{spaceTotal} Used"
-msgstr ""
+msgstr "%{spaceUsed} di %{spaceTotal} Usato"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModal.vue:56
 msgid "%{station} - Copy"
-msgstr ""
+msgstr "%{station} - Copia"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:21
 msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
-msgstr ""
+msgstr "(Docker Compose) Tutti i contenitori Docker sono prefissati da questo nome. Non modificarli dopo l'installazione."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:28
 msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:192
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:189
 msgid "(in seconds)"
 msgstr ""
 
@@ -138,14 +138,14 @@ msgstr ""
 msgid "API Documentation"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:39
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:187
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:10
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:39
 msgid "API Key Description/Comments"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:92
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:5
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:92
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/ApiKeysAction.php:23
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/admin.php:70
 msgid "API Keys"
@@ -188,34 +188,34 @@ msgstr "Account non trovato."
 msgid "Account recovery e-mail sent."
 msgstr "Email di recupero account inviata."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:190
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:153
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:117
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:66
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:65
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:73
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:79
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:190
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:79
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:269
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:84
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:70
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:92
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:81
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:92
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:75
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:75
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:111
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:94
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:75
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:158
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:65
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:73
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:66
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:77
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:153
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:117
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:79
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:81
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:84
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:94
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:92
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:69
 msgid "Actions"
 msgstr "Azioni"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:74
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:72
 msgid "Adapter"
 msgstr "Adattatore"
 
@@ -224,8 +224,8 @@ msgstr "Adattatore"
 msgid "Add API Key"
 msgstr "Aggiungi API Key"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/EditModal.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:17
 msgid "Add Custom Field"
 msgstr "Aggiungi campo personalizzato"
 
@@ -238,8 +238,8 @@ msgstr "Aggiungi Episodio"
 msgid "Add Files to Playlist"
 msgstr "Aggiungi file alla playlist"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/EditModal.vue:91
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:17
 msgid "Add Mount Point"
 msgstr "Aggiungi Punto Di Montaggio"
 
@@ -247,8 +247,8 @@ msgstr "Aggiungi Punto Di Montaggio"
 msgid "Add New GitHub Issue"
 msgstr "Aggiungi nuova segnalazione su GitHub"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/EditModal.vue:37
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:19
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/EditModal.vue:37
 msgid "Add Playlist"
 msgstr "Aggiungi Playlist"
 
@@ -266,8 +266,8 @@ msgstr "Aggiungi record"
 msgid "Add Remote Relay"
 msgstr "Aggiungi flusso remoto"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/EditModal.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:17
 msgid "Add Role"
 msgstr "Aggiungi ruolo"
 
@@ -276,7 +276,7 @@ msgstr "Aggiungi ruolo"
 msgid "Add SFTP User"
 msgstr "Aggiungi utente SFTP"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:123
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:120
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:100
 msgid "Add Schedule Item"
 msgstr "Aggiungi elemento pianificato"
@@ -287,7 +287,7 @@ msgstr "Aggiungi elemento pianificato"
 msgid "Add Station"
 msgstr "Aggiungi stazione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:15
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/EditModal.vue:27
 msgid "Add Storage Location"
 msgstr "Aggiungi Posizione Di Archiviazione"
@@ -297,8 +297,8 @@ msgstr "Aggiungi Posizione Di Archiviazione"
 msgid "Add Streamer"
 msgstr "Aggiungi Streamer"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/EditModal.vue:30
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:11
 msgid "Add User"
 msgstr "Aggiungi utente"
 
@@ -335,24 +335,20 @@ msgstr "Gestisci stazioni"
 msgid "Administer Storage Locations"
 msgstr "Amministrare Cartelle Di Archiviazione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:21
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/AdminForm.vue:104
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:20
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:19
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/sidebar.phtml:3
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:14
 msgid "Administration"
 msgstr "Amministrazione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:27
-msgid "Administrator Password"
-msgstr "Password Amministratore"
-
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:76
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:57
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:85
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:48
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Form/BWrappedFormCheckbox.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Form/BWrappedFormGroup.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:48
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:57
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:85
 #: /home/runner/work/AzuraCast/AzuraCast/config/assets.php:86
 msgid "Advanced"
 msgstr "Avanzata"
@@ -373,20 +369,20 @@ msgstr ""
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr "Le statistiche aggregate degli ascolti vengono utilizzate per mostrare i report delle stazioni attraverso il sistema. Le statistiche degli ascolti basate su IP vengono utilizzate per visualizzare il monitoraggio degli ascoltatori in tempo reale e potrebbero essere richieste per i report di royalty."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:118
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:118
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:232
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:27
 msgid "Album"
 msgstr "Album"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:281
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:138
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:88
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:138
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:281
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:137
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:296
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AlbumArt.vue:41
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:137
 msgid "Album Art"
 msgstr "Copertina disco"
 
@@ -452,8 +448,8 @@ msgstr "Amplifica: Amplificazione (dB)"
 msgid "An account recovery link has been requested for your account on \"%s\"."
 msgstr "È stato richiesto un link per il recupero dell'account per il tuo account su \"%s\"."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/base.js:40
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/vendor/bootstrapVue.js:27
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/base.js:40
 msgid "An error occurred and your request could not be completed."
 msgstr "Si è verificato un errore e la richiesta non può essere completata."
 
@@ -489,7 +485,7 @@ msgstr "Applica compressione e normalizzazione"
 msgid "Apply for an API key at Last.fm"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:139
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:145
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/vendor/bootstrapVue.js:59
 msgid "Applying changes..."
 msgstr "Applicando le modifiche..."
@@ -504,12 +500,12 @@ msgstr "Sei sicuro?"
 msgid "Art"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:117
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:56
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:117
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:121
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:227
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:11
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:55
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:30
 msgid "Artist"
@@ -550,16 +546,16 @@ msgstr ""
 msgid "Auto-Assigned"
 msgstr "Auto-Assegnato"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:135
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:132
 msgid "Auto-generate Random MariaDB Root Password"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:83
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:74
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:65
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/AutoDj.vue:105
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:331
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:78
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:65
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:74
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:83
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/AutoDj.vue:105
 msgid "AutoDJ"
 msgstr "Dj automatico"
 
@@ -581,8 +577,8 @@ msgstr "Formato Dj automatico"
 msgid "AutoDJ Queue Length"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:8
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:5
 msgid "AutoDJ Service"
 msgstr "Servizio regia automatica"
 
@@ -641,7 +637,7 @@ msgstr "Media ascoltatori"
 msgid "Avoid Duplicate Artists/Titles"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:48
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:49
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
 msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">versione %s</a> ora disponibile."
 
@@ -649,7 +645,7 @@ msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">versione %s</a> ora disponibi
 msgid "AzuraCast Application Log"
 msgstr "Log dell'applicazione AzuraCast"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:88
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:91
 msgid "AzuraCast Backup"
 msgstr "Backup AzuraCast"
 
@@ -714,21 +710,21 @@ msgstr ""
 msgid "AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:9
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:35
 msgid "AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed."
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MoveFilesModal.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:50
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:40
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:50
 msgid "Back"
 msgstr "Indietro"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:103
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:106
 msgid "Backing up MariaDB..."
 msgstr "Backup di MariaDB in corso..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:234
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:237
 msgid "Backup complete in %.2f seconds."
 msgstr "Backup completato in %.2f secondi."
 
@@ -740,11 +736,11 @@ msgstr "Backup non trovato."
 msgid "Backup path %s not found!"
 msgstr "Il percorso %s per i backup non è stato trovato!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:96
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:4
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:71
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:54
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/BackupsAction.php:27
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:54
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/admin.php:39
 msgid "Backups"
 msgstr "Backup"
@@ -753,13 +749,17 @@ msgstr "Backup"
 msgid "Band"
 msgstr "Band"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:119
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:131
 msgid "Banned Countries"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:94
 msgid "Banned IP Addresses"
 msgstr "Indirizzi Ip Bannati"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:118
+msgid "Banned User Agents"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/AdminForm.vue:19
 msgid "Base Station Directory"
@@ -777,17 +777,17 @@ msgstr ""
 msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
 msgstr "Basandosi su questa impostazione, il sistema riassegnerà automaticamente le canzoni ogni (tot) giorni usando i dati dai precedenti (tot) giorni."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:222
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/BasicInfo.vue:46
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/BasicInfo.vue:87
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:110
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:222
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:84
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/BasicInfo.vue:87
 msgid "Basic Info"
 msgstr "Informazioni di base"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:70
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:83
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:93
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:70
 msgid "Basic Information"
 msgstr "Informazioni di base"
 
@@ -819,13 +819,13 @@ msgstr ""
 msgid "Broadcast AutoDJ to Remote Station"
 msgstr "Trasmetti regia automatica a stazione remota"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:189
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:201
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:77
 msgid "Broadcasting"
 msgstr "In trasmissione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:8
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:5
 msgid "Broadcasting Service"
 msgstr "Servizio di trasmissione"
 
@@ -854,9 +854,9 @@ msgstr "Carico CPU"
 msgid "Categories"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:97
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview.vue:52
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview.vue:95
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:97
 msgid "Change"
 msgstr "Cambia"
 
@@ -915,13 +915,13 @@ msgstr "Scegli un nome per questa interazione web che ti aiuterà a distinguerla
 msgid "Choose a new password for your account."
 msgstr "Scegli una nuova password per il tuo account."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:223
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
 msgid "Cleaning up temporary files..."
 msgstr "Pulizia file temporanei in corso..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:39
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:95
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:112
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:126
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:39
 msgid "Clear"
 msgstr "Svuota"
 
@@ -930,7 +930,7 @@ msgstr "Svuota"
 msgid "Clear All Message Queues"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:94
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:125
 msgid "Clear All Pending Requests?"
 msgstr ""
 
@@ -951,7 +951,7 @@ msgstr ""
 msgid "Clear Image"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:131
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:143
 msgid "Clear List"
 msgstr ""
 
@@ -959,7 +959,7 @@ msgstr ""
 msgid "Clear Media"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:10
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:15
 msgid "Clear Pending Requests"
 msgstr ""
 
@@ -1000,18 +1000,18 @@ msgstr "Clona"
 msgid "Clone Station"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:20
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:18
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/NewDirectoryModal.vue:11
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/RenameModal.vue:12
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MoveFilesModal.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:33
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:26
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:67
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:44
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/RenameModal.vue:12
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/NewDirectoryModal.vue:11
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MoveFilesModal.vue:35
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:33
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:20
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:7
 msgid "Close"
 msgstr "Chiudi"
 
@@ -1051,7 +1051,7 @@ msgstr "Completa il processo di configurazione per iniziare."
 msgid "Composer"
 msgstr "Compositore"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:71
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:68
 msgid "Composer Plugin Mode"
 msgstr ""
 
@@ -1143,9 +1143,9 @@ msgstr ""
 msgid "Copy scheduled playback times."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:10
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/CopyToClipboardButton.vue:4
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:10
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/CopyToClipboardButton.vue:4
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:10
 #: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_inline.phtml:12
 #: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_viewer.phtml:28
 msgid "Copy to Clipboard"
@@ -1209,11 +1209,11 @@ msgstr ""
 msgid "Create custom fields to store extra metadata about each media file uploaded to your station libraries."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:147
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:150
 msgid "Creating backup archive..."
 msgstr "Creazione archivio backup in corso..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:92
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
 msgid "Creating temporary directories..."
 msgstr "Creazione directory temporanee in corso..."
 
@@ -1226,8 +1226,8 @@ msgid "Crossfade Method"
 msgstr "Metodo di dissolvenza incrociata"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/PlaylistPanel.vue:32
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MicrophonePanel.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:147
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MicrophonePanel.vue:26
 msgid "Cue"
 msgstr "Segnale"
 
@@ -1274,8 +1274,8 @@ msgstr "CSS personalizzato per pagine interne"
 msgid "Custom CSS for Public Pages"
 msgstr "CSS personalizzato per le pagine pubbliche"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:140
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:156
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:152
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:168
 msgid "Custom Configuration"
 msgstr "Configurazione personalizzata"
 
@@ -1299,8 +1299,8 @@ msgstr "Fading personalizzato: Tempo Fade-Out (secondi)"
 msgid "Custom Fading: Overlap Time (seconds)"
 msgstr "Fading personalizzato: tempo sovrapposizione (secondi)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/CustomFields.vue:27
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:5
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/CustomFields.vue:27
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:23
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/admin.php:86
 msgid "Custom Fields"
@@ -1370,29 +1370,29 @@ msgstr "Credenziali DJ"
 msgid "DJ/Streamer Buffer Time (Seconds)"
 msgstr "Tempo di buffer per il DJ/curatore (secondi)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:126
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:86
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:164
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:86
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:126
 msgid "Dark"
 msgstr "Scuro"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/DashboardAction.php:37
+#: /home/runner/work/AzuraCast/AzuraCast/templates/main.phtml:78
 #: /home/runner/work/AzuraCast/AzuraCast/templates/system/error_http.phtml:17
 #: /home/runner/work/AzuraCast/AzuraCast/templates/system/error_general.phtml:17
-#: /home/runner/work/AzuraCast/AzuraCast/templates/main.phtml:78
 msgid "Dashboard"
 msgstr "Bacheca"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:67
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:91
 msgid "Date Played"
 msgstr "Data riproduzione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:66
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:90
 msgid "Date Requested"
 msgstr "Data richiesta"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:95
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:112
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:95
 msgid "Date/Time"
 msgstr "Data/Ora"
 
@@ -1427,8 +1427,8 @@ msgstr "Predefinito"
 msgid "Default Album Art"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:49
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:66
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:49
 msgid "Default Album Art URL"
 msgstr "URL predefinito per le copertine"
 
@@ -1444,27 +1444,27 @@ msgstr "Mount predefinito"
 msgid "Default: %s"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:16
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:27
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:95
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:129
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:37
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:34
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:40
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:39
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:115
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:63
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:41
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:45
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:22
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:66
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:49
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:31
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:40
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:37
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:29
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:95
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:129
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:16
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:39
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:45
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:63
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/vendor/sweetalert.js:14
 msgid "Delete"
 msgstr "Elimina"
@@ -1473,8 +1473,8 @@ msgstr "Elimina"
 msgid "Delete %{ num } media files?"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:254
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:57
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:254
 msgid "Delete API Key?"
 msgstr ""
 
@@ -1522,7 +1522,7 @@ msgstr ""
 msgid "Delete Remote Relay?"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:80
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:111
 msgid "Delete Request?"
 msgstr ""
 
@@ -1538,7 +1538,7 @@ msgstr ""
 msgid "Delete Station?"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:150
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:156
 msgid "Delete Storage Location?"
 msgstr ""
 
@@ -1554,15 +1554,15 @@ msgstr ""
 msgid "Delete Web Hook?"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:35
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:108
 msgid "Description"
 msgstr "Descrizione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:254
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:257
 msgid "Deselect"
 msgstr ""
 
@@ -1583,7 +1583,7 @@ msgstr "Link diretto al flusso audio"
 msgid "Directory"
 msgstr "Cartella"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
 msgid "Directory \"%s\" was not created"
 msgstr "La directory \"%s\" non è stata creata"
 
@@ -1591,12 +1591,12 @@ msgstr "La directory \"%s\" non è stata creata"
 msgid "Directory Name"
 msgstr "Nome Cartella"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:88
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/Form.vue:53
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:55
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:191
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/Form.vue:53
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:88
 msgid "Disable"
 msgstr "Disabilita"
 
@@ -1620,7 +1620,7 @@ msgstr "Disabilita richiesta brani?"
 msgid "Disable streamers?"
 msgstr "Disabilita curatori?"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:162
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:159
 msgid "Disable to use a flatfile cache instead of Redis."
 msgstr ""
 
@@ -1628,19 +1628,19 @@ msgstr ""
 msgid "Disable two-factor authentication?"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:16
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:207
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:159
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:61
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:38
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:31
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:25
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:64
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:206
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:92
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:16
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:159
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:207
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:31
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:38
 msgid "Disabled"
 msgstr "Disabilitato"
 
@@ -1660,10 +1660,10 @@ msgstr "Interazione con Discord"
 msgid "Disk Space"
 msgstr "Spazio Su Disco"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:89
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:18
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:22
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:23
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:18
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:89
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:22
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -1671,13 +1671,13 @@ msgstr "Nome visualizzato"
 msgid "Do not collect any listener analytics"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:96
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:104
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:112
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:120
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:128
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:136
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:142
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:93
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:101
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:109
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:117
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:125
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:133
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:139
 msgid "Do not modify this after installation."
 msgstr ""
 
@@ -1702,16 +1702,16 @@ msgid "Down"
 msgstr "Giù"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:144
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:106
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:92
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Intro.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/Media.vue:25
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:106
 msgid "Download"
 msgstr "Scarica"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:11
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:11
 msgid "Download CSV"
 msgstr "Scarica CSV"
 
@@ -1759,9 +1759,9 @@ msgstr "Richiesta duplicata: questo brano è già stato richiesto e verrà prest
 msgid "E-Mail"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:38
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:6
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:13
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:38
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:21
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:25
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:41
@@ -1777,20 +1777,20 @@ msgstr "Servizio E-mail Delivery"
 msgid "E-mail addresses can be separated by commas."
 msgstr "Gli indirizzi e-mail multipli possono essere separati da una virgola."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:21
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:302
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:44
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:38
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:37
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:40
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:63
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:46
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:36
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:36
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:21
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:302
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:63
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:40
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:37
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:44
 msgid "Edit"
 msgstr "Modifica"
 
@@ -1825,8 +1825,8 @@ msgid "Edit Podcast"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:41
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/HeaderPanel.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditModal.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/HeaderPanel.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/ProfileController.php:207
 msgid "Edit Profile"
 msgstr "Modifica profilo"
@@ -1880,12 +1880,12 @@ msgstr ""
 msgid "Embed Widgets"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:26
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:89
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:70
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:192
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:89
 msgid "Enable"
 msgstr "Abilita"
 
@@ -1913,7 +1913,7 @@ msgstr "Abilita i download sulla pagina On-Demand"
 msgid "Enable Mail Delivery"
 msgstr "Abilita E-mail Delivery"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:147
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:144
 msgid "Enable MariaDB Slow Query Log"
 msgstr ""
 
@@ -1921,7 +1921,7 @@ msgstr ""
 msgid "Enable On-Demand Streaming"
 msgstr "Abilita Streaming On-Demand"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:212
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:209
 msgid "Enable Performance Profiling Extension"
 msgstr ""
 
@@ -1929,7 +1929,7 @@ msgstr ""
 msgid "Enable Public Pages"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:161
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:158
 msgid "Enable Redis"
 msgstr ""
 
@@ -1965,7 +1965,7 @@ msgstr "Abilita richiesta brani?"
 msgid "Enable streamers?"
 msgstr "Abilita curatori?"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:72
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:69
 msgid "Enable the composer \"merge\" functionality to combine the main application's composer.json file with any plugin composer files. This can have performance implications, so you should only use it if you use one or more plugins with their own Composer dependencies."
 msgstr ""
 
@@ -1997,13 +1997,13 @@ msgstr "Abilita per consentire a questo account di accedere e trasmettere."
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
 msgstr "Consente ad Azuracast di eseguire automaticamente i backup notturni all'ora specificata."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:58
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:33
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:29
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:13
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:58
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:29
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:33
 msgid "Enabled"
 msgstr "Abilitato"
 
@@ -2027,7 +2027,7 @@ msgstr "Impostazioni Encoder"
 msgid "Encoding Time"
 msgstr "Tempo di codifica"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:84
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:81
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/SoundExchange.vue:54
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:75
 msgid "End Date"
@@ -2038,8 +2038,8 @@ msgid "End Session"
 msgstr "Termina sessione"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:45
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:69
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:42
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:69
 msgid "End Time"
 msgstr "Ora di fine"
 
@@ -2071,8 +2071,8 @@ msgstr "Inserisci la tua password"
 msgid "Environment: %s"
 msgstr "Ambiente: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:8
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:108
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:8
 msgid "Episode"
 msgstr ""
 
@@ -2127,17 +2127,17 @@ msgstr "Esporta %{format}"
 msgid "Fallback Mount"
 msgstr "Mount di fallback"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:63
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:59
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/Form.vue:6
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:59
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:63
 msgid "Field Name"
 msgstr "Nome campo"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:56
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:109
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:140
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:109
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:56
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:7
 msgid "File Name"
 msgstr "Nome file"
 
@@ -2201,10 +2201,10 @@ msgstr "Per la maggior parte dei casi, utilizzare la codifica UTF-8 predefinita.
 msgid "For some clients, use port:"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
 msgid "Forgot Password"
 msgstr "Password Dimenticata"
 
@@ -2212,7 +2212,7 @@ msgstr "Password Dimenticata"
 msgid "Forgot your password?"
 msgstr "Hai dimenticato la password?"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:150
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:147
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:126
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:96
 msgid "Friday"
@@ -2222,9 +2222,9 @@ msgstr "Venerdì"
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
 msgstr "Dal tuo smartphone, scansiona il codice a destra usando un'app di autenticazione a tua scelta (FreeOTP, Authy, ecc.)."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:39
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:278
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:37
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:39
 msgid "Full Volume"
 msgstr "Volume al massimo"
 
@@ -2236,9 +2236,9 @@ msgstr ""
 msgid "GA Property Tracking ID"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:211
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:60
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:95
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:211
 msgid "General Rotation"
 msgstr "Rotazione generale"
 
@@ -2255,8 +2255,8 @@ msgid "Generic Web Hook"
 msgstr "Interazione web generica"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:62
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:233
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:20
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:233
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:46
 msgid "Genre"
 msgstr "Genere"
@@ -2392,8 +2392,8 @@ msgstr "Log errori Icecast"
 msgid "Identifier"
 msgstr "Identifica"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:52
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:69
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:52
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
 msgstr "Se una canzone non ha copertina, questo URL verrà utilizzato. Lascia vuoto per utilizzare la copertina standard."
 
@@ -2469,8 +2469,8 @@ msgstr "Se selezionato, rimuoverà il marchio AzuraCast dalle pagine rivolte al 
 msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
 msgstr "Se l'indirizzo e-mail fornito è nel sistema, controlla la posta in arrivo per visualizzare il messaggio di reimpostazione della password."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:48
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/ConfigureModal.vue:23
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:48
 msgid "If the end time is before the start time, the playlist will play overnight."
 msgstr "Se l'ora di fine è precedente all'ora di inizio, la playlist verrà riprodotta durante la notte."
 
@@ -2514,6 +2514,10 @@ msgstr "Se stai trasmettendo usando la regia automatica, inserisci qui il nome u
 msgid "If you manually maintain this file, review the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and make any changes needed."
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
+msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_help_card.phtml:11
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr "Se stai riscontrando un bug o un errore, puoi inviare una segnalazione su GitHub utilizzando il link sottostante."
@@ -2530,9 +2534,9 @@ msgstr "Se la tua interazione Web richiede l'autenticazione di base HTTP, fornis
 msgid "If your web hook requires HTTP basic authentication, provide the username here."
 msgstr "Se la tua interazione web richiede l'autenticazione di base HTTP, fornisci qui il nome utente."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:41
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:21
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:185
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:68
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:47
 msgid "Import from PLS/M3U"
 msgstr ""
 
@@ -2680,15 +2684,15 @@ msgstr "Modalità Jingle"
 msgid "Joins"
 msgstr "Partecipazioni"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:52
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:56
 msgid "Language"
 msgstr "Lingua"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:80
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/GeneralTab.vue:103
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:87
 msgid "Last 14 Days"
 msgstr "Ultimi 14 giorni"
 
@@ -2696,9 +2700,9 @@ msgstr "Ultimi 14 giorni"
 msgid "Last 2 Years"
 msgstr "Ultimi 2 anni"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:84
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:187
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/GeneralTab.vue:107
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:187
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:91
 msgid "Last 30 Days"
 msgstr "Ultimi 30 giorni"
 
@@ -2706,8 +2710,8 @@ msgstr "Ultimi 30 giorni"
 msgid "Last 60 Days"
 msgstr "Ultimi 60 giorni"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:76
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:183
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:83
 msgid "Last 7 Days"
 msgstr "Ultimi 7 giorni"
 
@@ -2715,8 +2719,8 @@ msgstr "Ultimi 7 giorni"
 msgid "Last Modified"
 msgstr "Ultima modifica"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:92
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:195
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:99
 msgid "Last Month"
 msgstr "Il mese scorso"
 
@@ -2761,13 +2765,13 @@ msgstr ""
 msgid "Leave blank to automatically generate a new password."
 msgstr "Lascia vuoto per generare una nuova password."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:107
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:104
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:84
 msgid "Leave blank to play on every day of the week."
 msgstr "Lascia vuoto per riprodurre ogni giorno della settimana."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:20
 msgid "Leave blank to use the current password."
 msgstr "Lascia vuoto per usare la password attuale."
 
@@ -2797,9 +2801,9 @@ msgstr ""
 msgid "LetsEncrypt E-mail Address"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:122
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:82
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:160
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:82
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:122
 msgid "Light"
 msgstr "Leggero"
 
@@ -2832,26 +2836,30 @@ msgstr "Log Liquidsoap"
 msgid "List one IP address or group (in CIDR format) per line."
 msgstr "Elenca un indirizzo IP o un gruppo (in formato CIDR) per riga."
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:122
+msgid "List one user agent per line. Wildcards (*) are allowed."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/SecurityPrivacyTab.vue:11
 msgid "Listener Analytics Collection"
 msgstr "Raccolta analisi degli ascolti"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:55
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:44
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:55
 msgid "Listener Request"
 msgstr "Richiesta ascoltatore"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/TimeSeriesChart.vue:70
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview/HourChart.vue:52
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:8
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:96
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:112
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:44
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:112
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:173
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:8
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:96
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview/HourChart.vue:52
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/TimeSeriesChart.vue:70
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:67
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:110
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:160
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:173
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/ListenersAction.php:22
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:124
 msgid "Listeners"
@@ -2877,8 +2885,8 @@ msgid "Listeners by Hour"
 msgstr "Ascoltatori per ora"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:73
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:81
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:73
 msgid "Live"
 msgstr "In diretta"
 
@@ -2911,12 +2919,12 @@ msgstr ""
 msgid "Live stream disconnected."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:263
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:266
 msgid "Loading..."
 msgstr "Caricamento..."
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:112
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:95
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:106
 msgid "Local"
 msgstr ""
 
@@ -2938,24 +2946,24 @@ msgstr "Località"
 msgid "Log In"
 msgstr "Accedi"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:30
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:28
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/LastOutputModal.vue:16
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:30
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:181
-#: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_viewer.phtml:12
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/logs/index.phtml:7
 #: /home/runner/work/AzuraCast/AzuraCast/templates/stations/logs/index.phtml:3
+#: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_viewer.phtml:12
 msgid "Log Viewer"
 msgstr "Visualizzatore log"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:148
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:145
 msgid "Log slower queries to diagnose possible database issues. Only turn this on if needed."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:37
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:30
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:96
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:30
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:37
 msgid "Logged in successfully."
 msgstr "Accesso riuscito."
 
@@ -2963,8 +2971,8 @@ msgstr "Accesso riuscito."
 msgid "Logged in using account recovery token"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:116
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:43
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:116
 msgid "Login unsuccessful"
 msgstr "Accesso non riuscito"
 
@@ -2976,11 +2984,11 @@ msgstr ""
 msgid "Logs by Station"
 msgstr "Log per stazione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:202
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:199
 msgid "Long Sync Task Execution Time"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:95
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:92
 msgid "Loop Once"
 msgstr ""
 
@@ -3005,9 +3013,9 @@ msgstr "MP3"
 msgid "Main Message Content"
 msgstr "Contenuto messaggio principale"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:13
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:163
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:29
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:163
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:13
 msgid "Manage"
 msgstr "Gestisci"
 
@@ -3063,40 +3071,44 @@ msgstr "Modalità AutoDJ manuale"
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:53
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:50
 msgid "Manually modify the logging level."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:127
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:124
 msgid "MariaDB Database Name"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:95
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:92
 msgid "MariaDB Host"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:154
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:151
 msgid "MariaDB Maximum Connections"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:119
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:116
 msgid "MariaDB Password"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:103
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:100
 msgid "MariaDB Port"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:141
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:138
 msgid "MariaDB Root Password"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:111
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:108
 msgid "MariaDB Username"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Telegram.vue:83
 msgid "Markdown"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:12
+msgid "Matched"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/MatomoAnalytics.vue:26
@@ -3131,11 +3143,11 @@ msgstr "Chiave Di Licenza MaxMind"
 msgid "Maximum Listeners"
 msgstr "Numero massimo ascoltatori"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:208
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:205
 msgid "Maximum PHP-FPM Worker Processes"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:87
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:84
 msgid "Maximum Port for Station Port Assignment"
 msgstr ""
 
@@ -3205,7 +3217,7 @@ msgid "Microphone\n"
 "                            Source"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:79
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:76
 msgid "Minimum Port for Station Port Assignment"
 msgstr ""
 
@@ -3225,12 +3237,12 @@ msgstr "Dispositivo mobile"
 msgid "Modified"
 msgstr "Modificato"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:82
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:90
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:79
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:87
 msgid "Modify this if your stations are listening on nonstandard ports."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:146
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:143
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:122
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:92
 msgid "Monday"
@@ -3240,8 +3252,8 @@ msgstr "Lunedì"
 msgid "Mood"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:120
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:170
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:120
 msgid "More"
 msgstr "Altro"
 
@@ -3257,13 +3269,13 @@ msgstr "Log del backup più recente"
 msgid "Mount Name:"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:9
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:9
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:9
 msgid "Mount Point URL"
 msgstr "URL mount point"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/MountsAction.php:28
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:96
 msgid "Mount Points"
@@ -3299,9 +3311,9 @@ msgstr "File musicali"
 msgid "Musician Credits List"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:29
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:272
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:27
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:29
 msgid "Mute"
 msgstr "Silenzia"
 
@@ -3317,12 +3329,12 @@ msgid "N/A"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:52
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:223
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:82
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:73
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:223
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:73
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:82
 msgid "Name"
 msgstr "Nome"
 
@@ -3338,11 +3350,11 @@ msgstr "Ti serve aiuto?"
 msgid "Never run"
 msgstr "Mai eseguito"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:60
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:61
 msgid "New AzuraCast Release Version Available"
 msgstr "Disponibile una nuova versione di AzuraCast"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:85
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:86
 msgid "New AzuraCast Updates Available"
 msgstr "Nuovi aggiornamenti AzuraCast disponibili"
 
@@ -3362,8 +3374,8 @@ msgstr "Nuova cartella"
 msgid "New Key Generated"
 msgstr "Nuova chiave generata"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ChangePasswordModal.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:13
 msgid "New Password"
 msgstr "Nuova password"
 
@@ -3411,6 +3423,10 @@ msgstr "No"
 msgid "No Limit"
 msgstr "Nessun limite"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:22
+msgid "No Match"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:25
 msgid "No directory specified"
 msgstr "Nessuna directory specificata"
@@ -3431,8 +3447,8 @@ msgstr ""
 msgid "No files selected."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:71
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:197
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:71
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr "Nessun altro programma può usare questa porta. Lascia vuoto per assegnare automaticamente una porta."
 
@@ -3440,8 +3456,8 @@ msgstr "Nessun altro programma può usare questa porta. Lascia vuoto per assegna
 msgid "No recording available."
 msgstr "Nessuna registrazione disponibile."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:260
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer/SongHistory.vue:93
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:263
 msgid "No records to display."
 msgstr ""
 
@@ -3462,7 +3478,7 @@ msgstr ""
 msgid "Normal Mode"
 msgstr "Modo normale"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:19
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:25
 msgid "Not Played"
 msgstr "Non riprodotto"
 
@@ -3499,8 +3515,8 @@ msgstr "Note"
 msgid "Now"
 msgstr "Adesso"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:115
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:24
 msgid "Now Playing"
 msgstr "In riproduzione"
 
@@ -3608,12 +3624,12 @@ msgstr "Invia un tweet soltanto ogni..."
 msgid "Only collect aggregate listener statistics"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:207
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:219
 msgid "Only connect to a remote server."
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:28
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:98
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:95
 msgid "Only loop through playlist once."
 msgstr "Ripeti la playlist solo una volta."
 
@@ -3673,6 +3689,10 @@ msgstr "Nome File Originale"
 msgid "Original Lyricist"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:10
+msgid "Original Path"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:64
 msgid "Original Release Time"
 msgstr "Data di Uscita"
@@ -3693,15 +3713,15 @@ msgstr "Proprietario"
 msgid "PHP Application Log"
 msgstr "Log applicazione PHP"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:183
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:180
 msgid "PHP Maximum POST File Size"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:187
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:184
 msgid "PHP Memory Limit"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:191
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:188
 msgid "PHP Script Maximum Execution Time"
 msgstr ""
 
@@ -3713,11 +3733,11 @@ msgstr "Parte di una Compilation"
 msgid "Part Of A Set"
 msgstr "Parte di un Set"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:46
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Recover.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:177
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:50
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:54
 msgid "Password"
@@ -3727,6 +3747,9 @@ msgstr "Password"
 msgid "Password Reset Instructions"
 msgstr "Istruzioni per la reimpostazione della password"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:64
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/ConnectionInfo.vue:63
 msgid "Password:"
 msgstr ""
@@ -3737,6 +3760,10 @@ msgstr "Incolla la chiave di licenza generata nel campo in questa pagina."
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:26
 msgid "Path/Suffix"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:74
+msgid "Pending Requests"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:57
@@ -3751,9 +3778,9 @@ msgstr "Riordina per esecutore"
 msgid "Permissions"
 msgstr "Permessi"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:44
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:266
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:44
 msgid "Play"
 msgstr "Play"
 
@@ -3778,8 +3805,8 @@ msgstr "Suona una volta ogni ora al minuto specificato."
 msgid "Play/Pause"
 msgstr "Play/Pausa"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:46
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:176
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:46
 msgid "Playback Queue"
 msgstr ""
 
@@ -3787,11 +3814,11 @@ msgstr ""
 msgid "Playing Next"
 msgstr "Riproduce in seguito"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:119
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer.vue:77
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/SchedulePanel.vue:15
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:119
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:41
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:73
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/SchedulePanel.vue:15
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:155
 msgid "Playlist"
 msgstr "Playlist"
@@ -3800,13 +3827,13 @@ msgstr "Playlist"
 msgid "Playlist (M3U/PLS) URL"
 msgstr "Link playlist (M3U/PLS)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MixerPanel.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/PlaylistPanel.vue:131
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MixerPanel.vue:13
 msgid "Playlist 1"
 msgstr "Playlist 1"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MixerPanel.vue:21
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/PlaylistPanel.vue:132
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MixerPanel.vue:21
 msgid "Playlist 2"
 msgstr "Playlist 2"
 
@@ -3851,7 +3878,7 @@ msgstr ""
 msgid "Playlist reshuffled."
 msgstr "Playlist rimescolata."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:142
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:158
 msgid "Playlist successfully imported; %d of %d files were successfully matched."
 msgstr "Playlist importata con successo; %d di %d file sono stati abbinati con successo."
 
@@ -3859,8 +3886,8 @@ msgstr "Playlist importata con successo; %d di %d file sono stati abbinati con s
 msgid "Playlist(s)"
 msgstr "Playlist"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:58
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:58
 msgid "Playlist:"
 msgstr "Playlist:"
 
@@ -3868,12 +3895,12 @@ msgstr "Playlist:"
 msgid "Playlist: %s"
 msgstr "Playlist: %s"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:57
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:264
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:9
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/Playlists.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:57
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/Playlists.vue:34
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:9
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/PlaylistsAction.php:34
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:68
 msgid "Playlists"
@@ -3895,7 +3922,7 @@ msgstr "Riproduzioni"
 msgid "Please log in to continue."
 msgstr "Per favore accedi per continuare."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:89
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:92
 msgid "Please wait while a backup is generated..."
 msgstr "Aspetta mentre viene generato un backup..."
 
@@ -3937,8 +3964,8 @@ msgstr ""
 msgid "Port:"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/main.phtml:175
 #: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:52
+#: /home/runner/work/AzuraCast/AzuraCast/templates/main.phtml:175
 msgid "Powered by %s"
 msgstr "Patrocinato da %s"
 
@@ -3950,8 +3977,8 @@ msgstr ""
 msgid "Prefer Browser URL (If Available)"
 msgstr "Preferisci URL del browser (se disponibile)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:78
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:156
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:78
 msgid "Prefer System Default"
 msgstr ""
 
@@ -3971,14 +3998,14 @@ msgstr "Privacy"
 msgid "Produced Notice"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:151
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/ProfileController.php:73
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:42
 msgid "Profile"
 msgstr "Profilo"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:219
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:216
 msgid "Profile Performance on All Requests"
 msgstr ""
 
@@ -3986,15 +4013,15 @@ msgstr ""
 msgid "Profiler Control Panel"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:225
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:222
 msgid "Profiling Extension HTTP Key"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:231
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:228
 msgid "Profiling Extension IP Allow List"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:213
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:210
 msgid "Profiling data can be viewed by visiting %s."
 msgstr ""
 
@@ -4002,10 +4029,10 @@ msgstr ""
 msgid "Programmatic Name"
 msgstr "Nome programmatico"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:129
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:30
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:129
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:47
 msgid "Public Page"
 msgstr "Pagina pubblica"
@@ -4014,9 +4041,9 @@ msgstr "Pagina pubblica"
 msgid "Public Page Background"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:84
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:63
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:84
 msgid "Public Pages"
 msgstr "Pagine pubbliche"
 
@@ -4046,9 +4073,9 @@ msgid "Queue the selected media to play next"
 msgstr "Coda i media selezionati per riprodurre il prossimo"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:53
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:76
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:43
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:53
 msgid "RSS Feed"
 msgstr ""
 
@@ -4110,19 +4137,19 @@ msgstr "Tempo di registrazione"
 msgid "Recover Account"
 msgstr "Recupera Account"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:177
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:174
 msgid "Redis Database Index"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:167
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:164
 msgid "Redis Host"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:172
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:169
 msgid "Redis Port"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:239
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:242
 msgid "Refresh rows"
 msgstr "Aggiorna righe"
 
@@ -4134,13 +4161,10 @@ msgstr "Sto aggiornando tutte le stazioni"
 msgid "Region"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:56
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/relays/index.phtml:20
 msgid "Relay"
 msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:41
-msgid "Relay Password"
-msgstr "Password collegamento esterno"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:46
 msgid "Relay Stream URL"
@@ -4175,9 +4199,9 @@ msgstr "Remoto"
 msgid "Remote Playback Buffer (Seconds)"
 msgstr "Buffer di riproduzione remota (secondi)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:5
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:65
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:43
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/RemotesAction.php:25
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:103
 msgid "Remote Relays"
@@ -4215,9 +4239,9 @@ msgstr "Nome utente sorgente per la stazione remota"
 msgid "Remote Station Type"
 msgstr "Tipo di stazione remota"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:74
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:98
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:74
 msgid "Remote URL"
 msgstr "URL Remoto"
 
@@ -4233,21 +4257,21 @@ msgstr "Tipo di link esterno"
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
 msgstr "I collegamenti remoti consentono di lavorare con il software di trasmissione al di fuori di questo server. Qualsiasi flusso che imposti qui sarà incluso nelle statistiche della tua stazione. È inoltre possibile trasmettere da questo server ai collegamenti remoti."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:112
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:118
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:18
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:98
 msgid "Remote: Dropbox"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:109
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:115
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:15
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:47
 msgid "Remote: S3 Compatible"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/StationForm.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:22
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:22
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/StationForm.vue:13
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -4301,6 +4325,10 @@ msgstr ""
 msgid "Request"
 msgstr "Richiesta"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:78
+msgid "Request History"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:103
 msgid "Request Last Played Threshold (Minutes)"
 msgstr "Soglia ultima richiesta riprodotta (Minuti)"
@@ -4317,7 +4345,7 @@ msgstr "Richiedi brano"
 msgid "Request a Song"
 msgstr "Richiedi un brano"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:69
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:93
 msgid "Requester IP"
 msgstr "IP richiesta"
 
@@ -4334,8 +4362,8 @@ msgstr "Reimposta Password"
 msgid "Reshuffle"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:78
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:26
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:53
 msgid "Restart"
 msgstr "Riavvia"
 
@@ -4357,13 +4385,13 @@ msgstr "Riavvia per applicare le modifiche"
 msgid "Restoring Backups"
 msgstr "Ripristino dei backup in corso"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:71
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/GlobalForm.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:71
 msgid "Role Name"
 msgstr "Nome ruolo"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:65
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:30
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:65
 msgid "Roles"
 msgstr "Ruoli"
 
@@ -4381,7 +4409,7 @@ msgstr ""
 msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:242
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:245
 msgid "Rows per page"
 msgstr "Righe per pagina"
 
@@ -4492,7 +4520,7 @@ msgstr "Chiavi Pubbliche SSH"
 msgid "Sample Rate"
 msgstr "Frequenza di campionamento"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:151
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:148
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:127
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:97
 msgid "Saturday"
@@ -4502,15 +4530,15 @@ msgstr "Sabato"
 msgid "Save"
 msgstr "Salva"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/LiquidsoapConfig.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:63
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeEditModal.vue:60
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/StationForm.vue:26
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:75
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:117
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings.vue:32
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/StationForm.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeEditModal.vue:60
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:63
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/LiquidsoapConfig.vue:35
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:24
 msgid "Save Changes"
 msgstr "Salva modifiche"
 
@@ -4519,16 +4547,16 @@ msgid "Save and Continue"
 msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Schedule.vue:13
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:158
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:134
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:97
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:41
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:155
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:134
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/ScheduleAction.php:40
 msgid "Schedule"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:101
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:167
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:101
 msgid "Schedule View"
 msgstr "Visualizza pianificazione"
 
@@ -4540,7 +4568,7 @@ msgstr "Programmata"
 msgid "Scheduled Backup Time"
 msgstr "Orario di backup pianificato"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:104
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:101
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:81
 msgid "Scheduled Play Days of Week"
 msgstr "Giorni della settimana programmati per la riproduzione"
@@ -4558,7 +4586,7 @@ msgstr "Le playlist programmate e gli altri elementi temporizzati saranno contro
 msgid "Scheduling"
 msgstr "Pianificazione"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:257
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:260
 msgid "Search"
 msgstr "Cerca"
 
@@ -4578,8 +4606,8 @@ msgstr "Secondi dall'inizio del brano, da cui l'automix dovrebbe smettere di suo
 msgid "Secret Key"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:49
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/SecurityPrivacyTab.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:49
 msgid "Security"
 msgstr "Sicurezza"
 
@@ -4604,7 +4632,7 @@ msgstr ""
 msgid "Seek"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:251
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:254
 msgid "Select"
 msgstr "Seleziona"
 
@@ -4620,7 +4648,7 @@ msgstr ""
 msgid "Select Media File"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:6
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:32
 msgid "Select PLS/M3U File to Import"
 msgstr ""
 
@@ -4636,11 +4664,11 @@ msgstr ""
 msgid "Select a theme to use as a base for station public pages and the login page."
 msgstr "Seleziona un tema da utilizzare come base per le pagine pubbliche della stazione e la pagina di accesso."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:248
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:251
 msgid "Select all visible rows"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:245
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:248
 msgid "Select displayed fields"
 msgstr "Seleziona i campi visualizzati"
 
@@ -4648,7 +4676,7 @@ msgstr "Seleziona i campi visualizzati"
 msgid "Select the category/categories that best reflects the content of your podcast."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:123
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:135
 msgid "Select the countries that are not allowed to connect to the streams."
 msgstr ""
 
@@ -4692,8 +4720,8 @@ msgstr "Indirizzo E-mail Mittente"
 msgid "Sender Name"
 msgstr "Nome Mittente"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:51
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:83
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:51
 msgid "Sequential"
 msgstr "In sequenza"
 
@@ -4791,7 +4819,7 @@ msgstr ""
 msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:155
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:152
 msgid "Set the amount of allowed connections to the database. This value should be increased if you are seeing the \"Too many connections\" error in the logs."
 msgstr ""
 
@@ -4844,7 +4872,7 @@ msgstr ""
 msgid "Share Recordings Storage Location"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:196
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:193
 msgid "Short Sync Task Execution Time"
 msgstr ""
 
@@ -4893,9 +4921,9 @@ msgstr "URL del sito base"
 msgid "Site Theme"
 msgstr "Tema del sito"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:150
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:248
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:80
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:150
 msgid "Size"
 msgstr "Dimensione"
 
@@ -4933,8 +4961,8 @@ msgstr "Artista canzone"
 msgid "Song Genre"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer.vue:71
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer/SongHistoryModal.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer.vue:71
 msgid "Song History"
 msgstr "Cronologia brani"
 
@@ -4962,19 +4990,19 @@ msgstr "Ordine di riproduzione brani"
 msgid "Song Playback Timeline"
 msgstr "Orari riproduzione brani"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:5
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:66
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:66
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/RequestsAction.php:22
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:128
 msgid "Song Requests"
 msgstr "Richieste di brani"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:17
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:68
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:98
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:98
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:17
 msgid "Song Title"
 msgstr "Titolo canzone"
 
@@ -5003,18 +5031,15 @@ msgstr "Report SoundExchange"
 msgid "SoundExchange Royalties"
 msgstr "Royalty di SoundExchange"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:78
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:151
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:8
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:99
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:78
 msgid "Source"
 msgstr "Sorgente"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:34
-msgid "Source Password"
-msgstr "Password sorgente"
-
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:73
 msgid "Space Used"
 msgstr ""
 
@@ -5034,8 +5059,8 @@ msgstr "Stabile"
 msgid "Standard playlist, shuffles with other standard playlists based on weight."
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:82
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:30
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:57
 msgid "Start"
 msgstr "Avvia"
 
@@ -5054,20 +5079,16 @@ msgid "Start Streaming"
 msgstr "Inizia streaming"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:32
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:61
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:32
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:61
 msgid "Start Time"
 msgstr "Ora di inizio"
-
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:73
-msgid "Start/end date cannot be used on playlists with advanced settings!"
-msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
 msgstr "Trasmissione radio disattivata"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:83
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:84
 msgid "Station Media"
 msgstr ""
 
@@ -5084,7 +5105,7 @@ msgstr "Panoramica stazione"
 msgid "Station Permissions"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:89
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:92
 msgid "Station Podcasts"
 msgstr ""
 
@@ -5092,7 +5113,7 @@ msgstr ""
 msgid "Station Ports"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:86
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:88
 msgid "Station Recordings"
 msgstr ""
 
@@ -5109,7 +5130,7 @@ msgstr "Fuso orario della stazione"
 msgid "Station restarted."
 msgstr "Stazione riavviata."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:74
 msgid "Station(s)"
 msgstr ""
 
@@ -5142,12 +5163,12 @@ msgstr "Passo 2: verifica codice generato"
 msgid "Steps for configuring a Twitter application:"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:269
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:18
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:61
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:21
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:86
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:34
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:18
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:43
 msgid "Stop"
 msgstr "Ferma"
 
@@ -5229,10 +5250,10 @@ msgstr ""
 msgid "Streamers enabled!"
 msgstr "Streamer abilitati!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:6
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:115
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:69
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:6
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:24
 msgid "Streamers/DJs"
 msgstr "Streamer/DJ"
 
@@ -5252,7 +5273,7 @@ msgstr "Sottotitolo"
 msgid "Success"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:152
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:149
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:128
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:98
 msgid "Sunday"
@@ -5302,10 +5323,11 @@ msgstr "Log di sistema"
 msgid "System Maintenance"
 msgstr "Manutenzione del sistema"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/SetupStep.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings.vue:9
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:166
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/SetupStep.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/SettingsAction.php:26
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:166
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:65
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/admin.php:19
 msgid "System Settings"
 msgstr "Impostazioni sistema"
@@ -5342,7 +5364,7 @@ msgstr "L'URL che riceverà i messaggi POST ogni volta che viene attivato un eve
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
 msgstr "L'account associato all'indirizzo mail \"%s\" è stato impostato come amministratore"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:43
 msgid "The application environment."
 msgstr "L'ambiente applicativo."
 
@@ -5406,7 +5428,7 @@ msgstr ""
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
 msgstr "La durata del tempo di riproduzione che Liquidsoap deve bufferizzare durante l'esecuzione di questa playlist remota. Tempi più brevi possono comportare una riproduzione intermittente su connessioni instabili."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:34
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:35
 msgid "The locale to use for CLI commands."
 msgstr ""
 
@@ -5418,11 +5440,11 @@ msgstr ""
 msgid "The main port AzuraCast listens to for secure HTTPS connections."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:203
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:200
 msgid "The maximum execution time (and lock timeout) for the 1-hour synchronization task."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:197
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:194
 msgid "The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks."
 msgstr ""
 
@@ -5526,7 +5548,7 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:226
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:223
 msgid "The value for the \"SPX_KEY\" parameter for viewing profiling pages."
 msgstr ""
 
@@ -5554,8 +5576,8 @@ msgstr "Questo CSS verrà applicato alle pagine di gestione principali, come que
 msgid "This CSS will be applied to the station public pages and login page."
 msgstr "Questo CSS verrà applicato alle pagine pubbliche della radio e alla pagina di accesso."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:88
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:191
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:95
 msgid "This Month"
 msgstr "Questo mese"
 
@@ -5567,7 +5589,7 @@ msgstr "Questo URL è fornito all'interno dell'applicazione Discord."
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
 msgstr "Questo account avrà pieno accesso al sistema e verrà automaticamente effettuato il login per il resto della configurazione."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:56
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:53
 msgid "This allows you to log debug-level errors temporarily (for problem-solving) or reduce the volume of logs that are produced by your installation, without needing to modify whether your installation is a production or development instance."
 msgstr ""
 
@@ -5575,7 +5597,7 @@ msgstr ""
 msgid "This can have an adverse impact on system performance. You should disable this when possible."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:143
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:155
 msgid "This code will be included in the frontend configuration. Allowed formats are:"
 msgstr ""
 
@@ -5583,8 +5605,8 @@ msgstr ""
 msgid "This determines how many songs in advance the AutoDJ will automatically fill the queue."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/SftpUsersAction.php:26
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/PlaylistsAction.php:24
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/SftpUsersAction.php:26
 #: /home/runner/work/AzuraCast/AzuraCast/src/Middleware/Module/StationFiles.php:21
 msgid "This feature is not currently supported on this station."
 msgstr "Attualmente questa funzione non è supportata in questa stazione radio."
@@ -5689,8 +5711,8 @@ msgstr ""
 msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:27
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:27
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:27
 msgid "This playlist is not a sequential playlist."
 msgstr "Questa playlist non è una playlist sequenziale."
 
@@ -5742,9 +5764,9 @@ msgstr ""
 msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:81
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:81
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:160
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:161
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:81
 msgid "This station does not accept requests currently."
 msgstr "Attualmente questa stazione non accetta richieste."
 
@@ -5757,10 +5779,10 @@ msgstr "Questa stazione non supporta lo streaming on-demand."
 msgid "This station is out of available storage space."
 msgstr "Questa stazione ha esaurito lo spazio disponibile."
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:10
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:61
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:58
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:10
 msgid "This station's time zone is currently %{tz}."
 msgstr ""
 
@@ -5788,7 +5810,7 @@ msgstr "Questo sarà usato come etichetta quando si modificano singoli brani e v
 msgid "This will clear any pending unprocessed messages in all message queues."
 msgstr "Questo cancellerà tutti i messaggi non elaborati in attesa in tutte le code dei messaggi."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:220
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:217
 msgid "This will have a significant performance impact on your installation."
 msgstr ""
 
@@ -5800,7 +5822,7 @@ msgstr ""
 msgid "Thumbnail Image URL"
 msgstr "URL immagine miniatura"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:149
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:146
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:125
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:95
 msgid "Thursday"
@@ -5818,14 +5840,14 @@ msgstr "Tempo (sec)"
 msgid "Time Zone"
 msgstr "Fuso orario"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:116
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:53
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:116
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:114
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:224
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:11
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:10
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:54
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:29
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:224
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:10
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:11
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:54
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:79
 msgid "Title"
 msgstr "Titolo"
@@ -5859,8 +5881,8 @@ msgstr ""
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
 msgstr "Per verificare che il codice sia stato impostato correttamente, inserisci il codice a 6 cifre mostrato dall'app."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:68
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:175
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:75
 msgid "Today"
 msgstr "Oggi"
 
@@ -5896,7 +5918,7 @@ msgstr "Numero Traccia"
 msgid "Triggers"
 msgstr "Eventi"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:147
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:144
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:123
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:93
 msgid "Tuesday"
@@ -5982,14 +6004,14 @@ msgstr "URL breve"
 msgid "URL User"
 msgstr "URL Utente"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:61
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:12
 msgid "Unique"
 msgstr "Univoco"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:41
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:232
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:41
 msgid "Unique Listeners"
 msgstr "Ascoltatori Unici"
 
@@ -6036,8 +6058,8 @@ msgstr "Coda di brani imminente"
 msgid "Update"
 msgstr "Aggiorna"
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:42
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ComposeVersionCheck.php:53
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:41
 msgid "Update Instructions"
 msgstr "Istruzioni per l'aggiornamento"
 
@@ -6073,7 +6095,7 @@ msgstr "Usa Asynchronous Worker"
 msgid "Use Browser Default"
 msgstr "Usa impostazione browser predefinita"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:194
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:206
 msgid "Use Icecast 2.4 on this server."
 msgstr ""
 
@@ -6085,7 +6107,7 @@ msgstr ""
 msgid "Use Replaygain Metadata"
 msgstr "Utilizza i metadati di Replaygain"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:201
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:213
 msgid "Use SHOUTcast DNAS 2 on this server."
 msgstr ""
 
@@ -6139,6 +6161,12 @@ msgstr "Utente non trovato."
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:90
 msgid "Username"
 msgstr "Nome utente"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:42
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:60
+msgid "Username:"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/UsersAction.php:25
@@ -6203,7 +6231,7 @@ msgstr "Vedi i report della stazione"
 msgid "View System Logs"
 msgstr "Vedi i log di sistema"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:80
 msgid "View the changelog for full details."
 msgstr "Visualizza il changelog per maggiori dettagli."
 
@@ -6223,9 +6251,9 @@ msgstr "Visita la pagina \"La mia chiave di licenza\" nella sezione \"Servizi\".
 msgid "Visual Cue Editor"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:113
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:275
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:88
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:113
 msgid "Volume"
 msgstr "Volume"
 
@@ -6259,8 +6287,8 @@ msgstr "Condizioni per l'interazione web"
 msgid "Web Hook URL"
 msgstr "URL interazione web"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:77
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/WebhooksAction.php:31
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:109
 msgid "Web Hooks"
@@ -6299,7 +6327,7 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:148
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:145
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:124
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:94
 msgid "Wednesday"
@@ -6369,8 +6397,8 @@ msgstr "Anno"
 msgid "Yes"
 msgstr "Sì"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:72
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:179
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:79
 msgid "Yesterday"
 msgstr "Ieri"
 
@@ -6378,7 +6406,7 @@ msgstr "Ieri"
 msgid "You"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:53
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
 msgid "You are currently running version %s. Updating is highly recommended."
 msgstr "Stai attualmente usando la versione %s. Aggiornamento altamente consigliato."
 
@@ -6448,12 +6476,16 @@ msgstr ""
 msgid "You may need to connect directly via your IP address:"
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:49
+msgid "You may want to update your base URL to ensure it is correct."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:175
 #: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:185
 msgid "You must be logged in to access this page."
 msgstr "Devi esserti autenticato per poter accedere a questa pagina."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:82
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:83
 msgid "You should update to take advantage of bug and security fixes."
 msgstr "Dovresti aggiornare per poter correggere errori e vulnerabilità di sicurezza."
 
@@ -6465,6 +6497,10 @@ msgstr "Dovresti aggiornare il file <code>docker-compose.yml</code> per applicar
 msgid "You will not be able to retrieve it again."
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:58
+msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ComposeVersionCheck.php:50
 msgid "Your <code>docker-compose.yml</code> file is out of date!"
 msgstr "Il tuo file <code>docker-compose.yml</code> non è aggiornato!"
@@ -6473,8 +6509,8 @@ msgstr "Il tuo file <code>docker-compose.yml</code> non è aggiornato!"
 msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
 msgstr "Il tuo account utilizza un codice di sicurezza a due fattori. Inserisci il codice che il tuo dispositivo sta mostrando qui sotto."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:116
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:43
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:116
 msgid "Your credentials could not be verified."
 msgstr "Impossibile verificare le tue credenziali."
 
@@ -6486,7 +6522,7 @@ msgstr "La tua attuale installazione è di tipo <b>%s </b>. Assicurati di includ
 msgid "Your full API key is below:"
 msgstr "La tua chiave API completa è la seguente:"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:73
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:74
 msgid "Your installation is currently %d update(s) behind the latest version."
 msgstr "Attualmente la tua installazione è indietro di %d aggiornamenti rispetto all'ultima versione."
 

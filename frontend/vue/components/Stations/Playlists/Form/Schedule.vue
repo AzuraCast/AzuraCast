@@ -69,12 +69,9 @@
                             </template>
                             <template #description="{lang}">
                                 <translate :key="lang">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
-                                <div v-if="hasAdvancedSettings" class="text-danger">
-                                    <translate :key="lang+'_warning'">Start/end date cannot be used on playlists with advanced settings!</translate>
-                                </div>
                             </template>
                             <template #default="props">
-                                <b-form-input :id="props.id" type="date" :disabled="hasAdvancedSettings"
+                                <b-form-input :id="props.id" type="date"
                                               v-model="props.field.$model" :state="props.state"></b-form-input>
                             </template>
                         </b-wrapped-form-group>
@@ -85,7 +82,7 @@
                             </template>
                             <template #default="props">
                                 <b-form-input :id="props.id" type="date" v-model="props.field.$model"
-                                              :disabled="hasAdvancedSettings" :state="props.state"></b-form-input>
+                                              :state="props.state"></b-form-input>
                             </template>
                         </b-wrapped-form-group>
 
@@ -156,9 +153,6 @@ export default {
     computed: {
         langTabTitle () {
             return this.$gettext('Schedule');
-        },
-        hasAdvancedSettings () {
-            return this.form.backend_options.$model.length > 1;
         }
     },
     methods: {

@@ -14,8 +14,8 @@ Language-Team: Portuguese
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: pt_PT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -292,10 +292,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administração',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => '',
       ),
       'Advanced' => 
       array (
@@ -658,6 +654,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Banned IP Addresses' => 
+      array (
+        0 => '',
+      ),
+      'Banned User Agents' => 
       array (
         0 => '',
       ),
@@ -2225,6 +2225,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => '',
@@ -2521,6 +2525,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => '',
@@ -2750,6 +2758,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Markdown' => 
+      array (
+        0 => '',
+      ),
+      'Matched' => 
       array (
         0 => '',
       ),
@@ -3042,6 +3054,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => '',
@@ -3290,6 +3306,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Letra Original',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Data de Publicação Original',
@@ -3347,6 +3367,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Path/Suffix' => 
+      array (
+        0 => '',
+      ),
+      'Pending Requests' => 
       array (
         0 => '',
       ),
@@ -3706,10 +3730,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
-      'Relay Password' => 
-      array (
-        0 => '',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Endereço do Relé de Transmissão',
@@ -3851,6 +3871,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Request' => 
+      array (
+        0 => '',
+      ),
+      'Request History' => 
       array (
         0 => '',
       ),
@@ -4494,10 +4518,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Fonte',
       ),
-      'Source Password' => 
-      array (
-        0 => '',
-      ),
       'Space Used' => 
       array (
         0 => '',
@@ -4537,10 +4557,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Hora de Início',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'A data de início/fim não pode ser usada em listas de reprodução com definições avançadas!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5554,6 +5570,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => 'Utilizadores',
@@ -5846,6 +5866,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Deve fazer login para aceder a esta página.',
@@ -5859,6 +5883,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'You will not be able to retrieve it again.' => 
+      array (
+        0 => '',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
         0 => '',
       ),

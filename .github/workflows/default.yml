@@ -5,6 +5,7 @@ on:
       - main
   push:
     paths-ignore:
+      - '*.md'
       - '.github/*.yml'
       - '.github/ISSUE_TEMPLATE/*.md'
       - 'install.sh' # Ansible-only scripts and folders
@@ -18,6 +19,10 @@ on:
       - '*'
   schedule:
     - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -194,7 +199,7 @@ jobs:
 
       - name: Build Docker Metadata
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v3
         with:
           images: |
             azuracast/azuracast_web_v2

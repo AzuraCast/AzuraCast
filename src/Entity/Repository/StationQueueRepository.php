@@ -45,6 +45,18 @@ class StationQueueRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
             UPDATE App\Entity\StationQueue sq
+            SET sq.timestamp_played = :timestamp
+            WHERE sq.station = :station
+            AND sq.id = :id
+            DQL
+        )->setParameter('timestamp', time())
+            ->setParameter('station', $station)
+            ->setParameter('id', $row->getIdRequired())
+            ->execute();
+
+        $this->em->createQuery(
+            <<<'DQL'
+            UPDATE App\Entity\StationQueue sq
             SET sq.is_played=1, sq.sent_to_autodj=1
             WHERE sq.station = :station 
             AND sq.is_played = 0 
@@ -110,16 +122,6 @@ class StationQueueRepository extends Repository
     public function getUnplayedQuery(Entity\Station $station): Query
     {
         return $this->getUnplayedBaseQuery($station)->getQuery();
-    }
-
-    public function getLatestVisibleRow(Entity\Station $station): ?Entity\StationQueue
-    {
-        return $this->getRecentBaseQuery($station)
-            ->andWhere('sq.sent_to_autodj = 1')
-            ->andWhere('sq.is_visible = 1')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
     }
 
     public function clearUpcomingQueue(Entity\Station $station): void

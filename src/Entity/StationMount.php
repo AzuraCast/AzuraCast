@@ -373,7 +373,7 @@ class StationMount implements
     public function getAutodjProtocolEnum(): ?StreamProtocols
     {
         return match ($this->getAutodjAdapterTypeEnum()) {
-            FrontendAdapters::SHOUTcast => StreamProtocols::Icy,
+            FrontendAdapters::Shoutcast => StreamProtocols::Icy,
             default => null
         };
     }

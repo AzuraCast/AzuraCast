@@ -103,11 +103,11 @@ class DebugController extends AbstractLogViewerController
             $syncTasksEvent = new GetSyncTasks();
             $eventDispatcher->dispatch($syncTasksEvent);
             foreach ($syncTasksEvent->getTasks() as $taskClass) {
-                $taskCommand->runTask($taskClass);
+                $taskCommand->runTask($taskClass, true);
             }
         } else {
             /** @var class-string $task */
-            $taskCommand->runTask($task);
+            $taskCommand->runTask($task, true);
         }
 
         $this->logger->popHandler();

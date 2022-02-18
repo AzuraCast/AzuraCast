@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Radio\CertificateLocator;
 use Exception;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class SHOUTcast extends AbstractFrontend
+class Shoutcast extends AbstractFrontend
 {
     public function supportsMounts(): bool
     {
@@ -57,8 +58,8 @@ class SHOUTcast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        /** @noinspection HttpUrlsUsage */
-        $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrl = $this->environment->getUriToStations()
+            ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);
         $npAdapter->setAdminPassword($feConfig->getAdminPassword());
@@ -114,19 +115,26 @@ class SHOUTcast extends AbstractFrontend
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
 
-        $config = array_filter([
-            'password'             => $frontendConfig->getSourcePassword(),
-            'adminpassword'        => $frontendConfig->getAdminPassword(),
-            'logfile'              => $configPath . '/sc_serv.log',
-            'w3clog'               => $configPath . '/sc_w3c.log',
-            'banfile'              => $this->writeIpBansFile($station),
-            'ripfile'              => $configPath . '/sc_serv.rip',
-            'maxuser'              => $frontendConfig->getMaxListeners() ?? 250,
-            'portbase'             => $frontendConfig->getPort(),
+        $certPaths = CertificateLocator::findCertificate();
+
+        $config = [
+            'password' => $frontendConfig->getSourcePassword(),
+            'adminpassword' => $frontendConfig->getAdminPassword(),
+            'logfile' => $configPath . '/sc_serv.log',
+            'w3clog' => $configPath . '/sc_w3c.log',
+            'banfile' => $this->writeIpBansFile($station),
+            'agentfile' => $this->writeUserAgentBansFile($station, 'sc_serv.agent'),
+            'ripfile' => $configPath . '/sc_serv.rip',
+            'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
+            'portbase' => $frontendConfig->getPort(),
             'requirestreamconfigs' => 1,
-            'licenceid'            => $frontendConfig->getScLicenseId(),
-            'userid'               => $frontendConfig->getScUserId(),
-        ]);
+            'savebanlistonexit' => '0',
+            'saveagentlistonexit' => '0',
+            'licenceid' => $frontendConfig->getScLicenseId(),
+            'userid' => $frontendConfig->getScUserId(),
+            'sslCertificateFile' => $certPaths->getCertPath(),
+            'sslCertificateKeyFile' => $certPaths->getKeyPath(),
+        ];
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
@@ -183,5 +191,25 @@ class SHOUTcast extends AbstractFrontend
         $public_url = $this->getPublicUrl($station, $base_url);
         return $public_url
             ->withPath($public_url->getPath() . '/admin.cgi');
+    }
+
+    protected function writeIpBansFile(
+        Entity\Station $station,
+        string $fileName = 'sc_serv.ban',
+        string $ipsSeparator = ";255;\n"
+    ): string {
+        $ips = $this->getBannedIps($station);
+
+        $configDir = $station->getRadioConfigDir();
+        $bansFile = $configDir . '/' . $fileName;
+
+        $bannedIpsString = implode($ipsSeparator, $ips);
+        if (!empty($bannedIpsString)) {
+            $bannedIpsString .= $ipsSeparator;
+        }
+
+        file_put_contents($bansFile, $bannedIpsString);
+
+        return $bansFile;
     }
 }

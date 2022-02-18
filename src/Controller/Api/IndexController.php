@@ -12,11 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        return $response->withRedirect('/static/api/index.html');
-    }
-
     #[OA\Get(
         path: '/status',
         description: 'Returns an affirmative response if the API is active.',

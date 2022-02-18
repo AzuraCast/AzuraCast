@@ -4,27 +4,52 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use DeviceDetector\Cache\CacheInterface;
-use DeviceDetector\Cache\PSR6Bridge;
+use App\Service\DeviceDetector\DeviceResult;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
+use Symfony\Component\Cache\CacheItem;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class DeviceDetector
 {
     protected CacheInterface $cache;
 
-    public function __construct(CacheItemPoolInterface $cache)
-    {
-        $wrappedCache = new ProxyAdapter($cache, 'device.');
-        $this->cache = new PSR6Bridge($wrappedCache);
+    protected \DeviceDetector\DeviceDetector $dd;
+
+    /** @var array<string, DeviceResult> */
+    protected array $deviceResults = [];
+
+    public function __construct(
+        CacheItemPoolInterface $psr6Cache
+    ) {
+        $this->cache = new ProxyAdapter($psr6Cache, 'device_detector.');
+
+        $this->dd = new \DeviceDetector\DeviceDetector();
     }
 
-    public function parse(string $userAgent): \DeviceDetector\DeviceDetector
+    public function parse(string $userAgent): DeviceResult
     {
-        $dd = new \DeviceDetector\DeviceDetector($userAgent);
-        $dd->setCache($this->cache);
-        $dd->parse();
+        $userAgentHash = md5($userAgent);
 
-        return $dd;
+        if (isset($this->deviceResults[$userAgentHash])) {
+            return $this->deviceResults[$userAgentHash];
+        }
+
+        $deviceResult = $this->cache->get(
+            $userAgentHash,
+            function (CacheItem $item) use ($userAgent) {
+                /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+                $item->expiresAfter(86400 * 7);
+
+                $this->dd->setUserAgent($userAgent);
+                $this->dd->parse();
+
+                return DeviceResult::fromDeviceDetector($this->dd);
+            }
+        );
+
+        $this->deviceResults[$userAgentHash] = $deviceResult;
+
+        return $deviceResult;
     }
 }

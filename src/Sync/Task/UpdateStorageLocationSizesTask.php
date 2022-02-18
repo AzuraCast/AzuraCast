@@ -19,6 +19,11 @@ class UpdateStorageLocationSizesTask extends AbstractTask
         return '27 * * * *';
     }
 
+    public static function isLongTask(): bool
+    {
+        return true;
+    }
+
     public function run(bool $force = false): void
     {
         $iterator = ReadWriteBatchIteratorAggregate::fromQuery(

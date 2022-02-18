@@ -17,6 +17,11 @@ abstract class AbstractTask implements ScheduledTaskInterface
     ) {
     }
 
+    public static function isLongTask(): bool
+    {
+        return false;
+    }
+
     abstract public function run(bool $force = false): void;
 
     /**

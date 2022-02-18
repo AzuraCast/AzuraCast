@@ -30,6 +30,11 @@ class RunAutomatedAssignmentTask extends AbstractTask
         return '7 * * * *';
     }
 
+    public static function isLongTask(): bool
+    {
+        return true;
+    }
+
     /**
      * Iterate through all stations and attempt to run automated assignment.
      *

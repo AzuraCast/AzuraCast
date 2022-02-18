@@ -49,7 +49,7 @@ class CustomFieldRepository extends Repository
             )->getArrayResult();
 
             foreach ($fieldsRaw as $row) {
-                $fields[$row['id']] = $row['short_name'] ?? Entity\Station::getStationShortName($row['name']);
+                $fields[$row['id']] = $row['short_name'] ?? Entity\Station::generateShortName($row['name']);
             }
         }
 

@@ -32,10 +32,10 @@ class AzuraCastCentral
     public function checkForUpdates(): ?array
     {
         $request_body = [
-            'id' => $this->getUniqueIdentifier(),
-            'is_docker' => $this->environment->isDocker(),
-            'environment' => $this->environment->getAppEnvironment(),
-            'release_channel' => $this->version->getReleaseChannel(),
+            'id'              => $this->getUniqueIdentifier(),
+            'is_docker'       => $this->environment->isDocker(),
+            'environment'     => $this->environment->getAppEnvironmentEnum()->value,
+            'release_channel' => $this->version->getReleaseChannelEnum()->value,
         ];
 
         $commit_hash = $this->version->getCommitHash();

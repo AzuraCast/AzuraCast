@@ -442,10 +442,8 @@ install-dev() {
     fi
   fi
 
-  if [[ ! -d ../docker-azuracast-nginx-proxy ]]; then
+  if [[ ! -d ../docker-azuracast-radio ]]; then
     if ask "Clone related repositories?" Y; then
-      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
-      git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
       git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
       git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
       git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
@@ -522,7 +520,8 @@ update() {
       rm docker.new.sh
     fi
 
-    if ! docker-compose config; then
+    local dc_config_test=$(docker-compose config)
+    if [ $? -ne 0 ]; then
       if ask "Docker Compose needs to be updated to continue. Update to latest version?" Y; then
         install-docker-compose
       fi
@@ -804,5 +803,8 @@ change-ports() {
   docker-compose down
   docker-compose up -d
 }
+
+# Ensure we're in the same directory as this script.
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
 "$@"

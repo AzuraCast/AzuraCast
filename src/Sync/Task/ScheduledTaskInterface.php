@@ -16,5 +16,10 @@ interface ScheduledTaskInterface
      */
     public static function getSchedulePattern(): string;
 
+    /**
+     * @return bool Whether the task is considered a long-running task.
+     */
+    public static function isLongTask(): bool;
+
     public function run(bool $force = false): void;
 }

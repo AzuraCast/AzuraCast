@@ -108,27 +108,10 @@ class Annotations implements EventSubscriberInterface
             return;
         }
 
-        // Handle "Jingle mode" by sending the same metadata as the previous song.
         if ($playlist->getIsJingle()) {
             $event->addAnnotations([
                 'jingle_mode' => 'true',
             ]);
-
-            $queue = $event->getQueue();
-            if (null !== $queue) {
-                $lastVisible = $this->queueRepo->getLatestVisibleRow($event->getStation());
-
-                if (null !== $lastVisible) {
-                    $event->addAnnotations(
-                        [
-                            'title'       => $lastVisible->getTitle(),
-                            'artist'      => $lastVisible->getArtist(),
-                            'playlist_id' => null,
-                            'media_id'    => null,
-                        ]
-                    );
-                }
-            }
         } else {
             $event->addAnnotations([
                 'playlist_id' => $playlist->getId(),

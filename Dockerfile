@@ -51,10 +51,6 @@ USER root
 
 EXPOSE 80 2022
 
-# Nginx Proxy environment variables.
-ENV VIRTUAL_HOST="azuracast.local" \
-    HTTPS_METHOD="noredirect"
-
 # Sensible default environment variables.
 ENV LANG="en_US.UTF-8" \
     APPLICATION_ENV="production" \

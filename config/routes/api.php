@@ -4,6 +4,7 @@ use App\Controller;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Middleware;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
@@ -23,8 +24,12 @@ return static function (RouteCollectorProxy $app) {
                 }
             );
 
-            $group->get('', Controller\Api\IndexController::class . ':indexAction')
-                ->setName('api:index:index');
+            $group->get(
+                '',
+                function (ServerRequest $request, Response $response): ResponseInterface {
+                    return $response->withRedirect('/static/api/index.html');
+                }
+            )->setName('api:index:index');
 
             $group->get('/openapi.yml', Controller\Api\OpenApiAction::class)
                 ->setName('api:openapi');

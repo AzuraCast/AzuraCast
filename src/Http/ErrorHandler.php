@@ -121,7 +121,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         // Special handling for cURL requests.
         $ua = $this->request->getHeaderLine('User-Agent');
 
-        if (false !== stripos($ua, 'curl')) {
+        if (false !== stripos($ua, 'curl') || false !== stripos($ua, 'Liquidsoap')) {
             $response = $this->responseFactory->createResponse($this->statusCode);
 
             $response->getBody()->write(

@@ -38,6 +38,11 @@ class CheckMediaTask extends AbstractTask
         return '1-59/5 * * * *';
     }
 
+    public static function isLongTask(): bool
+    {
+        return true;
+    }
+
     /**
      * Handle event dispatch.
      *
@@ -150,21 +155,17 @@ class CheckMediaTask extends AbstractTask
                 $message instanceof Message\AddNewMediaMessage
                 && $message->storage_location_id === $storageLocation->getId()
             ) {
-                $queuedNewFiles[$message->path] = true;
+                $queuedNewFiles[md5($message->path)] = true;
             }
         }
 
         // Check queue for existing pending processing entries.
         $this->processExistingMediaRows($storageLocation, $queuedMediaUpdates, $musicFiles, $stats);
 
-        gc_collect_cycles();
-
         $storageLocation = $this->em->refetch($storageLocation);
 
         // Loop through currently unprocessable media.
         $this->processUnprocessableMediaRows($storageLocation, $musicFiles, $stats);
-
-        gc_collect_cycles();
 
         $storageLocation = $this->em->refetch($storageLocation);
 
@@ -226,6 +227,8 @@ class CheckMediaTask extends AbstractTask
                 $stats['deleted']++;
             }
         }
+
+        $this->em->clear();
     }
 
     protected function processUnprocessableMediaRows(
@@ -267,6 +270,8 @@ class CheckMediaTask extends AbstractTask
                 $this->unprocessableMediaRepo->clearForPath($storageLocation, $unprocessableRow['path']);
             }
         }
+
+        $this->em->clear();
     }
 
     protected function processNewFiles(
@@ -275,7 +280,7 @@ class CheckMediaTask extends AbstractTask
         array $musicFiles,
         array &$stats
     ): void {
-        foreach ($musicFiles as $newMusicFile) {
+        foreach ($musicFiles as $pathHash => $newMusicFile) {
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
             if (!MimeType::isPathProcessable($path)) {
@@ -290,7 +295,7 @@ class CheckMediaTask extends AbstractTask
                 $stats['not_processable']++;
             }
 
-            if (isset($queuedNewFiles[$path])) {
+            if (isset($queuedNewFiles[$pathHash])) {
                 $stats['already_queued']++;
             } else {
                 $message = new Message\AddNewMediaMessage();

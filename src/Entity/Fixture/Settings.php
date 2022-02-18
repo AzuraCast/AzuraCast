@@ -30,7 +30,7 @@ class Settings extends AbstractFixture
 
         $isDemoMode = (!empty(getenv('INIT_DEMO_API_KEY') ?: ''));
         if ($isDemoMode) {
-            $settings->setAnalytics(Entity\Analytics::LEVEL_NO_IP);
+            $settings->setAnalytics(Entity\Enums\AnalyticsLevel::NoIp->value);
             $settings->setCheckForUpdates(false);
 
             $settings->setPublicCustomJs(

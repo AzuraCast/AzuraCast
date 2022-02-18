@@ -60,7 +60,10 @@ class BackupCommand extends CommandAbstract
             $tmpPath = $path;
             $storageLocation = null;
         } else {
-            $tmpPath = tempnam(sys_get_temp_dir(), 'backup_') . '.' . $file_ext;
+            $tmpPath = Utilities\File::createTempFile(
+                prefix: 'backup_',
+                suffix: '.' . $file_ext
+            );
 
             if (null === $storageLocationId) {
                 $io->error('You must specify a storage location when providing a relative path.');

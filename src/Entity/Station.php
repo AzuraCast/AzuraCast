@@ -25,6 +25,7 @@ use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -410,7 +411,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->name = $this->truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(self::getStationShortName($name));
+            $this->setShortName(self::generateShortName($name));
         }
     }
 
@@ -418,7 +419,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     {
         return (!empty($this->short_name))
             ? $this->short_name
-            : self::getStationShortName($this->name);
+            : self::generateShortName($this->name);
     }
 
     public function setShortName(string $shortName): void
@@ -428,13 +429,8 @@ class Station implements Stringable, IdentifiableEntityInterface
             $shortName = $this->name;
         }
 
-        $shortName = self::getStationShortName($shortName);
+        $shortName = self::generateShortName($shortName);
         $this->short_name = $this->truncateString($shortName, 100);
-    }
-
-    public static function getStationShortName(string $str): string
-    {
-        return File::sanitizeFileName($str);
     }
 
     public function setIsEnabled(bool $is_enabled): void
@@ -627,8 +623,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         $newDir = $this->truncateNullableString(trim($newDir ?? ''));
 
         if (empty($newDir)) {
-            $stationsBaseDir = Environment::getInstance()->getStationDirectory();
-            $newDir = $stationsBaseDir . '/' . $this->getShortName();
+            $newDir = $this->getShortName();
+        }
+
+        if (Path::isRelative($newDir)) {
+            $newDir = Path::makeAbsolute(
+                $newDir,
+                Environment::getInstance()->getStationDirectory()
+            );
         }
 
         $this->radio_base_dir = $newDir;
@@ -1140,5 +1142,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         $be_config->setDjPort(null);
         $be_config->setTelnetPort(null);
         $this->setBackendConfig($be_config);
+    }
+
+    public static function generateShortName(string $str): string
+    {
+        $str = File::sanitizeFileName($str);
+
+        return (is_numeric($str))
+            ? 'station_' . $str
+            : $str;
     }
 }

@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.15.0';
+    public const FALLBACK_VERSION = '0.15.1';
 
     // phpcs:disable Generic.Files.LineLength
     public const LATEST_COMPOSE_REVISION = 12;

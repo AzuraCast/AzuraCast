@@ -1,7 +1,12 @@
 # Rolling Release Changes
 
-These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
-release channel, you can take advantage of these new features and fixes.
+These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling release channel, you can take advantage of these new features and fixes.
+
+The Rolling Release version has no new changes from the latest Stable release.
+
+---
+
+# AzuraCast 0.15.1 (Feb 18, 2022)
 
 ## New Features/Changes
 

@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-01-12T10:40:53+00:00\n"
-"PO-Revision-Date: 2022-01-12T10:40:53+00:00\n"
+"POT-Creation-Date: 2022-02-18T18:11:58+00:00\n"
+"PO-Revision-Date: 2022-02-18T18:11:58+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Podcasts/ListView.vue:93
@@ -100,7 +100,7 @@ msgstr ""
 msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:192
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:189
 msgid "(in seconds)"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Stations/Queue.vue:75
 #: /var/azuracast/www/frontend/vue/components/Stations/Remotes.vue:75
 #: /var/azuracast/www/frontend/vue/components/Stations/Webhooks.vue:81
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:70
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:94
 #: /var/azuracast/www/frontend/vue/components/Stations/SftpUsers.vue:79
 #: /var/azuracast/www/frontend/vue/components/Stations/Media.vue:269
 #: /var/azuracast/www/frontend/vue/components/Stations/Podcasts/ListView.vue:94
@@ -196,7 +196,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Admin/Permissions.vue:73
 #: /var/azuracast/www/frontend/vue/components/Admin/Users.vue:66
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations.vue:79
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:77
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:75
 #: /var/azuracast/www/frontend/vue/components/Admin/AuditLog.vue:117
 #: /var/azuracast/www/frontend/vue/components/Admin/Backups.vue:153
 #: /var/azuracast/www/frontend/vue/components/Admin/ApiKeys.vue:47
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:74
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:72
 msgid "Adapter"
 msgstr ""
 
@@ -267,7 +267,7 @@ msgid "Add SFTP User"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:100
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:123
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:120
 msgid "Add Schedule Item"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgid "Add Station"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations/EditModal.vue:27
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:17
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:15
 msgid "Add Storage Location"
 msgstr ""
 
@@ -325,16 +325,12 @@ msgstr ""
 msgid "Administer Storage Locations"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:21
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:19
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/AdminForm.vue:104
 #: /var/azuracast/www/frontend/vue/components/Dashboard.vue:20
 #: /var/azuracast/www/templates/admin/sidebar.phtml:3
 #: /var/azuracast/www/templates/admin/index/index.phtml:14
 msgid "Administration"
-msgstr ""
-
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:27
-msgid "Administrator Password"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Form/BWrappedFormGroup.vue:26
@@ -479,7 +475,7 @@ msgstr ""
 msgid "Apply for an API key at Last.fm"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:139
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:145
 #: /var/azuracast/www/frontend/vue/vendor/bootstrapVue.js:59
 msgid "Applying changes..."
 msgstr ""
@@ -540,7 +536,7 @@ msgstr ""
 msgid "Auto-Assigned"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:135
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:132
 msgid "Auto-generate Random MariaDB Root Password"
 msgstr ""
 
@@ -631,7 +627,7 @@ msgstr ""
 msgid "Avoid Duplicate Artists/Titles"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:48
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:49
 msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
 msgstr ""
 
@@ -639,7 +635,7 @@ msgstr ""
 msgid "AzuraCast Application Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:88
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:91
 msgid "AzuraCast Backup"
 msgstr ""
 
@@ -704,7 +700,7 @@ msgstr ""
 msgid "AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:9
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:35
 msgid "AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed."
 msgstr ""
 
@@ -714,11 +710,11 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:103
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:106
 msgid "Backing up MariaDB..."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:234
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:237
 msgid "Backup complete in %.2f seconds."
 msgstr ""
 
@@ -730,7 +726,7 @@ msgstr ""
 msgid "Backup path %s not found!"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:92
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:96
 #: /var/azuracast/www/frontend/vue/components/Admin/Backups.vue:4
 #: /var/azuracast/www/frontend/vue/components/Admin/Backups.vue:71
 #: /var/azuracast/www/src/Controller/Admin/BackupsAction.php:27
@@ -743,12 +739,16 @@ msgstr ""
 msgid "Band"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:119
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:131
 msgid "Banned Countries"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:94
 msgid "Banned IP Addresses"
+msgstr ""
+
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:118
+msgid "Banned User Agents"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/AdminForm.vue:19
@@ -810,7 +810,7 @@ msgid "Broadcast AutoDJ to Remote Station"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations.vue:77
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:189
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:201
 msgid "Broadcasting"
 msgstr ""
 
@@ -905,13 +905,13 @@ msgstr ""
 msgid "Choose a new password for your account."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:223
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:226
 msgid "Cleaning up temporary files..."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Media/MediaToolbar.vue:39
 #: /var/azuracast/www/frontend/vue/components/Stations/Queue.vue:112
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:95
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:126
 msgid "Clear"
 msgstr ""
 
@@ -920,7 +920,7 @@ msgstr ""
 msgid "Clear All Message Queues"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:94
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:125
 msgid "Clear All Pending Requests?"
 msgstr ""
 
@@ -941,7 +941,7 @@ msgstr ""
 msgid "Clear Image"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:131
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:143
 msgid "Clear List"
 msgstr ""
 
@@ -949,7 +949,7 @@ msgstr ""
 msgid "Clear Media"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:10
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:15
 msgid "Clear Pending Requests"
 msgstr ""
 
@@ -996,7 +996,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:33
 #: /var/azuracast/www/frontend/vue/components/Stations/Queue/LogsModal.vue:7
 #: /var/azuracast/www/frontend/vue/components/Stations/Playlists/QueueModal.vue:24
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:18
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:44
 #: /var/azuracast/www/frontend/vue/components/Admin/Backups/RunBackupModal.vue:67
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/EditModal.vue:14
 #: /var/azuracast/www/frontend/vue/components/Account/ApiKeyModal.vue:26
@@ -1041,7 +1041,7 @@ msgstr ""
 msgid "Composer"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:71
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:68
 msgid "Composer Plugin Mode"
 msgstr ""
 
@@ -1199,11 +1199,11 @@ msgstr ""
 msgid "Create custom fields to store extra metadata about each media file uploaded to your station libraries."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:147
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:150
 msgid "Creating backup archive..."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:92
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:95
 msgid "Creating temporary directories..."
 msgstr ""
 
@@ -1264,8 +1264,8 @@ msgstr ""
 msgid "Custom CSS for Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:140
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:156
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:152
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:168
 msgid "Custom Configuration"
 msgstr ""
 
@@ -1373,11 +1373,11 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:67
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:91
 msgid "Date Played"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:66
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:90
 msgid "Date Requested"
 msgstr ""
 
@@ -1442,7 +1442,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Stations/Queue.vue:22
 #: /var/azuracast/www/frontend/vue/components/Stations/Remotes.vue:43
 #: /var/azuracast/www/frontend/vue/components/Stations/Webhooks.vue:47
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:41
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:47
 #: /var/azuracast/www/frontend/vue/components/Stations/SftpUsers.vue:24
 #: /var/azuracast/www/frontend/vue/components/Stations/Podcasts/ListView.vue:49
 #: /var/azuracast/www/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:66
@@ -1451,7 +1451,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Admin/Permissions.vue:40
 #: /var/azuracast/www/frontend/vue/components/Admin/Users.vue:37
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations.vue:39
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:29
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:27
 #: /var/azuracast/www/frontend/vue/components/Admin/AuditLog.vue:129
 #: /var/azuracast/www/frontend/vue/components/Admin/Backups.vue:95
 #: /var/azuracast/www/frontend/vue/components/Admin/ApiKeys.vue:16
@@ -1512,7 +1512,7 @@ msgstr ""
 msgid "Delete Remote Relay?"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:80
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:111
 msgid "Delete Request?"
 msgstr ""
 
@@ -1528,7 +1528,7 @@ msgstr ""
 msgid "Delete Station?"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:150
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:156
 msgid "Delete Storage Location?"
 msgstr ""
 
@@ -1552,7 +1552,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:254
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:257
 msgid "Deselect"
 msgstr ""
 
@@ -1573,7 +1573,7 @@ msgstr ""
 msgid "Directory"
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:96
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:99
 msgid "Directory \"%s\" was not created"
 msgstr ""
 
@@ -1610,7 +1610,7 @@ msgstr ""
 msgid "Disable streamers?"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:162
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:159
 msgid "Disable to use a flatfile cache instead of Redis."
 msgstr ""
 
@@ -1661,13 +1661,13 @@ msgstr ""
 msgid "Do not collect any listener analytics"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:96
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:104
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:112
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:120
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:128
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:136
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:142
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:93
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:101
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:109
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:117
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:125
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:133
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:139
 msgid "Do not modify this after installation."
 msgstr ""
 
@@ -1780,7 +1780,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Admin/Permissions.vue:36
 #: /var/azuracast/www/frontend/vue/components/Admin/Users.vue:34
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations.vue:36
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:26
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:24
 msgid "Edit"
 msgstr ""
 
@@ -1903,7 +1903,7 @@ msgstr ""
 msgid "Enable Mail Delivery"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:147
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:144
 msgid "Enable MariaDB Slow Query Log"
 msgstr ""
 
@@ -1911,7 +1911,7 @@ msgstr ""
 msgid "Enable On-Demand Streaming"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:212
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:209
 msgid "Enable Performance Profiling Extension"
 msgstr ""
 
@@ -1919,7 +1919,7 @@ msgstr ""
 msgid "Enable Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:161
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:158
 msgid "Enable Redis"
 msgstr ""
 
@@ -1955,7 +1955,7 @@ msgstr ""
 msgid "Enable streamers?"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:72
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:69
 msgid "Enable the composer \"merge\" functionality to combine the main application's composer.json file with any plugin composer files. This can have performance implications, so you should only use it if you use one or more plugins with their own Composer dependencies."
 msgstr ""
 
@@ -2019,7 +2019,7 @@ msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:75
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/SoundExchange.vue:54
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:84
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:81
 msgid "End Date"
 msgstr ""
 
@@ -2203,7 +2203,7 @@ msgid "Forgot your password?"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:126
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:150
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:147
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:96
 msgid "Friday"
 msgstr ""
@@ -2504,6 +2504,10 @@ msgstr ""
 msgid "If you manually maintain this file, review the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and make any changes needed."
 msgstr ""
 
+#: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:52
+msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
+msgstr ""
+
 #: /var/azuracast/www/templates/partials/log_help_card.phtml:11
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr ""
@@ -2521,8 +2525,8 @@ msgid "If your web hook requires HTTP basic authentication, provide the username
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Playlists.vue:185
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:41
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:21
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:68
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:47
 msgid "Import from PLS/M3U"
 msgstr ""
 
@@ -2678,7 +2682,7 @@ msgid "Language"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/Settings/GeneralTab.vue:103
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:80
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:87
 msgid "Last 14 Days"
 msgstr ""
 
@@ -2688,7 +2692,7 @@ msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:187
 #: /var/azuracast/www/frontend/vue/components/Admin/Settings/GeneralTab.vue:107
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:84
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:91
 msgid "Last 30 Days"
 msgstr ""
 
@@ -2697,7 +2701,7 @@ msgid "Last 60 Days"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:183
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:76
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:83
 msgid "Last 7 Days"
 msgstr ""
 
@@ -2706,7 +2710,7 @@ msgid "Last Modified"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:195
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:92
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:99
 msgid "Last Month"
 msgstr ""
 
@@ -2752,7 +2756,7 @@ msgid "Leave blank to automatically generate a new password."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:84
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:107
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:104
 msgid "Leave blank to play on every day of the week."
 msgstr ""
 
@@ -2820,6 +2824,10 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:98
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:110
 msgid "List one IP address or group (in CIDR format) per line."
+msgstr ""
+
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:122
+msgid "List one user agent per line. Wildcards (*) are allowed."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/Settings/SecurityPrivacyTab.vue:11
@@ -2901,12 +2909,12 @@ msgstr ""
 msgid "Live stream disconnected."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:263
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:266
 msgid "Loading..."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:95
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:106
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:112
 msgid "Local"
 msgstr ""
 
@@ -2938,7 +2946,7 @@ msgstr ""
 msgid "Log Viewer"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:148
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:145
 msgid "Log slower queries to diagnose possible database issues. Only turn this on if needed."
 msgstr ""
 
@@ -2966,11 +2974,11 @@ msgstr ""
 msgid "Logs by Station"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:202
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:199
 msgid "Long Sync Task Execution Time"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:95
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:92
 msgid "Loop Once"
 msgstr ""
 
@@ -3053,40 +3061,44 @@ msgstr ""
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:53
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:50
 msgid "Manually modify the logging level."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:127
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:124
 msgid "MariaDB Database Name"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:95
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:92
 msgid "MariaDB Host"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:154
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:151
 msgid "MariaDB Maximum Connections"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:119
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:116
 msgid "MariaDB Password"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:103
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:100
 msgid "MariaDB Port"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:141
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:138
 msgid "MariaDB Root Password"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:111
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:108
 msgid "MariaDB Username"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Webhooks/Form/Telegram.vue:83
 msgid "Markdown"
+msgstr ""
+
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:12
+msgid "Matched"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Webhooks/Form/MatomoAnalytics.vue:26
@@ -3121,11 +3133,11 @@ msgstr ""
 msgid "Maximum Listeners"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:208
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:205
 msgid "Maximum PHP-FPM Worker Processes"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:87
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:84
 msgid "Maximum Port for Station Port Assignment"
 msgstr ""
 
@@ -3196,7 +3208,7 @@ msgid ""
 "                            Source"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:79
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:76
 msgid "Minimum Port for Station Port Assignment"
 msgstr ""
 
@@ -3216,13 +3228,13 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:82
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:90
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:79
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:87
 msgid "Modify this if your stations are listening on nonstandard ports."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:122
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:146
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:143
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:92
 msgid "Monday"
 msgstr ""
@@ -3329,11 +3341,11 @@ msgstr ""
 msgid "Never run"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:60
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:61
 msgid "New AzuraCast Release Version Available"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:85
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:86
 msgid "New AzuraCast Updates Available"
 msgstr ""
 
@@ -3402,6 +3414,10 @@ msgstr ""
 msgid "No Limit"
 msgstr ""
 
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:22
+msgid "No Match"
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:25
 msgid "No directory specified"
 msgstr ""
@@ -3432,7 +3448,7 @@ msgid "No recording available."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Public/FullPlayer/SongHistory.vue:93
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:260
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:263
 msgid "No records to display."
 msgstr ""
 
@@ -3453,7 +3469,7 @@ msgstr ""
 msgid "Normal Mode"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:19
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:25
 msgid "Not Played"
 msgstr ""
 
@@ -3599,12 +3615,12 @@ msgstr ""
 msgid "Only collect aggregate listener statistics"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:207
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:219
 msgid "Only connect to a remote server."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:28
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:98
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:95
 msgid "Only loop through playlist once."
 msgstr ""
 
@@ -3664,6 +3680,10 @@ msgstr ""
 msgid "Original Lyricist"
 msgstr ""
 
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:10
+msgid "Original Path"
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:64
 msgid "Original Release Time"
 msgstr ""
@@ -3684,15 +3704,15 @@ msgstr ""
 msgid "PHP Application Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:183
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:180
 msgid "PHP Maximum POST File Size"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:187
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:184
 msgid "PHP Memory Limit"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:191
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:188
 msgid "PHP Script Maximum Execution Time"
 msgstr ""
 
@@ -3719,6 +3739,9 @@ msgid "Password Reset Instructions"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/ConnectionInfo.vue:63
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:28
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:46
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:64
 msgid "Password:"
 msgstr ""
 
@@ -3728,6 +3751,10 @@ msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations/Form.vue:26
 msgid "Path/Suffix"
+msgstr ""
+
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:74
+msgid "Pending Requests"
 msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:57
@@ -3842,7 +3869,7 @@ msgstr ""
 msgid "Playlist reshuffled."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ImportAction.php:142
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ImportAction.php:158
 msgid "Playlist successfully imported; %d of %d files were successfully matched."
 msgstr ""
 
@@ -3886,7 +3913,7 @@ msgstr ""
 msgid "Please log in to continue."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:89
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:92
 msgid "Please wait while a backup is generated..."
 msgstr ""
 
@@ -3969,7 +3996,7 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:219
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:216
 msgid "Profile Performance on All Requests"
 msgstr ""
 
@@ -3977,15 +4004,15 @@ msgstr ""
 msgid "Profiler Control Panel"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:225
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:222
 msgid "Profiling Extension HTTP Key"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:231
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:228
 msgid "Profiling Extension IP Allow List"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:213
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:210
 msgid "Profiling data can be viewed by visiting %s."
 msgstr ""
 
@@ -4101,19 +4128,19 @@ msgstr ""
 msgid "Recover Account"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:177
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:174
 msgid "Redis Database Index"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:167
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:164
 msgid "Redis Host"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:172
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:169
 msgid "Redis Port"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:239
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:242
 msgid "Refresh rows"
 msgstr ""
 
@@ -4125,12 +4152,9 @@ msgstr ""
 msgid "Region"
 msgstr ""
 
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:56
 #: /var/azuracast/www/templates/admin/relays/index.phtml:20
 msgid "Relay"
-msgstr ""
-
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:41
-msgid "Relay Password"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:46
@@ -4226,13 +4250,13 @@ msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations/Form.vue:18
 #: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations/Form.vue:98
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:112
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:118
 msgid "Remote: Dropbox"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations/Form.vue:15
 #: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations/Form.vue:47
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:109
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:115
 msgid "Remote: S3 Compatible"
 msgstr ""
 
@@ -4292,6 +4316,10 @@ msgstr ""
 msgid "Request"
 msgstr ""
 
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:78
+msgid "Request History"
+msgstr ""
+
 #: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:103
 msgid "Request Last Played Threshold (Minutes)"
 msgstr ""
@@ -4308,7 +4336,7 @@ msgstr ""
 msgid "Request a Song"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:69
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:93
 msgid "Requester IP"
 msgstr ""
 
@@ -4326,7 +4354,7 @@ msgid "Reshuffle"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Profile/BackendPanel.vue:26
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:53
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:78
 msgid "Restart"
 msgstr ""
 
@@ -4372,7 +4400,7 @@ msgstr ""
 msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:242
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:245
 msgid "Rows per page"
 msgstr ""
 
@@ -4484,7 +4512,7 @@ msgid "Sample Rate"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:127
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:151
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:148
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:97
 msgid "Saturday"
 msgstr ""
@@ -4512,7 +4540,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:134
 #: /var/azuracast/www/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:41
 #: /var/azuracast/www/frontend/vue/components/Stations/Profile/EmbedModal.vue:97
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:158
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:155
 #: /var/azuracast/www/frontend/vue/components/Public/Schedule.vue:13
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/ScheduleAction.php:40
 msgid "Schedule"
@@ -4532,7 +4560,7 @@ msgid "Scheduled Backup Time"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:81
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:104
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:101
 msgid "Scheduled Play Days of Week"
 msgstr ""
 
@@ -4549,7 +4577,7 @@ msgstr ""
 msgid "Scheduling"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:257
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:260
 msgid "Search"
 msgstr ""
 
@@ -4595,7 +4623,7 @@ msgstr ""
 msgid "Seek"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:251
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:254
 msgid "Select"
 msgstr ""
 
@@ -4611,7 +4639,7 @@ msgstr ""
 msgid "Select Media File"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:6
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/ImportModal.vue:32
 msgid "Select PLS/M3U File to Import"
 msgstr ""
 
@@ -4627,11 +4655,11 @@ msgstr ""
 msgid "Select a theme to use as a base for station public pages and the login page."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:248
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:251
 msgid "Select all visible rows"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:245
+#: /var/azuracast/www/frontend/vue/components/Common/DataTable.vue:248
 msgid "Select displayed fields"
 msgstr ""
 
@@ -4639,7 +4667,7 @@ msgstr ""
 msgid "Select the category/categories that best reflects the content of your podcast."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:123
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:135
 msgid "Select the countries that are not allowed to connect to the streams."
 msgstr ""
 
@@ -4782,7 +4810,7 @@ msgstr ""
 msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:155
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:152
 msgid "Set the amount of allowed connections to the database. This value should be increased if you are seeing the \"Too many connections\" error in the logs."
 msgstr ""
 
@@ -4835,7 +4863,7 @@ msgstr ""
 msgid "Share Recordings Storage Location"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:196
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:193
 msgid "Short Sync Task Execution Time"
 msgstr ""
 
@@ -4965,7 +4993,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:17
 #: /var/azuracast/www/frontend/vue/components/Stations/Queue.vue:76
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Timeline.vue:98
-#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:68
+#: /var/azuracast/www/frontend/vue/components/Stations/Reports/Requests.vue:92
 msgid "Song Title"
 msgstr ""
 
@@ -4995,17 +5023,14 @@ msgid "SoundExchange Royalties"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Queue.vue:78
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:38
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Timeline.vue:99
 #: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Source.vue:151
 #: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Source.vue:8
 msgid "Source"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:34
-msgid "Source Password"
-msgstr ""
-
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:75
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:73
 msgid "Space Used"
 msgstr ""
 
@@ -5026,7 +5051,7 @@ msgid "Standard playlist, shuffles with other standard playlists based on weight
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Profile/BackendPanel.vue:30
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:57
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:82
 msgid "Start"
 msgstr ""
 
@@ -5050,15 +5075,11 @@ msgstr ""
 msgid "Start Time"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:73
-msgid "Start/end date cannot be used on playlists with advanced settings!"
-msgstr ""
-
 #: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
 msgid "Station Broadcasting Disabled"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:83
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:84
 msgid "Station Media"
 msgstr ""
 
@@ -5075,7 +5096,7 @@ msgstr ""
 msgid "Station Permissions"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:89
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:92
 msgid "Station Podcasts"
 msgstr ""
 
@@ -5083,7 +5104,7 @@ msgstr ""
 msgid "Station Ports"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:86
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:88
 msgid "Station Recordings"
 msgstr ""
 
@@ -5100,7 +5121,7 @@ msgstr ""
 msgid "Station restarted."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:76
+#: /var/azuracast/www/frontend/vue/components/Admin/StorageLocations.vue:74
 msgid "Station(s)"
 msgstr ""
 
@@ -5135,7 +5156,7 @@ msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:18
 #: /var/azuracast/www/frontend/vue/components/Stations/Profile/BackendPanel.vue:34
-#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:61
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:86
 #: /var/azuracast/www/frontend/vue/components/InlinePlayer.vue:21
 #: /var/azuracast/www/frontend/vue/components/Public/Player.vue:269
 #: /var/azuracast/www/frontend/vue/components/Common/PlayButton.vue:43
@@ -5244,7 +5265,7 @@ msgid "Success"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:128
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:152
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:149
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:98
 msgid "Sunday"
 msgstr ""
@@ -5297,6 +5318,7 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Admin/Settings.vue:9
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:166
 #: /var/azuracast/www/src/Controller/Admin/SettingsAction.php:26
+#: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:65
 #: /var/azuracast/www/config/menus/admin.php:19
 msgid "System Settings"
 msgstr ""
@@ -5333,7 +5355,7 @@ msgstr ""
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:42
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:43
 msgid "The application environment."
 msgstr ""
 
@@ -5397,7 +5419,7 @@ msgstr ""
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:34
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:35
 msgid "The locale to use for CLI commands."
 msgstr ""
 
@@ -5409,11 +5431,11 @@ msgstr ""
 msgid "The main port AzuraCast listens to for secure HTTPS connections."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:203
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:200
 msgid "The maximum execution time (and lock timeout) for the 1-hour synchronization task."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:197
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:194
 msgid "The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks."
 msgstr ""
 
@@ -5517,7 +5539,7 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:226
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:223
 msgid "The value for the \"SPX_KEY\" parameter for viewing profiling pages."
 msgstr ""
 
@@ -5546,7 +5568,7 @@ msgid "This CSS will be applied to the station public pages and login page."
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:191
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:88
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:95
 msgid "This Month"
 msgstr ""
 
@@ -5558,7 +5580,7 @@ msgstr ""
 msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:56
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:53
 msgid "This allows you to log debug-level errors temporarily (for problem-solving) or reduce the volume of logs that are produced by your installation, without needing to modify whether your installation is a production or development instance."
 msgstr ""
 
@@ -5566,7 +5588,7 @@ msgstr ""
 msgid "This can have an adverse impact on system performance. You should disable this when possible."
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:143
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:155
 msgid "This code will be included in the frontend configuration. Allowed formats are:"
 msgstr ""
 
@@ -5734,7 +5756,7 @@ msgid "This specifies the time range (in minutes) of the song history that the d
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:81
-#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:160
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:161
 #: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:81
 msgid "This station does not accept requests currently."
 msgstr ""
@@ -5779,7 +5801,7 @@ msgstr ""
 msgid "This will clear any pending unprocessed messages in all message queues."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:220
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:217
 msgid "This will have a significant performance impact on your installation."
 msgstr ""
 
@@ -5792,7 +5814,7 @@ msgid "Thumbnail Image URL"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:125
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:149
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:146
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:95
 msgid "Thursday"
 msgstr ""
@@ -5851,7 +5873,7 @@ msgid "To verify that the code was set up correctly, enter the 6-digit code the 
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:175
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:68
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:75
 msgid "Today"
 msgstr ""
 
@@ -5888,7 +5910,7 @@ msgid "Triggers"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:123
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:147
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:144
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:93
 msgid "Tuesday"
 msgstr ""
@@ -6027,7 +6049,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:41
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:42
 #: /var/azuracast/www/src/Notification/Check/ComposeVersionCheck.php:53
 msgid "Update Instructions"
 msgstr ""
@@ -6064,7 +6086,7 @@ msgstr ""
 msgid "Use Browser Default"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:194
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:206
 msgid "Use Icecast 2.4 on this server."
 msgstr ""
 
@@ -6076,7 +6098,7 @@ msgstr ""
 msgid "Use Replaygain Metadata"
 msgstr ""
 
-#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:201
+#: /var/azuracast/www/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:213
 msgid "Use SHOUTcast DNAS 2 on this server."
 msgstr ""
 
@@ -6129,6 +6151,12 @@ msgstr ""
 #: /var/azuracast/www/frontend/vue/components/Stations/SftpUsers/Form.vue:6
 #: /var/azuracast/www/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:174
 msgid "Username"
+msgstr ""
+
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:24
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:42
+#: /var/azuracast/www/frontend/vue/components/Stations/Profile/FrontendPanel.vue:60
+msgid "Username:"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Admin/Users.vue:5
@@ -6194,7 +6222,7 @@ msgstr ""
 msgid "View System Logs"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:79
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:80
 msgid "View the changelog for full details."
 msgstr ""
 
@@ -6291,7 +6319,7 @@ msgid "Website"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:124
-#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:148
+#: /var/azuracast/www/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:145
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:94
 msgid "Wednesday"
 msgstr ""
@@ -6361,7 +6389,7 @@ msgid "Yes"
 msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Stations/Reports/Listeners.vue:179
-#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:72
+#: /var/azuracast/www/frontend/vue/components/Common/DateRangeDropdown.vue:79
 msgid "Yesterday"
 msgstr ""
 
@@ -6369,7 +6397,7 @@ msgstr ""
 msgid "You"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:53
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:54
 msgid "You are currently running version %s. Updating is highly recommended."
 msgstr ""
 
@@ -6439,12 +6467,16 @@ msgstr ""
 msgid "You may need to connect directly via your IP address:"
 msgstr ""
 
+#: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:49
+msgid "You may want to update your base URL to ensure it is correct."
+msgstr ""
+
 #: /var/azuracast/www/src/Http/ErrorHandler.php:175
 #: /var/azuracast/www/src/Http/ErrorHandler.php:185
 msgid "You must be logged in to access this page."
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:82
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:83
 msgid "You should update to take advantage of bug and security fixes."
 msgstr ""
 
@@ -6454,6 +6486,10 @@ msgstr ""
 
 #: /var/azuracast/www/frontend/vue/components/Account/ApiKeyNewKey.vue:11
 msgid "You will not be able to retrieve it again."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:58
+msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
 msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/ComposeVersionCheck.php:50
@@ -6477,7 +6513,7 @@ msgstr ""
 msgid "Your full API key is below:"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:73
+#: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:74
 msgid "Your installation is currently %d update(s) behind the latest version."
 msgstr ""
 

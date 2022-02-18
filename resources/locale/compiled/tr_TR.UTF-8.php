@@ -14,8 +14,8 @@ Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:15
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -296,10 +296,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Yönetim',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Yayın Yönetici Şifresi',
       ),
       'Advanced' => 
       array (
@@ -664,6 +660,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Yasaklanmış IP Adresleri',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -1995,7 +1995,7 @@ X-Crowdin-File-ID: 4
       ),
       'Get Now Playing' => 
       array (
-        0 => '',
+        0 => 'Şimdi Oynat',
       ),
       'Global' => 
       array (
@@ -2229,6 +2229,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Bu dosyayı manuel olarak güncelliyorsanız dosyanın <a href="%s" target="_blank">güncel</a> halini görüntüleyebilir ve gerekli düzenlemeleri yapabilirsiniz.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => 'AzuraCast\'a erişmek için düzenli olarak farklı URL\'ler kullanıyorsanız, "Tarayıcı URLsini Tercih Et" ayarını etkinleştirmelisiniz.',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Bir bug veya hata yaşıyorsanız aşağıdaki bağlantıyı kullanarak GitHub sorunu gönderebilirsiniz.',
@@ -2423,7 +2427,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last Run' => 
       array (
-        0 => '',
+        0 => 'Son Çalışma',
       ),
       'Last Year' => 
       array (
@@ -2525,6 +2529,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Her satıra bir IP adresi veya grup (CIDR biçiminde) yazın.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Dinleyici İstatistik Koleksiyonu',
@@ -2579,11 +2587,11 @@ X-Crowdin-File-ID: 4
       ),
       'Live stream connected.' => 
       array (
-        0 => '',
+        0 => 'Canlı yayın bağlandı.',
       ),
       'Live stream disconnected.' => 
       array (
-        0 => '',
+        0 => 'Canlı yayın bağlantısı kesildi.',
       ),
       'Loading...' => 
       array (
@@ -2757,6 +2765,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Etiketleme',
       ),
+      'Matched' => 
+      array (
+        0 => 'Eşleşti',
+      ),
       'Matomo API Token' => 
       array (
         0 => 'Matomo API Anahtarı',
@@ -2860,7 +2872,8 @@ X-Crowdin-File-ID: 4
       'Microphone
                             Source' => 
       array (
-        0 => '',
+        0 => 'Mikrofon
+                            Kaynak',
       ),
       'Minimum Port for Station Port Assignment' => 
       array (
@@ -3028,7 +3041,7 @@ X-Crowdin-File-ID: 4
       ),
       'Next Run' => 
       array (
-        0 => '',
+        0 => 'Sonraki Çalışma',
       ),
       'Nginx Access Log' => 
       array (
@@ -3045,6 +3058,10 @@ X-Crowdin-File-ID: 4
       'No Limit' => 
       array (
         0 => 'Limitsiz',
+      ),
+      'No Match' => 
+      array (
+        0 => 'Eşleşme Bulunamadı',
       ),
       'No directory specified' => 
       array (
@@ -3100,7 +3117,7 @@ X-Crowdin-File-ID: 4
       ),
       'Not Run' => 
       array (
-        0 => '',
+        0 => 'Çalışmadı',
       ),
       'Not Running' => 
       array (
@@ -3294,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Orijinal Söz Yazarı',
       ),
+      'Original Path' => 
+      array (
+        0 => 'Orjinal Dizin',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Orijinal Çıkış Zamanı',
@@ -3353,6 +3374,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Yol/Son Ek',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => 'Bekleyen İstekler',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3710,10 +3735,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Yönlendirme',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Yönlendirme Şifresi',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Yönlendirme URLsi',
@@ -3836,7 +3857,7 @@ X-Crowdin-File-ID: 4
       ),
       'Repeat' => 
       array (
-        0 => '',
+        0 => 'Tekrar',
       ),
       'Replace Album Cover Art' => 
       array (
@@ -3857,6 +3878,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'İstek',
+      ),
+      'Request History' => 
+      array (
+        0 => 'İstek Geçmişi',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -3928,7 +3953,7 @@ X-Crowdin-File-ID: 4
       ),
       'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.' => 
       array (
-        0 => '',
+        0 => 'Rutin senkronizasyon şu anda devre dışı. Rutin bakım görevlerini sürdürmek için yeniden etkinleştirdiğinizden emin olun.',
       ),
       'Rows per page' => 
       array (
@@ -4498,10 +4523,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Kaynak',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Yayın Şifresi',
-      ),
       'Space Used' => 
       array (
         0 => 'Kullanılan Alan',
@@ -4541,10 +4562,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Başlama Zamanı',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'Başlangıç/bitiş tarihi gelişmiş ayarlara sahip çalma listelerinde kullanılamaz!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -4732,11 +4749,11 @@ X-Crowdin-File-ID: 4
       ),
       'Synchronization Disabled' => 
       array (
-        0 => '',
+        0 => 'Senkronizasyon Devre Dışı',
       ),
       'Synchronization Not Recently Run' => 
       array (
-        0 => '',
+        0 => 'Senkronizasyon Yakın Zamanda Çalıştırılmadı',
       ),
       'Synchronization Tasks' => 
       array (
@@ -4772,7 +4789,7 @@ X-Crowdin-File-ID: 4
       ),
       'Task Name' => 
       array (
-        0 => '',
+        0 => 'Görev Adı',
       ),
       'Telegram Chat Message' => 
       array (
@@ -4924,7 +4941,7 @@ X-Crowdin-File-ID: 4
       ),
       'The routine synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => '',
+        0 => 'Rutin senkronizasyon görevi yakın zamanda çalışmadı. Bu kurulumunuzda bir hata olduğunu gösterebilir.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
@@ -5558,6 +5575,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Kullanıcı Adı',
       ),
+      'Username:' => 
+      array (
+        0 => 'Kullanıcı Adı:',
+      ),
       'Users' => 
       array (
         0 => 'Kullanıcılar',
@@ -5850,6 +5871,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Doğrudan IP adresiniz üzerinden bağlanmanız gerekebilir:',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => 'Doğru olduğundan emin olmak için temel URLnizi güncellemek isteyebilirsiniz.',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Bu sayfayı görüntülemek için giriş yapmalısınız.',
@@ -5865,6 +5890,10 @@ X-Crowdin-File-ID: 4
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Tekrar geri alamazsınız.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => '"Temel URL" ayarınız (%s) şu anda kullanmakta olduğunuz URL ile (%s) eşleşmiyor.',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

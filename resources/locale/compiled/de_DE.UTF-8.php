@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -296,10 +296,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administration',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Administrator Passwort',
       ),
       'Advanced' => 
       array (
@@ -664,6 +660,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Gesperrte IP-Adressen',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -1995,7 +1995,7 @@ X-Crowdin-File-ID: 4
       ),
       'Get Now Playing' => 
       array (
-        0 => '',
+        0 => '"Jetzt läuft"-Daten holen',
       ),
       'Global' => 
       array (
@@ -2229,6 +2229,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Wenn du die Datei manuell verwaltest, überprüfe <a href="%s" target="_blank"> die neueste Version der Datei</a> und übernehme die entsprechenden Änderungen.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Wenn du auf einen Fehler stößt, kannst du uns auf unserem GitHub Repository unter dem Link unten einreichen.',
@@ -2423,7 +2427,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last Run' => 
       array (
-        0 => '',
+        0 => 'Letzte Ausführung',
       ),
       'Last Year' => 
       array (
@@ -2525,6 +2529,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Eine IP-Adresse oder Gruppe (im CIDR-Format) pro Zeile auflisten.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Zuhörer Statistiken sammeln',
@@ -2579,11 +2587,11 @@ X-Crowdin-File-ID: 4
       ),
       'Live stream connected.' => 
       array (
-        0 => '',
+        0 => 'Live-Stream verbunden.',
       ),
       'Live stream disconnected.' => 
       array (
-        0 => '',
+        0 => 'Live-Stream getrennt.',
       ),
       'Loading...' => 
       array (
@@ -2757,6 +2765,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Markdown',
       ),
+      'Matched' => 
+      array (
+        0 => '',
+      ),
       'Matomo API Token' => 
       array (
         0 => 'Matomo API Token',
@@ -2860,7 +2872,8 @@ X-Crowdin-File-ID: 4
       'Microphone
                             Source' => 
       array (
-        0 => '',
+        0 => 'Mikrofon
+                            Quelle',
       ),
       'Minimum Port for Station Port Assignment' => 
       array (
@@ -3028,7 +3041,7 @@ X-Crowdin-File-ID: 4
       ),
       'Next Run' => 
       array (
-        0 => '',
+        0 => 'Nächste Ausführung',
       ),
       'Nginx Access Log' => 
       array (
@@ -3045,6 +3058,10 @@ X-Crowdin-File-ID: 4
       'No Limit' => 
       array (
         0 => 'Keine Begrenzung',
+      ),
+      'No Match' => 
+      array (
+        0 => '',
       ),
       'No directory specified' => 
       array (
@@ -3100,7 +3117,7 @@ X-Crowdin-File-ID: 4
       ),
       'Not Run' => 
       array (
-        0 => '',
+        0 => 'Nicht Ausgeführt',
       ),
       'Not Running' => 
       array (
@@ -3294,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Original Lyricist',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Original Releasezeit',
@@ -3353,6 +3374,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Pfad/Suffix',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => '',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3710,10 +3735,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Relay',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Relay Passwort',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Relay Stream URL',
@@ -3836,7 +3857,7 @@ X-Crowdin-File-ID: 4
       ),
       'Repeat' => 
       array (
-        0 => '',
+        0 => 'Wiederholen',
       ),
       'Replace Album Cover Art' => 
       array (
@@ -3857,6 +3878,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Wunsch',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -3928,7 +3953,7 @@ X-Crowdin-File-ID: 4
       ),
       'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.' => 
       array (
-        0 => '',
+        0 => 'Die Routine-Synchronisation ist derzeit deaktiviert. Stelle sicher, dass sie erneut aktiviert wird, um die Routine-Wartungsaufgaben fortzusetzen.',
       ),
       'Rows per page' => 
       array (
@@ -4498,10 +4523,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Quelle',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Source Passwort',
-      ),
       'Space Used' => 
       array (
         0 => 'Belegter Speicher',
@@ -4541,10 +4562,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Startzeit',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'Start/Enddatum kann nicht in Wiedergabelisten mit erweiterten Einstellungen verwendet werden!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -4732,11 +4749,11 @@ X-Crowdin-File-ID: 4
       ),
       'Synchronization Disabled' => 
       array (
-        0 => '',
+        0 => 'Synchronisierung deaktiviert',
       ),
       'Synchronization Not Recently Run' => 
       array (
-        0 => '',
+        0 => 'Synchronisierung wurde in letzter Zeit nicht ausgeführt',
       ),
       'Synchronization Tasks' => 
       array (
@@ -4772,7 +4789,7 @@ X-Crowdin-File-ID: 4
       ),
       'Task Name' => 
       array (
-        0 => '',
+        0 => 'Aufgaben-Name',
       ),
       'Telegram Chat Message' => 
       array (
@@ -4924,7 +4941,7 @@ X-Crowdin-File-ID: 4
       ),
       'The routine synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => '',
+        0 => 'Die routinemäßige Synchronisation wurde in letzter Zeit nicht ausgeführt. Dies kann auf einen Fehler bei der Installation hinweisen.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
@@ -5558,6 +5575,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Benutzername',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => 'Benutzer',
@@ -5700,7 +5721,7 @@ X-Crowdin-File-ID: 4
       ),
       'WebDJ' => 
       array (
-        0 => '',
+        0 => 'WebDJ',
       ),
       'Website' => 
       array (
@@ -5850,6 +5871,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Möglicherweise musst du dich direkt mit der IP-Adresse verbinden:',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Sie müssen angemeldet sein, um auf diese Seite zuzugreifen.',
@@ -5865,6 +5890,10 @@ X-Crowdin-File-ID: 4
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Du wirst sie nicht wieder abrufen können.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => '',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

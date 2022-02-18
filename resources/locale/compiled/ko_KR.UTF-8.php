@@ -14,8 +14,8 @@ Language-Team: Korean
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: ko_KR
 Plural-Forms: nplurals=1; plural=0;
 X-Crowdin-Project: azuracast
@@ -292,10 +292,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => '관리',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => '관리자 암호',
       ),
       'Advanced' => 
       array (
@@ -658,6 +654,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Banned IP Addresses' => 
+      array (
+        0 => '',
+      ),
+      'Banned User Agents' => 
       array (
         0 => '',
       ),
@@ -2225,6 +2225,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '이 파일을 수동으로 유지 관리하는 경우 <a href="%s" target="_blank">최신 버전의 파일</a>을 검토하고 필요한 내용을 변경하십시오.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => '',
@@ -2521,6 +2525,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => '',
@@ -2750,6 +2758,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Markdown' => 
+      array (
+        0 => '',
+      ),
+      'Matched' => 
       array (
         0 => '',
       ),
@@ -3042,6 +3054,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => '',
@@ -3290,6 +3306,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => '',
@@ -3349,6 +3369,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => '경로/접미사',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => '',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3706,10 +3730,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
-      'Relay Password' => 
-      array (
-        0 => '중계 암호',
-      ),
       'Relay Stream URL' => 
       array (
         0 => '중계 스트림 URL',
@@ -3853,6 +3873,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => '요청',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4494,10 +4518,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '소스',
       ),
-      'Source Password' => 
-      array (
-        0 => '',
-      ),
       'Space Used' => 
       array (
         0 => '',
@@ -4537,10 +4557,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => '시작 시간',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => '시작/종료일은 고급 설정이 있는 재생 목록에서는 사용할 수 없습니다!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5554,6 +5570,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '사용자 이름',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => '',
@@ -5846,6 +5866,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => '',
@@ -5859,6 +5883,10 @@ X-Crowdin-File-ID: 4
         0 => '최신 변경 사항을 반영하려면 <code>docker-compose.yml</code> 파일을 업데이트해야 합니다.',
       ),
       'You will not be able to retrieve it again.' => 
+      array (
+        0 => '',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
         0 => '',
       ),

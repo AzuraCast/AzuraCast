@@ -14,8 +14,8 @@ Language-Team: Greek
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: el_GR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -295,10 +295,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Διαχείριση',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Κωδικός Διαχειριστή',
       ),
       'Advanced' => 
       array (
@@ -663,6 +659,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Απαγορευμένες Διευθύνσεις Ip',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -2228,6 +2228,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αν διατηρήσετε χειροκίνητα αυτό το αρχείο, επανεξετάστε την <a href="%s" target="_blank">τελευταία έκδοση του αρχείου</a> και πραγματοποιήστε τυχόν αλλαγές που απαιτούνται.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Αν αντιμετωπίζετε κάποιο σφάλμα ή σφάλμα, μπορείτε να υποβάλετε ένα πρόβλημα του GitHub χρησιμοποιώντας τον παρακάτω σύνδεσμο.',
@@ -2524,6 +2528,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Λίστα μιας διεύθυνσης IP ή ομάδας (σε μορφή CIDR) ανά γραμμή.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Συλλογή Αναλυτικών Ακροατών',
@@ -2753,6 +2761,10 @@ X-Crowdin-File-ID: 4
         0 => 'MariaDB Username',
       ),
       'Markdown' => 
+      array (
+        0 => '',
+      ),
+      'Matched' => 
       array (
         0 => '',
       ),
@@ -3045,6 +3057,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Κανένα Όριο',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => 'Δεν καθορίστηκε κατάλογος',
@@ -3293,6 +3309,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αρχικός Καλλιτέχνης',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Αρχικός Χρόνος Κυκλοφορίας',
@@ -3352,6 +3372,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Διαδρομή/επίθεμα',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => '',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3709,10 +3733,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αναμεταδίδονται',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Κωδικός Relay',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Url Ροής Relay',
@@ -3856,6 +3876,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Αίτημα',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4497,10 +4521,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Πηγή',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Κωδικός πηγής',
-      ),
       'Space Used' => 
       array (
         0 => '',
@@ -4540,10 +4560,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Ώρα Έναρξης',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'Ημερομηνία έναρξης/λήξης δεν μπορεί να χρησιμοποιηθεί στις λίστες αναπαραγωγής με προηγμένες ρυθμίσεις!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5557,6 +5573,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Όνομα Χρήστη',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => 'Χρήστες',
@@ -5849,6 +5869,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Πρέπει να είστε συνδεδεμένοι για να αποκτήσετε πρόσβαση σε αυτήν τη σελίδα.',
@@ -5864,6 +5888,10 @@ X-Crowdin-File-ID: 4
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Δεν θα μπορείτε να το ανακτήσετε.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => '',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

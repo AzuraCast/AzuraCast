@@ -14,8 +14,8 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -296,10 +296,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administração',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Senha do Administrador',
       ),
       'Advanced' => 
       array (
@@ -664,6 +660,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Endereços de IP Banidos',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => 'Agentes de Usuários Banidos',
       ),
       'Base Station Directory' => 
       array (
@@ -2229,6 +2229,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Se você mantiver esse arquivo manualmente, revise a <a href="%s" target="_blank">última versão do arquivo</a> e faça qualquer alteração necessária.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => 'Se você usa regularmente URLs diferentes para acessar o AzuraCast, você deve habilitar a configuração "Preferir URL do Navegador".',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Se você econtrou um bug ou um erro, você pode submeter uma questão GitHub usando o link abaixo.',
@@ -2525,6 +2529,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Liste um endereço IP ou grupo (no formato CIDR) por linha.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => 'Listar um agente de usuário por linha. Caracteres curingas (*) são permitidos.',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Coleção de Estatísticas de Ouvinte',
@@ -2756,6 +2764,10 @@ X-Crowdin-File-ID: 4
       'Markdown' => 
       array (
         0 => 'Marcação',
+      ),
+      'Matched' => 
+      array (
+        0 => 'Compatível',
       ),
       'Matomo API Token' => 
       array (
@@ -3047,6 +3059,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ilimitado',
       ),
+      'No Match' => 
+      array (
+        0 => 'Não Compatível',
+      ),
       'No directory specified' => 
       array (
         0 => 'Nenhum diretório especificado',
@@ -3295,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Artista Original',
       ),
+      'Original Path' => 
+      array (
+        0 => 'Caminho Original',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Tempo de lançamento original',
@@ -3354,6 +3374,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Caminho/Sufixo',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => 'Solicitações Pendentes',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3711,10 +3735,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Retransmissão',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Senha de Retransmissão',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'URL de retransmissão de stream',
@@ -3858,6 +3878,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Solicitar',
+      ),
+      'Request History' => 
+      array (
+        0 => 'Histórico de Solicitações',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4499,10 +4523,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Fonte',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Senha da Fonte',
-      ),
       'Space Used' => 
       array (
         0 => 'Espaço Usado',
@@ -4542,10 +4562,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Hora Inicial',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'Datas de início/fim não podem ser usadas em listas de reprodução com definições avançadas!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5560,6 +5576,10 @@ Para adicionar um novo horário agendado, clique no botão abaixo.',
       array (
         0 => 'Usuário',
       ),
+      'Username:' => 
+      array (
+        0 => 'Usuário:',
+      ),
       'Users' => 
       array (
         0 => 'Usuários',
@@ -5852,6 +5872,10 @@ Para adicionar um novo horário agendado, clique no botão abaixo.',
       array (
         0 => 'Talvez você precise se conectar diretamente através do seu endereço IP:',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => 'Você pode querer atualizar sua URL base para garantir que ela esteja correta.',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Você precisa estar logado para acessar esta página.',
@@ -5867,6 +5891,10 @@ Para adicionar um novo horário agendado, clique no botão abaixo.',
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Você não poderá recuperá-lo novamente.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => 'Sua configuração da "URL base" (%s) não coincide com a URL que você está usando atualmente (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

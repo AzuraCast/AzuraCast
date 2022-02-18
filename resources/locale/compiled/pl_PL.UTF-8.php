@@ -14,8 +14,8 @@ Language-Team: Polish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: pl_PL
 Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
 X-Crowdin-Project: azuracast
@@ -304,10 +304,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administracja',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Hasło administratora',
       ),
       'Advanced' => 
       array (
@@ -672,6 +668,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Zablokowane adresy IP',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => 'Zbanowane User Agenty',
       ),
       'Base Station Directory' => 
       array (
@@ -2003,7 +2003,7 @@ X-Crowdin-File-ID: 4
       ),
       'Get Now Playing' => 
       array (
-        0 => '',
+        0 => 'Pobierz informację Teraz Odtwarzane',
       ),
       'Global' => 
       array (
@@ -2237,6 +2237,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Jeśli ręcznie edytujesz ten plik, przejrzyj <a href="%s" target="_blank">najnowszą wersję pliku</a> i wprowadź potrzebne zmiany.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => 'Jeśli do uzyskiwania dostępu do AzuraCast regularnie używasz różnych adresów URL, powinieneś włączyć ustawienie "Preferuj adres URL przeglądarki".',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Jeśli napotkałeś usterkę lub błąd, możesz wysłać zgłoszenie na GitHubie, korzystając z poniższego linku.',
@@ -2431,7 +2435,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last Run' => 
       array (
-        0 => '',
+        0 => 'Ostatnie uruchomienie',
       ),
       'Last Year' => 
       array (
@@ -2532,6 +2536,10 @@ X-Crowdin-File-ID: 4
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Podaj jeden adres IP lub grupę (w formacie CIDR) na wiersz.',
+      ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => 'Wpisz po jednym agencie na linijkę. Dozwolone są znaki wieloznaczne (*).',
       ),
       'Listener Analytics Collection' => 
       array (
@@ -2764,6 +2772,10 @@ X-Crowdin-File-ID: 4
       'Markdown' => 
       array (
         0 => 'Markdown',
+      ),
+      'Matched' => 
+      array (
+        0 => 'Dopasowane',
       ),
       'Matomo API Token' => 
       array (
@@ -3037,7 +3049,7 @@ X-Crowdin-File-ID: 4
       ),
       'Next Run' => 
       array (
-        0 => '',
+        0 => 'Następne uruchomienie',
       ),
       'Nginx Access Log' => 
       array (
@@ -3055,13 +3067,17 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Bez limitu',
       ),
+      'No Match' => 
+      array (
+        0 => 'Brak dopasowania',
+      ),
       'No directory specified' => 
       array (
         0 => 'Nie określono katalogu',
       ),
       'No entries found.' => 
       array (
-        0 => 'Nie znaleziono wpisów.',
+        0 => 'Nie znaleziono odcinków.',
       ),
       'No episodes found.' => 
       array (
@@ -3109,7 +3125,7 @@ X-Crowdin-File-ID: 4
       ),
       'Not Run' => 
       array (
-        0 => '',
+        0 => 'Nie uruchomiono',
       ),
       'Not Running' => 
       array (
@@ -3304,6 +3320,10 @@ Odtwarzane',
       array (
         0 => 'Oryginalny autor tekstu',
       ),
+      'Original Path' => 
+      array (
+        0 => 'Pierwotna ścieżka',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Oryginalny czas wydania',
@@ -3363,6 +3383,10 @@ Odtwarzane',
       'Path/Suffix' => 
       array (
         0 => 'Ścieżka/Sufix',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => 'Oczekujące prośby',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3720,10 +3744,6 @@ Odtwarzane',
       array (
         0 => 'Relay',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Hasło relaya',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Adres URL przekazania strumienia',
@@ -3868,6 +3888,10 @@ Odtwarzane',
       array (
         0 => 'Żądanie',
       ),
+      'Request History' => 
+      array (
+        0 => 'Historia próśb',
+      ),
       'Request Last Played Threshold (Minutes)' => 
       array (
         0 => 'Próg żądań dla listy ostatnio odtwarzanych utworów (w minutach)',
@@ -3938,7 +3962,7 @@ Odtwarzane',
       ),
       'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.' => 
       array (
-        0 => '',
+        0 => 'Rutynowa synchronizacja jest obecnie wyłączona. Upewnij się, że włączysz ją ponownie, aby wznowić rutynowe zadania konserwacyjne.',
       ),
       'Rows per page' => 
       array (
@@ -4508,10 +4532,6 @@ Odtwarzane',
       array (
         0 => 'Źródło',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Hasło źródłowe',
-      ),
       'Space Used' => 
       array (
         0 => 'Użyta przestrzeń',
@@ -4551,10 +4571,6 @@ Odtwarzane',
       'Start Time' => 
       array (
         0 => 'Czas rozpoczęcia',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => 'Data rozpoczęcia/zakończenia nie może być użyta na playlistach z zaawansowanymi ustawieniami!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -4742,11 +4758,11 @@ Odtwarzane',
       ),
       'Synchronization Disabled' => 
       array (
-        0 => '',
+        0 => 'Synchronizacja wyłączona',
       ),
       'Synchronization Not Recently Run' => 
       array (
-        0 => '',
+        0 => 'Synchronizacja nie została ostatnio uruchomiona',
       ),
       'Synchronization Tasks' => 
       array (
@@ -4782,7 +4798,7 @@ Odtwarzane',
       ),
       'Task Name' => 
       array (
-        0 => '',
+        0 => 'Nazwa zadania',
       ),
       'Telegram Chat Message' => 
       array (
@@ -4934,7 +4950,7 @@ Odtwarzane',
       ),
       'The routine synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => '',
+        0 => 'Rutynowe zadanie synchronizacji "%s" nie zostało ostatnio uruchomione. Może to wskazywać na błąd instalacji.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
@@ -5568,6 +5584,10 @@ Odtwarzane',
       array (
         0 => 'Nazwa użytkownika',
       ),
+      'Username:' => 
+      array (
+        0 => 'Nazwa użytkownika:',
+      ),
       'Users' => 
       array (
         0 => 'Użytkownicy',
@@ -5860,6 +5880,10 @@ Odtwarzane',
       array (
         0 => 'Być może musisz połączyć się bezpośrednio przez swój adres IP:',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => 'Może być konieczne uaktualnienie podstawowego adresu URL, aby upewnić się, że jest poprawny.',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Musisz być zalogowany aby korzystać z tej strony.',
@@ -5875,6 +5899,10 @@ Odtwarzane',
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'Nie będziesz w stanie odzyskać go ponownie.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => 'Twoje ustawienie "Podstawowego URL" (%s) nie pasuje do aktualnie używanego adresu URL (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

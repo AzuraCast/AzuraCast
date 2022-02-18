@@ -14,8 +14,8 @@ Language-Team: Spanish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:15
 Language: es_ES
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -155,7 +155,7 @@ X-Crowdin-File-ID: 4
       ),
       'Access Key ID' => 
       array (
-        0 => 'Key de Acceso ID',
+        0 => 'Clave de Acceso ID',
       ),
       'Access Token' => 
       array (
@@ -163,7 +163,7 @@ X-Crowdin-File-ID: 4
       ),
       'Access Token Secret' => 
       array (
-        0 => 'Contraseña del Token de Acceso',
+        0 => 'Token Secreto de Acceso',
       ),
       'Account List' => 
       array (
@@ -183,7 +183,7 @@ X-Crowdin-File-ID: 4
       ),
       'Account recovery e-mail sent.' => 
       array (
-        0 => 'El email de recuperación de su cuenta ya fue enviado.',
+        0 => 'El email de recuperación de su cuenta a sido enviado.',
       ),
       'Actions' => 
       array (
@@ -296,10 +296,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Administración',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Contraseña del Administrador',
       ),
       'Advanced' => 
       array (
@@ -664,6 +660,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Direcciones IP Prohibidas',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => 'Agentes de Usuario Bloqueados',
       ),
       'Base Station Directory' => 
       array (
@@ -2229,6 +2229,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Si mantiene este archivo manualmente, revise la <a href="%s" target="_blank">última versión del archivo</a> y efectúe cualquier cambio necesario.',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => 'Si utiliza regularmente diferentes URL´s para acceder a AzuraCast, debe habilitar la configuración "Preferir URL del navegador".',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Si estás experimentando un error o fallo, puedes publicar un reporte a GitHub usando el siguiente enlace.',
@@ -2525,6 +2529,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Listar una dirección IP o grupo (en formato CIDR) por línea.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => 'Enumere un agente de usuario por línea. Se permiten comodines (*).',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Colección Analítica del Oyente',
@@ -2756,6 +2764,10 @@ X-Crowdin-File-ID: 4
       'Markdown' => 
       array (
         0 => 'Reducción',
+      ),
+      'Matched' => 
+      array (
+        0 => 'Coincidente',
       ),
       'Matomo API Token' => 
       array (
@@ -3047,6 +3059,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Sin límite',
       ),
+      'No Match' => 
+      array (
+        0 => 'No Coincidente',
+      ),
       'No directory specified' => 
       array (
         0 => 'Ningún directorio especificado',
@@ -3295,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Letrista Original',
       ),
+      'Original Path' => 
+      array (
+        0 => 'Ruta Original',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Fecha de Lanzamiento Original',
@@ -3354,6 +3374,10 @@ X-Crowdin-File-ID: 4
       'Path/Suffix' => 
       array (
         0 => 'Ruta/Sufijo',
+      ),
+      'Pending Requests' => 
+      array (
+        0 => 'Solicitudes Pendientes',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3711,10 +3735,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Relé',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Contraseña del Relé',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'Url de retransmisión',
@@ -3858,6 +3878,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Solicitar',
+      ),
+      'Request History' => 
+      array (
+        0 => 'Historial de Peticiones',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4499,10 +4523,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Fuente',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Contraseña de Origen',
-      ),
       'Space Used' => 
       array (
         0 => 'Espacio Utilizado',
@@ -4542,10 +4562,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Hora de Inicio',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => '¡La fecha de inicio y fin, no se puede utilizar en las listas de reproducción con ajustes avanzados!',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5559,6 +5575,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Nombre de Usuario',
       ),
+      'Username:' => 
+      array (
+        0 => 'Nombre de Usuario:',
+      ),
       'Users' => 
       array (
         0 => 'Usuarios',
@@ -5851,6 +5871,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Es posible que necesite conectarse directamente a través de su dirección IP:',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => 'Puede que desee actualizar su URL base para asegurarse de que es correcta.',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Tienes que iniciar sesión para acceder a esta página.',
@@ -5866,6 +5890,10 @@ X-Crowdin-File-ID: 4
       'You will not be able to retrieve it again.' => 
       array (
         0 => 'No podrás recuperarlo de nuevo.',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
+      array (
+        0 => 'Su configuración de "URL base" (%s) no coincide con la URL que está utilizando actualmente (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

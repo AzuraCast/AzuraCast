@@ -14,8 +14,8 @@ Language-Team: Italian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-01-11T08:45:41+00:00
-PO-Revision-Date: 2022-01-12 10:48
+POT-Creation-Date: 2022-02-15T23:07:32+00:00
+PO-Revision-Date: 2022-02-18 18:14
 Language: it_IT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -59,19 +59,19 @@ X-Crowdin-File-ID: 4
       ),
       '%{ days } Days' => 
       array (
-        0 => '',
+        0 => '%{ days } Giorni',
       ),
       '%{ minutes } minutes' => 
       array (
-        0 => '',
+        0 => '%{ minutes } minuti',
       ),
       '%{ seconds } seconds' => 
       array (
-        0 => '',
+        0 => '%{ seconds } secondi',
       ),
       '%{filesCount} File' => 
       array (
-        0 => '',
+        0 => '%{filesCount} File',
       ),
       '%{listeners} Listener' => 
       array (
@@ -94,19 +94,19 @@ X-Crowdin-File-ID: 4
       ),
       '%{spaceUsed} Used' => 
       array (
-        0 => '',
+        0 => '%{spaceUsed} Usato',
       ),
       '%{spaceUsed} of %{spaceTotal} Used' => 
       array (
-        0 => '',
+        0 => '%{spaceUsed} di %{spaceTotal} Usato',
       ),
       '%{station} - Copy' => 
       array (
-        0 => '',
+        0 => '%{station} - Copia',
       ),
       '(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation.' => 
       array (
-        0 => '',
+        0 => '(Docker Compose) Tutti i contenitori Docker sono prefissati da questo nome. Non modificarli dopo l\'installazione.',
       ),
       '(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers.' => 
       array (
@@ -295,10 +295,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => 'Amministrazione',
-      ),
-      'Administrator Password' => 
-      array (
-        0 => 'Password Amministratore',
       ),
       'Advanced' => 
       array (
@@ -663,6 +659,10 @@ X-Crowdin-File-ID: 4
       'Banned IP Addresses' => 
       array (
         0 => 'Indirizzi Ip Bannati',
+      ),
+      'Banned User Agents' => 
+      array (
+        0 => '',
       ),
       'Base Station Directory' => 
       array (
@@ -2228,6 +2228,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
+      array (
+        0 => '',
+      ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Se stai riscontrando un bug o un errore, puoi inviare una segnalazione su GitHub utilizzando il link sottostante.',
@@ -2524,6 +2528,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Elenca un indirizzo IP o un gruppo (in formato CIDR) per riga.',
       ),
+      'List one user agent per line. Wildcards (*) are allowed.' => 
+      array (
+        0 => '',
+      ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Raccolta analisi degli ascolti',
@@ -2753,6 +2761,10 @@ X-Crowdin-File-ID: 4
         0 => '',
       ),
       'Markdown' => 
+      array (
+        0 => '',
+      ),
+      'Matched' => 
       array (
         0 => '',
       ),
@@ -3045,6 +3057,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Nessun limite',
       ),
+      'No Match' => 
+      array (
+        0 => '',
+      ),
       'No directory specified' => 
       array (
         0 => 'Nessuna directory specificata',
@@ -3293,6 +3309,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'Original Path' => 
+      array (
+        0 => '',
+      ),
       'Original Release Time' => 
       array (
         0 => 'Data di Uscita',
@@ -3350,6 +3370,10 @@ X-Crowdin-File-ID: 4
         0 => 'Incolla la chiave di licenza generata nel campo in questa pagina.',
       ),
       'Path/Suffix' => 
+      array (
+        0 => '',
+      ),
+      'Pending Requests' => 
       array (
         0 => '',
       ),
@@ -3709,10 +3733,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
-      'Relay Password' => 
-      array (
-        0 => 'Password collegamento esterno',
-      ),
       'Relay Stream URL' => 
       array (
         0 => 'URL flusso da ritrasmettere',
@@ -3856,6 +3876,10 @@ X-Crowdin-File-ID: 4
       'Request' => 
       array (
         0 => 'Richiesta',
+      ),
+      'Request History' => 
+      array (
+        0 => '',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -4497,10 +4521,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Sorgente',
       ),
-      'Source Password' => 
-      array (
-        0 => 'Password sorgente',
-      ),
       'Space Used' => 
       array (
         0 => '',
@@ -4540,10 +4560,6 @@ X-Crowdin-File-ID: 4
       'Start Time' => 
       array (
         0 => 'Ora di inizio',
-      ),
-      'Start/end date cannot be used on playlists with advanced settings!' => 
-      array (
-        0 => '',
       ),
       'Station Broadcasting Disabled' => 
       array (
@@ -5557,6 +5573,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Nome utente',
       ),
+      'Username:' => 
+      array (
+        0 => '',
+      ),
       'Users' => 
       array (
         0 => 'Utenti',
@@ -5849,6 +5869,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'You may want to update your base URL to ensure it is correct.' => 
+      array (
+        0 => '',
+      ),
       'You must be logged in to access this page.' => 
       array (
         0 => 'Devi esserti autenticato per poter accedere a questa pagina.',
@@ -5862,6 +5886,10 @@ X-Crowdin-File-ID: 4
         0 => 'Dovresti aggiornare il file <code>docker-compose.yml</code> per applicare le modifiche più recenti.',
       ),
       'You will not be able to retrieve it again.' => 
+      array (
+        0 => '',
+      ),
+      'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
         0 => '',
       ),

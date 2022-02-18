@@ -201,10 +201,23 @@ abstract class AbstractFrontend extends AbstractAdapter
     protected function writeIpBansFile(
         Entity\Station $station,
         string $fileName = 'ip_bans.txt',
+        string $ipsSeparator = "\n"
     ): string {
-        $ips = [];
-        $bannedIps = $station->getFrontendConfig()->getBannedIps();
+        $ips = $this->getBannedIps($station);
 
+        $configDir = $station->getRadioConfigDir();
+        $bansFile = $configDir . '/' . $fileName;
+
+        file_put_contents($bansFile, implode($ipsSeparator, $ips));
+
+        return $bansFile;
+    }
+
+    protected function getBannedIps(Entity\Station $station): array
+    {
+        $ips = [];
+
+        $bannedIps = $station->getFrontendConfig()->getBannedIps();
         if (!empty($bannedIps)) {
             foreach (array_filter(array_map('trim', explode("\n", $bannedIps))) as $ip) {
                 try {
@@ -222,11 +235,6 @@ abstract class AbstractFrontend extends AbstractAdapter
             }
         }
 
-        $configDir = $station->getRadioConfigDir();
-        $bansFile = $configDir . '/' . $fileName;
-
-        file_put_contents($bansFile, implode("\n", $ips));
-
-        return $bansFile;
+        return $ips;
     }
 }

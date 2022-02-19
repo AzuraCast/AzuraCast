@@ -52,8 +52,7 @@ class PerformanceAction
 
     /**
      * @param Response $response
-     * @param Entity\Station $station
-     * @param Entity\Api\Listener[] $listeners
+     * @param mixed[] $reportData
      * @param string $filename
      */
     protected function exportReportAsCsv(

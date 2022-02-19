@@ -420,6 +420,11 @@ install() {
   fi
 
   docker-compose pull
+
+  docker volume rm azuracast_www_vendor 2>/dev/null || true
+  docker volume rm azuracast_tmp_data 2>/dev/null || true
+  docker volume rm azuracast_redis_data 2>/dev/null || true
+
   docker-compose run --rm --user="azuracast" web azuracast_install "$@"
   docker-compose up -d
   exit
@@ -520,7 +525,7 @@ update() {
       rm docker.new.sh
     fi
 
-    local dc_config_test=$(docker-compose config)
+    local dc_config_test=$(docker-compose config 2>/dev/null)
     if [ $? -ne 0 ]; then
       if ask "Docker Compose needs to be updated to continue. Update to latest version?" Y; then
         install-docker-compose

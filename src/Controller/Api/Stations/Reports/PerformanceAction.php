@@ -8,8 +8,8 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Sync\Task\RunAutomatedAssignmentTask;
-use App\Utilities\Csv;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Utilities\File;
+use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 
 class PerformanceAction
@@ -17,20 +17,19 @@ class PerformanceAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
         RunAutomatedAssignmentTask $automationTask
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $automation_config = (array)$station->getAutomationSettings();
-        $threshold_days = (int)($automation_config['threshold_days']
+        $automationConfig = (array)$station->getAutomationSettings();
+        $thresholdDays = (int)($automationConfig['threshold_days']
             ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
 
-        $report_data = $automationTask->generateReport($station, $threshold_days);
+        $reportData = $automationTask->generateReport($station, $thresholdDays);
 
         // Do not show songs that are not in playlists.
-        $report_data = array_filter(
-            $report_data,
+        $reportData = array_filter(
+            $reportData,
             static function ($media) {
                 return !(empty($media['playlists']));
             }
@@ -40,47 +39,64 @@ class PerformanceAction
         $format = $params['format'] ?? 'json';
 
         if ($format === 'csv') {
-            $export_csv = [
-                [
-                    'Song Title',
-                    'Song Artist',
-                    'Filename',
-                    'Length',
-                    'Current Playlist',
-                    'Delta Joins',
-                    'Delta Losses',
-                    'Delta Total',
-                    'Play Count',
-                    'Play Percentage',
-                    'Weighted Ratio',
-                ],
-            ];
-
-            foreach ($report_data as $row) {
-                $export_csv[] = [
-                    $row['title'],
-                    $row['artist'],
-                    $row['path'],
-                    $row['length'],
-
-                    implode('/', $row['playlists']),
-                    $row['delta_positive'],
-                    $row['delta_negative'],
-                    $row['delta_total'],
-
-                    $row['num_plays'],
-                    $row['percent_plays'] . '%',
-                    $row['ratio'],
-                ];
-            }
-
-            $csv_file = Csv::arrayToCsv($export_csv);
-            $csv_filename = $station->getShortName() . '_media_' . date('Ymd') . '.csv';
-
-            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
+            return $this->exportReportAsCsv(
+                $response,
+                $reportData,
+                $station->getShortName() . '_media_' . date('Ymd') . '.csv'
+            );
         }
 
-        $paginator = Paginator::fromArray($report_data, $request);
+        $paginator = Paginator::fromArray($reportData, $request);
         return $paginator->write($response);
+    }
+
+    /**
+     * @param Response $response
+     * @param Entity\Station $station
+     * @param Entity\Api\Listener[] $listeners
+     * @param string $filename
+     */
+    protected function exportReportAsCsv(
+        Response $response,
+        array $reportData,
+        string $filename
+    ): ResponseInterface {
+        $tempFile = File::generateTempPath($filename);
+
+        $csv = Writer::createFromPath($tempFile, 'w+');
+
+        $csv->insertOne(
+            [
+                'Song Title',
+                'Song Artist',
+                'Filename',
+                'Length',
+                'Current Playlist',
+                'Delta Joins',
+                'Delta Losses',
+                'Delta Total',
+                'Play Count',
+                'Play Percentage',
+                'Weighted Ratio',
+            ]
+        );
+
+        foreach ($reportData as $row) {
+            $csv->insertOne([
+                $row['title'],
+                $row['artist'],
+                $row['path'],
+                $row['length'],
+                implode('/', $row['playlists']),
+                $row['delta_positive'],
+                $row['delta_negative'],
+                $row['delta_total'],
+                $row['num_plays'],
+                $row['percent_plays'] . '%',
+                $row['ratio'],
+            ]);
+        }
+
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

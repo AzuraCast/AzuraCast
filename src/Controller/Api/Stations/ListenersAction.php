@@ -12,14 +12,13 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
+use App\Utilities\File;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
 
 #[
     OA\Get(
@@ -235,8 +234,9 @@ class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = tmpfile() ?: throw new RuntimeException('Could not create temp file.');
-        $csv = Writer::createFromStream($tempFile);
+        $tempFile = File::generateTempPath($filename);
+
+        $csv = Writer::createFromPath($tempFile, 'w+');
 
         $tz = $station->getTimezoneObject();
 
@@ -262,7 +262,7 @@ class ListenersAction
             $startTime = CarbonImmutable::createFromTimestamp($listener->connected_on, $tz);
             $endTime = CarbonImmutable::createFromTimestamp($listener->connected_until, $tz);
 
-            $export_row = [
+            $exportRow = [
                 $listener->ip,
                 $startTime->toIso8601String(),
                 $endTime->toIso8601String(),
@@ -273,31 +273,29 @@ class ListenersAction
             ];
 
             if ('' === $listener->mount_name) {
-                $export_row[] = 'Unknown';
-                $export_row[] = 'Unknown';
+                $exportRow[] = 'Unknown';
+                $exportRow[] = 'Unknown';
             } else {
-                $export_row[] = ($listener->mount_is_local) ? 'Local' : 'Remote';
-                $export_row[] = $listener->mount_name;
+                $exportRow[] = ($listener->mount_is_local) ? 'Local' : 'Remote';
+                $exportRow[] = $listener->mount_name;
             }
 
             $location = $listener->location;
             if ('success' === $location['status']) {
-                $export_row[] = $location['region'] . ', ' . $location['country'];
-                $export_row[] = $location['country'];
-                $export_row[] = $location['region'];
-                $export_row[] = $location['city'];
+                $exportRow[] = $location['region'] . ', ' . $location['country'];
+                $exportRow[] = $location['country'];
+                $exportRow[] = $location['region'];
+                $exportRow[] = $location['city'];
             } else {
-                $export_row[] = $location['message'] ?? 'N/A';
-                $export_row[] = '';
-                $export_row[] = '';
-                $export_row[] = '';
+                $exportRow[] = $location['message'] ?? 'N/A';
+                $exportRow[] = '';
+                $exportRow[] = '';
+                $exportRow[] = '';
             }
 
-            $csv->insertOne($export_row);
+            $csv->insertOne($exportRow);
         }
 
-        $stream = new Stream($tempFile);
-
-        return $response->renderStreamAsFile($stream, 'text/csv', $filename);
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

@@ -6,13 +6,16 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use App\Entity;
+use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\Csv;
+use App\Utilities\File;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
+use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -59,7 +62,8 @@ class HistoryController
 {
     public function __construct(
         protected EntityManagerInterface $em,
-        protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
+        protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
+        protected Environment $environment
     ) {
     }
 
@@ -69,6 +73,8 @@ class HistoryController
      */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        set_time_limit($this->environment->getSyncLongExecutionTime());
+
         $station = $request->getStation();
         $station_tz = $station->getTimezoneObject();
 
@@ -98,55 +104,19 @@ class HistoryController
         $format = $params['format'] ?? 'json';
 
         if ('csv' === $format) {
-            $export_all = [];
-            $export_all[] = [
-                'Date',
-                'Time',
-                'Listeners',
-                'Delta',
-                'Track',
-                'Artist',
-                'Playlist',
-                'Streamer',
-            ];
-
-            foreach (ReadOnlyBatchIteratorAggregate::fromQuery($qb->getQuery(), 100) as $sh) {
-                /** @var Entity\SongHistory $sh */
-                $datetime = CarbonImmutable::createFromTimestamp($sh->getTimestampStart(), $station_tz);
-
-                $playlist = $sh->getPlaylist();
-                $playlistName = (null !== $playlist)
-                    ? $playlist->getName()
-                    : '';
-
-                $streamer = $sh->getStreamer();
-                $streamerName = (null !== $streamer)
-                    ? $streamer->getDisplayName()
-                    : '';
-
-                $export_row = [
-                    $datetime->format('Y-m-d'),
-                    $datetime->format('g:ia'),
-                    $sh->getListenersStart(),
-                    $sh->getDeltaTotal(),
-                    $sh->getTitle() ?: $sh->getText(),
-                    $sh->getArtist(),
-                    $playlistName,
-                    $streamerName,
-                ];
-
-                $export_all[] = $export_row;
-            }
-
-            $csv_file = Csv::arrayToCsv($export_all);
-            $csv_filename = sprintf(
+            $csvFilename = sprintf(
                 '%s_timeline_%s_to_%s.csv',
                 $station->getShortName(),
                 $start->format('Ymd'),
                 $end->format('Ymd')
             );
 
-            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
+            return $this->exportReportAsCsv(
+                $response,
+                $station,
+                $qb->getQuery(),
+                $csvFilename
+            );
         }
 
         $search_phrase = trim($params['searchPhrase'] ?? '');
@@ -172,5 +142,60 @@ class HistoryController
         );
 
         return $paginator->write($response);
+    }
+
+    protected function exportReportAsCsv(
+        Response $response,
+        Entity\Station $station,
+        Query $query,
+        string $filename
+    ): ResponseInterface {
+        $tempFile = File::generateTempPath($filename);
+
+        $csv = Writer::createFromPath($tempFile, 'w+');
+
+        $csv->insertOne(
+            [
+                'Date',
+                'Time',
+                'Listeners',
+                'Delta',
+                'Track',
+                'Artist',
+                'Playlist',
+                'Streamer',
+            ]
+        );
+
+        /** @var Entity\SongHistory $sh */
+        foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
+            $datetime = CarbonImmutable::createFromTimestamp(
+                $sh->getTimestampStart(),
+                $station->getTimezoneObject()
+            );
+
+            $playlist = $sh->getPlaylist();
+            $playlistName = (null !== $playlist)
+                ? $playlist->getName()
+                : '';
+
+            $streamer = $sh->getStreamer();
+            $streamerName = (null !== $streamer)
+                ? $streamer->getDisplayName()
+                : '';
+
+            $csv->insertOne([
+                $datetime->format('Y-m-d'),
+                $datetime->format('g:ia'),
+                $sh->getListenersStart(),
+                $sh->getDeltaTotal(),
+                $sh->getTitle() ?: $sh->getText(),
+                $sh->getArtist(),
+                $playlistName,
+                $streamerName,
+            ]);
+        }
+
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

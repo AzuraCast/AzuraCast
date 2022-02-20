@@ -370,6 +370,13 @@ run-installer() {
 
   touch docker-compose.new.yml
 
+  local dc_config_test=$(docker-compose -f docker-compose.new.yml config 2>/dev/null)
+  if [ $? -ne 0 ]; then
+    if ask "Docker Compose needs to be updated to continue. Update to latest version?" Y; then
+      install-docker-compose
+    fi
+  fi
+
   curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
   docker-compose -p azuracast_installer -f docker-compose.installer.yml pull
   docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
@@ -523,13 +530,6 @@ update() {
       exit
     else
       rm docker.new.sh
-    fi
-
-    local dc_config_test=$(docker-compose config 2>/dev/null)
-    if [ $? -ne 0 ]; then
-      if ask "Docker Compose needs to be updated to continue. Update to latest version?" Y; then
-        install-docker-compose
-      fi
     fi
 
     run-installer --update "$@"

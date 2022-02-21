@@ -11,6 +11,7 @@ body :
          - Ansible installation methods are not officially supported and support may not be provided outside of the rare circumstances.
          - Always check your logs before submitting!
          - Make sure your issue isn't already answered here : https://docs.azuracast.com/en/user-guide/troubleshooting
+         - Check our Known Issues area before you post : https://github.com/azuracast/azuracast/KNOWN-ISSUES.md
   - type : dropdown
     id : installation_method
     attributes :

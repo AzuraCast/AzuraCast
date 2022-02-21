@@ -13,29 +13,35 @@ return function (App\Event\BuildStationMenu $e) {
     $backend = $request->getStationBackend();
     $frontend = $request->getStationFrontend();
 
+    if ($frontend->supportsReload()) {
+        $reloadMessage = __('Reload broadcasting? Current listeners will not be disconnected.');
+    } else {
+        $reloadMessage = __('Restart broadcasting? This will disconnect any current listeners.');
+    }
+
     $settings = $e->getSettings();
 
     $e->merge(
         [
-            'start_station'   => [
-                'label'      => __('Start Station'),
-                'title'      => __('Ready to start broadcasting? Click to start your station.'),
-                'icon'       => 'refresh',
-                'url'        => (string)$router->fromHere('api:stations:restart'),
-                'class'      => 'api-call text-success',
-                'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
-                'visible'    => !$station->getHasStarted(),
+            'start_station' => [
+                'label' => __('Start Station'),
+                'title' => __('Ready to start broadcasting? Click to start your station.'),
+                'icon' => 'refresh',
+                'url' => (string)$router->fromHere('api:stations:restart'),
+                'class' => 'api-call text-success',
+                'confirm' => $reloadMessage,
+                'visible' => !$station->getHasStarted(),
                 'permission' => StationPermissions::Broadcasting,
             ],
             'restart_station' => [
-                'label'      => __('Restart to Apply Changes'),
-                'title'      => __('Click to restart your station and apply configuration changes.'),
-                'icon'       => 'refresh',
-                'url'        => (string)$router->fromHere('api:stations:restart'),
-                'class'      => 'api-call text-warning btn-restart-station '
+                'label' => __('Reload to Apply Changes'),
+                'title' => __('Click to restart your station and apply configuration changes.'),
+                'icon' => 'refresh',
+                'url' => (string)$router->fromHere('api:stations:restart'),
+                'class' => 'api-call text-warning btn-restart-station '
                     . (!$station->getNeedsRestart() ? 'd-none' : ''),
-                'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
-                'visible'    => $station->getHasStarted(),
+                'confirm' => __('Reload broadcasting? This will disconnect any current listeners.'),
+                'visible' => $station->getHasStarted(),
                 'permission' => StationPermissions::Broadcasting,
             ],
             'profile'         => [
@@ -188,10 +194,10 @@ return function (App\Event\BuildStationMenu $e) {
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'restart'    => [
-                        'label'      => __('Restart Broadcasting'),
-                        'url'        => (string)$router->fromHere('api:stations:restart'),
-                        'class'      => 'api-call',
-                        'confirm'    => __('Restart broadcasting? This will disconnect any current listeners.'),
+                        'label' => __('Restart Broadcasting'),
+                        'url' => (string)$router->fromHere('api:stations:restart'),
+                        'class' => 'api-call',
+                        'confirm' => $reloadMessage,
                         'permission' => StationPermissions::Broadcasting,
                     ],
                 ],

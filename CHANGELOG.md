@@ -1,8 +1,21 @@
 # Rolling Release Changes
 
-These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling release channel, you can take advantage of these new features and fixes.
+These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
+release channel, you can take advantage of these new features and fixes.
 
 The Rolling Release version has no new changes from the latest Stable release.
+
+---
+
+# AzuraCast 0.15.2 (Feb 20, 2022)
+
+## Bug Fixes
+
+- Incorporated a bug fix version of Liquidsoap 2.0.3 that fixes issues with smart crossfading.
+
+- Fixed a bug where some new installs could not continue due to an older version of Docker Compose being installed.
+
+- Fixed a bug when reinstalling AzuraCast on top of an existing (or previous) installation.
 
 ---
 

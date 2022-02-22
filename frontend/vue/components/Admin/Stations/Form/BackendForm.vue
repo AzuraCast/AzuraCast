@@ -250,7 +250,7 @@
                             <translate :key="lang">Use Replaygain Metadata</translate>
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.</translate>
+                            <translate :key="lang">Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.</translate>
                         </template>
                     </b-wrapped-form-checkbox>
 

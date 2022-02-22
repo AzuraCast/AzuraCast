@@ -232,16 +232,16 @@
                 </template>
 
                 <b-form-row>
-                    <b-wrapped-form-group class="col-md-6" id="edit_form_backend_telnet_port"
-                                          :field="form.backend_config.telnet_port" input-type="number"
-                                          :input-attrs="{ min: '0' }" advanced>
+                    <b-wrapped-form-checkbox class="col-md-6"
+                                             id="edit_form_backend_use_manual_autodj"
+                                             :field="form.backend_config.use_manual_autodj" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Customize Internal Request Processing Port</translate>
+                            <translate :key="lang">Manual AutoDJ Mode</translate>
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.</translate>
+                            <translate :key="lang">This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.</translate>
                         </template>
-                    </b-wrapped-form-group>
+                    </b-wrapped-form-checkbox>
 
                     <b-wrapped-form-checkbox class="col-md-6"
                                              id="edit_form_backend_enable_replaygain_metadata"
@@ -254,6 +254,17 @@
                         </template>
                     </b-wrapped-form-checkbox>
 
+                    <b-wrapped-form-group class="col-md-6" id="edit_form_backend_telnet_port"
+                                          :field="form.backend_config.telnet_port" input-type="number"
+                                          :input-attrs="{ min: '0' }" advanced>
+                        <template #label="{lang}">
+                            <translate :key="lang">Customize Internal Request Processing Port</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.</translate>
+                        </template>
+                    </b-wrapped-form-group>
+
                     <b-wrapped-form-group class="col-md-6" id="edit_form_backend_autodj_queue_length"
                                           :field="form.backend_config.autodj_queue_length" input-type="number"
                                           :input-attrs="{ min: '2', max: '25' }" advanced>
@@ -265,17 +276,6 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-checkbox class="col-md-6"
-                                             id="edit_form_backend_use_manual_autodj"
-                                             :field="form.backend_config.use_manual_autodj" advanced>
-                        <template #label="{lang}">
-                            <translate :key="lang">Manual AutoDJ Mode</translate>
-                        </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.</translate>
-                        </template>
-                    </b-wrapped-form-checkbox>
-
                     <b-wrapped-form-group class="col-md-6" id="edit_form_backend_charset"
                                           :field="form.backend_config.charset" advanced>
                         <template #label="{lang}">
@@ -286,6 +286,21 @@
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="charsetOptions"
+                                                v-model="props.field.$model">
+                            </b-form-radio-group>
+                        </template>
+                    </b-wrapped-form-group>
+
+                    <b-wrapped-form-group class="col-md-6" id="edit_form_backend_performance_mode"
+                                          :field="form.backend_config.performance_mode" advanced>
+                        <template #label="{lang}">
+                            <translate :key="lang">Liquidsoap Performance Tuning</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.</translate>
+                        </template>
+                        <template #default="props">
+                            <b-form-radio-group stacked :id="props.id" :options="performanceModeOptions"
                                                 v-model="props.field.$model">
                             </b-form-radio-group>
                         </template>
@@ -397,6 +412,22 @@ export default {
             return [
                 {text: 'UTF-8', value: 'UTF-8'},
                 {text: 'ISO-8859-1', value: 'ISO-8859-1'}
+            ];
+        },
+        performanceModeOptions() {
+            return [
+                {
+                    text: this.$gettext('Use Less Memory (Uses More CPU)'),
+                    value: 'less_memory'
+                },
+                {
+                    text: this.$gettext('Balanced'),
+                    value: 'balanced'
+                },
+                {
+                    text: this.$gettext('Use Less CPU (Uses More Memory)'),
+                    value: 'less_cpu'
+                },
             ];
         }
     }

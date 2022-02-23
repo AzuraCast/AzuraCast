@@ -428,6 +428,10 @@ export default {
                     text: this.$gettext('Use Less CPU (Uses More Memory)'),
                     value: 'less_cpu'
                 },
+                {
+                    text: this.$gettext('Disable Optimizations'),
+                    value: 'disabled'
+                }
             ];
         }
     }

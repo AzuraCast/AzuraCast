@@ -292,7 +292,7 @@ export default {
                         autodj_queue_length: 3,
                         use_manual_autodj: false,
                         charset: 'UTF-8',
-                        performance_mode: 'balanced',
+                        performance_mode: 'disabled',
                         duplicate_prevention_time_range: 120,
                     },
                 };

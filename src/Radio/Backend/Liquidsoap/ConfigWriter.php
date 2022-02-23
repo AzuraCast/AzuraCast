@@ -135,14 +135,6 @@ class ConfigWriter implements EventSubscriberInterface
                 ->withPath('/api/internal/' . $station->getId())
         );
 
-        $backendConfig = $station->getBackendConfig();
-
-        $gcSpaceOverhead = match ($backendConfig->getPerformanceModeEnum()) {
-            Entity\Enums\StationBackendPerformanceModes::LessMemory => 20,
-            Entity\Enums\StationBackendPerformanceModes::LessCpu => 140,
-            Entity\Enums\StationBackendPerformanceModes::Balanced => 80
-        };
-
         $event->appendBlock(
             <<<EOF
             init.daemon.set(false)
@@ -165,12 +157,6 @@ class ConfigWriter implements EventSubscriberInterface
             
             autodj_ping_attempts = ref(0)
             ignore(autodj_ping_attempts)
-            
-            # Performance Mode
-            runtime.gc.set(runtime.gc.get().{
-              space_overhead = ${gcSpaceOverhead},
-              allocation_policy = 2
-            })
             
             # Track live-enabled status script-wide for fades.
             live_enabled = ref(false)
@@ -203,6 +189,28 @@ class ConfigWriter implements EventSubscriberInterface
             end
             EOF
         );
+
+        $backendConfig = $station->getBackendConfig();
+
+        $perfMode = $backendConfig->getPerformanceModeEnum();
+        if ($perfMode !== Entity\Enums\StationBackendPerformanceModes::Disabled) {
+            $gcSpaceOverhead = match ($backendConfig->getPerformanceModeEnum()) {
+                Entity\Enums\StationBackendPerformanceModes::LessMemory => 20,
+                Entity\Enums\StationBackendPerformanceModes::LessCpu => 140,
+                Entity\Enums\StationBackendPerformanceModes::Balanced => 80,
+                Entity\Enums\StationBackendPerformanceModes::Disabled => 0,
+            };
+
+            $event->appendBlock(
+                <<<EOF
+                # Optimize Performance
+                runtime.gc.set(runtime.gc.get().{
+                  space_overhead = ${gcSpaceOverhead},
+                  allocation_policy = 2
+                })
+                EOF
+            );
+        }
     }
 
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event): void

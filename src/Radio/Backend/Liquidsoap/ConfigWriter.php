@@ -15,7 +15,6 @@ use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
@@ -735,26 +734,6 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         return $play_time;
-    }
-
-    protected function getTimeAsLiquidsoapVariable(CarbonInterface $time): string
-    {
-        $params = [
-            'isdst' => 'null()',
-            'year' => $time->year,
-            'month' => $time->month,
-            'day' => $time->day,
-            'hour' => $time->hour,
-            'min' => $time->minute,
-            'sec' => $time->second,
-        ];
-
-        $returnParams = [];
-        foreach ($params as $k => $v) {
-            $returnParams[] = $k . '=' . $v;
-        }
-
-        return 'time.make({' . implode(', ', $returnParams) . '})';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void

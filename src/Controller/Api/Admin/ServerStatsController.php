@@ -75,11 +75,11 @@ class ServerStatsController
 
         $networkInterfaces = [];
 
-        foreach ($secondNetworkMeasurement as $index => $currentNetworkMeassurement) {
-            $previousNetworkMeassurement = $firstNetworkMeasurement[$index];
+        foreach ($secondNetworkMeasurement as $index => $currentNetworkMeasurement) {
+            $previousNetworkMeasurement = $firstNetworkMeasurement[$index];
             $deltaNetworkData = NetworkStats::calculateDelta(
-                $currentNetworkMeassurement,
-                $previousNetworkMeassurement
+                $currentNetworkMeasurement,
+                $previousNetworkMeasurement
             );
 
             $bytesPerTimeReceived = $deltaNetworkData->received->bytes
@@ -181,7 +181,7 @@ class ServerStatsController
                     'used' => Quota::getReadableSize($spaceUsed),
                 ],
             ],
-            'network' => $networkInterfaces
+            'network' => $networkInterfaces,
         ];
 
         return $response->withJson($stats);

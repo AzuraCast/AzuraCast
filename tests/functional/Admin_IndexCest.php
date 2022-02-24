@@ -11,10 +11,7 @@ class Admin_IndexCest extends CestAbstract
         $I->wantTo('See the administration homepage.');
 
         $I->amOnPage('/admin');
-        $I->see('Administration');
-
-        $I->see('System Maintenance');
-        $I->see('Users');
-        $I->see('Stations');
+        $I->seeResponseCodeIs(200);
+        $I->seeInTitle('Administration');
     }
 }

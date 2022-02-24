@@ -1,21 +1,31 @@
 <template>
     <b-modal size="lg" centered id="cpu_stats_help_modal" ref="modal" :title="langTitle">
-        <b-container fluid>
-            <b-row class="mb-1">
-                <b-col>
-                    <h6><b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;Cached</h6>
-                    <p class="lead">The amount of memory that Linux is using for disk caching<p/>
-                    <p>This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.</p>
-                    <p>Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.</p>
-                </b-col>
-            </b-row>
-            <b-row class="mb-1">
-                <b-col>
-                    <h6><b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;Used</h6>
-                    <p class="lead">The current Memory usage excluding cached memory.<p/>
-                </b-col>
-            </b-row>
-        </b-container>
+        <div class="mb-2">
+            <h6>
+                <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;
+                <translate key="lang_cached">Cached</translate>
+                :
+                <translate
+                    key="lang_cached_1">The amount of memory Linux is using for disk caching.</translate>
+            </h6>
+            <div class="ml-4">
+                <p>
+                    <translate key="lang_cached_2">This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.</translate>
+                </p>
+                <p>
+                    <translate key="lang_cached_3">Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.</translate>
+                </p>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <h6>
+                <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
+                <translate key="lang_used">Used</translate>
+                :
+                <translate key="lang_used_1">The current Memory usage excluding cached memory.</translate>
+            </h6>
+        </div>
 
         <template #modal-footer>
             <slot name="modal-footer">

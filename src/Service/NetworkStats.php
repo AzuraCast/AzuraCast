@@ -11,13 +11,10 @@ use Brick\Math\BigDecimal;
 
 class NetworkStats
 {
-    /**
-     * @var NetworkData[]
-     */
     public static function getNetworkUsage(): array
     {
         $networkRaw = file('/proc/net/dev', FILE_IGNORE_NEW_LINES) ?: [];
-        $currenTimestamp = microtime(true);
+        $currentTimestamp = microtime(true);
         $interfaces = [];
 
         foreach ($networkRaw as $lineNumber => $line) {
@@ -27,11 +24,11 @@ class NetworkStats
 
             [$interfaceName, $interfaceData] = explode(':', $line);
             $interfaceName = trim($interfaceName);
-            $interfaceData = preg_split('/\s+/', trim($interfaceData));
+            $interfaceData = preg_split('/\s+/', trim($interfaceData)) ?: [];
 
             $interfaces[] = NetworkData::fromInterfaceData(
                 $interfaceName,
-                BigDecimal::of($currenTimestamp),
+                BigDecimal::of($currentTimestamp),
                 $interfaceData
             );
         }

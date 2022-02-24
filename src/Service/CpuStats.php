@@ -20,8 +20,8 @@ class CpuStats
         $cpuCoreData = [];
 
         foreach ($cpuStatsRaw as $statLine) {
-            $lineData = preg_split('/\s+/', $statLine);
-            $lineName = array_shift($lineData);
+            $lineData = preg_split('/\s+/', $statLine) ?: [];
+            $lineName = array_shift($lineData) ?? '';
 
             if ($lineName === 'cpu') {
                 $cpuCoreData[] = CpuData::fromCoreData('total', $lineData);
@@ -107,7 +107,7 @@ class CpuStats
         $ioWait = $delta->iowait;
         $total = $delta->getTotal();
 
-        return BigDecimal::of($ioWait)
+        return BigDecimal::of($ioWait ?? 0)
             ->multipliedBy(100)
             ->dividedBy($total, 2, RoundingMode::HALF_UP);
     }
@@ -117,7 +117,7 @@ class CpuStats
         $steal = $delta->steal;
         $total = $delta->getTotal();
 
-        return BigDecimal::of($steal)
+        return BigDecimal::of($steal ?? 0)
             ->multipliedBy(100)
             ->dividedBy($total, 2, RoundingMode::HALF_UP);
     }

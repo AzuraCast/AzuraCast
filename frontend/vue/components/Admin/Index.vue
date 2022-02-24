@@ -1,14 +1,14 @@
 <template>
     <div>
         <h2 class="outside-card-header mb-1">
-            <translate key="lang_header_admin">Administration</translate>
+            <translate key="lang_hdr_admin">Administration</translate>
         </h2>
 
         <b-card-group columns>
             <b-card no-body v-for="(panel, key) in adminPanels" :key="key">
                 <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title" key="lang_title" v-translate>
-                        <i class="material-icons" aria-hidden="true">{{ panel.icon }}</i>
+                    <h2 class="card-title flex-fill">
+                        <icon :icon="panel.icon"></icon>
                         {{ panel.label }}
                     </h2>
                 </b-card-header>
@@ -20,7 +20,7 @@
         </b-card-group>
 
         <h2 class="outside-card-header mb-1">
-            <translate key="lang_header_server_status">Server Status</translate>
+            <translate key="lang_hdr_server_status">Server Status</translate>
         </h2>
 
         <b-row class="mb-4">
@@ -28,7 +28,9 @@
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
                         <div class="flex-fill">
-                            <h2 class="card-title" key="lang_title" v-translate>CPU Load</h2>
+                            <h2 class="card-title">
+                                <translate key="lang_hdr_cpu_load">CPU Load</translate>
+                            </h2>
                         </div>
 
                         <div class="flex-shrink-0">
@@ -49,21 +51,23 @@
 
                         <b-row>
                             <b-col>
-                                <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;Steal: {{ stats.cpu.total.steal }}%
+                                <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;
+                                <translate key="lang_cpu_steal">Steal</translate>
+                                : {{ stats.cpu.total.steal }}%
                             </b-col>
                             <b-col>
-                                <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;Wait: {{ stats.cpu.total.io_wait }}%
+                                <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;
+                                <translate key="lang_cpu_wait">Wait</translate>
+                                : {{ stats.cpu.total.io_wait }}%
                             </b-col>
                             <b-col>
-                                <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;Use: {{ stats.cpu.total.usage }}%
+                                <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
+                                <translate key="lang_cpu_use">Use</translate>
+                                : {{ stats.cpu.total.usage }}%
                             </b-col>
                         </b-row>
 
-                        <b-row>
-                            <b-col>
-                                <hr>
-                            </b-col>
-                        </b-row>
+                        <hr>
 
                         <b-row>
                             <b-col v-for="core in stats.cpu.cores" :key="core.name" lg="6">
@@ -91,26 +95,20 @@
                     </b-card-body>
 
                     <b-card-footer>
-                        <h6 class="mb-1 text-center" key="lang_title" v-translate>Load Average</h6>
+                        <h6 class="mb-1 text-center">
+                            <translate key="lang_cpu_average">Load Average</translate>
+                        </h6>
                         <b-row class="text-center" no-gutters>
                             <b-col>
                                 <h6>1-Min</h6>
-                            </b-col>
-                            <b-col>
-                                <h6>5-Min</h6>
-                            </b-col>
-                            <b-col>
-                                <h6>15-Min</h6>
-                            </b-col>
-                        </b-row>
-                        <b-row class="text-center" no-gutters>
-                            <b-col>
                                 {{ stats.cpu.load[0] }}
                             </b-col>
                             <b-col>
+                                <h6>5-Min</h6>
                                 {{ stats.cpu.load[1] }}
                             </b-col>
                             <b-col>
+                                <h6>15-Min</h6>
                                 {{ stats.cpu.load[2] }}
                             </b-col>
                         </b-row>
@@ -124,7 +122,9 @@
                         <b-card no-body>
                             <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
                                 <div class="flex-fill">
-                                    <h2 class="card-title" key="lang_title" v-translate>Memory</h2>
+                                    <h2 class="card-title">
+                                        <translate key="lang_hdr_memory">Memory</translate>
+                                    </h2>
                                 </div>
 
                                 <div class="flex-shrink-0">
@@ -136,7 +136,8 @@
 
                             <b-card-body>
                                 <h6 class="mb-1 text-center">
-                                    <translate key="lang_disk_header">Total RAM: </translate>
+                                    <translate key="lang_disk_header">Total RAM</translate>
+                                    :
                                     {{ stats.memory.readable.total }}
                                 </h6>
 
@@ -147,10 +148,14 @@
 
                                 <b-row>
                                     <b-col>
-                                        <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;Used: {{ stats.memory.readable.used }}
+                                        <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
+                                        <translate key="lang_memory_used">Used</translate>
+                                        : {{ stats.memory.readable.used }}
                                     </b-col>
                                     <b-col>
-                                        <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;Cached: {{ stats.memory.readable.cached }}
+                                        <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;
+                                        <translate key="lang_memory_cached">Cached</translate>
+                                        : {{ stats.memory.readable.cached }}
                                     </b-col>
                                 </b-row>
                             </b-card-body>
@@ -161,12 +166,15 @@
                     <b-col>
                         <b-card no-body>
                             <b-card-header header-bg-variant="primary-dark">
-                                <h2 class="card-title" key="lang_title" v-translate>Disk Space</h2>
+                                <h2 class="card-title">
+                                    <translate key="lang_hdr_disk_space">Disk Space</translate>
+                                </h2>
                             </b-card-header>
 
                             <b-card-body>
                                 <h6 class="mb-1 text-center">
-                                    <translate key="lang_disk_header">Total Disk Space: </translate>
+                                    <translate key="lang_total_disk_space">Total Disk Space</translate>
+                                    :
                                     {{ stats.disk.readable.total }}
                                 </h6>
 
@@ -176,7 +184,10 @@
 
                                 <b-row>
                                     <b-col>
-                                        <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;Used: {{ stats.disk.readable.used }}
+                                        <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
+                                        <translate key="lang_used_disk_space">Used</translate>
+                                        :
+                                        {{ stats.disk.readable.used }}
                                     </b-col>
                                 </b-row>
                             </b-card-body>
@@ -190,24 +201,30 @@
             <b-col>
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title" key="lang_title" v-translate>Network Interfaces</h2>
+                        <h2 class="card-title">
+                            <translate key="lang_hdr_network_interfaces">Network Interfaces</translate>
+                        </h2>
                     </b-card-header>
 
                     <b-tabs content-class="mt-3">
                         <b-tab v-for="netInterface in stats.network" :key="netInterface.interface_name" :title="netInterface.interface_name" pills card>
                             <b-row class="mb-3">
                                 <b-col class="mb-3">
-                                    <h5 class="mb-1 text-center" key="lang_title" v-translate>Received</h5>
+                                    <h5 class="mb-1 text-center">
+                                        <translate key="lang_net_received">Received</translate>
+                                    </h5>
                                     <b-table striped responsive
-                                        :items="getNetworkInterfaceTableItems(netInterface.received)"
-                                        :fields="getNetworkInterfaceTableFields(netInterface.received)">
+                                             :items="getNetworkInterfaceTableItems(netInterface.received)"
+                                             :fields="getNetworkInterfaceTableFields(netInterface.received)">
                                     </b-table>
                                 </b-col>
                                 <b-col>
-                                    <h5 class="mb-1 text-center" v-translate>Transmitted</h5>
+                                    <h5 class="mb-1 text-center">
+                                        <translate key="lang_net_transmitted">Transmitted</translate>
+                                    </h5>
                                     <b-table striped responsive
-                                        :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
-                                        :fields="getNetworkInterfaceTableFields(netInterface.transmitted)">
+                                             :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
+                                             :fields="getNetworkInterfaceTableFields(netInterface.transmitted)">
                                     </b-table>
                                 </b-col>
                             </b-row>

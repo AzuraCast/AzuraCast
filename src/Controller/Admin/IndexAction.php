@@ -30,7 +30,7 @@ class IndexAction
             title: __('Administration'),
             props: [
                 'adminPanels' => $viewData['admin_panels'] ?? [],
-                'statsUrl' => (string)$router->named('api:admin:server:stats')
+                'statsUrl' => (string)$router->named('api:admin:server:stats'),
             ]
         );
     }

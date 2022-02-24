@@ -15,6 +15,7 @@ use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
@@ -695,11 +696,7 @@ class ConfigWriter implements EventSubscriberInterface
 
             $customFunctionBody = [];
 
-            $scheduleVar = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
-
-            $scheduleMethod = 'check_schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
-
-            $customFunctionBody[] = $scheduleVar . ' = ref(false)';
+            $scheduleMethod = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
             $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
 
             $conditions = [];
@@ -730,16 +727,34 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $customFunctionBody[] = '    current_time = time()';
-            $customFunctionBody[] = '    ' . $scheduleVar . ' := ' . implode(' and ', $conditions);
+            $customFunctionBody[] = '    ' . implode(' and ', $conditions);
             $customFunctionBody[] = 'end';
-            $customFunctionBody[] = 'thread.run(every=60., ' . $scheduleMethod . ')';
-
             $event->appendLines($customFunctionBody);
 
-            $play_time = '!' . $scheduleVar . ' and ' . $play_time;
+            $play_time = $scheduleMethod . '() and ' . $play_time;
         }
 
         return $play_time;
+    }
+
+    protected function getTimeAsLiquidsoapVariable(CarbonInterface $time): string
+    {
+        $params = [
+            'isdst' => 'null()',
+            'year' => $time->year,
+            'month' => $time->month,
+            'day' => $time->day,
+            'hour' => $time->hour,
+            'min' => $time->minute,
+            'sec' => $time->second,
+        ];
+
+        $returnParams = [];
+        foreach ($params as $k => $v) {
+            $returnParams[] = $k . '=' . $v;
+        }
+
+        return 'time.make({' . implode(', ', $returnParams) . '})';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void

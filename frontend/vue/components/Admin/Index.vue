@@ -23,8 +23,8 @@
             <translate key="lang_hdr_server_status">Server Status</translate>
         </h2>
 
-        <b-row class="mb-4">
-            <b-col sm="12" lg="8" xl="6">
+        <b-row>
+            <b-col sm="12" lg="8" xl="6" class="mb-4">
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
                         <div class="flex-fill">
@@ -116,7 +116,7 @@
                 </b-card>
             </b-col>
 
-            <b-col sm="12" lg="4" xl="6">
+            <b-col sm="12" lg="4" xl="6" class="mb-4">
                 <b-row class="mb-4">
                     <b-col>
                         <b-card no-body>

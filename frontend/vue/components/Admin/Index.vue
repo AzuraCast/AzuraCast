@@ -4,20 +4,23 @@
             <translate key="lang_hdr_admin">Administration</translate>
         </h2>
 
-        <b-card-group columns>
-            <b-card no-body v-for="(panel, key) in adminPanels" :key="key">
-                <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title flex-fill">
-                        <icon :icon="panel.icon"></icon>
-                        {{ panel.label }}
-                    </h2>
-                </b-card-header>
+        <b-row>
+            <b-col v-for="(panel, key) in adminPanels" :key="key" sm="12" lg="4" class="mb-4">
+                <b-card no-body>
+                    <b-card-header header-bg-variant="primary-dark">
+                        <h2 class="card-title flex-fill">
+                            <icon :icon="panel.icon"></icon>
+                            {{ panel.label }}
+                        </h2>
+                    </b-card-header>
 
-                <b-list-group>
-                    <b-list-group-item v-for="(item, key) in panel.items" :key="key" :href="item.url">{{ item.label }}</b-list-group-item>
-                </b-list-group>
-            </b-card>
-        </b-card-group>
+                    <b-list-group>
+                        <b-list-group-item v-for="(item, key) in panel.items" :key="key" :href="item.url">{{ item.label }}</b-list-group-item>
+                    </b-list-group>
+                </b-card>
+            </b-col>
+        </b-row>
+
 
         <h2 class="outside-card-header mb-1">
             <translate key="lang_hdr_server_status">Server Status</translate>

@@ -74,10 +74,12 @@ class Configuration
      *
      * @param Station $station
      * @param bool $forceRestart Always restart this station's supervisor instances, even if nothing changed.
+     * @throws Exception\NotFoundException
      */
     public function writeConfiguration(
         Station $station,
-        bool $forceRestart = false
+        bool $forceRestart = false,
+        bool $attemptReload = true
     ): void {
         if ($this->environment->isTesting()) {
             return;
@@ -149,7 +151,7 @@ class Configuration
 
         if (!$was_restarted && $forceRestart) {
             try {
-                if ($backend->supportsReload() || $frontend->supportsReload()) {
+                if ($attemptReload && ($backend->supportsReload() || $frontend->supportsReload())) {
                     $backend->reload($station);
                     $frontend->reload($station);
                 } else {

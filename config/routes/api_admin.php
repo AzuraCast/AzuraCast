@@ -55,6 +55,9 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Backups));
 
+            $group->get('/server/stats', Controller\Api\Admin\ServerStatsController::class)
+                ->setName('api:admin:server:stats');
+
             $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
                 ->add(new Middleware\Permissions(GlobalPermissions::All));
 

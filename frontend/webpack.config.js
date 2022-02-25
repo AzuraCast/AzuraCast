@@ -14,6 +14,7 @@ module.exports = {
         AdminBranding: '~/pages/Admin/Branding.js',
         AdminCustomFields: '~/pages/Admin/CustomFields.js',
         AdminGeoLite: '~/pages/Admin/GeoLite.js',
+        AdminIndex: '~/pages/Admin/Index.js',
         AdminPermissions: '~/pages/Admin/Permissions.js',
         AdminSettings: '~/pages/Admin/Settings.js',
         AdminShoutcast: '~/pages/Admin/Shoutcast.js',

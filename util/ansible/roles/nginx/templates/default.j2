@@ -6,7 +6,7 @@ upstream redis_server {
 server {
     listen 127.0.0.1:9010;
 
-    location ~ /pub/(\w+)$ {
+    location ~ /pub/[^\/]+$ {
         nchan_publisher;
         nchan_redis_pass redis_server;
 
@@ -123,7 +123,7 @@ server {
 
     {% if ansible_distribution_release != 'xenial' %}
     # pub/sub endpoints
-    location ~ /api/live/nowplaying/(\w+)$ {
+    location ~ /api/live/nowplaying/[^\/]+$ {
         nchan_subscriber;
         nchan_redis_pass redis_server;
 

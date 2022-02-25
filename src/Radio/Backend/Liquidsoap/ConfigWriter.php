@@ -189,6 +189,28 @@ class ConfigWriter implements EventSubscriberInterface
             end
             EOF
         );
+
+        $backendConfig = $station->getBackendConfig();
+
+        $perfMode = $backendConfig->getPerformanceModeEnum();
+        if ($perfMode !== Entity\Enums\StationBackendPerformanceModes::Disabled) {
+            $gcSpaceOverhead = match ($backendConfig->getPerformanceModeEnum()) {
+                Entity\Enums\StationBackendPerformanceModes::LessMemory => 20,
+                Entity\Enums\StationBackendPerformanceModes::LessCpu => 140,
+                Entity\Enums\StationBackendPerformanceModes::Balanced => 80,
+                Entity\Enums\StationBackendPerformanceModes::Disabled => 0,
+            };
+
+            $event->appendBlock(
+                <<<EOF
+                # Optimize Performance
+                runtime.gc.set(runtime.gc.get().{
+                  space_overhead = ${gcSpaceOverhead},
+                  allocation_policy = 2
+                })
+                EOF
+            );
+        }
     }
 
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -673,11 +695,7 @@ class ConfigWriter implements EventSubscriberInterface
 
             $customFunctionBody = [];
 
-            $scheduleVar = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
-
-            $scheduleMethod = 'check_schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
-
-            $customFunctionBody[] = $scheduleVar . ' = ref(false)';
+            $scheduleMethod = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
             $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
 
             $conditions = [];
@@ -708,13 +726,11 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $customFunctionBody[] = '    current_time = time()';
-            $customFunctionBody[] = '    ' . $scheduleVar . ' := ' . implode(' and ', $conditions);
+            $customFunctionBody[] = '    ' . implode(' and ', $conditions);
             $customFunctionBody[] = 'end';
-            $customFunctionBody[] = 'thread.run(every=60., ' . $scheduleMethod . ')';
-
             $event->appendLines($customFunctionBody);
 
-            $play_time = '!' . $scheduleVar . ' and ' . $play_time;
+            $play_time = $scheduleMethod . '() and ' . $play_time;
         }
 
         return $play_time;

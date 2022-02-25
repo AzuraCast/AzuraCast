@@ -9,7 +9,7 @@ resolver 127.0.0.11;
 server {
     listen 9010;
 
-    location ~ /pub/(\w+)$ {
+    location ~ /pub/[^\/]+$ {
         nchan_publisher;
 {{if isTrue .Env.ENABLE_REDIS}}
         nchan_redis_pass redis_server;
@@ -148,7 +148,7 @@ server {
     }
 
     # pub/sub endpoints
-    location ~ /api/live/nowplaying/(\w+)$ {
+    location ~ /api/live/nowplaying/[^\/]+$ {
         nchan_access_control_allow_origin "*";
 
         nchan_subscriber;

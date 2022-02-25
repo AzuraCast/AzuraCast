@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="import_modal" ref="modal" :title="langTitle">
+    <b-modal id="import_modal" ref="modal" :title="langTitle" @hidden="onHidden">
         <div v-if="results">
             <p class="card-text">{{ results.message }}</p>
 
@@ -93,8 +93,11 @@ export default {
             });
         },
         close () {
-            this.$emit('relist');
             this.$refs.modal.hide();
+        },
+        onHidden () {
+            this.$emit('relist');
+            this.results = null;
         }
     }
 };

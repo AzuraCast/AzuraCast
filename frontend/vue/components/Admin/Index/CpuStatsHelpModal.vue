@@ -16,7 +16,7 @@
                     <translate key="lang_steal_3">To alleviate this potential problem with shared CPU resources, hosts assign "credits" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM's assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the "Steal" or "St" value.</translate>
                 </p>
                 <p>
-                    <translate key="lang_steal_4">Audio transcoding applications like Liquidsoap constantly use some amount of CPU which constantly drains this credit. If you constantly see stolen CPU time, you should switch to a dedicated resource VM where a specific amount of CPU cores is only assigned to your VM.</translate>
+                    <translate key="lang_steal_4">Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance.</translate>
                 </p>
             </div>
         </div>

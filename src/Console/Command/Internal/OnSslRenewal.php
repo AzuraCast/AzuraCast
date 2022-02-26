@@ -7,6 +7,7 @@ namespace App\Console\Command\Internal;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Radio\Adapters;
+use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,6 +22,7 @@ class OnSslRenewal extends CommandAbstract
     public function __construct(
         protected EntityManagerInterface $em,
         protected Adapters $adapters,
+        protected Configuration $configuration,
     ) {
         parent::__construct();
     }
@@ -37,6 +39,12 @@ class OnSslRenewal extends CommandAbstract
             /** @var Entity\Station $station */
             $frontend = $this->adapters->getFrontendAdapter($station);
             if ($frontend->supportsReload()) {
+                $this->configuration->writeConfiguration(
+                    $station,
+                    forceRestart: false,
+                    attemptReload: false
+                );
+
                 $frontend->reload($station);
             }
         }

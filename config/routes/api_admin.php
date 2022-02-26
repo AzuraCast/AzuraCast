@@ -84,6 +84,11 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\SettingsController::class . ':updateAction'
                     );
 
+                    $group->post(
+                        '/send-test-message',
+                        Controller\Api\Admin\SendTestMessageAction::class
+                    )->setName('api:admin:send-test-message');
+
                     $group->get(
                         '/custom_assets/{type}',
                         Controller\Api\Admin\CustomAssets\GetCustomAssetAction::class

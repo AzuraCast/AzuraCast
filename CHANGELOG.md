@@ -3,7 +3,38 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
-The Rolling Release version has no new changes from the latest Stable release.
+## New Features/Changes
+
+- The System Administration homepage now includes much more detailed statistics on CPU and RAM consumption.
+
+- You can now send a test e-mail to yourself from the same System Settings panel where you provide e-mail service info.
+
+- A new report has been added, "Unassigned Files", that shows all media that has not been assigned to any playlist.
+
+- A new advanced feature has been added that allows Liquidsoap users to broadly tune their installation to optimize in
+  favor of using less CPU at the expense of memory, using less memory at the expense of CPU, or a "balanced"
+  configuration between the two.
+
+- For stations that support the zero-disconnect reload feature, you can now opt to either "Reload Configuration" (a soft
+  reload that does not disconnect listeners) or "Restart Broadcasting" (a hard reload that does) in the event the latter
+  is needed for troubleshooting.
+
+## Code Quality/Technical Changes
+
+- We have enabled the built-in "defender" service for our built-in SFTP provider, so repeated failed authentication
+  attempts will automatically be blocked by the system. If you find yourself locked out of the system, restarting Docker
+  will clear the block list.
+
+## Bug Fixes
+
+- A significant performance issue with the `station_queue` table has been identified and new indices have been added,
+  resulting in significant improvements for some behind-the-scenes functionality (like AutoDJ "next song" calculation).
+
+- A bug preventing playlists from being imported multiple times in the same pageview has been fixed.
+
+- An issue with SSL auto-renewal not applying to Icecast direct port connections has been fixed.
+
+- Websocket Now Playing updates now work on stations with non-ASCII characters in their "short name".
 
 ---
 

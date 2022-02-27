@@ -18,6 +18,9 @@ release channel, you can take advantage of these new features and fixes.
   favor of using less CPU at the expense of memory, using less memory at the expense of CPU, or a "balanced"
   configuration between the two.
 
+- Any IP ranges, countries or user agents you have banned from connecting to your stream will also be banned from
+  submitting song requests to your station.
+
 - For stations that support the zero-disconnect reload feature, you can now opt to either "Reload Configuration" (a soft
   reload that does not disconnect listeners) or "Restart Broadcasting" (a hard reload that does) in the event the latter
   is needed for troubleshooting.

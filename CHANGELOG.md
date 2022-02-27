@@ -5,6 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- If a playlist is marked as requestable but has scheduled date/time limits, it will only be requestable within those
+  scheduled dates/times.
+
 - The System Administration homepage now includes much more detailed statistics on CPU and RAM consumption.
 
 - You can now send a test e-mail to yourself from the same System Settings panel where you provide e-mail service info.

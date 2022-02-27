@@ -144,19 +144,24 @@ return function (App\Event\BuildStationMenu $e) {
                         'url'     => (string)$router->fromHere('stations:reports:performance'),
                         'visible' => $backend->supportsMedia(),
                     ],
-                    'reports_duplicates'    => [
-                        'label'   => __('Duplicate Songs'),
-                        'url'     => (string)$router->fromHere('stations:files:index') . '#special:duplicates',
+                    'reports_duplicates' => [
+                        'label' => __('Duplicate Songs'),
+                        'url' => (string)$router->fromHere('stations:files:index') . '#special:duplicates',
                         'visible' => $backend->supportsMedia(),
                     ],
                     'reports_unprocessable' => [
-                        'label'   => __('Unprocessable Files'),
-                        'url'     => (string)$router->fromHere('stations:files:index') . '#special:unprocessable',
+                        'label' => __('Unprocessable Files'),
+                        'url' => (string)$router->fromHere('stations:files:index') . '#special:unprocessable',
+                        'visible' => $backend->supportsMedia(),
+                    ],
+                    'reports_unassigned' => [
+                        'label' => __('Unassigned Files'),
+                        'url' => (string)$router->fromHere('stations:files:index') . '#special:unassigned',
                         'visible' => $backend->supportsMedia(),
                     ],
                     'reports_soundexchange' => [
                         'label' => __('SoundExchange Royalties'),
-                        'url'   => (string)$router->fromHere('stations:reports:soundexchange'),
+                        'url' => (string)$router->fromHere('stations:reports:soundexchange'),
                     ],
                 ],
             ],

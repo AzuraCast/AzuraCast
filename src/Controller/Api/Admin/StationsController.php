@@ -350,7 +350,8 @@ class StationsController extends AbstractAdminApiCrudController
         $radio_dir = $station->getRadioBaseDir();
         File::rmdirRecursive($radio_dir);
 
-        // Save changes and continue to the last setup step.
+        $this->stationRepo->doDeleteFallback($station);
+
         $this->em->flush();
 
         foreach ($station->getAllStorageLocations() as $storageLocation) {

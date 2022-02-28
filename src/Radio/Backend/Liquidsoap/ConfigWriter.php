@@ -14,6 +14,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
+use App\Radio\FallbackFile;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
@@ -966,6 +967,15 @@ class ConfigWriter implements EventSubscriberInterface
         $errorFile = $this->environment->isDocker()
             ? '/usr/local/share/icecast/web/error.mp3'
             : $this->environment->getBaseDirectory() . '/resources/error.mp3';
+
+        // Check for a custom station fallback file.
+        $stationFallback = $station->getFallbackPath();
+        if (!empty($stationFallback)) {
+            $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
+            if ($fsConfig->fileExists($stationFallback)) {
+                $errorFile = $fsConfig->getLocalPath($stationFallback);
+            }
+        }
 
         $event->appendBlock(
             <<<EOF

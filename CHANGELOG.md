@@ -5,6 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- Each station can now have its own custom "fallback" file (the error message that plays when you have no media
+  configured or a broadcasting error otherwise occurs on your station) uploaded via the web UI.
+
 - If a playlist is marked as requestable but has scheduled date/time limits, it will only be requestable within those
   scheduled dates/times.
 

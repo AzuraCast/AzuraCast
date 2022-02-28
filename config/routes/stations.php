@@ -26,6 +26,10 @@ return static function (RouteCollectorProxy $app) {
             )->setName('stations:automation:index')
                 ->add(new Middleware\Permissions(StationPermissions::Automation, true));
 
+            $group->get('/fallback', Controller\Stations\FallbackAction::class)
+                ->setName('stations:fallback')
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
             $group->get('/files', Controller\Stations\FilesAction::class)
                 ->setName('stations:files:index')
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));

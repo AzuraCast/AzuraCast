@@ -212,6 +212,12 @@ return function (App\Event\BuildStationMenu $e) {
                         'url' => (string)$router->fromHere('stations:remotes:index'),
                         'permission' => StationPermissions::RemoteRelays,
                     ],
+                    'fallback' => [
+                        'label' => __('Custom Fallback File'),
+                        'class' => 'text-muted',
+                        'url' => (string)$router->fromHere('stations:fallback'),
+                        'permission' => StationPermissions::Broadcasting,
+                    ],
                     'ls_config' => [
                         'label' => __('Edit Liquidsoap Configuration'),
                         'class' => 'text-muted',

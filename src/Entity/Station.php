@@ -1052,6 +1052,9 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setFallbackPath(?string $fallback_path): void
     {
+        if ($this->fallback_path !== $fallback_path) {
+            $this->setNeedsRestart(true);
+        }
         $this->fallback_path = $fallback_path;
     }
 

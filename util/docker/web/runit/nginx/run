@@ -1,5 +1,7 @@
 #!/bin/bash
 
+svwaitup 5 /service/php-fpm || exit 1
+
 bool() {
   case "$1" in
   Y* | y* | true | TRUE | 1) return 0 ;;

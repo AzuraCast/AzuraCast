@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+if [ "$(id -u)" = "0" ]; then
+    echo "Switching to dedicated user 'mysql'"
+    exec gosu mysql "$BASH_SOURCE" "$@"
+fi
+
+mysql_get_config() {
+	local conf="$1"; shift
+	mysqld --verbose --help 2>/dev/null \
+		| awk -v conf="$conf" '$1 == conf && /^[^ \t]/ { sub(/^[^ \t]+[ \t]+/, ""); print; exit }'
+}
+
+DATADIR="$(mysql_get_config 'datadir')"
+SOCKET="$(mysql_get_config 'socket')"
+
+echo "Starting temporary MariaDB server..."
+
+mysqld --skip-networking --skip-grant-tables --socket="${SOCKET}" &
+
+echo "Waiting for server startup"
+for i in {30..0}; do
+    if mysql --protocol=socket -hlocalhost -uroot --socket="${SOCKET}" --database=mysql <<<'SELECT 1'; then
+        break
+    fi
+    sleep 1
+done
+if [ "$i" = 0 ]; then
+    echo "Unable to start temporary server."
+    exit 1
+fi
+
+echo "Upgrading instance (if necessary)..."
+
+mariadb-upgrade --verbose --protocol=socket -hlocalhost -uroot --socket="${SOCKET}"
+
+echo "Upgrade complete; Shutting down temporary MariaDB server..."

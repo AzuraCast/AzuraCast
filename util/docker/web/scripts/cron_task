@@ -2,4 +2,4 @@
 
 source /etc/container_environment.sh
 
-exec sudo -E -u azuracast "$@" >/proc/1/fd/1 2>/proc/1/fd/2
+exec gosu azuracast "$@" >/proc/1/fd/1 2>/proc/1/fd/2

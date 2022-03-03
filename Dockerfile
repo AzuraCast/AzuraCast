@@ -1,3 +1,11 @@
+#
+# Icecast build stage (for later copy)
+#
+FROM ghcr.io/azuracast/icecast-kh-ac:2.4.0-kh15-ac2 AS icecast
+
+#
+# Golang dependencies build step
+#
 FROM golang:1.17-buster AS dockerize
 
 RUN apt-get update \
@@ -5,13 +13,19 @@ RUN apt-get update \
 
 RUN go install github.com/jwilder/dockerize@latest
 
+#
 # Final build image
+#
 FROM ubuntu:focal
 
 ENV TZ="UTC"
 
 # Add Dockerize
 COPY --from=dockerize /go/bin/dockerize /usr/local/bin
+
+# Import Icecast-KH from build container
+COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
+COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 
 # Run base build process
 COPY ./util/docker/web /bd_build/
@@ -50,9 +64,18 @@ VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/uploads", "/var/azuracast/back
 USER root
 
 EXPOSE 80 2022
+EXPOSE 8000-8999
+
+# Include radio services in PATH
+ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"
+VOLUME ["/var/azuracast/servers/shoutcast2"]
+
+# MariaDB Data
+VOLUME ["/var/lib/mysql"]
 
 # Sensible default environment variables.
 ENV LANG="en_US.UTF-8" \
+    DOCKER_IS_STANDALONE="true" \
     APPLICATION_ENV="production" \
     ENABLE_ADVANCED_FEATURES="false" \
     MYSQL_HOST="mariadb" \

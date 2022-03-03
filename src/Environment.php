@@ -34,6 +34,7 @@ class Environment
     public const ASSET_URL = 'ASSETS_URL';
 
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
+    public const DOCKER_IS_STANDALONE = 'DOCKER_IS_STANDALONE';
 
     public const LANG = 'LANG';
 
@@ -208,9 +209,18 @@ class Environment
         return ($compareVersion >= $version);
     }
 
+    public function isDockerStandalone(): bool
+    {
+        if (!$this->isDocker()) {
+            return false;
+        }
+
+        return self::envToBool($this->data[self::DOCKER_IS_STANDALONE] ?? false);
+    }
+
     public function getUriToWeb(): UriInterface
     {
-        if ($this->isDocker()) {
+        if ($this->isDocker() && !$this->isDockerStandalone()) {
             return $this->isDockerRevisionAtLeast(5)
                 ? new Uri('http://web')
                 : new Uri('http://nginx');
@@ -221,7 +231,7 @@ class Environment
 
     public function getUriToStations(): UriInterface
     {
-        return $this->isDocker()
+        return $this->isDocker() && !$this->isDockerStandalone()
             ? new Uri('http://stations')
             : new Uri('http://127.0.0.1');
     }

@@ -1,5 +1,16 @@
 #!/bin/bash
 
+svwaitup 5 /service/mariadb /service/redis || exit 1
+
 source /etc/php/.version
 
+# Set up PHP config
+dockerize -template "/etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl:/etc/php/${PHP_VERSION}/fpm/conf.d/05-azuracast.ini" \
+  -template "/etc/php/${PHP_VERSION}/fpm/www.conf.tmpl:/etc/php/${PHP_VERSION}/fpm/pool.d/www.conf" \
+  cp /etc/php/${PHP_VERSION}/fpm/conf.d/05-azuracast.ini /etc/php/${PHP_VERSION}/cli/conf.d/05-azuracast.ini
+
+# Initialize before running FPM
+sudo -E -u azuracast azuracast_cli azuracast:setup:initialize
+
+# Run PHP-FPM
 exec /usr/sbin/php-fpm${PHP_VERSION} -F --fpm-config /etc/php/${PHP_VERSION}/fpm/php-fpm.conf -c /etc/php/${PHP_VERSION}/fpm/

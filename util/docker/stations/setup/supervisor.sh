@@ -9,4 +9,4 @@ set -x
 $minimal_apt_get_install supervisor
 
 # mkdir -p /etc/supervisor
-cp /bd_build/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+cp /bd_build/stations/supervisor/supervisord.conf /etc/supervisor/supervisord.conf

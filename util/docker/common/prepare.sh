@@ -68,3 +68,10 @@ groupadd -g 8377 docker_env
 chown :docker_env /etc/container_environment.sh /etc/container_environment.json
 chmod 640 /etc/container_environment.sh /etc/container_environment.json
 ln -s /etc/container_environment.sh /etc/profile.d/
+
+# Install runit and other common scripts.
+$minimal_apt_get_install runit gosu curl wget tar zip unzip git rsync tzdata gpg-agent openssh-client
+
+# Add scripts
+cp -rT /bd_build/scripts/ /usr/local/bin
+chmod -R a+x /usr/local/bin

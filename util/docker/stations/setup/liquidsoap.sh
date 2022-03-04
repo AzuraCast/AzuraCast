@@ -33,7 +33,7 @@ ln -s /usr/bin/liquidsoap /usr/local/bin/liquidsoap
 # else
 #     $minimal_apt_get_install build-essential libssl-dev libcurl4-openssl-dev m4 ocaml opam autoconf automake
 #
-#     sudo -u azuracast bash /bd_build/liquidsoap/build_as_azuracast.sh
+#     sudo -u azuracast bash ../liquidsoap/build_as_azuracast.sh
 #     ln -s /var/azuracast/.opam/4.13.1/bin/liquidsoap /usr/local/bin/liquidsoap
 #     chmod a+x /usr/local/bin/liquidsoap
 #     apt-get purge -y build-essential libssl-dev libcurl4-openssl-dev m4 ocaml opam autoconf automake

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-svwaitup 5 /service/php-fpm || exit 1
+sv -w 30 check php-fpm || exit 1
 
 bool() {
   case "$1" in

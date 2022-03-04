@@ -171,10 +171,6 @@ services:
       - '8490:8490'
       - '8495:8495'
       - '8496:8496'
-    depends_on:
-      - mariadb
-      - stations
-      - redis
     env_file: azuracast.env
     environment:
       LANG: ${LANG:-en_US.UTF-8}

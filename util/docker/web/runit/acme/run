@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sv -w 45 check nginx || exit 1
+
 # Acme loading script
 # Uses code from:
 # https://github.com/nginx-proxy/acme-companion/blob/main/app/letsencrypt_service

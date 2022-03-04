@@ -5,6 +5,8 @@ set -x
 
 PHP_VERSION=8.1
 
+echo "${PHP_VERSION}" >> /etc/container_environment/PHP_VERSION
+
 add-apt-repository -y ppa:ondrej/php
 apt-get update
 
@@ -18,10 +20,8 @@ $minimal_apt_get_install php${PHP_VERSION}-fpm php${PHP_VERSION}-cli php${PHP_VE
 mkdir -p /run/php
 touch /run/php/php${PHP_VERSION}-fpm.pid
 
-echo "PHP_VERSION=${PHP_VERSION}" >>/etc/php/.version
-
-cp /bd_build/php/php.ini.tmpl /etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl
-cp /bd_build/php/www.conf.tmpl /etc/php/${PHP_VERSION}/fpm/www.conf.tmpl
+cp /bd_build/web/php/php.ini.tmpl /etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl
+cp /bd_build/web/php/www.conf.tmpl /etc/php/${PHP_VERSION}/fpm/www.conf.tmpl
 
 # Install Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer

@@ -220,7 +220,7 @@ class Environment
 
     public function getUriToWeb(): UriInterface
     {
-        return match(true) {
+        return match (true) {
             $this->isDockerStandalone() => new Uri('http://127.0.0.1'),
             $this->isDockerRevisionAtLeast(5) => new Uri('http://web'),
             $this->isDocker() => new Uri('http://nginx'),
@@ -230,7 +230,7 @@ class Environment
 
     public function getUriToStations(): UriInterface
     {
-        return match(true) {
+        return match (true) {
             $this->isDockerStandalone() => new Uri('http://127.0.0.1'),
             $this->isDocker() => new Uri('http://stations'),
             default => new Uri('http://127.0.0.1'),

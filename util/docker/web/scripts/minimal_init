@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+sv -w 30 start mariadb || exit 1
+sv -w 30 start redis || exit 1
+sv -w 30 start beanstalkd || exit 1
+
+gosu azuracast php /var/azuracast/www/bin/uptime_wait || exit 1
+
+exec "$@"

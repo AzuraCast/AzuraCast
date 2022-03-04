@@ -289,6 +289,8 @@ class InstallCommand extends Command
         $sampleFile = $this->environment->getBaseDirectory() . '/docker-compose.sample.yml';
         $yaml = Yaml::parseFile($sampleFile);
 
+        $isStandalone = $this->environment->isDockerStandalone();
+
         // Parse port listing and convert into YAML format.
         $ports = $env['AZURACAST_STATION_PORTS'] ?? '';
 
@@ -316,7 +318,18 @@ class InstallCommand extends Command
             }
 
             if (!empty($yamlPorts)) {
-                $yaml['services']['stations']['ports'] = $yamlPorts;
+                if ($isStandalone) {
+                    $existingPorts = [];
+                    foreach ($yaml['services']['ports'] as $port) {
+                        if (str_starts_with('$', $port)) {
+                            $existingPorts[] = $port;
+                        }
+                    }
+
+                    $yaml['services']['web']['ports'] = array_merge($existingPorts, $yamlPorts);
+                } else {
+                    $yaml['services']['stations']['ports'] = $yamlPorts;
+                }
             }
             if (!empty($nginxRadioPorts)) {
                 $nginxRadioPortsStr = '(' . implode('|', $nginxRadioPorts) . ')';
@@ -329,9 +342,11 @@ class InstallCommand extends Command
         }
 
         // Remove Redis if it's not enabled.
-        $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
-        if (!$enableRedis) {
-            unset($yaml['services']['redis']);
+        if (!$isStandalone) {
+            $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
+            if (!$enableRedis) {
+                unset($yaml['services']['redis']);
+            }
         }
 
         // Remove privileged-mode settings if not enabled.

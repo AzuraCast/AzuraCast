@@ -125,7 +125,11 @@ class ConfigWriter implements EventSubscriberInterface
         $configDir = $station->getRadioConfigDir();
         $pidfile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.pid';
 
-        $telnetBindAddr = $this->environment->isDocker() ? '0.0.0.0' : '127.0.0.1';
+        $telnetBindAddr = match (true) {
+            $this->environment->isDockerStandalone() => '127.0.0.1',
+            $this->environment->isDocker() => '0.0.0.0',
+            default => '127.0.0.1',
+        };
         $telnetPort = $this->liquidsoap->getTelnetPort($station);
 
         $stationTz = self::cleanUpString($station->getTimezone());

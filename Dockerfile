@@ -16,7 +16,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM ubuntu:focal
+FROM mariadb:10.5-focal
 
 ENV TZ="UTC"
 
@@ -90,9 +90,6 @@ EXPOSE 8000-8999
 ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"
 VOLUME ["/var/azuracast/servers/shoutcast2"]
 
-# MariaDB Data
-VOLUME ["/var/lib/mysql"]
-
 # Sensible default environment variables.
 ENV LANG="en_US.UTF-8" \
     DOCKER_IS_STANDALONE="true" \
@@ -117,4 +114,5 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=*
 
 # Entrypoint and default command
+ENTRYPOINT [""]
 CMD ["/usr/local/bin/my_init"]

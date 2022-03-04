@@ -2,4 +2,4 @@
 
 dockerize -template /etc/mysql/db.cnf.tmpl:/etc/mysql/conf.d/db.cnf
 
-exec gosu mysql db_init mysqld
+exec gosu mysql db_entrypoint.sh mysqld

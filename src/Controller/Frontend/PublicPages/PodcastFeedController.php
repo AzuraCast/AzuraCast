@@ -77,7 +77,9 @@ class PodcastFeedController
 
         $response->getBody()->write($generatedRss);
 
-        return $response->withHeader('Content-Type', 'application/rss+xml');
+        return $response
+            ->withHeader('Content-Type', 'application/rss+xml')
+            ->withHeader('X-Robots-Tag', 'index, nofollow');
     }
 
     protected function checkHasPublishedEpisodes(Podcast $podcast): bool

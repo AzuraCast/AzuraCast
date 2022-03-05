@@ -75,3 +75,6 @@ $minimal_apt_get_install runit gosu curl wget tar zip unzip git rsync tzdata gpg
 # Add scripts
 cp -rT /bd_build/scripts/ /usr/local/bin
 chmod -R a+x /usr/local/bin
+
+mkdir -p /etc/service.full/
+mkdir -p /etc/service.minimal/

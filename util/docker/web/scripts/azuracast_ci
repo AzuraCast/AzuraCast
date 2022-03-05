@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-minimal_init /bin/true || exit 1
-
 azuracast_install || exit 1
 
 chmod 777 tests/_output/

@@ -486,7 +486,7 @@ install-dev() {
   fi
 
   docker-compose build
-  docker-compose run --rm web minimal_init azuracast_install "$@"
+  docker-compose run --rm web azuracast_install "$@"
 
   docker-compose -f frontend/docker-compose.yml build
   docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
@@ -564,7 +564,7 @@ update() {
     docker volume rm azuracast_tmp_data
     docker volume rm azuracast_redis_data
 
-    docker-compose run --rm web minimal_init azuracast_update "$@"
+    docker-compose run --rm web azuracast_update "$@"
     docker-compose up -d
 
     if ask "Clean up all stopped Docker containers and images to save space?" Y; then
@@ -703,7 +703,7 @@ restore() {
       .env --file .env set AZURACAST_PGID="$(id -g)"
     fi
 
-    docker-compose run --rm web minimal_init azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+    docker-compose run --rm web azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
     # Move file back from volume to local filesystem
     docker run --rm -v "azuracast_backups:/backup_src" \

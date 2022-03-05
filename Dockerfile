@@ -77,7 +77,8 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
-VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist"]
+VOLUME ["/var/azuracast/stations", "/var/azuracast/www_tmp", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
+ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"
 
 #
 # END Operations as `azuracast` user
@@ -86,10 +87,6 @@ USER root
 
 EXPOSE 80 2022
 EXPOSE 8000-8999
-
-# Include radio services in PATH
-ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"
-VOLUME ["/var/azuracast/servers/shoutcast2"]
 
 # Sensible default environment variables.
 ENV LANG="en_US.UTF-8" \
@@ -116,4 +113,4 @@ ENV LANG="en_US.UTF-8" \
 
 # Entrypoint and default command
 ENTRYPOINT ["/usr/local/bin/my_init"]
-CMD [""]
+CMD ["--no-main-command"]

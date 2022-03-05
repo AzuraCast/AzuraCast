@@ -40,6 +40,11 @@ RUN bash /bd_build/stations/setup.sh \
     && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/stations
 
+COPY ./util/docker/web /bd_build/web/
+RUN bash /bd_build/web/setup.sh \
+    && bash /bd_build/cleanup.sh \
+    && rm -rf /bd_build/web
+
 COPY ./util/docker/mariadb /bd_build/mariadb/
 RUN bash /bd_build/mariadb/setup.sh \
     && bash /bd_build/cleanup.sh \
@@ -50,12 +55,8 @@ RUN bash /bd_build/redis/setup.sh \
     && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/redis
 
-COPY ./util/docker/web /bd_build/web/
-RUN bash /bd_build/web/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/web
-
-RUN rm -rf /bd_build
+RUN bash /bd_build/post_setup.sh \
+    && rm -rf /bd_build
 
 #
 # START Operations as `azuracast` user
@@ -114,5 +115,5 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=*
 
 # Entrypoint and default command
-ENTRYPOINT [""]
-CMD ["/usr/local/bin/my_init"]
+ENTRYPOINT ["/usr/local/bin/my_init"]
+CMD [""]

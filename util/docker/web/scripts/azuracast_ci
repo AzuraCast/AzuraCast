@@ -7,8 +7,5 @@ fi
 
 azuracast_install || exit 1
 
-chmod 777 tests/_output/
-chmod 777 tests/_support/_generated
-
 cd /var/azuracast/www
 composer codeception-no-coverage

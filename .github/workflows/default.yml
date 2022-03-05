@@ -129,6 +129,8 @@ jobs:
 
       - name: Run functional test suite.
         run: |
+          chmod 777 tests/_output/
+          chmod 777 tests/_support/_generated
           docker-compose run --rm web azuracast_ci
 
       - name: Stop all running containers.

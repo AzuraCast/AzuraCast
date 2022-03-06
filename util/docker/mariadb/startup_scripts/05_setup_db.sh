@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! -f /etc/service/mariadb/run ]; then
+    echo "MariaDB disabled. Skipping DB initialization..."
+    exit 0
+fi
+
 source /usr/local/bin/db_entrypoint.sh
 
 set -- mysqld

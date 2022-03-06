@@ -102,11 +102,11 @@ class InstallCommand extends Command
         $locale = SupportedLocales::getValidLocale($azuracastEnv[Environment::LANG] ?? null);
         $locale->register($this->environment);
 
-        $envConfig = EnvFile::getConfiguration();
-        $env->setFromDefaults();
+        $envConfig = EnvFile::getConfiguration($this->environment);
+        $env->setFromDefaults($this->environment);
 
-        $azuracastEnvConfig = AzuraCastEnvFile::getConfiguration();
-        $azuracastEnv->setFromDefaults();
+        $azuracastEnvConfig = AzuraCastEnvFile::getConfiguration($this->environment);
+        $azuracastEnv->setFromDefaults($this->environment);
 
         // Apply values passed via flags
         if (null !== $releaseChannel) {
@@ -154,6 +154,16 @@ class InstallCommand extends Command
             unset($azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD']);
         } else {
             $azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD'] = 'yes';
+        }
+
+        // Special fixes for transitioning to standalone installations.
+        if ($this->environment->isDockerStandalone()) {
+            if ('mariadb' === $azuracastEnv['MYSQL_HOST']) {
+                unset($azuracastEnv['MYSQL_HOST']);
+            }
+            if ('redis' === $azuracastEnv['REDIS_HOST']) {
+                unset($azuracastEnv['REDIS_HOST']);
+            }
         }
 
         // Display header messages
@@ -253,8 +263,8 @@ class InstallCommand extends Command
             __('Writing configuration files...')
         );
 
-        $envStr = $env->writeToFile();
-        $azuracastEnvStr = $azuracastEnv->writeToFile();
+        $envStr = $env->writeToFile($this->environment);
+        $azuracastEnvStr = $azuracastEnv->writeToFile($this->environment);
 
         if ($io->isVerbose()) {
             $io->section($env->getBasename());
@@ -294,7 +304,7 @@ class InstallCommand extends Command
         // Parse port listing and convert into YAML format.
         $ports = $env['AZURACAST_STATION_PORTS'] ?? '';
 
-        $envConfig = $env::getConfiguration();
+        $envConfig = $env::getConfiguration($this->environment);
         $defaultPorts = $envConfig['AZURACAST_STATION_PORTS']['default'];
 
         if (!empty($ports) && 0 !== strcmp($ports, $defaultPorts)) {

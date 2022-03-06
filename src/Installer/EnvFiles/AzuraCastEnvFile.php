@@ -14,12 +14,12 @@ use function __;
 class AzuraCastEnvFile extends AbstractEnvFile
 {
     /** @inheritDoc */
-    public static function getConfiguration(): array
+    public static function getConfiguration(Environment $environment): array
     {
         static $config = null;
 
         if (null === $config) {
-            $emptyEnv = new Environment([]);
+            $emptyEnv = Environment::getDefaultsForEnvironment($environment);
             $defaults = $emptyEnv->toArray();
 
             $langOptions = [];

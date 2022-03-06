@@ -360,6 +360,15 @@ class Environment
         return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
     }
 
+    public static function getDefaultsForEnvironment(Environment $existingEnv): self
+    {
+        return new self([
+            self::IS_CLI => $existingEnv->isCli(),
+            self::IS_DOCKER => $existingEnv->isDocker(),
+            self::DOCKER_IS_STANDALONE => $existingEnv->isDockerStandalone(),
+        ]);
+    }
+
     public static function envToBool(mixed $value): bool
     {
         if (is_bool($value)) {

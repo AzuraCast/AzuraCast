@@ -455,14 +455,6 @@ install-dev() {
     fi
   fi
 
-  if [[ ! -d ../docker-azuracast-radio ]]; then
-    if ask "Clone related repositories?" Y; then
-      git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
-      git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
-      git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
-    fi
-  fi
-
   if [[ ! -f docker-compose.yml ]]; then
     cp docker-compose.sample.yml docker-compose.yml
   fi

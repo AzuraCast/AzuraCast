@@ -117,8 +117,8 @@ jobs:
         with:
           context: .
           load: true
-          tags: ghcr.io/azuracast/web:latest
-          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
+          tags: ghcr.io/azuracast/azuracast:latest
+          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
 
       - name: Set up functional test environment.
         run: |
@@ -201,8 +201,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            azuracast/azuracast_web_v2
-            ghcr.io/azuracast/web
+            azuracast/azuracast
+            ghcr.io/azuracast/azuracast
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=branch
@@ -216,5 +216,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
-          cache-to: type=registry,ref=ghcr.io/azuracast/web:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
+          cache-to: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache,mode=max

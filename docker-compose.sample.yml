@@ -12,8 +12,8 @@
 
 services:
   web:
-    container_name: azuracast_web
-    image: "ghcr.io/azuracast/web:${AZURACAST_VERSION:-latest}"
+    container_name: azuracast
+    image: "ghcr.io/azuracast/azuracast:${AZURACAST_VERSION:-latest}"
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://docs.azuracast.com/en/administration/docker#using-non-standard-ports
     ports:

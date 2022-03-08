@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ${MYSQL_SLOW_QUERY_LOG} != 1 ]; then
+    echo "MariaDB Slow Query Log is not currently enabled on this instance."
+    echo "Set MYSQL_SLOW_QUERY_LOG=1 in your environment variables (azuracast.env), then restart to enable."
+    exit 1
+fi
+
+exec gosu mysql mysqldumpslow /var/log/mysql/slow.log

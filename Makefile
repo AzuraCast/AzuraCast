@@ -26,8 +26,8 @@ build: # Rebuild all containers and restart
 update: # Update everything (i.e. after a branch update)
 	docker-compose build
 	$(MAKE) down
-	docker-compose run --rm --user=azuracast web composer install
-	docker-compose run --rm --user=azuracast web azuracast_cli azuracast:setup:initialize
+	docker-compose run --rm web gosu azuracast composer install
+	docker-compose run --rm web azuracast_cli azuracast:setup:initialize
 	$(MAKE) frontend-build
 	$(MAKE) up
 

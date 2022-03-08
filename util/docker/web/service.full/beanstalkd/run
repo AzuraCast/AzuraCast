@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo 'Spinning up Beanstalkd process...'
+
+exec gosu azuracast beanstalkd -p 11300 -z 262140

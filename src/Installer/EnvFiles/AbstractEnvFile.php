@@ -32,12 +32,12 @@ abstract class AbstractEnvFile implements ArrayAccess
         return basename($this->path);
     }
 
-    public function setFromDefaults(): void
+    public function setFromDefaults(Environment $environment): void
     {
         $currentVars = array_filter($this->data);
 
         $defaults = [];
-        foreach (static::getConfiguration() as $key => $keyInfo) {
+        foreach (static::getConfiguration($environment) as $key => $keyInfo) {
             if (isset($keyInfo['default'])) {
                 $defaults[$key] = $keyInfo['default'] ?? null;
             }
@@ -82,7 +82,7 @@ abstract class AbstractEnvFile implements ArrayAccess
         unset($this->data[$offset]);
     }
 
-    public function writeToFile(): string
+    public function writeToFile(Environment $environment): string
     {
         $values = array_filter($this->data);
 
@@ -93,7 +93,7 @@ abstract class AbstractEnvFile implements ArrayAccess
             '',
         ];
 
-        foreach (static::getConfiguration() as $key => $keyInfo) {
+        foreach (static::getConfiguration($environment) as $key => $keyInfo) {
             $envFile[] = '# ' . ($keyInfo['name'] ?? $key);
 
             if (!empty($keyInfo['description'])) {
@@ -180,7 +180,7 @@ abstract class AbstractEnvFile implements ArrayAccess
     /**
      * @return mixed[]
      */
-    abstract public static function getConfiguration(): array;
+    abstract public static function getConfiguration(Environment $environment): array;
 
     abstract public static function buildPathFromBase(string $baseDir): string;
 

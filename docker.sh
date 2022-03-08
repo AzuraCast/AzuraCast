@@ -378,6 +378,7 @@ run-installer() {
   fi
 
   curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
+
   docker-compose -p azuracast_installer -f docker-compose.installer.yml pull
   docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
 
@@ -454,14 +455,6 @@ install-dev() {
     fi
   fi
 
-  if [[ ! -d ../docker-azuracast-radio ]]; then
-    if ask "Clone related repositories?" Y; then
-      git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
-      git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
-      git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
-    fi
-  fi
-
   if [[ ! -f docker-compose.yml ]]; then
     cp docker-compose.sample.yml docker-compose.yml
   fi
@@ -485,7 +478,7 @@ install-dev() {
   fi
 
   docker-compose build
-  docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+  docker-compose run --rm web azuracast_install "$@"
 
   docker-compose -f frontend/docker-compose.yml build
   docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
@@ -563,7 +556,7 @@ update() {
     docker volume rm azuracast_tmp_data
     docker volume rm azuracast_redis_data
 
-    docker-compose run --rm --user="azuracast" web azuracast_update "$@"
+    docker-compose run --rm web azuracast_update "$@"
     docker-compose up -d
 
     if ask "Clean up all stopped Docker containers and images to save space?" Y; then
@@ -654,7 +647,7 @@ backup() {
     .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
-  docker-compose run --rm web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+  docker-compose exec web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
   # Move from Docker volume to local filesystem
   docker run --rm -v "azuracast_backups:/backup_src" \

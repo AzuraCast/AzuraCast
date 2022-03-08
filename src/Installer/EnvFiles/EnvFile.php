@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Installer\EnvFiles;
 
+use App\Environment;
 use App\Radio\Configuration;
 
 use function __;
@@ -11,7 +12,7 @@ use function __;
 class EnvFile extends AbstractEnvFile
 {
     /** @inheritDoc */
-    public static function getConfiguration(): array
+    public static function getConfiguration(Environment $environment): array
     {
         static $config = null;
 

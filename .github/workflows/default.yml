@@ -45,7 +45,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
 
       - name: Set console permissions and clear static assets.
         run: |
@@ -117,8 +117,8 @@ jobs:
         with:
           context: .
           load: true
-          tags: ghcr.io/azuracast/web:latest
-          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
+          tags: ghcr.io/azuracast/azuracast:latest
+          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
 
       - name: Set up functional test environment.
         run: |
@@ -126,13 +126,12 @@ jobs:
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
           cp docker-compose.testing.yml docker-compose.override.yml
-          docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.
         run: |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose run --rm --user="azuracast" web composer codeception-no-coverage
+          docker-compose run --rm web azuracast_ci
 
       - name: Stop all running containers.
         run: |
@@ -202,8 +201,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            azuracast/azuracast_web_v2
-            ghcr.io/azuracast/web
+            azuracast/azuracast
+            ghcr.io/azuracast/azuracast
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=branch
@@ -217,5 +216,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/azuracast/web:buildcache
-          cache-to: type=registry,ref=ghcr.io/azuracast/web:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
+          cache-to: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache,mode=max

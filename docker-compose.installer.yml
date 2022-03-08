@@ -1,10 +1,10 @@
 services :
   installer :
-    container_name : azuracast_installer
-    image : 'ghcr.io/azuracast/web:${AZURACAST_VERSION:-latest}'
-    volumes :
+    container_name: azuracast_installer
+    image: 'ghcr.io/azuracast/web:${AZURACAST_VERSION:-latest}'
+    volumes:
       - './:/installer'
-    restart : 'no'
-    user : root
-    entrypoint : docker_installer
-    command : install
+    restart: 'no'
+    user: root
+    entrypoint: minimal_init
+    command: docker_installer install

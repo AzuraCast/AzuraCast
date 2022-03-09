@@ -380,7 +380,7 @@ run-installer() {
   curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
 
   docker-compose -p azuracast_installer -f docker-compose.installer.yml pull
-  docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
+  docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer -- docker_installer install "$@"
 
   rm docker-compose.installer.yml
 }
@@ -433,7 +433,7 @@ install() {
   docker volume rm azuracast_tmp_data 2>/dev/null || true
   docker volume rm azuracast_redis_data 2>/dev/null || true
 
-  docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+  docker-compose run --rm web -- azuracast_install "$@"
   docker-compose up -d
   exit
 }
@@ -478,7 +478,7 @@ install-dev() {
   fi
 
   docker-compose build
-  docker-compose run --rm web azuracast_install "$@"
+  docker-compose run --rm web -- azuracast_install "$@"
 
   docker-compose -f frontend/docker-compose.yml build
   docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
@@ -556,7 +556,7 @@ update() {
     docker volume rm azuracast_tmp_data
     docker volume rm azuracast_redis_data
 
-    docker-compose run --rm web azuracast_update "$@"
+    docker-compose run --rm web -- azuracast_update "$@"
     docker-compose up -d
 
     if ask "Clean up all stopped Docker containers and images to save space?" Y; then
@@ -588,7 +588,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-  docker-compose run --rm --user="azuracast" web azuracast_cli "$@"
+  docker-compose run --rm web -- azuracast_cli "$@"
   exit
 }
 
@@ -622,7 +622,7 @@ db() {
   .env --file azuracast.env get MYSQL_DATABASE
   MYSQL_DATABASE="${REPLY:-azuracast}"
 
-  docker-compose run --rm mariadb mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
+  docker-compose run --rm web -- mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
     --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE}
 
   exit
@@ -647,7 +647,7 @@ backup() {
     .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
-  docker-compose exec web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+  docker-compose exec web -- azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
   # Move from Docker volume to local filesystem
   docker run --rm -v "azuracast_backups:/backup_src" \
@@ -695,7 +695,7 @@ restore() {
       .env --file .env set AZURACAST_PGID="$(id -g)"
     fi
 
-    docker-compose run --rm web azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+    docker-compose run --rm web -- azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
     # Move file back from volume to local filesystem
     docker run --rm -v "azuracast_backups:/backup_src" \

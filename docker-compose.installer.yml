@@ -5,6 +5,3 @@ services :
     volumes:
       - './:/installer'
     restart: 'no'
-    user: root
-    entrypoint: minimal_init
-    command: docker_installer install

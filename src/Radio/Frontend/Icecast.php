@@ -116,18 +116,20 @@ class Icecast extends AbstractFrontend
 
         $certPaths = CertificateLocator::findCertificate();
 
-        $xForwardedFor = $this->environment->isDocker()
-            ? ['172.*.*.*', '192.*.*.*']
-            : '127.0.0.1';
+        $xForwardedFor = match (true) {
+            $this->environment->isDockerStandalone() => '127.0.0.1',
+            $this->environment->isDocker() => ['172.*.*.*', '192.*.*.*'],
+            default => '127.0.0.1',
+        };
 
         $config = [
-            'location'       => 'AzuraCast',
-            'admin'          => 'icemaster@localhost',
-            'hostname'       => $baseUrl->getHost(),
-            'limits'         => [
-                'clients'        => $frontendConfig->getMaxListeners() ?? 2500,
-                'sources'        => $station->getMounts()->count(),
-                'queue-size'     => 524288,
+            'location' => 'AzuraCast',
+            'admin' => 'icemaster@localhost',
+            'hostname' => $baseUrl->getHost(),
+            'limits' => [
+                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
+                'sources' => $station->getMounts()->count(),
+                'queue-size' => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
                 'source-timeout' => 10,

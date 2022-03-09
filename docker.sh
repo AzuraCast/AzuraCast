@@ -588,7 +588,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-  docker-compose exec web -- azuracast_cli "$@"
+  docker-compose exec --user="azuracast" web azuracast_cli "$@"
   exit
 }
 
@@ -608,7 +608,7 @@ db() {
   local MYSQL_HOST MYSQL_PORT MYSQL_USER MYSQL_PASSWORD MYSQL_DATABASE
 
   .env --file azuracast.env get MYSQL_HOST
-  MYSQL_HOST="${REPLY:-mariadb}"
+  MYSQL_HOST="${REPLY:-localhost}"
 
   .env --file azuracast.env get MYSQL_PORT
   MYSQL_PORT="${REPLY:-3306}"
@@ -622,7 +622,7 @@ db() {
   .env --file azuracast.env get MYSQL_DATABASE
   MYSQL_DATABASE="${REPLY:-azuracast}"
 
-  docker-compose run --rm web -- mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
+  docker-compose exec --user="mysql" web mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
     --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE}
 
   exit
@@ -647,7 +647,7 @@ backup() {
     .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
-  docker-compose exec web -- azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+  docker-compose exec --user="azuracast" web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
   # Move from Docker volume to local filesystem
   docker run --rm -v "azuracast_backups:/backup_src" \

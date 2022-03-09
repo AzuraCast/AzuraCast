@@ -588,7 +588,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-  docker-compose run --rm web -- azuracast_cli "$@"
+  docker-compose exec web -- azuracast_cli "$@"
   exit
 }
 

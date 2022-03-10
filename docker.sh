@@ -431,7 +431,6 @@ install() {
 
   docker volume rm azuracast_www_vendor 2>/dev/null || true
   docker volume rm azuracast_tmp_data 2>/dev/null || true
-  docker volume rm azuracast_redis_data 2>/dev/null || true
 
   docker-compose run --rm web -- azuracast_install "$@"
   docker-compose up -d
@@ -554,7 +553,6 @@ update() {
 
     docker volume rm azuracast_www_vendor
     docker volume rm azuracast_tmp_data
-    docker volume rm azuracast_redis_data
 
     docker-compose run --rm web -- azuracast_update "$@"
     docker-compose up -d

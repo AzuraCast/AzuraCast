@@ -331,7 +331,7 @@ class InstallCommand extends Command
                 if ($isStandalone) {
                     $existingPorts = [];
                     foreach ($yaml['services']['web']['ports'] as $port) {
-                        if (str_starts_with('$', $port)) {
+                        if (str_starts_with($port, '$')) {
                             $existingPorts[] = $port;
                         }
                     }

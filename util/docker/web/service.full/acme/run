@@ -13,6 +13,89 @@ export DEBUG=1
 shopt -s expand_aliases
 . /usr/local/acme.sh/acme.sh.env
 
+function set_ownership_and_permissions {
+    local path="${1:?}"
+    # The default ownership is root:root, with 755 permissions for folders and 644 for files.
+    local user="${FILES_UID:-root}"
+    local group="${FILES_GID:-$user}"
+    local f_perms="${FILES_PERMS:-644}"
+    local d_perms="${FOLDERS_PERMS:-755}"
+
+    if [[ ! "$f_perms" =~ ^[0-7]{3,4}$ ]]; then
+        echo "Warning : the provided files permission octal ($f_perms) is incorrect. Skipping ownership and permissions check."
+        return 1
+    fi
+    if [[ ! "$d_perms" =~ ^[0-7]{3,4}$ ]]; then
+        echo "Warning : the provided folders permission octal ($d_perms) is incorrect. Skipping ownership and permissions check."
+        return 1
+    fi
+
+    [[ "$DEBUG" == 1 ]] && echo "Debug: checking $path ownership and permissions."
+
+    # Find the user numeric ID if the FILES_UID environment variable isn't numeric.
+    if [[ "$user" =~ ^[0-9]+$ ]]; then
+        user_num="$user"
+    # Check if this user exist inside the container
+    elif id -u "$user" > /dev/null 2>&1; then
+        # Convert the user name to numeric ID
+        local user_num; user_num="$(id -u "$user")"
+        [[ "$DEBUG" == 1 ]] && echo "Debug: numeric ID of user $user is $user_num."
+    else
+        echo "Warning: user $user not found in the container, please use a numeric user ID instead of a user name. Skipping ownership and permissions check."
+        return 1
+    fi
+
+    # Find the group numeric ID if the FILES_GID environment variable isn't numeric.
+    if [[ "$group" =~ ^[0-9]+$ ]]; then
+        group_num="$group"
+    # Check if this group exist inside the container
+    elif getent group "$group" > /dev/null 2>&1; then
+        # Convert the group name to numeric ID
+        local group_num; group_num="$(getent group "$group" | awk -F ':' '{print $3}')"
+        [[ "$DEBUG" == 1 ]] && echo "Debug: numeric ID of group $group is $group_num."
+    else
+        echo "Warning: group $group not found in the container, please use a numeric group ID instead of a group name. Skipping ownership and permissions check."
+        return 1
+    fi
+
+    # Check and modify ownership if required.
+    if [[ -e "$path" ]]; then
+    if [[ "$(stat -c %u:%g "$path" )" != "$user_num:$group_num" ]]; then
+        [[ "$DEBUG" == 1 ]] && echo "Debug: setting $path ownership to $user:$group."
+        if [[ -L "$path" ]]; then
+            chown -h "$user_num:$group_num" "$path"
+        else
+            chown "$user_num:$group_num" "$path"
+        fi
+    fi
+    # If the path is a folder, check and modify permissions if required.
+    if [[ -d "$path" ]]; then
+        if [[ "$(stat -c %a "$path")" != "$d_perms" ]]; then
+            [[ "$DEBUG" == 1 ]] && echo "Debug: setting $path permissions to $d_perms."
+            chmod "$d_perms" "$path"
+        fi
+    # If the path is a file, check and modify permissions if required.
+    elif [[ -f "$path" ]]; then
+        # Use different permissions for private files (private keys and ACME account files) ...
+        if [[ "$path" =~ ^.*(default\.key|key\.pem|\.json)$ ]]; then
+            if [[ "$(stat -c %a "$path")" != "$f_perms" ]]; then
+                [[ "$DEBUG" == 1 ]] && echo "Debug: setting $path permissions to $f_perms."
+                chmod "$f_perms" "$path"
+            fi
+        # ... and for public files (certificates, chains, fullchains, DH parameters).
+        else
+            if [[ "$(stat -c %a "$path")" != "644" ]]; then
+                [[ "$DEBUG" == 1 ]] && echo "Debug: setting $path permissions to 644."
+                chmod "644" "$path"
+            fi
+        fi
+    fi
+    else
+        echo "Warning: $path does not exist. Skipping ownership and permissions check."
+        return 1
+    fi
+}
+
 # Convert argument to lowercase (bash 4 only)
 function lc() {
 	echo "${@,,}"
@@ -23,10 +106,12 @@ function create_link {
     local -r target=${2?missing target argument}
 
     if [[ -f "$target" ]] && [[ "$(readlink "$target")" == "$source" ]]; then
+        set_ownership_and_permissions "$target"
         [[ "$DEBUG" == 1 ]] && echo "$target already linked to $source"
         return 1
     else
-        ln -sf "$source" "$target"
+        ln -sf "$source" "$target" \
+            && set_ownership_and_permissions "$target"
     fi
 }
 
@@ -210,6 +295,7 @@ function update_cert {
 
     # Create directory for the first domain
     mkdir -p "$certificate_dir"
+    set_ownership_and_permissions "$certificate_dir"
 
     for domain in "${hosts_array[@]}"; do
         # Add all the domains to certificate
@@ -233,6 +319,12 @@ function update_cert {
             create_links "$base_domain" \
                 && should_reload_nginx='true'
         fi
+
+        # Make private key root readable only
+        for file in cert.pem key.pem chain.pem fullchain.pem; do
+            local file_path="${certificate_dir}/${file}"
+            [[ -e "$file_path" ]] && set_ownership_and_permissions "$file_path"
+        done
 
         [[ $acmesh_return -eq 0 ]] \
             && should_reload_nginx='true'

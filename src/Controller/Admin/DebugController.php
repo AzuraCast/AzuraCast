@@ -139,14 +139,40 @@ class DebugController extends AbstractLogViewerController
             $response,
             'system/log_view',
             [
-                'sidebar'     => null,
-                'title'       => __('Debug Output'),
+                'sidebar' => null,
+                'title' => __('Debug Output'),
                 'log_records' => $this->testHandler->getRecords(),
             ]
         );
     }
 
-    public function nextsongAction(
+    public function nextSongAction(
+        ServerRequest $request,
+        Response $response,
+        AutoDJ\Annotations $annotations,
+    ): ResponseInterface {
+        $this->logger->pushHandler($this->testHandler);
+
+        $nextSongAnnotated = $annotations->annotateNextSong(
+            $request->getStation(),
+            false
+        );
+
+        $this->logger->info('Annotated next song: ' . $nextSongAnnotated);
+        $this->logger->popHandler();
+
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/log_view',
+            [
+                'sidebar' => null,
+                'title' => __('Debug Output'),
+                'log_records' => $this->testHandler->getRecords(),
+            ]
+        );
+    }
+
+    public function clearStationQueueAction(
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,

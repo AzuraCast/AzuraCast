@@ -16,7 +16,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM mariadb:10.5-focal
+FROM mariadb:10.7-focal
 
 ENV TZ="UTC"
 

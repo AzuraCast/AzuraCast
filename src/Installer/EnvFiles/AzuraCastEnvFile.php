@@ -65,12 +65,12 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     ],
                 ],
                 'COMPOSER_PLUGIN_MODE'                     => [
-                    'name'        => __('Composer Plugin Mode'),
+                    'name' => __('Enable Custom Code Plugins'),
                     'description' => __(
                         'Enable the composer "merge" functionality to combine the main application\'s composer.json file with any plugin composer files. This can have performance implications, so you should only use it if you use one or more plugins with their own Composer dependencies.',
                     ),
-                    'options'     => [true, false],
-                    'default'     => false,
+                    'options' => [true, false],
+                    'default' => false,
                 ],
                 Environment::AUTO_ASSIGN_PORT_MIN          => [
                     'name'        => __(

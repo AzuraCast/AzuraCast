@@ -185,9 +185,7 @@ services:
     volumes:
       - letsencrypt:/etc/nginx/certs
       - letsencrypt_acme:/etc/acme.sh
-      - www_vendor:/var/azuracast/www/vendor
       - www_uploads:/var/azuracast/uploads
-      - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
       - geolite_install:/var/azuracast/geoip
@@ -212,7 +210,5 @@ volumes:
   geolite_install: { }
   sftpgo_data: { }
   station_data: { }
-  www_vendor: { }
   www_uploads: { }
-  tmp_data: { }
   backups: { }

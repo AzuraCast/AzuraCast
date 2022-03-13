@@ -429,9 +429,6 @@ install() {
 
   docker-compose pull
 
-  docker volume rm azuracast_www_vendor 2>/dev/null || true
-  docker volume rm azuracast_tmp_data 2>/dev/null || true
-
   docker-compose run --rm web -- azuracast_install "$@"
   docker-compose up -d
   exit
@@ -550,9 +547,6 @@ update() {
       docker-compose pull
       docker-compose down
     fi
-
-    docker volume rm azuracast_www_vendor
-    docker volume rm azuracast_tmp_data
 
     docker-compose run --rm web -- azuracast_update "$@"
     docker-compose up -d

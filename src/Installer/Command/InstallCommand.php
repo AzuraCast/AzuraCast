@@ -257,6 +257,11 @@ class InstallCommand extends Command
                     $env['LETSENCRYPT_EMAIL'] ?? ''
                 );
             }
+
+            $azuracastEnv['COMPOSER_PLUGIN_MODE'] = $io->confirm(
+                $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
+                $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
+            );
         }
 
         $io->writeln(
@@ -349,6 +354,12 @@ class InstallCommand extends Command
                 $nginxWebDjPortsStr = '(' . implode('|', $nginxWebDjPorts) . ')';
                 $yaml['services']['web']['environment']['NGINX_WEBDJ_PORTS'] = $nginxWebDjPortsStr;
             }
+        }
+
+        // Add plugin mode if it's selected.
+        if ($isStandalone && $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)) {
+            $yaml['services']['web']['volumes'][] = 'www_vendor:/var/azuracast/www/vendor';
+            $yaml['volumes']['www_vendor'] = [];
         }
 
         // Remove Redis if it's not enabled.

@@ -502,7 +502,7 @@ class ConfigWriter implements EventSubscriberInterface
                     end
                 end
                 
-                dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
+                dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=10., autodj_next_song)
                 dynamic = cue_cut(id="cue_next_song", dynamic)
                 
                 dynamic_startup = fallback(

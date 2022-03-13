@@ -61,8 +61,23 @@ class NowPlayingPerStationCommand extends CommandAbstract
 
         $this->logger->info('Starting Now Playing sync task.');
 
-        $this->nowPlayingTask->run($station);
-        $this->buildQueueTask->run($station);
+        try {
+            $this->nowPlayingTask->run($station);
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                'Now Playing error: ' . $e->getMessage(),
+                ['exception' => $e]
+            );
+        }
+
+        try {
+            $this->buildQueueTask->run($station);
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                'Queue builder error: ' . $e->getMessage(),
+                ['exception' => $e]
+            );
+        }
 
         $this->logger->info('Now Playing sync task complete.');
         $this->logger->popProcessor();

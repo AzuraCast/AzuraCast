@@ -28,7 +28,9 @@ class PodcastEpisodeController
         string $podcast_id,
         string $episode_id
     ): ResponseInterface {
-        $response = $response->withHeader('X-Robots-Tag', 'index, nofollow');
+        $response = $response
+            ->withHeader('X-Frame-Options', '*')
+            ->withHeader('X-Robots-Tag', 'index, nofollow');
 
         $router = $request->getRouter();
         $station = $request->getStation();

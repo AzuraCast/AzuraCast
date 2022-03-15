@@ -78,6 +78,7 @@ class Configuration
      */
     public function writeConfiguration(
         Station $station,
+        bool $reloadSupervisor = true,
         bool $forceRestart = false,
         bool $attemptReload = true
     ): void {
@@ -93,7 +94,10 @@ class Configuration
 
         if (!$station->getIsEnabled()) {
             @unlink($supervisorConfigFile);
-            $this->stopForStation($station);
+
+            if ($reloadSupervisor) {
+                $this->stopForStation($station);
+            }
             return;
         }
 
@@ -103,7 +107,10 @@ class Configuration
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             @unlink($supervisorConfigFile);
-            $this->stopForStation($station);
+
+            if ($reloadSupervisor) {
+                $this->stopForStation($station);
+            }
             return;
         }
 
@@ -146,26 +153,28 @@ class Configuration
         $backend->write($station);
 
         // Reload Supervisord and process groups
-        $affected_groups = $this->reloadSupervisor();
-        $was_restarted = in_array($backend_group, $affected_groups, true);
+        if ($reloadSupervisor) {
+            $affected_groups = $this->reloadSupervisor();
+            $was_restarted = in_array($backend_group, $affected_groups, true);
 
-        if (!$was_restarted && $forceRestart) {
-            try {
-                if ($attemptReload && ($backend->supportsReload() || $frontend->supportsReload())) {
-                    $backend->reload($station);
-                    $frontend->reload($station);
-                } else {
-                    $this->supervisor->stopProcessGroup($backend_group, true);
-                    $this->supervisor->startProcessGroup($backend_group, true);
+            if (!$was_restarted && $forceRestart) {
+                try {
+                    if ($attemptReload && ($backend->supportsReload() || $frontend->supportsReload())) {
+                        $backend->reload($station);
+                        $frontend->reload($station);
+                    } else {
+                        $this->supervisor->stopProcessGroup($backend_group, true);
+                        $this->supervisor->startProcessGroup($backend_group, true);
+                    }
+                } catch (SupervisorException) {
                 }
-            } catch (SupervisorException) {
+
+                $was_restarted = true;
             }
 
-            $was_restarted = true;
-        }
-
-        if ($was_restarted) {
-            $this->markAsStarted($station);
+            if ($was_restarted) {
+                $this->markAsStarted($station);
+            }
         }
     }
 

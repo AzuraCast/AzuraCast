@@ -56,7 +56,14 @@ class SetupCommand extends CommandAbstract
         $io->newLine();
         $io->section(__('Refreshing All Stations'));
 
-        $this->runCommand($output, 'azuracast:radio:restart');
+        $this->runCommand($output, 'azuracast:station-queues:clear');
+
+        $this->runCommand(
+            $output,
+            $this->environment->isDockerStandalone()
+                ? 'azuracast:radio:restart --no-supervisor-restart'
+                : 'azuracast:radio:restart'
+        );
 
         // Update system setting logging when updates were last run.
         $settings = $this->settingsRepo->readSettings();

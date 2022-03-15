@@ -18,6 +18,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:queue:clear' => Command\MessageQueue\ClearCommand::class,
         'azuracast:settings:list' => Command\Settings\ListCommand::class,
         'azuracast:settings:set' => Command\Settings\SetCommand::class,
+        'azuracast:station-queues:clear' => Command\ClearQueuesCommand::class,
         'azuracast:account:list' => Command\Users\ListCommand::class,
         'azuracast:account:login-token' => Command\Users\LoginTokenCommand::class,
         'azuracast:account:reset-password' => Command\Users\ResetPasswordCommand::class,

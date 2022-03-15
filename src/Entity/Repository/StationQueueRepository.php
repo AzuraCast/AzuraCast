@@ -198,6 +198,16 @@ class StationQueueRepository extends Repository
             ->setParameter('station', $station);
     }
 
+    public function clearUnplayed(): void
+    {
+        $this->em->createQuery(
+            <<<DQL
+                DELETE FROM App\Entity\StationQueue sq
+                WHERE sq.is_played = 0
+            DQL
+        )->execute();
+    }
+
     public function cleanup(int $daysToKeep): void
     {
         $threshold = CarbonImmutable::now()

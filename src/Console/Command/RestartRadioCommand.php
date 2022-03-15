@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Environment;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -20,6 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class RestartRadioCommand extends CommandAbstract
 {
     public function __construct(
+        protected Environment $environment,
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationRepository $stationRepo,
         protected Configuration $configuration,
@@ -29,7 +32,14 @@ class RestartRadioCommand extends CommandAbstract
 
     protected function configure(): void
     {
-        $this->addArgument('station-name', InputArgument::OPTIONAL);
+        $this->addArgument('station-name', InputArgument::OPTIONAL)
+            ->addOption(
+                'no-supervisor-restart',
+                '',
+                InputOption::VALUE_NONE,
+                'Do not reload Supervisord immediately with changes.',
+                false
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -37,6 +47,7 @@ class RestartRadioCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
 
         $stationName = $input->getArgument('station-name');
+        $noSupervisorRestart = (bool)$input->getOption('no-supervisor-restart');
 
         if (!empty($stationName)) {
             $station = $this->stationRepo->findByIdentifier($stationName);
@@ -57,7 +68,11 @@ class RestartRadioCommand extends CommandAbstract
         $io->progressStart(count($stations));
 
         foreach ($stations as $station) {
-            $this->configuration->writeConfiguration($station, true);
+            $this->configuration->writeConfiguration(
+                station: $station,
+                reloadSupervisor: $noSupervisorRestart,
+                forceRestart: true
+            );
             $io->progressAdvance();
         }
 

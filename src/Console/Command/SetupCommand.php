@@ -58,11 +58,15 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'azuracast:station-queues:clear');
 
+        $restartArgs = [];
+        if ($this->environment->isDockerStandalone()) {
+            $restartArgs[] = '--no-supervisor-restart';
+        }
+
         $this->runCommand(
             $output,
-            $this->environment->isDockerStandalone()
-                ? 'azuracast:radio:restart --no-supervisor-restart'
-                : 'azuracast:radio:restart'
+            'azuracast:radio:restart',
+            $restartArgs
         );
 
         // Update system setting logging when updates were last run.

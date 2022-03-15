@@ -37,9 +37,8 @@ class LiquidsoapCommand extends CommandAbstract
             ->addOption(
                 'as-autodj',
                 null,
-                InputOption::VALUE_NEGATABLE,
-                'Whether the task is executing as the actual AutoDJ or as a test.',
-                false
+                InputOption::VALUE_NONE,
+                'Whether the task is executing as the actual AutoDJ or as a test.'
             );
     }
 

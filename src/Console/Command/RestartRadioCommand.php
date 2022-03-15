@@ -35,10 +35,9 @@ class RestartRadioCommand extends CommandAbstract
         $this->addArgument('station-name', InputArgument::OPTIONAL)
             ->addOption(
                 'no-supervisor-restart',
-                '',
+                null,
                 InputOption::VALUE_NONE,
-                'Do not reload Supervisord immediately with changes.',
-                false
+                'Do not reload Supervisord immediately with changes.'
             );
     }
 

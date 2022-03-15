@@ -133,12 +133,6 @@ class ConfigWriter implements EventSubscriberInterface
         $telnetPort = $this->liquidsoap->getTelnetPort($station);
 
         $stationTz = self::cleanUpString($station->getTimezone());
-        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
-
-        $stationApiUrl = self::cleanUpString(
-            (string)$this->environment->getUriToWeb()
-                ->withPath('/api/internal/' . $station->getId())
-        );
 
         $event->appendBlock(
             <<<EOF
@@ -166,34 +160,73 @@ class ConfigWriter implements EventSubscriberInterface
             # Track live-enabled status script-wide for fades.
             live_enabled = ref(false)
             ignore(live_enabled)
-            
-            azuracast_api_url = "${stationApiUrl}"
-            azuracast_api_key = "${stationApiAuth}"
-            
-            def azuracast_api_call(~timeout=2, url, payload) =
-                full_url = "#{azuracast_api_url}/#{url}"
-                
-                log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
-                try
-                    response = http.post(full_url,
-                        headers=[
-                            ("Content-Type", "application/json"),
-                            ("User-Agent", "Liquidsoap AzuraCast"),
-                            ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
-                        ],
-                        timeout=timeout,
-                        data=payload
-                    )
-                    
-                    log("API #{url} - Response (#{response.status_code}): #{response}")
-                    {success = response.status_code == 200, data = "#{response}"}
-                catch err do
-                    log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
-                    {success = false, data = ""}
-                end
-            end
             EOF
         );
+
+        if (!$this->environment->isDockerStandalone()) {
+            $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
+            $stationApiUrl = self::cleanUpString(
+                (string)$this->environment->getUriToWeb()
+                    ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
+            );
+
+            $event->appendBlock(
+                <<<EOF
+                azuracast_api_url = "${stationApiUrl}"
+                azuracast_api_key = "${stationApiAuth}"
+                
+                def azuracast_api_call(~timeout=2, url, payload) =
+                    full_url = "#{azuracast_api_url}/#{url}"
+                    
+                    log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
+                    try
+                        response = http.post(full_url,
+                            headers=[
+                                ("Content-Type", "application/json"),
+                                ("User-Agent", "Liquidsoap AzuraCast"),
+                                ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
+                            ],
+                            timeout=timeout,
+                            data=payload
+                        )
+                        
+                        log("API #{url} - Response (#{response.status_code}): #{response}")
+                        "#{response}"
+                    catch err do
+                        log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
+                        "false"
+                    end
+                end
+                EOF
+            );
+        } else {
+            $stationId = $station->getIdRequired();
+
+            $event->appendBlock(
+                <<<EOF
+                def azuracast_api_call(~timeout=2, url, payload) =
+                    command = "liquidsoap_cli --as-autodj #{url} ${stationId}"
+                
+                    try
+                        response = list.hd(
+                            process.read.lines(
+                                env=[("PAYLOAD", payload)],
+                                timeout=float_of_int(timeout),
+                                command
+                            ),
+                            default=""
+                        )
+                        
+                        log("API #{url} - Response: #{response}")
+                        response
+                    catch err do
+                        log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
+                        "false"
+                    end
+                end
+                EOF
+            );
+        }
 
         $backendConfig = $station->getBackendConfig();
 
@@ -473,10 +506,10 @@ class ConfigWriter implements EventSubscriberInterface
                         "nextsong",
                         ""
                     )
-                    if (response.success != true) or (response.data == "") or (string.match(pattern="Error", response.data)) then
+                    if (response == "") or (response == "false") then
                         null()
                     else
-                        r = request.create(response.data)
+                        r = request.create(response)
                         if request.resolve(r) then
                             r
                         else
@@ -804,7 +837,8 @@ class ConfigWriter implements EventSubscriberInterface
                     "auth",
                     json.stringify(auth_info)
                 )
-                if response.success then
+                
+                if (response == "true") then
                     last_authenticated_dj := auth_info.user
                     true
                 else
@@ -827,8 +861,8 @@ class ConfigWriter implements EventSubscriberInterface
                     "djon",
                     json.stringify(j)
                 )
-                if response.success and string.contains(prefix="/", response.data) then
-                    live_record_path := response.data
+                if string.contains(prefix="/", response) then
+                    live_record_path := response
                 end
             end
             

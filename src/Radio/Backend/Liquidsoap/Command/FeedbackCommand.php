@@ -2,37 +2,34 @@
 
 declare(strict_types=1);
 
-namespace App\Radio\Backend\Liquidsoap;
+namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
 
-class Feedback
+class FeedbackCommand extends AbstractCommand
 {
     public function __construct(
+        Logger $logger,
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationQueueRepository $queueRepo,
         protected CacheInterface $cache
     ) {
+        parent::__construct($logger);
     }
 
-    /**
-     * Queue an individual station for processing its "Now Playing" metadata.
-     *
-     * @param Entity\Station $station
-     * @param array $extraMetadata
-     */
-    public function __invoke(Entity\Station $station, array $extraMetadata = []): void
+    protected function doRun(Entity\Station $station, bool $asAutoDj = false, array $payload = []): bool
     {
         // Process extra metadata sent by Liquidsoap (if it exists).
-        if (empty($extraMetadata['media_id'])) {
-            return;
+        if (empty($payload['media_id'])) {
+            throw new \RuntimeException('No payload provided.');
         }
 
-        $media = $this->em->find(Entity\StationMedia::class, $extraMetadata['media_id']);
+        $media = $this->em->find(Entity\StationMedia::class, $payload['media_id']);
         if (!$media instanceof Entity\StationMedia) {
-            return;
+            throw new \RuntimeException('Media ID does not exist for station.');
         }
 
         $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
@@ -43,8 +40,8 @@ class Feedback
                 $sq->setMedia($media);
             }
 
-            if (!empty($extraMetadata['playlist_id']) && null === $sq->getPlaylist()) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $extraMetadata['playlist_id']);
+            if (!empty($payload['playlist_id']) && null === $sq->getPlaylist()) {
+                $playlist = $this->em->find(Entity\StationPlaylist::class, $payload['playlist_id']);
                 if ($playlist instanceof Entity\StationPlaylist) {
                     $sq->setPlaylist($playlist);
                 }
@@ -59,10 +56,12 @@ class Feedback
             // If not, store the feedback information in the temporary cache for later checking.
             $this->cache->set(
                 $this->getFeedbackCacheName($station),
-                $extraMetadata,
+                $payload,
                 3600
             );
         }
+
+        return true;
     }
 
     public function registerFromFeedback(

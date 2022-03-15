@@ -20,7 +20,7 @@ if [ "$(uname -m)" = "aarch64" ]; then
     ARCHITECTURE=arm64
 fi
 
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.0.2/liquidsoap_2.0.2-ubuntu-focal-1_${ARCHITECTURE}.deb"
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.0.3/liquidsoap_2.0.3-ubuntu-focal-2_${ARCHITECTURE}.deb"
 
 dpkg -i /tmp/liquidsoap.deb
 apt-get install -y -f --no-install-recommends 

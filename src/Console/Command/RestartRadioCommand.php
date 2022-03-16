@@ -70,7 +70,7 @@ class RestartRadioCommand extends CommandAbstract
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,
-                    reloadSupervisor: $noSupervisorRestart,
+                    reloadSupervisor: !$noSupervisorRestart,
                     forceRestart: true
                 );
             } catch (\Throwable $e) {

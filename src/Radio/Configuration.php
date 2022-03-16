@@ -93,11 +93,7 @@ class Configuration
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
         if (!$station->getIsEnabled()) {
-            @unlink($supervisorConfigFile);
-
-            if ($reloadSupervisor) {
-                $this->stopForStation($station);
-            }
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
             return;
         }
 
@@ -106,12 +102,25 @@ class Configuration
 
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
-            @unlink($supervisorConfigFile);
-
-            if ($reloadSupervisor) {
-                $this->stopForStation($station);
-            }
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
             return;
+        }
+
+        // If using AutoDJ and there is no media, don't spin up services.
+        if (BackendAdapters::None !== $station->getBackendTypeEnum()) {
+            $mediaCount = $this->em->createQuery(
+                <<<DQL
+                    SELECT COUNT(spm.id) FROM App\Entity\StationPlaylistMedia spm
+                    JOIN spm.playlist sp
+                    WHERE sp.station = :station
+                DQL
+            )->setParameter('station', $station)
+                ->getSingleScalarResult();
+
+            if (0 === $mediaCount) {
+                $this->unlinkAndStopStation($station, $reloadSupervisor);
+                return;
+            }
         }
 
         // Get group information
@@ -185,6 +194,24 @@ class Configuration
     {
         $configDir = $station->getRadioConfigDir();
         return $configDir . '/supervisord.conf';
+    }
+
+    protected function unlinkAndStopStation(
+        Station $station,
+        bool $reloadSupervisor = true
+    ): void {
+        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+        @unlink($supervisorConfigFile);
+        if ($reloadSupervisor) {
+            $this->stopForStation($station);
+        }
+
+        $station->setHasStarted(false);
+        $station->setNeedsRestart(false);
+        $station->clearCache();
+
+        $this->em->persist($station);
+        $this->em->flush();
     }
 
     protected function stopForStation(Station $station): void

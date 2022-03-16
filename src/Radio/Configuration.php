@@ -94,7 +94,7 @@ class Configuration
 
         if (!$station->getIsEnabled()) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
-            return;
+            throw new \RuntimeException('Station is disabled.');
         }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
@@ -103,7 +103,7 @@ class Configuration
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
-            return;
+            throw new \RuntimeException('Station has no local services.');
         }
 
         // If using AutoDJ and there is no media, don't spin up services.
@@ -119,7 +119,7 @@ class Configuration
 
             if (0 === $mediaCount) {
                 $this->unlinkAndStopStation($station, $reloadSupervisor);
-                return;
+                throw new \RuntimeException('Station has no media assigned to playlists.');
             }
         }
 

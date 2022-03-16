@@ -67,11 +67,19 @@ class RestartRadioCommand extends CommandAbstract
         $io->progressStart(count($stations));
 
         foreach ($stations as $station) {
-            $this->configuration->writeConfiguration(
-                station: $station,
-                reloadSupervisor: $noSupervisorRestart,
-                forceRestart: true
-            );
+            try {
+                $this->configuration->writeConfiguration(
+                    station: $station,
+                    reloadSupervisor: $noSupervisorRestart,
+                    forceRestart: true
+                );
+            } catch (\Throwable $e) {
+                $io->error([
+                    (string)$station,
+                    $e->getMessage(),
+                ]);
+            }
+
             $io->progressAdvance();
         }
 

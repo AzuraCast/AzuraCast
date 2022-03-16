@@ -320,10 +320,13 @@ class StationsController extends AbstractAdminApiCrudController
         }
 
         if ($adapter_changed || !$station->getIsEnabled()) {
-            $this->configuration->writeConfiguration(
-                station: $station,
-                forceRestart: true
-            );
+            try {
+                $this->configuration->writeConfiguration(
+                    station: $station,
+                    forceRestart: true
+                );
+            } catch (\Throwable $e) {
+            }
         }
 
         return $station;

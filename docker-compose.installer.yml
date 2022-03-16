@@ -1,5 +1,5 @@
-services :
-  installer :
+services:
+  installer:
     container_name: azuracast_installer
     image: 'ghcr.io/azuracast/azuracast:${AZURACAST_VERSION:-latest}'
     volumes:

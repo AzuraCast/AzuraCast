@@ -1,4 +1,4 @@
-{{if isTrue .Env.ENABLE_REDIS }}
+{{if isTrue .Env.REDIS_LOCAL }}
 upstream redis_server {
     nchan_redis_server "redis://localhost:6379";
 }
@@ -9,7 +9,7 @@ server {
 
     location ~ /pub/([^\/]+)$ {
         nchan_publisher;
-{{if isTrue .Env.ENABLE_REDIS}}
+{{if isTrue .Env.REDIS_LOCAL}}
         nchan_redis_pass redis_server;
 {{end}}
 
@@ -148,7 +148,7 @@ server {
         nchan_access_control_allow_origin "*";
 
         nchan_subscriber;
-{{if isTrue .Env.ENABLE_REDIS}}
+{{if isTrue .Env.REDIS_LOCAL}}
         nchan_redis_pass redis_server;
 {{end}}
 

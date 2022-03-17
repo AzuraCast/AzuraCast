@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#2 \\$record of method App\\\\Controller\\\\Api\\\\AbstractApiCrudController\\<TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\>\\:\\:fromArray\\(\\) expects \\(TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\)\\|null, \\(TEntity of App\\\\Entity\\\\StationPlaylist\\|App\\\\Entity\\\\StationStreamer\\)\\|null given\\.$#"
-			count: 1
-			path: src/Controller/Api/Stations/AbstractScheduledEntityController.php
-
-		-
 			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
 			count: 1
 			path: src/Entity/Migration/Version20180412055024.php

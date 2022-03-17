@@ -1,0 +1,11 @@
+actor: FunctionalTester
+suite_namespace: \Functional
+modules:
+  enabled:
+    - \App\Tests\Module:
+        container: \App\AppFactory
+    - Doctrine2:
+        depends: \App\Tests\Module
+    - REST:
+        depends: \App\Tests\Module
+    - Cli

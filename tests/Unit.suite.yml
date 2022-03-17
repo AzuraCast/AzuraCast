@@ -1,0 +1,8 @@
+actor: UnitTester
+suite_namespace: \Unit
+modules:
+  enabled:
+    - \App\Tests\Module:
+        container: \App\AppFactory
+
+error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

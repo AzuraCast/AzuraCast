@@ -73,39 +73,40 @@ class ProfileController
             title: __('Profile'),
             props: [
                 // Common
-                'backendType'                  => $station->getBackendType(),
-                'frontendType'                 => $station->getFrontendType(),
-                'stationTimeZone'              => $station->getTimezone(),
-                'stationSupportsRequests'      => $backend->supportsRequests(),
-                'stationSupportsStreamers'     => $backend->supportsStreamers(),
-                'enableRequests'               => $station->getEnableRequests(),
-                'enableStreamers'              => $station->getEnableStreamers(),
-                'enablePublicPage'             => $station->getEnablePublicPage(),
-                'enableOnDemand'               => $station->getEnableOnDemand(),
-                'profileApiUri'                => (string)$router->fromHere('api:stations:profile'),
+                'backendType' => $station->getBackendType(),
+                'frontendType' => $station->getFrontendType(),
+                'stationTimeZone' => $station->getTimezone(),
+                'stationSupportsRequests' => $backend->supportsRequests(),
+                'stationSupportsStreamers' => $backend->supportsStreamers(),
+                'enableRequests' => $station->getEnableRequests(),
+                'enableStreamers' => $station->getEnableStreamers(),
+                'enablePublicPage' => $station->getEnablePublicPage(),
+                'enableOnDemand' => $station->getEnableOnDemand(),
+                'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
+                'hasStarted' => $station->getHasStarted(),
 
                 // ACL
-                'userCanManageMedia'           => $acl->isAllowed(StationPermissions::Media, $station->getId()),
-                'userCanManageBroadcasting'    => $acl->isAllowed(StationPermissions::Broadcasting, $station->getId()),
-                'userCanManageProfile'         => $acl->isAllowed(StationPermissions::Profile, $station->getId()),
-                'userCanManageReports'         => $acl->isAllowed(StationPermissions::Reports, $station->getId()),
-                'userCanManageStreamers'       => $acl->isAllowed(StationPermissions::Streamers, $station->getId()),
+                'userCanManageMedia' => $acl->isAllowed(StationPermissions::Media, $station->getId()),
+                'userCanManageBroadcasting' => $acl->isAllowed(StationPermissions::Broadcasting, $station->getId()),
+                'userCanManageProfile' => $acl->isAllowed(StationPermissions::Profile, $station->getId()),
+                'userCanManageReports' => $acl->isAllowed(StationPermissions::Reports, $station->getId()),
+                'userCanManageStreamers' => $acl->isAllowed(StationPermissions::Streamers, $station->getId()),
 
                 // Header
-                'stationName'                  => $station->getName(),
-                'stationDescription'           => $station->getDescription(),
-                'manageProfileUri'             => (string)$router->fromHere('stations:profile:edit'),
+                'stationName' => $station->getName(),
+                'stationDescription' => $station->getDescription(),
+                'manageProfileUri' => (string)$router->fromHere('stations:profile:edit'),
 
                 // Now Playing
-                'backendSkipSongUri'           => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
+                'backendSkipSongUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
                 'backendDisconnectStreamerUri' => (string)$router->fromHere(
                     'api:stations:backend',
                     ['do' => 'disconnect']
                 ),
 
                 // Requests
-                'requestsViewUri'              => (string)$router->fromHere('stations:reports:requests'),
-                'requestsToggleUri'            => (string)$router->fromHere(
+                'requestsViewUri' => (string)$router->fromHere('stations:reports:requests'),
+                'requestsToggleUri' => (string)$router->fromHere(
                     'stations:profile:toggle',
                     ['feature' => 'requests', 'csrf' => $csrf]
                 ),
@@ -169,28 +170,28 @@ class ProfileController
                     absolute: true
                 ),
 
-                'togglePublicPageUri'    => (string)$router->fromHere(
+                'togglePublicPageUri' => (string)$router->fromHere(
                     route_name: 'stations:profile:toggle',
                     route_params: ['feature' => 'public', 'csrf' => $csrf]
                 ),
 
                 // Frontend
-                'frontendAdminUri'       => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
-                'frontendAdminPassword'  => $frontendConfig->getAdminPassword(),
+                'frontendAdminUri' => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
+                'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
                 'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
-                'frontendRelayPassword'  => $frontendConfig->getRelayPassword(),
-                'frontendRestartUri'     => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
-                'frontendStartUri'       => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
-                'frontendStopUri'        => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
+                'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
+                'frontendRestartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
+                'frontendStartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
+                'frontendStopUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
 
                 // Backend
-                'numSongs'               => (int)$num_songs,
-                'numPlaylists'           => (int)$num_playlists,
-                'manageMediaUri'         => (string)$router->fromHere('stations:files:index'),
-                'managePlaylistsUri'     => (string)$router->fromHere('stations:playlists:index'),
-                'backendRestartUri'      => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
-                'backendStartUri'        => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
-                'backendStopUri'         => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
+                'numSongs' => (int)$num_songs,
+                'numPlaylists' => (int)$num_playlists,
+                'manageMediaUri' => (string)$router->fromHere('stations:files:index'),
+                'managePlaylistsUri' => (string)$router->fromHere('stations:playlists:index'),
+                'backendRestartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
+                'backendStartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
+                'backendStopUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
             ],
         );
     }

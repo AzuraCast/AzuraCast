@@ -10,9 +10,9 @@ apt-get update
 
 # cp -rT /bd_build/stations/startup_scripts/. /etc/my_init.d/
 
-cp -rT /bd_build/stations/service.minimal/. /etc/service.minimal/
+# cp -rT /bd_build/stations/service.minimal/. /etc/service.minimal/
 
-# cp -rT /bd_build/stations/service.full/. /etc/service.full/
+cp -rT /bd_build/stations/service.full/. /etc/service.full/
 
 # Run service setup for all setup scripts
 for f in /bd_build/stations/setup/*.sh; do

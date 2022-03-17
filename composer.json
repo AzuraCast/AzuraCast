@@ -107,7 +107,7 @@
     "gettext/gettext": ">=5"
   },
   "require-dev": {
-    "codeception/codeception": "^5.0.0-alpha2",
+    "codeception/codeception": "^5.0.0-RC1",
     "codeception/module-asserts": "^3",
     "codeception/module-cli": "^2",
     "codeception/module-doctrine2": "^3",

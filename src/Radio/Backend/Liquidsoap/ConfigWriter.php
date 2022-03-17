@@ -206,22 +206,17 @@ class ConfigWriter implements EventSubscriberInterface
                 def azuracast_api_call(~timeout=2, url, payload) =
                     command = "liquidsoap_cli --as-autodj #{url} ${stationId}"
                 
-                    try
-                        response = list.hd(
-                            process.read.lines(
-                                env=[("PAYLOAD", payload)],
-                                timeout=float_of_int(timeout),
-                                command
-                            ),
-                            default=""
-                        )
-                        
-                        log("API #{url} - Response: #{response}")
-                        response
-                    catch err do
-                        log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
-                        "false"
-                    end
+                    response = list.hd(
+                        process.read.lines(
+                            env=[("PAYLOAD", payload)],
+                            timeout=float_of_int(timeout),
+                            command
+                        ),
+                        default=""
+                    )
+                    
+                    log("API #{url} - Response: #{response}")
+                    "#{response}"
                 end
                 EOF
             );

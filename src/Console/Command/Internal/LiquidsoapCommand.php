@@ -73,7 +73,11 @@ class LiquidsoapCommand extends CommandAbstract
         /** @var AbstractCommand $commandObj */
         $commandObj = $this->di->get($command->getClass());
 
-        $io->writeln($commandObj->run($station, $asAutoDj, $payload));
-        return 0;
+        $result = $commandObj->run($station, $asAutoDj, $payload);
+        $io->writeln($result);
+
+        return ('' === $result || 'false' === $result)
+            ? 1
+            : 0;
     }
 }

@@ -352,11 +352,15 @@ class StationsController extends AbstractAdminApiCrudController
     {
         $this->configuration->removeConfiguration($station);
 
-        // Remove media folders.
-        $radio_dir = $station->getRadioBaseDir();
-        File::rmdirRecursive($radio_dir);
-
-        $this->stationRepo->doDeleteFallback($station);
+        // Remove directories generated specifically for this station.
+        $directoriesToEmpty = [
+            $station->getRadioConfigDir(),
+            $station->getRadioPlaylistsDir(),
+            $station->getRadioTempDir(),
+        ];
+        foreach ($directoriesToEmpty as $dir) {
+            File::rmdirRecursive($dir);
+        }
 
         $this->em->flush();
 

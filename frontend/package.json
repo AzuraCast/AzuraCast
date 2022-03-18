@@ -17,7 +17,7 @@
     "@fullcalendar/luxon2": "^5.10.2",
     "@fullcalendar/timegrid": "^5.9.0",
     "@fullcalendar/vue": "^5.9.0",
-    "axios": "^0",
+    "axios": "^0.24",
     "bootstrap": "^4.6.0",
     "bootstrap-notify": "^3.1.3",
     "bootstrap-vue": "^2.21.2",

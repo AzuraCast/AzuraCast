@@ -16,7 +16,7 @@
         "@fullcalendar/luxon2": "^5.10.2",
         "@fullcalendar/timegrid": "^5.9.0",
         "@fullcalendar/vue": "^5.9.0",
-        "axios": "^0",
+        "axios": "^0.24",
         "bootstrap": "^4.6.0",
         "bootstrap-notify": "^3.1.3",
         "bootstrap-vue": "^2.21.2",
@@ -2532,11 +2532,11 @@
       }
     },
     "node_modules/axios": {
-      "version": "0.26.1",
-      "resolved": "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz",
-      "integrity": "sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==",
+      "version": "0.24.0",
+      "resolved": "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz",
+      "integrity": "sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==",
       "dependencies": {
-        "follow-redirects": "^1.14.8"
+        "follow-redirects": "^1.14.4"
       }
     },
     "node_modules/babel-plugin-dynamic-import-node": {
@@ -3579,9 +3579,9 @@
       }
     },
     "node_modules/electron-to-chromium": {
-      "version": "1.4.86",
-      "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.86.tgz",
-      "integrity": "sha512-EVTZ+igi8x63pK4bPuA95PXIs2b2Cowi3WQwI9f9qManLiZJOD1Lash1J3W4TvvcUCcIR4o/rgi9o8UicXSO+w=="
+      "version": "1.4.87",
+      "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.87.tgz",
+      "integrity": "sha512-EXXTtDHFUKdFVkCnhauU7Xp8wmFC1ZG6GK9a1BeI2vvNhy61IwfNPo/CRexhf7mh4ajxAHJPind62BzpzVUeuQ=="
     },
     "node_modules/emojis-list": {
       "version": "3.0.0",
@@ -11203,11 +11203,11 @@
       "integrity": "sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg=="
     },
     "axios": {
-      "version": "0.26.1",
-      "resolved": "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz",
-      "integrity": "sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==",
+      "version": "0.24.0",
+      "resolved": "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz",
+      "integrity": "sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==",
       "requires": {
-        "follow-redirects": "^1.14.8"
+        "follow-redirects": "^1.14.4"
       }
     },
     "babel-plugin-dynamic-import-node": {
@@ -12036,9 +12036,9 @@
       }
     },
     "electron-to-chromium": {
-      "version": "1.4.86",
-      "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.86.tgz",
-      "integrity": "sha512-EVTZ+igi8x63pK4bPuA95PXIs2b2Cowi3WQwI9f9qManLiZJOD1Lash1J3W4TvvcUCcIR4o/rgi9o8UicXSO+w=="
+      "version": "1.4.87",
+      "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.87.tgz",
+      "integrity": "sha512-EXXTtDHFUKdFVkCnhauU7Xp8wmFC1ZG6GK9a1BeI2vvNhy61IwfNPo/CRexhf7mh4ajxAHJPind62BzpzVUeuQ=="
     },
     "emojis-list": {
       "version": "3.0.0",

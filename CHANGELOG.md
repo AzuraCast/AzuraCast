@@ -46,6 +46,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- A bug preventing "Forgot Password" resets and login token generation from working was fixed.
+
+- Deleting stations will no longer recursively delete their base directories. This is to prevent accidental deletion of
+  media that is used by other services. If you want to clear the media from a station, you should remove it prior to
+  deleting the station, or do so directly via the filesystem.
+
 - Updating now automatically clears the unplayed station queue for all stations.
 
 - A significant performance issue with the `station_queue` table has been identified and new indices have been added,

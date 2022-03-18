@@ -5,5 +5,5 @@ services:
     volumes:
       - './:/installer'
     restart: 'no'
-    entrypoint: ''
-    command: docker_installer
+    entrypoint: docker_installer
+    command: install

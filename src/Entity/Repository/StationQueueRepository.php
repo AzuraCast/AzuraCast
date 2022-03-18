@@ -21,10 +21,11 @@ class StationQueueRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\StationQueue sq
-                WHERE sq.media = :media AND sq.playlist = :playlist
+                WHERE sq.media = :media 
+                AND sq.playlist = :playlist
+                AND sq.is_played = 0
             DQL
-        )
-            ->setParameter('media', $media)
+        )->setParameter('media', $media)
             ->setParameter('playlist', $playlist)
             ->execute();
     }

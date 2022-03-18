@@ -50,7 +50,6 @@ class RecoverAction
                     throw new InvalidArgumentException('Password required.');
                 }
 
-                $user = $request->getUser();
                 $user->setNewPassword($data['password']);
                 $user->setTwoFactorSecret();
 

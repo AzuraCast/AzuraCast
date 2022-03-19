@@ -72,18 +72,21 @@ return function (App\Event\BuildStationMenu $e) {
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:duplicates',
                         'visible' => $backend->supportsMedia(),
+                        'permission' => StationPermissions::Media,
                     ],
                     'reports_unprocessable' => [
                         'label' => __('Unprocessable Files'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:unprocessable',
                         'visible' => $backend->supportsMedia(),
+                        'permission' => StationPermissions::Media,
                     ],
                     'reports_unassigned' => [
                         'label' => __('Unassigned Files'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:unassigned',
                         'visible' => $backend->supportsMedia(),
+                        'permission' => StationPermissions::Media,
                     ],
                     'ondemand' => [
                         'label' => __('On-Demand Media'),
@@ -100,15 +103,19 @@ return function (App\Event\BuildStationMenu $e) {
                         'visible' => App\Service\SftpGo::isSupportedForStation($station),
                         'permission' => StationPermissions::Media,
                     ],
+                ],
+            ],
 
+            'playlists' => [
+                'label' => __('Playlists'),
+                'icon' => 'queue_music',
+                'items' => [
                     'playlists' => [
                         'label' => __('Playlists'),
-                        'icon' => 'queue_music',
                         'url' => (string)$router->fromHere('stations:playlists:index'),
                         'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
-
                     'automation' => [
                         'label' => __('Automated Assignment'),
                         'class' => 'text-muted',

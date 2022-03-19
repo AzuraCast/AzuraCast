@@ -199,14 +199,18 @@ class StationQueueRepository extends Repository
             ->setParameter('station', $station);
     }
 
-    public function clearUnplayed(): void
+    public function clearUnplayed(?Entity\Station $station): void
     {
-        $this->em->createQuery(
-            <<<DQL
-                DELETE FROM App\Entity\StationQueue sq
-                WHERE sq.is_played = 0
-            DQL
-        )->execute();
+        $qb = $this->em->createQueryBuilder()
+            ->delete(Entity\StationQueue::class, 'sq')
+            ->where('sq.is_played = 0');
+
+        if (null !== $station) {
+            $qb->andWhere('sq.station = :station')
+                ->setParameter('station', $station);
+        }
+
+        $qb->getQuery()->execute();
     }
 
     public function cleanup(int $daysToKeep): void

@@ -145,6 +145,7 @@ class StationsController extends AbstractAdminApiCrudController
     public function __construct(
         protected Entity\Repository\StationRepository $stationRepo,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Adapters $adapters,
         protected Configuration $configuration,
         protected ReloadableEntityManagerInterface $reloadableEm,
@@ -304,6 +305,11 @@ class StationsController extends AbstractAdminApiCrudController
 
         if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
             $this->stationRepo->flushRelatedMedia($station);
+        }
+
+        // If Manual AutoDJ mode is enabled, clear the queue.
+        if ($station->useManualAutoDj()) {
+            $this->queueRepo->clearUnplayed($station);
         }
 
         // Get the original values to check for changes.

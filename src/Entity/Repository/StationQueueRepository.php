@@ -199,7 +199,7 @@ class StationQueueRepository extends Repository
             ->setParameter('station', $station);
     }
 
-    public function clearUnplayed(?Entity\Station $station): void
+    public function clearUnplayed(?Entity\Station $station = null): void
     {
         $qb = $this->em->createQueryBuilder()
             ->delete(Entity\StationQueue::class, 'sq')

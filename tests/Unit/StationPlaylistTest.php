@@ -3,23 +3,30 @@
 namespace Unit;
 
 use App\Entity;
+use App\Radio\AutoDJ\Scheduler;
+use App\Tests\Module;
+use Carbon\CarbonImmutable;
+use Codeception\Test\Unit;
+use DateTimeZone;
+use Mockery;
+use UnitTester;
 
-class StationPlaylistTest extends \Codeception\Test\Unit
+class StationPlaylistTest extends Unit
 {
-    protected \UnitTester $tester;
+    protected UnitTester $tester;
 
-    protected \App\Radio\AutoDJ\Scheduler $scheduler;
+    protected Scheduler $scheduler;
 
-    protected function _inject(\App\Tests\Module $tests_module): void
+    protected function _inject(Module $tests_module): void
     {
         $di = $tests_module->container;
-        $this->scheduler = $di->get(\App\Radio\AutoDJ\Scheduler::class);
+        $this->scheduler = $di->get(Scheduler::class);
     }
 
     public function testScheduledPlaylist(): void
     {
         /** @var Entity\Station $station */
-        $station = \Mockery::mock(Entity\Station::class);
+        $station = Mockery::mock(Entity\Station::class);
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
@@ -32,9 +39,9 @@ class StationPlaylistTest extends \Codeception\Test\Unit
 
         $playlist->getScheduleItems()->add($scheduleEntry);
 
-        $utc = new \DateTimeZone('UTC');
-        $test_monday = \Carbon\CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
-        $test_thursday = \Carbon\CarbonImmutable::create(2018, 1, 18, 0, 0, 0, $utc);
+        $utc = new DateTimeZone('UTC');
+        $test_monday = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
+        $test_thursday = CarbonImmutable::create(2018, 1, 18, 0, 0, 0, $utc);
 
         // Sanity check: Jan 15, 2018 is a Monday, and Jan 18, 2018 is a Thursday.
         self::assertTrue($test_monday->isMonday());
@@ -60,15 +67,15 @@ class StationPlaylistTest extends \Codeception\Test\Unit
     public function testOncePerXMinutesPlaylist()
     {
         /** @var Entity\Station $station */
-        $station = \Mockery::mock(Entity\Station::class);
+        $station = Mockery::mock(Entity\Station::class);
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
         $playlist->setType(Entity\Enums\PlaylistTypes::OncePerXMinutes->value);
         $playlist->setPlayPerMinutes(30);
 
-        $utc = new \DateTimeZone('UTC');
-        $test_day = \Carbon\CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
+        $utc = new DateTimeZone('UTC');
+        $test_day = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
 
         // Last played 20 minutes ago, SHOULD NOT play again.
         $last_played = $test_day->addMinutes(0 - 20);
@@ -86,15 +93,15 @@ class StationPlaylistTest extends \Codeception\Test\Unit
     public function testOncePerHourPlaylist()
     {
         /** @var Entity\Station $station */
-        $station = \Mockery::mock(Entity\Station::class);
+        $station = Mockery::mock(Entity\Station::class);
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
         $playlist->setType(Entity\Enums\PlaylistTypes::OncePerHour->value);
         $playlist->setPlayPerHourMinute(50);
 
-        $utc = new \DateTimeZone('UTC');
-        $test_day = \Carbon\CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
+        $utc = new DateTimeZone('UTC');
+        $test_day = CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
 
         // Playlist SHOULD try to play at 11:59 PM.
         $test_time = $test_day->setTime(23, 59);

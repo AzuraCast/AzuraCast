@@ -3,10 +3,12 @@
 namespace Unit;
 
 use App\Utilities\Strings;
+use Codeception\Test\Unit;
+use UnitTester;
 
-class UtilitiesTest extends \Codeception\Test\Unit
+class UtilitiesTest extends Unit
 {
-    protected \UnitTester $tester;
+    protected UnitTester $tester;
 
     public function testUtilities(): void
     {

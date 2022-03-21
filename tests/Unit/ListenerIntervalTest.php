@@ -4,12 +4,14 @@ namespace Unit;
 
 use App\Entity;
 use Carbon\CarbonImmutable;
+use Codeception\Test\Unit;
+use DateTimeZone;
 
-class ListenerIntervalTest extends \Codeception\Test\Unit
+class ListenerIntervalTest extends Unit
 {
     public function testListenerIntervals(): void
     {
-        $utc = new \DateTimeZone('UTC');
+        $utc = new DateTimeZone('UTC');
 
         $intervals = [
             [

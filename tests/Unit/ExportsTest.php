@@ -3,10 +3,12 @@
 namespace Unit;
 
 use App\Utilities;
+use Codeception\Test\Unit;
+use UnitTester;
 
-class ExportsTest extends \Codeception\Test\Unit
+class ExportsTest extends Unit
 {
-    protected \UnitTester $tester;
+    protected UnitTester $tester;
 
     public function testExports()
     {
@@ -14,7 +16,7 @@ class ExportsTest extends \Codeception\Test\Unit
             [
                 'test_field_a' => 'Test Field A',
                 'test_field_b' => 'Test Field B',
-            ]
+            ],
         ];
 
         $csv = Utilities\Csv::arrayToCsv($raw_data, false);

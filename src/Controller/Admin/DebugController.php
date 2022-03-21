@@ -176,18 +176,14 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
+        Entity\Repository\StationQueueRepository $queueRepo,
         AutoDJ\Queue $queue
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
         $station = $request->getStation();
 
-        $em->createQuery(
-            <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
-            DQL
-        )->setParameter('station', $station)
-            ->execute();
+        $queueRepo->clearUnplayed($station);
 
         $this->logger->debug('Current queue cleared.');
 

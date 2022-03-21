@@ -29,7 +29,8 @@ class StationRequestRepository extends Repository
         LoggerInterface $logger,
         protected StationMediaRepository $mediaRepo,
         protected DeviceDetector $deviceDetector,
-        protected BlocklistParser $blocklistParser
+        protected BlocklistParser $blocklistParser,
+        protected AutoDJ\DuplicatePrevention $duplicatePrevention,
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
     }
@@ -242,7 +243,7 @@ class StationRequestRepository extends Repository
         $eligibleTrack->title = $media->getTitle() ?? '';
         $eligibleTrack->artist = $media->getArtist() ?? '';
 
-        $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack([$eligibleTrack], $recentTracks));
+        $isDuplicate = (null === $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks));
 
         if ($isDuplicate) {
             throw new Exception(

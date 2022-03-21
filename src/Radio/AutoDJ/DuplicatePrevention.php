@@ -13,6 +13,9 @@ class DuplicatePrevention
         ', ',
         ' feat ',
         ' feat. ',
+        ' ft ',
+        ' ft. ',
+        ' / ',
         ' & ',
         ' vs. ',
     ];

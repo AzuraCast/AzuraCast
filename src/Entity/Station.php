@@ -361,6 +361,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?StationStreamer $current_streamer = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $fallback_path = null;
+
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
@@ -1036,10 +1039,23 @@ class Station implements Stringable, IdentifiableEntityInterface
     public static function getStorageLocationTypes(): array
     {
         return [
-            'media_storage_location'      => StorageLocationTypes::StationMedia,
+            'media_storage_location' => StorageLocationTypes::StationMedia,
             'recordings_storage_location' => StorageLocationTypes::StationRecordings,
-            'podcasts_storage_location'   => StorageLocationTypes::StationPodcasts,
+            'podcasts_storage_location' => StorageLocationTypes::StationPodcasts,
         ];
+    }
+
+    public function getFallbackPath(): ?string
+    {
+        return $this->fallback_path;
+    }
+
+    public function setFallbackPath(?string $fallback_path): void
+    {
+        if ($this->fallback_path !== $fallback_path) {
+            $this->setNeedsRestart(true);
+        }
+        $this->fallback_path = $fallback_path;
     }
 
     /**

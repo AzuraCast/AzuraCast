@@ -5,29 +5,12 @@ declare(strict_types=1);
 namespace App\Radio\Backend;
 
 use App\Entity;
-use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
-use App\Flysystem\StationFilesystems;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
-use Supervisor\Supervisor;
 
 class Liquidsoap extends AbstractBackend
 {
-    public function __construct(
-        protected Entity\Repository\StationStreamerRepository $streamerRepo,
-        Environment $environment,
-        EntityManagerInterface $em,
-        Supervisor $supervisor,
-        EventDispatcherInterface $dispatcher,
-        LoggerInterface $logger
-    ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
-    }
-
     public function supportsMedia(): bool
     {
         return true;
@@ -313,43 +296,6 @@ class Liquidsoap extends AbstractBackend
             $station,
             'input_streamer.stop'
         );
-    }
-
-    public function authenticateStreamer(
-        Entity\Station $station,
-        string $user = '',
-        string $pass = ''
-    ): bool {
-        // Allow connections using the exact broadcast source password.
-        $sourcePw = $station->getFrontendConfig()->getSourcePassword();
-        if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
-            return true;
-        }
-
-        return $this->streamerRepo->authenticate($station, $user, $pass);
-    }
-
-    public function onConnect(
-        Entity\Station $station,
-        string $user = ''
-    ): string {
-        $resp = $this->streamerRepo->onConnect($station, $user);
-
-        if (is_string($resp)) {
-            $finalPath = (new StationFilesystems($station))->getTempFilesystem()->getLocalPath($resp);
-            return $finalPath;
-        }
-
-        return $resp ? 'true' : 'false';
-    }
-
-    public function onDisconnect(
-        Entity\Station $station,
-        string $user = ''
-    ): string {
-        return $this->streamerRepo->onDisconnect($station)
-            ? 'true'
-            : 'false';
     }
 
     public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface

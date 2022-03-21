@@ -21,10 +21,11 @@ class StationQueueRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\StationQueue sq
-                WHERE sq.media = :media AND sq.playlist = :playlist
+                WHERE sq.media = :media 
+                AND sq.playlist = :playlist
+                AND sq.is_played = 0
             DQL
-        )
-            ->setParameter('media', $media)
+        )->setParameter('media', $media)
             ->setParameter('playlist', $playlist)
             ->execute();
     }
@@ -196,6 +197,20 @@ class StationQueueRepository extends Repository
             ->leftJoin('sq.playlist', 'sp')
             ->where('sq.station = :station')
             ->setParameter('station', $station);
+    }
+
+    public function clearUnplayed(?Entity\Station $station = null): void
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->delete(Entity\StationQueue::class, 'sq')
+            ->where('sq.is_played = 0');
+
+        if (null !== $station) {
+            $qb->andWhere('sq.station = :station')
+                ->setParameter('station', $station);
+        }
+
+        $qb->getQuery()->execute();
     }
 
     public function cleanup(int $daysToKeep): void

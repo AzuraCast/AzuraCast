@@ -83,6 +83,8 @@ class NowPlayingCommand extends AbstractSyncCommand
                         $npTimestamp = (int)$activeStation['nowplaying_timestamp'];
                         if (time() > $npTimestamp + \random_int(5, 15)) {
                             $this->start($io, $shortName);
+
+                            usleep(250000);
                         }
                     }
                 }
@@ -90,7 +92,7 @@ class NowPlayingCommand extends AbstractSyncCommand
 
             $this->em->clear();
             gc_collect_cycles();
-            \usleep(1500000);
+            usleep(1000000);
         }
     }
 

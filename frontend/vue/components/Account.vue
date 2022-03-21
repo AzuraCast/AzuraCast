@@ -29,7 +29,7 @@
 
                                 <div v-if="user.roles.length > 0" class="mt-2">
                                 <span v-for="role in user.roles" :key="role.id"
-                                      class="badge badge-secondary">{{ role.name }}</span>
+                                      class="badge badge-secondary mr-2">{{ role.name }}</span>
                                 </div>
                             </b-media>
                         </b-card-body>

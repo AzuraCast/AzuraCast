@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec gosu redis redis-server /etc/redis/redis.conf

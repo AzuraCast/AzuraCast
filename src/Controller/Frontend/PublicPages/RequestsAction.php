@@ -18,7 +18,8 @@ class RequestsAction
         Entity\Repository\CustomFieldRepository $customFieldRepo
     ): ResponseInterface {
         // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
+        $response = $response
+            ->withHeader('X-Frame-Options', '*');
 
         $station = $request->getStation();
 

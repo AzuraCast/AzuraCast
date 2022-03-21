@@ -1,17 +1,15 @@
-{{if isTrue .Env.ENABLE_REDIS }}
+{{if isTrue .Env.REDIS_LOCAL }}
 upstream redis_server {
-    nchan_redis_server "redis://redis:6379";
+    nchan_redis_server "redis://localhost:6379";
 }
 {{end}}
-
-resolver 127.0.0.11;
 
 server {
     listen 9010;
 
-    location ~ /pub/(\w+)$ {
+    location ~ /pub/([^\/]+)$ {
         nchan_publisher;
-{{if isTrue .Env.ENABLE_REDIS}}
+{{if isTrue .Env.REDIS_LOCAL}}
         nchan_redis_pass redis_server;
 {{end}}
 
@@ -130,7 +128,7 @@ server {
         proxy_connect_timeout     60;
 
         proxy_set_header Host localhost:$1;
-        proxy_pass http://stations:$1/$3?$args;
+        proxy_pass http://127.0.0.1:$1/$3?$args;
     }
 
     # Reverse proxy the Liquidsoap harbor inputs to allow for streaming.
@@ -140,19 +138,17 @@ server {
     location ~ ^/radio/{{ .Env.NGINX_WEBDJ_PORTS }}(/?)(.*)$ {
 {{ end }}
 
-        resolver 127.0.0.11;
-
         include proxy_params;
 
-        proxy_pass http://stations:$1/$3;
+        proxy_pass http://127.0.0.1:$1/$3;
     }
 
     # pub/sub endpoints
-    location ~ /api/live/nowplaying/(\w+)$ {
+    location ~ /api/live/nowplaying/([^\/]+)$ {
         nchan_access_control_allow_origin "*";
 
         nchan_subscriber;
-{{if isTrue .Env.ENABLE_REDIS}}
+{{if isTrue .Env.REDIS_LOCAL}}
         nchan_redis_pass redis_server;
 {{end}}
 

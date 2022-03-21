@@ -74,10 +74,13 @@ class Configuration
      *
      * @param Station $station
      * @param bool $forceRestart Always restart this station's supervisor instances, even if nothing changed.
+     * @throws Exception\NotFoundException
      */
     public function writeConfiguration(
         Station $station,
-        bool $forceRestart = false
+        bool $reloadSupervisor = true,
+        bool $forceRestart = false,
+        bool $attemptReload = true
     ): void {
         if ($this->environment->isTesting()) {
             return;
@@ -90,9 +93,8 @@ class Configuration
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
         if (!$station->getIsEnabled()) {
-            @unlink($supervisorConfigFile);
-            $this->stopForStation($station);
-            return;
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new \RuntimeException('Station is disabled.');
         }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
@@ -100,9 +102,25 @@ class Configuration
 
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
-            @unlink($supervisorConfigFile);
-            $this->stopForStation($station);
-            return;
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new \RuntimeException('Station has no local services.');
+        }
+
+        // If using AutoDJ and there is no media, don't spin up services.
+        if (BackendAdapters::None !== $station->getBackendTypeEnum()) {
+            $mediaCount = $this->em->createQuery(
+                <<<DQL
+                    SELECT COUNT(spm.id) FROM App\Entity\StationPlaylistMedia spm
+                    JOIN spm.playlist sp
+                    WHERE sp.station = :station
+                DQL
+            )->setParameter('station', $station)
+                ->getSingleScalarResult();
+
+            if (0 === $mediaCount) {
+                $this->unlinkAndStopStation($station, $reloadSupervisor);
+                throw new \RuntimeException('Station has no media assigned to playlists.');
+            }
         }
 
         // Get group information
@@ -144,26 +162,28 @@ class Configuration
         $backend->write($station);
 
         // Reload Supervisord and process groups
-        $affected_groups = $this->reloadSupervisor();
-        $was_restarted = in_array($backend_group, $affected_groups, true);
+        if ($reloadSupervisor) {
+            $affected_groups = $this->reloadSupervisor();
+            $was_restarted = in_array($backend_group, $affected_groups, true);
 
-        if (!$was_restarted && $forceRestart) {
-            try {
-                if ($backend->supportsReload() || $frontend->supportsReload()) {
-                    $backend->reload($station);
-                    $frontend->reload($station);
-                } else {
-                    $this->supervisor->stopProcessGroup($backend_group, true);
-                    $this->supervisor->startProcessGroup($backend_group, true);
+            if (!$was_restarted && $forceRestart) {
+                try {
+                    if ($attemptReload && ($backend->supportsReload() || $frontend->supportsReload())) {
+                        $backend->reload($station);
+                        $frontend->reload($station);
+                    } else {
+                        $this->supervisor->stopProcessGroup($backend_group, true);
+                        $this->supervisor->startProcessGroup($backend_group, true);
+                    }
+                } catch (SupervisorException) {
                 }
-            } catch (SupervisorException) {
+
+                $was_restarted = true;
             }
 
-            $was_restarted = true;
-        }
-
-        if ($was_restarted) {
-            $this->markAsStarted($station);
+            if ($was_restarted) {
+                $this->markAsStarted($station);
+            }
         }
     }
 
@@ -174,6 +194,24 @@ class Configuration
     {
         $configDir = $station->getRadioConfigDir();
         return $configDir . '/supervisord.conf';
+    }
+
+    protected function unlinkAndStopStation(
+        Station $station,
+        bool $reloadSupervisor = true
+    ): void {
+        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+        @unlink($supervisorConfigFile);
+        if ($reloadSupervisor) {
+            $this->stopForStation($station);
+        }
+
+        $station->setHasStarted(false);
+        $station->setNeedsRestart(false);
+        $station->clearCache();
+
+        $this->em->persist($station);
+        $this->em->flush();
     }
 
     protected function stopForStation(Station $station): void

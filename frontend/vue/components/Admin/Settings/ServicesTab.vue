@@ -52,7 +52,7 @@
                 </b-wrapped-form-checkbox>
             </b-form-row>
 
-            <b-form-row v-if="form.mail_enabled.$model">
+            <b-form-row v-if="form.mail_enabled.$model" class="mt-2">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_mail_sender_name"
                                       :field="form.mail_sender_name">
                     <template #label="{lang}">
@@ -104,6 +104,16 @@
                         <translate :key="lang">SMTP Password</translate>
                     </template>
                 </b-wrapped-form-group>
+
+                <div class="form-group col">
+                    <b-button size="sm" variant="primary" :disabled="form.$anyDirty" v-b-modal.send_test_message>
+                        <icon icon="send"></icon>
+                        <translate key="lang_btn_test_message">Send Test Message</translate>
+                        <span v-if="form.$anyDirty">
+                            (<translate key="lang_btn_test_message_save_changes">Save Changes first</translate>)
+                        </span>
+                    </b-button>
+                </div>
             </b-form-row>
         </b-form-fieldset>
 
@@ -166,6 +176,8 @@
                 </b-wrapped-form-group>
             </b-form-row>
         </b-form-fieldset>
+
+        <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
     </b-tab>
 </template>
 
@@ -174,14 +186,20 @@ import BFormMarkup from "~/components/Form/BFormMarkup";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal";
+import Icon from "~/components/Common/Icon";
 
 export default {
     name: 'SettingsServicesTab',
-    components: {BWrappedFormCheckbox, BFormFieldset, BWrappedFormGroup, BFormMarkup},
+    components: {
+        Icon,
+        AdminSettingsTestMessageModal, BWrappedFormCheckbox, BFormFieldset, BWrappedFormGroup, BFormMarkup
+    },
     props: {
         form: Object,
         tabClass: {},
         releaseChannel: String,
+        testMessageUrl: String,
     },
     computed: {
         langTabTitle() {

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+MYSQL_USER="${MYSQL_USER:-azuracast}"
+MYSQL_PASSWORD="${MYSQL_PASSWORD:-azur4c457}"
+MYSQL_DATABASE="${MYSQL_DATABASE:-azuracast}"
+
+cat $1 | mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} -D ${MYSQL_DATABASE}

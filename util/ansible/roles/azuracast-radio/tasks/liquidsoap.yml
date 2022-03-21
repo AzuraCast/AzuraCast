@@ -70,7 +70,7 @@
 
 - name: Install Liquidsoap
   apt:
-    deb: "https://github.com/savonet/liquidsoap/releases/download/v2.0.3/liquidsoap_2.0.3-ubuntu-focal-1_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
+    deb: "https://github.com/savonet/liquidsoap/releases/download/v2.0.3/liquidsoap_2.0.3-ubuntu-focal-2_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
 
 - name: Link Liquidsoap binary
   file:

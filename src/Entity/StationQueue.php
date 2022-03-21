@@ -13,7 +13,9 @@ use Psr\Log\LogLevel;
 
 #[
     ORM\Entity,
-    ORM\Table(name: 'station_queue')
+    ORM\Table(name: 'station_queue'),
+    ORM\Index(columns: ['is_played', 'timestamp_played'], name: 'idx_played_status'),
+    ORM\Index(columns: ['sent_to_autodj', 'timestamp_cued'], name: 'idx_cued_status')
 ]
 class StationQueue implements SongInterface, IdentifiableEntityInterface
 {

@@ -72,16 +72,18 @@
                 </tbody>
             </b-table-simple>
 
-            <div class="card-actions">
+            <div class="card-actions" v-if="hasStarted">
                 <a class="api-call no-reload btn btn-outline-secondary" :href="frontendRestartUri">
                     <icon icon="update"></icon>
                     <translate key="lang_profile_frontend_restart">Restart</translate>
                 </a>
-                <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.frontend_running" :href="frontendStartUri">
+                <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.frontend_running"
+                   :href="frontendStartUri">
                     <icon icon="play_arrow"></icon>
                     <translate key="lang_profile_frontend_start">Start</translate>
                 </a>
-                <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.frontend_running" :href="frontendStopUri">
+                <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.frontend_running"
+                   :href="frontendStopUri">
                     <icon icon="stop"></icon>
                     <translate key="lang_profile_frontend_stop">Stop</translate>
                 </a>
@@ -105,6 +107,7 @@ export const profileFrontendProps = {
         frontendRestartUri: String,
         frontendStartUri: String,
         frontendStopUri: String,
+        hasStarted: Boolean,
         userCanManageBroadcasting: Boolean
     }
 };

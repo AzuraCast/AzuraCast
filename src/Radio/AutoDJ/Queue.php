@@ -23,6 +23,7 @@ class Queue implements EventSubscriberInterface
         protected EntityManagerInterface $em,
         protected Logger $logger,
         protected Scheduler $scheduler,
+        protected DuplicatePrevention $duplicatePrevention,
         protected CacheInterface $cache,
         protected EventDispatcherInterface $dispatcher,
         protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
@@ -567,7 +568,7 @@ class Queue implements EventSubscriberInterface
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
         if ($playlist->getAvoidDuplicates()) {
-            return $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+            return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
         }
 
         return array_shift($mediaQueue);
@@ -603,96 +604,10 @@ class Queue implements EventSubscriberInterface
                 $mediaQueue = $this->spmRepo->resetQueue($playlist);
             }
 
-            return $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+            return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
         }
 
         return array_shift($mediaQueue);
-    }
-
-    /**
-     * @param Entity\Api\StationPlaylistQueue[] $eligibleTracks
-     * @param array $playedTracks
-     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     */
-    protected function preventDuplicates(
-        array $eligibleTracks = [],
-        array $playedTracks = [],
-        bool $allowDuplicates = false
-    ): ?Entity\Api\StationPlaylistQueue {
-        if (empty($eligibleTracks)) {
-            $this->logger->debug('Eligible song queue is empty!');
-            return null;
-        }
-
-        $latestSongIdsPlayed = [];
-
-        foreach ($playedTracks as $playedTrack) {
-            $songId = $playedTrack['song_id'];
-
-            if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'];
-            }
-        }
-
-        /** @var Entity\Api\StationPlaylistQueue[] $notPlayedEligibleTracks */
-        $notPlayedEligibleTracks = [];
-
-        foreach ($eligibleTracks as $mediaId => $track) {
-            $songId = $track->song_id;
-            if (isset($latestSongIdsPlayed[$songId])) {
-                continue;
-            }
-
-            $notPlayedEligibleTracks[$mediaId] = $track;
-        }
-
-        $validTrack = self::getDistinctTrack($notPlayedEligibleTracks, $playedTracks);
-
-        if (null !== $validTrack) {
-            $this->logger->info(
-                'Found track that avoids duplicate title and artist.',
-                [
-                    'media_id' => $validTrack->media_id,
-                    'title' => $validTrack->title,
-                    'artist' => $validTrack->artist,
-                ]
-            );
-
-            return $validTrack;
-        }
-
-        // If we reach this point, there's no way to avoid a duplicate title and artist.
-        if ($allowDuplicates) {
-            /** @var Entity\Api\StationPlaylistQueue[] $mediaIdsByTimePlayed */
-            $mediaIdsByTimePlayed = [];
-
-            // For each piece of eligible media, get its latest played timestamp.
-            foreach ($eligibleTracks as $track) {
-                $songId = $track->song_id;
-                $trackKey = $latestSongIdsPlayed[$songId] ?? 0;
-                $mediaIdsByTimePlayed[$trackKey] = $track;
-            }
-
-            ksort($mediaIdsByTimePlayed);
-
-            $validTrack = array_shift($mediaIdsByTimePlayed);
-
-            // Pull the lowest value, which corresponds to the least recently played song.
-            if (null !== $validTrack) {
-                $this->logger->warning(
-                    'No way to avoid same title OR same artist; using least recently played song.',
-                    [
-                        'media_id' => $validTrack->media_id,
-                        'title' => $validTrack->title,
-                        'artist' => $validTrack->artist,
-                    ]
-                );
-
-                return $validTrack;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -716,99 +631,6 @@ class Queue implements EventSubscriberInterface
         $this->em->persist($request);
 
         $event->setNextSong($stationQueueEntry);
-    }
-
-    /**
-     * Given an array of eligible tracks, return the first ID that doesn't have a duplicate artist/
-     *   title with any of the previously played tracks.
-     *
-     * Both should be in the form of an array, i.e.:
-     *  [ 'id' => ['artist' => 'Foo', 'title' => 'Fighters'] ]
-     *
-     * @param Entity\Api\StationPlaylistQueue[] $eligibleTracks
-     * @param array $playedTracks
-     *
-     */
-    public static function getDistinctTrack(
-        array $eligibleTracks,
-        array $playedTracks
-    ): ?Entity\Api\StationPlaylistQueue {
-        $artistSeparators = [
-            ', ',
-            ' feat ',
-            ' feat. ',
-            ' & ',
-            ' vs. ',
-        ];
-        $dividerString = chr(7);
-
-        $artists = [];
-        $titles = [];
-        $latestSongIdsPlayed = [];
-
-        foreach ($playedTracks as $playedTrack) {
-            $title = trim($playedTrack['title']);
-            $titles[$title] = $title;
-
-            $artistParts = explode(
-                $dividerString,
-                str_replace($artistSeparators, $dividerString, $playedTrack['artist'])
-            );
-
-            foreach ($artistParts as $artist) {
-                $artist = trim($artist);
-                if (!empty($artist)) {
-                    $artists[$artist] = $artist;
-                }
-            }
-
-            $songId = $playedTrack['song_id'];
-            if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_played'] ?? $playedTrack['timestamp_end'];
-            }
-        }
-
-        /** @var Entity\Api\StationPlaylistQueue[] $eligibleTracksWithoutSameTitle */
-        $eligibleTracksWithoutSameTitle = [];
-
-        foreach ($eligibleTracks as $track) {
-            // Avoid all direct title matches.
-            $title = trim($track->title);
-
-            if (isset($titles[$title])) {
-                continue;
-            }
-
-            // Attempt to avoid an artist match, if possible.
-            $artist = trim($track->artist);
-
-            $artistMatchFound = false;
-            if (!empty($artist)) {
-                $artistParts = explode($dividerString, str_replace($artistSeparators, $dividerString, $artist));
-                foreach ($artistParts as $artist) {
-                    $artist = trim($artist);
-                    if (empty($artist)) {
-                        continue;
-                    }
-
-                    if (isset($artists[$artist])) {
-                        $artistMatchFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$artistMatchFound) {
-                return $track;
-            }
-
-            $songId = $track->song_id;
-            $trackKey = $latestSongIdsPlayed[$songId] ?? 0;
-            $eligibleTracksWithoutSameTitle[$trackKey] = $track;
-        }
-
-        ksort($eligibleTracksWithoutSameTitle);
-        return array_shift($eligibleTracksWithoutSameTitle);
     }
 
     protected function logRecentSongHistory(

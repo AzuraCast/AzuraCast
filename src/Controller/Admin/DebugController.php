@@ -139,29 +139,51 @@ class DebugController extends AbstractLogViewerController
             $response,
             'system/log_view',
             [
-                'sidebar'     => null,
-                'title'       => __('Debug Output'),
+                'sidebar' => null,
+                'title' => __('Debug Output'),
                 'log_records' => $this->testHandler->getRecords(),
             ]
         );
     }
 
-    public function nextsongAction(
+    public function nextSongAction(
+        ServerRequest $request,
+        Response $response,
+        AutoDJ\Annotations $annotations,
+    ): ResponseInterface {
+        $this->logger->pushHandler($this->testHandler);
+
+        $nextSongAnnotated = $annotations->annotateNextSong(
+            $request->getStation(),
+            false
+        );
+
+        $this->logger->info('Annotated next song: ' . $nextSongAnnotated);
+        $this->logger->popHandler();
+
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/log_view',
+            [
+                'sidebar' => null,
+                'title' => __('Debug Output'),
+                'log_records' => $this->testHandler->getRecords(),
+            ]
+        );
+    }
+
+    public function clearStationQueueAction(
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
+        Entity\Repository\StationQueueRepository $queueRepo,
         AutoDJ\Queue $queue
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
         $station = $request->getStation();
 
-        $em->createQuery(
-            <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
-            DQL
-        )->setParameter('station', $station)
-            ->execute();
+        $queueRepo->clearUnplayed($station);
 
         $this->logger->debug('Current queue cleared.');
 

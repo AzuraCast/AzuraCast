@@ -46,20 +46,25 @@ $active ??= null;
                         <?php
                         foreach ($category['items'] as $item_id => $item): ?>
                             <li class="nav-item">
-                                <a class="nav-link pl-4 py-2 text-muted <?=($item['class'] ?? '')?>"
-                                   href="<?=$item['url']?>"
+                                <a class="nav-link pl-4 py-2 <?= ($item['class'] ?? '') ?>"
+                                   href="<?= $item['url'] ?>"
                                    <?php
                                    if ($item['external'] ?? false): ?>target="_blank"<?php
                                 endif; ?>
                                    <?php
-                                   if (isset($item['confirm'])): ?>data-confirm-title="<?=$this->e(
+                                   if (isset($item['confirm'])): ?>data-confirm-title="<?= $this->e(
                                        $item['confirm']
-                                   )?>"<?php
+                                   ) ?>"<?php
                                 endif; ?>
                                    <?php
-                                   if (isset($item['title'])): ?>title="<?=$this->e($item['title'])?>"<?php
+                                   if (isset($item['title'])): ?>title="<?= $this->e($item['title']) ?>"<?php
                                 endif; ?>>
-                                    <?=$item['label']?>
+                                    <?= $item['label'] ?>
+                                    <?php
+                                    if ($item['external'] ?? false): ?>
+                                        <i class="material-icons sm">open_in_new</i>
+                                    <?php
+                                    endif; ?>
                                 </a>
                             </li>
                         <?php endforeach; ?>

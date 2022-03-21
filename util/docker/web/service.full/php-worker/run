@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sv -w 30 check php-fpm || exit 1
+
+exec gosu azuracast php /var/azuracast/www/bin/console queue:process --worker-name=app_worker_0

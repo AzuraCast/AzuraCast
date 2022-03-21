@@ -14,3 +14,6 @@ if [ ! -f /etc/nginx/certs/default.crt ]; then
         -keyout /etc/nginx/certs/default.key \
         -out /etc/nginx/certs/default.crt
 fi
+
+chown azuracast:azuracast /etc/nginx/certs/default.* || true
+chmod 644 /etc/nginx/certs/default.* || true

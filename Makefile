@@ -4,12 +4,15 @@ list:
 	@LC_ALL=C $(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
 
 install-cloud-ide:
-	cp docker-compose.cloudide.yml docker-compose.yml
+	cp docker-compose.sample.yml docker-compose.yml
+	cp docker-compose.cloudide.yml docker-compose.override.yml
+
 	cp dev.env .env
 	cp azuracast.dev.env azuracast.env
 
+	docker-compose pull
 	docker-compose build
-	docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+	docker-compose run --rm web azuracast_install "$@"
 
 up:
 	docker-compose up -d
@@ -26,8 +29,8 @@ build: # Rebuild all containers and restart
 update: # Update everything (i.e. after a branch update)
 	docker-compose build
 	$(MAKE) down
-	docker-compose run --rm --user=azuracast web composer install
-	docker-compose run --rm --user=azuracast web azuracast_cli azuracast:setup:initialize
+	docker-compose run --rm web gosu azuracast composer install
+	docker-compose run --rm web azuracast_cli azuracast:setup:initialize
 	$(MAKE) frontend-build
 	$(MAKE) up
 

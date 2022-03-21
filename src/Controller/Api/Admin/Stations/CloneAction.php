@@ -183,7 +183,12 @@ class CloneAction extends StationsController
         $newStation = $this->reloadableEm->refetch($newStation);
 
         $this->configuration->assignRadioPorts($newStation, true);
-        $this->configuration->writeConfiguration($newStation);
+
+        try {
+            $this->configuration->writeConfiguration($newStation);
+        } catch (\Throwable $e) {
+        }
+
         $this->em->flush();
 
         return $response->withJson(Entity\Api\Status::created());

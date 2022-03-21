@@ -8,7 +8,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
-use App\Radio\Backend\Liquidsoap\Feedback;
+use App\Radio\Backend\Liquidsoap\Command\FeedbackCommand;
 use App\Radio\Enums\BackendAdapters;
 use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
@@ -26,7 +26,7 @@ class SongHistoryRepository extends Repository
         LoggerInterface $logger,
         protected ListenerRepository $listenerRepository,
         protected StationQueueRepository $stationQueueRepository,
-        protected Feedback $liquidsoapFeedback,
+        protected FeedbackCommand $liquidsoapFeedback,
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
     }

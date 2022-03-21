@@ -1,10 +1,10 @@
-services :
-  web :
-    build :
-      context : .
-    environment :
-      APPLICATION_ENV : 'testing'
-      LOG_LEVEL : 'debug'
-    volumes :
+services:
+  web:
+    build:
+      context: .
+    environment:
+      APPLICATION_ENV: 'testing'
+      LOG_LEVEL: 'debug'
+    volumes:
       - ./vendor:/var/azuracast/www/vendor
       - .:/var/azuracast/www

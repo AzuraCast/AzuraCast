@@ -1,8 +1,79 @@
 # Rolling Release Changes
 
-These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling release channel, you can take advantage of these new features and fixes.
+These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
+release channel, you can take advantage of these new features and fixes.
 
-The Rolling Release version has no new changes from the latest Stable release.
+## New Features/Changes
+
+- Each station can now have its own custom "fallback" file (the error message that plays when you have no media
+  configured or a broadcasting error otherwise occurs on your station) uploaded via the web UI.
+
+- If a playlist is marked as requestable but has scheduled date/time limits, it will only be requestable within those
+  scheduled dates/times.
+
+- The System Administration homepage now includes much more detailed statistics on CPU and RAM consumption.
+
+- You can now send a test e-mail to yourself from the same System Settings panel where you provide e-mail service info.
+
+- A new report has been added, "Unassigned Files", that shows all media that has not been assigned to any playlist.
+
+- A new advanced feature has been added that allows Liquidsoap users to broadly tune their installation to optimize in
+  favor of using less CPU at the expense of memory, using less memory at the expense of CPU, or a "balanced"
+  configuration between the two.
+
+- Any IP ranges, countries or user agents you have banned from connecting to your stream will also be banned from
+  submitting song requests to your station.
+
+- For stations that support the zero-disconnect reload feature, you can now opt to either "Reload Configuration" (a soft
+  reload that does not disconnect listeners) or "Restart Broadcasting" (a hard reload that does) in the event the latter
+  is needed for troubleshooting.
+
+## Code Quality/Technical Changes
+
+- **Unified Docker Container**: We have combined all of our Docker containers into a single unified container that
+  includes the database, cache, stations container and more. This combined container is located
+  at [ghcr.io/azuracast/azuracast](https://github.com/azuracast/AzuraCast/pkgs/container/azuracast). For most users, no
+  changes will be needed when migrating to the latest version of AzuraCast, but if you have created
+  a `docker-compose.override.yml` file, you should
+  follow [our instructions](https://github.com/AzuraCast/AzuraCast/issues/5191) to update the file.
+
+- We have enabled the built-in "defender" service for our built-in SFTP provider, so repeated failed authentication
+  attempts will automatically be blocked by the system. If you find yourself locked out of the system, restarting Docker
+  will clear the block list.
+
+- Stations that do not have any media assigned to any playlists won't start automatically, so for installations with
+  many empty stations, resources will be significantly saved.
+
+## Bug Fixes
+
+- A bug preventing "Forgot Password" resets and login token generation from working was fixed.
+
+- Deleting stations will no longer recursively delete their base directories. This is to prevent accidental deletion of
+  media that is used by other services. If you want to clear the media from a station, you should remove it prior to
+  deleting the station, or do so directly via the filesystem.
+
+- Updating now automatically clears the unplayed station queue for all stations.
+
+- A significant performance issue with the `station_queue` table has been identified and new indices have been added,
+  resulting in significant improvements for some behind-the-scenes functionality (like AutoDJ "next song" calculation).
+
+- A bug preventing playlists from being imported multiple times in the same pageview has been fixed.
+
+- An issue with SSL auto-renewal not applying to Icecast direct port connections has been fixed.
+
+- Websocket Now Playing updates now work on stations with non-ASCII characters in their "short name".
+
+---
+
+# AzuraCast 0.15.2 (Feb 20, 2022)
+
+## Bug Fixes
+
+- Incorporated a bug fix version of Liquidsoap 2.0.3 that fixes issues with smart crossfading.
+
+- Fixed a bug where some new installs could not continue due to an older version of Docker Compose being installed.
+
+- Fixed a bug when reinstalling AzuraCast on top of an existing (or previous) installation.
 
 ---
 

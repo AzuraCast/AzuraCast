@@ -18,5 +18,5 @@ rm -f /etc/cron.daily/dpkg
 rm -f /etc/cron.daily/password
 rm -f /etc/cron.weekly/fstrim
 
-cp -r /bd_build/cron/. /etc/cron.d/
+cp -r /bd_build/web/cron/. /etc/cron.d/
 chmod -R 600 /etc/cron.d/*

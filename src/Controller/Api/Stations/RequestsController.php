@@ -10,7 +10,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Paginator;
+use App\Radio\AutoDJ\Scheduler;
 use App\Utilities;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -66,7 +68,8 @@ class RequestsController
     public function __construct(
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationRequestRepository $requestRepo,
-        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        protected Scheduler $scheduler
     ) {
     }
 
@@ -81,19 +84,17 @@ class RequestsController
                 ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
         }
 
-        $qb = $this->em->createQueryBuilder();
+        $playlistIds = $this->getRequestablePlaylists($station);
 
+        $qb = $this->em->createQueryBuilder();
         $qb->select('sm, spm, sp')
             ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.storage_location = :storageLocation')
-            ->andWhere('sp.id IS NOT NULL')
-            ->andWhere('sp.station = :station')
-            ->andWhere('sp.is_enabled = 1')
-            ->andWhere('sp.include_in_requests = 1')
+            ->andWhere('sp.id IN (:playlistIds)')
             ->setParameter('storageLocation', $station->getMediaStorageLocation())
-            ->setParameter('station', $station);
+            ->setParameter('playlistIds', $playlistIds);
 
         $params = $request->getQueryParams();
 
@@ -148,6 +149,33 @@ class RequestsController
         );
 
         return $paginator->write($response);
+    }
+
+    /**
+     * @param Entity\Station $station
+     */
+    protected function getRequestablePlaylists(Entity\Station $station): array
+    {
+        $playlists = $this->em->createQuery(
+            <<<DQL
+            SELECT sp FROM App\Entity\StationPlaylist sp
+            WHERE sp.station = :station
+            AND sp.is_enabled = 1 AND sp.include_in_requests = 1
+            DQL
+        )->setParameter('station', $station)
+            ->toIterable();
+
+        $ids = [];
+        $now = CarbonImmutable::now($station->getTimezoneObject());
+
+        /** @var Entity\StationPlaylist $playlist */
+        foreach ($playlists as $playlist) {
+            if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now)) {
+                $ids[] = $playlist->getIdRequired();
+            }
+        }
+
+        return $ids;
     }
 
     public function submitAction(ServerRequest $request, Response $response, string $media_id): ResponseInterface

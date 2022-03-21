@@ -121,6 +121,10 @@ class ListAction
                                 DQL
                             )
                         );
+                    } elseif ('special:unassigned' === $searchPhrase) {
+                        $mediaQueryBuilder->andWhere(
+                            'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
+                        );
                     } elseif (str_starts_with($searchPhrase, 'playlist:')) {
                         [, $playlistName] = explode(':', $searchPhrase, 2);
 
@@ -128,7 +132,7 @@ class ListAction
                             ->findOneBy(
                                 [
                                     'station' => $station,
-                                    'name'    => $playlistName,
+                                    'name' => $playlistName,
                                 ]
                             );
 

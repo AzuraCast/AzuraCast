@@ -102,11 +102,11 @@ class InstallCommand extends Command
         $locale = SupportedLocales::getValidLocale($azuracastEnv[Environment::LANG] ?? null);
         $locale->register($this->environment);
 
-        $envConfig = EnvFile::getConfiguration();
-        $env->setFromDefaults();
+        $envConfig = EnvFile::getConfiguration($this->environment);
+        $env->setFromDefaults($this->environment);
 
-        $azuracastEnvConfig = AzuraCastEnvFile::getConfiguration();
-        $azuracastEnv->setFromDefaults();
+        $azuracastEnvConfig = AzuraCastEnvFile::getConfiguration($this->environment);
+        $azuracastEnv->setFromDefaults($this->environment);
 
         // Apply values passed via flags
         if (null !== $releaseChannel) {
@@ -154,6 +154,16 @@ class InstallCommand extends Command
             unset($azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD']);
         } else {
             $azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD'] = 'yes';
+        }
+
+        // Special fixes for transitioning to standalone installations.
+        if ($this->environment->isDockerStandalone()) {
+            if ('mariadb' === $azuracastEnv['MYSQL_HOST']) {
+                unset($azuracastEnv['MYSQL_HOST']);
+            }
+            if ('redis' === $azuracastEnv['REDIS_HOST']) {
+                unset($azuracastEnv['REDIS_HOST']);
+            }
         }
 
         // Display header messages
@@ -247,14 +257,19 @@ class InstallCommand extends Command
                     $env['LETSENCRYPT_EMAIL'] ?? ''
                 );
             }
+
+            $azuracastEnv['COMPOSER_PLUGIN_MODE'] = $io->confirm(
+                $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
+                $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
+            );
         }
 
         $io->writeln(
             __('Writing configuration files...')
         );
 
-        $envStr = $env->writeToFile();
-        $azuracastEnvStr = $azuracastEnv->writeToFile();
+        $envStr = $env->writeToFile($this->environment);
+        $azuracastEnvStr = $azuracastEnv->writeToFile($this->environment);
 
         if ($io->isVerbose()) {
             $io->section($env->getBasename());
@@ -289,10 +304,12 @@ class InstallCommand extends Command
         $sampleFile = $this->environment->getBaseDirectory() . '/docker-compose.sample.yml';
         $yaml = Yaml::parseFile($sampleFile);
 
+        $isStandalone = $this->environment->isDockerStandalone();
+
         // Parse port listing and convert into YAML format.
         $ports = $env['AZURACAST_STATION_PORTS'] ?? '';
 
-        $envConfig = $env::getConfiguration();
+        $envConfig = $env::getConfiguration($this->environment);
         $defaultPorts = $envConfig['AZURACAST_STATION_PORTS']['default'];
 
         if (!empty($ports) && 0 !== strcmp($ports, $defaultPorts)) {
@@ -316,7 +333,18 @@ class InstallCommand extends Command
             }
 
             if (!empty($yamlPorts)) {
-                $yaml['services']['stations']['ports'] = $yamlPorts;
+                if ($isStandalone) {
+                    $existingPorts = [];
+                    foreach ($yaml['services']['web']['ports'] as $port) {
+                        if (str_starts_with($port, '$')) {
+                            $existingPorts[] = $port;
+                        }
+                    }
+
+                    $yaml['services']['web']['ports'] = array_merge($existingPorts, $yamlPorts);
+                } else {
+                    $yaml['services']['stations']['ports'] = $yamlPorts;
+                }
             }
             if (!empty($nginxRadioPorts)) {
                 $nginxRadioPortsStr = '(' . implode('|', $nginxRadioPorts) . ')';
@@ -328,10 +356,18 @@ class InstallCommand extends Command
             }
         }
 
+        // Add plugin mode if it's selected.
+        if ($isStandalone && $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)) {
+            $yaml['services']['web']['volumes'][] = 'www_vendor:/var/azuracast/www/vendor';
+            $yaml['volumes']['www_vendor'] = [];
+        }
+
         // Remove Redis if it's not enabled.
-        $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
-        if (!$enableRedis) {
-            unset($yaml['services']['redis']);
+        if (!$isStandalone) {
+            $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
+            if (!$enableRedis) {
+                unset($yaml['services']['redis']);
+            }
         }
 
         // Remove privileged-mode settings if not enabled.

@@ -10,6 +10,7 @@ use App\Entity;
 use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
+use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -21,22 +22,17 @@ use Symfony\Component\Serializer\Serializer;
  */
 class StationRequestRepository extends Repository
 {
-    protected StationMediaRepository $mediaRepo;
-
-    protected DeviceDetector $deviceDetector;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        StationMediaRepository $mediaRepo,
-        DeviceDetector $deviceDetector
+        protected StationMediaRepository $mediaRepo,
+        protected DeviceDetector $deviceDetector,
+        protected BlocklistParser $blocklistParser,
+        protected AutoDJ\DuplicatePrevention $duplicatePrevention,
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
-
-        $this->mediaRepo = $mediaRepo;
-        $this->deviceDetector = $deviceDetector;
     }
 
     public function getPendingRequest(int $id, Entity\Station $station): ?Entity\StationRequest
@@ -69,6 +65,11 @@ class StationRequestRepository extends Repository
         string $ip,
         string $userAgent
     ): int {
+        // Verify that the station supports requests.
+        if (!$station->getEnableRequests()) {
+            throw new Exception(__('This station does not accept requests currently.'));
+        }
+
         // Forbid web crawlers from using this feature.
         $dd = $this->deviceDetector->parse($userAgent);
 
@@ -76,9 +77,9 @@ class StationRequestRepository extends Repository
             throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
         }
 
-        // Verify that the station supports requests.
-        if (!$station->getEnableRequests()) {
-            throw new Exception(__('This station does not accept requests currently.'));
+        // Check frontend blocklist and apply it to requests.
+        if (!$this->blocklistParser->isAllowed($ip, $userAgent, $station)) {
+            throw new Exception(__('You are not permitted to submit requests.'));
         }
 
         // Verify that Track ID exists with station.
@@ -242,7 +243,7 @@ class StationRequestRepository extends Repository
         $eligibleTrack->title = $media->getTitle() ?? '';
         $eligibleTrack->artist = $media->getArtist() ?? '';
 
-        $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack([$eligibleTrack], $recentTracks));
+        $isDuplicate = (null === $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks));
 
         if ($isDuplicate) {
             throw new Exception(

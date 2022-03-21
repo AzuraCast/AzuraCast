@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo 'Spinning up Beanstalkd process...'
-
-exec sudo -E -u azuracast beanstalkd -p 11300 -z 262140

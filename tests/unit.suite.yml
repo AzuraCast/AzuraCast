@@ -1,8 +1,0 @@
-class_name: UnitTester
-modules:
-  enabled:
-    - \App\Tests\Module:
-        container: \App\AppFactory
-    - \Helper\Unit
-
-error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

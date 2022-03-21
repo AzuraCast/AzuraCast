@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 if [ `whoami` != 'azuracast' ]; then
-    echo 'This script must be run as the "azuracast" user. Rerunning...'
-    exec sudo -E -u azuracast azuracast_cli "$@"
+    exec gosu azuracast azuracast_cli "$@"
 fi
 
 cd /var/azuracast/www

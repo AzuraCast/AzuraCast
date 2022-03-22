@@ -79,9 +79,9 @@ class HistoryController
         $station_tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
-        if (!empty($params['start'])) {
-            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $station_tz);
-            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
+        if (!empty($params['start']) && !empty($params['end'])) {
+            $start = CarbonImmutable::parse($params['start'], $station_tz);
+            $end = CarbonImmutable::parse($params['end'], $station_tz);
         } else {
             $start = CarbonImmutable::parse('-2 weeks', $station_tz);
             $end = CarbonImmutable::now($station_tz);
@@ -107,8 +107,8 @@ class HistoryController
             $csvFilename = sprintf(
                 '%s_timeline_%s_to_%s.csv',
                 $station->getShortName(),
-                $start->format('Ymd'),
-                $end->format('Ymd')
+                $start->format('Y-m-d_H-i-s'),
+                $end->format('Y-m-d_H-i-s')
             );
 
             return $this->exportReportAsCsv(

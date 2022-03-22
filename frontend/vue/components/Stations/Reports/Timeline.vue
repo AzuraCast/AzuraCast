@@ -11,7 +11,7 @@
                         <translate key="lang_download_csv_button">Download CSV</translate>
                     </a>
 
-                    <date-range-dropdown v-model="dateRange" :tz="stationTimeZone"
+                    <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"
                                          @update="relist"></date-range-dropdown>
                 </div>
             </div>
@@ -102,14 +102,21 @@ export default {
     },
     computed: {
         apiUrl() {
-            let params = {};
-            params.start = DateTime.fromJSDate(this.dateRange.startDate).toISODate();
-            params.end = DateTime.fromJSDate(this.dateRange.endDate).toISODate();
+            let apiUrl = new URL(this.baseApiUrl, document.location);
 
-            return this.baseApiUrl + '?start=' + params.start + '&end=' + params.end;
+            let apiUrlParams = apiUrl.searchParams;
+            apiUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
+            apiUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
+
+            return apiUrl.toString();
         },
         exportUrl() {
-            return this.apiUrl + '&format=csv';
+            let exportUrl = new URL(this.apiUrl, document.location);
+            let exportUrlParams = exportUrl.searchParams;
+
+            exportUrlParams.set('format', 'csv');
+
+            return exportUrl.toString();
         },
     },
     methods: {

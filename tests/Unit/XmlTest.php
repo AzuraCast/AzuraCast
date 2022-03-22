@@ -4,10 +4,12 @@ namespace Unit;
 
 use App\Xml\Reader;
 use App\Xml\Writer;
+use Codeception\Test\Unit;
+use UnitTester;
 
-class XmlTest extends \Codeception\Test\Unit
+class XmlTest extends Unit
 {
-    protected \UnitTester $tester;
+    protected UnitTester $tester;
 
     public function testXml(): void
     {

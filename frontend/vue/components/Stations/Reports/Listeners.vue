@@ -202,16 +202,16 @@ export default {
             return DateTime.fromJSDate(this.liveTime).equals(DateTime.fromJSDate(this.dateRange.startDate));
         },
         exportUrl() {
-            let params = {};
-            let export_url = this.apiUrl + '?format=csv';
+            let exportUrl = new URL(this.apiUrl, document.location);
+            let exportUrlParams = exportUrl.searchParams;
+            exportUrlParams.set('format', 'csv');
 
             if (!this.isLive) {
-                params.start = DateTime.fromJSDate(this.dateRange.startDate).toISO();
-                params.end = DateTime.fromJSDate(this.dateRange.endDate).toISO();
-                export_url += '&start=' + params.start + '&end=' + params.end;
+                exportUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
+                exportUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
             }
 
-            return export_url;
+            return exportUrl.toString();
         },
         totalListenerHours() {
             let tlh_seconds = 0;

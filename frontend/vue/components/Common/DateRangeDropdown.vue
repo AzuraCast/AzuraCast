@@ -1,7 +1,8 @@
 <template>
     <date-range-picker
         ref="picker" controlContainerClass="" opens="left" show-dropdowns
-        v-bind="$props" :ranges="ranges" @update="onUpdate">
+        v-bind="$props"
+        :time-picker-increment="1" :ranges="ranges" @update="onUpdate">
         <template #input="datePicker">
             <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                 <icon icon="date_range"></icon>
@@ -63,48 +64,48 @@ export default {
             default: null,
         },
     },
-    data() {
-        let ranges = {};
+    computed: {
+        ranges() {
+            let ranges = {};
 
-        if (null !== this.customRanges) {
-            ranges = this.customRanges;
-        } else {
+            if (null !== this.customRanges) {
+                return this.customRanges;
+            }
+
             let nowTz = DateTime.now().setZone(this.tz);
             let nowTzDate = nowTz.toJSDate();
 
             ranges[this.$gettext('Today')] = [
-                nowTzDate,
+                nowTz.minus({days: 1}).toJSDate(),
                 nowTzDate
             ];
             ranges[this.$gettext('Yesterday')] = [
-                nowTz.minus({days: 1}).toJSDate(),
+                nowTz.minus({days: 2}).toJSDate(),
                 nowTz.minus({days: 1}).toJSDate()
             ];
             ranges[this.$gettext('Last 7 Days')] = [
-                nowTz.minus({days: 6}).toJSDate(),
+                nowTz.minus({days: 7}).toJSDate(),
                 nowTzDate
             ];
             ranges[this.$gettext('Last 14 Days')] = [
-                nowTz.minus({days: 13}).toJSDate(),
+                nowTz.minus({days: 14}).toJSDate(),
                 nowTzDate
             ];
             ranges[this.$gettext('Last 30 Days')] = [
-                nowTz.minus({days: 29}).toJSDate(),
+                nowTz.minus({days: 30}).toJSDate(),
                 nowTzDate
             ];
             ranges[this.$gettext('This Month')] = [
-                nowTz.startOf('month').toJSDate(),
-                nowTz.endOf('month').toJSDate()
+                nowTz.startOf('month').startOf('day').toJSDate(),
+                nowTz.endOf('month').endOf('day').toJSDate()
             ];
             ranges[this.$gettext('Last Month')] = [
-                nowTz.minus({months: 1}).startOf('month').toJSDate(),
-                nowTz.minus({months: 1}).endOf('month').toJSDate()
+                nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
+                nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
             ];
-        }
 
-        return {
-            ranges: ranges
-        };
+            return ranges;
+        }
     },
     methods: {
         onUpdate(newValue) {

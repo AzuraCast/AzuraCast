@@ -129,11 +129,13 @@ export default {
             return this.$gettext('Delete');
         },
         apiUrl() {
-            let params = {};
-            params.start = DateTime.fromJSDate(this.dateRange.startDate).toISODate();
-            params.end = DateTime.fromJSDate(this.dateRange.endDate).toISODate();
+            let apiUrl = new URL(this.baseApiUrl, document.location);
 
-            return this.baseApiUrl + '?start=' + params.start + '&end=' + params.end;
+            let apiUrlParams = apiUrl.searchParams;
+            apiUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
+            apiUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
+
+            return apiUrl.toString();
         },
     },
     methods: {

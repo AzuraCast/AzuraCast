@@ -16,10 +16,13 @@
                 </div>
             </div>
         </div>
-        <data-table ref="datatable" responsive paginated
+        <data-table ref="datatable" responsive paginated select-fields
                     :fields="fields" :apiUrl="apiUrl">
             <template #cell(datetime)="row">
                 {{ formatTimestamp(row.item.played_at) }}
+            </template>
+            <template #cell(datetime_station)="row">
+                {{ formatTimestampStation(row.item.played_at) }}
             </template>
             <template #cell(listeners_start)="row">
                 {{ row.item.listeners_start }}
@@ -92,11 +95,44 @@ export default {
                 endDate: nowTz.toJSDate(),
             },
             fields: [
-                {key: 'datetime', label: this.$gettext('Date/Time'), sortable: false},
-                {key: 'listeners_start', label: this.$gettext('Listeners'), sortable: false},
-                {key: 'delta', label: this.$gettext('Change'), sortable: false},
-                {key: 'song', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
-                {key: 'source', label: this.$gettext('Source'), sortable: false}
+                {
+                    key: 'datetime',
+                    label: this.$gettext('Date/Time (Browser)'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'datetime_station',
+                    label: this.$gettext('Date/Time (Station)'),
+                    sortable: false,
+                    selectable: true,
+                    visible: false
+                },
+                {
+                    key: 'listeners_start',
+                    label: this.$gettext('Listeners'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'delta',
+                    label: this.$gettext('Change'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'song',
+                    isRowHeader: true,
+                    label: this.$gettext('Song Title'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'source',
+                    label: this.$gettext('Source'),
+                    selectable: true,
+                    sortable: false
+                }
             ],
         }
     },
@@ -127,6 +163,9 @@ export default {
             return Math.abs(val);
         },
         formatTimestamp(unix_timestamp) {
+            return DateTime.fromSeconds(unix_timestamp).toLocaleString(DateTime.DATETIME_SHORT);
+        },
+        formatTimestampStation(unix_timestamp) {
             return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_SHORT);
         }
     }

@@ -27,9 +27,9 @@ class AuditLogAction
         $tz = new DateTimeZone('UTC');
 
         $params = $request->getParams();
-        if (!empty($params['start'])) {
-            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $tz);
-            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $tz);
+        if (!empty($params['start']) && !empty($params['end'])) {
+            $start = CarbonImmutable::parse($params['start'], $tz)->setSecond(0);
+            $end = CarbonImmutable::parse($params['end'], $tz)->setSecond(59);
         } else {
             $start = CarbonImmutable::parse('-2 weeks', $tz);
             $end = CarbonImmutable::now($tz);

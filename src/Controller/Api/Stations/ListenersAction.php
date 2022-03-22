@@ -81,20 +81,12 @@ class ListenersAction
 
             $qb = $qb->andWhere('l.timestamp_end = 0');
         } else {
-            $startString = $params['start'];
-            if (10 === strlen($startString)) {
-                $startString .= ' 00:00:00';
-            }
-
-            $start = CarbonImmutable::parse($startString, $stationTz);
+            $start = CarbonImmutable::parse($params['start'], $stationTz)
+                ->setSecond(0);
             $startTimestamp = $start->getTimestamp();
 
-            $endString = $params['end'] ?? $params['start'];
-            if (10 === strlen($endString)) {
-                $endString .= ' 23:59:59';
-            }
-
-            $end = CarbonImmutable::parse($endString, $stationTz);
+            $end = CarbonImmutable::parse($params['end'] ?? $params['start'], $stationTz)
+                ->setSecond(59);
             $endTimestamp = $end->getTimestamp();
 
             $range = $start->format('Y-m-d_H-i-s') . '_to_' . $end->format('Y-m-d_H-i-s');

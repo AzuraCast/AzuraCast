@@ -80,8 +80,8 @@ class HistoryController
 
         $params = $request->getQueryParams();
         if (!empty($params['start']) && !empty($params['end'])) {
-            $start = CarbonImmutable::parse($params['start'], $station_tz);
-            $end = CarbonImmutable::parse($params['end'], $station_tz);
+            $start = CarbonImmutable::parse($params['start'], $station_tz)->setSecond(0);
+            $end = CarbonImmutable::parse($params['end'], $station_tz)->setSecond(59);
         } else {
             $start = CarbonImmutable::parse('-2 weeks', $station_tz);
             $end = CarbonImmutable::now($station_tz);

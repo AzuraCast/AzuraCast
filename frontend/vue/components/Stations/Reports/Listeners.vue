@@ -4,33 +4,28 @@
             <div class="card">
                 <div class="card-header bg-primary-dark">
                     <div class="d-flex align-items-center">
-                        <h2 class="card-title flex-fill my-0">
-                            <translate key="lang_header">Listeners</translate>
-                        </h2>
+                        <div class="flex-fill my-0">
+                            <h2 class="card-title">
+                                <translate key="lang_header">Listeners</translate>
+                            </h2>
+                        </div>
                         <div class="flex-shrink">
                             <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
                                 <icon icon="file_download"></icon>
                                 <translate key="lang_download_csv_button">Download CSV</translate>
                             </a>
 
-                            <date-range-dropdown time-picker :min-date="minDate" :max-date="maxDate"
+                            <date-range-dropdown v-if="!isLive" time-picker :min-date="minDate" :max-date="maxDate"
                                                  :tz="stationTimeZone" :custom-ranges="dateRanges"
                                                  v-model="dateRange" @update="updateListeners">
-                                <template #input="datePicker">
-                                    <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
-                                        <icon icon="date_range"></icon>
-                                        <template v-if="isLive">
-                                            <translate key="lang_live_listeners">Live Listeners</translate>
-                                        </template>
-                                        <template v-else>
-                                            {{ datePicker.rangeText }}
-                                        </template>
-                                    </a>
-                                </template>
                             </date-range-dropdown>
                         </div>
                     </div>
                 </div>
+                <b-tabs pills card lazy>
+                    <b-tab key="live" active @click="setIsLive(true)" :title="langLiveListeners" no-body></b-tab>
+                    <b-tab key="not-live" @click="setIsLive(false)" :title="langListenerHistory" no-body></b-tab>
+                </b-tabs>
                 <div id="map">
                     <StationReportsListenersMap :listeners="listeners"></StationReportsListenersMap>
                 </div>
@@ -137,26 +132,32 @@ export default {
         stationTimeZone: String,
     },
     data() {
-        let liveTime = DateTime.now().setZone(this.stationTimeZone).plus({days: 1}).toJSDate();
+        const nowTz = DateTime.now().setZone(this.stationTimeZone);
 
         return {
+            isLive: true,
             listeners: [],
-            liveTime: liveTime,
             dateRange: {
-                startDate: liveTime,
-                endDate: liveTime
+                startDate: nowTz.minus({days: 1}).toJSDate(),
+                endDate: nowTz
             },
             fields: [
-                { key: 'ip', label: this.$gettext('IP'), sortable: false },
-                { key: 'time', label: this.$gettext('Time'), sortable: false },
-                { key: 'time_sec', label: this.$gettext('Time (sec)'), sortable: false },
-                { key: 'user_agent', isRowHeader: true, label: this.$gettext('User Agent'), sortable: false },
-                { key: 'stream', label: this.$gettext('Stream'), sortable: false },
-                { key: 'location', label: this.$gettext('Location'), sortable: false }
+                {key: 'ip', label: this.$gettext('IP'), sortable: false},
+                {key: 'time', label: this.$gettext('Time'), sortable: false},
+                {key: 'time_sec', label: this.$gettext('Time (sec)'), sortable: false},
+                {key: 'user_agent', isRowHeader: true, label: this.$gettext('User Agent'), sortable: false},
+                {key: 'stream', label: this.$gettext('Stream'), sortable: false},
+                {key: 'location', label: this.$gettext('Location'), sortable: false}
             ]
         };
     },
     computed: {
+        langLiveListeners() {
+            return this.$gettext('Live Listeners');
+        },
+        langListenerHistory() {
+            return this.$gettext('Listener History');
+        },
         nowTz() {
             return DateTime.now().setZone(this.stationTimeZone);
         },
@@ -168,25 +169,21 @@ export default {
         },
         dateRanges() {
             let ranges = {};
-            ranges[this.$gettext('Live Listeners')] = [
-                this.liveTime,
-                this.liveTime
-            ];
             ranges[this.$gettext('Today')] = [
-                this.nowTz.startOf('day').toJSDate(),
-                this.nowTz.endOf('day').toJSDate()
+                this.nowTz.minus({days: 1}).toJSDate(),
+                this.nowTz.toJSDate()
             ];
             ranges[this.$gettext('Yesterday')] = [
-                this.nowTz.minus({days: 1}).startOf('day').toJSDate(),
-                this.nowTz.minus({days: 1}).endOf('day').toJSDate()
+                this.nowTz.minus({days: 2}).toJSDate(),
+                this.nowTz.minus({days: 1}).toJSDate()
             ];
             ranges[this.$gettext('Last 7 Days')] = [
-                this.nowTz.minus({days: 6}).startOf('day').toJSDate(),
-                this.nowTz.endOf('day').toJSDate()
+                this.nowTz.minus({days: 6}).toJSDate(),
+                this.nowTz.toJSDate()
             ];
             ranges[this.$gettext('Last 30 Days')] = [
-                this.nowTz.minus({days: 29}).startOf('day').toJSDate(),
-                this.nowTz.endOf('day').toJSDate()
+                this.nowTz.minus({days: 29}).toJSDate(),
+                this.nowTz.toJSDate()
             ];
             ranges[this.$gettext('This Month')] = [
                 this.nowTz.startOf('month').startOf('day').toJSDate(),
@@ -196,10 +193,8 @@ export default {
                 this.nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
                 this.nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
             ];
+
             return ranges;
-        },
-        isLive() {
-            return DateTime.fromJSDate(this.liveTime).equals(DateTime.fromJSDate(this.dateRange.startDate));
         },
         exportUrl() {
             let exportUrl = new URL(this.apiUrl, document.location);
@@ -227,6 +222,10 @@ export default {
         this.updateListeners();
     },
     methods: {
+        setIsLive(newValue) {
+            this.isLive = newValue;
+            this.updateListeners();
+        },
         formatTime(time) {
             return formatTime(time);
         },

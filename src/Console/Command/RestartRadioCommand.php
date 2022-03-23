@@ -75,8 +75,7 @@ class RestartRadioCommand extends CommandAbstract
                 );
             } catch (\Throwable $e) {
                 $io->error([
-                    (string)$station,
-                    $e->getMessage(),
+                    $station . ': ' . $e->getMessage(),
                 ]);
             }
 

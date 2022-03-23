@@ -60,7 +60,7 @@ class SetupCommand extends CommandAbstract
 
         $restartArgs = [];
         if ($this->environment->isDockerStandalone()) {
-            $restartArgs[] = '--no-supervisor-restart';
+            $restartArgs['--no-supervisor-restart'] = true;
         }
 
         $this->runCommand(

@@ -35,6 +35,7 @@ RUN chmod a+x /bd_build/*.sh \
     && /bd_build/cleanup.sh
 
 # Build each set of dependencies in their own step for cacheability.
+ARG ARM_FULL_BUILD
 COPY ./util/docker/stations /bd_build/stations/
 RUN bash /bd_build/stations/setup.sh \
     && bash /bd_build/cleanup.sh \

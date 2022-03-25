@@ -15,8 +15,9 @@ $minimal_apt_get_install frei0r-plugins-dev ladspa-sdk multimedia-audio-plugins 
 
 # Per-architecture LS installs
 ARCHITECTURE=amd64
+ARM_FULL_BUILD="${ARM_FULL_BUILD:-false}"
 
-if [ "$(uname -m)" = "aarch64" ]; then
+if [[ "$(uname -m)" = "aarch64" && ${ARM_FULL_BUILD} == "false" ]]; then
     ARCHITECTURE=arm64
 
     wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.0.3/liquidsoap_2.0.3-ubuntu-focal-2_${ARCHITECTURE}.deb"

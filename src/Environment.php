@@ -49,7 +49,7 @@ class Environment
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
 
     public const LOG_LEVEL = 'LOG_LEVEL';
-    public const SHOW_DETAILED_ERRORS = 'show_detailed_errors';
+    public const SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
 
     public const PROFILING_EXTENSION_ENABLED = 'PROFILING_EXTENSION_ENABLED';
     public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';

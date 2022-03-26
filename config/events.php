@@ -100,7 +100,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
 
             // Add an error handler for most in-controller/task situations.
             $errorMiddleware = $app->addErrorMiddleware(
-                !$environment->isProduction(),
+                $environment->showDetailedErrors(),
                 true,
                 true,
                 $container->get(Psr\Log\LoggerInterface::class)

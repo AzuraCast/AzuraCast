@@ -49,6 +49,7 @@ class Environment
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
 
     public const LOG_LEVEL = 'LOG_LEVEL';
+    public const SHOW_DETAILED_ERRORS = 'show_detailed_errors';
 
     public const PROFILING_EXTENSION_ENABLED = 'PROFILING_EXTENSION_ENABLED';
     public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
@@ -121,6 +122,15 @@ class Environment
     public function isDevelopment(): bool
     {
         return ApplicationEnvironment::Development === $this->getAppEnvironmentEnum();
+    }
+
+    public function showDetailedErrors(): bool
+    {
+        if (self::envToBool($this->data[self::SHOW_DETAILED_ERRORS] ?? false)) {
+            return true;
+        }
+
+        return !$this->isProduction();
     }
 
     public function isDocker(): bool

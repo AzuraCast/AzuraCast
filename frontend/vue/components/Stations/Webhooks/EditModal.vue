@@ -36,7 +36,55 @@ export default {
     data() {
         return {
             type: null,
-            webhookConfig: {
+        }
+    },
+    validations() {
+        let validations = {
+            type: {required},
+            form: {
+                name: {required},
+                triggers: {},
+                config: {}
+            }
+        };
+
+        if (this.triggerOptions.length > 0) {
+            validations.form.triggers = {required};
+        }
+
+        if (this.type !== null) {
+            validations.form.config = _.get(this.webhookConfig, [this.type, 'validations'], {});
+        }
+
+        return validations;
+    },
+    computed: {
+        langTitle() {
+            return this.isEditMode
+                ? this.$gettext('Edit Web Hook')
+                : this.$gettext('Add Web Hook');
+        },
+        triggerOptions () {
+            if (!this.type) {
+                return [];
+            }
+
+            let webhookKeys = _.get(this.webhookTypes, [this.type, 'triggers'], []);
+            return _.map(webhookKeys, (key) => {
+                return {
+                    text: this.webhookTriggers[key],
+                    value: key
+                };
+            });
+        },
+        typeTitle() {
+            return _.get(this.webhookTypes, [this.type, 'name'], '');
+        },
+        formComponent() {
+            return _.get(this.webhookConfig, [this.type, 'component'], Generic);
+        },
+        webhookConfig() {
+            return {
                 'generic': {
                     component: Generic,
                     validations: {
@@ -157,53 +205,7 @@ export default {
                         token: ''
                     }
                 }
-            }
-        }
-    },
-    validations() {
-        let validations = {
-            type: {required},
-            form: {
-                name: {required},
-                triggers: {},
-                config: {}
-            }
-        };
-
-        if (this.triggerOptions.length > 0) {
-            validations.form.triggers = {required};
-        }
-
-        if (this.type !== null) {
-            validations.form.config = _.get(this.webhookConfig, [this.type, 'validations'], {});
-        }
-
-        return validations;
-    },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Web Hook')
-                : this.$gettext('Add Web Hook');
-        },
-        triggerOptions () {
-            if (!this.type) {
-                return [];
-            }
-
-            let webhookKeys = _.get(this.webhookTypes, [this.type, 'triggers'], []);
-            return _.map(webhookKeys, (key) => {
-                return {
-                    text: this.webhookTriggers[key],
-                    value: key
-                };
-            });
-        },
-        typeTitle() {
-            return _.get(this.webhookTypes, [this.type, 'name'], '');
-        },
-        formComponent() {
-            return _.get(this.webhookConfig, [this.type, 'component'], Generic);
+            };
         },
         langPoweredByAzuraCast() {
             return this.$gettext('Powered by AzuraCast');

@@ -224,6 +224,10 @@ setup-release() {
   set +e
 
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
+
+  if ask "You should update the Docker Utility Script after changing release channels. Automatically update it now?" Y; then
+    update-self
+  fi
 }
 
 check-install-requirements() {

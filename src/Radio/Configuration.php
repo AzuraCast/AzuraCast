@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Entity\Enums\PlaylistTypes;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Environment;
@@ -27,7 +28,8 @@ class Configuration
         protected Adapters $adapters,
         protected Supervisor $supervisor,
         protected Logger $logger,
-        protected Environment $environment
+        protected Environment $environment,
+        protected StationPlaylistRepository $stationPlaylistRepo
     ) {
     }
 
@@ -107,20 +109,12 @@ class Configuration
         }
 
         // If using AutoDJ and there is no media, don't spin up services.
-        if (BackendAdapters::None !== $station->getBackendTypeEnum()) {
-            $mediaCount = $this->em->createQuery(
-                <<<DQL
-                    SELECT COUNT(spm.id) FROM App\Entity\StationPlaylistMedia spm
-                    JOIN spm.playlist sp
-                    WHERE sp.station = :station
-                DQL
-            )->setParameter('station', $station)
-                ->getSingleScalarResult();
-
-            if (0 === $mediaCount) {
-                $this->unlinkAndStopStation($station, $reloadSupervisor);
-                throw new \RuntimeException('Station has no media assigned to playlists.');
-            }
+        if (
+            BackendAdapters::None !== $station->getBackendTypeEnum()
+            && !$this->stationPlaylistRepo->stationHasActivePlaylists($station)
+        ) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new \RuntimeException('Station has no media assigned to playlists.');
         }
 
         // Get group information

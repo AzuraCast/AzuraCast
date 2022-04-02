@@ -217,9 +217,11 @@ setup-release() {
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
   fi
 
+  set +e
   local OLD_RELEASE_CHANNEL
   .env --file .env get AZURACAST_VERSION
   OLD_RELEASE_CHANNEL="${REPLY:-latest}"
+  set -e
 
   local AZURACAST_VERSION="${OLD_RELEASE_CHANNEL}"
 
@@ -234,14 +236,16 @@ setup-release() {
   fi
 
   set +e
-
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
+  set -e
 
   if [[ $AZURACAST_VERSION != $OLD_RELEASE_CHANNEL ]]; then
     if ask "You should update the Docker Utility Script after changing release channels. Automatically update it now?" Y; then
       update-self
     fi
   fi
+
+  set +e
 }
 
 check-install-requirements() {

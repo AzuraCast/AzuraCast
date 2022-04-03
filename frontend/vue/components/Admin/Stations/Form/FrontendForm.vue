@@ -162,7 +162,7 @@
                 <b-form-row>
                     <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_custom_config"
                                           :field="form.frontend_config.custom_config" input-type="textarea"
-                                          :input-attrs="{class: 'text-preformatted', style: 'min-height: 250px;'}"
+                                          :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
                                           advanced>
                         <template #label="{lang}">
                             <translate :key="lang">Custom Configuration</translate>

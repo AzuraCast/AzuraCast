@@ -17,7 +17,8 @@
             <b-form-row v-if="isIcecast">
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_config" :field="form.frontend_config"
-                                      input-type="textarea" advanced :input-attrs="{class: 'text-preformatted'}">
+                                      input-type="textarea" advanced
+                                      :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Frontend Configuration</translate>
                     </template>

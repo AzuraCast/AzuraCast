@@ -95,13 +95,16 @@ class StationQueueRepository extends Repository
             ->getArrayResult();
 
         $playedRows = (clone $baseQueryBuilder)
-            ->andWhere('sq.is_played != 0')
+            ->andWhere('sq.is_played = 1')
             ->getQuery()
             ->setMaxResults($rows)
             ->getArrayResult();
 
-        $allRows = array_merge($unplayedRows, $playedRows);
-        return array_splice($allRows, 0, $rows);
+        return array_slice(
+            array_merge($unplayedRows, $playedRows),
+            0,
+            $rows
+        );
     }
 
     /**

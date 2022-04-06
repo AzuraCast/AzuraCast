@@ -73,10 +73,10 @@ class AnnotateNextSong extends Event
     /**
      * Compile the resulting annotations into one string for Liquidsoap to consume.
      */
-    public function buildAnnotations(): string
+    public function buildAnnotations(): ?string
     {
         if (empty($this->songPath)) {
-            return '';
+            return null;
         }
 
         $this->annotations = array_filter($this->annotations);

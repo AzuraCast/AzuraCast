@@ -27,7 +27,7 @@ class Annotations implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed[]
+     * @inheritDoc
      */
     public static function getSubscribedEvents(): array
     {
@@ -50,7 +50,7 @@ class Annotations implements EventSubscriberInterface
     public function annotateNextSong(
         Entity\Station $station,
         bool $asAutoDj = false,
-    ): string {
+    ): ?string {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         // Try to rebuild the queue if it's empty.
@@ -64,7 +64,8 @@ class Annotations implements EventSubscriberInterface
                     ],
                 ]
             );
-            return '';
+
+            return null;
         }
 
         $event = new AnnotateNextSong($queueRow, $asAutoDj);

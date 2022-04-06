@@ -6,13 +6,15 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity;
 use App\Radio\AutoDJ\Annotations;
+use App\Radio\FallbackFile;
 use Monolog\Logger;
 
 class NextSongCommand extends AbstractCommand
 {
     public function __construct(
         Logger $logger,
-        protected Annotations $annotations
+        protected Annotations $annotations,
+        protected FallbackFile $fallbackFile
     ) {
         parent::__construct($logger);
     }
@@ -25,6 +27,6 @@ class NextSongCommand extends AbstractCommand
         return $this->annotations->annotateNextSong(
             $station,
             $asAutoDj
-        );
+        ) ?? $this->fallbackFile->getFallbackPathForStation($station);
     }
 }

@@ -83,6 +83,11 @@ class CheckRequestsTask extends AbstractTask
 
         $track = $event->buildAnnotations();
 
+        if (null === $track) {
+            $this->logger->error('Error building annotation.');
+            return false;
+        }
+
         // Queue request with Liquidsoap.
         if (!$backend->isQueueEmpty($station)) {
             $this->logger->error('Skipping submitting request to Liquidsoap; current queue is occupied.');

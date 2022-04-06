@@ -154,11 +154,12 @@ class DebugController extends AbstractLogViewerController
         $this->logger->pushHandler($this->testHandler);
 
         $nextSongAnnotated = $annotations->annotateNextSong(
-            $request->getStation(),
-            false
+            $request->getStation()
         );
 
-        $this->logger->info('Annotated next song: ' . $nextSongAnnotated);
+        $this->logger->info('Annotated next song', [
+            'annotation' => $nextSongAnnotated,
+        ]);
         $this->logger->popHandler();
 
         return $request->getView()->renderToResponse(

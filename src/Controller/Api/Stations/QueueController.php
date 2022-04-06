@@ -144,7 +144,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->sent_to_autodj = $record->getSentToAutodj();
         $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
-        $apiResponse->log = $record->getLog();
+        $apiResponse->log = null; // TODO: Implement non-DB solution for this.
 
         $apiResponse->links = [
             'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),

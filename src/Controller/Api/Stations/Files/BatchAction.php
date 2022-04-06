@@ -19,7 +19,6 @@ use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
@@ -282,8 +281,6 @@ class BatchAction
 
                     $newQueue = Entity\StationQueue::fromMedia($stationRef, $media);
                     $newQueue->setTimestampCued($cuedTimestamp);
-                    $newQueue->addLogRecord(LogLevel::INFO, 'Manually queued via media manager.');
-
                     $this->em->persist($newQueue);
                 } catch (Throwable $e) {
                     $result->errors[] = $media->getPath() . ': ' . $e->getMessage();

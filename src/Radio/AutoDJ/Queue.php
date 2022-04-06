@@ -194,7 +194,8 @@ class Queue implements EventSubscriberInterface
             $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
             $queueRow->updateVisibility();
 
-            $queueRow->setLog($testHandler->getRecords());
+            // TODO: Persist queue log in absence of DB table.
+            // $testHandler->getRecords()
         }
 
         return $queueRow;

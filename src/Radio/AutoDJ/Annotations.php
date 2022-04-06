@@ -11,7 +11,6 @@ use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Annotations implements EventSubscriberInterface
@@ -71,12 +70,7 @@ class Annotations implements EventSubscriberInterface
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->eventDispatcher->dispatch($event);
 
-        $annotation = $event->buildAnnotations();
-        $queueRow->addLogRecord(LogLevel::INFO, 'Annotation: ' . $annotation);
-        $this->em->persist($queueRow);
-        $this->em->flush();
-
-        return $annotation;
+        return $event->buildAnnotations();
     }
 
     public function annotateSongPath(AnnotateNextSong $event): void

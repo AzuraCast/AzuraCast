@@ -23,6 +23,7 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     use Traits\HasSongFields;
 
     public const DAYS_TO_KEEP = 7;
+    public const QUEUE_LOG_TTL = 86400;
 
     #[ORM\Column(nullable: false)]
     protected int $station_id;

@@ -9,6 +9,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Radio\AutoDJ\Queue;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -99,6 +100,7 @@ class QueueController extends AbstractStationApiCrudController
     public function __construct(
         protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
         protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected Queue $queue,
         App\Doctrine\ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
@@ -144,7 +146,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->sent_to_autodj = $record->getSentToAutodj();
         $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
-        $apiResponse->log = null; // TODO: Implement non-DB solution for this.
+        $apiResponse->log = $this->queue->getQueueRowLog($record);
 
         $apiResponse->links = [
             'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),

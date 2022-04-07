@@ -100,12 +100,6 @@ class Queue implements EventSubscriberInterface
                     $queueLength = 1;
                 }
             } else {
-                // Prevent the exact same track from being played twice during this loop
-                if ($lastSongId === $queueRow->getSongId()) {
-                    $this->em->remove($queueRow);
-                    continue;
-                }
-
                 $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                 $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
 
@@ -125,32 +119,58 @@ class Queue implements EventSubscriberInterface
 
         // Build the remainder of the queue.
         while ($queueLength < $maxQueueLength) {
-            $queueRow = $this->cueNextSong($station, $expectedCueTime, $expectedPlayTime);
+            $this->logger->debug(
+                'Adding to station queue.',
+                [
+                    'now' => (string)$expectedPlayTime,
+                ]
+            );
+
+            // Push another test handler specifically for this one queue task.
+            $testHandler = new TestHandler(LogLevel::DEBUG, true);
+            $this->logger->pushHandler($testHandler);
+
+            $event = new BuildQueue(
+                $station,
+                $expectedCueTime,
+                $expectedPlayTime,
+                $lastSongId
+            );
+
+            try {
+                $this->dispatcher->dispatch($event);
+            } finally {
+                $this->logger->popHandler();
+            }
+
+            $queueRow = $event->getNextSong();
+
             if ($queueRow instanceof Entity\StationQueue) {
+                $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
+                $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
+                $queueRow->updateVisibility();
                 $this->em->persist($queueRow);
+                $this->em->flush();
 
-                // Prevent the exact same track from being played twice during this loop
-                if ($lastSongId === $queueRow->getSongId()) {
-                    $this->em->remove($queueRow);
-                } else {
-                    $lastSongId = $queueRow->getSongId();
+                $this->setQueueRowLog($queueRow, $testHandler->getRecords());
 
-                    $expectedCueTime = $this->addDurationToTime(
-                        $station,
-                        $expectedCueTime,
-                        $queueRow->getDuration()
-                    );
-                    $expectedPlayTime = $this->addDurationToTime(
-                        $station,
-                        $expectedPlayTime,
-                        $queueRow->getDuration()
-                    );
-                }
+                $lastSongId = $queueRow->getSongId();
+
+                $expectedCueTime = $this->addDurationToTime(
+                    $station,
+                    $expectedCueTime,
+                    $queueRow->getDuration()
+                );
+                $expectedPlayTime = $this->addDurationToTime(
+                    $station,
+                    $expectedPlayTime,
+                    $queueRow->getDuration()
+                );
             } else {
+                $this->em->flush();
                 break;
             }
 
-            $this->em->flush();
             $queueLength++;
         }
     }
@@ -165,40 +185,6 @@ class Queue implements EventSubscriberInterface
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
-    }
-
-    protected function cueNextSong(
-        Entity\Station $station,
-        CarbonInterface $expectedCueTime,
-        CarbonInterface $expectedPlayTime
-    ): ?Entity\StationQueue {
-        $this->logger->debug(
-            'Adding to station queue.',
-            [
-                'now' => (string)$expectedPlayTime,
-            ]
-        );
-
-        // Push another test handler specifically for this one queue task.
-        $testHandler = new TestHandler(LogLevel::DEBUG, true);
-        $this->logger->pushHandler($testHandler);
-
-        $event = new BuildQueue($station, $expectedCueTime, $expectedPlayTime);
-        $this->dispatcher->dispatch($event);
-
-        $this->logger->popHandler();
-
-        $queueRow = $event->getNextSong();
-        if ($queueRow instanceof Entity\StationQueue) {
-            $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
-            $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
-            $queueRow->updateVisibility();
-
-            // TODO: Persist queue log in absence of DB table.
-            // $testHandler->getRecords()
-        }
-
-        return $queueRow;
     }
 
     /**
@@ -231,9 +217,12 @@ class Queue implements EventSubscriberInterface
             $station->getBackendConfig()->getDuplicatePreventionTimeRange()
         );
 
-        $this->logRecentSongHistory(
-            $recentPlaylistHistory,
-            $recentSongHistoryForDuplicatePrevention
+        $this->logger->debug(
+            'AutoDJ recent song playback history',
+            [
+                'history_once_per_x_songs' => $recentPlaylistHistory,
+                'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention,
+            ]
         );
 
         $typesToPlay = [
@@ -264,10 +253,13 @@ class Queue implements EventSubscriberInterface
                 continue;
             }
 
-            $this->logPlayablePlaylists(
-                $currentPlaylistType,
-                $eligiblePlaylists,
-                $logPlaylists
+            $this->logger->info(
+                sprintf(
+                    '%d playable playlist(s) of type "%s" found.',
+                    count($eligiblePlaylists),
+                    $type
+                ),
+                ['playlists' => $logPlaylists]
             );
 
             $this->weightedShuffle($eligiblePlaylists);
@@ -634,31 +626,24 @@ class Queue implements EventSubscriberInterface
         $event->setNextSong($stationQueueEntry);
     }
 
-    protected function logRecentSongHistory(
-        array $recentPlaylistHistory,
-        array $recentSongHistoryForDuplicatePrevention
-    ): void {
-        $this->logger->debug(
-            'AutoDJ recent song playback history',
-            [
-                'history_once_per_x_songs' => $recentPlaylistHistory,
-                'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention,
-            ]
+    public function getQueueRowLog(Entity\StationQueue $queueRow): ?array
+    {
+        return $this->cache->get(
+            $this->getQueueRowLogCacheKey($queueRow)
         );
     }
 
-    protected function logPlayablePlaylists(
-        string $type,
-        array $eligiblePlaylists,
-        array $logPlaylists
-    ): void {
-        $this->logger->info(
-            sprintf(
-                '%d playable playlist(s) of type "%s" found.',
-                count($eligiblePlaylists),
-                $type
-            ),
-            ['playlists' => $logPlaylists]
+    public function setQueueRowLog(Entity\StationQueue $queueRow, ?array $log): void
+    {
+        $this->cache->set(
+            $this->getQueueRowLogCacheKey($queueRow),
+            $log,
+            Entity\StationQueue::QUEUE_LOG_TTL
         );
+    }
+
+    protected function getQueueRowLogCacheKey(Entity\StationQueue $queueRow): string
+    {
+        return 'queue_log.' . $queueRow->getIdRequired();
     }
 }

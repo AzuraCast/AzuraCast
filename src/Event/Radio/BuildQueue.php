@@ -20,7 +20,8 @@ class BuildQueue extends Event
     public function __construct(
         protected Entity\Station $station,
         ?CarbonInterface $expectedCueTime = null,
-        ?CarbonInterface $expectedPlayTime = null
+        ?CarbonInterface $expectedPlayTime = null,
+        protected ?string $lastPlayedSongId = null,
     ) {
         $this->expectedCueTime = $expectedCueTime ?? CarbonImmutable::now($station->getTimezoneObject());
         $this->expectedPlayTime = $expectedPlayTime ?? CarbonImmutable::now($station->getTimezoneObject());
@@ -41,6 +42,11 @@ class BuildQueue extends Event
         return $this->expectedPlayTime;
     }
 
+    public function getLastPlayedSongId(): ?string
+    {
+        return $this->lastPlayedSongId;
+    }
+
     public function getNextSong(): ?Entity\StationQueue
     {
         return $this->nextSong;
@@ -48,14 +54,17 @@ class BuildQueue extends Event
 
     public function setNextSong(?Entity\StationQueue $nextSong): bool
     {
-        $this->nextSong = $nextSong;
-
-        if (null !== $nextSong) {
-            $this->stopPropagation();
-            return true;
+        if (null === $nextSong) {
+            return false;
         }
 
-        return false;
+        if ($this->lastPlayedSongId === $nextSong->getSongId()) {
+            return false;
+        }
+
+        $this->nextSong = $nextSong;
+        $this->stopPropagation();
+        return true;
     }
 
     public function hasNextSong(): bool

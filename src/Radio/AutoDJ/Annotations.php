@@ -49,22 +49,11 @@ class Annotations implements EventSubscriberInterface
     public function annotateNextSong(
         Entity\Station $station,
         bool $asAutoDj = false,
-    ): ?string {
+    ): string {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
-        // Try to rebuild the queue if it's empty.
         if (null === $queueRow) {
-            $this->logger->info(
-                'Queue is empty!',
-                [
-                    'station' => [
-                        'id' => $station->getId(),
-                        'name' => $station->getName(),
-                    ],
-                ]
-            );
-
-            return null;
+            throw new \RuntimeException('Queue is empty for station.');
         }
 
         $event = new AnnotateNextSong($queueRow, $asAutoDj);

@@ -73,10 +73,10 @@ class AnnotateNextSong extends Event
     /**
      * Compile the resulting annotations into one string for Liquidsoap to consume.
      */
-    public function buildAnnotations(): ?string
+    public function buildAnnotations(): string
     {
         if (empty($this->songPath)) {
-            return null;
+            throw new \RuntimeException('No valid path for song.');
         }
 
         $this->annotations = array_filter($this->annotations);

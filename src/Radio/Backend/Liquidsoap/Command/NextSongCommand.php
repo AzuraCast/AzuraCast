@@ -27,6 +27,6 @@ class NextSongCommand extends AbstractCommand
         return $this->annotations->annotateNextSong(
             $station,
             $asAutoDj
-        ) ?? $this->fallbackFile->getFallbackPathForStation($station);
+        );
     }
 }

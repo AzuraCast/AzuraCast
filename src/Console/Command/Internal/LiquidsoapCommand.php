@@ -10,6 +10,7 @@ use App\Entity\Repository\StationRepository;
 use App\Radio\Backend\Liquidsoap\Command\AbstractCommand;
 use App\Radio\Enums\LiquidsoapCommands;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +26,8 @@ class LiquidsoapCommand extends CommandAbstract
 {
     public function __construct(
         protected StationRepository $stationRepo,
-        protected ContainerInterface $di
+        protected ContainerInterface $di,
+        protected LoggerInterface $logger,
     ) {
         parent::__construct();
     }
@@ -57,27 +59,40 @@ class LiquidsoapCommand extends CommandAbstract
             $payload = [];
         }
 
-        $station = $this->stationRepo->findByIdentifier($stationId);
+        try {
+            $station = $this->stationRepo->findByIdentifier($stationId);
+            if (!($station instanceof Entity\Station)) {
+                throw new \LogicException('Station not found.');
+            }
 
-        if (!($station instanceof Entity\Station)) {
+            $command = LiquidsoapCommands::tryFrom($action);
+            if (null === $command || !$this->di->has($command->getClass())) {
+                throw new \LogicException('Command not found.');
+            }
+
+            /** @var AbstractCommand $commandObj */
+            $commandObj = $this->di->get($command->getClass());
+
+            $result = $commandObj->run($station, $asAutoDj, $payload);
+            $io->writeln($result);
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                sprintf(
+                    'Liquidsoap command "%s" error: %s',
+                    $action,
+                    $e->getMessage()
+                ),
+                [
+                    'station' => $stationId,
+                    'payload' => $payload,
+                    'as-autodj' => $asAutoDj,
+                ]
+            );
+
             $io->writeln('false');
             return 1;
         }
 
-        $command = LiquidsoapCommands::tryFrom($action);
-        if (null === $command) {
-            $io->writeln('false');
-            return 1;
-        }
-
-        /** @var AbstractCommand $commandObj */
-        $commandObj = $this->di->get($command->getClass());
-
-        $result = $commandObj->run($station, $asAutoDj, $payload);
-        $io->writeln($result);
-
-        return ('' === $result || 'false' === $result)
-            ? 1
-            : 0;
+        return 0;
     }
 }

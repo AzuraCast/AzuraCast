@@ -5,7 +5,7 @@ set -x
 opam init --disable-sandboxing -a --bare && opam switch create 4.13.1
 
 # Pin specific commit of Liquidsoap
-opam pin add --no-action liquidsoap https://github.com/savonet/liquidsoap.git#6e56aed06f116fb7ec92f72326faf7b90554efa2
+opam pin add --no-action liquidsoap https://github.com/savonet/liquidsoap.git#342c6efb5d4f7e9e425dfd2cb13173e6037420bc
 
 opam pin add --no-action mm https://github.com/savonet/ocaml-mm.git#bfff160ece1676a3a912e8bc79c80ce6482f4d36
 

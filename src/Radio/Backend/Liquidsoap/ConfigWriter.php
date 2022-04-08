@@ -6,6 +6,7 @@ namespace App\Radio\Backend\Liquidsoap;
 
 use App\Entity;
 use App\Environment;
+use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Flysystem\StationFilesystems;
@@ -18,6 +19,7 @@ use App\Radio\FallbackFile;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\StorageAttributes;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -36,6 +38,7 @@ class ConfigWriter implements EventSubscriberInterface
         protected Liquidsoap $liquidsoap,
         protected Environment $environment,
         protected LoggerInterface $logger,
+        protected EventDispatcherInterface $eventDispatcher,
         protected FallbackFile $fallbackFile
     ) {
     }
@@ -164,65 +167,103 @@ class ConfigWriter implements EventSubscriberInterface
             EOF
         );
 
-        if (!$this->environment->isDockerStandalone()) {
-            $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
-            $stationApiUrl = self::cleanUpString(
-                (string)$this->environment->getUriToWeb()
-                    ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
-            );
+        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
+        $stationApiUrl = self::cleanUpString(
+            (string)$this->environment->getUriToWeb()
+                ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
+        );
+
+        $event->appendBlock(
+            <<<EOF
+            azuracast_api_url = "${stationApiUrl}"
+            azuracast_api_key = "${stationApiAuth}"
+            
+            def azuracast_api_call(~timeout=2, url, payload) =
+                full_url = "#{azuracast_api_url}/#{url}"
+                
+                log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
+                try
+                    response = http.post(full_url,
+                        headers=[
+                            ("Content-Type", "application/json"),
+                            ("User-Agent", "Liquidsoap AzuraCast"),
+                            ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
+                        ],
+                        timeout=float_of_int(timeout),
+                        data=payload
+                    )
+                    
+                    log("API #{url} - Response (#{response.status_code}): #{response}")
+                    "#{response}"
+                catch err do
+                    log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
+                    "false"
+                end
+            end
+            EOF
+        );
+
+        /*
+        $stationId = $station->getIdRequired();
+
+        $event->appendBlock(
+            <<<EOF
+            def azuracast_api_call(~timeout=2, url, payload) =
+                command = "liquidsoap_cli --as-autodj #{url} ${stationId}"
+
+                response = list.hd(
+                    process.read.lines(
+                        env=[("PAYLOAD", payload)],
+                        timeout=float_of_int(timeout),
+                        command
+                    ),
+                    default=""
+                )
+
+                log("API #{url} - Response: #{response}")
+                "#{response}"
+            end
+            EOF
+        );
+        }
+        */
+
+        $mediaStorageLocation = $station->getMediaStorageLocation();
+
+        if ($mediaStorageLocation->isLocal()) {
+            $stationMediaDir = $mediaStorageLocation->getFilteredPath();
 
             $event->appendBlock(
                 <<<EOF
-                azuracast_api_url = "${stationApiUrl}"
-                azuracast_api_key = "${stationApiAuth}"
-                
-                def azuracast_api_call(~timeout=2, url, payload) =
-                    full_url = "#{azuracast_api_url}/#{url}"
-                    
-                    log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
-                    try
-                        response = http.post(full_url,
-                            headers=[
-                                ("Content-Type", "application/json"),
-                                ("User-Agent", "Liquidsoap AzuraCast"),
-                                ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
-                            ],
-                            timeout=timeout,
-                            data=payload
-                        )
-                        
-                        log("API #{url} - Response (#{response.status_code}): #{response}")
-                        "#{response}"
-                    catch err do
-                        log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
-                        "false"
-                    end
+                station_media_dir = "${stationMediaDir}"
+                def azuracast_media_protocol(~rlog,~maxtime,arg) =
+                    ["#{station_media_dir}/#{arg}"]
                 end
                 EOF
             );
         } else {
-            $stationId = $station->getIdRequired();
-
             $event->appendBlock(
                 <<<EOF
-                def azuracast_api_call(~timeout=2, url, payload) =
-                    command = "liquidsoap_cli --as-autodj #{url} ${stationId}"
-                
-                    response = list.hd(
-                        process.read.lines(
-                            env=[("PAYLOAD", payload)],
-                            timeout=float_of_int(timeout),
-                            command
-                        ),
-                        default=""
-                    )
+                def azuracast_media_protocol(~rlog,~maxtime,arg) =
+                    j = json()
+                    j.add("uri", arg)
                     
-                    log("API #{url} - Response: #{response}")
-                    "#{response}"
+                    [azuracast_api_call(timeout=5, "cp", json.stringify(j))]
                 end
                 EOF
             );
         }
+
+        $event->appendBlock(
+            <<<EOF
+            add_protocol(
+                "media",
+                azuracast_media_protocol,
+                doc="Pull files from AzuraCast media directory.",
+                syntax="media://uri"
+            )
+            EOF
+        );
 
         $backendConfig = $station->getBackendConfig();
 
@@ -591,11 +632,6 @@ class ConfigWriter implements EventSubscriberInterface
     {
         $station = $playlist->getStation();
 
-        $mediaStorage = $station->getMediaStorageLocation();
-        if (!$mediaStorage->isLocal()) {
-            return null;
-        }
-
         $playlistPath = $station->getRadioPlaylistsDir();
         $playlistVarName = 'playlist_' . $playlist->getShortName();
 
@@ -607,7 +643,6 @@ class ConfigWriter implements EventSubscriberInterface
             ]
         );
 
-        $mediaBaseDir = $mediaStorage->getPath() . '/';
         $playlistFile = [];
 
         $mediaQuery = $this->em->createQuery(
@@ -622,22 +657,18 @@ class ConfigWriter implements EventSubscriberInterface
 
         /** @var Entity\StationMedia $mediaFile */
         foreach ($mediaQuery->toIterable() as $mediaFile) {
-            $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
-            $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
+            $event = new AnnotateNextSong(
+                station: $station,
+                media: $mediaFile,
+                playlist: $playlist,
+                asAutoDj: false
+            );
 
-            if ($playlist->getIsJingle()) {
-                $mediaAnnotations['is_jingle_mode'] = 'true';
-                unset($mediaAnnotations['media_id']);
-            } else {
-                $mediaAnnotations['playlist_id'] = $playlist->getId();
+            try {
+                $this->eventDispatcher->dispatch($event);
+                $playlistFile[] = $event->buildAnnotations();
+            } catch (\Throwable $e) {
             }
-
-            $annotations_str = [];
-            foreach ($mediaAnnotations as $annotation_key => $annotation_val) {
-                $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
-            }
-
-            $playlistFile[] = 'annotate:' . implode(',', $annotations_str) . ':' . $mediaFilePath;
         }
 
         $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';

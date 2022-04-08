@@ -20,7 +20,11 @@ class AnnotateNextSong extends Event
     protected array $annotations = [];
 
     public function __construct(
-        protected Entity\StationQueue $queue,
+        protected Entity\Station $station,
+        protected ?Entity\StationQueue $queue = null,
+        protected ?Entity\StationMedia $media = null,
+        protected ?Entity\StationPlaylist $playlist = null,
+        protected ?Entity\StationRequest $request = null,
         protected bool $asAutoDj = false
     ) {
     }
@@ -32,22 +36,22 @@ class AnnotateNextSong extends Event
 
     public function getStation(): Entity\Station
     {
-        return $this->queue->getStation();
+        return $this->station;
     }
 
     public function getMedia(): ?Entity\StationMedia
     {
-        return $this->queue->getMedia();
+        return $this->media;
     }
 
     public function getPlaylist(): ?Entity\StationPlaylist
     {
-        return $this->queue->getPlaylist();
+        return $this->playlist;
     }
 
     public function getRequest(): ?Entity\StationRequest
     {
-        return $this->queue->getRequest();
+        return $this->request;
     }
 
     public function setAnnotations(array $annotations): void
@@ -91,5 +95,19 @@ class AnnotateNextSong extends Event
         }
 
         return $this->songPath;
+    }
+
+    public static function fromStationQueue(
+        Entity\StationQueue $queue,
+        bool $asAutoDj = false
+    ): self {
+        return new self(
+            station: $queue->getStation(),
+            queue: $queue,
+            media: $queue->getMedia(),
+            playlist: $queue->getPlaylist(),
+            request: $queue->getRequest(),
+            asAutoDj: $asAutoDj
+        );
     }
 }

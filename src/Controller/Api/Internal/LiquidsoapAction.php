@@ -23,41 +23,46 @@ class LiquidsoapAction
         string $action
     ): ResponseInterface {
         $station = $request->getStation();
-
-        $acl = $request->getAcl();
-        if (!$acl->isAllowed(StationPermissions::View, $station->getIdRequired())) {
-            $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
-            if (!$station->validateAdapterApiKey($authKey)) {
-                $logger->error(
-                    'Invalid API key supplied for internal API call.',
-                    [
-                        'station_id' => $station->getId(),
-                        'station_name' => $station->getName(),
-                    ]
-                );
-
-                $response->getBody()->write('false');
-                return $response->withStatus(403);
-            }
-        }
-
         $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key');
         $payload = (array)$request->getParsedBody();
 
-        $command = LiquidsoapCommands::tryFrom($action);
-        if (null === $command) {
-            return $response;
-        }
+        try {
+            $acl = $request->getAcl();
+            if (!$acl->isAllowed(StationPermissions::View, $station->getIdRequired())) {
+                $authKey = $request->getHeaderLine('X-Liquidsoap-Api-Key');
+                if (!$station->validateAdapterApiKey($authKey)) {
+                    throw new \RuntimeException('Invalid API key.');
+                }
+            }
 
-        /** @var AbstractCommand $commandObj */
-        $commandObj = $di->get($command->getClass());
+            $command = LiquidsoapCommands::tryFrom($action);
+            if (null === $command || !$di->has($command->getClass())) {
+                throw new \InvalidArgumentException('Command not found.');
+            }
 
-        $result = $commandObj->run($station, $asAutoDj, $payload);
+            /** @var AbstractCommand $commandObj */
+            $commandObj = $di->get($command->getClass());
 
-        if ("false" === $result) {
+            $result = $commandObj->run($station, $asAutoDj, $payload);
+            $response->getBody()->write((string)$result);
+        } catch (\Throwable $e) {
+            $logger->error(
+                sprintf(
+                    'Liquidsoap command "%s" error: %s',
+                    $action,
+                    $e->getMessage()
+                ),
+                [
+                    'station' => (string)$station,
+                    'payload' => $payload,
+                    'as-autodj' => $asAutoDj,
+                ]
+            );
+
             $response = $response->withStatus(400);
+            $response->getBody()->write('false');
         }
-        $response->getBody()->write((string)$result);
+
         return $response;
     }
 }

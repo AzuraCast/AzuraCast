@@ -6,7 +6,6 @@ namespace App\Radio\AutoDJ;
 
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
-use App\Flysystem\StationFilesystems;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -56,7 +55,7 @@ class Annotations implements EventSubscriberInterface
             throw new \RuntimeException('Queue is empty for station.');
         }
 
-        $event = new AnnotateNextSong($queueRow, $asAutoDj);
+        $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);
         $this->eventDispatcher->dispatch($event);
 
         return $event->buildAnnotations();
@@ -66,11 +65,7 @@ class Annotations implements EventSubscriberInterface
     {
         $media = $event->getMedia();
         if ($media instanceof Entity\StationMedia) {
-            $localMediaPath = (new StationFilesystems($event->getStation()))
-                ->getMediaFilesystem()
-                ->getLocalPath($media->getPath());
-
-            $event->setSongPath($localMediaPath);
+            $event->setSongPath('media://' . ltrim($media->getPath(), '/'));
 
             $backend = $this->adapters->getBackendAdapter($event->getStation());
             $event->addAnnotations($backend->annotateMedia($media));
@@ -115,18 +110,19 @@ class Annotations implements EventSubscriberInterface
 
     public function postAnnotation(AnnotateNextSong $event): void
     {
-        if ($event->isAsAutoDj()) {
-            $queueRow = $event->getQueue();
-            if ($queueRow instanceof Entity\StationQueue) {
-                $queueRow->setSentToAutodj();
-                $queueRow->setTimestampCued(time());
-                $this->em->persist($queueRow);
-            }
-
-            // The "get next song" function is only called when a streamer is not live.
-            $this->streamerRepo->onDisconnect($event->getStation());
+        if (!$event->isAsAutoDj()) {
+            return;
         }
 
+        $queueRow = $event->getQueue();
+        if ($queueRow instanceof Entity\StationQueue) {
+            $queueRow->setSentToAutodj();
+            $queueRow->setTimestampCued(time());
+            $this->em->persist($queueRow);
+        }
+
+        // The "get next song" function is only called when a streamer is not live.
+        $this->streamerRepo->onDisconnect($event->getStation());
         $this->em->flush();
     }
 }

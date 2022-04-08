@@ -267,12 +267,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/flysystem-v2-extensions.git",
-                "reference": "36c8152f42503ade7cd14491292f13d6abe9f2f2"
+                "reference": "4d38fae94f33f4d96fe02032651e89e9a0394d43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/36c8152f42503ade7cd14491292f13d6abe9f2f2",
-                "reference": "36c8152f42503ade7cd14491292f13d6abe9f2f2",
+                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/4d38fae94f33f4d96fe02032651e89e9a0394d43",
+                "reference": "4d38fae94f33f4d96fe02032651e89e9a0394d43",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +337,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-01-30T19:51:23+00:00"
+            "time": "2022-04-08T06:31:17+00:00"
         },
         {
             "name": "azuracast/metadata-manager",
@@ -3539,12 +3539,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "fd92eb60f71ec4c56ab22406d45a0d0c9c38a8f4"
+                "reference": "51ba4a6a12419809bfa2ffdf843c0c58cc7609da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/fd92eb60f71ec4c56ab22406d45a0d0c9c38a8f4",
-                "reference": "fd92eb60f71ec4c56ab22406d45a0d0c9c38a8f4",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/51ba4a6a12419809bfa2ffdf843c0c58cc7609da",
+                "reference": "51ba4a6a12419809bfa2ffdf843c0c58cc7609da",
                 "shasum": ""
             },
             "require": {
@@ -3622,20 +3622,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-12T19:55:57+00:00"
+            "time": "2022-04-06T18:29:59+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "3.0.11",
+            "version": "3.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "6f78e668ee70c69dd43830ebb21b41ec11f648fc"
+                "reference": "0074cf016e21a6d1eb99b6db70acdd23743fc371"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/6f78e668ee70c69dd43830ebb21b41ec11f648fc",
-                "reference": "6f78e668ee70c69dd43830ebb21b41ec11f648fc",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/0074cf016e21a6d1eb99b6db70acdd23743fc371",
+                "reference": "0074cf016e21a6d1eb99b6db70acdd23743fc371",
                 "shasum": ""
             },
             "require": {
@@ -3676,9 +3676,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-aws-s3-v3/issues",
-                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.0.11"
+                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.0.13"
             },
-            "time": "2022-03-04T16:39:25+00:00"
+            "time": "2022-04-01T22:05:11+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -13929,5 +13929,5 @@
         "ext-xmlwriter": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e60adb1eba6afd7c269a403661e8195b",
+    "content-hash": "67a24d5cc2bd9710e85b97e9761c03fc",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8064,16 +8064,16 @@
         },
         {
             "name": "symfony/rate-limiter",
-            "version": "v6.0.7",
+            "version": "v6.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/rate-limiter.git",
-                "reference": "106cdd5eab73ff6dee4de7ca9f5eb0f24d050c58"
+                "reference": "795406813d478966ac2a8d5e8771177a69b64cbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/106cdd5eab73ff6dee4de7ca9f5eb0f24d050c58",
-                "reference": "106cdd5eab73ff6dee4de7ca9f5eb0f24d050c58",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/795406813d478966ac2a8d5e8771177a69b64cbf",
+                "reference": "795406813d478966ac2a8d5e8771177a69b64cbf",
                 "shasum": ""
             },
             "require": {
@@ -8114,7 +8114,7 @@
                 "rate-limiter"
             ],
             "support": {
-                "source": "https://github.com/symfony/rate-limiter/tree/v6.0.7"
+                "source": "https://github.com/symfony/rate-limiter/tree/v6.0.3"
             },
             "funding": [
                 {
@@ -8130,7 +8130,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-31T17:18:25+00:00"
+            "time": "2022-01-24T15:11:35+00:00"
         },
         {
             "name": "symfony/redis-messenger",

@@ -4,8 +4,38 @@ upstream redis_server {
 }
 {{end}}
 
+# Internal connection handler for PubSub and internal API calls
 server {
-    listen 9010;
+    listen 127.0.0.1:9010;
+
+    root /var/azuracast/www/web;
+    index index.php;
+
+    server_name localhost;
+
+    # Default clean URL routing
+    location / {
+        try_files $uri @clean_url;
+    }
+
+    location @clean_url {
+        rewrite ^(.*)$ /index.php last;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+        fastcgi_pass localhost:9005;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        include fastcgi_params;
+
+        fastcgi_read_timeout 600;
+        fastcgi_buffering off;
+
+        internal;
+    }
 
     location ~ /pub/([^\/]+)$ {
         nchan_publisher;

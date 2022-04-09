@@ -203,31 +203,6 @@ class ConfigWriter implements EventSubscriberInterface
             EOF
         );
 
-        /*
-        $stationId = $station->getIdRequired();
-
-        $event->appendBlock(
-            <<<EOF
-            def azuracast_api_call(~timeout=2, url, payload) =
-                command = "liquidsoap_cli --as-autodj #{url} ${stationId}"
-
-                response = list.hd(
-                    process.read.lines(
-                        env=[("PAYLOAD", payload)],
-                        timeout=float_of_int(timeout),
-                        command
-                    ),
-                    default=""
-                )
-
-                log("API #{url} - Response: #{response}")
-                "#{response}"
-            end
-            EOF
-        );
-        }
-        */
-
         $mediaStorageLocation = $station->getMediaStorageLocation();
 
         if ($mediaStorageLocation->isLocal()) {
@@ -248,7 +223,7 @@ class ConfigWriter implements EventSubscriberInterface
                     j = json()
                     j.add("uri", arg)
                     
-                    [azuracast_api_call(timeout=5, "cp", json.stringify(j))]
+                    [azuracast_api_call(timeout=20, "cp", json.stringify(j))]
                 end
                 EOF
             );
@@ -260,7 +235,7 @@ class ConfigWriter implements EventSubscriberInterface
                 "media",
                 azuracast_media_protocol,
                 doc="Pull files from AzuraCast media directory.",
-                syntax="media://uri"
+                syntax="media:uri"
             )
             EOF
         );

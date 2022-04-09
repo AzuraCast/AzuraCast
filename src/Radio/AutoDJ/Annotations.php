@@ -65,7 +65,7 @@ class Annotations implements EventSubscriberInterface
     {
         $media = $event->getMedia();
         if ($media instanceof Entity\StationMedia) {
-            $event->setSongPath('media://' . ltrim($media->getPath(), '/'));
+            $event->setSongPath('media:' . ltrim($media->getPath(), '/'));
 
             $backend = $this->adapters->getBackendAdapter($event->getStation());
             $event->addAnnotations($backend->annotateMedia($media));

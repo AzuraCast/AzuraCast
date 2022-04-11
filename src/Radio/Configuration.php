@@ -21,7 +21,16 @@ class Configuration
 {
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
-    public const PROTECTED_PORTS = [8080, 80, 443, 2022];
+    public const PROTECTED_PORTS = [
+        9000, // PHP-FPM external
+        9001, // Supervisord
+        9005, // PHP-FPM internal
+        9010, // Nginx internal
+        8080, // Common debug port
+        80,   // HTTP
+        443,  // HTTPS
+        2022, // SFTP
+    ];
 
     public function __construct(
         protected EntityManagerInterface $em,

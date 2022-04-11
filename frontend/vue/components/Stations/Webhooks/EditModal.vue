@@ -90,12 +90,14 @@ export default {
                     validations: {
                         webhook_url: {required},
                         basic_auth_username: {},
-                        basic_auth_password: {}
+                        basic_auth_password: {},
+                        timeout: {},
                     },
                     defaultConfig: {
                         webhook_url: '',
                         basic_auth_username: '',
-                        basic_auth_password: ''
+                        basic_auth_password: '',
+                        timeout: '5',
                     }
                 },
                 'email': {

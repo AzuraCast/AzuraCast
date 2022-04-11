@@ -35,6 +35,7 @@ class Generic extends AbstractConnector
                     'Content-Type' => 'application/json',
                 ],
                 'json' => $np,
+                'timeout' => (float)($config['timeout'] ?? 5.0),
             ];
 
             if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {

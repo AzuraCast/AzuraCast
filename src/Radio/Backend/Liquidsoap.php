@@ -8,6 +8,7 @@ use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Process\Process;
 
 class Liquidsoap extends AbstractBackend
 {
@@ -307,5 +308,17 @@ class Liquidsoap extends AbstractBackend
         return $base_url
             ->withScheme('wss')
             ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
+    }
+
+    public function getVersion(): string
+    {
+        $process = new Process([
+            $this->getBinary(),
+            '--version',
+        ]);
+        $process->mustRun();
+
+        preg_match('/^Liquidsoap (.+)$/im', $process->getOutput(), $matches);
+        return $matches[1];
     }
 }

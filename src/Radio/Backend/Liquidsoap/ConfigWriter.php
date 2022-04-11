@@ -142,8 +142,10 @@ class ConfigWriter implements EventSubscriberInterface
             <<<EOF
             init.daemon.set(false)
             init.daemon.pidfile.path.set("${pidfile}")
+            
             log.stdout.set(true)
             log.file.set(false)
+            
             settings.server.log.level.set(4)
             settings.server.telnet.set(true)
             settings.server.telnet.bind_addr.set("${telnetBindAddr}")
@@ -173,6 +175,12 @@ class ConfigWriter implements EventSubscriberInterface
                 ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
         );
 
+        $lsVersion = $this->liquidsoap->getVersion();
+
+        $timeoutFn = version_compare($lsVersion, '2.0.4', '<')
+            ? 'timeout'
+            : 'float_of_int(timeout)';
+
         $event->appendBlock(
             <<<EOF
             azuracast_api_url = "${stationApiUrl}"
@@ -189,7 +197,7 @@ class ConfigWriter implements EventSubscriberInterface
                             ("User-Agent", "Liquidsoap AzuraCast"),
                             ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
                         ],
-                        timeout=float_of_int(timeout),
+                        timeout=${timeoutFn},
                         data=payload
                     )
                     

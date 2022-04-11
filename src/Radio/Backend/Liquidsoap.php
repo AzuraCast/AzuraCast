@@ -227,6 +227,25 @@ class Liquidsoap extends AbstractBackend
         return '/usr/local/bin/liquidsoap';
     }
 
+    public function getVersion(): ?string
+    {
+        $binary = $this->getBinary();
+        if (null === $binary) {
+            return null;
+        }
+
+        $process = new Process([$binary, '--version']);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return preg_match('/^Liquidsoap (.+)$/im', $process->getOutput(), $matches)
+            ? $matches[1]
+            : null;
+    }
+
     public function isQueueEmpty(Entity\Station $station): bool
     {
         $queue = $this->command(
@@ -308,24 +327,5 @@ class Liquidsoap extends AbstractBackend
         return $base_url
             ->withScheme('wss')
             ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
-    }
-
-    public function getVersion(): ?string
-    {
-        $binary = $this->getBinary();
-        if (null === $binary) {
-            return null;
-        }
-
-        $process = new Process([$binary, '--version']);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            return null;
-        }
-
-        return preg_match('/^Liquidsoap (.+)$/im', $process->getOutput(), $matches)
-            ? $matches[1]
-            : null;
     }
 }

@@ -18,6 +18,23 @@ class Shoutcast extends AbstractFrontend
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getBinary(): ?string
+    {
+        $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
+
+        // Docker versions before 3 included the SC binary across the board.
+        if ($this->environment->isDocker() && !$this->environment->isDockerRevisionAtLeast(3)) {
+            return $new_path;
+        }
+
+        return file_exists($new_path)
+            ? $new_path
+            : null;
+    }
+
     public function getVersion(): ?string
     {
         $binary = $this->getBinary();
@@ -35,23 +52,6 @@ class Shoutcast extends AbstractFrontend
 
         return preg_match('/^SHOUTcast .* v(\S+) .*$/i', $process->getOutput(), $matches)
             ? $matches[1]
-            : null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getBinary(): ?string
-    {
-        $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
-
-        // Docker versions before 3 included the SC binary across the board.
-        if ($this->environment->isDocker() && !$this->environment->isDockerRevisionAtLeast(3)) {
-            return $new_path;
-        }
-
-        return file_exists($new_path)
-            ? $new_path
             : null;
     }
 

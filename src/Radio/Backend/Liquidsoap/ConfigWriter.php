@@ -175,7 +175,7 @@ class ConfigWriter implements EventSubscriberInterface
                 ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
         );
 
-        $lsVersion = $this->liquidsoap->getVersion();
+        $lsVersion = $this->liquidsoap->getVersion() ?? '0.0.0';
 
         $timeoutFn = version_compare($lsVersion, '2.0.4', '<')
             ? 'timeout'

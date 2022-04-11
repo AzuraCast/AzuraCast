@@ -310,15 +310,22 @@ class Liquidsoap extends AbstractBackend
             ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
     }
 
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
-        $process = new Process([
-            $this->getBinary(),
-            '--version',
-        ]);
-        $process->mustRun();
+        $binary = $this->getBinary();
+        if (null === $binary) {
+            return null;
+        }
 
-        preg_match('/^Liquidsoap (.+)$/im', $process->getOutput(), $matches);
-        return $matches[1];
+        $process = new Process([$binary, '--version']);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return preg_match('/^Liquidsoap (.+)$/im', $process->getOutput(), $matches)
+            ? $matches[1]
+            : null;
     }
 }

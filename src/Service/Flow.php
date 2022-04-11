@@ -31,6 +31,7 @@ use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -49,9 +50,7 @@ class Flow
     ): UploadedFile|ResponseInterface {
         if (null === $tempDir) {
             $tempDir = sys_get_temp_dir() . '/uploads';
-            if (!mkdir($tempDir) && !is_dir($tempDir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $tempDir));
-            }
+            File::ensureDirectoryExists($tempDir);
         }
 
         $params = $request->getParams();
@@ -107,9 +106,7 @@ class Flow
         }
 
         // the file is stored in a temporary directory
-        if (!is_dir($chunkBaseDir) && !mkdir($chunkBaseDir, 0777, true) && !is_dir($chunkBaseDir)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $chunkBaseDir));
-        }
+        File::ensureDirectoryExists($chunkBaseDir);
 
         if ($file->getSize() !== $currentChunkSize) {
             throw new RuntimeException(

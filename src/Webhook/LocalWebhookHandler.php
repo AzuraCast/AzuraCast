@@ -7,10 +7,10 @@ namespace App\Webhook;
 use App\Entity;
 use App\Environment;
 use App\Service\NChan;
+use App\Utilities\File;
 use GuzzleHttp\Client;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
-use RuntimeException;
 
 use const JSON_PRETTY_PRINT;
 
@@ -58,9 +58,7 @@ class LocalWebhookHandler
         $this->logger->debug('Writing static nowplaying text file...');
 
         $static_np_dir = Environment::getInstance()->getTempDirectory() . '/nowplaying';
-        if (!is_dir($static_np_dir) && !mkdir($static_np_dir) && !is_dir($static_np_dir)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $static_np_dir));
-        }
+        File::ensureDirectoryExists($static_np_dir);
 
         $static_path = $static_np_dir . '/' . $station->getShortName() . '.json';
         file_put_contents(

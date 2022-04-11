@@ -95,8 +95,10 @@ class BackupCommand extends CommandAbstract
         $io->section(__('Creating temporary directories...'));
 
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
-        if (!mkdir($tmp_dir_mariadb) && !is_dir($tmp_dir_mariadb)) {
-            $io->error(__('Directory "%s" was not created', $tmp_dir_mariadb));
+        try {
+            Utilities\File::ensureDirectoryExists($tmp_dir_mariadb);
+        } catch (\Throwable $e) {
+            $io->error($e->getMessage());
             return 1;
         }
 

@@ -23,7 +23,6 @@ use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
-use RuntimeException;
 use Stringable;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -696,11 +695,8 @@ class Station implements Stringable, IdentifiableEntityInterface
         $visibility = (new PortableVisibilityConverter(
             defaultForDirectories: Visibility::PUBLIC
         ))->defaultForDirectories();
-        if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
-        }
 
-        clearstatcache(false, $dirname);
+        File::ensureDirectoryExists($dirname, $visibility);
     }
 
     public function getRadioPlaylistsDir(): string

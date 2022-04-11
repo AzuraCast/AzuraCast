@@ -104,6 +104,31 @@ class File
         return $fullPath;
     }
 
+    public static function ensureDirectoryExists(string $dirname, int $visibility = 0777): void
+    {
+        if (is_dir($dirname)) {
+            return;
+        }
+
+        error_clear_last();
+
+        if (!@mkdir($dirname, $visibility, true)) {
+            $mkdirError = error_get_last();
+        }
+
+        clearstatcache(true, $dirname);
+
+        if (!is_dir($dirname)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Unable to create directory "%s": %s',
+                    $dirname,
+                    $mkdirError['message'] ?? ''
+                )
+            );
+        }
+    }
+
     /**
      * Recursively remove a directory and its contents.
      *

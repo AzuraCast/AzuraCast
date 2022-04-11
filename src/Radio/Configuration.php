@@ -15,7 +15,7 @@ use App\Radio\Enums\FrontendAdapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Supervisor\Exception\SupervisorException;
-use Supervisor\Supervisor;
+use Supervisor\SupervisorInterface;
 
 class Configuration
 {
@@ -26,7 +26,7 @@ class Configuration
     public function __construct(
         protected EntityManagerInterface $em,
         protected Adapters $adapters,
-        protected Supervisor $supervisor,
+        protected SupervisorInterface $supervisor,
         protected Logger $logger,
         protected Environment $environment,
         protected StationPlaylistRepository $stationPlaylistRepo
@@ -213,8 +213,7 @@ class Configuration
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
 
-        $was_restarted = in_array($station_group, $affected_groups, true);
-        if (!$was_restarted) {
+        if (!in_array($station_group, $affected_groups, true)) {
             try {
                 $this->supervisor->stopProcessGroup($station_group, false);
             } catch (SupervisorException) {

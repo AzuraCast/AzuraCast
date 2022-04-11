@@ -10,7 +10,7 @@ use App\Environment;
 use App\Radio\Adapters;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
-use Supervisor\Supervisor;
+use Supervisor\SupervisorInterface;
 use Symfony\Component\Finder\Finder;
 
 class RotateLogsTask extends AbstractTask
@@ -18,7 +18,7 @@ class RotateLogsTask extends AbstractTask
     public function __construct(
         protected Environment $environment,
         protected Adapters $adapters,
-        protected Supervisor $supervisor,
+        protected SupervisorInterface $supervisor,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         ReloadableEntityManagerInterface $em,

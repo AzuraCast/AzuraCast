@@ -20,7 +20,7 @@ use PhpIP\IPBlock;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
-use Supervisor\Supervisor;
+use Supervisor\SupervisorInterface;
 
 abstract class AbstractFrontend extends AbstractAdapter
 {
@@ -32,7 +32,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         protected Entity\Repository\StationMountRepository $stationMountRepo,
         Environment $environment,
         EntityManagerInterface $em,
-        Supervisor $supervisor,
+        SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
         LoggerInterface $logger
     ) {

@@ -16,14 +16,14 @@ use Psr\Log\LoggerInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\Process;
-use Supervisor\Supervisor;
+use Supervisor\SupervisorInterface;
 
 abstract class AbstractAdapter
 {
     public function __construct(
         protected Environment $environment,
         protected EntityManagerInterface $em,
-        protected Supervisor $supervisor,
+        protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
         protected LoggerInterface $logger
     ) {

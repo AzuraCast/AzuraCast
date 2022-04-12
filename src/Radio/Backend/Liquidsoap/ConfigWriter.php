@@ -175,12 +175,6 @@ class ConfigWriter implements EventSubscriberInterface
                 ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
         );
 
-        $lsVersion = $this->liquidsoap->getVersion() ?? '0.0.0';
-
-        $timeoutFn = version_compare($lsVersion, '2.0.4', '<')
-            ? 'timeout'
-            : 'float_of_int(timeout)';
-
         $event->appendBlock(
             <<<EOF
             azuracast_api_url = "${stationApiUrl}"
@@ -197,7 +191,7 @@ class ConfigWriter implements EventSubscriberInterface
                             ("User-Agent", "Liquidsoap AzuraCast"),
                             ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
                         ],
-                        timeout=${timeoutFn},
+                        timeout=timeout,
                         data=payload
                     )
                     

@@ -7,7 +7,6 @@ namespace App\Console\Command\Backup;
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
 use App\Entity;
-use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,6 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 use const PATHINFO_EXTENSION;
 
@@ -43,6 +43,7 @@ class BackupCommand extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $fsUtils = new Filesystem();
 
         $path = $input->getArgument('path');
         $excludeMedia = (bool)$input->getOption('exclude-media');
@@ -60,9 +61,10 @@ class BackupCommand extends CommandAbstract
             $tmpPath = $path;
             $storageLocation = null;
         } else {
-            $tmpPath = Utilities\File::createTempFile(
-                prefix: 'backup_',
-                suffix: '.' . $file_ext
+            $tmpPath = $fsUtils->tempnam(
+                sys_get_temp_dir(),
+                'backup_',
+                '.' . $file_ext
             );
 
             if (null === $storageLocationId) {
@@ -96,7 +98,7 @@ class BackupCommand extends CommandAbstract
 
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
         try {
-            Utilities\File::ensureDirectoryExists($tmp_dir_mariadb);
+            $fsUtils->mkdir($tmp_dir_mariadb);
         } catch (\Throwable $e) {
             $io->error($e->getMessage());
             return 1;
@@ -227,7 +229,7 @@ class BackupCommand extends CommandAbstract
         // Cleanup
         $io->section(__('Cleaning up temporary files...'));
 
-        Utilities\File::rmdirRecursive($tmp_dir_mariadb);
+        $fsUtils->remove($tmp_dir_mariadb);
 
         $io->newLine();
 

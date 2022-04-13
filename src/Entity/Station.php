@@ -24,6 +24,7 @@ use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use Stringable;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -696,7 +697,7 @@ class Station implements Stringable, IdentifiableEntityInterface
             defaultForDirectories: Visibility::PUBLIC
         ))->defaultForDirectories();
 
-        File::ensureDirectoryExists($dirname, $visibility);
+        (new Filesystem())->mkdir($dirname, $visibility);
     }
 
     public function getRadioPlaylistsDir(): string

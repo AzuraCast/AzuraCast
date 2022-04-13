@@ -7,10 +7,10 @@ namespace App\Webhook;
 use App\Entity;
 use App\Environment;
 use App\Service\NChan;
-use App\Utilities\File;
 use GuzzleHttp\Client;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 use const JSON_PRETTY_PRINT;
 
@@ -22,7 +22,8 @@ class LocalWebhookHandler
         protected Logger $logger,
         protected Client $httpClient,
         protected CacheInterface $cache,
-        protected Entity\Repository\SettingsRepository $settingsRepo
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment,
     ) {
     }
 
@@ -33,10 +34,10 @@ class LocalWebhookHandler
         // Write local static file that the video stream (and other scripts) can use.
         $this->logger->debug('Writing local nowplaying text file...');
 
-        $config_dir = $station->getRadioConfigDir();
-        $np_file = $config_dir . '/nowplaying.txt';
+        $configDir = $station->getRadioConfigDir();
+        $npFile = $configDir . '/nowplaying.txt';
 
-        $np_text = implode(
+        $npText = implode(
             ' - ',
             array_filter(
                 [
@@ -46,24 +47,25 @@ class LocalWebhookHandler
             )
         );
 
-        if (empty($np_text)) {
-            $np_text = $station->getName();
+        if (empty($npText)) {
+            $npText = $station->getName() ?? '';
         }
 
+        $fsUtils = new Filesystem();
+
         // Atomic rename to ensure the file is always there.
-        file_put_contents($np_file . '.new', $np_text);
-        rename($np_file . '.new', $np_file);
+        $fsUtils->dumpFile($npFile, $npText);
 
         // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
         $this->logger->debug('Writing static nowplaying text file...');
 
-        $static_np_dir = Environment::getInstance()->getTempDirectory() . '/nowplaying';
-        File::ensureDirectoryExists($static_np_dir);
+        $staticNpDir = $this->environment->getTempDirectory() . '/nowplaying';
+        $fsUtils->mkdir($staticNpDir);
 
-        $static_path = $static_np_dir . '/' . $station->getShortName() . '.json';
-        file_put_contents(
-            $static_path,
-            json_encode($np, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        $staticNpPath = $staticNpDir . '/' . $station->getShortName() . '.json';
+        $fsUtils->dumpFile(
+            $staticNpPath,
+            json_encode($np, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) ?: ''
         );
 
         // Send Nchan notification.

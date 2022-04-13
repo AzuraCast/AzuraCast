@@ -74,6 +74,7 @@
     "symfony/cache": "^6",
     "symfony/console": "^6",
     "symfony/event-dispatcher": "^6",
+    "symfony/filesystem": "^6.0",
     "symfony/finder": "^6",
     "symfony/intl": "^6",
     "symfony/lock": "^6",

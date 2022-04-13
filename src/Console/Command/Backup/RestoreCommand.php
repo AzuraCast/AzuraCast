@@ -6,7 +6,6 @@ namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
-use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 use const PATHINFO_EXTENSION;
 
@@ -140,7 +140,7 @@ class RestoreCommand extends CommandAbstract
             ]
         );
 
-        Utilities\File::rmdirRecursive($tmp_dir_mariadb);
+        (new Filesystem())->remove($tmp_dir_mariadb);
         $io->newLine();
 
         // Update from current version to latest.

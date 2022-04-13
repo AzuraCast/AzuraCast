@@ -13,10 +13,10 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
-use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -364,9 +364,7 @@ class StationsController extends AbstractAdminApiCrudController
             $station->getRadioPlaylistsDir(),
             $station->getRadioTempDir(),
         ];
-        foreach ($directoriesToEmpty as $dir) {
-            File::rmdirRecursive($dir);
-        }
+        (new Filesystem())->remove($directoriesToEmpty);
 
         $this->em->flush();
 

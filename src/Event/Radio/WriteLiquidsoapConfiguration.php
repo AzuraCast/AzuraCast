@@ -13,7 +13,8 @@ class WriteLiquidsoapConfiguration extends Event
 
     public function __construct(
         protected Station $station,
-        protected bool $forEditing = false
+        protected bool $forEditing = false,
+        protected bool $writeToDisk = true
     ) {
     }
 
@@ -25,6 +26,11 @@ class WriteLiquidsoapConfiguration extends Event
     public function isForEditing(): bool
     {
         return $this->forEditing;
+    }
+
+    public function shouldWriteToDisk(): bool
+    {
+        return $this->writeToDisk && !$this->forEditing;
     }
 
     /**

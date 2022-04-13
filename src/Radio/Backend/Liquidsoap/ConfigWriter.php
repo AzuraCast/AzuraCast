@@ -6,11 +6,7 @@ namespace App\Radio\Backend\Liquidsoap;
 
 use App\Entity;
 use App\Environment;
-use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Exception;
-use App\Flysystem\StationFilesystems;
-use App\Message;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
@@ -18,7 +14,6 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\StorageAttributes;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,22 +36,6 @@ class ConfigWriter implements EventSubscriberInterface
         protected EventDispatcherInterface $eventDispatcher,
         protected FallbackFile $fallbackFile
     ) {
-    }
-
-    /**
-     * Handle event dispatch.
-     *
-     * @param Message\AbstractMessage $message
-     */
-    public function __invoke(Message\AbstractMessage $message): void
-    {
-        if ($message instanceof Message\WritePlaylistFileMessage) {
-            $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
-
-            if ($playlist instanceof Entity\StationPlaylist) {
-                $this->writePlaylistFile($playlist);
-            }
-        }
     }
 
     /**
@@ -213,7 +192,7 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<EOF
                 station_media_dir = "${stationMediaDir}"
-                def azuracast_media_protocol(~rlog,~maxtime,arg) =
+                def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
                     ["#{station_media_dir}/#{arg}"]
                 end
                 EOF
@@ -221,11 +200,13 @@ class ConfigWriter implements EventSubscriberInterface
         } else {
             $event->appendBlock(
                 <<<EOF
-                def azuracast_media_protocol(~rlog,~maxtime,arg) =
+                def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
+                    timeout = int_of_float(maxtime - time())
+                    
                     j = json()
                     j.add("uri", arg)
                     
-                    [azuracast_api_call(timeout=20, "cp", json.stringify(j))]
+                    [azuracast_api_call(timeout=timeout, "cp", json.stringify(j))]
                 end
                 EOF
             );
@@ -271,37 +252,13 @@ class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_PLAYLISTS);
 
-        // Clear out existing playlists directory.
-
-        $fsPlaylists = (new StationFilesystems($station))->getPlaylistsFilesystem();
-
-        foreach ($fsPlaylists->listContents('', false) as $file) {
-            /** @var StorageAttributes $file */
-            if ($file->isDir()) {
-                $fsPlaylists->deleteDirectory($file->path());
-            } else {
-                $fsPlaylists->delete($file->path());
-            }
-        }
-
         // Set up playlists using older format as a fallback.
-        $playlistObjects = [];
-
-        foreach ($station->getPlaylists() as $playlistRaw) {
-            /** @var Entity\StationPlaylist $playlistRaw */
-            if (!$playlistRaw->getIsEnabled()) {
-                continue;
-            }
-
-            $playlistObjects[] = $playlistRaw;
-        }
-
         $playlistVarNames = [];
         $genPlaylistWeights = [];
         $genPlaylistVars = [];
 
         $specialPlaylists = [
-            'once_per_x_songs'   => [
+            'once_per_x_songs' => [
                 '# Once per x Songs Playlists',
             ],
             'once_per_x_minutes' => [
@@ -312,9 +269,12 @@ class ConfigWriter implements EventSubscriberInterface
         $scheduleSwitches = [];
         $scheduleSwitchesInterrupting = [];
 
-        foreach ($playlistObjects as $playlist) {
-            /** @var Entity\StationPlaylist $playlist */
-            $playlistVarName = self::cleanUpVarName('playlist_' . $playlist->getShortName());
+        foreach ($station->getPlaylists() as $playlist) {
+            if (!$playlist->getIsEnabled()) {
+                continue;
+            }
+
+            $playlistVarName = self::getPlaylistVariableName($playlist);
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
                 $playlistVarName .= '_' . $playlist->getId();
@@ -325,10 +285,7 @@ class ConfigWriter implements EventSubscriberInterface
             $playlistConfigLines = [];
 
             if (Entity\Enums\PlaylistSources::Songs === $playlist->getSourceEnum()) {
-                $playlistFilePath = $this->writePlaylistFile($playlist, false);
-                if (!$playlistFilePath) {
-                    continue;
-                }
+                $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
                     'id="' . self::cleanUpString($playlistVarName) . '"',
@@ -596,79 +553,6 @@ class ConfigWriter implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Write a playlist's contents to file so Liquidsoap can process it, and optionally notify
-     * Liquidsoap of the change.
-     *
-     * @param Entity\StationPlaylist $playlist
-     * @param bool $notify
-     *
-     * @return string|null The full path that was written to.
-     */
-    public function writePlaylistFile(Entity\StationPlaylist $playlist, bool $notify = true): ?string
-    {
-        $station = $playlist->getStation();
-
-        $playlistPath = $station->getRadioPlaylistsDir();
-        $playlistVarName = 'playlist_' . $playlist->getShortName();
-
-        $this->logger->info(
-            'Writing playlist file to disk...',
-            [
-                'station'  => $station->getName(),
-                'playlist' => $playlist->getName(),
-            ]
-        );
-
-        $playlistFile = [];
-
-        $mediaQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT DISTINCT sm
-                FROM App\Entity\StationMedia sm
-                JOIN sm.playlists spm
-                WHERE spm.playlist = :playlist
-                ORDER BY spm.weight ASC
-            DQL
-        )->setParameter('playlist', $playlist);
-
-        /** @var Entity\StationMedia $mediaFile */
-        foreach ($mediaQuery->toIterable() as $mediaFile) {
-            $event = new AnnotateNextSong(
-                station: $station,
-                media: $mediaFile,
-                playlist: $playlist,
-                asAutoDj: false
-            );
-
-            try {
-                $this->eventDispatcher->dispatch($event);
-                $playlistFile[] = $event->buildAnnotations();
-            } catch (\Throwable $e) {
-            }
-        }
-
-        $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';
-
-        file_put_contents($playlistFilePath, implode("\n", $playlistFile));
-
-        if ($notify) {
-            try {
-                $this->liquidsoap->command($station, $playlistVarName . '.reload');
-            } catch (Exception $e) {
-                $this->logger->error(
-                    'Could not reload playlist with AutoDJ.',
-                    [
-                        'message'  => $e->getMessage(),
-                        'playlist' => $playlistVarName,
-                        'station'  => $station->getId(),
-                    ]
-                );
-            }
-        }
-
-        return $playlistFilePath;
-    }
 
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
@@ -1277,5 +1161,10 @@ class ConfigWriter implements EventSubscriberInterface
         $str = str_replace(['%', '-', '.'], ['', '_', '_'], $str);
 
         return $str;
+    }
+
+    public static function getPlaylistVariableName(Entity\StationPlaylist $playlist): string
+    {
+        return 'playlist_' . $playlist->getShortName();
     }
 }

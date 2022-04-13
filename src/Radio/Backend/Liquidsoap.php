@@ -45,17 +45,7 @@ class Liquidsoap extends AbstractBackend
      */
     public function getCurrentConfiguration(Entity\Station $station): ?string
     {
-        return $this->doGetConfiguration($station);
-    }
-
-    public function getEditableConfiguration(Entity\Station $station): string
-    {
-        return $this->doGetConfiguration($station, true);
-    }
-
-    protected function doGetConfiguration(Entity\Station $station, bool $forEditing = false): string
-    {
-        $event = new WriteLiquidsoapConfiguration($station, $forEditing);
+        $event = new WriteLiquidsoapConfiguration($station, false, true);
         $this->dispatcher->dispatch($event);
 
         return $event->buildConfiguration();
@@ -327,5 +317,23 @@ class Liquidsoap extends AbstractBackend
         return $base_url
             ->withScheme('wss')
             ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
+    }
+
+    public function verifyConfig(string $config): void
+    {
+        $binary = $this->getBinary();
+
+        $process = new Process([
+            $binary,
+            '--check',
+            '-',
+        ]);
+
+        $process->setInput($config);
+        $process->run();
+
+        if (1 === $process->getExitCode()) {
+            throw new \LogicException($process->getOutput());
+        }
     }
 }

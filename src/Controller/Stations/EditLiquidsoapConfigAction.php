@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Entity\Repository\SettingsRepository;
+use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class EditLiquidsoapConfigAction
@@ -18,7 +20,8 @@ class EditLiquidsoapConfigAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        SettingsRepository $settingsRepo
+        SettingsRepository $settingsRepo,
+        EventDispatcherInterface $eventDispatcher,
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -28,20 +31,20 @@ class EditLiquidsoapConfigAction
         }
 
         $configSections = Liquidsoap\ConfigWriter::getCustomConfigurationSections();
-        $config = $backend->getEditableConfiguration($station);
         $tokens = Liquidsoap\ConfigWriter::getDividerString();
+
+        $event = new WriteLiquidsoapConfiguration($station, true, false);
+        $eventDispatcher->dispatch($event);
+        $config = $event->buildConfiguration();
 
         $areas = [];
 
         $tok = strtok($config, $tokens);
-        $i = 0;
         while ($tok !== false) {
             $tok = trim($tok);
-            $i++;
-
             if (in_array($tok, $configSections, true)) {
                 $areas[] = [
-                    'is_field'   => true,
+                    'is_field' => true,
                     'field_name' => $tok,
                 ];
             } else {

@@ -57,6 +57,14 @@ class Listener implements IdentifiableEntityInterface
     #[ORM\Column]
     protected int $timestamp_end;
 
+    #[ORM\ManyToOne(inversedBy: 'listeners')]
+    #[ORM\JoinColumn(name: 'listener_ip', referencedColumnName: 'ip', nullable: false)]
+    protected ?ListenerIpLocation $ipLocation;
+
+    #[ORM\ManyToOne(inversedBy: 'listeners')]
+    #[ORM\JoinColumn(name: 'listener_user_agent', referencedColumnName: 'user_agent', nullable: false)]
+    protected ?ListenerUserAgent $userAgentDetails;
+
     public function __construct(Station $station, Client $client)
     {
         $this->station = $station;
@@ -148,6 +156,16 @@ class Listener implements IdentifiableEntityInterface
     public function getConnectedSeconds(): int
     {
         return $this->timestamp_end - $this->timestamp_start;
+    }
+
+    public function getIpLocation(): ?ListenerIpLocation
+    {
+        return $this->ipLocation;
+    }
+
+    public function getUserAgentDetails(): ?ListenerUserAgent
+    {
+        return $this->userAgentDetails;
     }
 
     /**

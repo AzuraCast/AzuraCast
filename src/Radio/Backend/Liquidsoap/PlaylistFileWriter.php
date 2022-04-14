@@ -41,6 +41,22 @@ class PlaylistFileWriter implements EventSubscriberInterface
 
             if ($playlist instanceof Entity\StationPlaylist) {
                 $this->writePlaylistFile($playlist);
+
+                $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
+                $station = $playlist->getStation();
+
+                try {
+                    $this->liquidsoap->command($station, $playlistVarName . '.reload');
+                } catch (Exception $e) {
+                    $this->logger->error(
+                        'Could not reload playlist with AutoDJ.',
+                        [
+                            'message' => $e->getMessage(),
+                            'playlist' => $playlistVarName,
+                            'station' => $station->getId(),
+                        ]
+                    );
+                }
             }
         }
     }
@@ -80,20 +96,11 @@ class PlaylistFileWriter implements EventSubscriberInterface
                 continue;
             }
 
-            $this->writePlaylistFile($playlist, false);
+            $this->writePlaylistFile($playlist);
         }
     }
 
-    /**
-     * Write a playlist's contents to file so Liquidsoap can process it, and optionally notify
-     * Liquidsoap of the change.
-     *
-     * @param Entity\StationPlaylist $playlist
-     * @param bool $notify
-     *
-     * @return string|null The full path that was written to.
-     */
-    public function writePlaylistFile(Entity\StationPlaylist $playlist, bool $notify = true): ?string
+    protected function writePlaylistFile(Entity\StationPlaylist $playlist): void
     {
         $station = $playlist->getStation();
 
@@ -133,30 +140,11 @@ class PlaylistFileWriter implements EventSubscriberInterface
             }
         }
 
-        $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
         $playlistFilePath = self::getPlaylistFilePath($playlist);
-
         $this->fsUtils->dumpFile(
             $playlistFilePath,
             implode("\n", $playlistFile)
         );
-
-        if ($notify) {
-            try {
-                $this->liquidsoap->command($station, $playlistVarName . '.reload');
-            } catch (Exception $e) {
-                $this->logger->error(
-                    'Could not reload playlist with AutoDJ.',
-                    [
-                        'message' => $e->getMessage(),
-                        'playlist' => $playlistVarName,
-                        'station' => $station->getId(),
-                    ]
-                );
-            }
-        }
-
-        return $playlistFilePath;
     }
 
     public static function getPlaylistFilePath(Entity\StationPlaylist $playlist): string

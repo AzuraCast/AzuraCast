@@ -415,12 +415,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "f63d430183297aba0d3ba745ad808cabd69e37af"
+                "reference": "634ca1ddfee7c0516636343489d7f3d3c632d41e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/f63d430183297aba0d3ba745ad808cabd69e37af",
-                "reference": "f63d430183297aba0d3ba745ad808cabd69e37af",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/634ca1ddfee7c0516636343489d7f3d3c632d41e",
+                "reference": "634ca1ddfee7c0516636343489d7f3d3c632d41e",
                 "shasum": ""
             },
             "require": {
@@ -431,16 +431,16 @@
                 "php": ">=7.4",
                 "psr/http-client": "*",
                 "psr/http-factory": "*",
-                "psr/log": "^1.1"
+                "psr/log": ">=1"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^7",
                 "http-interop/http-factory-guzzle": "^1.0",
                 "php-http/discovery": "^1.9",
-                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-console-highlighter": "^1",
                 "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/phpstan": "^0.12",
-                "roave/security-advisories": "dev-master"
+                "phpstan/phpstan": "^1",
+                "roave/security-advisories": "dev-latest"
             },
             "default-branch": true,
             "type": "library",
@@ -478,7 +478,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-06-01T06:46:10+00:00"
+            "time": "2022-04-14T00:44:07+00:00"
         },
         {
             "name": "azuracast/slim-callable-eventdispatcher",

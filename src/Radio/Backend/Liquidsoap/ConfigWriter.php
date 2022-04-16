@@ -1165,6 +1165,6 @@ class ConfigWriter implements EventSubscriberInterface
 
     public static function getPlaylistVariableName(Entity\StationPlaylist $playlist): string
     {
-        return 'playlist_' . $playlist->getShortName();
+        return self::cleanUpVarName('playlist_' . $playlist->getShortName());
     }
 }

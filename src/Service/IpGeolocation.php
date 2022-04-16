@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Enums\SupportedLocales;
 use App\Service\IpGeolocator;
+use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class IpGeolocation
@@ -67,10 +68,7 @@ class IpGeolocation
         return $this->attribution;
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function getLocationInfo(string $ip, SupportedLocales $locale): array
+    public function getLocationInfo(string $ip): IpGeolocator\IpResult
     {
         if (!$this->isInitialized) {
             $this->initialize();
@@ -78,12 +76,36 @@ class IpGeolocation
 
         $reader = $this->reader;
         if (null === $reader) {
-            return [
-                'status' => 'error',
-                'message' => $this->getAttribution(),
-            ];
+            throw new \RuntimeException('No IP Geolocation reader available.');
         }
 
-        return (array)$reader->get($ip);
+        $cacheKey = $this->readerShortName . '_' . str_replace([':', '.'], '_', $ip);
+
+        $ipInfo = $this->cache->get(
+            $cacheKey,
+            function (CacheItem $item) use ($ip, $reader) {
+                /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+                $item->expiresAfter(86400 * 7);
+
+                try {
+                    $ipInfo = $reader->get($ip);
+                    if (!empty($ipInfo)) {
+                        return $ipInfo;
+                    }
+
+                    return [
+                        'status' => 'error',
+                        'message' => 'Internal/Reserved IP',
+                    ];
+                } catch (Exception $e) {
+                    return [
+                        'status' => 'error',
+                        'message' => $e->getMessage(),
+                    ];
+                }
+            }
+        );
+
+        return IpGeolocator\IpResult::fromIpInfo($ip, $ipInfo);
     }
 }

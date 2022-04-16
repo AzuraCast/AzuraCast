@@ -33,18 +33,6 @@ class Listener
     public string $hash = '';
 
     #[OA\Property(
-        description: 'The listener\'s client details (extracted from user-agent)',
-        example: ''
-    )]
-    public string $client = '';
-
-    #[OA\Property(
-        description: 'Whether the user-agent is likely a mobile browser.',
-        example: true
-    )]
-    public bool $is_mobile = false;
-
-    #[OA\Property(
         description: 'Whether the user is connected to a local mount point or a remote one.',
         example: false
     )]
@@ -75,8 +63,40 @@ class Listener
     public int $connected_time = 0;
 
     #[OA\Property(
+        description: 'Device metadata, if available',
+        items: new OA\Items()
+    )]
+    public array $device = [];
+
+    #[OA\Property(
         description: 'Location metadata, if available',
         items: new OA\Items()
     )]
     public array $location = [];
+
+    public static function fromArray(array $row): self
+    {
+        $api = new self();
+        $api->ip = $row['listener_ip'];
+        $api->user_agent = $row['listener_user_agent'];
+        $api->hash = $row['listener_hash'];
+        $api->connected_on = $row['timestamp_start'];
+        $api->connected_until = $row['timestamp_end'];
+        $api->connected_time = $api->connected_until - $api->connected_on;
+
+        $device = [];
+        $location = [];
+        foreach ($row as $key => $val) {
+            if (str_starts_with($key, 'device.')) {
+                $device[str_replace('device.', '', $key)] = $val;
+            } elseif (str_starts_with($key, 'location.')) {
+                $location[str_replace('location.', '', $key)] = $val;
+            }
+        }
+
+        $api->device = $device;
+        $api->location = $location;
+
+        return $api;
+    }
 }

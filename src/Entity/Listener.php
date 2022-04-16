@@ -11,7 +11,10 @@ use NowPlaying\Result\Client;
 #[
     ORM\Entity,
     ORM\Table(name: 'listener'),
-    ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps')
+    ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps'),
+    ORM\Index(columns: ['location_country'], name: 'idx_statistics_country'),
+    ORM\Index(columns: ['device_os_family'], name: 'idx_statistics_os'),
+    ORM\Index(columns: ['device_browser_family'], name: 'idx_statistics_browser')
 ]
 class Listener implements IdentifiableEntityInterface
 {
@@ -57,13 +60,11 @@ class Listener implements IdentifiableEntityInterface
     #[ORM\Column]
     protected int $timestamp_end;
 
-    #[ORM\ManyToOne(inversedBy: 'listeners')]
-    #[ORM\JoinColumn(name: 'listener_ip', referencedColumnName: 'ip', nullable: false)]
-    protected ?ListenerIpLocation $ipLocation;
+    #[ORM\Embedded(class: ListenerLocation::class, columnPrefix: 'location_')]
+    protected ListenerLocation $location;
 
-    #[ORM\ManyToOne(inversedBy: 'listeners')]
-    #[ORM\JoinColumn(name: 'listener_user_agent', referencedColumnName: 'user_agent', nullable: false)]
-    protected ?ListenerUserAgent $userAgentDetails;
+    #[ORM\Embedded(class: ListenerDevice::class, columnPrefix: 'device_')]
+    protected ListenerDevice $device;
 
     public function __construct(Station $station, Client $client)
     {
@@ -76,6 +77,9 @@ class Listener implements IdentifiableEntityInterface
         $this->listener_user_agent = $this->truncateString($client->userAgent);
         $this->listener_ip = $client->ip;
         $this->listener_hash = self::calculateListenerHash($client);
+
+        $this->location = new ListenerLocation();
+        $this->device = new ListenerDevice();
     }
 
     public function getStation(): Station
@@ -158,14 +162,14 @@ class Listener implements IdentifiableEntityInterface
         return $this->timestamp_end - $this->timestamp_start;
     }
 
-    public function getIpLocation(): ?ListenerIpLocation
+    public function getLocation(): ListenerLocation
     {
-        return $this->ipLocation;
+        return $this->location;
     }
 
-    public function getUserAgentDetails(): ?ListenerUserAgent
+    public function getDevice(): ListenerDevice
     {
-        return $this->userAgentDetails;
+        return $this->device;
     }
 
     /**

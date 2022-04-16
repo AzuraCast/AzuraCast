@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Radio\Frontend\Blocklist;
 
 use App\Entity;
-use App\Enums\SupportedLocales;
 use App\Radio\Enums\FrontendAdapters;
 use App\Service\IpGeolocation;
 use PhpIP\IP;
 use PhpIP\IPBlock;
-use Symfony\Component\Intl\Countries;
 
 class BlocklistParser
 {
@@ -106,22 +104,11 @@ class BlocklistParser
             return false;
         }
 
-        $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp, SupportedLocales::default());
-        if ('success' === $listenerLocation['status']) {
-            $listenerCountry = $listenerLocation['country'];
+        $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp);
 
-            $countries = Countries::getNames(SupportedLocales::default()->value);
-
-            $listenerCountryCode = '';
-            foreach ($countries as $countryCode => $countryName) {
-                if ($countryName === $listenerCountry) {
-                    $listenerCountryCode = $countryCode;
-                    break;
-                }
-            }
-
+        if (null !== $listenerLocation->country) {
             foreach ($bannedCountries as $countryCode) {
-                if ($countryCode === $listenerCountryCode) {
+                if ($countryCode === $listenerLocation->country) {
                     return true;
                 }
             }

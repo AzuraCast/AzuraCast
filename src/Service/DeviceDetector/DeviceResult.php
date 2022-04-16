@@ -32,10 +32,12 @@ final class DeviceResult
 
         if ($record->isBot) {
             $clientBot = (array)$dd->getBot();
-
             $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
             $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
             $record->client = $clientBotName . ' (' . $clientBotType . ')';
+
+            $record->browserFamily = 'Crawler';
+            $record->osFamily = 'Crawler';
         } else {
             $record->isMobile = $dd->isMobile();
             $record->isBrowser = $dd->isBrowser();

@@ -58,7 +58,7 @@ export default {
     computed: {
         mapPoints() {
             return _.filter(this.listeners, function (l) {
-                return l.location.status === 'success';
+                return null !== l.location.lat && null !== l.location.lon;
             });
         }
     }

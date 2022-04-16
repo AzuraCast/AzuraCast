@@ -200,7 +200,7 @@ class ListenerRepository extends Repository
 
     protected function batchAddLocationDetails(array $record): array
     {
-        $ip = '70.113.114.191';
+        $ip = $record['listener_ip'];
 
         try {
             $ipInfo = $this->ipGeolocation->getLocationInfo($ip);

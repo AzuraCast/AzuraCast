@@ -28,6 +28,11 @@ release channel, you can take advantage of these new features and fixes.
   reload that does not disconnect listeners) or "Restart Broadcasting" (a hard reload that does) in the event the latter
   is needed for troubleshooting.
 
+- When editing custom Liquidsoap configuration, your changes will be evaluated immediately by Liquidsoap, which will
+  alert you of any errors immediately, avoiding the need to restart broadcasting to test script changes.
+
+- You can now specify a custom max timeout for "Generic" web hooks (that make HTTP requests to external URLs).
+
 ## Code Quality/Technical Changes
 
 - **Unified Docker Container**: We have combined all of our Docker containers into a single unified container that
@@ -43,6 +48,16 @@ release channel, you can take advantage of these new features and fixes.
 
 - Stations that do not have any media assigned to any playlists won't start automatically, so for installations with
   many empty stations, resources will be significantly saved.
+
+- The way Liquidsoap handles remote media locations (i.e. Dropbox or S3) has been rewritten to be more compatible and to
+  work with features that previously didn't work, like advanced playlists. It will also automatically remove media when
+  it's finished playing, which should help with disk space usage.
+
+- All album art across the application has the `loading="lazy"` attribute to encourage supported browsers to defer its
+  loading until after other content is rendered, improving performance.
+
+- Internal API requests (Icecast listener auth, Liquidsoap API calls) are now handled via a separate, dedicated "back
+  channel" and won't be affected as severely by heavy traffic on AzuraCast from public viewers or administrators.
 
 ## Bug Fixes
 
@@ -62,6 +77,8 @@ release channel, you can take advantage of these new features and fixes.
 - An issue with SSL auto-renewal not applying to Icecast direct port connections has been fixed.
 
 - Websocket Now Playing updates now work on stations with non-ASCII characters in their "short name".
+
+- Expanding text areas (i.e. in Edit Liquidsoap Configuration) will now properly expand to fit their contents.
 
 ---
 

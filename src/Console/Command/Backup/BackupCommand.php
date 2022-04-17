@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 use const PATHINFO_EXTENSION;
 
@@ -57,7 +58,7 @@ class BackupCommand extends CommandAbstract
 
         $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        if ('/' === $path[0]) {
+        if (Path::isAbsolute($path)) {
             $tmpPath = $path;
             $storageLocation = null;
         } else {
@@ -66,6 +67,9 @@ class BackupCommand extends CommandAbstract
                 'backup_',
                 '.' . $file_ext
             );
+
+            // Zip command cannot handle an existing file (even an empty one)
+            @unlink($tmpPath);
 
             if (null === $storageLocationId) {
                 $io->error('You must specify a storage location when providing a relative path.');

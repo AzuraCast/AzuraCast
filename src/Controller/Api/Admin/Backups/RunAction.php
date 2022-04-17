@@ -23,7 +23,7 @@ class RunAction
         $tempFile = File::generateTempPath('backup.log');
         touch($tempFile);
 
-        $storageLocationId = (int)$data['storage_location'];
+        $storageLocationId = (int)($data['storage_location'] ?? 0);
         if ($storageLocationId <= 0) {
             $storageLocationId = null;
         }

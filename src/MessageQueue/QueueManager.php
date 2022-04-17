@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
+use Pheanstalk\Exception\JobNotFoundException;
 use Pheanstalk\Pheanstalk;
 use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\BeanstalkdTransport;
 use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\Connection as MessengerConnection;
@@ -22,13 +23,22 @@ class QueueManager extends AbstractQueueManager
         $pheanstalk = $this->pheanstalk->useTube($queueName);
 
         while ($job = $pheanstalk->peekReady()) {
-            $pheanstalk->delete($job);
+            try {
+                $pheanstalk->delete($job);
+            } catch (JobNotFoundException) {
+            }
         }
         while ($job = $pheanstalk->peekBuried()) {
-            $pheanstalk->delete($job);
+            try {
+                $pheanstalk->delete($job);
+            } catch (JobNotFoundException) {
+            }
         }
         while ($job = $pheanstalk->peekDelayed()) {
-            $pheanstalk->delete($job);
+            try {
+                $pheanstalk->delete($job);
+            } catch (JobNotFoundException) {
+            }
         }
     }
 

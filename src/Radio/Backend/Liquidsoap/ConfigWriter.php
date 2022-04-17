@@ -195,6 +195,13 @@ class ConfigWriter implements EventSubscriberInterface
                 def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
                     ["#{station_media_dir}/#{arg}"]
                 end
+                
+                add_protocol(
+                    "media",
+                    azuracast_media_protocol,
+                    doc="Pull files from AzuraCast media directory.",
+                    syntax="media:uri"
+                )
                 EOF
             );
         } else {
@@ -208,20 +215,17 @@ class ConfigWriter implements EventSubscriberInterface
                     
                     [azuracast_api_call(timeout=timeout, "cp", json.stringify(j))]
                 end
+                
+                add_protocol(
+                    "media",
+                    azuracast_media_protocol,
+                    temporary=true,
+                    doc="Pull files from AzuraCast media directory.",
+                    syntax="media:uri"
+                )
                 EOF
             );
         }
-
-        $event->appendBlock(
-            <<<EOF
-            add_protocol(
-                "media",
-                azuracast_media_protocol,
-                doc="Pull files from AzuraCast media directory.",
-                syntax="media:uri"
-            )
-            EOF
-        );
 
         $backendConfig = $station->getBackendConfig();
 

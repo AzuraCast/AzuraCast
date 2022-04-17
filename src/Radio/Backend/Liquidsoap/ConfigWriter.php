@@ -904,9 +904,6 @@ class ConfigWriter implements EventSubscriberInterface
             EOF
         );
 
-        // Custom configuration
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
-
         $event->appendBlock(
             <<<EOF
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
@@ -946,6 +943,9 @@ class ConfigWriter implements EventSubscriberInterface
             radio.on_metadata(metadata_updated)
             EOF
         );
+
+        // Custom configuration
+        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void

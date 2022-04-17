@@ -16,8 +16,7 @@
                             </a>
 
                             <date-range-dropdown v-if="!isLive" time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :tz="stationTimeZone" :custom-ranges="dateRanges"
-                                                 v-model="dateRange" @update="updateListeners">
+                                                 :tz="stationTimeZone" v-model="dateRange" @update="updateListeners">
                             </date-range-dropdown>
                         </div>
                     </div>
@@ -166,35 +165,6 @@ export default {
         },
         maxDate() {
             return this.nowTz.plus({days: 5}).toJSDate();
-        },
-        dateRanges() {
-            let ranges = {};
-            ranges[this.$gettext('Today')] = [
-                this.nowTz.minus({days: 1}).toJSDate(),
-                this.nowTz.toJSDate()
-            ];
-            ranges[this.$gettext('Yesterday')] = [
-                this.nowTz.minus({days: 2}).toJSDate(),
-                this.nowTz.minus({days: 1}).toJSDate()
-            ];
-            ranges[this.$gettext('Last 7 Days')] = [
-                this.nowTz.minus({days: 6}).toJSDate(),
-                this.nowTz.toJSDate()
-            ];
-            ranges[this.$gettext('Last 30 Days')] = [
-                this.nowTz.minus({days: 29}).toJSDate(),
-                this.nowTz.toJSDate()
-            ];
-            ranges[this.$gettext('This Month')] = [
-                this.nowTz.startOf('month').startOf('day').toJSDate(),
-                this.nowTz.endOf('month').endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last Month')] = [
-                this.nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
-                this.nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
-            ];
-
-            return ranges;
         },
         exportUrl() {
             let exportUrl = new URL(this.apiUrl, document.location);

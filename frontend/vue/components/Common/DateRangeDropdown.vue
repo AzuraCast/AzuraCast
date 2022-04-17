@@ -65,6 +65,7 @@ export default {
         },
     },
     computed: {
+
         ranges() {
             let ranges = {};
 
@@ -73,27 +74,31 @@ export default {
             }
 
             let nowTz = DateTime.now().setZone(this.tz);
-            let nowTzDate = nowTz.toJSDate();
+            let nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
-            ranges[this.$gettext('Today')] = [
+            ranges[this.$gettext('Last 24 Hours')] = [
                 nowTz.minus({days: 1}).toJSDate(),
-                nowTzDate
+                nowTz.toJSDate()
+            ];
+            ranges[this.$gettext('Today')] = [
+                nowTz.minus({days: 1}).startOf('day').toJSDate(),
+                nowAtMidnightDate
             ];
             ranges[this.$gettext('Yesterday')] = [
-                nowTz.minus({days: 2}).toJSDate(),
-                nowTz.minus({days: 1}).toJSDate()
+                nowTz.minus({days: 2}).startOf('day').toJSDate(),
+                nowTz.minus({days: 1}).endOf('day').toJSDate()
             ];
             ranges[this.$gettext('Last 7 Days')] = [
-                nowTz.minus({days: 7}).toJSDate(),
-                nowTzDate
+                nowTz.minus({days: 7}).startOf('day').toJSDate(),
+                nowAtMidnightDate
             ];
             ranges[this.$gettext('Last 14 Days')] = [
-                nowTz.minus({days: 14}).toJSDate(),
-                nowTzDate
+                nowTz.minus({days: 14}).startOf('day').toJSDate(),
+                nowAtMidnightDate
             ];
             ranges[this.$gettext('Last 30 Days')] = [
-                nowTz.minus({days: 30}).toJSDate(),
-                nowTzDate
+                nowTz.minus({days: 30}).startOf('day').toJSDate(),
+                nowAtMidnightDate
             ];
             ranges[this.$gettext('This Month')] = [
                 nowTz.startOf('month').startOf('day').toJSDate(),

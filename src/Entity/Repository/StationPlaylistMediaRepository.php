@@ -56,10 +56,6 @@ class StationPlaylistMediaRepository extends Repository
         }
 
         // Only update existing record for random-order playlists.
-        if (0 === $weight) {
-            $weight = $this->getHighestSongWeight($playlist) + 1;
-        }
-
         if (Entity\Enums\PlaylistOrders::Sequential !== $playlist->getOrderEnum()) {
             $record = $this->repository->findOneBy(
                 [
@@ -67,6 +63,10 @@ class StationPlaylistMediaRepository extends Repository
                     'playlist_id' => $playlist->getId(),
                 ]
             );
+
+            if (0 === $weight) {
+                $weight = $this->getHighestSongWeight($playlist) + 1;
+            }
 
             $weight = random_int(1, $weight);
         } else {

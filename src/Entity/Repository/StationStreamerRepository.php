@@ -9,7 +9,6 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Radio\AutoDJ\Scheduler;
-use App\Radio\Enums\StreamFormats;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -82,21 +81,8 @@ class StationStreamerRepository extends Repository
 
         $record = new Entity\StationStreamerBroadcast($streamer);
         $this->em->persist($record);
-
-        $backendConfig = $station->getBackendConfig();
-        $recordStreams = $backendConfig->recordStreams();
-
-        if ($recordStreams) {
-            $format = $backendConfig->getRecordStreamsFormatEnum() ?? StreamFormats::Mp3;
-            $recordingPath = $record->generateRecordingPath($format);
-
-            $this->em->persist($record);
-            $this->em->flush();
-
-            return $recordingPath;
-        }
-
         $this->em->flush();
+
         return true;
     }
 
@@ -115,7 +101,7 @@ class StationStreamerRepository extends Repository
         return true;
     }
 
-    protected function getStreamer(Entity\Station $station, string $username = ''): ?Entity\StationStreamer
+    public function getStreamer(Entity\Station $station, string $username = ''): ?Entity\StationStreamer
     {
         /** @var Entity\StationStreamer|null $streamer */
         $streamer = $this->repository->findOneBy(

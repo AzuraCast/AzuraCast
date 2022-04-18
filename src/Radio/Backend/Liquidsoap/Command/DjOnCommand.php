@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity;
-use App\Flysystem\StationFilesystems;
 use Monolog\Logger;
 
 class DjOnCommand extends AbstractCommand
@@ -31,14 +30,6 @@ class DjOnCommand extends AbstractCommand
             ]
         );
 
-        $resp = $this->streamerRepo->onConnect($station, $user);
-
-        if (is_string($resp)) {
-            return (new StationFilesystems($station))
-                ->getTempFilesystem()
-                ->getLocalPath($resp);
-        }
-
-        return $resp;
+        return $this->streamerRepo->onConnect($station, $user);
     }
 }

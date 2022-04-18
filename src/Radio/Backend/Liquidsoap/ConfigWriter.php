@@ -714,8 +714,6 @@ class ConfigWriter implements EventSubscriberInterface
             last_authenticated_dj = ref("")
             live_dj = ref("")
             
-            live_record_path = ref("")
-            
             def dj_auth(login) =
                 auth_info =
                     if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
@@ -747,36 +745,22 @@ class ConfigWriter implements EventSubscriberInterface
                 live_enabled := true
                 live_dj := dj
                 
-                j = json()
-                j.add("user", dj)
-                
-                response = azuracast_api_call(
+                _ = azuracast_api_call(
                     timeout=5,
                     "djon",
-                    json.stringify(j)
+                    json.stringify({user = dj})
                 )
-                if string.contains(prefix="/", response) then
-                    live_record_path := response
-                end
             end
             
             def live_disconnected() =
-                dj = !live_dj
-                
-                j = json()
-                j.add("user", dj)
-                
                 _ = azuracast_api_call(
                     timeout=5,
                     "djoff",
-                    json.stringify(j)
+                    json.stringify({user = !live_dj})
                 )
                 
                 live_enabled := false
-                last_authenticated_dj := ""
                 live_dj := ""
-                
-                live_record_path := ""
             end
             EOF
         );
@@ -828,16 +812,21 @@ class ConfigWriter implements EventSubscriberInterface
             $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
+            $recordExtension = $recordLiveStreamsFormat->getExtension();
+            $recordBasePath = self::cleanUpString($station->getRadioTempDir());
+            $recordPathPrefix = Entity\StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
                 <<< EOF
                 # Record Live Broadcasts
+                recording_base_path = "${recordBasePath}"
+                recording_extension = "${recordExtension}"
+                
                 output.file(
                     {$formatString}, 
                     fun () -> begin
-                        path = !live_record_path
-                        if (path != "") then
-                            "#{path}.tmp"
+                        if (!live_enabled) then
+                            "#{recording_base_path}/#{!live_dj}/${recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
                         else
                             ""
                         end

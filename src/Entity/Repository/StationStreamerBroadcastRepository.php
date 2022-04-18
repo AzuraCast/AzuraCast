@@ -6,6 +6,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use Carbon\CarbonImmutable;
 
 /**
  * @extends Repository<Entity\StationStreamerBroadcast>
@@ -65,8 +66,63 @@ class StationStreamerBroadcastRepository extends Repository
     public function findByPath(Entity\Station $station, string $path): ?Entity\StationStreamerBroadcast
     {
         return $this->repository->findOneBy([
-            'station'       => $station,
+            'station' => $station,
             'recordingPath' => $path,
         ]);
+    }
+
+    public function getOrCreateFromPath(
+        Entity\Station $station,
+        string $recordingPath,
+    ): ?Entity\StationStreamerBroadcast {
+        $streamerUsername = pathinfo($recordingPath, PATHINFO_DIRNAME);
+
+        $streamer = $this->em->getRepository(Entity\StationStreamer::class)
+            ->findOneBy([
+                'station' => $station,
+                'streamer_username' => $streamerUsername,
+                'is_active' => 1,
+            ]);
+
+        if (null === $streamer) {
+            return null;
+        }
+
+        $startTimeRaw = str_replace(
+            Entity\StationStreamerBroadcast::PATH_PREFIX . '_',
+            '',
+            pathinfo($recordingPath, PATHINFO_FILENAME)
+        );
+        $startTime = CarbonImmutable::createFromFormat(
+            'Ymd-His',
+            $startTimeRaw,
+            $station->getTimezoneObject()
+        );
+
+        if (false === $startTime) {
+            return null;
+        }
+
+        $record = $this->em->createQuery(
+            <<<'DQL'
+            SELECT ssb
+            FROM App\Entity\StationStreamerBroadcast ssb
+            WHERE ssb.streamer = :streamer
+            AND ssb.timestampStart >= :start AND ssb.timestampStart <= :end
+            AND ssb.recordingPath IS NULL  
+            DQL
+        )->setParameter('streamer', $streamer)
+            ->setParameter('start', $startTime->subMinute()->getTimestamp())
+            ->setParameter('end', $startTime->addMinute()->getTimestamp())
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if (null === $record) {
+            $record = new Entity\StationStreamerBroadcast($streamer);
+        }
+
+        $record->setTimestampStart($startTime->getTimestamp());
+        $record->setRecordingPath($recordingPath);
+        return $record;
     }
 }

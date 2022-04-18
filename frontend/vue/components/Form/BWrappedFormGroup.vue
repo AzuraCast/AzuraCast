@@ -3,10 +3,10 @@
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
                 <b-form-textarea v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
-                                 v-model="field.$model"
+                                 v-model="modelValue"
                                  :required="isRequired" :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
                                  :autofocus="autofocus" :state="fieldState"></b-form-textarea>
-                <b-form-input v-else ref="input" :type="inputType" :id="id" :name="name" v-model="field.$model"
+                <b-form-input v-else ref="input" :type="inputType" :id="id" :name="name" v-model="modelValue"
                               :required="isRequired" :number="isNumeric" :trim="inputTrim"
                               :autofocus="autofocus" v-bind="inputAttrs" :state="fieldState"></b-form-input>
             </slot>
@@ -68,6 +68,10 @@ export default {
             type: Boolean,
             default: false
         },
+        inputEmptyIsNull: {
+            type: Boolean,
+            default: false
+        },
         inputAttrs: {
             type: Object,
             default() {
@@ -84,6 +88,18 @@ export default {
         }
     },
     computed: {
+        modelValue: {
+            get() {
+                return this.field.$model;
+            },
+            set(value) {
+                if ((this.isNumeric || this.inputEmptyIsNull) && '' === value) {
+                    value = null;
+                }
+
+                this.field.$model = value;
+            }
+        },
         filteredScopedSlots() {
             return _.filter(this.$scopedSlots, (slot, name) => {
                 return !_.includes([

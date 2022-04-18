@@ -10,7 +10,8 @@
                     <b-form-input id="edit_form_song_length" readonly :value="songLength"></b-form-input>
                 </b-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_amplify" :field="form.amplify">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_amplify" :field="form.amplify"
+                                      input-type="number" :input-attrs="{ step: '0.1' }">
                     <template #label="{lang}">
                         <translate :key="lang">Amplify: Amplification (dB)</translate>
                     </template>
@@ -19,7 +20,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_fade_overlap" :field="form.fade_overlap">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_fade_overlap" :field="form.fade_overlap"
+                                      input-type="number" :input-attrs="{ step: '0.1' }">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Fading: Overlap Time (seconds)</translate>
                     </template>
@@ -28,7 +30,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_fade_in" :field="form.fade_in">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_fade_in" :field="form.fade_in"
+                                      input-type="number" :input-attrs="{ step: '0.1' }">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Fading: Fade-In Time (seconds)</translate>
                     </template>
@@ -37,7 +40,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_fade_out" :field="form.fade_out">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_fade_out" :field="form.fade_out"
+                                      input-type="number" :input-attrs="{ step: '0.1' }">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Fading: Fade-Out Time (seconds)</translate>
                     </template>
@@ -46,7 +50,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_cue_in" :field="form.cue_in">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_cue_in" :field="form.cue_in"
+                                      input-type="number" :input-attrs="{ step: '0.1' }">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Cues: Cue-In Point (seconds)</translate>
                     </template>
@@ -56,7 +61,8 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_cue_out" :field="form.cue_out">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_cue_out" :field="form.cue_out"
+                                      input-type="number" :input-attrs="{ step: '0.1' }">
                     <template #label="{lang}">
                         <translate :key="lang">Custom Cues: Cue-Out Point (seconds)</translate>
                     </template>

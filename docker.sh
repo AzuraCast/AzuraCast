@@ -488,6 +488,10 @@ install-dev() {
     .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
+  chmod 777 ./frontend/ ./web/ ./vendor/ \
+    ./web/static/ ./web/static/api/ \
+     ./web/static/dist/ ./web/static/img/
+
   docker-compose build
   docker-compose run --rm web -- azuracast_install "$@"
 

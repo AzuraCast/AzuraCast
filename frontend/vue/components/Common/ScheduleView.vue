@@ -1,5 +1,5 @@
 <template>
-    <full-calendar ref="calendar" :options="calendarOptions" @eventClick="onEventClick"></full-calendar>
+    <full-calendar ref="calendar" :options="calendarOptions"></full-calendar>
 </template>
 
 <script>
@@ -31,15 +31,25 @@ export default {
                 footerToolbar: false,
                 height: 'auto',
                 events: this.scheduleUrl,
-                eventClick: this.onEventClick
+                eventClick: this.onEventClick,
+                eventDidMount: this.onEventDidMount
             }
         };
     },
     methods: {
-        refresh () {
+        refresh() {
 
         },
-        onEventClick (arg) {
+        onEventDidMount(info) {
+            $(info.el).tooltip({
+                title: info.event.extendedProps.description,
+                placement: 'top',
+                trigger: 'hover',
+                container: 'body',
+                offset: 0
+            });
+        },
+        onEventClick(arg) {
             this.$emit('click', arg.event);
         }
     }

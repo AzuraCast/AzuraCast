@@ -52,11 +52,11 @@ class ScheduleApiGenerator
         if ($playlist instanceof Entity\StationPlaylist) {
             $row->type = Entity\Api\StationSchedule::TYPE_PLAYLIST;
             $row->name = $playlist->getName();
-            $row->title = __('Playlist: %s', $row->name);
+            $row->title = $row->name;
         } elseif ($streamer instanceof Entity\StationStreamer) {
             $row->type = Entity\Api\StationSchedule::TYPE_STREAMER;
             $row->name = $streamer->getDisplayName();
-            $row->title = __('Streamer: %s', $row->name);
+            $row->title = $row->name;
         }
 
         return $row;

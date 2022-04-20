@@ -90,7 +90,7 @@
     "theiconic/php-ga-measurement-protocol": "^2.9",
     "vlucas/phpdotenv": "^5.3",
     "wikimedia/composer-merge-plugin": "dev-master",
-    "zircote/swagger-php": "dev-master"
+    "zircote/swagger-php": "^4.3.0"
   },
   "replace": {
     "symfony/polyfill-iconv": "1.99",

@@ -208,26 +208,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "2548a9e513f5e4e13b8570e1cd72c5cea06230ec"
+                "reference": "f322c2247b8032dfae92dd50b206788b060b57bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/2548a9e513f5e4e13b8570e1cd72c5cea06230ec",
-                "reference": "2548a9e513f5e4e13b8570e1cd72c5cea06230ec",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/f322c2247b8032dfae92dd50b206788b060b57bc",
+                "reference": "f322c2247b8032dfae92dd50b206788b060b57bc",
                 "shasum": ""
             },
             "require": {
                 "doctrine/collections": ">1",
                 "doctrine/inflector": "^2",
                 "doctrine/orm": "^2",
-                "doctrine/persistence": "^2",
-                "php": "^8.0",
+                "doctrine/persistence": "^2|^3",
+                "php": ">=8.0",
                 "symfony/serializer": "^5|^6"
             },
             "require-dev": {
-                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-console-highlighter": "^1",
                 "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^1",
                 "roave/security-advisories": "dev-master"
             },
             "default-branch": true,
@@ -259,7 +259,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-20T07:55:34+00:00"
+            "time": "2022-04-20T09:10:41+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",
@@ -2072,44 +2072,43 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "2.5.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "4473480044c88f30e0e8288e7123b60c7eb9efa3"
+                "reference": "e6103cb9e0982a4312e05ad94bb7be3f8e2d5869"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/4473480044c88f30e0e8288e7123b60c7eb9efa3",
-                "reference": "4473480044c88f30e0e8288e7123b60c7eb9efa3",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/e6103cb9e0982a4312e05ad94bb7be3f8e2d5869",
+                "reference": "e6103cb9e0982a4312e05ad94bb7be3f8e2d5869",
                 "shasum": ""
             },
             "require": {
-                "doctrine/cache": "^1.11 || ^2.0",
                 "doctrine/collections": "^1.0",
-                "doctrine/deprecations": "^0.5.3",
                 "doctrine/event-manager": "^1.0",
-                "php": "^7.1 || ^8.0",
+                "php": "^7.2 || ^8.0",
                 "psr/cache": "^1.0 || ^2.0 || ^3.0"
             },
             "conflict": {
-                "doctrine/annotations": "<1.0 || >=2.0",
+                "doctrine/annotations": "<1.7 || >=2.0",
                 "doctrine/common": "<2.10"
             },
             "require-dev": {
                 "composer/package-versions-deprecated": "^1.11",
-                "doctrine/annotations": "^1.0",
+                "doctrine/annotations": "^1.7",
                 "doctrine/coding-standard": "^9.0",
                 "doctrine/common": "^3.0",
-                "phpstan/phpstan": "~1.4.10 || 1.5.0",
-                "phpunit/phpunit": "^7.5.20 || ^8.5 || ^9.5",
+                "phpstan/phpstan": "1.5.0",
+                "phpstan/phpstan-phpunit": "^1",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "phpunit/phpunit": "^8.5 || ^9.5",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
                 "vimeo/psalm": "4.22.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Common\\": "src/Common",
                     "Doctrine\\Persistence\\": "src/Persistence"
                 }
             },
@@ -2144,7 +2143,7 @@
                 }
             ],
             "description": "The Doctrine Persistence project is a set of shared interfaces and functionality that the different Doctrine object mappers share.",
-            "homepage": "https://doctrine-project.org/projects/persistence.html",
+            "homepage": "https://www.doctrine-project.org/projects/persistence.html",
             "keywords": [
                 "mapper",
                 "object",
@@ -2154,9 +2153,23 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/2.5.1"
+                "source": "https://github.com/doctrine/persistence/tree/3.0.0"
             },
-            "time": "2022-04-14T21:47:17+00:00"
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fpersistence",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-04-15T10:39:55+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",

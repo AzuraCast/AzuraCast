@@ -7,6 +7,7 @@ namespace App\Console\Command\Backup;
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
 use App\Entity;
+use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,6 +29,7 @@ class BackupCommand extends CommandAbstract
     use Traits\PassThruProcess;
 
     public function __construct(
+        protected Environment $environment,
         protected EntityManagerInterface $em,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
     ) {
@@ -115,8 +117,7 @@ class BackupCommand extends CommandAbstract
 
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
-        $conn = $this->em->getConnection();
-        $connParams = $conn->getParams();
+        $connSettings = $this->environment->getDatabaseSettings();
 
         // phpcs:disable Generic.Files.LineLength
         $this->passThruProcess(
@@ -124,10 +125,10 @@ class BackupCommand extends CommandAbstract
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
             $tmp_dir_mariadb,
             [
-                'DB_HOST' => $connParams['host'],
-                'DB_DATABASE' => $conn->getDatabase(),
-                'DB_USERNAME' => $connParams['user'],
-                'DB_PASSWORD' => $connParams['password'],
+                'DB_HOST' => $connSettings['host'],
+                'DB_DATABASE' => $connSettings['dbname'],
+                'DB_USERNAME' => $connSettings['user'],
+                'DB_PASSWORD' => $connSettings['password'],
                 'DB_DEST' => $path_db_dump,
             ]
         );

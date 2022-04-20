@@ -31,7 +31,11 @@ class Reader
             return [];
         }
 
+        /** @var XMLReader|false $reader */
         $reader = XMLReader::XML($string, null, \LIBXML_XINCLUDE);
+        if (false === $reader) {
+            return false;
+        }
 
         set_error_handler(
             function ($error, $message = '') {

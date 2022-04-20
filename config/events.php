@@ -24,7 +24,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
 
             $helper_set = $console->getHelperSet();
             $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
-            $helper_set->set($doctrine_helpers->get('db'), 'db');
             $helper_set->set($doctrine_helpers->get('em'), 'em');
 
             $migrationConfigurations = [

@@ -54,11 +54,7 @@ class BatchAction
         };
 
         if ($this->em->isOpen()) {
-            $this->em->clear(Entity\StationMedia::class);
-            $this->em->clear(Entity\StationPlaylist::class);
-            $this->em->clear(Entity\StationPlaylistMedia::class);
-            $this->em->clear(Entity\UnprocessableMedia::class);
-            $this->em->clear(Entity\StationRequest::class);
+            $this->em->clear();
         }
 
         return $response->withJson($result);

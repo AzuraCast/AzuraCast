@@ -8,23 +8,14 @@ declare(strict_types=1);
 
 namespace App\Xml;
 
-use Laminas\Config\Exception;
-use Laminas\Stdlib\ArrayUtils;
-use Traversable;
 use XMLWriter;
 
 class Writer
 {
     public static function toString(
-        mixed $config,
+        array $config,
         string $baseElement = 'xml-config'
     ): string {
-        if ($config instanceof Traversable) {
-            $config = ArrayUtils::iteratorToArray($config);
-        } elseif (!is_array($config)) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' expects an array or Traversable config');
-        }
-
         return self::processConfig($config, $baseElement);
     }
 
@@ -61,8 +52,11 @@ class Writer
         return $writer->outputMemory();
     }
 
-    protected static function addBranch($branchName, array $config, XMLWriter $writer): void
-    {
+    protected static function addBranch(
+        mixed $branchName,
+        array $config,
+        XMLWriter $writer
+    ): void {
         $branchType = null;
 
         // Ensure attributes come first.
@@ -77,7 +71,7 @@ class Writer
                     $branchType = 'string';
                 }
             } elseif ($branchType !== (is_numeric($key) ? 'numeric' : 'string')) {
-                throw new Exception\RuntimeException('Mixing of string and numeric keys is not allowed');
+                throw new \RuntimeException('Mixing of string and numeric keys is not allowed');
             }
 
             if ($branchType === 'numeric') {

@@ -291,7 +291,7 @@ class Icecast extends AbstractFrontend
             }
         }
 
-        $configString = (new Writer())->toString($config, 'icecast');
+        $configString = Writer::toString($config, 'icecast');
 
         // Strip the first line (the XML charset)
         return substr($configString, strpos($configString, "\n") + 1);

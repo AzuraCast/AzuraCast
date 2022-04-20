@@ -161,7 +161,7 @@ abstract class AbstractFrontend extends AbstractAdapter
             }
 
             if (str_starts_with($custom_config_raw, '<')) {
-                $xmlConfig = (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                $xmlConfig = Reader::fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
                 return (false !== $xmlConfig)
                     ? (array)$xmlConfig
                     : false;

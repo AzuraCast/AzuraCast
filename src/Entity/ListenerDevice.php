@@ -21,10 +21,10 @@ class ListenerDevice implements \JsonSerializable
     #[ORM\Column]
     protected bool $is_bot = false;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $browser_family = null;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $os_family = null;
 
     public function getClient(): ?string

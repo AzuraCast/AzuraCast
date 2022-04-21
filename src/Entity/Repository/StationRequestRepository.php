@@ -73,7 +73,7 @@ class StationRequestRepository extends Repository
         // Forbid web crawlers from using this feature.
         $dd = $this->deviceDetector->parse($userAgent);
 
-        if ($dd->isBot()) {
+        if ($dd->isBot) {
             throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
         }
 

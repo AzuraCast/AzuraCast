@@ -64,20 +64,25 @@
                             {{ row.item.connected_time }}
                         </template>
                         <template #cell(user_agent)="row">
-                            <span v-if="row.item.is_mobile">
-                                <icon icon="smartphone"></icon>
-                                <span class="sr-only">
-                                    <translate key="lang_device_mobile">Mobile Device</translate>
+                            <div>
+                                <span v-if="row.item.is_mobile">
+                                    <icon icon="smartphone"></icon>
+                                    <span class="sr-only">
+                                        <translate key="lang_device_mobile">Mobile Device</translate>
+                                    </span>
                                 </span>
-                            </span>
-                            <span v-else>
-                                <icon icon="desktop_windows"></icon>
-                                <span class="sr-only">
-                                    <translate key="lang_device_desktop">Desktop Device</translate>
+                                <span v-else>
+                                    <icon icon="desktop_windows"></icon>
+                                    <span class="sr-only">
+                                        <translate key="lang_device_desktop">Desktop Device</translate>
+                                    </span>
                                 </span>
-                            </span>
-                            {{ row.item.user_agent }} <br>
-                            <small>{{ row.item.client }}</small>
+
+                                {{ row.item.user_agent }}
+                            </div>
+                            <div v-if="row.item.device.client">
+                                <small>{{ row.item.device.client }}</small>
+                            </div>
                         </template>
                         <template #cell(stream)="row">
                             <span v-if="row.item.mount_name == ''">
@@ -94,11 +99,8 @@
                             </span>
                         </template>
                         <template #cell(location)="row">
-                            <span v-if="row.item.location.status == 'success'">
-                                {{ row.item.location.region }}, {{ row.item.location.country }}
-                            </span>
-                            <span v-else-if="row.item.location.message">
-                                {{ row.item.location.message }}
+                            <span v-if="row.item.location.description">
+                                {{ row.item.location.description }}
                             </span>
                             <span v-else>
                                 <translate key="lang_location_unknown">Unknown</translate>

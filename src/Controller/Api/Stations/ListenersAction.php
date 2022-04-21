@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -13,8 +12,8 @@ use App\OpenApi;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\File;
-use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
@@ -51,14 +50,13 @@ class ListenersAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
+        Entity\Repository\ListenerRepository $listenerRepo,
         Entity\Repository\StationMountRepository $mountRepo,
         Entity\Repository\StationRemoteRepository $remoteRepo,
         IpGeolocation $geoLite,
         DeviceDetector $deviceDetector,
         Environment $environment
     ): ResponseInterface {
-        set_time_limit($environment->getSyncLongExecutionTime());
-
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
 
@@ -67,19 +65,12 @@ class ListenersAction
         $isLive = empty($params['start']);
         $now = CarbonImmutable::now($stationTz);
 
-        $qb = $em->createQueryBuilder()
-            ->select('l')
-            ->from(Entity\Listener::class, 'l')
-            ->where('l.station = :station')
-            ->setParameter('station', $station)
-            ->orderBy('l.timestamp_start', 'ASC');
-
         if ($isLive) {
             $range = 'live';
             $startTimestamp = $now->getTimestamp();
             $endTimestamp = $now->getTimestamp();
 
-            $qb = $qb->andWhere('l.timestamp_end = 0');
+            $listenersIterator = $listenerRepo->iterateLiveListenersArray($station);
         } else {
             $start = CarbonImmutable::parse($params['start'], $stationTz)
                 ->setSecond(0);
@@ -91,44 +82,48 @@ class ListenersAction
 
             $range = $start->format('Y-m-d_H-i-s') . '_to_' . $end->format('Y-m-d_H-i-s');
 
-            $qb = $qb->andWhere('l.timestamp_start < :time_end')
-                ->andWhere('(l.timestamp_end = 0 OR l.timestamp_end > :time_start)')
+            $listenersIterator = $em->createQuery(
+                <<<'DQL'
+                    SELECT l
+                    FROM App\Entity\Listener l
+                    WHERE l.station = :station
+                    AND l.timestamp_start < :time_end
+                    AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)
+                    ORDER BY l.timestamp_start ASC
+                DQL
+            )->setParameter('station', $station)
                 ->setParameter('time_start', $startTimestamp)
-                ->setParameter('time_end', $endTimestamp);
+                ->setParameter('time_end', $endTimestamp)
+                ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
         }
-
-        $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE)
-            ?? SupportedLocales::default();
 
         $mountNames = $mountRepo->getDisplayNames($station);
         $remoteNames = $remoteRepo->getDisplayNames($station);
-
-        $listenersIterator = ReadOnlyBatchIteratorAggregate::fromQuery($qb->getQuery(), 250);
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];
         $listenersByHash = [];
 
         $groupByUnique = ('false' !== ($params['unique'] ?? 'true'));
+        $nowTimestamp = $now->getTimestamp();
 
         foreach ($listenersIterator as $listener) {
-            /** @var Entity\Listener $listener */
-            $listenerStart = $listener->getTimestampStart();
+            $listenerStart = $listener['timestamp_start'];
 
             if ($isLive) {
-                $listenerEnd = $now->getTimestamp();
+                $listenerEnd = $nowTimestamp;
             } else {
                 if ($listenerStart < $startTimestamp) {
                     $listenerStart = $startTimestamp;
                 }
 
-                $listenerEnd = $listener->getTimestampEnd();
+                $listenerEnd = $listener['timestamp_end'];
                 if (0 === $listenerEnd || $listenerEnd > $endTimestamp) {
                     $listenerEnd = $endTimestamp;
                 }
             }
 
-            $hash = $listener->getListenerHash();
+            $hash = $listener['listener_hash'];
             if ($groupByUnique && isset($listenersByHash[$hash])) {
                 $listenersByHash[$hash]['intervals'][] = [
                     'start' => $listenerStart,
@@ -137,29 +132,15 @@ class ListenersAction
                 continue;
             }
 
-            $userAgent = $listener->getListenerUserAgent();
-            $dd = $deviceDetector->parse($userAgent);
+            $api = Entity\Api\Listener::fromArray($listener);
 
-            $api = new Entity\Api\Listener();
-            $api->ip = $listener->getListenerIp();
-            $api->user_agent = $userAgent;
-            $api->hash = $hash;
-            $api->client = $dd->getClient() ?? 'Unknown';
-            $api->is_mobile = $dd->isMobile();
-
-            if ($listener->getMountId()) {
-                $mountId = $listener->getMountId();
-
+            if (null !== $listener['mount_id']) {
                 $api->mount_is_local = true;
-                $api->mount_name = $mountNames[$mountId];
-            } elseif ($listener->getRemoteId()) {
-                $remoteId = $listener->getRemoteId();
-
+                $api->mount_name = $mountNames[$listener['mount_id']];
+            } elseif (null !== $listener['remote_id']) {
                 $api->mount_is_local = false;
-                $api->mount_name = $remoteNames[$remoteId];
+                $api->mount_name = $remoteNames[$listener['remote_id']];
             }
-
-            $api->location = $geoLite->getLocationInfo($api->ip, $locale);
 
             if ($groupByUnique) {
                 $listenersByHash[$hash] = [
@@ -183,7 +164,7 @@ class ListenersAction
             foreach ($listenersByHash as $listenerInfo) {
                 $intervals = (array)$listenerInfo['intervals'];
 
-                $startTime = $now->getTimestamp();
+                $startTime = $nowTimestamp;
                 $endTime = 0;
                 foreach ($intervals as $interval) {
                     $startTime = min($interval['start'], $startTime);
@@ -239,14 +220,20 @@ class ListenersAction
                 'End Time',
                 'Seconds Connected',
                 'User Agent',
-                'Client',
-                'Is Mobile',
                 'Mount Type',
                 'Mount Name',
-                'Location',
-                'Country',
-                'Region',
-                'City',
+                'Device: Client',
+                'Device: Is Mobile',
+                'Device: Is Browser',
+                'Device: Is Bot',
+                'Device: Browser Family',
+                'Device: OS Family',
+                'Location: Description',
+                'Location: Country',
+                'Location: Region',
+                'Location: City',
+                'Location: Latitude',
+                'Location: Longitude',
             ]
         );
 
@@ -260,30 +247,21 @@ class ListenersAction
                 $endTime->toIso8601String(),
                 $listener->connected_time,
                 $listener->user_agent,
-                $listener->client,
-                $listener->is_mobile ? 'True' : 'False',
+                ($listener->mount_is_local) ? 'Local' : 'Remote',
+                $listener->mount_name,
+                $listener->device['client'],
+                $listener->device['is_mobile'] ? 'True' : 'False',
+                $listener->device['is_browser'] ? 'True' : 'False',
+                $listener->device['is_bot'] ? 'True' : 'False',
+                $listener->device['browser_family'],
+                $listener->device['os_family'],
+                $listener->location['description'],
+                $listener->location['country'],
+                $listener->location['region'],
+                $listener->location['city'],
+                $listener->location['lat'],
+                $listener->location['lon'],
             ];
-
-            if ('' === $listener->mount_name) {
-                $exportRow[] = 'Unknown';
-                $exportRow[] = 'Unknown';
-            } else {
-                $exportRow[] = ($listener->mount_is_local) ? 'Local' : 'Remote';
-                $exportRow[] = $listener->mount_name;
-            }
-
-            $location = $listener->location;
-            if ('success' === $location['status']) {
-                $exportRow[] = $location['region'] . ', ' . $location['country'];
-                $exportRow[] = $location['country'];
-                $exportRow[] = $location['region'];
-                $exportRow[] = $location['city'];
-            } else {
-                $exportRow[] = $location['message'] ?? 'N/A';
-                $exportRow[] = '';
-                $exportRow[] = '';
-                $exportRow[] = '';
-            }
 
             $csv->insertOne($exportRow);
         }

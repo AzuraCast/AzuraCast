@@ -3,56 +3,57 @@
 namespace App\Service\DeviceDetector;
 
 use DeviceDetector\DeviceDetector;
+use DeviceDetector\Parser\Client\Browser;
+use DeviceDetector\Parser\OperatingSystem;
 
 final class DeviceResult
 {
     public function __construct(
-        protected bool $isBot = false,
-        protected bool $isMobile = false,
-        protected ?string $client = null
+        public readonly string $userAgent
     ) {
     }
 
-    public function isBot(): bool
-    {
-        return $this->isBot;
-    }
+    public ?string $client = null;
 
-    public function isMobile(): bool
-    {
-        return $this->isMobile;
-    }
+    public bool $isBrowser = false;
 
-    public function getClient(): ?string
-    {
-        return $this->client;
-    }
+    public bool $isMobile = false;
 
-    public static function fromDeviceDetector(DeviceDetector $dd): self
-    {
-        $isBot = $dd->isBot();
+    public bool $isBot = false;
 
-        if ($isBot) {
+    public ?string $browserFamily = null;
+
+    public ?string $osFamily = null;
+
+    public static function fromDeviceDetector(string $userAgent, DeviceDetector $dd): self
+    {
+        $record = new self($userAgent);
+        $record->isBot = $dd->isBot();
+
+        if ($record->isBot) {
             $clientBot = (array)$dd->getBot();
-
             $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
             $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
-            $client = $clientBotName . ' (' . $clientBotType . ')';
+            $record->client = $clientBotName . ' (' . $clientBotType . ')';
+
+            $record->browserFamily = 'Crawler';
+            $record->osFamily = 'Crawler';
         } else {
+            $record->isMobile = $dd->isMobile();
+            $record->isBrowser = $dd->isBrowser();
+
             $clientInfo = (array)$dd->getClient();
             $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
             $clientVersion = $clientInfo['version'] ?? '0.00';
+            $record->browserFamily = Browser::getBrowserFamily($clientBrowser);
 
             $clientOsInfo = (array)$dd->getOs();
             $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
+            $record->osFamily = OperatingSystem::getOsFamily($clientOs);
 
-            $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
+            $record->client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
         }
 
-        return new self(
-            isBot: $isBot,
-            isMobile: $dd->isMobile(),
-            client: $client
-        );
+        return $record;
     }
 }

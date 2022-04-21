@@ -216,6 +216,8 @@ class ListenerRepository extends Repository
                 'ip' => $ip,
                 'exception' => $e,
             ]);
+
+            $record['location_description'] = 'Unknown';
         }
 
         return $record;

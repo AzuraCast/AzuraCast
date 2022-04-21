@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ListenerLocation implements \JsonSerializable
 {
     #[ORM\Column(length: 255, nullable: false)]
-    protected ?string $description = 'Unknown';
+    protected string $description = 'Unknown';
 
     #[ORM\Column(length: 150, nullable: true)]
     protected ?string $region = null;

@@ -2,9 +2,14 @@
     <data-table ref="datatable" id="song_requests" paginated select-fields :page-options="pageOptions" :fields="fields"
                 :responsive="false" :api-url="requestListUri">
         <template #cell(name)="row">
-            <album-art v-if="showAlbumArt" :src="row.item.song_art" :width="40" class="float-left pr-3"></album-art>
-            {{ row.item.song_title }}<br>
-            <small>{{ row.item.song_artist }}</small>
+            <div class="d-flex align-items-center">
+                <album-art v-if="showAlbumArt" :src="row.item.song_art" :width="40"
+                           class="flex-shrink-1 pr-3"></album-art>
+                <div class="flex-fill">
+                    {{ row.item.song_title }}<br>
+                    <small>{{ row.item.song_artist }}</small>
+                </div>
+            </div>
         </template>
         <template #cell(actions)="row">
             <b-button-group size="sm">
@@ -73,7 +78,7 @@ export default {
         });
 
         fields.push(
-            { key: 'actions', label: this.$gettext('Actions'), sortable: false }
+            {key: 'actions', label: this.$gettext('Actions'), class: 'shrink', sortable: false}
         );
 
         return {

@@ -117,6 +117,26 @@
                 </b-form-group>
             </b-card-body>
         </b-card>
+        
+        <b-card v-show="form.adapter.$model === 'sftp'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_form_adapter_sftp">Remote: SFTP</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpHost"
+                                              :field="form.sftpHost">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Host</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                </b-form-group>
+            </b-card-body>
+        </b-card>
     </div>
 </template>
 

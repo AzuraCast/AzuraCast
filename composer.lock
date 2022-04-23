@@ -343,7 +343,7 @@
         },
         {
             "name": "azuracast/metadata-manager",
-            "version": "dev-add-ffmpeg-fallback",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/metadata-manager.git",
@@ -369,6 +369,7 @@
                 "phpstan/phpstan": "^1",
                 "roave/security-advisories": "dev-latest"
             },
+            "default-branch": true,
             "bin": [
                 "bin/metadata-manager"
             ],
@@ -378,19 +379,7 @@
                     "Azura\\MetadataManager\\": "src/"
                 }
             },
-            "scripts": {
-                "test": [
-                    "@composer install",
-                    "@phplint",
-                    "@phpstan"
-                ],
-                "phplint": [
-                    "parallel-lint . --exclude vendor"
-                ],
-                "phpstan": [
-                    "phpstan analyze --memory-limit=-1"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -405,20 +394,20 @@
             "description": "A command-line wrapper around the PHP GetId3 library.",
             "homepage": "https://github.com/AzuraCast/metadata-manager",
             "support": {
-                "source": "https://github.com/Vaalyn/metadata-manager/tree/add-ffmpeg-fallback"
+                "source": "https://github.com/AzuraCast/metadata-manager/tree/main"
             },
             "funding": [
                 {
-                    "type": "github",
-                    "url": "https://github.com/AzuraCast"
+                    "url": "https://github.com/AzuraCast",
+                    "type": "github"
                 },
                 {
-                    "type": "open_collective",
-                    "url": "https://opencollective.com/azuracast"
+                    "url": "https://opencollective.com/azuracast",
+                    "type": "open_collective"
                 },
                 {
-                    "type": "patreon",
-                    "url": "https://www.patreon.com/AzuraCast"
+                    "url": "https://www.patreon.com/AzuraCast",
+                    "type": "patreon"
                 }
             ],
             "time": "2022-04-23T03:55:03+00:00"

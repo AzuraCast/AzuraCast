@@ -45,6 +45,12 @@ export default {
                 validations.form.s3Bucket = {};
                 validations.form.s3Endpoint = {};
                 validations.form.dropboxAuthToken = {};
+                validations.form.sftpHost = {};
+                validations.form.sftpPort = {};
+                validations.form.sftpUsername = {};
+                validations.form.sftpPassword = {};
+                validations.form.sftpPrivateKey = {};
+                validations.form.sftpPrivateKeyPassPhrase = {};
                 break;
 
             case 'dropbox':
@@ -56,6 +62,12 @@ export default {
                 validations.form.s3Bucket = {};
                 validations.form.s3Endpoint = {};
                 validations.form.dropboxAuthToken = { required };
+                validations.form.sftpHost = {};
+                validations.form.sftpPort = {};
+                validations.form.sftpUsername = {};
+                validations.form.sftpPassword = {};
+                validations.form.sftpPrivateKey = {};
+                validations.form.sftpPrivateKeyPassPhrase = {};
                 break;
 
             case 's3':
@@ -67,6 +79,12 @@ export default {
                 validations.form.s3Bucket = { required };
                 validations.form.s3Endpoint = { required };
                 validations.form.dropboxAuthToken = {};
+                validations.form.sftpHost = {};
+                validations.form.sftpPort = {};
+                validations.form.sftpUsername = {};
+                validations.form.sftpPassword = {};
+                validations.form.sftpPrivateKey = {};
+                validations.form.sftpPrivateKeyPassPhrase = {};
                 break;
                 
             case 'sftp':
@@ -102,7 +120,7 @@ export default {
                 's3Endpoint': null,
                 'dropboxAuthToken': null,
                 'sftpHost': null,
-                'sftpPort': null,
+                'sftpPort': '22',
                 'sftpUsername': null,
                 'sftpPassword': null,
                 'sftpPrivateKey': null,

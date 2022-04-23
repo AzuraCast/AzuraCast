@@ -134,6 +134,51 @@
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>
+                    
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPort"
+                                              :field="form.sftpPort">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Port</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                    
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpUsername"
+                                              :field="form.sftpUsername">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Username</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                    
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPassword"
+                                              :field="form.sftpPassword">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Password</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                    
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPrivateKey"
+                                              :field="form.sftpPrivateKey">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Private Key</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                    
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPrivateKeyPassPhrase"
+                                              :field="form.sftpPrivateKeyPassPhrase">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Private Key Pass Phrase</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
                 </b-form-group>
             </b-card-body>
         </b-card>

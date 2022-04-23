@@ -68,6 +68,23 @@ export default {
                 validations.form.s3Endpoint = { required };
                 validations.form.dropboxAuthToken = {};
                 break;
+                
+            case 'sftp':
+                validations.form.path = {};
+                validations.form.s3CredentialKey = {};
+                validations.form.s3CredentialSecret = {};
+                validations.form.s3Region = {};
+                validations.form.s3Version = {};
+                validations.form.s3Bucket = {};
+                validations.form.s3Endpoint = {};
+                validations.form.dropboxAuthToken = {};
+                validations.form.sftpHost = { required };
+                validations.form.sftpPort = { required };
+                validations.form.sftpUsername = { required };
+                validations.form.sftpPassword = {};
+                validations.form.sftpPrivateKey = {};
+                validations.form.sftpPrivateKeyPassPhrase = {};
+                break;
         }
 
         return validations;
@@ -84,6 +101,12 @@ export default {
                 's3Bucket': null,
                 's3Endpoint': null,
                 'dropboxAuthToken': null,
+                'sftpHost': null,
+                'sftpPort': null,
+                'sftpUsername': null,
+                'sftpPassword': null,
+                'sftpPrivateKey': null,
+                'sftpPrivateKeyPassPhrase': null,
                 'storageQuota': ''
             };
         },

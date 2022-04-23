@@ -577,12 +577,12 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         }
 
         return new SftpConnectionProvider(
-            $this->sftpHost,
-            $this->sftpUsername,
+            $this->sftpHost ?? '',
+            $this->sftpUsername ?? '',
             $this->sftpPassword,
             $this->sftpPrivateKey,
             $this->sftpPrivateKeyPassPhrase,
-            $this->sftpPort
+            $this->sftpPort ?? 22
         );
     }
 

@@ -72,6 +72,24 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
     protected ?string $dropboxAuthToken = null;
+    
+    #[ORM\Column(name: 'sftp_host', length: 255, nullable: true)]
+    protected ?string $sftpHost = null;
+    
+    #[ORM\Column(name: 'sftp_username', length: 255, nullable: true)]
+    protected ?string $sftpUsername = null;
+    
+    #[ORM\Column(name: 'sftp_password', length: 255, nullable: true)]
+    protected ?string $sftpPassword = null;
+    
+    #[ORM\Column(name: 'sftp_port', nullable: true)]
+    protected ?int $sftpPort = null;
+    
+    #[ORM\Column(name: 'sftp_private_key', type: 'text', nullable: true)]
+    protected ?string $sftpPrivateKey = null;
+    
+    #[ORM\Column(name: 'sftp_private_key_pass_phrase', length: 255, nullable: true)]
+    protected ?string $sftpPrivateKeyPassPhrase = null;
 
     #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
     protected ?string $storageQuota = null;
@@ -215,6 +233,66 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function setDropboxAuthToken(?string $dropboxAuthToken): void
     {
         $this->dropboxAuthToken = $dropboxAuthToken;
+    }
+    
+    public function getSftpHost(): ?string
+    {
+        return $this->sftpHost;
+    }
+
+    public function setSftpHost(?string $sftpHost): void
+    {
+        $this->sftpHost = $sftpHost;
+    }
+    
+    public function getSftpUsername(): ?string
+    {
+        return $this->sftpUsername;
+    }
+
+    public function setSftpUsername(?string $sftpUsername): void
+    {
+        $this->sftpUsername = $sftpUsername;
+    }
+    
+    public function getSftpPassword(): ?string
+    {
+        return $this->sftpPassword;
+    }
+
+    public function setSftpPassword(?string $sftpPassword): void
+    {
+        $this->sftpPassword = $sftpPassword;
+    }
+
+    public function getSftpPort(): ?int
+    {
+        return $this->sftpPort;
+    }
+
+    public function setSftpPort(?int $sftpPort): void
+    {
+        $this->sftpPort = $sftpPort;
+    }
+    
+    public function getSftpPrivateKey(): ?string
+    {
+        return $this->sftpPrivateKey;
+    }
+
+    public function setSftpPrivateKey(?string $sftpPrivateKey): void
+    {
+        $this->sftpPrivateKey = $sftpPrivateKey;
+    }
+    
+    public function getSftpPrivateKeyPassPhrase(): ?string
+    {
+        return $this->sftpPrivateKeyPassPhrase;
+    }
+
+    public function setSftpPrivateKeyPassPhrase(?string $sftpPrivateKeyPassPhrase): void
+    {
+        $this->sftpPrivateKeyPassPhrase = $sftpPrivateKeyPassPhrase;
     }
 
     public function isLocal(): bool

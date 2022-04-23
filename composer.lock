@@ -263,7 +263,7 @@
         },
         {
             "name": "azuracast/flysystem-v2-extensions",
-            "version": "dev-main",
+            "version": "dev-add-sftp-adapter",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/flysystem-v2-extensions.git",
@@ -293,14 +293,25 @@
                 "league/flysystem-sftp-v3": "SFTP adapter for Flysystem V3",
                 "spatie/flysystem-dropbox": "Dropbox adapter for Flysystem V3."
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Azura\\Files\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "@composer install --prefer-dist --no-progress",
+                    "@phplint",
+                    "@phpstan"
+                ],
+                "phplint": [
+                    "parallel-lint . --exclude vendor"
+                ],
+                "phpstan": [
+                    "phpstan analyse --memory-limit=-1"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -322,21 +333,20 @@
                 "storage"
             ],
             "support": {
-                "issues": "https://github.com/AzuraCast/flysystem-v2-extensions/issues",
-                "source": "https://github.com/AzuraCast/flysystem-v2-extensions/tree/main"
+                "source": "https://github.com/Vaalyn/flysystem-v2-extensions/tree/add-sftp-adapter"
             },
             "funding": [
                 {
-                    "url": "https://github.com/AzuraCast",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/AzuraCast"
                 },
                 {
-                    "url": "https://opencollective.com/azuracast",
-                    "type": "open_collective"
+                    "type": "open_collective",
+                    "url": "https://opencollective.com/azuracast"
                 },
                 {
-                    "url": "https://www.patreon.com/AzuraCast",
-                    "type": "patreon"
+                    "type": "patreon",
+                    "url": "https://www.patreon.com/AzuraCast"
                 }
             ],
             "time": "2022-04-23T05:01:55+00:00"

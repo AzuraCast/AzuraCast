@@ -74,22 +74,22 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
     protected ?string $dropboxAuthToken = null;
-    
+
     #[ORM\Column(name: 'sftp_host', length: 255, nullable: true)]
     protected ?string $sftpHost = null;
-    
+
     #[ORM\Column(name: 'sftp_username', length: 255, nullable: true)]
     protected ?string $sftpUsername = null;
-    
+
     #[ORM\Column(name: 'sftp_password', length: 255, nullable: true)]
     protected ?string $sftpPassword = null;
-    
+
     #[ORM\Column(name: 'sftp_port', nullable: true)]
     protected ?int $sftpPort = null;
-    
+
     #[ORM\Column(name: 'sftp_private_key', type: 'text', nullable: true)]
     protected ?string $sftpPrivateKey = null;
-    
+
     #[ORM\Column(name: 'sftp_private_key_pass_phrase', length: 255, nullable: true)]
     protected ?string $sftpPrivateKeyPassPhrase = null;
 
@@ -236,7 +236,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $this->dropboxAuthToken = $dropboxAuthToken;
     }
-    
+
     public function getSftpHost(): ?string
     {
         return $this->sftpHost;
@@ -246,7 +246,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $this->sftpHost = $sftpHost;
     }
-    
+
     public function getSftpUsername(): ?string
     {
         return $this->sftpUsername;
@@ -256,7 +256,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $this->sftpUsername = $sftpUsername;
     }
-    
+
     public function getSftpPassword(): ?string
     {
         return $this->sftpPassword;
@@ -276,7 +276,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $this->sftpPort = $sftpPort;
     }
-    
+
     public function getSftpPrivateKey(): ?string
     {
         return $this->sftpPrivateKey;
@@ -286,7 +286,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $this->sftpPrivateKey = $sftpPrivateKey;
     }
-    
+
     public function getSftpPrivateKeyPassPhrase(): ?string
     {
         return $this->sftpPrivateKeyPassPhrase;
@@ -532,7 +532,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
             case StorageLocationAdapters::Dropbox:
                 return new DropboxAdapter($this->getDropboxClient(), $filteredPath);
-                
+
             case StorageLocationAdapters::Sftp:
                 return new SftpAdapter($this->getSftpConnectionProvider(), $filteredPath);
 
@@ -569,7 +569,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
         return new Client($this->dropboxAuthToken);
     }
-    
+
     protected function getSftpConnectionProvider(): SftpConnectionProvider
     {
         if (StorageLocationAdapters::Sftp !== $this->getAdapterEnum()) {

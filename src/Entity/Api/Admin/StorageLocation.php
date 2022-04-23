@@ -73,36 +73,36 @@ class StorageLocation
         example: 'https://your-region.digitaloceanspaces.com'
     )]
     public ?string $s3Endpoint = null;
-    
+
     #[OA\Property(
         description: 'The host for SFTP adapters',
         example: '127.0.0.1'
     )]
     protected ?string $sftpHost = null;
-    
+
     #[OA\Property(
         description: 'The username for SFTP adapters',
         example: 'root'
     )]
     protected ?string $sftpUsername = null;
-    
+
     #[OA\Property(
         description: 'The password for SFTP adapters',
         example: 'abc123'
     )]
     protected ?string $sftpPassword = null;
-    
+
     #[OA\Property(
         description: 'The port for SFTP adapters',
         example: 20
     )]
     protected ?int $sftpPort = null;
-    
+
     #[OA\Property(
         description: 'The private key for SFTP adapters'
     )]
     protected ?string $sftpPrivateKey = null;
-    
+
     #[OA\Property(
         description: 'The private key pass phrase for SFTP adapters'
     )]

@@ -253,7 +253,7 @@ export default {
     name: 'AdminIndex',
     components: {InfoCard, CpuStatsHelpModal, MemoryStatsHelpModal, Icon},
     props: {
-        adminPanels: Array,
+        adminPanels: Object,
         statsUrl: String,
     },
     data() {

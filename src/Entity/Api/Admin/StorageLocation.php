@@ -74,6 +74,40 @@ class StorageLocation
     )]
     public ?string $s3Endpoint = null;
 
+    #[OA\Property(
+        description: 'The host for SFTP adapters',
+        example: '127.0.0.1'
+    )]
+    public ?string $sftpHost = null;
+
+    #[OA\Property(
+        description: 'The username for SFTP adapters',
+        example: 'root'
+    )]
+    public ?string $sftpUsername = null;
+
+    #[OA\Property(
+        description: 'The password for SFTP adapters',
+        example: 'abc123'
+    )]
+    public ?string $sftpPassword = null;
+
+    #[OA\Property(
+        description: 'The port for SFTP adapters',
+        example: 20
+    )]
+    public ?int $sftpPort = null;
+
+    #[OA\Property(
+        description: 'The private key for SFTP adapters'
+    )]
+    public ?string $sftpPrivateKey = null;
+
+    #[OA\Property(
+        description: 'The private key pass phrase for SFTP adapters'
+    )]
+    public ?string $sftpPrivateKeyPassPhrase = null;
+
     #[OA\Property(example: '50 GB')]
     public ?string $storageQuota = null;
 

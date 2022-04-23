@@ -116,6 +116,9 @@ export default {
 
                 case 'dropbox':
                     return this.$gettext('Remote: Dropbox');
+                    
+                case 'sftp':
+                    return this.$gettext('Remote: SFTP');
             }
         },
         getSpaceUsed(item) {

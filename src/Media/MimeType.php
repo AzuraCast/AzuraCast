@@ -19,10 +19,12 @@ class MimeType
             'audio/mp4', // m4a mp4a
             'audio/mpeg', // mpga mp2 mp2a mp3 m2a m3a
             'audio/ogg', // oga ogg spx
+            'audio/xm', // xm
             'audio/x-aac', // aac
             'audio/x-flac', // flac
             'audio/x-m4a', // alt for m4a/mp4a
             'audio/x-wav', // wav
+            'audio/x-mod', // alt for audio/xm
             'video/mp4', // some MP4 audio files are recognized as this (#3569)
         ];
     }

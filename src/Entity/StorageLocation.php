@@ -16,6 +16,7 @@ use Azura\Files\Adapter\Dropbox\DropboxAdapter;
 use Azura\Files\Adapter\ExtendedAdapterInterface;
 use Azura\Files\Adapter\Local\LocalFilesystemAdapter;
 use Azura\Files\Adapter\LocalAdapterInterface;
+use Azura\Files\Adapter\Sftp\SftpAdapter;
 use Azura\Files\ExtendedFilesystemInterface;
 use Azura\Files\LocalFilesystem;
 use Azura\Files\RemoteFilesystem;
@@ -24,6 +25,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use RuntimeException;
@@ -530,6 +532,9 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
             case StorageLocationAdapters::Dropbox:
                 return new DropboxAdapter($this->getDropboxClient(), $filteredPath);
+                
+            case StorageLocationAdapters::Sftp:
+                return new SftpAdapter($this->getSftpConnectionProvider(), $filteredPath);
 
             default:
                 return new LocalFilesystemAdapter($filteredPath);
@@ -563,6 +568,22 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         }
 
         return new Client($this->dropboxAuthToken);
+    }
+    
+    protected function getSftpConnectionProvider(): SftpConnectionProvider
+    {
+        if (StorageLocationAdapters::Sftp !== $this->getAdapterEnum()) {
+            throw new InvalidArgumentException('This storage location is not using the SFTP adapter.');
+        }
+
+        return new SftpConnectionProvider(
+            $this->sftpHost,
+            $this->sftpUsername,
+            $this->sftpPassword,
+            $this->sftpPrivateKey,
+            $this->sftpPrivateKeyPassPhrase,
+            $this->sftpPort
+        );
     }
 
     public function getFilesystem(): ExtendedFilesystemInterface

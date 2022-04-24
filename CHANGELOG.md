@@ -33,6 +33,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - You can now specify a custom max timeout for "Generic" web hooks (that make HTTP requests to external URLs).
 
+- You can now add Storage Locations that use SFTP connections.
+
 ## Code Quality/Technical Changes
 
 - **Unified Docker Container**: We have combined all of our Docker containers into a single unified container that
@@ -58,6 +60,10 @@ release channel, you can take advantage of these new features and fixes.
 
 - Internal API requests (Icecast listener auth, Liquidsoap API calls) are now handled via a separate, dedicated "back
   channel" and won't be affected as severely by heavy traffic on AzuraCast from public viewers or administrators.
+
+- When processing media, we now use a combination of two libraries (php-getid3 and ffmpeg/ffprobe) to process media and
+  retrieve rich metadata; this greatly expands the types of media that we can handle in AzuraCast to include essentially
+  any media that Liquidsoap itself can play.
 
 ## Bug Fixes
 

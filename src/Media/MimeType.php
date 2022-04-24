@@ -34,7 +34,7 @@ class MimeType
             'audio/x-ms-wma', // wma (Windows Media Audio)
             'application/octet-stream', // stm (ScreamTracker Module)
             'video/mp4', // some MP4 audio files are recognized as this (#3569)
-            'video/x-ms-asf' // asf / wmv / alt for wma
+            'video/x-ms-asf', // asf / wmv / alt for wma
         ];
     }
 

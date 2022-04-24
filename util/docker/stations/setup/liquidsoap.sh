@@ -19,18 +19,19 @@ ARM_FULL_BUILD="${ARM_FULL_BUILD:-false}"
 
 if [[ "$(uname -m)" = "aarch64" && ${ARM_FULL_BUILD} == "false" ]]; then
     ARCHITECTURE=arm64
-
-    wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.0.3/liquidsoap_2.0.3-ubuntu-focal-2_${ARCHITECTURE}.deb"
-
-    dpkg -i /tmp/liquidsoap.deb
-    apt-get install -y -f --no-install-recommends 
-    rm -f /tmp/liquidsoap.deb 
-    ln -s /usr/bin/liquidsoap /usr/local/bin/liquidsoap
-else 
-   $minimal_apt_get_install build-essential libssl-dev libcurl4-openssl-dev m4 ocaml opam autoconf automake
-
-   sudo -u azuracast bash /bd_build/stations/liquidsoap/build_as_azuracast.sh
-   ln -s /var/azuracast/.opam/4.13.1/bin/liquidsoap /usr/local/bin/liquidsoap
-   chmod a+x /usr/local/bin/liquidsoap
-    apt-get purge -y build-essential libssl-dev libcurl4-openssl-dev m4 ocaml opam autoconf automake
 fi
+
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.0.4/liquidsoap_2.0.4-ubuntu-focal-2_${ARCHITECTURE}.deb"
+
+dpkg -i /tmp/liquidsoap.deb
+apt-get install -y -f --no-install-recommends
+rm -f /tmp/liquidsoap.deb
+ln -s /usr/bin/liquidsoap /usr/local/bin/liquidsoap
+
+# else
+#    $minimal_apt_get_install build-essential libssl-dev libcurl4-openssl-dev m4 ocaml opam autoconf automake
+#    sudo -u azuracast bash /bd_build/stations/liquidsoap/build_as_azuracast.sh
+#    ln -s /var/azuracast/.opam/4.13.1/bin/liquidsoap /usr/local/bin/liquidsoap
+#    chmod a+x /usr/local/bin/liquidsoap
+#     apt-get purge -y build-essential libssl-dev libcurl4-openssl-dev m4 ocaml opam autoconf automake
+# fi

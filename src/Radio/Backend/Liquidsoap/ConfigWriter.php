@@ -159,7 +159,7 @@ class ConfigWriter implements EventSubscriberInterface
             azuracast_api_url = "${stationApiUrl}"
             azuracast_api_key = "${stationApiAuth}"
             
-            def azuracast_api_call(~timeout=2, url, payload) =
+            def azuracast_api_call(~timeout_ms=2000, url, payload) =
                 full_url = "#{azuracast_api_url}/#{url}"
                 
                 log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
@@ -170,7 +170,7 @@ class ConfigWriter implements EventSubscriberInterface
                             ("User-Agent", "Liquidsoap AzuraCast"),
                             ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
                         ],
-                        timeout=timeout,
+                        timeout_ms=timeout_ms,
                         data=payload
                     )
                     
@@ -208,12 +208,12 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<EOF
                 def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
-                    timeout = int_of_float(maxtime - time())
+                    timeout_ms = int_of_float(1000*(maxtime - time()))
                     
                     j = json()
                     j.add("uri", arg)
                     
-                    [azuracast_api_call(timeout=timeout, "cp", json.stringify(j))]
+                    [azuracast_api_call(timeout_ms=timeout_ms, "cp", json.stringify(j))]
                 end
                 
                 add_protocol(
@@ -725,7 +725,7 @@ class ConfigWriter implements EventSubscriberInterface
                     end
                 
                 response = azuracast_api_call(
-                    timeout=5,
+                    timeout_ms=5000,
                     "auth",
                     json.stringify(auth_info)
                 )
@@ -746,7 +746,7 @@ class ConfigWriter implements EventSubscriberInterface
                 live_dj := dj
                 
                 _ = azuracast_api_call(
-                    timeout=5,
+                    timeout_ms=5000,
                     "djon",
                     json.stringify({user = dj})
                 )
@@ -754,7 +754,7 @@ class ConfigWriter implements EventSubscriberInterface
             
             def live_disconnected() =
                 _ = azuracast_api_call(
-                    timeout=5,
+                    timeout_ms=5000,
                     "djoff",
                     json.stringify({user = !live_dj})
                 )

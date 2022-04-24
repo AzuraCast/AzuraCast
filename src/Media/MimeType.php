@@ -21,14 +21,16 @@ class MimeType
             'audio/mpeg', // mpga mp2 mp2a mp3 m2a m3a
             'audio/ogg', // oga ogg spx
             'audio/s3m', // s3m (ScreamTracker 3 Module)
+            'audio/wav', // wav
             'audio/xm', // xm
+            'audio/vnd.wave', // alt for wav (RFC 2361)
             'audio/x-aac', // aac
             'audio/x-aiff', // alt for aiff
             'audio/x-flac', // flac
             'audio/x-m4a', // alt for m4a/mp4a
             'audio/x-mod', // alt for xm
             'audio/x-s3m', // alt for s3m
-            'audio/x-wav', // wav
+            'audio/x-wav', // alt for wav
             'application/octet-stream', // stm (ScreamTracker Module)
             'video/mp4', // some MP4 audio files are recognized as this (#3569)
         ];

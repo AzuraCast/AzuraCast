@@ -15,6 +15,7 @@ class MimeType
     public static function getProcessableTypes(): array
     {
         return [
+            'audio/aiff', // aiff (Audio Interchange File Format)
             'audio/flac', // MIME type used by some FLAC files
             'audio/mp4', // m4a mp4a
             'audio/mpeg', // mpga mp2 mp2a mp3 m2a m3a
@@ -22,6 +23,7 @@ class MimeType
             'audio/s3m', // s3m (ScreamTracker 3 Module)
             'audio/xm', // xm
             'audio/x-aac', // aac
+            'audio/x-aiff', // alt for aiff
             'audio/x-flac', // flac
             'audio/x-m4a', // alt for m4a/mp4a
             'audio/x-mod', // alt for xm

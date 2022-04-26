@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Media;
 
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
-use League\MimeTypeDetection\GeneratedExtensionToMimeTypeMap;
 
 class MimeType
 {
@@ -28,11 +27,10 @@ class MimeType
             'audio/x-aiff', // alt for aiff
             'audio/x-flac', // flac
             'audio/x-m4a', // alt for m4a/mp4a
-            'audio/x-mod', // alt for xm
+            'audio/x-mod', // stm, alt for xm
             'audio/x-s3m', // alt for s3m
             'audio/x-wav', // alt for wav
             'audio/x-ms-wma', // wma (Windows Media Audio)
-            'application/octet-stream', // stm (ScreamTracker Module)
             'video/mp4', // some MP4 audio files are recognized as this (#3569)
             'video/x-ms-asf', // asf / wmv / alt for wma
         ];
@@ -40,7 +38,10 @@ class MimeType
 
     public static function getMimeTypeFromFile(string $path): string
     {
-        $fileMimeType = (new FinfoMimeTypeDetector())->detectMimeTypeFromFile($path);
+        $fileMimeType = (new FinfoMimeTypeDetector(
+            extensionMap: new MimeTypeExtensionMap()
+        ))->detectMimeTypeFromFile($path);
+
         if ('application/octet-stream' === $fileMimeType) {
             $fileMimeType = null;
         }
@@ -50,7 +51,8 @@ class MimeType
 
     public static function getMimeTypeFromPath(string $path): string
     {
-        $extensionMap = new GeneratedExtensionToMimeTypeMap();
+        $extensionMap = new MimeTypeExtensionMap();
+
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         return $extensionMap->lookupMimeType($extension) ?? 'application/octet-stream';

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
+use App\Enums\SupportedLocales;
 use App\Environment;
 use Gettext\Generator\PoGenerator;
 use Gettext\Loader\PoLoader;
@@ -77,6 +78,23 @@ class GenerateCommand extends CommandAbstract
             $translations,
             $destFile
         );
+
+        // Create locale folders if they don't exist already.
+        $supportedLocales = SupportedLocales::cases();
+        $defaultLocale = SupportedLocales::default();
+
+        foreach ($supportedLocales as $supportedLocale) {
+            if ($supportedLocale === $defaultLocale) {
+                continue;
+            }
+
+            $localeDir = $exportDir . '/' . $supportedLocale->value . '/LC_MESSAGES';
+            if (!is_dir($localeDir)) {
+                /** @noinspection MkdirRaceConditionInspection */
+                mkdir($localeDir, 0777, true);
+            }
+        }
+
 
         $io->success('Locales generated.');
         return 0;

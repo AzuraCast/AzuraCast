@@ -5,6 +5,25 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+There have been no new features in the Rolling Release since the latest Stable release.
+
+## Code Quality/Technical Changes
+
+There have been no technical changes in the Rolling Release since the latest Stable release.
+
+## Bug Fixes
+
+There have been no new bug fixes in the Rolling Release since the latest Stable release.
+
+---
+
+# AzuraCast 0.16.0 (Apr 27, 2022)
+
+## New Features/Changes
+
+- AzuraCast can now process new media files, including ScreamTracker Modules (.stm, .s3m), Module/Extended Modules
+  (.mod, .xm), AIFF (.aiff), and Windows Media files (.wma, .wmv, .asf)
+
 - Each station can now have its own custom "fallback" file (the error message that plays when you have no media
   configured or a broadcasting error otherwise occurs on your station) uploaded via the web UI.
 

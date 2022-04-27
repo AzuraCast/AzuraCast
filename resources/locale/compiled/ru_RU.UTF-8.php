@@ -14,8 +14,8 @@ Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-02-15T23:07:32+00:00
-PO-Revision-Date: 2022-02-18 18:15
+POT-Creation-Date: 2022-04-23T16:48:19+00:00
+PO-Revision-Date: 2022-04-27 14:59
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Crowdin-Project: azuracast
@@ -53,10 +53,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '%s не распознан как сервис.',
       ),
-      '%s of %s Used' => 
-      array (
-        0 => 'Используется %s из %s',
-      ),
       '%{ days } Days' => 
       array (
         0 => '%{ days } Дней',
@@ -85,7 +81,7 @@ X-Crowdin-File-ID: 4
       ),
       '%{name} - Copy' => 
       array (
-        0 => '%{name} - Копировать',
+        0 => '%{name} - Копия',
       ),
       '%{numPlaylists} playlist' => 
       array (
@@ -111,7 +107,7 @@ X-Crowdin-File-ID: 4
       ),
       '%{station} - Copy' => 
       array (
-        0 => '%{station} - Копировать',
+        0 => '%{station} - Копия',
       ),
       '(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation.' => 
       array (
@@ -124,10 +120,6 @@ X-Crowdin-File-ID: 4
       '(in seconds)' => 
       array (
         0 => '(в секундах)',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => 'Среднее за 15 минут',
       ),
       'A completely random track is picked for playback every time the queue is populated.' => 
       array (
@@ -307,7 +299,7 @@ X-Crowdin-File-ID: 4
       ),
       'Advanced' => 
       array (
-        0 => 'Продвинутое',
+        0 => 'Дополнительное',
       ),
       'Advanced Configuration' => 
       array (
@@ -461,6 +453,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Если отсутствует, попытка автоматического получения ISRC',
       ),
+      'Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance.' => 
+      array (
+        0 => 'Приложения для перекодирования звука, такие как Liquid soap, со временем потребляют постоянное количество ЦП, что постепенно истощает этот доступный кредит. Если вы регулярно видите украденное процессорное время, вам следует рассмотреть возможность перехода на виртуальную машину, ресурсы процессора которой выделены для вашего экземпляра.',
+      ),
       'Audit Log' => 
       array (
         0 => 'Журнал Изменений',
@@ -471,7 +467,7 @@ X-Crowdin-File-ID: 4
       ),
       'Auto-Assign Value' => 
       array (
-        0 => 'Автоназначение значения',
+        0 => 'Автоматическое присвоение значения',
       ),
       'Auto-Assigned' => 
       array (
@@ -496,6 +492,10 @@ X-Crowdin-File-ID: 4
       'AutoDJ Format' => 
       array (
         0 => 'Формат АвтоДиджея',
+      ),
+      'AutoDJ Queue' => 
+      array (
+        0 => 'Очередь АвтоДиджея',
       ),
       'AutoDJ Queue Length' => 
       array (
@@ -595,7 +595,7 @@ X-Crowdin-File-ID: 4
       ),
       'AzuraCast Updater' => 
       array (
-        0 => 'Обновления AzuraCast',
+        0 => 'Обновление AzuraCast',
       ),
       'AzuraCast User' => 
       array (
@@ -657,6 +657,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Резервные копии',
       ),
+      'Balanced' => 
+      array (
+        0 => 'Сбалансированно',
+      ),
       'Band' => 
       array (
         0 => 'Группа',
@@ -671,7 +675,7 @@ X-Crowdin-File-ID: 4
       ),
       'Banned User Agents' => 
       array (
-        0 => '',
+        0 => 'Заблокированные User Agents',
       ),
       'Base Station Directory' => 
       array (
@@ -752,6 +756,14 @@ X-Crowdin-File-ID: 4
       'CPU Load' => 
       array (
         0 => 'Загрузка ЦП',
+      ),
+      'CPU Stats Help' => 
+      array (
+        0 => 'Справка по статистике ЦП',
+      ),
+      'Cached' => 
+      array (
+        0 => 'Кэшировано',
       ),
       'Categories' => 
       array (
@@ -851,7 +863,7 @@ X-Crowdin-File-ID: 4
       ),
       'Clear Media' => 
       array (
-        0 => 'Очистить медиа',
+        0 => 'Удалить медиафайл',
       ),
       'Clear Pending Requests' => 
       array (
@@ -932,10 +944,6 @@ X-Crowdin-File-ID: 4
       'Composer' => 
       array (
         0 => 'Композитор',
-      ),
-      'Composer Plugin Mode' => 
-      array (
-        0 => 'Режим плагина Composer',
       ),
       'Composer Sort Order' => 
       array (
@@ -1027,7 +1035,7 @@ X-Crowdin-File-ID: 4
       ),
       'Copy to New Station' => 
       array (
-        0 => 'Копировать в новую станцию',
+        0 => 'Копировать на новую станцию',
       ),
       'Copyright' => 
       array (
@@ -1059,7 +1067,7 @@ X-Crowdin-File-ID: 4
       ),
       'Create a New Radio Station' => 
       array (
-        0 => 'Создать Новую Радиостанцию',
+        0 => 'Создание Новой Радиостанции',
       ),
       'Create a new app on the Twitter Applications site. Use this installation\'s base URL as the application URL.' => 
       array (
@@ -1101,9 +1109,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Реплика',
       ),
-      'Current' => 
+      'Current Custom Fallback File' => 
       array (
-        0 => 'Текущее',
+        0 => 'Текущий собственный резервный файл',
       ),
       'Current Installed Version' => 
       array (
@@ -1119,11 +1127,11 @@ X-Crowdin-File-ID: 4
       ),
       'Current Podcast Media' => 
       array (
-        0 => 'Текущий медиа-подкаст',
+        0 => 'Текущий медиафайл подкаста',
       ),
       'Custom' => 
       array (
-        0 => 'Продвинутое',
+        0 => 'Пользовательское',
       ),
       'Custom API Base URL' => 
       array (
@@ -1143,7 +1151,7 @@ X-Crowdin-File-ID: 4
       ),
       'Custom Configuration' => 
       array (
-        0 => 'Пользовательская настройка',
+        0 => 'Пользовательская конфигурация',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
@@ -1164,6 +1172,10 @@ X-Crowdin-File-ID: 4
       'Custom Fading: Overlap Time (seconds)' => 
       array (
         0 => 'Настраиваемое Совмещение: Время Нахлёста (в секундах)',
+      ),
+      'Custom Fallback File' => 
+      array (
+        0 => 'Собственный резервный файл',
       ),
       'Custom Fields' => 
       array (
@@ -1223,7 +1235,7 @@ X-Crowdin-File-ID: 4
       ),
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
-        0 => 'Настройте количество песен, которые будут отображаться в разделе «История песен» для этой станции и во всех общедоступных API.',
+        0 => 'Настройте количество песен, которые будут отображаться в разделе «Играло ранее» для этой станции и во всех общедоступных API.',
       ),
       'DJ Credentials' => 
       array (
@@ -1252,6 +1264,14 @@ X-Crowdin-File-ID: 4
       'Date/Time' => 
       array (
         0 => 'Дата/Время',
+      ),
+      'Date/Time (Browser)' => 
+      array (
+        0 => 'Дата/Время (Браузер)',
+      ),
+      'Date/Time (Station)' => 
+      array (
+        0 => 'Дата/Время (Станция)',
       ),
       'Days Between Automated Assignments' => 
       array (
@@ -1409,10 +1429,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Папка',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'Папка "%s" не была создана',
-      ),
       'Directory Name' => 
       array (
         0 => 'Название папки',
@@ -1424,6 +1440,10 @@ X-Crowdin-File-ID: 4
       'Disable Crossfading' => 
       array (
         0 => 'Отключить Плавный Переход',
+      ),
+      'Disable Optimizations' => 
+      array (
+        0 => 'Отключить оптимизацию',
       ),
       'Disable Two-Factor' => 
       array (
@@ -1443,7 +1463,7 @@ X-Crowdin-File-ID: 4
       ),
       'Disable to use a flatfile cache instead of Redis.' => 
       array (
-        0 => 'Отключить использование кэша flatfile вместо Redis.',
+        0 => 'Отключить использование flatfile кэша вместо Redis.',
       ),
       'Disable two-factor authentication?' => 
       array (
@@ -1468,6 +1488,10 @@ X-Crowdin-File-ID: 4
       'Disk Space' => 
       array (
         0 => 'Место на диске',
+      ),
+      'Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.' => 
+      array (
+        0 => 'Кэширование диска делает систему намного быстрее и более отзывчивой в целом. Это никоим образом не отнимает память у приложений, поскольку при необходимости операционная система автоматически освобождает ее.',
       ),
       'Display Name' => 
       array (
@@ -1519,7 +1543,7 @@ X-Crowdin-File-ID: 4
       ),
       'Download the Linux x64 binary from the SHOUTcast Radio Manager:' => 
       array (
-        0 => 'Загрузите Linux x64 из SHOUTcast Radio Manager:',
+        0 => 'Загрузите бинарный файл Linux x64 из SHOUTcast Radio Manager:',
       ),
       'Drag file(s) here to upload or' => 
       array (
@@ -1623,7 +1647,7 @@ X-Crowdin-File-ID: 4
       ),
       'Edit Station Profile' => 
       array (
-        0 => 'Редактировать профиль станции',
+        0 => 'Редактирование профиля станции',
       ),
       'Edit Storage Location' => 
       array (
@@ -1669,9 +1693,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Включить трансляцию',
       ),
+      'Enable Custom Code Plugins' => 
+      array (
+        0 => 'Включить плагины пользовательского кода',
+      ),
       'Enable Downloads on On-Demand Page' => 
       array (
-        0 => 'Включить загрузки на странице по требованию',
+        0 => 'Включить Загрузки на Странице Запросов',
       ),
       'Enable Mail Delivery' => 
       array (
@@ -1683,7 +1711,7 @@ X-Crowdin-File-ID: 4
       ),
       'Enable On-Demand Streaming' => 
       array (
-        0 => 'Включить трансляцию по требованию',
+        0 => 'Включить вещание по запросам',
       ),
       'Enable Performance Profiling Extension' => 
       array (
@@ -1699,7 +1727,7 @@ X-Crowdin-File-ID: 4
       ),
       'Enable Streaming' => 
       array (
-        0 => 'Включить трансляцию',
+        0 => 'Активировать вещание',
       ),
       'Enable Two-Factor' => 
       array (
@@ -1715,7 +1743,7 @@ X-Crowdin-File-ID: 4
       ),
       'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
       array (
-        0 => 'Включение этого параметра позволяет слушателям заказать песню для воспроизведения на вашей станции. Запрошены могут быть только те песни, которые находятся в ваших плейлистах.',
+        0 => 'Позвольте слушателям запросить песню для воспроизведения на вашей станции. Запрашиваются только те песни, которые уже есть в ваших плейлистах.',
       ),
       'Enable public pages?' => 
       array (
@@ -1747,11 +1775,11 @@ X-Crowdin-File-ID: 4
       ),
       'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
       array (
-        0 => 'Разрешить слушателям выбрать эту точку подключения на публичных страницах этой станции.',
+        0 => 'Разрешить слушателям выбирать эту точку подключения на публичных страницах этой станции.',
       ),
       'Enable to allow listeners to select this relay on this station\'s public pages.' => 
       array (
-        0 => 'Разрешить слушателям выбирать эту точку подключения на публичных страницах этой станции.',
+        0 => 'Разрешить слушателям выбирать этот ретранслятор на публичных страницах этой станции.',
       ),
       'Enable to allow this account to log in and stream.' => 
       array (
@@ -1859,7 +1887,7 @@ X-Crowdin-File-ID: 4
       ),
       'Expected to Play at' => 
       array (
-        0 => 'Ожидается играть в',
+        0 => 'Ожидается, что сыграет',
       ),
       'Explicit' => 
       array (
@@ -1935,11 +1963,11 @@ X-Crowdin-File-ID: 4
       ),
       'For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.' => 
       array (
-        0 => 'Для большинства случаев используйте кодировку UTF-8 по умолчанию. При приеме соединений из SHOUTcast 1 DJs или с другими устаревшими программами можно использовать старую кодировку ISO-8859-1.',
+        0 => 'В большинстве случаев используйте кодировку UTF-8 по умолчанию. Более старую кодировку ISO-8859-1 можно использовать при приеме подключений от диджеев SHOUTcast 1 или при использовании другого устаревшего программного обеспечения.',
       ),
       'For some clients, use port:' => 
       array (
-        0 => 'Для некоторых клиентов используйте порт:',
+        0 => 'Для некоторых пользователей используйте порт:',
       ),
       'Forgot Password' => 
       array (
@@ -1963,11 +1991,11 @@ X-Crowdin-File-ID: 4
       ),
       'Full:' => 
       array (
-        0 => 'Полная:',
+        0 => 'Полностью:',
       ),
       'GA Property Tracking ID' => 
       array (
-        0 => 'ID отслеживания GA',
+        0 => 'Идентификатор отслеживания GA',
       ),
       'General Rotation' => 
       array (
@@ -1999,15 +2027,19 @@ X-Crowdin-File-ID: 4
       ),
       'GeoLite version "%{ version }" is currently installed.' => 
       array (
-        0 => 'В настоящее время установлена версия GeoLite "%{ version }".',
+        0 => 'В данный момент установлена версия GeoLite "%{ version }" .',
+      ),
+      'Get Next Song' => 
+      array (
+        0 => 'Получить следующую песню',
       ),
       'Get Now Playing' => 
       array (
-        0 => 'Получить то, что Сейчас Играет',
+        0 => 'Сейчас играет',
       ),
       'Global' => 
       array (
-        0 => 'Основное',
+        0 => 'Глобально',
       ),
       'Global Permissions' => 
       array (
@@ -2061,6 +2093,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Часто',
       ),
+      'High I/O Wait can indicate a bottleneck with the server\'s hard disk, a potentially failing hard disk, or heavy load on the hard disk.' => 
+      array (
+        0 => 'Высокий уровень ожидания ввода-вывода может указывать на узкое место на жестком диске сервера, потенциально неисправный жесткий диск или большую нагрузку на жесткий диск.',
+      ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
         0 => 'Плейлисты с более высоким весом чаще воспроизводятся по сравнению с другими плейлистами с более низким весом.',
@@ -2103,7 +2139,7 @@ X-Crowdin-File-ID: 4
       ),
       'Icecast Clients' => 
       array (
-        0 => 'Клиенты IceCast',
+        0 => 'Пользователи IceCast',
       ),
       'Icecast Configuration' => 
       array (
@@ -2219,7 +2255,7 @@ X-Crowdin-File-ID: 4
       ),
       'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
       array (
-        0 => 'При выборе этого параметра, браузером будет использоваться URL-адрес по умолчанию, вместо указанного выше базового URL-адреса. Если не выбран этот параметр, то постоянно используется базовый URL-адрес.',
+        0 => 'Если этот параметр выбран, то URL-адрес в браузере будет использоваться вместо основного URL-адреса, когда он будет доступен. Если параметр не выбран, то постоянно используется основной URL-адрес.',
       ),
       'If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.' => 
       array (
@@ -2239,11 +2275,15 @@ X-Crowdin-File-ID: 4
       ),
       'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
       array (
-        0 => 'Если вы регулярно используете разные URL-адреса для доступа к AzuraCast, вам следует включить параметр "Предпочитаемый URL-адрес браузера".',
+        0 => 'Если вы регулярно используете разные URL-адреса для доступа к AzuraCast, вам следует включить параметр "Предпочтительно URL-адрес в браузере".',
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Если вы столкнулись с неполадкой или ошибкой, вы можете отправить запрос на GitHub с помощью ссылки ниже.',
+      ),
+      'If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.' => 
+      array (
+        0 => 'Если ваша установка ограничена процессором или памятью, вы можете изменить этот параметр, чтобы настроить ресурсы, используемые Liquidsoap.',
       ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
@@ -2251,7 +2291,7 @@ X-Crowdin-File-ID: 4
       ),
       'If your web hook requires HTTP basic authentication, provide the password here.' => 
       array (
-        0 => 'Если ваш веб-хук требует базовой аутентификации HTTP, введите пароль здесь.',
+        0 => 'Если ваш веб-хук требует базовой аутентификации HTTP, укажите пароль здесь.',
       ),
       'If your web hook requires HTTP basic authentication, provide the username here.' => 
       array (
@@ -2275,11 +2315,11 @@ X-Crowdin-File-ID: 4
       ),
       'In order to process quickly, web hooks have a short timeout, so the responding service should be optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => 'Для быстрой обработки веб-хуки имеют короткий таймаут, так что ответная служба должна быть оптимизирована для обработки запроса в течение 2 секунд.',
+        0 => 'Для быстрой обработки веб-хуки имеют короткое время ожидания, поэтому отвечающая служба должна быть оптимизирована для обработки запроса менее чем за 2 секунды.',
       ),
       'In the newly created application, click the "Keys and Access Tokens" tab.' => 
       array (
-        0 => 'Во вновь созданном приложении перейдите на вкладку "Ключи и токены доступа".',
+        0 => 'В созданном приложении перейдите на вкладку "Ключи и токены доступа" (Key and Access Tokens).',
       ),
       'Include in Automated Assignment' => 
       array (
@@ -2291,7 +2331,7 @@ X-Crowdin-File-ID: 4
       ),
       'Indefinitely' => 
       array (
-        0 => 'Неопределенный',
+        0 => 'Безгранично',
       ),
       'Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.' => 
       array (
@@ -2311,7 +2351,7 @@ X-Crowdin-File-ID: 4
       ),
       'Insert' => 
       array (
-        0 => 'Вставить',
+        0 => 'Добавлено',
       ),
       'Install GeoLite IP Database' => 
       array (
@@ -2337,9 +2377,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Установка модификатора данных',
       ),
-      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
+      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.' => 
       array (
-        0 => 'Инструкция для Liquidsoap о использовании любых метаданных replaygain, связанных с песней, для управления уровнем громкости.',
+        0 => 'Укажите Liquidsoap использовать любые метаданные replaygain, связанные с песней, для управления её уровнем громкости. Это может увеличить потребление процессора.',
       ),
       'Instructions' => 
       array (
@@ -2399,7 +2439,7 @@ X-Crowdin-File-ID: 4
       ),
       'Joins' => 
       array (
-        0 => 'Подключено',
+        0 => 'Подключились',
       ),
       'Language' => 
       array (
@@ -2412,6 +2452,10 @@ X-Crowdin-File-ID: 4
       'Last 2 Years' => 
       array (
         0 => 'Последние 2 года',
+      ),
+      'Last 24 Hours' => 
+      array (
+        0 => 'Последние 24 часа',
       ),
       'Last 30 Days' => 
       array (
@@ -2439,7 +2483,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last Year' => 
       array (
-        0 => 'Прошлый год',
+        0 => 'Последний год',
       ),
       'Last run:' => 
       array (
@@ -2467,7 +2511,7 @@ X-Crowdin-File-ID: 4
       ),
       'Learn more about this header.' => 
       array (
-        0 => 'Узнайте больше об этом заголовке.',
+        0 => 'Подробнее об этом заголовке.',
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
@@ -2483,7 +2527,7 @@ X-Crowdin-File-ID: 4
       ),
       'Leave blank to use the default Telegram API URL (recommended).' => 
       array (
-        0 => 'Оставьте пустым, чтобы использовать Telegram API URL по умолчанию (рекомендуется).',
+        0 => 'Оставьте пустым, чтобы использовать URL-адрес Telegram API по умолчанию (рекомендуется).',
       ),
       'Length' => 
       array (
@@ -2533,17 +2577,25 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Liquidsoap - Журнал',
       ),
+      'Liquidsoap Performance Tuning' => 
+      array (
+        0 => 'Настройка производительности Liquidsoap',
+      ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Укажите один IP-адрес или группу (в формате CIDR) на строку.',
       ),
       'List one user agent per line. Wildcards (*) are allowed.' => 
       array (
-        0 => '',
+        0 => 'Укажите по одному идентификатору пользователя (user agent) в каждой строке. Допускаются подстановочные знаки (*).',
       ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Сбор Аналитики о Слушателях',
+      ),
+      'Listener History' => 
+      array (
+        0 => 'История прослушивания',
       ),
       'Listener Request' => 
       array (
@@ -2593,13 +2645,21 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ведущий Онлайн:',
       ),
+      'Live Streaming' => 
+      array (
+        0 => 'Прямой эфир',
+      ),
       'Live stream connected.' => 
       array (
-        0 => 'Прямая трансляция подключена.',
+        0 => 'Прямой эфир подключен.',
       ),
       'Live stream disconnected.' => 
       array (
-        0 => 'Прямая трансляция отключена.',
+        0 => 'Прямой эфир отключен.',
+      ),
+      'Load Average' => 
+      array (
+        0 => 'Средняя нагрузка',
       ),
       'Loading...' => 
       array (
@@ -2631,7 +2691,7 @@ X-Crowdin-File-ID: 4
       ),
       'Log slower queries to diagnose possible database issues. Only turn this on if needed.' => 
       array (
-        0 => 'Регистрируйте более медленные запросы, чтобы диагностировать возможные проблемы с базой данных. Включайте это только при необходимости.',
+        0 => 'Регистрируйте более медленные запросы для диагностики возможных проблем с базой данных. Включайте это только при необходимости.',
       ),
       'Logged in successfully.' => 
       array (
@@ -2659,7 +2719,7 @@ X-Crowdin-File-ID: 4
       ),
       'Loop Once' => 
       array (
-        0 => 'Проиграть один цикл',
+        0 => 'Проиграть один раз',
       ),
       'Losses' => 
       array (
@@ -2775,7 +2835,7 @@ X-Crowdin-File-ID: 4
       ),
       'Matched' => 
       array (
-        0 => 'Соответствие',
+        0 => 'Совпадение',
       ),
       'Matomo API Token' => 
       array (
@@ -2795,7 +2855,7 @@ X-Crowdin-File-ID: 4
       ),
       'Max Listener Duration' => 
       array (
-        0 => 'Макс. Время Прослушивания',
+        0 => 'Максимальное Время Прослушивания',
       ),
       'MaxMind Developer Site' => 
       array (
@@ -2807,7 +2867,7 @@ X-Crowdin-File-ID: 4
       ),
       'Maximum Listeners' => 
       array (
-        0 => 'Максимальное количество слушателей',
+        0 => 'Максимум слушателей',
       ),
       'Maximum PHP-FPM Worker Processes' => 
       array (
@@ -2823,7 +2883,7 @@ X-Crowdin-File-ID: 4
       ),
       'Media' => 
       array (
-        0 => 'Медиа',
+        0 => 'Медиафайлы',
       ),
       'Media Storage Location' => 
       array (
@@ -2836,6 +2896,10 @@ X-Crowdin-File-ID: 4
       'Memory' => 
       array (
         0 => 'Память',
+      ),
+      'Memory Stats Help' => 
+      array (
+        0 => 'Справка по статистике памяти',
       ),
       'Merge playlist to play as a single track.' => 
       array (
@@ -2855,7 +2919,7 @@ X-Crowdin-File-ID: 4
       ),
       'Message Recipient(s)' => 
       array (
-        0 => 'Получатель(и) Сообщения',
+        0 => 'Получатель(и) сообщения',
       ),
       'Message Subject' => 
       array (
@@ -2881,7 +2945,7 @@ X-Crowdin-File-ID: 4
                             Source' => 
       array (
         0 => 'Микрофон
-',
+                            Источник',
       ),
       'Minimum Port for Station Port Assignment' => 
       array (
@@ -2926,6 +2990,10 @@ X-Crowdin-File-ID: 4
       'Most Recent Backup Log' => 
       array (
         0 => 'Журнал Последнего Резервного Копирования',
+      ),
+      'Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server "stealing" CPU time from your VM and vice-versa.' => 
+      array (
+        0 => 'Большинство хостинг-провайдеров размещают на сервере больше виртуальных машин (VPS), чем может выдержать оборудование, когда каждая виртуальная машина работает при полной загрузке процессора. Это называется избыточным выделением ресурсов, что может привести к тому, что другие виртуальные машины на сервере "украдут" процессорное время у вашей виртуальной машины и наоборот.',
       ),
       'Mount Name:' => 
       array (
@@ -2977,7 +3045,7 @@ X-Crowdin-File-ID: 4
       ),
       'N/A' => 
       array (
-        0 => 'Н/Д',
+        0 => 'Не доступно',
       ),
       'Name' => 
       array (
@@ -2985,11 +3053,15 @@ X-Crowdin-File-ID: 4
       ),
       'Name/Type' => 
       array (
-        0 => 'Имя/Тип',
+        0 => 'Название/Тип',
       ),
       'Need Help?' => 
       array (
         0 => 'Нужна помощь?',
+      ),
+      'Network Interfaces' => 
+      array (
+        0 => 'Сетевые интерфейсы',
       ),
       'Never run' => 
       array (
@@ -3029,7 +3101,7 @@ X-Crowdin-File-ID: 4
       ),
       'New Playlist Name' => 
       array (
-        0 => 'Название Плейлиста',
+        0 => 'Название нового плейлиста',
       ),
       'New Station Description' => 
       array (
@@ -3093,7 +3165,7 @@ X-Crowdin-File-ID: 4
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.' => 
       array (
-        0 => 'Никакая другая программа не может использовать этот порт. Оставьте поле пустым, чтобы автоматически назначить порт.',
+        0 => 'Никакая другая программа не сможет использовать этот порт. Оставьте поле пустым, чтобы автоматически назначить порт.',
       ),
       'No recording available.' => 
       array (
@@ -3113,7 +3185,7 @@ X-Crowdin-File-ID: 4
       ),
       'None:' => 
       array (
-        0 => 'Не собирать:',
+        0 => 'Ничего:',
       ),
       'Normal Mode' => 
       array (
@@ -3121,11 +3193,11 @@ X-Crowdin-File-ID: 4
       ),
       'Not Played' => 
       array (
-        0 => 'Не сыграно',
+        0 => 'Не играло',
       ),
       'Not Run' => 
       array (
-        0 => 'Не запускался',
+        0 => 'Не запускалось',
       ),
       'Not Running' => 
       array (
@@ -3145,7 +3217,7 @@ X-Crowdin-File-ID: 4
       ),
       'Note: the port after this one will automatically be used for legacy connections.' => 
       array (
-        0 => 'Примечание: порт после этого будет автоматически использоваться для старых соединений.',
+        0 => 'Примечание: порт после этого будет автоматически использоваться для старых подключений.',
       ),
       'Notes' => 
       array (
@@ -3173,11 +3245,11 @@ X-Crowdin-File-ID: 4
       ),
       'NowPlaying API Response' => 
       array (
-        0 => 'Ответ API сейчас играет',
+        0 => 'Ответ NowPlaying API',
       ),
       'Num Plays' => 
       array (
-        0 => 'Проиграно',
+        0 => 'Сыграно',
       ),
       'Number of Backup Copies to Keep' => 
       array (
@@ -3193,7 +3265,7 @@ X-Crowdin-File-ID: 4
       ),
       'Number of Visible Recent Songs' => 
       array (
-        0 => 'Количество видимых последних песен',
+        0 => 'Количество видимых проигранных песен',
       ),
       'Number of seconds to overlap songs.' => 
       array (
@@ -3213,7 +3285,7 @@ X-Crowdin-File-ID: 4
       ),
       'On-Demand Streaming' => 
       array (
-        0 => 'Включить трансляцию по требованию',
+        0 => 'Вещание по запросу',
       ),
       'Once per %{minutes} Minutes' => 
       array (
@@ -3241,11 +3313,15 @@ X-Crowdin-File-ID: 4
       ),
       'Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.' => 
       array (
-        0 => 'После завершения этих шагов введите информацию из раздела "Ключи и токены доступа" в поля ниже.',
+        0 => 'После выполнения этих шагов введите информацию со страницы "Ключи и токены доступа" в поля ниже.',
       ),
       'Once you have configured automated assignment, click the button below to run the automated assignment process.' => 
       array (
-        0 => 'После того как вы настроили автоматическое назначение, нажмите кнопку ниже, чтобы запустить процесс автоматического назначения.',
+        0 => 'После того, как вы настроили автоматическое назначение, нажмите на кнопку ниже, чтобы запустить процесс автоматического назначения.',
+      ),
+      'One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools.' => 
+      array (
+        0 => 'Одно важное замечание об ожидании ввода-вывода заключается в том, что оно может указывать на узкое место или проблему, но также может быть совершенно бессмысленным, в зависимости от рабочей нагрузки и общедоступных ресурсов. Постоянно высокое ожидание ввода-вывода должно побудить к дальнейшему исследованию с помощью более сложных инструментов.',
       ),
       'Only Send One Tweet Every...' => 
       array (
@@ -3257,7 +3333,7 @@ X-Crowdin-File-ID: 4
       ),
       'Only connect to a remote server.' => 
       array (
-        0 => 'Подключаться только к удаленному серверу.',
+        0 => 'Подключаться только к отдалённому серверу.',
       ),
       'Only loop through playlist once.' => 
       array (
@@ -3269,7 +3345,7 @@ X-Crowdin-File-ID: 4
       ),
       'Operation' => 
       array (
-        0 => 'Операция',
+        0 => 'Действие',
       ),
       'Optional: HTTP Basic Authentication Password' => 
       array (
@@ -3277,7 +3353,11 @@ X-Crowdin-File-ID: 4
       ),
       'Optional: HTTP Basic Authentication Username' => 
       array (
-        0 => 'При необходимости: имя пользователя базовой аутентификации HTTP',
+        0 => 'При необходимости: логин базовой аутентификации HTTP',
+      ),
+      'Optional: Request Timeout (Seconds)' => 
+      array (
+        0 => 'Необязательно: Время ожидания запроса (в секундах)',
       ),
       'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
       array (
@@ -3289,7 +3369,7 @@ X-Crowdin-File-ID: 4
       ),
       'Optionally specify a short URL-friendly name, such as "my_station_name", that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
       array (
-        0 => 'При необходимости укажите короткое имя, подходящее для URL-адресов, например "my_station_name", которое будет использоваться в URL-адресах этой станции. Оставьте это поле пустым, чтобы автоматически создать его на основе названия станции.',
+        0 => 'При желании, укажите короткое имя окончания URL-адреса, например "my_station_name", которое будет использоваться в URL-адресах этой станции. Оставьте это поле пустым, чтобы автоматически создать его на основе названия станции.',
       ),
       'Optionally specify an API-friendly name, such as "field_name". Leave this field blank to automatically create one based on the name.' => 
       array (
@@ -3297,11 +3377,11 @@ X-Crowdin-File-ID: 4
       ),
       'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
       array (
-        0 => 'Дополнительно укажите публичные ключи SSH, которые пользователь может использовать для подключения вместо пароля. Введите по одному ключу на строку.',
+        0 => 'Дополнительно укажите публичные SSH ключи, которые пользователь может использовать для подключения вместо пароля. Введите по одному ключу на строку.',
       ),
       'Optionally supply an API token to allow IP address overriding.' => 
       array (
-        0 => 'При необходимости укажите токен API, позволяющий переопределять IP-адрес.',
+        0 => 'При необходимости укажите токен API, чтобы разрешить переопределение IP-адреса.',
       ),
       'Original Album' => 
       array (
@@ -3321,7 +3401,7 @@ X-Crowdin-File-ID: 4
       ),
       'Original Path' => 
       array (
-        0 => 'Путь',
+        0 => 'Исходный путь',
       ),
       'Original Release Time' => 
       array (
@@ -3397,7 +3477,7 @@ X-Crowdin-File-ID: 4
       ),
       'Permissions' => 
       array (
-        0 => 'Права',
+        0 => 'Права доступа',
       ),
       'Play' => 
       array (
@@ -3405,7 +3485,7 @@ X-Crowdin-File-ID: 4
       ),
       'Play %' => 
       array (
-        0 => 'Играет %',
+        0 => 'Играло %',
       ),
       'Play exactly once every $x minutes.' => 
       array (
@@ -3553,7 +3633,7 @@ X-Crowdin-File-ID: 4
       ),
       'Podcasts Storage Location' => 
       array (
-        0 => 'Место Хранения Подкастов',
+        0 => 'Место хранения подкастов',
       ),
       'Port:' => 
       array (
@@ -3569,11 +3649,11 @@ X-Crowdin-File-ID: 4
       ),
       'Prefer Browser URL (If Available)' => 
       array (
-        0 => 'Предпочтительный URL-адрес в браузере (если доступно)',
+        0 => 'Предпочтительно URL-адрес в браузере (если доступно)',
       ),
       'Prefer System Default' => 
       array (
-        0 => 'Использовать системные по умолчанию',
+        0 => 'Использовать системное по умолчанию',
       ),
       'Preview' => 
       array (
@@ -3673,7 +3753,7 @@ X-Crowdin-File-ID: 4
       ),
       'Ratio' => 
       array (
-        0 => 'Коэффициент',
+        0 => 'Соотношение',
       ),
       'Raw' => 
       array (
@@ -3683,9 +3763,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Готовы начать вещание? Нажмите, чтобы запустить станцию.',
       ),
-      'Rebuild AutoDJ Queue' => 
+      'Received' => 
       array (
-        0 => 'Перестроить очередь АвтоДиджея',
+        0 => 'Получено',
       ),
       'Record Live Broadcasts' => 
       array (
@@ -3749,15 +3829,27 @@ X-Crowdin-File-ID: 4
       ),
       'Release Channel' => 
       array (
-        0 => 'Канал выпуска',
+        0 => 'Канал релизов',
       ),
       'Release Time' => 
       array (
         0 => 'Время Выпуска',
       ),
+      'Reload Configuration' => 
+      array (
+        0 => 'Перезагрузить конфигурацию',
+      ),
       'Reload System Data' => 
       array (
         0 => 'Перезагрузить системные данные',
+      ),
+      'Reload broadcasting? Current listeners will not be disconnected.' => 
+      array (
+        0 => 'Перезагрузить вещание? Текущие слушатели не будут отключены.',
+      ),
+      'Reload to Apply Changes' => 
+      array (
+        0 => 'Перезгрузка для применения',
       ),
       'Remember me' => 
       array (
@@ -3835,6 +3927,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Дистанционно: Совместимость с S3',
       ),
+      'Remote: SFTP' => 
+      array (
+        0 => '',
+      ),
       'Remove' => 
       array (
         0 => 'Удалить',
@@ -3865,7 +3961,7 @@ X-Crowdin-File-ID: 4
       ),
       'Repeat' => 
       array (
-        0 => 'Повторять',
+        0 => 'Повторить',
       ),
       'Replace Album Cover Art' => 
       array (
@@ -3893,11 +3989,11 @@ X-Crowdin-File-ID: 4
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
-        0 => 'Запрос последнего игрового порога (минуты)',
+        0 => 'Порог последнего сыгранного запроса (в минутах)',
       ),
       'Request Minimum Delay (Minutes)' => 
       array (
-        0 => 'Запрос минимальной задержки (минут)',
+        0 => 'Минимальная задержка запроса (в минутах)',
       ),
       'Request Song' => 
       array (
@@ -3909,7 +4005,7 @@ X-Crowdin-File-ID: 4
       ),
       'Requester IP' => 
       array (
-        0 => 'IP заказавшего',
+        0 => 'IP-адрес Запроса',
       ),
       'Requests' => 
       array (
@@ -3935,17 +4031,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Перезапустить вещание? Это отключит любых текущих слушателей.',
       ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => 'Перезапустить для Применения',
-      ),
       'Restoring Backups' => 
       array (
         0 => 'Восстановление резервных копий',
       ),
       'Role Name' => 
       array (
-        0 => 'Имя роли',
+        0 => 'Название роли',
       ),
       'Roles' => 
       array (
@@ -3961,7 +4053,7 @@ X-Crowdin-File-ID: 4
       ),
       'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.' => 
       array (
-        0 => 'Синхронизация с рутиной в настоящее время отключена. Убедитесь, что включите её заново, чтобы возобновить текущие задания по обслуживанию.',
+        0 => 'Обычная синхронизация в данный момент отключена. Обязательно повторно включите её, чтобы возобновить выполнение обычных задач технического обслуживания.',
       ),
       'Rows per page' => 
       array (
@@ -3995,6 +4087,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Запуск миграции базы данных',
       ),
+      'SFTP Host' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Password' => 
+      array (
+        0 => '',
+      ),
       'SFTP Port' => 
       array (
         0 => 'SFTP порт',
@@ -4003,13 +4103,25 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'SFTP порт: %d',
       ),
+      'SFTP Private Key' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Private Key Pass Phrase' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Username' => 
+      array (
+        0 => '',
+      ),
       'SFTP Users' => 
       array (
         0 => 'Пользователи SFTP',
       ),
       'SHOUTcast 2 DNAS is not currently installed on this installation.' => 
       array (
-        0 => 'SHOUTcast 2 DNAS в настоящее время не установлен для этой установки.',
+        0 => 'SHOUTcast 2 DNAS в данный момент здесь не установлен.',
       ),
       'SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary.' => 
       array (
@@ -4017,7 +4129,7 @@ X-Crowdin-File-ID: 4
       ),
       'SHOUTcast Clients' => 
       array (
-        0 => 'Клиенты SHOUTcast',
+        0 => 'Пользователи SHOUTcast',
       ),
       'SHOUTcast Configuration' => 
       array (
@@ -4041,7 +4153,7 @@ X-Crowdin-File-ID: 4
       ),
       'SHOUTcast version "%{ version }" is currently installed.' => 
       array (
-        0 => 'Установлена версия SHOUTcast "%{ version }".',
+        0 => 'В данный момент установлена версия SHOUTcast "%{ version }".',
       ),
       'SMTP Host' => 
       array (
@@ -4061,7 +4173,7 @@ X-Crowdin-File-ID: 4
       ),
       'SSH Public Keys' => 
       array (
-        0 => 'Публичные ключи SSH',
+        0 => 'Публичные SSH ключи',
       ),
       'Sample Rate' => 
       array (
@@ -4078,6 +4190,10 @@ X-Crowdin-File-ID: 4
       'Save Changes' => 
       array (
         0 => 'Сохранить',
+      ),
+      'Save Changes first' => 
+      array (
+        0 => 'Сначала сохраните изменения',
       ),
       'Save and Continue' => 
       array (
@@ -4109,7 +4225,7 @@ X-Crowdin-File-ID: 4
       ),
       'Scheduled playlists and other timed items will be controlled by this time zone.' => 
       array (
-        0 => 'Запланированные плейлисты и другие синхронизированные элементы будут контролироваться этим часовым поясом.',
+        0 => 'Запланированные плейлисты и другие запланированные элементы будут контролироваться этим часовым поясом.',
       ),
       'Scheduling' => 
       array (
@@ -4149,11 +4265,11 @@ X-Crowdin-File-ID: 4
       ),
       'See the Telegram Documentation for more details.' => 
       array (
-        0 => 'Более подробную информацию смотрите в документации Telegram.',
+        0 => 'Подробности смотрите в документации Telegram.',
       ),
       'See the Telegram documentation for more details.' => 
       array (
-        0 => 'Подробнее см. в документации Telegram.',
+        0 => 'Подробности смотрите в документации Telegram.',
       ),
       'Seek' => 
       array (
@@ -4162,6 +4278,10 @@ X-Crowdin-File-ID: 4
       'Select' => 
       array (
         0 => 'Выбрать',
+      ),
+      'Select Custom Fallback File' => 
+      array (
+        0 => 'Выбрать собственный резервный файл',
       ),
       'Select File' => 
       array (
@@ -4173,7 +4293,7 @@ X-Crowdin-File-ID: 4
       ),
       'Select Media File' => 
       array (
-        0 => 'Выбрать медиа файл',
+        0 => 'Выбрать медиафайл',
       ),
       'Select PLS/M3U File to Import' => 
       array (
@@ -4223,6 +4343,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Отправить письмо для восстановления',
       ),
+      'Send Test Message' => 
+      array (
+        0 => 'Отправить тестовое сообщение',
+      ),
       'Send an e-mail to specified address(es).' => 
       array (
         0 => 'Отправить письмо на указанный адрес(ы).',
@@ -4265,7 +4389,7 @@ X-Crowdin-File-ID: 4
       ),
       'Service reloaded.' => 
       array (
-        0 => 'Служба перезагружена.',
+        0 => 'Сервис перезагружен.',
       ),
       'Service restarted.' => 
       array (
@@ -4281,7 +4405,7 @@ X-Crowdin-File-ID: 4
       ),
       'Services' => 
       array (
-        0 => 'Сервисы',
+        0 => 'Обслуживание',
       ),
       'Set Cue In' => 
       array (
@@ -4309,7 +4433,7 @@ X-Crowdin-File-ID: 4
       ),
       'Set Up AzuraCast' => 
       array (
-        0 => 'Настроить AzuraCast',
+        0 => 'Настройка AzuraCast',
       ),
       'Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.' => 
       array (
@@ -4325,7 +4449,7 @@ X-Crowdin-File-ID: 4
       ),
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 
       array (
-        0 => 'Установите больше времени, чтобы сохранить больше истории воспроизведения и метаданных слушателя для станций. Установите меньше, чтобы сэкономить место на диске.',
+        0 => 'Установите более длительный срок, чтобы сохранить больше истории воспроизведений и метаданных слушателя для станций. Установите меньше, чтобы сэкономить место на диске.',
       ),
       'Set or clear playlists from the selected media' => 
       array (
@@ -4349,11 +4473,11 @@ X-Crowdin-File-ID: 4
       ),
       'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
       array (
-        0 => 'Установите "Да" для того, чтобы всегда использовать "https://" безопасные URL, и автоматически перенаправлять на безопасный URL, когда посещается небезопасный URL.',
+        0 => 'Выберите параметр для того, чтобы всегда использовать безопасные URL-адреса "https://" и автоматически перенаправлять на безопасный URL-адрес, когда посещается небезопасный URL-адрес.',
       ),
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
       array (
-        0 => 'Установите * для разрешения всех источников, или укажите список источников, разделенных запятыми (,).',
+        0 => 'Установите значение * чтобы разрешить все источники, или укажите список источников, разделенных запятой (,).',
       ),
       'Set up LetsEncrypt?' => 
       array (
@@ -4377,23 +4501,23 @@ X-Crowdin-File-ID: 4
       ),
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 
       array (
-        0 => 'Инструкции по настройке программ вещания доступны на AzuraCast wiki.',
+        0 => 'Инструкции по установке программ для вещания доступны на AzuraCast Wiki.',
       ),
       'Share Media Storage Location' => 
       array (
-        0 => 'Поделиться местоположением медиафайлов',
+        0 => 'Общее местоположение медиафайлов',
       ),
       'Share Podcasts Storage Location' => 
       array (
-        0 => 'Поделиться местоположением подкастов',
+        0 => 'Общее местоположение подкастов',
       ),
       'Share Recordings Storage Location' => 
       array (
-        0 => 'Поделиться местоположением записей эфира',
+        0 => 'Общее местоположение записей эфира',
       ),
       'Short Sync Task Execution Time' => 
       array (
-        0 => 'Краткое время выполнения задачи синхронизации',
+        0 => 'Короткое время выполнения задачи синхронизации',
       ),
       'Show Charts' => 
       array (
@@ -4405,7 +4529,7 @@ X-Crowdin-File-ID: 4
       ),
       'Show new releases within your update channel on the AzuraCast homepage.' => 
       array (
-        0 => 'Показывать новые релизы в вашем канале обновления на главной странице AzuraCast.',
+        0 => 'Показывать новые релизы в вашем канале обновлений на главной странице AzuraCast.',
       ),
       'Show on Public Pages' => 
       array (
@@ -4413,7 +4537,7 @@ X-Crowdin-File-ID: 4
       ),
       'Show the station in public pages and general API results.' => 
       array (
-        0 => 'Показывать станцию на публичных страницах и общих результатах API.',
+        0 => 'Показывать станцию на публичных страницах и в общих результатах API.',
       ),
       'Shuffled' => 
       array (
@@ -4429,7 +4553,7 @@ X-Crowdin-File-ID: 4
       ),
       'Site Base URL' => 
       array (
-        0 => 'Базовый URL-АДРЕС сайта',
+        0 => 'Основной URL-адрес сайта',
       ),
       'Site Theme' => 
       array (
@@ -4509,7 +4633,7 @@ X-Crowdin-File-ID: 4
       ),
       'Song-Based' => 
       array (
-        0 => 'Основанный на медиафайлах',
+        0 => 'Базовые песни',
       ),
       'Song-Based Playlist' => 
       array (
@@ -4545,7 +4669,7 @@ X-Crowdin-File-ID: 4
       ),
       'Stable' => 
       array (
-        0 => 'Стабильный',
+        0 => 'Стабильные релизы',
       ),
       'Standard playlist, shuffles with other standard playlists based on weight.' => 
       array (
@@ -4589,11 +4713,11 @@ X-Crowdin-File-ID: 4
       ),
       'Station Permissions' => 
       array (
-        0 => 'Разрешения станций',
+        0 => 'Разрешения станции',
       ),
       'Station Podcasts' => 
       array (
-        0 => 'Станция подкастов',
+        0 => 'Подкасты станции',
       ),
       'Station Ports' => 
       array (
@@ -4610,6 +4734,10 @@ X-Crowdin-File-ID: 4
       'Station Time Zone' => 
       array (
         0 => 'Часовой пояс станции',
+      ),
+      'Station reloaded.' => 
+      array (
+        0 => 'Станция перезагружена.',
       ),
       'Station restarted.' => 
       array (
@@ -4630,6 +4758,14 @@ X-Crowdin-File-ID: 4
       'Statistics Overview' => 
       array (
         0 => 'Статистика',
+      ),
+      'Steal' => 
+      array (
+        0 => 'Кража',
+      ),
+      'Steal (St)' => 
+      array (
+        0 => 'Кража (St)',
       ),
       'Step 1: Scan QR Code' => 
       array (
@@ -4713,7 +4849,7 @@ X-Crowdin-File-ID: 4
       ),
       'Streamer: %s' => 
       array (
-        0 => 'Стример: %s',
+        0 => 'Радиоведущий: %s',
       ),
       'Streamers enabled!' => 
       array (
@@ -4749,7 +4885,7 @@ X-Crowdin-File-ID: 4
       ),
       'Supported file formats:' => 
       array (
-        0 => 'Поддерживаемые форматы:',
+        0 => 'Поддерживаемые форматы файлов:',
       ),
       'Switch Theme' => 
       array (
@@ -4761,7 +4897,7 @@ X-Crowdin-File-ID: 4
       ),
       'Synchronization Not Recently Run' => 
       array (
-        0 => 'Синхронизация не запущена',
+        0 => 'Синхронизация не выполнялась в последнее время',
       ),
       'Synchronization Tasks' => 
       array (
@@ -4811,13 +4947,33 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Проверить',
       ),
+      'Test Message' => 
+      array (
+        0 => 'Тестовое сообщение',
+      ),
+      'Test message sent successfully.' => 
+      array (
+        0 => 'Тестовое сообщение успешно отправлено.',
+      ),
+      'Test message sent.' => 
+      array (
+        0 => 'Тестовое сообщение отправлено.',
+      ),
+      'The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this.' => 
+      array (
+        0 => 'Ожидание ввода-вывода - это процент времени, в течение которого процессор ожидает доступа к диску, прежде чем он сможет продолжить работу.',
+      ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
-        0 => 'URL, который будет получать POST сообщения в любое время, когда событие будет запущено.',
+        0 => 'URL-адрес, который будет получать POST сообщения при каждом запуске события.',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => 'Учетная запись, связанная с адресом электронной почты "%s" была установлена как администратор',
+      ),
+      'The amount of memory Linux is using for disk caching.' => 
+      array (
+        0 => 'Объем памяти, который Linux использует для кэширования диска.',
       ),
       'The application environment.' => 
       array (
@@ -4825,15 +4981,23 @@ X-Crowdin-File-ID: 4
       ),
       'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
       array (
-        0 => 'Базовый URL-адрес, где находится эта служба. Используйте либо внешний IP-адрес, либо полное доменное имя (если оно существует), указывающее на этот сервер.',
+        0 => 'Основной URL-адрес, где находится эта служба. Используйте внешний IP-адрес или полное доменное имя (если есть) указывающее на этот сервер.',
       ),
       'The body of the POST message is the exact same as the NowPlaying API response for your station.' => 
       array (
-        0 => 'Тело POST сообщения совпадает с ответом API NowPlaying для вашей станции.',
+        0 => 'Текст POST сообщения точно такой же, как и ответ NowPlaying API для вашей станции.',
       ),
       'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
       array (
         0 => 'Контактное лицо подкаста. Может потребоваться для размещения подкастов в таких сервисах, как Apple Podcasts, Spotify, Google Podcasts и т. д.',
+      ),
+      'The current CPU usage including I/O Wait and Steal.' => 
+      array (
+        0 => 'Текущее использование ЦП, включая ожидание ввода-вывода и кражу.',
+      ),
+      'The current Memory usage excluding cached memory.' => 
+      array (
+        0 => 'Текущее использование памяти без учета кэшированной памяти.',
       ),
       'The date when the episode should be published.' => 
       array (
@@ -4857,7 +5021,7 @@ X-Crowdin-File-ID: 4
       ),
       'The editable text boxes are areas where you can insert custom configuration code. The non-editable sections are automatically generated by AzuraCast.' => 
       array (
-        0 => 'Редактируемые текстовые поля - это области, где вы можете вставить пользовательский код конфигурации. Не редактируемые секции автоматически сгенерируются AzuraCast.',
+        0 => 'Редактируемые текстовые поля - это области, где вы можете вставить пользовательский код конфигурации. Не редактируемые разделы автоматически генерируются AzuraCast.',
       ),
       'The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
       array (
@@ -4907,6 +5071,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Количество секунд сохраняемого сигнала в случае прерывания. Установите минимальное значение, которое ваши Диджеи могут использовать без прерывания потока.',
       ),
+      'The number of seconds to wait for a response from the remote server before cancelling the request.' => 
+      array (
+        0 => 'Количество секунд ожидания ответа от удаленного сервера перед отменой запроса.',
+      ),
       'The numeric site ID for this site.' => 
       array (
         0 => 'Цифровой ID для этого сайта.',
@@ -4917,7 +5085,7 @@ X-Crowdin-File-ID: 4
       ),
       'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.' => 
       array (
-        0 => 'Родительская папка, где хранятся плейлисты и конфигурационные файлы. Оставьте пустым, чтобы использовать папку по умолчанию.',
+        0 => 'Родительская папка, где хранятся плейлисты и конфигурационные файлы. Оставьте поле пустым, чтобы использовать папку по умолчанию.',
       ),
       'The performance profiling extension is currently enabled on this installation.' => 
       array (
@@ -4949,7 +5117,7 @@ X-Crowdin-File-ID: 4
       ),
       'The routine synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => 'Задача рутинной синхронизации не была запущена недавно. Это может указывать на ошибку в вашей установке.',
+        0 => 'Обычная задача синхронизации в последнее время не запускалась. Это может указывать на ошибку в вашей установке.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
@@ -4961,7 +5129,7 @@ X-Crowdin-File-ID: 4
       ),
       'The station ID will be a numeric string that starts with the letter S.' => 
       array (
-        0 => 'ID станции будет числовой строкой, которая начинается с буквы S.',
+        0 => 'Идентификатор (ID) станции будет числовой строкой, которая начинается с буквы S.',
       ),
       'The streamer will use this password to connect to the radio server.' => 
       array (
@@ -5015,13 +5183,17 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Тема',
       ),
+      'There is no existing custom fallback file associated with this station.' => 
+      array (
+        0 => 'Нет резервного файла, связанного с этой станцией.',
+      ),
       'There is no existing intro file associated with this mount point.' => 
       array (
         0 => 'С этой точкой подключения не связан ни один интро файл.',
       ),
       'There is no existing media associated with this episode.' => 
       array (
-        0 => 'С этим эпизодом не связаны никакие медиа.',
+        0 => 'С этим эпизодом не связаны никакие медиафайлы.',
       ),
       'This CSS will be applied to the main management pages, like this one.' => 
       array (
@@ -5037,7 +5209,7 @@ X-Crowdin-File-ID: 4
       ),
       'This URL is provided within the Discord application.' => 
       array (
-        0 => 'Этот URL-адрес предоставлен в приложении Discord.',
+        0 => 'Этот URL-адрес предоставляется в приложении Discord.',
       ),
       'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
       array (
@@ -5051,13 +5223,17 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Это может отрицательно сказаться на производительности системы. Вы должны отключить это, когда это возможно.',
       ),
+      'This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.' => 
+      array (
+        0 => 'Это может создать впечатление, что у вас мало памяти, хотя на самом деле это не так. Некоторые решения/панели мониторинга включают кэшированную память в статистику используемой памяти без указания этого.',
+      ),
       'This code will be included in the frontend configuration. Allowed formats are:' => 
       array (
         0 => 'Этот код будет включен в конфигурацию интерфейса. Допустимые форматы:',
       ),
       'This determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
       array (
-        0 => 'Это определяет, сколько песен заранее автоматически заполнит очередь AutoDJ.',
+        0 => 'Количество песен которыми заранее АвтоДиджей автоматически заполнит очередь.',
       ),
       'This feature is not currently supported on this station.' => 
       array (
@@ -5115,6 +5291,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Этот файл был автоматически создан AzuraCast.',
       ),
+      'This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.' => 
+      array (
+        0 => 'Этот файл будет воспроизводиться на вашей радиостанции тогда, когда нет запланированных медиафайлов для воспроизведения или произошла критическая ошибка, которая прервала регулярное вещание.',
+      ),
       'This installation has not been backed up in the last two weeks.' => 
       array (
         0 => 'Резервное копирование этой установки не выполнялось в течение последних двух недель.',
@@ -5125,11 +5305,15 @@ X-Crowdin-File-ID: 4
       ),
       'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
       array (
-        0 => 'Этот интро файл должен точно соответствовать битрейту и формату самой точки подключения.',
+        0 => 'Этот интро файл должен точно соответствовать битрейту и формату точки подключения.',
+      ),
+      'This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly.' => 
+      array (
+        0 => 'Это тестовое сообщение от AzuraCast. Если вы получили это сообщение, это означает, что ваши настройки электронной почты настроены правильно.',
       ),
       'This is an advanced feature and custom code is not officially supported by AzuraCast. You may break your station by adding custom code, but removing it should fix any issues.' => 
       array (
-        0 => 'Это расширенная функция, и пользовательский код официально не поддерживается AzuraCast. Вы можете сломать свою станцию, добавив пользовательский код, но его удаление должно устранить любые проблемы.',
+        0 => 'Пользовательский код в расширенных настройках официально не поддерживается AzuraCast. Вы можете сломать свою станцию, добавив пользовательский код, но его удаление должно решить все проблемы.',
       ),
       'This is the informal display name that will be shown in API responses if the streamer/DJ is live.' => 
       array (
@@ -5137,7 +5321,7 @@ X-Crowdin-File-ID: 4
       ),
       'This is the number of seconds until a streamer who has been manually disconnected can reconnect to the stream. Set to 0 to allow the streamer to immediately reconnect.' => 
       array (
-        0 => 'Это количество секунд до тех пор, пока стример, который был отключен вручную, не сможет снова подключиться к потоку. Установите значение 0, чтобы разрешить стримеру немедленно повторно подключиться.',
+        0 => 'Это количество секунд до тех пор, пока радиоведущий, который был отключен вручную, не сможет снова подключиться к потоку. Установите значение 0, чтобы разрешить радиоведущему немедленно переподключиться.',
       ),
       'This javascript code will be applied to the station public pages and login page.' => 
       array (
@@ -5145,7 +5329,7 @@ X-Crowdin-File-ID: 4
       ),
       'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.' => 
       array (
-        0 => 'Этот режим отключает АвтоДиджея AzuraCast, использующем в управлении Liquidsoap, который управляет воспроизведением песен. "Следующая песня" и некоторые другие функции не будут доступны.',
+        0 => 'Этот режим отключает АвтоДиджея AzuraCast, который управляет воспроизведением песен с помощью Liquidsoap. "Следующая песня" и некоторые другие функции будут не доступны.',
       ),
       'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
@@ -5153,11 +5337,11 @@ X-Crowdin-File-ID: 4
       ),
       'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
       array (
-        0 => 'Это имя появится в виде подзаголовка рядом с логотипом  IvaCom Radio Control, чтобы помочь идентифицировать этот сервер.',
+        0 => 'Это название будет отображаться в качестве подзаголовка рядом с логотипом AzuraCast, чтобы помочь идентифицировать этот сервер.',
       ),
       'This password is too common or insecure.' => 
       array (
-        0 => 'Этот пароль слишком распространен или небезопасен.',
+        0 => 'Этот пароль слишком распространен или ненадёжен.',
       ),
       'This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.' => 
       array (
@@ -5177,7 +5361,7 @@ X-Crowdin-File-ID: 4
       ),
       'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.' => 
       array (
-        0 => 'Этот порт не используется никаким внешним процессом. Изменяйте этот порт, только если назначенный порт используется. Оставьте пустым, чтобы автоматически назначить порт.',
+        0 => 'Этот порт не используется никаким внешним процессом. Изменяйте этот порт только в том случае, если назначенный порт используется. Оставьте поле пустым, чтобы автоматически назначить порт.',
       ),
       'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
       array (
@@ -5197,11 +5381,11 @@ X-Crowdin-File-ID: 4
       ),
       'This software delivers your broadcast to the listening audience.' => 
       array (
-        0 => 'Это программное обеспечение доставляет вашу трансляцию для слушателей.',
+        0 => 'Это программное обеспечение доставляет вашу трансляцию слушателям.',
       ),
       'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
       array (
-        0 => 'Это программное обеспечение постоянно проигрывает и перетасовывает музыку из плейлистов, когда другой источник радио недоступен.',
+        0 => 'Это программное обеспечение постоянно проигрывает и перетасовывает музыку из плейлистов, когда нет другого источника радио.',
       ),
       'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
@@ -5209,7 +5393,7 @@ X-Crowdin-File-ID: 4
       ),
       'This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.' => 
       array (
-        0 => 'Это указывает минимальное время (в минутах) между воспроизведением песни по радио и ее повторным запросом. Установите значение 0 для отсутствия порога.',
+        0 => 'Указывает минимальное время (в минутах) между воспроизведением песни на радио и возможности повторного запроса. Установите значение 0 для отсутствия порога.',
       ),
       'This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.' => 
       array (
@@ -5241,15 +5425,15 @@ X-Crowdin-File-ID: 4
       ),
       'This web hook will only run when the selected event(s) occur on this specific station.' => 
       array (
-        0 => 'Этот веб-хук будет запущен только тогда, когда выбранное событие произойдет на этой конкретной станции.',
+        0 => 'Этот веб-хук будет запускаться только тогда, когда выбранное событие (события) происходят на этой конкретной станции.',
       ),
       'This will be the file name for your backup, include the extension for file type you wish to use.' => 
       array (
-        0 => 'Это будет имя файла для вашей резервной копии, укажите расширение для типа файла, который вы хотите использовать.',
+        0 => 'Это будет имя файла для вашей резервной копии, включая расширение для типа файла, который вы хотите использовать.',
       ),
       'This will be used as the label when editing individual songs, and will show in API results.' => 
       array (
-        0 => 'Это будет использоваться как метка при редактировании отдельных песен и будет отображаться в результатах API.',
+        0 => 'Будет использоваться как метка при редактировании отдельных песен и будет отображаться в результатах API.',
       ),
       'This will clear any pending unprocessed messages in all message queues.' => 
       array (
@@ -5265,7 +5449,7 @@ X-Crowdin-File-ID: 4
       ),
       'Thumbnail Image URL' => 
       array (
-        0 => 'URL изображения эскиза',
+        0 => 'URL миниатюры изображения',
       ),
       'Thursday' => 
       array (
@@ -5283,6 +5467,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Часовой пояс',
       ),
+      'Time spent waiting for disk I/O to be completed.' => 
+      array (
+        0 => 'Время ожидания завершения дискового ввода-вывода.',
+      ),
+      'Time stolen by other virtual machines on the same physical server.' => 
+      array (
+        0 => 'Время, украденное другими виртуальными машинами на этом физическом сервере.',
+      ),
       'Title' => 
       array (
         0 => 'Заголовок',
@@ -5291,9 +5483,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Сортировка по названию',
       ),
+      'To alleviate this potential problem with shared CPU resources, hosts assign "credits" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM\'s assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the "Steal" or "St" value.' => 
+      array (
+        0 => 'Чтобы смягчить эту потенциальную проблему с общими ресурсами ЦП, хосты назначают "кредиты" VPS, которые расходуются в соответствии с алгоритмом, основанным на загрузке ЦП, а также времени, в течение которого генерируется нагрузка ЦП. Если выделенный вашей виртуальной машине кредит израсходован, они заберут процессорное время у вашей виртуальной машины и назначат его другим виртуальным машинам на сервере. Это рассматривается как значение "Кража" или "St".',
+      ),
       'To download the GeoLite database:' => 
       array (
-        0 => 'Для загрузки базы данных GeoLite:',
+        0 => 'Чтобы загрузить базу данных GeoLite:',
       ),
       'To play once per day, set the start and end times to the same value.' => 
       array (
@@ -5337,15 +5533,27 @@ X-Crowdin-File-ID: 4
       ),
       'Total' => 
       array (
-        0 => 'Всего',
+        0 => 'Итог',
+      ),
+      'Total Disk Space' => 
+      array (
+        0 => 'Всего места на диске',
       ),
       'Total Listener Hours' => 
       array (
         0 => 'Всего Часов Прослушивания',
       ),
+      'Total RAM' => 
+      array (
+        0 => 'Всего ОЗУ',
+      ),
       'Track Number' => 
       array (
         0 => 'Номер трека',
+      ),
+      'Transmitted' => 
+      array (
+        0 => 'Передано',
       ),
       'Triggers' => 
       array (
@@ -5361,11 +5569,11 @@ X-Crowdin-File-ID: 4
       ),
       'TuneIn Partner ID' => 
       array (
-        0 => 'ID партнера TuneIn',
+        0 => 'ID партнёра TuneIn',
       ),
       'TuneIn Partner Key' => 
       array (
-        0 => 'Ключ партнера TuneIn',
+        0 => 'Ключ партнёра TuneIn',
       ),
       'TuneIn Station ID' => 
       array (
@@ -5373,7 +5581,7 @@ X-Crowdin-File-ID: 4
       ),
       'Twitter Account Details' => 
       array (
-        0 => 'Детали аккаунта Twitter',
+        0 => 'Детали аккаунта в Твиттере',
       ),
       'Twitter Applications' => 
       array (
@@ -5381,7 +5589,7 @@ X-Crowdin-File-ID: 4
       ),
       'Twitter Post' => 
       array (
-        0 => 'Пост в Твиттере',
+        0 => 'Сообщение в Твиттере',
       ),
       'Two-Factor Authentication' => 
       array (
@@ -5435,6 +5643,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ссылка на Пользователя',
       ),
+      'Unassigned Files' => 
+      array (
+        0 => 'Неназначенные файлы',
+      ),
       'Unique' => 
       array (
         0 => 'Уникальных',
@@ -5481,7 +5693,7 @@ X-Crowdin-File-ID: 4
       ),
       'Update' => 
       array (
-        0 => 'Обновить',
+        0 => 'Изменение',
       ),
       'Update Instructions' => 
       array (
@@ -5505,11 +5717,19 @@ X-Crowdin-File-ID: 4
       ),
       'Upload the file on this page to automatically extract it into the proper directory.' => 
       array (
-        0 => 'Загрузите файл на этой странице, чтобы автоматически извлечь его в соответствующий каталог.',
+        0 => 'Загрузите файл на этой странице, чтобы автоматически извлечь его в нужный каталог.',
+      ),
+      'Use' => 
+      array (
+        0 => 'Использовано',
+      ),
+      'Use (Us)' => 
+      array (
+        0 => 'Использовано (Us)',
       ),
       'Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.' => 
       array (
-        0 => 'Используйте ключи API для аутентификации с AzuraCast API, используя те же разрешения, что и ваша учетная запись пользователя.',
+        0 => 'Используйте ключи API для аутентификации с API AzuraCast, используя те же разрешения, что и ваша учетная запись пользователя.',
       ),
       'Use Asynchronous Worker' => 
       array (
@@ -5523,13 +5743,21 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Использовать Icecast 2.4 на этом сервере.',
       ),
+      'Use Less CPU (Uses More Memory)' => 
+      array (
+        0 => 'Использовать меньше ЦП (использует больше памяти)',
+      ),
+      'Use Less Memory (Uses More CPU)' => 
+      array (
+        0 => 'Использовать меньше памяти (использует больше ЦП)',
+      ),
       'Use Liquidsoap on this server.' => 
       array (
         0 => 'Использовать Liquidsoap на этом сервере.',
       ),
       'Use Replaygain Metadata' => 
       array (
-        0 => 'Использование метаданных Replaygain',
+        0 => 'Использовать метаданные Replaygain',
       ),
       'Use SHOUTcast DNAS 2 on this server.' => 
       array (
@@ -5550,6 +5778,10 @@ X-Crowdin-File-ID: 4
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
         0 => 'Используйте Telegram Bot API для отправки сообщения на канал.',
+      ),
+      'Used' => 
+      array (
+        0 => 'Использовано',
       ),
       'Used for "Forgot Password" functionality, web hooks and other functions.' => 
       array (
@@ -5585,7 +5817,7 @@ X-Crowdin-File-ID: 4
       ),
       'Username:' => 
       array (
-        0 => 'Имя пользователя:',
+        0 => 'Логин:',
       ),
       'Users' => 
       array (
@@ -5593,7 +5825,7 @@ X-Crowdin-File-ID: 4
       ),
       'Users with this role will have these permissions across the entire installation.' => 
       array (
-        0 => 'Пользователи с этой ролью будут иметь разрешения на всю установку.',
+        0 => 'Пользователи с этой ролью будут иметь права доступа на всю установку.',
       ),
       'Users with this role will have these permissions for this single station.' => 
       array (
@@ -5601,15 +5833,11 @@ X-Crowdin-File-ID: 4
       ),
       'Using this page, you can customize several sections of the Liquidsoap configuration. This allows you to add advanced functionality to your station\'s AutoDJ.' => 
       array (
-        0 => 'С помощью этой страницы вы можете настроить несколько разделов конфигурации Liquidsoap. Это позволяет добавить дополнительные функции для AutoDJ вашей станции.',
+        0 => 'Используя эту страницу, вы можете настроить несколько разделов конфигурации Liquidsoap. Это позволяет вам добавлять расширенные функции в АвтоДиджей вашей станции.',
       ),
       'Usually enabled for port 465, disabled for ports 587 or 25.' => 
       array (
         0 => 'Обычно включен для порта 465, отключен для портов 587 или 25.',
-      ),
-      'Utilities' => 
-      array (
-        0 => 'Инструменты',
       ),
       'Valid options: %s' => 
       array (
@@ -5617,7 +5845,7 @@ X-Crowdin-File-ID: 4
       ),
       'Variables are in the form of:' => 
       array (
-        0 => 'Переменные представлены в виде:',
+        0 => 'Переменные имеют вид:',
       ),
       'View' => 
       array (
@@ -5671,6 +5899,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Громкость',
       ),
+      'Wait' => 
+      array (
+        0 => 'Ожидание',
+      ),
+      'Wait (Wa)' => 
+      array (
+        0 => 'Ожидание (Wa)',
+      ),
       'Warning' => 
       array (
         0 => 'Предупреждение',
@@ -5685,7 +5921,7 @@ X-Crowdin-File-ID: 4
       ),
       'Web Hook Details' => 
       array (
-        0 => 'Подробности веб-хука',
+        0 => 'Подробности о веб-хуке',
       ),
       'Web Hook Name' => 
       array (
@@ -5697,7 +5933,7 @@ X-Crowdin-File-ID: 4
       ),
       'Web Hook URL' => 
       array (
-        0 => 'URL веб-хука',
+        0 => 'URL-адрес веб-хука',
       ),
       'Web Hooks' => 
       array (
@@ -5705,7 +5941,7 @@ X-Crowdin-File-ID: 4
       ),
       'Web Site URL' => 
       array (
-        0 => 'URL веб-сайта',
+        0 => 'URL-адрес веб-сайта',
       ),
       'Web hook disabled.' => 
       array (
@@ -5721,15 +5957,15 @@ X-Crowdin-File-ID: 4
       ),
       'Web hooks automatically send a HTTP POST request to the URL you specify to notify it any time one of the triggers you specify occurs on your station.' => 
       array (
-        0 => 'Веб-хуки автоматически посылают HTTP-запрос POST на указанный вами URL, чтобы уведомить его в любой момент, когда на вашей станции возникает один из триггеров, которые вы укажете.',
+        0 => 'Веб-хуки автоматически посылают HTTP POST-запрос на указанный вами URL-адрес, чтобы уведомить его каждый раз, когда на вашей станции происходит один из указанных вами триггеров.',
       ),
       'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
       array (
-        0 => 'Веб-хуки позволяют вам подключиться к внешним веб-сервисам и транслировать изменения на вашу станцию.',
+        0 => 'Веб-хуки позволяют вам подключаться к внешним веб-сервисам и транслировать на них изменения на вашей станции.',
       ),
       'WebDJ' => 
       array (
-        0 => 'WebDJ',
+        0 => 'Веб Диджей',
       ),
       'Website' => 
       array (
@@ -5765,7 +6001,7 @@ X-Crowdin-File-ID: 4
       ),
       'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself.' => 
       array (
-        0 => 'При вызове API вы можете передать это значение в заголовке "X-API-Key" для аутентификации самостоятельно.',
+        0 => 'Выполняя вызовы API, вы можете передать это значение в заголовке «X-API-Key», для аутентификации от своего имени.',
       ),
       'When the station broadcast comes online.' => 
       array (
@@ -5815,9 +6051,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'В настоящее время вы используете версию %s. Рекомендуем обновиться.',
       ),
+      'You are not permitted to submit requests.' => 
+      array (
+        0 => 'Вам не разрешено отправлять запросы.',
+      ),
       'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => 'Вы также можете загружать файлы оптом через SFTP.',
+        0 => 'Вы также можете загружать файлы массово через SFTP.',
       ),
       'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
       array (
@@ -5825,7 +6065,7 @@ X-Crowdin-File-ID: 4
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML <key>value</key>' => 
       array (
-        0 => 'Здесь вы можете включить любые специальные настройки точки монтирования в формате JSON { key: \'value\' } или XML <key>значение</key>',
+        0 => 'Здесь вы можете указать любые специальные настройки точки подключения в формате JSON { key: \'value\' } или XML <key>value</key>',
       ),
       'You can modify it as necessary. To apply changes, restart the Docker containers.' => 
       array (
@@ -5849,7 +6089,7 @@ X-Crowdin-File-ID: 4
       ),
       'You cannot modify yourself.' => 
       array (
-        0 => 'Вы не можете изменить себя.',
+        0 => 'Вы не можете изменять себя.',
       ),
       'You cannot remove yourself.' => 
       array (
@@ -5873,15 +6113,15 @@ X-Crowdin-File-ID: 4
       ),
       'You may need to connect directly to your IP address:' => 
       array (
-        0 => 'Возможно, вам потребуется подключиться напрямую через ваш IP-адрес:',
+        0 => 'Возможно, вам потребуется подключиться напрямую к вашему IP-адресу:',
       ),
       'You may need to connect directly via your IP address:' => 
       array (
-        0 => 'Возможно, вам потребуется подключиться напрямую через свой IP-адрес:',
+        0 => 'Возможно, вам потребуется подключиться напрямую через ваш IP-адрес:',
       ),
       'You may want to update your base URL to ensure it is correct.' => 
       array (
-        0 => 'Вы можете обновить базовый URL-адрес, чтобы убедиться, что он правильный.',
+        0 => 'Вы можете обновить основной URL-адрес, чтобы убедиться, что он правильный.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -5901,7 +6141,7 @@ X-Crowdin-File-ID: 4
       ),
       'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
-        0 => 'Ваш параметр "Базовый URL" (%s) не соответствует URL, который вы используете в данный момент (%s).',
+        0 => 'Заданный вами "Основной URL-адрес" (%s) не соответствует используемому в данный момент URL-адресу (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

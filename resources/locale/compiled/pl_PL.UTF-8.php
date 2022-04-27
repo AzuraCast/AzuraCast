@@ -14,8 +14,8 @@ Language-Team: Polish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-02-15T23:07:32+00:00
-PO-Revision-Date: 2022-02-18 18:14
+POT-Creation-Date: 2022-04-23T16:48:19+00:00
+PO-Revision-Date: 2022-04-27 14:59
 Language: pl_PL
 Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
 X-Crowdin-Project: azuracast
@@ -52,10 +52,6 @@ X-Crowdin-File-ID: 4
       '%s is not recognized as a service.' => 
       array (
         0 => '%s nie jest rozpoznany jako usługa.',
-      ),
-      '%s of %s Used' => 
-      array (
-        0 => '%s z %s używane',
       ),
       '%{ days } Days' => 
       array (
@@ -124,10 +120,6 @@ X-Crowdin-File-ID: 4
       '(in seconds)' => 
       array (
         0 => '(w sekundach)',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => 'Średnia 15-minutowa',
       ),
       'A completely random track is picked for playback every time the queue is populated.' => 
       array (
@@ -461,6 +453,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Próbuj Automatycznie Pobrać ISRC w Razie Braku',
       ),
+      'Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance.' => 
+      array (
+        0 => 'Aplikacje do transkodowania dźwięku, takie jak Liquidsoap, używają stałej ilości CPU w czasie, co stopniowo wyczerpuje dostępną moc procesora. Jeśli regularnie obserwujesz skradziony czas CPU, powinieneś rozważyć migrację do VM z zasobami CPU dedykowanymi dla twojej instancji.',
+      ),
       'Audit Log' => 
       array (
         0 => 'Dziennik audytu',
@@ -496,6 +492,10 @@ X-Crowdin-File-ID: 4
       'AutoDJ Format' => 
       array (
         0 => 'Format AutoDJ\'a',
+      ),
+      'AutoDJ Queue' => 
+      array (
+        0 => 'Kolejka AutoDJa',
       ),
       'AutoDJ Queue Length' => 
       array (
@@ -657,6 +657,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Kopie zapasowe',
       ),
+      'Balanced' => 
+      array (
+        0 => 'Zrównoważony',
+      ),
       'Band' => 
       array (
         0 => 'Zespół',
@@ -752,6 +756,14 @@ X-Crowdin-File-ID: 4
       'CPU Load' => 
       array (
         0 => 'Obciążenie procesora',
+      ),
+      'CPU Stats Help' => 
+      array (
+        0 => 'Statystyki CPU - pomoc',
+      ),
+      'Cached' => 
+      array (
+        0 => 'Buforowane',
       ),
       'Categories' => 
       array (
@@ -933,10 +945,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Kompozytor',
       ),
-      'Composer Plugin Mode' => 
-      array (
-        0 => 'Tryb Wtyczki Composera',
-      ),
       'Composer Sort Order' => 
       array (
         0 => 'Kolejność sortowania kompozytora',
@@ -1101,9 +1109,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Kolejka',
       ),
-      'Current' => 
+      'Current Custom Fallback File' => 
       array (
-        0 => 'Obecnie',
+        0 => 'Obecny niestandardowy plik zastępczy',
       ),
       'Current Installed Version' => 
       array (
@@ -1164,6 +1172,10 @@ X-Crowdin-File-ID: 4
       'Custom Fading: Overlap Time (seconds)' => 
       array (
         0 => 'Niestandardowe zanikanie: Czas nakładania się (sekundy)',
+      ),
+      'Custom Fallback File' => 
+      array (
+        0 => 'Niestandardowy plik zastępczy',
       ),
       'Custom Fields' => 
       array (
@@ -1252,6 +1264,14 @@ X-Crowdin-File-ID: 4
       'Date/Time' => 
       array (
         0 => 'Data/Czas',
+      ),
+      'Date/Time (Browser)' => 
+      array (
+        0 => 'Data/Czas (Przeglądarka)',
+      ),
+      'Date/Time (Station)' => 
+      array (
+        0 => 'Data/Czas (stacja)',
       ),
       'Days Between Automated Assignments' => 
       array (
@@ -1409,10 +1429,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Katalog',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'Katalog "%s" nie został utworzony',
-      ),
       'Directory Name' => 
       array (
         0 => 'Nazwa katalogu',
@@ -1424,6 +1440,10 @@ X-Crowdin-File-ID: 4
       'Disable Crossfading' => 
       array (
         0 => 'Wyłącz przejścia',
+      ),
+      'Disable Optimizations' => 
+      array (
+        0 => 'Wyłącz optymalizacje',
       ),
       'Disable Two-Factor' => 
       array (
@@ -1468,6 +1488,10 @@ X-Crowdin-File-ID: 4
       'Disk Space' => 
       array (
         0 => 'Miejsce na dysku',
+      ),
+      'Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.' => 
+      array (
+        0 => 'Buforowanie na dysku sprawia, że system jest znacznie szybszy i bardziej elastyczny. Nie odbiera ono w żaden sposób pamięci aplikacjom, ponieważ w razie potrzeby zostanie ona automatycznie zwolniona przez system operacyjny.',
       ),
       'Display Name' => 
       array (
@@ -1668,6 +1692,10 @@ X-Crowdin-File-ID: 4
       'Enable Broadcasting' => 
       array (
         0 => 'Włącz nadawanie',
+      ),
+      'Enable Custom Code Plugins' => 
+      array (
+        0 => 'Włącz Wtyczki z Własnym Kodem',
       ),
       'Enable Downloads on On-Demand Page' => 
       array (
@@ -2001,6 +2029,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Obecnie zainstalowana wersja GeoLite to "%{ version }".',
       ),
+      'Get Next Song' => 
+      array (
+        0 => 'Pobierz następną piosenkę',
+      ),
       'Get Now Playing' => 
       array (
         0 => 'Pobierz informację Teraz Odtwarzane',
@@ -2060,6 +2092,10 @@ X-Crowdin-File-ID: 4
       'High' => 
       array (
         0 => 'Wysoki',
+      ),
+      'High I/O Wait can indicate a bottleneck with the server\'s hard disk, a potentially failing hard disk, or heavy load on the hard disk.' => 
+      array (
+        0 => 'Wysokie wartości I/O mogą wskazywać wąskie gardło związane z twardym dyskiem serwera, potencjalnie uszkodzonym twardym dyskiem lub dużym obciążeniem dysku twardego.',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
@@ -2245,6 +2281,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Jeśli napotkałeś usterkę lub błąd, możesz wysłać zgłoszenie na GitHubie, korzystając z poniższego linku.',
       ),
+      'If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.' => 
+      array (
+        0 => 'Jeśli twoja instalacja jest ograniczona przez moc procesora lub ilość dostępnej pamięci, możesz zmienić to ustawienie w celu dostosowania zasobów używanych przez Liquidsoap.',
+      ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
         0 => 'Jeśli Twoje oprogramowanie nadawcze wymaga podania określonej ścieżki punktu montowania, podaj ją tutaj. W przeciwnym razie, użyj domyślnej.',
@@ -2337,9 +2377,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Instalowanie Danych Konfiguracyjnych',
       ),
-      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
+      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.' => 
       array (
-        0 => 'Wymuś, aby Liquidsoap używało metadanych ReplayGain powiązanych z utworem, aby kontrolować jego głośność.',
+        0 => 'Wymuś, aby Liquidsoap używało metadanych ReplayGain powiązanych z utworem, aby kontrolować jego głośność. Może to zwiększyć użycie CPU.',
       ),
       'Instructions' => 
       array (
@@ -2412,6 +2452,10 @@ X-Crowdin-File-ID: 4
       'Last 2 Years' => 
       array (
         0 => 'Ostatnie 2 lata',
+      ),
+      'Last 24 Hours' => 
+      array (
+        0 => '',
       ),
       'Last 30 Days' => 
       array (
@@ -2533,6 +2577,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Dziennik Liquidsoap',
       ),
+      'Liquidsoap Performance Tuning' => 
+      array (
+        0 => 'Dostrajanie wydajności Liquidsoap',
+      ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Podaj jeden adres IP lub grupę (w formacie CIDR) na wiersz.',
@@ -2544,6 +2592,10 @@ X-Crowdin-File-ID: 4
       'Listener Analytics Collection' => 
       array (
         0 => 'Zbiór analiz danych o słuchaczach',
+      ),
+      'Listener History' => 
+      array (
+        0 => 'Historia słuchaczy',
       ),
       'Listener Request' => 
       array (
@@ -2593,6 +2645,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Nadający na żywo:',
       ),
+      'Live Streaming' => 
+      array (
+        0 => 'Strumieniowanie na żywo',
+      ),
       'Live stream connected.' => 
       array (
         0 => 'Strumień na żywo połączony.',
@@ -2600,6 +2656,10 @@ X-Crowdin-File-ID: 4
       'Live stream disconnected.' => 
       array (
         0 => 'Strumień na żywo odłączony.',
+      ),
+      'Load Average' => 
+      array (
+        0 => 'Średnie obciążenie',
       ),
       'Loading...' => 
       array (
@@ -2837,6 +2897,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Pamięć',
       ),
+      'Memory Stats Help' => 
+      array (
+        0 => 'Statystyki pamięci - pomoc',
+      ),
       'Merge playlist to play as a single track.' => 
       array (
         0 => 'Scal playlistę aby grać jako pojedynczy utwór.',
@@ -2927,6 +2991,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Najświeższy dziennik kopii zapasowej',
       ),
+      'Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server "stealing" CPU time from your VM and vice-versa.' => 
+      array (
+        0 => 'Większość dostawców hostingu umieszcza na pojedynczym serwerze więcej maszyn wirtualnych (VPS), niż pozwala na to sprzęt w momencie gdy każdy VPS używa pełni przydzielonej mu mocy procesora. Nazywa się to nadmiernym dostarczaniem (z ang. over-provisioning) i może to doprowadzić do "wykradania" czasu CPU z Twojego VPS-a i vice-versa.',
+      ),
       'Mount Name:' => 
       array (
         0 => 'Nazwa montowania:',
@@ -2990,6 +3058,10 @@ X-Crowdin-File-ID: 4
       'Need Help?' => 
       array (
         0 => 'Potrzebujesz pomocy?',
+      ),
+      'Network Interfaces' => 
+      array (
+        0 => 'Interfejsy sieciowe',
       ),
       'Never run' => 
       array (
@@ -3248,6 +3320,10 @@ Odtwarzane',
       array (
         0 => 'Po skonfigurowaniu automatycznego przypisania, kliknij poniższy przycisk, aby uruchomić proces automatycznego przypisania.',
       ),
+      'One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools.' => 
+      array (
+        0 => 'Ważną rzeczą odnoszącą się do Oczekiwania Wejścia/Wyjścia (I/O Wait) jest to, że może to wskazywać na wąskie gardło lub inny problem, równie dobrze może jednak nie mieć żadnego znaczenia, a zależy to od obciążenia i ogólnie od dostępnych zasobów. Nieustannie wysokie wartości Oczekiwania Wejścia/Wyjścia powinny zmotywować cię do przeprowadzenia inspekcji z użyciem wyspecjalizowanych narzędzi.',
+      ),
       'Only Send One Tweet Every...' => 
       array (
         0 => 'Wysyłaj tylko jednego tweeta co...',
@@ -3279,6 +3355,10 @@ Odtwarzane',
       'Optional: HTTP Basic Authentication Username' => 
       array (
         0 => 'Opcjonalne: Nazwa użytkownika podstawowego uwierzytelnienia HTTP',
+      ),
+      'Optional: Request Timeout (Seconds)' => 
+      array (
+        0 => '',
       ),
       'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
       array (
@@ -3502,7 +3582,7 @@ Odtwarzane',
       ),
       'Playlist: %s' => 
       array (
-        0 => 'Playlista: %s',
+        0 => '',
       ),
       'Playlists' => 
       array (
@@ -3684,9 +3764,9 @@ Odtwarzane',
       array (
         0 => 'Gotów by rozpocząć nadawanie? Kliknij, aby uruchomić stację.',
       ),
-      'Rebuild AutoDJ Queue' => 
+      'Received' => 
       array (
-        0 => 'Przebuduj kolejkę AutoDJ',
+        0 => 'Otrzymano',
       ),
       'Record Live Broadcasts' => 
       array (
@@ -3756,9 +3836,21 @@ Odtwarzane',
       array (
         0 => 'Czas wydania',
       ),
+      'Reload Configuration' => 
+      array (
+        0 => 'Przeładuj konfigurację',
+      ),
       'Reload System Data' => 
       array (
         0 => 'Przeładuj dane systemowe',
+      ),
+      'Reload broadcasting? Current listeners will not be disconnected.' => 
+      array (
+        0 => 'Przeładować nadawanie? Obecni słuchacze nie zostaną rozłączeni.',
+      ),
+      'Reload to Apply Changes' => 
+      array (
+        0 => 'Przeładuj, aby zastosować zmiany',
       ),
       'Remember me' => 
       array (
@@ -3835,6 +3927,10 @@ Odtwarzane',
       'Remote: S3 Compatible' => 
       array (
         0 => 'Zdalne: Kompatybilny S3',
+      ),
+      'Remote: SFTP' => 
+      array (
+        0 => '',
       ),
       'Remove' => 
       array (
@@ -3936,10 +4032,6 @@ Odtwarzane',
       array (
         0 => 'Zrestartować transmisję? Spowoduje to rozłączenie wszystkich obecnych słuchaczy.',
       ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => 'Zrestartuj, by zastosować zmiany',
-      ),
       'Restoring Backups' => 
       array (
         0 => 'Przywracanie kopii zapasowych',
@@ -3996,6 +4088,14 @@ Odtwarzane',
       array (
         0 => 'Uruchamianie migracji bazy danych',
       ),
+      'SFTP Host' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Password' => 
+      array (
+        0 => '',
+      ),
       'SFTP Port' => 
       array (
         0 => 'Port SFTP',
@@ -4003,6 +4103,18 @@ Odtwarzane',
       'SFTP Port: %d' => 
       array (
         0 => 'Port SFTP: %d',
+      ),
+      'SFTP Private Key' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Private Key Pass Phrase' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Username' => 
+      array (
+        0 => '',
       ),
       'SFTP Users' => 
       array (
@@ -4079,6 +4191,10 @@ Odtwarzane',
       'Save Changes' => 
       array (
         0 => 'Zapisz zmiany',
+      ),
+      'Save Changes first' => 
+      array (
+        0 => 'Najpierw zapisz zmiany',
       ),
       'Save and Continue' => 
       array (
@@ -4164,6 +4280,10 @@ Odtwarzane',
       array (
         0 => 'Wybierz',
       ),
+      'Select Custom Fallback File' => 
+      array (
+        0 => 'Wybierz niestandardowy plik zastępczy',
+      ),
       'Select File' => 
       array (
         0 => 'Wybierz plik',
@@ -4223,6 +4343,10 @@ Odtwarzane',
       'Send Recovery E-mail' => 
       array (
         0 => 'Wyślij e-mail odzyskiwania',
+      ),
+      'Send Test Message' => 
+      array (
+        0 => 'Wyślij wiadomość testową',
       ),
       'Send an e-mail to specified address(es).' => 
       array (
@@ -4612,6 +4736,10 @@ Odtwarzane',
       array (
         0 => 'Strefa czasowa stacji',
       ),
+      'Station reloaded.' => 
+      array (
+        0 => 'Stacja przeładowana.',
+      ),
       'Station restarted.' => 
       array (
         0 => 'Stacja uruchomiona ponownie.',
@@ -4631,6 +4759,14 @@ Odtwarzane',
       'Statistics Overview' => 
       array (
         0 => 'Przegląd statystyk',
+      ),
+      'Steal' => 
+      array (
+        0 => 'Ukradnij',
+      ),
+      'Steal (St)' => 
+      array (
+        0 => 'Ukradnij (St)',
       ),
       'Step 1: Scan QR Code' => 
       array (
@@ -4714,7 +4850,7 @@ Odtwarzane',
       ),
       'Streamer: %s' => 
       array (
-        0 => 'Streamer: %s',
+        0 => '',
       ),
       'Streamers enabled!' => 
       array (
@@ -4812,6 +4948,22 @@ Odtwarzane',
       array (
         0 => 'Test',
       ),
+      'Test Message' => 
+      array (
+        0 => 'Wiadomość testowa',
+      ),
+      'Test message sent successfully.' => 
+      array (
+        0 => 'Wiadomość testowa wysłana pomyślnie.',
+      ),
+      'Test message sent.' => 
+      array (
+        0 => 'Wiadomość testowa wysłana.',
+      ),
+      'The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this.' => 
+      array (
+        0 => 'Oczekiwanie I/O to procent czasu, w którym procesor czeka na dostęp do dysku, zanim będzie mógł kontynuować pracę zależną od rezultatu.',
+      ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
         0 => 'URL, który będzie odbierał wiadomość POST za każdym razem, gdy zdarzenie będzie wywoływane.',
@@ -4819,6 +4971,10 @@ Odtwarzane',
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => 'Konto połączone z adresem e-mail "%s" zostało ustawione jako administrator',
+      ),
+      'The amount of memory Linux is using for disk caching.' => 
+      array (
+        0 => 'Ilość pamięci, jaką Linux używa do buforowania na dysku.',
       ),
       'The application environment.' => 
       array (
@@ -4835,6 +4991,14 @@ Odtwarzane',
       'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
       array (
         0 => 'Osoba kontaktowa podcastu. Ta informacja może być wymagana, aby wyświetlić podcast w serwisach takich jak Apple Podcasts, Spotify, Google Podcasts, itp.',
+      ),
+      'The current CPU usage including I/O Wait and Steal.' => 
+      array (
+        0 => 'Bieżące użycie CPU, w tym oczekiwanie i kradzież I/O.',
+      ),
+      'The current Memory usage excluding cached memory.' => 
+      array (
+        0 => 'Aktualne użycie pamięci bez uwzględniania pamięci podręcznej.',
       ),
       'The date when the episode should be published.' => 
       array (
@@ -4906,7 +5070,11 @@ Odtwarzane',
       ),
       'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
       array (
-        0 => 'Długość sygnału w sekundach, jaka będzie przechowywana w razie usterki. Ustaw najniższa wartość, jaką mogą wykorzystywać Twoi prezenterzy w razie przerwania się strumienia.',
+        0 => 'Długość sygnału w sekundach, jaka będzie przechowywana w razie usterki. Ustaw najniższą wartość, jaką mogą wykorzystywać Twoi prezenterzy w razie przerwania się strumienia.',
+      ),
+      'The number of seconds to wait for a response from the remote server before cancelling the request.' => 
+      array (
+        0 => '',
       ),
       'The numeric site ID for this site.' => 
       array (
@@ -5016,6 +5184,10 @@ Odtwarzane',
       array (
         0 => 'Motyw',
       ),
+      'There is no existing custom fallback file associated with this station.' => 
+      array (
+        0 => 'Nie ma istniejącego niestandardowego pliku zastępczego powiązanego z tą stacją.',
+      ),
       'There is no existing intro file associated with this mount point.' => 
       array (
         0 => 'Brak pliku intra powiązanego z tym punktem montowania.',
@@ -5051,6 +5223,10 @@ Odtwarzane',
       'This can have an adverse impact on system performance. You should disable this when possible.' => 
       array (
         0 => 'Może to mieć niekorzystny wpływ na wydajność systemu. Powinieneś to wyłączyć, jeśli to możliwe.',
+      ),
+      'This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.' => 
+      array (
+        0 => 'Może to spowodować, że będzie ci się wydawało, że masz mało pamięci, mimo iż tak nie jest. Niektóre narzędzia lub panele do monitorowania obejmują w swoich statystykach użycia pamięci również pamięć buforowaną, nie informując o tym.',
       ),
       'This code will be included in the frontend configuration. Allowed formats are:' => 
       array (
@@ -5116,6 +5292,10 @@ Odtwarzane',
       array (
         0 => 'Ten plik został wygenerowany automatycznie przez AzuraCast.',
       ),
+      'This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.' => 
+      array (
+        0 => 'Ten plik będzie odtwarzany na stacji radiowej w dowolnym momencie, gdy nie zaplanowano odtwarzania mediów lub wystąpił krytyczny błąd, który przerywa regularne nadawanie.',
+      ),
       'This installation has not been backed up in the last two weeks.' => 
       array (
         0 => 'Ta instalacja w ciągu 2 tygodni nie utworzyła kopii zapasowej.',
@@ -5127,6 +5307,10 @@ Odtwarzane',
       'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
       array (
         0 => 'Plik intra powinien mieć dokładnie taki sam bitrate i format, co punkt montowania.',
+      ),
+      'This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly.' => 
+      array (
+        0 => 'To jest wiadomość testowa z AzuraCast. Jeśli otrzymałeś tę wiadomość, oznacza to, że ustawienia poczty e-mail są poprawnie skonfigurowane.',
       ),
       'This is an advanced feature and custom code is not officially supported by AzuraCast. You may break your station by adding custom code, but removing it should fix any issues.' => 
       array (
@@ -5284,6 +5468,14 @@ Odtwarzane',
       array (
         0 => 'Strefa czasowa',
       ),
+      'Time spent waiting for disk I/O to be completed.' => 
+      array (
+        0 => 'Czas spędzony na czekaniu na ukończenie operacji I/O.',
+      ),
+      'Time stolen by other virtual machines on the same physical server.' => 
+      array (
+        0 => 'Czas skradziony przez inne maszyny wirtualne na tym samym fizycznym serwerze.',
+      ),
       'Title' => 
       array (
         0 => 'Tytuł',
@@ -5291,6 +5483,10 @@ Odtwarzane',
       'Title Sort Order' => 
       array (
         0 => 'Kolejność sortowania tytułu',
+      ),
+      'To alleviate this potential problem with shared CPU resources, hosts assign "credits" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM\'s assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the "Steal" or "St" value.' => 
+      array (
+        0 => 'Aby złagodzić ten potencjalny problem ze współdzielonymi zasobami CPU, hosts przypisuje "kredyty" do VPS-a, które są używane zgodnie z algorytmem na podstawie obciążenia CPU oraz czasu, w którym generowane jest obciążenie procesora. Jeśli kredyt przypisany do Twojego VPS-a jest wykorzystany, to zabierze to czas CPU z Twojego VPS-a i przypisz go do innych maszyn wirtualnych na serwerze. Jest to wartość „Steal” (kradzież) lub „St”.',
       ),
       'To download the GeoLite database:' => 
       array (
@@ -5340,13 +5536,25 @@ Odtwarzane',
       array (
         0 => 'Łącznie',
       ),
+      'Total Disk Space' => 
+      array (
+        0 => 'Całkowita przestrzeń dyskowa',
+      ),
       'Total Listener Hours' => 
       array (
         0 => 'Łącznie godziny słuchania',
       ),
+      'Total RAM' => 
+      array (
+        0 => 'Całkowita ilość pamięci RAM',
+      ),
       'Track Number' => 
       array (
         0 => 'Numer utworu',
+      ),
+      'Transmitted' => 
+      array (
+        0 => 'Przesłane',
       ),
       'Triggers' => 
       array (
@@ -5436,6 +5644,10 @@ Odtwarzane',
       array (
         0 => 'URL Użytkownika',
       ),
+      'Unassigned Files' => 
+      array (
+        0 => 'Nieprzypisane pliki',
+      ),
       'Unique' => 
       array (
         0 => 'Unikalne',
@@ -5508,6 +5720,14 @@ Odtwarzane',
       array (
         0 => 'Prześlij plik na tej stronie, aby automatycznie rozpakować go do odpowiedniego katalogu.',
       ),
+      'Use' => 
+      array (
+        0 => 'Użycie',
+      ),
+      'Use (Us)' => 
+      array (
+        0 => 'Użycie (Us)',
+      ),
       'Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.' => 
       array (
         0 => 'Użyj kluczy API do uwierzytelniania z API AzuraCast przy użyciu tych samych uprawnień co konto użytkownika.',
@@ -5523,6 +5743,14 @@ Odtwarzane',
       'Use Icecast 2.4 on this server.' => 
       array (
         0 => 'Użyj Icecast 2.4 na tym serwerze.',
+      ),
+      'Use Less CPU (Uses More Memory)' => 
+      array (
+        0 => 'Użyj mniej CPU (używa więcej pamięci)',
+      ),
+      'Use Less Memory (Uses More CPU)' => 
+      array (
+        0 => 'Użyj mniej pamięci (Używa więcej CPU)',
       ),
       'Use Liquidsoap on this server.' => 
       array (
@@ -5551,6 +5779,10 @@ Odtwarzane',
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
         0 => 'Wyślij wiadomość do kanału za pomocą interfejsu Telegram Bot API.',
+      ),
+      'Used' => 
+      array (
+        0 => 'Używane',
       ),
       'Used for "Forgot Password" functionality, web hooks and other functions.' => 
       array (
@@ -5607,10 +5839,6 @@ Odtwarzane',
       'Usually enabled for port 465, disabled for ports 587 or 25.' => 
       array (
         0 => 'Zazwyczaj włączone dla portu 465, wyłączone dla portów 587 lub 25.',
-      ),
-      'Utilities' => 
-      array (
-        0 => 'Narzędzia',
       ),
       'Valid options: %s' => 
       array (
@@ -5671,6 +5899,14 @@ Odtwarzane',
       'Volume' => 
       array (
         0 => 'Głośność',
+      ),
+      'Wait' => 
+      array (
+        0 => 'Czekanie',
+      ),
+      'Wait (Wa)' => 
+      array (
+        0 => 'Czekanie (Wa)',
       ),
       'Warning' => 
       array (
@@ -5815,6 +6051,10 @@ Odtwarzane',
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
         0 => 'Obecnie wykorzystujesz wersję %s. Aktualizacja jest wysoce zalecana.',
+      ),
+      'You are not permitted to submit requests.' => 
+      array (
+        0 => 'Nie masz uprawnień do wysyłania żądań.',
       ),
       'You can also upload files in bulk via SFTP.' => 
       array (

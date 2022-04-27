@@ -208,7 +208,7 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<EOF
                 def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
-                    timeout_ms = int_of_float(1000*(maxtime - time()))
+                    timeout_ms = 1000 * (int_of_float(maxtime) - int_of_float(time()))
                     
                     j = json()
                     j.add("uri", arg)

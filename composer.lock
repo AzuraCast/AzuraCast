@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.220.3",
+            "version": "3.221.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fbb2d7349916c15758ee02dfd001a714883a9adf"
+                "reference": "6ef06165ef815358d3e60872b4c9f6c10deb3816"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fbb2d7349916c15758ee02dfd001a714883a9adf",
-                "reference": "fbb2d7349916c15758ee02dfd001a714883a9adf",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6ef06165ef815358d3e60872b4c9f6c10deb3816",
+                "reference": "6ef06165ef815358d3e60872b4c9f6c10deb3816",
                 "shasum": ""
             },
             "require": {
@@ -143,9 +143,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.220.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.221.0"
             },
-            "time": "2022-04-22T18:18:31+00:00"
+            "time": "2022-04-26T18:19:33+00:00"
         },
         {
             "name": "azuracast/doctrine-batch-utilities",
@@ -3537,12 +3537,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "d785c1dd12bb8853f1d6334676e369be9eae5651"
+                "reference": "c8e137e594948240b03372e012344b07c61b9193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d785c1dd12bb8853f1d6334676e369be9eae5651",
-                "reference": "d785c1dd12bb8853f1d6334676e369be9eae5651",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c8e137e594948240b03372e012344b07c61b9193",
+                "reference": "c8e137e594948240b03372e012344b07c61b9193",
                 "shasum": ""
             },
             "require": {
@@ -3604,7 +3604,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.x"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.0.18"
             },
             "funding": [
                 {
@@ -3620,7 +3620,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-24T20:22:13+00:00"
+            "time": "2022-04-25T18:55:04+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -3680,16 +3680,16 @@
         },
         {
             "name": "league/flysystem-sftp-v3",
-            "version": "3.0.17",
+            "version": "3.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-sftp-v3.git",
-                "reference": "8e5c3d4d50b58281786f9a15b827aaeef739fc32"
+                "reference": "89a27ca3d9c09bd8365acec3719ce900c8c08f39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-sftp-v3/zipball/8e5c3d4d50b58281786f9a15b827aaeef739fc32",
-                "reference": "8e5c3d4d50b58281786f9a15b827aaeef739fc32",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-sftp-v3/zipball/89a27ca3d9c09bd8365acec3719ce900c8c08f39",
+                "reference": "89a27ca3d9c09bd8365acec3719ce900c8c08f39",
                 "shasum": ""
             },
             "require": {
@@ -3724,7 +3724,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-sftp-v3/issues",
-                "source": "https://github.com/thephpleague/flysystem-sftp-v3/tree/3.0.17"
+                "source": "https://github.com/thephpleague/flysystem-sftp-v3/tree/3.0.18"
             },
             "funding": [
                 {
@@ -3740,7 +3740,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-14T14:56:41+00:00"
+            "time": "2022-04-25T18:49:52+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -11553,16 +11553,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.5.7",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "7fb7e2e1e9f3d59a26a413b2d3d5e47f0edb75ac"
+                "reference": "becb9603a31d70f5007d505877a7b812598dfe46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7fb7e2e1e9f3d59a26a413b2d3d5e47f0edb75ac",
-                "reference": "7fb7e2e1e9f3d59a26a413b2d3d5e47f0edb75ac",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/becb9603a31d70f5007d505877a7b812598dfe46",
+                "reference": "becb9603a31d70f5007d505877a7b812598dfe46",
                 "shasum": ""
             },
             "require": {
@@ -11588,7 +11588,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.5.7"
+                "source": "https://github.com/phpstan/phpstan/tree/1.6.2"
             },
             "funding": [
                 {
@@ -11608,7 +11608,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-20T12:20:27+00:00"
+            "time": "2022-04-27T11:05:24+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -12239,12 +12239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "e5e096c731d21614b952983804581389eb2a484f"
+                "reference": "f9837ae1f1830a09d71f5132112dcc9ed3ef9c65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/e5e096c731d21614b952983804581389eb2a484f",
-                "reference": "e5e096c731d21614b952983804581389eb2a484f",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f9837ae1f1830a09d71f5132112dcc9ed3ef9c65",
+                "reference": "f9837ae1f1830a09d71f5132112dcc9ed3ef9c65",
                 "shasum": ""
             },
             "conflict": {
@@ -12303,6 +12303,7 @@
                 "craftcms/cms": "<3.7.29",
                 "croogo/croogo": "<3.0.7",
                 "cuyz/valinor": ">=0.5,<0.7",
+                "czproject/git-php": "<4.0.3",
                 "datadog/dd-trace": ">=0.30,<0.30.2",
                 "david-garcia/phpwhois": "<=4.3.1",
                 "derhansen/sf_event_mgt": "<4.3.1|>=5,<5.1.1",
@@ -12714,7 +12715,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-22T22:04:12+00:00"
+            "time": "2022-04-27T15:08:54+00:00"
         },
         {
             "name": "sebastian/cli-parser",

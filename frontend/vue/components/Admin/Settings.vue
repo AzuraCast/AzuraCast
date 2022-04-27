@@ -22,7 +22,8 @@
                     <settings-security-privacy-tab :form="$v.form"
                                                    :tab-class="getTabClass($v.securityPrivacyTab)"></settings-security-privacy-tab>
                     <settings-services-tab :form="$v.form" :tab-class="getTabClass($v.servicesTab)"
-                                           :release-channel="releaseChannel"></settings-services-tab>
+                                           :release-channel="releaseChannel"
+                                           :test-message-url="testMessageUrl"></settings-services-tab>
                 </b-tabs>
             </b-overlay>
 
@@ -50,6 +51,7 @@ export default {
     emits: ['saved'],
     props: {
         apiUrl: String,
+        testMessageUrl: String,
         releaseChannel: {
             type: String,
             default: 'rolling',

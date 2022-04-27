@@ -20,16 +20,18 @@
                 <a class="btn btn-primary" :href="managePlaylistsUri" key="lang_profile_manage_playlists" v-translate>Playlists</a>
             </div>
         </div>
-        <div class="card-actions" v-if="userCanManageBroadcasting">
+        <div class="card-actions" v-if="userCanManageBroadcasting && hasStarted">
             <a class="api-call no-reload btn btn-outline-secondary" :href="backendRestartUri">
                 <icon icon="update"></icon>
                 <translate key="lang_profile_backend_restart">Restart</translate>
             </a>
-            <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.backend_running" :href="backendStartUri">
+            <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.backend_running"
+               :href="backendStartUri">
                 <icon icon="play_arrow"></icon>
                 <translate key="lang_profile_backend_start">Start</translate>
             </a>
-            <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.backend_running" :href="backendStopUri">
+            <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.backend_running"
+               :href="backendStopUri">
                 <icon icon="stop"></icon>
                 <translate key="lang_profile_backend_stop">Stop</translate>
             </a>
@@ -46,6 +48,7 @@ export const profileBackendProps = {
         numSongs: Number,
         numPlaylists: Number,
         backendType: String,
+        hasStarted: Boolean,
         userCanManageBroadcasting: Boolean,
         userCanManageMedia: Boolean,
         manageMediaUri: String,

@@ -54,6 +54,17 @@
                         <translate :key="lang">If your web hook requires HTTP basic authentication, provide the password here.</translate>
                     </template>
                 </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-6" id="form_config_timeout"
+                                      :field="form.config.timeout" input-type="number"
+                                      :input-attrs="{ min: '0.0', max: '600.0', step: '0.1' }">
+                    <template #label="{lang}">
+                        <translate :key="lang">Optional: Request Timeout (Seconds)</translate>
+                    </template>
+                    <template #description="{lang}">
+                        <translate :key="lang">The number of seconds to wait for a response from the remote server before cancelling the request.</translate>
+                    </template>
+                </b-wrapped-form-group>
             </b-form-row>
         </b-form-group>
     </b-tab>

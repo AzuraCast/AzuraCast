@@ -18,24 +18,6 @@ class Shoutcast extends AbstractFrontend
         return true;
     }
 
-    public function getVersion(): ?string
-    {
-        $binary_path = $this->getBinary();
-        if (!$binary_path) {
-            return null;
-        }
-
-        $process = new Process([$binary_path, '--version']);
-        $process->setWorkingDirectory(dirname($binary_path));
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            return null;
-        }
-
-        return trim($process->getOutput());
-    }
-
     /**
      * @inheritDoc
      */
@@ -50,6 +32,26 @@ class Shoutcast extends AbstractFrontend
 
         return file_exists($new_path)
             ? $new_path
+            : null;
+    }
+
+    public function getVersion(): ?string
+    {
+        $binary = $this->getBinary();
+        if (!$binary) {
+            return null;
+        }
+
+        $process = new Process([$binary, '--version']);
+        $process->setWorkingDirectory(dirname($binary));
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return preg_match('/^SHOUTcast .* v(\S+) .*$/i', $process->getOutput(), $matches)
+            ? $matches[1]
             : null;
     }
 

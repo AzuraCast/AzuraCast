@@ -28,11 +28,13 @@ class CleanupHistoryTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $daysToKeep = $this->settingsRepo->readSettings()->getHistoryKeepDays();
+        // Clear station queue independent of history settings.
+        $this->queueRepo->cleanup(Entity\StationQueue::DAYS_TO_KEEP);
 
-        if ($daysToKeep !== 0) {
+        // Clean up history and listeners according to user settings.
+        $daysToKeep = $this->settingsRepo->readSettings()->getHistoryKeepDays();
+        if (0 !== $daysToKeep) {
             $this->historyRepo->cleanup($daysToKeep);
-            $this->queueRepo->cleanup($daysToKeep);
             $this->listenerRepo->cleanup($daysToKeep);
         }
     }

@@ -14,8 +14,8 @@ Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-02-15T23:07:32+00:00
-PO-Revision-Date: 2022-02-18 18:14
+POT-Creation-Date: 2022-04-23T16:48:19+00:00
+PO-Revision-Date: 2022-04-27 14:59
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -53,10 +53,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '%s is niet herkend als een service.',
       ),
-      '%s of %s Used' => 
-      array (
-        0 => '%s van %s gebruikt',
-      ),
       '%{ days } Days' => 
       array (
         0 => '%{ days } dagen',
@@ -76,7 +72,7 @@ X-Crowdin-File-ID: 4
       ),
       '%{listeners} Listener' => 
       array (
-        0 => '%{listeners} luisteraars',
+        0 => '%{listeners} Luisteraar',
         1 => '%{listeners} luisteraars',
       ),
       '%{name} - Copy' => 
@@ -116,10 +112,6 @@ X-Crowdin-File-ID: 4
       '(in seconds)' => 
       array (
         0 => '(in seconden)',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => '15-Minuten Gemiddelde',
       ),
       'A completely random track is picked for playback every time the queue is populated.' => 
       array (
@@ -453,6 +445,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Probeer ISRC automatisch op te halen wanneer deze ontbreekt',
       ),
+      'Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance.' => 
+      array (
+        0 => 'Audio-transcodering applicaties zoals Liquidsoap gebruiken na verloop van tijd een consistente hoeveelheid CPU-gebruik, wat geleidelijk dit beschikbare krediet verliest. Als u regelmatig gestolen CPU-tijd ziet, kunt u overwegen te migreren naar een VM dat CPU middelen heeft die aan uw instantie zijn toegewijd.',
+      ),
       'Audit Log' => 
       array (
         0 => 'Controle logboek',
@@ -488,6 +484,10 @@ X-Crowdin-File-ID: 4
       'AutoDJ Format' => 
       array (
         0 => 'AutoDJ formaat',
+      ),
+      'AutoDJ Queue' => 
+      array (
+        0 => 'AutoDJ Wachtrij',
       ),
       'AutoDJ Queue Length' => 
       array (
@@ -649,6 +649,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Back-ups',
       ),
+      'Balanced' => 
+      array (
+        0 => 'Gebalanceerd',
+      ),
       'Band' => 
       array (
         0 => 'Band',
@@ -663,7 +667,7 @@ X-Crowdin-File-ID: 4
       ),
       'Banned User Agents' => 
       array (
-        0 => '',
+        0 => 'Verbannen Gebruikers',
       ),
       'Base Station Directory' => 
       array (
@@ -744,6 +748,14 @@ X-Crowdin-File-ID: 4
       'CPU Load' => 
       array (
         0 => 'CPU belasting',
+      ),
+      'CPU Stats Help' => 
+      array (
+        0 => 'Hulp bij CPU-statistieken',
+      ),
+      'Cached' => 
+      array (
+        0 => 'Gebufferd',
       ),
       'Categories' => 
       array (
@@ -925,10 +937,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Artiest',
       ),
-      'Composer Plugin Mode' => 
-      array (
-        0 => 'Composer Plugin Modus',
-      ),
       'Composer Sort Order' => 
       array (
         0 => 'Artiest sorteer volgorde',
@@ -1093,9 +1101,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Stop (in cue mode)',
       ),
-      'Current' => 
+      'Current Custom Fallback File' => 
       array (
-        0 => 'Huidig',
+        0 => 'Huidig aangepast terugvalbestand',
       ),
       'Current Installed Version' => 
       array (
@@ -1156,6 +1164,10 @@ X-Crowdin-File-ID: 4
       'Custom Fading: Overlap Time (seconds)' => 
       array (
         0 => 'Op maat gemaakte overgang van muziek in (seconden)',
+      ),
+      'Custom Fallback File' => 
+      array (
+        0 => 'Aangepast terugvalbestand',
       ),
       'Custom Fields' => 
       array (
@@ -1244,6 +1256,14 @@ X-Crowdin-File-ID: 4
       'Date/Time' => 
       array (
         0 => 'Datum/Tijd',
+      ),
+      'Date/Time (Browser)' => 
+      array (
+        0 => 'Datum/Tijd (Browser)',
+      ),
+      'Date/Time (Station)' => 
+      array (
+        0 => 'Datum/Tijd (Station)',
       ),
       'Days Between Automated Assignments' => 
       array (
@@ -1401,10 +1421,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Map',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'Map "%s" is niet aangemaakt',
-      ),
       'Directory Name' => 
       array (
         0 => 'Directorynaam',
@@ -1416,6 +1432,10 @@ X-Crowdin-File-ID: 4
       'Disable Crossfading' => 
       array (
         0 => 'Crossfading uitschakelen',
+      ),
+      'Disable Optimizations' => 
+      array (
+        0 => 'Optimalisaties uitschakelen',
       ),
       'Disable Two-Factor' => 
       array (
@@ -1460,6 +1480,10 @@ X-Crowdin-File-ID: 4
       'Disk Space' => 
       array (
         0 => 'Schijfruimte',
+      ),
+      'Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.' => 
+      array (
+        0 => 'Schijfcaching maakt een systeem veel sneller en sneller in het algemeen. Het ontneemt op geen enkele manier geheugen voor toepassingen, omdat het automatisch door het besturingssysteem wordt vrijgegeven wanneer dat nodig is.',
       ),
       'Display Name' => 
       array (
@@ -1660,6 +1684,10 @@ X-Crowdin-File-ID: 4
       'Enable Broadcasting' => 
       array (
         0 => 'Uitzending inschakelen',
+      ),
+      'Enable Custom Code Plugins' => 
+      array (
+        0 => 'Plugins met aangepaste code inschakelen',
       ),
       'Enable Downloads on On-Demand Page' => 
       array (
@@ -1993,9 +2021,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'GeoLite versie "%{ version }" is momenteel geïnstalleerd.',
       ),
+      'Get Next Song' => 
+      array (
+        0 => 'Volgende nummer krijgen',
+      ),
       'Get Now Playing' => 
       array (
-        0 => '',
+        0 => 'Verkrijg het Nummer dat nu speelt',
       ),
       'Global' => 
       array (
@@ -2052,6 +2084,10 @@ X-Crowdin-File-ID: 4
       'High' => 
       array (
         0 => 'Hoog',
+      ),
+      'High I/O Wait can indicate a bottleneck with the server\'s hard disk, a potentially failing hard disk, or heavy load on the hard disk.' => 
+      array (
+        0 => 'Een hoge I/O wachttijd kan wijzen op een knelpunt met de harde schijf van de server, een mogelijk defecte harde schijf, of zware belasting van de harde schijf.',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
@@ -2231,11 +2267,15 @@ X-Crowdin-File-ID: 4
       ),
       'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
       array (
-        0 => '',
+        0 => 'Als u regelmatig verschillende URL\'s gebruikt om toegang te krijgen tot AzuraCast, moet u de "Voorkeur Browser URL" instelling aanzetten.',
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Als je een bug of fout ontdekt, kun je een GitHub issue indienen met behulp van de onderstaande link.',
+      ),
+      'If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.' => 
+      array (
+        0 => 'Als uw installatie beperkt is door CPU of geheugen, kunt u deze instelling wijzigen om de bronnen die door Liquidsoap worden gebruikt aan te passen.',
       ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
@@ -2329,9 +2369,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Data Fixtures installeren',
       ),
-      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
+      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.' => 
       array (
-        0 => 'Geef Liquidsoap de instructie om replaygain metadata te gebruiken, die gekoppeld zijn aan een nummer, om het volume niveau te controleren.',
+        0 => 'Liquidsoap instrueren om alle replaygain metadata van een liedje te gebruiken om het volumeniveau te regelen. Dit kan het CPU-verbruik verhogen.',
       ),
       'Instructions' => 
       array (
@@ -2405,6 +2445,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Laatste 2 jaar',
       ),
+      'Last 24 Hours' => 
+      array (
+        0 => '',
+      ),
       'Last 30 Days' => 
       array (
         0 => 'Laatste 30 dagen',
@@ -2427,7 +2471,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last Run' => 
       array (
-        0 => '',
+        0 => 'Laatst uitgevoerd',
       ),
       'Last Year' => 
       array (
@@ -2525,17 +2569,25 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Liquidsoap log',
       ),
+      'Liquidsoap Performance Tuning' => 
+      array (
+        0 => 'Liquidsoap Prestatie Tuning',
+      ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Geef één IP-adres of groep (in CIDR formaat) per regel aan.',
       ),
       'List one user agent per line. Wildcards (*) are allowed.' => 
       array (
-        0 => '',
+        0 => 'Laat één user agent per regel zien. jokers (*) zijn toegestaan.',
       ),
       'Listener Analytics Collection' => 
       array (
         0 => 'Luisteraars statistieken',
+      ),
+      'Listener History' => 
+      array (
+        0 => 'Luisteraar Geschiedenis',
       ),
       'Listener Request' => 
       array (
@@ -2585,13 +2637,21 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Live Streamer:',
       ),
+      'Live Streaming' => 
+      array (
+        0 => 'Live Streaming',
+      ),
       'Live stream connected.' => 
       array (
-        0 => '',
+        0 => 'Live stream verbonden.',
       ),
       'Live stream disconnected.' => 
       array (
-        0 => '',
+        0 => 'Live stream ontkoppeld.',
+      ),
+      'Load Average' => 
+      array (
+        0 => 'Gemiddelde belasting',
       ),
       'Loading...' => 
       array (
@@ -2767,7 +2827,7 @@ X-Crowdin-File-ID: 4
       ),
       'Matched' => 
       array (
-        0 => '',
+        0 => 'Overeenkomend',
       ),
       'Matomo API Token' => 
       array (
@@ -2829,6 +2889,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Geheugen',
       ),
+      'Memory Stats Help' => 
+      array (
+        0 => 'Geheugen Statistieken Help',
+      ),
       'Merge playlist to play as a single track.' => 
       array (
         0 => 'Voeg afspeellijst samen om af te spelen als één nummer.',
@@ -2872,7 +2936,8 @@ X-Crowdin-File-ID: 4
       'Microphone
                             Source' => 
       array (
-        0 => '',
+        0 => 'Microfoon
+                            bron',
       ),
       'Minimum Port for Station Port Assignment' => 
       array (
@@ -2917,6 +2982,10 @@ X-Crowdin-File-ID: 4
       'Most Recent Backup Log' => 
       array (
         0 => 'Meest recente back-up log',
+      ),
+      'Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server "stealing" CPU time from your VM and vice-versa.' => 
+      array (
+        0 => 'De meeste hosting providers zullen meer Virtual Machines (VPSen) op een server zetten dan de hardware aan kan wanneer elke VM op volle CPU belasting draait. Dit wordt over-provisioning genoemd, wat ertoe kan leiden dat andere VM\'s op de server CPU-tijd van jouw VM "stelen" en vice versa.',
       ),
       'Mount Name:' => 
       array (
@@ -2982,6 +3051,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Hulp nodig?',
       ),
+      'Network Interfaces' => 
+      array (
+        0 => 'Netwerk Interfaces',
+      ),
       'Never run' => 
       array (
         0 => 'Nooit uitvoeren',
@@ -3040,7 +3113,7 @@ X-Crowdin-File-ID: 4
       ),
       'Next Run' => 
       array (
-        0 => '',
+        0 => 'Volgende uitvoering',
       ),
       'Nginx Access Log' => 
       array (
@@ -3060,7 +3133,7 @@ X-Crowdin-File-ID: 4
       ),
       'No Match' => 
       array (
-        0 => '',
+        0 => 'Geen overeenkomsten',
       ),
       'No directory specified' => 
       array (
@@ -3116,7 +3189,7 @@ X-Crowdin-File-ID: 4
       ),
       'Not Run' => 
       array (
-        0 => '',
+        0 => 'Niet Uitgevoerd',
       ),
       'Not Running' => 
       array (
@@ -3238,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Zodra je automatische toewijzing hebt geconfigureerd, klik je op de knop hieronder om het toewijzing proces uit te voeren.',
       ),
+      'One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools.' => 
+      array (
+        0 => 'Een belangrijk punt in I/O Wait is dat het een knelpunt of probleem kan aangeven, maar ook volledig zinloos kan zijn. afhankelijk van de werklast en de algemene beschikbare middelen. Een constant hoge I/O Wait moet aanleiding geven tot verder onderzoek met geavanceerdere middelen.',
+      ),
       'Only Send One Tweet Every...' => 
       array (
         0 => 'Stuur slechts één Tweet elke...',
@@ -3269,6 +3346,10 @@ X-Crowdin-File-ID: 4
       'Optional: HTTP Basic Authentication Username' => 
       array (
         0 => 'Optioneel: HTTP standaard authenticatie gebruikersnaam',
+      ),
+      'Optional: Request Timeout (Seconds)' => 
+      array (
+        0 => 'Optioneel: Time-out verzoek (Seconden)',
       ),
       'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
       array (
@@ -3312,7 +3393,7 @@ X-Crowdin-File-ID: 4
       ),
       'Original Path' => 
       array (
-        0 => '',
+        0 => 'Oorspronkelijke pad',
       ),
       'Original Release Time' => 
       array (
@@ -3376,7 +3457,7 @@ X-Crowdin-File-ID: 4
       ),
       'Pending Requests' => 
       array (
-        0 => '',
+        0 => 'Verzoeken in afwachting',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3492,8 +3573,7 @@ X-Crowdin-File-ID: 4
       ),
       'Playlist: %s' => 
       array (
-        0 => '
-Afspeellijst: %s',
+        0 => '',
       ),
       'Playlists' => 
       array (
@@ -3675,9 +3755,9 @@ Afspeellijst: %s',
       array (
         0 => 'Klaar om te beginnen met uitzenden? Klik om uw station te starten.',
       ),
-      'Rebuild AutoDJ Queue' => 
+      'Received' => 
       array (
-        0 => 'AutoDJ wachtrij opnieuw opbouwen',
+        0 => 'Ontvangen',
       ),
       'Record Live Broadcasts' => 
       array (
@@ -3747,9 +3827,21 @@ Afspeellijst: %s',
       array (
         0 => 'Releasedatum',
       ),
+      'Reload Configuration' => 
+      array (
+        0 => 'Configuratie Herladen',
+      ),
       'Reload System Data' => 
       array (
         0 => 'Herlaad systeemgegevens',
+      ),
+      'Reload broadcasting? Current listeners will not be disconnected.' => 
+      array (
+        0 => 'Uitzending herladen? De huidige luisteraars worden niet verbroken.',
+      ),
+      'Reload to Apply Changes' => 
+      array (
+        0 => 'Opnieuw laden om wijzigingen toe te passen',
       ),
       'Remember me' => 
       array (
@@ -3827,6 +3919,10 @@ Afspeellijst: %s',
       array (
         0 => 'Extern: S3 Compatibel',
       ),
+      'Remote: SFTP' => 
+      array (
+        0 => '',
+      ),
       'Remove' => 
       array (
         0 => 'Verwijderen',
@@ -3857,7 +3953,7 @@ Afspeellijst: %s',
       ),
       'Repeat' => 
       array (
-        0 => '',
+        0 => 'Hehaal',
       ),
       'Replace Album Cover Art' => 
       array (
@@ -3881,7 +3977,7 @@ Afspeellijst: %s',
       ),
       'Request History' => 
       array (
-        0 => '',
+        0 => 'Verzoek geschiedenis',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -3927,10 +4023,6 @@ Afspeellijst: %s',
       array (
         0 => 'Uitzenden opnieuw starten? Dit zal alle huidige luisteraars ontkoppelen.',
       ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => 'Herstart om wijzigingen toe te passen',
-      ),
       'Restoring Backups' => 
       array (
         0 => 'Herstellen van back-ups',
@@ -3953,7 +4045,7 @@ Afspeellijst: %s',
       ),
       'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.' => 
       array (
-        0 => '',
+        0 => 'Routinesynchronisatie is momenteel uitgeschakeld. Zorg ervoor dat u deze weer inschakelt om routinematige onderhoudstaken te hervatten.',
       ),
       'Rows per page' => 
       array (
@@ -3987,6 +4079,14 @@ Afspeellijst: %s',
       array (
         0 => 'Database migraties worden uitgevoerd',
       ),
+      'SFTP Host' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Password' => 
+      array (
+        0 => '',
+      ),
       'SFTP Port' => 
       array (
         0 => 'SFTP-poort',
@@ -3994,6 +4094,18 @@ Afspeellijst: %s',
       'SFTP Port: %d' => 
       array (
         0 => 'SFTP poort: %d',
+      ),
+      'SFTP Private Key' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Private Key Pass Phrase' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Username' => 
+      array (
+        0 => '',
       ),
       'SFTP Users' => 
       array (
@@ -4070,6 +4182,10 @@ Afspeellijst: %s',
       'Save Changes' => 
       array (
         0 => 'Instellingen Opslaan',
+      ),
+      'Save Changes first' => 
+      array (
+        0 => 'Wijzigingen eerst opslaan',
       ),
       'Save and Continue' => 
       array (
@@ -4155,6 +4271,10 @@ Afspeellijst: %s',
       array (
         0 => 'Selecteer',
       ),
+      'Select Custom Fallback File' => 
+      array (
+        0 => 'Selecteer aangepast terugval bestand',
+      ),
       'Select File' => 
       array (
         0 => 'Selecteer bestand',
@@ -4214,6 +4334,10 @@ Afspeellijst: %s',
       'Send Recovery E-mail' => 
       array (
         0 => 'Verstuur herstel-e-mail',
+      ),
+      'Send Test Message' => 
+      array (
+        0 => 'Testbericht verzenden',
       ),
       'Send an e-mail to specified address(es).' => 
       array (
@@ -4603,6 +4727,10 @@ Afspeellijst: %s',
       array (
         0 => 'Tijdzone',
       ),
+      'Station reloaded.' => 
+      array (
+        0 => 'Station is opnieuw geladen.',
+      ),
       'Station restarted.' => 
       array (
         0 => 'Station is opnieuw gestart.',
@@ -4622,6 +4750,14 @@ Afspeellijst: %s',
       'Statistics Overview' => 
       array (
         0 => 'Statistieken overzicht',
+      ),
+      'Steal' => 
+      array (
+        0 => 'Gestolen',
+      ),
+      'Steal (St)' => 
+      array (
+        0 => 'Gestolen (st)',
       ),
       'Step 1: Scan QR Code' => 
       array (
@@ -4705,7 +4841,7 @@ Afspeellijst: %s',
       ),
       'Streamer: %s' => 
       array (
-        0 => 'Streamer: %s',
+        0 => '',
       ),
       'Streamers enabled!' => 
       array (
@@ -4749,11 +4885,11 @@ Afspeellijst: %s',
       ),
       'Synchronization Disabled' => 
       array (
-        0 => '',
+        0 => 'Synchronisatie Uitgeschakeld',
       ),
       'Synchronization Not Recently Run' => 
       array (
-        0 => '',
+        0 => 'Synchronisatie niet recent uitgevoerd',
       ),
       'Synchronization Tasks' => 
       array (
@@ -4789,7 +4925,7 @@ Afspeellijst: %s',
       ),
       'Task Name' => 
       array (
-        0 => '',
+        0 => 'Taak Naam',
       ),
       'Telegram Chat Message' => 
       array (
@@ -4803,6 +4939,22 @@ Afspeellijst: %s',
       array (
         0 => 'Test',
       ),
+      'Test Message' => 
+      array (
+        0 => 'Test Bericht',
+      ),
+      'Test message sent successfully.' => 
+      array (
+        0 => 'Test Bericht succesvol verzonden.',
+      ),
+      'Test message sent.' => 
+      array (
+        0 => 'Test bericht verzonden.',
+      ),
+      'The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this.' => 
+      array (
+        0 => 'De I/O Wait is het percentage tijd dat de CPU wacht op toegang tot de schijf voordat het kan doorgaan met het werk dat afhankelijk is van het resultaat hiervan.',
+      ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
         0 => 'De URL dat POST berichten zal ontvangen telkens wanneer er een Event wordt aangeroepen.',
@@ -4810,6 +4962,10 @@ Afspeellijst: %s',
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => 'Het account dat gekoppeld is aan het e-mailadres "%s" is ingesteld als administrator',
+      ),
+      'The amount of memory Linux is using for disk caching.' => 
+      array (
+        0 => 'De hoeveelheid geheugen Linux gebruikt voor schijfcaching.',
       ),
       'The application environment.' => 
       array (
@@ -4826,6 +4982,14 @@ Afspeellijst: %s',
       'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
       array (
         0 => 'De contactpersoon van de podcast. Kan vereist zijn om podcast te tonen op diensten zoals Apple Podcasts, Spotify, Google Podcasts, etc.',
+      ),
+      'The current CPU usage including I/O Wait and Steal.' => 
+      array (
+        0 => 'Het huidige CPU-gebruik, inclusief I/O Wait en Steal.',
+      ),
+      'The current Memory usage excluding cached memory.' => 
+      array (
+        0 => 'Het huidige geheugengebruik exclusief gecached geheugen.',
       ),
       'The date when the episode should be published.' => 
       array (
@@ -4899,6 +5063,10 @@ Afspeellijst: %s',
       array (
         0 => 'Het aantal seconden van het signaal dat opgeslagen moet worden in geval van een onderbreking.',
       ),
+      'The number of seconds to wait for a response from the remote server before cancelling the request.' => 
+      array (
+        0 => 'Het aantal seconden dat moet worden gewacht op een antwoord van de server voordat het verzoek wordt geannuleerd.',
+      ),
       'The numeric site ID for this site.' => 
       array (
         0 => 'Het numerieke site-ID voor deze site.',
@@ -4941,7 +5109,7 @@ Afspeellijst: %s',
       ),
       'The routine synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => '',
+        0 => 'De routine synchronisatie taak is onlangs niet uitgevoerd. Dit kan duiden op een fout met uw installatie.',
       ),
       'The song ID you specified cannot be requested for this station.' => 
       array (
@@ -5007,6 +5175,10 @@ Afspeellijst: %s',
       array (
         0 => 'Thema',
       ),
+      'There is no existing custom fallback file associated with this station.' => 
+      array (
+        0 => 'Er is geen bestaand aangepaste terugvalbestand gekoppeld aan dit station.',
+      ),
       'There is no existing intro file associated with this mount point.' => 
       array (
         0 => 'Er is geen bestaand intro bestand gekoppeld aan dit mount punt.',
@@ -5042,6 +5214,10 @@ Afspeellijst: %s',
       'This can have an adverse impact on system performance. You should disable this when possible.' => 
       array (
         0 => 'Dit kan een negatieve invloed hebben op de systeemprestaties. U kunt dit het beste uitschakelen als dit mogelijk is.',
+      ),
+      'This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.' => 
+      array (
+        0 => 'Hierdoor kan het lijken alsof uw geheugen laag is, terwijl dat in werkelijkheid niet zo is. Sommige monitoring oplossingen/panels nemen caching geheugen mee in hun gebruikte geheugenstatistieken zonder dit aan te geven.',
       ),
       'This code will be included in the frontend configuration. Allowed formats are:' => 
       array (
@@ -5107,6 +5283,10 @@ Afspeellijst: %s',
       array (
         0 => 'Dit bestand is automatisch gegenereerd door AzuraCast.',
       ),
+      'This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.' => 
+      array (
+        0 => 'Dit bestand zal op je radiostation worden afgespeeld wanneer er geen media gepland staan om af te spelen of wanneer er een kritieke fout optreedt die de reguliere uitzending onderbreekt.',
+      ),
       'This installation has not been backed up in the last two weeks.' => 
       array (
         0 => 'Er is geen back-up van deze installatie gemaakt in de afgelopen twee weken.',
@@ -5118,6 +5298,10 @@ Afspeellijst: %s',
       'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
       array (
         0 => 'Dit introductiebestand moet precies overeenkomen met de bitrate en het formaat van het mount point zelf.',
+      ),
+      'This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly.' => 
+      array (
+        0 => 'Dit is een testbericht van AzuraCast. Als u dit bericht ontvangt, betekent dit dat uw e-mailinstellingen correct zijn geconfigureerd.',
       ),
       'This is an advanced feature and custom code is not officially supported by AzuraCast. You may break your station by adding custom code, but removing it should fix any issues.' => 
       array (
@@ -5275,6 +5459,14 @@ Afspeellijst: %s',
       array (
         0 => 'Tijdzone',
       ),
+      'Time spent waiting for disk I/O to be completed.' => 
+      array (
+        0 => 'Tijd besteed aan het wachten op schijf I/O om te worden voltooid.',
+      ),
+      'Time stolen by other virtual machines on the same physical server.' => 
+      array (
+        0 => 'Tijd gestolen door andere virtuele machines op dezelfde fysieke server.',
+      ),
       'Title' => 
       array (
         0 => 'Titel',
@@ -5282,6 +5474,10 @@ Afspeellijst: %s',
       'Title Sort Order' => 
       array (
         0 => 'Titel sorteervolgorde',
+      ),
+      'To alleviate this potential problem with shared CPU resources, hosts assign "credits" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM\'s assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the "Steal" or "St" value.' => 
+      array (
+        0 => 'Om dit potentiële probleem te verlichten met gedeelde CPU-middelen, hosts wijzen "credits" toe aan een VPS die worden gebruikt volgens een algoritme gebaseerd op de CPU-belasting en de tijd waarop de CPU-belasting wordt gegenereerd. Als uw VM\'s toegewezen krediet wordt gebruikt, zullen ze de CPU-tijd van uw VM gebruiken en aan andere VM\'s op de machine toewijzen. Dit wordt gezien als de "Steal" of "St" waarde.',
       ),
       'To download the GeoLite database:' => 
       array (
@@ -5331,13 +5527,25 @@ Afspeellijst: %s',
       array (
         0 => 'Totaal',
       ),
+      'Total Disk Space' => 
+      array (
+        0 => 'Totale schijfruimte',
+      ),
       'Total Listener Hours' => 
       array (
         0 => 'Totaal aantal luisteruren',
       ),
+      'Total RAM' => 
+      array (
+        0 => 'Totale RAM',
+      ),
       'Track Number' => 
       array (
         0 => 'Track Nummer',
+      ),
+      'Transmitted' => 
+      array (
+        0 => 'Verzonden',
       ),
       'Triggers' => 
       array (
@@ -5427,6 +5635,10 @@ Afspeellijst: %s',
       array (
         0 => 'URL gebruiker',
       ),
+      'Unassigned Files' => 
+      array (
+        0 => 'Niet toegewezen Bestanden',
+      ),
       'Unique' => 
       array (
         0 => 'Uniek',
@@ -5499,6 +5711,14 @@ Afspeellijst: %s',
       array (
         0 => 'Upload het bestand op deze pagina om het automatisch in de juiste map te vinden.',
       ),
+      'Use' => 
+      array (
+        0 => 'Gebruik',
+      ),
+      'Use (Us)' => 
+      array (
+        0 => 'Gebruik (ons)',
+      ),
       'Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.' => 
       array (
         0 => 'Gebruik API-sleutels om te verifiëren met de AzuraCast API met dezelfde rechten als uw gebruikersaccount.',
@@ -5514,6 +5734,14 @@ Afspeellijst: %s',
       'Use Icecast 2.4 on this server.' => 
       array (
         0 => 'Gebruik Icecast 2.4 op deze server.',
+      ),
+      'Use Less CPU (Uses More Memory)' => 
+      array (
+        0 => 'Minder CPU gebruiken (Gebruikt meer geheugen)',
+      ),
+      'Use Less Memory (Uses More CPU)' => 
+      array (
+        0 => 'Gebruik minder geheugen (Gebruikt meer CPU)',
       ),
       'Use Liquidsoap on this server.' => 
       array (
@@ -5542,6 +5770,10 @@ Afspeellijst: %s',
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
         0 => 'Gebruik de Telegram Bot API om een bericht naar een kanaal te sturen.',
+      ),
+      'Used' => 
+      array (
+        0 => 'Gebruikt',
       ),
       'Used for "Forgot Password" functionality, web hooks and other functions.' => 
       array (
@@ -5577,7 +5809,7 @@ Afspeellijst: %s',
       ),
       'Username:' => 
       array (
-        0 => '',
+        0 => 'Gebruikersnaam:',
       ),
       'Users' => 
       array (
@@ -5598,10 +5830,6 @@ Afspeellijst: %s',
       'Usually enabled for port 465, disabled for ports 587 or 25.' => 
       array (
         0 => 'Meestal ingeschakeld voor poort 465, uitgeschakelde havens 587 of 25.',
-      ),
-      'Utilities' => 
-      array (
-        0 => 'Hulpprogramma’s',
       ),
       'Valid options: %s' => 
       array (
@@ -5663,6 +5891,14 @@ Afspeellijst: %s',
       array (
         0 => 'Volume',
       ),
+      'Wait' => 
+      array (
+        0 => 'Wacht',
+      ),
+      'Wait (Wa)' => 
+      array (
+        0 => 'Wacht (Wa)',
+      ),
       'Warning' => 
       array (
         0 => 'Waarschuwing',
@@ -5721,7 +5957,7 @@ Afspeellijst: %s',
       ),
       'WebDJ' => 
       array (
-        0 => '',
+        0 => 'WebDJ',
       ),
       'Website' => 
       array (
@@ -5807,6 +6043,10 @@ Afspeellijst: %s',
       array (
         0 => 'U draait momenteel versie %s. We raden u aan een update uit te voeren.',
       ),
+      'You are not permitted to submit requests.' => 
+      array (
+        0 => 'Je hebt geen toestemming om aanvragen in te dienen.',
+      ),
       'You can also upload files in bulk via SFTP.' => 
       array (
         0 => 'U kunt ook bestanden in bulk uploaden via SFTP.',
@@ -5873,7 +6113,7 @@ Afspeellijst: %s',
       ),
       'You may want to update your base URL to ensure it is correct.' => 
       array (
-        0 => '',
+        0 => 'Misschien wilt u uw basis URL bijwerken om er zeker van te zijn dat deze correct is.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -5893,7 +6133,7 @@ Afspeellijst: %s',
       ),
       'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
-        0 => '',
+        0 => 'Uw "Basis URL" instelling (%s) komt niet overeen met de URL die u momenteel gebruikt (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

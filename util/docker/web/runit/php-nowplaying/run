@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec sudo -E -u azuracast php /var/azuracast/www/bin/console azuracast:sync:nowplaying

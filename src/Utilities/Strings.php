@@ -51,7 +51,8 @@ class Strings
         $max = mb_strlen($keyspace, '8bit') - 1;
 
         for ($i = 0; $i < $length; ++$i) {
-            $str .= $keyspace[random_int(0, $max)];
+            /** @noinspection RandomApiMigrationInspection */
+            $str .= $keyspace[rand(0, $max)];
         }
         return $str;
     }

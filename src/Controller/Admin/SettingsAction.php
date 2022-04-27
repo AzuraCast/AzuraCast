@@ -25,9 +25,10 @@ class SettingsAction
             id: 'admin-settings',
             title: __('System Settings'),
             props: [
-                'apiUrl'         => (string)$router->named('api:admin:settings', [
+                'apiUrl' => (string)$router->named('api:admin:settings', [
                     'group' => Settings::GROUP_GENERAL,
                 ]),
+                'testMessageUrl' => (string)$router->named('api:admin:send-test-message'),
                 'releaseChannel' => $version->getReleaseChannelEnum()->value,
             ],
         );

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
-use App\Utilities\File;
 use Intervention\Image\Image;
-use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class BrowserIconCustomAsset extends AbstractCustomAsset
 {
@@ -42,9 +41,7 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
     public function upload(Image $image): void
     {
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
-        if (!mkdir($uploadsDir) && !is_dir($uploadsDir)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $uploadsDir));
-        }
+        (new Filesystem())->mkdir($uploadsDir);
 
         $newImage = clone $image;
         $newImage->resize(256, 256);
@@ -60,7 +57,7 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
     public function delete(): void
     {
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
-        File::rmdirRecursive($uploadsDir);
+        (new Filesystem())->remove($uploadsDir);
     }
 
     public function getUrlForSize(int $size): string

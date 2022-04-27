@@ -3,7 +3,107 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
-The Rolling Release version has no new changes from the latest Stable release.
+## New Features/Changes
+
+There have been no new features in the Rolling Release since the latest Stable release.
+
+## Code Quality/Technical Changes
+
+There have been no technical changes in the Rolling Release since the latest Stable release.
+
+## Bug Fixes
+
+There have been no new bug fixes in the Rolling Release since the latest Stable release.
+
+---
+
+# AzuraCast 0.16.0 (Apr 27, 2022)
+
+## New Features/Changes
+
+- AzuraCast can now process new media files, including ScreamTracker Modules (.stm, .s3m), Module/Extended Modules
+  (.mod, .xm), AIFF (.aiff), and Windows Media files (.wma, .wmv, .asf)
+
+- Each station can now have its own custom "fallback" file (the error message that plays when you have no media
+  configured or a broadcasting error otherwise occurs on your station) uploaded via the web UI.
+
+- If a playlist is marked as requestable but has scheduled date/time limits, it will only be requestable within those
+  scheduled dates/times.
+
+- The System Administration homepage now includes much more detailed statistics on CPU and RAM consumption.
+
+- You can now send a test e-mail to yourself from the same System Settings panel where you provide e-mail service info.
+
+- A new report has been added, "Unassigned Files", that shows all media that has not been assigned to any playlist.
+
+- A new advanced feature has been added that allows Liquidsoap users to broadly tune their installation to optimize in
+  favor of using less CPU at the expense of memory, using less memory at the expense of CPU, or a "balanced"
+  configuration between the two.
+
+- Any IP ranges, countries or user agents you have banned from connecting to your stream will also be banned from
+  submitting song requests to your station.
+
+- For stations that support the zero-disconnect reload feature, you can now opt to either "Reload Configuration" (a soft
+  reload that does not disconnect listeners) or "Restart Broadcasting" (a hard reload that does) in the event the latter
+  is needed for troubleshooting.
+
+- When editing custom Liquidsoap configuration, your changes will be evaluated immediately by Liquidsoap, which will
+  alert you of any errors immediately, avoiding the need to restart broadcasting to test script changes.
+
+- You can now specify a custom max timeout for "Generic" web hooks (that make HTTP requests to external URLs).
+
+- You can now add Storage Locations that use SFTP connections.
+
+## Code Quality/Technical Changes
+
+- **Unified Docker Container**: We have combined all of our Docker containers into a single unified container that
+  includes the database, cache, stations container and more. This combined container is located
+  at [ghcr.io/azuracast/azuracast](https://github.com/azuracast/AzuraCast/pkgs/container/azuracast). For most users, no
+  changes will be needed when migrating to the latest version of AzuraCast, but if you have created
+  a `docker-compose.override.yml` file, you should
+  follow [our instructions](https://github.com/AzuraCast/AzuraCast/issues/5191) to update the file.
+
+- We have enabled the built-in "defender" service for our built-in SFTP provider, so repeated failed authentication
+  attempts will automatically be blocked by the system. If you find yourself locked out of the system, restarting Docker
+  will clear the block list.
+
+- Stations that do not have any media assigned to any playlists won't start automatically, so for installations with
+  many empty stations, resources will be significantly saved.
+
+- The way Liquidsoap handles remote media locations (i.e. Dropbox or S3) has been rewritten to be more compatible and to
+  work with features that previously didn't work, like advanced playlists. It will also automatically remove media when
+  it's finished playing, which should help with disk space usage.
+
+- All album art across the application has the `loading="lazy"` attribute to encourage supported browsers to defer its
+  loading until after other content is rendered, improving performance.
+
+- Internal API requests (Icecast listener auth, Liquidsoap API calls) are now handled via a separate, dedicated "back
+  channel" and won't be affected as severely by heavy traffic on AzuraCast from public viewers or administrators.
+
+- When processing media, we now use a combination of two libraries (php-getid3 and ffmpeg/ffprobe) to process media and
+  retrieve rich metadata; this greatly expands the types of media that we can handle in AzuraCast to include essentially
+  any media that Liquidsoap itself can play.
+
+## Bug Fixes
+
+- A bug preventing "Forgot Password" resets and login token generation from working was fixed.
+
+- Deleting stations will no longer recursively delete their base directories. This is to prevent accidental deletion of
+  media that is used by other services. If you want to clear the media from a station, you should remove it prior to
+  deleting the station, or do so directly via the filesystem.
+
+- Updating now automatically clears the unplayed station queue for all stations.
+
+- A significant performance issue with the `station_queue` table has been identified and new indices have been added,
+  resulting in significant improvements for some behind-the-scenes functionality (like AutoDJ "next song" calculation).
+
+- A bug preventing playlists from being imported multiple times in the same pageview has been fixed.
+
+- An issue with SSL auto-renewal not applying to Icecast direct port connections has been fixed.
+
+- Websocket Now Playing updates now work on stations with non-ASCII characters in their "short name".
+
+- Expanding text areas (i.e. in Edit Liquidsoap Configuration) will now properly expand to fit their contents.
 
 ---
 

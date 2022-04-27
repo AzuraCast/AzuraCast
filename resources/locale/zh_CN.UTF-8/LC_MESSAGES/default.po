@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-15T23:07:32+00:00\n"
-"PO-Revision-Date: 2022-02-18 18:14\n"
+"POT-Creation-Date: 2022-04-23T16:48:19+00:00\n"
+"PO-Revision-Date: 2022-04-27 14:59\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Crowdin-Project: azuracast\n"
@@ -31,11 +31,11 @@ msgstr "%d 排队的信息"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Radio/AbstractAdapter.php:257
 msgid "%s cannot start"
-msgstr "%s无法启动"
+msgstr "%s 无法启动"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Radio/AbstractAdapter.php:266
 msgid "%s cannot stop"
-msgstr "％s不能停止"
+msgstr "%s 不能停止"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Radio/AbstractAdapter.php:275
 msgid "%s encountered an error"
@@ -44,11 +44,6 @@ msgstr "%s遇到了一个错误"
 #: /home/runner/work/AzuraCast/AzuraCast/src/Radio/AbstractAdapter.php:248
 msgid "%s is not recognized as a service."
 msgstr "%s不被承认为服务。"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:67
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:82
-msgid "%s of %s Used"
-msgstr "已使用的%s"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:107
 msgid "%{ days } Days"
@@ -74,17 +69,17 @@ msgstr[0] "%{listeners} 听众"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/CloneModal.vue:77
 msgid "%{name} - Copy"
-msgstr "%{名称} - 复制"
+msgstr "%{name} - 复制"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:71
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:74
 msgid "%{numPlaylists} playlist"
 msgid_plural "%{numPlaylists} playlists"
-msgstr[0] "%{numPlaylists}播放列表"
+msgstr[0] "%{numPlaylists} 播放列表"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:68
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:71
 msgid "%{numSongs} uploaded song"
 msgid_plural "%{numSongs} uploaded songs"
-msgstr[0] "%{numSongs}上传的歌曲"
+msgstr[0] "%{numSongs} 上传的歌曲"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Common/Quota.vue:59
 msgid "%{spaceUsed} Used"
@@ -98,21 +93,17 @@ msgstr ""
 msgid "%{station} - Copy"
 msgstr "%{station} - 复制"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:21
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
 msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
-msgstr "(Docker Compose)所有Docker容器都以这个名字为前缀。安装后不要改变这个名字。"
+msgstr "(Docker Compose) 所有Docker容器都以这个名字为前缀。安装后不要改变这个名字。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:28
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
 msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
 msgstr "(Docker Compose) Docker Compose操作失败前的等待时间。在性能较低的计算机上增加这个时间。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:189
 msgid "(in seconds)"
 msgstr "(单位：秒)"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:50
-msgid "15-Minute Average"
-msgstr "平均15分钟"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:48
 msgid "A completely random track is picked for playback every time the queue is populated."
@@ -134,9 +125,9 @@ msgstr "API \"Access-Control-Allow-Origin\" 标头"
 msgid "API Documentation"
 msgstr "API文档"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:10
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:39
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:187
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:10
 msgid "API Key Description/Comments"
 msgstr "API密钥描述/助是"
 
@@ -147,11 +138,11 @@ msgstr "API密钥描述/助是"
 msgid "API Keys"
 msgstr "API密钥"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:87
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:90
 msgid "API Version"
 msgstr "API 版本"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:56
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:59
 msgid "Access Key ID"
 msgstr "访问密钥ID"
 
@@ -184,29 +175,29 @@ msgstr "找不到帐户。"
 msgid "Account recovery e-mail sent."
 msgstr "发送账户恢复电子邮件。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:117
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:79
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:73
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:65
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:75
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:153
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:117
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:66
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:65
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:73
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:79
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:190
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:79
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:269
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:75
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:111
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:84
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:94
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:75
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:158
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:111
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:81
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:92
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:84
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:158
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:274
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:94
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:79
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:84
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:190
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:69
 msgid "Actions"
 msgstr "操作"
@@ -215,8 +206,8 @@ msgstr "操作"
 msgid "Adapter"
 msgstr "适配器"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:106
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:68
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:106
 msgid "Add API Key"
 msgstr "添加API密钥"
 
@@ -234,8 +225,8 @@ msgstr "添加# ＃集数"
 msgid "Add Files to Playlist"
 msgstr "将文件添加到播放列表"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/EditModal.vue:91
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/EditModal.vue:91
 msgid "Add Mount Point"
 msgstr "添加挂载点"
 
@@ -248,8 +239,8 @@ msgstr "添加新的GitHub问题"
 msgid "Add Playlist"
 msgstr "添加播放列表"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastEditModal.vue:57
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:18
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastEditModal.vue:57
 msgid "Add Podcast"
 msgstr "添加播客"
 
@@ -262,8 +253,8 @@ msgstr "添加记录"
 msgid "Add Remote Relay"
 msgstr "添加远程中继"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/EditModal.vue:38
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/EditModal.vue:38
 msgid "Add Role"
 msgstr "添加角色"
 
@@ -277,29 +268,29 @@ msgstr "添加SFTP用户"
 msgid "Add Schedule Item"
 msgstr "增加时间表项目"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/StationForm.vue:43
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:50
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:11
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:50
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/StationForm.vue:43
 msgid "Add Station"
 msgstr "添加电台"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:15
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/EditModal.vue:27
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:15
 msgid "Add Storage Location"
 msgstr "添加存储位置"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:21
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/EditModal.vue:57
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:21
 msgid "Add Streamer"
 msgstr "添加流媒体"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/EditModal.vue:30
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:11
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/EditModal.vue:30
 msgid "Add User"
 msgstr "添加用户"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:187
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:15
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:65
 msgid "Add Web Hook"
 msgstr "添加网络钩子"
 
@@ -331,20 +322,21 @@ msgstr "管理电台"
 msgid "Administer Storage Locations"
 msgstr "管理存储位置"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:4
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/AdminForm.vue:104
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:19
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:20
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/IndexAction.php:30
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/sidebar.phtml:3
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:14
 msgid "Administration"
 msgstr "管理"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Form/BWrappedFormCheckbox.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Form/BWrappedFormGroup.vue:26
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:48
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:57
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:76
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:85
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:49
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:91
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Form/BWrappedFormGroup.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Form/BWrappedFormCheckbox.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/config/assets.php:86
 msgid "Advanced"
 msgstr "高级"
@@ -357,7 +349,7 @@ msgstr "高级配置"
 msgid "Advanced Manual AutoDJ Scheduling Options"
 msgstr "高级手动AutoDJ调度选项"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:83
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
 msgid "Advanced: Use Privileged Docker Settings"
 msgstr "高级。使用特权的Docker设置"
 
@@ -365,19 +357,19 @@ msgstr "高级。使用特权的Docker设置"
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr "汇总听众统计数据用于显示整个系统的电台报告。基于IP的听众统计用于查看实时听众跟踪，可能是版税报告所需。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:69
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:118
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:232
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:237
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:27
 msgid "Album"
 msgstr "专辑"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:88
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:138
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:147
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:281
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:137
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:296
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:96
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:138
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:301
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AlbumArt.vue:41
 msgid "Album Art"
 msgstr "专辑封面"
@@ -399,8 +391,8 @@ msgstr "所有权限"
 msgid "All Playlists"
 msgstr "所有播放列表"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:100
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:26
 msgid "All Podcasts"
 msgstr "所有播客"
 
@@ -436,7 +428,7 @@ msgstr "允许的IP地址"
 msgid "Always Use HTTPS"
 msgstr "一律使用HTTPS"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:15
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:16
 msgid "Amplify: Amplification (dB)"
 msgstr "放大: 放大 (dB)"
 
@@ -477,11 +469,11 @@ msgstr "只要听众人数增加"
 msgid "Apply Compression and Normalization"
 msgstr "应用压缩和规范化"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:163
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:173
 msgid "Apply for an API key at Last.fm"
 msgstr "在Last.fm申请一个API密钥"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:145
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:148
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/vendor/bootstrapVue.js:59
 msgid "Applying changes..."
 msgstr "应用更改中..."
@@ -491,18 +483,18 @@ msgid "Are you sure?"
 msgstr "您确定吗？"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:115
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:107
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:91
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:107
 msgid "Art"
 msgstr "艺术"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:56
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:117
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:121
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:227
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:64
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:117
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:232
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:55
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:12
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:55
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:30
 msgid "Artist"
 msgstr "艺术家"
@@ -523,14 +515,18 @@ msgstr "在页面的底部，点击 \"创建我的访问令牌\"。"
 msgid "Attempt to Automatically Retrieve ISRC When Missing"
 msgstr "缺少时尝试自动检索ISRC"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:19
+msgid "Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/AuditLogAction.php:21
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/admin.php:65
 msgid "Audit Log"
 msgstr "审核日志"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:47
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:47
 msgid "Author"
 msgstr "作者"
 
@@ -546,17 +542,17 @@ msgstr "自动分配"
 msgid "Auto-generate Random MariaDB Root Password"
 msgstr "自动生成随机的MariaDB根密码"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:331
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:78
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:65
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:346
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:74
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:83
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/AutoDj.vue:105
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:83
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:65
 msgid "AutoDJ"
 msgstr "自动DJ"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/AutoDj.vue:31
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:34
 msgid "AutoDJ Bitrate (kbps)"
 msgstr "AutoDJ比特率(kbps)"
 
@@ -564,12 +560,16 @@ msgstr "AutoDJ比特率(kbps)"
 msgid "AutoDJ Disabled"
 msgstr "AutoDJ 禁用"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:19
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/AutoDj.vue:20
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/AutoDj.vue:19
 msgid "AutoDJ Format"
 msgstr "AutoDJ格式"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:261
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:156
+msgid "AutoDJ Queue"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:272
 msgid "AutoDJ Queue Length"
 msgstr "AutoDJ队列长度"
 
@@ -584,7 +584,7 @@ msgstr "本台的AutoDJ已被禁用。当音源不在现场时，不会自动播
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/AutomationAction.php:23
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:168
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:120
 msgid "Automated Assignment"
 msgstr "自动分配"
 
@@ -616,14 +616,14 @@ msgstr "自动发送推文。"
 msgid "Available Logs"
 msgstr "可用日志"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:112
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:118
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:122
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:128
 msgid "Avatar Service"
 msgstr "头像服务"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Avatar.vue:22
 msgid "Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings."
-msgstr "头像是根据您的电子邮件地址从%{服务}服务中获取的。点击管理您的%{服务}设置。"
+msgstr "头像是根据您的电子邮件地址从%{service} 服务中获取的。点击管理您的%{service} 设置。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:229
 msgid "Average Listeners"
@@ -641,7 +641,7 @@ msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">版本%s</a>现已发布。"
 msgid "AzuraCast Application Log"
 msgstr "AzuraCast应用程序日志"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:91
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
 msgid "AzuraCast Backup"
 msgstr "AzuraCast备份"
 
@@ -649,7 +649,7 @@ msgstr "AzuraCast备份"
 msgid "AzuraCast First-Time Setup"
 msgstr "AzuraCast首次设置"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:162
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:172
 msgid "AzuraCast Installer"
 msgstr "AzuraCast安装程序"
 
@@ -669,7 +669,7 @@ msgstr "安装AzuraCast"
 msgid "AzuraCast Update Checks"
 msgstr "检查AzuraCast更新"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:171
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:181
 msgid "AzuraCast Updater"
 msgstr "AzuraCast更新器"
 
@@ -682,11 +682,11 @@ msgstr "AzuraCast用户"
 msgid "AzuraCast Wiki"
 msgstr "AzuraCast 维基"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:78
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:89
 msgid "AzuraCast installation complete!"
 msgstr "AzuraCast安装完成！"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:187
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:197
 msgid "AzuraCast is currently configured to listen on the following ports:"
 msgstr "AzuraCast目前被配置为监听以下端口："
 
@@ -694,7 +694,7 @@ msgstr "AzuraCast目前被配置为监听以下端口："
 msgid "AzuraCast is now initialized."
 msgstr "AzuraCast现在已被初始化。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:80
 msgid "AzuraCast is now updated to the latest version!"
 msgstr "AzuraCast现在已更新为最新版本！"
 
@@ -716,11 +716,11 @@ msgstr "AzuraCast将扫描上传的文件，寻找与电台音乐库匹配的文
 msgid "Back"
 msgstr "返回"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:106
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:116
 msgid "Backing up MariaDB..."
-msgstr "正在备份MariaDB ..."
+msgstr "正在备份MariaDB..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:237
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:246
 msgid "Backup complete in %.2f seconds."
 msgstr "在%.2f秒内完成备份。"
 
@@ -728,7 +728,7 @@ msgstr "在%.2f秒内完成备份。"
 msgid "Backup not found."
 msgstr "找不到备份。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:57
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:59
 msgid "Backup path %s not found!"
 msgstr "没有找到备份路径%s!"
 
@@ -740,6 +740,10 @@ msgstr "没有找到备份路径%s!"
 #: /home/runner/work/AzuraCast/AzuraCast/config/menus/admin.php:39
 msgid "Backups"
 msgstr "备份"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:424
+msgid "Balanced"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:31
 msgid "Band"
@@ -774,15 +778,15 @@ msgid "Based on this setting, the system will automatically reassign songs every
 msgstr "根据此设置，系统将每隔（此）天利用前（此）天的数据自动重新分配歌曲。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/BasicInfo.vue:46
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:110
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:222
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:84
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:222
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:110
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/BasicInfo.vue:87
 msgid "Basic Info"
 msgstr "基本信息"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:83
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:93
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:83
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:70
 msgid "Basic Information"
 msgstr "基本信息"
@@ -815,8 +819,9 @@ msgstr "品牌设置"
 msgid "Broadcast AutoDJ to Remote Station"
 msgstr "廣播AutoDJ到遠端電台"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:201
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:77
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:201
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:206
 msgid "Broadcasting"
 msgstr "广播"
 
@@ -833,7 +838,7 @@ msgstr "广播"
 msgid "Browser Icon"
 msgstr "浏览图标"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:78
 msgid "Bucket Name"
 msgstr "桶名"
 
@@ -841,27 +846,36 @@ msgstr "桶名"
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
 msgstr "默认情况下，电台在自己的端口上广播（即8000）。如果您正在使用CloudFlare等服务或通过SSL访问您的广播电台，您应该启用此功能，该功能通过网络端口（80和443）进行广播。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:35
 msgid "CPU Load"
 msgstr "CPU负载"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:67
+msgid "CPU Stats Help"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:160
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:6
+msgid "Cached"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:64
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:60
 msgid "Categories"
 msgstr "分类"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:97
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview.vue:52
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview.vue:95
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:119
 msgid "Change"
 msgstr "更改"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:74
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ChangePasswordModal.vue:67
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:74
 msgid "Change Password"
 msgstr "修改密码"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:178
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:188
 msgid "Change installation settings?"
 msgstr "修改安装设置？"
 
@@ -874,7 +888,7 @@ msgid "Changes saved successfully."
 msgstr "更改已成功保存。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:222
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings.vue:179
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings.vue:181
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/vendor/bootstrapVue.js:42
 msgid "Changes saved."
 msgstr "更改已保存。"
@@ -887,11 +901,11 @@ msgstr "字符集编码"
 msgid "Chat ID"
 msgstr "聊天 ID"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:151
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:161
 msgid "Check Web Services for Album Art When Uploading Media"
 msgstr "上载媒体时，从网络服务检查专辑封面"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:144
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:154
 msgid "Check Web Services for Album Art for \"Now Playing\" Tracks"
 msgstr "为 \"正在播放 \"的曲目检查网络服务的专辑封面"
 
@@ -911,12 +925,12 @@ msgstr "为这个网络钩子选择一个名称，以帮助您将它与其他网
 msgid "Choose a new password for your account."
 msgstr "为您的账户选择一个新的密码。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:235
 msgid "Cleaning up temporary files..."
 msgstr "清理临时文件..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:112
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:126
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:112
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:39
 msgid "Clear"
 msgstr "清除"
@@ -939,6 +953,7 @@ msgstr "清除作品"
 msgid "Clear Cache"
 msgstr "清除缓存"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:39
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Intro.vue:28
 msgid "Clear File"
 msgstr "清除文件"
@@ -961,6 +976,7 @@ msgstr "清除待处理的请求"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:27
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:127
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:163
 msgid "Clear Queue"
 msgstr "清理队列"
 
@@ -984,7 +1000,7 @@ msgstr "点击 \"生成新的许可证密钥\"。"
 msgid "Click the link below to log in to your account."
 msgstr "点击以下链接登录您的账户。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:32
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:38
 msgid "Click to restart your station and apply configuration changes."
 msgstr "单击以重新启动电台并应用配置更改。"
 
@@ -996,18 +1012,21 @@ msgstr "克隆"
 msgid "Clone Station"
 msgstr "克隆电台"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:20
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/TestMessageModal.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:67
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/ApiKeyModal.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:54
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ImportModal.vue:44
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/RenameModal.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/NewDirectoryModal.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MoveFilesModal.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:33
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:20
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:7
 msgid "Close"
 msgstr "关闭"
 
@@ -1019,7 +1038,7 @@ msgstr "来自认证器应用程序的代码"
 msgid "Collect aggregate listener statistics and IP-based listener statistics"
 msgstr "收集汇总的听众统计数据和基于IP的听众统计数据"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:189
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:195
 msgid "Command"
 msgstr "命令"
 
@@ -1046,10 +1065,6 @@ msgstr "完成设置过程即可开始。"
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:35
 msgid "Composer"
 msgstr "作曲家"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:68
-msgid "Composer Plugin Mode"
-msgstr "Composer插件模式"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:36
 msgid "Composer Sort Order"
@@ -1139,9 +1154,9 @@ msgstr "复制相关的媒体和文件夹。"
 msgid "Copy scheduled playback times."
 msgstr "复制预定的播放时间。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:10
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/CopyToClipboardButton.vue:4
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:10
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/CopyToClipboardButton.vue:4
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:10
 #: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_inline.phtml:12
 #: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_viewer.phtml:28
 msgid "Copy to Clipboard"
@@ -1205,34 +1220,34 @@ msgstr "创建和继续"
 msgid "Create custom fields to store extra metadata about each media file uploaded to your station libraries."
 msgstr "创建自定义字段来存储上传到电台库的每个媒体文件的额外元数据。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:150
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:159
 msgid "Creating backup archive..."
 msgstr "正在创建备份存档..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:103
 msgid "Creating temporary directories..."
 msgstr "创建临时目录..."
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:44
 msgid "Crossfade Duration (Seconds)"
-msgstr "淡入淡出持续时间  (Seconds)"
+msgstr "淡入淡出持续时间 (Seconds)"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:28
 msgid "Crossfade Method"
 msgstr "淡入淡出法"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MicrophonePanel.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/PlaylistPanel.vue:32
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:147
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/MicrophonePanel.vue:26
 msgid "Cue"
 msgstr "开始"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:44
-msgid "Current"
-msgstr "当前"
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:29
+msgid "Current Custom Fallback File"
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:52
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Shoutcast.vue:49
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:52
 msgid "Current Installed Version"
 msgstr "当前安装版本"
 
@@ -1275,25 +1290,31 @@ msgstr "公共页面的自定义CSS"
 msgid "Custom Configuration"
 msgstr "自定义配置"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:51
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:56
 msgid "Custom Cues: Cue-In Point (seconds)"
 msgstr "自定义提示：插入点 (seconds)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:67
 msgid "Custom Cues: Cue-Out Point (seconds)"
 msgstr "自定义提示：插入点 (seconds)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:33
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:36
 msgid "Custom Fading: Fade-In Time (seconds)"
 msgstr "自定义渐变：淡入时间 (seconds)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:42
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:46
 msgid "Custom Fading: Fade-Out Time (seconds)"
 msgstr "自定义渐变。淡出时间 (seconds)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:26
 msgid "Custom Fading: Overlap Time (seconds)"
 msgstr "自定义渐变：重叠时间 (seconds)"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:5
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/FallbackAction.php:25
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:223
+msgid "Custom Fallback File"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/CustomFields.vue:27
@@ -1302,7 +1323,7 @@ msgstr "自定义渐变：重叠时间 (seconds)"
 msgid "Custom Fields"
 msgstr "自定义字段"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:22
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:23
 msgid "Custom Frontend Configuration"
 msgstr "自定义前端配置"
 
@@ -1342,7 +1363,7 @@ msgstr "自定义DJ / Streamer挂载点"
 msgid "Customize DJ/Streamer Port"
 msgstr "自定义DJ /流媒体端口"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:239
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:261
 msgid "Customize Internal Request Processing Port"
 msgstr "自定义内部请求处理端口"
 
@@ -1350,7 +1371,7 @@ msgstr "自定义内部请求处理端口"
 msgid "Customize Source Password"
 msgstr "自定义源密码"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:199
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:209
 msgid "Customize ports used for AzuraCast?"
 msgstr "自定用于AzuraCast的端口？"
 
@@ -1366,8 +1387,8 @@ msgstr "DJ凭证"
 msgid "DJ/Streamer Buffer Time (Seconds)"
 msgstr "DJ /流媒体缓冲时间（秒）"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:164
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:86
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:164
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:126
 msgid "Dark"
 msgstr "黑暗"
@@ -1388,9 +1409,16 @@ msgid "Date Requested"
 msgstr "要求日期"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:112
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:95
 msgid "Date/Time"
 msgstr "日期/时间"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:100
+msgid "Date/Time (Browser)"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:106
+msgid "Date/Time (Station)"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:48
 msgid "Days Between Automated Assignments"
@@ -1410,8 +1438,9 @@ msgstr "调试首页"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:120
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:143
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:177
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:211
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:170
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:200
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/DebugController.php:234
 msgid "Debug Output"
 msgstr "调试输出"
 
@@ -1428,7 +1457,7 @@ msgstr "默认专辑封面"
 msgid "Default Album Art URL"
 msgstr "默认专辑封面URL"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:129
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:139
 msgid "Default Avatar URL"
 msgstr "默认头像网址"
 
@@ -1440,27 +1469,27 @@ msgstr "默认挂载点"
 msgid "Default: %s"
 msgstr "默认: %s"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:129
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/ApiKeys.vue:16
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:39
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:40
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:27
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:95
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:129
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:37
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:40
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:39
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:115
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:49
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:66
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:31
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:22
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:66
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:49
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:43
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:31
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:45
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:63
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:45
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:63
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:115
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/vendor/sweetalert.js:14
 msgid "Delete"
 msgstr "删除"
@@ -1534,7 +1563,7 @@ msgstr "删除SFTP用户？"
 msgid "Delete Station?"
 msgstr "删除电台？"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:156
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:159
 msgid "Delete Storage Location?"
 msgstr "删除存储位置？"
 
@@ -1551,9 +1580,9 @@ msgid "Delete Web Hook?"
 msgstr "删除网络钩子？"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:35
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:108
 msgid "Description"
 msgstr "描述"
@@ -1562,7 +1591,7 @@ msgstr "描述"
 msgid "Deselect"
 msgstr "取消选择"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:82
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:77
 msgid "Desktop Device"
 msgstr "桌面设备"
 
@@ -1575,30 +1604,30 @@ msgid "Direct Stream URL"
 msgstr "流媒体直链URL"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MoveFilesModal.vue:62
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:287
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:291
 msgid "Directory"
 msgstr "目录"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
-msgid "Directory \"%s\" was not created"
-msgstr "目录\"%s \"没有被创建"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/NewDirectoryModal.vue:6
 msgid "Directory Name"
 msgstr "目录名称"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/Form.vue:53
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:88
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:191
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:55
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:17
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:17
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:191
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:88
 msgid "Disable"
 msgstr "禁用"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:359
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:374
 msgid "Disable Crossfading"
 msgstr "禁用淡入淡出"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:432
+msgid "Disable Optimizations"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:79
 msgid "Disable Two-Factor"
@@ -1624,19 +1653,19 @@ msgstr "禁止使用平面文件缓存而不是Redis。"
 msgid "Disable two-factor authentication?"
 msgstr "禁用双因素认证？"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:16
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:207
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:225
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:159
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:16
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:206
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:64
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:25
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:206
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:92
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:25
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:31
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:61
 msgid "Disabled"
 msgstr "禁用"
 
@@ -1652,14 +1681,18 @@ msgstr "Discord网络钩子 URL"
 msgid "Discord Webhook"
 msgstr "Discord 网络钩子"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:73
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:173
 msgid "Disk Space"
 msgstr "磁盘空间"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:16
+msgid "Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:23
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:22
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:18
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:89
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:22
 msgid "Display Name"
 msgstr "显示名称"
 
@@ -1677,19 +1710,19 @@ msgstr "不要收集任何听众的分析数据"
 msgid "Do not modify this after installation."
 msgstr "安装后请勿修改。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:340
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:355
 msgid "Do not use an AutoDJ service."
 msgstr "不要使用自动DJ服务。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:76
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
 msgid "Docker User GID"
 msgstr "Docker用户GID"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:69
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
 msgid "Docker User UID"
 msgstr "Docker用户UID"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:89
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:90
 msgid "Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt."
 msgstr "域名（example.com）或名称（example.com,foo.bar）要与LetsEncrypt一起使用。"
 
@@ -1697,15 +1730,16 @@ msgstr "域名（example.com）或名称（example.com,foo.bar）要与LetsEncry
 msgid "Down"
 msgstr "下"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:144
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:92
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Intro.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:144
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/Media.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:36
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Intro.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:106
 msgid "Download"
 msgstr "下载"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:13
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:15
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:11
 msgid "Download CSV"
@@ -1727,7 +1761,7 @@ msgstr "从SHOUTcast Radio Manager下载Linux x64二进制文件："
 msgid "Drag file(s) here to upload or"
 msgstr "将文件拖到这里上传，或"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:107
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:110
 msgid "Dropbox Generated Access Token"
 msgstr "Dropbox生成的访问令牌"
 
@@ -1739,15 +1773,15 @@ msgstr "重复的"
 msgid "Duplicate Playlist"
 msgstr "重复的播放列表"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:298
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:313
 msgid "Duplicate Prevention Time Range (Minutes)"
-msgstr "重复预防时间范围（分钟"
+msgstr "重复预防时间范围 (分钟)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:142
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:71
 msgid "Duplicate Songs"
 msgstr "重复的歌曲"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:170
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:171
 msgid "Duplicate request: this song was already requested and will play soon."
 msgstr "重复请求：这首歌已经被请求了，很快就会播放。"
 
@@ -1755,13 +1789,14 @@ msgstr "重复请求：这首歌已经被请求了，很快就会播放。"
 msgid "E-Mail"
 msgstr "电子邮件"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:13
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/TestMessageModal.vue:6
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:38
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:21
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:25
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:41
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:45
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:21
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:25
 msgid "E-mail Address"
 msgstr "电子邮件地址"
 
@@ -1773,20 +1808,20 @@ msgstr "电子邮件发送服务"
 msgid "E-mail addresses can be separated by commas."
 msgstr "电子邮件地址可以用逗号分隔。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:36
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:36
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:31
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:36
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:36
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:21
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:302
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:63
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:46
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:40
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:63
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:37
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:28
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:307
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:40
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:21
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:44
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:38
 msgid "Edit"
 msgstr "编辑"
 
@@ -1799,8 +1834,8 @@ msgid "Edit Episode"
 msgstr "编辑# ＃集数"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/LiquidsoapConfig.vue:6
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/EditLiquidsoapConfigAction.php:62
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:174
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/EditLiquidsoapConfigAction.php:65
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:229
 msgid "Edit Liquidsoap Configuration"
 msgstr "编辑Liquidsoap配置"
 
@@ -1820,10 +1855,10 @@ msgstr "编辑播放列表"
 msgid "Edit Podcast"
 msgstr "编辑播客"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:41
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditModal.vue:46
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/HeaderPanel.vue:11
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/ProfileController.php:207
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:41
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/ProfileController.php:208
 msgid "Edit Profile"
 msgstr "编辑个人资料"
 
@@ -1863,7 +1898,7 @@ msgstr "编辑流媒体"
 msgid "Edit User"
 msgstr "编辑用户"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:186
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:64
 msgid "Edit Web Hook"
 msgstr "编辑网络钩子"
 
@@ -1871,17 +1906,17 @@ msgstr "编辑网络钩子"
 msgid "Embed Code"
 msgstr "嵌入代码"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:133
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:51
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:133
 msgid "Embed Widgets"
 msgstr "嵌入小部件"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:89
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:192
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:70
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:31
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:31
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:192
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:26
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:89
 msgid "Enable"
 msgstr "启用"
 
@@ -1900,6 +1935,10 @@ msgstr "启用自动分配"
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/AdminForm.vue:8
 msgid "Enable Broadcasting"
 msgstr "启用广播"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:68
+msgid "Enable Custom Code Plugins"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:120
 msgid "Enable Downloads on On-Demand Page"
@@ -1994,12 +2033,12 @@ msgid "Enable to have AzuraCast automatically run nightly backups at the time sp
 msgstr "启用AzuraCast在指定时间自动运行夜间备份。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:13
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:58
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:29
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:29
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:33
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:58
 msgid "Enabled"
 msgstr "启用"
 
@@ -2023,8 +2062,8 @@ msgstr "设置编码器"
 msgid "Encoding Time"
 msgstr "编码时间"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:81
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/SoundExchange.vue:54
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:81
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:75
 msgid "End Date"
 msgstr "结束日期"
@@ -2034,12 +2073,12 @@ msgid "End Session"
 msgstr "会议结束"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:45
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:42
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:69
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:42
 msgid "End Time"
 msgstr "结束时间"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:69
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:72
 msgid "Endpoint"
 msgstr "端点"
 
@@ -2072,15 +2111,15 @@ msgstr "环境: %s"
 msgid "Episode"
 msgstr "# ＃集数介绍"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/PodcastEpisodeController.php:55
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/PodcastEpisodeController.php:59
 msgid "Episode not found."
 msgstr "没有找到剧集。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:52
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:13
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:32
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:38
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:83
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:32
 msgid "Episodes"
 msgstr "剧集"
 
@@ -2092,8 +2131,8 @@ msgstr "错误"
 msgid "Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter \"http://station.example.com:8000\"."
 msgstr "例如：如果远程广播的URL是http://station.example.com:8000/radio.mp3，请输入 \"http://station.example.com:8000\"。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:47
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/ConfigureModal.vue:33
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:47
 msgid "Exclude Media from Backup"
 msgstr "从备份中排除媒体"
 
@@ -2101,7 +2140,7 @@ msgstr "从备份中排除媒体"
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
 msgstr "将媒体排除在自动备份之外可以节省空间，但您应确保在其他地方备份媒体。请注意，只有本地存储的媒体才会被备份。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:194
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:200
 msgid "Execute Command"
 msgstr "执行命令"
 
@@ -2123,21 +2162,21 @@ msgstr "输出 %{format}"
 msgid "Fallback Mount"
 msgstr "回退安装"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/Form.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/AuditLog.vue:59
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields/Form.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/CustomFields.vue:63
 msgid "Field Name"
 msgstr "字段名称"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:140
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:140
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:109
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:56
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:7
 msgid "File Name"
 msgstr "文件名"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:293
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:297
 msgid "File Not Processed: %s"
 msgstr "未处理的文件：%s"
 
@@ -2145,7 +2184,7 @@ msgstr "未处理的文件：%s"
 msgid "File Owner"
 msgstr "文件拥有者"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:298
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:302
 msgid "File Processing"
 msgstr "文件处理"
 
@@ -2185,7 +2224,7 @@ msgstr "Fixtures 已加载。"
 msgid "Footer Text"
 msgstr "页脚文字"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:29
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:32
 msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
 msgstr "对于本地文件系统，这是目录的基本路径。对于远程文件系统，这是文件夹的前缀。"
 
@@ -2218,9 +2257,9 @@ msgstr "星期五"
 msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
 msgstr "请使用您的智能手机，使用您选择的认证应用程序（FreeOTP、Authy等）扫描右边的二维码。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:278
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:37
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:39
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:278
 msgid "Full Volume"
 msgstr "最大音量"
 
@@ -2250,14 +2289,14 @@ msgstr "生成数据库代理类"
 msgid "Generic Web Hook"
 msgstr "通用网络钩子"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:62
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:20
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:233
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:70
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:238
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:46
 msgid "Genre"
 msgstr "分类"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:58
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:57
 msgid "GeoLite database not configured for this installation. See System Administration for instructions."
 msgstr "没有为本次安装配置GeoLite数据库。请参阅系统管理以了解相关说明。"
 
@@ -2267,9 +2306,13 @@ msgstr "目前在这个装置上还没有安装GeoLite。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:117
 msgid "GeoLite version \"%{ version }\" is currently installed."
-msgstr "目前已安装GeoLite版本\"%{版本}\"。"
+msgstr "目前已安装GeoLite版本\"%{ version }\"。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:168
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:169
+msgid "Get Next Song"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:174
 msgid "Get Now Playing"
 msgstr ""
 
@@ -2290,22 +2333,23 @@ msgstr "谷歌分析集成"
 msgid "HTML"
 msgstr "HTML代码"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:41
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
 msgid "HTTP Port"
 msgstr "HTTP端口"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:191
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
 msgid "HTTP Port: %d"
 msgstr "HTTP端口： %d"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:48
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
 msgid "HTTPS Port"
 msgstr "HTTPS端口"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:202
 msgid "HTTPS Port: %d"
 msgstr "HTTPS端口： %d"
 
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:261
 #: /home/runner/work/AzuraCast/AzuraCast/templates/main.phtml:107
 msgid "Help"
 msgstr "帮助"
@@ -2330,6 +2374,10 @@ msgstr "从听众那里隐藏元数据（\"铃声模式\"）。"
 msgid "High"
 msgstr "高"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:35
+msgid "High I/O Wait can indicate a bottleneck with the server's hard disk, a potentially failing hard disk, or heavy load on the hard disk."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/BasicInfo.vue:16
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
 msgstr "与其他低权重的播放列表相比，高权重的播放列表的播放频率更高。"
@@ -2351,7 +2399,7 @@ msgstr "主页重定向网址"
 msgid "Hour"
 msgstr "小时"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:150
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:146
 msgid "IP"
 msgstr "IP 地址"
 
@@ -2518,6 +2566,10 @@ msgstr ""
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr "如果您遇到bug或错误，您可以使用下面的链接提交一个GitHub问题。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:300
+msgid "If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:221
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
 msgstr "如果您的流媒体软件需要一个特定的挂载点路径，请在这里指定它。否则，使用默认值。"
@@ -2599,7 +2651,7 @@ msgid "Install SHOUTcast"
 msgstr "安装SHOUTcast"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Shoutcast.vue:5
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/ShoutcastAction.php:25
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/ShoutcastAction.php:27
 msgid "Install SHOUTcast 2 DNAS"
 msgstr "安装SHOUTcast 2 DNAS"
 
@@ -2616,11 +2668,11 @@ msgid "Installing Data Fixtures"
 msgstr "安装数据装置"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:253
-msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
-msgstr "指示Liquidsoap使用任何与歌曲相关的重放元数据来控制其音量。"
+msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption."
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:19
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Shoutcast.vue:15
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:19
 msgid "Instructions"
 msgstr "使用说明"
 
@@ -2687,8 +2739,8 @@ msgstr "加入"
 msgid "Language"
 msgstr "语言"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:95
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/GeneralTab.vue:103
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:87
 msgid "Last 14 Days"
 msgstr "最近14天"
 
@@ -2696,9 +2748,12 @@ msgstr "最近14天"
 msgid "Last 2 Years"
 msgstr "最近两年"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:79
+msgid "Last 24 Hours"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:99
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/GeneralTab.vue:107
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:187
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:91
 msgid "Last 30 Days"
 msgstr "最近30天"
 
@@ -2706,8 +2761,7 @@ msgstr "最近30天"
 msgid "Last 60 Days"
 msgstr "最近60天"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:183
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:83
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:91
 msgid "Last 7 Days"
 msgstr "最近7天"
 
@@ -2715,8 +2769,7 @@ msgstr "最近7天"
 msgid "Last Modified"
 msgstr "最后修改"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:195
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:99
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:107
 msgid "Last Month"
 msgstr "上个月"
 
@@ -2732,7 +2785,7 @@ msgstr "最近一年"
 msgid "Last run:"
 msgstr "最后运行："
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:157
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:167
 msgid "Last.fm API Key"
 msgstr "最后一个fm API密钥"
 
@@ -2740,7 +2793,7 @@ msgstr "最后一个fm API密钥"
 msgid "Latest Update"
 msgstr "最新更新"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:112
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:115
 msgid "Learn More about Dropbox Auth Tokens"
 msgstr "了解有关Dropbox认证令牌的更多信息"
 
@@ -2775,7 +2828,7 @@ msgstr "留空以使用当前密码。"
 msgid "Leave blank to use the default Telegram API URL (recommended)."
 msgstr "留空以使用默认的Telegram API URL（推荐）。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:234
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:239
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:57
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:53
 msgid "Length"
@@ -2789,16 +2842,16 @@ msgstr "文字长度"
 msgid "Let's get started by creating your Super Administrator account."
 msgstr "让我们从创建您的超管账户开始。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:87
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
 msgid "LetsEncrypt Domain Name(s)"
 msgstr "LetsEncrypt域名(s)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:94
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:95
 msgid "LetsEncrypt E-mail Address"
 msgstr "LetsEncrypt电子邮件地址"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:160
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:82
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:160
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:122
 msgid "Light"
 msgstr "光"
@@ -2815,9 +2868,9 @@ msgstr "有限的："
 msgid "Linked Information"
 msgstr "链接信息"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:74
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:77
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
-msgstr "LiquidSoap目前正在从%{歌曲}和%{播放列表}进行排列。"
+msgstr "LiquidSoap目前正在从%{songs} 和%{playlists} 进行排列。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/AbstractLogViewerController.php:33
 msgid "Liquidsoap Configuration"
@@ -2826,6 +2879,10 @@ msgstr "Liquidsoap 配置"
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/AbstractLogViewerController.php:28
 msgid "Liquidsoap Log"
 msgstr "Liquidsoap 日志"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:297
+msgid "Liquidsoap Performance Tuning"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:98
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:110
@@ -2840,24 +2897,28 @@ msgstr ""
 msgid "Listener Analytics Collection"
 msgstr "听众分析系列"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:160
+msgid "Listener History"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:58
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:44
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:55
 msgid "Listener Request"
 msgstr "侦听器请求"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:112
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/TimeSeriesChart.vue:70
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview/HourChart.vue:52
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:9
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:113
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:44
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:8
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:96
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview/HourChart.vue:52
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/TimeSeriesChart.vue:70
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:112
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:67
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:110
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:160
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:173
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/ListenersAction.php:22
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:124
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:181
 msgid "Listeners"
 msgstr "听众"
 
@@ -2894,8 +2955,7 @@ msgstr "直播广播记录比特率（kbps）"
 msgid "Live Broadcast Recording Format"
 msgstr "直播录音格式"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:171
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:23
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:157
 msgid "Live Listeners"
 msgstr "现场听众"
 
@@ -2903,9 +2963,13 @@ msgstr "现场听众"
 msgid "Live Recordings Storage Location"
 msgstr "现场录音存储位置"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:62
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:65
 msgid "Live Streamer:"
 msgstr "直播员："
+
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:137
+msgid "Live Streaming"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:242
 msgid "Live stream connected."
@@ -2915,12 +2979,16 @@ msgstr ""
 msgid "Live stream disconnected."
 msgstr ""
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:102
+msgid "Load Average"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:266
 msgid "Loading..."
 msgstr "加载中..."
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:112
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:95
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:94
 msgid "Local"
 msgstr "本地"
 
@@ -2932,7 +3000,7 @@ msgstr "本地文件系统"
 msgid "Local Streams"
 msgstr "本地流"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:155
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:151
 msgid "Location"
 msgstr "位置"
 
@@ -2942,13 +3010,12 @@ msgstr "位置"
 msgid "Log In"
 msgstr "登录"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:30
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/LastOutputModal.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue/LogsModal.vue:28
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/StreamingLogModal.vue:30
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:181
+#: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_viewer.phtml:12
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/logs/index.phtml:7
 #: /home/runner/work/AzuraCast/AzuraCast/templates/stations/logs/index.phtml:3
-#: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_viewer.phtml:12
 msgid "Log Viewer"
 msgstr "日志查看器"
 
@@ -2963,7 +3030,7 @@ msgstr "记录较慢的查询，以诊断可能的数据库问题。只有在需
 msgid "Logged in successfully."
 msgstr "登录成功。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:67
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:66
 msgid "Logged in using account recovery token"
 msgstr "使用账户恢复令牌登录"
 
@@ -3004,14 +3071,14 @@ msgstr "作词人"
 msgid "MP3"
 msgstr "MP 3"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:23
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Telegram.vue:44
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:23
 msgid "Main Message Content"
 msgstr "主要信息内容"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:29
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:163
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamersPanel.vue:13
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:163
 msgid "Manage"
 msgstr "管理"
 
@@ -3059,7 +3126,7 @@ msgstr "管理电台钩子"
 msgid "Manage Stations"
 msgstr "管理电台"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:272
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:239
 msgid "Manual AutoDJ Mode"
 msgstr "手动自动DJ模式"
 
@@ -3152,6 +3219,7 @@ msgid "Maximum number of total listeners across all streams. Leave blank to use 
 msgstr "所有数据流中听众的最大数量。留空以使用默认值。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/Media.vue:68
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:60
 msgid "Media"
 msgstr "媒体"
 
@@ -3163,16 +3231,20 @@ msgstr "媒体存储位置"
 msgid "Media Type"
 msgstr "媒体类型"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:58
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:129
 msgid "Memory"
 msgstr "记忆"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:46
+msgid "Memory Stats Help"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:36
 msgid "Merge playlist to play as a single track."
 msgstr "合并播放列表，作为单轨播放。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Email.vue:28
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Twitter.vue:78
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Email.vue:28
 msgid "Message Body"
 msgstr "邮件正文"
 
@@ -3225,11 +3297,11 @@ msgstr "播放时间分钟"
 msgid "Mixer"
 msgstr "混音器"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:71
 msgid "Mobile Device"
 msgstr "移动设备"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:251
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:256
 msgid "Modified"
 msgstr "更改"
 
@@ -3261,6 +3333,10 @@ msgstr "播放次数最多的歌曲"
 msgid "Most Recent Backup Log"
 msgstr "最新备份日志"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:13
+msgid "Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server \"stealing\" CPU time from your VM and vice-versa."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/ConnectionInfo.vue:31
 msgid "Mount Name:"
 msgstr "挂载名称："
@@ -3273,7 +3349,7 @@ msgstr "挂载点URL"
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:61
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/MountsAction.php:28
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:96
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:210
 msgid "Mount Points"
 msgstr "挂载点"
 
@@ -3299,7 +3375,7 @@ msgstr "音乐CD标识符"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:9
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/FilesAction.php:42
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:61
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:64
 msgid "Music Files"
 msgstr "音乐文件"
 
@@ -3307,9 +3383,9 @@ msgstr "音乐文件"
 msgid "Musician Credits List"
 msgstr "音乐人名单"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:272
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:27
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:29
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:272
 msgid "Mute"
 msgstr "静音"
 
@@ -3324,11 +3400,11 @@ msgstr "我的帐户"
 msgid "N/A"
 msgstr "不可用"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:52
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:76
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:223
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations.vue:76
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:60
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:228
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:73
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts.vue:82
 msgid "Name"
@@ -3341,6 +3417,10 @@ msgstr "名称/类型"
 #: /home/runner/work/AzuraCast/AzuraCast/templates/partials/log_help_card.phtml:3
 msgid "Need Help?"
 msgstr "需要帮助吗？"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:208
+msgid "Network Interfaces"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:28
 msgid "Never run"
@@ -3431,7 +3511,7 @@ msgstr "没有指定目录"
 msgid "No entries found."
 msgstr "没有发现任何条目。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/PodcastEpisodesController.php:67
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/PodcastEpisodesController.php:71
 msgid "No episodes found."
 msgstr "没有发现任何剧集。"
 
@@ -3443,8 +3523,8 @@ msgstr "没有上传文件。"
 msgid "No files selected."
 msgstr "未选择文件。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:197
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:71
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:197
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr "其他程序不能使用这个端口。留空以自动分配一个端口。"
 
@@ -3452,8 +3532,8 @@ msgstr "其他程序不能使用这个端口。留空以自动分配一个端口
 msgid "No recording available."
 msgstr "没有可用的录音。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer/SongHistory.vue:93
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:263
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer/SongHistory.vue:93
 msgid "No records to display."
 msgstr "没有记录可显示。"
 
@@ -3470,7 +3550,7 @@ msgstr "无"
 msgid "None:"
 msgstr "没有："
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:355
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:370
 msgid "Normal Mode"
 msgstr "正常模式"
 
@@ -3511,22 +3591,22 @@ msgstr "备注"
 msgid "Now"
 msgstr "现在"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:115
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:24
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:115
 msgid "Now Playing"
 msgstr "正在播放"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:212
-msgid "Now playing on %{ station }:"
-msgstr "现在正在%{电台}上播放："
-
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:216
-msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now."
-msgstr "现在在%{电台}上播放。%{标题}由 %{艺术家}演唱! 现在收听。"
+msgid "Now playing on %{ station }:"
+msgstr "现在正在 %{ station } 上播放："
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:224
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:220
+msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now."
+msgstr "现在在 %{ station } 上播放。%{ title } 由 %{ artist } 演唱! 现在收听。"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:228
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }"
-msgstr "现在在%{电台}上播放。%{标题}由 %{艺术家}演唱! 现在收听： %{ url }"
+msgstr "现在在 %{ station } 上播放。%{ title } 由 %{ artist } 演唱! 现在收听： %{ url }"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/CommonFormattingInfo.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Generic.vue:17
@@ -3566,10 +3646,10 @@ msgid "On-Demand"
 msgstr "点播请求"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:13
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:111
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:29
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:111
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/OnDemandAction.php:64
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:54
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:92
 msgid "On-Demand Media"
 msgstr "点播媒体"
 
@@ -3579,7 +3659,7 @@ msgstr "点播流媒体"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:218
 msgid "Once per %{minutes} Minutes"
-msgstr "每%{minutes}分钟一次"
+msgstr "每 %{minutes} 分钟一次"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:214
 msgid "Once per %{songs} Songs"
@@ -3611,6 +3691,10 @@ msgstr "一旦这些步骤完成，请将 \"密钥和访问令牌 \"页面上的
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:15
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process."
 msgstr "一旦您配置了自动分配，点击下面的按钮来运行自动分配过程。"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:38
+msgid "One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Twitter.vue:60
 msgid "Only Send One Tweet Every..."
@@ -3645,7 +3729,11 @@ msgstr "可选：HTTP基本认证密码"
 msgid "Optional: HTTP Basic Authentication Username"
 msgstr "可选：HTTP基本认证用户名"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:96
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Generic.vue:62
+msgid "Optional: Request Timeout (Seconds)"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:97
 msgid "Optionally provide an e-mail address for updates from LetsEncrypt."
 msgstr "可选择提供一个电子邮件地址，以获得LetsEncrypt的更新。"
 
@@ -3730,10 +3818,10 @@ msgid "Part Of A Set"
 msgstr "一组的一部分"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Recover.vue:25
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:177
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:177
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers/Form.vue:16
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Register.vue:46
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:50
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:54
 msgid "Password"
@@ -3754,7 +3842,7 @@ msgstr "密码："
 msgid "Paste the generated license key into the field on this page."
 msgstr "将生成的许可证密钥粘贴到本页面的字段中。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:29
 msgid "Path/Suffix"
 msgstr "路径/后缀"
 
@@ -3774,9 +3862,9 @@ msgstr "表演者排序顺序"
 msgid "Permissions"
 msgstr "权限"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:44
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:266
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:14
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:44
 msgid "Play"
 msgstr "播放"
 
@@ -3812,10 +3900,10 @@ msgstr "播放下一个"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer.vue:77
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:119
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:155
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/SchedulePanel.vue:15
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:41
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:73
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/SchedulePanel.vue:15
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:155
 msgid "Playlist"
 msgstr "播放列表"
 
@@ -3882,23 +3970,24 @@ msgstr "播放列表成功导入；%d的%d文件被成功匹配。"
 msgid "Playlist(s)"
 msgstr "播放列表"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:61
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:47
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:58
 msgid "Playlist:"
 msgstr "播放列表："
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:55
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:56
 msgid "Playlist: %s"
-msgstr "播放列表。%s"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:57
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:264
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:7
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/Playlists.vue:34
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:269
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/MediaToolbar.vue:9
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/Playlists.vue:34
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/PlaylistsAction.php:34
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:68
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:110
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:114
 msgid "Playlists"
 msgstr "播放列表"
 
@@ -3918,7 +4007,7 @@ msgstr "播放"
 msgid "Please log in to continue."
 msgstr "请登录后继续。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:92
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:100
 msgid "Please wait while a backup is generated..."
 msgstr "请稍候，正在生成备份..."
 
@@ -3943,10 +4032,10 @@ msgstr "播客媒体应采用MP3或M4A（AAC）格式，以获得最大的兼容
 msgid "Podcast not found!"
 msgstr "没有找到播客!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:35
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:7
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:35
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/PodcastsAction.php:30
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:75
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:130
 msgid "Podcasts"
 msgstr "播客"
 
@@ -3960,12 +4049,12 @@ msgstr "播客存储位置"
 msgid "Port:"
 msgstr "端口："
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:52
 #: /home/runner/work/AzuraCast/AzuraCast/templates/main.phtml:175
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:52
 msgid "Powered by %s"
 msgstr "由%s提供技术支持"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:209
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/EditModal.vue:213
 msgid "Powered by AzuraCast"
 msgstr "由AzuraCast提供技术支持"
 
@@ -3973,8 +4062,8 @@ msgstr "由AzuraCast提供技术支持"
 msgid "Prefer Browser URL (If Available)"
 msgstr "首选浏览器URL（如果可用）"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:156
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/EditForm.vue:78
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:156
 msgid "Prefer System Default"
 msgstr "首选系统默认值"
 
@@ -3997,7 +4086,7 @@ msgstr "制作的通知"
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/ProfileForm.vue:151
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:12
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/ProfileController.php:73
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:48
 msgid "Profile"
 msgstr "个人资料"
 
@@ -4025,11 +4114,11 @@ msgstr "分析数据可以通过访问%s查看。"
 msgid "Programmatic Name"
 msgstr "方案名称"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:129
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:17
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:30
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodesView.vue:43
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:129
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:53
 msgid "Public Page"
 msgstr "公开页面"
 
@@ -4051,8 +4140,8 @@ msgstr "发布日期"
 msgid "Publish Time"
 msgstr "发布时间"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:55
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/AutoDj.vue:79
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:55
 msgid "Publish to \"Yellow Pages\" Directories"
 msgstr "发布到 \"黄页 \"目录"
 
@@ -4069,9 +4158,9 @@ msgid "Queue the selected media to play next"
 msgstr "将选定的媒体排队等待下一个播放"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/ListView.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:76
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:43
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:53
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:76
 msgid "RSS Feed"
 msgstr "RSS订阅"
 
@@ -4079,7 +4168,7 @@ msgstr "RSS订阅"
 msgid "Radio Player"
 msgstr "电台播放器"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:194
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:204
 msgid "Radio Ports: %s"
 msgstr "广播端口： %s"
 
@@ -4095,13 +4184,13 @@ msgstr "比"
 msgid "Raw"
 msgstr "原始"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:22
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:28
 msgid "Ready to start broadcasting? Click to start your station."
 msgstr "准备开始广播了吗？单击以启动您的电台。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:156
-msgid "Rebuild AutoDJ Queue"
-msgstr "重建 AutoDJ 队列"
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:217
+msgid "Received"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:138
 msgid "Record Live Broadcasts"
@@ -4129,7 +4218,7 @@ msgstr "录制时间"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Recover.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Recover.vue:31
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:84
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:83
 msgid "Recover Account"
 msgstr "恢复账户"
 
@@ -4153,7 +4242,7 @@ msgstr "刷新行数"
 msgid "Refreshing All Stations"
 msgstr "刷新所有电台"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:81
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:84
 msgid "Region"
 msgstr "地区"
 
@@ -4167,7 +4256,7 @@ msgid "Relay Stream URL"
 msgstr "流媒体中继 URL"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:11
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:35
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:36
 msgid "Release Channel"
 msgstr "发布渠道"
 
@@ -4175,9 +4264,21 @@ msgstr "发布渠道"
 msgid "Release Time"
 msgstr "发布日期"
 
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:243
+msgid "Reload Configuration"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/InitializeCommand.php:58
 msgid "Reload System Data"
 msgstr "重新加载系统数据"
+
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:17
+msgid "Reload broadcasting? Current listeners will not be disconnected."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:37
+msgid "Reload to Apply Changes"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:60
 msgid "Remember me"
@@ -4187,7 +4288,7 @@ msgstr "记住登录信息"
 msgid "Remixer"
 msgstr "混音器"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:98
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:97
 msgid "Remote"
 msgstr "远程"
 
@@ -4196,10 +4297,10 @@ msgid "Remote Playback Buffer (Seconds)"
 msgstr "远程播放缓冲区 (Seconds)"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:65
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes.vue:5
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:43
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/RemotesAction.php:25
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:103
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:217
 msgid "Remote Relays"
 msgstr "远程继电器"
 
@@ -4253,17 +4354,23 @@ msgstr "远程URL类型"
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
 msgstr "远程中继可以让您与本服务器以外的广播软件合作。您在这里包含的任何中继都会被包含在您的电台统计中。您也可以从本服务器向远程中继进行广播。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:118
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:18
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:98
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:101
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:118
 msgid "Remote: Dropbox"
 msgstr "远程： Dropbox"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:115
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:15
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:50
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:115
 msgid "Remote: S3 Compatible"
 msgstr "远程：S3兼容"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:21
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:127
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations.vue:121
+msgid "Remote: SFTP"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/StationForm.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:22
@@ -4279,7 +4386,7 @@ msgstr "移除密钥"
 msgid "Remove the leading \"#\" symbol from lines to uncomment them."
 msgstr "行取消注释。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:299
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:304
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/RenameModal.vue:15
 msgid "Rename"
 msgstr "重命名"
@@ -4309,7 +4416,7 @@ msgstr "更换专辑封面"
 msgid "Report Not Available"
 msgstr "报告不可用"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:115
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:172
 msgid "Reports"
 msgstr "报告"
 
@@ -4317,7 +4424,7 @@ msgstr "报告"
 msgid "Reprocess"
 msgstr "正在重新处理"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:12
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:19
 msgid "Request"
 msgstr "请求"
 
@@ -4346,7 +4453,7 @@ msgid "Requester IP"
 msgstr "请求者IP"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:104
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/RequestsAction.php:37
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/RequestsAction.php:38
 msgid "Requests"
 msgstr "请求"
 
@@ -4358,36 +4465,30 @@ msgstr "重设密码"
 msgid "Reshuffle"
 msgstr "洗牌"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:78
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:26
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:78
 msgid "Restart"
 msgstr "重启"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:191
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:251
 msgid "Restart Broadcasting"
 msgstr "重新开始广播"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:26
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:37
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:194
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:16
 msgid "Restart broadcasting? This will disconnect any current listeners."
 msgstr "重新开始播放？这将断开所有当前的侦听器。"
-
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:31
-msgid "Restart to Apply Changes"
-msgstr "重新开始应用更改"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:49
 msgid "Restoring Backups"
 msgstr "恢复备份"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/GlobalForm.vue:7
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions.vue:71
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Permissions/Form/GlobalForm.vue:7
 msgid "Role Name"
 msgstr "角色名称"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:30
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users.vue:65
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Users/Form.vue:30
 msgid "Roles"
 msgstr "角色"
 
@@ -4397,7 +4498,7 @@ msgstr "角色"
 msgid "Roles & Permissions"
 msgstr "角色和权限"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:193
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:211
 msgid "Rolling Release"
 msgstr "滚动发布"
 
@@ -4417,9 +4518,9 @@ msgstr "运行自动分配"
 msgid "Run Automatic Nightly Backups"
 msgstr "每晚运行自动备份"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:78
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:113
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:71
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:78
 msgid "Run Manual Backup"
 msgstr "运行手动备份"
 
@@ -4429,8 +4530,7 @@ msgid "Run Synchronization Task"
 msgstr "运行同步任务"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:100
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:163
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:175
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:181
 msgid "Run Task"
 msgstr "运行任务"
 
@@ -4442,17 +4542,38 @@ msgstr "运行中"
 msgid "Running Database Migrations"
 msgstr "运行数据库迁移"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:55
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:136
+msgid "SFTP Host"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:157
+msgid "SFTP Password"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:143
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:56
 msgid "SFTP Port"
 msgstr "SFTP端口"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:193
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:203
 msgid "SFTP Port: %d"
 msgstr "SFTP端口： %d"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:171
+msgid "SFTP Private Key"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:164
+msgid "SFTP Private Key Pass Phrase"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:150
+msgid "SFTP Username"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/SftpUsers.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/SftpUsersAction.php:41
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:162
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:100
 msgid "SFTP Users"
 msgstr "SFTP用户"
 
@@ -4526,28 +4647,32 @@ msgstr "星期六"
 msgid "Save"
 msgstr "保存"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:24
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Branding/BrandingForm.vue:117
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings.vue:32
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/StationForm.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/EditModal.vue:17
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeEditModal.vue:60
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Automation.vue:63
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/LiquidsoapConfig.vue:35
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/ModalForm.vue:24
 msgid "Save Changes"
 msgstr "保存更改"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:113
+msgid "Save Changes first"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Setup/Settings.vue:15
 msgid "Save and Continue"
 msgstr "保存并继续"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Schedule.vue:13
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:97
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:41
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:97
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:155
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:134
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/ScheduleAction.php:40
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/ScheduleAction.php:41
 msgid "Schedule"
 msgstr "时间表"
 
@@ -4586,19 +4711,19 @@ msgstr "时间安排"
 msgid "Search"
 msgstr "搜索"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:76
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:77
 msgid "Search engine crawlers are not permitted to use this feature."
 msgstr "搜索引擎爬虫不允许使用此功能。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:55
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:60
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
 msgstr "从歌曲开始到AutoDJ开始播放的秒数。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:65
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:71
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr "从歌曲开始到AutoDJ停止播放的秒数。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:63
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:66
 msgid "Secret Key"
 msgstr "密钥"
 
@@ -4631,6 +4756,10 @@ msgstr "寻求"
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DataTable.vue:254
 msgid "Select"
 msgstr "选择"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:20
+msgid "Select Custom Fallback File"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/FlowUpload.vue:19
 msgid "Select File"
@@ -4684,13 +4813,19 @@ msgstr "选择..."
 msgid "Send E-mail"
 msgstr "发送电子邮件"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:182
+#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/debug/index.phtml:188
 msgid "Send Liquidsoap Telnet Command"
 msgstr "发送Liquidsoap Telnet命令"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:30
 msgid "Send Recovery E-mail"
 msgstr "发送恢复电子邮件"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/TestMessageModal.vue:43
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/TestMessageModal.vue:15
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:111
+msgid "Send Test Message"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/config/webhooks.php:36
 msgid "Send an e-mail to specified address(es)."
@@ -4721,11 +4856,11 @@ msgstr "发件人名称"
 msgid "Sequential"
 msgstr "顺序"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/admin/index/index.phtml:33
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:26
 msgid "Server Status"
 msgstr "服务器状态"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:278
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:293
 msgid "Server configuration complete!"
 msgstr "服务器配置完成!"
 
@@ -4735,27 +4870,27 @@ msgstr "服务器配置完成!"
 msgid "Server:"
 msgstr "服务器："
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:213
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:197
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:250
 msgid "Service reloaded."
 msgstr "Service 重载。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:172
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:225
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:262
 msgid "Service restarted."
 msgstr "Service 重启。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:154
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:207
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:191
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:244
 msgid "Service started."
 msgstr "Service 开始运行。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:149
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:202
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:239
 msgid "Service stopped."
 msgstr "Service 停止。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:188
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:206
 msgid "Services"
 msgstr "服务项目"
 
@@ -4787,7 +4922,7 @@ msgstr "设置字幕"
 msgid "Set Up AzuraCast"
 msgstr "设置AzuraCast"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:41
 msgid "Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
 msgstr "设置这个存储位置可以使用的最大磁盘空间。用单位指定大小，如 \"8 GB\"。单位以1024字节为单位。留空则默认为磁盘上的可用空间。"
 
@@ -4807,11 +4942,11 @@ msgstr "设置较长的时间来保存更多的播放历史和听众元数据的
 msgid "Set or clear playlists from the selected media"
 msgstr "设置或清除所选媒体的播放列表"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
 msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
 msgstr "设置在Docker容器内运行的用户的GID。将其与主机的GID相匹配，可以解决权限问题。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
 msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
 msgstr "设置在Docker容器内运行的用户的UID。将其与您的主机UID相匹配可以解决权限问题。"
 
@@ -4831,7 +4966,7 @@ msgstr "设置为 \"是\"，将始终使用 \"https://\"安全URL，并在访问
 msgid "Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
 msgstr "设置为*以允许所有来源，或指定一个由逗号（,）分隔的来源列表。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:235
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:245
 msgid "Set up LetsEncrypt?"
 msgstr "设置LetsEncrypt？"
 
@@ -4843,8 +4978,8 @@ msgstr "设置密钥"
 msgid "Setting Value"
 msgstr "显示设置"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:16
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/GeneralTab.vue:97
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:16
 msgid "Settings"
 msgstr "设置"
 
@@ -4884,8 +5019,8 @@ msgstr "显示更新公告"
 msgid "Show new releases within your update channel on the AzuraCast homepage."
 msgstr "在AzuraCast主页显示您的更新频道中的新版本。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:28
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Remotes/Form/BasicInfo.vue:59
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/BasicInfo.vue:28
 msgid "Show on Public Pages"
 msgstr "在公共页面上显示"
 
@@ -4901,9 +5036,9 @@ msgstr "洗牌"
 msgid "Sign Out"
 msgstr "退出"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:27
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:64
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:67
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:27
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
 msgid "Sign in"
@@ -4918,7 +5053,7 @@ msgid "Site Theme"
 msgstr "网站主题"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups.vue:150
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:248
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:253
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:80
 msgid "Size"
 msgstr "大小"
@@ -4931,7 +5066,7 @@ msgstr "跳过歌曲"
 msgid "Skip to main content"
 msgstr "跳到主要内容"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:351
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:366
 msgid "Smart Mode"
 msgstr "智能模式"
 
@@ -4957,8 +5092,8 @@ msgstr "歌曲艺术家"
 msgid "Song Genre"
 msgstr "歌曲类型"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer/SongHistoryModal.vue:25
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer.vue:71
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/FullPlayer/SongHistoryModal.vue:25
 msgid "Song History"
 msgstr "歌曲历史"
 
@@ -4968,7 +5103,7 @@ msgstr "歌曲长度"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/PerformanceAction.php:23
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:137
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:194
 msgid "Song Listener Impact"
 msgstr "歌曲听众影响"
 
@@ -4982,27 +5117,27 @@ msgstr "歌曲播放顺序"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/TimelineAction.php:22
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:133
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:190
 msgid "Song Playback Timeline"
 msgstr "歌曲播放时间线"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:66
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:6
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/RequestsPanel.vue:24
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/RequestsAction.php:22
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:128
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:185
 msgid "Song Requests"
 msgstr "歌曲请求"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:76
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:98
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Requests.vue:92
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:126
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:76
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/BasicInfo.vue:17
 msgid "Song Title"
 msgstr "歌曲标题"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:190
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
 msgid "Song skipped."
 msgstr "已跳过歌曲。"
 
@@ -5023,15 +5158,15 @@ msgstr "基于歌曲"
 msgid "SoundExchange Report"
 msgstr "声讯报告"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:152
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:199
 msgid "SoundExchange Royalties"
 msgstr "SoundExchange版税"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:132
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:38
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:78
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:151
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Source.vue:8
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Timeline.vue:99
 msgid "Source"
 msgstr "源"
 
@@ -5047,7 +5182,7 @@ msgstr "指定一个挂载点（如\"/radio.mp3\"）或Shoutcast SID（如 \"2\"
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr "指定该播放列表每小时应播放的分钟数。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:192
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:210
 msgid "Stable"
 msgstr "稳定"
 
@@ -5055,18 +5190,18 @@ msgstr "稳定"
 msgid "Standard playlist, shuffles with other standard playlists based on weight."
 msgstr "标准播放列表，根据权重与其他标准播放列表进行随机播放。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:82
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:30
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:31
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:83
 msgid "Start"
 msgstr "开始"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:68
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/SoundExchange.vue:47
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:68
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:65
 msgid "Start Date"
 msgstr "开始日期"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:21
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:27
 msgid "Start Station"
 msgstr "开始电台"
 
@@ -5075,8 +5210,8 @@ msgid "Start Streaming"
 msgstr "开始流媒体"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:32
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:32
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/BroadcastsModal.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:32
 msgid "Start Time"
 msgstr "开始时间"
 
@@ -5105,7 +5240,7 @@ msgstr "电台权限"
 msgid "Station Podcasts"
 msgstr "电台播客"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:62
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
 msgid "Station Ports"
 msgstr "电台端口"
 
@@ -5122,7 +5257,11 @@ msgstr "电台时间"
 msgid "Station Time Zone"
 msgstr "电台时区"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:134
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:148
+msgid "Station reloaded."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:171
 msgid "Station restarted."
 msgstr "电台已重新启动。"
 
@@ -5143,9 +5282,17 @@ msgstr "电台"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Overview.vue:4
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/Reports/OverviewAction.php:31
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:120
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:177
 msgid "Statistics Overview"
 msgstr "统计总览"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:58
+msgid "Steal"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:6
+msgid "Steal (St)"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account/TwoFactorModal.vue:8
 msgid "Step 1: Scan QR Code"
@@ -5159,12 +5306,12 @@ msgstr "第二步：验证生成的代码"
 msgid "Steps for configuring a Twitter application:"
 msgstr "配置Twitter应用程序的步骤："
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:269
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:21
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:86
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:18
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/PlayButton.vue:43
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:269
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/BackendPanel.vue:36
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/FrontendPanel.vue:88
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/WaveformEditor.vue:18
 msgid "Stop"
 msgstr "停止"
 
@@ -5176,8 +5323,8 @@ msgstr "停止流媒体"
 msgid "Storage Adapter"
 msgstr "存储适配器"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:13
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/ConfigureModal.vue:53
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Backups/RunBackupModal.vue:13
 msgid "Storage Location"
 msgstr "存储位置"
 
@@ -5187,7 +5334,7 @@ msgstr "存储位置"
 msgid "Storage Locations"
 msgstr "存储位置"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:35
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/StorageLocations/Form.vue:38
 msgid "Storage Quota"
 msgstr "储存配额"
 
@@ -5199,7 +5346,7 @@ msgstr "存储位置%s已存在。"
 msgid "Storage location %s could not be validated: %s"
 msgstr "存储位置%s不能被验证：%s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:154
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:150
 msgid "Stream"
 msgstr "流"
 
@@ -5219,7 +5366,7 @@ msgstr "流媒体用户名"
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
 msgstr "该电台目前已禁用流媒体账户。要启用流媒体账户，请点击下面的按钮。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:197
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:234
 msgid "Streamer disconnected."
 msgstr "流媒体已断线。"
 
@@ -5233,14 +5380,14 @@ msgstr "流媒体/DJ"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:8
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/StreamersAction.php:61
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:81
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:141
 #: /home/runner/work/AzuraCast/AzuraCast/templates/stations/streamers/disabled.phtml:1
 msgid "Streamer/DJ Accounts"
 msgstr "流媒体/ DJ帐户"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:61
 msgid "Streamer: %s"
-msgstr "流媒体: %s"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/StreamersAction.php:42
 msgid "Streamers enabled!"
@@ -5352,6 +5499,22 @@ msgstr "使用条款"
 msgid "Test"
 msgstr "测试"
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:43
+msgid "Test Message"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:60
+msgid "Test message sent successfully."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/TestMessageModal.vue:63
+msgid "Test message sent."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:32
+msgid "The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Generic.vue:34
 msgid "The URL that will receive the POST messages any time an event is triggered."
 msgstr "当事件被触发时，接收POST消息的URL。"
@@ -5359,6 +5522,10 @@ msgstr "当事件被触发时，接收POST消息的URL。"
 #: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:57
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
 msgstr "与电子邮件地址\"%s \"相关联的账户已被设置为管理员"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:9
+msgid "The amount of memory Linux is using for disk caching."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:43
 msgid "The application environment."
@@ -5375,6 +5542,14 @@ msgstr "POST消息的主体与您的电台的NowPlaying API响应完全相同。
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:49
 msgid "The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc."
 msgstr "播客的联系人。为了在苹果播客、Spotify、谷歌播客等服务上列出播客，可能需要这样做。"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:47
+msgid "The current CPU usage including I/O Wait and Steal."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:26
+msgid "The current Memory usage excluding cached memory."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
 msgid "The date when the episode should be published."
@@ -5428,11 +5603,11 @@ msgstr "播放这个远程播放列表时，Liquidsoap应该缓冲的播放时�
 msgid "The locale to use for CLI commands."
 msgstr "CLI命令要使用的区域语言。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
 msgid "The main port AzuraCast listens to for insecure HTTP connections."
 msgstr "AzuraCast对不安全的HTTP连接进行监听的主要端口。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
 msgid "The main port AzuraCast listens to for secure HTTPS connections."
 msgstr "AzuraCast对安全HTTPS连接进行监听的主要端口。"
 
@@ -5447,6 +5622,10 @@ msgstr "15秒、1分钟和5分钟同步任务的最大执行时间（和锁定�
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:210
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
 msgstr "在中断的情况下要存储的信号秒数。设置为您的DJ可以在不中断的情况下使用的最低值。"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Generic.vue:65
+msgid "The number of seconds to wait for a response from the remote server before cancelling the request."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/MatomoAnalytics.vue:20
 msgid "The numeric site ID for this site."
@@ -5468,11 +5647,11 @@ msgstr "性能分析扩展目前已在此安装上启用。"
 msgid "The port %s is in use by another station."
 msgstr "端口%s正在被另一个电台使用。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:56
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
 msgid "The port AzuraCast listens to for SFTP file management connections."
 msgstr "AzuraCast对SFTP文件管理连接的监听端口。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
 msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
 msgstr "AzuraCast应该监听电台广播和进入的DJ连接的端口。"
 
@@ -5492,11 +5671,11 @@ msgstr "无法处理该请求。"
 msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:92
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:93
 msgid "The song ID you specified cannot be requested for this station."
 msgstr "您指定的歌曲ID不能被要求使用在这个电台。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:88
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
 msgid "The song ID you specified could not be found in the station."
 msgstr "您指定的歌曲ID在电台中找不到。"
 
@@ -5516,15 +5695,15 @@ msgstr "流媒体将使用这个用户名连接到电台服务器。"
 msgid "The synchronization task is running in the background. The log below will update automatically."
 msgstr "同步任务正在后台运行。下面的日志会自动更新。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:36
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:39
 msgid "The time period that the song should fade in. Leave blank to use the system default."
 msgstr "歌曲应该淡入的时间段。留空以使用系统默认值。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:45
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:49
 msgid "The time period that the song should fade out. Leave blank to use the system default."
 msgstr "歌曲应该淡出的时间段。留空以使用系统默认值。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:27
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:29
 msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
 msgstr "渐变时，这首歌曲与周围歌曲重叠的时间。留空以使用系统默认值。"
 
@@ -5548,13 +5727,17 @@ msgstr "上传的文件只是部分上传。"
 msgid "The value for the \"SPX_KEY\" parameter for viewing profiling pages."
 msgstr "用于查看分析页面的 \"SPX_KEY \"参数的值。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:18
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media/Form/AdvancedSettings.vue:19
 msgid "The volume in decibels to amplify the track with. Leave blank to use the system default."
 msgstr "要放大音轨的音量，单位为分贝。留空以使用系统默认值。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/EmbedModal.vue:139
 msgid "Theme"
 msgstr "主题"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:44
+msgid "There is no existing custom fallback file associated with this station."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Intro.vue:33
 msgid "There is no existing intro file associated with this mount point."
@@ -5572,8 +5755,7 @@ msgstr "这个CSS将被应用到主管理页面，比如这个。"
 msgid "This CSS will be applied to the station public pages and login page."
 msgstr "该CSS将应用于电台内公共页面和登录页面。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:191
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:95
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:103
 msgid "This Month"
 msgstr "这个月"
 
@@ -5593,11 +5775,15 @@ msgstr "这允许您暂时记录调试级别的错误（用于解决问题）或
 msgid "This can have an adverse impact on system performance. You should disable this when possible."
 msgstr "这可能对系统性能产生不利影响。您应该在可能的情况下禁用它。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:13
+msgid "This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/FrontendForm.vue:155
 msgid "This code will be included in the frontend configuration. Allowed formats are:"
 msgstr "这段代码将被包含在前端配置中。允许的格式是："
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:264
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:275
 msgid "This determines how many songs in advance the AutoDJ will automatically fill the queue."
 msgstr "这决定了AutoDJ会提前多少首歌曲自动填充队列。"
 
@@ -5659,6 +5845,10 @@ msgstr "这个字段必须只包含数字字符。"
 msgid "This file was automatically generated by AzuraCast."
 msgstr "这个文件是由AzuraCast自动生成的。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Fallback.vue:11
+msgid "This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:50
 msgid "This installation has not been backed up in the last two weeks."
 msgstr "在过去的两个星期里，这个装置还没有备份。"
@@ -5670,6 +5860,10 @@ msgstr "此安装的管理员没有配置此功能。"
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Intro.vue:10
 msgid "This introduction file should exactly match the bitrate and format of the mount point itself."
 msgstr "这个介绍文件应该与挂载点本身的比特率和格式完全一致。"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:46
+msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/LiquidsoapConfig.vue:18
 msgid "This is an advanced feature and custom code is not officially supported by AzuraCast. You may break your station by adding custom code, but removing it should fix any issues."
@@ -5687,7 +5881,7 @@ msgstr "这是被手动断开连接的流媒体可以重新连接到流媒体之
 msgid "This javascript code will be applied to the station public pages and login page."
 msgstr "该javascript代码将被应用到电台内公共页面和登录页面。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:275
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:242
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
 msgstr "该模式禁用AzuraCast的AutoDJ管理，使用Liquidsoap本身来管理歌曲播放。\"下一首歌曲 \"和其他一些功能将无法使用。"
 
@@ -5707,8 +5901,8 @@ msgstr "这个密码太常见或不安全。"
 msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
 msgstr "该播放列表目前没有安排时间。它将在所有时间播放。要添加新的预定时间，请点击下面的按钮。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:27
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:27
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:27
 msgid "This playlist is not a sequential playlist."
 msgstr "此播放列表不是顺序播放列表。"
 
@@ -5720,7 +5914,7 @@ msgstr ""
 msgid "This playlist will play every $x songs, where $x is specified here."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:242
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:264
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
 msgstr "此端口不被任何外部进程使用。只有当指定的端口正在使用时，才能修改此端口。留空以自动分配一个端口。"
 
@@ -5736,7 +5930,7 @@ msgstr "这个队列包含剩余的曲目，其顺序将由AzuraCast AutoDJ排�
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
 msgstr "由于系统管理员选择不收集详细的基于IP的听众信息，因此该电台没有该报告。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:160
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:170
 msgid "This service can provide album art for tracks where none is available locally."
 msgstr "这项服务可以为本地没有的曲目提供专辑封面。"
 
@@ -5748,7 +5942,7 @@ msgstr "该软件将您的广播传递给听众。"
 msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
 msgstr "这款软件从音乐的播放列表中不断地洗牌，当没有其他广播源时，就会播放。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:249
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:250
 msgid "This song or artist has been played too recently. Wait a while before requesting it again."
 msgstr "这首歌或艺术家最近被播放的次数太多。在再次请求之前，请稍等片刻。"
 
@@ -5756,13 +5950,13 @@ msgstr "这首歌或艺术家最近被播放的次数太多。在再次请求之
 msgid "This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
 msgstr "这指定了在广播中播放歌曲和可再次请求的最小时间（分钟）。设置为0表示没有阈值。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:301
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:316
 msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
 msgstr "这指定了重复歌曲防止算法应考虑的歌曲历史的时间范围（分钟）。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:81
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:161
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:81
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:84
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/RequestsController.php:189
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:70
 msgid "This station does not accept requests currently."
 msgstr "该电台当前不接受请求。"
 
@@ -5777,8 +5971,8 @@ msgstr "这个电台已经没有可用的存储空间了。"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists.vue:10
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Schedule.vue:61
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:11
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers/Form/Schedule.vue:58
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Streamers.vue:11
 msgid "This station's time zone is currently %{tz}."
 msgstr "此电台的时区目前是%{tz}。"
 
@@ -5824,11 +6018,11 @@ msgstr "缩略图网址"
 msgid "Thursday"
 msgstr "星期四"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:151
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:147
 msgid "Time"
 msgstr "时间"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:152
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:148
 msgid "Time (sec)"
 msgstr "时间 (sec)"
 
@@ -5836,14 +6030,22 @@ msgstr "时间 (sec)"
 msgid "Time Zone"
 msgstr "时区"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:53
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:116
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:28
+msgid "Time spent waiting for disk I/O to be completed."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:9
+msgid "Time stolen by other virtual machines on the same physical server."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/WebDJ/SettingsPanel.vue:114
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Requests.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/OnDemand.vue:116
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:229
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks/Form/Discord.vue:29
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:224
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:54
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/QueueModal.vue:10
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/ReorderModal.vue:11
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Performance.vue:54
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:79
 msgid "Title"
 msgstr "标题"
@@ -5851,6 +6053,10 @@ msgstr "标题"
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:80
 msgid "Title Sort Order"
 msgstr "标题排序顺序"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:16
+msgid "To alleviate this potential problem with shared CPU resources, hosts assign \"credits\" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM's assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the \"Steal\" or \"St\" value."
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/GeoLite.vue:26
 msgid "To download the GeoLite database:"
@@ -5877,8 +6083,7 @@ msgstr "要将此计划设置为仅在特定日期范围内运行，请指定开
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
 msgstr "要验证代码设置是否正确，请输入应用程序显示的6位数代码。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:175
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:75
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:83
 msgid "Today"
 msgstr "今天"
 
@@ -5902,13 +6107,25 @@ msgstr "尝试登录次数过多"
 msgid "Total"
 msgstr "总"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:51
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:179
+msgid "Total Disk Space"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:45
 msgid "Total Listener Hours"
 msgstr "听众总时数"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:142
+msgid "Total RAM"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/CustomFieldsAction.php:81
 msgid "Track Number"
 msgstr "轨道编号"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:226
+msgid "Transmitted"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:80
 msgid "Triggers"
@@ -6000,14 +6217,18 @@ msgstr "URL存根"
 msgid "URL User"
 msgstr "URL用户"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:12
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:85
+msgid "Unassigned Files"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:33
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/StreamsPanel.vue:61
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/NowPlayingPanel.vue:12
 msgid "Unique"
 msgstr "特别听众"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:35
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Dashboard.vue:232
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:41
 msgid "Unique Listeners"
 msgstr "特别听众"
 
@@ -6015,8 +6236,8 @@ msgstr "特别听众"
 msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
 msgstr "目标聊天的唯一标识符或目标频道的用户名（格式为@channelusername）。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:90
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:110
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:89
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:106
 msgid "Unknown"
 msgstr "未知"
 
@@ -6028,7 +6249,7 @@ msgstr "未知艺术家"
 msgid "Unknown Title"
 msgstr "未知标题"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:147
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:78
 msgid "Unprocessable Files"
 msgstr "无法处理的文件"
 
@@ -6046,7 +6267,7 @@ msgstr "上"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Queue.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/QueueAction.php:22
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:186
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:237
 msgid "Upcoming Song Queue"
 msgstr "即将到来的歌曲队列"
 
@@ -6079,6 +6300,14 @@ msgstr "上传被一个PHP扩展停止了。"
 msgid "Upload the file on this page to automatically extract it into the proper directory."
 msgstr "在这个页面上上传文件，就可以自动解压到适当的目录中。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:68
+msgid "Use"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:45
+msgid "Use (Us)"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Account.vue:97
 msgid "Use API keys to authenticate with the AzuraCast API using the same permissions as your user account."
 msgstr "使用API密钥与AzuraCast API进行认证，使用与用户账户相同的权限。"
@@ -6095,7 +6324,15 @@ msgstr "使用浏览器默认"
 msgid "Use Icecast 2.4 on this server."
 msgstr "在这个服务器上使用Icecast 2.4。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:336
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:428
+msgid "Use Less CPU (Uses More Memory)"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:420
+msgid "Use Less Memory (Uses More CPU)"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/Form/BackendForm.vue:351
 msgid "Use Liquidsoap on this server."
 msgstr "在这个服务器上使用Liquidsoap。"
 
@@ -6123,6 +6360,12 @@ msgstr "使用WebSockets立即播放广播"
 msgid "Use the Telegram Bot API to send a message to a channel."
 msgstr "使用Telegram Bot API将消息发送到频道。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:155
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:191
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/MemoryStatsHelpModal.vue:24
+msgid "Used"
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Settings/ServicesTab.vue:43
 msgid "Used for \"Forgot Password\" functionality, web hooks and other functions."
 msgstr "用于 \"忘记密码 \"功能、网页钩子等功能。"
@@ -6135,7 +6378,7 @@ msgstr "用户"
 msgid "User Accounts"
 msgstr "用户帐号"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:153
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:149
 msgid "User Agent"
 msgstr "用户 Agent"
 
@@ -6186,10 +6429,6 @@ msgstr "利用这个页面，您可以定制Liquidsoap配置的几个部分。�
 msgid "Usually enabled for port 465, disabled for ports 587 or 25."
 msgstr "电子邮件通常使用465，587或25端口，有时25端口可能是被禁用的。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:158
-msgid "Utilities"
-msgstr "实用工具"
-
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:113
 msgid "Valid options: %s"
 msgstr "有效选项: %s"
@@ -6231,11 +6470,11 @@ msgstr "查看系统日志"
 msgid "View the changelog for full details."
 msgstr "查看更新日志以了解完整详细信息。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:305
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:310
 msgid "View tracks in playlist"
 msgstr "在播放列表中查看曲目"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:79
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:90
 msgid "Visit %s to complete setup."
 msgstr "访问%s完成设置。"
 
@@ -6247,11 +6486,19 @@ msgstr "访问 \"服务 \"部分下的 \"我的许可证密钥 \"页面。"
 msgid "Visual Cue Editor"
 msgstr "视觉提示编辑器"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:275
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/InlinePlayer.vue:88
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/Waveform.vue:113
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Public/Player.vue:275
 msgid "Volume"
 msgstr "音量"
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index.vue:63
+msgid "Wait"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Index/CpuStatsHelpModal.vue:26
+msgid "Wait (Wa)"
+msgstr ""
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Playlists/Form/Advanced.vue:7
 msgid "Warning"
@@ -6263,7 +6510,7 @@ msgstr "波形缩放"
 
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Profile/PublicPagesPanel.vue:23
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/WebDjAction.php:59
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:88
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:149
 msgid "Web DJ"
 msgstr "网络DJ"
 
@@ -6286,7 +6533,7 @@ msgstr "网络钩子网址"
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Admin/Stations/CloneModalForm.vue:77
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Webhooks.vue:5
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Stations/WebhooksAction.php:31
-#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:109
+#: /home/runner/work/AzuraCast/AzuraCast/config/menus/station.php:165
 msgid "Web Hooks"
 msgstr "网络钩子"
 
@@ -6318,8 +6565,8 @@ msgstr "网络钩子可以让您连接到外部网络服务，并将您的电台
 msgid "WebDJ"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:14
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:14
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:14
 msgid "Website"
 msgstr "网站"
 
@@ -6341,7 +6588,7 @@ msgstr "欢迎来到%s！"
 msgid "Welcome to AzuraCast!"
 msgstr "欢迎来到AzuraCast!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:165
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:175
 msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
 msgstr "欢迎来到AzuraCast! 通过回答几个问题来完成AzuraCast服务器的设置。"
 
@@ -6377,7 +6624,7 @@ msgstr "小部件类型"
 msgid "Worst Performing Songs"
 msgstr "最差的表演歌曲"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:253
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:268
 msgid "Writing configuration files..."
 msgstr "编写配置文件..."
 
@@ -6393,8 +6640,7 @@ msgstr "年"
 msgid "Yes"
 msgstr "是"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:179
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:79
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Common/DateRangeDropdown.vue:87
 msgid "Yesterday"
 msgstr "昨天"
 
@@ -6406,6 +6652,10 @@ msgstr "您"
 msgid "You are currently running version %s. Updating is highly recommended."
 msgstr "您目前正在运行的是%s版本。强烈推荐您进行更新。"
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:82
+msgid "You are not permitted to submit requests."
+msgstr ""
+
 #: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Media.vue:24
 msgid "You can also upload files in bulk via SFTP."
 msgstr "您也可以通过SFTP批量上传文件。"
@@ -6414,7 +6664,7 @@ msgstr "您也可以通过SFTP批量上传文件。"
 msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
 msgstr "您可以在我们的<a href=\"%s\" target=\"_blank\">支持文档</a>中找到许多常见问题的答案。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:25
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Mounts/Form/Advanced.vue:26
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML <key>value</key>"
 msgstr "您可以在这里包括任何特殊的挂载点设置，格式可以是JSON { key: 'value' }，也可以是XML <key>value</key>"
 
@@ -6446,8 +6696,8 @@ msgstr "您不能修改自己。"
 msgid "You cannot remove yourself."
 msgstr "您无法删除自己。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:203
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:213
+#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:199
+#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:209
 msgid "You do not have permission to access this portion of the site."
 msgstr "您没有权限访问这部分网站。"
 
@@ -6459,7 +6709,7 @@ msgstr "您已尝试登录太多次。请等待30秒后再试。"
 msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
 msgstr "您已尝试重置密码太多次。请等待30秒后再试。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:123
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:124
 msgid "You have submitted a request too recently! Please wait before submitting another one."
 msgstr "您最近提交的请求太多了! 请等待后再提交另一个请求。"
 
@@ -6476,8 +6726,8 @@ msgstr "您可能需要通过您的IP地址直接连接："
 msgid "You may want to update your base URL to ensure it is correct."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:175
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:185
+#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:171
+#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:181
 msgid "You must be logged in to access this page."
 msgstr "您必须先登录才能访问本页面。"
 
@@ -6522,7 +6772,7 @@ msgstr "您的完整API密钥如下："
 msgid "Your installation is currently %d update(s) behind the latest version."
 msgstr "您的安装目前落后于最新版本的%d更新。"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:68
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:67
 msgid "Your password has been updated."
 msgstr "您的密码已更新。"
 
@@ -6534,8 +6784,8 @@ msgstr "您的电台目前未启用广播。您仍然可以管理媒体、播放
 msgid "ZStandard compression"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:44
-#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:54
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:38
+#: /home/runner/work/AzuraCast/AzuraCast/frontend/vue/components/Stations/Reports/Listeners.vue:48
 msgid "for selected period"
 msgstr "选定时期"
 
@@ -6548,8 +6798,8 @@ msgstr "在过去48小时内"
 msgid "in the last month"
 msgstr "在过去的一个月里"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:23
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/login.phtml:43
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:23
 msgid "name@example.com"
 msgstr "名称@example.com"
 

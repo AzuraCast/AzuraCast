@@ -7,7 +7,7 @@ namespace App\Console\Command\Backup;
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
 use App\Entity;
-use App\Utilities;
+use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,6 +15,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 use const PATHINFO_EXTENSION;
 
@@ -27,6 +29,7 @@ class BackupCommand extends CommandAbstract
     use Traits\PassThruProcess;
 
     public function __construct(
+        protected Environment $environment,
         protected EntityManagerInterface $em,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
     ) {
@@ -43,6 +46,7 @@ class BackupCommand extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $fsUtils = new Filesystem();
 
         $path = $input->getArgument('path');
         $excludeMedia = (bool)$input->getOption('exclude-media');
@@ -56,14 +60,18 @@ class BackupCommand extends CommandAbstract
 
         $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        if ('/' === $path[0]) {
+        if (Path::isAbsolute($path)) {
             $tmpPath = $path;
             $storageLocation = null;
         } else {
-            $tmpPath = Utilities\File::createTempFile(
-                prefix: 'backup_',
-                suffix: '.' . $file_ext
+            $tmpPath = $fsUtils->tempnam(
+                sys_get_temp_dir(),
+                'backup_',
+                '.' . $file_ext
             );
+
+            // Zip command cannot handle an existing file (even an empty one)
+            @unlink($tmpPath);
 
             if (null === $storageLocationId) {
                 $io->error('You must specify a storage location when providing a relative path.');
@@ -95,8 +103,10 @@ class BackupCommand extends CommandAbstract
         $io->section(__('Creating temporary directories...'));
 
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
-        if (!mkdir($tmp_dir_mariadb) && !is_dir($tmp_dir_mariadb)) {
-            $io->error(__('Directory "%s" was not created', $tmp_dir_mariadb));
+        try {
+            $fsUtils->mkdir($tmp_dir_mariadb);
+        } catch (\Throwable $e) {
+            $io->error($e->getMessage());
             return 1;
         }
 
@@ -107,8 +117,7 @@ class BackupCommand extends CommandAbstract
 
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
-        $conn = $this->em->getConnection();
-        $connParams = $conn->getParams();
+        $connSettings = $this->environment->getDatabaseSettings();
 
         // phpcs:disable Generic.Files.LineLength
         $this->passThruProcess(
@@ -116,10 +125,10 @@ class BackupCommand extends CommandAbstract
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
             $tmp_dir_mariadb,
             [
-                'DB_HOST' => $connParams['host'],
-                'DB_DATABASE' => $conn->getDatabase(),
-                'DB_USERNAME' => $connParams['user'],
-                'DB_PASSWORD' => $connParams['password'],
+                'DB_HOST' => $connSettings['host'],
+                'DB_DATABASE' => $connSettings['dbname'],
+                'DB_USERNAME' => $connSettings['user'],
+                'DB_PASSWORD' => $connSettings['password'],
                 'DB_DEST' => $path_db_dump,
             ]
         );
@@ -225,7 +234,7 @@ class BackupCommand extends CommandAbstract
         // Cleanup
         $io->section(__('Cleaning up temporary files...'));
 
-        Utilities\File::rmdirRecursive($tmp_dir_mariadb);
+        $fsUtils->remove($tmp_dir_mariadb);
 
         $io->newLine();
 

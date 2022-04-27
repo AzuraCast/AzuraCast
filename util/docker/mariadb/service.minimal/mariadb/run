@@ -1,0 +1,5 @@
+#!/bin/bash
+
+dockerize -template /etc/mysql/db.cnf.tmpl:/etc/mysql/conf.d/db.cnf
+
+exec gosu mysql mysqld

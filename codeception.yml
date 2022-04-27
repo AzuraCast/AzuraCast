@@ -1,7 +1,7 @@
 actor: Tester
 paths:
   tests: tests
-  log: tests/_output
+  output: tests/_output
   data: tests/_data
   support: tests/_support
   envs: tests/_envs
@@ -11,9 +11,6 @@ settings:
   colors: true
   memory_limit: 1024M
   error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"
-extensions:
-  enabled:
-    - Codeception\Extension\RunFailed
 modules:
 coverage :
   enabled : true
@@ -37,4 +34,4 @@ coverage :
 
     # Exceptions
     - src/Exception/*.php
-    - src/Mvc/ErrorHandler.php
+    - src/Http/ErrorHandler.php

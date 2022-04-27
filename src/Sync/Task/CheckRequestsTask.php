@@ -78,7 +78,7 @@ class CheckRequestsTask extends AbstractTask
         }
 
         // Generate full Liquidsoap annotations
-        $event = new AnnotateNextSong($sq, true);
+        $event = AnnotateNextSong::fromStationQueue($sq, true);
         $this->dispatcher->dispatch($event);
 
         $track = $event->buildAnnotations();

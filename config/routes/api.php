@@ -46,42 +46,17 @@ return static function (RouteCollectorProxy $app) {
                     $group->group(
                         '/{station_id}',
                         function (RouteCollectorProxy $group) {
-                            // Liquidsoap internal authentication functions
                             $group->map(
                                 ['GET', 'POST'],
-                                '/auth',
-                                Controller\Api\InternalController::class . ':authAction'
-                            )->setName('api:internal:auth');
-
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/nextsong',
-                                Controller\Api\InternalController::class . ':nextsongAction'
-                            )->setName('api:internal:nextsong');
-
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/djon',
-                                Controller\Api\InternalController::class . ':djonAction'
-                            )->setName('api:internal:djon');
-
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/djoff',
-                                Controller\Api\InternalController::class . ':djoffAction'
-                            )->setName('api:internal:djoff');
-
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/feedback',
-                                Controller\Api\InternalController::class . ':feedbackAction'
-                            )->setName('api:internal:feedback');
+                                '/liquidsoap/{action}',
+                                Controller\Api\Internal\LiquidsoapAction::class
+                            )->setName('api:internal:liquidsoap');
 
                             // Icecast internal auth functions
                             $group->map(
                                 ['GET', 'POST'],
                                 '/listener-auth',
-                                Controller\Api\InternalController::class . ':listenerAuthAction'
+                                Controller\Api\Internal\ListenerAuthAction::class
                             )->setName('api:internal:listener-auth');
                         }
                     )->add(Middleware\GetStation::class);

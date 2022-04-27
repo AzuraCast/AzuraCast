@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -207,5 +208,28 @@ class StationBackendConfiguration extends ArrayCollection
     public function setDuplicatePreventionTimeRange(?int $duplicatePreventionTimeRange): void
     {
         $this->set(self::DUPLICATE_PREVENTION_TIME_RANGE, $duplicatePreventionTimeRange);
+    }
+
+    public const PERFORMANCE_MODE = 'performance_mode';
+
+    public function getPerformanceMode(): string
+    {
+        return $this->getPerformanceModeEnum()->value;
+    }
+
+    public function getPerformanceModeEnum(): StationBackendPerformanceModes
+    {
+        return StationBackendPerformanceModes::tryFrom($this->get(self::PERFORMANCE_MODE) ?? '')
+            ?? StationBackendPerformanceModes::default();
+    }
+
+    public function setPerformanceMode(?string $performanceMode): void
+    {
+        $perfModeEnum = StationBackendPerformanceModes::tryFrom($performanceMode ?? '');
+        if (null === $perfModeEnum) {
+            $this->set(self::PERFORMANCE_MODE, null);
+        } else {
+            $this->set(self::PERFORMANCE_MODE, $perfModeEnum->value);
+        }
     }
 }

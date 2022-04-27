@@ -21,10 +21,11 @@ class StationQueueRepository extends Repository
         $this->em->createQuery(
             <<<'DQL'
                 DELETE FROM App\Entity\StationQueue sq
-                WHERE sq.media = :media AND sq.playlist = :playlist
+                WHERE sq.media = :media 
+                AND sq.playlist = :playlist
+                AND sq.is_played = 0
             DQL
-        )
-            ->setParameter('media', $media)
+        )->setParameter('media', $media)
             ->setParameter('playlist', $playlist)
             ->execute();
     }
@@ -75,16 +76,35 @@ class StationQueueRepository extends Repository
         Entity\Station $station,
         int $rows
     ): array {
-        return $this->em->createQuery(
-            <<<'DQL'
-                SELECT sq.timestamp_played, sq.playlist_id
-                FROM App\Entity\StationQueue sq
-                WHERE sq.station = :station
-                ORDER BY sq.sent_to_autodj ASC, sq.timestamp_played DESC
-            DQL
-        )->setParameter('station', $station)
+        /*
+         * Explanation for why this is done in two queries:
+         * MariaDB won't apply indices if you order by one field ASC, then another DESC.
+         * The combiend query would order by is_played ASC, then timestamp_played DESC.
+         * This forces the use of indices at the expense of slightly more records being handled.
+         */
+        $baseQueryBuilder = $this->em->createQueryBuilder()
+            ->select('sq.timestamp_played, sq.playlist_id')
+            ->from(Entity\StationQueue::class, 'sq')
+            ->where('sq.station = :station')
+            ->setParameter('station', $station)
+            ->orderBy('sq.timestamp_played', 'DESC');
+
+        $unplayedRows = (clone $baseQueryBuilder)
+            ->andWhere('sq.is_played = 0')
+            ->getQuery()
+            ->getArrayResult();
+
+        $playedRows = (clone $baseQueryBuilder)
+            ->andWhere('sq.is_played = 1')
+            ->getQuery()
             ->setMaxResults($rows)
             ->getArrayResult();
+
+        return array_slice(
+            array_merge($unplayedRows, $playedRows),
+            0,
+            $rows
+        );
     }
 
     /**
@@ -196,6 +216,20 @@ class StationQueueRepository extends Repository
             ->leftJoin('sq.playlist', 'sp')
             ->where('sq.station = :station')
             ->setParameter('station', $station);
+    }
+
+    public function clearUnplayed(?Entity\Station $station = null): void
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->delete(Entity\StationQueue::class, 'sq')
+            ->where('sq.is_played = 0');
+
+        if (null !== $station) {
+            $qb->andWhere('sq.station = :station')
+                ->setParameter('station', $station);
+        }
+
+        $qb->getQuery()->execute();
     }
 
     public function cleanup(int $daysToKeep): void

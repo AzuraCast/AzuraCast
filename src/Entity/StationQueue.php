@@ -7,19 +7,23 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Monolog\Handler\TestHandler;
-use Monolog\Logger;
-use Psr\Log\LogLevel;
 
 #[
     ORM\Entity,
-    ORM\Table(name: 'station_queue')
+    ORM\Table(name: 'station_queue'),
+    ORM\Index(columns: ['is_played'], name: 'idx_is_played'),
+    ORM\Index(columns: ['timestamp_played'], name: 'idx_timestamp_played'),
+    ORM\Index(columns: ['sent_to_autodj'], name: 'idx_sent_to_autodj'),
+    ORM\Index(columns: ['timestamp_cued'], name: 'idx_timestamp_cued')
 ]
 class StationQueue implements SongInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
+
+    public const DAYS_TO_KEEP = 7;
+    public const QUEUE_LOG_TTL = 86400;
 
     #[ORM\Column(nullable: false)]
     protected int $station_id;
@@ -69,9 +73,6 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
 
     #[ORM\Column(nullable: true)]
     protected ?int $duration = null;
-
-    #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $log = null;
 
     public function __construct(Station $station, SongInterface $song)
     {
@@ -200,30 +201,6 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
     public function setTimestampPlayed(int $timestamp_played): void
     {
         $this->timestamp_played = $timestamp_played;
-    }
-
-    /**
-     * @return string[]|null
-     */
-    public function getLog(): ?array
-    {
-        return $this->log;
-    }
-
-    public function setLog(?array $log): void
-    {
-        $this->log = $log;
-    }
-
-    public function addLogRecord(string|int $level, string $message, array $context = []): void
-    {
-        $testHandler = new TestHandler(LogLevel::DEBUG, false);
-        $testLogger = new Logger('AzuraCast', [$testHandler]);
-
-        /** @phpstan-ignore-next-line */
-        $testLogger->addRecord(Logger::toMonologLevel($level), $message, $context);
-
-        $this->log = array_merge($this->log ?? [], $testHandler->getRecords());
     }
 
     public function __toString(): string

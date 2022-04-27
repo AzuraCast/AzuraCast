@@ -40,15 +40,19 @@ return static function (RouteCollectorProxy $app) {
                                 ['GET', 'POST'],
                                 '/nowplaying',
                                 Controller\Admin\DebugController::class . ':nowplayingAction'
-                            )
-                                ->setName('admin:debug:nowplaying');
+                            )->setName('admin:debug:nowplaying');
 
                             $group->map(
                                 ['GET', 'POST'],
                                 '/nextsong',
-                                Controller\Admin\DebugController::class . ':nextsongAction'
-                            )
-                                ->setName('admin:debug:nextsong');
+                                Controller\Admin\DebugController::class . ':nextSongAction'
+                            )->setName('admin:debug:nextsong');
+
+                            $group->map(
+                                ['GET', 'POST'],
+                                '/clearqueue',
+                                Controller\Admin\DebugController::class . ':clearStationQueueAction'
+                            )->setName('admin:debug:clear-station-queue');
 
                             $group->post('/telnet', Controller\Admin\DebugController::class . ':telnetAction')
                                 ->setName('admin:debug:telnet');

@@ -14,8 +14,8 @@ Language-Team: Greek
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-02-15T23:07:32+00:00
-PO-Revision-Date: 2022-02-18 18:14
+POT-Creation-Date: 2022-04-23T16:48:19+00:00
+PO-Revision-Date: 2022-04-27 14:59
 Language: el_GR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -53,25 +53,22 @@ X-Crowdin-File-ID: 4
       array (
         0 => '%s δεν αναγνωρίζεται ως υπηρεσία.',
       ),
-      '%s of %s Used' => 
-      array (
-        0 => '%s από %s Χρησιμοποιούνται',
-      ),
       '%{ days } Days' => 
       array (
-        0 => '',
+        0 => '%{ days } Ημέρες',
       ),
       '%{ minutes } minutes' => 
       array (
-        0 => '',
+        0 => '%{ minutes } λεπτά',
       ),
       '%{ seconds } seconds' => 
       array (
-        0 => '',
+        0 => '%{ seconds } δευτερόλεπτα',
       ),
       '%{filesCount} File' => 
       array (
-        0 => '',
+        0 => '%{filesCount} Αρχείο',
+        1 => '%{filesCount} Αρχεία',
       ),
       '%{listeners} Listener' => 
       array (
@@ -94,7 +91,7 @@ X-Crowdin-File-ID: 4
       ),
       '%{spaceUsed} Used' => 
       array (
-        0 => '',
+        0 => '%{spaceUsed} Χρησιμοποιείται',
       ),
       '%{spaceUsed} of %{spaceTotal} Used' => 
       array (
@@ -115,10 +112,6 @@ X-Crowdin-File-ID: 4
       '(in seconds)' => 
       array (
         0 => '(σε δευτερόλεπτα)',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => 'Μέσος Όρος 15 Λεπτών',
       ),
       'A completely random track is picked for playback every time the queue is populated.' => 
       array (
@@ -452,6 +445,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Προσπάθεια αυτόματης ανάκτησης του ISRC όταν λείπει',
       ),
+      'Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance.' => 
+      array (
+        0 => '',
+      ),
       'Audit Log' => 
       array (
         0 => 'Αρχεία Καταγραφής Ελέγχου',
@@ -487,6 +484,10 @@ X-Crowdin-File-ID: 4
       'AutoDJ Format' => 
       array (
         0 => 'Μορφή AutoDJ',
+      ),
+      'AutoDJ Queue' => 
+      array (
+        0 => '',
       ),
       'AutoDJ Queue Length' => 
       array (
@@ -648,6 +649,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αντίγραφα Ασφαλείας',
       ),
+      'Balanced' => 
+      array (
+        0 => '',
+      ),
       'Band' => 
       array (
         0 => 'Ζώνη',
@@ -743,6 +748,14 @@ X-Crowdin-File-ID: 4
       'CPU Load' => 
       array (
         0 => 'Φόρτωση CPU',
+      ),
+      'CPU Stats Help' => 
+      array (
+        0 => '',
+      ),
+      'Cached' => 
+      array (
+        0 => '',
       ),
       'Categories' => 
       array (
@@ -924,10 +937,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Συνθέτης',
       ),
-      'Composer Plugin Mode' => 
-      array (
-        0 => 'Λειτουργία Πρόσθετου Συνθέτη',
-      ),
       'Composer Sort Order' => 
       array (
         0 => 'Σειρά Ταξινόμησης Συνθέτη',
@@ -1092,9 +1101,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ένδειξη',
       ),
-      'Current' => 
+      'Current Custom Fallback File' => 
       array (
-        0 => 'Τρέχων',
+        0 => '',
       ),
       'Current Installed Version' => 
       array (
@@ -1155,6 +1164,10 @@ X-Crowdin-File-ID: 4
       'Custom Fading: Overlap Time (seconds)' => 
       array (
         0 => 'Προσαρμοσμένο ξεθώριασμα: Χρόνος επικάλυψης (δευτερόλεπτα)',
+      ),
+      'Custom Fallback File' => 
+      array (
+        0 => '',
       ),
       'Custom Fields' => 
       array (
@@ -1243,6 +1256,14 @@ X-Crowdin-File-ID: 4
       'Date/Time' => 
       array (
         0 => 'Ημερομηνία/Ώρα',
+      ),
+      'Date/Time (Browser)' => 
+      array (
+        0 => '',
+      ),
+      'Date/Time (Station)' => 
+      array (
+        0 => '',
       ),
       'Days Between Automated Assignments' => 
       array (
@@ -1400,10 +1421,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Κατάλογος',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'Κατάλογος "%s" δεν δημιουργήθηκε',
-      ),
       'Directory Name' => 
       array (
         0 => 'Όνομα καταλόγου',
@@ -1415,6 +1432,10 @@ X-Crowdin-File-ID: 4
       'Disable Crossfading' => 
       array (
         0 => 'Απενεργοποίηση Crossfading',
+      ),
+      'Disable Optimizations' => 
+      array (
+        0 => '',
       ),
       'Disable Two-Factor' => 
       array (
@@ -1459,6 +1480,10 @@ X-Crowdin-File-ID: 4
       'Disk Space' => 
       array (
         0 => 'Χώρος Στο Δίσκο',
+      ),
+      'Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.' => 
+      array (
+        0 => '',
       ),
       'Display Name' => 
       array (
@@ -1659,6 +1684,10 @@ X-Crowdin-File-ID: 4
       'Enable Broadcasting' => 
       array (
         0 => 'Ενεργοποίηση Μετάδοσης',
+      ),
+      'Enable Custom Code Plugins' => 
+      array (
+        0 => '',
       ),
       'Enable Downloads on On-Demand Page' => 
       array (
@@ -1992,6 +2021,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'Get Next Song' => 
+      array (
+        0 => '',
+      ),
       'Get Now Playing' => 
       array (
         0 => '',
@@ -2051,6 +2084,10 @@ X-Crowdin-File-ID: 4
       'High' => 
       array (
         0 => 'Υψηλή',
+      ),
+      'High I/O Wait can indicate a bottleneck with the server\'s hard disk, a potentially failing hard disk, or heavy load on the hard disk.' => 
+      array (
+        0 => '',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
@@ -2236,6 +2273,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αν αντιμετωπίζετε κάποιο σφάλμα ή σφάλμα, μπορείτε να υποβάλετε ένα πρόβλημα του GitHub χρησιμοποιώντας τον παρακάτω σύνδεσμο.',
       ),
+      'If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.' => 
+      array (
+        0 => '',
+      ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
         0 => 'Αν το λογισμικό μετάδοσης απαιτεί μια συγκεκριμένη διαδρομή σημείου προσάρτησης, καθορίστε το εδώ. Διαφορετικά, χρησιμοποιήστε την προεπιλογή.',
@@ -2328,9 +2369,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Εγκατάσταση Προσδιορισμών Δεδομένων',
       ),
-      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
+      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.' => 
       array (
-        0 => 'Δώστε εντολή στο LiquidSoap να χρησιμοποιήσετε τα μεταδεδομένα που σχετίζονται με ένα τραγούδι για να ελέγξετε το επίπεδο έντασης.',
+        0 => '',
       ),
       'Instructions' => 
       array (
@@ -2403,6 +2444,10 @@ X-Crowdin-File-ID: 4
       'Last 2 Years' => 
       array (
         0 => 'Τελευταία 2 Χρόνια',
+      ),
+      'Last 24 Hours' => 
+      array (
+        0 => '',
       ),
       'Last 30 Days' => 
       array (
@@ -2524,6 +2569,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αρχείο καταγραφής Liquidsoap',
       ),
+      'Liquidsoap Performance Tuning' => 
+      array (
+        0 => '',
+      ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Λίστα μιας διεύθυνσης IP ή ομάδας (σε μορφή CIDR) ανά γραμμή.',
@@ -2535,6 +2584,10 @@ X-Crowdin-File-ID: 4
       'Listener Analytics Collection' => 
       array (
         0 => 'Συλλογή Αναλυτικών Ακροατών',
+      ),
+      'Listener History' => 
+      array (
+        0 => '',
       ),
       'Listener Request' => 
       array (
@@ -2584,11 +2637,19 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ζωντανή Ροή:',
       ),
+      'Live Streaming' => 
+      array (
+        0 => '',
+      ),
       'Live stream connected.' => 
       array (
         0 => '',
       ),
       'Live stream disconnected.' => 
+      array (
+        0 => '',
+      ),
+      'Load Average' => 
       array (
         0 => '',
       ),
@@ -2828,6 +2889,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Μνήμη',
       ),
+      'Memory Stats Help' => 
+      array (
+        0 => '',
+      ),
       'Merge playlist to play as a single track.' => 
       array (
         0 => 'Συγχώνευση λίστας αναπαραγωγής για να παίξει ως ένα μόνο κομμάτι.',
@@ -2917,6 +2982,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Πιο Πρόσφατη Καταγραφή Αντιγράφων Ασφαλείας',
       ),
+      'Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server "stealing" CPU time from your VM and vice-versa.' => 
+      array (
+        0 => '',
+      ),
       'Mount Name:' => 
       array (
         0 => '',
@@ -2980,6 +3049,10 @@ X-Crowdin-File-ID: 4
       'Need Help?' => 
       array (
         0 => 'Χρειάζεστε Βοήθεια;',
+      ),
+      'Network Interfaces' => 
+      array (
+        0 => '',
       ),
       'Never run' => 
       array (
@@ -3237,6 +3310,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools.' => 
+      array (
+        0 => '',
+      ),
       'Only Send One Tweet Every...' => 
       array (
         0 => 'Στείλτε Μόνο Ένα Tweet Όλα...',
@@ -3268,6 +3345,10 @@ X-Crowdin-File-ID: 4
       'Optional: HTTP Basic Authentication Username' => 
       array (
         0 => 'Προαιρετικό: HTTP Βασικό Όνομα Χρήστη Ελέγχου Ταυτότητας',
+      ),
+      'Optional: Request Timeout (Seconds)' => 
+      array (
+        0 => '',
       ),
       'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
       array (
@@ -3673,9 +3754,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Έτοιμο για εκκίνηση μετάδοσης? Κάντε κλικ για να ξεκινήσετε το σταθμό σας.',
       ),
-      'Rebuild AutoDJ Queue' => 
+      'Received' => 
       array (
-        0 => 'Ανοικοδόμηση AutoDJ Ουράς',
+        0 => '',
       ),
       'Record Live Broadcasts' => 
       array (
@@ -3745,9 +3826,21 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Χρόνος Κυκλοφορίας',
       ),
+      'Reload Configuration' => 
+      array (
+        0 => '',
+      ),
       'Reload System Data' => 
       array (
         0 => 'Επαναφόρτωση Δεδομένων Συστήματος',
+      ),
+      'Reload broadcasting? Current listeners will not be disconnected.' => 
+      array (
+        0 => '',
+      ),
+      'Reload to Apply Changes' => 
+      array (
+        0 => '',
       ),
       'Remember me' => 
       array (
@@ -3824,6 +3917,10 @@ X-Crowdin-File-ID: 4
       'Remote: S3 Compatible' => 
       array (
         0 => 'Remote: S3 Συμβατό Σύστημα',
+      ),
+      'Remote: SFTP' => 
+      array (
+        0 => '',
       ),
       'Remove' => 
       array (
@@ -3925,10 +4022,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Επανεκκίνηση μετάδοσης? Αυτό θα αποσυνδέσει τους τρέχοντες ακροατές.',
       ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => 'Επανεκκίνηση στην εφαρμογή αλλαγών',
-      ),
       'Restoring Backups' => 
       array (
         0 => 'Επαναφορά Αντιγράφων Ασφαλείας',
@@ -3985,6 +4078,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Εκτέλεση Μεταφοράς Βάσης Δεδομένων',
       ),
+      'SFTP Host' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Password' => 
+      array (
+        0 => '',
+      ),
       'SFTP Port' => 
       array (
         0 => 'Θύρα SFTP',
@@ -3992,6 +4093,18 @@ X-Crowdin-File-ID: 4
       'SFTP Port: %d' => 
       array (
         0 => 'Θύρα SFTP: %d',
+      ),
+      'SFTP Private Key' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Private Key Pass Phrase' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Username' => 
+      array (
+        0 => '',
       ),
       'SFTP Users' => 
       array (
@@ -4068,6 +4181,10 @@ X-Crowdin-File-ID: 4
       'Save Changes' => 
       array (
         0 => 'Αποθήκευση Αλλαγών',
+      ),
+      'Save Changes first' => 
+      array (
+        0 => '',
       ),
       'Save and Continue' => 
       array (
@@ -4153,6 +4270,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Επιλογή',
       ),
+      'Select Custom Fallback File' => 
+      array (
+        0 => '',
+      ),
       'Select File' => 
       array (
         0 => 'Επιλογή αρχείου',
@@ -4212,6 +4333,10 @@ X-Crowdin-File-ID: 4
       'Send Recovery E-mail' => 
       array (
         0 => 'Αποστολή Email Ανάκτησης',
+      ),
+      'Send Test Message' => 
+      array (
+        0 => '',
       ),
       'Send an e-mail to specified address(es).' => 
       array (
@@ -4601,6 +4726,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ζώνη Ώρας Σταθμού',
       ),
+      'Station reloaded.' => 
+      array (
+        0 => '',
+      ),
       'Station restarted.' => 
       array (
         0 => 'Ο σταθμός επανεκκινήθηκε.',
@@ -4620,6 +4749,14 @@ X-Crowdin-File-ID: 4
       'Statistics Overview' => 
       array (
         0 => 'Επισκόπηση Στατιστικών',
+      ),
+      'Steal' => 
+      array (
+        0 => '',
+      ),
+      'Steal (St)' => 
+      array (
+        0 => '',
       ),
       'Step 1: Scan QR Code' => 
       array (
@@ -4801,6 +4938,22 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Δοκιμή',
       ),
+      'Test Message' => 
+      array (
+        0 => '',
+      ),
+      'Test message sent successfully.' => 
+      array (
+        0 => '',
+      ),
+      'Test message sent.' => 
+      array (
+        0 => '',
+      ),
+      'The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this.' => 
+      array (
+        0 => '',
+      ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
         0 => 'Το URL που θα λαμβάνει τα μηνύματα POST οποιαδήποτε στιγμή ενεργοποιείται ένα γεγονός.',
@@ -4808,6 +4961,10 @@ X-Crowdin-File-ID: 4
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => 'Ο λογαριασμός που σχετίζεται με τη διεύθυνση ηλεκτρονικού ταχυδρομείου "%s" έχει οριστεί ως διαχειριστής',
+      ),
+      'The amount of memory Linux is using for disk caching.' => 
+      array (
+        0 => '',
       ),
       'The application environment.' => 
       array (
@@ -4824,6 +4981,14 @@ X-Crowdin-File-ID: 4
       'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
       array (
         0 => 'Το άτομο επαφής του podcast. Μπορεί να απαιτείται για να απαριθμήσετε το podcast σε υπηρεσίες όπως το Apple Podcasts, το Spotify, το Google Podcasts, κλπ.',
+      ),
+      'The current CPU usage including I/O Wait and Steal.' => 
+      array (
+        0 => '',
+      ),
+      'The current Memory usage excluding cached memory.' => 
+      array (
+        0 => '',
       ),
       'The date when the episode should be published.' => 
       array (
@@ -4896,6 +5061,10 @@ X-Crowdin-File-ID: 4
       'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
       array (
         0 => 'Ο αριθμός των δευτερολέπτων του σήματος που αποθηκεύεται σε περίπτωση διακοπής. Ορίστε στη χαμηλότερη τιμή που οι DJs σας μπορούν να χρησιμοποιήσουν χωρίς διακοπές ρεύματος.',
+      ),
+      'The number of seconds to wait for a response from the remote server before cancelling the request.' => 
+      array (
+        0 => '',
       ),
       'The numeric site ID for this site.' => 
       array (
@@ -5005,6 +5174,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Θέμα',
       ),
+      'There is no existing custom fallback file associated with this station.' => 
+      array (
+        0 => '',
+      ),
       'There is no existing intro file associated with this mount point.' => 
       array (
         0 => 'Δεν υπάρχει κανένα υπάρχον εισαγωγικό αρχείο που να συνδέεται με αυτό το σημείο προσάρτησης.',
@@ -5040,6 +5213,10 @@ X-Crowdin-File-ID: 4
       'This can have an adverse impact on system performance. You should disable this when possible.' => 
       array (
         0 => 'Αυτό μπορεί να έχει αρνητικές επιπτώσεις στην απόδοση του συστήματος. Θα πρέπει να το απενεργοποιήσετε όταν είναι δυνατόν.',
+      ),
+      'This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.' => 
+      array (
+        0 => '',
       ),
       'This code will be included in the frontend configuration. Allowed formats are:' => 
       array (
@@ -5105,6 +5282,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Αυτό το αρχείο δημιουργήθηκε αυτόματα από το AzuraCast.',
       ),
+      'This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.' => 
+      array (
+        0 => '',
+      ),
       'This installation has not been backed up in the last two weeks.' => 
       array (
         0 => 'Αυτή η εγκατάσταση δεν έχει δημιουργήσει αντίγραφο ασφαλείας τις τελευταίες δύο εβδομάδες.',
@@ -5116,6 +5297,10 @@ X-Crowdin-File-ID: 4
       'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
       array (
         0 => 'Αυτό το αρχείο εισαγωγής πρέπει να ταιριάζει ακριβώς με το bitrate και τη μορφή του ίδιου του σημείου προσάρτησης.',
+      ),
+      'This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly.' => 
+      array (
+        0 => '',
       ),
       'This is an advanced feature and custom code is not officially supported by AzuraCast. You may break your station by adding custom code, but removing it should fix any issues.' => 
       array (
@@ -5273,6 +5458,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Ζώνη Ώρας',
       ),
+      'Time spent waiting for disk I/O to be completed.' => 
+      array (
+        0 => '',
+      ),
+      'Time stolen by other virtual machines on the same physical server.' => 
+      array (
+        0 => '',
+      ),
       'Title' => 
       array (
         0 => 'Τίτλος',
@@ -5280,6 +5473,10 @@ X-Crowdin-File-ID: 4
       'Title Sort Order' => 
       array (
         0 => 'Σειρά Ταξινόμησης Τίτλου',
+      ),
+      'To alleviate this potential problem with shared CPU resources, hosts assign "credits" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM\'s assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the "Steal" or "St" value.' => 
+      array (
+        0 => '',
       ),
       'To download the GeoLite database:' => 
       array (
@@ -5329,13 +5526,25 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Σύνολο',
       ),
+      'Total Disk Space' => 
+      array (
+        0 => '',
+      ),
       'Total Listener Hours' => 
       array (
         0 => 'Συνολικές Ώρες Ακρόασης',
       ),
+      'Total RAM' => 
+      array (
+        0 => '',
+      ),
       'Track Number' => 
       array (
         0 => 'Αριθμός Κομματιού',
+      ),
+      'Transmitted' => 
+      array (
+        0 => '',
       ),
       'Triggers' => 
       array (
@@ -5425,6 +5634,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Χρήστης URL',
       ),
+      'Unassigned Files' => 
+      array (
+        0 => '',
+      ),
       'Unique' => 
       array (
         0 => 'Μοναδικό(οι)',
@@ -5497,6 +5710,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => '',
       ),
+      'Use' => 
+      array (
+        0 => '',
+      ),
+      'Use (Us)' => 
+      array (
+        0 => '',
+      ),
       'Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.' => 
       array (
         0 => '',
@@ -5510,6 +5731,14 @@ X-Crowdin-File-ID: 4
         0 => 'Χρήση Προεπιλογής Περιηγητή',
       ),
       'Use Icecast 2.4 on this server.' => 
+      array (
+        0 => '',
+      ),
+      'Use Less CPU (Uses More Memory)' => 
+      array (
+        0 => '',
+      ),
+      'Use Less Memory (Uses More CPU)' => 
       array (
         0 => '',
       ),
@@ -5540,6 +5769,10 @@ X-Crowdin-File-ID: 4
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
         0 => 'Χρησιμοποιήστε το Telegram Bot API για να στείλετε ένα μήνυμα σε ένα κανάλι.',
+      ),
+      'Used' => 
+      array (
+        0 => '',
       ),
       'Used for "Forgot Password" functionality, web hooks and other functions.' => 
       array (
@@ -5596,10 +5829,6 @@ X-Crowdin-File-ID: 4
       'Usually enabled for port 465, disabled for ports 587 or 25.' => 
       array (
         0 => 'Συνήθως ενεργοποιημένη για θύρα 465, απενεργοποιημένη για θύρες 587 ή 25.',
-      ),
-      'Utilities' => 
-      array (
-        0 => 'Βοηθητικά προγράμματα',
       ),
       'Valid options: %s' => 
       array (
@@ -5660,6 +5889,14 @@ X-Crowdin-File-ID: 4
       'Volume' => 
       array (
         0 => 'Όγκος',
+      ),
+      'Wait' => 
+      array (
+        0 => '',
+      ),
+      'Wait (Wa)' => 
+      array (
+        0 => '',
       ),
       'Warning' => 
       array (
@@ -5804,6 +6041,10 @@ X-Crowdin-File-ID: 4
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
         0 => 'Αυτή τη στιγμή εκτελείτε την έκδοση %s. Η ενημέρωση συστήνεται ιδιαίτερα.',
+      ),
+      'You are not permitted to submit requests.' => 
+      array (
+        0 => '',
       ),
       'You can also upload files in bulk via SFTP.' => 
       array (

@@ -5,29 +5,13 @@ declare(strict_types=1);
 namespace App\Radio\Backend;
 
 use App\Entity;
-use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
-use App\Flysystem\StationFilesystems;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
-use Supervisor\Supervisor;
+use Symfony\Component\Process\Process;
 
 class Liquidsoap extends AbstractBackend
 {
-    public function __construct(
-        protected Entity\Repository\StationStreamerRepository $streamerRepo,
-        Environment $environment,
-        EntityManagerInterface $em,
-        Supervisor $supervisor,
-        EventDispatcherInterface $dispatcher,
-        LoggerInterface $logger
-    ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
-    }
-
     public function supportsMedia(): bool
     {
         return true;
@@ -61,17 +45,7 @@ class Liquidsoap extends AbstractBackend
      */
     public function getCurrentConfiguration(Entity\Station $station): ?string
     {
-        return $this->doGetConfiguration($station);
-    }
-
-    public function getEditableConfiguration(Entity\Station $station): string
-    {
-        return $this->doGetConfiguration($station, true);
-    }
-
-    protected function doGetConfiguration(Entity\Station $station, bool $forEditing = false): string
-    {
-        $event = new WriteLiquidsoapConfiguration($station, $forEditing);
+        $event = new WriteLiquidsoapConfiguration($station, false, true);
         $this->dispatcher->dispatch($event);
 
         return $event->buildConfiguration();
@@ -243,6 +217,25 @@ class Liquidsoap extends AbstractBackend
         return '/usr/local/bin/liquidsoap';
     }
 
+    public function getVersion(): ?string
+    {
+        $binary = $this->getBinary();
+        if (null === $binary) {
+            return null;
+        }
+
+        $process = new Process([$binary, '--version']);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return preg_match('/^Liquidsoap (.+)$/im', $process->getOutput(), $matches)
+            ? $matches[1]
+            : null;
+    }
+
     public function isQueueEmpty(Entity\Station $station): bool
     {
         $queue = $this->command(
@@ -315,43 +308,6 @@ class Liquidsoap extends AbstractBackend
         );
     }
 
-    public function authenticateStreamer(
-        Entity\Station $station,
-        string $user = '',
-        string $pass = ''
-    ): bool {
-        // Allow connections using the exact broadcast source password.
-        $sourcePw = $station->getFrontendConfig()->getSourcePassword();
-        if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
-            return true;
-        }
-
-        return $this->streamerRepo->authenticate($station, $user, $pass);
-    }
-
-    public function onConnect(
-        Entity\Station $station,
-        string $user = ''
-    ): string {
-        $resp = $this->streamerRepo->onConnect($station, $user);
-
-        if (is_string($resp)) {
-            $finalPath = (new StationFilesystems($station))->getTempFilesystem()->getLocalPath($resp);
-            return $finalPath;
-        }
-
-        return $resp ? 'true' : 'false';
-    }
-
-    public function onDisconnect(
-        Entity\Station $station,
-        string $user = ''
-    ): string {
-        return $this->streamerRepo->onDisconnect($station)
-            ? 'true'
-            : 'false';
-    }
-
     public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface
     {
         $stream_port = $this->getStreamPort($station);
@@ -361,5 +317,23 @@ class Liquidsoap extends AbstractBackend
         return $base_url
             ->withScheme('wss')
             ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
+    }
+
+    public function verifyConfig(string $config): void
+    {
+        $binary = $this->getBinary();
+
+        $process = new Process([
+            $binary,
+            '--check',
+            '-',
+        ]);
+
+        $process->setInput($config);
+        $process->run();
+
+        if (1 === $process->getExitCode()) {
+            throw new \LogicException($process->getOutput());
+        }
     }
 }

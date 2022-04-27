@@ -76,14 +76,21 @@ class MoveBroadcastsTask extends AbstractTask
                         . 'Check temporary directory at path to recover file.',
                         [
                             'storageLocation' => (string)$storageLocation,
-                            'path'            => $recordingPath,
+                            'path' => $recordingPath,
                         ]
                     );
                     break;
                 }
 
-                $broadcast = $this->broadcastRepo->findByPath($station, $recordingPath);
+                $broadcast = $this->broadcastRepo->getOrCreateFromPath($station, $recordingPath);
                 if (null !== $broadcast) {
+                    if (0 === $broadcast->getTimestampEnd()) {
+                        $broadcast->setTimestampEnd($file->getMTime() ?: time());
+                    }
+
+                    $this->em->persist($broadcast);
+                    $this->em->flush();
+
                     $tempPath = $file->getPathname();
                     $fs->uploadAndDeleteOriginal($tempPath, $recordingPath);
 
@@ -91,7 +98,7 @@ class MoveBroadcastsTask extends AbstractTask
                         'Uploaded broadcast to storage location.',
                         [
                             'storageLocation' => (string)$storageLocation,
-                            'path'            => $recordingPath,
+                            'path' => $recordingPath,
                         ]
                     );
                 } else {
@@ -100,7 +107,7 @@ class MoveBroadcastsTask extends AbstractTask
                     $this->logger->info(
                         'Could not find a corresponding broadcast.',
                         [
-                            'path'            => $recordingPath,
+                            'path' => $recordingPath,
                         ]
                     );
                 }

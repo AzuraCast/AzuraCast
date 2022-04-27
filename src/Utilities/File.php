@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
-use FilesystemIterator;
 use InvalidArgumentException;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use RuntimeException;
-use SplFileInfo;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 use function stripos;
@@ -61,33 +58,11 @@ class File
         $prefix = Path::getFilenameWithoutExtension($pattern) ?: 'temp';
         $extension = Path::getExtension($pattern) ?: 'log';
 
-        return self::createTempFile(
-            prefix: $prefix . '_',
-            suffix: '.' . $extension
+        return (new Filesystem())->tempnam(
+            sys_get_temp_dir(),
+            $prefix . '_',
+            '.' . $extension
         );
-    }
-
-    public static function createTempFile(
-        string $prefix = 'tmp_',
-        string $suffix = '.tmp',
-        string $dir = null
-    ): string {
-        $dir ??= sys_get_temp_dir();
-
-        $tries = 1;
-        while ($tries <= 5) {
-            $rand = substr(uniqid('', true), -5);
-            $path = $prefix . $rand . $suffix;
-
-            $fullPath = Path::makeAbsolute($path, $dir);
-            if (!is_file($fullPath)) {
-                return $fullPath;
-            }
-
-            $tries++;
-        }
-
-        throw new \RuntimeException('Could not generate temp path.');
     }
 
     public static function validateTempPath(string $path): string
@@ -102,45 +77,6 @@ class File
         }
 
         return $fullPath;
-    }
-
-    /**
-     * Recursively remove a directory and its contents.
-     *
-     * @param string $source
-     */
-    public static function rmdirRecursive(string $source): bool
-    {
-        if (empty($source) || !file_exists($source)) {
-            return true;
-        }
-
-        if (is_file($source) || is_link($source)) {
-            return @unlink($source);
-        }
-
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($source, FilesystemIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($files as $fileinfo) {
-            /** @var SplFileInfo $fileinfo */
-            $realPath = $fileinfo->getRealPath();
-            if (false === $realPath) {
-                return false;
-            }
-
-            if ('link' !== $fileinfo->getType() && $fileinfo->isDir()) {
-                if (!rmdir($realPath)) {
-                    return false;
-                }
-            } elseif (!unlink($realPath)) {
-                return false;
-            }
-        }
-
-        return rmdir($source);
     }
 
     public static function renameDirectoryInPath(string $path, string $fromDir, string $toDir): string

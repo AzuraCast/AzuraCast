@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Utilities\File;
 use App\Utilities\Json;
 use InvalidArgumentException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class AudioWaveform
@@ -20,9 +20,10 @@ class AudioWaveform
             throw new InvalidArgumentException(sprintf('File at path "%s" not found.', $path));
         }
 
-        $jsonOutPath = File::createTempFile(
-            prefix: 'awf_',
-            suffix: '.json'
+        $jsonOutPath = (new Filesystem())->tempnam(
+            sys_get_temp_dir(),
+            'awf_',
+            '.json'
         );
 
         $process = new Process(

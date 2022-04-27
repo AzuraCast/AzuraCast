@@ -17,6 +17,9 @@
                             <b-form-radio value="dropbox">
                                 <translate key="lang_form_adapter_dropbox">Remote: Dropbox</translate>
                             </b-form-radio>
+                            <b-form-radio value="sftp">
+                                <translate key="lang_form_adapter_sftp">Remote: SFTP</translate>
+                            </b-form-radio>
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
@@ -111,6 +114,61 @@
                                    target="_blank">
                                     <translate :key="lang">Learn More about Dropbox Auth Tokens</translate>
                                 </a>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                </b-form-group>
+            </b-card-body>
+        </b-card>
+        
+        <b-card v-show="form.adapter.$model === 'sftp'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_form_adapter_sftp">Remote: SFTP</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpHost"
+                                              :field="form.sftpHost">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Host</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpPort" input-type="number" min="1" step="1"
+                                              :field="form.sftpPort">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Port</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpUsername"
+                                              :field="form.sftpUsername">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Username</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpPassword"
+                                              :field="form.sftpPassword">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Password</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPrivateKeyPassPhrase"
+                                              :field="form.sftpPrivateKeyPassPhrase">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Private Key Pass Phrase</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                        
+                        <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPrivateKey" input-type="textarea"
+                                              :field="form.sftpPrivateKey">
+                            <template #label="{lang}">
+                                <translate :key="lang">SFTP Private Key</translate>
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

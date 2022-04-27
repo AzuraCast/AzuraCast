@@ -3,7 +3,3 @@ services:
     volumes:
       - /var/azuracast/stations:/var/azuracast/stations
       - /var/azuracast/backups:/var/azuracast/backups
-
-  stations:
-    volumes:
-      - /var/azuracast/stations:/var/azuracast/stations

@@ -19,6 +19,10 @@ class PodcastsController
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
+        $response = $response
+            ->withHeader('X-Frame-Options', '*')
+            ->withHeader('X-Robots-Tag', 'index, nofollow');
+
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {

@@ -29,7 +29,7 @@ class Module extends Framework implements DoctrineProvider
 
     public ReloadableEntityManagerInterface $em;
 
-    public function __construct(ModuleContainer $moduleContainer, $config = null)
+    public function __construct(ModuleContainer $moduleContainer, ?array $config = null)
     {
         parent::__construct($moduleContainer, $config);
 

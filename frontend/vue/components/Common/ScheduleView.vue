@@ -1,12 +1,12 @@
 <template>
-    <full-calendar ref="calendar" :options="calendarOptions" @eventClick="onEventClick"></full-calendar>
+    <full-calendar ref="calendar" :options="calendarOptions"></full-calendar>
 </template>
 
 <script>
 import '@fullcalendar/core/vdom';
 import FullCalendar from '@fullcalendar/vue';
 import allLocales from '@fullcalendar/core/locales-all';
-import luxonPlugin from '@fullcalendar/luxon';
+import luxon2Plugin from '@fullcalendar/luxon2';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 export default {
@@ -21,7 +21,7 @@ export default {
             calendarOptions: {
                 locale: App.locale_short,
                 locales: allLocales,
-                plugins: [luxonPlugin, timeGridPlugin],
+                plugins: [luxon2Plugin, timeGridPlugin],
                 initialView: 'timeGridWeek',
                 timeZone: this.stationTimeZone,
                 themeSystem: 'bootstrap',
@@ -31,15 +31,25 @@ export default {
                 footerToolbar: false,
                 height: 'auto',
                 events: this.scheduleUrl,
-                eventClick: this.onEventClick
+                eventClick: this.onEventClick,
+                eventDidMount: this.onEventDidMount
             }
         };
     },
     methods: {
-        refresh () {
+        refresh() {
 
         },
-        onEventClick (arg) {
+        onEventDidMount(info) {
+            $(info.el).tooltip({
+                title: info.event.extendedProps.description,
+                placement: 'top',
+                trigger: 'hover',
+                container: 'body',
+                offset: 0
+            });
+        },
+        onEventClick(arg) {
             this.$emit('click', arg.event);
         }
     }

@@ -479,7 +479,7 @@ return [
     ),
 
     // Supervisor manager
-    Supervisor\Supervisor::class => static function (
+    Supervisor\SupervisorInterface::class => static function (
         Environment $environment,
         Psr\Log\LoggerInterface $logger
     ) {

@@ -1,0 +1,11 @@
+[mysqld]
+character-set-server=utf8mb4
+
+slow_query_log = {{ default .Env.MYSQL_SLOW_QUERY_LOG "0" }}
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 0.2
+
+max_connections = {{ default .Env.MYSQL_MAX_CONNECTIONS "100" }}
+
+[client]
+default-character-set=utf8mb4

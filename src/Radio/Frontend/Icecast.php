@@ -116,18 +116,20 @@ class Icecast extends AbstractFrontend
 
         $certPaths = CertificateLocator::findCertificate();
 
-        $xForwardedFor = $this->environment->isDocker()
-            ? ['172.*.*.*', '192.*.*.*']
-            : '127.0.0.1';
+        $xForwardedFor = match (true) {
+            $this->environment->isDockerStandalone() => '127.0.0.1',
+            $this->environment->isDocker() => ['172.*.*.*', '192.*.*.*'],
+            default => '127.0.0.1',
+        };
 
         $config = [
-            'location'       => 'AzuraCast',
-            'admin'          => 'icemaster@localhost',
-            'hostname'       => $baseUrl->getHost(),
-            'limits'         => [
-                'clients'        => $frontendConfig->getMaxListeners() ?? 2500,
-                'sources'        => $station->getMounts()->count(),
-                'queue-size'     => 524288,
+            'location' => 'AzuraCast',
+            'admin' => 'icemaster@localhost',
+            'hostname' => $baseUrl->getHost(),
+            'limits' => [
+                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
+                'sources' => $station->getMounts()->count(),
+                'queue-size' => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
                 'source-timeout' => 10,
@@ -245,18 +247,20 @@ class Icecast extends AbstractFrontend
 
             $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
             if (!empty($bannedCountries)) {
-                $mountAuthenticationUrl = $this->environment->isDocker()
-                    ? 'http://web/api/internal/' . $station->getIdRequired() . '/listener-auth'
-                    : 'http://localhost/api/internal/' . $station->getId() . '/listener-auth';
-
-                $mountAuthenticationUrl .= '?api_auth=' . $station->getAdapterApiKey();
+                $mountAuthenticationUrl = $this->environment->getUriToWeb()
+                    ->withPath('/api/internal/' . $station->getIdRequired() . '/listener-auth')
+                    ->withQuery(
+                        http_build_query([
+                            'api_auth' => $station->getAdapterApiKey(),
+                        ])
+                    );
 
                 $mount['authentication'][] = [
                     '@type' => 'url',
                     'option' => [
                         [
                             '@name' => 'listener_add',
-                            '@value' => $mountAuthenticationUrl,
+                            '@value' => (string)$mountAuthenticationUrl,
                         ],
                         [
                             '@name' => 'auth_header',
@@ -287,7 +291,7 @@ class Icecast extends AbstractFrontend
             }
         }
 
-        $configString = (new Writer())->toString($config, 'icecast');
+        $configString = Writer::toString($config, 'icecast');
 
         // Strip the first line (the XML charset)
         return substr($configString, strpos($configString, "\n") + 1);

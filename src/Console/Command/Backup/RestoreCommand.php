@@ -6,7 +6,7 @@ namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
-use App\Utilities;
+use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 use const PATHINFO_EXTENSION;
 
@@ -26,6 +27,7 @@ class RestoreCommand extends CommandAbstract
     use Traits\PassThruProcess;
 
     public function __construct(
+        protected Environment $environment,
         protected EntityManagerInterface $em
     ) {
         parent::__construct();
@@ -118,7 +120,7 @@ class RestoreCommand extends CommandAbstract
         }
 
         $conn = $this->em->getConnection();
-        $connParams = $conn->getParams();
+        $connSettings = $this->environment->getDatabaseSettings();
 
         // Drop all preloaded tables prior to running a DB dump backup.
         $conn->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
@@ -127,20 +129,21 @@ class RestoreCommand extends CommandAbstract
         }
         $conn->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
 
+
         $this->passThruProcess(
             $io,
             'mysql --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD $DB_DATABASE < $DB_DUMP',
             $tmp_dir_mariadb,
             [
-                'DB_HOST' => $connParams['host'],
-                'DB_DATABASE' => $conn->getDatabase(),
-                'DB_USERNAME' => $connParams['user'],
-                'DB_PASSWORD' => $connParams['password'],
+                'DB_HOST' => $connSettings['host'],
+                'DB_DATABASE' => $connSettings['dbname'],
+                'DB_USERNAME' => $connSettings['user'],
+                'DB_PASSWORD' => $connSettings['password'],
                 'DB_DUMP' => $path_db_dump,
             ]
         );
 
-        Utilities\File::rmdirRecursive($tmp_dir_mariadb);
+        (new Filesystem())->remove($tmp_dir_mariadb);
         $io->newLine();
 
         // Update from current version to latest.

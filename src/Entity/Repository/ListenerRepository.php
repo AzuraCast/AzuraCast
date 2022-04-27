@@ -4,17 +4,44 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
+use App\Service\DeviceDetector;
+use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\Connection;
 use NowPlaying\Result\Client;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\Listener>
  */
 class ListenerRepository extends Repository
 {
+    use Entity\Traits\TruncateStrings;
+
+    protected string $tableName;
+
+    protected Connection $conn;
+
+    public function __construct(
+        protected DeviceDetector $deviceDetector,
+        protected IpGeolocation $ipGeolocation,
+        ReloadableEntityManagerInterface $em,
+        Serializer $serializer,
+        Environment $environment,
+        LoggerInterface $logger
+    ) {
+        parent::__construct($em, $serializer, $environment, $logger);
+
+        $this->tableName = $this->em->getClassMetadata(Entity\Listener::class)->getTableName();
+        $this->conn = $this->em->getConnection();
+    }
+
     /**
      * Get the number of unique listeners for a station during a specified time period.
      *
@@ -56,6 +83,7 @@ class ListenerRepository extends Repository
                     FROM App\Entity\Listener l
                     WHERE l.station = :station
                     AND l.timestamp_end = 0
+                    ORDER BY l.timestamp_start ASC
                 DQL
         )->setParameter('station', $station);
 
@@ -88,10 +116,6 @@ class ListenerRepository extends Repository
                     $existingClients[$identifier] = $client['id'];
                 }
 
-                $listenerTable = $this->em->getClassMetadata(Entity\Listener::class)->getTableName();
-
-                $conn = $this->em->getConnection();
-
                 foreach ($clients as $client) {
                     $listenerHash = Entity\Listener::calculateListenerHash($client);
                     $identifier = $client->uid . '_' . $listenerHash;
@@ -101,32 +125,7 @@ class ListenerRepository extends Repository
                         unset($existingClients[$identifier]);
                     } else {
                         // Create a new record.
-                        $record = [
-                            'station_id'          => $station->getId(),
-                            'timestamp_start'     => time(),
-                            'timestamp_end'       => 0,
-                            'listener_uid'        => (int)$client->uid,
-                            'listener_user_agent' => mb_substr(
-                                $client->userAgent ?? '',
-                                0,
-                                255,
-                                'UTF-8'
-                            ),
-                            'listener_ip'         => $client->ip,
-                            'listener_hash'       => Entity\Listener::calculateListenerHash($client),
-                        ];
-
-                        if (!empty($client->mount)) {
-                            [$mountType, $mountId] = explode('_', $client->mount, 2);
-
-                            if ('local' === $mountType) {
-                                $record['mount_id'] = (int)$mountId;
-                            } elseif ('remote' === $mountType) {
-                                $record['remote_id'] = (int)$mountId;
-                            }
-                        }
-
-                        $conn->insert($listenerTable, $record);
+                        $this->batchAddRow($station, $client);
                     }
                 }
 
@@ -144,6 +143,84 @@ class ListenerRepository extends Repository
                 }
             }
         );
+    }
+
+    public function batchAddRow(Entity\Station $station, Client $client): array
+    {
+        $record = [
+            'station_id' => $station->getId(),
+            'timestamp_start' => time(),
+            'timestamp_end' => 0,
+            'listener_uid' => (int)$client->uid,
+            'listener_user_agent' => $this->truncateString($client->userAgent ?? ''),
+            'listener_ip' => $client->ip,
+            'listener_hash' => Entity\Listener::calculateListenerHash($client),
+        ];
+
+        if (!empty($client->mount)) {
+            [$mountType, $mountId] = explode('_', $client->mount, 2);
+
+            if ('local' === $mountType) {
+                $record['mount_id'] = (int)$mountId;
+            } elseif ('remote' === $mountType) {
+                $record['remote_id'] = (int)$mountId;
+            }
+        }
+
+        $record = $this->batchAddDeviceDetails($record);
+        $record = $this->batchAddLocationDetails($record);
+
+        $this->conn->insert($this->tableName, $record);
+
+        return $record;
+    }
+
+    protected function batchAddDeviceDetails(array $record): array
+    {
+        $userAgent = $record['listener_user_agent'];
+
+        try {
+            $browserResult = $this->deviceDetector->parse($userAgent);
+
+            $record['device_client'] = $this->truncateNullableString($browserResult->client);
+            $record['device_is_browser'] = $browserResult->isBrowser ? 1 : 0;
+            $record['device_is_mobile'] = $browserResult->isMobile ? 1 : 0;
+            $record['device_is_bot'] = $browserResult->isBot ? 1 : 0;
+            $record['device_browser_family'] = $this->truncateNullableString($browserResult->browserFamily, 150);
+            $record['device_os_family'] = $this->truncateNullableString($browserResult->osFamily, 150);
+        } catch (\Throwable $e) {
+            $this->logger->error('Device Detector error: ' . $e->getMessage(), [
+                'user_agent' => $userAgent,
+                'exception' => $e,
+            ]);
+        }
+
+        return $record;
+    }
+
+    protected function batchAddLocationDetails(array $record): array
+    {
+        $ip = $record['listener_ip'];
+
+        try {
+            $ipInfo = $this->ipGeolocation->getLocationInfo($ip);
+
+            $record['location_description'] = $this->truncateString($ipInfo->description);
+            $record['location_region'] = $this->truncateNullableString($ipInfo->region, 150);
+            $record['location_city'] = $this->truncateNullableString($ipInfo->city, 150);
+            $record['location_country'] = $this->truncateNullableString($ipInfo->country, 2);
+            $record['location_lat'] = $ipInfo->lat;
+            $record['location_lon'] = $ipInfo->lon;
+        } catch (\Throwable $e) {
+            $this->logger->error('IP Geolocation error: ' . $e->getMessage(), [
+                'ip' => $ip,
+                'exception' => $e,
+            ]);
+
+            $record['location_description'] = 'Unknown';
+        }
+
+        return $record;
     }
 
     public function clearAll(): void

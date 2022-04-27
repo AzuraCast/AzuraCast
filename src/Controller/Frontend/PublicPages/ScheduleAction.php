@@ -17,7 +17,8 @@ class ScheduleAction
         bool $embed = false
     ): ResponseInterface {
         // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
+        $response = $response
+            ->withHeader('X-Frame-Options', '*');
 
         $station = $request->getStation();
 

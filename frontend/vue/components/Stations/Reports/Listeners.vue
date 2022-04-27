@@ -4,33 +4,27 @@
             <div class="card">
                 <div class="card-header bg-primary-dark">
                     <div class="d-flex align-items-center">
-                        <h2 class="card-title flex-fill my-0">
-                            <translate key="lang_header">Listeners</translate>
-                        </h2>
+                        <div class="flex-fill my-0">
+                            <h2 class="card-title">
+                                <translate key="lang_header">Listeners</translate>
+                            </h2>
+                        </div>
                         <div class="flex-shrink">
                             <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
                                 <icon icon="file_download"></icon>
                                 <translate key="lang_download_csv_button">Download CSV</translate>
                             </a>
 
-                            <date-range-dropdown time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :tz="stationTimeZone" :custom-ranges="dateRanges"
-                                                 v-model="dateRange" @update="updateListeners">
-                                <template #input="datePicker">
-                                    <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
-                                        <icon icon="date_range"></icon>
-                                        <template v-if="isLive">
-                                            <translate key="lang_live_listeners">Live Listeners</translate>
-                                        </template>
-                                        <template v-else>
-                                            {{ datePicker.rangeText }}
-                                        </template>
-                                    </a>
-                                </template>
+                            <date-range-dropdown v-if="!isLive" time-picker :min-date="minDate" :max-date="maxDate"
+                                                 :tz="stationTimeZone" v-model="dateRange" @update="updateListeners">
                             </date-range-dropdown>
                         </div>
                     </div>
                 </div>
+                <b-tabs pills card lazy>
+                    <b-tab key="live" active @click="setIsLive(true)" :title="langLiveListeners" no-body></b-tab>
+                    <b-tab key="not-live" @click="setIsLive(false)" :title="langListenerHistory" no-body></b-tab>
+                </b-tabs>
                 <div id="map">
                     <StationReportsListenersMap :listeners="listeners"></StationReportsListenersMap>
                 </div>
@@ -70,20 +64,25 @@
                             {{ row.item.connected_time }}
                         </template>
                         <template #cell(user_agent)="row">
-                            <span v-if="row.item.is_mobile">
-                                <icon icon="smartphone"></icon>
-                                <span class="sr-only">
-                                    <translate key="lang_device_mobile">Mobile Device</translate>
+                            <div>
+                                <span v-if="row.item.is_mobile">
+                                    <icon icon="smartphone"></icon>
+                                    <span class="sr-only">
+                                        <translate key="lang_device_mobile">Mobile Device</translate>
+                                    </span>
                                 </span>
-                            </span>
-                            <span v-else>
-                                <icon icon="desktop_windows"></icon>
-                                <span class="sr-only">
-                                    <translate key="lang_device_desktop">Desktop Device</translate>
+                                <span v-else>
+                                    <icon icon="desktop_windows"></icon>
+                                    <span class="sr-only">
+                                        <translate key="lang_device_desktop">Desktop Device</translate>
+                                    </span>
                                 </span>
-                            </span>
-                            {{ row.item.user_agent }} <br>
-                            <small>{{ row.item.client }}</small>
+
+                                {{ row.item.user_agent }}
+                            </div>
+                            <div v-if="row.item.device.client">
+                                <small>{{ row.item.device.client }}</small>
+                            </div>
                         </template>
                         <template #cell(stream)="row">
                             <span v-if="row.item.mount_name == ''">
@@ -100,11 +99,8 @@
                             </span>
                         </template>
                         <template #cell(location)="row">
-                            <span v-if="row.item.location.status == 'success'">
-                                {{ row.item.location.region }}, {{ row.item.location.country }}
-                            </span>
-                            <span v-else-if="row.item.location.message">
-                                {{ row.item.location.message }}
+                            <span v-if="row.item.location.description">
+                                {{ row.item.location.description }}
                             </span>
                             <span v-else>
                                 <translate key="lang_location_unknown">Unknown</translate>
@@ -137,26 +133,32 @@ export default {
         stationTimeZone: String,
     },
     data() {
-        let liveTime = DateTime.now().setZone(this.stationTimeZone).plus({days: 1}).toJSDate();
+        const nowTz = DateTime.now().setZone(this.stationTimeZone);
 
         return {
+            isLive: true,
             listeners: [],
-            liveTime: liveTime,
             dateRange: {
-                startDate: liveTime,
-                endDate: liveTime
+                startDate: nowTz.minus({days: 1}).toJSDate(),
+                endDate: nowTz
             },
             fields: [
-                { key: 'ip', label: this.$gettext('IP'), sortable: false },
-                { key: 'time', label: this.$gettext('Time'), sortable: false },
-                { key: 'time_sec', label: this.$gettext('Time (sec)'), sortable: false },
-                { key: 'user_agent', isRowHeader: true, label: this.$gettext('User Agent'), sortable: false },
-                { key: 'stream', label: this.$gettext('Stream'), sortable: false },
-                { key: 'location', label: this.$gettext('Location'), sortable: false }
+                {key: 'ip', label: this.$gettext('IP'), sortable: false},
+                {key: 'time', label: this.$gettext('Time'), sortable: false},
+                {key: 'time_sec', label: this.$gettext('Time (sec)'), sortable: false},
+                {key: 'user_agent', isRowHeader: true, label: this.$gettext('User Agent'), sortable: false},
+                {key: 'stream', label: this.$gettext('Stream'), sortable: false},
+                {key: 'location', label: this.$gettext('Location'), sortable: false}
             ]
         };
     },
     computed: {
+        langLiveListeners() {
+            return this.$gettext('Live Listeners');
+        },
+        langListenerHistory() {
+            return this.$gettext('Listener History');
+        },
         nowTz() {
             return DateTime.now().setZone(this.stationTimeZone);
         },
@@ -166,52 +168,17 @@ export default {
         maxDate() {
             return this.nowTz.plus({days: 5}).toJSDate();
         },
-        dateRanges() {
-            let ranges = {};
-            ranges[this.$gettext('Live Listeners')] = [
-                this.liveTime,
-                this.liveTime
-            ];
-            ranges[this.$gettext('Today')] = [
-                this.nowTz.startOf('day').toJSDate(),
-                this.nowTz.endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Yesterday')] = [
-                this.nowTz.minus({days: 1}).startOf('day').toJSDate(),
-                this.nowTz.minus({days: 1}).endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last 7 Days')] = [
-                this.nowTz.minus({days: 6}).startOf('day').toJSDate(),
-                this.nowTz.endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last 30 Days')] = [
-                this.nowTz.minus({days: 29}).startOf('day').toJSDate(),
-                this.nowTz.endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('This Month')] = [
-                this.nowTz.startOf('month').startOf('day').toJSDate(),
-                this.nowTz.endOf('month').endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last Month')] = [
-                this.nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
-                this.nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
-            ];
-            return ranges;
-        },
-        isLive() {
-            return DateTime.fromJSDate(this.liveTime).equals(DateTime.fromJSDate(this.dateRange.startDate));
-        },
         exportUrl() {
-            let params = {};
-            let export_url = this.apiUrl + '?format=csv';
+            let exportUrl = new URL(this.apiUrl, document.location);
+            let exportUrlParams = exportUrl.searchParams;
+            exportUrlParams.set('format', 'csv');
 
             if (!this.isLive) {
-                params.start = DateTime.fromJSDate(this.dateRange.startDate).toISO();
-                params.end = DateTime.fromJSDate(this.dateRange.endDate).toISO();
-                export_url += '&start=' + params.start + '&end=' + params.end;
+                exportUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
+                exportUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
             }
 
-            return export_url;
+            return exportUrl.toString();
         },
         totalListenerHours() {
             let tlh_seconds = 0;
@@ -227,6 +194,10 @@ export default {
         this.updateListeners();
     },
     methods: {
+        setIsLive(newValue) {
+            this.isLive = newValue;
+            this.updateListeners();
+        },
         formatTime(time) {
             return formatTime(time);
         },

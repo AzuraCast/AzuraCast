@@ -13,10 +13,10 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
-use App\Utilities\File;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -145,6 +145,7 @@ class StationsController extends AbstractAdminApiCrudController
     public function __construct(
         protected Entity\Repository\StationRepository $stationRepo,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Adapters $adapters,
         protected Configuration $configuration,
         protected ReloadableEntityManagerInterface $reloadableEm,
@@ -306,6 +307,11 @@ class StationsController extends AbstractAdminApiCrudController
             $this->stationRepo->flushRelatedMedia($station);
         }
 
+        // If Manual AutoDJ mode is enabled, clear the queue.
+        if ($station->useManualAutoDj()) {
+            $this->queueRepo->clearUnplayed($station);
+        }
+
         // Get the original values to check for changes.
         $old_frontend = $original_record['frontend_type'];
         $old_backend = $original_record['backend_type'];
@@ -320,7 +326,13 @@ class StationsController extends AbstractAdminApiCrudController
         }
 
         if ($adapter_changed || !$station->getIsEnabled()) {
-            $this->configuration->writeConfiguration($station, true);
+            try {
+                $this->configuration->writeConfiguration(
+                    station: $station,
+                    forceRestart: true
+                );
+            } catch (\Throwable $e) {
+            }
         }
 
         return $station;
@@ -346,11 +358,14 @@ class StationsController extends AbstractAdminApiCrudController
     {
         $this->configuration->removeConfiguration($station);
 
-        // Remove media folders.
-        $radio_dir = $station->getRadioBaseDir();
-        File::rmdirRecursive($radio_dir);
+        // Remove directories generated specifically for this station.
+        $directoriesToEmpty = [
+            $station->getRadioConfigDir(),
+            $station->getRadioPlaylistsDir(),
+            $station->getRadioTempDir(),
+        ];
+        (new Filesystem())->remove($directoriesToEmpty);
 
-        // Save changes and continue to the last setup step.
         $this->em->flush();
 
         foreach ($station->getAllStorageLocations() as $storageLocation) {

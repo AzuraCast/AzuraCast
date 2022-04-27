@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Entity\Enums\PlaylistTypes;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Environment;
@@ -14,20 +15,30 @@ use App\Radio\Enums\FrontendAdapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Supervisor\Exception\SupervisorException;
-use Supervisor\Supervisor;
+use Supervisor\SupervisorInterface;
 
 class Configuration
 {
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
-    public const PROTECTED_PORTS = [8080, 80, 443, 2022];
+    public const PROTECTED_PORTS = [
+        9000, // PHP-FPM external
+        9001, // Supervisord
+        9005, // PHP-FPM internal
+        9010, // Nginx internal
+        8080, // Common debug port
+        80,   // HTTP
+        443,  // HTTPS
+        2022, // SFTP
+    ];
 
     public function __construct(
         protected EntityManagerInterface $em,
         protected Adapters $adapters,
-        protected Supervisor $supervisor,
+        protected SupervisorInterface $supervisor,
         protected Logger $logger,
-        protected Environment $environment
+        protected Environment $environment,
+        protected StationPlaylistRepository $stationPlaylistRepo
     ) {
     }
 
@@ -74,10 +85,13 @@ class Configuration
      *
      * @param Station $station
      * @param bool $forceRestart Always restart this station's supervisor instances, even if nothing changed.
+     * @throws Exception\NotFoundException
      */
     public function writeConfiguration(
         Station $station,
-        bool $forceRestart = false
+        bool $reloadSupervisor = true,
+        bool $forceRestart = false,
+        bool $attemptReload = true
     ): void {
         if ($this->environment->isTesting()) {
             return;
@@ -90,9 +104,8 @@ class Configuration
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
         if (!$station->getIsEnabled()) {
-            @unlink($supervisorConfigFile);
-            $this->stopForStation($station);
-            return;
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new \RuntimeException('Station is disabled.');
         }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
@@ -100,9 +113,17 @@ class Configuration
 
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
-            @unlink($supervisorConfigFile);
-            $this->stopForStation($station);
-            return;
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new \RuntimeException('Station has no local services.');
+        }
+
+        // If using AutoDJ and there is no media, don't spin up services.
+        if (
+            BackendAdapters::None !== $station->getBackendTypeEnum()
+            && !$this->stationPlaylistRepo->stationHasActivePlaylists($station)
+        ) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new \RuntimeException('Station has no media assigned to playlists.');
         }
 
         // Get group information
@@ -144,26 +165,28 @@ class Configuration
         $backend->write($station);
 
         // Reload Supervisord and process groups
-        $affected_groups = $this->reloadSupervisor();
-        $was_restarted = in_array($backend_group, $affected_groups, true);
+        if ($reloadSupervisor) {
+            $affected_groups = $this->reloadSupervisor();
+            $was_restarted = in_array($backend_group, $affected_groups, true);
 
-        if (!$was_restarted && $forceRestart) {
-            try {
-                if ($backend->supportsReload() || $frontend->supportsReload()) {
-                    $backend->reload($station);
-                    $frontend->reload($station);
-                } else {
-                    $this->supervisor->stopProcessGroup($backend_group, true);
-                    $this->supervisor->startProcessGroup($backend_group, true);
+            if (!$was_restarted && $forceRestart) {
+                try {
+                    if ($attemptReload && ($backend->supportsReload() || $frontend->supportsReload())) {
+                        $backend->reload($station);
+                        $frontend->reload($station);
+                    } else {
+                        $this->supervisor->stopProcessGroup($backend_group, true);
+                        $this->supervisor->startProcessGroup($backend_group, true);
+                    }
+                } catch (SupervisorException) {
                 }
-            } catch (SupervisorException) {
+
+                $was_restarted = true;
             }
 
-            $was_restarted = true;
-        }
-
-        if ($was_restarted) {
-            $this->markAsStarted($station);
+            if ($was_restarted) {
+                $this->markAsStarted($station);
+            }
         }
     }
 
@@ -176,13 +199,30 @@ class Configuration
         return $configDir . '/supervisord.conf';
     }
 
+    protected function unlinkAndStopStation(
+        Station $station,
+        bool $reloadSupervisor = true
+    ): void {
+        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+        @unlink($supervisorConfigFile);
+        if ($reloadSupervisor) {
+            $this->stopForStation($station);
+        }
+
+        $station->setHasStarted(false);
+        $station->setNeedsRestart(false);
+        $station->clearCache();
+
+        $this->em->persist($station);
+        $this->em->flush();
+    }
+
     protected function stopForStation(Station $station): void
     {
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
 
-        $was_restarted = in_array($station_group, $affected_groups, true);
-        if (!$was_restarted) {
+        if (!in_array($station_group, $affected_groups, true)) {
             try {
                 $this->supervisor->stopProcessGroup($station_group, false);
             } catch (SupervisorException) {

@@ -6,12 +6,10 @@ namespace App\Radio\AutoDJ;
 
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
-use App\Flysystem\StationFilesystems;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Annotations implements EventSubscriberInterface
@@ -27,7 +25,7 @@ class Annotations implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed[]
+     * @inheritDoc
      */
     public static function getSubscribedEvents(): array
     {
@@ -53,40 +51,21 @@ class Annotations implements EventSubscriberInterface
     ): string {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
-        // Try to rebuild the queue if it's empty.
         if (null === $queueRow) {
-            $this->logger->info(
-                'Queue is empty!',
-                [
-                    'station' => [
-                        'id' => $station->getId(),
-                        'name' => $station->getName(),
-                    ],
-                ]
-            );
-            return '';
+            throw new \RuntimeException('Queue is empty for station.');
         }
 
-        $event = new AnnotateNextSong($queueRow, $asAutoDj);
+        $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);
         $this->eventDispatcher->dispatch($event);
 
-        $annotation = $event->buildAnnotations();
-        $queueRow->addLogRecord(LogLevel::INFO, 'Annotation: ' . $annotation);
-        $this->em->persist($queueRow);
-        $this->em->flush();
-
-        return $annotation;
+        return $event->buildAnnotations();
     }
 
     public function annotateSongPath(AnnotateNextSong $event): void
     {
         $media = $event->getMedia();
         if ($media instanceof Entity\StationMedia) {
-            $localMediaPath = (new StationFilesystems($event->getStation()))
-                ->getMediaFilesystem()
-                ->getLocalPath($media->getPath());
-
-            $event->setSongPath($localMediaPath);
+            $event->setSongPath('media:' . ltrim($media->getPath(), '/'));
 
             $backend = $this->adapters->getBackendAdapter($event->getStation());
             $event->addAnnotations($backend->annotateMedia($media));
@@ -131,18 +110,19 @@ class Annotations implements EventSubscriberInterface
 
     public function postAnnotation(AnnotateNextSong $event): void
     {
-        if ($event->isAsAutoDj()) {
-            $queueRow = $event->getQueue();
-            if ($queueRow instanceof Entity\StationQueue) {
-                $queueRow->setSentToAutodj();
-                $queueRow->setTimestampCued(time());
-                $this->em->persist($queueRow);
-            }
-
-            // The "get next song" function is only called when a streamer is not live.
-            $this->streamerRepo->onDisconnect($event->getStation());
+        if (!$event->isAsAutoDj()) {
+            return;
         }
 
+        $queueRow = $event->getQueue();
+        if ($queueRow instanceof Entity\StationQueue) {
+            $queueRow->setSentToAutodj();
+            $queueRow->setTimestampCued(time());
+            $this->em->persist($queueRow);
+        }
+
+        // The "get next song" function is only called when a streamer is not live.
+        $this->streamerRepo->onDisconnect($event->getStation());
         $this->em->flush();
     }
 }

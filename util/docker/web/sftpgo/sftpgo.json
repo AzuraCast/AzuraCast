@@ -10,6 +10,10 @@
                 "rename"
             ],
             "hook": "/usr/local/bin/azuracast_sftp_event"
+        },
+        "defender": {
+            "enabled": true,
+            "driver": "memory"
         }
     },
     "sftpd": {

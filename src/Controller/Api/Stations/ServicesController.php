@@ -126,10 +126,47 @@ class ServicesController
         );
     }
 
+    public function reloadAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        // Reloading attempts to update configuration without restarting broadcasting, if possible and supported.
+        $station = $request->getStation();
+
+        try {
+            $this->configuration->writeConfiguration(
+                station: $station,
+                forceRestart: true
+            );
+        } catch (\Throwable $e) {
+            return $response->withJson(
+                new Entity\Api\Error(
+                    500,
+                    $e->getMessage()
+                )
+            );
+        }
+
+        return $response->withJson(new Entity\Api\Status(true, __('Station reloaded.')));
+    }
+
     public function restartAction(ServerRequest $request, Response $response): ResponseInterface
     {
+        // Restarting will always shut down and restart any services.
         $station = $request->getStation();
-        $this->configuration->writeConfiguration($station, true);
+
+        try {
+            $this->configuration->writeConfiguration(
+                station: $station,
+                forceRestart: true,
+                attemptReload: false
+            );
+        } catch (\Throwable $e) {
+            return $response->withJson(
+                new Entity\Api\Error(
+                    500,
+                    $e->getMessage()
+                )
+            );
+        }
 
         return $response->withJson(new Entity\Api\Status(true, __('Station restarted.')));
     }

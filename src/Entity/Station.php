@@ -23,8 +23,8 @@ use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
-use RuntimeException;
 use Stringable;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -361,6 +361,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?StationStreamer $current_streamer = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $fallback_path = null;
+
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
@@ -693,11 +696,8 @@ class Station implements Stringable, IdentifiableEntityInterface
         $visibility = (new PortableVisibilityConverter(
             defaultForDirectories: Visibility::PUBLIC
         ))->defaultForDirectories();
-        if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
-        }
 
-        clearstatcache(false, $dirname);
+        (new Filesystem())->mkdir($dirname, $visibility);
     }
 
     public function getRadioPlaylistsDir(): string
@@ -1036,10 +1036,23 @@ class Station implements Stringable, IdentifiableEntityInterface
     public static function getStorageLocationTypes(): array
     {
         return [
-            'media_storage_location'      => StorageLocationTypes::StationMedia,
+            'media_storage_location' => StorageLocationTypes::StationMedia,
             'recordings_storage_location' => StorageLocationTypes::StationRecordings,
-            'podcasts_storage_location'   => StorageLocationTypes::StationPodcasts,
+            'podcasts_storage_location' => StorageLocationTypes::StationPodcasts,
         ];
+    }
+
+    public function getFallbackPath(): ?string
+    {
+        return $this->fallback_path;
+    }
+
+    public function setFallbackPath(?string $fallback_path): void
+    {
+        if ($this->fallback_path !== $fallback_path) {
+            $this->setNeedsRestart(true);
+        }
+        $this->fallback_path = $fallback_path;
     }
 
     /**

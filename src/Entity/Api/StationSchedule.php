@@ -39,10 +39,16 @@ class StationSchedule
     public string $name;
 
     #[OA\Property(
+        description: 'The name of the event.',
+        example: 'Example Schedule Entry'
+    )]
+    public string $title;
+
+    #[OA\Property(
         description: 'The full name of the type and name combined.',
         example: 'Playlist: Example Schedule Entry'
     )]
-    public string $title;
+    public string $description;
 
     #[OA\Property(
         description: 'The start time of the schedule entry, in UNIX format.',

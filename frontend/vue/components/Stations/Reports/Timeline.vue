@@ -11,15 +11,18 @@
                         <translate key="lang_download_csv_button">Download CSV</translate>
                     </a>
 
-                    <date-range-dropdown v-model="dateRange" :tz="stationTimeZone"
+                    <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"
                                          @update="relist"></date-range-dropdown>
                 </div>
             </div>
         </div>
-        <data-table ref="datatable" responsive paginated
+        <data-table ref="datatable" responsive paginated select-fields
                     :fields="fields" :apiUrl="apiUrl">
             <template #cell(datetime)="row">
                 {{ formatTimestamp(row.item.played_at) }}
+            </template>
+            <template #cell(datetime_station)="row">
+                {{ formatTimestampStation(row.item.played_at) }}
             </template>
             <template #cell(listeners_start)="row">
                 {{ row.item.listeners_start }}
@@ -92,24 +95,64 @@ export default {
                 endDate: nowTz.toJSDate(),
             },
             fields: [
-                {key: 'datetime', label: this.$gettext('Date/Time'), sortable: false},
-                {key: 'listeners_start', label: this.$gettext('Listeners'), sortable: false},
-                {key: 'delta', label: this.$gettext('Change'), sortable: false},
-                {key: 'song', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
-                {key: 'source', label: this.$gettext('Source'), sortable: false}
+                {
+                    key: 'datetime',
+                    label: this.$gettext('Date/Time (Browser)'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'datetime_station',
+                    label: this.$gettext('Date/Time (Station)'),
+                    sortable: false,
+                    selectable: true,
+                    visible: false
+                },
+                {
+                    key: 'listeners_start',
+                    label: this.$gettext('Listeners'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'delta',
+                    label: this.$gettext('Change'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'song',
+                    isRowHeader: true,
+                    label: this.$gettext('Song Title'),
+                    selectable: true,
+                    sortable: false
+                },
+                {
+                    key: 'source',
+                    label: this.$gettext('Source'),
+                    selectable: true,
+                    sortable: false
+                }
             ],
         }
     },
     computed: {
         apiUrl() {
-            let params = {};
-            params.start = DateTime.fromJSDate(this.dateRange.startDate).toISODate();
-            params.end = DateTime.fromJSDate(this.dateRange.endDate).toISODate();
+            let apiUrl = new URL(this.baseApiUrl, document.location);
 
-            return this.baseApiUrl + '?start=' + params.start + '&end=' + params.end;
+            let apiUrlParams = apiUrl.searchParams;
+            apiUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
+            apiUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
+
+            return apiUrl.toString();
         },
         exportUrl() {
-            return this.apiUrl + '&format=csv';
+            let exportUrl = new URL(this.apiUrl, document.location);
+            let exportUrlParams = exportUrl.searchParams;
+
+            exportUrlParams.set('format', 'csv');
+
+            return exportUrl.toString();
         },
     },
     methods: {
@@ -120,6 +163,9 @@ export default {
             return Math.abs(val);
         },
         formatTimestamp(unix_timestamp) {
+            return DateTime.fromSeconds(unix_timestamp).toLocaleString(DateTime.DATETIME_SHORT);
+        },
+        formatTimestampStation(unix_timestamp) {
             return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_SHORT);
         }
     }

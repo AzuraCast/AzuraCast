@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Radio\Enums\StreamFormats;
-use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 
@@ -69,6 +67,11 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
         return $this->timestampStart;
     }
 
+    public function setTimestampStart(int $timestampStart): void
+    {
+        $this->timestampStart = $timestampStart;
+    }
+
     public function getTimestampEnd(): int
     {
         return $this->timestampEnd;
@@ -84,17 +87,9 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
         return $this->recordingPath;
     }
 
-    public function generateRecordingPath(StreamFormats $format): string
+    public function setRecordingPath(?string $recordingPath): void
     {
-        $now = CarbonImmutable::createFromTimestamp(
-            $this->timestampStart,
-            $this->station->getTimezoneObject()
-        );
-
-        $this->recordingPath = $this->streamer->getStreamerUsername()
-            . '/' . self::PATH_PREFIX . '_' . $now->format('Ymd-His') . '.' . $format->getExtension();
-
-        return $this->recordingPath;
+        $this->recordingPath = $recordingPath;
     }
 
     public function clearRecordingPath(): void

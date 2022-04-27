@@ -24,7 +24,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
 
             $helper_set = $console->getHelperSet();
             $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
-            $helper_set->set($doctrine_helpers->get('db'), 'db');
             $helper_set->set($doctrine_helpers->get('em'), 'em');
 
             $migrationConfigurations = [
@@ -100,7 +99,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
 
             // Add an error handler for most in-controller/task situations.
             $errorMiddleware = $app->addErrorMiddleware(
-                !$environment->isProduction(),
+                $environment->showDetailedErrors(),
                 true,
                 true,
                 $container->get(Psr\Log\LoggerInterface::class)
@@ -194,6 +193,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             App\Radio\AutoDJ\Queue::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,
+            App\Radio\Backend\Liquidsoap\PlaylistFileWriter::class,
             App\Sync\NowPlaying\Task\NowPlayingTask::class,
         ]
     );

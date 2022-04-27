@@ -543,9 +543,33 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:frontend')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
+            $group->post('/reload', Controller\Api\Stations\ServicesController::class . ':reloadAction')
+                ->setName('api:stations:reload')
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
             $group->post('/restart', Controller\Api\Stations\ServicesController::class . ':restartAction')
                 ->setName('api:stations:restart')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
+            $group->group(
+                '/fallback',
+                function (RouteCollectorProxy $group) {
+                    $group->get(
+                        '',
+                        Controller\Api\Stations\Fallback\GetFallbackAction::class
+                    )->setName('api:stations:fallback');
+
+                    $group->post(
+                        '',
+                        Controller\Api\Stations\Fallback\PostFallbackAction::class
+                    );
+
+                    $group->delete(
+                        '',
+                        Controller\Api\Stations\Fallback\DeleteFallbackAction::class
+                    );
+                }
+            )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->group(
                 '/webhook/{id}',

@@ -12,83 +12,14 @@
 
 services:
   web:
-    container_name: azuracast_web
-    image: "ghcr.io/azuracast/web:${AZURACAST_VERSION:-latest}"
+    container_name: azuracast
+    image: "ghcr.io/azuracast/azuracast:${AZURACAST_VERSION:-latest}"
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://docs.azuracast.com/en/administration/docker#using-non-standard-ports
     ports:
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'
       - '${AZURACAST_SFTP_PORT:-2022}:2022'
-    depends_on:
-      - mariadb
-      - stations
-      - redis
-    env_file: azuracast.env
-    environment:
-      LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 13
-      AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
-      AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
-      NGINX_TIMEOUT: ${NGINX_TIMEOUT:-1800}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-}
-      PUID: ${AZURACAST_PUID:-1000}
-      PGID: ${AZURACAST_PGID:-1000}
-    volumes:
-      - letsencrypt:/etc/nginx/certs
-      - letsencrypt_acme:/etc/acme.sh
-      - www_vendor:/var/azuracast/www/vendor
-      - www_uploads:/var/azuracast/uploads
-      - tmp_data:/var/azuracast/www_tmp
-      - station_data:/var/azuracast/stations
-      - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - geolite_install:/var/azuracast/geoip
-      - sftpgo_data:/var/azuracast/sftpgo/persist
-      - backups:/var/azuracast/backups
-    networks:
-      - frontend
-      - backend
-    restart: unless-stopped
-    ulimits: &default-ulimits
-      nofile:
-        soft: 65536
-        hard: 65536
-    logging: &default-logging
-      options:
-        max-size: "1m"
-        max-file: "5"
-
-  mariadb:
-    container_name: azuracast_mariadb
-    image: "ghcr.io/azuracast/db:${AZURACAST_VERSION:-latest}"
-    volumes:
-      - db_data:/var/lib/mysql
-    env_file: azuracast.env
-    networks:
-      - backend
-    restart: unless-stopped
-    logging: *default-logging
-
-  redis:
-    container_name: azuracast_redis
-    image: "ghcr.io/azuracast/redis:${AZURACAST_VERSION:-latest}"
-    sysctls:
-      net.core.somaxconn: 1024
-    volumes:
-      - redis_data:/data
-    networks:
-      - backend
-    restart: unless-stopped
-    logging: *default-logging
-
-  stations:
-    container_name: azuracast_stations
-    image: "ghcr.io/azuracast/radio:${AZURACAST_VERSION:-latest}"
-    environment:
-      PUID: ${AZURACAST_PUID:-1000}
-      PGID: ${AZURACAST_PGID:-1000}
-    ports:
       # This default mapping is the outgoing and incoming ports for the first 50 stations.
       # You can override this port mapping in your own docker-compose.override.yml file.
       # For instructions, see:
@@ -240,24 +171,36 @@ services:
       - '8490:8490'
       - '8495:8495'
       - '8496:8496'
+    env_file: azuracast.env
+    environment:
+      LANG: ${LANG:-en_US.UTF-8}
+      AZURACAST_DC_REVISION: 14
+      AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
+      AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
+      NGINX_TIMEOUT: ${NGINX_TIMEOUT:-1800}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-}
+      PUID: ${AZURACAST_PUID:-1000}
+      PGID: ${AZURACAST_PGID:-1000}
     volumes:
+      - letsencrypt:/etc/nginx/certs
+      - letsencrypt_acme:/etc/acme.sh
+      - www_uploads:/var/azuracast/uploads
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - letsencrypt:/etc/nginx/certs
-      - tmp_data:/var/azuracast/www_tmp
-    networks:
-      - frontend
-      - backend
-    init: true
+      - geolite_install:/var/azuracast/geoip
+      - sftpgo_data:/var/azuracast/sftpgo/persist
+      - backups:/var/azuracast/backups
+      - db_data:/var/lib/mysql
     restart: unless-stopped
-    ulimits: *default-ulimits
-    logging: *default-logging
-
-networks:
-  frontend:
-    driver: bridge
-  backend:
-    driver: bridge
+    ulimits: &default-ulimits
+      nofile:
+        soft: 65536
+        hard: 65536
+    logging: &default-logging
+      options:
+        max-size: "1m"
+        max-file: "5"
 
 volumes:
   db_data: { }
@@ -267,8 +210,5 @@ volumes:
   geolite_install: { }
   sftpgo_data: { }
   station_data: { }
-  www_vendor: { }
   www_uploads: { }
-  tmp_data: { }
-  redis_data: { }
   backups: { }

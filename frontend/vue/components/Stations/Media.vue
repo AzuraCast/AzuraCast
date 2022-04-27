@@ -48,42 +48,47 @@
                             @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
                             :request-config="requestConfig">
                     <template #cell(path)="row">
-                        <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 pr-2">
+                                <template v-if="row.item.media_is_playable">
+                                    <play-button :url="row.item.media_links_play" icon-class="outlined"></play-button>
+                                </template>
+                                <template v-else>
+                                    <span class="file-icon" v-if="row.item.is_dir">
+                                        <icon icon="folder"></icon>
+                                    </span>
+                                    <span class="file-icon" v-else>
+                                        <icon icon="note"></icon>
+                                    </span>
+                                </template>
+                            </div>
+
+                            <div class="flex-fill">
+                                <template v-if="row.item.is_dir">
+                                    <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
+                                       :title="row.item.name">
+                                        {{ row.item.path_short }}
+                                    </a>
+                                </template>
+                                <template v-else-if="row.item.media_is_playable">
+                                    <a class="name" :href="row.item.media_links_play" target="_blank"
+                                       :title="row.item.name">
+                                        {{ row.item.text }}
+                                    </a>
+                                </template>
+                                <template v-else>
+                                    <a class="name" :href="row.item.links_download" target="_blank"
+                                       :title="row.item.text">
+                                        {{ row.item.path_short }}
+                                    </a>
+                                </template>
+                                <br>
+                                <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
+                                <small v-else>{{ row.item.text }}</small>
+                            </div>
+
                             <album-art v-if="row.item.media_art" :src="row.item.media_art"
-                                       class="float-right pl-3"></album-art>
-
-                            <template v-if="row.item.media_is_playable">
-                                <play-button :url="row.item.media_links_play" icon-class="outlined"></play-button>
-                            </template>
-                            <template v-else>
-                                <span class="file-icon" v-if="row.item.is_dir">
-                                    <icon icon="folder"></icon>
-                                </span>
-                                <span class="file-icon" v-else>
-                                    <icon icon="note"></icon>
-                                </span>
-                            </template>
-
-                            <template v-if="row.item.is_dir">
-                                <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
-                                   :title="row.item.name">
-                                    {{ row.item.path_short }}
-                                </a>
-                            </template>
-                            <template v-else-if="row.item.media_is_playable">
-                                <a class="name" :href="row.item.media_links_play" target="_blank"
-                                   :title="row.item.name">
-                                    {{ row.item.text }}
-                                </a>
-                            </template>
-                            <template v-else>
-                                <a class="name" :href="row.item.links_download" target="_blank" :title="row.item.text">
-                                    {{ row.item.path_short }}
-                                </a>
-                            </template>
-                            <br>
-                            <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
-                            <small v-else>{{ row.item.text }}</small>
+                                       class="flex-shrink-1 pl-2"></album-art>
                         </div>
                     </template>
                     <template #cell(media_genre)="row">

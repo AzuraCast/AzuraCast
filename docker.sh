@@ -212,18 +212,33 @@ setup-letsencrypt() {
 # Configure release mode settings.
 #
 setup-release() {
-  set -e
   if [[ ! -f .env ]]; then
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
   fi
 
-  local AZURACAST_VERSION="latest"
-  if ask "Prefer stable release versions of AzuraCast?" N; then
-    AZURACAST_VERSION="stable"
+  local OLD_RELEASE_CHANNEL
+  .env --file .env get AZURACAST_VERSION
+  OLD_RELEASE_CHANNEL="${REPLY:-latest}"
+
+  local AZURACAST_VERSION="${OLD_RELEASE_CHANNEL}"
+
+  if [[ $AZURACAST_VERSION == "latest" ]]; then
+    if ask "Your current release channel is 'Rolling Release'. Switch to 'Stable' release channel?" N; then
+      AZURACAST_VERSION="stable"
+    fi
+  elif [[ $AZURACAST_VERSION == "stable" ]]; then
+    if ask "Your current release channel is 'Stable'. Switch to 'Rolling Release' release channel?" N; then
+      AZURACAST_VERSION="latest"
+    fi
   fi
-  set +e
 
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
+
+  if [[ $AZURACAST_VERSION != $OLD_RELEASE_CHANNEL ]]; then
+    if ask "You should update the Docker Utility Script after changing release channels. Automatically update it now?" Y; then
+      update-self
+    fi
+  fi
 }
 
 check-install-requirements() {
@@ -328,13 +343,13 @@ install-docker-compose() {
   set -e
   echo "Installing Docker Compose..."
 
-  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-$(uname -m)
+  curl -fsSL -o docker-compose https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-$(uname -m)
 
   ARCHITECTURE=amd64
   if [ "$(uname -m)" = "aarch64" ]; then
     ARCHITECTURE=arm64
   fi
-  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.2/docker-compose-linux-${ARCHITECTURE}
+  curl -fsSL -o docker-compose-switch https://github.com/docker/compose-switch/releases/download/v1.0.4/docker-compose-linux-${ARCHITECTURE}
 
   if [[ $EUID -ne 0 ]]; then
     sudo chmod a+x ./docker-compose
@@ -378,6 +393,7 @@ run-installer() {
   fi
 
   curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
+
   docker-compose -p azuracast_installer -f docker-compose.installer.yml pull
   docker-compose -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
 
@@ -428,11 +444,7 @@ install() {
 
   docker-compose pull
 
-  docker volume rm azuracast_www_vendor 2>/dev/null || true
-  docker volume rm azuracast_tmp_data 2>/dev/null || true
-  docker volume rm azuracast_redis_data 2>/dev/null || true
-
-  docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+  docker-compose run --rm web -- azuracast_install "$@"
   docker-compose up -d
   exit
 }
@@ -451,14 +463,6 @@ install-dev() {
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
       install-docker-compose
-    fi
-  fi
-
-  if [[ ! -d ../docker-azuracast-radio ]]; then
-    if ask "Clone related repositories?" Y; then
-      git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
-      git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
-      git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
     fi
   fi
 
@@ -484,8 +488,12 @@ install-dev() {
     .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
+  chmod 777 ./frontend/ ./web/ ./vendor/ \
+    ./web/static/ ./web/static/api/ \
+     ./web/static/dist/ ./web/static/img/
+
   docker-compose build
-  docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+  docker-compose run --rm web -- azuracast_install "$@"
 
   docker-compose -f frontend/docker-compose.yml build
   docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
@@ -559,11 +567,7 @@ update() {
       docker-compose down
     fi
 
-    docker volume rm azuracast_www_vendor
-    docker volume rm azuracast_tmp_data
-    docker volume rm azuracast_redis_data
-
-    docker-compose run --rm --user="azuracast" web azuracast_update "$@"
+    docker-compose run --rm web -- azuracast_update "$@"
     docker-compose up -d
 
     if ask "Clean up all stopped Docker containers and images to save space?" Y; then
@@ -595,7 +599,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-  docker-compose run --rm --user="azuracast" web azuracast_cli "$@"
+  docker-compose exec --user="azuracast" web azuracast_cli "$@"
   exit
 }
 
@@ -615,7 +619,7 @@ db() {
   local MYSQL_HOST MYSQL_PORT MYSQL_USER MYSQL_PASSWORD MYSQL_DATABASE
 
   .env --file azuracast.env get MYSQL_HOST
-  MYSQL_HOST="${REPLY:-mariadb}"
+  MYSQL_HOST="${REPLY:-localhost}"
 
   .env --file azuracast.env get MYSQL_PORT
   MYSQL_PORT="${REPLY:-3306}"
@@ -629,7 +633,7 @@ db() {
   .env --file azuracast.env get MYSQL_DATABASE
   MYSQL_DATABASE="${REPLY:-azuracast}"
 
-  docker-compose run --rm mariadb mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
+  docker-compose exec --user="mysql" web mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
     --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE}
 
   exit
@@ -654,7 +658,7 @@ backup() {
     .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
-  docker-compose run --rm web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+  docker-compose exec --user="azuracast" web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
   # Move from Docker volume to local filesystem
   docker run --rm -v "azuracast_backups:/backup_src" \
@@ -702,7 +706,7 @@ restore() {
       .env --file .env set AZURACAST_PGID="$(id -g)"
     fi
 
-    docker-compose run --rm web azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+    docker-compose run --rm web -- azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
 
     # Move file back from volume to local filesystem
     docker run --rm -v "azuracast_backups:/backup_src" \
@@ -807,6 +811,24 @@ change-ports() {
 
   docker-compose down
   docker-compose up -d
+}
+
+#
+# Helper scripts for basic Docker Compose functions
+#
+up() {
+  echo "Starting up AzuraCast services..."
+  docker-compose up -d
+}
+
+down() {
+  echo "Shutting down AzuraCast services..."
+  docker-compose down
+}
+
+restart() {
+  down
+  up
 }
 
 # Ensure we're in the same directory as this script.

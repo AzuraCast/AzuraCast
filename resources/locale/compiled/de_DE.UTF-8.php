@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2022-02-15T23:07:32+00:00
-PO-Revision-Date: 2022-02-18 18:14
+POT-Creation-Date: 2022-04-23T16:48:19+00:00
+PO-Revision-Date: 2022-04-27 14:59
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -52,10 +52,6 @@ X-Crowdin-File-ID: 4
       '%s is not recognized as a service.' => 
       array (
         0 => '%s wird nicht als Dienst erkannt.',
-      ),
-      '%s of %s Used' => 
-      array (
-        0 => '%s von %s verwendet',
       ),
       '%{ days } Days' => 
       array (
@@ -103,7 +99,7 @@ X-Crowdin-File-ID: 4
       ),
       '%{station} - Copy' => 
       array (
-        0 => '%{station} - Kopieren',
+        0 => '%{station} - Kopie',
       ),
       '(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation.' => 
       array (
@@ -116,10 +112,6 @@ X-Crowdin-File-ID: 4
       '(in seconds)' => 
       array (
         0 => '(in Sekunden)',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => '15-Minuten Durchschnitt',
       ),
       'A completely random track is picked for playback every time the queue is populated.' => 
       array (
@@ -453,6 +445,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Versuche ISRC automatisch abzurufen, wenn nicht vorhanden',
       ),
+      'Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance.' => 
+      array (
+        0 => 'Audio-Transcoding-Anwendungen wie Liquidsoap verwenden kontinuierlich eine bestimmte Menge an CPU-Zeit, wodurch das verfügbare Guthaben kontinuierlich abnimmt. Wenn regelmäßig gestohlene CPU-Zeit zu sehen ist, sollte in Erwägung gezogen werden, zu einer VM zu wechseln, die für die Instanz dedizierte CPU-Ressourcen bereitstellt.',
+      ),
       'Audit Log' => 
       array (
         0 => 'Audit-Log',
@@ -488,6 +484,10 @@ X-Crowdin-File-ID: 4
       'AutoDJ Format' => 
       array (
         0 => 'AutoDJ Format',
+      ),
+      'AutoDJ Queue' => 
+      array (
+        0 => 'AutoDJ Warteschlange',
       ),
       'AutoDJ Queue Length' => 
       array (
@@ -649,6 +649,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Backups',
       ),
+      'Balanced' => 
+      array (
+        0 => 'Ausgeglichen',
+      ),
       'Band' => 
       array (
         0 => 'Band',
@@ -663,7 +667,7 @@ X-Crowdin-File-ID: 4
       ),
       'Banned User Agents' => 
       array (
-        0 => '',
+        0 => 'Gesperrte User-Agents',
       ),
       'Base Station Directory' => 
       array (
@@ -744,6 +748,14 @@ X-Crowdin-File-ID: 4
       'CPU Load' => 
       array (
         0 => 'CPU Load',
+      ),
+      'CPU Stats Help' => 
+      array (
+        0 => 'CPU Statistik Hilfe',
+      ),
+      'Cached' => 
+      array (
+        0 => 'Für Caches',
       ),
       'Categories' => 
       array (
@@ -925,10 +937,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Komponist',
       ),
-      'Composer Plugin Mode' => 
-      array (
-        0 => 'Composer Plugin Modus',
-      ),
       'Composer Sort Order' => 
       array (
         0 => 'Interpreten-Sortierreihenfolge',
@@ -1093,9 +1101,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Warteschlange',
       ),
-      'Current' => 
+      'Current Custom Fallback File' => 
       array (
-        0 => 'Aktuell',
+        0 => 'Aktuelle benutzerdefinierte Fallback-Datei',
       ),
       'Current Installed Version' => 
       array (
@@ -1156,6 +1164,10 @@ X-Crowdin-File-ID: 4
       'Custom Fading: Overlap Time (seconds)' => 
       array (
         0 => 'Benutzerdefiniertes Ein-/Ausblenden: Überschneidungszeit (Sekunden)',
+      ),
+      'Custom Fallback File' => 
+      array (
+        0 => 'Benutzerdefinierte Fallback-Datei',
       ),
       'Custom Fields' => 
       array (
@@ -1244,6 +1256,14 @@ X-Crowdin-File-ID: 4
       'Date/Time' => 
       array (
         0 => 'Datum/Zeit',
+      ),
+      'Date/Time (Browser)' => 
+      array (
+        0 => 'Datum/Zeit (Browser)',
+      ),
+      'Date/Time (Station)' => 
+      array (
+        0 => 'Datum/Zeit (Sender)',
       ),
       'Days Between Automated Assignments' => 
       array (
@@ -1401,10 +1421,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Verzeichnis',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'Verzeichnis "%s" wurde nicht erstellt',
-      ),
       'Directory Name' => 
       array (
         0 => 'Verzeichnisname',
@@ -1416,6 +1432,10 @@ X-Crowdin-File-ID: 4
       'Disable Crossfading' => 
       array (
         0 => 'Crossfading deaktivieren',
+      ),
+      'Disable Optimizations' => 
+      array (
+        0 => 'Optimierungen deaktivieren',
       ),
       'Disable Two-Factor' => 
       array (
@@ -1460,6 +1480,10 @@ X-Crowdin-File-ID: 4
       'Disk Space' => 
       array (
         0 => 'Festplattenspeicher',
+      ),
+      'Disk caching makes a system much faster and more responsive in general. It does not take memory away from applications in any way since it will automatically be released by the operating system when needed.' => 
+      array (
+        0 => '',
       ),
       'Display Name' => 
       array (
@@ -1660,6 +1684,10 @@ X-Crowdin-File-ID: 4
       'Enable Broadcasting' => 
       array (
         0 => 'Übertragung aktivieren',
+      ),
+      'Enable Custom Code Plugins' => 
+      array (
+        0 => 'Benutzerdefinierte Plug-ins aktivieren',
       ),
       'Enable Downloads on On-Demand Page' => 
       array (
@@ -1993,6 +2021,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Derzeit ist Version "%{ version }" von GeoLite installiert.',
       ),
+      'Get Next Song' => 
+      array (
+        0 => 'Nächsten Song abrufen',
+      ),
       'Get Now Playing' => 
       array (
         0 => '"Jetzt läuft"-Daten holen',
@@ -2052,6 +2084,10 @@ X-Crowdin-File-ID: 4
       'High' => 
       array (
         0 => 'Hoch',
+      ),
+      'High I/O Wait can indicate a bottleneck with the server\'s hard disk, a potentially failing hard disk, or heavy load on the hard disk.' => 
+      array (
+        0 => '',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
@@ -2231,11 +2267,15 @@ X-Crowdin-File-ID: 4
       ),
       'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.' => 
       array (
-        0 => '',
+        0 => 'Wenn regelmäßig verschiedene URLs für den Zugriff auf AzuraCast verwendet werden, sollte die Einstellung " Bevorzuge Browser URL" aktiviert werden.',
       ),
       'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
       array (
         0 => 'Wenn du auf einen Fehler stößt, kannst du uns auf unserem GitHub Repository unter dem Link unten einreichen.',
+      ),
+      'If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.' => 
+      array (
+        0 => '',
       ),
       'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.' => 
       array (
@@ -2329,9 +2369,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Installiere Daten-Fixtures',
       ),
-      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
+      'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.' => 
       array (
-        0 => 'Weist LiquidSoap an, alle mit einem Song verbundenen Replaygain-Metadaten zu verwenden, um dessen Lautstärke zu steuern.',
+        0 => '',
       ),
       'Instructions' => 
       array (
@@ -2404,6 +2444,10 @@ X-Crowdin-File-ID: 4
       'Last 2 Years' => 
       array (
         0 => 'Letzte 2 Jahre',
+      ),
+      'Last 24 Hours' => 
+      array (
+        0 => 'Letzte 24 Stunden',
       ),
       'Last 30 Days' => 
       array (
@@ -2525,6 +2569,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Liquidsoap Log',
       ),
+      'Liquidsoap Performance Tuning' => 
+      array (
+        0 => 'Liquidsoap Leistungs-Optimierung',
+      ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
         0 => 'Eine IP-Adresse oder Gruppe (im CIDR-Format) pro Zeile auflisten.',
@@ -2536,6 +2584,10 @@ X-Crowdin-File-ID: 4
       'Listener Analytics Collection' => 
       array (
         0 => 'Zuhörer Statistiken sammeln',
+      ),
+      'Listener History' => 
+      array (
+        0 => '',
       ),
       'Listener Request' => 
       array (
@@ -2585,6 +2637,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Live-Streamer:',
       ),
+      'Live Streaming' => 
+      array (
+        0 => '',
+      ),
       'Live stream connected.' => 
       array (
         0 => 'Live-Stream verbunden.',
@@ -2592,6 +2648,10 @@ X-Crowdin-File-ID: 4
       'Live stream disconnected.' => 
       array (
         0 => 'Live-Stream getrennt.',
+      ),
+      'Load Average' => 
+      array (
+        0 => 'Load Durchschnitt',
       ),
       'Loading...' => 
       array (
@@ -2829,6 +2889,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'RAM',
       ),
+      'Memory Stats Help' => 
+      array (
+        0 => 'Speicher Statistik Hilfe',
+      ),
       'Merge playlist to play as a single track.' => 
       array (
         0 => 'Wiedergabeliste zusammenführen, um sie wie ein einzelnes Lied abzuspielen.',
@@ -2919,6 +2983,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Letztes Backup-Log',
       ),
+      'Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server "stealing" CPU time from your VM and vice-versa.' => 
+      array (
+        0 => '',
+      ),
       'Mount Name:' => 
       array (
         0 => 'Mount-Name:',
@@ -2982,6 +3050,10 @@ X-Crowdin-File-ID: 4
       'Need Help?' => 
       array (
         0 => 'Brauchst du Hilfe?',
+      ),
+      'Network Interfaces' => 
+      array (
+        0 => 'Netzwerkschnittstellen',
       ),
       'Never run' => 
       array (
@@ -3239,6 +3311,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Sobald die automatische Zuweisung konfiguriert ist, klicke auf den Button, um die Automatische Zuordnung zu starten.',
       ),
+      'One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools.' => 
+      array (
+        0 => '',
+      ),
       'Only Send One Tweet Every...' => 
       array (
         0 => 'Nur einen Tweet senden jede...',
@@ -3270,6 +3346,10 @@ X-Crowdin-File-ID: 4
       'Optional: HTTP Basic Authentication Username' => 
       array (
         0 => 'Optional: HTTP Basic Authentication Benutzername',
+      ),
+      'Optional: Request Timeout (Seconds)' => 
+      array (
+        0 => '',
       ),
       'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
       array (
@@ -3377,7 +3457,7 @@ X-Crowdin-File-ID: 4
       ),
       'Pending Requests' => 
       array (
-        0 => '',
+        0 => 'Ausstehende Musikwünsche',
       ),
       'Performance profiling is currently enabled for all requests.' => 
       array (
@@ -3493,7 +3573,7 @@ X-Crowdin-File-ID: 4
       ),
       'Playlist: %s' => 
       array (
-        0 => 'Wiedergabeliste: %s',
+        0 => '',
       ),
       'Playlists' => 
       array (
@@ -3675,9 +3755,9 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Bereit zum Starten der Übertragung? Dann klick hier, um deinen Sender zu starten.',
       ),
-      'Rebuild AutoDJ Queue' => 
+      'Received' => 
       array (
-        0 => 'AutoDJ Warteschlange neu aufbauen',
+        0 => '',
       ),
       'Record Live Broadcasts' => 
       array (
@@ -3747,9 +3827,21 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Veröffentlichungszeitpunkt',
       ),
+      'Reload Configuration' => 
+      array (
+        0 => '',
+      ),
       'Reload System Data' => 
       array (
         0 => 'Systemdaten neu laden',
+      ),
+      'Reload broadcasting? Current listeners will not be disconnected.' => 
+      array (
+        0 => '',
+      ),
+      'Reload to Apply Changes' => 
+      array (
+        0 => '',
       ),
       'Remember me' => 
       array (
@@ -3827,6 +3919,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Remote: S3 kompatibel',
       ),
+      'Remote: SFTP' => 
+      array (
+        0 => '',
+      ),
       'Remove' => 
       array (
         0 => 'Löschen',
@@ -3881,7 +3977,7 @@ X-Crowdin-File-ID: 4
       ),
       'Request History' => 
       array (
-        0 => '',
+        0 => 'Musikwunschverlauf',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
@@ -3926,10 +4022,6 @@ X-Crowdin-File-ID: 4
       'Restart broadcasting? This will disconnect any current listeners.' => 
       array (
         0 => 'Übertragung neu starten? Dadurch werden alle aktuellen Zuhörer getrennt.',
-      ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => 'Neustart um die Änderungen anzuwenden',
       ),
       'Restoring Backups' => 
       array (
@@ -3987,6 +4079,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Datenbank-Migrationen werden ausgeführt',
       ),
+      'SFTP Host' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Password' => 
+      array (
+        0 => '',
+      ),
       'SFTP Port' => 
       array (
         0 => 'SFTP Port',
@@ -3994,6 +4094,18 @@ X-Crowdin-File-ID: 4
       'SFTP Port: %d' => 
       array (
         0 => 'SFTP Port: %d',
+      ),
+      'SFTP Private Key' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Private Key Pass Phrase' => 
+      array (
+        0 => '',
+      ),
+      'SFTP Username' => 
+      array (
+        0 => '',
       ),
       'SFTP Users' => 
       array (
@@ -4070,6 +4182,10 @@ X-Crowdin-File-ID: 4
       'Save Changes' => 
       array (
         0 => 'Änderungen speichern',
+      ),
+      'Save Changes first' => 
+      array (
+        0 => '',
       ),
       'Save and Continue' => 
       array (
@@ -4155,6 +4271,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Auswählen',
       ),
+      'Select Custom Fallback File' => 
+      array (
+        0 => '',
+      ),
       'Select File' => 
       array (
         0 => 'Datei auswählen',
@@ -4214,6 +4334,10 @@ X-Crowdin-File-ID: 4
       'Send Recovery E-mail' => 
       array (
         0 => 'Wiederherstellungs-E-Mail senden',
+      ),
+      'Send Test Message' => 
+      array (
+        0 => '',
       ),
       'Send an e-mail to specified address(es).' => 
       array (
@@ -4603,6 +4727,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Zeitzone einstellen',
       ),
+      'Station reloaded.' => 
+      array (
+        0 => '',
+      ),
       'Station restarted.' => 
       array (
         0 => 'Station neu gestartet.',
@@ -4622,6 +4750,14 @@ X-Crowdin-File-ID: 4
       'Statistics Overview' => 
       array (
         0 => 'Statistik-Übersicht',
+      ),
+      'Steal' => 
+      array (
+        0 => '',
+      ),
+      'Steal (St)' => 
+      array (
+        0 => '',
       ),
       'Step 1: Scan QR Code' => 
       array (
@@ -4705,7 +4841,7 @@ X-Crowdin-File-ID: 4
       ),
       'Streamer: %s' => 
       array (
-        0 => 'Streamer: %s',
+        0 => '',
       ),
       'Streamers enabled!' => 
       array (
@@ -4803,6 +4939,22 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Test',
       ),
+      'Test Message' => 
+      array (
+        0 => '',
+      ),
+      'Test message sent successfully.' => 
+      array (
+        0 => '',
+      ),
+      'Test message sent.' => 
+      array (
+        0 => '',
+      ),
+      'The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this.' => 
+      array (
+        0 => '',
+      ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
         0 => 'Die URL, die die POST-Nachrichten nach Auslösen eines Ereignisses erhalten soll.',
@@ -4810,6 +4962,10 @@ X-Crowdin-File-ID: 4
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => 'Das Konto mit der E-Mail-Adresse "%s" wurde als Administrator gesetzt',
+      ),
+      'The amount of memory Linux is using for disk caching.' => 
+      array (
+        0 => '',
       ),
       'The application environment.' => 
       array (
@@ -4826,6 +4982,14 @@ X-Crowdin-File-ID: 4
       'The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.' => 
       array (
         0 => 'Die Kontaktperson des Podcasts. Kann benötigt werden, um den Podcast bei Diensten wie Apple Podcasts, Spotify, Google Podcasts usw. zu veröffentlichen.',
+      ),
+      'The current CPU usage including I/O Wait and Steal.' => 
+      array (
+        0 => '',
+      ),
+      'The current Memory usage excluding cached memory.' => 
+      array (
+        0 => '',
       ),
       'The date when the episode should be published.' => 
       array (
@@ -4898,6 +5062,10 @@ X-Crowdin-File-ID: 4
       'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.' => 
       array (
         0 => 'Die Anzahl der Sekunden des zu speichernden Audiosignals für den Fall einer Unterbrechung. Stelle den niedrigsten Wert ein, den deine DJs ohne Stream-Unterbrechungen verwenden können.',
+      ),
+      'The number of seconds to wait for a response from the remote server before cancelling the request.' => 
+      array (
+        0 => '',
       ),
       'The numeric site ID for this site.' => 
       array (
@@ -5007,6 +5175,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Theme',
       ),
+      'There is no existing custom fallback file associated with this station.' => 
+      array (
+        0 => '',
+      ),
       'There is no existing intro file associated with this mount point.' => 
       array (
         0 => 'Es existiert keine Intro-Datei, die mit diesem Einhängepunkt verknüpft ist.',
@@ -5042,6 +5214,10 @@ X-Crowdin-File-ID: 4
       'This can have an adverse impact on system performance. You should disable this when possible.' => 
       array (
         0 => 'Dies kann sich negativ auf die Systemleistung auswirken. Wenn möglich sollte dies deaktiviert werden.',
+      ),
+      'This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.' => 
+      array (
+        0 => '',
       ),
       'This code will be included in the frontend configuration. Allowed formats are:' => 
       array (
@@ -5107,6 +5283,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Diese Datei wurde automatisch von AzuraCast generiert.',
       ),
+      'This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.' => 
+      array (
+        0 => '',
+      ),
       'This installation has not been backed up in the last two weeks.' => 
       array (
         0 => 'Diese Installation wurde in den letzten zwei Wochen nicht gesichert.',
@@ -5118,6 +5298,10 @@ X-Crowdin-File-ID: 4
       'This introduction file should exactly match the bitrate and format of the mount point itself.' => 
       array (
         0 => 'Diese Intro-Datei sollte genau der Bitrate und dem Format des Einhängepunkts entsprechen.',
+      ),
+      'This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly.' => 
+      array (
+        0 => '',
       ),
       'This is an advanced feature and custom code is not officially supported by AzuraCast. You may break your station by adding custom code, but removing it should fix any issues.' => 
       array (
@@ -5275,6 +5459,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Zeitzone',
       ),
+      'Time spent waiting for disk I/O to be completed.' => 
+      array (
+        0 => '',
+      ),
+      'Time stolen by other virtual machines on the same physical server.' => 
+      array (
+        0 => '',
+      ),
       'Title' => 
       array (
         0 => 'Titel',
@@ -5282,6 +5474,10 @@ X-Crowdin-File-ID: 4
       'Title Sort Order' => 
       array (
         0 => 'Sortierreihenfolge Titel',
+      ),
+      'To alleviate this potential problem with shared CPU resources, hosts assign "credits" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM\'s assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the "Steal" or "St" value.' => 
+      array (
+        0 => '',
       ),
       'To download the GeoLite database:' => 
       array (
@@ -5331,13 +5527,25 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Gesamt',
       ),
+      'Total Disk Space' => 
+      array (
+        0 => '',
+      ),
       'Total Listener Hours' => 
       array (
         0 => 'Gesamte Zuhörstunden',
       ),
+      'Total RAM' => 
+      array (
+        0 => '',
+      ),
       'Track Number' => 
       array (
         0 => 'Titelnummer',
+      ),
+      'Transmitted' => 
+      array (
+        0 => '',
       ),
       'Triggers' => 
       array (
@@ -5427,6 +5635,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'URL Nutzer',
       ),
+      'Unassigned Files' => 
+      array (
+        0 => '',
+      ),
       'Unique' => 
       array (
         0 => 'Einzigartig',
@@ -5499,6 +5711,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Lade die Datei auf dieser Seite hoch, damit sie automatisch in das richtige Verzeichnis entpackt wird.',
       ),
+      'Use' => 
+      array (
+        0 => '',
+      ),
+      'Use (Us)' => 
+      array (
+        0 => '',
+      ),
       'Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.' => 
       array (
         0 => 'Verwende API-Schlüssel, um dich bei der AzuraCast API mit den Berechtigungen deines Benutzerkonto zu authentifizieren.',
@@ -5514,6 +5734,14 @@ X-Crowdin-File-ID: 4
       'Use Icecast 2.4 on this server.' => 
       array (
         0 => 'Verwende Icecast 2.4 auf diesem Server.',
+      ),
+      'Use Less CPU (Uses More Memory)' => 
+      array (
+        0 => '',
+      ),
+      'Use Less Memory (Uses More CPU)' => 
+      array (
+        0 => '',
       ),
       'Use Liquidsoap on this server.' => 
       array (
@@ -5542,6 +5770,10 @@ X-Crowdin-File-ID: 4
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
         0 => 'Benutze die Telegram Bot API, um eine Nachricht an einen Kanal zu schicken.',
+      ),
+      'Used' => 
+      array (
+        0 => '',
       ),
       'Used for "Forgot Password" functionality, web hooks and other functions.' => 
       array (
@@ -5598,10 +5830,6 @@ X-Crowdin-File-ID: 4
       'Usually enabled for port 465, disabled for ports 587 or 25.' => 
       array (
         0 => 'Normalerweise aktiviert für Port 465, deaktiviert für Ports 587 oder 25.',
-      ),
-      'Utilities' => 
-      array (
-        0 => 'Tools',
       ),
       'Valid options: %s' => 
       array (
@@ -5662,6 +5890,14 @@ X-Crowdin-File-ID: 4
       'Volume' => 
       array (
         0 => 'Lautstärke',
+      ),
+      'Wait' => 
+      array (
+        0 => '',
+      ),
+      'Wait (Wa)' => 
+      array (
+        0 => '',
       ),
       'Warning' => 
       array (
@@ -5807,6 +6043,10 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Sie nutzen derzeit Version %s. Eine Aktualisierung wird dringend empfohlen.',
       ),
+      'You are not permitted to submit requests.' => 
+      array (
+        0 => 'Du bist nicht berechtigt, Anfragen einzureichen.',
+      ),
       'You can also upload files in bulk via SFTP.' => 
       array (
         0 => 'Du kannst Dateien auch per Massen-Upload über SFTP hochladen.',
@@ -5873,7 +6113,7 @@ X-Crowdin-File-ID: 4
       ),
       'You may want to update your base URL to ensure it is correct.' => 
       array (
-        0 => '',
+        0 => 'Möglicherweise sollte die System-URL aktualisiert werden, um sicherzustellen, dass sie korrekt ist.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -5893,7 +6133,7 @@ X-Crowdin-File-ID: 4
       ),
       'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).' => 
       array (
-        0 => '',
+        0 => 'Die "System-URL" Einstellung (%s) stimmt nicht mit der URL überein, die gerade verwendet wird (%s).',
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (

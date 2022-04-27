@@ -34,6 +34,7 @@ class Environment
     public const ASSET_URL = 'ASSETS_URL';
 
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
+    public const DOCKER_IS_STANDALONE = 'DOCKER_IS_STANDALONE';
 
     public const LANG = 'LANG';
 
@@ -48,6 +49,7 @@ class Environment
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
 
     public const LOG_LEVEL = 'LOG_LEVEL';
+    public const SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
 
     public const PROFILING_EXTENSION_ENABLED = 'PROFILING_EXTENSION_ENABLED';
     public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
@@ -120,6 +122,15 @@ class Environment
     public function isDevelopment(): bool
     {
         return ApplicationEnvironment::Development === $this->getAppEnvironmentEnum();
+    }
+
+    public function showDetailedErrors(): bool
+    {
+        if (self::envToBool($this->data[self::SHOW_DETAILED_ERRORS] ?? false)) {
+            return true;
+        }
+
+        return !$this->isProduction();
     }
 
     public function isDocker(): bool
@@ -208,22 +219,32 @@ class Environment
         return ($compareVersion >= $version);
     }
 
-    public function getUriToWeb(): UriInterface
+    public function isDockerStandalone(): bool
     {
-        if ($this->isDocker()) {
-            return $this->isDockerRevisionAtLeast(5)
-                ? new Uri('http://web')
-                : new Uri('http://nginx');
+        if (!$this->isDocker()) {
+            return false;
         }
 
-        return new Uri('http://127.0.0.1');
+        return self::envToBool($this->data[self::DOCKER_IS_STANDALONE] ?? false);
+    }
+
+    public function getUriToWeb(): UriInterface
+    {
+        return match (true) {
+            $this->isDockerStandalone() => new Uri('http://127.0.0.1:9010'),
+            $this->isDockerRevisionAtLeast(5) => new Uri('http://web'),
+            $this->isDocker() => new Uri('http://nginx'),
+            default => new Uri('http://127.0.0.1')
+        };
     }
 
     public function getUriToStations(): UriInterface
     {
-        return $this->isDocker()
-            ? new Uri('http://stations')
-            : new Uri('http://127.0.0.1');
+        return match (true) {
+            $this->isDockerStandalone() => new Uri('http://127.0.0.1'),
+            $this->isDocker() => new Uri('http://stations'),
+            default => new Uri('http://127.0.0.1'),
+        };
     }
 
     public function getLang(): ?string
@@ -296,11 +317,17 @@ class Environment
      */
     public function getDatabaseSettings(): array
     {
+        $defaultHost = match (true) {
+            $this->isDockerStandalone() => 'localhost',
+            $this->isDocker() => 'mariadb',
+            default => 'localhost'
+        };
+
         return [
-            'host'     => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
-            'port'     => (int)($this->data[self::DB_PORT] ?? 3306),
-            'dbname'   => $this->data[self::DB_NAME] ?? 'azuracast',
-            'user'     => $this->data[self::DB_USER] ?? 'azuracast',
+            'host' => $this->data[self::DB_HOST] ?? $defaultHost,
+            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
+            'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
+            'user' => $this->data[self::DB_USER] ?? 'azuracast',
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
     }
@@ -315,10 +342,16 @@ class Environment
      */
     public function getRedisSettings(): array
     {
+        $defaultHost = match (true) {
+            $this->isDockerStandalone() => 'localhost',
+            $this->isDocker() => 'redis',
+            default => 'localhost'
+        };
+
         return [
-            'host' => $this->data[self::REDIS_HOST] ?? ($this->isDocker() ? 'redis' : 'localhost'),
+            'host' => $this->data[self::REDIS_HOST] ?? $defaultHost,
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
-            'db'   => (int)($this->data[self::REDIS_DB] ?? 1),
+            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
     }
 
@@ -335,6 +368,15 @@ class Environment
     public function getProfilingExtensionHttpKey(): string
     {
         return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
+    }
+
+    public static function getDefaultsForEnvironment(Environment $existingEnv): self
+    {
+        return new self([
+            self::IS_CLI => $existingEnv->isCli(),
+            self::IS_DOCKER => $existingEnv->isDocker(),
+            self::DOCKER_IS_STANDALONE => $existingEnv->isDockerStandalone(),
+        ]);
     }
 
     public static function envToBool(mixed $value): bool

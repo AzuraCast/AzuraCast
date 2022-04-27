@@ -25,6 +25,10 @@
   .calendar-table {
     background: none;
     border: 0;
+
+    .next span, .prev span {
+      border-color: $text-color;
+    }
   }
 
   td.off {
@@ -38,5 +42,11 @@
   td.available:hover,
   th.available:hover {
     background-color: $navdrawer-nav-link-bg-hover;
+  }
+
+  .monthselect, .yearselect, input, select.ampmselect, select.hourselect, select.minuteselect, select.secondselect {
+    background-color: $menu-bg;
+    border: 1px solid $menu-divider-bg;
+    color: $text-color;
   }
 }

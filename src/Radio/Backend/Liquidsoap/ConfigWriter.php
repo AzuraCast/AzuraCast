@@ -7,16 +7,14 @@ namespace App\Radio\Backend\Liquidsoap;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Exception;
-use App\Flysystem\StationFilesystems;
-use App\Message;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
+use App\Radio\FallbackFile;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\StorageAttributes;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,24 +32,10 @@ class ConfigWriter implements EventSubscriberInterface
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Liquidsoap $liquidsoap,
         protected Environment $environment,
-        protected LoggerInterface $logger
+        protected LoggerInterface $logger,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected FallbackFile $fallbackFile
     ) {
-    }
-
-    /**
-     * Handle event dispatch.
-     *
-     * @param Message\AbstractMessage $message
-     */
-    public function __invoke(Message\AbstractMessage $message): void
-    {
-        if ($message instanceof Message\WritePlaylistFileMessage) {
-            $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
-
-            if ($playlist instanceof Entity\StationPlaylist) {
-                $this->writePlaylistFile($playlist);
-            }
-        }
     }
 
     /**
@@ -124,23 +108,23 @@ class ConfigWriter implements EventSubscriberInterface
         $configDir = $station->getRadioConfigDir();
         $pidfile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.pid';
 
-        $telnetBindAddr = $this->environment->isDocker() ? '0.0.0.0' : '127.0.0.1';
+        $telnetBindAddr = match (true) {
+            $this->environment->isDockerStandalone() => '127.0.0.1',
+            $this->environment->isDocker() => '0.0.0.0',
+            default => '127.0.0.1',
+        };
         $telnetPort = $this->liquidsoap->getTelnetPort($station);
 
         $stationTz = self::cleanUpString($station->getTimezone());
-        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
-
-        $stationApiUrl = self::cleanUpString(
-            (string)$this->environment->getUriToWeb()
-                ->withPath('/api/internal/' . $station->getId())
-        );
 
         $event->appendBlock(
             <<<EOF
             init.daemon.set(false)
             init.daemon.pidfile.path.set("${pidfile}")
+            
             log.stdout.set(true)
             log.file.set(false)
+            
             settings.server.log.level.set(4)
             settings.server.telnet.set(true)
             settings.server.telnet.bind_addr.set("${telnetBindAddr}")
@@ -161,11 +145,21 @@ class ConfigWriter implements EventSubscriberInterface
             # Track live-enabled status script-wide for fades.
             live_enabled = ref(false)
             ignore(live_enabled)
-            
+            EOF
+        );
+
+        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
+        $stationApiUrl = self::cleanUpString(
+            (string)$this->environment->getUriToWeb()
+                ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
+        );
+
+        $event->appendBlock(
+            <<<EOF
             azuracast_api_url = "${stationApiUrl}"
             azuracast_api_key = "${stationApiAuth}"
             
-            def azuracast_api_call(~timeout=2, url, payload) =
+            def azuracast_api_call(~timeout_ms=2000, url, payload) =
                 full_url = "#{azuracast_api_url}/#{url}"
                 
                 log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
@@ -176,19 +170,84 @@ class ConfigWriter implements EventSubscriberInterface
                             ("User-Agent", "Liquidsoap AzuraCast"),
                             ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
                         ],
-                        timeout=timeout,
+                        timeout_ms=timeout_ms,
                         data=payload
                     )
                     
                     log("API #{url} - Response (#{response.status_code}): #{response}")
-                    {success = response.status_code == 200, data = "#{response}"}
+                    "#{response}"
                 catch err do
                     log("API #{url} - Error: #{error.kind(err)} - #{error.message(err)}")
-                    {success = false, data = ""}
+                    "false"
                 end
             end
             EOF
         );
+
+        $mediaStorageLocation = $station->getMediaStorageLocation();
+
+        if ($mediaStorageLocation->isLocal()) {
+            $stationMediaDir = $mediaStorageLocation->getFilteredPath();
+
+            $event->appendBlock(
+                <<<EOF
+                station_media_dir = "${stationMediaDir}"
+                def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
+                    ["#{station_media_dir}/#{arg}"]
+                end
+                
+                add_protocol(
+                    "media",
+                    azuracast_media_protocol,
+                    doc="Pull files from AzuraCast media directory.",
+                    syntax="media:uri"
+                )
+                EOF
+            );
+        } else {
+            $event->appendBlock(
+                <<<EOF
+                def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
+                    timeout_ms = 1000 * (int_of_float(maxtime) - int_of_float(time()))
+                    
+                    j = json()
+                    j.add("uri", arg)
+                    
+                    [azuracast_api_call(timeout_ms=timeout_ms, "cp", json.stringify(j))]
+                end
+                
+                add_protocol(
+                    "media",
+                    azuracast_media_protocol,
+                    temporary=true,
+                    doc="Pull files from AzuraCast media directory.",
+                    syntax="media:uri"
+                )
+                EOF
+            );
+        }
+
+        $backendConfig = $station->getBackendConfig();
+
+        $perfMode = $backendConfig->getPerformanceModeEnum();
+        if ($perfMode !== Entity\Enums\StationBackendPerformanceModes::Disabled) {
+            $gcSpaceOverhead = match ($backendConfig->getPerformanceModeEnum()) {
+                Entity\Enums\StationBackendPerformanceModes::LessMemory => 20,
+                Entity\Enums\StationBackendPerformanceModes::LessCpu => 140,
+                Entity\Enums\StationBackendPerformanceModes::Balanced => 80,
+                Entity\Enums\StationBackendPerformanceModes::Disabled => 0,
+            };
+
+            $event->appendBlock(
+                <<<EOF
+                # Optimize Performance
+                runtime.gc.set(runtime.gc.get().{
+                  space_overhead = ${gcSpaceOverhead},
+                  allocation_policy = 2
+                })
+                EOF
+            );
+        }
     }
 
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -197,37 +256,13 @@ class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_PLAYLISTS);
 
-        // Clear out existing playlists directory.
-
-        $fsPlaylists = (new StationFilesystems($station))->getPlaylistsFilesystem();
-
-        foreach ($fsPlaylists->listContents('', false) as $file) {
-            /** @var StorageAttributes $file */
-            if ($file->isDir()) {
-                $fsPlaylists->deleteDirectory($file->path());
-            } else {
-                $fsPlaylists->delete($file->path());
-            }
-        }
-
         // Set up playlists using older format as a fallback.
-        $playlistObjects = [];
-
-        foreach ($station->getPlaylists() as $playlistRaw) {
-            /** @var Entity\StationPlaylist $playlistRaw */
-            if (!$playlistRaw->getIsEnabled()) {
-                continue;
-            }
-
-            $playlistObjects[] = $playlistRaw;
-        }
-
         $playlistVarNames = [];
         $genPlaylistWeights = [];
         $genPlaylistVars = [];
 
         $specialPlaylists = [
-            'once_per_x_songs'   => [
+            'once_per_x_songs' => [
                 '# Once per x Songs Playlists',
             ],
             'once_per_x_minutes' => [
@@ -238,9 +273,12 @@ class ConfigWriter implements EventSubscriberInterface
         $scheduleSwitches = [];
         $scheduleSwitchesInterrupting = [];
 
-        foreach ($playlistObjects as $playlist) {
-            /** @var Entity\StationPlaylist $playlist */
-            $playlistVarName = self::cleanUpVarName('playlist_' . $playlist->getShortName());
+        foreach ($station->getPlaylists() as $playlist) {
+            if (!$playlist->getIsEnabled()) {
+                continue;
+            }
+
+            $playlistVarName = self::getPlaylistVariableName($playlist);
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
                 $playlistVarName .= '_' . $playlist->getId();
@@ -251,10 +289,7 @@ class ConfigWriter implements EventSubscriberInterface
             $playlistConfigLines = [];
 
             if (Entity\Enums\PlaylistSources::Songs === $playlist->getSourceEnum()) {
-                $playlistFilePath = $this->writePlaylistFile($playlist, false);
-                if (!$playlistFilePath) {
-                    continue;
-                }
+                $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
                     'id="' . self::cleanUpString($playlistVarName) . '"',
@@ -446,10 +481,10 @@ class ConfigWriter implements EventSubscriberInterface
                         "nextsong",
                         ""
                     )
-                    if (response.success != true) or (response.data == "") or (string.match(pattern="Error", response.data)) then
+                    if (response == "") or (response == "false") then
                         null()
                     else
-                        r = request.create(response.data)
+                        r = request.create(response)
                         if request.resolve(r) then
                             r
                         else
@@ -475,7 +510,7 @@ class ConfigWriter implements EventSubscriberInterface
                     end
                 end
                 
-                dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
+                dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=10., autodj_next_song)
                 dynamic = cue_cut(id="cue_next_song", dynamic)
                 
                 dynamic_startup = fallback(
@@ -522,89 +557,6 @@ class ConfigWriter implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Write a playlist's contents to file so Liquidsoap can process it, and optionally notify
-     * Liquidsoap of the change.
-     *
-     * @param Entity\StationPlaylist $playlist
-     * @param bool $notify
-     *
-     * @return string|null The full path that was written to.
-     */
-    public function writePlaylistFile(Entity\StationPlaylist $playlist, bool $notify = true): ?string
-    {
-        $station = $playlist->getStation();
-
-        $mediaStorage = $station->getMediaStorageLocation();
-        if (!$mediaStorage->isLocal()) {
-            return null;
-        }
-
-        $playlistPath = $station->getRadioPlaylistsDir();
-        $playlistVarName = 'playlist_' . $playlist->getShortName();
-
-        $this->logger->info(
-            'Writing playlist file to disk...',
-            [
-                'station'  => $station->getName(),
-                'playlist' => $playlist->getName(),
-            ]
-        );
-
-        $mediaBaseDir = $mediaStorage->getPath() . '/';
-        $playlistFile = [];
-
-        $mediaQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT DISTINCT sm
-                FROM App\Entity\StationMedia sm
-                JOIN sm.playlists spm
-                WHERE spm.playlist = :playlist
-                ORDER BY spm.weight ASC
-            DQL
-        )->setParameter('playlist', $playlist);
-
-        /** @var Entity\StationMedia $mediaFile */
-        foreach ($mediaQuery->toIterable() as $mediaFile) {
-            $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
-            $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
-
-            if ($playlist->getIsJingle()) {
-                $mediaAnnotations['is_jingle_mode'] = 'true';
-                unset($mediaAnnotations['media_id']);
-            } else {
-                $mediaAnnotations['playlist_id'] = $playlist->getId();
-            }
-
-            $annotations_str = [];
-            foreach ($mediaAnnotations as $annotation_key => $annotation_val) {
-                $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
-            }
-
-            $playlistFile[] = 'annotate:' . implode(',', $annotations_str) . ':' . $mediaFilePath;
-        }
-
-        $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';
-
-        file_put_contents($playlistFilePath, implode("\n", $playlistFile));
-
-        if ($notify) {
-            try {
-                $this->liquidsoap->command($station, $playlistVarName . '.reload');
-            } catch (Exception $e) {
-                $this->logger->error(
-                    'Could not reload playlist with AutoDJ.',
-                    [
-                        'message'  => $e->getMessage(),
-                        'playlist' => $playlistVarName,
-                        'station'  => $station->getId(),
-                    ]
-                );
-            }
-        }
-
-        return $playlistFilePath;
-    }
 
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
@@ -673,11 +625,7 @@ class ConfigWriter implements EventSubscriberInterface
 
             $customFunctionBody = [];
 
-            $scheduleVar = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
-
-            $scheduleMethod = 'check_schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
-
-            $customFunctionBody[] = $scheduleVar . ' = ref(false)';
+            $scheduleMethod = 'schedule_' . $playlistSchedule->getIdRequired() . '_date_range';
             $customFunctionBody[] = 'def ' . $scheduleMethod . '() =';
 
             $conditions = [];
@@ -708,13 +656,13 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $customFunctionBody[] = '    current_time = time()';
-            $customFunctionBody[] = '    ' . $scheduleVar . ' := ' . implode(' and ', $conditions);
+            $customFunctionBody[] = '    result = (' . implode(' and ', $conditions) . ')';
+            $customFunctionBody[] = '    log("' . implode(' and ', $conditions) . ' = #{result} (#{current_time})")';
+            $customFunctionBody[] = '    result';
             $customFunctionBody[] = 'end';
-            $customFunctionBody[] = 'thread.run(every=60., ' . $scheduleMethod . ')';
-
             $event->appendLines($customFunctionBody);
 
-            $play_time = '!' . $scheduleVar . ' and ' . $play_time;
+            $play_time = $scheduleMethod . '() and ' . $play_time;
         }
 
         return $play_time;
@@ -766,8 +714,6 @@ class ConfigWriter implements EventSubscriberInterface
             last_authenticated_dj = ref("")
             live_dj = ref("")
             
-            live_record_path = ref("")
-            
             def dj_auth(login) =
                 auth_info =
                     if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
@@ -779,11 +725,12 @@ class ConfigWriter implements EventSubscriberInterface
                     end
                 
                 response = azuracast_api_call(
-                    timeout=5,
+                    timeout_ms=5000,
                     "auth",
                     json.stringify(auth_info)
                 )
-                if response.success then
+                
+                if (response == "true") then
                     last_authenticated_dj := auth_info.user
                     true
                 else
@@ -798,36 +745,22 @@ class ConfigWriter implements EventSubscriberInterface
                 live_enabled := true
                 live_dj := dj
                 
-                j = json()
-                j.add("user", dj)
-                
-                response = azuracast_api_call(
-                    timeout=5,
+                _ = azuracast_api_call(
+                    timeout_ms=5000,
                     "djon",
-                    json.stringify(j)
+                    json.stringify({user = dj})
                 )
-                if response.success and string.contains(prefix="/", response.data) then
-                    live_record_path := response.data
-                end
             end
             
             def live_disconnected() =
-                dj = !live_dj
-                
-                j = json()
-                j.add("user", dj)
-                
                 _ = azuracast_api_call(
-                    timeout=5,
+                    timeout_ms=5000,
                     "djoff",
-                    json.stringify(j)
+                    json.stringify({user = !live_dj})
                 )
                 
                 live_enabled := false
-                last_authenticated_dj := ""
                 live_dj := ""
-                
-                live_record_path := ""
             end
             EOF
         );
@@ -879,16 +812,21 @@ class ConfigWriter implements EventSubscriberInterface
             $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
+            $recordExtension = $recordLiveStreamsFormat->getExtension();
+            $recordBasePath = self::cleanUpString($station->getRadioTempDir());
+            $recordPathPrefix = Entity\StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
                 <<< EOF
                 # Record Live Broadcasts
+                recording_base_path = "${recordBasePath}"
+                recording_extension = "${recordExtension}"
+                
                 output.file(
                     {$formatString}, 
                     fun () -> begin
-                        path = !live_record_path
-                        if (path != "") then
-                            "#{path}.tmp"
+                        if (!live_enabled) then
+                            "#{recording_base_path}/#{!live_dj}/${recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
                         else
                             ""
                         end
@@ -947,18 +885,13 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Write fallback to safety file to ensure infallible source for the broadcast outputs.
-        $errorFile = $this->environment->isDocker()
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : $this->environment->getBaseDirectory() . '/resources/error.mp3';
+        $errorFile = $this->fallbackFile->getFallbackPathForStation($station);
 
         $event->appendBlock(
             <<<EOF
             radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "${errorFile}")])
             EOF
         );
-
-        // Custom configuration
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
         $event->appendBlock(
             <<<EOF
@@ -999,6 +932,9 @@ class ConfigWriter implements EventSubscriberInterface
             radio.on_metadata(metadata_updated)
             EOF
         );
+
+        // Custom configuration
+        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -1218,5 +1154,10 @@ class ConfigWriter implements EventSubscriberInterface
         $str = str_replace(['%', '-', '.'], ['', '_', '_'], $str);
 
         return $str;
+    }
+
+    public static function getPlaylistVariableName(Entity\StationPlaylist $playlist): string
+    {
+        return self::cleanUpVarName('playlist_' . $playlist->getShortName());
     }
 }

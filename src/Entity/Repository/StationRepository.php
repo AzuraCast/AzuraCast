@@ -9,7 +9,10 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
+use App\Flysystem\StationFilesystems;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Service\Flow\UploadedFile;
+use Azura\Files\ExtendedFilesystemInterface;
 use Closure;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
@@ -168,5 +171,53 @@ class StationRepository extends Repository
         }
 
         return AssetFactory::createAlbumArt($this->environment)->getUri();
+    }
+
+    public function setFallback(
+        Entity\Station $station,
+        UploadedFile $file,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+
+        if (!empty($station->getFallbackPath())) {
+            $this->doDeleteFallback($station, $fs);
+            $station->setFallbackPath(null);
+        }
+
+        $originalPath = $file->getClientFilename();
+        $originalExt = pathinfo($originalPath, PATHINFO_EXTENSION);
+
+        $fallbackPath = 'fallback.' . $originalExt;
+        $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $fallbackPath);
+
+        $station->setFallbackPath($fallbackPath);
+        $this->em->persist($station);
+        $this->em->flush();
+    }
+
+    public function doDeleteFallback(
+        Entity\Station $station,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+
+        $fallbackPath = $station->getFallbackPath();
+        if (empty($fallbackPath)) {
+            return;
+        }
+
+        $fs->delete($fallbackPath);
+    }
+
+    public function clearFallback(
+        Entity\Station $station,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $this->doDeleteFallback($station, $fs);
+
+        $station->setFallbackPath(null);
+        $this->em->persist($station);
+        $this->em->flush();
     }
 }

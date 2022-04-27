@@ -44,7 +44,7 @@ class DeviceDetector
                 $this->dd->setUserAgent($userAgent);
                 $this->dd->parse();
 
-                return DeviceResult::fromDeviceDetector($this->dd);
+                return DeviceResult::fromDeviceDetector($userAgent, $this->dd);
             }
         );
 

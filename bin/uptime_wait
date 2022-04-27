@@ -92,8 +92,10 @@ class UptimeWait
     protected function checkDatabase(): bool
     {
         try {
+            $defaultHost = $this->isStandalone() ? 'localhost' : 'mariadb';
+
             $dbOptions = [
-                    'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
+                    'host' => $_ENV['MYSQL_HOST'] ?? $defaultHost,
                     'port' => (int)($_ENV['MYSQL_PORT'] ?? 3306),
                     'dbname' => $_ENV['MYSQL_DATABASE'] ?? 'azuracast',
                     'user' => $_ENV['MYSQL_USER'] ?? 'azuracast',
@@ -119,8 +121,10 @@ class UptimeWait
 
     protected function checkRedis(): bool
     {
+        $defaultHost = $this->isStandalone() ? 'localhost' : 'redis';
+
         $enableRedis = $this->envToBool($_ENV['ENABLE_REDIS'] ?? true);
-        $redisHost = $_ENV['REDIS_HOST'] ?? 'redis';
+        $redisHost = $_ENV['REDIS_HOST'] ?? $defaultHost;
         $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
         $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
 
@@ -155,6 +159,11 @@ class UptimeWait
         return str_starts_with(strtolower($value), 'y')
                 || 'true' === strtolower($value)
                 || '1' === $value;
+    }
+
+    protected function isStandalone(): bool
+    {
+        return $this->envToBool($_ENV['DOCKER_IS_STANDALONE'] ?? false);
     }
 
     protected function println(string $line): void

@@ -8,7 +8,9 @@ namespace App\Enums;
 
 use App\Environment;
 use App\Http\ServerRequest;
-use Gettext\Translator;
+use Gettext\GettextTranslator;
+use Gettext\TranslatorFunctions;
+use Gettext\TranslatorInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 enum SupportedLocales: string
@@ -62,24 +64,19 @@ enum SupportedLocales: string
         return self::stripLocaleEncoding($this);
     }
 
-    public function createTranslator(Environment $environment): Translator
+    public function createTranslator(Environment $environment): TranslatorInterface
     {
-        $translator = new Translator();
-
-        $localeBase = $environment->getBaseDirectory() . '/resources/locale/compiled';
-        $localePath = $localeBase . '/' . $this->value . '.php';
-
-        if (file_exists($localePath)) {
-            $translator->loadTranslations($localePath);
-        }
-
+        $translator = new GettextTranslator();
+        $translator->setLanguage($this->value);
+        $translator->loadDomain('default', $environment->getBaseDirectory() . '/resources/locale');
         return $translator;
     }
 
     public function register(Environment $environment): void
     {
         $translator = $this->createTranslator($environment);
-        $translator->register();
+
+        TranslatorFunctions::register($translator);
 
         // Register translation superglobal functions
         setlocale(LC_ALL, $this->value);

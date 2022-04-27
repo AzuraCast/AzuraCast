@@ -6,6 +6,9 @@ namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
 use App\Environment;
+use Gettext\Generator\PoGenerator;
+use Gettext\Loader\PoLoader;
+use Gettext\Scanner\PhpScanner;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -35,45 +38,45 @@ class GenerateCommand extends CommandAbstract
 
         $exportDir = $this->environment->getBaseDirectory() . '/resources/locale';
 
-        $dest_file = $exportDir . '/default.pot';
+        $translations = Translations::create('default');
+        $destFile = $exportDir . '/default.pot';
 
-        $translations = new Translations();
+        // Import the JS-generated files if they exist
+        $frontendJsFile = $exportDir . '/frontend.pot';
 
-        // Find all JS/Vue file translations.
-        $directory = new RecursiveDirectoryIterator($this->environment->getBaseDirectory() . '/frontend/vue');
-        $iterator = new RecursiveIteratorIterator($directory);
-
-        $vueRegex = new RegexIterator($iterator, '/^.+\.(vue)$/i', RegexIterator::GET_MATCH);
-        foreach ($vueRegex as $pathMatch) {
-            $translations->addFromVueJsFile($pathMatch[0]);
-        }
-
-        $jsRegex = new RegexIterator($iterator, '/^.+\.(js)$/i', RegexIterator::GET_MATCH);
-        foreach ($jsRegex as $pathMatch) {
-            $translations->addFromJsCodeFile($pathMatch[0]);
+        if (is_file($frontendJsFile)) {
+            $translations = (new PoLoader())->loadFile($frontendJsFile, $translations);
+            @unlink($frontendJsFile);
         }
 
         // Find all PHP/PHTML files in the application's code.
-        $translatable_folders = [
+        $translatableFolders = [
             $this->environment->getBaseDirectory() . '/src',
             $this->environment->getBaseDirectory() . '/config',
             $this->environment->getViewsDirectory(),
         ];
 
-        foreach ($translatable_folders as $folder) {
+        $phpScanner = new PhpScanner($translations);
+        $phpScanner->setDefaultDomain('default');
+
+        foreach ($translatableFolders as $folder) {
             $directory = new RecursiveDirectoryIterator($folder);
             $iterator = new RecursiveIteratorIterator($directory);
             $regex = new RegexIterator($iterator, '/^.+\.(phtml|php)$/i', RegexIterator::GET_MATCH);
 
             foreach ($regex as $path_match) {
                 $path = $path_match[0];
-                $translations->addFromPhpCodeFile($path);
+                $phpScanner->scanFile($path);
             }
         }
 
-        $translations->ksort();
+        @unlink($destFile);
 
-        $translations->toPoFile($dest_file);
+        $poGenerator = new PoGenerator();
+        $poGenerator->generateFile(
+            $translations,
+            $destFile
+        );
 
         $io->success('Locales generated.');
         return 0;

@@ -347,12 +347,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/metadata-manager.git",
-                "reference": "19c83b59cd8bba3eaace72f8e5257ca17520990a"
+                "reference": "b03d7f37f9d1e862a47ecc1f7bdc78a996ff9712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/metadata-manager/zipball/19c83b59cd8bba3eaace72f8e5257ca17520990a",
-                "reference": "19c83b59cd8bba3eaace72f8e5257ca17520990a",
+                "url": "https://api.github.com/repos/AzuraCast/metadata-manager/zipball/b03d7f37f9d1e862a47ecc1f7bdc78a996ff9712",
+                "reference": "b03d7f37f9d1e862a47ecc1f7bdc78a996ff9712",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-04-23T03:55:03+00:00"
+            "time": "2022-04-28T11:59:24+00:00"
         },
         {
             "name": "azuracast/nowplaying",

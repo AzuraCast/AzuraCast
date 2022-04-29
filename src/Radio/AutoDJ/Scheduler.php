@@ -162,19 +162,29 @@ class Scheduler
             return false;
         }
 
-        // Check if already played
-        $relevant_song_history = array_slice($recentPlaylistHistory, 0, $length);
+        $playlistId = $playlist->getIdRequired();
 
-        $was_played = false;
-        foreach ($relevant_song_history as $sh_row) {
-            if ((int)$sh_row['playlist_id'] === $playlist->getId()) {
-                $was_played = true;
-                break;
+        // Only consider playlists that are this playlist or are non-jingles.
+        $relevantSongHistory = array_slice(
+            array_filter(
+                $recentPlaylistHistory,
+                static function ($row) use ($playlistId) {
+                    return $playlistId === $row['playlist_id']
+                        ? true
+                        : $row['is_visible'];
+                }
+            ),
+            0,
+            $length
+        );
+
+        foreach ($relevantSongHistory as $sh_row) {
+            if ($playlistId === (int)$sh_row['playlist_id']) {
+                return true;
             }
         }
 
-        reset($recentPlaylistHistory);
-        return $was_played;
+        return false;
     }
 
     /**

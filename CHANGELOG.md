@@ -9,7 +9,9 @@ There have been no new features in the Rolling Release since the latest Stable r
 
 ## Code Quality/Technical Changes
 
-There have been no technical changes in the Rolling Release since the latest Stable release.
+- The scheduler has been updated to follow a new rule for "Once per X Songs" playlists: it will only consider songs
+  played from non-jingle playlists in its calculation. This will prevent other jingles from being counted in the total
+  number of songs played in a time period.
 
 ## Bug Fixes
 

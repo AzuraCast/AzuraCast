@@ -7,6 +7,7 @@ namespace App\Radio\Backend;
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
+use App\Radio\Enums\LiquidsoapQueues;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
@@ -28,6 +29,11 @@ class Liquidsoap extends AbstractBackend
     }
 
     public function supportsWebStreaming(): bool
+    {
+        return true;
+    }
+
+    public function supportsImmediateQueue(): bool
     {
         return true;
     }
@@ -236,23 +242,28 @@ class Liquidsoap extends AbstractBackend
             : null;
     }
 
-    public function isQueueEmpty(Entity\Station $station): bool
-    {
-        $queue = $this->command(
+    public function isQueueEmpty(
+        Entity\Station $station,
+        LiquidsoapQueues $queue
+    ): bool {
+        $queueResult = $this->command(
             $station,
-            'requests.queue'
+            sprintf('%s.queue', $queue->value)
         );
-        return empty($queue[0]);
+        return empty($queueResult[0]);
     }
 
     /**
      * @return string[]
      */
-    public function enqueue(Entity\Station $station, string $music_file): array
-    {
+    public function enqueue(
+        Entity\Station $station,
+        LiquidsoapQueues $queue,
+        string $music_file
+    ): array {
         return $this->command(
             $station,
-            'requests.push ' . $music_file
+            sprintf('%s.push %s', $queue->value, $music_file)
         );
     }
 
@@ -263,7 +274,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            'requests_fallback.skip'
+            'interrupting_fallback.skip'
         );
     }
 

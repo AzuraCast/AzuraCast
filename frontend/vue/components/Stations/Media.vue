@@ -40,6 +40,7 @@
 
                     <media-toolbar :batch-url="batchUrl" :selected-items="selectedItems"
                                    :current-directory="currentDirectory"
+                                   :supports-immediate-queue="supportsImmediateQueue"
                                    :playlists="playlists" @add-playlist="onAddPlaylist"
                                    @relist="onTriggerRelist"></media-toolbar>
                 </div>
@@ -221,7 +222,8 @@ export default {
         },
         stationTimeZone: String,
         showSftp: Boolean,
-        sftpUrl: String
+        sftpUrl: String,
+        supportsImmediateQueue: Boolean
     },
     data () {
         let fields = [

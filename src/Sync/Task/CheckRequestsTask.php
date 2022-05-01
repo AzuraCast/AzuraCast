@@ -9,6 +9,7 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use App\Radio\Enums\LiquidsoapQueues;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
@@ -84,14 +85,16 @@ class CheckRequestsTask extends AbstractTask
         $track = $event->buildAnnotations();
 
         // Queue request with Liquidsoap.
-        if (!$backend->isQueueEmpty($station)) {
+        $queue = LiquidsoapQueues::Requests;
+
+        if (!$backend->isQueueEmpty($station, $queue)) {
             $this->logger->error('Skipping submitting request to Liquidsoap; current queue is occupied.');
             return false;
         }
 
         $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
 
-        $response = $backend->enqueue($station, $track);
+        $response = $backend->enqueue($station, $queue, $track);
         $this->logger->debug('AutoDJ request response', ['response' => $response]);
 
         // Log the request as played.

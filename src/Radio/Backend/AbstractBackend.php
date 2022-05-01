@@ -29,6 +29,11 @@ abstract class AbstractBackend extends AbstractAdapter
         return false;
     }
 
+    public function supportsImmediateQueue(): bool
+    {
+        return false;
+    }
+
     public function getStreamPort(Entity\Station $station): ?int
     {
         return null;

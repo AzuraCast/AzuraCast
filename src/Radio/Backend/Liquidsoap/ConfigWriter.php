@@ -9,6 +9,7 @@ use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\FrontendAdapters;
+use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
@@ -108,11 +109,6 @@ class ConfigWriter implements EventSubscriberInterface
         $configDir = $station->getRadioConfigDir();
         $pidfile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.pid';
 
-        $telnetBindAddr = match (true) {
-            $this->environment->isDockerStandalone() => '127.0.0.1',
-            $this->environment->isDocker() => '0.0.0.0',
-            default => '127.0.0.1',
-        };
         $telnetPort = $this->liquidsoap->getTelnetPort($station);
 
         $stationTz = self::cleanUpString($station->getTimezone());
@@ -126,9 +122,11 @@ class ConfigWriter implements EventSubscriberInterface
             log.file.set(false)
             
             settings.server.log.level.set(4)
+            
             settings.server.telnet.set(true)
-            settings.server.telnet.bind_addr.set("${telnetBindAddr}")
+            settings.server.telnet.bind_addr.set("127.0.0.1")
             settings.server.telnet.port.set(${telnetPort})
+            
             settings.harbor.bind_addrs.set(["0.0.0.0"])
             
             settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
@@ -465,6 +463,23 @@ class ConfigWriter implements EventSubscriberInterface
             }
         }
 
+        if (!empty($scheduleSwitchesInterrupting)) {
+            $event->appendLines(['# Interrupting Schedule Switches']);
+
+            foreach (array_chunk($scheduleSwitchesInterrupting, 168, true) as $scheduleSwitchesChunk) {
+                $scheduleSwitchesChunk[] = '({true}, radio)';
+
+                $event->appendLines(
+                    [
+                        sprintf(
+                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
+                            implode(', ', $scheduleSwitchesChunk)
+                        ),
+                    ]
+                );
+            }
+        }
+
         // Add in special playlists if necessary.
         foreach ($specialPlaylists as $playlistConfigLines) {
             if (count($playlistConfigLines) > 1) {
@@ -532,26 +547,19 @@ class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        if (!empty($scheduleSwitchesInterrupting)) {
-            $scheduleSwitchesInterrupting[] = '({true}, radio)';
-
-            $event->appendLines(
-                [
-                    '# Interrupting Schedule Switches',
-                    sprintf(
-                        'radio = switch(id="interrupt_switch", track_sensitive=false, [ %s ])',
-                        implode(', ', $scheduleSwitchesInterrupting)
-                    ),
-                ]
-            );
-        }
+        $requestsQueueName = LiquidsoapQueues::Requests->value;
+        $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
         $event->appendBlock(
             <<< EOF
-            requests = request.queue(id="requests")
-            requests = cue_cut(id="cue_requests", requests)
-            
+            requests = request.queue(id="${requestsQueueName}")
+            requests = cue_cut(id="cue_${requestsQueueName}", requests)
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
+            
+            interrupting_queue = request.queue(id="${interruptingQueueName}")
+            interrupting_queue = cue_cut(id="cue_${interruptingQueueName}", interrupting_queue)
+            radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
+            
             add_skip_command(radio)
             EOF
         );

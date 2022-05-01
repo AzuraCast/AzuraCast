@@ -490,13 +490,13 @@ install-dev() {
 
   chmod 777 ./frontend/ ./web/ ./vendor/ \
     ./web/static/ ./web/static/api/ \
-     ./web/static/dist/ ./web/static/img/
+    ./web/static/dist/ ./web/static/img/
 
   docker-compose build
   docker-compose run --rm web -- azuracast_install "$@"
 
-  docker-compose -f frontend/docker-compose.yml build
-  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run dev-build
+  docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
+  docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run --rm frontend npm run dev-build
 
   docker-compose up -d
   exit

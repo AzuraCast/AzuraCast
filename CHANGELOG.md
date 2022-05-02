@@ -5,7 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features in the Rolling Release since the latest Stable release.
+- **Play Immediately**: From the Media Manager, you can now trigger selected songs to play _immediately_, which will
+  interrupt any existing songs that are currently playing and play the specified audio instead.
 
 ## Code Quality/Technical Changes
 
@@ -15,7 +16,7 @@ There have been no new features in the Rolling Release since the latest Stable r
 
 ## Bug Fixes
 
-There have been no new bug fixes in the Rolling Release since the latest Stable release.
+- A bug in Liquidsoap preventing "Skip Songs" from working properly has been fixed.
 
 ---
 

@@ -463,23 +463,6 @@ class ConfigWriter implements EventSubscriberInterface
             }
         }
 
-        if (!empty($scheduleSwitchesInterrupting)) {
-            $event->appendLines(['# Interrupting Schedule Switches']);
-
-            foreach (array_chunk($scheduleSwitchesInterrupting, 168, true) as $scheduleSwitchesChunk) {
-                $scheduleSwitchesChunk[] = '({true}, radio)';
-
-                $event->appendLines(
-                    [
-                        sprintf(
-                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
-                            implode(', ', $scheduleSwitchesChunk)
-                        ),
-                    ]
-                );
-            }
-        }
-
         // Add in special playlists if necessary.
         foreach ($specialPlaylists as $playlistConfigLines) {
             if (count($playlistConfigLines) > 1) {
@@ -545,6 +528,23 @@ class ConfigWriter implements EventSubscriberInterface
                 thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
                 EOF
             );
+        }
+
+        if (!empty($scheduleSwitchesInterrupting)) {
+            $event->appendLines(['# Interrupting Schedule Switches']);
+
+            foreach (array_chunk($scheduleSwitchesInterrupting, 168, true) as $scheduleSwitchesChunk) {
+                $scheduleSwitchesChunk[] = '({true}, radio)';
+
+                $event->appendLines(
+                    [
+                        sprintf(
+                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
+                            implode(', ', $scheduleSwitchesChunk)
+                        ),
+                    ]
+                );
+            }
         }
 
         $requestsQueueName = LiquidsoapQueues::Requests->value;

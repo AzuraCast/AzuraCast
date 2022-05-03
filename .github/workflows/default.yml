@@ -74,18 +74,21 @@ jobs:
       - name: Clear existing locales.
         if: github.event_name == 'push' || github.event_name == 'schedule'
         run: |
-          rm -rf resources/locale/compiled
-          rm -rf resources/locale/compiled_js
           rm -rf resources/locale/*.UTF-8
-          mkdir -p resources/locale/compiled
 
       - name: Generate new translations from existing code.
         if: github.event_name == 'push' || github.event_name == 'schedule'
-        run: bin/console locale:generate
+        run: |
+          cd frontend
+          npm ci
+          npm run generate-locales
+          
+          cd ..
+          bin/console locale:generate
 
       - name: Pull latest translations.
         if: github.event_name == 'push' || github.event_name == 'schedule'
-        uses: crowdin/github-action@1.4.1
+        uses: crowdin/github-action@1.4.8
         with:
           upload_sources: true
           download_translations: true
@@ -103,7 +106,7 @@ jobs:
           bin/console locale:import
 
           cd frontend
-          npm ci
+          npm run import-locales
           npm run build
 
       - name: Build OpenAPI Docs
@@ -149,8 +152,7 @@ jobs:
           name: assets
           if-no-files-found: error
           path: |
-            resources/locale/compiled
-            resources/locale/translations.json
+            resources/locale
             web/static/dist
             web/static/webpack_dist
             web/static/webpack.json

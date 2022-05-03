@@ -10,8 +10,7 @@ $autoloader->addClassMap([
 $GLOBALS['autoloader'] = $autoloader;
 
 if (!function_exists('__')) {
-    $translator = new \Gettext\Translator();
-    $translator->register();
+    \Gettext\TranslatorFunctions::register(new \Gettext\Translator());
 }
 
 // Clear output directory

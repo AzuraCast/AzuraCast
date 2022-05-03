@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Entity;
+use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Exception;
 use App\Exception\NotLoggedInException;
@@ -13,7 +14,6 @@ use App\Middleware\InjectSession;
 use App\Session\Flash;
 use App\View;
 use DI\FactoryInterface;
-use Gettext\Translator;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -110,8 +110,8 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
     protected function respond(): ResponseInterface
     {
         if (!function_exists('__')) {
-            $translator = new Translator();
-            $translator->register();
+            $locale = SupportedLocales::default();
+            $locale->register($this->environment);
         }
 
         // Special handling for cURL requests.

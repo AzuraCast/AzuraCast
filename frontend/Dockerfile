@@ -1,4 +1,4 @@
-FROM library/node:16-alpine
+FROM library/node:18-alpine
 
 RUN apk update \
     && apk add bash python3 make curl g++ shadow git
@@ -16,6 +16,9 @@ RUN USER=node && \
     mkdir -p /etc/fixuid && \
     printf "user: $USER\ngroup: $GROUP\npaths:\n  - /\n  - /data/frontend/node_modules\n" > /etc/fixuid/config.yml
 
+COPY ./entrypoint.sh /
+RUN chmod a+x /entrypoint.sh
+
 # Define working directory.
 WORKDIR /data/frontend
 
@@ -27,5 +30,5 @@ VOLUME /data/frontend/node_modules
 ENV NODE_ENV=production
 
 # Define default command.
-ENTRYPOINT ["fixuid"]
-CMD ["npm", "run", "dev"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]

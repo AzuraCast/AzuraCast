@@ -17,6 +17,25 @@ There have been no new bug fixes in the Rolling Release since the latest Stable 
 
 ---
 
+# AzuraCast 0.16.1 (May 03, 2022)
+
+## New Features/Changes
+
+- **Play Immediately**: From the Media Manager, you can now trigger selected songs to play _immediately_, which will
+  interrupt any existing songs that are currently playing and play the specified audio instead.
+
+## Code Quality/Technical Changes
+
+- The scheduler has been updated to follow a new rule for "Once per X Songs" playlists: it will only consider songs
+  played from non-jingle playlists in its calculation. This will prevent other jingles from being counted in the total
+  number of songs played in a time period.
+
+## Bug Fixes
+
+- A bug in Liquidsoap preventing "Skip Songs" from working properly has been fixed.
+
+---
+
 # AzuraCast 0.16.0 (Apr 27, 2022)
 
 ## New Features/Changes

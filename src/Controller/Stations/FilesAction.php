@@ -35,27 +35,30 @@ class FilesAction
 
         $router = $request->getRouter();
 
+        $backend = $request->getStationBackend();
+
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Vue_StationsMedia',
             id: 'media-manager',
             title: __('Music Files'),
             props: [
-                'listUrl'            => (string)$router->fromHere('api:stations:files:list'),
-                'batchUrl'           => (string)$router->fromHere('api:stations:files:batch'),
-                'uploadUrl'          => (string)$router->fromHere('api:stations:files:upload'),
+                'listUrl' => (string)$router->fromHere('api:stations:files:list'),
+                'batchUrl' => (string)$router->fromHere('api:stations:files:batch'),
+                'uploadUrl' => (string)$router->fromHere('api:stations:files:upload'),
                 'listDirectoriesUrl' => (string)$router->fromHere('api:stations:files:directories'),
-                'mkdirUrl'           => (string)$router->fromHere('api:stations:files:mkdir'),
-                'renameUrl'          => (string)$router->fromHere('api:stations:files:rename'),
-                'quotaUrl'           => (string)$router->fromHere('api:stations:quota', [
+                'mkdirUrl' => (string)$router->fromHere('api:stations:files:mkdir'),
+                'renameUrl' => (string)$router->fromHere('api:stations:files:rename'),
+                'quotaUrl' => (string)$router->fromHere('api:stations:quota', [
                     'type' => Entity\Enums\StorageLocationTypes::StationMedia->value,
                 ]),
-                'initialPlaylists'   => $playlists,
-                'customFields'       => $customFieldRepo->fetchArray(),
-                'validMimeTypes'     => MimeType::getProcessableTypes(),
-                'stationTimeZone'    => $station->getTimezone(),
-                'showSftp'           => SftpGo::isSupportedForStation($station),
-                'sftpUrl'            => (string)$router->fromHere('stations:sftp_users:index'),
+                'initialPlaylists' => $playlists,
+                'customFields' => $customFieldRepo->fetchArray(),
+                'validMimeTypes' => MimeType::getProcessableTypes(),
+                'stationTimeZone' => $station->getTimezone(),
+                'showSftp' => SftpGo::isSupportedForStation($station),
+                'sftpUrl' => (string)$router->fromHere('stations:sftp_users:index'),
+                'supportsImmediateQueue' => $backend->supportsImmediateQueue(),
             ],
         );
     }

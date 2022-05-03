@@ -5,6 +5,22 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+There have been no new features in the Rolling Release since the latest Stable release.
+
+## Code Quality/Technical Changes
+
+There have been no technical changes in the Rolling Release since the latest Stable release.
+
+## Bug Fixes
+
+There have been no new bug fixes in the Rolling Release since the latest Stable release.
+
+---
+
+# AzuraCast 0.16.1 (Mar 03, 2022)
+
+## New Features/Changes
+
 - **Play Immediately**: From the Media Manager, you can now trigger selected songs to play _immediately_, which will
   interrupt any existing songs that are currently playing and play the specified audio instead.
 

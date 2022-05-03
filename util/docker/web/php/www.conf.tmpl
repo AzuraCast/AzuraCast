@@ -7,7 +7,10 @@ daemonize = no
 user = azuracast
 group = azuracast
 
-listen = 127.0.0.1:9000
+listen = /var/run/php-fpm-www.sock
+listen.owner = azuracast
+listen.group = www-data
+listen.mode = 0660
 
 pm = ondemand
 pm.max_children = {{ default .Env.PHP_FPM_MAX_CHILDREN "20" }}
@@ -32,7 +35,10 @@ process.dumpable = yes
 user = azuracast
 group = azuracast
 
-listen = 127.0.0.1:9005
+listen = /var/run/php-fpm-internal.sock
+listen.owner = azuracast
+listen.group = www-data
+listen.mode = 0660
 
 pm = ondemand
 pm.max_children = 10

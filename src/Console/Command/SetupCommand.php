@@ -59,7 +59,7 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:station-queues:clear');
 
         $restartArgs = [];
-        if ($this->environment->isDockerStandalone()) {
+        if ($this->environment->isDocker()) {
             $restartArgs['--no-supervisor-restart'] = true;
         }
 

@@ -33,9 +33,6 @@ class Environment
 
     public const ASSET_URL = 'ASSETS_URL';
 
-    public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
-    public const DOCKER_IS_STANDALONE = 'DOCKER_IS_STANDALONE';
-
     public const LANG = 'LANG';
 
     public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
@@ -209,42 +206,14 @@ class Environment
         return $this->getParentDirectory() . '/stations';
     }
 
-    public function isDockerRevisionAtLeast(int $version): bool
-    {
-        if (!$this->isDocker()) {
-            return false;
-        }
-
-        $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
-        return ($compareVersion >= $version);
-    }
-
-    public function isDockerStandalone(): bool
-    {
-        if (!$this->isDocker()) {
-            return false;
-        }
-
-        return self::envToBool($this->data[self::DOCKER_IS_STANDALONE] ?? false);
-    }
-
     public function getUriToWeb(): UriInterface
     {
-        return match (true) {
-            $this->isDockerStandalone() => new Uri('http://127.0.0.1:9010'),
-            $this->isDockerRevisionAtLeast(5) => new Uri('http://web'),
-            $this->isDocker() => new Uri('http://nginx'),
-            default => new Uri('http://127.0.0.1')
-        };
+        return new Uri('http://127.0.0.1:9010');
     }
 
     public function getUriToStations(): UriInterface
     {
-        return match (true) {
-            $this->isDockerStandalone() => new Uri('http://127.0.0.1'),
-            $this->isDocker() => new Uri('http://stations'),
-            default => new Uri('http://127.0.0.1'),
-        };
+        return new Uri('http://127.0.0.1');
     }
 
     public function getLang(): ?string
@@ -317,14 +286,8 @@ class Environment
      */
     public function getDatabaseSettings(): array
     {
-        $defaultHost = match (true) {
-            $this->isDockerStandalone() => 'localhost',
-            $this->isDocker() => 'mariadb',
-            default => 'localhost'
-        };
-
         return [
-            'host' => $this->data[self::DB_HOST] ?? $defaultHost,
+            'host' => $this->data[self::DB_HOST] ?? 'localhost',
             'port' => (int)($this->data[self::DB_PORT] ?? 3306),
             'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
             'user' => $this->data[self::DB_USER] ?? 'azuracast',
@@ -342,14 +305,8 @@ class Environment
      */
     public function getRedisSettings(): array
     {
-        $defaultHost = match (true) {
-            $this->isDockerStandalone() => 'localhost',
-            $this->isDocker() => 'redis',
-            default => 'localhost'
-        };
-
         return [
-            'host' => $this->data[self::REDIS_HOST] ?? $defaultHost,
+            'host' => $this->data[self::REDIS_HOST] ?? 'localhost',
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
@@ -375,7 +332,6 @@ class Environment
         return new self([
             self::IS_CLI => $existingEnv->isCli(),
             self::IS_DOCKER => $existingEnv->isDocker(),
-            self::DOCKER_IS_STANDALONE => $existingEnv->isDockerStandalone(),
         ]);
     }
 

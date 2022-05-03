@@ -12,8 +12,7 @@ class SftpGo
     public static function isSupported(): bool
     {
         $environment = Environment::getInstance();
-
-        return !$environment->isTesting() && $environment->isDockerRevisionAtLeast(7);
+        return !$environment->isTesting() && $environment->isDocker();
     }
 
     public static function isSupportedForStation(Station $station): bool

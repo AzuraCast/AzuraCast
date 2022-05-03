@@ -157,7 +157,7 @@ class InstallCommand extends Command
         }
 
         // Special fixes for transitioning to standalone installations.
-        if ($this->environment->isDockerStandalone()) {
+        if ($this->environment->isDocker()) {
             if ('mariadb' === $azuracastEnv['MYSQL_HOST']) {
                 unset($azuracastEnv['MYSQL_HOST']);
             }
@@ -304,8 +304,6 @@ class InstallCommand extends Command
         $sampleFile = $this->environment->getBaseDirectory() . '/docker-compose.sample.yml';
         $yaml = Yaml::parseFile($sampleFile);
 
-        $isStandalone = $this->environment->isDockerStandalone();
-
         // Parse port listing and convert into YAML format.
         $ports = $env['AZURACAST_STATION_PORTS'] ?? '';
 
@@ -333,18 +331,14 @@ class InstallCommand extends Command
             }
 
             if (!empty($yamlPorts)) {
-                if ($isStandalone) {
-                    $existingPorts = [];
-                    foreach ($yaml['services']['web']['ports'] as $port) {
-                        if (str_starts_with($port, '$')) {
-                            $existingPorts[] = $port;
-                        }
+                $existingPorts = [];
+                foreach ($yaml['services']['web']['ports'] as $port) {
+                    if (str_starts_with($port, '$')) {
+                        $existingPorts[] = $port;
                     }
-
-                    $yaml['services']['web']['ports'] = array_merge($existingPorts, $yamlPorts);
-                } else {
-                    $yaml['services']['stations']['ports'] = $yamlPorts;
                 }
+
+                $yaml['services']['web']['ports'] = array_merge($existingPorts, $yamlPorts);
             }
             if (!empty($nginxRadioPorts)) {
                 $nginxRadioPortsStr = '(' . implode('|', $nginxRadioPorts) . ')';
@@ -357,17 +351,9 @@ class InstallCommand extends Command
         }
 
         // Add plugin mode if it's selected.
-        if ($isStandalone && $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)) {
+        if ($azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)) {
             $yaml['services']['web']['volumes'][] = 'www_vendor:/var/azuracast/www/vendor';
             $yaml['volumes']['www_vendor'] = [];
-        }
-
-        // Remove Redis if it's not enabled.
-        if (!$isStandalone) {
-            $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
-            if (!$enableRedis) {
-                unset($yaml['services']['redis']);
-            }
         }
 
         // Remove privileged-mode settings if not enabled.

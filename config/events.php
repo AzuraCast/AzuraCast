@@ -154,10 +154,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
     );
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
-        App\Notification\Check\ComposeVersionCheck::class
-    );
-    $dispatcher->addCallableListener(
-        Event\GetNotifications::class,
         App\Notification\Check\UpdateCheck::class
     );
     $dispatcher->addCallableListener(

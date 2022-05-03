@@ -17,7 +17,7 @@ There have been no new bug fixes in the Rolling Release since the latest Stable 
 
 ---
 
-# AzuraCast 0.16.1 (Mar 03, 2022)
+# AzuraCast 0.16.1 (May 03, 2022)
 
 ## New Features/Changes
 

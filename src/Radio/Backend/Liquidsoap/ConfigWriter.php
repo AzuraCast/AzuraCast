@@ -109,7 +109,7 @@ class ConfigWriter implements EventSubscriberInterface
         $configDir = $station->getRadioConfigDir();
         $pidfile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.pid';
 
-        $telnetPort = $this->liquidsoap->getTelnetPort($station);
+        $socketFile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.sock';
 
         $stationTz = self::cleanUpString($station->getTimezone());
 
@@ -123,9 +123,9 @@ class ConfigWriter implements EventSubscriberInterface
             
             settings.server.log.level.set(4)
             
-            settings.server.telnet.set(true)
-            settings.server.telnet.bind_addr.set("127.0.0.1")
-            settings.server.telnet.port.set(${telnetPort})
+            settings.server.socket.set(true)
+            settings.server.socket.permissions.set(0o660)
+            settings.server.socket.path.set("${socketFile}")
             
             settings.harbor.bind_addrs.set(["0.0.0.0"])
             

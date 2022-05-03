@@ -58,19 +58,6 @@ class Liquidsoap extends AbstractBackend
     }
 
     /**
-     * Returns the internal port used to relay requests and other changes from AzuraCast to LiquidSoap.
-     *
-     * @param Entity\Station $station
-     *
-     * @return int The port number to use for this station.
-     */
-    public function getTelnetPort(Entity\Station $station): int
-    {
-        $settings = $station->getBackendConfig();
-        return $settings->getTelnetPort() ?? ($this->getStreamPort($station) - 1);
-    }
-
-    /**
      * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
      *
      * @param Entity\Station $station
@@ -175,12 +162,10 @@ class Liquidsoap extends AbstractBackend
      */
     public function command(Entity\Station $station, string $command_str): array
     {
-        $uri = $this->environment->getUriToStations()
-            ->withScheme('tcp')
-            ->withPort($this->getTelnetPort($station));
+        $socketPath = 'unix://' . $station->getRadioConfigDir() . '/liquidsoap.sock';
 
         $fp = stream_socket_client(
-            (string)$uri,
+            $socketPath,
             $errno,
             $errstr,
             20

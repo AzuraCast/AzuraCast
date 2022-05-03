@@ -29,7 +29,7 @@
       when: update_revision|int < 63
 
     - role: "nginx"
-      when: update_revision|int < 75
+      when: update_revision|int < 78
 
     - role: "redis"
       when: update_revision|int < 57
@@ -38,7 +38,7 @@
       when: update_revision|int < 67
 
     - role: "php"
-      when: update_revision|int < 68
+      when: update_revision|int < 78
 
     - role: "composer"
 

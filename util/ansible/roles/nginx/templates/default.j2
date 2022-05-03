@@ -1,4 +1,11 @@
-{% if ansible_distribution_release != 'xenial' %}
+upstream php-fpm-internal {
+    server unix:/var/run/php-fpm-internal.sock;
+}
+
+upstream php-fpm-www {
+    server unix:/var/run/php-fpm-www.sock;
+}
+
 upstream redis_server {
     nchan_redis_server "redis://localhost:6379";
 }
@@ -16,8 +23,31 @@ server {
         nchan_message_buffer_length 1;
         nchan_message_timeout 16s;
     }
+
+    # Default clean URL routing
+    location / {
+        try_files $uri @clean_url;
+    }
+
+    location @clean_url {
+        rewrite ^(.*)$ /index.php last;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+        fastcgi_pass php-fpm-internal;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        include fastcgi_params;
+
+        fastcgi_read_timeout 600;
+        fastcgi_buffering off;
+
+        internal;
+    }
 }
-{% endif %}
 
 server {
     listen 80;
@@ -121,7 +151,6 @@ server {
         proxy_set_header Connection "Upgrade";
     }
 
-    {% if ansible_distribution_release != 'xenial' %}
     # pub/sub endpoints
     location ~ /api/live/nowplaying/([^\/]+)$ {
         nchan_subscriber;
@@ -133,7 +162,6 @@ server {
 
         nchan_subscriber_first_message -1;
     }
-    {% endif %}
 
     # deny access to .htaccess files, if Apache's document root
     # concurs with nginx's one

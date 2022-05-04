@@ -9,16 +9,9 @@
 ;  - Comments must have a leading space: "a=b ;comment" not "a=b;comment".
 
 [unix_http_server]
-file=/tmp/supervisor.sock   ; (the path to the socket file)
-;chmod=0700                  ; socket file mode (default 0700)
-;chown=azuracast:azuracast   ; socket file uid:gid owner
-;username=user              ; (default is no username (open server))
-;password=123               ; (default is no password (open server))
-
-[inet_http_server]         ; inet (TCP) server disabled by default
-port=127.0.0.1:9001        ; (ip_address:port specifier, *:port for all iface)
-;username=user              ; (default is no username (open server))
-;password=123               ; (default is no password (open server))
+file = /var/run/supervisor.sock
+chmod = 0666
+chown=azuracast:azuracast
 
 [supervisord]
 logfile={{ tmp_base }}/supervisord.log ; (main log file;default $CWD/supervisord.log)

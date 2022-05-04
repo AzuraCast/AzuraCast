@@ -23,7 +23,7 @@
       when: update_revision|int < 77
 
     - role: "supervisord"
-      when: update_revision|int < 13
+      when: update_revision|int < 79
 
     - role: "mariadb"
       when: update_revision|int < 63

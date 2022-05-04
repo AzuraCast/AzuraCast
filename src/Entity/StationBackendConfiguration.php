@@ -125,11 +125,11 @@ class StationBackendConfiguration extends ArrayCollection
         $this->set(self::DJ_MOUNT_POINT, $mountPoint);
     }
 
-    public const AUDIO_PROCESSING_METHOD = 'none';
+    public const AUDIO_PROCESSING_METHOD = 'audio_processing_method';
 
     public function getAudioProcessingMethod(): ?string
     {
-        return $this->get(self::AUDIO_PROCESSING_METHOD);
+        return $this->get(self::AUDIO_PROCESSING_METHOD ?? AudioProcessingMethods::None);
     }
 
     public function setAudioProcessingMethod(?string $method): void

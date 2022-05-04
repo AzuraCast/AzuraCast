@@ -867,7 +867,7 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         // NRJ normalization
-        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::Liquidsoap) {
+        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::Liquidsoap->getValue()) {
             $event->appendBlock(
                 <<<EOF
                 # Normalization and Compression
@@ -880,11 +880,11 @@ class ConfigWriter implements EventSubscriberInterface
         // Stereo Tool processing
         //
 //        radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q -k "<3faxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxee>"', radio)
-        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::StereoTool) {
+        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::StereoTool->getValue()) {
             $event->appendBlock(
                 <<<EOF
                 # Stereo Tool Pipe
-                radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q', radio)
+                radio = pipe(process='/usr/bin/stereo_tool - - -s /var/azuracast/audio.sts -q', radio)
                 EOF
             );
         }

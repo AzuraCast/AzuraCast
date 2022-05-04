@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Enums\StationBackendPerformanceModes;
+use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
@@ -124,16 +125,24 @@ class StationBackendConfiguration extends ArrayCollection
         $this->set(self::DJ_MOUNT_POINT, $mountPoint);
     }
 
-    public const USE_NORMALIZER = 'nrj';
+    public const AUDIO_PROCESSING_METHOD = 'none';
 
-    public function useNormalizer(): bool
+    public function getAudioProcessingMethod(): ?string
     {
-        return $this->get(self::USE_NORMALIZER) ?? false;
+        return $this->get(self::AUDIO_PROCESSING_METHOD);
     }
 
-    public function setUseNormalizer(?bool $useNormalizer): void
+    public function setAudioProcessingMethod(?string $method): void
     {
-        $this->set(self::USE_NORMALIZER, $useNormalizer);
+        if (null !== $method) {
+            $method = strtolower($method);
+        }
+
+        if (null !== $method && null === AudioProcessingMethods::tryFrom($method)) {
+            throw new \InvalidArgumentException('Invalid audio processing method specified.');
+        }
+
+        $this->set(self::AUDIO_PROCESSING_METHOD, $method);
     }
 
     public const USE_REPLAYGAIN = 'enable_replaygain_metadata';

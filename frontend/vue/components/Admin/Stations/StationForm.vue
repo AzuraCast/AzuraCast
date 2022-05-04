@@ -35,7 +35,7 @@
 <script>
 import {validationMixin} from "vuelidate";
 import {decimal, numeric, required, url} from 'vuelidate/dist/validators.min.js';
-import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
 import AdminStationsBackendForm from "./Form/BackendForm";
@@ -108,7 +108,8 @@ export default {
                 backend_config: {
                     crossfade_type: {},
                     crossfade: {decimal},
-                    nrj: {},
+                    audio_processing_method: {},
+                    stereo_tool_license_key: {},
                     record_streams: {},
                     record_streams_format: {},
                     record_streams_bitrate: {},
@@ -258,7 +259,8 @@ export default {
                 backend_config: {
                     crossfade_type: 'normal',
                     crossfade: 2,
-                    nrj: false,
+                    audio_processing_method: AUDIO_PROCESSING_NONE,
+                    stereo_tool_license_key: '',
                     record_streams: false,
                     record_streams_format: 'mp3',
                     record_streams_bitrate: 128,

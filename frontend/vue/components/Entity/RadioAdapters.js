@@ -5,6 +5,10 @@ export const FRONTEND_REMOTE = 'remote';
 export const BACKEND_LIQUIDSOAP = 'liquidsoap';
 export const BACKEND_NONE = 'none';
 
+export const AUDIO_PROCESSING_LIQUIDSOAP = 'nrj';
+export const AUDIO_PROCESSING_STEREO_TOOL = 'stereo_tool';
+export const AUDIO_PROCESSING_NONE = 'none';
+
 export const REMOTE_SHOUTCAST1 = 'shoutcast1';
 export const REMOTE_SHOUTCAST2 = 'shoutcast2';
 export const REMOTE_ICECAST = 'icecast';

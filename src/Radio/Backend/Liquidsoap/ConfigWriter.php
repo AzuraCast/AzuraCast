@@ -8,6 +8,7 @@ use App\Entity;
 use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
+use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
@@ -866,12 +867,24 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         // NRJ normalization
-        if ($settings->useNormalizer()) {
+        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::Liquidsoap) {
             $event->appendBlock(
                 <<<EOF
                 # Normalization and Compression
                 radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
                 radio = compress.exponential(radio, mu = 1.0)
+                EOF
+            );
+        }
+
+        // Stereo Tool processing
+        //
+//        radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q -k "<3faxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxee>"', radio)
+        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::StereoTool) {
+            $event->appendBlock(
+                <<<EOF
+                # Stereo Tool Pipe
+                radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q', radio)
                 EOF
             );
         }

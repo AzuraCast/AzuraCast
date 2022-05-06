@@ -39,7 +39,7 @@ class BackupCommand extends CommandAbstract
     protected function configure(): void
     {
         $this->addArgument('path', InputArgument::REQUIRED)
-            ->addOption('storage-location-id', null, InputOption::VALUE_OPTIONAL, '', '')
+            ->addOption('storage-location-id', null, InputOption::VALUE_OPTIONAL)
             ->addOption('exclude-media', null, InputOption::VALUE_NONE);
     }
 

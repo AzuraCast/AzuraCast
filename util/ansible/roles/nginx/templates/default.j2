@@ -13,6 +13,9 @@ upstream redis_server {
 server {
     listen 127.0.0.1:9010;
 
+    root {{ app_base }}/www/web;
+    index index.php;
+
     location ~ /pub/([^\/]+)$ {
         nchan_publisher;
         nchan_redis_pass redis_server;
@@ -106,17 +109,20 @@ server {
         expires 365d;
     }
 
-    location ~ \.php$ {
+    location ~ ^/index\.php(/|$) {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
 
         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass php-fpm-www;
         fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME {{ app_base }}/www/web$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
         include fastcgi_params;
 
         fastcgi_read_timeout 1800;
         fastcgi_buffering off;
+
+        internal;
     }
 
     # Reverse proxy all possible radio listening ports (8000, 8010...8480, 8490)

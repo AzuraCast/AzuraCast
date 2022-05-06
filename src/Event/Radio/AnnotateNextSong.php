@@ -97,6 +97,18 @@ class AnnotateNextSong extends Event
         return $this->songPath;
     }
 
+    public static function fromStationMedia(
+        Entity\Station $station,
+        Entity\StationMedia $media,
+        bool $asAutoDj = false
+    ): self {
+        return new self(
+            station: $station,
+            media: $media,
+            asAutoDj: $asAutoDj
+        );
+    }
+
     public static function fromStationQueue(
         Entity\StationQueue $queue,
         bool $asAutoDj = false

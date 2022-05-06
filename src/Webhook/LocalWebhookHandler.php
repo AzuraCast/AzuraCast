@@ -6,7 +6,6 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Environment;
-use App\Service\NChan;
 use GuzzleHttp\Client;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
@@ -69,15 +68,13 @@ class LocalWebhookHandler
         );
 
         // Send Nchan notification.
-        if (NChan::isSupported()) {
-            $this->logger->debug('Dispatching Nchan notification...');
+        $this->logger->debug('Dispatching Nchan notification...');
 
-            $this->httpClient->post(
-                'http://localhost:9010/pub/' . urlencode($station->getShortName()),
-                [
-                    'json' => $np,
-                ]
-            );
-        }
+        $this->httpClient->post(
+            'http://localhost:9010/pub/' . urlencode($station->getShortName()),
+            [
+                'json' => $np,
+            ]
+        );
     }
 }

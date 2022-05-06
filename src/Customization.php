@@ -9,7 +9,6 @@ use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
 use App\Http\ServerRequest;
-use App\Service\NChan;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Customization
@@ -184,10 +183,6 @@ class Customization
 
     public function useWebSocketsForNowPlaying(): bool
     {
-        if (!NChan::isSupported()) {
-            return false;
-        }
-
         return $this->settings->getEnableWebsockets();
     }
 

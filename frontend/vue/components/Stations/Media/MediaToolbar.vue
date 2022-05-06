@@ -53,6 +53,10 @@
                 <b-dropdown-item @click="doQueue" v-b-tooltip.hover :title="langQueue">
                     <translate key="lang_btn_queue">Queue</translate>
                 </b-dropdown-item>
+                <b-dropdown-item v-if="supportsImmediateQueue" @click="doImmediateQueue" v-b-tooltip.hover
+                                 :title="langImmediateQueue">
+                    <translate key="lang_btn_immediate_queue">Play Now</translate>
+                </b-dropdown-item>
                 <b-dropdown-item @click="doReprocess" v-b-tooltip.hover :title="langReprocess">
                     <translate key="lang_btn_reprocess">Reprocess</translate>
                 </b-dropdown-item>
@@ -83,7 +87,8 @@ export default {
         currentDirectory: String,
         selectedItems: Object,
         playlists: Array,
-        batchUrl: String
+        batchUrl: String,
+        supportsImmediateQueue: Boolean
     },
     data () {
         return {
@@ -110,36 +115,42 @@ export default {
         }
     },
     computed: {
-        langPlaylistDropdown () {
+        langPlaylistDropdown() {
             return this.$gettext('Set or clear playlists from the selected media');
         },
-        langNewPlaylist () {
+        langNewPlaylist() {
             return this.$gettext('New Playlist');
         },
-        langMore () {
+        langMore() {
             return this.$gettext('More');
         },
-        langQueue () {
+        langImmediateQueue() {
+            return this.$gettext('Make the selected media play immediately, interrupting existing media');
+        },
+        langQueue() {
             return this.$gettext('Queue the selected media to play next');
         },
-        langReprocess () {
+        langReprocess() {
             return this.$gettext('Analyze and reprocess the selected media');
         },
-        langErrors () {
+        langErrors() {
             return this.$gettext('The request could not be processed.');
         },
-        newPlaylistIsChecked () {
+        newPlaylistIsChecked() {
             return this.newPlaylist !== '';
         }
     },
     methods: {
-        doQueue (e) {
+        doImmediateQueue(e) {
+            this.doBatch('immediate', this.$gettext('Files played immediately:'));
+        },
+        doQueue(e) {
             this.doBatch('queue', this.$gettext('Files queued for playback:'));
         },
-        doReprocess (e) {
+        doReprocess(e) {
             this.doBatch('reprocess', this.$gettext('Files marked for reprocessing:'));
         },
-        doDelete (e) {
+        doDelete(e) {
             let buttonConfirmText = this.$gettext('Delete %{ num } media files?');
             let numFiles = this.selectedItems.all.length;
 

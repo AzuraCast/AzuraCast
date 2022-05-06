@@ -20,16 +20,16 @@
     - role: "azuracast-config"
 
     - role: "azuracast-radio"
-      when: update_revision|int < 76
+      when: update_revision|int < 77
 
     - role: "supervisord"
-      when: update_revision|int < 13
+      when: update_revision|int < 79
 
     - role: "mariadb"
       when: update_revision|int < 63
 
     - role: "nginx"
-      when: update_revision|int < 75
+      when: update_revision|int < 78
 
     - role: "redis"
       when: update_revision|int < 57
@@ -38,7 +38,7 @@
       when: update_revision|int < 67
 
     - role: "php"
-      when: update_revision|int < 68
+      when: update_revision|int < 78
 
     - role: "composer"
 

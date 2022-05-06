@@ -83,7 +83,7 @@ class StationQueueRepository extends Repository
          * This forces the use of indices at the expense of slightly more records being handled.
          */
         $baseQueryBuilder = $this->em->createQueryBuilder()
-            ->select('sq.timestamp_played, sq.playlist_id')
+            ->select('sq.timestamp_played, sq.is_visible, sq.playlist_id')
             ->from(Entity\StationQueue::class, 'sq')
             ->where('sq.station = :station')
             ->setParameter('station', $station)

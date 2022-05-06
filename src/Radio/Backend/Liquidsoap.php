@@ -7,6 +7,7 @@ namespace App\Radio\Backend;
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
+use App\Radio\Enums\LiquidsoapQueues;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
@@ -32,6 +33,11 @@ class Liquidsoap extends AbstractBackend
         return true;
     }
 
+    public function supportsImmediateQueue(): bool
+    {
+        return true;
+    }
+
     /**
      * @inheritDoc
      */
@@ -49,19 +55,6 @@ class Liquidsoap extends AbstractBackend
         $this->dispatcher->dispatch($event);
 
         return $event->buildConfiguration();
-    }
-
-    /**
-     * Returns the internal port used to relay requests and other changes from AzuraCast to LiquidSoap.
-     *
-     * @param Entity\Station $station
-     *
-     * @return int The port number to use for this station.
-     */
-    public function getTelnetPort(Entity\Station $station): int
-    {
-        $settings = $station->getBackendConfig();
-        return $settings->getTelnetPort() ?? ($this->getStreamPort($station) - 1);
     }
 
     /**
@@ -169,12 +162,10 @@ class Liquidsoap extends AbstractBackend
      */
     public function command(Entity\Station $station, string $command_str): array
     {
-        $uri = $this->environment->getUriToStations()
-            ->withScheme('tcp')
-            ->withPort($this->getTelnetPort($station));
+        $socketPath = 'unix://' . $station->getRadioConfigDir() . '/liquidsoap.sock';
 
         $fp = stream_socket_client(
-            (string)$uri,
+            $socketPath,
             $errno,
             $errstr,
             20
@@ -236,23 +227,28 @@ class Liquidsoap extends AbstractBackend
             : null;
     }
 
-    public function isQueueEmpty(Entity\Station $station): bool
-    {
-        $queue = $this->command(
+    public function isQueueEmpty(
+        Entity\Station $station,
+        LiquidsoapQueues $queue
+    ): bool {
+        $queueResult = $this->command(
             $station,
-            'requests.queue'
+            sprintf('%s.queue', $queue->value)
         );
-        return empty($queue[0]);
+        return empty($queueResult[0]);
     }
 
     /**
      * @return string[]
      */
-    public function enqueue(Entity\Station $station, string $music_file): array
-    {
+    public function enqueue(
+        Entity\Station $station,
+        LiquidsoapQueues $queue,
+        string $music_file
+    ): array {
         return $this->command(
             $station,
-            'requests.push ' . $music_file
+            sprintf('%s.push %s', $queue->value, $music_file)
         );
     }
 
@@ -263,7 +259,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            'requests_fallback.skip'
+            'interrupting_fallback.skip'
         );
     }
 

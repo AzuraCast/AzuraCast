@@ -1,4 +1,4 @@
-FROM library/node:16-alpine
+FROM library/node:18-alpine
 
 RUN apk update \
     && apk add bash python3 make curl g++ shadow git

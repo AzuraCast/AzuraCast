@@ -6,18 +6,23 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Event\Radio\AnnotateNextSong;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
 use App\MessageQueue\QueueManagerInterface;
+use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use App\Radio\Enums\BackendAdapters;
+use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
@@ -29,6 +34,8 @@ class BatchAction
         protected ReloadableEntityManagerInterface $em,
         protected MessageBus $messageBus,
         protected QueueManagerInterface $queueManager,
+        protected Adapters $adapters,
+        protected EventDispatcherInterface $eventDispatcher,
         protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
@@ -49,6 +56,7 @@ class BatchAction
             'playlist' => $this->doPlaylist($request, $station, $storageLocation, $fsMedia),
             'move' => $this->doMove($request, $station, $storageLocation, $fsMedia),
             'queue' => $this->doQueue($request, $station, $storageLocation, $fsMedia),
+            'immediate' => $this->doPlayImmediately($request, $station, $storageLocation, $fsMedia),
             'reprocess' => $this->doReprocess($request, $station, $storageLocation, $fsMedia),
             default => throw new InvalidArgumentException('Invalid batch action specified.')
         };
@@ -283,6 +291,67 @@ class BatchAction
                 }
 
                 $cuedTimestamp -= 10;
+            }
+        }
+
+        return $result;
+    }
+
+    public function doPlayImmediately(
+        ServerRequest $request,
+        Entity\Station $station,
+        Entity\StorageLocation $storageLocation,
+        ExtendedFilesystemInterface $fs
+    ): Entity\Api\BatchResult {
+        $result = $this->parseRequest($request, $fs, true);
+
+        if (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()) {
+            throw new \RuntimeException('This functionality can only be used on stations that use Liquidsoap.');
+        }
+
+        /** @var Liquidsoap $backend */
+        $backend = $this->adapters->getBackendAdapter($station);
+
+        if ($station->useManualAutoDJ()) {
+            foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
+                /** @var Entity\Station $station */
+                $station = $this->em->find(Entity\Station::class, $station->getIdRequired());
+
+                $event = AnnotateNextSong::fromStationMedia($station, $media, true);
+                $this->eventDispatcher->dispatch($event);
+
+                $backend->enqueue(
+                    $station,
+                    LiquidsoapQueues::Interrupting,
+                    $event->buildAnnotations()
+                );
+            }
+        } else {
+            $cuedTimestamp = time();
+
+            foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
+                try {
+                    /** @var Entity\Station $station */
+                    $station = $this->em->find(Entity\Station::class, $station->getIdRequired());
+
+                    $newQueue = Entity\StationQueue::fromMedia($station, $media);
+                    $newQueue->setTimestampCued($cuedTimestamp);
+                    $newQueue->setIsPlayed(true);
+                    $this->em->persist($newQueue);
+
+                    $event = AnnotateNextSong::fromStationQueue($newQueue, true);
+                    $this->eventDispatcher->dispatch($event);
+
+                    $backend->enqueue(
+                        $station,
+                        LiquidsoapQueues::Interrupting,
+                        $event->buildAnnotations()
+                    );
+                } catch (Throwable $e) {
+                    $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+                }
+
+                $cuedTimestamp += 10;
             }
         }
 

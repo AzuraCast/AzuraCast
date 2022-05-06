@@ -5,6 +5,7 @@
 
 use App\Environment;
 use App\Event;
+use App\Exception;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -483,15 +484,15 @@ return [
         Environment $environment,
         Psr\Log\LoggerInterface $logger
     ) {
-        $uri = $environment->getUriToStations()
-            ->withPort(9001)
-            ->withPath('/RPC2');
-
         $client = new fXmlRpc\Client(
-            (string)$uri,
+            'http://localhost/RPC2',
             new fXmlRpc\Transport\PsrTransport(
                 new Http\Factory\Guzzle\RequestFactory,
-                new GuzzleHttp\Client
+                new GuzzleHttp\Client([
+                    'curl' => [
+                        \CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
+                    ],
+                ])
             )
         );
 

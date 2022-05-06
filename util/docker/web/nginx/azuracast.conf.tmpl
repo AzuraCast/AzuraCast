@@ -1,3 +1,11 @@
+upstream php-fpm-internal {
+    server unix:/var/run/php-fpm-internal.sock;
+}
+
+upstream php-fpm-www {
+    server unix:/var/run/php-fpm-www.sock;
+}
+
 {{if isTrue .Env.REDIS_LOCAL }}
 upstream redis_server {
     nchan_redis_server "redis://localhost:6379";
@@ -25,7 +33,7 @@ server {
     location ~ ^/index\.php(/|$) {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
 
-        fastcgi_pass localhost:9005;
+        fastcgi_pass php-fpm-internal;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
@@ -127,7 +135,7 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
 
         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-        fastcgi_pass localhost:9000;
+        fastcgi_pass php-fpm-www;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;

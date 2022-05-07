@@ -9,11 +9,17 @@ There have been no new features in the Rolling Release since the latest Stable r
 
 ## Code Quality/Technical Changes
 
-There have been no technical changes in the Rolling Release since the latest Stable release.
+- Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP
+  to using Unix domain socket files. This not only reduces the number of used ports but improves performance.
+
+- Internal services using ports from 9000-9010 have been moved to use other ports or sockets; while our default port
+  allocation does not use these ports, many stations need to use ports in that range for legacy purposes, which should
+  once again be possible.
 
 ## Bug Fixes
 
-There have been no new bug fixes in the Rolling Release since the latest Stable release.
+- The library used to handle translations for the PHP side of the application has been switched, which should avoid many
+  of the errors being seen by users not able to see translations in some sections of the site.
 
 ---
 

@@ -71,7 +71,8 @@ class LocalWebhookHandler
         $this->logger->debug('Dispatching Nchan notification...');
 
         $this->httpClient->post(
-            'http://localhost:9010/pub/' . urlencode($station->getShortName()),
+            $this->environment->getInternalUri()
+                ->withPath('/pub/' . urlencode($station->getShortName())),
             [
                 'json' => $np,
             ]

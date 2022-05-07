@@ -86,7 +86,7 @@ return [
                     // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
                     1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
                 ],
-                'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
+                'platform' => new Doctrine\DBAL\Platforms\MariaDBPlatform(),
             ]
         );
 

@@ -313,11 +313,17 @@ class Environment
      */
     public function getRedisSettings(): array
     {
-        return [
+        $redisSettings = [
             'host' => $this->data[self::REDIS_HOST] ?? 'localhost',
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
+
+        if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
+            $redisSettings['socket'] = '/run/redis/redis.sock';
+        }
+
+        return $redisSettings;
     }
 
     public function isProfilingExtensionEnabled(): bool

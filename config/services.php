@@ -157,7 +157,11 @@ return [
         $settings = $environment->getRedisSettings();
 
         $redis = new Redis();
-        $redis->connect($settings['host'], $settings['port'], 15);
+        if (isset($settings['socket'])) {
+            $redis->connect($settings['socket']);
+        } else {
+            $redis->connect($settings['host'], $settings['port'], 15);
+        }
         $redis->select($settings['db']);
 
         return $redis;

@@ -110,7 +110,7 @@ abstract class AbstractEnvFile implements ArrayAccess
                     $keyInfo['options'],
                 );
 
-                $envFile[] = '# ' . __('Valid options: %s', implode(', ', $options));
+                $envFile[] = '# ' . sprintf(__('Valid options: %s'), implode(', ', $options));
             }
 
             if (isset($values[$key])) {
@@ -122,7 +122,7 @@ abstract class AbstractEnvFile implements ArrayAccess
 
             if (!empty($keyInfo['default'])) {
                 $default = $this->getEnvValue($keyInfo['default']);
-                $envFile[] = '# ' . __('Default: %s', $default);
+                $envFile[] = '# ' . sprintf(__('Default: %s'), $default);
             } else {
                 $default = '';
             }

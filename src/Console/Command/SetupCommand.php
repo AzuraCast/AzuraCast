@@ -87,7 +87,10 @@ class SetupCommand extends CommandAbstract
             $io->success(
                 [
                     __('AzuraCast installation complete!'),
-                    __('Visit %s to complete setup.', 'http://' . $public_ip),
+                    sprintf(
+                        __('Visit %s to complete setup.'),
+                        'http://' . $public_ip
+                    ),
                 ]
             );
         }

@@ -198,10 +198,10 @@ class InstallCommand extends Command
             );
             $io->listing(
                 [
-                    __('HTTP Port: %d', $env['AZURACAST_HTTP_PORT']),
-                    __('HTTPS Port: %d', $env['AZURACAST_HTTPS_PORT']),
-                    __('SFTP Port: %d', $env['AZURACAST_SFTP_PORT']),
-                    __('Radio Ports: %s', $env['AZURACAST_STATION_PORTS']),
+                    sprintf(__('HTTP Port: %d'), $env['AZURACAST_HTTP_PORT']),
+                    sprintf(__('HTTPS Port: %d'), $env['AZURACAST_HTTPS_PORT']),
+                    sprintf(__('SFTP Port: %d'), $env['AZURACAST_SFTP_PORT']),
+                    sprintf(__('Radio Ports: %s'), $env['AZURACAST_STATION_PORTS']),
                 ],
             );
 

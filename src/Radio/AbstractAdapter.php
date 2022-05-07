@@ -245,7 +245,10 @@ abstract class AbstractAdapter
         $class_name = array_pop($class_parts);
 
         if ($e instanceof Fault\BadNameException) {
-            $e_headline = __('%s is not recognized as a service.', $class_name);
+            $e_headline = sprintf(
+                __('%s is not recognized as a service.'),
+                $class_name
+            );
             $e_body = __('It may not be registered with Supervisor yet. Restarting broadcasting may help.');
 
             $app_e = new BadNameException(
@@ -254,7 +257,10 @@ abstract class AbstractAdapter
                 $e
             );
         } elseif ($e instanceof Fault\AlreadyStartedException) {
-            $e_headline = __('%s cannot start', $class_name);
+            $e_headline = sprintf(
+                __('%s cannot start'),
+                $class_name
+            );
             $e_body = __('It is already running.');
 
             $app_e = new AlreadyRunningException(
@@ -263,7 +269,10 @@ abstract class AbstractAdapter
                 $e
             );
         } elseif ($e instanceof Fault\NotRunningException) {
-            $e_headline = __('%s cannot stop', $class_name);
+            $e_headline = sprintf(
+                __('%s cannot stop'),
+                $class_name
+            );
             $e_body = __('It is not running.');
 
             $app_e = new NotRunningException(
@@ -272,7 +281,10 @@ abstract class AbstractAdapter
                 $e
             );
         } else {
-            $e_headline = __('%s encountered an error', $class_name);
+            $e_headline = sprintf(
+                __('%s encountered an error'),
+                $class_name
+            );
 
             // Get more detailed information for more significant errors.
             $process_log = $this->supervisor->tailProcessStdoutLog($program_name, 0, 500);

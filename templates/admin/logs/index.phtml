@@ -17,8 +17,12 @@ $this->layout('main', [
             </div>
             <div class="card-body">
                 <?php if ($environment->isDocker()): ?>
-                    <p><?=__('Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.',
-                            'docker-compose logs -f (nginx|web|stations|...)')?></p>
+                    <p><?= sprintf(
+                            __(
+                                'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.'
+                            ),
+                            'docker-compose logs -f (nginx|web|stations|...)'
+                        ) ?></p>
                 <?php endif; ?>
             </div>
             <div class="list-group list-group-flush">

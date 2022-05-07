@@ -121,9 +121,7 @@ class StationRequestRepository extends Repository
 
             if (count($recent_requests) > 0) {
                 throw new Exception(
-                    __(
-                        'You have submitted a request too recently! Please wait before submitting another one.'
-                    )
+                    __('You have submitted a request too recently! Please wait before submitting another one.')
                 );
             }
         }
@@ -247,9 +245,7 @@ class StationRequestRepository extends Repository
 
         if ($isDuplicate) {
             throw new Exception(
-                __(
-                    'This song or artist has been played too recently. Wait a while before requesting it again.'
-                )
+                __('This song or artist has been played too recently. Wait a while before requesting it again.')
             );
         }
 

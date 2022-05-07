@@ -11,6 +11,7 @@ use App\Http\ServerRequest;
 use Gettext\GettextTranslator;
 use Gettext\TranslatorFunctions;
 use Gettext\TranslatorInterface;
+use PhpMyAdmin\MoTranslator\Loader;
 use Psr\Http\Message\ServerRequestInterface;
 
 enum SupportedLocales: string
@@ -64,22 +65,14 @@ enum SupportedLocales: string
         return self::stripLocaleEncoding($this);
     }
 
-    public function createTranslator(Environment $environment): TranslatorInterface
-    {
-        $translator = new GettextTranslator();
-        $translator->setLanguage($this->value);
-        $translator->loadDomain('default', $environment->getBaseDirectory() . '/resources/locale');
-        return $translator;
-    }
-
     public function register(Environment $environment): void
     {
-        $translator = $this->createTranslator($environment);
+        $translator = Loader::getInstance();
+        $translator->setlocale($this->value);
+        $translator->textdomain('default');
+        $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/resources/locale');
 
-        TranslatorFunctions::register($translator);
-
-        // Register translation superglobal functions
-        setlocale(LC_ALL, $this->value);
+        Loader::loadFunctions();
     }
 
     public static function default(): self

@@ -43,7 +43,12 @@ class RestoreCommand extends AbstractBackupCommand
         }
 
         if (!file_exists($path)) {
-            $io->getErrorStyle()->error(__('Backup path %s not found!', $path));
+            $io->getErrorStyle()->error(
+                sprintf(
+                    __('Backup path %s not found!'),
+                    $path
+                )
+            );
             return 1;
         }
 

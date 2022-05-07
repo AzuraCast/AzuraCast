@@ -117,7 +117,7 @@ $assets
             foreach ($queue_totals as $queueType => $queueTotal): ?>
                 <div class="col">
                     <h5 class="mb-0"><?= $queueType ?></h5>
-                    <p><?= __('%d queued messages', $queueTotal) ?></p>
+                    <p><?= sprintf(__('%d queued messages'), $queueTotal) ?></p>
 
                     <div class="buttons">
                         <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(

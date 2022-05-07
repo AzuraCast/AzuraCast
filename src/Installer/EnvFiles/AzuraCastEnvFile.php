@@ -32,28 +32,22 @@ class AzuraCastEnvFile extends AbstractEnvFile
 
             $config = [
                 Environment::LANG                          => [
-                    'name'     => __(
-                        'The locale to use for CLI commands.',
-                    ),
-                    'options'  => $langOptions,
-                    'default'  => SupportedLocales::default()->getLocaleWithoutEncoding(),
+                    'name' => __('The locale to use for CLI commands.'),
+                    'options' => $langOptions,
+                    'default' => SupportedLocales::default()->getLocaleWithoutEncoding(),
                     'required' => true,
                 ],
                 Environment::APP_ENV                       => [
-                    'name'     => __(
-                        'The application environment.',
-                    ),
-                    'options'  => ApplicationEnvironment::toSelect(),
+                    'name' => __('The application environment.'),
+                    'options' => ApplicationEnvironment::toSelect(),
                     'required' => true,
                 ],
                 Environment::LOG_LEVEL                     => [
-                    'name'        => __(
-                        'Manually modify the logging level.',
-                    ),
+                    'name' => __('Manually modify the logging level.'),
                     'description' => __(
                         'This allows you to log debug-level errors temporarily (for problem-solving) or reduce the volume of logs that are produced by your installation, without needing to modify whether your installation is a production or development instance.'
                     ),
-                    'options'     => [
+                    'options' => [
                         LogLevel::DEBUG,
                         LogLevel::INFO,
                         LogLevel::NOTICE,
@@ -73,17 +67,13 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'default' => false,
                 ],
                 Environment::AUTO_ASSIGN_PORT_MIN          => [
-                    'name'        => __(
-                        'Minimum Port for Station Port Assignment'
-                    ),
+                    'name' => __('Minimum Port for Station Port Assignment'),
                     'description' => __(
                         'Modify this if your stations are listening on nonstandard ports.',
                     ),
                 ],
                 Environment::AUTO_ASSIGN_PORT_MAX          => [
-                    'name'        => __(
-                        'Maximum Port for Station Port Assignment'
-                    ),
+                    'name' => __('Maximum Port for Station Port Assignment'),
                     'description' => __(
                         'Modify this if your stations are listening on nonstandard ports.',
                     ),
@@ -206,9 +196,9 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'default' => 5,
                 ],
                 Environment::PROFILING_EXTENSION_ENABLED   => [
-                    'name'        => __('Enable Performance Profiling Extension'),
-                    'description' => __(
-                        'Profiling data can be viewed by visiting %s.',
+                    'name' => __('Enable Performance Profiling Extension'),
+                    'description' => sprintf(
+                        __('Profiling data can be viewed by visiting %s.'),
                         'http://your-azuracast-site/?SPX_KEY=dev&SPX_UI_URI=/',
                     ),
                 ],

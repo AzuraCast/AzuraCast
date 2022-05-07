@@ -155,8 +155,8 @@ class ImportAction extends AbstractPlaylistsAction
         return $response->withJson(
             new Entity\Api\StationPlaylistImportResult(
                 true,
-                __(
-                    'Playlist successfully imported; %d of %d files were successfully matched.',
+                sprintf(
+                    __('Playlist successfully imported; %d of %d files were successfully matched.'),
                     $foundPaths,
                     $totalPaths
                 ),

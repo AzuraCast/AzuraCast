@@ -54,7 +54,10 @@ class ImportCommand extends CommandAbstract
                 $moGenerator->generateFile($translations, $localeDest);
 
                 $io->writeln(
-                    __('Imported locale: %s', $supportedLocale->value . ' (' . $supportedLocale->getLocalName() . ')')
+                    sprintf(
+                        __('Imported locale: %s'),
+                        $supportedLocale->value . ' (' . $supportedLocale->getLocalName() . ')'
+                    )
                 );
             }
         }

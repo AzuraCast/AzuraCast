@@ -172,17 +172,16 @@ endif; ?>
 <footer id="footer" <?php
 if (empty($sidebar)): ?>class="footer-alt"<?php
 endif; ?> role="contentinfo">
-    <?=__(
-        'Powered by %s',
+    <?= sprintf(
+        __('Powered by %s'),
         '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName(
         ) . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . ($environment->isDocker(
         ) ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION
-    )?>
+    ) ?>
     <br>
-    <?=__(
-        'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>',
-        'https://docs.azuracast.com/en/contribute/donate'
-    )?>
+    <?= __('Like our software?') ?> <a href="https://docs.azuracast.com/en/contribute/donate"><?= __(
+            'Donate to support AzuraCast!'
+        ) ?></a>
 </footer>
 
 <div id="radio-player"></div>

@@ -39,7 +39,10 @@ class StationPortCheckerValidator extends ConstraintValidator
 
         $used_ports = $this->configuration->getUsedPorts($value);
 
-        $message = __('The port %s is in use by another station.', '{{ port }}');
+        $message = sprintf(
+            __('The port %s is in use by another station.'),
+            '{{ port }}'
+        );
 
         foreach ($ports_to_check as $port_path => $port) {
             if (null === $port) {

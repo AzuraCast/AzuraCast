@@ -236,7 +236,10 @@ class BackupCommand extends AbstractBackupCommand
 
         $io->success(
             [
-                __('Backup complete in %.2f seconds.', $time_diff),
+                sprintf(
+                    __('Backup complete in %.2f seconds.'),
+                    $time_diff
+                ),
             ]
         );
         return 0;

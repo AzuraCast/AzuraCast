@@ -34,8 +34,8 @@ class StorageLocationValidator extends ConstraintValidator
         try {
             $value->validate();
         } catch (Exception $e) {
-            $message = __(
-                'Storage location %s could not be validated: %s',
+            $message = sprintf(
+                __('Storage location %s could not be validated: %s'),
                 '{{ storageLocation }}',
                 '{{ error }}'
             );
@@ -65,8 +65,8 @@ class StorageLocationValidator extends ConstraintValidator
         /** @var Entity\StorageLocation $row */
         foreach ($qb->getQuery()->toIterable() as $row) {
             if ($row->getUri() === $storageLocationUri) {
-                $message = __(
-                    'Storage location %s already exists.',
+                $message = sprintf(
+                    __('Storage location %s already exists.'),
                     '{{ storageLocation }}',
                 );
 

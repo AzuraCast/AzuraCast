@@ -294,8 +294,8 @@ class ListAction
                         $row->playlists = (array)$foldersInDir[$row->path]['playlists'];
                     }
                 } elseif (isset($unprocessableMedia[$row->path])) {
-                    $row->text = __(
-                        'File Not Processed: %s',
+                    $row->text = sprintf(
+                        __('File Not Processed: %s'),
                         Utilities\Strings::truncateText($unprocessableMedia[$row->path])
                     );
                 } else {

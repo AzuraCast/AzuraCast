@@ -22,10 +22,9 @@ class Configuration
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
     public const PROTECTED_PORTS = [
-        9000, // PHP-FPM external
-        9001, // Supervisord
-        9005, // PHP-FPM internal
-        9010, // Nginx internal
+        3306, // MariaDB
+        6010, // Nginx internal
+        6379, // Redis
         8080, // Common debug port
         80,   // HTTP
         443,  // HTTPS

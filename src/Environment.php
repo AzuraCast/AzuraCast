@@ -206,12 +206,12 @@ class Environment
         return $this->getParentDirectory() . '/stations';
     }
 
-    public function getUriToWeb(): UriInterface
+    public function getInternalUri(): UriInterface
     {
-        return new Uri('http://127.0.0.1:9010');
+        return new Uri('http://127.0.0.1:6010');
     }
 
-    public function getUriToStations(): UriInterface
+    public function getLocalUri(): UriInterface
     {
         return new Uri('http://127.0.0.1');
     }
@@ -286,13 +286,21 @@ class Environment
      */
     public function getDatabaseSettings(): array
     {
-        return [
-            'host' => $this->data[self::DB_HOST] ?? 'localhost',
-            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
+        $dbSettings = [
             'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
             'user' => $this->data[self::DB_USER] ?? 'azuracast',
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
+
+        $host = $this->data[self::DB_HOST] ?? 'localhost';
+        if ('localhost' === $host) {
+            $dbSettings['unix_socket'] = '/run/mysqld/mysqld.sock';
+        } else {
+            $dbSettings['host'] = $host;
+            $dbSettings['port'] = (int)($this->data[self::DB_PORT] ?? 3306);
+        }
+
+        return $dbSettings;
     }
 
     public function enableRedis(): bool

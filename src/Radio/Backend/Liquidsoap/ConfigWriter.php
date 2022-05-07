@@ -148,7 +148,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
         $stationApiUrl = self::cleanUpString(
-            (string)$this->environment->getUriToWeb()
+            (string)$this->environment->getInternalUri()
                 ->withPath('/api/internal/' . $station->getId() . '/liquidsoap')
         );
 

@@ -54,7 +54,7 @@ class Shoutcast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        $baseUrl = $this->environment->getUriToStations()
+        $baseUrl = $this->environment->getLocalUri()
             ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);

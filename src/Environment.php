@@ -287,17 +287,15 @@ class Environment
     public function getDatabaseSettings(): array
     {
         $dbSettings = [
+            'host' => $this->data[self::DB_HOST] ?? 'localhost',
+            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
             'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
             'user' => $this->data[self::DB_USER] ?? 'azuracast',
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
 
-        $host = $this->data[self::DB_HOST] ?? 'localhost';
-        if ('localhost' === $host) {
+        if ('localhost' === $dbSettings['host']) {
             $dbSettings['unix_socket'] = '/run/mysqld/mysqld.sock';
-        } else {
-            $dbSettings['host'] = $host;
-            $dbSettings['port'] = (int)($this->data[self::DB_PORT] ?? 3306);
         }
 
         return $dbSettings;

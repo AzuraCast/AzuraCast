@@ -73,8 +73,13 @@ return [
         App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         Psr\EventDispatcher\EventDispatcherInterface $dispatcher
     ) {
+        $dbSettings = $environment->getDatabaseSettings();
+        if (isset($dbSettings['unix_socket'])) {
+            unset($dbSettings['host'], $dbSettings['port']);
+        }
+
         $connectionOptions = array_merge(
-            $environment->getDatabaseSettings(),
+            $dbSettings,
             [
                 'driver' => 'pdo_mysql',
                 'charset' => 'utf8mb4',

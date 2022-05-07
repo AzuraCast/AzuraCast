@@ -67,10 +67,13 @@ enum SupportedLocales: string
 
     public function register(Environment $environment): void
     {
-        $translator = Loader::getInstance();
-        $translator->setlocale($this->value);
-        $translator->textdomain('default');
-        $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/resources/locale');
+        // Skip translation file reading for default locale.
+        if ($this !== self::default()) {
+            $translator = Loader::getInstance();
+            $translator->setlocale($this->value);
+            $translator->textdomain('default');
+            $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/resources/locale');
+        }
 
         Loader::loadFunctions();
     }

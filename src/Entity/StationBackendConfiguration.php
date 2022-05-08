@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\Collections\ArrayCollection;
+use InvalidArgumentException;
 
 class StationBackendConfiguration extends ArrayCollection
 {
@@ -80,7 +81,7 @@ class StationBackendConfiguration extends ArrayCollection
         }
 
         if (null !== $format && null === StreamFormats::tryFrom($format)) {
-            throw new \InvalidArgumentException('Invalid recording type specified.');
+            throw new InvalidArgumentException('Invalid recording type specified.');
         }
 
         $this->set(self::RECORD_STREAMS_FORMAT, $format);

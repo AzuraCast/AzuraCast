@@ -253,9 +253,9 @@ class Assets
 
         $this->addInlineJs(
             <<<JS
-                let ${name};
+                let {$name};
                 $(function () {
-                    ${name} = ${nameWithoutPrefix}.default('${elementId}', ${propsJson});
+                    {$name} = {$nameWithoutPrefix}.default('{$elementId}', {$propsJson});
                 });
             JS
         );

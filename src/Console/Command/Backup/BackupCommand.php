@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Throwable;
 
 use const PATHINFO_EXTENSION;
 
@@ -101,7 +102,7 @@ class BackupCommand extends AbstractBackupCommand
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
         try {
             $fsUtils->mkdir($tmp_dir_mariadb);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $io->error($e->getMessage());
             return 1;
         }

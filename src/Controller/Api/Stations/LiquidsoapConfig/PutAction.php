@@ -13,6 +13,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class PutAction
 {
@@ -45,7 +46,7 @@ class PutAction
 
             $config = $event->buildConfiguration();
             $liquidsoap->verifyConfig($config);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withStatus(500)->withJson(Entity\Api\Error::fromException($e));
         }
 

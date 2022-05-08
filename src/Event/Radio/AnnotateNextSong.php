@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Event\Radio;
 
 use App\Entity;
+use RuntimeException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -80,7 +81,7 @@ class AnnotateNextSong extends Event
     public function buildAnnotations(): string
     {
         if (empty($this->songPath)) {
-            throw new \RuntimeException('No valid path for song.');
+            throw new RuntimeException('No valid path for song.');
         }
 
         $this->annotations = array_filter($this->annotations);

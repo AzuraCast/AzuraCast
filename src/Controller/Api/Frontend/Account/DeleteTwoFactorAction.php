@@ -17,7 +17,7 @@ class DeleteTwoFactorAction extends UsersController
         $user = $request->getUser();
         $user = $this->em->refetch($user);
 
-        $user->setTwoFactorSecret(null);
+        $user->setTwoFactorSecret();
         $this->em->persist($user);
         $this->em->flush();
 

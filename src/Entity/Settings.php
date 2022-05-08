@@ -12,6 +12,7 @@ use App\Service\Avatar;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
@@ -245,7 +246,7 @@ class Settings implements Stringable
     public function setAnalytics(?string $analytics): void
     {
         if (null !== $analytics && null === Entity\Enums\AnalyticsLevel::tryFrom($analytics)) {
-            throw new \InvalidArgumentException('Invalid analytics level.');
+            throw new InvalidArgumentException('Invalid analytics level.');
         }
 
         $this->analytics = $analytics;
@@ -337,7 +338,7 @@ class Settings implements Stringable
     public function setPublicTheme(?string $publicTheme): void
     {
         if (null !== $publicTheme && null === SupportedThemes::tryFrom($publicTheme)) {
-            throw new \InvalidArgumentException('Unsupported theme specified.');
+            throw new InvalidArgumentException('Unsupported theme specified.');
         }
 
         $this->public_theme = $publicTheme;

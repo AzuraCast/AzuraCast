@@ -19,6 +19,7 @@ use App\Session\Flash;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
 use Carbon\CarbonImmutable;
 use Cron\CronExpression;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -55,7 +56,7 @@ class DebugController extends AbstractLogViewerController
         }
 
         $syncTimes = [];
-        $now = CarbonImmutable::now(new \DateTimeZone('UTC'));
+        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
         $syncTasksEvent = new GetSyncTasks();
         $dispatcher->dispatch($syncTasksEvent);
 

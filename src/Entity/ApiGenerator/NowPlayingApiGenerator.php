@@ -126,11 +126,7 @@ class NowPlayingApiGenerator
         ?UriInterface $baseUri = null
     ): Entity\Api\NowPlaying\NowPlaying {
         $np = $station->getNowplaying();
-        if (null !== $np) {
-            return $np;
-        }
-
-        return $this->offlineApi($station, $baseUri);
+        return $np ?? $this->offlineApi($station, $baseUri);
     }
 
     protected function offlineApi(

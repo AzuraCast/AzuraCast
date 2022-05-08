@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand(
     name: 'azuracast:radio:restart',
@@ -73,7 +74,7 @@ class RestartRadioCommand extends CommandAbstract
                     reloadSupervisor: !$noSupervisorRestart,
                     forceRestart: true
                 );
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $io->error([
                     $station . ': ' . $e->getMessage(),
                 ]);

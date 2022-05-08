@@ -333,7 +333,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
     /**
      * @inheritDoc
      */
-    protected function viewRecord(object $record, ServerRequest $request): mixed
+    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\PodcastEpisode
     {
         if (!($record instanceof Entity\PodcastEpisode)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

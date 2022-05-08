@@ -13,6 +13,7 @@ use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -251,7 +252,7 @@ class StationPlaylist implements
     public function setType(string $type): void
     {
         if (null === PlaylistTypes::tryFrom($type)) {
-            throw new \InvalidArgumentException('Invalid playlist type.');
+            throw new InvalidArgumentException('Invalid playlist type.');
         }
 
         $this->type = $type;
@@ -270,7 +271,7 @@ class StationPlaylist implements
     public function setSource(string $source): void
     {
         if (null === PlaylistSources::tryFrom($source)) {
-            throw new \InvalidArgumentException('Invalid playlist source.');
+            throw new InvalidArgumentException('Invalid playlist source.');
         }
 
         $this->source = $source;
@@ -289,7 +290,7 @@ class StationPlaylist implements
     public function setOrder(string $order): void
     {
         if (null === PlaylistOrders::tryFrom($order)) {
-            throw new \InvalidArgumentException('Invalid playlist order.');
+            throw new InvalidArgumentException('Invalid playlist order.');
         }
 
         $this->order = $order;
@@ -318,7 +319,7 @@ class StationPlaylist implements
     public function setRemoteType(?string $remote_type): void
     {
         if (null !== $remote_type && null === PlaylistRemoteTypes::tryFrom($remote_type)) {
-            throw new \InvalidArgumentException('Invalid playlist remote type.');
+            throw new InvalidArgumentException('Invalid playlist remote type.');
         }
 
         $this->remote_type = $remote_type;

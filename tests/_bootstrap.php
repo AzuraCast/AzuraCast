@@ -5,12 +5,8 @@ $autoloader->addClassMap([
     'Functional\CestAbstract' => __DIR__ . '/Functional/CestAbstract.php',
 ]);
 
-\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
-
-$GLOBALS['autoloader'] = $autoloader;
-
 if (!function_exists('__')) {
-    \PhpMyAdmin\MoTranslator\Loader::loadFunctions();
+    PhpMyAdmin\MoTranslator\Loader::loadFunctions();
 }
 
 // Clear output directory

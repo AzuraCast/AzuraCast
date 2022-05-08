@@ -11,6 +11,7 @@ use App\Http\ServerRequest;
 use Gettext\GettextTranslator;
 use Gettext\TranslatorFunctions;
 use Gettext\TranslatorInterface;
+use Locale;
 use PhpMyAdmin\MoTranslator\Loader;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -124,7 +125,7 @@ enum SupportedLocales: string
         }
 
         $server_params = $request->getServerParams();
-        $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? '');
+        $browser_locale = Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? '');
 
         if (!empty($browser_locale)) {
             if (2 === strlen($browser_locale)) {

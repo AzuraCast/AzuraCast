@@ -179,7 +179,7 @@ class RemotesController extends AbstractStationApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    protected function viewRecord(object $record, ServerRequest $request): mixed
+    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\StationRemote
     {
         if (!($record instanceof Entity\StationRemote)) {
             throw new InvalidArgumentException(

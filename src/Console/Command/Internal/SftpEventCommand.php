@@ -65,7 +65,7 @@ class SftpEventCommand extends CommandAbstract
         $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
 
         if (!$storageLocation->isLocal()) {
-            $this->logger->error(sprintf('Storage location "%s" is not local.', (string)$storageLocation));
+            $this->logger->error(sprintf('Storage location "%s" is not local.', $storageLocation));
             return 1;
         }
 

@@ -8,6 +8,7 @@ use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Radio\Enums\LiquidsoapQueues;
+use LogicException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
@@ -329,7 +330,7 @@ class Liquidsoap extends AbstractBackend
         $process->run();
 
         if (1 === $process->getExitCode()) {
-            throw new \LogicException($process->getOutput());
+            throw new LogicException($process->getOutput());
         }
     }
 }

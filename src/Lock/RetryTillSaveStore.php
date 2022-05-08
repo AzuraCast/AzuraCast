@@ -19,6 +19,8 @@ use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\Lock\Key;
 use Symfony\Component\Lock\PersistingStoreInterface;
 
+use const PHP_INT_MAX;
+
 /**
  * Copied from Symfony 5.x as it was deprecated in 6.x with no suitable replacement.
  *
@@ -38,7 +40,7 @@ final class RetryTillSaveStore implements BlockingStoreInterface, LoggerAwareInt
     public function __construct(
         private PersistingStoreInterface $decorated,
         private int $retrySleep = 100,
-        private int $retryCount = \PHP_INT_MAX
+        private int $retryCount = PHP_INT_MAX
     ) {
         $this->logger = new NullLogger();
     }
@@ -68,12 +70,10 @@ final class RetryTillSaveStore implements BlockingStoreInterface, LoggerAwareInt
             }
         } while (++$retry < $this->retryCount);
 
-        if (null !== $this->logger) {
-            $this->logger->warning(
-                'Failed to store the "{resource}" lock. Abort after {retry} retry.',
-                ['resource' => $key, 'retry' => $retry]
-            );
-        }
+        $this->logger?->warning(
+            'Failed to store the "{resource}" lock. Abort after {retry} retry.',
+            ['resource' => $key, 'retry' => $retry]
+        );
 
         throw new LockConflictedException();
     }

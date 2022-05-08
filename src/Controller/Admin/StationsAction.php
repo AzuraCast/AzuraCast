@@ -28,9 +28,9 @@ class StationsAction
             props: array_merge(
                 $stationFormComponent->getProps($request),
                 [
-                    'listUrl'       => (string)$router->fromHere('api:admin:stations'),
-                    'frontendTypes' => $adapters->listFrontendAdapters(false),
-                    'backendTypes'  => $adapters->listBackendAdapters(false),
+                    'listUrl' => (string)$router->fromHere('api:admin:stations'),
+                    'frontendTypes' => $adapters->listFrontendAdapters(),
+                    'backendTypes' => $adapters->listBackendAdapters(),
                 ]
             )
         );

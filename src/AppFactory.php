@@ -8,10 +8,8 @@ use App\Console\Application;
 use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
-use Composer\Autoload\ClassLoader;
 use DI;
 use DI\Bridge\Slim\ControllerInvoker;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Invoker\Invoker;
 use Invoker\ParameterResolver\AssociativeArrayResolver;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
@@ -31,33 +29,19 @@ use const E_USER_ERROR;
 
 class AppFactory
 {
-    /**
-     * @param ClassLoader|null $autoloader
-     * @param array<string, mixed> $appEnvironment
-     * @param array<string, mixed> $diDefinitions
-     *
-     */
     public static function createApp(
-        ?ClassLoader $autoloader = null,
         array $appEnvironment = [],
         array $diDefinitions = []
     ): App {
-        $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
+        $di = self::buildContainer($appEnvironment, $diDefinitions);
         return self::buildAppFromContainer($di);
     }
 
-    /**
-     * @param ClassLoader|null $autoloader
-     * @param array<string, mixed> $appEnvironment
-     * @param array<string, mixed> $diDefinitions
-     *
-     */
     public static function createCli(
-        ?ClassLoader $autoloader = null,
         array $appEnvironment = [],
         array $diDefinitions = []
     ): Application {
-        $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
+        $di = self::buildContainer($appEnvironment, $diDefinitions);
         self::buildAppFromContainer($di);
 
         $env = $di->get(Environment::class);
@@ -106,24 +90,10 @@ class AppFactory
         return $app;
     }
 
-    /**
-     * @param ClassLoader|null $autoloader
-     * @param array<string, mixed> $appEnvironment
-     * @param array<string, mixed> $diDefinitions
-     *
-     * @noinspection SummerTimeUnsafeTimeManipulationInspection
-     *
-     */
     public static function buildContainer(
-        ?ClassLoader $autoloader = null,
         array $appEnvironment = [],
         array $diDefinitions = []
     ): DI\Container {
-        // Register Annotation autoloader
-        if (null !== $autoloader) {
-            AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
-        }
-
         $environment = self::buildEnvironment($appEnvironment);
         Environment::setInstance($environment);
 
@@ -132,22 +102,20 @@ class AppFactory
         // Override DI definitions for settings.
         $diDefinitions[Environment::class] = $environment;
 
-        if ($autoloader) {
-            $plugins = new Plugins($environment->getBaseDirectory() . '/plugins');
+        $plugins = new Plugins($environment->getBaseDirectory() . '/plugins');
 
-            $diDefinitions[Plugins::class] = $plugins;
-            $diDefinitions = $plugins->registerServices($diDefinitions);
-        }
+        $diDefinitions[Plugins::class] = $plugins;
+        $diDefinitions = $plugins->registerServices($diDefinitions);
 
         $containerBuilder = new DI\ContainerBuilder();
         $containerBuilder->useAutowiring(true);
 
-        /*
-        $containerBuilder->enableDefinitionCache();
+        // TODO Implement APCu
+        // $containerBuilder->enableDefinitionCache();
+
         if ($environment->isProduction()) {
             $containerBuilder->enableCompilation($environment->getTempDirectory());
         }
-        */
 
         $containerBuilder->addDefinitions($diDefinitions);
 

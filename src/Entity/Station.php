@@ -19,10 +19,12 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 use Stringable;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -456,7 +458,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setFrontendType(?string $frontend_type = null): void
     {
         if (null !== $frontend_type && null === FrontendAdapters::tryFrom($frontend_type)) {
-            throw new \InvalidArgumentException('Invalid frontend type specified.');
+            throw new InvalidArgumentException('Invalid frontend type specified.');
         }
 
         $this->frontend_type = $frontend_type;
@@ -511,7 +513,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setBackendType(string $backend_type = null): void
     {
         if (null !== $backend_type && null === BackendAdapters::tryFrom($backend_type)) {
-            throw new \InvalidArgumentException('Invalid frontend type specified.');
+            throw new InvalidArgumentException('Invalid frontend type specified.');
         }
 
         $this->backend_type = $backend_type;
@@ -962,7 +964,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getMediaStorageLocation(): StorageLocation
     {
         if (null === $this->media_storage_location) {
-            throw new \RuntimeException('Media storage location not initialized.');
+            throw new RuntimeException('Media storage location not initialized.');
         }
         return $this->media_storage_location;
     }
@@ -970,7 +972,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
         if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getTypeEnum()) {
-            throw new \RuntimeException('Invalid storage location.');
+            throw new RuntimeException('Invalid storage location.');
         }
 
         $this->media_storage_location = $storageLocation;
@@ -979,7 +981,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRecordingsStorageLocation(): StorageLocation
     {
         if (null === $this->recordings_storage_location) {
-            throw new \RuntimeException('Recordings storage location not initialized.');
+            throw new RuntimeException('Recordings storage location not initialized.');
         }
         return $this->recordings_storage_location;
     }
@@ -987,7 +989,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
         if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getTypeEnum()) {
-            throw new \RuntimeException('Invalid storage location.');
+            throw new RuntimeException('Invalid storage location.');
         }
 
         $this->recordings_storage_location = $storageLocation;
@@ -996,7 +998,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getPodcastsStorageLocation(): StorageLocation
     {
         if (null === $this->podcasts_storage_location) {
-            throw new \RuntimeException('Podcasts storage location not initialized.');
+            throw new RuntimeException('Podcasts storage location not initialized.');
         }
         return $this->podcasts_storage_location;
     }
@@ -1004,7 +1006,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
         if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getTypeEnum()) {
-            throw new \RuntimeException('Invalid storage location.');
+            throw new RuntimeException('Invalid storage location.');
         }
 
         $this->podcasts_storage_location = $storageLocation;
@@ -1016,7 +1018,7 @@ class Station implements Stringable, IdentifiableEntityInterface
             StorageLocationTypes::StationMedia => $this->getMediaStorageLocation(),
             StorageLocationTypes::StationRecordings => $this->getRecordingsStorageLocation(),
             StorageLocationTypes::StationPodcasts => $this->getPodcastsStorageLocation(),
-            default => throw new \InvalidArgumentException('Invalid storage location.')
+            default => throw new InvalidArgumentException('Invalid storage location.')
         };
     }
 

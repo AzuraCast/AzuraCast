@@ -12,6 +12,7 @@ use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
 use Supervisor\SupervisorInterface;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 class RotateLogsTask extends AbstractTask
 {
@@ -43,7 +44,7 @@ class RotateLogsTask extends AbstractTask
 
             try {
                 $this->rotateStationLogs($station);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
                     'station' => (string)$station,
                 ]);

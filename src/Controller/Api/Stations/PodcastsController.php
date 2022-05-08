@@ -268,16 +268,10 @@ class PodcastsController extends AbstractApiCrudController
      */
     protected function getRecord(Entity\Station $station, string $id): ?object
     {
-        $record = $this->podcastRepository->fetchPodcastForStation($station, $id);
-        return $record;
+        return $this->podcastRepository->fetchPodcastForStation($station, $id);
     }
 
-    /**
-     * @param Entity\Podcast $record
-     * @param ServerRequest $request
-     *
-     */
-    protected function viewRecord(object $record, ServerRequest $request): mixed
+    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\Podcast
     {
         if (!($record instanceof Entity\Podcast)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

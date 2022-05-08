@@ -65,13 +65,13 @@ class Flow
             return self::handleStandardUpload($request, $tempDir);
         }
 
-        $flowIdentifier = $params['flowIdentifier'] ?? '';
+        $flowIdentifier = $params['flowIdentifier'];
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
 
         $targetSize = (int)($params['flowTotalSize'] ?? 0);
-        $targetChunks = (int)($params['flowTotalChunks'] ?? 1);
+        $targetChunks = (int)($params['flowTotalChunks']);
 
-        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier ?: ('upload-' . date('Ymd')));
+        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier);
 
         // init the destination file (format <filename.ext>.part<#chunk>
         $chunkBaseDir = $tempDir . '/' . $flowIdentifier;

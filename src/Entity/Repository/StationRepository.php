@@ -166,11 +166,7 @@ class StationRepository extends Repository
         }
 
         $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
-        if (null !== $customUrl) {
-            return $customUrl;
-        }
-
-        return AssetFactory::createAlbumArt($this->environment)->getUri();
+        return $customUrl ?? AssetFactory::createAlbumArt($this->environment)->getUri();
     }
 
     public function setFallback(

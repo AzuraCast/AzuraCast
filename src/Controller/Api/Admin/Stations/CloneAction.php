@@ -12,6 +12,7 @@ use App\Http\ServerRequest;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class CloneAction extends StationsController
 {
@@ -186,7 +187,7 @@ class CloneAction extends StationsController
 
         try {
             $this->configuration->writeConfiguration($newStation);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
         }
 
         $this->em->flush();

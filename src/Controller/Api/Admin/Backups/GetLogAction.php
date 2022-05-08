@@ -21,6 +21,6 @@ class GetLogAction
     ): ResponseInterface {
         $logPath = File::validateTempPath($path);
 
-        return $this->streamLogToResponse($request, $response, $logPath, true);
+        return $this->streamLogToResponse($request, $response, $logPath);
     }
 }

@@ -38,7 +38,7 @@ class Customization
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
 
         // Register current theme
-        $this->theme = $this->determineTheme($request, false);
+        $this->theme = $this->determineTheme($request);
         $this->publicTheme = $this->determineTheme($request, true);
 
         // Register locale
@@ -114,7 +114,7 @@ class Customization
 
             $publicCss .= <<<CSS
             [data-theme] body.page-minimal {
-                background-image: url('${backgroundUrl}');
+                background-image: url('{$backgroundUrl}');
             }
             CSS;
         }

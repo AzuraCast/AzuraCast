@@ -8,6 +8,7 @@ use App\Service\IpGeolocator;
 use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
+use RuntimeException;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -76,7 +77,7 @@ class IpGeolocation
 
         $reader = $this->reader;
         if (null === $reader) {
-            throw new \RuntimeException('No IP Geolocation reader available.');
+            throw new RuntimeException('No IP Geolocation reader available.');
         }
 
         $cacheKey = $this->readerShortName . '_' . str_replace([':', '.'], '_', $ip);

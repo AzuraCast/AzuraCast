@@ -24,6 +24,7 @@ use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
@@ -306,7 +307,7 @@ class BatchAction
         $result = $this->parseRequest($request, $fs, true);
 
         if (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()) {
-            throw new \RuntimeException('This functionality can only be used on stations that use Liquidsoap.');
+            throw new RuntimeException('This functionality can only be used on stations that use Liquidsoap.');
         }
 
         /** @var Liquidsoap $backend */
@@ -336,7 +337,7 @@ class BatchAction
 
                     $newQueue = Entity\StationQueue::fromMedia($station, $media);
                     $newQueue->setTimestampCued($cuedTimestamp);
-                    $newQueue->setIsPlayed(true);
+                    $newQueue->setIsPlayed();
                     $this->em->persist($newQueue);
 
                     $event = AnnotateNextSong::fromStationQueue($newQueue, true);

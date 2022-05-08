@@ -17,7 +17,7 @@ trait HasSongFields
     use TruncateStrings;
 
     #[
-        OA\Property(),
+        OA\Property,
         ORM\Column(length: 50),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]

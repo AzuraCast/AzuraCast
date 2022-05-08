@@ -16,7 +16,7 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
     public function __construct(callable $createEm)
     {
         parent::__construct($createEm());
-        $this->createEm = Closure::fromCallable($createEm);
+        $this->createEm = $createEm(...);
     }
 
     /**

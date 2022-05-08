@@ -74,7 +74,7 @@ class CheckMediaTask extends AbstractTask
             $this->logger->info(
                 sprintf(
                     'Processing media for storage location %s...',
-                    (string)$storageLocation
+                    $storageLocation
                 )
             );
 
@@ -111,7 +111,7 @@ class CheckMediaTask extends AbstractTask
             );
         } catch (FilesystemException $e) {
             $this->logger->error(
-                sprintf('Flysystem Error for Storage Space %s', (string)$storageLocation),
+                sprintf('Flysystem Error for Storage Space %s', $storageLocation),
                 [
                     'exception' => $e,
                 ]
@@ -171,7 +171,7 @@ class CheckMediaTask extends AbstractTask
 
         $this->processNewFiles($storageLocation, $queuedNewFiles, $musicFiles, $stats);
 
-        $this->logger->debug(sprintf('Media processed for "%s".', (string)$storageLocation), $stats);
+        $this->logger->debug(sprintf('Media processed for "%s".', $storageLocation), $stats);
     }
 
     protected function processExistingMediaRows(
@@ -221,7 +221,7 @@ class CheckMediaTask extends AbstractTask
             } else {
                 $media = $this->em->find(Entity\StationMedia::class, $mediaRow['id']);
                 if ($media instanceof Entity\StationMedia) {
-                    $this->mediaRepo->remove($media, false);
+                    $this->mediaRepo->remove($media);
                 }
 
                 $stats['deleted']++;

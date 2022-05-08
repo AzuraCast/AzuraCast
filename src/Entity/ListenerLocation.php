@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Embeddable]
-class ListenerLocation implements \JsonSerializable
+class ListenerLocation implements JsonSerializable
 {
     #[ORM\Column(length: 255, nullable: false)]
     protected string $description = 'Unknown';
@@ -57,7 +58,7 @@ class ListenerLocation implements \JsonSerializable
         return $this->lon;
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'description' => $this->description,

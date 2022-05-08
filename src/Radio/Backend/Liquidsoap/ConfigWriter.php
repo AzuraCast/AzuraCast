@@ -116,7 +116,7 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<EOF
             init.daemon.set(false)
-            init.daemon.pidfile.path.set("${pidfile}")
+            init.daemon.pidfile.path.set("{$pidfile}")
             
             log.stdout.set(true)
             log.file.set(false)
@@ -125,14 +125,14 @@ class ConfigWriter implements EventSubscriberInterface
             
             settings.server.socket.set(true)
             settings.server.socket.permissions.set(0o660)
-            settings.server.socket.path.set("${socketFile}")
+            settings.server.socket.path.set("{$socketFile}")
             
             settings.harbor.bind_addrs.set(["0.0.0.0"])
             
             settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
             settings.encoder.metadata.export.set(["artist","title","album","song"])
             
-            setenv("TZ", "${stationTz}")
+            setenv("TZ", "{$stationTz}")
             
             autodj_is_loading = ref(true)
             ignore(autodj_is_loading)
@@ -154,8 +154,8 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<EOF
-            azuracast_api_url = "${stationApiUrl}"
-            azuracast_api_key = "${stationApiAuth}"
+            azuracast_api_url = "{$stationApiUrl}"
+            azuracast_api_key = "{$stationApiAuth}"
             
             def azuracast_api_call(~timeout_ms=2000, url, payload) =
                 full_url = "#{azuracast_api_url}/#{url}"
@@ -189,7 +189,7 @@ class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<<EOF
-                station_media_dir = "${stationMediaDir}"
+                station_media_dir = "{$stationMediaDir}"
                 def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
                     ["#{station_media_dir}/#{arg}"]
                 end
@@ -240,7 +240,7 @@ class ConfigWriter implements EventSubscriberInterface
                 <<<EOF
                 # Optimize Performance
                 runtime.gc.set(runtime.gc.get().{
-                  space_overhead = ${gcSpaceOverhead},
+                  space_overhead = {$gcSpaceOverhead},
                   allocation_policy = 2
                 })
                 EOF
@@ -552,12 +552,12 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<< EOF
-            requests = request.queue(id="${requestsQueueName}")
-            requests = cue_cut(id="cue_${requestsQueueName}", requests)
+            requests = request.queue(id="{$requestsQueueName}")
+            requests = cue_cut(id="cue_{$requestsQueueName}", requests)
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
             
-            interrupting_queue = request.queue(id="${interruptingQueueName}")
-            interrupting_queue = cue_cut(id="cue_${interruptingQueueName}", interrupting_queue)
+            interrupting_queue = request.queue(id="{$interruptingQueueName}")
+            interrupting_queue = cue_cut(id="cue_{$interruptingQueueName}", interrupting_queue)
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
             
             add_skip_command(radio)
@@ -800,7 +800,7 @@ class ConfigWriter implements EventSubscriberInterface
             ignore(radio_without_live)
             
             # Live Broadcasting
-            live = input.harbor(${harborParams})
+            live = input.harbor({$harborParams})
             
             def insert_missing(m) =
                 if m == [] then
@@ -827,14 +827,14 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<< EOF
                 # Record Live Broadcasts
-                recording_base_path = "${recordBasePath}"
-                recording_extension = "${recordExtension}"
+                recording_base_path = "{$recordBasePath}"
+                recording_extension = "{$recordExtension}"
                 
                 output.file(
                     {$formatString}, 
                     fun () -> begin
                         if (!live_enabled) then
-                            "#{recording_base_path}/#{!live_dj}/${recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
+                            "#{recording_base_path}/#{!live_dj}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
                         else
                             ""
                         end
@@ -897,7 +897,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<EOF
-            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "${errorFile}")])
+            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "{$errorFile}")])
             EOF
         );
 

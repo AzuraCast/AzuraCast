@@ -16,6 +16,7 @@ use Doctrine\DBAL\Connection;
 use NowPlaying\Result\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
+use Throwable;
 
 /**
  * @extends Repository<Entity\Listener>
@@ -188,7 +189,7 @@ class ListenerRepository extends Repository
             $record['device_is_bot'] = $browserResult->isBot ? 1 : 0;
             $record['device_browser_family'] = $this->truncateNullableString($browserResult->browserFamily, 150);
             $record['device_os_family'] = $this->truncateNullableString($browserResult->osFamily, 150);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('Device Detector error: ' . $e->getMessage(), [
                 'user_agent' => $userAgent,
                 'exception' => $e,
@@ -211,7 +212,7 @@ class ListenerRepository extends Repository
             $record['location_country'] = $this->truncateNullableString($ipInfo->country, 2);
             $record['location_lat'] = $ipInfo->lat;
             $record['location_lon'] = $ipInfo->lon;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('IP Geolocation error: ' . $e->getMessage(), [
                 'ip' => $ip,
                 'exception' => $e,

@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand(
     name: 'azuracast:sync:nowplaying:station',
@@ -63,7 +64,7 @@ class NowPlayingPerStationCommand extends CommandAbstract
 
         try {
             $this->buildQueueTask->run($station);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 'Queue builder error: ' . $e->getMessage(),
                 ['exception' => $e]
@@ -72,7 +73,7 @@ class NowPlayingPerStationCommand extends CommandAbstract
 
         try {
             $this->nowPlayingTask->run($station);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 'Now Playing error: ' . $e->getMessage(),
                 ['exception' => $e]

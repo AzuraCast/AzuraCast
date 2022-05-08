@@ -14,6 +14,7 @@ use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 #[
     OA\Get(
@@ -136,7 +137,7 @@ class ServicesController
                 station: $station,
                 forceRestart: true
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withJson(
                 new Entity\Api\Error(
                     500,
@@ -159,7 +160,7 @@ class ServicesController
                 forceRestart: true,
                 attemptReload: false
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $response->withJson(
                 new Entity\Api\Error(
                     500,

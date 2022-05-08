@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class PostAction
@@ -20,7 +21,7 @@ class PostAction
         Environment $environment
     ): ResponseInterface {
         if ('x86_64' !== php_uname('m')) {
-            throw new \RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
+            throw new RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
         }
 
         $flowResponse = Flow::process($request, $response);

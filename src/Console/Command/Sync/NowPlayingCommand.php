@@ -15,6 +15,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function random_int;
+
 #[AsCommand(
     name: 'azuracast:sync:nowplaying',
     description: 'Task to run the Now Playing worker task.'
@@ -81,7 +83,7 @@ class NowPlayingCommand extends AbstractSyncCommand
 
                     if (!isset($this->processes[$shortName])) {
                         $npTimestamp = (int)$activeStation['nowplaying_timestamp'];
-                        if (time() > $npTimestamp + \random_int(5, 15)) {
+                        if (time() > $npTimestamp + random_int(5, 15)) {
                             $this->start($io, $shortName);
 
                             usleep(250000);

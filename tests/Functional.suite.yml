@@ -2,8 +2,7 @@ actor: FunctionalTester
 suite_namespace: \Functional
 modules:
   enabled:
-    - \App\Tests\Module:
-        container: \App\AppFactory
+    - \App\Tests\Module
     - Doctrine2:
         depends: \App\Tests\Module
     - REST:

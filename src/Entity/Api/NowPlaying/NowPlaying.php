@@ -67,9 +67,7 @@ class NowPlaying implements ResolvableUrlInterface
      */
     public function resolveUrls(UriInterface $base): void
     {
-        if ($this->station instanceof ResolvableUrlInterface) {
-            $this->station->resolveUrls($base);
-        }
+        $this->station->resolveUrls($base);
 
         if ($this->now_playing instanceof ResolvableUrlInterface) {
             $this->now_playing->resolveUrls($base);

@@ -8,6 +8,7 @@ use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
+use RuntimeException;
 
 class FeedbackCommand extends AbstractCommand
 {
@@ -24,12 +25,12 @@ class FeedbackCommand extends AbstractCommand
     {
         // Process extra metadata sent by Liquidsoap (if it exists).
         if (empty($payload['media_id'])) {
-            throw new \RuntimeException('No payload provided.');
+            throw new RuntimeException('No payload provided.');
         }
 
         $media = $this->em->find(Entity\StationMedia::class, $payload['media_id']);
         if (!$media instanceof Entity\StationMedia) {
-            throw new \RuntimeException('Media ID does not exist for station.');
+            throw new RuntimeException('Media ID does not exist for station.');
         }
 
         $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);

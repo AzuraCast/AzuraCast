@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 /** @extends AbstractAdminApiCrudController<Entity\Station> */
 #[
@@ -331,7 +332,7 @@ class StationsController extends AbstractAdminApiCrudController
                     station: $station,
                     forceRestart: true
                 );
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
             }
         }
 

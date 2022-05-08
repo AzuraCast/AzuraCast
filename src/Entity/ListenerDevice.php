@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Embeddable]
-class ListenerDevice implements \JsonSerializable
+class ListenerDevice implements JsonSerializable
 {
     #[ORM\Column(length: 255)]
     protected ?string $client = null;
@@ -57,7 +58,7 @@ class ListenerDevice implements \JsonSerializable
         return $this->os_family;
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'client' => $this->client,

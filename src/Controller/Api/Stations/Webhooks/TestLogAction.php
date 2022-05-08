@@ -37,8 +37,7 @@ class TestLogAction extends AbstractWebhooksAction
         return $this->streamLogToResponse(
             $request,
             $response,
-            $tempPath,
-            true
+            $tempPath
         );
     }
 }

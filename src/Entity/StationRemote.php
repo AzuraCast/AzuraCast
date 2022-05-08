@@ -12,6 +12,7 @@ use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 
@@ -234,7 +235,7 @@ class StationRemote implements
     public function setType(string $type): void
     {
         if (null === RemoteAdapters::tryFrom($type)) {
-            throw new \InvalidArgumentException('Invalid type specified.');
+            throw new InvalidArgumentException('Invalid type specified.');
         }
 
         $this->type = $type;

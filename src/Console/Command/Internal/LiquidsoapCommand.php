@@ -9,6 +9,7 @@ use App\Entity;
 use App\Entity\Repository\StationRepository;
 use App\Radio\Backend\Liquidsoap\Command\AbstractCommand;
 use App\Radio\Enums\LiquidsoapCommands;
+use LogicException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand(
     name: 'azuracast:internal:liquidsoap',
@@ -62,12 +64,12 @@ class LiquidsoapCommand extends CommandAbstract
         try {
             $station = $this->stationRepo->findByIdentifier($stationId);
             if (!($station instanceof Entity\Station)) {
-                throw new \LogicException('Station not found.');
+                throw new LogicException('Station not found.');
             }
 
             $command = LiquidsoapCommands::tryFrom($action);
             if (null === $command || !$this->di->has($command->getClass())) {
-                throw new \LogicException('Command not found.');
+                throw new LogicException('Command not found.');
             }
 
             /** @var AbstractCommand $commandObj */
@@ -75,7 +77,7 @@ class LiquidsoapCommand extends CommandAbstract
 
             $result = $commandObj->run($station, $asAutoDj, $payload);
             $io->writeln($result);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
                     'Liquidsoap command "%s" error: %s',

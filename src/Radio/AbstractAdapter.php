@@ -15,7 +15,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
-use Supervisor\Process;
 use Supervisor\SupervisorInterface;
 
 abstract class AbstractAdapter
@@ -106,9 +105,7 @@ abstract class AbstractAdapter
         $program_name = $this->getProgramName($station);
 
         try {
-            $process = $this->supervisor->getProcess($program_name);
-
-            return $process instanceof Process && $process->isRunning();
+            return $this->supervisor->getProcess($program_name)->isRunning();
         } catch (Fault\BadNameException) {
             return false;
         }

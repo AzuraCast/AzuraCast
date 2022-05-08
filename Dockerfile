@@ -4,6 +4,11 @@
 FROM ghcr.io/azuracast/icecast-kh-ac:2.4.0-kh15-ac2 AS icecast
 
 #
+# MariaDB stage (for later copy)
+#
+FROM mariadb:10.7-focal AS mariadb
+
+#
 # Golang dependencies build step
 #
 FROM golang:1.17-buster AS dockerize
@@ -16,7 +21,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM mariadb:10.7-focal
+FROM ubuntu:focal
 
 ENV TZ="UTC"
 
@@ -26,6 +31,10 @@ COPY --from=dockerize /go/bin/dockerize /usr/local/bin
 # Import Icecast-KH from build container
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
+
+# Import MariaDB scripts.
+COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
+COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

@@ -110,9 +110,6 @@ class AppFactory
         $containerBuilder = new DI\ContainerBuilder();
         $containerBuilder->useAutowiring(true);
 
-        // TODO Implement APCu
-        // $containerBuilder->enableDefinitionCache();
-
         if ($environment->isProduction()) {
             $containerBuilder->enableCompilation($environment->getTempDirectory());
         }

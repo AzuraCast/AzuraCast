@@ -6,6 +6,7 @@ namespace App\Radio\AutoDJ;
 
 use App\Entity;
 use App\Event\Radio\BuildQueue;
+use App\Radio\Enums\BackendAdapters;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -55,6 +56,10 @@ class Queue implements EventSubscriberInterface
         }
         if ($station->useManualAutoDJ()) {
             $this->logger->notice('This station uses manual AutoDJ mode.');
+            return;
+        }
+        if (BackendAdapters::None === $station->getBackendTypeEnum()) {
+            $this->logger->notice('This station has disabled the AutoDJ.');
             return;
         }
 

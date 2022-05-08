@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0104251d3227b908f4942d08ded6aef4",
+    "content-hash": "4b8224fea5f9405d7270b1719c1dc791",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -267,12 +267,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/flysystem-v2-extensions.git",
-                "reference": "7a77d75091bf5dd10ab6aa93fa16da4e87d45e59"
+                "reference": "70c23b81979878fc29fc3aa43ef046b496c8fb90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/7a77d75091bf5dd10ab6aa93fa16da4e87d45e59",
-                "reference": "7a77d75091bf5dd10ab6aa93fa16da4e87d45e59",
+                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/70c23b81979878fc29fc3aa43ef046b496c8fb90",
+                "reference": "70c23b81979878fc29fc3aa43ef046b496c8fb90",
                 "shasum": ""
             },
             "require": {
@@ -339,7 +339,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-04-23T05:01:55+00:00"
+            "time": "2022-05-08T19:35:28+00:00"
         },
         {
             "name": "azuracast/metadata-manager",
@@ -14421,6 +14421,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-maxminddb": "*",
         "ext-mbstring": "*",
         "ext-redis": "*",

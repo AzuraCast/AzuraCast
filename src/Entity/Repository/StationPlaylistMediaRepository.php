@@ -192,8 +192,8 @@ class StationPlaylistMediaRepository extends Repository
                 ->execute();
         } elseif (Entity\Enums\PlaylistOrders::Shuffle === $playlist->getOrderEnum()) {
             $this->em->wrapInTransaction(
-                function (ReloadableEntityManagerInterface $em) use ($playlist): void {
-                    $allSpmRecordsQuery = $em->createQuery(
+                function () use ($playlist): void {
+                    $allSpmRecordsQuery = $this->em->createQuery(
                         <<<'DQL'
                             SELECT spm.id
                             FROM App\Entity\StationPlaylistMedia spm
@@ -202,7 +202,7 @@ class StationPlaylistMediaRepository extends Repository
                         DQL
                     )->setParameter('playlist', $playlist);
 
-                    $updateSpmWeightQuery = $em->createQuery(
+                    $updateSpmWeightQuery = $this->em->createQuery(
                         <<<'DQL'
                             UPDATE App\Entity\StationPlaylistMedia spm
                             SET spm.weight=:weight, spm.is_queued=1

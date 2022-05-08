@@ -87,19 +87,24 @@ return function (App\Event\BuildAdminMenu $e) {
                         'url'        => (string)$router->named('admin:custom_fields:index'),
                         'permission' => GlobalPermissions::CustomFields,
                     ],
-                    'relays'          => [
-                        'label'      => __('Connected AzuraRelays'),
-                        'url'        => (string)$router->named('admin:relays:index'),
+                    'relays' => [
+                        'label' => __('Connected AzuraRelays'),
+                        'url' => (string)$router->named('admin:relays:index'),
                         'permission' => GlobalPermissions::Stations,
                     ],
-                    'shoutcast'       => [
-                        'label'      => __('Install SHOUTcast'),
-                        'url'        => (string)$router->named('admin:install_shoutcast:index'),
+                    'shoutcast' => [
+                        'label' => __('Install SHOUTcast'),
+                        'url' => (string)$router->named('admin:install_shoutcast:index'),
                         'permission' => GlobalPermissions::All,
                     ],
-                    'geolite'         => [
-                        'label'      => __('Install GeoLite IP Database'),
-                        'url'        => (string)$router->named('admin:install_geolite:index'),
+                    'stereo_tool' => [
+                        'label' => __('Install Stereo Tool'),
+                        'url' => (string)$router->named('admin:install_stereo_tool:index'),
+                        'permission' => GlobalPermissions::All,
+                    ],
+                    'geolite' => [
+                        'label' => __('Install GeoLite IP Database'),
+                        'url' => (string)$router->named('admin:install_geolite:index'),
                         'permission' => GlobalPermissions::All,
                     ],
                 ],

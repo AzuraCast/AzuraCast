@@ -129,7 +129,13 @@ class StationBackendConfiguration extends ArrayCollection
 
     public function getAudioProcessingMethod(): ?string
     {
-        return $this->get(self::AUDIO_PROCESSING_METHOD ?? AudioProcessingMethods::None);
+        return $this->getAudioProcessingMethodEnum()->value;
+    }
+
+    public function getAudioProcessingMethodEnum(): AudioProcessingMethods
+    {
+        return AudioProcessingMethods::tryFrom($this->get(self::AUDIO_PROCESSING_METHOD) ?? '')
+            ?? AudioProcessingMethods::default();
     }
 
     public function setAudioProcessingMethod(?string $method): void

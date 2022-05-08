@@ -18,6 +18,7 @@ module.exports = {
         AdminPermissions: '~/pages/Admin/Permissions.js',
         AdminSettings: '~/pages/Admin/Settings.js',
         AdminShoutcast: '~/pages/Admin/Shoutcast.js',
+        AdminStereoTool: '~/pages/Admin/StereoTool.js',
         AdminStations: '~/pages/Admin/Stations.js',
         AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
         AdminUsers: '~/pages/Admin/Users.js',

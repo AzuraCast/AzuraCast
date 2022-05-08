@@ -14,6 +14,7 @@ use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
+use App\Radio\StereoTool;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -36,7 +37,8 @@ class ConfigWriter implements EventSubscriberInterface
         protected Environment $environment,
         protected LoggerInterface $logger,
         protected EventDispatcherInterface $eventDispatcher,
-        protected FallbackFile $fallbackFile
+        protected FallbackFile $fallbackFile,
+        protected StereoTool $stereoTool,
     ) {
     }
 
@@ -867,7 +869,7 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         // NRJ normalization
-        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::Liquidsoap->getValue()) {
+        if (AudioProcessingMethods::Liquidsoap === $settings->getAudioProcessingMethodEnum()) {
             $event->appendBlock(
                 <<<EOF
                 # Normalization and Compression
@@ -878,13 +880,15 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Stereo Tool processing
-        //
-//        radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q -k "<3faxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxee>"', radio)
-        if ($settings->getAudioProcessingMethod() === AudioProcessingMethods::StereoTool->getValue()) {
+        // radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q -k "<3faxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxee>"', radio)
+        if (AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
+            && $this->stereoTool->isInstalled()) {
+            $stereoToolBinary = $this->stereoTool->getBinaryPath();
+
             $event->appendBlock(
                 <<<EOF
                 # Stereo Tool Pipe
-                radio = pipe(process='/usr/bin/stereo_tool - - -s /var/azuracast/audio.sts -q', radio)
+                radio = pipe(process='{$stereoToolBinary} - - -s /var/azuracast/audio.sts -q', radio)
                 EOF
             );
         }

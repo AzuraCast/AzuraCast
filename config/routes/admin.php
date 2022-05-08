@@ -67,6 +67,9 @@ return static function (RouteCollectorProxy $app) {
                     $group->get('/shoutcast', Controller\Admin\ShoutcastAction::class)
                         ->setName('admin:install_shoutcast:index');
 
+                    $group->get('/stereo_tool', Controller\Admin\StereoToolAction::class)
+                        ->setName('admin:install_stereo_tool:index');
+
                     $group->get('/geolite', Controller\Admin\GeoLiteAction::class)
                         ->setName('admin:install_geolite:index');
                 }

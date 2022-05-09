@@ -492,7 +492,7 @@ export default {
                 }
             ];
 
-            if (this.isStereoToolEnabled) {
+            if (this.isStereoToolInstalled) {
                 audioProcessingOptions.splice(1, 0,
                     {
                         text: this.$gettext('Stereo Tool'),

@@ -66,6 +66,7 @@
     "php-di/php-di": "^6.0",
     "php-di/slim-bridge": "^3.0",
     "phpmyadmin/motranslator": "^5.3",
+    "phpseclib/phpseclib": "^3.0",
     "psr/http-factory": ">1",
     "psr/simple-cache": ">1",
     "ramsey/uuid": "^4.0",

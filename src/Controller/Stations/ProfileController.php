@@ -83,6 +83,7 @@ class ProfileController
                 'enableOnDemand' => $station->getEnableOnDemand(),
                 'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
                 'hasStarted' => $station->getHasStarted(),
+                'newStereoToolConfigurationUrl' => (string)$router->fromHere('api:stations:new-stereo-tool-config'),
 
                 // ACL
                 'userCanManageMedia' => $acl->isAllowed(StationPermissions::Media, $station->getId()),

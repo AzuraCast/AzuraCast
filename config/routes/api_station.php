@@ -137,6 +137,26 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
+            $group->group(
+                '/stereo-tool-configuration',
+                function (RouteCollectorProxy $group) {
+                    $group->get(
+                        '',
+                        Controller\Api\Stations\StereoTool\GetStereoToolConfigurationAction::class
+                    )->setName('api:stations:stereo-tool-config');
+
+                    $group->post(
+                        '',
+                        Controller\Api\Stations\StereoTool\PostStereoToolConfigurationAction::class
+                    )->setName('api:stations:new-stereo-tool-config');
+
+                    $group->delete(
+                        '',
+                        Controller\Api\Stations\StereoTool\DeleteStereoToolConfigurationAction::class
+                    );
+                }
+            )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
             // Public and private podcast pages
             $group->group(
                 '/podcast/{podcast_id}',

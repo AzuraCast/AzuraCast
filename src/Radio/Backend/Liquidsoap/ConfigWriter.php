@@ -880,15 +880,24 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Stereo Tool processing
-        // radio = pipe(process='/usr/bin/stereo_tool_cmd_64 - - -s /opt/optimod8100.sts -q -k "<3faxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxee>"', radio)
-        if (AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
-            && $this->stereoTool->isInstalled()) {
+        if (
+            AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
+            && $this->stereoTool->isInstalled()
+        ) {
             $stereoToolBinary = $this->stereoTool->getBinaryPath();
+            $stereoToolConfiguration = $station->getStereoToolConfigurationPath();
+            $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
+
+            $stereoToolProcess = $stereoToolBinary . ' - - -s ' . $stereoToolConfiguration . ' -q';
+
+            if ($stereoToolLicenseKey) {
+                $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
+            }
 
             $event->appendBlock(
                 <<<EOF
                 # Stereo Tool Pipe
-                radio = pipe(process='{$stereoToolBinary} - - -s /var/azuracast/audio.sts -q', radio)
+                radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
                 EOF
             );
         }

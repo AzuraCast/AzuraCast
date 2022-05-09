@@ -151,6 +151,18 @@ class StationBackendConfiguration extends ArrayCollection
         $this->set(self::AUDIO_PROCESSING_METHOD, $method);
     }
 
+    public const STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
+
+    public function getStereoToolLicenseKey(): ?string
+    {
+        return $this->get(self::STEREO_TOOL_LICENSE_KEY) ?? null;
+    }
+
+    public function setStereoToolLicenseKey(?string $licenseKey): ?string
+    {
+        $this->set(self::STEREO_TOOL_LICENSE_KEY, $licenseKey);
+    }
+
     public const USE_REPLAYGAIN = 'enable_replaygain_metadata';
 
     public function useReplayGain(): bool

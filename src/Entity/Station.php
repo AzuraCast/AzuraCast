@@ -366,6 +366,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $fallback_path = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $stereo_tool_configuration_path = null;
+
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
@@ -1062,6 +1065,19 @@ class Station implements Stringable, IdentifiableEntityInterface
             $this->setNeedsRestart(true);
         }
         $this->fallback_path = $fallback_path;
+    }
+
+    public function getStereoToolConfigurationPath(): ?string
+    {
+        return $this->stereo_tool_configuration_path;
+    }
+
+    public function setStereoToolConfigurationPath(?string $stereo_tool_configuration_path): void
+    {
+        if ($this->stereo_tool_configuration_path !== $stereo_tool_configuration_path) {
+            $this->setNeedsRestart(true);
+        }
+        $this->stereo_tool_configuration_path = $stereo_tool_configuration_path;
     }
 
     /**

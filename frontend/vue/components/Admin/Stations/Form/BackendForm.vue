@@ -61,10 +61,7 @@
                         </template>
                         <template #description="{lang}">
                             <translate :key="lang">Choose a method to use for processing audio which produces a more
-                                uniform and "full" sound for your station. The Liquidsoap method applies simple
-                                compression and normalization with built-in functions. Stereo Tool is 3rd party software
-                                which requires a valid license key and configuration file. It requires more system
-                                resources but allows more specific tweaking and better overall results.
+                                uniform and "full" sound for your station.
                             </translate>
                         </template>
                         <template #default="props">
@@ -74,17 +71,41 @@
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>
-                <b-form-row v-if="isStereoToolEnabled">
-                    <b-wrapped-form-group class="col-md-5" id="edit_form_backend_stereo_tool_license_key"
-                                          :field="form.backend_config.stereo_tool_license_key" input-type="text">
-                        <template #label="{lang}">
-                            <translate :key="lang">Stereo Tool License Key</translate>
-                        </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">Provide a valid license key provided by Thimeo.</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </b-form-row>
+            </b-form-fieldset>
+
+            <b-form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
+                <template #label>
+                    <translate key="lang_hdr_stereo_tool">Stereo Tool</translate>
+                </template>
+                <template #description>
+                    <translate key="lang_stereo_tool_desc">Stereo Tool is an industry standard for software audio
+                        processing. For more information on how to configure it, please refer to the
+                    </translate>
+                    <a href="https://www.thimeo.com/stereo-tool/" target="_blank">
+                        <translate key="lang_stereo_tool_documentation_desc">Stereo Tool documentation.</translate>
+                    </a>
+                </template>
+
+                <b-form-fieldset>
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-5" id="edit_form_backend_stereo_tool_license_key"
+                                              :field="form.backend_config.stereo_tool_license_key" input-type="text">
+                            <template #label="{lang}">
+                                <translate :key="lang">Stereo Tool License Key</translate>
+                            </template>
+                            <template #description="{lang}">
+                                <translate :key="lang">Provide a valid license key provided by Thimeo. Only very few
+                                    features work without a license key.
+                                </translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                </b-form-fieldset>
+
+                <station-stereo-tool-configuration v-model="form.backend_config.stereo_tool_configuration_file.$model"
+                                                   :station-has-stereo-tool-configuration="station.intro_path !== null"
+                                                   :new-configuration-url="newStereoToolConfigurationUrl"
+                                                   :edit-configuration-url="station.links.stereo_tool_configuration"></station-stereo-tool-configuration>
             </b-form-fieldset>
 
             <b-form-fieldset>
@@ -402,13 +423,20 @@ import {
     BACKEND_NONE
 } from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import StationStereoToolConfiguration from "~/components/Admin/Stations/Form/Backend/StereoToolConfig";
 
 export default {
     name: 'AdminStationsBackendForm',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
+    components: {StationStereoToolConfiguration, BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
+        station: Object,
         tabClass: {},
+        isStereoToolInstalled: {
+            type: Boolean,
+            default: true
+        },
+        newStereoToolConfigurationUrl: String,
         showAdvanced: {
             type: Boolean,
             default: true
@@ -453,20 +481,27 @@ export default {
             ];
         },
         audioProcessingOptions() {
-            return [
+            const audioProcessingOptions = [
                 {
                     text: this.$gettext('Liquidsoap'),
                     value: AUDIO_PROCESSING_LIQUIDSOAP,
-                },
-                {
-                    text: this.$gettext('Stereo Tool'),
-                    value: AUDIO_PROCESSING_STEREO_TOOL,
                 },
                 {
                     text: this.$gettext('Disable Processing'),
                     value: AUDIO_PROCESSING_NONE,
                 }
             ];
+
+            if (this.isStereoToolEnabled) {
+                audioProcessingOptions.splice(1, 0,
+                    {
+                        text: this.$gettext('Stereo Tool'),
+                        value: AUDIO_PROCESSING_STEREO_TOOL,
+                    }
+                )
+            }
+
+            return audioProcessingOptions;
         },
         recordStreamsOptions() {
             return [

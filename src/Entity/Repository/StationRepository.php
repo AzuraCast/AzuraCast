@@ -216,4 +216,49 @@ class StationRepository extends Repository
         $this->em->persist($station);
         $this->em->flush();
     }
+
+    public function setStereoToolConfiguration(
+        Entity\Station $station,
+        UploadedFile $file,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+
+        if (!empty($station->getStereoToolConfigurationPath())) {
+            $this->doDeleteStereoToolConfiguration($station, $fs);
+            $station->setStereoToolConfigurationPath(null);
+        }
+
+        $stereoToolConfigurationPath = 'stereo-tool.sts';
+        $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $stereoToolConfigurationPath);
+
+        $station->setStereoToolConfigurationPath($stereoToolConfigurationPath);
+        $this->em->persist($station);
+        $this->em->flush();
+    }
+
+    public function doDeleteStereoToolConfiguration(
+        Entity\Station $station,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+
+        $stereoToolConfigurationPath = $station->getStereoToolConfigurationPath();
+        if (empty($stereoToolConfigurationPath)) {
+            return;
+        }
+
+        $fs->delete($stereoToolConfigurationPath);
+    }
+
+    public function clearStereoToolConfiguration(
+        Entity\Station $station,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $this->doDeleteStereoToolConfiguration($station, $fs);
+
+        $station->setStereoToolConfigurationPath(null);
+        $this->em->persist($station);
+        $this->em->flush();
+    }
 }

@@ -882,7 +882,7 @@ class ConfigWriter implements EventSubscriberInterface
         // Stereo Tool processing
         if (
             AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
-            && $this->stereoTool->isInstalled()
+            && $this->stereoTool->isReady($station)
         ) {
             $stereoToolBinary = $this->stereoTool->getBinaryPath();
             $stereoToolConfiguration = $station->getStereoToolConfigurationPath();

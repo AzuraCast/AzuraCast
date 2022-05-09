@@ -23,4 +23,9 @@ class StereoTool
     {
         return $this->environment->getParentDirectory() . '/servers/stereo_tool/stereo_tool';
     }
+
+    public function isReady(Entity\Station $station): bool
+    {
+        return $this->isInstalled() && !empty($station->getStereoToolConfigurationPath());
+    }
 }

@@ -83,7 +83,6 @@ class ProfileController
                 'enableOnDemand' => $station->getEnableOnDemand(),
                 'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
                 'hasStarted' => $station->getHasStarted(),
-                'newStereoToolConfigurationUrl' => (string)$router->fromHere('api:stations:new-stereo-tool-config'),
 
                 // ACL
                 'userCanManageMedia' => $acl->isAllowed(StationPermissions::Media, $station->getId()),
@@ -201,6 +200,8 @@ class ProfileController
         Response $response,
         StationFormComponent $stationFormComponent
     ): ResponseInterface {
+        $router = $request->getRouter();
+
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Vue_StationsProfileEdit',
@@ -209,8 +210,9 @@ class ProfileController
             props: array_merge(
                 $stationFormComponent->getProps($request),
                 [
-                    'editUrl' => (string)$request->getRouter()->fromHere('api:stations:profile:edit'),
-                    'continueUrl' => (string)$request->getRouter()->fromHere('stations:profile:index'),
+                    'editUrl' => (string)$router->fromHere('api:stations:profile:edit'),
+                    'continueUrl' => (string)$router->fromHere('stations:profile:index'),
+                    'newStereoToolConfigurationUrl' => (string)$router->fromHere('api:stations:new-stereo-tool-config'),
                 ]
             )
         );

@@ -7,6 +7,7 @@
         </div>
 
         <admin-stations-form ref="form" v-bind="$props" :is-edit-mode="true" :edit-url="editUrl"
+                             :new-stereo-tool-configuration-url="newStereoToolConfigurationUrl"
                              @submitted="onSubmitted"></admin-stations-form>
     </section>
 </template>
@@ -23,7 +24,8 @@ export default {
         continueUrl: {
             type: String,
             required: true
-        }
+        },
+        newStereoToolConfigurationUrl: String,
     },
     mounted() {
         this.$refs.form.reset();

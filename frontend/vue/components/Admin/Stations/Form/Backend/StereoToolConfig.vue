@@ -17,7 +17,6 @@
                     <template #label>
                         <translate key="existing_stereo_tool_configuration">Current Configuration File</translate>
                     </template>
-
                     <div v-if="hasStereoToolConfiguration">
                         <div class="buttons pt-3">
                             <b-button v-if="editConfigurationUrl" block variant="bg" :href="editConfigurationUrl" target="_blank">
@@ -29,7 +28,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <translate key="no_existing_stereo_tool_configuration">There is no existing Stereo Tool configuration file present.</translate>
+                        <translate key="no_existing_stereo_tool_configuration">There is no Stereo Tool configuration file present.</translate>
                     </div>
                 </b-form-group>
             </b-form-row>
@@ -44,23 +43,24 @@ export default {
     components: {FlowUpload},
     props: {
         value: Object,
-        stationHasStereoToolConfiguration: Boolean,
+        recordHasStereoToolConfiguration: Boolean,
         editConfigurationUrl: String,
         newConfigurationUrl: String
     },
     data() {
         return {
-            hasStereoToolConfiguration: this.stationHasStereoToolConfiguration,
+            hasStereoToolConfiguration: this.recordHasStereoToolConfiguration,
             acceptMimeTypes: ['text/plain']
         };
     },
     watch: {
-        stationHasStereoToolConfiguration(newValue) {
+        recordHasStereoToolConfiguration(newValue) {
             this.hasStereoToolConfiguration = newValue;
         }
     },
     computed: {
         targetUrl() {
+            console.log({editConfigurationUrl: this.editConfigurationUrl, newConfigurationUrl: this.newConfigurationUrl})
             return (this.editConfigurationUrl)
                 ? this.editConfigurationUrl
                 : this.newConfigurationUrl;

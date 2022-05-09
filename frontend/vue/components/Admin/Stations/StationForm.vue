@@ -359,7 +359,7 @@ export default {
             });
         },
         populateForm(data) {
-            this.station = data;
+            this.record = data;
             this.form = mergeExisting(this.form, data);
         },
         getSubmittableFormData() {

@@ -103,7 +103,7 @@
                 </b-form-fieldset>
 
                 <station-stereo-tool-configuration v-model="form.backend_config.stereo_tool_configuration_file.$model"
-                                                   :station-has-stereo-tool-configuration="station.intro_path !== null"
+                                                   :station-has-stereo-tool-configuration="station.stereo_tool_configuration_file_path !== null"
                                                    :new-configuration-url="newStereoToolConfigurationUrl"
                                                    :edit-configuration-url="station.links.stereo_tool_configuration"></station-stereo-tool-configuration>
             </b-form-fieldset>

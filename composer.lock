@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee39dba284c5c3f58875350e539c3826",
+    "content-hash": "da5cc239fd0238e0d8fc481e437dcfa0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -340,77 +340,6 @@
                 }
             ],
             "time": "2022-05-08T19:35:28+00:00"
-        },
-        {
-            "name": "azuracast/metadata-manager",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AzuraCast/metadata-manager.git",
-                "reference": "b03d7f37f9d1e862a47ecc1f7bdc78a996ff9712"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/metadata-manager/zipball/b03d7f37f9d1e862a47ecc1f7bdc78a996ff9712",
-                "reference": "b03d7f37f9d1e862a47ecc1f7bdc78a996ff9712",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "james-heinrich/getid3": "v2.0.0-beta4",
-                "php": ">=7.4",
-                "php-ffmpeg/php-ffmpeg": "^1.0",
-                "symfony/console": ">5.0",
-                "voku/portable-utf8": "^6"
-            },
-            "require-dev": {
-                "php-parallel-lint/php-console-highlighter": "^1",
-                "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/phpstan": "^1",
-                "roave/security-advisories": "dev-latest"
-            },
-            "default-branch": true,
-            "bin": [
-                "bin/metadata-manager"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Azura\\MetadataManager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Buster 'Silver Eagle' Neece",
-                    "email": "buster@busterneece.com",
-                    "homepage": "https://dashdev.net/",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "A command-line wrapper around the PHP GetId3 library.",
-            "homepage": "https://github.com/AzuraCast/metadata-manager",
-            "support": {
-                "source": "https://github.com/AzuraCast/metadata-manager/tree/main"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/AzuraCast",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/azuracast",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/AzuraCast",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2022-04-28T11:59:24+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -14400,7 +14329,6 @@
         "azuracast/doctrine-batch-utilities": 20,
         "azuracast/doctrine-entity-normalizer": 20,
         "azuracast/flysystem-v2-extensions": 20,
-        "azuracast/metadata-manager": 20,
         "azuracast/nowplaying": 20,
         "azuracast/slim-callable-eventdispatcher": 20,
         "lstrojny/fxmlrpc": 20,

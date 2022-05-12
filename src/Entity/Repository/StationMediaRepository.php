@@ -205,7 +205,10 @@ class StationMediaRepository extends Repository
             $mediaMtime = time();
         } else {
             if (!$fs->fileExists($path)) {
-                throw new CannotProcessMediaException(sprintf('Media path "%s" not found.', $path));
+                throw CannotProcessMediaException::forPath(
+                    $path,
+                    sprintf('Media path "%s" not found.', $path)
+                );
             }
 
             $mediaMtime = $fs->lastModified($path);

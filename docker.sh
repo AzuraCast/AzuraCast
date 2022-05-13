@@ -496,7 +496,7 @@ install-dev() {
   docker-compose run --rm web -- azuracast_install "$@"
 
   docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
-  docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run --rm frontend npm run dev-build
+  docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run --rm frontend npm run build
 
   docker-compose up -d
   exit

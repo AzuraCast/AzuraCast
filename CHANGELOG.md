@@ -18,6 +18,11 @@ There have been no new features in the Rolling Release since the latest Stable r
 
 ## Bug Fixes
 
+- A bug preventing SFTP from properly supporting SSH public keys has been fixed.
+
+- A minor security issue where SFTP would not properly disable if a station switched storage locations to a non-local one
+  has been resolved.
+
 - The library used to handle translations for the PHP side of the application has been switched, which should avoid many
   of the errors being seen by users not able to see translations in some sections of the site.
 

@@ -8,7 +8,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
-use App\Entity\StationSchedule;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\Collection;
@@ -33,7 +32,7 @@ class Scheduler
             function ($record) use ($playlist) {
                 $record['extra']['playlist'] = [
                     'id' => $playlist->getId(),
-                'name' => $playlist->getName(),
+                    'name' => $playlist->getName(),
                 ];
                 return $record;
             }
@@ -201,7 +200,7 @@ class Scheduler
             $now
         );
 
-        if ($scheduleItem instanceof StationSchedule) {
+        if ($scheduleItem instanceof Entity\StationSchedule) {
             return $scheduleItem->getDuration();
         }
         return 0;
@@ -226,10 +225,15 @@ class Scheduler
         return null !== $scheduleItem;
     }
 
+    /**
+     * @param Collection<Entity\StationSchedule> $scheduleItems
+     * @param CarbonInterface $now
+     * @return Entity\StationSchedule|null
+     */
     protected function getActiveScheduleFromCollection(
         Collection $scheduleItems,
         CarbonInterface $now
-    ): ?StationSchedule {
+    ): ?Entity\StationSchedule {
         if ($scheduleItems->count() > 0) {
             foreach ($scheduleItems as $scheduleItem) {
                 $scheduleName = (string)$scheduleItem;
@@ -276,8 +280,8 @@ class Scheduler
         if ($startTime->equalTo($endTime)) {
             // Create intervals for "play once" type dates.
             $comparePeriods[] = [$startTime, $endTime->addMinutes(15)];
-            $comparePeriods[] = [$startTime->subDay(), $endTime->subDay()];
-            $comparePeriods[] = [$startTime->addDay(), $endTime->addDay()];
+            $comparePeriods[] = [$startTime->subDay(), $endTime->subDay()->addMinutes(15)];
+            $comparePeriods[] = [$startTime->addDay(), $endTime->addDay()->addMinutes(15)];
         } elseif ($startTime->greaterThan($endTime)) {
             // Create intervals for overnight playlists (one from yesterday to today, one from today to tomorrow).
             $comparePeriods[] = [$startTime->subDay(), $endTime];
@@ -287,33 +291,53 @@ class Scheduler
         }
 
         foreach ($comparePeriods as [$start, $end]) {
-            /** @var CarbonInterface $start */
-            /** @var CarbonInterface $end */
-            if (!$now->between($start, $end)) {
-                continue;
-            }
-
-            $dayToCheck = $start->dayOfWeekIso;
-
-            if (!$this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
-                continue;
-            }
-
-            if ($startTime->equalTo($endTime)) {
-                $playlist = $schedule->getPlaylist();
-                if (null !== $playlist && !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, 30)) {
-                    return true;
-                }
-            } else {
-                if (!$schedule->getLoopOnce()) {
-                    return true;
-                }
-
-                return $this->shouldPlaylistLoopNow($schedule, $now, $start, $end);
+            if ($this->shouldPlayInSchedulePeriod($schedule, $start, $end, $now)) {
+                return true;
             }
         }
 
         return false;
+    }
+
+    protected function shouldPlayInSchedulePeriod(
+        Entity\StationSchedule $schedule,
+        CarbonInterface $start,
+        CarbonInterface $end,
+        CarbonInterface $now
+    ): bool {
+        if (!$now->between($start, $end)) {
+            return false;
+        }
+
+        // Check day-of-week limitations.
+        $dayToCheck = $start->dayOfWeekIso;
+        if (!$this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
+            return false;
+        }
+
+        // Check playlist special handling rules.
+        $playlist = $schedule->getPlaylist();
+        if (null === $playlist) {
+            return true;
+        }
+
+        // Handle "Play Single Track" advanced setting.
+        if (
+            $playlist->backendPlaySingleTrack()
+            && $playlist->getPlayedAt() >= $start->getTimestamp()
+        ) {
+            return false;
+        }
+
+        // Handle "Loop Once" schedule specification.
+        if (
+            $schedule->getLoopOnce()
+            && !$this->shouldPlaylistLoopNow($schedule, $now, $start, $end)
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function shouldPlaylistLoopNow(

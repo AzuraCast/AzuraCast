@@ -463,17 +463,16 @@ class StationPlaylist implements
 
     /**
      * Indicates whether a playlist is enabled and has content which can be scheduled by an AutoDJ scheduler.
+     *
+     * @var bool $interrupting Whether determining "playability" for an interrupting queue or a regular one.
      */
-    public function isPlayable(): bool
+    public function isPlayable(bool $interrupting = false): bool
     {
-        // Any "advanced" settings are not managed by AzuraCast AutoDJ.
-        if (
-            !$this->is_enabled
-            || $this->backendInterruptOtherSongs()
-            || $this->backendMerge()
-            || $this->backendLoopPlaylistOnce()
-            || $this->backendPlaySingleTrack()
-        ) {
+        if (!$this->is_enabled) {
+            return false;
+        }
+
+        if ($interrupting !== $this->backendInterruptOtherSongs()) {
             return false;
         }
 

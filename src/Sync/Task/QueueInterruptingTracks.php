@@ -11,8 +11,8 @@ use App\Radio\Adapters;
 use App\Radio\AutoDJ\Queue;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
+use Monolog\Logger;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 
 class QueueInterruptingTracks extends AbstractTask
 {
@@ -20,10 +20,10 @@ class QueueInterruptingTracks extends AbstractTask
         protected Queue $queue,
         protected Adapters $adapters,
         protected EventDispatcherInterface $eventDispatcher,
+        protected Logger $monolog,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em, $monolog);
     }
 
     public static function getSchedulePattern(): string
@@ -39,7 +39,21 @@ class QueueInterruptingTracks extends AbstractTask
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            $this->queueForStation($station);
+            $this->monolog->pushProcessor(
+                function ($record) use ($station) {
+                    $record['extra']['station'] = [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ];
+                    return $record;
+                }
+            );
+
+            try {
+                $this->queueForStation($station);
+            } finally {
+                $this->monolog->popProcessor();
+            }
         }
     }
 
@@ -71,6 +85,7 @@ class QueueInterruptingTracks extends AbstractTask
 
         // Check that the interrupting queue is empty first.
         if (!$backend->isQueueEmpty($station, LiquidsoapQueues::Interrupting)) {
+            $this->logger->info('Interrupting queue: Queue is not empty!');
             return;
         }
 

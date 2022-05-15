@@ -209,6 +209,7 @@ class Queue
             $queueRow->setTimestampCued($expectedPlayTime->getTimestamp());
             $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
             $queueRow->updateVisibility();
+
             $this->em->persist($queueRow);
             $this->em->flush();
 

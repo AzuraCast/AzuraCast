@@ -115,7 +115,7 @@ class QueueBuilder implements EventSubscriberInterface
 
             $eligiblePlaylists = [];
             $logPlaylists = [];
-            foreach ($activePlaylistsByType[$type] as $playlistId => $playlist) {
+            foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime, $recentPlaylistHistory)) {
                     continue;

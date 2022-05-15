@@ -527,6 +527,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->getBackendConfig()->useManualAutoDj();
     }
 
+    public function supportsAutoDjQueue(): bool
+    {
+        return $this->getIsEnabled()
+            && !$this->useManualAutoDJ()
+            && BackendAdapters::None !== $this->getBackendTypeEnum();
+    }
+
     public function getBackendConfig(): StationBackendConfiguration
     {
         return new StationBackendConfiguration((array)$this->backend_config);

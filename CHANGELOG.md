@@ -5,7 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features in the Rolling Release since the latest Stable release.
+- We have updated AzuraCast's AutoDJ scheduler to be able to handle the "Advanced" playlist configuration options
+  itself, notably including the "Interrupt Other Tracks" setting. This means that enabling these settings will no longer
+  force a playlist to use Liquidsoap for its scheduling.
 
 ## Code Quality/Technical Changes
 
@@ -20,7 +22,8 @@ There have been no new features in the Rolling Release since the latest Stable r
 
 - A bug preventing SFTP from properly supporting SSH public keys has been fixed.
 
-- A minor security issue where SFTP would not properly disable if a station switched storage locations to a non-local one
+- A minor security issue where SFTP would not properly disable if a station switched storage locations to a non-local
+  one
   has been resolved.
 
 - The library used to handle translations for the PHP side of the application has been switched, which should avoid many
@@ -158,9 +161,10 @@ There have been no new features in the Rolling Release since the latest Stable r
   incorporated several soft-reload improvements that allow us to rebuild configuration files without disconnecting
   listeners. Both the "Restart to Apply Changes" and the "Restart System Broadcasting" link inside the 'Utilities'
   submenu will now soft-reload, which will not disconnect listeners on Icecast.
-  
+
 - **Blocking User Agents**: Station owners can now block specific user agents (or user-agent patterns, with wildcards)
-  from connecting to their streams. This will prevent bots or malicious users from consuming excess bandwidth and appearing
+  from connecting to their streams. This will prevent bots or malicious users from consuming excess bandwidth and
+  appearing
   in system-wide reports.
 
 ## Code Quality/Technical Changes
@@ -174,7 +178,7 @@ There have been no new features in the Rolling Release since the latest Stable r
 - We have updated how we handle Listener Reports to significantly reduce both memory and overall processing times,
   meaning stations with large listener counts can now more easily view and export reports for long time periods.
 
-- Updated to Liquidsoap version 2.0.3 on Ansible and Docker, this change includes some stability fixes and a patch for a 
+- Updated to Liquidsoap version 2.0.3 on Ansible and Docker, this change includes some stability fixes and a patch for a
   memory leak within Liquidsoap version 2.0.2. We are still working on resolving some minor issues with it. Refer to our
   megathread for more information [#5017](https://github.com/AzuraCast/AzuraCast/issues/5017)
 

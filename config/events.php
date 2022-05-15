@@ -136,6 +136,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\CleanupRelaysTask::class,
                 App\Sync\Task\CleanupStorageTask::class,
                 App\Sync\Task\MoveBroadcastsTask::class,
+                App\Sync\Task\QueueInterruptingTracks::class,
                 App\Sync\Task\ReactivateStreamerTask::class,
                 App\Sync\Task\RotateLogsTask::class,
                 App\Sync\Task\RunAnalyticsTask::class,
@@ -194,7 +195,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addServiceSubscriber(
         [
             App\Console\ErrorHandler::class,
-            App\Radio\AutoDJ\Queue::class,
+            App\Radio\AutoDJ\QueueBuilder::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,
             App\Radio\Backend\Liquidsoap\PlaylistFileWriter::class,

@@ -72,11 +72,16 @@ class BuildQueue extends Event
             return false;
         }
 
-        if (!is_array($nextSongs) && $this->lastPlayedSongId === $nextSongs->getSongId()) {
-            return false;
+        if (!is_array($nextSongs)) {
+            if ($this->lastPlayedSongId === $nextSongs->getSongId()) {
+                return false;
+            }
+
+            $this->nextSongs = [$nextSongs];
+        } else {
+            $this->nextSongs = $nextSongs;
         }
 
-        $this->nextSongs = $nextSongs;
         $this->stopPropagation();
         return true;
     }

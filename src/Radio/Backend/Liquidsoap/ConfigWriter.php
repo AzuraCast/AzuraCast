@@ -300,13 +300,7 @@ class ConfigWriter implements EventSubscriberInterface
                     Entity\Enums\PlaylistOrders::Random => 'random'
                 };
                 $playlistParams[] = 'mode="' . $playlistMode . '"';
-
-                if ($playlist->backendLoopPlaylistOnce()) {
-                    $playlistParams[] = 'reload_mode="never"';
-                } else {
-                    $playlistParams[] = 'reload_mode="watch"';
-                }
-
+                $playlistParams[] = 'reload_mode="watch"';
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
                 $playlistConfigLines[] = $playlistVarName . ' = playlist('
@@ -470,6 +464,23 @@ class ConfigWriter implements EventSubscriberInterface
             }
         }
 
+        if (!empty($scheduleSwitchesInterrupting)) {
+            $event->appendLines(['# Interrupting Schedule Switches']);
+
+            foreach (array_chunk($scheduleSwitchesInterrupting, 168, true) as $scheduleSwitchesChunk) {
+                $scheduleSwitchesChunk[] = '({true}, radio)';
+
+                $event->appendLines(
+                    [
+                        sprintf(
+                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
+                            implode(', ', $scheduleSwitchesChunk)
+                        ),
+                    ]
+                );
+            }
+        }
+
         if (!$station->useManualAutoDJ()) {
             $event->appendBlock(
                 <<< EOF
@@ -530,23 +541,6 @@ class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        if (!empty($scheduleSwitchesInterrupting)) {
-            $event->appendLines(['# Interrupting Schedule Switches']);
-
-            foreach (array_chunk($scheduleSwitchesInterrupting, 168, true) as $scheduleSwitchesChunk) {
-                $scheduleSwitchesChunk[] = '({true}, radio)';
-
-                $event->appendLines(
-                    [
-                        sprintf(
-                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
-                            implode(', ', $scheduleSwitchesChunk)
-                        ),
-                    ]
-                );
-            }
-        }
-
         $requestsQueueName = LiquidsoapQueues::Requests->value;
         $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
@@ -564,7 +558,6 @@ class ConfigWriter implements EventSubscriberInterface
             EOF
         );
     }
-
 
     /**
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.

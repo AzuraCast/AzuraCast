@@ -4,9 +4,8 @@
             <div class="uploading-file pt-1" v-for="(file, _) in files" :id="'file_upload_' + file.uniqueIdentifier"
                  :class="{ 'text-success': file.is_completed, 'text-danger': file.error }">
                 <h6 class="fileuploadname m-0">{{ file.name }}</h6>
-                <div class="progress" v-if="!file.is_completed">
-                    <div class="progress-bar" :style="{ width: file.progress_percent+'%' }"></div>
-                </div>
+                <b-progress v-if="!file.is_completed" :value="file.progress_percent" :max="100"
+                            show-progress class="h-15 my-1"></b-progress>
                 <div class="upload-status" v-if="file.error">
                     {{ file.error }}
                 </div>
@@ -81,24 +80,24 @@ export default {
         },
         validMimeTypes: {
             type: Array,
-            default () {
+            default() {
                 return ['*'];
             }
         },
         flowConfiguration: {
             type: Object,
-            default () {
+            default() {
                 return {};
             }
         }
     },
-    data () {
+    data() {
         return {
             flow: null,
             files: []
         };
     },
-    mounted () {
+    mounted() {
         let defaultConfig = {
             target: () => {
                 return this.targetUrl
@@ -166,12 +165,12 @@ export default {
         });
     },
     computed: {
-        validMimeTypesList () {
+        validMimeTypesList() {
             return this.validMimeTypes.join(', ');
         }
     },
     methods: {
-        formatFileSize (bytes) {
+        formatFileSize(bytes) {
             return formatFileSize(bytes);
         }
     }

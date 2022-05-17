@@ -23,11 +23,14 @@ release channel, you can take advantage of these new features and fixes.
 - A bug preventing SFTP from properly supporting SSH public keys has been fixed.
 
 - A minor security issue where SFTP would not properly disable if a station switched storage locations to a non-local
-  one
-  has been resolved.
+  one has been resolved.
 
 - The library used to handle translations for the PHP side of the application has been switched, which should avoid many
   of the errors being seen by users not able to see translations in some sections of the site.
+
+- When searching for items in searchable tables, the page will correctly reset to page 1.
+
+- "Schedule View" now properly shows events that start on Saturday and roll over into Sunday.
 
 ---
 

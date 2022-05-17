@@ -5,17 +5,15 @@
       Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }}
       {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
 
-- name: Sanity check
+- name: Ubuntu OS Check
   fail:
     msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu."
   when: ansible_distribution != 'Ubuntu'
 
-- name: Sanity check
+- name: Ubuntu Version Check
   fail:
-    msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu 16.04, 18.04 or 20.04 LTS."
+    msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu 20.04 LTS."
   when:
-    - ansible_distribution_release != 'bionic'
-    - ansible_distribution_release != 'xenial'
     - ansible_distribution_release != 'focal'
 
 - name: Add multiverse repository
@@ -59,20 +57,6 @@
       - software-properties-common
       - python3-pip
   when: ansible_distribution_release == 'focal'
-
-- name: Install Bionic Packages (18.04 only)
-  apt:
-    name:
-      - software-properties-common
-      - python-pip
-  when: ansible_distribution_release == 'bionic'
-
-- name: Install Xenial Packages (16.04 only)
-  apt:
-    name:
-      - python-software-properties
-      - python-pip
-  when: ansible_distribution_release == 'xenial'
 
 - name: Update pip components
   pip:

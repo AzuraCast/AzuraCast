@@ -2,11 +2,6 @@
 - name: Build Icecast
   include_tasks: icecast.yml
 
-- name: Build Liquidsoap (Legacy Ubuntu Versions)
-  include_tasks: liquidsoap_legacy.yml
-  when:
-    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
-
 - name: Install Liquidsoap (Focal)
   include_tasks: liquidsoap.yml
   when:

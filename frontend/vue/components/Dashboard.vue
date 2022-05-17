@@ -125,9 +125,11 @@
                         </td>
                         <td class="pl-2">
                             <big>{{ item.station.name }}</big><br>
-                            <a :href="item.links.public" target="_blank">
-                                <translate key="dashboard_link_public_page">Public Page</translate>
-                            </a>
+                            <template v-if="item.station.is_public">
+                                <a :href="item.links.public" target="_blank">
+                                    <translate key="dashboard_link_public_page">Public Page</translate>
+                                </a>
+                            </template>
                         </td>
                         <td class="text-center">
                             <icon class="sm align-middle" icon="headset"></icon>

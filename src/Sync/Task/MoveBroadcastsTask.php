@@ -64,7 +64,7 @@ class MoveBroadcastsTask extends AbstractTask
                 ->notName('*.tmp')
                 ->depth(1);
 
-            $this->logger->debug('Files', ['files', iterator_to_array($finder)]);
+            $this->logger->debug('Files', ['files', iterator_to_array($finder, false)]);
 
             foreach ($finder as $file) {
                 $this->logger->debug('File', ['file' => $file]);

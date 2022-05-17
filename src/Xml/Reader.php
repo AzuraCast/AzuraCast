@@ -41,7 +41,7 @@ class Reader
         }
 
         set_error_handler(
-            function ($error, $message = '') {
+            static function ($error, $message = '') {
                 throw new RuntimeException(
                     sprintf('Error reading XML string: %s', $message),
                     $error

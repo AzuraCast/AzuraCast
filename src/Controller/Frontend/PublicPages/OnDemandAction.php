@@ -19,9 +19,6 @@ class OnDemandAction
         EntityManagerInterface $em,
         bool $embed = false
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -57,7 +54,7 @@ class OnDemandAction
         }
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicOnDemand',
             id: 'station-on-demand',
             layout: 'minimal',

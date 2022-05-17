@@ -29,8 +29,7 @@ class ProfilerAdvisorCheck
             return;
         }
 
-        $profilerIsEnabled = $this->environment->isProfilingExtensionEnabled();
-        if (!$profilerIsEnabled) {
+        if (!$this->environment->isProfilingExtensionEnabled()) {
             return;
         }
 

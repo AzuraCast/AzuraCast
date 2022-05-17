@@ -28,10 +28,6 @@ class PodcastEpisodeController
         string $podcast_id,
         string $episode_id
     ): ResponseInterface {
-        $response = $response
-            ->withHeader('X-Frame-Options', '*')
-            ->withHeader('X-Robots-Tag', 'index, nofollow');
-
         $router = $request->getRouter();
         $station = $request->getStation();
 
@@ -69,7 +65,9 @@ class PodcastEpisodeController
         );
 
         return $request->getView()->renderToResponse(
-            $response,
+            $response
+                ->withHeader('X-Frame-Options', '*')
+                ->withHeader('X-Robots-Tag', 'index, nofollow'),
             'frontend/public/podcast-episode',
             [
                 'episode' => $episode,

@@ -29,8 +29,7 @@ class UpdateCheck
 
         $settings = $this->settingsRepo->readSettings();
 
-        $checkForUpdates = $settings->getCheckForUpdates();
-        if (!$checkForUpdates) {
+        if (!$settings->getCheckForUpdates()) {
             return;
         }
 

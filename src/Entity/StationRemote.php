@@ -271,7 +271,6 @@ class StationRemote implements
         $this->admin_password = $admin_password;
     }
 
-    /** @inheritdoc */
     public function getAutodjMount(): ?string
     {
         if (RemoteAdapters::Icecast !== $this->getTypeEnum()) {
@@ -315,7 +314,6 @@ class StationRemote implements
      * StationMountInterface compliance methods
      */
 
-    /** @inheritdoc */
     public function getAutodjPort(): ?int
     {
         return $this->getSourcePort() ?? $this->getUrlAsUri()->getPort();
@@ -403,7 +401,7 @@ class StationRemote implements
         $response->url = $adapter->getPublicUrl($this);
 
         $response->listeners = new Api\NowPlaying\Listeners(
-            total:  $this->listeners_total,
+            total: $this->listeners_total,
             unique: $this->listeners_unique
         );
 

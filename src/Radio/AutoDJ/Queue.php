@@ -205,7 +205,7 @@ class Queue
         }
 
         foreach ($nextSongs as $queueRow) {
-            $queueRow->setIsPlayed(true);
+            $queueRow->setIsPlayed();
             $queueRow->setTimestampCued($expectedPlayTime->getTimestamp());
             $queueRow->setTimestampPlayed($expectedPlayTime->getTimestamp());
             $queueRow->updateVisibility();

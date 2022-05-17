@@ -94,8 +94,7 @@ class RunBackupTask extends AbstractTask
     {
         $settings = $this->settingsRepo->readSettings();
 
-        $backup_enabled = $settings->getBackupEnabled();
-        if (!$backup_enabled) {
+        if (!$settings->getBackupEnabled()) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
         }

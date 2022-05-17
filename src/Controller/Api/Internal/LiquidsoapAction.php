@@ -47,7 +47,7 @@ class LiquidsoapAction
             $commandObj = $di->get($command->getClass());
 
             $result = $commandObj->run($station, $asAutoDj, $payload);
-            $response->getBody()->write((string)$result);
+            $response->getBody()->write($result);
         } catch (Throwable $e) {
             $logger->error(
                 sprintf(
@@ -62,8 +62,8 @@ class LiquidsoapAction
                 ]
             );
 
-            $response = $response->withStatus(400);
-            $response->getBody()->write('false');
+            return $response->withStatus(400)
+                ->write('false');
         }
 
         return $response;

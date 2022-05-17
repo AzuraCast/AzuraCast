@@ -341,12 +341,16 @@ class InstallCommand extends Command
                 $yaml['services']['web']['ports'] = array_merge($existingPorts, $yamlPorts);
             }
             if (!empty($nginxRadioPorts)) {
-                $nginxRadioPortsStr = '(' . implode('|', $nginxRadioPorts) . ')';
-                $yaml['services']['web']['environment']['NGINX_RADIO_PORTS'] = $nginxRadioPortsStr;
+                $yaml['services']['web']['environment']['NGINX_RADIO_PORTS'] = '(' . implode(
+                    '|',
+                    $nginxRadioPorts
+                ) . ')';
             }
             if (!empty($nginxWebDjPorts)) {
-                $nginxWebDjPortsStr = '(' . implode('|', $nginxWebDjPorts) . ')';
-                $yaml['services']['web']['environment']['NGINX_WEBDJ_PORTS'] = $nginxWebDjPortsStr;
+                $yaml['services']['web']['environment']['NGINX_WEBDJ_PORTS'] = '(' . implode(
+                    '|',
+                    $nginxWebDjPorts
+                ) . ')';
             }
         }
 
@@ -357,8 +361,7 @@ class InstallCommand extends Command
         }
 
         // Remove privileged-mode settings if not enabled.
-        $enablePrivileged = $env->getAsBool('AZURACAST_COMPOSE_PRIVILEGED', true);
-        if (!$enablePrivileged) {
+        if (!$env->getAsBool('AZURACAST_COMPOSE_PRIVILEGED', true)) {
             foreach ($yaml['services'] as &$service) {
                 unset(
                     $service['ulimits'],

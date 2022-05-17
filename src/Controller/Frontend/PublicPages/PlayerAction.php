@@ -21,11 +21,6 @@ class PlayerAction
         Entity\Repository\StationRepository $stationRepo,
         ?string $embed = null
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response
-            ->withHeader('X-Frame-Options', '*')
-            ->withHeader('X-Robots-Tag', 'index, nofollow');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -47,7 +42,9 @@ class PlayerAction
             : 'frontend/public/index';
 
         return $request->getView()->renderToResponse(
-            $response,
+            $response
+                ->withHeader('X-Frame-Options', '*')
+                ->withHeader('X-Robots-Tag', 'index, nofollow'),
             $templateName,
             [
                 'isSocial' => ('social' === $embed),

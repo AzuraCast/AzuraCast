@@ -237,9 +237,9 @@ class PodcastFeedController
 
         if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
             $podcastArtworkSrc = (string)$this->router->fromHere(
-                route_name:   'api:stations:podcast:art',
+                route_name: 'api:stations:podcast:art',
                 route_params: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
-                absolute:     true
+                absolute: true
             );
         }
 
@@ -318,9 +318,9 @@ class PodcastFeedController
         $rssEnclosure = new RssEnclosure();
 
         $podcastMediaPlayUrl = (string)$this->router->fromHere(
-            route_name:   'api:stations:podcast:episode:download',
+            route_name: 'api:stations:podcast:episode:download',
             route_params: ['episode_id' => $episode->getId()],
-            absolute:     true
+            absolute: true
         );
 
         $rssEnclosure->setUrl($podcastMediaPlayUrl);
@@ -345,9 +345,9 @@ class PodcastFeedController
 
         if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
             $episodeArtworkSrc = (string)$this->router->fromHere(
-                route_name:   'api:stations:podcast:episode:art',
+                route_name: 'api:stations:podcast:episode:art',
                 route_params: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
-                absolute:     true
+                absolute: true
             );
         }
 
@@ -361,11 +361,10 @@ class PodcastFeedController
     {
         foreach ($rssItems as $rssItem) {
             foreach ($rssItem->getExtensions() as $extension) {
-                if (($extension instanceof ItunesItem) === false) {
+                if (!($extension instanceof ItunesItem)) {
                     continue;
                 }
 
-                /** @var ItunesItem $extension */
                 if ($extension->getExplicit()) {
                     return true;
                 }

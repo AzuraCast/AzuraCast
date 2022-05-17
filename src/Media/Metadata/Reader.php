@@ -13,6 +13,7 @@ use App\Utilities\Time;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
+use Throwable;
 use voku\helper\UTF8;
 
 class Reader
@@ -70,7 +71,7 @@ class Reader
                 @unlink($artOutput);
                 break;
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable) {
             $metadata->setArtwork(null);
         }
 

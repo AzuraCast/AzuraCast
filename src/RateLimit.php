@@ -70,7 +70,7 @@ class RateLimit
         $rateLimiterFactory = new RateLimiterFactory($config, $cacheStore, $this->lockFactory);
         $rateLimiter = $rateLimiterFactory->create($key);
 
-        if (false === $rateLimiter->consume()->isAccepted()) {
+        if (!$rateLimiter->consume()->isAccepted()) {
             throw new Exception\RateLimitExceededException();
         }
     }

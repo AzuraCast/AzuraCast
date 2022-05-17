@@ -188,9 +188,7 @@ class StationQueue implements SongInterface, IdentifiableEntityInterface
 
     public function updateVisibility(): void
     {
-        $this->is_visible = ($this->playlist instanceof StationPlaylist)
-            ? !$this->playlist->getIsJingle()
-            : true;
+        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
     }
 
     public function getTimestampPlayed(): int

@@ -17,10 +17,6 @@ class RequestsAction
         Response $response,
         Entity\Repository\CustomFieldRepository $customFieldRepo
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response
-            ->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -31,7 +27,8 @@ class RequestsAction
         $customization = $request->getCustomization();
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response
+                ->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicRequests',
             id: 'song-requests',
             layout: 'minimal',

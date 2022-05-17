@@ -137,7 +137,7 @@ class PlaylistFileWriter implements EventSubscriberInterface
             try {
                 $this->eventDispatcher->dispatch($event);
                 $playlistFile[] = $event->buildAnnotations();
-            } catch (Throwable $e) {
+            } catch (Throwable) {
             }
         }
 

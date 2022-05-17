@@ -28,7 +28,7 @@ class StationApiGenerator
         $response = new Entity\Api\NowPlaying\Station();
         $response->id = (int)$station->getId();
         $response->name = (string)$station->getName();
-        $response->shortcode = (string)$station->getShortName();
+        $response->shortcode = $station->getShortName();
         $response->description = (string)$station->getDescription();
         $response->frontend = (string)$station->getFrontendType();
         $response->backend = (string)$station->getBackendType();

@@ -7,6 +7,7 @@ namespace App\Media\Metadata;
 use App\Event\Media\WriteMetadata;
 use JamesHeinrich\GetID3\GetID3;
 use JamesHeinrich\GetID3\WriteTags;
+use RuntimeException;
 
 class Writer
 {
@@ -54,7 +55,7 @@ class Writer
         }
 
         if (null === $tagFormats) {
-            throw new \RuntimeException('Cannot write tag formats based on file type.');
+            throw new RuntimeException('Cannot write tag formats based on file type.');
         }
 
         $tagwriter->tagformats = $tagFormats;
@@ -89,7 +90,7 @@ class Writer
         if (!empty($tagwriter->errors) || !empty($tagwriter->warnings)) {
             $messages = array_merge($tagwriter->errors, $tagwriter->warnings);
 
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Cannot process media file %s: %s',
                     $path,

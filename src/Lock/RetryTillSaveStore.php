@@ -38,9 +38,9 @@ final class RetryTillSaveStore implements BlockingStoreInterface, LoggerAwareInt
      * @param int $retryCount Maximum amount of retry
      */
     public function __construct(
-        private PersistingStoreInterface $decorated,
-        private int $retrySleep = 100,
-        private int $retryCount = PHP_INT_MAX
+        private readonly PersistingStoreInterface $decorated,
+        private readonly int $retrySleep = 100,
+        private readonly int $retryCount = PHP_INT_MAX
     ) {
         $this->logger = new NullLogger();
     }
@@ -65,7 +65,7 @@ final class RetryTillSaveStore implements BlockingStoreInterface, LoggerAwareInt
                 $this->decorated->save($key);
 
                 return;
-            } catch (LockConflictedException $e) {
+            } catch (LockConflictedException) {
                 usleep(($this->retrySleep + random_int(-$sleepRandomness, $sleepRandomness)) * 1000);
             }
         } while (++$retry < $this->retryCount);

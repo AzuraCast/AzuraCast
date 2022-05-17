@@ -31,7 +31,7 @@ final class HandleUniqueMiddleware implements MiddlewareInterface
         $message = $envelope->getMessage();
 
         $lock = $this->lockFactory->createLock('message_queue_' . $message->getIdentifier(), $message->getTtl());
-        if ($lock->acquire() === false) {
+        if (!$lock->acquire()) {
             throw new UnrecoverableMessageHandlingException(
                 'A queued message matching this one is already being handled.'
             );

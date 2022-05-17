@@ -19,9 +19,6 @@ class WebDjAction
         Response $response,
         Assets $assets
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -52,7 +49,7 @@ class WebDjAction
         }
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicWebDJ',
             id: 'web_dj',
             layout: 'minimal',

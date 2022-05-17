@@ -81,8 +81,7 @@ class StationsAction
             }
         );
 
-        $sortDesc = ('desc' === strtolower($request->getParam('sortOrder', 'asc')));
-        if ($sortDesc) {
+        if ('desc' === strtolower($request->getParam('sortOrder', 'asc'))) {
             $viewStations = array_reverse($viewStations);
         }
 

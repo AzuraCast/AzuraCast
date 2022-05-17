@@ -121,7 +121,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
 
         $this->moved = rename($this->file, $targetPath);
 
-        if (false === $this->moved) {
+        if (!$this->moved) {
             throw new RuntimeException(
                 sprintf('Uploaded file could not be moved to %s', $targetPath)
             );
@@ -145,7 +145,7 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
     {
         return [
             'originalFilename' => $this->clientFilename,
-            'uploadedPath'     => $this->file,
+            'uploadedPath' => $this->file,
         ];
     }
 

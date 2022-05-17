@@ -42,7 +42,7 @@ class GetOrderAction extends AbstractPlaylistsAction
 
         return $response->withJson(
             array_map(
-                function (array $row) use ($router, $station): array {
+                static function (array $row) use ($router, $station): array {
                     $row['media']['links'] = [
                         'play' => (string)$router->named(
                             'api:stations:files:play',

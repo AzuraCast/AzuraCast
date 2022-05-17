@@ -8,6 +8,7 @@ use App\Entity\Attributes\Auditable;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use OpenApi\Attributes as OA;
 use phpseclib3\Crypt\PublicKeyLoader;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -134,7 +135,7 @@ class SftpUser implements IdentifiableEntityInterface
         try {
             $pkObj = PublicKeyLoader::loadPublicKey(trim($pubKeyRaw));
             return trim($pkObj->toString('OpenSSH', ['comment' => '']));
-        } catch (\Exception) {
+        } catch (Exception) {
             return null;
         }
     }

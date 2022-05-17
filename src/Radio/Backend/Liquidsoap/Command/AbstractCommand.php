@@ -51,11 +51,12 @@ abstract class AbstractCommand
 
             if (true === $result) {
                 return 'true';
-            } elseif (false === $result) {
-                return 'false';
-            } else {
-                return (string)$result;
             }
+            if (false === $result) {
+                return 'false';
+            }
+
+            return (string)$result;
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(

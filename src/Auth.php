@@ -205,21 +205,11 @@ class Auth
 
     /**
      * Become a different user across the application.
-     *
-     * @param array<string, mixed>|User $user_info
      */
-    public function masqueradeAsUser(User|array $user_info): void
+    public function masqueradeAsUser(User $user): void
     {
-        if (!($user_info instanceof User)) {
-            $user_info = $this->userRepo->getRepository()->findOneBy($user_info);
-        }
-
-        if (!($user_info instanceof User)) {
-            throw new Exception('Invalid user!');
-        }
-
-        $this->session->set(self::SESSION_MASQUERADE_USER_ID_KEY, $user_info->getId());
-        $this->masqueraded_user = $user_info;
+        $this->session->set(self::SESSION_MASQUERADE_USER_ID_KEY, $user->getId());
+        $this->masqueraded_user = $user;
     }
 
     /**

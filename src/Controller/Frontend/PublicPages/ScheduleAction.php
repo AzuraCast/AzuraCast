@@ -16,10 +16,6 @@ class ScheduleAction
         Response $response,
         bool $embed = false
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response
-            ->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -34,7 +30,8 @@ class ScheduleAction
         }
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response
+                ->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicSchedule',
             id: 'station-schedule',
             layout: 'minimal',

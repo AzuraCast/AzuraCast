@@ -18,8 +18,8 @@ class Urls
                 try {
                     return new Uri($url);
                 } catch (MalformedUriException) {
-                    /** @noinspection HttpUrlsUsage */
                     if (!str_starts_with($url, 'http')) {
+                        /** @noinspection HttpUrlsUsage */
                         return self::getUri('http://' . $url);
                     }
                 }

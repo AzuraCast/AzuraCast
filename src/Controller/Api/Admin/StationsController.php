@@ -196,7 +196,7 @@ class StationsController extends AbstractAdminApiCrudController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'self'   => (string)$router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
@@ -206,7 +206,7 @@ class StationsController extends AbstractAdminApiCrudController
                 route_params: ['station_id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'clone'  => (string)$router->fromHere(
+            'clone' => (string)$router->fromHere(
                 route_name: 'api:admin:station:clone',
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
@@ -234,7 +234,7 @@ class StationsController extends AbstractAdminApiCrudController
         ];
 
         foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
-            $context[AbstractNormalizer::CALLBACKS][$locationKey] = fn(
+            $context[AbstractNormalizer::CALLBACKS][$locationKey] = static fn(
                 array $value
             ) => $value['id'];
         }
@@ -332,7 +332,7 @@ class StationsController extends AbstractAdminApiCrudController
                     station: $station,
                     forceRestart: true
                 );
-            } catch (Throwable $e) {
+            } catch (Throwable) {
             }
         }
 

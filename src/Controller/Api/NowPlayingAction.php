@@ -114,7 +114,7 @@ class NowPlayingAction
                     ->getSingleResult();
 
                 $np = $npResult['nowplaying'] ?? null;
-            } catch (NoResultException $e) {
+            } catch (NoResultException) {
                 return null;
             }
         }

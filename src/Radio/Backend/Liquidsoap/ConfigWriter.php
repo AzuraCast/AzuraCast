@@ -424,6 +424,8 @@ class ConfigWriter implements EventSubscriberInterface
                         }
                     }
                     break;
+                case Entity\Enums\PlaylistTypes::Advanced:
+                    throw new \Exception('To be implemented');
             }
         }
 
@@ -1144,17 +1146,18 @@ class ConfigWriter implements EventSubscriberInterface
      */
     public static function cleanUpVarName(string $str): string
     {
-        $str = strip_tags($str);
-        $str = preg_replace(['/[\r\n\t ]+/', '/[\"\*\/\:\<\>\?\'\|]+/'], ' ', $str) ?? '';
-        $str = strtolower($str);
+        $str = strtolower(
+            preg_replace(
+                ['/[\r\n\t ]+/', '/[\"*\/:<>?\'|]+/'],
+                ' ',
+                strip_tags($str)
+            ) ?? ''
+        );
         $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
         $str = htmlentities($str, ENT_QUOTES, "utf-8");
         $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str) ?? '';
-        $str = str_replace(' ', '_', $str);
-        $str = rawurlencode($str);
-        $str = str_replace(['%', '-', '.'], ['', '_', '_'], $str);
-
-        return $str;
+        $str = rawurlencode(str_replace(' ', '_', $str));
+        return str_replace(['%', '-', '.'], ['', '_', '_'], $str);
     }
 
     public static function getPlaylistVariableName(Entity\StationPlaylist $playlist): string

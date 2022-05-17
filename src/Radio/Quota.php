@@ -17,8 +17,8 @@ class Quota
             return 100;
         }
 
-        $size = $size->toBigDecimal();
-        return $size->dividedBy($total, 2, Math\RoundingMode::HALF_CEILING)
+        return $size->toBigDecimal()
+            ->dividedBy($total, 2, Math\RoundingMode::HALF_CEILING)
             ->multipliedBy(100)
             ->toInt();
     }
@@ -55,7 +55,7 @@ class Quota
         $unit = preg_replace('/[^bkmgtpezy]/i', '', $size) ?? '';
 
         // Remove the non-numeric characters from the size.
-        $size = preg_replace('/[^0-9\\.]/', '', $size) ?? '';
+        $size = preg_replace('/[^\d.]/', '', $size) ?? '';
 
         if ($unit) {
             // Find the position of the unit in the ordered string which is the power
@@ -64,7 +64,7 @@ class Quota
             /** @noinspection StringFragmentMisplacedInspection */
             $byte_power = stripos(
                 haystack: 'bkmgtpezy',
-                needle:   $unit[0]
+                needle: $unit[0]
             ) ?: 0;
             $byte_multiplier = Math\BigInteger::of(1000)->power($byte_power);
 

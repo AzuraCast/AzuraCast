@@ -187,7 +187,7 @@ class CloneAction extends StationsController
 
         try {
             $this->configuration->writeConfiguration($newStation);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
 
         $this->em->flush();

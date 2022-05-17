@@ -9,6 +9,7 @@ use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class MetadataManager
 {
@@ -33,7 +34,7 @@ class MetadataManager
             $this->eventDispatcher->dispatch($event);
 
             return $event->getMetadata();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
                     'Cannot read metadata for file "%s": %s',
@@ -55,7 +56,7 @@ class MetadataManager
         try {
             $event = new WriteMetadata($metadata, $filePath);
             $this->eventDispatcher->dispatch($event);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
                     'Cannot write metadata for file "%s": %s',

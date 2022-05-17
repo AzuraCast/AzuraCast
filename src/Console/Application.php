@@ -31,8 +31,7 @@ class Application extends \Symfony\Component\Console\Application
 
         $output = new StreamOutput($temp_stream);
 
-        $command = $this->find($command);
-        $result_code = $command->run($input, $output);
+        $result_code = $this->find($command)->run($input, $output);
 
         rewind($temp_stream);
         $result_output = stream_get_contents($temp_stream);

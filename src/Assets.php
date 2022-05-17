@@ -57,7 +57,7 @@ class Assets
         $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/webpack.json');
         $this->addVueComponents($vueComponents);
 
-        $this->csp_nonce = (string)preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
+        $this->csp_nonce = (string)preg_replace('/[^A-Za-z\d+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
     }
 

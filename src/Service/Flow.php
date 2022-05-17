@@ -237,8 +237,7 @@ class Flow
     protected static function rrmdir(string $dir): void
     {
         if (is_dir($dir)) {
-            $objects = array_diff(scandir($dir, SCANDIR_SORT_NONE) ?: [], ['.', '..']);
-            foreach ($objects as $object) {
+            foreach (array_diff(scandir($dir, SCANDIR_SORT_NONE) ?: [], ['.', '..']) as $object) {
                 if (is_dir($dir . '/' . $object)) {
                     self::rrmdir($dir . '/' . $object);
                 } else {

@@ -46,8 +46,7 @@ class PerformanceAction
             );
         }
 
-        $paginator = Paginator::fromArray($reportData, $request);
-        return $paginator->write($response);
+        return Paginator::fromArray($reportData, $request)->write($response);
     }
 
     /**

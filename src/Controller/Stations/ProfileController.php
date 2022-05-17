@@ -60,7 +60,6 @@ class ProfileController
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
 
-        $backendConfig = $station->getBackendConfig();
         $frontendConfig = $station->getFrontendConfig();
 
         $acl = $request->getAcl();

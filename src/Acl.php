@@ -72,9 +72,9 @@ class Acl
     public function listPermissions(): array
     {
         if (!isset($this->permissions)) {
-            /** @var array<string,array> $permissions */
+            /** @var array<string,array<string, string>> $permissions */
             $permissions = [
-                'global'  => [],
+                'global' => [],
                 'station' => [],
             ];
 

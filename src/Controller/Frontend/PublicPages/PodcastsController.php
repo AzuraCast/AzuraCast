@@ -19,10 +19,6 @@ class PodcastsController
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $response = $response
-            ->withHeader('X-Frame-Options', '*')
-            ->withHeader('X-Robots-Tag', 'index, nofollow');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -31,9 +27,15 @@ class PodcastsController
 
         $publishedPodcasts = $this->podcastRepository->fetchPublishedPodcastsForStation($station);
 
-        return $request->getView()->renderToResponse($response, 'frontend/public/podcasts', [
-            'podcasts' => $publishedPodcasts,
-            'station' => $station,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response
+                ->withHeader('X-Frame-Options', '*')
+                ->withHeader('X-Robots-Tag', 'index, nofollow'),
+            'frontend/public/podcasts',
+            [
+                'podcasts' => $publishedPodcasts,
+                'station' => $station,
+            ]
+        );
     }
 }

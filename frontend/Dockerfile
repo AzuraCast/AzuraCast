@@ -28,6 +28,7 @@ USER node:node
 VOLUME /data/frontend/node_modules
 
 ENV NODE_ENV=production
+ENV HOME=/home/node
 
 # Define default command.
 ENTRYPOINT ["/entrypoint.sh"]

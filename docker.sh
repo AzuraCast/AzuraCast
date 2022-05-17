@@ -763,9 +763,9 @@ restore-legacy() {
 # Usage: ./docker.sh static [static_container_command]
 #
 static() {
-  docker-compose -f frontend/docker-compose.yml down -v
-  docker-compose -f frontend/docker-compose.yml build
-  docker-compose --env-file=.env -f frontend/docker-compose.yml run --rm frontend "$@"
+  docker-compose -f docker-compose.frontend.yml down -v
+  docker-compose -f docker-compose.frontend.yml build
+  docker-compose --env-file=.env -f docker-compose.frontend.yml run --rm frontend "$@"
   exit
 }
 

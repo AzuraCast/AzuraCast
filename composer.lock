@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.222.7",
+            "version": "3.222.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "03d35eef5c509798d2c08587cfd9a7c33afe2260"
+                "reference": "007ddbbded7b753c2ceda61f3648774597a2615f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/03d35eef5c509798d2c08587cfd9a7c33afe2260",
-                "reference": "03d35eef5c509798d2c08587cfd9a7c33afe2260",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/007ddbbded7b753c2ceda61f3648774597a2615f",
+                "reference": "007ddbbded7b753c2ceda61f3648774597a2615f",
                 "shasum": ""
             },
             "require": {
@@ -143,9 +143,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.222.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.222.13"
             },
-            "time": "2022-05-06T18:16:59+00:00"
+            "time": "2022-05-16T18:15:06+00:00"
         },
         {
             "name": "azuracast/doctrine-batch-utilities",
@@ -1425,25 +1425,25 @@
         },
         {
             "name": "doctrine/deprecations",
-            "version": "v0.5.3",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314"
+                "reference": "0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/9504165960a1f83cc1480e2be1dd0a0478561314",
-                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de",
+                "reference": "0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1|^8.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0|^7.0|^8.0",
-                "phpunit/phpunit": "^7.0|^8.0|^9.0",
-                "psr/log": "^1.0"
+                "doctrine/coding-standard": "^9",
+                "phpunit/phpunit": "^7.5|^8.5|^9.5",
+                "psr/log": "^1|^2|^3"
             },
             "suggest": {
                 "psr/log": "Allows logging deprecations via PSR-3 logger implementation"
@@ -1462,9 +1462,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/v0.5.3"
+                "source": "https://github.com/doctrine/deprecations/tree/v1.0.0"
             },
-            "time": "2021-03-21T12:59:47+00:00"
+            "time": "2022-05-02T15:47:09+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -1799,22 +1799,22 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "5713b45c933122e509d9b31c767b420c3dfed399"
+                "reference": "c0a01ddead0ccaf0282f3f4fcaa026d11918a481"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/5713b45c933122e509d9b31c767b420c3dfed399",
-                "reference": "5713b45c933122e509d9b31c767b420c3dfed399",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/c0a01ddead0ccaf0282f3f4fcaa026d11918a481",
+                "reference": "c0a01ddead0ccaf0282f3f4fcaa026d11918a481",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2",
                 "doctrine/dbal": "^3.3",
-                "doctrine/deprecations": "^0.5.3",
+                "doctrine/deprecations": "^0.5.3 || ^1",
                 "doctrine/event-manager": "^1.0",
                 "friendsofphp/proxy-manager-lts": "^1.0",
                 "php": "^7.4 || ^8.0",
@@ -1822,10 +1822,13 @@
                 "symfony/console": "^4.4.16 || ^5.4 || ^6.0",
                 "symfony/stopwatch": "^4.4 || ^5.4 || ^6.0"
             },
+            "conflict": {
+                "doctrine/orm": "<2.12"
+            },
             "require-dev": {
                 "doctrine/coding-standard": "^9",
-                "doctrine/orm": "^2.6",
-                "doctrine/persistence": "^2.0",
+                "doctrine/orm": "^2.12",
+                "doctrine/persistence": "^2 || ^3",
                 "doctrine/sql-formatter": "^1.0",
                 "ergebnis/composer-normalize": "^2.9",
                 "ext-pdo_sqlite": "*",
@@ -1834,7 +1837,7 @@
                 "phpstan/phpstan-phpunit": "^1.1",
                 "phpstan/phpstan-strict-rules": "^1.1",
                 "phpstan/phpstan-symfony": "^1.1",
-                "phpunit/phpunit": "^9.4",
+                "phpunit/phpunit": "^9.5",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
                 "symfony/process": "^4.4 || ^5.4 || ^6.0",
                 "symfony/yaml": "^4.4 || ^5.4 || ^6.0"
@@ -1885,7 +1888,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/migrations/issues",
-                "source": "https://github.com/doctrine/migrations/tree/3.5.0"
+                "source": "https://github.com/doctrine/migrations/tree/3.5.1"
             },
             "funding": [
                 {
@@ -1901,7 +1904,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-04T20:24:11+00:00"
+            "time": "2022-05-09T20:24:38+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -4201,16 +4204,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "4192345e260f1d51b365536199744b987e160edc"
+                "reference": "247918972acd74356b0a91dfaa5adcaec069b6c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4192345e260f1d51b365536199744b987e160edc",
-                "reference": "4192345e260f1d51b365536199744b987e160edc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/247918972acd74356b0a91dfaa5adcaec069b6c0",
+                "reference": "247918972acd74356b0a91dfaa5adcaec069b6c0",
                 "shasum": ""
             },
             "require": {
@@ -4223,18 +4226,23 @@
             "require-dev": {
                 "aws/aws-sdk-php": "^2.4.9 || ^3.0",
                 "doctrine/couchdb": "~1.0@dev",
-                "elasticsearch/elasticsearch": "^7",
+                "elasticsearch/elasticsearch": "^7 || ^8",
+                "ext-json": "*",
                 "graylog2/gelf-php": "^1.4.2",
+                "guzzlehttp/guzzle": "^7.4",
+                "guzzlehttp/psr7": "^2.2",
                 "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4 || ^3",
                 "php-console/php-console": "^3.1.3",
-                "phpspec/prophecy": "^1.6.1",
+                "phpspec/prophecy": "^1.15",
                 "phpstan/phpstan": "^0.12.91",
-                "phpunit/phpunit": "^8.5",
+                "phpunit/phpunit": "^8.5.14",
                 "predis/predis": "^1.1",
                 "rollbar/rollbar": "^1.3 || ^2 || ^3",
-                "ruflin/elastica": ">=0.90@dev",
-                "swiftmailer/swiftmailer": "^5.3|^6.0"
+                "ruflin/elastica": "^7",
+                "swiftmailer/swiftmailer": "^5.3|^6.0",
+                "symfony/mailer": "^5.4 || ^6",
+                "symfony/mime": "^5.4 || ^6"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -4284,7 +4292,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.5.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.6.0"
             },
             "funding": [
                 {
@@ -4296,7 +4304,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-08T15:43:54+00:00"
+            "time": "2022-05-10T09:36:00+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -9972,16 +9980,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.4.1",
+            "version": "4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "86ab9cb3468a9a6989b14f57d95bb4202aa593ce"
+                "reference": "1653b53eb3973a9a6dac87ef8f2676801b14469f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/86ab9cb3468a9a6989b14f57d95bb4202aa593ce",
-                "reference": "86ab9cb3468a9a6989b14f57d95bb4202aa593ce",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/1653b53eb3973a9a6dac87ef8f2676801b14469f",
+                "reference": "1653b53eb3973a9a6dac87ef8f2676801b14469f",
                 "shasum": ""
             },
             "require": {
@@ -10043,9 +10051,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.4.1"
+                "source": "https://github.com/zircote/swagger-php/tree/4.4.2"
             },
-            "time": "2022-05-06T09:12:54+00:00"
+            "time": "2022-05-13T23:51:07+00:00"
         }
     ],
     "packages-dev": [
@@ -11657,16 +11665,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.6.7",
+            "version": "1.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "d41c39cb2e487663bce9bbd97c660e244b73abad"
+                "reference": "d76498c5531232cb8386ceb6004f7e013138d3ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d41c39cb2e487663bce9bbd97c660e244b73abad",
-                "reference": "d41c39cb2e487663bce9bbd97c660e244b73abad",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d76498c5531232cb8386ceb6004f7e013138d3ba",
+                "reference": "d76498c5531232cb8386ceb6004f7e013138d3ba",
                 "shasum": ""
             },
             "require": {
@@ -11692,7 +11700,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.6.7"
+                "source": "https://github.com/phpstan/phpstan/tree/1.6.8"
             },
             "funding": [
                 {
@@ -11712,20 +11720,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-04T22:55:41+00:00"
+            "time": "2022-05-10T06:54:21+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "1.3.3",
+            "version": "1.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "35b098cbf78647a15fcaf4a9bfa536b8de9c3ddd"
+                "reference": "dd53db81bc1f877248de3819321d84126a9e9f65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/35b098cbf78647a15fcaf4a9bfa536b8de9c3ddd",
-                "reference": "35b098cbf78647a15fcaf4a9bfa536b8de9c3ddd",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/dd53db81bc1f877248de3819321d84126a9e9f65",
+                "reference": "dd53db81bc1f877248de3819321d84126a9e9f65",
                 "shasum": ""
             },
             "require": {
@@ -11778,9 +11786,9 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.3.3"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.3.4"
             },
-            "time": "2022-04-20T15:54:13+00:00"
+            "time": "2022-05-09T13:15:33+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12341,12 +12349,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "c99945852fb9e9de3bc89c90f24b4c8ef47668fd"
+                "reference": "c491d086242983f784b8af91cbb9de43d3374971"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/c99945852fb9e9de3bc89c90f24b4c8ef47668fd",
-                "reference": "c99945852fb9e9de3bc89c90f24b4c8ef47668fd",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/c491d086242983f784b8af91cbb9de43d3374971",
+                "reference": "c491d086242983f784b8af91cbb9de43d3374971",
                 "shasum": ""
             },
             "conflict": {
@@ -12379,11 +12387,12 @@
                 "bolt/core": "<=4.2",
                 "bottelet/flarepoint": "<2.2.1",
                 "brightlocal/phpwhois": "<=4.2.5",
+                "brotkrueml/codehighlight": "<2.7",
                 "buddypress/buddypress": "<7.2.1",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
                 "bytefury/crater": "<6.0.2",
                 "cachethq/cachet": "<2.5.1",
-                "cakephp/cakephp": "<4.0.6",
+                "cakephp/cakephp": "<3.10.3|>=4,<4.0.6",
                 "cardgate/magento2": "<2.0.33",
                 "cart2quote/module-quotation": ">=4.1.6,<=4.4.5|>=5,<5.4.4",
                 "cartalyst/sentry": "<=2.1.6",
@@ -12823,7 +12832,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-06T13:19:01+00:00"
+            "time": "2022-05-16T08:10:11+00:00"
         },
         {
             "name": "sebastian/cli-parser",

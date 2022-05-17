@@ -47,9 +47,8 @@
                                 <translate key="lang_current_version">Current Installed Version</translate>
                             </legend>
 
-                            <p v-if="isInstalled" class="text-success card-text">
-                                <translate
-                                    key="lang_installed">Stereo Tool is installed on this installation.</translate>
+                            <p v-if="version" class="text-success card-text">
+                                {{ langInstalledVersion }}
                             </p>
                             <p v-else class="text-danger card-text">
                                 <translate
@@ -77,8 +76,16 @@ export default {
     data() {
         return {
             loading: true,
-            isInstalled: false,
+            version: null,
         };
+    },
+    computed: {
+        langInstalledVersion() {
+            const text = this.$gettext('%{ version } is currently installed.');
+            return this.$gettextInterpolate(text, {
+                version: this.version
+            });
+        }
     },
     mounted() {
         this.relist();
@@ -87,7 +94,7 @@ export default {
         relist() {
             this.loading = true;
             this.axios.get(this.apiUrl).then((resp) => {
-                this.isInstalled = resp.data.isInstalled;
+                this.version = resp.data.version;
                 this.loading = false;
             });
         }

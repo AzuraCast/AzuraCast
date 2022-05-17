@@ -31,6 +31,8 @@ class PostAction
         }
 
         $flowResponse->moveTo($binaryPath);
+        
+        chmod($binaryPath, 0744);
 
         return $response->withJson(Entity\Api\Status::success());
     }

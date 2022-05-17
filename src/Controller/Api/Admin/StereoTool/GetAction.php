@@ -19,7 +19,7 @@ class GetAction
         return $response->withJson(
             [
                 'success' => true,
-                'isInstalled' => $stereoTool->isInstalled(),
+                'version' => $stereoTool->getVersion(),
             ]
         );
     }

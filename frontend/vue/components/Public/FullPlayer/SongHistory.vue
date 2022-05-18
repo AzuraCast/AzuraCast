@@ -102,7 +102,7 @@ export default {
             return DateTime.fromSeconds(timestamp).toRelative();
         },
         albumAndArtist (song) {
-            return [song.album, song.artist].filter(str => !!str).join(', ');
+            return [song.artist, song.album].filter(str => !!str).join(', ');
         }
     }
 };

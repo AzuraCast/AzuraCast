@@ -58,13 +58,11 @@ class NowPlayingAction
     ) {
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int|string|null $station_id
-     */
-    public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string|null $station_id = null
+    ): ResponseInterface {
         $router = $request->getRouter();
 
         if (!empty($station_id)) {

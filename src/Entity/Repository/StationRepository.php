@@ -55,15 +55,14 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param bool|string $add_blank
-     * @param Closure|NULL $display
-     * @param string $pk
-     * @param string $order_by
-     *
-     * @return mixed[]
+     * @inheritDoc
      */
-    public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name'): array
-    {
+    public function fetchSelect(
+        bool|string $add_blank = false,
+        Closure $display = null,
+        string $pk = 'id',
+        string $order_by = 'name'
+    ): array {
         $select = [];
 
         // Specify custom text in the $add_blank parameter to override.

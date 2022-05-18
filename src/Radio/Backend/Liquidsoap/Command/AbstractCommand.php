@@ -7,6 +7,7 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 use App\Entity;
 use App\Radio\Enums\BackendAdapters;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use ReflectionClass;
 use Throwable;
 
@@ -23,8 +24,8 @@ abstract class AbstractCommand
         ?array $payload = []
     ): string {
         $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
+            function (LogRecord $record) use ($station) {
+                $record->extra['station'] = [
                     'id' => $station->getId(),
                     'name' => $station->getName(),
                 ];

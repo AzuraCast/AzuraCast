@@ -12,17 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class PlayAction
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int|string $id
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @return ResponseInterface
-     */
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $id,
+        int|string $id,
         Entity\Repository\StationMediaRepository $mediaRepo
     ): ResponseInterface {
         set_time_limit(600);

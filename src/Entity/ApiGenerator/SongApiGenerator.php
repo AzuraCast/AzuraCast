@@ -109,7 +109,7 @@ class SongApiGenerator
      *
      * @return mixed[]
      */
-    protected function getCustomFields($media_id = null): array
+    protected function getCustomFields(?int $media_id = null): array
     {
         $fields = $this->customFieldRepo->getFieldIds();
 

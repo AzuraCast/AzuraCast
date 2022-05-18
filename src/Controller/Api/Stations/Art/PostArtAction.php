@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
-use App\Exception\NoFileUploadedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -43,22 +42,12 @@ use Psr\Http\Message\ResponseInterface;
 )]
 class PostArtAction
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @param EntityManagerInterface $em
-     * @param int|string $media_id
-     *
-     * @return ResponseInterface
-     * @throws NoFileUploadedException
-     */
     public function __invoke(
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationMediaRepository $mediaRepo,
         EntityManagerInterface $em,
-        $media_id
+        int|string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 

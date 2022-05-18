@@ -24,8 +24,10 @@ class ProfileController
     ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $station = $request->getStation();
         $view = $request->getView();
 

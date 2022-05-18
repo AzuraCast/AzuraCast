@@ -1058,9 +1058,10 @@ class ConfigWriter implements EventSubscriberInterface
                 return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
 
             case StreamFormats::Mp3:
-            default:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
         }
+
+        throw new \RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
     }
 
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void

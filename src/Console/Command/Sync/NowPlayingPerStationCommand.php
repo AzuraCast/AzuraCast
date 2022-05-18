@@ -10,6 +10,7 @@ use App\Entity\Station;
 use App\Sync\NowPlaying\Task\BuildQueueTask;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,8 +52,8 @@ class NowPlayingPerStationCommand extends CommandAbstract
         }
 
         $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
+            function (LogRecord $record) use ($station) {
+                $record->extra['station'] = [
                     'id' => $station->getId(),
                     'name' => $station->getName(),
                 ];

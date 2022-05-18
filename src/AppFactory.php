@@ -9,7 +9,6 @@ use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use DI;
-use DI\Bridge\Slim\ControllerInvoker;
 use Invoker\Invoker;
 use Invoker\ParameterResolver\AssociativeArrayResolver;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
@@ -58,7 +57,7 @@ class AppFactory
 
         $app = new App(
             responseFactory: new ResponseFactory(),
-            container:       $container,
+            container: $container,
         );
         $container->set(App::class, $app);
 

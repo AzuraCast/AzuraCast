@@ -5,6 +5,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Bulk Media CSV Import/Export**: You can now export all of your station's media and its associated metadata into a
+  CSV file for editing in spreadsheet software of your choice. Once you've made your changes, upload the modified file
+  from the same page and all of the changes will be applied in bulk, including basic metadata, associated playlists,
+  cue/fade points, and custom fields.
+
 - We have updated AzuraCast's AutoDJ scheduler to be able to handle the "Advanced" playlist configuration options
   itself, notably including the "Interrupt Other Tracks" setting. This means that enabling these settings will no longer
   force a playlist to use Liquidsoap for its scheduling.

@@ -12,6 +12,16 @@ use App\Entity;
  */
 class StationPlaylistRepository extends Repository
 {
+    /**
+     * @return Entity\StationPlaylist[]
+     */
+    public function getAllForStation(Entity\Station $station): array
+    {
+        return $this->repository->findBy([
+            'station' => $station,
+        ]);
+    }
+
     public function stationHasActivePlaylists(Entity\Station $station): bool
     {
         foreach ($station->getPlaylists() as $playlist) {

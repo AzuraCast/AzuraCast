@@ -344,6 +344,11 @@ return static function (RouteCollectorProxy $group) {
                     $group->get('/download', Controller\Api\Stations\Files\DownloadAction::class)
                         ->setName('api:stations:files:download');
 
+                    $group->get('/bulk', Controller\Api\Stations\Files\BulkDownloadAction::class)
+                        ->setName('api:stations:files:bulk');
+
+                    $group->post('/bulk', Controller\Api\Stations\Files\BulkUploadAction::class);
+
                     $group->map(
                         ['GET', 'POST'],
                         '/upload',

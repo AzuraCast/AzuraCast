@@ -7,9 +7,8 @@ namespace App\Controller\Api\Stations\Reports;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use App\Service\CsvWriterTempFile;
 use App\Sync\Task\RunAutomatedAssignmentTask;
-use App\Utilities\File;
-use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 
 class PerformanceAction
@@ -59,9 +58,8 @@ class PerformanceAction
         array $reportData,
         string $filename
     ): ResponseInterface {
-        $tempFile = File::generateTempPath($filename);
-
-        $csv = Writer::createFromPath($tempFile, 'w+');
+        $tempFile = new CsvWriterTempFile();
+        $csv = $tempFile->getWriter();
 
         $csv->insertOne(
             [
@@ -95,6 +93,6 @@ class PerformanceAction
             ]);
         }
 
-        return $response->withFileDownload($tempFile, $filename, 'text/csv');
+        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
     }
 }

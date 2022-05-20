@@ -10,12 +10,11 @@ use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\File;
+use App\Service\CsvWriterTempFile;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -150,22 +149,19 @@ class HistoryController
         Query $query,
         string $filename
     ): ResponseInterface {
-        $tempFile = File::generateTempPath($filename);
+        $tempFile = new CsvWriterTempFile();
+        $csv = $tempFile->getWriter();
 
-        $csv = Writer::createFromPath($tempFile, 'w+');
-
-        $csv->insertOne(
-            [
-                'Date',
-                'Time',
-                'Listeners',
-                'Delta',
-                'Track',
-                'Artist',
-                'Playlist',
-                'Streamer',
-            ]
-        );
+        $csv->insertOne([
+            'Date',
+            'Time',
+            'Listeners',
+            'Delta',
+            'Track',
+            'Artist',
+            'Playlist',
+            'Streamer',
+        ]);
 
         /** @var Entity\SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
@@ -196,6 +192,6 @@ class HistoryController
             ]);
         }
 
-        return $response->withFileDownload($tempFile, $filename, 'text/csv');
+        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
     }
 }

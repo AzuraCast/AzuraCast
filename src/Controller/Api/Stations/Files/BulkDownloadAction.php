@@ -8,9 +8,8 @@ use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Utilities\File;
+use App\Service\CsvWriterTempFile;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 
 class BulkDownloadAction
@@ -46,9 +45,9 @@ class BulkDownloadAction
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         $filename = $station->getShortName() . '_all_media.csv';
-        $tempFile = File::generateTempPath($filename);
-        $csv = Writer::createFromPath($tempFile, 'w+');
-        $csv->setOutputBOM($csv::BOM_UTF8);
+
+        $tempFile = new CsvWriterTempFile();
+        $csv = $tempFile->getWriter();
 
         /*
          * NOTE: These field names should correspond with DB property names when converted into short_names.
@@ -116,10 +115,6 @@ class BulkDownloadAction
             $csv->insertOne($bodyRow);
         }
 
-        try {
-            return $response->withFileDownload($tempFile, $filename, 'text/csv');
-        } finally {
-            @unlink($filename);
-        }
+        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
     }
 }

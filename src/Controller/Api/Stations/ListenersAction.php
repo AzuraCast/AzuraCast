@@ -9,13 +9,12 @@ use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Service\CsvWriterTempFile;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
-use App\Utilities\File;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -207,9 +206,8 @@ class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = File::generateTempPath($filename);
-
-        $csv = Writer::createFromPath($tempFile, 'w+');
+        $tempFile = new CsvWriterTempFile();
+        $csv = $tempFile->getWriter();
 
         $tz = $station->getTimezoneObject();
 
@@ -266,6 +264,6 @@ class ListenersAction
             $csv->insertOne($exportRow);
         }
 
-        return $response->withFileDownload($tempFile, $filename, 'text/csv');
+        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
     }
 }

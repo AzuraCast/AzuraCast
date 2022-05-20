@@ -494,7 +494,7 @@ return [
         $client = new fXmlRpc\Client(
             'http://localhost/RPC2',
             new fXmlRpc\Transport\PsrTransport(
-                new Http\Factory\Guzzle\RequestFactory,
+                new GuzzleHttp\Psr7\HttpFactory(),
                 new GuzzleHttp\Client([
                     'curl' => [
                         \CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
@@ -520,9 +520,11 @@ return [
         GuzzleHttp\Client $httpClient,
         Psr\Log\LoggerInterface $logger
     ) {
+        $httpFactory = new GuzzleHttp\Psr7\HttpFactory();
+
         return new NowPlaying\AdapterFactory(
-            new Http\Factory\Guzzle\UriFactory,
-            new Http\Factory\Guzzle\RequestFactory,
+            $httpFactory,
+            $httpFactory,
             $httpClient,
             $logger
         );

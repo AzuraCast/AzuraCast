@@ -45,7 +45,6 @@
     "gettext/php-scanner": "^1.3",
     "guzzlehttp/guzzle": "^7.0",
     "guzzlehttp/oauth-subscriber": "^0.6.0",
-    "http-interop/http-factory-guzzle": "^1.0",
     "intervention/image": "^2.6",
     "james-heinrich/getid3": "v2.0.0-beta4",
     "league/csv": "^9.6",

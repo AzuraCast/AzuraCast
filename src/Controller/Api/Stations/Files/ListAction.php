@@ -184,6 +184,7 @@ class ListAction
                 $media->text = $row['artist'] . ' - ' . $row['title'];
                 $media->album = (string)$row['album'];
                 $media->genre = (string)$row['genre'];
+                $media->isrc = (string)$row['isrc'];
 
                 $media->is_playable = ($row['length'] !== 0);
                 $media->length = (int)$row['length'];
@@ -208,15 +209,15 @@ class ListAction
                         $playlists[$playlistId]['count']++;
                     } else {
                         $playlists[$playlistId] = [
-                            'id'    => $playlistId,
-                            'name'  => $spmRow['playlist']['name'],
+                            'id' => $playlistId,
+                            'name' => $spmRow['playlist']['name'],
                             'count' => 1,
                         ];
                     }
                 }
 
                 $mediaInDir[$row['path']] = [
-                    'media'     => $media,
+                    'media' => $media,
                     'playlists' => array_values($playlists),
                 ];
             }
@@ -230,7 +231,7 @@ class ListAction
                 }
 
                 $foldersInDir[$folderRow['path']]['playlists'][] = [
-                    'id'   => $folderRow['playlist']['id'],
+                    'id' => $folderRow['playlist']['id'],
                     'name' => $folderRow['playlist']['name'],
                 ];
             }
@@ -400,22 +401,22 @@ class ListAction
                     'api:stations:media:art',
                     [
                         'station_id' => $stationId,
-                        'media_id'   => $row->media->unique_id . '-' . $row->media->art_updated_at,
+                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
                     ]
                 );
 
             $row->media->links = [
-                'play'     => (string)$router->named(
+                'play' => (string)$router->named(
                     'api:stations:files:play',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                     [],
                     true
                 ),
-                'edit'     => (string)$router->named(
+                'edit' => (string)$router->named(
                     'api:stations:file',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                 ),
-                'art'      => (string)$router->named(
+                'art' => (string)$router->named(
                     'api:stations:media:art-internal',
                     ['station_id' => $stationId, 'media_id' => $row->media->media_id]
                 ),
@@ -423,7 +424,7 @@ class ListAction
                     'api:stations:media:waveform',
                     [
                         'station_id' => $stationId,
-                        'media_id'   => $row->media->unique_id . '-' . $row->media->art_updated_at,
+                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
                     ]
                 ),
             ];
@@ -435,7 +436,7 @@ class ListAction
                 ['station_id' => $stationId],
                 ['file' => $row->path]
             ),
-            'rename'   => (string)$router->named(
+            'rename' => (string)$router->named(
                 'api:stations:files:rename',
                 ['station_id' => $stationId],
                 ['file' => $row->path]

@@ -51,6 +51,12 @@ class Song implements ResolvableUrlInterface
     public string $genre = '';
 
     #[OA\Property(
+        description: 'The International Standard Recording Code (ISRC) of the file.',
+        example: 'US28E1600021'
+    )]
+    public string $isrc = '';
+
+    #[OA\Property(
         description: 'Lyrics to the song.',
         example: ''
     )]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Stations\Files;
+namespace App\Controller\Api\Stations\BulkMedia;
 
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistRepository;
@@ -12,7 +12,7 @@ use App\Service\CsvWriterTempFile;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class BulkDownloadAction
+class DownloadAction
 {
     public function __invoke(
         ServerRequest $request,

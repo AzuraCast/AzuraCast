@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Stations\Files;
+namespace App\Controller\Api\Stations\BulkMedia;
 
 use App\Entity;
 use App\Exception\ValidationException;
@@ -16,7 +16,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class BulkUploadAction
+use function count;
+use function str_starts_with;
+
+class UploadAction
 {
     protected const ALLOWED_MEDIA_FIELDS = [
         'title',

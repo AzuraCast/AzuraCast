@@ -330,8 +330,8 @@ class ConfigWriter implements EventSubscriberInterface
                             $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
                             $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString(
-                                    $remote_url
-                                ) . '")))';
+                                $remote_url
+                            ) . '")))';
                         }
                         break;
                 }
@@ -424,6 +424,9 @@ class ConfigWriter implements EventSubscriberInterface
                         }
                     }
                     break;
+
+                case Entity\Enums\PlaylistTypes::Advanced:
+                    // NOOP
             }
         }
 

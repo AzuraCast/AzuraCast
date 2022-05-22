@@ -8,12 +8,8 @@ class Strings
 {
     /**
      * Truncate text (adding "..." if needed)
-     *
-     * @param string $text
-     * @param int $limit
-     * @param string $pad
      */
-    public static function truncateText(string $text, $limit = 80, $pad = '...'): string
+    public static function truncateText(string $text, int $limit = 80, string $pad = '...'): string
     {
         mb_internal_encoding('UTF-8');
 

@@ -138,7 +138,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class WebhooksController extends AbstractStationApiCrudController
+final class WebhooksController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
@@ -149,8 +149,11 @@ class WebhooksController extends AbstractStationApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
@@ -189,7 +192,7 @@ class WebhooksController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'self'   => (string)$router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
@@ -199,7 +202,7 @@ class WebhooksController extends AbstractStationApiCrudController
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'test'   => (string)$router->fromHere(
+            'test' => (string)$router->fromHere(
                 route_name: 'api:stations:webhook:test',
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal

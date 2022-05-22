@@ -8,7 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexAction
+final class IndexAction
 {
     public function __invoke(
         ServerRequest $request,

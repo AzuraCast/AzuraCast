@@ -14,17 +14,18 @@ use App\Http\ServerRequest;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-class PodcastEpisodesController
+final class PodcastEpisodesAction
 {
     public function __construct(
-        protected PodcastRepository $podcastRepository,
-        protected PodcastEpisodeRepository $episodeRepository
+        private readonly PodcastRepository $podcastRepository,
+        private readonly PodcastEpisodeRepository $episodeRepository
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $router = $request->getRouter();

@@ -10,14 +10,18 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class RelaysAction
+final class RelaysAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        EntityManagerInterface $em
+        Response $response
     ): ResponseInterface {
-        $relays = $em->createQueryBuilder()
+        $relays = $this->em->createQueryBuilder()
             ->select('e')
             ->from(Entity\Relay::class, 'e')
             ->getQuery()->getArrayResult();

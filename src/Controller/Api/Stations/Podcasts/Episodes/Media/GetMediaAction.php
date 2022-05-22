@@ -44,18 +44,24 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class GetMediaAction
+final class GetMediaAction
 {
+    public function __construct(
+        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         set_time_limit(600);
 
         $station = $request->getStation();
-        $episode = $episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
 
         if ($episode instanceof Entity\PodcastEpisode) {
             $podcastMedia = $episode->getMedia();

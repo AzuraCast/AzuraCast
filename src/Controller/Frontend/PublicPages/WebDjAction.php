@@ -12,12 +12,17 @@ use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use Psr\Http\Message\ResponseInterface;
 
-class WebDjAction
+final class WebDjAction
 {
+    public function __construct(
+        private readonly Assets $assets
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Assets $assets
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -41,10 +46,10 @@ class WebDjAction
         $wss_url = str_replace('wss://', '', $wss_url);
 
         $libUrls = [];
-        $lib = $assets->getLibrary('Vue_PublicWebDJ');
+        $lib = $this->assets->getLibrary('Vue_PublicWebDJ');
         if (null !== $lib) {
             foreach (array_slice($lib['files']['js'], 0, -1) as $script) {
-                $libUrls[] = (string)($router->getBaseUrl()->withPath($assets->getUrl($script['src'])));
+                $libUrls[] = (string)($router->getBaseUrl()->withPath($this->assets->getUrl($script['src'])));
             }
         }
 

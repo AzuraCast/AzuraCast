@@ -99,7 +99,7 @@ class Reader
                         $tagValue = implode(', ', $flatValue);
                     }
 
-                    $metaTags[(string)$tagName] = $this->cleanUpString((string)$tagValue);
+                    $metaTags[strtolower((string)$tagName)] = $this->cleanUpString((string)$tagValue);
                 }
             }
         }

@@ -7,19 +7,27 @@ namespace App\Controller\Api\Stations\Playlists;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ReshuffleAction extends AbstractPlaylistsAction
+final class ReshuffleAction extends AbstractPlaylistsAction
 {
+    public function __construct(
+        EntityManagerInterface $em,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+    ) {
+        parent::__construct($em);
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        int|string $station_id,
         int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 
-        $spmRepo->resetQueue($record);
+        $this->spmRepo->resetQueue($record);
 
         return $response->withJson(
             new Entity\Api\Status(

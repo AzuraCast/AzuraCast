@@ -20,7 +20,7 @@ interface MetadataInterface
      * @param string $key
      * @param mixed $value
      */
-    public function addTag(string $key, $value): void;
+    public function addTag(string $key, mixed $value): void;
 
     /**
      * @return float

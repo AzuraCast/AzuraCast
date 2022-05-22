@@ -13,14 +13,19 @@ use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class StreamersAction
+final class StreamersAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly AzuraCastCentral $acCentral,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        AzuraCastCentral $acCentral,
-        Entity\Repository\SettingsRepository $settingsRepo
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
@@ -35,8 +40,8 @@ class StreamersAction
             $params = $request->getQueryParams();
             if (isset($params['enable'])) {
                 $station->setEnableStreamers(true);
-                $em->persist($station);
-                $em->flush();
+                $this->em->persist($station);
+                $this->em->flush();
 
                 $request->getFlash()->addMessage(
                     '<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
@@ -49,7 +54,7 @@ class StreamersAction
             return $view->renderToResponse($response, 'stations/streamers/disabled');
         }
 
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
         $backendConfig = $station->getBackendConfig();
 
         $router = $request->getRouter();
@@ -66,7 +71,7 @@ class StreamersAction
                 'connectionInfo' => [
                     'serverUrl' => $settings->getBaseUrl(),
                     'streamPort' => $backend->getStreamPort($station),
-                    'ip' => $acCentral->getIp(),
+                    'ip' => $this->acCentral->getIp(),
                     'djMountPoint' => $backendConfig->getDjMountPoint(),
                 ],
             ]

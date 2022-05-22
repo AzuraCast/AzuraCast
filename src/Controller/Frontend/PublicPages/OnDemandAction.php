@@ -11,12 +11,17 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class OnDemandAction
+final class OnDemandAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
+        int|string $station_id,
         bool $embed = false
     ): ResponseInterface {
         $station = $request->getStation();
@@ -30,7 +35,7 @@ class OnDemandAction
         }
 
         // Get list of custom fields.
-        $customFieldsRaw = $em->createQuery(
+        $customFieldsRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT cf.id, cf.short_name, cf.name
                 FROM App\Entity\CustomField cf ORDER BY cf.name ASC

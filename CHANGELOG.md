@@ -5,6 +5,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Bulk Media CSV Import/Export**: You can now export all of your station's media and its associated metadata into a
+  CSV file for editing in spreadsheet software of your choice. Once you've made your changes, upload the modified file
+  from the same page and all of the changes will be applied in bulk, including basic metadata, associated playlists,
+  cue/fade points, and custom fields.
+
 - We have updated AzuraCast's AutoDJ scheduler to be able to handle the "Advanced" playlist configuration options
   itself, notably including the "Interrupt Other Tracks" setting. This means that enabling these settings will no longer
   force a playlist to use Liquidsoap for its scheduling.
@@ -17,6 +22,9 @@ release channel, you can take advantage of these new features and fixes.
 - Internal services using ports from 9000-9010 have been moved to use other ports or sockets; while our default port
   allocation does not use these ports, many stations need to use ports in that range for legacy purposes, which should
   once again be possible.
+
+- Docker users can now debug Slim Application Errors by editing the `SHOW_DETAILED_ERRORS` in the `azuracast.env` file,
+  reports should be submitted to our [issues](https://github.com/azuracast/azuracast/issues) section for review by our team. 
 
 ## Bug Fixes
 

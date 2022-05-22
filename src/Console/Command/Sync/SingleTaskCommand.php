@@ -8,6 +8,7 @@ use App\Console\Command\CommandAbstract;
 use App\Sync\Task\AbstractTask;
 use InvalidArgumentException;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
@@ -75,8 +76,8 @@ class SingleTaskCommand extends CommandAbstract
 
         $startTime = microtime(true);
         $this->logger->pushProcessor(
-            function ($record) use ($taskShortName) {
-                $record['extra']['task'] = $taskShortName;
+            function (LogRecord $record) use ($taskShortName) {
+                $record->extra['task'] = $taskShortName;
                 return $record;
             }
         );

@@ -12,6 +12,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\Collection;
 use Monolog\Logger;
+use Monolog\LogRecord;
 
 class Scheduler
 {
@@ -29,8 +30,8 @@ class Scheduler
         array $recentPlaylistHistory = []
     ): bool {
         $this->logger->pushProcessor(
-            function ($record) use ($playlist) {
-                $record['extra']['playlist'] = [
+            function (LogRecord $record) use ($playlist) {
+                $record->extra['playlist'] = [
                     'id' => $playlist->getId(),
                     'name' => $playlist->getName(),
                 ];

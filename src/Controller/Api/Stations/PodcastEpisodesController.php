@@ -180,7 +180,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class PodcastEpisodesController extends AbstractApiCrudController
+final class PodcastEpisodesController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\PodcastEpisode::class;
     protected string $resourceRouteName = 'api:stations:podcast:episode';
@@ -189,9 +189,8 @@ class PodcastEpisodesController extends AbstractApiCrudController
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        protected Entity\Repository\StationRepository $stationRepository,
-        protected Entity\Repository\PodcastRepository $podcastRepository,
-        protected Entity\Repository\PodcastEpisodeRepository $episodeRepository
+        private readonly Entity\Repository\PodcastRepository $podcastRepository,
+        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepository
     ) {
         parent::__construct($em, $serializer, $validator);
     }
@@ -199,6 +198,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -226,6 +226,8 @@ class PodcastEpisodesController extends AbstractApiCrudController
     public function getAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -243,6 +245,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
     public function createAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -286,6 +289,8 @@ class PodcastEpisodesController extends AbstractApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $podcast = $this->getRecord($request->getStation(), $episode_id);
@@ -303,6 +308,8 @@ class PodcastEpisodesController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -325,7 +332,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
      *
      * @return Entity\PodcastEpisode|null
      */
-    protected function getRecord(Entity\Station $station, string $id): ?object
+    private function getRecord(Entity\Station $station, string $id): ?object
     {
         return $this->episodeRepository->fetchEpisodeForStation($station, $id);
     }

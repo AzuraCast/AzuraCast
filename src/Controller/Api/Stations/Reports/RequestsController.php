@@ -12,17 +12,18 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class RequestsController
+final class RequestsController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRequestRepository $requestRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationRequestRepository $requestRepo
     ) {
     }
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -65,6 +66,7 @@ class RequestsController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $request_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -81,6 +83,7 @@ class RequestsController
     public function clearAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $this->requestRepo->clearPendingRequests($station);

@@ -45,9 +45,9 @@ class Assets
 
     public function __construct(
         protected Environment $environment,
-        Config $config
+        array $libraries,
     ) {
-        foreach ($config->get('assets') as $library_name => $library) {
+        foreach ($libraries as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
 

@@ -53,6 +53,7 @@ class SongApiGenerator
         if ($song instanceof Entity\StationMedia) {
             $response->album = $song->getAlbum() ?? '';
             $response->genre = $song->getGenre() ?? '';
+            $response->isrc = $song->getIsrc() ?? '';
             $response->lyrics = $song->getLyrics() ?? '';
 
             $response->custom_fields = $this->getCustomFields($song->getId());
@@ -109,7 +110,7 @@ class SongApiGenerator
      *
      * @return mixed[]
      */
-    protected function getCustomFields($media_id = null): array
+    protected function getCustomFields(?int $media_id = null): array
     {
         $fields = $this->customFieldRepo->getFieldIds();
 

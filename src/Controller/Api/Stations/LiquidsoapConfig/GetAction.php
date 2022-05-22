@@ -9,11 +9,12 @@ use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Psr\Http\Message\ResponseInterface;
 
-class GetAction
+final class GetAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $backendConfig = $request->getStation()->getBackendConfig();
 

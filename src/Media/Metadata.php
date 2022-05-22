@@ -25,7 +25,7 @@ final class Metadata implements MetadataInterface
         $this->tags = $tags;
     }
 
-    public function addTag(string $key, $value): void
+    public function addTag(string $key, mixed $value): void
     {
         $this->tags[$key] = $value;
     }

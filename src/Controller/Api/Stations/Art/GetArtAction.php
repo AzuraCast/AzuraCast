@@ -37,27 +37,25 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-class GetArtAction
+final class GetArtAction
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param Entity\Repository\StationRepository $stationRepo
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @param string $media_id
-     */
+    public function __construct(
+        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\StationMediaRepository $mediaRepo,
+        int|string $station_id,
         string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
-        $defaultArtRedirect = $response->withRedirect((string)$stationRepo->getDefaultAlbumArtUrl($station), 302);
+        $defaultArtRedirect = $response->withRedirect((string)$this->stationRepo->getDefaultAlbumArtUrl($station), 302);
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id, 2)[0];
@@ -66,7 +64,7 @@ class GetArtAction
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
             $mediaPath = Entity\StationMedia::getArtPath($media_id);
         } else {
-            $media = $mediaRepo->find($media_id, $station);
+            $media = $this->mediaRepo->find($media_id, $station);
             if ($media instanceof Entity\StationMedia) {
                 $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
             } else {

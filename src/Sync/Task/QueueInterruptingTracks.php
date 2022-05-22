@@ -12,6 +12,7 @@ use App\Radio\AutoDJ\Queue;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class QueueInterruptingTracks extends AbstractTask
@@ -40,8 +41,8 @@ class QueueInterruptingTracks extends AbstractTask
     {
         foreach ($this->iterateStations() as $station) {
             $this->monolog->pushProcessor(
-                function ($record) use ($station) {
-                    $record['extra']['station'] = [
+                function (LogRecord $record) use ($station) {
+                    $record->extra['station'] = [
                         'id' => $station->getId(),
                         'name' => $station->getName(),
                     ];

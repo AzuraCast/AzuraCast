@@ -12,13 +12,18 @@ use App\Service\AzuraCastCentral;
 use App\Service\SftpGo;
 use Psr\Http\Message\ResponseInterface;
 
-class SftpUsersAction
+final class SftpUsersAction
 {
+    public function __construct(
+        private readonly Environment $environment,
+        private readonly AzuraCastCentral $acCentral
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment,
-        AzuraCastCentral $acCentral
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -30,7 +35,7 @@ class SftpUsersAction
             ->withScheme('sftp')
             ->withPort(null);
 
-        $port = $environment->getSftpPort();
+        $port = $this->environment->getSftpPort();
 
         $router = $request->getRouter();
 
@@ -40,10 +45,10 @@ class SftpUsersAction
             id: 'station-sftp-users',
             title: __('SFTP Users'),
             props: [
-                'listUrl'        => (string)$router->fromHere('api:stations:sftp-users'),
+                'listUrl' => (string)$router->fromHere('api:stations:sftp-users'),
                 'connectionInfo' => [
-                    'url'  => (string)$baseUrl,
-                    'ip'   => $acCentral->getIp(),
+                    'url' => (string)$baseUrl,
+                    'ip' => $this->acCentral->getIp(),
                     'port' => $port,
                 ],
             ],

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
-use App\Exception\NoFileUploadedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -41,28 +40,23 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class PostArtAction
+final class PostArtAction
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @param EntityManagerInterface $em
-     * @param int|string $media_id
-     *
-     * @return ResponseInterface
-     * @throws NoFileUploadedException
-     */
+    public function __construct(
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        EntityManagerInterface $em,
-        $media_id
+        int|string $station_id,
+        int|string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $media = $mediaRepo->find($media_id, $station);
+        $media = $this->mediaRepo->find($media_id, $station);
         if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)
                 ->withJson(Entity\Api\Error::notFound());
@@ -73,11 +67,11 @@ class PostArtAction
             return $flowResponse;
         }
 
-        $mediaRepo->updateAlbumArt(
+        $this->mediaRepo->updateAlbumArt(
             $media,
             $flowResponse->readAndDeleteUploadedFile()
         );
-        $em->flush();
+        $this->em->flush();
 
         return $response->withJson(Entity\Api\Status::updated());
     }

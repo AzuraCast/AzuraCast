@@ -13,12 +13,16 @@ use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class PostAction
+final class PostAction
 {
+    public function __construct(
+        private readonly Environment $environment,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Environment $environment
+        Response $response
     ): ResponseInterface {
         if ('x86_64' !== php_uname('m')) {
             throw new RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
@@ -29,7 +33,7 @@ class PostAction
             return $flowResponse;
         }
 
-        $scBaseDir = $environment->getParentDirectory() . '/servers/shoutcast2';
+        $scBaseDir = $this->environment->getParentDirectory() . '/servers/shoutcast2';
 
         $scTgzPath = $scBaseDir . '/sc_serv.tar.gz';
         if (is_file($scTgzPath)) {

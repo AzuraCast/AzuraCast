@@ -9,11 +9,12 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class ScheduleAction
+final class ScheduleAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         bool $embed = false
     ): ResponseInterface {
         $station = $request->getStation();

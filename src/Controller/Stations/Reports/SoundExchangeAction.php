@@ -9,10 +9,13 @@ use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 
-class SoundExchangeAction
+final class SoundExchangeAction
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $tzObject = $request->getStation()->getTimezoneObject();
 
         $defaultStartDate = CarbonImmutable::parse('first day of last month', $tzObject)->format('Y-m-d');

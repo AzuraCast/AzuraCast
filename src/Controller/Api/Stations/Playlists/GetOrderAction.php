@@ -10,11 +10,12 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class GetOrderAction extends AbstractPlaylistsAction
+final class GetOrderAction extends AbstractPlaylistsAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $id
     ): ResponseInterface {
         $station = $request->getStation();

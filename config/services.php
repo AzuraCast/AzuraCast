@@ -365,7 +365,7 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        App\LockFactory $lockFactory,
+        \App\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
@@ -494,7 +494,7 @@ return [
         $client = new fXmlRpc\Client(
             'http://localhost/RPC2',
             new fXmlRpc\Transport\PsrTransport(
-                new Http\Factory\Guzzle\RequestFactory,
+                new GuzzleHttp\Psr7\HttpFactory(),
                 new GuzzleHttp\Client([
                     'curl' => [
                         \CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
@@ -520,12 +520,23 @@ return [
         GuzzleHttp\Client $httpClient,
         Psr\Log\LoggerInterface $logger
     ) {
+        $httpFactory = new GuzzleHttp\Psr7\HttpFactory();
+
         return new NowPlaying\AdapterFactory(
-            new Http\Factory\Guzzle\UriFactory,
-            new Http\Factory\Guzzle\RequestFactory,
+            $httpFactory,
+            $httpFactory,
             $httpClient,
             $logger
         );
     },
 
+    App\Assets::class => static fn(Environment $env) => new App\Assets(
+        $env,
+        require __DIR__ . '/assets.php'
+    ),
+
+    App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
+        $di,
+        require __DIR__ . '/webhooks.php'
+    ),
 ];

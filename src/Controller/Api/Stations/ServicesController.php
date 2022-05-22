@@ -11,7 +11,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -102,16 +101,18 @@ use Throwable;
         ]
     )
 ]
-class ServicesController
+final class ServicesController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Configuration $configuration
+        private readonly Configuration $configuration
     ) {
     }
 
-    public function statusAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function statusAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $backend = $request->getStationBackend();
@@ -127,8 +128,11 @@ class ServicesController
         );
     }
 
-    public function reloadAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function reloadAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         // Reloading attempts to update configuration without restarting broadcasting, if possible and supported.
         $station = $request->getStation();
 
@@ -149,8 +153,11 @@ class ServicesController
         return $response->withJson(new Entity\Api\Status(true, __('Station reloaded.')));
     }
 
-    public function restartAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function restartAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         // Restarting will always shut down and restart any services.
         $station = $request->getStation();
 
@@ -175,6 +182,7 @@ class ServicesController
     public function frontendAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
@@ -214,6 +222,7 @@ class ServicesController
     public function backendAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();

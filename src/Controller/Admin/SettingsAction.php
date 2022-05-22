@@ -10,12 +10,16 @@ use App\Http\ServerRequest;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
-class SettingsAction
+final class SettingsAction
 {
+    public function __construct(
+        private readonly Version $version,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Version $version
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -29,7 +33,7 @@ class SettingsAction
                     'group' => Settings::GROUP_GENERAL,
                 ]),
                 'testMessageUrl' => (string)$router->named('api:admin:send-test-message'),
-                'releaseChannel' => $version->getReleaseChannelEnum()->value,
+                'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
             ],
         );
     }

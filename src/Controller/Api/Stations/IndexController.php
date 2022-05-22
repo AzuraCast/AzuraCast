@@ -48,15 +48,31 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class IndexController
+final class IndexController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
     ) {
     }
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+
+    public function indexAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
+        $station = $request->getStation();
+
+        $apiResponse = ($this->stationApiGenerator)($station);
+        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
+
+        return $response->withJson($apiResponse);
+    }
+
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $stations_raw = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
 
@@ -72,14 +88,5 @@ class IndexController
         }
 
         return $response->withJson($stations);
-    }
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $station = $request->getStation();
-
-        $apiResponse = ($this->stationApiGenerator)($station);
-        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
-
-        return $response->withJson($apiResponse);
     }
 }

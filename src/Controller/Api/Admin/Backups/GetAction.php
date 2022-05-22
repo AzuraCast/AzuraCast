@@ -12,17 +12,21 @@ use Azura\Files\Attributes\FileAttributes;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
-class GetAction
+final class GetAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
         $backups = [];
-        $storageLocations = $storageLocationRepo->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
+        $storageLocations = $this->storageLocationRepo->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
 
         foreach ($storageLocations as $storageLocation) {
             /** @var StorageAttributes $file */
@@ -37,11 +41,11 @@ class GetAction
                 $pathEncoded = base64_encode($storageLocation->getId() . '|' . $filename);
 
                 $backups[] = [
-                    'path'              => $filename,
-                    'basename'          => basename($filename),
-                    'pathEncoded'       => $pathEncoded,
-                    'timestamp'         => $file->lastModified(),
-                    'size'              => $file->fileSize(),
+                    'path' => $filename,
+                    'basename' => basename($filename),
+                    'pathEncoded' => $pathEncoded,
+                    'timestamp' => $file->lastModified(),
+                    'size' => $file->fileSize(),
                     'storageLocationId' => $storageLocation->getId(),
                 ];
             }
@@ -61,7 +65,7 @@ class GetAction
                     'api:admin:backups:download',
                     ['path' => $row['pathEncoded']]
                 ),
-                'delete'   => (string)$router->fromHere(
+                'delete' => (string)$router->fromHere(
                     'api:admin:backups:delete',
                     ['path' => $row['pathEncoded']]
                 ),

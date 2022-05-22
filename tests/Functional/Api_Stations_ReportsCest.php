@@ -3,6 +3,7 @@
 namespace Functional;
 
 use Codeception\Util\Shared\Asserts;
+use League\Csv\Reader;
 
 class Api_Stations_ReportsCest extends CestAbstract
 {
@@ -153,18 +154,21 @@ class Api_Stations_ReportsCest extends CestAbstract
 
         $response = $I->grabResponse();
 
-        $responseCsv = str_getcsv($response);
+        $csvReader = Reader::createFromString($response);
+        $csvReader->setHeaderOffset(0);
 
-        $this->assertIsArray($responseCsv);
+        $csvHeaders = $csvReader->getHeader();
+
+        $this->assertIsArray($csvHeaders);
         $this->assertTrue(
-            count($responseCsv) > 0,
+            count($csvHeaders) > 0,
             'CSV is not empty'
         );
 
         foreach ($headerFields as $csvHeaderField) {
             $this->assertContains(
                 $csvHeaderField,
-                $responseCsv,
+                $csvHeaders,
                 'CSV has header field'
             );
         }

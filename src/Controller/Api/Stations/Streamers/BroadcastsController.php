@@ -17,18 +17,14 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * @extends AbstractApiCrudController<Entity\StationStreamerBroadcast>
  */
-class BroadcastsController extends AbstractApiCrudController
+final class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\StationStreamerBroadcast::class;
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int|null $id
-     */
     public function listAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         ?int $id = null
     ): ResponseInterface {
         $station = $request->getStation();
@@ -126,14 +122,10 @@ class BroadcastsController extends AbstractApiCrudController
         return $paginator->write($response);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int $broadcast_id
-     */
     public function downloadAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -165,6 +157,7 @@ class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -190,7 +183,7 @@ class BroadcastsController extends AbstractApiCrudController
         return $response->withJson(Entity\Api\Status::deleted());
     }
 
-    protected function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast
+    private function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast
     {
         /** @var Entity\StationStreamerBroadcast|null $broadcast */
         $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy(
@@ -202,7 +195,7 @@ class BroadcastsController extends AbstractApiCrudController
         return $broadcast;
     }
 
-    protected function getStreamer(Entity\Station $station, int $id): ?Entity\StationStreamer
+    private function getStreamer(Entity\Station $station, int $id): ?Entity\StationStreamer
     {
         /** @var Entity\StationStreamer|null $streamer */
         $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy(

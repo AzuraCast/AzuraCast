@@ -103,6 +103,13 @@ return function (App\Event\BuildStationMenu $e) {
                         'visible' => App\Service\SftpGo::isSupportedForStation($station),
                         'permission' => StationPermissions::Media,
                     ],
+                    'bulk_media' => [
+                        'label' => __('Bulk Media Import/Export'),
+                        'class' => 'text-muted',
+                        'url' => (string)$router->fromHere('stations:bulk-media'),
+                        'visible' => $backend->supportsMedia(),
+                        'permission' => StationPermissions::Media,
+                    ],
                 ],
             ],
 

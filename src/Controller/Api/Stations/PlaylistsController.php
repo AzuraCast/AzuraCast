@@ -138,18 +138,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
         ]
     )
 ]
-class PlaylistsController extends AbstractScheduledEntityController
+final class PlaylistsController extends AbstractScheduledEntityController
 {
     use CanSortResults;
 
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
-    /**
-     * @inheritDoc
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
@@ -183,8 +183,11 @@ class PlaylistsController extends AbstractScheduledEntityController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function scheduleAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $scheduleItems = $this->em->createQuery(
@@ -213,10 +216,10 @@ class PlaylistsController extends AbstractScheduledEntityController
                 $playlist = $scheduleItem->getPlaylist();
 
                 return [
-                    'id'       => $playlist->getId(),
-                    'title'    => $playlist->getName(),
-                    'start'    => $start->toIso8601String(),
-                    'end'      => $end->toIso8601String(),
+                    'id' => $playlist->getId(),
+                    'title' => $playlist->getName(),
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
                     'edit_url' => (string)$request->getRouter()->named(
                         'api:stations:playlist',
                         ['station_id' => $station->getId(), 'id' => $playlist->getId()]
@@ -254,13 +257,13 @@ class PlaylistsController extends AbstractScheduledEntityController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'toggle'    => (string)$router->fromHere(
+            'toggle' => (string)$router->fromHere(
                 'api:stations:playlist:toggle',
                 ['id' => $record->getId()],
                 [],
                 !$isInternal
             ),
-            'order'     => (string)$router->fromHere(
+            'order' => (string)$router->fromHere(
                 'api:stations:playlist:order',
                 ['id' => $record->getId()],
                 [],
@@ -271,22 +274,22 @@ class PlaylistsController extends AbstractScheduledEntityController
                 route_params: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'queue'     => (string)$router->fromHere(
+            'queue' => (string)$router->fromHere(
                 route_name: 'api:stations:playlist:queue',
                 route_params: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'import'    => (string)$router->fromHere(
+            'import' => (string)$router->fromHere(
                 route_name: 'api:stations:playlist:import',
                 route_params: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'clone'     => (string)$router->fromHere(
+            'clone' => (string)$router->fromHere(
                 route_name: 'api:stations:playlist:clone',
                 route_params: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'self'      => (string)$router->fromHere(
+            'self' => (string)$router->fromHere(
                 $this->resourceRouteName,
                 ['id' => $record->getId()],
                 [],

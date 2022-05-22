@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-class TwoFactorAction
+final class TwoFactorAction
 {
     public function __invoke(
         ServerRequest $request,

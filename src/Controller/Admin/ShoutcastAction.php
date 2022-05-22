@@ -9,7 +9,7 @@ use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-class ShoutcastAction
+final class ShoutcastAction
 {
     public function __invoke(
         ServerRequest $request,

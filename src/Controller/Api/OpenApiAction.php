@@ -9,12 +9,16 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class OpenApiAction
+final class OpenApiAction
 {
+    public function __construct(
+        private readonly GenerateApiDocsCommand $apiDocsCommand
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        GenerateApiDocsCommand $apiDocsCommand
+        Response $response
     ): ResponseInterface {
         $apiBaseUrl = str_replace(
             '/openapi.yml',
@@ -22,7 +26,7 @@ class OpenApiAction
             (string)$request->getRouter()->fromHere(absolute: true)
         );
 
-        $yaml = $apiDocsCommand->generate(true, $apiBaseUrl)?->toYaml();
+        $yaml = $this->apiDocsCommand->generate(true, $apiBaseUrl)?->toYaml();
 
         $response->getBody()->write($yaml ?? '');
         return $response->withHeader('Content-Type', 'text/x-yaml');

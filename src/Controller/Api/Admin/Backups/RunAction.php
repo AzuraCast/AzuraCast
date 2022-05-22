@@ -11,12 +11,16 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class RunAction
+final class RunAction
 {
+    public function __construct(
+        private readonly MessageBus $messageBus,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        MessageBus $messageBus
+        Response $response
     ): ResponseInterface {
         $data = (array)$request->getParsedBody();
 
@@ -33,15 +37,15 @@ class RunAction
         $message->path = $data['path'] ?? null;
         $message->excludeMedia = $data['exclude_media'] ?? false;
         $message->outputPath = $tempFile;
-        $messageBus->dispatch($message);
+        $this->messageBus->dispatch($message);
 
         $router = $request->getRouter();
         return $response->withJson([
             'storageLocationId' => $message->storageLocationId,
-            'path'              => $message->path,
-            'excludeMedia'      => $message->excludeMedia,
-            'outputPath'        => $message->outputPath,
-            'links'             => [
+            'path' => $message->path,
+            'excludeMedia' => $message->excludeMedia,
+            'outputPath' => $message->outputPath,
+            'links' => [
                 'log' => (string)$router->named(
                     'api:admin:backups:log',
                     ['path' => basename($tempFile)]

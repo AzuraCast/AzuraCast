@@ -15,18 +15,23 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-class PutAction
+final class PutAction
 {
+    public function __construct(
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Liquidsoap $liquidsoap,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ReloadableEntityManagerInterface $em,
-        EventDispatcherInterface $eventDispatcher,
-        Liquidsoap $liquidsoap,
+        int|string $station_id
     ): ResponseInterface {
         $body = (array)$request->getParsedBody();
 
-        $station = $em->refetch($request->getStation());
+        $station = $this->em->refetch($request->getStation());
 
         $backendConfig = $station->getBackendConfig();
         foreach (ConfigWriter::getCustomConfigurationSections() as $field) {
@@ -37,15 +42,15 @@ class PutAction
 
         $station->setBackendConfig($backendConfig);
 
-        $em->persist($station);
-        $em->flush();
+        $this->em->persist($station);
+        $this->em->flush();
 
         try {
             $event = new WriteLiquidsoapConfiguration($station, false, false);
-            $eventDispatcher->dispatch($event);
+            $this->eventDispatcher->dispatch($event);
 
             $config = $event->buildConfiguration();
-            $liquidsoap->verifyConfig($config);
+            $this->liquidsoap->verifyConfig($config);
         } catch (Throwable $e) {
             return $response->withStatus(500)->withJson(Entity\Api\Error::fromException($e));
         }

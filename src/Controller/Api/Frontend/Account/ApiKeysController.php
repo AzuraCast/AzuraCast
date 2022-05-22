@@ -6,7 +6,6 @@ namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -17,28 +16,28 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
  * @template TEntity as Entity\ApiKey
  * @extends AbstractApiCrudController<TEntity>
  */
-class ApiKeysController extends AbstractApiCrudController
+final class ApiKeysController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\ApiKey::class;
     protected string $resourceRouteName = 'api:frontend:api-key';
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $query = $this->em->createQuery(<<<'DQL'
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
+        $query = $this->em->createQuery(
+            <<<'DQL'
             SELECT e FROM App\Entity\ApiKey e WHERE e.user = :user
-        DQL)->setParameter('user', $request->getUser());
+        DQL
+        )->setParameter('user', $request->getUser());
 
         return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws Exception
-     */
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $newKey = SplitToken::generate();
 
         $record = new Entity\ApiKey(
@@ -55,13 +54,11 @@ class ApiKeysController extends AbstractApiCrudController
         return $response->withJson($return);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $id
-     */
-    public function getAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function getAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($request->getUser(), $id);
 
         if (null === $record) {
@@ -73,13 +70,11 @@ class ApiKeysController extends AbstractApiCrudController
         return $response->withJson($return);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $id
-     */
-    public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($request->getUser(), $id);
 
         if (null === $record) {
@@ -97,11 +92,11 @@ class ApiKeysController extends AbstractApiCrudController
      *
      * @return TEntity|null
      */
-    protected function getRecord(Entity\User $user, string $id): ?object
+    private function getRecord(Entity\User $user, string $id): ?object
     {
         /** @var TEntity|null $record */
         $record = $this->em->getRepository(Entity\ApiKey::class)->findOneBy([
-            'id'   => $id,
+            'id' => $id,
             'user' => $user,
         ]);
         return $record;

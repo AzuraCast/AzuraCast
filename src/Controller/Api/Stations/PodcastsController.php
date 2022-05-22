@@ -145,7 +145,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class PodcastsController extends AbstractApiCrudController
+final class PodcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Podcast::class;
     protected string $resourceRouteName = 'api:stations:podcast';
@@ -154,14 +154,16 @@ class PodcastsController extends AbstractApiCrudController
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        protected Entity\Repository\StationRepository $stationRepository,
-        protected Entity\Repository\PodcastRepository $podcastRepository
+        private readonly Entity\Repository\PodcastRepository $podcastRepository
     ) {
         parent::__construct($em, $serializer, $validator);
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $queryBuilder = $this->em->createQueryBuilder()
@@ -184,7 +186,8 @@ class PodcastsController extends AbstractApiCrudController
     public function getAction(
         ServerRequest $request,
         Response $response,
-        string $podcast_id
+        int|string $station_id,
+        string $podcast_id,
     ): ResponseInterface {
         $station = $request->getStation();
         $record = $this->getRecord($station, $podcast_id);
@@ -198,8 +201,11 @@ class PodcastsController extends AbstractApiCrudController
         return $response->withJson($return);
     }
 
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $parsedBody = (array)$request->getParsedBody();
@@ -227,6 +233,7 @@ class PodcastsController extends AbstractApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $podcast = $this->getRecord($request->getStation(), $podcast_id);
@@ -244,6 +251,7 @@ class PodcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -266,7 +274,7 @@ class PodcastsController extends AbstractApiCrudController
      *
      * @return Entity\Podcast|null
      */
-    protected function getRecord(Entity\Station $station, string $id): ?object
+    private function getRecord(Entity\Station $station, string $id): ?object
     {
         return $this->podcastRepository->fetchPodcastForStation($station, $id);
     }
@@ -348,9 +356,9 @@ class PodcastsController extends AbstractApiCrudController
                 absolute: !$isInternal
             );
             $return->links['episode_new_media'] = (string)$router->fromHere(
-                route_name:   'api:stations:podcast:episodes:new-media',
+                route_name: 'api:stations:podcast:episodes:new-media',
                 route_params: ['podcast_id' => $record->getId()],
-                absolute:     !$isInternal
+                absolute: !$isInternal
             );
         }
 

@@ -10,15 +10,18 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PodcastsController
+final class PodcastsController
 {
     public function __construct(
-        protected PodcastRepository $podcastRepository
+        private readonly PodcastRepository $podcastRepository
     ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {

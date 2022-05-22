@@ -10,26 +10,24 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PlayAction
+final class PlayAction
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int|string $id
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     * @return ResponseInterface
-     */
+    public function __construct(
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $id,
-        Entity\Repository\StationMediaRepository $mediaRepo
+        int|string $station_id,
+        int|string $id
     ): ResponseInterface {
         set_time_limit(600);
 
         $station = $request->getStation();
 
-        $media = $mediaRepo->find($id, $station);
+        $media = $this->mediaRepo->find($id, $station);
 
         if (!$media instanceof Entity\StationMedia) {
             return $response->withStatus(404)

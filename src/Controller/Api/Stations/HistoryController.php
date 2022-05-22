@@ -10,7 +10,6 @@ use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\File;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,21 +57,20 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class HistoryController
+final class HistoryController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
-        protected Environment $environment
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
+        private readonly Environment $environment
     ) {
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         set_time_limit($this->environment->getSyncLongExecutionTime());
 
         $station = $request->getStation();
@@ -144,28 +142,27 @@ class HistoryController
         return $paginator->write($response);
     }
 
-    protected function exportReportAsCsv(
+    private function exportReportAsCsv(
         Response $response,
         Entity\Station $station,
         Query $query,
         string $filename
     ): ResponseInterface {
-        $tempFile = File::generateTempPath($filename);
+        if (!($tempFile = tmpfile())) {
+            throw new \RuntimeException('Could not create temp file.');
+        }
+        $csv = Writer::createFromStream($tempFile);
 
-        $csv = Writer::createFromPath($tempFile, 'w+');
-
-        $csv->insertOne(
-            [
-                'Date',
-                'Time',
-                'Listeners',
-                'Delta',
-                'Track',
-                'Artist',
-                'Playlist',
-                'Streamer',
-            ]
-        );
+        $csv->insertOne([
+            'Date',
+            'Time',
+            'Listeners',
+            'Delta',
+            'Track',
+            'Artist',
+            'Playlist',
+            'Streamer',
+        ]);
 
         /** @var Entity\SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {

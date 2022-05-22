@@ -139,19 +139,18 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class RemotesController extends AbstractStationApiCrudController
+final class RemotesController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
     protected string $entityClass = Entity\StationRemote::class;
     protected string $resourceRouteName = 'api:stations:remote';
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
@@ -164,7 +163,7 @@ class RemotesController extends AbstractStationApiCrudController
             $request,
             $qb,
             [
-                'display_name'  => 'e.display_name',
+                'display_name' => 'e.display_name',
                 'enable_autodj' => 'e.enable_autodj',
             ],
             'e.display_name'
@@ -199,9 +198,9 @@ class RemotesController extends AbstractStationApiCrudController
 
         $return->links = [
             'self' => (string)$router->fromHere(
-                route_name:   $this->resourceRouteName,
+                route_name: $this->resourceRouteName,
                 route_params: ['id' => $record->getIdRequired()],
-                absolute:     !$isInternal
+                absolute: !$isInternal
             ),
         ];
 

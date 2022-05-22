@@ -8,16 +8,20 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Sync\Task\RunAutomatedAssignmentTask;
-use App\Utilities\File;
 use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 
-class PerformanceAction
+final class PerformanceAction
 {
+    public function __construct(
+        private readonly RunAutomatedAssignmentTask $automationTask
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        RunAutomatedAssignmentTask $automationTask
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -25,7 +29,7 @@ class PerformanceAction
         $thresholdDays = (int)($automationConfig['threshold_days']
             ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
 
-        $reportData = $automationTask->generateReport($station, $thresholdDays);
+        $reportData = $this->automationTask->generateReport($station, $thresholdDays);
 
         // Do not show songs that are not in playlists.
         $reportData = array_filter(
@@ -35,8 +39,8 @@ class PerformanceAction
             }
         );
 
-        $params = $request->getQueryParams();
-        $format = $params['format'] ?? 'json';
+        $queryParams = $request->getQueryParams();
+        $format = $queryParams['format'] ?? 'json';
 
         if ($format === 'csv') {
             return $this->exportReportAsCsv(
@@ -54,14 +58,15 @@ class PerformanceAction
      * @param mixed[] $reportData
      * @param string $filename
      */
-    protected function exportReportAsCsv(
+    private function exportReportAsCsv(
         Response $response,
         array $reportData,
         string $filename
     ): ResponseInterface {
-        $tempFile = File::generateTempPath($filename);
-
-        $csv = Writer::createFromPath($tempFile, 'w+');
+        if (!($tempFile = tmpfile())) {
+            throw new \RuntimeException('Could not create temp file.');
+        }
+        $csv = Writer::createFromStream($tempFile);
 
         $csv->insertOne(
             [

@@ -14,17 +14,22 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-class FlowUploadAction
+final class FlowUploadAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly LoggerInterface $logger
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        LoggerInterface $logger
+        int|string $station_id
     ): ResponseInterface {
-        $params = $request->getParams();
+        $allParams = $request->getParams();
         $station = $request->getStation();
 
         $mediaStorage = $station->getMediaStorageLocation();
@@ -49,9 +54,9 @@ class FlowUploadAction
         }
 
         try {
-            $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse->getUploadedPath());
+            $stationMedia = $this->mediaRepo->getOrCreate($station, $destPath, $flowResponse->getUploadedPath());
         } catch (CannotProcessMediaException $e) {
-            $logger->error(
+            $this->logger->error(
                 $e->getMessageWithPath(),
                 [
                     'exception' => $e,
@@ -62,13 +67,13 @@ class FlowUploadAction
         }
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-        if (!empty($params['searchPhrase'])) {
-            $search_phrase = $params['searchPhrase'];
+        if (!empty($allParams['searchPhrase'])) {
+            $search_phrase = $allParams['searchPhrase'];
 
             if (str_starts_with($search_phrase, 'playlist:')) {
                 $playlist_name = substr($search_phrase, 9);
 
-                $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
                     [
                         'station_id' => $station->getId(),
                         'name' => $playlist_name,
@@ -76,15 +81,15 @@ class FlowUploadAction
                 );
 
                 if ($playlist instanceof Entity\StationPlaylist) {
-                    $spmRepo->addMediaToPlaylist($stationMedia, $playlist);
-                    $em->flush();
+                    $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
+                    $this->em->flush();
                 }
             }
         }
 
         $mediaStorage->addStorageUsed($uploadedSize);
-        $em->persist($mediaStorage);
-        $em->flush();
+        $this->em->persist($mediaStorage);
+        $this->em->flush();
 
         return $response->withJson(Entity\Api\Status::created());
     }

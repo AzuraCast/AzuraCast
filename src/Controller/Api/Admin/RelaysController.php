@@ -34,16 +34,18 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class RelaysController
+final class RelaysController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Adapters $adapters
+        private readonly EntityManagerInterface $em,
+        private readonly Adapters $adapters
     ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $stations = $this->getManageableStations($request);
 
         $router = $request->getRouter();
@@ -89,7 +91,7 @@ class RelaysController
      *
      * @return Entity\Station[]
      */
-    protected function getManageableStations(ServerRequest $request): array
+    private function getManageableStations(ServerRequest $request): array
     {
         $all_stations = $this->em->createQuery(
             <<<'DQL'
@@ -112,8 +114,10 @@ class RelaysController
         );
     }
 
-    public function updateAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function updateAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $relay_repo = $this->em->getRepository(Entity\Relay::class);
 
         $body = (array)$request->getParsedBody();

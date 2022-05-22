@@ -13,7 +13,7 @@ return static function (RouteCollectorProxy $app) {
         function (RouteCollectorProxy $group) {
             $group->get(
                 '',
-                function (ServerRequest $request, Response $response) {
+                function (ServerRequest $request, Response $response, ...$params) {
                     return $response->withRedirect(
                         (string)$request->getRouter()->fromHere('stations:profile:index')
                     );
@@ -25,6 +25,10 @@ return static function (RouteCollectorProxy $app) {
                 Controller\Stations\AutomationAction::class
             )->setName('stations:automation:index')
                 ->add(new Middleware\Permissions(StationPermissions::Automation, true));
+
+            $group->get('/bulk-media', Controller\Stations\BulkMediaAction::class)
+                ->setName('stations:bulk-media')
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->get('/fallback', Controller\Stations\FallbackAction::class)
                 ->setName('stations:fallback')

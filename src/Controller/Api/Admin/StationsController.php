@@ -156,12 +156,10 @@ class StationsController extends AbstractAdminApiCrudController
         parent::__construct($reloadableEm, $serializer, $validator);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
             ->from(Entity\Station::class, 'e');

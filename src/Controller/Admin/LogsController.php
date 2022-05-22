@@ -13,16 +13,18 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class LogsController extends AbstractLogViewerController
+final class LogsController extends AbstractLogViewerController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Environment $environment
+        private readonly EntityManagerInterface $em,
+        private readonly Environment $environment
     ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
         $station_logs = [];
 
@@ -47,7 +49,7 @@ class LogsController extends AbstractLogViewerController
     /**
      * @return array<string, array>
      */
-    protected function getGlobalLogs(): array
+    private function getGlobalLogs(): array
     {
         $tempDir = $this->environment->getTempDirectory();
         $logPaths = [];

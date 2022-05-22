@@ -130,13 +130,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class StorageLocationsController extends AbstractAdminApiCrudController
+final class StorageLocationsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\StorageLocation::class;
     protected string $resourceRouteName = 'api:admin:storage_location';
 
     public function __construct(
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -144,8 +144,10 @@ class StorageLocationsController extends AbstractAdminApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('sl')
@@ -204,8 +206,10 @@ class StorageLocationsController extends AbstractAdminApiCrudController
                 $stationNames[] = $station->getName();
             }
 
-            throw new RuntimeException('This storage location has stations associated with it, and cannot be '
-                . ' deleted until these stations are updated: ' . implode(', ', $stationNames));
+            throw new RuntimeException(
+                'This storage location has stations associated with it, and cannot be '
+                . ' deleted until these stations are updated: ' . implode(', ', $stationNames)
+            );
         }
 
         parent::deleteRecord($record);

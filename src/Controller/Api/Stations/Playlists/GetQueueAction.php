@@ -8,15 +8,23 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
-class GetQueueAction extends AbstractPlaylistsAction
+final class GetQueueAction extends AbstractPlaylistsAction
 {
+    public function __construct(
+        EntityManagerInterface $em,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo
+    ) {
+        parent::__construct($em);
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        int|string $station_id,
         int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
@@ -29,7 +37,7 @@ class GetQueueAction extends AbstractPlaylistsAction
             throw new InvalidArgumentException('This playlist is always shuffled and has no visible queue.');
         }
 
-        $queue = $spmRepo->getQueue($record);
+        $queue = $this->spmRepo->getQueue($record);
         return Paginator::fromArray($queue, $request)->write($response);
     }
 }

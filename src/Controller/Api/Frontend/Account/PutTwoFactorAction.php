@@ -16,7 +16,7 @@ use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-class PutTwoFactorAction extends UsersController
+final class PutTwoFactorAction extends UsersController
 {
     public function __invoke(
         ServerRequest $request,
@@ -72,9 +72,9 @@ class PutTwoFactorAction extends UsersController
             $qrCodeBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrCodeImage);
 
             return $response->withJson([
-                'secret'   => $secret,
+                'secret' => $secret,
                 'totp_uri' => $totp_uri,
-                'qr_code'  => $qrCodeBase64,
+                'qr_code' => $qrCodeBase64,
             ]);
         } catch (Throwable $e) {
             return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));

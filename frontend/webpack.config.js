@@ -34,6 +34,7 @@ module.exports = {
         SetupSettings: '~/pages/Setup/Settings.js',
         SetupStation: '~/pages/Setup/Station.js',
         StationsAutomation: '~/pages/Stations/Automation.js',
+        StationsBulkMedia: '~/pages/Stations/BulkMedia.js',
         StationsFallback: '~/pages/Stations/Fallback.js',
         StationsLiquidsoapConfig: '~/pages/Stations/LiquidsoapConfig.js',
         StationsMedia: '~/pages/Stations/Media.js',

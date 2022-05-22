@@ -6,7 +6,7 @@ namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
 use App\Environment;
-use App\LockFactory;
+use App\Lock\LockFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;
@@ -95,7 +95,7 @@ abstract class AbstractSyncCommand extends CommandAbstract
 
         $this->processes[$processKey] = [
             'process' => $process,
-            'lock'    => $lock,
+            'lock' => $lock,
         ];
     }
 }

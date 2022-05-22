@@ -14,7 +14,7 @@ final class StorageLocationsAction extends StationsController
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $newStorageLocationMessage = __('Create a new storage location based on the base directory.');
 

@@ -198,6 +198,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -225,6 +226,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function getAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -242,6 +245,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function createAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -285,6 +289,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $podcast = $this->getRecord($request->getStation(), $episode_id);
@@ -302,6 +308,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $station = $request->getStation();

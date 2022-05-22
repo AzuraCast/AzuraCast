@@ -18,8 +18,10 @@ final class DeleteTwoFactorAction
     }
 
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $user = $request->getUser();
         $user = $this->em->refetch($user);
 

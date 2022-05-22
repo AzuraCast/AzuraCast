@@ -40,9 +40,9 @@ use MarcW\RssWriter\Extension\Sy\SyWriter;
 use MarcW\RssWriter\RssWriter;
 use Psr\Http\Message\ResponseInterface;
 
-final class PodcastFeedController
+final class PodcastFeedAction
 {
-    protected RouterInterface $router;
+    private RouterInterface $router;
 
     public function __construct(
         private readonly StationRepository $stationRepository,
@@ -53,7 +53,8 @@ final class PodcastFeedController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $podcast_id,
+        int|string $station_id,
+        string $podcast_id
     ): ResponseInterface {
         $this->router = $request->getRouter();
 

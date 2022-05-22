@@ -21,7 +21,8 @@ final class ProfileEditController extends StationsController
 {
     public function getProfileAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -32,7 +33,8 @@ final class ProfileEditController extends StationsController
 
     public function putProfileAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 

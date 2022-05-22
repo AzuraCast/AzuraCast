@@ -20,7 +20,8 @@ final class DownloadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $media_id,
+        int|string $station_id,
+        string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 

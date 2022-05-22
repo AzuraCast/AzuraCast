@@ -23,7 +23,8 @@ final class PlayerAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ?string $embed = null
+        int|string $station_id,
+        ?string $embed = null,
     ): ResponseInterface {
         $station = $request->getStation();
 

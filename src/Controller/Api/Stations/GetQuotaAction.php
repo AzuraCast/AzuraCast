@@ -20,6 +20,7 @@ final class GetQuotaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $type = null
     ): ResponseInterface {
         $typeEnum = Entity\Enums\StorageLocationTypes::tryFrom($type ?? '')

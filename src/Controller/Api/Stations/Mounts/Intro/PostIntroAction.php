@@ -44,6 +44,7 @@ final class PostIntroAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         ?int $id = null
     ): ResponseInterface {
         $station = $request->getStation();

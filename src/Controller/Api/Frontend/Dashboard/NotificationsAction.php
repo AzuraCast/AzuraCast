@@ -19,7 +19,7 @@ final class NotificationsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $event = new Event\GetNotifications($request);
         $this->eventDispatcher->dispatch($event);

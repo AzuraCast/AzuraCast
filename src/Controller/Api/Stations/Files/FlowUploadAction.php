@@ -27,8 +27,9 @@ final class FlowUploadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
-        $params = $request->getParams();
+        $allParams = $request->getParams();
         $station = $request->getStation();
 
         $mediaStorage = $station->getMediaStorageLocation();
@@ -66,8 +67,8 @@ final class FlowUploadAction
         }
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-        if (!empty($params['searchPhrase'])) {
-            $search_phrase = $params['searchPhrase'];
+        if (!empty($allParams['searchPhrase'])) {
+            $search_phrase = $allParams['searchPhrase'];
 
             if (str_starts_with($search_phrase, 'playlist:')) {
                 $playlist_name = substr($search_phrase, 9);

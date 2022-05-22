@@ -23,7 +23,7 @@ final class StationsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
         $acl = $request->getAcl();

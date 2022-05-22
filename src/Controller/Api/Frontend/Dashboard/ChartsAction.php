@@ -25,7 +25,7 @@ final class ChartsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(403, 'Forbidden')

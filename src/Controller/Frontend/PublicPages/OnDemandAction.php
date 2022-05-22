@@ -21,6 +21,7 @@ final class OnDemandAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         bool $embed = false
     ): ResponseInterface {
         $station = $request->getStation();

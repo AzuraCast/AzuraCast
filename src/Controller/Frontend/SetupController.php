@@ -52,7 +52,7 @@ final class SetupController
      */
     public function registerAction(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
@@ -122,7 +122,7 @@ final class SetupController
      */
     public function stationAction(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
@@ -151,7 +151,7 @@ final class SetupController
      */
     public function settingsAction(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -182,8 +182,10 @@ final class SetupController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function completeAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function completeAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
 
         return $response->withRedirect((string)$request->getRouter()->named('dashboard'));

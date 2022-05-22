@@ -19,7 +19,7 @@ final class ThemeAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $user = $request->getUser();
 

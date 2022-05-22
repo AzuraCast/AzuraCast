@@ -22,7 +22,8 @@ final class RequestsController
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -65,6 +66,7 @@ final class RequestsController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $request_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -81,6 +83,7 @@ final class RequestsController
     public function clearAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $this->requestRepo->clearPendingRequests($station);

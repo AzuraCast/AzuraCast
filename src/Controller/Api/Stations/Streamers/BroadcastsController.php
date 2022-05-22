@@ -21,14 +21,10 @@ final class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\StationStreamerBroadcast::class;
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int|null $id
-     */
     public function listAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         ?int $id = null
     ): ResponseInterface {
         $station = $request->getStation();
@@ -126,14 +122,10 @@ final class BroadcastsController extends AbstractApiCrudController
         return $paginator->write($response);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int $broadcast_id
-     */
     public function downloadAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -165,6 +157,7 @@ final class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();

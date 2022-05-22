@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Lock;
 
-use App\Lock\RetryTillSaveStore;
+use App\Environment;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\LockFactory as SymfonyLockFactory;

@@ -17,6 +17,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigWriter implements EventSubscriberInterface
@@ -1062,7 +1063,7 @@ class ConfigWriter implements EventSubscriberInterface
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
         }
 
-        throw new \RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
+        throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
     }
 
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void

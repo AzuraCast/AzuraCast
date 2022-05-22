@@ -13,7 +13,8 @@ final class SoundExchangeAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $tzObject = $request->getStation()->getTimezoneObject();
 

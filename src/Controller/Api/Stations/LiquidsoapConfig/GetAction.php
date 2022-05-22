@@ -13,7 +13,8 @@ final class GetAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $backendConfig = $request->getStation()->getBackendConfig();
 

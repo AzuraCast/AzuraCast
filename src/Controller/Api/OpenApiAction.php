@@ -18,7 +18,7 @@ final class OpenApiAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $apiBaseUrl = str_replace(
             '/openapi.yml',

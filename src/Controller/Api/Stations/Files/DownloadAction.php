@@ -14,7 +14,8 @@ final class DownloadAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         set_time_limit(600);
 

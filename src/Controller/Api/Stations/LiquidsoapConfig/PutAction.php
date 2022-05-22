@@ -27,6 +27,7 @@ final class PutAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $body = (array)$request->getParsedBody();
 

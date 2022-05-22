@@ -24,6 +24,7 @@ final class TestAction extends AbstractWebhooksAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $id
     ): ResponseInterface {
         $this->requireRecord($request->getStation(), $id);

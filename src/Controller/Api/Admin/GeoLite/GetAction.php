@@ -19,7 +19,7 @@ final class GetAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $version = GeoLite::getVersion();
         $settings = $this->settingsRepo->readSettings();

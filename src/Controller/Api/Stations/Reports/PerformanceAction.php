@@ -7,8 +7,8 @@ namespace App\Controller\Api\Stations\Reports;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Service\CsvWriterTempFile;
 use App\Sync\Task\RunAutomatedAssignmentTask;
+use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 
 final class PerformanceAction
@@ -21,6 +21,7 @@ final class PerformanceAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -38,8 +39,8 @@ final class PerformanceAction
             }
         );
 
-        $params = $request->getQueryParams();
-        $format = $params['format'] ?? 'json';
+        $queryParams = $request->getQueryParams();
+        $format = $queryParams['format'] ?? 'json';
 
         if ($format === 'csv') {
             return $this->exportReportAsCsv(
@@ -62,8 +63,10 @@ final class PerformanceAction
         array $reportData,
         string $filename
     ): ResponseInterface {
-        $tempFile = new CsvWriterTempFile();
-        $csv = $tempFile->getWriter();
+        if (!($tempFile = tmpfile())) {
+            throw new \RuntimeException('Could not create temp file.');
+        }
+        $csv = Writer::createFromStream($tempFile);
 
         $csv->insertOne(
             [
@@ -97,6 +100,6 @@ final class PerformanceAction
             ]);
         }
 
-        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

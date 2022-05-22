@@ -8,8 +8,8 @@ use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\CsvWriterTempFile;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 
 final class DownloadAction
@@ -24,6 +24,7 @@ final class DownloadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -50,8 +51,10 @@ final class DownloadAction
 
         $filename = $station->getShortName() . '_all_media.csv';
 
-        $tempFile = new CsvWriterTempFile();
-        $csv = $tempFile->getWriter();
+        if (!($tempFile = tmpfile())) {
+            throw new \RuntimeException('Could not create temp file.');
+        }
+        $csv = Writer::createFromStream($tempFile);
 
         /*
          * NOTE: These field names should correspond with DB property names when converted into short_names.
@@ -119,6 +122,6 @@ final class DownloadAction
             $csv->insertOne($bodyRow);
         }
 
-        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

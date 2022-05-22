@@ -154,10 +154,6 @@ final class RolesController extends AbstractAdminApiCrudController
         $this->superAdminRole = $permissionRepo->ensureSuperAdministratorRole();
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
     public function listAction(
         ServerRequest $request,
         Response $response

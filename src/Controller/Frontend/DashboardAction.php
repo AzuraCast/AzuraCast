@@ -19,7 +19,7 @@ final class DashboardAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $settings = $this->settingsRepo->readSettings();
 

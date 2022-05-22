@@ -30,7 +30,8 @@ final class IndexAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $queues = AbstractQueueManager::getAllQueues();
 

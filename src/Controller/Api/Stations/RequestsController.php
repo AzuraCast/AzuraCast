@@ -73,8 +73,11 @@ final class RequestsController
     ) {
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         // Verify that the station supports requests.
@@ -96,12 +99,12 @@ final class RequestsController
             ->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->setParameter('playlistIds', $playlistIds);
 
-        $params = $request->getQueryParams();
+        $queryParams = $request->getQueryParams();
 
-        if (!empty($params['sort'])) {
-            $sortDirection = (($params['sortOrder'] ?? 'ASC') === 'ASC') ? 'ASC' : 'DESC';
+        if (!empty($queryParams['sort'])) {
+            $sortDirection = (($queryParams['sortOrder'] ?? 'ASC') === 'ASC') ? 'ASC' : 'DESC';
 
-            match ($params['sort']) {
+            match ($queryParams['sort']) {
                 'name', 'song_title' => $qb->addOrderBy('sm.title', $sortDirection),
                 'song_artist' => $qb->addOrderBy('sm.artist', $sortDirection),
                 'song_album' => $qb->addOrderBy('sm.album', $sortDirection),
@@ -113,7 +116,7 @@ final class RequestsController
                 ->addOrderBy('sm.title', 'ASC');
         }
 
-        $search_phrase = trim($params['searchPhrase'] ?? '');
+        $search_phrase = trim($queryParams['searchPhrase'] ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');
@@ -178,8 +181,12 @@ final class RequestsController
         return $ids;
     }
 
-    public function submitAction(ServerRequest $request, Response $response, string $media_id): ResponseInterface
-    {
+    public function submitAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id,
+        string $media_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         // Verify that the station supports requests.

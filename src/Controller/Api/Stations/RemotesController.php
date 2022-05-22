@@ -146,12 +146,11 @@ final class RemotesController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationRemote::class;
     protected string $resourceRouteName = 'api:stations:remote';
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()

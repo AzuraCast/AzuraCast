@@ -19,6 +19,7 @@ final class OverviewAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         // Get current analytics level.
         if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {

@@ -49,7 +49,7 @@ final class LogsController extends AbstractLogViewerController
     /**
      * @return array<string, array>
      */
-    protected function getGlobalLogs(): array
+    private function getGlobalLogs(): array
     {
         $tempDir = $this->environment->getTempDirectory();
         $logPaths = [];

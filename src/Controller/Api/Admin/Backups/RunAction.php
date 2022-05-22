@@ -20,7 +20,7 @@ final class RunAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $data = (array)$request->getParsedBody();
 

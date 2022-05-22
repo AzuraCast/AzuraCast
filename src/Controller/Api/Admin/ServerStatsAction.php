@@ -35,7 +35,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ServerStatsController
+final class ServerStatsAction
 {
     public function __construct(
         private readonly Environment $environment,
@@ -44,7 +44,7 @@ final class ServerStatsController
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $firstCpuMeasurement = CpuStats::getCurrentLoad();
         $firstNetworkMeasurement = NetworkStats::getNetworkUsage();

@@ -8,10 +8,10 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Service\CsvWriterTempFile;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -53,13 +53,14 @@ final class ListenersAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
 
-        $params = $request->getQueryParams();
+        $queryParams = $request->getQueryParams();
 
-        $isLive = empty($params['start']);
+        $isLive = empty($queryParams['start']);
         $now = CarbonImmutable::now($stationTz);
 
         if ($isLive) {
@@ -69,11 +70,11 @@ final class ListenersAction
 
             $listenersIterator = $this->listenerRepo->iterateLiveListenersArray($station);
         } else {
-            $start = CarbonImmutable::parse($params['start'], $stationTz)
+            $start = CarbonImmutable::parse($queryParams['start'], $stationTz)
                 ->setSecond(0);
             $startTimestamp = $start->getTimestamp();
 
-            $end = CarbonImmutable::parse($params['end'] ?? $params['start'], $stationTz)
+            $end = CarbonImmutable::parse($queryParams['end'] ?? $queryParams['start'], $stationTz)
                 ->setSecond(59);
             $endTimestamp = $end->getTimestamp();
 
@@ -101,7 +102,7 @@ final class ListenersAction
         $listeners = [];
         $listenersByHash = [];
 
-        $groupByUnique = ('false' !== ($params['unique'] ?? 'true'));
+        $groupByUnique = ('false' !== ($queryParams['unique'] ?? 'true'));
         $nowTimestamp = $now->getTimestamp();
 
         foreach ($listenersIterator as $listener) {
@@ -178,7 +179,7 @@ final class ListenersAction
             }
         }
 
-        $format = $params['format'] ?? 'json';
+        $format = $queryParams['format'] ?? 'json';
 
         if ('csv' === $format) {
             return $this->exportReportAsCsv(
@@ -204,8 +205,10 @@ final class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = new CsvWriterTempFile();
-        $csv = $tempFile->getWriter();
+        if (!($tempFile = tmpfile())) {
+            throw new \RuntimeException('Could not create temp file.');
+        }
+        $csv = Writer::createFromStream($tempFile);
 
         $tz = $station->getTimezoneObject();
 
@@ -262,6 +265,6 @@ final class ListenersAction
             $csv->insertOne($exportRow);
         }
 
-        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

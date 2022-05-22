@@ -7,8 +7,9 @@ use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
-    $app->get('/public/sw.js',
-        function (ServerRequest $request, Response $response) {
+    $app->get(
+        '/public/sw.js',
+        function (ServerRequest $request, Response $response, ...$params) {
             return $response
                 ->withHeader('Content-Type', 'text/javascript')
                 ->write(
@@ -52,13 +53,19 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsController::class)
                 ->setName('public:podcasts');
 
-            $group->get('/podcast/{podcast_id}/episodes', Controller\Frontend\PublicPages\PodcastEpisodesController::class)
+            $group->get(
+                '/podcast/{podcast_id}/episodes',
+                Controller\Frontend\PublicPages\PodcastEpisodesAction::class
+            )
                 ->setName('public:podcast:episodes');
 
-            $group->get('/podcast/{podcast_id}/episode/{episode_id}', Controller\Frontend\PublicPages\PodcastEpisodeController::class)
+            $group->get(
+                '/podcast/{podcast_id}/episode/{episode_id}',
+                Controller\Frontend\PublicPages\PodcastEpisodeAction::class
+            )
                 ->setName('public:podcast:episode');
 
-            $group->get('/podcast/{podcast_id}/feed', Controller\Frontend\PublicPages\PodcastFeedController::class)
+            $group->get('/podcast/{podcast_id}/feed', Controller\Frontend\PublicPages\PodcastFeedAction::class)
                 ->setName('public:podcast:feed');
         }
     )

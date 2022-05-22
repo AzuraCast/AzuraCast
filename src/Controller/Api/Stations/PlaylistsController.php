@@ -145,11 +145,11 @@ final class PlaylistsController extends AbstractScheduledEntityController
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
-    /**
-     * @inheritDoc
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
@@ -183,8 +183,11 @@ final class PlaylistsController extends AbstractScheduledEntityController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function scheduleAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $scheduleItems = $this->em->createQuery(

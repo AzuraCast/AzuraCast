@@ -22,6 +22,7 @@ final class ChartsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $station_tz = $station->getTimezoneObject();

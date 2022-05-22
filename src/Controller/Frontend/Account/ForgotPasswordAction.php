@@ -25,7 +25,7 @@ final class ForgotPasswordAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $flash = $request->getFlash();
         $view = $request->getView();

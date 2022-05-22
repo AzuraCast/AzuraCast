@@ -36,7 +36,8 @@ final class PostFallbackAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 

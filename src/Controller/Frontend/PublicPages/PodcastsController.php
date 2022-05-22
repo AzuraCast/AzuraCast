@@ -17,8 +17,11 @@ final class PodcastsController
     ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {

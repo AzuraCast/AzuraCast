@@ -135,12 +135,10 @@ class UsersController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\User::class;
     protected string $resourceRouteName = 'api:admin:user';
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
             ->from(Entity\User::class, 'e');
@@ -197,8 +195,11 @@ class UsersController extends AbstractAdminApiCrudController
         return $return;
     }
 
-    public function editAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {
@@ -217,8 +218,11 @@ class UsersController extends AbstractAdminApiCrudController
         return $response->withJson(Entity\Api\Status::updated());
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {

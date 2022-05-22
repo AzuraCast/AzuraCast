@@ -25,6 +25,7 @@ final class ImportAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $id
     ): ResponseInterface {
         $playlist = $this->requireRecord($request->getStation(), $id);

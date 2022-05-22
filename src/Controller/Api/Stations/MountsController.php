@@ -157,12 +157,11 @@ final class MountsController extends AbstractStationApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
@@ -216,7 +215,8 @@ final class MountsController extends AbstractStationApiCrudController
 
     public function createAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -237,8 +237,8 @@ final class MountsController extends AbstractStationApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        mixed $station_id,
-        mixed $id
+        int|string $station_id,
+        mixed $id,
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 

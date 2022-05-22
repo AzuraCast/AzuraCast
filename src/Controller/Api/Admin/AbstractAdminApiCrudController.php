@@ -6,7 +6,6 @@ namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -17,21 +16,19 @@ use Psr\Http\Message\ResponseInterface;
  */
 abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 {
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $query = $this->em->createQuery('SELECT e FROM ' . $this->entityClass . ' e');
 
         return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @throws Exception
-     */
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $row = $this->createRecord((array)$request->getParsedBody());
 
         $return = $this->viewRecord($row, $request);
@@ -40,7 +37,6 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
     /**
      * @param array $data
-     *
      * @return TEntity
      */
     protected function createRecord(array $data): object
@@ -48,13 +44,11 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
         return $this->editRecord($data);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $id
-     */
-    public function getAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function getAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {
@@ -76,13 +70,11 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
         return $this->em->find($this->entityClass, $id);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $id
-     */
-    public function editAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {
@@ -95,13 +87,11 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
         return $response->withJson(Entity\Api\Status::updated());
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param mixed $id
-     */
-    public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        mixed $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {

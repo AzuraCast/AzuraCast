@@ -23,6 +23,7 @@ final class ListenerAuthAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 

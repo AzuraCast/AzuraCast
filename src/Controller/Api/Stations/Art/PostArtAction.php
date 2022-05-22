@@ -51,6 +51,7 @@ final class PostArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int|string $media_id
     ): ResponseInterface {
         $station = $request->getStation();

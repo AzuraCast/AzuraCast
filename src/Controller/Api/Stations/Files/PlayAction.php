@@ -20,7 +20,8 @@ final class PlayAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int|string $station_id,
+        int|string $id
     ): ResponseInterface {
         set_time_limit(600);
 

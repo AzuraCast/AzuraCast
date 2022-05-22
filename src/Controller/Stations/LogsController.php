@@ -14,7 +14,8 @@ final class LogsController extends AbstractLogViewerController
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -26,7 +27,8 @@ final class LogsController extends AbstractLogViewerController
     public function viewAction(
         ServerRequest $request,
         Response $response,
-        string $log
+        int|string $station_id,
+        string $log,
     ): ResponseInterface {
         $station = $request->getStation();
         $log_areas = $this->getStationLogs($station);

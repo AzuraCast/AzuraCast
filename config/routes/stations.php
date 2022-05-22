@@ -13,7 +13,7 @@ return static function (RouteCollectorProxy $app) {
         function (RouteCollectorProxy $group) {
             $group->get(
                 '',
-                function (ServerRequest $request, Response $response) {
+                function (ServerRequest $request, Response $response, ...$params) {
                     return $response->withRedirect(
                         (string)$request->getRouter()->fromHere('stations:profile:index')
                     );

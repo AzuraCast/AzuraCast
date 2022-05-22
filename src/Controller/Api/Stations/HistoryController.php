@@ -10,11 +10,11 @@ use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Service\CsvWriterTempFile;
 use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -66,12 +66,11 @@ final class HistoryController
     ) {
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         set_time_limit($this->environment->getSyncLongExecutionTime());
 
         $station = $request->getStation();
@@ -149,8 +148,10 @@ final class HistoryController
         Query $query,
         string $filename
     ): ResponseInterface {
-        $tempFile = new CsvWriterTempFile();
-        $csv = $tempFile->getWriter();
+        if (!($tempFile = tmpfile())) {
+            throw new \RuntimeException('Could not create temp file.');
+        }
+        $csv = Writer::createFromStream($tempFile);
 
         $csv->insertOne([
             'Date',
@@ -192,6 +193,6 @@ final class HistoryController
             ]);
         }
 
-        return $response->withFileDownload($tempFile->getTempPath(), $filename, 'text/csv');
+        return $response->withFileDownload($tempFile, $filename, 'text/csv');
     }
 }

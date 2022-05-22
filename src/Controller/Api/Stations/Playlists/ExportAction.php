@@ -14,6 +14,7 @@ final class ExportAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         int $id,
         string $format = 'pls'
     ): ResponseInterface {

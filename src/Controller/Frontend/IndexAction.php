@@ -18,7 +18,7 @@ final class IndexAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
         $settings = $this->settingsRepo->readSettings();

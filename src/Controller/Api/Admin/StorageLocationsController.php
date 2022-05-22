@@ -144,8 +144,10 @@ final class StorageLocationsController extends AbstractAdminApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('sl')

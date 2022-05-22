@@ -25,7 +25,7 @@ final class SendTestMessageAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $emailAddress = $request->getParam('email', '');
 

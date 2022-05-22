@@ -159,8 +159,11 @@ final class PodcastsController extends AbstractApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $queryBuilder = $this->em->createQueryBuilder()
@@ -183,7 +186,8 @@ final class PodcastsController extends AbstractApiCrudController
     public function getAction(
         ServerRequest $request,
         Response $response,
-        string $podcast_id
+        int|string $station_id,
+        string $podcast_id,
     ): ResponseInterface {
         $station = $request->getStation();
         $record = $this->getRecord($station, $podcast_id);
@@ -197,8 +201,11 @@ final class PodcastsController extends AbstractApiCrudController
         return $response->withJson($return);
     }
 
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $parsedBody = (array)$request->getParsedBody();
@@ -226,6 +233,7 @@ final class PodcastsController extends AbstractApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $podcast = $this->getRecord($request->getStation(), $podcast_id);
@@ -243,6 +251,7 @@ final class PodcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();

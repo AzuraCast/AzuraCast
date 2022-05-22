@@ -149,8 +149,11 @@ final class WebhooksController extends AbstractStationApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()

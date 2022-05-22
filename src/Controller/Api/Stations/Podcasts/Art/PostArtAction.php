@@ -46,7 +46,8 @@ final class PostArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ?string $podcast_id
+        int|string $station_id,
+        ?string $podcast_id = null
     ): ResponseInterface {
         $station = $request->getStation();
 

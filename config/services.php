@@ -365,7 +365,7 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        App\LockFactory $lockFactory,
+        \App\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
@@ -530,4 +530,13 @@ return [
         );
     },
 
+    App\Assets::class => static fn(Environment $env) => new App\Assets(
+        $env,
+        require __DIR__ . '/assets.php'
+    ),
+
+    App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
+        $di,
+        require __DIR__ . '/webhooks.php'
+    ),
 ];

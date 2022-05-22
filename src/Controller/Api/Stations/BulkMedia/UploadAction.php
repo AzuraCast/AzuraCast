@@ -15,13 +15,14 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 use function count;
 use function str_starts_with;
 
 final class UploadAction
 {
-    protected const ALLOWED_MEDIA_FIELDS = [
+    private const ALLOWED_MEDIA_FIELDS = [
         'title',
         'artist',
         'album',
@@ -48,7 +49,8 @@ final class UploadAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -138,7 +140,7 @@ final class UploadAction
                 if ($rowResult) {
                     $processed++;
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $importResult['success'] = false;
                 $importResult['error'] = $e->getMessage();
             }

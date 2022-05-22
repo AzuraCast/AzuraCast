@@ -4,29 +4,30 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Config;
 use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Webhook\ConnectorLocator;
 use Psr\Http\Message\ResponseInterface;
 
 final class WebhooksAction
 {
     public function __construct(
         private readonly SettingsRepository $settingsRepo,
-        private readonly Config $config
+        private readonly ConnectorLocator $connectorLocator
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $router = $request->getRouter();
 
         $settings = $this->settingsRepo->readSettings();
 
-        $webhookConfig = $this->config->get('webhooks');
+        $webhookConfig = $this->connectorLocator->getWebhookConfig();
 
         return $request->getView()->renderVuePage(
             response: $response,

@@ -10,8 +10,11 @@ use Psr\Http\Message\ResponseInterface;
 
 final class TimelineAction
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();
 

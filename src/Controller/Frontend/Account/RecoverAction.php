@@ -24,7 +24,7 @@ final class RecoverAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $token,
+        string $token
     ): ResponseInterface {
         $user = $this->loginTokenRepo->authenticate($token);
         $flash = $request->getFlash();

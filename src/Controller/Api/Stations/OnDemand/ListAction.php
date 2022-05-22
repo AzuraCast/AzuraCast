@@ -31,6 +31,7 @@ final class ListAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -51,9 +52,9 @@ final class ListAction
 
         $trackList = new ArrayCollection($trackList);
 
-        $params = $request->getQueryParams();
+        $queryParams = $request->getQueryParams();
 
-        $searchPhrase = trim($params['searchPhrase'] ?? '');
+        $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
         if (!empty($searchPhrase)) {
             $searchFields = [
                 'media_title',
@@ -79,9 +80,9 @@ final class ListAction
             );
         }
 
-        if (!empty($params['sort'])) {
-            $sortField = $params['sort'];
-            $sortDirection = $params['sortOrder'] ?? Criteria::ASC;
+        if (!empty($queryParams['sort'])) {
+            $sortField = $queryParams['sort'];
+            $sortDirection = $queryParams['sortOrder'] ?? Criteria::ASC;
 
             $criteria = new Criteria();
             $criteria->orderBy([$sortField => $sortDirection]);

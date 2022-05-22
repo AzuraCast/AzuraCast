@@ -14,6 +14,7 @@ final class PlaylistAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $format = 'pls'
     ): ResponseInterface {
         $station = $request->getStation();

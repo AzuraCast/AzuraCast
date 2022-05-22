@@ -21,7 +21,7 @@ final class GetAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 

@@ -27,6 +27,7 @@ final class LiquidsoapAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $action
     ): ResponseInterface {
         $station = $request->getStation();

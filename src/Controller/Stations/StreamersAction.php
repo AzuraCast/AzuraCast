@@ -25,6 +25,7 @@ final class StreamersAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();

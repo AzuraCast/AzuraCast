@@ -146,12 +146,11 @@ final class StreamersController extends AbstractScheduledEntityController
     protected string $entityClass = Entity\StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
@@ -179,8 +178,11 @@ final class StreamersController extends AbstractScheduledEntityController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function scheduleAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         $scheduleItems = $this->em->createQuery(

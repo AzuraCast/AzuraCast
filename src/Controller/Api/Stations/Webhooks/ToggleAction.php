@@ -11,8 +11,12 @@ use Psr\Http\Message\ResponseInterface;
 
 final class ToggleAction extends AbstractWebhooksAction
 {
-    public function __invoke(ServerRequest $request, Response $response, int $id): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id,
+        int $id
+    ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 
         $newValue = !$record->getIsEnabled();

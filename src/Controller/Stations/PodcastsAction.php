@@ -14,7 +14,8 @@ final class PodcastsAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        int|string $station_id
     ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();

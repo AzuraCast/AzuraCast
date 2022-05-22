@@ -52,6 +52,7 @@ final class PostMediaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        int|string $station_id,
         string $podcast_id,
         ?string $episode_id = null
     ): ResponseInterface {

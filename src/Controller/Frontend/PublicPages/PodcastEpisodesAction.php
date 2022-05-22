@@ -14,7 +14,7 @@ use App\Http\ServerRequest;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-final class PodcastEpisodeController
+final class PodcastEpisodesAction
 {
     public function __construct(
         private readonly PodcastRepository $podcastRepository,
@@ -25,8 +25,8 @@ final class PodcastEpisodeController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $podcast_id,
-        string $episode_id
+        int|string $station_id,
+        string $podcast_id
     ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();
@@ -41,19 +41,32 @@ final class PodcastEpisodeController
             throw new PodcastNotFoundException();
         }
 
-        $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episode_id);
+        $publishedEpisodes = $this->episodeRepository->fetchPublishedEpisodesForPodcast($podcast);
 
-        $podcastEpisodesLink = (string)$router->named(
-            'public:podcast:episodes',
+        // Reverse sort order according to the calculated publishing timestamp
+        usort(
+            $publishedEpisodes,
+            static function ($prevEpisode, $nextEpisode) {
+                /** @var PodcastEpisode $prevEpisode */
+                /** @var PodcastEpisode $nextEpisode */
+
+                $prevPublishedAt = $prevEpisode->getPublishAt() ?? $prevEpisode->getCreatedAt();
+                $nextPublishedAt = $nextEpisode->getPublishAt() ?? $nextEpisode->getCreatedAt();
+
+                return ($nextPublishedAt <=> $prevPublishedAt);
+            }
+        );
+
+        $podcastsLink = (string)$router->fromHere(
+            'public:podcasts',
             [
                 'station_id' => $station->getId(),
-                'podcast_id' => $podcast_id,
             ]
         );
 
-        if (!($episode instanceof PodcastEpisode) || !$episode->isPublished()) {
-            $request->getFlash()->addMessage(__('Episode not found.'), Flash::ERROR);
-            return $response->withRedirect($podcastEpisodesLink);
+        if (count($publishedEpisodes) === 0) {
+            $request->getFlash()->addMessage(__('No episodes found.'), Flash::ERROR);
+            return $response->withRedirect($podcastsLink);
         }
 
         $feedLink = (string)$router->named(
@@ -68,12 +81,12 @@ final class PodcastEpisodeController
             $response
                 ->withHeader('X-Frame-Options', '*')
                 ->withHeader('X-Robots-Tag', 'index, nofollow'),
-            'frontend/public/podcast-episode',
+            'frontend/public/podcast-episodes',
             [
-                'episode' => $episode,
+                'episodes' => $publishedEpisodes,
                 'feedLink' => $feedLink,
                 'podcast' => $podcast,
-                'podcastEpisodesLink' => $podcastEpisodesLink,
+                'podcastsLink' => $podcastsLink,
                 'station' => $station,
             ]
         );

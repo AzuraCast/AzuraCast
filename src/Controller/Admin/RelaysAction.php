@@ -19,7 +19,7 @@ final class RelaysAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $relays = $this->em->createQueryBuilder()
             ->select('e')

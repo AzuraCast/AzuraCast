@@ -25,8 +25,10 @@ final class IndexController
             ),
         ]
     )]
-    public function statusAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function statusAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         return $response->withJson(new Entity\Api\SystemStatus());
     }
 
@@ -43,8 +45,10 @@ final class IndexController
             ),
         ]
     )]
-    public function timeAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function timeAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         return $response->withJson(new Entity\Api\Time());
     }
 }

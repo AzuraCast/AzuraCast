@@ -9,22 +9,13 @@ use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use DI;
-use Invoker\Invoker;
-use Invoker\ParameterResolver\AssociativeArrayResolver;
-use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
-use Invoker\ParameterResolver\DefaultValueResolver;
-use Invoker\ParameterResolver\ResolverChain;
+use Monolog\ErrorHandler;
 use Monolog\Registry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
-
-use const E_COMPILE_ERROR;
-use const E_CORE_ERROR;
-use const E_ERROR;
-use const E_PARSE;
-use const E_USER_ERROR;
+use Slim\Handlers\Strategies\RequestResponseNamedArgs;
 
 class AppFactory
 {
@@ -62,21 +53,7 @@ class AppFactory
         $container->set(App::class, $app);
 
         $routeCollector = $app->getRouteCollector();
-
-        // Use the PHP-DI Bridge's action invocation helper.
-        $resolvers = [
-            // Inject parameters by name first
-            new AssociativeArrayResolver(),
-            // Then inject services by type-hints for those that weren't resolved
-            new TypeHintContainerResolver($container),
-            // Then fall back on parameters default values for optional route parameters
-            new DefaultValueResolver(),
-        ];
-
-        $invoker = new Invoker(new ResolverChain($resolvers), $container);
-        $controllerInvoker = new ControllerInvoker($invoker);
-
-        $routeCollector->setDefaultInvocationStrategy($controllerInvoker);
+        $routeCollector->setDefaultInvocationStrategy(new RequestResponseNamedArgs());
 
         $environment = $container->get(Environment::class);
         if ($environment->isProduction()) {
@@ -123,33 +100,10 @@ class AppFactory
 
         $di = $containerBuilder->build();
 
+        // Monolog setup
         $logger = $di->get(LoggerInterface::class);
-
-        register_shutdown_function(
-            static function (LoggerInterface $logger): void {
-                $error = error_get_last();
-                if (null === $error) {
-                    return;
-                }
-
-                $errno = $error["type"];
-                $errfile = $error["file"];
-                $errline = $error["line"];
-                $errstr = $error["message"];
-
-                if ($errno &= E_PARSE | E_ERROR | E_USER_ERROR | E_CORE_ERROR | E_COMPILE_ERROR) {
-                    $logger->critical(
-                        sprintf(
-                            'Fatal error: %s in %s on line %d',
-                            $errstr,
-                            $errfile,
-                            $errline
-                        )
-                    );
-                }
-            },
-            $logger
-        );
+        $errorHandler = new ErrorHandler($logger);
+        $errorHandler->registerFatalHandler();
 
         Registry::addLogger($logger, 'app', true);
 

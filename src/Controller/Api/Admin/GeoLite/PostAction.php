@@ -21,7 +21,7 @@ final class PostAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $newKey = trim($request->getParsedBodyParam('geolite_license_key', ''));
 

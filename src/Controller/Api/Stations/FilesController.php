@@ -163,8 +163,11 @@ final class FilesController extends AbstractStationApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
         $query = $this->em->createQuery(
@@ -177,8 +180,11 @@ final class FilesController extends AbstractStationApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id
+    ): ResponseInterface {
         $station = $this->getStation($request);
 
         $mediaStorage = $station->getMediaStorageLocation();
@@ -214,7 +220,7 @@ final class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        mixed $station_id,
+        int|string $station_id,
         mixed $id
     ): ResponseInterface {
         $station = $this->getStation($request);

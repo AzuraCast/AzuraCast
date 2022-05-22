@@ -25,7 +25,7 @@ final class LoginAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response,
+        Response $response
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();

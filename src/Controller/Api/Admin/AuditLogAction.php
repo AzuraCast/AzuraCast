@@ -28,10 +28,10 @@ final class AuditLogAction
     ): ResponseInterface {
         $tz = new DateTimeZone('UTC');
 
-        $params = $request->getParams();
-        if (!empty($params['start']) && !empty($params['end'])) {
-            $start = CarbonImmutable::parse($params['start'], $tz)->setSecond(0);
-            $end = CarbonImmutable::parse($params['end'], $tz)->setSecond(59);
+        $allParams = $request->getParams();
+        if (!empty($allParams['start']) && !empty($allParams['end'])) {
+            $start = CarbonImmutable::parse($allParams['start'], $tz)->setSecond(0);
+            $end = CarbonImmutable::parse($allParams['end'], $tz)->setSecond(59);
         } else {
             $start = CarbonImmutable::parse('-2 weeks', $tz);
             $end = CarbonImmutable::now($tz);
@@ -45,7 +45,7 @@ final class AuditLogAction
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $search_phrase = trim($params['searchPhrase'] ?? '');
+        $search_phrase = trim($allParams['searchPhrase'] ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

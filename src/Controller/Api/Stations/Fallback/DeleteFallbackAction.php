@@ -26,15 +26,19 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class DeleteFallbackAction
+final class DeleteFallbackAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationRepository $stationRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Entity\Repository\StationRepository $stationRepo
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
-        $stationRepo->clearFallback($station);
+        $this->stationRepo->clearFallback($station);
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

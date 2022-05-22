@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * @extends AbstractApiCrudController<Entity\StationStreamerBroadcast>
  */
-class BroadcastsController extends AbstractApiCrudController
+final class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\StationStreamerBroadcast::class;
 
@@ -190,7 +190,7 @@ class BroadcastsController extends AbstractApiCrudController
         return $response->withJson(Entity\Api\Status::deleted());
     }
 
-    protected function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast
+    private function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast
     {
         /** @var Entity\StationStreamerBroadcast|null $broadcast */
         $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy(
@@ -202,7 +202,7 @@ class BroadcastsController extends AbstractApiCrudController
         return $broadcast;
     }
 
-    protected function getStreamer(Entity\Station $station, int $id): ?Entity\StationStreamer
+    private function getStreamer(Entity\Station $station, int $id): ?Entity\StationStreamer
     {
         /** @var Entity\StationStreamer|null $streamer */
         $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy(

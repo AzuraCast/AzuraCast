@@ -11,7 +11,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Cache\CacheItem;
@@ -52,18 +51,21 @@ use Symfony\Contracts\Cache\CacheInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class ScheduleAction
+final class ScheduleAction
 {
     use HasScheduleDisplay;
+
+    public function __construct(
+        private readonly Scheduler $scheduler,
+        private readonly CacheInterface $cache,
+        private readonly Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator,
+        private readonly Entity\Repository\StationScheduleRepository $scheduleRepo
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        Scheduler $scheduler,
-        CacheInterface $cache,
-        Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator,
-        Entity\Repository\StationScheduleRepository $scheduleRepo
     ): ResponseInterface {
         $station = $request->getStation();
         $tz = $station->getTimezoneObject();
@@ -77,28 +79,25 @@ class ScheduleAction
                 . $startDate->format('Ymd') . '-'
                 . $endDate->format('Ymd');
 
-            $events = $cache->get(
+            $events = $this->cache->get(
                 $cacheKey,
                 function (CacheItem $item) use (
                     $station,
-                    $scheduleRepo,
-                    $scheduleApiGenerator,
-                    $scheduler,
                     $startDate,
                     $endDate
                 ) {
                     $item->expiresAfter(600);
 
                     $nowTz = CarbonImmutable::now($station->getTimezoneObject());
-                    $events = $scheduleRepo->getAllScheduledItemsForStation($station);
+                    $events = $this->scheduleRepo->getAllScheduledItemsForStation($station);
 
                     return $this->getEvents(
                         $startDate,
                         $endDate,
                         $nowTz,
-                        $scheduler,
+                        $this->scheduler,
                         $events,
-                        [$scheduleApiGenerator, '__invoke']
+                        [$this->scheduleApiGenerator, '__invoke']
                     );
                 }
             );
@@ -111,11 +110,11 @@ class ScheduleAction
                 $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
             }
 
-            $events = $cache->get(
+            $events = $this->cache->get(
                 $cacheKey,
-                function (CacheItem $item) use ($scheduleRepo, $station, $now) {
+                function (CacheItem $item) use ($station, $now) {
                     $item->expiresAfter(60);
-                    return $scheduleRepo->getUpcomingSchedule($station, $now);
+                    return $this->scheduleRepo->getUpcomingSchedule($station, $now);
                 }
             );
 

@@ -145,7 +145,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class PodcastsController extends AbstractApiCrudController
+final class PodcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Podcast::class;
     protected string $resourceRouteName = 'api:stations:podcast';
@@ -154,8 +154,7 @@ class PodcastsController extends AbstractApiCrudController
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        protected Entity\Repository\StationRepository $stationRepository,
-        protected Entity\Repository\PodcastRepository $podcastRepository
+        private readonly Entity\Repository\PodcastRepository $podcastRepository
     ) {
         parent::__construct($em, $serializer, $validator);
     }
@@ -266,7 +265,7 @@ class PodcastsController extends AbstractApiCrudController
      *
      * @return Entity\Podcast|null
      */
-    protected function getRecord(Entity\Station $station, string $id): ?object
+    private function getRecord(Entity\Station $station, string $id): ?object
     {
         return $this->podcastRepository->fetchPodcastForStation($station, $id);
     }
@@ -348,9 +347,9 @@ class PodcastsController extends AbstractApiCrudController
                 absolute: !$isInternal
             );
             $return->links['episode_new_media'] = (string)$router->fromHere(
-                route_name:   'api:stations:podcast:episodes:new-media',
+                route_name: 'api:stations:podcast:episodes:new-media',
                 route_params: ['podcast_id' => $record->getId()],
-                absolute:     !$isInternal
+                absolute: !$isInternal
             );
         }
 

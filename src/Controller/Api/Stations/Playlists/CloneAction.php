@@ -11,7 +11,7 @@ use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
 
-class CloneAction extends AbstractPlaylistsAction
+final class CloneAction extends AbstractPlaylistsAction
 {
     public function __invoke(
         ServerRequest $request,

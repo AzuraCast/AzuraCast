@@ -8,10 +8,12 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class QueueAction
+final class QueueAction
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();
 

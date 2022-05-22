@@ -28,18 +28,18 @@ use RuntimeException;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
-class BatchAction
+final class BatchAction
 {
     public function __construct(
-        protected BatchUtilities $batchUtilities,
-        protected ReloadableEntityManagerInterface $em,
-        protected MessageBus $messageBus,
-        protected QueueManagerInterface $queueManager,
-        protected Adapters $adapters,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly BatchUtilities $batchUtilities,
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly MessageBus $messageBus,
+        private readonly QueueManagerInterface $queueManager,
+        private readonly Adapters $adapters,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
     ) {
     }
 
@@ -69,7 +69,7 @@ class BatchAction
         return $response->withJson($result);
     }
 
-    public function doDelete(
+    private function doDelete(
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
@@ -105,7 +105,7 @@ class BatchAction
         return $result;
     }
 
-    public function doPlaylist(
+    private function doPlaylist(
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
@@ -138,7 +138,7 @@ class BatchAction
                 $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
                     [
                         'station_id' => $station->getId(),
-                        'id'         => (int)$playlistId,
+                        'id' => (int)$playlistId,
                     ]
                 );
 
@@ -197,7 +197,7 @@ class BatchAction
         return $result;
     }
 
-    public function doMove(
+    private function doMove(
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
@@ -257,7 +257,7 @@ class BatchAction
         return $result;
     }
 
-    public function doQueue(
+    private function doQueue(
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
@@ -298,7 +298,7 @@ class BatchAction
         return $result;
     }
 
-    public function doPlayImmediately(
+    private function doPlayImmediately(
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
@@ -359,7 +359,7 @@ class BatchAction
         return $result;
     }
 
-    public function doReprocess(
+    private function doReprocess(
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
@@ -409,7 +409,7 @@ class BatchAction
         return $result;
     }
 
-    protected function parseRequest(
+    private function parseRequest(
         ServerRequest $request,
         ExtendedFilesystemInterface $fs,
         bool $recursive = false
@@ -438,7 +438,7 @@ class BatchAction
         return $result;
     }
 
-    protected function writePlaylistChanges(
+    private function writePlaylistChanges(
         ServerRequest $request,
         array $playlists
     ): void {

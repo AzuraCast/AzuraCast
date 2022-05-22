@@ -9,15 +9,22 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
 use App\Utilities\File;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
-class ImportAction extends AbstractPlaylistsAction
+final class ImportAction extends AbstractPlaylistsAction
 {
+    public function __construct(
+        EntityManagerInterface $em,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+    ) {
+        parent::__construct($em);
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         int $id
     ): ResponseInterface {
         $playlist = $this->requireRecord($request->getStation(), $id);
@@ -136,14 +143,14 @@ class ImportAction extends AbstractPlaylistsAction
                     $mediaById[$row->getId()] = $row;
                 }
 
-                $weight = $playlistMediaRepo->getHighestSongWeight($playlist);
+                $weight = $this->spmRepo->getHighestSongWeight($playlist);
 
                 // Split this process to preserve the order of the imported items.
                 foreach ($matches as $mediaId) {
                     $weight++;
 
                     $media = $mediaById[$mediaId];
-                    $playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
+                    $this->spmRepo->addMediaToPlaylist($media, $playlist, $weight);
 
                     $foundPaths++;
                 }

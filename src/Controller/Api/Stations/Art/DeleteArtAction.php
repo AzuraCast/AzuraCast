@@ -38,23 +38,27 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class DeleteArtAction
+final class DeleteArtAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationMediaRepository $mediaRepo,
         int|string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $media = $mediaRepo->find($media_id, $station);
+        $media = $this->mediaRepo->find($media_id, $station);
         if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)
                 ->withJson(Entity\Api\Error::notFound());
         }
 
-        $mediaRepo->removeAlbumArt($media);
+        $this->mediaRepo->removeAlbumArt($media);
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

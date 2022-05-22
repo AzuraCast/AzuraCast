@@ -11,7 +11,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -102,11 +101,10 @@ use Throwable;
         ]
     )
 ]
-class ServicesController
+final class ServicesController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Configuration $configuration
+        private readonly Configuration $configuration
     ) {
     }
 

@@ -27,12 +27,16 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class PostFallbackAction
+final class PostFallbackAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationRepository $stationRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Entity\Repository\StationRepository $stationRepo
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -41,7 +45,8 @@ class PostFallbackAction
             return $flowResponse;
         }
 
-        $stationRepo->setFallback($station, $flowResponse);
+        $this->stationRepo->setFallback($station, $flowResponse);
+
         return $response->withJson(Entity\Api\Status::updated());
     }
 }

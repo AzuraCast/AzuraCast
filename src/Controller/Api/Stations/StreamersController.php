@@ -139,7 +139,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class StreamersController extends AbstractScheduledEntityController
+final class StreamersController extends AbstractScheduledEntityController
 {
     use CanSortResults;
 
@@ -164,7 +164,7 @@ class StreamersController extends AbstractScheduledEntityController
             $request,
             $qb,
             [
-                'display_name'      => 'e.display_name',
+                'display_name' => 'e.display_name',
                 'streamer_username' => 'e.streamer_username',
             ],
             'e.streamer_username'
@@ -209,10 +209,10 @@ class StreamersController extends AbstractScheduledEntityController
                 $streamer = $scheduleItem->getStreamer();
 
                 return [
-                    'id'       => $streamer->getId(),
-                    'title'    => $streamer->getDisplayName(),
-                    'start'    => $start->toIso8601String(),
-                    'end'      => $end->toIso8601String(),
+                    'id' => $streamer->getId(),
+                    'title' => $streamer->getDisplayName(),
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
                     'edit_url' => (string)$request->getRouter()->named(
                         'api:stations:streamer',
                         ['station_id' => $station->getId(), 'id' => $streamer->getId()]

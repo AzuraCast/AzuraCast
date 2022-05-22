@@ -19,12 +19,16 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-class SetupController
+final class SetupController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Environment $environment
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Environment $environment,
+        private readonly Entity\Repository\RolePermissionRepository $permissionRepo,
+        private readonly ValidatorInterface $validator,
+        private readonly StationFormComponent $stationFormComponent,
+        private readonly Version $version
     ) {
     }
 
@@ -34,8 +38,10 @@ class SetupController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function indexAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $current_step = $this->getSetupStep($request);
         return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
     }
@@ -47,8 +53,6 @@ class SetupController
     public function registerAction(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\RolePermissionRepository $permissionRepo,
-        ValidatorInterface $validator
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
@@ -70,7 +74,7 @@ class SetupController
                     throw new InvalidArgumentException('Username and password required.');
                 }
 
-                $role = $permissionRepo->ensureSuperAdministratorRole();
+                $role = $this->permissionRepo->ensureSuperAdministratorRole();
 
                 // Create user account.
                 $user = new Entity\User();
@@ -78,7 +82,7 @@ class SetupController
                 $user->setNewPassword($data['password']);
                 $user->getRoles()->add($role);
 
-                $errors = $validator->validate($user);
+                $errors = $this->validator->validate($user);
                 if (count($errors) > 0) {
                     throw ValidationException::fromValidationErrors($errors);
                 }
@@ -106,7 +110,7 @@ class SetupController
             layout: 'minimal',
             title: __('Set Up AzuraCast'),
             props: [
-                'csrf'  => $csrf->generate('register'),
+                'csrf' => $csrf->generate('register'),
                 'error' => $error,
             ]
         );
@@ -119,7 +123,6 @@ class SetupController
     public function stationAction(
         ServerRequest $request,
         Response $response,
-        StationFormComponent $stationFormComponent
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
@@ -133,7 +136,7 @@ class SetupController
             id: 'setup-station',
             title: __('Create a New Radio Station'),
             props: array_merge(
-                $stationFormComponent->getProps($request),
+                $this->stationFormComponent->getProps($request),
                 [
                     'createUrl' => (string)$request->getRouter()->named('api:admin:stations'),
                     'continueUrl' => (string)$request->getRouter()->named('setup:settings'),
@@ -149,7 +152,6 @@ class SetupController
     public function settingsAction(
         ServerRequest $request,
         Response $response,
-        Version $version
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -165,11 +167,11 @@ class SetupController
             id: 'setup-settings',
             title: __('System Settings'),
             props: [
-                'apiUrl'         => (string)$router->named('api:admin:settings', [
+                'apiUrl' => (string)$router->named('api:admin:settings', [
                     'group' => Entity\Settings::GROUP_GENERAL,
                 ]),
-                'releaseChannel' => $version->getReleaseChannelEnum()->value,
-                'continueUrl'    => (string)$router->named('dashboard'),
+                'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
+                'continueUrl' => (string)$router->named('dashboard'),
             ],
         );
     }
@@ -192,7 +194,7 @@ class SetupController
      *
      * @param ServerRequest $request
      */
-    protected function getSetupStep(ServerRequest $request): string
+    private function getSetupStep(ServerRequest $request): string
     {
         $settings = $this->settingsRepo->readSettings();
         if ($settings->isSetupComplete()) {

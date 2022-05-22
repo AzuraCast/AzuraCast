@@ -10,12 +10,16 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PlaylistsAction
+final class PlaylistsAction
 {
+    public function __construct(
+        private readonly SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        SettingsRepository $settingsRepo
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -24,7 +28,7 @@ class PlaylistsAction
             throw new Exception(__('This feature is not currently supported on this station.'));
         }
 
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
         $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
@@ -33,12 +37,12 @@ class PlaylistsAction
             id: 'station-playlist',
             title: __('Playlists'),
             props: [
-                'listUrl'                => (string)$router->fromHere('api:stations:playlists'),
-                'scheduleUrl'            => (string)$router->fromHere('api:stations:playlists:schedule'),
-                'filesUrl'               => (string)$router->fromHere('stations:files:index'),
-                'restartStatusUrl'       => (string)$router->fromHere('api:stations:restart-status'),
-                'stationTimeZone'        => $station->getTimezone(),
-                'useManualAutoDj'        => $station->useManualAutoDJ(),
+                'listUrl' => (string)$router->fromHere('api:stations:playlists'),
+                'scheduleUrl' => (string)$router->fromHere('api:stations:playlists:schedule'),
+                'filesUrl' => (string)$router->fromHere('stations:files:index'),
+                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
+                'stationTimeZone' => $station->getTimezone(),
+                'useManualAutoDj' => $station->useManualAutoDJ(),
                 'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
             ],
         );

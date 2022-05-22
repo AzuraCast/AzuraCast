@@ -11,10 +11,12 @@ use Psr\Http\Message\ResponseInterface;
 
 use const ARRAY_FILTER_USE_KEY;
 
-class UpdateMetadataAction
+final class UpdateMetadataAction
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
 

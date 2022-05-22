@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function count;
 use function str_starts_with;
 
-class UploadAction
+final class UploadAction
 {
     protected const ALLOWED_MEDIA_FIELDS = [
         'title',
@@ -37,12 +37,12 @@ class UploadAction
     ];
 
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\CustomFieldRepository $customFieldRepo,
-        protected Entity\Repository\StationPlaylistRepository $playlistRepo,
-        protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        protected Serializer $serializer,
-        protected ValidatorInterface $validator,
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly Entity\Repository\StationPlaylistRepository $playlistRepo,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly Serializer $serializer,
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
@@ -163,7 +163,7 @@ class UploadAction
         );
     }
 
-    protected function processRow(
+    private function processRow(
         Entity\StationMedia $record,
         array $row,
         array $customFieldShortNames,
@@ -241,7 +241,7 @@ class UploadAction
         return true;
     }
 
-    protected function clearMemory(): void
+    private function clearMemory(): void
     {
         $this->em->clear();
         gc_collect_cycles();

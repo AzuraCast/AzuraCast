@@ -10,13 +10,17 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class DownloadAction
+final class DownloadAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
         string $media_id,
-        Entity\Repository\StationMediaRepository $mediaRepo
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -26,7 +30,7 @@ class DownloadAction
                 ->withJson(new Entity\Api\Error(403, __('This station does not support on-demand streaming.')));
         }
 
-        $media = $mediaRepo->findByUniqueId($media_id, $station);
+        $media = $this->mediaRepo->findByUniqueId($media_id, $station);
 
         if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)

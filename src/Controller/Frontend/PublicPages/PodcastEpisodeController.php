@@ -14,11 +14,11 @@ use App\Http\ServerRequest;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-class PodcastEpisodeController
+final class PodcastEpisodeController
 {
     public function __construct(
-        protected PodcastRepository $podcastRepository,
-        protected PodcastEpisodeRepository $episodeRepository
+        private readonly PodcastRepository $podcastRepository,
+        private readonly PodcastEpisodeRepository $episodeRepository
     ) {
     }
 

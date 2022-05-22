@@ -19,16 +19,20 @@ use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
-class ListAction
+final class ListAction
 {
     use CanSortResults;
+
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly CacheInterface $cache,
+        private readonly Entity\Repository\StationRepository $stationRepo
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        CacheInterface $cache,
-        Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -56,8 +60,8 @@ class ListAction
 
         $flushCache = (bool)$request->getParam('flushCache', false);
 
-        if (!$flushCache && $cache->has($cacheKey)) {
-            $result = $cache->get($cacheKey);
+        if (!$flushCache && $this->cache->has($cacheKey)) {
+            $result = $this->cache->get($cacheKey);
         } else {
             $result = [];
 
@@ -65,7 +69,7 @@ class ListAction
                 ? '%'
                 : $currentDir . '/%';
 
-            $mediaQueryBuilder = $em->createQueryBuilder()
+            $mediaQueryBuilder = $this->em->createQueryBuilder()
                 ->select(['sm', 'spm', 'sp', 'smcf'])
                 ->from(Entity\StationMedia::class, 'sm')
                 ->leftJoin('sm.custom_fields', 'smcf')
@@ -78,7 +82,7 @@ class ListAction
                 ->setParameter('path', $pathLike);
 
             // Apply searching
-            $foldersInDirQuery = $em->createQuery(
+            $foldersInDirQuery = $this->em->createQuery(
                 <<<'DQL'
                     SELECT spf, sp
                     FROM App\Entity\StationPlaylistFolder spf
@@ -89,7 +93,7 @@ class ListAction
             )->setParameter('station', $station)
                 ->setParameter('path', $pathLike);
 
-            $unprocessableMediaQuery = $em->createQuery(
+            $unprocessableMediaQuery = $this->em->createQuery(
                 <<<'DQL'
                     SELECT upm
                     FROM App\Entity\UnprocessableMedia upm
@@ -128,7 +132,7 @@ class ListAction
                     } elseif (str_starts_with($searchPhrase, 'playlist:')) {
                         [, $playlistName] = explode(':', $searchPhrase, 2);
 
-                        $playlist = $em->getRepository(Entity\StationPlaylist::class)
+                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)
                             ->findOneBy(
                                 [
                                     'station' => $station,
@@ -306,7 +310,7 @@ class ListAction
                 $result[] = $row;
             }
 
-            $cache->set($cacheKey, $result, 300);
+            $this->cache->set($cacheKey, $result, 300);
         }
 
         // Apply sorting
@@ -331,7 +335,7 @@ class ListAction
         // Add processor-intensive data for just this page.
         $stationId = $station->getIdRequired();
         $isInternal = (bool)$request->getParam('internal', false);
-        $defaultAlbumArtUrl = (string)$stationRepo->getDefaultAlbumArtUrl($station);
+        $defaultAlbumArtUrl = (string)$this->stationRepo->getDefaultAlbumArtUrl($station);
 
         $paginator->setPostprocessor(
             static function (Entity\Api\FileList $row) use ($router, $stationId, $defaultAlbumArtUrl, $isInternal) {
@@ -342,7 +346,7 @@ class ListAction
         return $paginator->write($response);
     }
 
-    protected static function sortRows(
+    private static function sortRows(
         Entity\Api\FileList $a,
         Entity\Api\FileList $b,
         ?string $searchPhrase = null,
@@ -387,7 +391,7 @@ class ListAction
             : $bVal <=> $aVal;
     }
 
-    protected static function postProcessRow(
+    private static function postProcessRow(
         Entity\Api\FileList $row,
         RouterInterface $router,
         int $stationId,

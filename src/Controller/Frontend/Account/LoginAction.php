@@ -14,24 +14,27 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class LoginAction
+final class LoginAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly RateLimit $rateLimit,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        RateLimit $rateLimit,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\UserLoginTokenRepository $loginTokenRepo
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();
 
         // Check installation completion progress.
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
 
         if (!$settings->isSetupComplete()) {
-            $num_users = (int)$em->createQuery(
+            $num_users = (int)$this->em->createQuery(
                 <<<'DQL'
                     SELECT COUNT(u.id) FROM App\Entity\User u
                 DQL
@@ -50,7 +53,7 @@ class LoginAction
 
         if ($request->isPost()) {
             try {
-                $rateLimit->checkRequestRateLimit($request, 'login', 30, 5);
+                $this->rateLimit->checkRequestRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException) {
                 $flash->addMessage(
                     sprintf(
@@ -80,8 +83,8 @@ class LoginAction
                 $acl->reload();
 
                 // Persist user as database entity.
-                $em->persist($user);
-                $em->flush();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 // Redirect for 2FA.
                 if (!$auth->isLoginComplete()) {

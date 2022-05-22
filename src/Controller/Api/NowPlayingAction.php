@@ -49,12 +49,11 @@ use Psr\SimpleCache\CacheInterface;
         ]
     )
 ]
-class NowPlayingAction
+final class NowPlayingAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected CacheInterface $cache
+        private readonly EntityManagerInterface $em,
+        private readonly CacheInterface $cache
     ) {
     }
 
@@ -84,7 +83,7 @@ class NowPlayingAction
         );
     }
 
-    protected function getForStation(
+    private function getForStation(
         string|int $station,
         RouterInterface $router
     ): ?Entity\Api\NowPlaying\NowPlaying {
@@ -126,7 +125,7 @@ class NowPlayingAction
         return null;
     }
 
-    protected function getForAllStations(
+    private function getForAllStations(
         RouterInterface $router,
         bool $publicOnly = false,
     ): array {

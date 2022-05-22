@@ -30,12 +30,11 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class GetFallbackAction
+final class GetFallbackAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
         set_time_limit(600);
 

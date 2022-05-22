@@ -11,12 +11,16 @@ use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use Psr\Http\Message\ResponseInterface;
 
-class RenameAction
+final class RenameAction
 {
+    public function __construct(
+        private readonly BatchUtilities $batchUtilities
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        BatchUtilities $batchUtilities
     ): ResponseInterface {
         $from = $request->getParam('file');
         if (empty($from)) {
@@ -42,7 +46,7 @@ class RenameAction
 
         $fsMedia->move($from, $to);
 
-        $batchUtilities->handleRename($from, $to, $storageLocation, $fsMedia);
+        $this->batchUtilities->handleRename($from, $to, $storageLocation, $fsMedia);
 
         return $response->withJson(Entity\Api\Status::updated());
     }

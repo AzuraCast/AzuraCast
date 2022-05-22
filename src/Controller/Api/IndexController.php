@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexController
+final class IndexController
 {
     #[OA\Get(
         path: '/status',

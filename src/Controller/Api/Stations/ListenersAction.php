@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\CsvWriterTempFile;
-use App\Service\DeviceDetector;
-use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,18 +40,19 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class ListenersAction
+final class ListenersAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\ListenerRepository $listenerRepo,
+        private readonly Entity\Repository\StationMountRepository $mountRepo,
+        private readonly Entity\Repository\StationRemoteRepository $remoteRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        Entity\Repository\ListenerRepository $listenerRepo,
-        Entity\Repository\StationMountRepository $mountRepo,
-        Entity\Repository\StationRemoteRepository $remoteRepo,
-        IpGeolocation $geoLite,
-        DeviceDetector $deviceDetector,
-        Environment $environment
     ): ResponseInterface {
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
@@ -69,7 +67,7 @@ class ListenersAction
             $startTimestamp = $now->getTimestamp();
             $endTimestamp = $now->getTimestamp();
 
-            $listenersIterator = $listenerRepo->iterateLiveListenersArray($station);
+            $listenersIterator = $this->listenerRepo->iterateLiveListenersArray($station);
         } else {
             $start = CarbonImmutable::parse($params['start'], $stationTz)
                 ->setSecond(0);
@@ -81,7 +79,7 @@ class ListenersAction
 
             $range = $start->format('Y-m-d_H-i-s') . '_to_' . $end->format('Y-m-d_H-i-s');
 
-            $listenersIterator = $em->createQuery(
+            $listenersIterator = $this->em->createQuery(
                 <<<'DQL'
                     SELECT l
                     FROM App\Entity\Listener l
@@ -96,8 +94,8 @@ class ListenersAction
                 ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
         }
 
-        $mountNames = $mountRepo->getDisplayNames($station);
-        $remoteNames = $remoteRepo->getDisplayNames($station);
+        $mountNames = $this->mountRepo->getDisplayNames($station);
+        $remoteNames = $this->remoteRepo->getDisplayNames($station);
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];
@@ -200,7 +198,7 @@ class ListenersAction
      * @param Entity\Api\Listener[] $listeners
      * @param string $filename
      */
-    protected function exportReportAsCsv(
+    private function exportReportAsCsv(
         Response $response,
         Entity\Station $station,
         array $listeners,

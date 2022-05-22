@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\StationFormComponent;
-use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ProfileController
+final class ProfileController
 {
-    protected string $csrf_namespace = 'stations_profile';
+    private const CSRF_NAMESPACE = 'stations_profile';
 
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected FactoryInterface $factory
+        private readonly EntityManagerInterface $em,
+        private readonly StationFormComponent $stationFormComponent,
     ) {
     }
 
@@ -57,7 +54,7 @@ class ProfileController
         )->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        $csrf = $request->getCsrf()->generate($this->csrf_namespace);
+        $csrf = $request->getCsrf()->generate(self::CSRF_NAMESPACE);
 
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
@@ -200,7 +197,6 @@ class ProfileController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        StationFormComponent $stationFormComponent
     ): ResponseInterface {
         return $request->getView()->renderVuePage(
             response: $response,
@@ -208,7 +204,7 @@ class ProfileController
             id: 'edit-profile',
             title: __('Edit Profile'),
             props: array_merge(
-                $stationFormComponent->getProps($request),
+                $this->stationFormComponent->getProps($request),
                 [
                     'editUrl' => (string)$request->getRouter()->fromHere('api:stations:profile:edit'),
                     'continueUrl' => (string)$request->getRouter()->fromHere('stations:profile:index'),
@@ -223,7 +219,7 @@ class ProfileController
         string $feature,
         string $csrf
     ): ResponseInterface {
-        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
+        $request->getCsrf()->verify($csrf, self::CSRF_NAMESPACE);
 
         $station = $request->getStation();
 

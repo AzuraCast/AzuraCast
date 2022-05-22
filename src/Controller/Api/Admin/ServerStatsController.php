@@ -35,12 +35,16 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class ServerStatsController
+final class ServerStatsController
 {
+    public function __construct(
+        private readonly Environment $environment,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment
     ): ResponseInterface {
         $firstCpuMeasurement = CpuStats::getCurrentLoad();
         $firstNetworkMeasurement = NetworkStats::getNetworkUsage();
@@ -125,12 +129,12 @@ class ServerStatsController
 
         $memoryStats = MemoryStats::getMemoryUsage();
 
-        $spaceTotalFloat = disk_total_space($environment->getStationDirectory());
+        $spaceTotalFloat = disk_total_space($this->environment->getStationDirectory());
         $spaceTotal = (is_float($spaceTotalFloat))
             ? BigInteger::of($spaceTotalFloat)
             : BigInteger::zero();
 
-        $spaceFreeFloat = disk_free_space($environment->getStationDirectory());
+        $spaceFreeFloat = disk_free_space($this->environment->getStationDirectory());
         $spaceFree = (is_float($spaceFreeFloat))
             ? BigInteger::of($spaceFreeFloat)
             : BigInteger::zero();

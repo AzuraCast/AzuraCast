@@ -9,15 +9,19 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class OverviewAction
+final class OverviewAction
 {
+    public function __construct(
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
         // Get current analytics level.
-        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
             return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
         }

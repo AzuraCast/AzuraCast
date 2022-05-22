@@ -11,15 +11,19 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class DeleteCustomAssetAction
+final class DeleteCustomAssetAction
 {
+    public function __construct(
+        private readonly Environment $environment,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment,
         string $type
     ): ResponseInterface {
-        $customAsset = AssetFactory::createForType($environment, $type);
+        $customAsset = AssetFactory::createForType($this->environment, $type);
 
         $customAsset->delete();
 

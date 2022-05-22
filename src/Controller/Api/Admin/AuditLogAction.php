@@ -15,15 +15,17 @@ use Psr\Http\Message\ResponseInterface;
 
 use const JSON_PRETTY_PRINT;
 
-class AuditLogAction
+final class AuditLogAction
 {
     public function __construct(
         protected EntityManagerInterface $em
     ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $tz = new DateTimeZone('UTC');
 
         $params = $request->getParams();

@@ -141,7 +141,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class MountsController extends AbstractStationApiCrudController
+final class MountsController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
@@ -152,7 +152,7 @@ class MountsController extends AbstractStationApiCrudController
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        protected Entity\Repository\StationMountRepository $mountRepo
+        private readonly Entity\Repository\StationMountRepository $mountRepo
     ) {
         parent::__construct($em, $serializer, $validator);
     }
@@ -175,7 +175,7 @@ class MountsController extends AbstractStationApiCrudController
             $request,
             $qb,
             [
-                'display_name'  => 'e.display_name',
+                'display_name' => 'e.display_name',
                 'enable_autodj' => 'e.enable_autodj',
             ],
             'e.display_name'
@@ -200,9 +200,9 @@ class MountsController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         $return['links']['intro'] = (string)$router->fromHere(
-            route_name:   'api:stations:mounts:intro',
+            route_name: 'api:stations:mounts:intro',
             route_params: ['id' => $record->getId()],
-            absolute:     true
+            absolute: true
         );
 
         $return['links']['listen'] = (string)Router::resolveUri(

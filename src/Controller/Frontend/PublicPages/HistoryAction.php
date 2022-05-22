@@ -10,23 +10,24 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class HistoryAction
+final class HistoryAction
 {
+    public function __construct(
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
             throw new StationNotFoundException();
         }
 
-        $np = $npApiGenerator->currentOrEmpty($station);
+        $np = $this->npApiGenerator->currentOrEmpty($station);
         $np->resolveUrls($request->getRouter()->getBaseUrl());
 
         $customization = $request->getCustomization();
@@ -35,7 +36,7 @@ class HistoryAction
         $useNChan = $customization->useWebSocketsForNowPlaying();
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicHistory',
             id: 'song-history',
             layout: 'minimal',

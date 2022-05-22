@@ -16,11 +16,11 @@ use Throwable;
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
  */
-class SoundExchangeAction
+final class SoundExchangeAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected MusicBrainz $musicBrainz
+        private readonly EntityManagerInterface $em,
+        private readonly MusicBrainz $musicBrainz
     ) {
     }
 
@@ -151,7 +151,7 @@ class SoundExchangeAction
         return $response->renderStringAsFile($export_txt, 'text/plain', $export_filename);
     }
 
-    protected function findISRC(array $song_row): ?string
+    private function findISRC(array $song_row): ?string
     {
         $song = Entity\Song::createFromArray($song_row);
 

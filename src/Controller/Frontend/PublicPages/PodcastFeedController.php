@@ -40,13 +40,13 @@ use MarcW\RssWriter\Extension\Sy\SyWriter;
 use MarcW\RssWriter\RssWriter;
 use Psr\Http\Message\ResponseInterface;
 
-class PodcastFeedController
+final class PodcastFeedController
 {
     protected RouterInterface $router;
 
     public function __construct(
-        protected StationRepository $stationRepository,
-        protected PodcastRepository $podcastRepository
+        private readonly StationRepository $stationRepository,
+        private readonly PodcastRepository $podcastRepository
     ) {
     }
 
@@ -82,7 +82,7 @@ class PodcastFeedController
             ->withHeader('X-Robots-Tag', 'index, nofollow');
     }
 
-    protected function checkHasPublishedEpisodes(Podcast $podcast): bool
+    private function checkHasPublishedEpisodes(Podcast $podcast): bool
     {
         /** @var PodcastEpisode $episode */
         foreach ($podcast->getEpisodes() as $episode) {
@@ -94,7 +94,7 @@ class PodcastFeedController
         return false;
     }
 
-    protected function generateRssFeed(
+    private function generateRssFeed(
         Podcast $podcast,
         Station $station,
         ServerRequest $serverRequest
@@ -106,7 +106,7 @@ class PodcastFeedController
         return $rssWriter->writeChannel($channel);
     }
 
-    protected function createRssWriter(): RssWriter
+    private function createRssWriter(): RssWriter
     {
         $rssWriter = new RssWriter(null, [], true);
 
@@ -120,7 +120,7 @@ class PodcastFeedController
         return $rssWriter;
     }
 
-    protected function buildRssChannelForPodcast(
+    private function buildRssChannelForPodcast(
         Podcast $podcast,
         Station $station,
         ServerRequest $serverRequest
@@ -179,7 +179,7 @@ class PodcastFeedController
     /**
      * @return RssCategory[]
      */
-    protected function buildRssCategoriesForPodcast(Podcast $podcast): array
+    private function buildRssCategoriesForPodcast(Podcast $podcast): array
     {
         return $podcast->getCategories()->map(
             function (PodcastCategory $podcastCategory) {
@@ -197,7 +197,7 @@ class PodcastFeedController
     /**
      * @return mixed[]
      */
-    protected function buildItunesCategoriesForPodcast(Podcast $podcast): array
+    private function buildItunesCategoriesForPodcast(Podcast $podcast): array
     {
         return $podcast->getCategories()->map(
             function (PodcastCategory $podcastCategory) {
@@ -211,7 +211,7 @@ class PodcastFeedController
         )->getValues();
     }
 
-    protected function buildItunesOwner(Podcast $podcast): ?ItunesOwner
+    private function buildItunesOwner(Podcast $podcast): ?ItunesOwner
     {
         if (empty($podcast->getAuthor()) && empty($podcast->getEmail())) {
             return null;
@@ -224,7 +224,7 @@ class PodcastFeedController
         return $itunesOwner;
     }
 
-    protected function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
+    private function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
     {
         $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
 
@@ -253,7 +253,7 @@ class PodcastFeedController
     /**
      * @return RssItem[]
      */
-    protected function buildRssItemsForPodcast(Podcast $podcast, Station $station): array
+    private function buildRssItemsForPodcast(Podcast $podcast, Station $station): array
     {
         $rssItems = [];
 
@@ -311,7 +311,7 @@ class PodcastFeedController
         return $rssItems;
     }
 
-    protected function buildRssEnclosureForPodcastMedia(
+    private function buildRssEnclosureForPodcastMedia(
         PodcastEpisode $episode,
         Station $station
     ): RssEnclosure {
@@ -334,7 +334,7 @@ class PodcastFeedController
         return $rssEnclosure;
     }
 
-    protected function buildItunesImageForEpisode(PodcastEpisode $episode, Station $station): string
+    private function buildItunesImageForEpisode(PodcastEpisode $episode, Station $station): string
     {
         $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
 
@@ -357,7 +357,7 @@ class PodcastFeedController
     /**
      * @param RssItem[] $rssItems
      */
-    protected function rssItemsContainsExplicitContent(array $rssItems): bool
+    private function rssItemsContainsExplicitContent(array $rssItems): bool
     {
         foreach ($rssItems as $rssItem) {
             foreach ($rssItem->getExtensions() as $extension) {

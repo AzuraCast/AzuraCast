@@ -11,7 +11,7 @@ use App\Http\ServerRequest;
 use League\Flysystem\UnableToCreateDirectory;
 use Psr\Http\Message\ResponseInterface;
 
-class MakeDirectoryAction
+final class MakeDirectoryAction
 {
     public function __invoke(
         ServerRequest $request,

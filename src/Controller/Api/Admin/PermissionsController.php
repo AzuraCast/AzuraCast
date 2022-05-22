@@ -29,15 +29,19 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class PermissionsController
+final class PermissionsController
 {
+    public function __construct(
+        private readonly Acl $acl,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Acl $acl
     ): ResponseInterface {
         $permissions = [];
-        foreach ($acl->listPermissions() as $group => $actions) {
+        foreach ($this->acl->listPermissions() as $group => $actions) {
             foreach ($actions as $action_id => $action_name) {
                 $permissions[$group][] = [
                     'id' => $action_id,

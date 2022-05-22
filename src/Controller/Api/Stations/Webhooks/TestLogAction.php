@@ -10,16 +10,14 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Messenger\MessageBus;
 
-class TestLogAction extends AbstractWebhooksAction
+final class TestLogAction extends AbstractWebhooksAction
 {
     use HasLogViewer;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        MessageBus $messageBus,
         int $id,
         string $path
     ): ResponseInterface {

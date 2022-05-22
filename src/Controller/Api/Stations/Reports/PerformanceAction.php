@@ -11,12 +11,16 @@ use App\Service\CsvWriterTempFile;
 use App\Sync\Task\RunAutomatedAssignmentTask;
 use Psr\Http\Message\ResponseInterface;
 
-class PerformanceAction
+final class PerformanceAction
 {
+    public function __construct(
+        private readonly RunAutomatedAssignmentTask $automationTask
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        RunAutomatedAssignmentTask $automationTask
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -24,7 +28,7 @@ class PerformanceAction
         $thresholdDays = (int)($automationConfig['threshold_days']
             ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
 
-        $reportData = $automationTask->generateReport($station, $thresholdDays);
+        $reportData = $this->automationTask->generateReport($station, $thresholdDays);
 
         // Do not show songs that are not in playlists.
         $reportData = array_filter(
@@ -53,7 +57,7 @@ class PerformanceAction
      * @param mixed[] $reportData
      * @param string $filename
      */
-    protected function exportReportAsCsv(
+    private function exportReportAsCsv(
         Response $response,
         array $reportData,
         string $filename

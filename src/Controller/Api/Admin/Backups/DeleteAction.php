@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use Azura\Files\ExtendedFilesystemInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class DeleteAction extends AbstractFileAction
+final class DeleteAction extends AbstractFileAction
 {
     public function __invoke(
         ServerRequest $request,

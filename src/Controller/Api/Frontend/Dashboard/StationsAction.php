@@ -12,21 +12,25 @@ use App\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class StationsAction
+final class StationsAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
     ): ResponseInterface {
         $router = $request->getRouter();
         $acl = $request->getAcl();
 
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
-            $em->getRepository(Entity\Station::class)->findAll(),
+            $this->em->getRepository(Entity\Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->getIsEnabled() &&
@@ -34,11 +38,11 @@ class StationsAction
             }
         );
 
-        $listenersEnabled = $settingsRepo->readSettings()->isAnalyticsEnabled();
+        $listenersEnabled = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
 
         $viewStations = [];
         foreach ($stations as $station) {
-            $np = $npApiGenerator->currentOrEmpty($station);
+            $np = $this->npApiGenerator->currentOrEmpty($station);
             $np->resolveUrls($request->getRouter()->getBaseUrl());
 
             $row = new Entity\Api\Dashboard();

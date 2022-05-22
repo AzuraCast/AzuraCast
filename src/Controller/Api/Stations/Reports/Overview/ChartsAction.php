@@ -11,19 +11,23 @@ use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
-class ChartsAction
+final class ChartsAction
 {
+    public function __construct(
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\AnalyticsRepository $analyticsRepo,
     ): ResponseInterface {
         $station = $request->getStation();
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
         }
@@ -34,7 +38,7 @@ class ChartsAction
         $stats = [];
 
         // Statistics by day.
-        $dailyStats = $analyticsRepo->findForStationAfterTime(
+        $dailyStats = $this->analyticsRepo->findForStationAfterTime(
             $station,
             $statisticsThreshold
         );
@@ -122,7 +126,7 @@ class ChartsAction
         ];
 
         // Statistics by hour.
-        $hourlyStats = $analyticsRepo->findForStationAfterTime(
+        $hourlyStats = $this->analyticsRepo->findForStationAfterTime(
             $station,
             $statisticsThreshold,
             Entity\Analytics::INTERVAL_HOURLY

@@ -9,17 +9,21 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class MountsAction
+final class MountsAction
 {
+    public function __construct(
+        private readonly SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        SettingsRepository $settingsRepo
     ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();
 
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -27,11 +31,11 @@ class MountsAction
             id: 'station-mounts',
             title: __('Mount Points'),
             props: [
-                'listUrl'             => (string)$router->fromHere('api:stations:mounts'),
-                'newIntroUrl'         => (string)$router->fromHere('api:stations:mounts:new-intro'),
-                'restartStatusUrl'    => (string)$router->fromHere('api:stations:restart-status'),
+                'listUrl' => (string)$router->fromHere('api:stations:mounts'),
+                'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
+                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
                 'stationFrontendType' => $station->getFrontendType(),
-                'showAdvanced'        => $settings->getEnableAdvancedFeatures(),
+                'showAdvanced' => $settings->getEnableAdvancedFeatures(),
             ],
         );
     }

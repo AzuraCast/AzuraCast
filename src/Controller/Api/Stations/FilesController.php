@@ -145,17 +145,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class FilesController extends AbstractStationApiCrudController
+final class FilesController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
     public function __construct(
-        protected Adapters $adapters,
-        protected MessageBus $messageBus,
-        protected Entity\Repository\CustomFieldRepository $customFieldsRepo,
-        protected Entity\Repository\StationMediaRepository $mediaRepo,
-        protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly Adapters $adapters,
+        private readonly MessageBus $messageBus,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldsRepo,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -294,7 +294,7 @@ class FilesController extends AbstractStationApiCrudController
                     $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
                         [
                             'station' => $station,
-                            'id'      => $playlist_id,
+                            'id' => $playlist_id,
                         ]
                     );
 
@@ -350,7 +350,7 @@ class FilesController extends AbstractStationApiCrudController
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,
-                    $field             => $id,
+                    $field => $id,
                 ]
             );
 

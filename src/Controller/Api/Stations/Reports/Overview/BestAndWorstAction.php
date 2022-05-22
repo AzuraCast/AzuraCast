@@ -11,20 +11,24 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class BestAndWorstAction
+final class BestAndWorstAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
     ): ResponseInterface {
         $station = $request->getStation();
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
         }
@@ -33,7 +37,7 @@ class BestAndWorstAction
         $songPerformanceThreshold = CarbonImmutable::parse('-2 days', $station_tz)->getTimestamp();
 
         // Get all songs played in timeline.
-        $baseQuery = $em->createQueryBuilder()
+        $baseQuery = $this->em->createQueryBuilder()
             ->select('sh')
             ->from(Entity\SongHistory::class, 'sh')
             ->where('sh.station = :station')
@@ -56,8 +60,8 @@ class BestAndWorstAction
 
         foreach ($rawStats as $category => $rawRows) {
             $stats[$category] = array_map(
-                static function ($row) use ($songApiGenerator, $station, $baseUrl) {
-                    $song = ($songApiGenerator)(Entity\Song::createFromArray($row), $station);
+                function ($row) use ($station, $baseUrl) {
+                    $song = ($this->songApiGenerator)(Entity\Song::createFromArray($row), $station);
                     $song->resolveUrls($baseUrl);
 
                     return [

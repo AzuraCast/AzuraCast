@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Stations;
 
 use App\Controller\Api\Admin\StationsController;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
+use App\Radio\Configuration;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-class CloneAction extends StationsController
+final class CloneAction extends StationsController
 {
     public const CLONE_MEDIA_STORAGE = 'media_storage';
     public const CLONE_RECORDINGS_STORAGE = 'recordings_storage';
@@ -27,11 +32,33 @@ class CloneAction extends StationsController
     public const CLONE_PERMISSIONS = 'permissions';
     public const CLONE_WEBHOOKS = 'webhooks';
 
+    public function __construct(
+        Entity\Repository\StationRepository $stationRepo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        Entity\Repository\StationQueueRepository $queueRepo,
+        Adapters $adapters,
+        Configuration $configuration,
+        ReloadableEntityManagerInterface $reloadableEm,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        private readonly Environment $environment
+    ) {
+        parent::__construct(
+            $stationRepo,
+            $storageLocationRepo,
+            $queueRepo,
+            $adapters,
+            $configuration,
+            $reloadableEm,
+            $serializer,
+            $validator
+        );
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment,
-        mixed $id
+        int|string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
         $data = (array)$request->getParsedBody();
@@ -79,7 +106,7 @@ class CloneAction extends StationsController
         }
 
         // Set new radio base directory
-        $station_base_dir = $environment->getStationDirectory();
+        $station_base_dir = $this->environment->getStationDirectory();
         $newStation->setRadioBaseDir($station_base_dir . '/' . $newStation->getShortName());
 
         $newStation->ensureDirectoriesExist();
@@ -195,7 +222,7 @@ class CloneAction extends StationsController
         return $response->withJson(Entity\Api\Status::created());
     }
 
-    protected function cloneCollection(
+    private function cloneCollection(
         Collection $collection,
         Entity\Station $newStation,
         DeepCopy\DeepCopy $copier,

@@ -18,19 +18,19 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class ListAction
+final class ListAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\CustomFieldRepository $customFieldRepo,
-        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        private readonly CacheInterface $cache,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        CacheInterface $cache
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -41,7 +41,7 @@ class ListAction
         }
 
         $cacheKey = 'ondemand_' . $station->getId();
-        $trackList = $cache->get(
+        $trackList = $this->cache->get(
             $cacheKey,
             function (CacheItem $item) use ($station, $request) {
                 $item->expiresAfter(300);
@@ -95,7 +95,7 @@ class ListAction
     /**
      * @return mixed[]
      */
-    protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
+    private function buildTrackList(Entity\Station $station, RouterInterface $router): array
     {
         $list = [];
 

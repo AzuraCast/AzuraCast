@@ -13,16 +13,20 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-class RecoverAction
+final class RecoverAction
 {
+    public function __construct(
+        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly EntityManagerInterface $em
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
         string $token,
-        Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
-        EntityManagerInterface $em
     ): ResponseInterface {
-        $user = $loginTokenRepo->authenticate($token);
+        $user = $this->loginTokenRepo->authenticate($token);
         $flash = $request->getFlash();
 
         if (!$user instanceof Entity\User) {
@@ -53,12 +57,12 @@ class RecoverAction
                 $user->setNewPassword($data['password']);
                 $user->setTwoFactorSecret();
 
-                $em->persist($user);
-                $em->flush();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 $request->getAuth()->setUser($user);
 
-                $loginTokenRepo->revokeForUser($user);
+                $this->loginTokenRepo->revokeForUser($user);
 
                 $flash->addMessage(
                     sprintf(

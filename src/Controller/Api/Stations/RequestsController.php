@@ -63,13 +63,13 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class RequestsController
+final class RequestsController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRequestRepository $requestRepo,
-        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
-        protected Scheduler $scheduler
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationRequestRepository $requestRepo,
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        private readonly Scheduler $scheduler
     ) {
     }
 
@@ -134,7 +134,7 @@ class RequestsController
                     'api:requests:submit',
                     [
                         'station_id' => $station->getId(),
-                        'media_id'   => $media_row->getUniqueId(),
+                        'media_id' => $media_row->getUniqueId(),
                     ]
                 );
 
@@ -154,7 +154,7 @@ class RequestsController
     /**
      * @param Entity\Station $station
      */
-    protected function getRequestablePlaylists(Entity\Station $station): array
+    private function getRequestablePlaylists(Entity\Station $station): array
     {
         $playlists = $this->em->createQuery(
             <<<DQL

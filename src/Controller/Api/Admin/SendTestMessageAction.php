@@ -15,17 +15,21 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SendTestMessageAction
+final class SendTestMessageAction
 {
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+        private readonly Mail $mail,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ValidatorInterface $validator,
-        Mail $mail
     ): ResponseInterface {
         $emailAddress = $request->getParam('email', '');
 
-        $errors = $validator->validate(
+        $errors = $this->validator->validate(
             $emailAddress,
             [
                 new Required(),
@@ -37,7 +41,7 @@ class SendTestMessageAction
         }
 
         try {
-            $email = $mail->createMessage();
+            $email = $this->mail->createMessage();
             $email->to($emailAddress);
             $email->subject(
                 __('Test Message')
@@ -49,7 +53,7 @@ class SendTestMessageAction
                 )
             );
 
-            $mail->send($email);
+            $this->mail->send($email);
         } catch (TransportException $e) {
             return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
         }

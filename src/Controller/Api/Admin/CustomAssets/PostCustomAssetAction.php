@@ -13,16 +13,20 @@ use App\Service\Flow;
 use Intervention\Image\ImageManager;
 use Psr\Http\Message\ResponseInterface;
 
-class PostCustomAssetAction
+final class PostCustomAssetAction
 {
+    public function __construct(
+        private readonly Environment $environment,
+        private readonly ImageManager $imageManager,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment,
-        ImageManager $imageManager,
         string $type
     ): ResponseInterface {
-        $customAsset = AssetFactory::createForType($environment, $type);
+        $customAsset = AssetFactory::createForType($this->environment, $type);
 
         $flowResponse = Flow::process($request, $response);
         if ($flowResponse instanceof ResponseInterface) {
@@ -30,7 +34,7 @@ class PostCustomAssetAction
         }
 
         $imageContents = $flowResponse->readAndDeleteUploadedFile();
-        $image = $imageManager->make($imageContents);
+        $image = $this->imageManager->make($imageContents);
 
         $customAsset->upload($image);
 

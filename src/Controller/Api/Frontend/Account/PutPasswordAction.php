@@ -12,10 +12,12 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-class PutPasswordAction extends UsersController
+final class PutPasswordAction extends UsersController
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $user = $request->getUser();
         $body = (array)$request->getParsedBody();
 

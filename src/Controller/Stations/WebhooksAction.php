@@ -10,19 +10,23 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class WebhooksAction
+final class WebhooksAction
 {
+    public function __construct(
+        private readonly SettingsRepository $settingsRepo,
+        private readonly Config $config
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        SettingsRepository $settingsRepo,
-        Config $config
     ): ResponseInterface {
         $router = $request->getRouter();
 
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
 
-        $webhookConfig = $config->get('webhooks');
+        $webhookConfig = $this->config->get('webhooks');
 
         return $request->getView()->renderVuePage(
             response: $response,

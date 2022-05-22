@@ -10,13 +10,17 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class BackupsAction
+final class BackupsAction
 {
+    public function __construct(
+        private readonly Environment $environment,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Environment $environment,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -26,13 +30,13 @@ class BackupsAction
             id: 'admin-backups',
             title: __('Backups'),
             props: [
-                'listUrl'          => (string)$router->named('api:admin:backups'),
-                'runBackupUrl'     => (string)$router->named('api:admin:backups:run'),
-                'settingsUrl'      => (string)$router->named('api:admin:settings', [
+                'listUrl' => (string)$router->named('api:admin:backups'),
+                'runBackupUrl' => (string)$router->named('api:admin:backups:run'),
+                'settingsUrl' => (string)$router->named('api:admin:settings', [
                     'group' => Entity\Settings::GROUP_BACKUP,
                 ]),
-                'isDocker'         => $environment->isDocker(),
-                'storageLocations' => $storageLocationRepo->fetchSelectByType(
+                'isDocker' => $this->environment->isDocker(),
+                'storageLocations' => $this->storageLocationRepo->fetchSelectByType(
                     Entity\Enums\StorageLocationTypes::Backup
                 ),
             ],

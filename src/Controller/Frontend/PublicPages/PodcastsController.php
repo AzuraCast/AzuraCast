@@ -10,10 +10,10 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PodcastsController
+final class PodcastsController
 {
     public function __construct(
-        protected PodcastRepository $podcastRepository
+        private readonly PodcastRepository $podcastRepository
     ) {
     }
 

@@ -57,12 +57,12 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class HistoryController
+final class HistoryController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
-        protected Environment $environment
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
+        private readonly Environment $environment
     ) {
     }
 
@@ -143,7 +143,7 @@ class HistoryController
         return $paginator->write($response);
     }
 
-    protected function exportReportAsCsv(
+    private function exportReportAsCsv(
         Response $response,
         Entity\Station $station,
         Query $query,

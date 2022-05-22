@@ -8,7 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class TimelineAction
+final class TimelineAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {

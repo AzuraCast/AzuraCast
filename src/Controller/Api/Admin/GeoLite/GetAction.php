@@ -10,21 +10,25 @@ use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use Psr\Http\Message\ResponseInterface;
 
-class GetAction
+final class GetAction
 {
+    public function __construct(
+        private readonly SettingsRepository $settingsRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        SettingsRepository $settingsRepo
     ): ResponseInterface {
         $version = GeoLite::getVersion();
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
 
         return $response->withJson(
             [
                 'success' => true,
                 'version' => $version,
-                'key'     => $settings->getGeoliteLicenseKey(),
+                'key' => $settings->getGeoliteLicenseKey(),
             ]
         );
     }

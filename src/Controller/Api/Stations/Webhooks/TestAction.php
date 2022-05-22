@@ -8,15 +8,22 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\TestWebhookMessage;
 use App\Utilities\File;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class TestAction extends AbstractWebhooksAction
+final class TestAction extends AbstractWebhooksAction
 {
+    public function __construct(
+        EntityManagerInterface $em,
+        private readonly MessageBus $messageBus
+    ) {
+        parent::__construct($em);
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        MessageBus $messageBus,
         int $id
     ): ResponseInterface {
         $this->requireRecord($request->getStation(), $id);
@@ -28,7 +35,7 @@ class TestAction extends AbstractWebhooksAction
         $message->webhookId = $id;
         $message->outputPath = $tempFile;
 
-        $messageBus->dispatch($message);
+        $this->messageBus->dispatch($message);
 
         $router = $request->getRouter();
         return $response->withJson(

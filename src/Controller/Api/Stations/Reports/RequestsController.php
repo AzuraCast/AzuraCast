@@ -12,11 +12,11 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class RequestsController
+final class RequestsController
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRequestRepository $requestRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationRequestRepository $requestRepo
     ) {
     }
 

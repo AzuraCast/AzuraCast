@@ -9,7 +9,7 @@ use App\Http\ServerRequest;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
-class ExportAction extends AbstractPlaylistsAction
+final class ExportAction extends AbstractPlaylistsAction
 {
     public function __invoke(
         ServerRequest $request,

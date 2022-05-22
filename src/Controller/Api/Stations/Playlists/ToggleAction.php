@@ -9,10 +9,13 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class ToggleAction extends AbstractPlaylistsAction
+final class ToggleAction extends AbstractPlaylistsAction
 {
-    public function __invoke(ServerRequest $request, Response $response, int $id): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int $id
+    ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 
         $new_value = !$record->getIsEnabled();

@@ -9,7 +9,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class ToggleAction extends AbstractWebhooksAction
+final class ToggleAction extends AbstractWebhooksAction
 {
     public function __invoke(ServerRequest $request, Response $response, int $id): ResponseInterface
     {

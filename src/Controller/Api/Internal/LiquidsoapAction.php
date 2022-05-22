@@ -16,13 +16,17 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
-class LiquidsoapAction
+final class LiquidsoapAction
 {
+    public function __construct(
+        private readonly ContainerInterface $di,
+        private readonly LoggerInterface $logger,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ContainerInterface $di,
-        LoggerInterface $logger,
         string $action
     ): ResponseInterface {
         $station = $request->getStation();
@@ -39,17 +43,17 @@ class LiquidsoapAction
             }
 
             $command = LiquidsoapCommands::tryFrom($action);
-            if (null === $command || !$di->has($command->getClass())) {
+            if (null === $command || !$this->di->has($command->getClass())) {
                 throw new InvalidArgumentException('Command not found.');
             }
 
             /** @var AbstractCommand $commandObj */
-            $commandObj = $di->get($command->getClass());
+            $commandObj = $this->di->get($command->getClass());
 
             $result = $commandObj->run($station, $asAutoDj, $payload);
             $response->getBody()->write($result);
         } catch (Throwable $e) {
-            $logger->error(
+            $this->logger->error(
                 sprintf(
                     'Liquidsoap command "%s" error: %s',
                     $action,

@@ -133,21 +133,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class RolesController extends AbstractAdminApiCrudController
+final class RolesController extends AbstractAdminApiCrudController
 {
     use CanSortResults;
 
     protected string $entityClass = Entity\Role::class;
     protected string $resourceRouteName = 'api:admin:role';
 
-    protected Entity\Role $superAdminRole;
+    private readonly Entity\Role $superAdminRole;
 
     public function __construct(
-        protected Acl $acl,
-        protected Entity\Repository\RolePermissionRepository $permissionRepo,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        Entity\Repository\RolePermissionRepository $permissionRepo,
+        private readonly Acl $acl,
     ) {
         parent::__construct($em, $serializer, $validator);
 
@@ -158,8 +158,10 @@ class RolesController extends AbstractAdminApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('r, rp')
             ->from(Entity\Role::class, 'r')
@@ -238,7 +240,7 @@ class RolesController extends AbstractAdminApiCrudController
         );
     }
 
-    protected function doUpdatePermissions(Entity\Role $role, array $newPermissions): void
+    private function doUpdatePermissions(Entity\Role $role, array $newPermissions): void
     {
         $existingPerms = $role->getPermissions();
         if ($existingPerms->count() > 0) {

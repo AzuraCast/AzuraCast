@@ -92,18 +92,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class QueueController extends AbstractStationApiCrudController
+final class QueueController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
     public function __construct(
-        protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Queue $queue,
         App\Doctrine\ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
+        private readonly Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Queue $queue,
     ) {
         parent::__construct($em, $serializer, $validator);
     }

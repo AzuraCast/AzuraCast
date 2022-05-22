@@ -14,16 +14,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
-class ChartsAction
+final class ChartsAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly CacheInterface $cache,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        CacheInterface $cache,
-        Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
-        if (!$settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(403, 'Forbidden')
                 ->withJson(new Entity\Api\Error(403, 'Analytics are disabled for this installation.'));
         }
@@ -35,7 +39,7 @@ class ChartsAction
 
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
-            $em->getRepository(Entity\Station::class)->findAll(),
+            $this->em->getRepository(Entity\Station::class)->findAll(),
             static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->getIsEnabled() &&
@@ -51,12 +55,12 @@ class ChartsAction
         }
         $cacheName = 'homepage_metrics_' . implode(',', $stationIds);
 
-        if ($cache->has($cacheName)) {
-            $stationStats = $cache->get($cacheName);
+        if ($this->cache->has($cacheName)) {
+            $stationStats = $this->cache->get($cacheName);
         } else {
             $threshold = CarbonImmutable::parse('-180 days');
 
-            $stats = $em->createQuery(
+            $stats = $this->em->createQuery(
                 <<<'DQL'
                     SELECT a.station_id, a.moment, a.number_avg, a.number_unique
                     FROM App\Entity\Analytics a
@@ -178,7 +182,7 @@ class ChartsAction
                 }
             }
 
-            $cache->set($cacheName, $stationStats, 600);
+            $this->cache->set($cacheName, $stationStats, 600);
         }
 
         return $response->withJson($stationStats);

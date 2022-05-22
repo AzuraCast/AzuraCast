@@ -13,26 +13,30 @@ use App\Service\Mail;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-class ForgotPasswordAction
+final class ForgotPasswordAction
 {
+    public function __construct(
+        private readonly Entity\Repository\UserRepository $userRepo,
+        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly RateLimit $rateLimit,
+        private readonly Mail $mail
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\UserRepository $userRepo,
-        Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
-        RateLimit $rateLimit,
-        Mail $mail
     ): ResponseInterface {
         $flash = $request->getFlash();
         $view = $request->getView();
 
-        if (!$mail->isEnabled()) {
+        if (!$this->mail->isEnabled()) {
             return $view->renderToResponse($response, 'frontend/account/forgot_disabled');
         }
 
         if ($request->isPost()) {
             try {
-                $rateLimit->checkRequestRateLimit($request, 'forgot', 30, 3);
+                $this->rateLimit->checkRequestRateLimit($request, 'forgot', 30, 3);
             } catch (RateLimitExceededException) {
                 $flash->addMessage(
                     sprintf(
@@ -50,15 +54,15 @@ class ForgotPasswordAction
             }
 
             $email = $request->getParsedBodyParam('email', '');
-            $user = $userRepo->findByEmail($email);
+            $user = $this->userRepo->findByEmail($email);
 
             if ($user instanceof Entity\User) {
-                $email = $mail->createMessage();
+                $email = $this->mail->createMessage();
                 $email->to($user->getEmail());
 
                 $email->subject(__('Account Recovery'));
 
-                $loginToken = $loginTokenRepo->createToken($user);
+                $loginToken = $this->loginTokenRepo->createToken($user);
                 $email->text(
                     $view->render(
                         'mail/forgot',
@@ -68,7 +72,7 @@ class ForgotPasswordAction
                     )
                 );
 
-                $mail->send($email);
+                $this->mail->send($email);
             }
 
             $flash->addMessage(

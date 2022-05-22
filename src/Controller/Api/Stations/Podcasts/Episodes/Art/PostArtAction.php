@@ -42,13 +42,17 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class PostArtAction
+final class PostArtAction
 {
+    public function __construct(
+        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\PodcastEpisodeRepository $episodeRepo,
-        EntityManagerInterface $em,
         ?string $episode_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -59,19 +63,19 @@ class PostArtAction
         }
 
         if (null !== $episode_id) {
-            $episode = $episodeRepo->fetchEpisodeForStation($station, $episode_id);
+            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
 
             if (null === $episode) {
                 return $response->withStatus(404)
                     ->withJson(Entity\Api\Error::notFound());
             }
 
-            $episodeRepo->writeEpisodeArt(
+            $this->episodeRepo->writeEpisodeArt(
                 $episode,
                 $flowResponse->readAndDeleteUploadedFile()
             );
 
-            $em->flush();
+            $this->em->flush();
 
             return $response->withJson(Entity\Api\Status::updated());
         }

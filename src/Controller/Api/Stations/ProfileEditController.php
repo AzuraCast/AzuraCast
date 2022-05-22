@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
  * This controller handles the specific "Edit Profile" function on a station's profile, which has different permissions
  * and possible actions than the Admin Station Edit function.
  */
-class ProfileEditController extends StationsController
+final class ProfileEditController extends StationsController
 {
     public function getProfileAction(
         ServerRequest $request,
@@ -41,7 +41,7 @@ class ProfileEditController extends StationsController
         return $response->withJson(Entity\Api\Status::updated());
     }
 
-    protected function getContext(ServerRequest $request): array
+    private function getContext(ServerRequest $request): array
     {
         $context = [
             AbstractNormalizer::GROUPS => [

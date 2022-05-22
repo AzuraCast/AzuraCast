@@ -12,17 +12,21 @@ use App\Service\SftpGo;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class FilesAction
+final class FilesAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        Entity\Repository\CustomFieldRepository $customFieldRepo
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $playlists = $em->createQuery(
+        $playlists = $this->em->createQuery(
             <<<'DQL'
                 SELECT sp.id, sp.name
                 FROM App\Entity\StationPlaylist sp
@@ -53,7 +57,7 @@ class FilesAction
                     'type' => Entity\Enums\StorageLocationTypes::StationMedia->value,
                 ]),
                 'initialPlaylists' => $playlists,
-                'customFields' => $customFieldRepo->fetchArray(),
+                'customFields' => $this->customFieldRepo->fetchArray(),
                 'validMimeTypes' => MimeType::getProcessableTypes(),
                 'stationTimeZone' => $station->getTimezone(),
                 'showSftp' => SftpGo::isSupportedForStation($station),

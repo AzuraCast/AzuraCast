@@ -17,16 +17,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
  * @template TEntity as Entity\ApiKey
  * @extends AbstractApiCrudController<TEntity>
  */
-class ApiKeysController extends AbstractApiCrudController
+final class ApiKeysController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\ApiKey::class;
     protected string $resourceRouteName = 'api:frontend:api-key';
 
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $query = $this->em->createQuery(<<<'DQL'
+        $query = $this->em->createQuery(
+            <<<'DQL'
             SELECT e FROM App\Entity\ApiKey e WHERE e.user = :user
-        DQL)->setParameter('user', $request->getUser());
+        DQL
+        )->setParameter('user', $request->getUser());
 
         return $this->listPaginatedFromQuery($request, $response, $query);
     }
@@ -101,7 +103,7 @@ class ApiKeysController extends AbstractApiCrudController
     {
         /** @var TEntity|null $record */
         $record = $this->em->getRepository(Entity\ApiKey::class)->findOneBy([
-            'id'   => $id,
+            'id' => $id,
             'user' => $user,
         ]);
         return $record;

@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
-class GetLogAction
+final class GetLogAction
 {
     use HasLogViewer;
 

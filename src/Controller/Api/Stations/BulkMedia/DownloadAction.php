@@ -12,28 +12,32 @@ use App\Service\CsvWriterTempFile;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class DownloadAction
+final class DownloadAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly StationPlaylistRepository $playlistRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        CustomFieldRepository $customFieldRepo,
-        StationPlaylistRepository $playlistRepo,
     ): ResponseInterface {
         $station = $request->getStation();
 
         $customFields = [];
-        foreach ($customFieldRepo->fetchArray() as $row) {
+        foreach ($this->customFieldRepo->fetchArray() as $row) {
             $customFields[$row['id']] = $row['short_name'];
         }
 
         $playlistsById = [];
-        foreach ($playlistRepo->getAllForStation($station) as $playlist) {
+        foreach ($this->playlistRepo->getAllForStation($station) as $playlist) {
             $playlistsById[$playlist->getIdRequired()] = $playlist->getName();
         }
 
-        $query = $em->createQuery(
+        $query = $this->em->createQuery(
             <<<DQL
                 SELECT sm, spm, smcf
                 FROM App\Entity\StationMedia sm

@@ -8,14 +8,21 @@ use App\Entity;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class PutOrderAction extends AbstractPlaylistsAction
+final class PutOrderAction extends AbstractPlaylistsAction
 {
+    public function __construct(
+        EntityManagerInterface $em,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+    ) {
+        parent::__construct($em);
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepository,
         int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
@@ -29,7 +36,7 @@ class PutOrderAction extends AbstractPlaylistsAction
 
         $order = $request->getParam('order');
 
-        $playlistMediaRepository->setMediaOrder($record, $order);
+        $this->spmRepo->setMediaOrder($record, $order);
         return $response->withJson($order);
     }
 }

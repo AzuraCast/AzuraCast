@@ -10,12 +10,16 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class RequestsAction
+final class RequestsAction
 {
+    public function __construct(
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\CustomFieldRepository $customFieldRepo
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -38,7 +42,7 @@ class RequestsAction
                 'hide_footer' => true,
             ],
             props: [
-                'customFields' => $customFieldRepo->fetchArray(),
+                'customFields' => $this->customFieldRepo->fetchArray(),
                 'showAlbumArt' => !$customization->hideAlbumArt(),
                 'requestListUri' => (string)$router->named('api:requests:list', [
                     'station_id' => $station->getId(),

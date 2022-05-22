@@ -10,26 +10,30 @@ use App\Http\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 
-class ProfileAction
+final class ProfileAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationScheduleRepository $scheduleRepo,
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
+        private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationScheduleRepository $scheduleRepo,
-        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
-        Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
 
         $baseUri = new Uri('');
-        $nowPlayingApi = $nowPlayingApiGenerator->currentOrEmpty($station, $baseUri);
+        $nowPlayingApi = $this->nowPlayingApiGenerator->currentOrEmpty($station, $baseUri);
 
         $apiResponse = new Entity\Api\StationProfile();
         $apiResponse->fromParentObject($nowPlayingApi);
 
-        $apiResponse->station = ($stationApiGenerator)($station, $baseUri, true);
+        $apiResponse->station = ($this->stationApiGenerator)($station, $baseUri, true);
         $apiResponse->cache = 'database';
 
         $apiResponse->services = new Entity\Api\StationServiceStatus(
@@ -39,7 +43,7 @@ class ProfileAction
             $station->getNeedsRestart()
         );
 
-        $apiResponse->schedule = $scheduleRepo->getUpcomingSchedule($station);
+        $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);
 
         $apiResponse->update();
         $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());

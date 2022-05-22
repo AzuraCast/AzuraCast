@@ -10,15 +10,19 @@ use App\Http\ServerRequest;
 use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class NotificationsAction
+final class NotificationsAction
 {
+    public function __construct(
+        private readonly CallableEventDispatcherInterface $eventDispatcher,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        CallableEventDispatcherInterface $eventDispatcher
     ): ResponseInterface {
         $event = new Event\GetNotifications($request);
-        $eventDispatcher->dispatch($event);
+        $this->eventDispatcher->dispatch($event);
 
         return $response->withJson(
             $event->getNotifications()

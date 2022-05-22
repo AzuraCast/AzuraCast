@@ -23,6 +23,9 @@ release channel, you can take advantage of these new features and fixes.
   allocation does not use these ports, many stations need to use ports in that range for legacy purposes, which should
   once again be possible.
 
+- Docker users can now debug Slim Application Errors by editing the `SHOW_DETAILED_ERRORS` in the `azuracast.env` file,
+  reports should be submitted to our [issues](https://github.com/azuracast/azuracast/issues) section for review by our team. 
+
 ## Bug Fixes
 
 - A bug preventing SFTP from properly supporting SSH public keys has been fixed.

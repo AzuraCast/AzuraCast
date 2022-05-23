@@ -9,17 +9,21 @@ use App\Http\ServerRequest;
 use App\Radio\StereoTool;
 use Psr\Http\Message\ResponseInterface;
 
-class GetAction
+final class GetAction
 {
+    public function __construct(
+        private readonly StereoTool $stereoTool,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        StereoTool $stereoTool,
+        Response $response
     ): ResponseInterface {
         return $response->withJson(
             [
                 'success' => true,
-                'version' => $stereoTool->getVersion(),
+                'version' => $this->stereoTool->getVersion(),
             ]
         );
     }

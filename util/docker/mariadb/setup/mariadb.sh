@@ -5,9 +5,8 @@ set -x
 
 $minimal_apt_get_install tzdata libjemalloc2 pwgen xz-utils zstd dirmngr apt-transport-https
 
-sudo apt-get install software-properties-common
 sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el,s390x] https://mirrors.gigenet.com/mariadb/repo/10.7/ubuntu focal main'
+sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el,s390x] https://atl.mirrors.knownhost.com/mariadb/repo/10.7/ubuntu focal main'
 
 # Pulled from MariaDB Docker container
 export MARIADB_MAJOR=10.7

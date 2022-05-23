@@ -122,6 +122,16 @@ return static function (RouteCollectorProxy $group) {
                         '/shoutcast',
                         Controller\Api\Admin\Shoutcast\PostAction::class
                     );
+
+                    $group->get(
+                        '/stereo_tool',
+                        Controller\Api\Admin\StereoTool\GetAction::class
+                    )->setName('api:admin:stereo_tool');
+
+                    $group->post(
+                        '/stereo_tool',
+                        Controller\Api\Admin\StereoTool\PostAction::class
+                    );
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Settings));
 

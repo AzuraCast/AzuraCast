@@ -4,10 +4,13 @@
  */
 
 use App\Enums\StationPermissions;
+use App\Radio\Enums\AudioProcessingMethods;
 
 return function (App\Event\BuildStationMenu $e) {
     $request = $e->getRequest();
     $station = $e->getStation();
+
+    $backendConfig = $station->getBackendConfig();
 
     $router = $request->getRouter();
     $backend = $request->getStationBackend();
@@ -238,6 +241,15 @@ return function (App\Event\BuildStationMenu $e) {
                         'url' => (string)$router->fromHere('stations:util:ls_config'),
                         'visible' => $settings->getEnableAdvancedFeatures()
                             && $backend instanceof App\Radio\Backend\Liquidsoap,
+                        'permission' => StationPermissions::Broadcasting,
+                    ],
+                    'stations:stereo_tool_config' => [
+                        'label' => __('Upload Stereo Tool Configuration'),
+                        'class' => 'text-muted',
+                        'url' => (string)$router->fromHere('stations:stereo_tool_config'),
+                        'visible' => $settings->getEnableAdvancedFeatures()
+                            && $backend instanceof App\Radio\Backend\Liquidsoap
+                            && AudioProcessingMethods::StereoTool === $backendConfig->getAudioProcessingMethodEnum(),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'queue' => [

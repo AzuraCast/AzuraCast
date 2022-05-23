@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Enums\StationBackendPerformanceModes;
+use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
@@ -124,16 +125,54 @@ class StationBackendConfiguration extends ArrayCollection
         $this->set(self::DJ_MOUNT_POINT, $mountPoint);
     }
 
-    public const USE_NORMALIZER = 'nrj';
+    public const AUDIO_PROCESSING_METHOD = 'audio_processing_method';
 
-    public function useNormalizer(): bool
+    public function getAudioProcessingMethod(): ?string
     {
-        return $this->get(self::USE_NORMALIZER) ?? false;
+        return $this->getAudioProcessingMethodEnum()->value;
     }
 
-    public function setUseNormalizer(?bool $useNormalizer): void
+    public function getAudioProcessingMethodEnum(): AudioProcessingMethods
     {
-        $this->set(self::USE_NORMALIZER, $useNormalizer);
+        return AudioProcessingMethods::tryFrom($this->get(self::AUDIO_PROCESSING_METHOD) ?? '')
+            ?? AudioProcessingMethods::default();
+    }
+
+    public function setAudioProcessingMethod(?string $method): void
+    {
+        if (null !== $method) {
+            $method = strtolower($method);
+        }
+
+        if (null !== $method && null === AudioProcessingMethods::tryFrom($method)) {
+            throw new \InvalidArgumentException('Invalid audio processing method specified.');
+        }
+
+        $this->set(self::AUDIO_PROCESSING_METHOD, $method);
+    }
+
+    public const STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
+
+    public function getStereoToolLicenseKey(): ?string
+    {
+        return $this->get(self::STEREO_TOOL_LICENSE_KEY) ?? null;
+    }
+
+    public function setStereoToolLicenseKey(?string $licenseKey): void
+    {
+        $this->set(self::STEREO_TOOL_LICENSE_KEY, $licenseKey);
+    }
+
+    public const STEREO_TOOL_CONFIGURATION_PATH = 'stereo_tool_configuration_path';
+
+    public function getStereoToolConfigurationPath(): ?string
+    {
+        return $this->get(self::STEREO_TOOL_CONFIGURATION_PATH) ?? null;
+    }
+
+    public function setStereoToolConfigurationPath(?string $stereoToolConfigurationPath): void
+    {
+        $this->set(self::STEREO_TOOL_CONFIGURATION_PATH, $stereoToolConfigurationPath);
     }
 
     public const USE_REPLAYGAIN = 'enable_replaygain_metadata';

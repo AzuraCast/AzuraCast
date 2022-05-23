@@ -11,7 +11,8 @@
                                               :is-shoutcast-installed="isShoutcastInstalled"
                                               :countries="countries"
                                               :show-advanced="showAdvanced"></admin-stations-frontend-form>
-                <admin-stations-backend-form :form="$v.form" :tab-class="getTabClass($v.backendTab)"
+                <admin-stations-backend-form :form="$v.form" :station="station" :tab-class="getTabClass($v.backendTab)"
+                                             :is-stereo-tool-installed="isStereoToolInstalled"
                                              :show-advanced="showAdvanced"></admin-stations-backend-form>
                 <admin-stations-admin-form v-if="showAdminTab" :tab-class="getTabClass($v.adminTab)" :form="$v.form"
                                            :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl"
@@ -35,7 +36,7 @@
 <script>
 import {validationMixin} from "vuelidate";
 import {decimal, numeric, required, url} from 'vuelidate/dist/validators.min.js';
-import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
 import AdminStationsBackendForm from "./Form/BackendForm";
@@ -58,6 +59,10 @@ export const StationFormProps = {
         timezones: Object,
         // Frontend
         isShoutcastInstalled: {
+            type: Boolean,
+            default: false
+        },
+        isStereoToolInstalled: {
             type: Boolean,
             default: false
         },
@@ -108,7 +113,8 @@ export default {
                 backend_config: {
                     crossfade_type: {},
                     crossfade: {decimal},
-                    nrj: {},
+                    audio_processing_method: {},
+                    stereo_tool_license_key: {},
                     record_streams: {},
                     record_streams_format: {},
                     record_streams_bitrate: {},
@@ -205,6 +211,12 @@ export default {
         return {
             loading: true,
             error: null,
+            station: {
+                stereo_tool_configuration_file_path: null,
+                links: {
+                    stereo_tool_configuration: null
+                }
+            },
             form: {}
         };
     },
@@ -258,7 +270,9 @@ export default {
                 backend_config: {
                     crossfade_type: 'normal',
                     crossfade: 2,
-                    nrj: false,
+                    audio_processing_method: AUDIO_PROCESSING_NONE,
+                    stereo_tool_license_key: '',
+                    stereo_tool_configuration_file: null,
                     record_streams: false,
                     record_streams_format: 'mp3',
                     record_streams_bitrate: 128,
@@ -316,6 +330,12 @@ export default {
                 }
             }
 
+            this.station = {
+                stereo_tool_configuration_file_path: null,
+                links: {
+                    stereo_tool_configuration: null
+                }
+            };
             this.form = form;
         },
         reset() {
@@ -336,6 +356,7 @@ export default {
             });
         },
         populateForm(data) {
+            this.record = data;
             this.form = mergeExisting(this.form, data);
         },
         getSubmittableFormData() {

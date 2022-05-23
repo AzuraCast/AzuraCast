@@ -14,7 +14,7 @@ usermod -aG docker_env azuracast
 usermod -aG www-data azuracast
 
 mkdir -p /var/azuracast/www /var/azuracast/stations /var/azuracast/servers/shoutcast2 \
-  /var/azuracast/backups /var/azuracast/www_tmp \
+  /var/azuracast/servers/stereo_tool /var/azuracast/backups /var/azuracast/www_tmp \
   /var/azuracast/uploads /var/azuracast/geoip /var/azuracast/dbip
 
 chown -R azuracast:azuracast /var/azuracast

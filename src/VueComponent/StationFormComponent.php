@@ -9,6 +9,7 @@ use App\Enums\GlobalPermissions;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
+use App\Radio\StereoTool;
 use DateTime;
 use DateTimeZone;
 use Symfony\Component\Intl\Countries;
@@ -17,6 +18,7 @@ class StationFormComponent implements VueComponentInterface
 {
     public function __construct(
         protected Adapters $adapters,
+        protected StereoTool $stereoTool,
         protected SettingsRepository $settingsRepo
     ) {
     }
@@ -32,6 +34,7 @@ class StationFormComponent implements VueComponentInterface
             'showAdvanced'          => $settings->getEnableAdvancedFeatures(),
             'timezones'             => $this->getTimezones(),
             'isShoutcastInstalled'  => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
+            'isStereoToolInstalled'  => $this->stereoTool->isInstalled(),
             'countries'             => Countries::getNames(),
             'storageLocationApiUrl' => (string)$request->getRouter()->named('api:admin:stations:storage-locations'),
         ];

@@ -200,6 +200,8 @@ final class ProfileController
         Response $response,
         int|string $station_id
     ): ResponseInterface {
+        $router = $request->getRouter();
+
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Vue_StationsProfileEdit',
@@ -208,8 +210,8 @@ final class ProfileController
             props: array_merge(
                 $this->stationFormComponent->getProps($request),
                 [
-                    'editUrl' => (string)$request->getRouter()->fromHere('api:stations:profile:edit'),
-                    'continueUrl' => (string)$request->getRouter()->fromHere('stations:profile:index'),
+                    'editUrl' => (string)$router->fromHere('api:stations:profile:edit'),
+                    'continueUrl' => (string)$router->fromHere('stations:profile:index'),
                 ]
             )
         );

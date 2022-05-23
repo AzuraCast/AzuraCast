@@ -42,6 +42,10 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:util:ls_config')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
+            $group->get('/stereo_tool_config', Controller\Stations\UploadStereoToolConfigAction::class)
+                ->setName('stations:stereo_tool_config')
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
             $group->group(
                 '/logs',
                 function (RouteCollectorProxy $group) {

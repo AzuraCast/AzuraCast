@@ -8,11 +8,13 @@ use App\Entity;
 use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
+use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
+use App\Radio\StereoTool;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -36,7 +38,8 @@ class ConfigWriter implements EventSubscriberInterface
         protected Environment $environment,
         protected LoggerInterface $logger,
         protected EventDispatcherInterface $eventDispatcher,
-        protected FallbackFile $fallbackFile
+        protected FallbackFile $fallbackFile,
+        protected StereoTool $stereoTool,
     ) {
     }
 
@@ -868,12 +871,36 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         // NRJ normalization
-        if ($settings->useNormalizer()) {
+        if (AudioProcessingMethods::Liquidsoap === $settings->getAudioProcessingMethodEnum()) {
             $event->appendBlock(
                 <<<EOF
                 # Normalization and Compression
                 radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
                 radio = compress.exponential(radio, mu = 1.0)
+                EOF
+            );
+        }
+
+        // Stereo Tool processing
+        if (
+            AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
+            && $this->stereoTool->isReady($station)
+        ) {
+            $stereoToolBinary = $this->stereoTool->getBinaryPath();
+
+            $stereoToolConfiguration = $station->getRadioConfigDir()
+                . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
+            $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+
+            $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
+            if (!empty($stereoToolLicenseKey)) {
+                $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
+            }
+
+            $event->appendBlock(
+                <<<EOF
+                # Stereo Tool Pipe
+                radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
                 EOF
             );
         }

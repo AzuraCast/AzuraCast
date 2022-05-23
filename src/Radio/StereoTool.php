@@ -29,7 +29,7 @@ class StereoTool
     {
         return $this->isInstalled() && !empty($station->getStereoToolConfigurationPath());
     }
-    
+
     public function getVersion(): ?string
     {
         if (!$this->isInstalled()) {
@@ -46,9 +46,7 @@ class StereoTool
             return null;
         }
 
-        $outputLines = explode(PHP_EOL, $process->getErrorOutput());
-        $version = explode(' - ', $outputLines[2])[0];
-
-        return $version;
+        preg_match('/STEREO TOOL ([.\d]+) CONSOLE APPLICATION/i', $process->getErrorOutput(), $matches);
+        return $matches[1] ?? null;
     }
 }

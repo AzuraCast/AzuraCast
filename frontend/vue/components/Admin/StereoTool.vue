@@ -81,7 +81,7 @@ export default {
     },
     computed: {
         langInstalledVersion() {
-            const text = this.$gettext('%{ version } is currently installed.');
+            const text = this.$gettext('Stereo Tool version %{ version } is currently installed.');
             return this.$gettextInterpolate(text, {
                 version: this.version
             });

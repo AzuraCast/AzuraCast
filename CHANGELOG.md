@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Integrated Stereo Tool Support**: We now support the popular premium sound processing tool, Stereo Tool. Because the
+  software is proprietary, you must first upload a copy of it via the System Administration page; you can then configure
+  Stereo Tool on a per-station level, including uploading your own custom `.sts` configuration file.
+
 - **Bulk Media CSV Import/Export**: You can now export all of your station's media and its associated metadata into a
   CSV file for editing in spreadsheet software of your choice. Once you've made your changes, upload the modified file
   from the same page and all of the changes will be applied in bulk, including basic metadata, associated playlists,
@@ -24,7 +28,8 @@ release channel, you can take advantage of these new features and fixes.
   once again be possible.
 
 - Docker users can now debug Slim Application Errors by editing the `SHOW_DETAILED_ERRORS` in the `azuracast.env` file,
-  reports should be submitted to our [issues](https://github.com/azuracast/azuracast/issues) section for review by our team. 
+  reports should be submitted to our [issues](https://github.com/azuracast/azuracast/issues) section for review by our
+  team.
 
 ## Bug Fixes
 

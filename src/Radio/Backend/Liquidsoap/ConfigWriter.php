@@ -334,8 +334,8 @@ class ConfigWriter implements EventSubscriberInterface
                             $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
                             $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString(
-                                    $remote_url
-                                ) . '")))';
+                                $remote_url
+                            ) . '")))';
                         }
                         break;
                 }
@@ -887,12 +887,13 @@ class ConfigWriter implements EventSubscriberInterface
             && $this->stereoTool->isReady($station)
         ) {
             $stereoToolBinary = $this->stereoTool->getBinaryPath();
-            $stereoToolConfiguration = $settings->getStereoToolConfigurationPath();
+
+            $stereoToolConfiguration = $station->getRadioConfigDir()
+                . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
+            $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+
             $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
-
-            $stereoToolProcess = $stereoToolBinary . ' - - -s ' . $stereoToolConfiguration . ' -q';
-
-            if ($stereoToolLicenseKey) {
+            if (!empty($stereoToolLicenseKey)) {
                 $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
             }
 

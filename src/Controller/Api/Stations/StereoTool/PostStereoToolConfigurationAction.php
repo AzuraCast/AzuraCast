@@ -47,7 +47,7 @@ final class PostStereoToolConfigurationAction
         }
 
         $this->stationRepo->setStereoToolConfiguration($station, $flowResponse);
-        
+
         return $response->withJson(Entity\Api\Status::updated());
     }
 }

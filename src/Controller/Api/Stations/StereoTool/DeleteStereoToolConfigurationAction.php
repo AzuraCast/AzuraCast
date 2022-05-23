@@ -39,7 +39,7 @@ final class DeleteStereoToolConfigurationAction
         int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-        
+
         $this->stationRepo->clearStereoToolConfiguration($station);
 
         return $response->withJson(Entity\Api\Status::deleted());

@@ -10,6 +10,8 @@ use App\Http\ServerRequest;
 use App\Radio\StereoTool;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
+use Symfony\Component\Process\Process;
 
 final class PostAction
 {
@@ -35,6 +37,23 @@ final class PostAction
         $flowResponse->moveTo($binaryPath);
 
         chmod($binaryPath, 0744);
+
+        $process = new Process([$binaryPath, '--help']);
+        $process->setWorkingDirectory(dirname($binaryPath));
+        $process->setTimeout(5.0);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            unlink($binaryPath);
+            throw new RuntimeException('Incompatible binary for StereoTool was uploaded.');
+        }
+
+        preg_match('/STEREO TOOL ([.\d]+) CONSOLE APPLICATION/i', $process->getErrorOutput(), $matches);
+
+        if (!$matches[1]) {
+            unlink($binaryPath);
+            throw new RuntimeException('Unexpected help output received from Stereo Tool.');
+        }
 
         return $response->withJson(Entity\Api\Status::success());
     }

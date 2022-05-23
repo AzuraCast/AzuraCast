@@ -212,7 +212,6 @@ final class ProfileController
                 [
                     'editUrl' => (string)$router->fromHere('api:stations:profile:edit'),
                     'continueUrl' => (string)$router->fromHere('stations:profile:index'),
-                    'newStereoToolConfigurationUrl' => (string)$router->fromHere('api:stations:new-stereo-tool-config'),
                 ]
             )
         );

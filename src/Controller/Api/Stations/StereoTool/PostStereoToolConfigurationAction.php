@@ -27,12 +27,17 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class PostStereoToolConfigurationAction
+final class PostStereoToolConfigurationAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationRepository $stationRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationRepository $stationRepo
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -41,7 +46,8 @@ class PostStereoToolConfigurationAction
             return $flowResponse;
         }
 
-        $stationRepo->setStereoToolConfiguration($station, $flowResponse);
+        $this->stationRepo->setStereoToolConfiguration($station, $flowResponse);
+        
         return $response->withJson(Entity\Api\Status::updated());
     }
 }

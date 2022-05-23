@@ -138,17 +138,17 @@ return static function (RouteCollectorProxy $group) {
             )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->group(
-                '/stereo-tool-configuration',
+                '/stereo_tool_config',
                 function (RouteCollectorProxy $group) {
                     $group->get(
                         '',
                         Controller\Api\Stations\StereoTool\GetStereoToolConfigurationAction::class
-                    )->setName('api:stations:stereo-tool-config');
+                    )->setName('api:stations:stereo_tool_config');
 
                     $group->post(
                         '',
                         Controller\Api\Stations\StereoTool\PostStereoToolConfigurationAction::class
-                    )->setName('api:stations:new-stereo-tool-config');
+                    );
 
                     $group->delete(
                         '',

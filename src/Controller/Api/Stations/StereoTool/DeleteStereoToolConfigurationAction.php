@@ -26,15 +26,21 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class DeleteStereoToolConfigurationAction
+final class DeleteStereoToolConfigurationAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationRepository $stationRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationRepository $stationRepo
+        int|string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $stationRepo->clearStereoToolConfiguration($station);
+        
+        $this->stationRepo->clearStereoToolConfiguration($station);
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

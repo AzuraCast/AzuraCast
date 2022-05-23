@@ -31,8 +31,7 @@ export default {
     components: {InvisibleSubmitButton, AdminStationsForm, ModalForm},
     emits: ['relist'],
     props: {
-        createUrl: String,
-        newStereoToolConfigurationUrl: String
+        createUrl: String
     },
     mixins: [
         StationFormProps

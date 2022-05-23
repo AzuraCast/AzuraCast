@@ -13,7 +13,6 @@
                                               :show-advanced="showAdvanced"></admin-stations-frontend-form>
                 <admin-stations-backend-form :form="$v.form" :station="station" :tab-class="getTabClass($v.backendTab)"
                                              :is-stereo-tool-installed="isStereoToolInstalled"
-                                             :new-stereo-tool-configuration-url="newStereoToolConfigurationUrl"
                                              :show-advanced="showAdvanced"></admin-stations-backend-form>
                 <admin-stations-admin-form v-if="showAdminTab" :tab-class="getTabClass($v.adminTab)" :form="$v.form"
                                            :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl"
@@ -67,7 +66,6 @@ export const StationFormProps = {
             type: Boolean,
             default: false
         },
-        newStereoToolConfigurationUrl: String,
         countries: Object,
         // Admin
         storageLocationApiUrl: String
@@ -117,7 +115,6 @@ export default {
                     crossfade: {decimal},
                     audio_processing_method: {},
                     stereo_tool_license_key: {},
-                    stereo_tool_configuration_file: {},
                     record_streams: {},
                     record_streams_format: {},
                     record_streams_bitrate: {},

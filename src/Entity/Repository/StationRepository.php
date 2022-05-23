@@ -223,15 +223,19 @@ class StationRepository extends Repository
     ): void {
         $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
 
-        if (!empty($station->getStereoToolConfigurationPath())) {
+        $backendConfig = $station->getBackendConfig();
+
+        if (null !== $backendConfig->getStereoToolConfigurationPath()) {
             $this->doDeleteStereoToolConfiguration($station, $fs);
-            $station->setStereoToolConfigurationPath(null);
+            $backendConfig->setStereoToolConfigurationPath(null);
         }
 
         $stereoToolConfigurationPath = 'stereo-tool.sts';
         $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $stereoToolConfigurationPath);
 
-        $station->setStereoToolConfigurationPath($stereoToolConfigurationPath);
+        $backendConfig->setStereoToolConfigurationPath($stereoToolConfigurationPath);
+        $station->setBackendConfig($backendConfig);
+
         $this->em->persist($station);
         $this->em->flush();
     }
@@ -240,14 +244,13 @@ class StationRepository extends Repository
         Entity\Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
-
-        $stereoToolConfigurationPath = $station->getStereoToolConfigurationPath();
-        if (empty($stereoToolConfigurationPath)) {
+        $backendConfig = $station->getBackendConfig();
+        if (null === $backendConfig->getStereoToolConfigurationPath()) {
             return;
         }
 
-        $fs->delete($stereoToolConfigurationPath);
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+        $fs->delete($backendConfig->getStereoToolConfigurationPath());
     }
 
     public function clearStereoToolConfiguration(
@@ -256,7 +259,10 @@ class StationRepository extends Repository
     ): void {
         $this->doDeleteStereoToolConfiguration($station, $fs);
 
-        $station->setStereoToolConfigurationPath(null);
+        $backendConfig = $station->getBackendConfig();
+        $backendConfig->setStereoToolConfigurationPath(null);
+        $station->setBackendConfig($backendConfig);
+
         $this->em->persist($station);
         $this->em->flush();
     }

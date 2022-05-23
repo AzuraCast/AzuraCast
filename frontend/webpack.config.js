@@ -45,6 +45,7 @@ module.exports = {
         StationsProfileEdit: '~/pages/Stations/ProfileEdit.js',
         StationsQueue: '~/pages/Stations/Queue.js',
         StationsRemotes: '~/pages/Stations/Remotes.js',
+        StationsStereoToolConfig: '~/pages/Stations/StereoToolConfig.js',
         StationsStreamers: '~/pages/Stations/Streamers.js',
         StationsReportsListeners: '~/pages/Stations/Reports/Listeners.js',
         StationsReportsRequests: '~/pages/Stations/Reports/Requests.js',

@@ -27,7 +27,12 @@ class StereoTool
 
     public function isReady(Entity\Station $station): bool
     {
-        return $this->isInstalled() && !empty($station->getStereoToolConfigurationPath());
+        if (!$this->isInstalled()) {
+            return false;
+        }
+
+        $backendConfig = $station->getBackendConfig();
+        return !empty($backendConfig->getStereoToolConfigurationPath());
     }
 
     public function getVersion(): ?string

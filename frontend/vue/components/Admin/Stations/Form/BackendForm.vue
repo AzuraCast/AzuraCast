@@ -54,7 +54,7 @@
                     </b-wrapped-form-group>
                 </b-form-row>
                 <b-form-row>
-                    <b-wrapped-form-group class="col-md-7" id="edit_form_backend_config_audio_processing_method"
+                    <b-wrapped-form-group class="col-md-12" id="edit_form_backend_config_audio_processing_method"
                                           :field="form.backend_config.audio_processing_method">
                         <template #label="{lang}">
                             <translate :key="lang">Audio Processing Method</translate>
@@ -78,9 +78,7 @@
                     <translate key="lang_hdr_stereo_tool">Stereo Tool</translate>
                 </template>
                 <template #description>
-                    <translate key="lang_stereo_tool_desc">Stereo Tool is an industry standard for software audio
-                        processing. For more information on how to configure it, please refer to the
-                    </translate>
+                    <translate key="lang_stereo_tool_desc">Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the</translate>
                     <a href="https://www.thimeo.com/stereo-tool/" target="_blank">
                         <translate key="lang_stereo_tool_documentation_desc">Stereo Tool documentation.</translate>
                     </a>
@@ -88,24 +86,27 @@
 
                 <b-form-fieldset>
                     <b-form-row>
-                        <b-wrapped-form-group class="col-md-5" id="edit_form_backend_stereo_tool_license_key"
+                        <b-wrapped-form-group class="col-md-7" id="edit_form_backend_stereo_tool_license_key"
                                               :field="form.backend_config.stereo_tool_license_key" input-type="text">
                             <template #label="{lang}">
                                 <translate :key="lang">Stereo Tool License Key</translate>
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">Provide a valid license key provided by Thimeo. Only very few
-                                    features work without a license key.
-                                </translate>
+                                <translate :key="lang">Provide a valid license key from Thimeo. Functionality is limited without a license key.</translate>
                             </template>
                         </b-wrapped-form-group>
+
+                        <b-form-markup class="col-md-5" id="edit_form_backend_stereo_tool_config">
+                            <template #label="{lang}">
+                                <translate :key="lang">Upload Stereo Tool Configuration</translate>
+                            </template>
+
+                            <p class="card-text">
+                                <translate key="lang_stereotool_config">Upload a Stereo Tool configuration file from the "Broadcasting" submenu in the station profile.</translate>
+                            </p>
+                        </b-form-markup>
                     </b-form-row>
                 </b-form-fieldset>
-
-                <station-stereo-tool-configuration v-if="newStereoToolConfigurationUrl" v-model="form.backend_config.stereo_tool_configuration_file.$model"
-                                                   :station-has-stereo-tool-configuration="station.stereo_tool_configuration_file_path !== null"
-                                                   :new-configuration-url="newStereoToolConfigurationUrl"
-                                                   :edit-configuration-url="station.links.stereo_tool_configuration"></station-stereo-tool-configuration>
             </b-form-fieldset>
 
             <b-form-fieldset>
@@ -251,7 +252,8 @@
                                 </template>
                             </b-wrapped-form-group>
 
-                            <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_backend_dj_port"
+                            <b-wrapped-form-group v-if="showAdvanced" class="col-md-6"
+                                                  id="edit_form_backend_dj_port"
                                                   :field="form.backend_config.dj_port" input-type="number"
                                                   :input-attrs="{ min: '0' }" advanced>
                                 <template #label="{lang}">
@@ -407,9 +409,7 @@
                     </b-wrapped-form-group>
                 </b-form-row>
             </b-form-fieldset>
-
         </b-form-fieldset>
-
     </b-tab>
 </template>
 
@@ -417,17 +417,18 @@
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {
-    AUDIO_PROCESSING_LIQUIDSOAP, AUDIO_PROCESSING_NONE,
+    AUDIO_PROCESSING_LIQUIDSOAP,
+    AUDIO_PROCESSING_NONE,
     AUDIO_PROCESSING_STEREO_TOOL,
     BACKEND_LIQUIDSOAP,
     BACKEND_NONE
 } from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import StationStereoToolConfiguration from "~/components/Admin/Stations/Form/Backend/StereoToolConfig";
+import BFormMarkup from "~/components/Form/BFormMarkup";
 
 export default {
     name: 'AdminStationsBackendForm',
-    components: {StationStereoToolConfiguration, BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
+    components: {BFormMarkup, BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
         station: Object,
@@ -436,7 +437,6 @@ export default {
             type: Boolean,
             default: true
         },
-        newStereoToolConfigurationUrl: String,
         showAdvanced: {
             type: Boolean,
             default: true

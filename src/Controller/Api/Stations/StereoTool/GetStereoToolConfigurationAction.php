@@ -30,18 +30,19 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class GetStereoToolConfigurationAction
+final class GetStereoToolConfigurationAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationRepository $stationRepo
+        int|string $station_id
     ): ResponseInterface {
         set_time_limit(600);
 
         $station = $request->getStation();
 
-        $stereoToolConfigurationPath = $station->getStereoToolConfigurationPath();
+        $stereoToolConfigurationPath = $station->getBackendConfig()->getStereoToolConfigurationPath();
+
         if (!empty($stereoToolConfigurationPath)) {
             $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
 

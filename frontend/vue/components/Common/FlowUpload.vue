@@ -157,10 +157,14 @@ export default {
 
         this.flow.on('error', (message, file, chunk) => {
             console.error(message, file, chunk);
+
+            let messageJson = JSON.parse(message);
+
+            file.error = messageJson.message.split(': ')[1];
+            this.$emit('error', file, messageJson);
         });
 
         this.flow.on('complete', () => {
-            this.files = [];
             this.$emit('complete');
         });
     },

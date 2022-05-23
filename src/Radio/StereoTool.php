@@ -8,26 +8,22 @@ use App\Entity;
 use App\Environment;
 use Symfony\Component\Process\Process;
 
-class StereoTool
+final class StereoTool
 {
-    public function __construct(
-        protected Environment $environment,
-    ) {
+    public static function isInstalled(): bool
+    {
+        return file_exists(self::getBinaryPath());
     }
 
-    public function isInstalled(): bool
+    public static function getBinaryPath(): string
     {
-        return file_exists($this->getBinaryPath());
+        $environment = Environment::getInstance();
+        return $environment->getParentDirectory() . '/servers/stereo_tool/stereo_tool';
     }
 
-    public function getBinaryPath(): string
+    public static function isReady(Entity\Station $station): bool
     {
-        return $this->environment->getParentDirectory() . '/servers/stereo_tool/stereo_tool';
-    }
-
-    public function isReady(Entity\Station $station): bool
-    {
-        if (!$this->isInstalled()) {
+        if (!self::isInstalled()) {
             return false;
         }
 
@@ -35,13 +31,13 @@ class StereoTool
         return !empty($backendConfig->getStereoToolConfigurationPath());
     }
 
-    public function getVersion(): ?string
+    public static function getVersion(): ?string
     {
-        if (!$this->isInstalled()) {
+        if (!self::isInstalled()) {
             return null;
         }
 
-        $binaryPath = $this->getBinaryPath();
+        $binaryPath = self::getBinaryPath();
 
         $process = new Process([$binaryPath, '--help']);
         $process->setWorkingDirectory(dirname($binaryPath));

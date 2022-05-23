@@ -11,11 +11,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class GetAction
 {
-    public function __construct(
-        private readonly StereoTool $stereoTool,
-    ) {
-    }
-
     public function __invoke(
         ServerRequest $request,
         Response $response
@@ -23,7 +18,7 @@ final class GetAction
         return $response->withJson(
             [
                 'success' => true,
-                'version' => $this->stereoTool->getVersion(),
+                'version' => StereoTool::getVersion(),
             ]
         );
     }

@@ -38,8 +38,7 @@ class ConfigWriter implements EventSubscriberInterface
         protected Environment $environment,
         protected LoggerInterface $logger,
         protected EventDispatcherInterface $eventDispatcher,
-        protected FallbackFile $fallbackFile,
-        protected StereoTool $stereoTool,
+        protected FallbackFile $fallbackFile
     ) {
     }
 
@@ -884,9 +883,9 @@ class ConfigWriter implements EventSubscriberInterface
         // Stereo Tool processing
         if (
             AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
-            && $this->stereoTool->isReady($station)
+            && StereoTool::isReady($station)
         ) {
-            $stereoToolBinary = $this->stereoTool->getBinaryPath();
+            $stereoToolBinary = StereoTool::getBinaryPath();
 
             $stereoToolConfiguration = $station->getRadioConfigDir()
                 . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();

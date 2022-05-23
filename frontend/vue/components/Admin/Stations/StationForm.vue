@@ -211,12 +211,6 @@ export default {
         return {
             loading: true,
             error: null,
-            station: {
-                stereo_tool_configuration_file_path: null,
-                links: {
-                    stereo_tool_configuration: null
-                }
-            },
             form: {}
         };
     },
@@ -272,7 +266,6 @@ export default {
                     crossfade: 2,
                     audio_processing_method: AUDIO_PROCESSING_NONE,
                     stereo_tool_license_key: '',
-                    stereo_tool_configuration_file: null,
                     record_streams: false,
                     record_streams_format: 'mp3',
                     record_streams_bitrate: 128,
@@ -356,7 +349,6 @@ export default {
             });
         },
         populateForm(data) {
-            this.record = data;
             this.form = mergeExisting(this.form, data);
         },
         getSubmittableFormData() {

@@ -18,7 +18,6 @@ class StationFormComponent implements VueComponentInterface
 {
     public function __construct(
         protected Adapters $adapters,
-        protected StereoTool $stereoTool,
         protected SettingsRepository $settingsRepo
     ) {
     }
@@ -30,12 +29,12 @@ class StationFormComponent implements VueComponentInterface
         $settings = $this->settingsRepo->readSettings();
 
         return [
-            'showAdminTab'          => $request->getAcl()->isAllowed(GlobalPermissions::Stations),
-            'showAdvanced'          => $settings->getEnableAdvancedFeatures(),
-            'timezones'             => $this->getTimezones(),
-            'isShoutcastInstalled'  => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
-            'isStereoToolInstalled'  => $this->stereoTool->isInstalled(),
-            'countries'             => Countries::getNames(),
+            'showAdminTab' => $request->getAcl()->isAllowed(GlobalPermissions::Stations),
+            'showAdvanced' => $settings->getEnableAdvancedFeatures(),
+            'timezones' => $this->getTimezones(),
+            'isShoutcastInstalled' => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
+            'isStereoToolInstalled' => StereoTool::isInstalled(),
+            'countries' => Countries::getNames(),
             'storageLocationApiUrl' => (string)$request->getRouter()->named('api:admin:stations:storage-locations'),
         ];
     }

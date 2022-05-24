@@ -20,7 +20,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $this->getStation($request);
 
@@ -48,7 +48,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function createAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $this->getStation($request);
         $row = $this->createRecord((array)$request->getParsedBody(), $station);
@@ -82,8 +82,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function getAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);
@@ -116,8 +116,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function editAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 
@@ -134,8 +134,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 

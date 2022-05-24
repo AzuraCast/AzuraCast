@@ -21,7 +21,7 @@ final class WebhooksAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $router = $request->getRouter();
 

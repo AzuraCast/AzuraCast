@@ -15,12 +15,12 @@ abstract class AbstractWebhooksAction
     ) {
     }
 
-    protected function requireRecord(Entity\Station $station, int $id): Entity\StationWebhook
+    protected function requireRecord(Entity\Station $station, int|string $id): Entity\StationWebhook
     {
         $record = $this->em->getRepository(Entity\StationWebhook::class)->findOneBy(
             [
                 'station' => $station,
-                'id' => $id,
+                'id' => (int)$id,
             ]
         );
 

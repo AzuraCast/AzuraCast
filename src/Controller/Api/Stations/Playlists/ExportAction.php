@@ -14,8 +14,8 @@ final class ExportAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        int $id,
+        string $station_id,
+        string $id,
         string $format = 'pls'
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);

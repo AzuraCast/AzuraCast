@@ -24,8 +24,8 @@ final class BroadcastsController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        ?int $id = null
+        string $station_id,
+        ?string $id = null
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -125,7 +125,7 @@ final class BroadcastsController extends AbstractApiCrudController
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
+        string $station_id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -157,7 +157,7 @@ final class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
+        string $station_id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -183,24 +183,24 @@ final class BroadcastsController extends AbstractApiCrudController
         return $response->withJson(Entity\Api\Status::deleted());
     }
 
-    private function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast
+    private function getRecord(Entity\Station $station, int|string $id): ?Entity\StationStreamerBroadcast
     {
         /** @var Entity\StationStreamerBroadcast|null $broadcast */
         $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy(
             [
-                'id' => $id,
+                'id' => (int)$id,
                 'station' => $station,
             ]
         );
         return $broadcast;
     }
 
-    private function getStreamer(Entity\Station $station, int $id): ?Entity\StationStreamer
+    private function getStreamer(Entity\Station $station, int|string $id): ?Entity\StationStreamer
     {
         /** @var Entity\StationStreamer|null $streamer */
         $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy(
             [
-                'id' => $id,
+                'id' => (int)$id,
                 'station' => $station,
             ]
         );

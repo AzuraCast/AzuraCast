@@ -58,7 +58,7 @@ final class CloneAction extends StationsController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
         $data = (array)$request->getParsedBody();

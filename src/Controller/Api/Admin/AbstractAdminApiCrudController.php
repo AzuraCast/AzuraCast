@@ -47,7 +47,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     public function getAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
 
@@ -61,11 +61,11 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      *
      * @return TEntity|null
      */
-    protected function getRecord(mixed $id): ?object
+    protected function getRecord(string $id): ?object
     {
         return $this->em->find($this->entityClass, $id);
     }
@@ -73,7 +73,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
 
@@ -90,7 +90,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
 

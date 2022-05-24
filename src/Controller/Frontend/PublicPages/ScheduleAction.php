@@ -14,8 +14,8 @@ final class ScheduleAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        bool $embed = false
+        string $station_id,
+        ?string $embed = null
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -26,7 +26,7 @@ final class ScheduleAction
         $router = $request->getRouter();
 
         $pageClass = 'schedule station-' . $station->getShortName();
-        if ($embed) {
+        if (null !== $embed) {
             $pageClass .= ' embed';
         }
 

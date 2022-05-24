@@ -63,7 +63,7 @@ final class DeleteArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
+        string $station_id,
         string $podcast_id,
         string $episode_id
     ): ResponseInterface {

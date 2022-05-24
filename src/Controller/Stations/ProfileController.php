@@ -24,7 +24,7 @@ final class ProfileController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $view = $request->getView();
@@ -198,7 +198,7 @@ final class ProfileController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -220,7 +220,7 @@ final class ProfileController
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
+        string $station_id,
         string $feature,
         string $csrf
     ): ResponseInterface {

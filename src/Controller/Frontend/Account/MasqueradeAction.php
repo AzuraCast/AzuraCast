@@ -23,7 +23,7 @@ final class MasqueradeAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $id,
+        string $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, self::CSRF_NAMESPACE);

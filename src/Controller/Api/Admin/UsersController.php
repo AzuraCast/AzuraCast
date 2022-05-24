@@ -198,7 +198,7 @@ class UsersController extends AbstractAdminApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
 
@@ -221,7 +221,7 @@ class UsersController extends AbstractAdminApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($id);
 

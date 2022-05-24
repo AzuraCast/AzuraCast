@@ -12,9 +12,9 @@ use App\Entity;
  */
 class UserRepository extends Repository
 {
-    public function find(int $id): ?Entity\User
+    public function find(int|string $id): ?Entity\User
     {
-        return $this->repository->find($id);
+        return $this->repository->find((int)$id);
     }
 
     public function findByEmail(string $email): ?Entity\User

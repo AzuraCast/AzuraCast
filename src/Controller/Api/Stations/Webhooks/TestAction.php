@@ -24,16 +24,16 @@ final class TestAction extends AbstractWebhooksAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
-        $this->requireRecord($request->getStation(), $id);
+        $webhook = $this->requireRecord($request->getStation(), $id);
 
         $tempFile = File::generateTempPath('webhook_test_' . $id . '.log');
         touch($tempFile);
 
         $message = new TestWebhookMessage();
-        $message->webhookId = $id;
+        $message->webhookId = $webhook->getIdRequired();
         $message->outputPath = $tempFile;
 
         $this->messageBus->dispatch($message);

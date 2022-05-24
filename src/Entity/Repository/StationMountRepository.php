@@ -15,12 +15,12 @@ use Azura\Files\ExtendedFilesystemInterface;
  */
 class StationMountRepository extends Repository
 {
-    public function find(Entity\Station $station, int $id): ?Entity\StationMount
+    public function find(Entity\Station $station, int|string $id): ?Entity\StationMount
     {
         return $this->repository->findOneBy(
             [
                 'station' => $station,
-                'id' => $id,
+                'id' => (int)$id,
             ]
         );
     }

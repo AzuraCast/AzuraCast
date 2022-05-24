@@ -60,7 +60,7 @@ final class NowPlayingAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string|null $station_id = null
+        ?string $station_id = null
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -84,7 +84,7 @@ final class NowPlayingAction
     }
 
     private function getForStation(
-        string|int $station,
+        string $station,
         RouterInterface $router
     ): ?Entity\Api\NowPlaying\NowPlaying {
         // Check cache first.

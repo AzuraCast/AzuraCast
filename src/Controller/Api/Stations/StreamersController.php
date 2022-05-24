@@ -149,7 +149,7 @@ final class StreamersController extends AbstractScheduledEntityController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -181,7 +181,7 @@ final class StreamersController extends AbstractScheduledEntityController
     public function scheduleAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 

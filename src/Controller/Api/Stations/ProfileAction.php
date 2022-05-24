@@ -22,7 +22,7 @@ final class ProfileAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();

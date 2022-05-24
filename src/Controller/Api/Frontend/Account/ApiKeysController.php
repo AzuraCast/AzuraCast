@@ -57,7 +57,7 @@ final class ApiKeysController extends AbstractApiCrudController
     public function getAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($request->getUser(), $id);
 
@@ -73,7 +73,7 @@ final class ApiKeysController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        mixed $id
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($request->getUser(), $id);
 

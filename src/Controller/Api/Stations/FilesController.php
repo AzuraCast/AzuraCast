@@ -166,7 +166,7 @@ final class FilesController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
@@ -183,7 +183,7 @@ final class FilesController extends AbstractStationApiCrudController
     public function createAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $this->getStation($request);
 
@@ -220,8 +220,8 @@ final class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);

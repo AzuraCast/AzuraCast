@@ -18,8 +18,8 @@ final class TestLogAction extends AbstractWebhooksAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        int $id,
+        string $station_id,
+        string $id,
         string $path
     ): ResponseInterface {
         $this->requireRecord($request->getStation(), $id);

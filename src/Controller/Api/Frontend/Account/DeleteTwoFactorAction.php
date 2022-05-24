@@ -17,7 +17,6 @@ final class DeleteTwoFactorAction
     ) {
     }
 
-
     public function __invoke(
         ServerRequest $request,
         Response $response

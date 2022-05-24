@@ -47,13 +47,13 @@ class StationMediaRepository extends Repository
     }
 
     /**
-     * @param mixed $id
+     * @param int|string $id
      * @param Entity\Station|Entity\StorageLocation $source
      *
      */
-    public function find(mixed $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
+    public function find(int|string $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
     {
-        if (is_string($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
+        if (!is_numeric($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
             $media = $this->findByUniqueId($id, $source);
             if ($media instanceof Entity\StationMedia) {
                 return $media;
@@ -66,7 +66,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'id'               => $id,
+                'id' => $id,
             ]
         );
 
@@ -86,7 +86,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'path'             => $path,
+                'path' => $path,
             ]
         );
 
@@ -120,7 +120,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'unique_id'        => $uniqueId,
+                'unique_id' => $uniqueId,
             ]
         );
 

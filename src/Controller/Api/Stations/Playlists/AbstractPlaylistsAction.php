@@ -15,12 +15,12 @@ abstract class AbstractPlaylistsAction
     ) {
     }
 
-    protected function requireRecord(Entity\Station $station, int $id): Entity\StationPlaylist
+    protected function requireRecord(Entity\Station $station, int|string $id): Entity\StationPlaylist
     {
         $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
             [
                 'station' => $station,
-                'id' => $id,
+                'id' => (int)$id,
             ]
         );
 

@@ -16,8 +16,8 @@ final class CloneAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

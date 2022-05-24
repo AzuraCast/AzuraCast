@@ -22,7 +22,7 @@ final class GetWaveformAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
+        string $station_id,
         string $media_id
     ): ResponseInterface {
         $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);

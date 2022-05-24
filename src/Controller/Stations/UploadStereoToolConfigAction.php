@@ -13,7 +13,7 @@ final class UploadStereoToolConfigAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $backendConfig = $request->getStation()->getBackendConfig();
         $router = $request->getRouter();

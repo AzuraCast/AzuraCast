@@ -149,7 +149,7 @@ final class RemotesController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 

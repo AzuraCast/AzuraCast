@@ -14,7 +14,8 @@ final class AppManifestAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 

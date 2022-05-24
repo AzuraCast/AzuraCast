@@ -160,7 +160,7 @@ final class MountsController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -216,7 +216,7 @@ final class MountsController extends AbstractStationApiCrudController
     public function createAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -237,8 +237,8 @@ final class MountsController extends AbstractStationApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        mixed $id,
+        string $station_id,
+        string $id,
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 

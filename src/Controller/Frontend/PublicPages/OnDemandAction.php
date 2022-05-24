@@ -21,8 +21,8 @@ final class OnDemandAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        bool $embed = false
+        string $station_id,
+        ?string $embed = null
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -54,7 +54,7 @@ final class OnDemandAction
         $router = $request->getRouter();
 
         $pageClass = 'ondemand station-' . $station->getShortName();
-        if ($embed) {
+        if (null !== $embed) {
             $pageClass .= ' embed';
         }
 

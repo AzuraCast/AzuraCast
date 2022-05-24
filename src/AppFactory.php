@@ -9,13 +9,13 @@ use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use DI;
+use Invoker\Invoker;
 use Monolog\ErrorHandler;
 use Monolog\Registry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Handlers\Strategies\RequestResponseNamedArgs;
 
 class AppFactory
 {
@@ -53,7 +53,8 @@ class AppFactory
         $container->set(App::class, $app);
 
         $routeCollector = $app->getRouteCollector();
-        $routeCollector->setDefaultInvocationStrategy(new RequestResponseNamedArgs());
+
+        $routeCollector->setDefaultInvocationStrategy(new ControllerInvoker(new Invoker()));
 
         $environment = $container->get(Environment::class);
         if ($environment->isProduction()) {

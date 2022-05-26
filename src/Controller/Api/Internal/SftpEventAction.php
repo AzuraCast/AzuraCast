@@ -32,8 +32,7 @@ final class SftpEventAction
     ): ResponseInterface {
         $errorResponse = $response->withStatus(500)->withJson(['success' => false]);
 
-        $parsedBody = $request->getParsedBody();
-
+        $parsedBody = (array)$request->getParsedBody();
         $action = $parsedBody['action'] ?? null;
         $username = $parsedBody['username'] ?? null;
         $path = $parsedBody['path'] ?? null;

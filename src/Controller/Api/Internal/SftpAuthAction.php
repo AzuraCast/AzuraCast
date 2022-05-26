@@ -28,8 +28,7 @@ final class SftpAuthAction
             ->withStatus(500)
             ->withJson(['username' => '']);
 
-        $parsedBody = $request->getParsedBody();
-
+        $parsedBody = (array)$request->getParsedBody();
         $username = $parsedBody['username'] ?? '';
         $password = $parsedBody['password'] ?? '';
         $pubKey = $parsedBody['public_key'] ?? '';

@@ -2,45 +2,40 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Command\Internal;
+namespace App\Controller\Api\Internal;
 
-use App\Console\Command\CommandAbstract;
 use App\Entity\SftpUser;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-use const JSON_THROW_ON_ERROR;
-
-#[AsCommand(
-    name: 'azuracast:internal:sftp-auth',
-    description: 'Attempt SFTP authentication.',
-)]
-class SftpAuthCommand extends CommandAbstract
+final class SftpAuthAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected LoggerInterface $logger,
+        private readonly EntityManagerInterface $em,
+        private readonly LoggerInterface $logger,
     ) {
-        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-        $errorResponse = json_encode(['username' => ''], JSON_THROW_ON_ERROR);
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
+        $errorResponse = $response
+            ->withStatus(500)
+            ->withJson(['username' => '']);
 
-        $username = getenv('SFTPGO_AUTHD_USERNAME') ?: '';
-        $password = getenv('SFTPGO_AUTHD_PASSWORD') ?: '';
-        $pubKey = getenv('SFTPGO_AUTHD_PUBLIC_KEY') ?: '';
+        $parsedBody = $request->getParsedBody();
+
+        $username = $parsedBody['username'] ?? '';
+        $password = $parsedBody['password'] ?? '';
+        $pubKey = $parsedBody['public_key'] ?? '';
 
         if (empty($username)) {
-            $io->write($errorResponse);
-            return 1;
+            return $errorResponse;
         }
 
         $sftpUser = $this->em->getRepository(SftpUser::class)->findOneBy(['username' => $username]);
@@ -52,8 +47,7 @@ class SftpAuthCommand extends CommandAbstract
                 )
             );
 
-            $io->write($errorResponse);
-            return 1;
+            return $errorResponse;
         }
 
         if (!$sftpUser->authenticate($password, $pubKey)) {
@@ -68,8 +62,7 @@ class SftpAuthCommand extends CommandAbstract
                 ]
             );
 
-            $io->write($errorResponse);
-            return 1;
+            return $errorResponse;
         }
 
         $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
@@ -83,8 +76,7 @@ class SftpAuthCommand extends CommandAbstract
                 )
             );
 
-            $io->write($errorResponse);
-            return 1;
+            return $errorResponse;
         }
 
         $quotaRaw = $storageLocation->getStorageQuotaBytes();
@@ -105,7 +97,6 @@ class SftpAuthCommand extends CommandAbstract
             ],
         ];
 
-        $io->write(json_encode($row, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
-        return 0;
+        return $response->withJson($row);
     }
 }

@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
 set -x
 
-$minimal_apt_get_install tzdata libjemalloc2 pwgen xz-utils zstd dirmngr apt-transport-https
+apt-get install -y --no-install-recommends tzdata libjemalloc2 pwgen xz-utils zstd dirmngr apt-transport-https
 
 sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
 sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el,s390x] https://atl.mirrors.knownhost.com/mariadb/repo/10.7/ubuntu focal main'
@@ -17,7 +16,7 @@ export MARIADB_MAJOR=10.7
 } | debconf-set-selections;
 
 apt update
-$minimal_apt_get_install mariadb-server mariadb-backup socat
+apt-get install -y --no-install-recommends mariadb-server mariadb-backup socat
 
 # Temporary work around for MDEV-27980, closes #417
 sed --follow-symlinks -i -e 's/--loose-disable-plugin-file-key-management//' /usr/bin/mysql_install_db
@@ -42,9 +41,6 @@ if [ ! -L /etc/mysql/my.cnf ]; then
 else
   sed -i -e '/includedir/ {N;s/\(.*\)\n\(.*\)/[mariadbd]\nskip-host-cache\nskip-name-resolve\n\n\2\n\1/}' /etc/mysql/mariadb.cnf;
 fi
-
-# Customizations to MariaDB
-echo "1" >> /etc/container_environment/MARIADB_AUTO_UPGRADE
 
 mkdir /docker-entrypoint-initdb.d
 

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if [ `whoami` != 'azuracast' ]; then
-    exec gosu azuracast liquidsoap_cli "$@"
-fi
-
-source /etc/container_environment.sh
-
-exec azuracast_cli azuracast:internal:liquidsoap "$@"

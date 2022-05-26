@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-source /etc/container_environment.sh
-
-exec azuracast_cli azuracast:internal:sftp-event "$@"

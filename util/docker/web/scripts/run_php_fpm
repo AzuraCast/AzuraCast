@@ -1,14 +1,6 @@
 #!/bin/bash
 
-source /etc/container_environment.sh
-
-if [ -f /etc/service/mariadb/run ]; then
-  sv -w 30 check mariadb || exit 1
-fi
-
-if [ -f /etc/service/redis/run ]; then
-  sv -w 30 check redis || exit 1
-fi
+source /etc/php/.version
 
 # Set up PHP config
 dockerize -template "/etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl:/etc/php/${PHP_VERSION}/fpm/conf.d/05-azuracast.ini" \

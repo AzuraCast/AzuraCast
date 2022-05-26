@@ -1,5 +1,0 @@
-#!/bin/sh
-
-sv -w 45 check php-fpm || exit 1
-
-exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf

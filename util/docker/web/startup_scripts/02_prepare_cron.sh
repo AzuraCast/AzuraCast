@@ -1,10 +1,6 @@
-#!/bin/sh
-
-sv -w 30 check php-fpm || exit 1
+#!/bin/bash
 
 # Touch cron files to fix 'NUMBER OF HARD LINKS > 1' issue. See  https://github.com/phusion/baseimage-docker/issues/198
 touch -c /var/spool/cron/crontabs/*
 touch -c /etc/crontab
 touch -c /etc/cron.*/*
-
-exec /usr/sbin/cron -f

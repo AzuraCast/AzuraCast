@@ -61,6 +61,12 @@ return static function (RouteCollectorProxy $app) {
                         }
                     )->add(Middleware\GetStation::class);
 
+                    $group->post('/sftp-auth', Controller\Api\Internal\SftpAuthAction::class)
+                        ->setName('api:internal:sftp-auth');
+
+                    $group->post('/sftp-event', Controller\Api\Internal\SftpEventAction::class)
+                        ->setName('api:internal:sftp-event');
+
                     $group->get('/relays', Controller\Api\Admin\RelaysController::class)
                         ->setName('api:internal:relays')
                         ->add(Middleware\RequireLogin::class);

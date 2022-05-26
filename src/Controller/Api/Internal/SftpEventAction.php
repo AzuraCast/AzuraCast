@@ -2,90 +2,104 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Command\Internal;
+namespace App\Controller\Api\Internal;
 
-use App\Console\Command\CommandAbstract;
-use App\Entity;
+use App\Entity\SftpUser;
+use App\Entity\StorageLocation;
+use App\Http\Response;
+use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
-use App\Message;
+use App\Message\AddNewMediaMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-#[AsCommand(
-    name: 'azuracast:internal:sftp-event',
-    description: 'Send upcoming song feedback from the AutoDJ back to AzuraCast.',
-)]
-class SftpEventCommand extends CommandAbstract
+final class SftpEventAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected MessageBus $messageBus,
-        protected LoggerInterface $logger,
-        protected BatchUtilities $batchUtilities,
+        private readonly EntityManagerInterface $em,
+        private readonly MessageBus $messageBus,
+        private readonly LoggerInterface $logger,
+        private readonly BatchUtilities $batchUtilities,
     ) {
-        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $action = getenv('SFTPGO_ACTION') ?: null;
-        $username = getenv('SFTPGO_ACTION_USERNAME') ?: null;
-        $path = getenv('SFTPGO_ACTION_PATH') ?: null;
-        $targetPath = getenv('SFTPGO_ACTION_TARGET') ?: null;
-        $sshCmd = getenv('SFTPGO_ACTION_SSH_CMD') ?: null;
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
+        $errorResponse = $response->withStatus(500)->withJson(['success' => false]);
+
+        $parsedBody = $request->getParsedBody();
+
+        $action = $parsedBody['action'] ?? null;
+        $username = $parsedBody['username'] ?? null;
+        $path = $parsedBody['path'] ?? null;
+        $targetPath = $parsedBody['target_path'] ?? null;
+        $sshCmd = $parsedBody['ssh_cmd'] ?? null;
 
         $this->logger->notice(
             'SFTP file event triggered',
             [
-                'action'     => $action,
-                'username'   => $username,
-                'path'       => $path,
+                'action' => $action,
+                'username' => $username,
+                'path' => $path,
                 'targetPath' => $targetPath,
-                'sshCmd'     => $sshCmd,
+                'sshCmd' => $sshCmd,
             ]
         );
 
         // Determine which station the username belongs to.
-        $sftpUser = $this->em->getRepository(Entity\SftpUser::class)->findOneBy(
+        $sftpUser = $this->em->getRepository(SftpUser::class)->findOneBy(
             [
                 'username' => $username,
             ]
         );
 
-        if (!$sftpUser instanceof Entity\SftpUser) {
+        if (!$sftpUser instanceof SftpUser) {
             $this->logger->error('SFTP Username not found.', ['username' => $username]);
-            return 1;
+            return $errorResponse;
         }
 
         $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
 
         if (!$storageLocation->isLocal()) {
             $this->logger->error(sprintf('Storage location "%s" is not local.', $storageLocation));
-            return 1;
+            return $errorResponse;
         }
 
         if (null === $path) {
             $this->logger->error('No path specified for action.');
-            return 1;
+            return $errorResponse;
         }
 
-        return match ($action) {
-            'upload' => $this->handleNewUpload($storageLocation, $path),
-            'pre-delete' => $this->handleDelete($storageLocation, $path),
-            'rename' => $this->handleRename($storageLocation, $path, $targetPath),
-            default => 1,
-        };
+        try {
+            match ($action) {
+                'upload' => $this->handleNewUpload($storageLocation, $path),
+                'pre-delete' => $this->handleDelete($storageLocation, $path),
+                'rename' => $this->handleRename($storageLocation, $path, $targetPath),
+                default => null,
+            };
+
+            return $response->withJson(['success' => true]);
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                sprintf('SFTP Event: %s', $e->getMessage()),
+                [
+                    'exception' => $e,
+                ]
+            );
+
+            return $errorResponse;
+        }
     }
 
-    protected function handleNewUpload(
-        Entity\StorageLocation $storageLocation,
+    private function handleNewUpload(
+        StorageLocation $storageLocation,
         string $path
-    ): int {
+    ): void {
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
@@ -93,23 +107,21 @@ class SftpEventCommand extends CommandAbstract
             'Processing new SFTP upload.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'path'            => $relativePath,
+                'path' => $relativePath,
             ]
         );
 
-        $message = new Message\AddNewMediaMessage();
+        $message = new AddNewMediaMessage();
         $message->storage_location_id = $storageLocation->getIdRequired();
         $message->path = $relativePath;
 
         $this->messageBus->dispatch($message);
-
-        return 0;
     }
 
-    protected function handleDelete(
-        Entity\StorageLocation $storageLocation,
+    private function handleDelete(
+        StorageLocation $storageLocation,
         string $path
-    ): int {
+    ): void {
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
@@ -117,7 +129,7 @@ class SftpEventCommand extends CommandAbstract
             'Processing SFTP file/folder deletion.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'path'            => $relativePath,
+                'path' => $relativePath,
             ]
         );
 
@@ -140,18 +152,15 @@ class SftpEventCommand extends CommandAbstract
         );
 
         $fs->delete($relativePath);
-
-        return 0;
     }
 
-    protected function handleRename(
-        Entity\StorageLocation $storageLocation,
+    private function handleRename(
+        StorageLocation $storageLocation,
         string $path,
         ?string $newPath
-    ): int {
+    ): void {
         if (null === $newPath) {
-            $this->logger->error('No new path specified for rename.');
-            return 1;
+            throw new \LogicException('No new path specified for rename.');
         }
 
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
@@ -163,8 +172,8 @@ class SftpEventCommand extends CommandAbstract
             'Processing SFTP file/folder rename.',
             [
                 'storageLocation' => (string)$storageLocation,
-                'from'            => $from,
-                'to'              => $to,
+                'from' => $from,
+                'to' => $to,
             ]
         );
 
@@ -173,7 +182,5 @@ class SftpEventCommand extends CommandAbstract
             $to,
             $storageLocation
         );
-
-        return 0;
     }
 }

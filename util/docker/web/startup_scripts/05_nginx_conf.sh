@@ -1,9 +1,7 @@
 #!/bin/bash
 
-sv -w 30 check php-fpm || exit 1
-
 REDIS_LOCAL=false
-if [ -f /etc/service/redis/run ]; then
+if [ -f /etc/supervisor/minimal.conf.d/redis.conf ]; then
     REDIS_LOCAL=true
 fi
 export REDIS_LOCAL
@@ -11,5 +9,3 @@ export REDIS_LOCAL
 # Copy the nginx template to its destination.
 dockerize -template "/etc/nginx/nginx.conf.tmpl:/etc/nginx/nginx.conf" \
     -template "/etc/nginx/azuracast.conf.tmpl:/etc/nginx/sites-available/default"
-
-exec nginx -g "daemon off;"

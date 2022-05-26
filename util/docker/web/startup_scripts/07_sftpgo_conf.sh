@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo 'Spinning up SFTP process...'
-
 if [[ ! -f /var/azuracast/sftpgo/persist/id_rsa ]]; then
     ssh-keygen -t rsa -b 4096 -f /var/azuracast/sftpgo/persist/id_rsa -q -N ""
 fi
@@ -15,7 +13,3 @@ if [[ ! -f /var/azuracast/sftpgo/persist/id_ed25519 ]]; then
 fi
 
 chown -R azuracast:azuracast /var/azuracast/sftpgo/persist
-
-cd /var/azuracast/sftpgo
-
-exec sudo -E -u azuracast sftpgo --config-dir=/var/azuracast/sftpgo serve -l "" > /proc/1/fd/1 2> /proc/1/fd/2

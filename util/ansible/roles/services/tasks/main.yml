@@ -1,9 +1,7 @@
 ---
-- name: Enable and restart all core services
+- name: Enable and restart Supervisord
   service:
-    name: "{{ item }}"
+    name: "supervisor"
     enabled: true
     state: restarted
   ignore_errors: true
-  with_items:
-    - "supervisord"

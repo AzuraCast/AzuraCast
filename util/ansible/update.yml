@@ -51,10 +51,10 @@
     - role: "dbip"
       when: update_revision|int < 51
 
-    - role: "services"
-
     - role: "azuracast-cron"
       when: update_revision|int < 83
+
+    - role: "services"
 
     - role: "azuracast-build"
 

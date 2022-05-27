@@ -15,7 +15,6 @@
 - name: Install Cron file
   command: >-
     crontab -u azuracast {{ tmp_base }}/azuracast_cron
-  notify: restart cron
 
 - name: Clean up temp Cron file
   file:

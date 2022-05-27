@@ -6,9 +6,4 @@
     state: restarted
   ignore_errors: true
   with_items:
-    - "mysql"
-    - "php8.1-fpm"
-    - "nginx"
-    - "redis-server"
-    - "redis"
-    - "beanstalkd"
+    - "supervisord"

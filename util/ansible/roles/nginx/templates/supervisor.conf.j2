@@ -1,0 +1,8 @@
+[program:nginx]
+command=nginx -g "daemon off;"
+priority=100
+numprocs=1
+autostart=true
+autorestart=unexpected
+stopasgroup=true
+killasgroup=true

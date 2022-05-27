@@ -9,3 +9,17 @@
     dest: /etc/default/beanstalkd
     force: true
     mode: 0644
+
+- name: Install Beanstalkd Supervisord conf
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/beanstalkd.conf
+    force: true
+    mode: 0644
+
+- name: Disable Beanstalkd service
+  service:
+    name: "beanstalkd"
+    enabled: false
+    state: stopped
+  ignore_errors: true

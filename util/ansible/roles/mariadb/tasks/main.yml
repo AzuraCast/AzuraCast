@@ -14,8 +14,16 @@
       - mariadb-server
       - mariadb-client
 
-- name: Start and enable service
+- name: Install MariaDB Supervisord conf
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/mariadb.conf
+    force: true
+    mode: 0644
+
+- name: Disable MariaDB service
   service:
-    name: mysql
-    state: started
-    enabled: true
+    name: "mysql"
+    enabled: false
+    state: stopped
+  ignore_errors: true

@@ -80,3 +80,17 @@
     regexp: 'sendfile on;'
     replace: 'sendfile off;'
   when: app_env == "development"
+
+- name: Install Nginx Supervisord conf
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/nginx.conf
+    force: true
+    mode: 0644
+
+- name: Disable Nginx service
+  service:
+    name: "nginx"
+    enabled: false
+    state: stopped
+  ignore_errors: true

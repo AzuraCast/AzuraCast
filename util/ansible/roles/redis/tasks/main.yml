@@ -8,6 +8,13 @@
   apt:
     name: redis-server
 
+- name: Install Redis Conf
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    force: true
+    mode: 0644
+
 - name: Install Redis Supervisord conf
   template:
     src: supervisor.conf.j2
@@ -15,7 +22,7 @@
     force: true
     mode: 0644
 
-- name: Enable and restart all core services
+- name: Disable Redis services
   service:
     name: "{{ item }}"
     enabled: false

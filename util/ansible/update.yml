@@ -32,7 +32,7 @@
       when: update_revision|int < 83
 
     - role: "redis"
-      when: update_revision|int < 83
+      when: update_revision|int < 84
 
     - role: "beanstalkd"
       when: update_revision|int < 83

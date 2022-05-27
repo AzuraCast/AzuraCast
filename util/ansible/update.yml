@@ -29,7 +29,7 @@
       when: update_revision|int < 83
 
     - role: "nginx"
-      when: update_revision|int < 83
+      when: update_revision|int < 85
 
     - role: "redis"
       when: update_revision|int < 84

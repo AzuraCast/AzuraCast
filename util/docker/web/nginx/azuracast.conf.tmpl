@@ -201,5 +201,7 @@ server {
         alias /var/azuracast/stations/;
     }
 
+    include /var/azuracast/stations/*/config/nginx.conf;
+
     include /etc/nginx/azuracast.conf.d/*.conf;
 }

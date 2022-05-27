@@ -116,7 +116,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         ) {
             // Web proxy support.
             return $base_url
-                ->withPath($base_url->getPath() . '/radio/' . $radio_port);
+                ->withPath($base_url->getPath() . '/listen/' . $station->getShortName());
         }
 
         // Remove port number and other decorations.

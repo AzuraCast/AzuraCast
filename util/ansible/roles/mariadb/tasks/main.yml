@@ -16,6 +16,14 @@
 
 - name: Install MariaDB Supervisord conf
   template:
+    src: my.cnf.j2
+    dest: /etc/mysql/conf.d/db.cnf
+    owner: "mariadb"
+    force: true
+    mode: 0644
+
+- name: Install MariaDB Supervisord conf
+  template:
     src: supervisor.conf.j2
     dest: /etc/supervisor/conf.d/mariadb.conf
     force: true

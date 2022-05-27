@@ -13,7 +13,14 @@
     src: redis.conf.j2
     dest: /etc/redis/redis.conf
     force: true
+    owner: "redis"
     mode: 0644
+
+- name: Create Redis run dir
+  file:
+    path: /run/redis
+    owner: "redis"
+    state: directory
 
 - name: Install Redis Supervisord conf
   template:

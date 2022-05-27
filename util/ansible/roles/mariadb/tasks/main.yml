@@ -18,7 +18,6 @@
   template:
     src: my.cnf.j2
     dest: /etc/mysql/conf.d/db.cnf
-    owner: "mariadb"
     force: true
     mode: 0644
 

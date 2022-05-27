@@ -4,6 +4,12 @@
     curl -sSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
     | bash -s -- --mariadb-server-version="mariadb-10.5"
 
+- name: Remove old MariaDB conf files
+  file:
+    path: /etc/apt/sources.list.d/mariadb.list.old*
+    state: absent
+  ignore_errors: true
+
 - name: Install MariaDB
   apt:
     name: "{{ packages }}"
@@ -14,7 +20,7 @@
       - mariadb-server
       - mariadb-client
 
-- name: Install MariaDB Supervisord conf
+- name: Install MariaDB DB conf
   template:
     src: my.cnf.j2
     dest: /etc/mysql/conf.d/db.cnf

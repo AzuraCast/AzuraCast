@@ -6,7 +6,6 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Environment;
-use App\Nginx\Nginx;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,7 +27,6 @@ class RestartRadioCommand extends CommandAbstract
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationRepository $stationRepo,
         protected Configuration $configuration,
-        protected Nginx $nginx,
     ) {
         parent::__construct();
     }
@@ -75,11 +73,6 @@ class RestartRadioCommand extends CommandAbstract
                     station: $station,
                     reloadSupervisor: !$noSupervisorRestart,
                     forceRestart: true
-                );
-
-                $this->nginx->writeConfiguration(
-                    station: $station,
-                    reloadIfChanged: !$noSupervisorRestart
                 );
             } catch (Throwable $e) {
                 $io->error([

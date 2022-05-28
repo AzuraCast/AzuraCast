@@ -8,7 +8,6 @@ use App\Entity;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Nginx\Nginx;
 use App\OpenApi;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
@@ -105,8 +104,7 @@ use Throwable;
 final class ServicesController
 {
     public function __construct(
-        private readonly Configuration $configuration,
-        private readonly Nginx $nginx,
+        private readonly Configuration $configuration
     ) {
     }
 
@@ -143,8 +141,6 @@ final class ServicesController
                 station: $station,
                 forceRestart: true
             );
-
-            $this->nginx->writeConfiguration($station);
         } catch (Throwable $e) {
             return $response->withJson(
                 new Entity\Api\Error(
@@ -171,8 +167,6 @@ final class ServicesController
                 forceRestart: true,
                 attemptReload: false
             );
-
-            $this->nginx->writeConfiguration($station);
         } catch (Throwable $e) {
             return $response->withJson(
                 new Entity\Api\Error(

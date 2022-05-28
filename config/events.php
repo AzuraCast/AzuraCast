@@ -195,7 +195,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addServiceSubscriber(
         [
             App\Console\ErrorHandler::class,
-            App\Nginx\ConfigWriter::class,
             App\Radio\AutoDJ\QueueBuilder::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,

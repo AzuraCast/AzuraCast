@@ -25,10 +25,21 @@ class ReactivateStreamerTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        foreach ($this->streamerRepo->getStreamersDueForReactivation() as $streamer) {
+        $streamers = $this->em->createQuery(
+            <<<DQL
+            SELECT sst
+            FROM App\Entity\StationStreamer sst
+            WHERE sst.is_active = 0
+            AND sst.reactivate_at <= :reactivate_at
+            DQL
+        )->setParameter('reactivate_at', time())
+            ->execute();
+
+        foreach ($streamers as $streamer) {
             $streamer->setIsActive(true);
             $this->em->persist($streamer);
-            $this->em->flush();
         }
+
+        $this->em->flush();
     }
 }

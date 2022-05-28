@@ -135,6 +135,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\CleanupLoginTokensTask::class,
                 App\Sync\Task\CleanupRelaysTask::class,
                 App\Sync\Task\CleanupStorageTask::class,
+                App\Sync\Task\EnforceBroadcastTimesTask::class,
                 App\Sync\Task\MoveBroadcastsTask::class,
                 App\Sync\Task\QueueInterruptingTracks::class,
                 App\Sync\Task\ReactivateStreamerTask::class,

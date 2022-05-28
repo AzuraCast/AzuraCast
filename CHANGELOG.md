@@ -18,6 +18,10 @@ release channel, you can take advantage of these new features and fixes.
   itself, notably including the "Interrupt Other Tracks" setting. This means that enabling these settings will no longer
   force a playlist to use Liquidsoap for its scheduling.
 
+- If the "Enforce Schedule" setting is enabled for a streamer and they overrun their scheduled time slot, the system
+  will automatically disconnect the listener and prevent them from reconnecting for a time period (configurable via the
+  station profile). THis can help prevent DJs from accidentally leaving their stream online and broadcasting "dead air".
+
 ## Code Quality/Technical Changes
 
 - Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP
@@ -30,6 +34,8 @@ release channel, you can take advantage of these new features and fixes.
 - Docker users can now debug Slim Application Errors by editing the `SHOW_DETAILED_ERRORS` in the `azuracast.env` file,
   reports should be submitted to our [issues](https://github.com/azuracast/azuracast/issues) section for review by our
   team.
+
+- SFTP support is now enabled for Ansible users as well.
 
 ## Bug Fixes
 

@@ -114,25 +114,4 @@ class StationStreamerRepository extends Repository
 
         return $streamer;
     }
-
-    /**
-     * Fetch all streamers who are deactivated and have a reactivate at timestamp set
-     *
-     * @param int|null $reactivate_at
-     *
-     * @return Entity\StationStreamer[]
-     */
-    public function getStreamersDueForReactivation(int $reactivate_at = null): array
-    {
-        $reactivate_at = $reactivate_at ?? time();
-
-        return $this->em->createQueryBuilder()
-            ->select('s')
-            ->from($this->entityClass, 's')
-            ->where('s.is_active = 0')
-            ->andWhere('s.reactivate_at <= :reactivate_at')
-            ->setParameter('reactivate_at', $reactivate_at)
-            ->getQuery()
-            ->execute();
-    }
 }

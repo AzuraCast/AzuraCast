@@ -7,8 +7,9 @@
   ignore_errors: true
   with_items:
     - "supervisor"
-    - "cron"
     - "mysql"
-    - "nginx"
-    - "php8.1-fpm"
     - "redis-server"
+    - "php8.1-fpm"
+    - "nginx"
+    - "cron"
+    - "sftpgo"

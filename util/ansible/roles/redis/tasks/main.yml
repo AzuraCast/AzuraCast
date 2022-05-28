@@ -21,20 +21,3 @@
     path: /run/redis
     owner: "redis"
     state: directory
-
-- name: Install Redis Supervisord conf
-  template:
-    src: supervisor.conf.j2
-    dest: /etc/supervisor/conf.d/redis.conf
-    force: true
-    mode: 0644
-
-- name: Disable Redis services
-  service:
-    name: "{{ item }}"
-    enabled: false
-    state: stopped
-  ignore_errors: true
-  with_items:
-    - "redis-server"
-    - "redis"

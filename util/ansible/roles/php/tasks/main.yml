@@ -73,17 +73,3 @@
     option: "short_open_tag"
     value: "On"
     mode: 0644
-
-- name: Install PHP-FPM Supervisord conf
-  template:
-    src: supervisor.conf.j2
-    dest: /etc/supervisor/conf.d/php-fpm.conf
-    force: true
-    mode: 0644
-
-- name: Disable PHP-FPM service
-  service:
-    name: "php8.1-fpm"
-    enabled: false
-    state: stopped
-  ignore_errors: true

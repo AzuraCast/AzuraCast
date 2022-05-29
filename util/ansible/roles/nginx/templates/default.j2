@@ -186,4 +186,6 @@ server {
         internal;
         alias {{ app_base }}/stations/;
     }
+
+    include {{ app_base }}/stations/*/config/nginx.conf;
 }

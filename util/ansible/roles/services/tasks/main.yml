@@ -1,15 +1,7 @@
 ---
-- name: Enable and Restart Services
+- name: Enable and restart Supervisord
   service:
-    name: "{{ item }}"
+    name: "supervisor"
     enabled: true
     state: restarted
   ignore_errors: true
-  with_items:
-    - "supervisor"
-    - "mysql"
-    - "redis-server"
-    - "php8.1-fpm"
-    - "nginx"
-    - "cron"
-    - "sftpgo"

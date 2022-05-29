@@ -70,7 +70,7 @@ class Environment
 
         self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
-        self::IS_CLI    => ('cli' === PHP_SAPI),
+        self::IS_CLI => ('cli' === PHP_SAPI),
 
         self::ASSET_URL => '/static',
 
@@ -80,11 +80,11 @@ class Environment
         self::ENABLE_REDIS => true,
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
-        self::SYNC_LONG_EXECUTION_TIME  => 1800,
+        self::SYNC_LONG_EXECUTION_TIME => 1800,
 
-        self::PROFILING_EXTENSION_ENABLED   => 0,
+        self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
-        self::PROFILING_EXTENSION_HTTP_KEY  => 'dev',
+        self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
     ];
 
     public function __construct(array $elements = [])
@@ -317,7 +317,7 @@ class Environment
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
 
-        if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
+        if ('localhost' === $redisSettings['host']) {
             $redisSettings['socket'] = '/run/redis/redis.sock';
         }
 

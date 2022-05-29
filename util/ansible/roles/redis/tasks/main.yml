@@ -18,7 +18,7 @@
 
 - name: Create Redis run dir
   file:
-    path: /run/redis
+    path: /run/redis/
     owner: "redis"
     state: directory
 

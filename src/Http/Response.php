@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http;
 
+use App\Nginx\CustomUrls;
 use Azura\Files\Adapter\LocalAdapterInterface;
 use Azura\Files\ExtendedFilesystemInterface;
 use InvalidArgumentException;
@@ -134,21 +135,11 @@ final class Response extends \Slim\Http\Response
 
         $adapter = $filesystem->getAdapter();
         if ($adapter instanceof LocalAdapterInterface) {
-            $localPath = $filesystem->getLocalPath($path);
-
             // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
-            $specialPaths = [
-                '/var/azuracast/backups' => '/internal/backups',
-                '/var/azuracast/stations' => '/internal/stations',
-            ];
-
-            foreach ($specialPaths as $diskPath => $nginxPath) {
-                if (str_starts_with($localPath, $diskPath)) {
-                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
-
-                    return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
-                        ->withHeader('X-Accel-Redirect', $accelPath);
-                }
+            $accelPath = CustomUrls::getXAccelPath($filesystem->getLocalPath($path));
+            if (null !== $accelPath) {
+                return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
+                    ->withHeader('X-Accel-Redirect', $accelPath);
             }
         }
 

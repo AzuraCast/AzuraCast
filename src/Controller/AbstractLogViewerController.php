@@ -22,6 +22,12 @@ abstract class AbstractLogViewerController
 
         $stationConfigDir = $station->getRadioConfigDir();
 
+        $log_paths['station_nginx'] = [
+            'name' => __('Station Nginx Configuration'),
+            'path' => $stationConfigDir . '/nginx.conf',
+            'tail' => false,
+        ];
+
         if (BackendAdapters::Liquidsoap === $station->getBackendTypeEnum()) {
             $log_paths['liquidsoap_log'] = [
                 'name' => __('Liquidsoap Log'),

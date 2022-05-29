@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Nginx;
 
 use App\Event\Nginx\WriteNginxConfiguration;
+use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -18,6 +19,7 @@ final class ConfigWriter implements EventSubscriberInterface
         return [
             WriteNginxConfiguration::class => [
                 ['writeRadioSection', 35],
+                ['writeWebDjSection', 30],
             ],
         ];
     }
@@ -31,14 +33,14 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $shortCode = $station->getShortName();
+        $listenBaseUrl = CustomUrls::getListenUrl($station);
 
         $port = $station->getFrontendConfig()->getPort();
 
         $event->appendBlock(
             <<<NGINX
             # Reverse proxy the frontend broadcast.
-            location ~ ^/listen/{$shortCode}(/?)(.*)\$ {
+            location ~ ^{$listenBaseUrl}(/?)(.*)\$ {
                 include proxy_params;
                 
                 proxy_intercept_errors    on;
@@ -48,6 +50,31 @@ final class ConfigWriter implements EventSubscriberInterface
                 
                 proxy_set_header Host localhost:{$port};
                 proxy_pass http://127.0.0.1:{$port}/\$2?\$args;
+            }
+            NGINX
+        );
+    }
+
+    public function writeWebDjSection(WriteNginxConfiguration $event): void
+    {
+        $station = $event->getStation();
+
+        // Only forward Liquidsoap
+        if (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()) {
+            return;
+        }
+
+        $webDjBaseUrl = CustomUrls::getWebDjUrl($station);
+
+        $autoDjPort = $station->getBackendConfig()->getDjPort();
+
+        $event->appendBlock(
+            <<<NGINX
+            # Reverse proxy the WebDJ connection.
+            location ~ ^{$webDjBaseUrl}(/?)(.*)\$ {
+                include proxy_params;
+
+                proxy_pass http://127.0.0.1:{$autoDjPort}/$2;
             }
             NGINX
         );

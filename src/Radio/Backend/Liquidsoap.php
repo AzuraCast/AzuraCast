@@ -7,6 +7,7 @@ namespace App\Radio\Backend;
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
+use App\Nginx\CustomUrls;
 use App\Radio\Enums\LiquidsoapQueues;
 use LogicException;
 use Psr\Http\Message\UriInterface;
@@ -307,13 +308,11 @@ class Liquidsoap extends AbstractBackend
 
     public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface
     {
-        $stream_port = $this->getStreamPort($station);
-
         $djMount = $station->getBackendConfig()->getDjMountPoint();
 
         return $base_url
             ->withScheme('wss')
-            ->withPath($base_url->getPath() . '/radio/' . $stream_port . $djMount);
+            ->withPath($base_url->getPath() . CustomUrls::getWebDjUrl($station) . $djMount);
     }
 
     public function verifyConfig(string $config): void

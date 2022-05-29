@@ -39,7 +39,7 @@ final class Nginx
         (new Filesystem())->dumpFile($configPath, $newConfig);
 
         if ($reloadIfChanged) {
-            $this->supervisor->signalProcess(self::PROCESS_NAME, 'HUP');
+            $this->reload();
         }
     }
 
@@ -55,6 +55,11 @@ final class Nginx
         $this->eventDispatcher->dispatch($event);
 
         return $event->buildConfiguration();
+    }
+
+    public function reload(): void
+    {
+        $this->supervisor->signalProcess(self::PROCESS_NAME, 'HUP');
     }
 
     private function getConfigPath(Station $station): string

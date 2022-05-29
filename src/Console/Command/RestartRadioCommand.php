@@ -79,7 +79,7 @@ class RestartRadioCommand extends CommandAbstract
 
                 $this->nginx->writeConfiguration(
                     station: $station,
-                    reloadIfChanged: !$noSupervisorRestart
+                    reloadIfChanged: false
                 );
             } catch (Throwable $e) {
                 $io->error([
@@ -88,6 +88,10 @@ class RestartRadioCommand extends CommandAbstract
             }
 
             $io->progressAdvance();
+        }
+
+        if (!$noSupervisorRestart) {
+            $this->nginx->reload();
         }
 
         $io->progressFinish();

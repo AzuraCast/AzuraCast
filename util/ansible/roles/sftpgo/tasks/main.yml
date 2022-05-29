@@ -15,3 +15,17 @@
     dest: "/etc/sftpgo/sftpgo.json"
     force: true
     mode: 0644
+
+- name: Install SFTPGo Supervisord conf
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/sftpgo.conf
+    force: true
+    mode: 0644
+
+- name: Disable SFTPGo service
+  service:
+    name: "sftpgo"
+    enabled: false
+    state: stopped
+  ignore_errors: true

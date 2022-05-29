@@ -33,8 +33,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $shortCode = $station->getShortName();
 
-        $frontendConfig = $station->getFrontendConfig();
-        $port = $frontendConfig->getPort();
+        $port = $station->getFrontendConfig()->getPort();
 
         $event->appendBlock(
             <<<NGINX

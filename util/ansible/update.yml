@@ -23,25 +23,24 @@
       when: update_revision|int < 82
 
     - role: "supervisord"
-      when: update_revision|int < 83
 
     - role: "mariadb"
-      when: update_revision|int < 83
+      when: update_revision|int < 87
 
     - role: "nginx"
-      when: update_revision|int < 85
+      when: update_revision|int < 87
 
     - role: "redis"
-      when: update_revision|int < 84
+      when: update_revision|int < 87
 
     - role: "beanstalkd"
-      when: update_revision|int < 83
+      when: update_revision|int < 87
 
     - role: "sftpgo"
-      when: update_revision|int < 86
+      when: update_revision|int < 87
 
     - role: "php"
-      when: update_revision|int < 83
+      when: update_revision|int < 87
 
     - role: "composer"
 
@@ -55,7 +54,7 @@
       when: update_revision|int < 51
 
     - role: "azuracast-cron"
-      when: update_revision|int < 83
+      when: update_revision|int < 87
 
     - role: "services"
 

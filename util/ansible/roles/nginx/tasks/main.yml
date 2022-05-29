@@ -31,7 +31,7 @@
     name:
       - nginx
       - nginx-common
-      - nginx-extras
+      - libnginx-mod-nchan
 
 - name: Create nginx ssl directory
   file:

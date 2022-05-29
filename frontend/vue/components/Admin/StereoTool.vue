@@ -14,6 +14,9 @@
                             <legend>
                                 <translate key="lang_instructions">Instructions</translate>
                             </legend>
+                            <p class="card-text">
+                                <translate key="lang_disclaimer">Stereo Tool can be resource intensive on both CPU and Memory, please ensure you have suffient resources before proceeding.</translate>
+                            </p>
 
                             <p class="card-text">
                                 <translate key="lang_instructions_1a">Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary.</translate>

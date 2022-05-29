@@ -9,15 +9,14 @@ use App\Entity;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Media\AlbumArt;
 use App\Service\Flow;
-use Intervention\Image\ImageManager;
 use Psr\Http\Message\ResponseInterface;
 
 final class PostCustomAssetAction
 {
     public function __construct(
-        private readonly Environment $environment,
-        private readonly ImageManager $imageManager,
+        private readonly Environment $environment
     ) {
     }
 
@@ -34,9 +33,9 @@ final class PostCustomAssetAction
         }
 
         $imageContents = $flowResponse->readAndDeleteUploadedFile();
-        $image = $this->imageManager->make($imageContents);
-
-        $customAsset->upload($image);
+        $customAsset->upload(
+            AlbumArt::getImageManager()->make($imageContents)
+        );
 
         return $response->withJson(Entity\Api\Status::success());
     }

@@ -9,9 +9,8 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception\StorageLocationFullException;
+use App\Media\AlbumArt;
 use Azura\Files\ExtendedFilesystemInterface;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
@@ -27,7 +26,6 @@ class PodcastRepository extends Repository
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        protected ImageManager $imageManager,
         protected PodcastEpisodeRepository $podcastEpisodeRepo,
     ) {
         parent::__construct($entityManager, $serializer, $environment, $logger);
@@ -87,16 +85,7 @@ class PodcastRepository extends Repository
         $storageLocation = $podcast->getStorageLocation();
         $fs ??= $storageLocation->getFilesystem();
 
-        $podcastArtwork = $this->imageManager->make($rawArtworkString);
-        $podcastArtwork->fit(
-            3000,
-            3000,
-            function (Constraint $constraint): void {
-                $constraint->upsize();
-            }
-        );
-        $podcastArtwork->encode('jpg');
-        $podcastArtworkString = $podcastArtwork->getEncoded();
+        $podcastArtworkString = AlbumArt::resize($rawArtworkString);
 
         $podcastArtworkSize = strlen($podcastArtworkString);
         if (!$storageLocation->canHoldFile($podcastArtworkSize)) {

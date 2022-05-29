@@ -9,14 +9,13 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
+use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
 use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
 use League\Flysystem\FilesystemException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -40,8 +39,7 @@ class StationMediaRepository extends Repository
         protected CustomFieldRepository $customFieldRepo,
         protected StationPlaylistMediaRepository $spmRepo,
         protected StorageLocationRepository $storageLocationRepo,
-        protected UnprocessableMediaRepository $unprocessableMediaRepo,
-        protected ImageManager $imageManager
+        protected UnprocessableMediaRepository $unprocessableMediaRepo
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
     }
@@ -334,19 +332,10 @@ class StationMediaRepository extends Repository
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
 
-        $albumArt = $this->imageManager->make($rawArtString);
-        $albumArt->fit(
-            1200,
-            1200,
-            function (Constraint $constraint): void {
-                $constraint->upsize();
-            }
-        );
-
         $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-        $albumArtStream = $albumArt->stream('jpg');
+        $albumArtString = AlbumArt::resize($rawArtString);
 
-        $fs->writeStream($albumArtPath, $albumArtStream->detach());
+        $fs->write($albumArtPath, $albumArtString);
     }
 
     public function removeAlbumArt(

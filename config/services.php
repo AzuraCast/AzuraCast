@@ -506,15 +506,6 @@ return [
         return new Supervisor\Supervisor($client, $logger);
     },
 
-    // Image Manager
-    Intervention\Image\ImageManager::class => static function () {
-        return new Intervention\Image\ImageManager(
-            [
-                'driver' => 'gd',
-            ]
-        );
-    },
-
     // NowPlaying Adapter factory
     NowPlaying\AdapterFactory::class => static function (
         GuzzleHttp\Client $httpClient,

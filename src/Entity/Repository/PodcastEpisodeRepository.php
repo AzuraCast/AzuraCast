@@ -10,10 +10,9 @@ use App\Entity;
 use App\Environment;
 use App\Exception\InvalidPodcastMediaFileException;
 use App\Exception\StorageLocationFullException;
+use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use Azura\Files\ExtendedFilesystemInterface;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
@@ -25,7 +24,6 @@ use Symfony\Component\Serializer\Serializer;
 class PodcastEpisodeRepository extends Repository
 {
     public function __construct(
-        protected ImageManager $imageManager,
         protected MetadataManager $metadataManager,
         ReloadableEntityManagerInterface $entityManager,
         Serializer $serializer,
@@ -85,17 +83,7 @@ class PodcastEpisodeRepository extends Repository
         Entity\PodcastEpisode $episode,
         string $rawArtworkString
     ): void {
-        $episodeArtwork = $this->imageManager->make($rawArtworkString);
-        $episodeArtwork->fit(
-            3000,
-            3000,
-            function (Constraint $constraint): void {
-                $constraint->upsize();
-            }
-        );
-
-        $episodeArtwork->encode('jpg');
-        $episodeArtworkString = $episodeArtwork->getEncoded();
+        $episodeArtworkString = AlbumArt::resize($rawArtworkString);
 
         $storageLocation = $episode->getPodcast()->getStorageLocation();
         $fs = $storageLocation->getFilesystem();

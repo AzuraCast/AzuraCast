@@ -12,19 +12,18 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             $console = $event->getConsole();
             $di = $event->getContainer();
 
-            // Doctrine ORM/DBAL
-            Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
-
-            // Add Doctrine Migrations
             /** @var Doctrine\ORM\EntityManagerInterface $em */
             $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
 
+            // Doctrine ORM/DBAL
+            Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
+                $console,
+                new Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
+            );
+
+            // Add Doctrine Migrations
             /** @var Environment $environment */
             $environment = $di->get(Environment::class);
-
-            $helper_set = $console->getHelperSet();
-            $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
-            $helper_set->set($doctrine_helpers->get('em'), 'em');
 
             $migrationConfigurations = [
                 'migrations_paths' => [

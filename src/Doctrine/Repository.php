@@ -45,6 +45,20 @@ class Repository
         return $this->repository;
     }
 
+    public function getEntityManager(): ReloadableEntityManagerInterface
+    {
+        return $this->em;
+    }
+
+    /**
+     * @param int|string $id
+     * @return TEntity|null
+     */
+    public function find(int|string $id): ?object
+    {
+        return $this->em->find($this->entityClass, $id);
+    }
+
     /**
      * Generate an array result of all records.
      *

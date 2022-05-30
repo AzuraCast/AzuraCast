@@ -4,27 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\Repository;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Service\Flow\UploadedFile;
 use Azura\Files\ExtendedFilesystemInterface;
 
 /**
- * @extends Repository<Entity\StationMount>
+ * @extends AbstractStationBasedRepository<Entity\StationMount>
  */
-class StationMountRepository extends Repository
+class StationMountRepository extends AbstractStationBasedRepository
 {
-    public function find(Entity\Station $station, int|string $id): ?Entity\StationMount
-    {
-        return $this->repository->findOneBy(
-            [
-                'station' => $station,
-                'id' => (int)$id,
-            ]
-        );
-    }
-
     public function setIntro(
         Entity\StationMount $mount,
         UploadedFile $file,

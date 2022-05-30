@@ -27,7 +27,7 @@ final class PlayAction
 
         $station = $request->getStation();
 
-        $media = $this->mediaRepo->find($id, $station);
+        $media = $this->mediaRepo->findForStation($id, $station);
 
         if (!$media instanceof Entity\StationMedia) {
             return $response->withStatus(404)

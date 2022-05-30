@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -16,7 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Index(columns: ['sent_to_autodj'], name: 'idx_sent_to_autodj'),
     ORM\Index(columns: ['timestamp_cued'], name: 'idx_timestamp_cued')
 ]
-class StationQueue implements SongInterface, IdentifiableEntityInterface
+class StationQueue implements
+    Interfaces\SongInterface,
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;

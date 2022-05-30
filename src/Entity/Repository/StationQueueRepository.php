@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\Repository;
 use App\Entity;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -12,9 +11,9 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * @extends Repository<Entity\StationQueue>
+ * @extends AbstractStationBasedRepository<Entity\StationQueue>
  */
-class StationQueueRepository extends Repository
+class StationQueueRepository extends AbstractStationBasedRepository
 {
     public function clearForMediaAndPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
     {

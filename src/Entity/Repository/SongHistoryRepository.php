@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Radio\Backend\Liquidsoap\Command\FeedbackCommand;
@@ -15,9 +14,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @extends Repository<Entity\SongHistory>
+ * @extends AbstractStationBasedRepository<Entity\SongHistory>
  */
-class SongHistoryRepository extends Repository
+class SongHistoryRepository extends AbstractStationBasedRepository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,

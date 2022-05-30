@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class StationPlaylistFolder implements
     Interfaces\PathAwareInterface,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

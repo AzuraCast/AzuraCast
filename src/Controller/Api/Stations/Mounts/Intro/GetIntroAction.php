@@ -53,7 +53,7 @@ final class GetIntroAction
         set_time_limit(600);
 
         $station = $request->getStation();
-        $mount = $this->mountRepo->find($station, $id);
+        $mount = $this->mountRepo->findForStation($id, $station);
 
         if ($mount instanceof Entity\StationMount) {
             $introPath = $mount->getIntroPath();

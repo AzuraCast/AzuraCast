@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Attributes\Auditable;
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -23,7 +22,9 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['username']),
     Auditable
 ]
-class SftpUser implements IdentifiableEntityInterface
+class SftpUser implements
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
 

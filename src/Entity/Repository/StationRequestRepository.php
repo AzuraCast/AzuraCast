@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception;
@@ -18,9 +17,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @extends Repository<Entity\StationRequest>
+ * @extends AbstractStationBasedRepository<Entity\StationRequest>
  */
-class StationRequestRepository extends Repository
+class StationRequestRepository extends AbstractStationBasedRepository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,

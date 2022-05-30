@@ -44,21 +44,16 @@ class StationMediaRepository extends Repository
         parent::__construct($em, $serializer, $environment, $logger);
     }
 
-    /**
-     * @param int|string $id
-     * @param Entity\Station|Entity\StorageLocation $source
-     *
-     */
-    public function find(int|string $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
+    public function findForStation(int|string $id, Entity\Station $station): ?Entity\StationMedia
     {
         if (!is_numeric($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
-            $media = $this->findByUniqueId($id, $source);
+            $media = $this->findByUniqueId($id, $station);
             if ($media instanceof Entity\StationMedia) {
                 return $media;
             }
         }
 
-        $storageLocation = $this->getStorageLocation($source);
+        $storageLocation = $this->getStorageLocation($station);
 
         /** @var Entity\StationMedia|null $media */
         $media = $this->repository->findOneBy(

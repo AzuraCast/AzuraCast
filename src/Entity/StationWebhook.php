@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class StationWebhook implements
     Stringable,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

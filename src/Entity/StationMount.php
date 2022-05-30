@@ -26,7 +26,8 @@ class StationMount implements
     Stringable,
     Interfaces\StationMountInterface,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -417,7 +418,7 @@ class StationMount implements
         $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 
         $response->listeners = new Api\NowPlaying\Listeners(
-            total:  $this->listeners_total,
+            total: $this->listeners_total,
             unique: $this->listeners_unique
         );
 

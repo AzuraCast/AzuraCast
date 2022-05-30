@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\Repository;
 use App\Entity;
 
 /**
- * @extends Repository<Entity\StationPlaylistFolder>
+ * @extends AbstractStationBasedRepository<Entity\StationPlaylistFolder>
  */
-class StationPlaylistFolderRepository extends Repository
+class StationPlaylistFolderRepository extends AbstractStationBasedRepository
 {
     /**
      * @param Entity\Station $station

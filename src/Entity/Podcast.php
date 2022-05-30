@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'podcast'),
     Attributes\Auditable
 ]
-class Podcast implements IdentifiableEntityInterface
+class Podcast implements Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;

@@ -64,7 +64,7 @@ final class GetArtAction
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
             $mediaPath = Entity\StationMedia::getArtPath($media_id);
         } else {
-            $media = $this->mediaRepo->find($media_id, $station);
+            $media = $this->mediaRepo->findForStation($media_id, $station);
             if ($media instanceof Entity\StationMedia) {
                 $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
             } else {

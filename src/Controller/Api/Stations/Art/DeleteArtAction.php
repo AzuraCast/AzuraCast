@@ -53,7 +53,7 @@ final class DeleteArtAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $media = $this->mediaRepo->find($media_id, $station);
+        $media = $this->mediaRepo->findForStation($media_id, $station);
         if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)
                 ->withJson(Entity\Api\Error::notFound());

@@ -14,8 +14,9 @@
                             <legend>
                                 <translate key="lang_instructions">Instructions</translate>
                             </legend>
+                            
                             <p class="card-text">
-                                <translate key="lang_disclaimer">Stereo Tool can be resource intensive on both CPU and Memory, please ensure you have suffient resources before proceeding.</translate>
+                                <translate key="lang_disclaimer">Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding.</translate>
                             </p>
 
                             <p class="card-text">

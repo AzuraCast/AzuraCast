@@ -10,7 +10,7 @@ use App\Security\SplitToken;
 /**
  * @extends AbstractSplitTokenRepository<Entity\UserLoginToken>
  */
-class UserLoginTokenRepository extends AbstractSplitTokenRepository
+final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {
     public function createToken(Entity\User $user): SplitToken
     {

@@ -13,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * @extends AbstractStationBasedRepository<Entity\StationQueue>
  */
-class StationQueueRepository extends AbstractStationBasedRepository
+final class StationQueueRepository extends AbstractStationBasedRepository
 {
     public function clearForMediaAndPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
     {

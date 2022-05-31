@@ -7,37 +7,32 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
+use Monolog\Registry;
 use NowPlaying\Result\Client;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 use Throwable;
 
 /**
  * @extends Repository<Entity\Listener>
  */
-class ListenerRepository extends Repository
+final class ListenerRepository extends Repository
 {
     use Entity\Traits\TruncateStrings;
 
-    protected string $tableName;
+    private string $tableName;
 
-    protected Connection $conn;
+    private Connection $conn;
 
     public function __construct(
-        protected DeviceDetector $deviceDetector,
-        protected IpGeolocation $ipGeolocation,
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger
+        private readonly DeviceDetector $deviceDetector,
+        private readonly IpGeolocation $ipGeolocation
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
 
         $this->tableName = $this->em->getClassMetadata(Entity\Listener::class)->getTableName();
         $this->conn = $this->em->getConnection();
@@ -190,7 +185,7 @@ class ListenerRepository extends Repository
             $record['device_browser_family'] = $this->truncateNullableString($browserResult->browserFamily, 150);
             $record['device_os_family'] = $this->truncateNullableString($browserResult->osFamily, 150);
         } catch (Throwable $e) {
-            $this->logger->error('Device Detector error: ' . $e->getMessage(), [
+            Registry::getInstance('app')->error('Device Detector error: ' . $e->getMessage(), [
                 'user_agent' => $userAgent,
                 'exception' => $e,
             ]);
@@ -213,7 +208,7 @@ class ListenerRepository extends Repository
             $record['location_lat'] = $ipInfo->lat;
             $record['location_lon'] = $ipInfo->lon;
         } catch (Throwable $e) {
-            $this->logger->error('IP Geolocation error: ' . $e->getMessage(), [
+            Registry::getInstance('app')->error('IP Geolocation error: ' . $e->getMessage(), [
                 'ip' => $ip,
                 'exception' => $e,
             ]);

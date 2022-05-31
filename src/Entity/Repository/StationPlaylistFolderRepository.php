@@ -9,7 +9,7 @@ use App\Entity;
 /**
  * @extends AbstractStationBasedRepository<Entity\StationPlaylistFolder>
  */
-class StationPlaylistFolderRepository extends AbstractStationBasedRepository
+final class StationPlaylistFolderRepository extends AbstractStationBasedRepository
 {
     /**
      * @param Entity\Station $station

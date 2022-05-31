@@ -55,12 +55,7 @@ final class PostIntroAction
         }
 
         if (null !== $id) {
-            $mount = $this->mountRepo->findForStation($id, $station);
-            if (null === $mount) {
-                return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
-            }
-
+            $mount = $this->mountRepo->requireForStation($id, $station);
             $this->mountRepo->setIntro($mount, $flowResponse);
 
             return $response->withJson(Entity\Api\Status::updated());

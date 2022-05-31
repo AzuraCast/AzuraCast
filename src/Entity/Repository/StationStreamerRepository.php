@@ -6,34 +6,21 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Environment;
 use App\Flysystem\StationFilesystems;
 use App\Media\AlbumArt;
 use App\Radio\AutoDJ\Scheduler;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends AbstractStationBasedRepository<Entity\StationStreamer>
  */
-class StationStreamerRepository extends AbstractStationBasedRepository
+final class StationStreamerRepository extends AbstractStationBasedRepository
 {
-    protected Scheduler $scheduler;
-
-    protected StationStreamerBroadcastRepository $broadcastRepo;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        Scheduler $scheduler,
-        StationStreamerBroadcastRepository $broadcastRepo
+        private readonly Scheduler $scheduler,
+        private readonly StationStreamerBroadcastRepository $broadcastRepo
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
-
-        $this->scheduler = $scheduler;
-        $this->broadcastRepo = $broadcastRepo;
+        parent::__construct($em);
     }
 
     /**

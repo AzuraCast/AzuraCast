@@ -7,28 +7,22 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Exception\StorageLocationFullException;
 use App\Media\AlbumArt;
 use Azura\Files\ExtendedFilesystemInterface;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\Podcast>
  */
-class PodcastRepository extends Repository
+final class PodcastRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $entityManager,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected PodcastEpisodeRepository $podcastEpisodeRepo,
+        private readonly PodcastEpisodeRepository $podcastEpisodeRepo,
     ) {
-        parent::__construct($entityManager, $serializer, $environment, $logger);
+        parent::__construct($entityManager);
     }
 
     public function fetchPodcastForStation(Entity\Station $station, string $podcastId): ?Entity\Podcast

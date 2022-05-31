@@ -11,7 +11,7 @@ use Carbon\CarbonImmutable;
 /**
  * @extends Repository<Entity\StationStreamerBroadcast>
  */
-class StationStreamerBroadcastRepository extends Repository
+final class StationStreamerBroadcastRepository extends Repository
 {
     public function getLatestBroadcast(Entity\Station $station): ?Entity\StationStreamerBroadcast
     {
@@ -58,7 +58,7 @@ class StationStreamerBroadcastRepository extends Repository
     public function getActiveBroadcasts(Entity\Station $station): array
     {
         return $this->repository->findBy([
-            'station'      => $station,
+            'station' => $station,
             'timestampEnd' => 0,
         ]);
     }

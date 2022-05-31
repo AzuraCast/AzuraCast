@@ -11,7 +11,7 @@ use Brick\Math\BigInteger;
 /**
  * @extends Repository<Entity\StorageLocation>
  */
-class StorageLocationRepository extends Repository
+final class StorageLocationRepository extends Repository
 {
     public function findByType(
         string|Entity\Enums\StorageLocationTypes $type,
@@ -24,7 +24,7 @@ class StorageLocationRepository extends Repository
         return $this->repository->findOneBy(
             [
                 'type' => $type,
-                'id'   => $id,
+                'id' => $id,
             ]
         );
     }

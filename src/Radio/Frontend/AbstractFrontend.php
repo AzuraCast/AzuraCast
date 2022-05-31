@@ -8,6 +8,7 @@ use App\Entity;
 use App\Environment;
 use App\Http\Router;
 use App\Radio\AbstractAdapter;
+use App\Radio\Enums\StreamFormats;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -50,19 +51,18 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * Get the default mounts when resetting or initializing a station.
      *
-     * @return mixed[]
+     * @return Entity\StationMount[]
      */
-    public function getDefaultMounts(): array
+    public function getDefaultMounts(Entity\Station $station): array
     {
-        return [
-            [
-                'name' => '/radio.mp3',
-                'is_default' => 1,
-                'enable_autodj' => 1,
-                'autodj_format' => 'mp3',
-                'autodj_bitrate' => 128,
-            ],
-        ];
+        $record = new Entity\StationMount($station);
+        $record->setName('/radio.mp3');
+        $record->setIsDefault(true);
+        $record->setEnableAutodj(true);
+        $record->setAutodjFormat(StreamFormats::Mp3->value);
+        $record->setAutodjBitrate(128);
+
+        return [$record];
     }
 
     /**

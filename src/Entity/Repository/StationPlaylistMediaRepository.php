@@ -7,33 +7,23 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\StationPlaylistMedia>
  */
-class StationPlaylistMediaRepository extends Repository
+final class StationPlaylistMediaRepository extends Repository
 {
-    protected StationQueueRepository $queueRepo;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        StationQueueRepository $queueRepo
+        private readonly StationQueueRepository $queueRepo
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
-
-        $this->queueRepo = $queueRepo;
+        parent::__construct($em);
     }
 
     /**

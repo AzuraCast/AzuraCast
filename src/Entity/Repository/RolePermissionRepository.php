@@ -11,7 +11,7 @@ use App\Enums\GlobalPermissions;
 /**
  * @extends Repository<Entity\RolePermission>
  */
-class RolePermissionRepository extends Repository
+final class RolePermissionRepository extends Repository
 {
     /**
      * @param Entity\Role $role

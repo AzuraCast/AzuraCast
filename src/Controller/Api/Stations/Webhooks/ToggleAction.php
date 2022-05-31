@@ -5,25 +5,32 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Webhooks;
 
 use App\Entity;
+use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class ToggleAction extends AbstractWebhooksAction
+final class ToggleAction
 {
+    public function __construct(
+        private readonly StationWebhookRepository $webhookRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
         string $station_id,
         string $id
     ): ResponseInterface {
-        $record = $this->requireRecord($request->getStation(), $id);
+        $record = $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $newValue = !$record->getIsEnabled();
         $record->setIsEnabled($newValue);
 
-        $this->em->persist($record);
-        $this->em->flush();
+        $em = $this->webhookRepo->getEntityManager();
+        $em->persist($record);
+        $em->flush();
 
         $flash_message = ($newValue)
             ? __('Web hook enabled.')

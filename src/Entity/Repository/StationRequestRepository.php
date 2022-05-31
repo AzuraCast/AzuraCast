@@ -6,32 +6,26 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends AbstractStationBasedRepository<Entity\StationRequest>
  */
-class StationRequestRepository extends AbstractStationBasedRepository
+final class StationRequestRepository extends AbstractStationBasedRepository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected StationMediaRepository $mediaRepo,
-        protected DeviceDetector $deviceDetector,
-        protected BlocklistParser $blocklistParser,
-        protected AutoDJ\DuplicatePrevention $duplicatePrevention,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly DeviceDetector $deviceDetector,
+        private readonly BlocklistParser $blocklistParser,
+        private readonly AutoDJ\DuplicatePrevention $duplicatePrevention,
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
     public function getPendingRequest(int|string $id, Entity\Station $station): ?Entity\StationRequest

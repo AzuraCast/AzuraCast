@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Assets\AssetFactory;
+use App\Assets\AssetTypes;
 use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -28,13 +28,13 @@ final class BrandingAction
                     'group' => Settings::GROUP_BRANDING,
                 ]),
                 'browserIconApiUrl' => (string)$router->named('api:admin:custom_assets', [
-                    'type' => AssetFactory::TYPE_BROWSER_ICON,
+                    'type' => AssetTypes::BrowserIcon->value,
                 ]),
                 'backgroundApiUrl' => (string)$router->named('api:admin:custom_assets', [
-                    'type' => AssetFactory::TYPE_BACKGROUND,
+                    'type' => AssetTypes::Background->value,
                 ]),
                 'albumArtApiUrl' => (string)$router->named('api:admin:custom_assets', [
-                    'type' => AssetFactory::TYPE_ALBUM_ART,
+                    'type' => AssetTypes::AlbumArt->value,
                 ]),
             ],
         );

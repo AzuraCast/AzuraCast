@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Waveform;
 
-use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
@@ -41,10 +40,7 @@ final class GetWaveformAction
             }
         }
 
-        $media = $this->mediaRepo->findByUniqueId($media_id, $station);
-        if (!($media instanceof StationMedia)) {
-            return $response->withStatus(500)->withJson(new Error(500, 'Media not found.'));
-        }
+        $media = $this->mediaRepo->requireByUniqueId($media_id, $station);
 
         $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
         if (!$fsMedia->fileExists($waveformPath)) {

@@ -4,31 +4,38 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class ToggleAction extends AbstractPlaylistsAction
+final class ToggleAction
 {
+    public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
         string $station_id,
         string $id
     ): ResponseInterface {
-        $record = $this->requireRecord($request->getStation(), $id);
+        $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $new_value = !$record->getIsEnabled();
-
         $record->setIsEnabled($new_value);
-        $this->em->persist($record);
-        $this->em->flush();
+
+        $em = $this->playlistRepo->getEntityManager();
+        $em->persist($record);
+        $em->flush();
 
         $flash_message = ($new_value)
             ? __('Playlist enabled.')
             : __('Playlist disabled.');
 
-        return $response->withJson(new Entity\Api\Status(true, $flash_message));
+        return $response->withJson(new Status(true, $flash_message));
     }
 }

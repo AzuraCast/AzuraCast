@@ -56,11 +56,7 @@ final class PostArtAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $media = $this->mediaRepo->findForStation($media_id, $station);
-        if (!($media instanceof Entity\StationMedia)) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
+        $media = $this->mediaRepo->requireForStation($media_id, $station);
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
         if ($flowResponse instanceof ResponseInterface) {

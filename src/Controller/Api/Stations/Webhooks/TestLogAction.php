@@ -6,14 +6,20 @@ namespace App\Controller\Api\Stations\Webhooks;
 
 use App\Controller\Api\Traits\HasLogViewer;
 use App\Entity;
+use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
-final class TestLogAction extends AbstractWebhooksAction
+final class TestLogAction
 {
     use HasLogViewer;
+
+    public function __construct(
+        private readonly StationWebhookRepository $webhookRepo
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
@@ -22,7 +28,7 @@ final class TestLogAction extends AbstractWebhooksAction
         string $id,
         string $path
     ): ResponseInterface {
-        $this->requireRecord($request->getStation(), $id);
+        $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $logPathPortion = 'webhook_test_' . $id;
         if (!str_contains($path, $logPathPortion)) {

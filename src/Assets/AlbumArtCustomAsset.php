@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Environment;
 use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 
@@ -16,7 +17,7 @@ class AlbumArtCustomAsset extends AbstractCustomAsset
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/img/generic_song.jpg';
+        return Environment::getInstance()->getAssetUrl() . '/img/generic_song.jpg';
     }
 
     public function upload(Image $image): void

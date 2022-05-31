@@ -7,8 +7,8 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Exception\CannotProcessMediaException;
+use App\Exception\NotFoundException;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
@@ -17,8 +17,7 @@ use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
 use League\Flysystem\FilesystemException;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
+use Monolog\Registry;
 
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
@@ -27,21 +26,17 @@ use const JSON_UNESCAPED_SLASHES;
 /**
  * @extends Repository<Entity\StationMedia>
  */
-class StationMediaRepository extends Repository
+final class StationMediaRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected MetadataManager $metadataManager,
-        protected RemoteAlbumArt $remoteAlbumArt,
-        protected CustomFieldRepository $customFieldRepo,
-        protected StationPlaylistMediaRepository $spmRepo,
-        protected StorageLocationRepository $storageLocationRepo,
-        protected UnprocessableMediaRepository $unprocessableMediaRepo
+        private readonly MetadataManager $metadataManager,
+        private readonly RemoteAlbumArt $remoteAlbumArt,
+        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly UnprocessableMediaRepository $unprocessableMediaRepo
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
     public function findForStation(int|string $id, Entity\Station $station): ?Entity\StationMedia
@@ -64,6 +59,15 @@ class StationMediaRepository extends Repository
         );
 
         return $media;
+    }
+
+    public function requireForStation(int|string $id, Entity\Station $station): Entity\StationMedia
+    {
+        $record = $this->findForStation($id, $station);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 
     /**
@@ -118,6 +122,17 @@ class StationMediaRepository extends Repository
         );
 
         return $media;
+    }
+
+    public function requireByUniqueId(
+        string $uniqueId,
+        Entity\Station|Entity\StorageLocation $source
+    ): Entity\StationMedia {
+        $record = $this->findByUniqueId($uniqueId, $source);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 
     protected function getStorageLocation(Entity\Station|Entity\StorageLocation $source): Entity\StorageLocation
@@ -277,7 +292,7 @@ class StationMediaRepository extends Repository
             try {
                 $this->writeAlbumArt($media, $artwork, $fs);
             } catch (Exception $exception) {
-                $this->logger->error(
+                Registry::getInstance('app')->error(
                     sprintf(
                         'Album Artwork for "%s" could not be processed: "%s"',
                         $filePath,

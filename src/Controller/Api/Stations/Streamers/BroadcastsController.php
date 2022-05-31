@@ -126,7 +126,7 @@ final class BroadcastsController extends AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         string $station_id,
-        int $broadcast_id
+        string $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
         $broadcast = $this->getRecord($station, $broadcast_id);
@@ -158,7 +158,7 @@ final class BroadcastsController extends AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         string $station_id,
-        int $broadcast_id
+        string $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
         $broadcast = $this->getRecord($station, $broadcast_id);

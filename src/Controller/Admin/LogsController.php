@@ -89,7 +89,7 @@ final class LogsController extends AbstractLogViewerController
     public function viewAction(
         ServerRequest $request,
         Response $response,
-        string|int $station_id,
+        string $station_id,
         string $log
     ): ResponseInterface {
         if ('global' === $station_id) {

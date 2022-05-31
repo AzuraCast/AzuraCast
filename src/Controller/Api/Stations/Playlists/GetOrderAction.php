@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Entity;
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetOrderAction extends AbstractPlaylistsAction
+final class GetOrderAction
 {
+    public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly ReloadableEntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -19,11 +28,11 @@ final class GetOrderAction extends AbstractPlaylistsAction
         string $id
     ): ResponseInterface {
         $station = $request->getStation();
-        $record = $this->requireRecord($station, $id);
+        $record = $this->playlistRepo->requireForStation($id, $station);
 
         if (
-            Entity\Enums\PlaylistSources::Songs !== $record->getSourceEnum()
-            || Entity\Enums\PlaylistOrders::Sequential !== $record->getOrderEnum()
+            PlaylistSources::Songs !== $record->getSourceEnum()
+            || PlaylistOrders::Sequential !== $record->getOrderEnum()
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }

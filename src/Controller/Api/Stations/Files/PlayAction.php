@@ -27,12 +27,7 @@ final class PlayAction
 
         $station = $request->getStation();
 
-        $media = $this->mediaRepo->findForStation($id, $station);
-
-        if (!$media instanceof Entity\StationMedia) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
+        $media = $this->mediaRepo->requireForStation($id, $station);
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 

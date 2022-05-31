@@ -13,7 +13,7 @@ use DateTimeInterface;
 /**
  * @extends Repository<Entity\Analytics>
  */
-class AnalyticsRepository extends Repository
+final class AnalyticsRepository extends Repository
 {
     /**
      * @return mixed[]

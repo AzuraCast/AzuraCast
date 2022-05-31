@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Environment;
 use Intervention\Image\Image;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -34,13 +35,15 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
 
     protected function getDefaultUrl(): string
     {
-        $assetUrl = $this->environment->getAssetUrl();
-        return $assetUrl . '/icons/' . $this->environment->getAppEnvironmentEnum()->value . '/original.png';
+        $env = Environment::getInstance();
+
+        $assetUrl = $env->getAssetUrl();
+        return $assetUrl . '/icons/' . $env->getAppEnvironmentEnum()->value . '/original.png';
     }
 
     public function upload(Image $image): void
     {
-        $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
+        $uploadsDir = Environment::getInstance()->getUploadsDirectory() . '/browser_icon';
         (new Filesystem())->mkdir($uploadsDir);
 
         $newImage = clone $image;
@@ -56,15 +59,16 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
 
     public function delete(): void
     {
-        $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
+        $uploadsDir = Environment::getInstance()->getUploadsDirectory() . '/browser_icon';
         (new Filesystem())->remove($uploadsDir);
     }
 
     public function getUrlForSize(int $size): string
     {
-        $assetUrl = $this->environment->getAssetUrl();
+        $env = Environment::getInstance();
+        $assetUrl = $env->getAssetUrl();
 
-        $uploadsDir = $this->environment->getUploadsDirectory();
+        $uploadsDir = $env->getUploadsDirectory();
         $iconPath = $uploadsDir . '/browser_icon/' . $size . '.png';
 
         if (is_file($iconPath)) {
@@ -72,6 +76,6 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
             return $assetUrl . '/uploads/browser_icon/' . $size . '.' . $mtime . '.png';
         }
 
-        return $assetUrl . '/icons/' . $this->environment->getAppEnvironmentEnum()->value . '/' . $size . '.png';
+        return $assetUrl . '/icons/' . $env->getAppEnvironmentEnum()->value . '/' . $size . '.png';
     }
 }

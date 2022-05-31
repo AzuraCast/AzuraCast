@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Webhooks;
 
+use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\TestWebhookMessage;
 use App\Utilities\File;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-final class TestAction extends AbstractWebhooksAction
+final class TestAction
 {
     public function __construct(
-        EntityManagerInterface $em,
+        private readonly StationWebhookRepository $webhookRepo,
         private readonly MessageBus $messageBus
     ) {
-        parent::__construct($em);
     }
 
     public function __invoke(
@@ -27,7 +26,7 @@ final class TestAction extends AbstractWebhooksAction
         string $station_id,
         string $id
     ): ResponseInterface {
-        $webhook = $this->requireRecord($request->getStation(), $id);
+        $webhook = $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $tempFile = File::generateTempPath('webhook_test_' . $id . '.log');
         touch($tempFile);

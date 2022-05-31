@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Assets\AssetFactory;
+use App\Assets\BackgroundCustomAsset;
+use App\Assets\BrowserIconCustomAsset;
 use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
@@ -108,7 +109,7 @@ class Customization
     {
         $publicCss = $this->settings->getPublicCustomCss() ?? '';
 
-        $background = AssetFactory::createBackground($this->environment);
+        $background = new BackgroundCustomAsset();
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
@@ -140,7 +141,7 @@ class Customization
 
     public function getBrowserIconUrl(int $size = 256): string
     {
-        return AssetFactory::createBrowserIcon($this->environment)->getUrlForSize($size);
+        return (new BrowserIconCustomAsset())->getUrlForSize($size);
     }
 
     /**

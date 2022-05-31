@@ -10,7 +10,7 @@ use App\Entity;
 /**
  * @extends Repository<Entity\User>
  */
-class UserRepository extends Repository
+final class UserRepository extends Repository
 {
     public function findByEmail(string $email): ?Entity\User
     {

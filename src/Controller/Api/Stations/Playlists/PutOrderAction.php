@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Entity;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class PutOrderAction extends AbstractPlaylistsAction
+final class PutOrderAction
 {
     public function __construct(
-        EntityManagerInterface $em,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo
     ) {
-        parent::__construct($em);
     }
 
     public function __invoke(
@@ -26,11 +27,11 @@ final class PutOrderAction extends AbstractPlaylistsAction
         string $station_id,
         string $id
     ): ResponseInterface {
-        $record = $this->requireRecord($request->getStation(), $id);
+        $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         if (
-            Entity\Enums\PlaylistSources::Songs !== $record->getSourceEnum()
-            || Entity\Enums\PlaylistOrders::Sequential !== $record->getOrderEnum()
+            PlaylistSources::Songs !== $record->getSourceEnum()
+            || PlaylistOrders::Sequential !== $record->getOrderEnum()
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }

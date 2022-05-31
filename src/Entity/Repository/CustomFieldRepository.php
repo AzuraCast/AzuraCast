@@ -10,7 +10,7 @@ use App\Entity;
 /**
  * @extends Repository<Entity\CustomField>
  */
-class CustomFieldRepository extends Repository
+final class CustomFieldRepository extends Repository
 {
     /**
      * @return Entity\CustomField[]

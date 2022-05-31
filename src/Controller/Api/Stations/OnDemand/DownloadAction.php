@@ -31,12 +31,7 @@ final class DownloadAction
                 ->withJson(new Entity\Api\Error(403, __('This station does not support on-demand streaming.')));
         }
 
-        $media = $this->mediaRepo->findByUniqueId($media_id, $station);
-
-        if (!($media instanceof Entity\StationMedia)) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
+        $media = $this->mediaRepo->requireByUniqueId($media_id, $station);
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 

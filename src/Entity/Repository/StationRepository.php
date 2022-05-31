@@ -4,33 +4,27 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Assets\AssetFactory;
+use App\Assets\AlbumArtCustomAsset;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Service\Flow\UploadedFile;
 use Azura\Files\ExtendedFilesystemInterface;
 use Closure;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\Station>
  */
-class StationRepository extends Repository
+final class StationRepository extends Repository
 {
     public function __construct(
-        protected SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger
+        private readonly SettingsRepository $settingsRepo
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
     /**
@@ -103,11 +97,8 @@ class StationRepository extends Repository
         // Create default mountpoints if station supports them.
         if ($frontend_adapter->supportsMounts()) {
             // Create default mount points.
-            foreach ($frontend_adapter->getDefaultMounts() as $mount_point) {
-                $mount_record = new Entity\StationMount($station);
-                $this->fromArray($mount_record, $mount_point);
-
-                $this->em->persist($mount_record);
+            foreach ($frontend_adapter->getDefaultMounts($station) as $mount) {
+                $this->em->persist($mount);
             }
         }
 
@@ -165,7 +156,7 @@ class StationRepository extends Repository
         }
 
         $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
-        return $customUrl ?? AssetFactory::createAlbumArt($this->environment)->getUri();
+        return $customUrl ?? (new AlbumArtCustomAsset())->getUri();
     }
 
     public function setFallback(

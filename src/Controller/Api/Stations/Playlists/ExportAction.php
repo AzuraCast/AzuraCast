@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
-final class ExportAction extends AbstractPlaylistsAction
+final class ExportAction
 {
+    public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -18,7 +24,7 @@ final class ExportAction extends AbstractPlaylistsAction
         string $id,
         string $format = 'pls'
     ): ResponseInterface {
-        $record = $this->requireRecord($request->getStation(), $id);
+        $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $exportFileName = 'playlist_' . $record->getShortName() . '.' . $format;
         $exportLines = [];

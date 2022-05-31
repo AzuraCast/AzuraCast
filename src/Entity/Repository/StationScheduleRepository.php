@@ -7,27 +7,21 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\StationSchedule>
  */
-class StationScheduleRepository extends Repository
+final class StationScheduleRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected Scheduler $scheduler,
-        protected Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator
+        private readonly Scheduler $scheduler,
+        private readonly Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
     /**

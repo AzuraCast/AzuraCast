@@ -9,7 +9,7 @@ use App\Entity;
 /**
  * @extends AbstractStationBasedRepository<Entity\StationRemote>
  */
-class StationRemoteRepository extends AbstractStationBasedRepository
+final class StationRemoteRepository extends AbstractStationBasedRepository
 {
     /**
      * @param Entity\Station $station

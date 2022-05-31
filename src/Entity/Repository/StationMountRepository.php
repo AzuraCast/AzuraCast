@@ -12,7 +12,7 @@ use Azura\Files\ExtendedFilesystemInterface;
 /**
  * @extends AbstractStationBasedRepository<Entity\StationMount>
  */
-class StationMountRepository extends AbstractStationBasedRepository
+final class StationMountRepository extends AbstractStationBasedRepository
 {
     public function setIntro(
         Entity\StationMount $mount,

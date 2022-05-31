@@ -36,17 +36,17 @@ class StationQueueApiGenerator
         $recordMedia = $record->getMedia();
         if (null !== $recordMedia) {
             $response->song = ($this->songApiGenerator)(
-                $recordMedia,
-                $record->getStation(),
-                $baseUri,
-                $allowRemoteArt
+                song: $recordMedia,
+                station: $record->getStation(),
+                baseUri: $baseUri,
+                allowRemoteArt: $allowRemoteArt
             );
         } else {
             $response->song = ($this->songApiGenerator)(
-                $record,
-                $record->getStation(),
-                $baseUri,
-                $allowRemoteArt
+                song: $record,
+                station: $record->getStation(),
+                baseUri: $baseUri,
+                allowRemoteArt: $allowRemoteArt
             );
         }
 

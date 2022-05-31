@@ -42,7 +42,8 @@ class SongApiGenerator
         Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
         ?UriInterface $baseUri = null,
-        bool $allowRemoteArt = false
+        bool $allowRemoteArt = false,
+        bool $isNowPlaying = false,
     ): Entity\Api\Song {
         $response = new Entity\Api\Song();
         $response->id = $song->getSongId();
@@ -63,7 +64,7 @@ class SongApiGenerator
 
         $response->art = UriResolver::resolve(
             $baseUri ?? $this->router->getBaseUrl(),
-            $this->getAlbumArtUrl($song, $station, $allowRemoteArt)
+            $this->getAlbumArtUrl($song, $station, $allowRemoteArt, $isNowPlaying)
         );
 
         return $response;
@@ -72,7 +73,8 @@ class SongApiGenerator
     protected function getAlbumArtUrl(
         Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
-        bool $allowRemoteArt = false
+        bool $allowRemoteArt = false,
+        bool $isNowPlaying = false,
     ): UriInterface {
         if (null !== $station && $song instanceof Entity\StationMedia) {
             $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
@@ -94,7 +96,7 @@ class SongApiGenerator
             }
         }
 
-        if (null !== $station) {
+        if ($isNowPlaying && null !== $station) {
             $currentStreamer = $station->getCurrentStreamer();
             if (null !== $currentStreamer && 0 !== $currentStreamer->getArtUpdatedAt()) {
                 return $this->router->named(

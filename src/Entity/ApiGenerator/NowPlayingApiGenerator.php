@@ -41,7 +41,7 @@ class NowPlayingApiGenerator
         $np->is_online = $npResult->meta->online;
         $np->station = ($this->stationApiGenerator)($station, $baseUri);
         $np->listeners = new Entity\Api\NowPlaying\Listeners(
-            total:  $npResult->listeners->total,
+            total: $npResult->listeners->total,
             unique: $npResult->listeners->unique
         );
 
@@ -102,7 +102,12 @@ class NowPlayingApiGenerator
             $np->live = new Entity\Api\NowPlaying\Live(false);
         }
 
-        $apiSongHistory = ($this->songHistoryApiGenerator)($sh_obj, $baseUri, true);
+        $apiSongHistory = ($this->songHistoryApiGenerator)(
+            record: $sh_obj,
+            baseUri: $baseUri,
+            allowRemoteArt: true,
+            isNowPlaying: true
+        );
         $apiCurrentSong = new Entity\Api\NowPlaying\CurrentSong();
         $apiCurrentSong->fromParentObject($apiSongHistory);
 
@@ -143,9 +148,9 @@ class NowPlayingApiGenerator
         $offlineApiNowPlaying = new Entity\Api\NowPlaying\CurrentSong();
         $offlineApiNowPlaying->sh_id = 0;
         $offlineApiNowPlaying->song = ($this->songApiGenerator)(
-            $songObj,
-            $station,
-            $baseUri
+            song: $songObj,
+            station: $station,
+            baseUri: $baseUri
         );
         $np->now_playing = $offlineApiNowPlaying;
 

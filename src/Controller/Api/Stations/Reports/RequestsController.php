@@ -67,7 +67,7 @@ final class RequestsController
         ServerRequest $request,
         Response $response,
         string $station_id,
-        int $request_id
+        string $request_id
     ): ResponseInterface {
         $station = $request->getStation();
         $media = $this->requestRepo->getPendingRequest($request_id, $station);

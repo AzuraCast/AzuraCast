@@ -34,7 +34,7 @@ class StationRequestRepository extends AbstractStationBasedRepository
         parent::__construct($em, $serializer, $environment, $logger);
     }
 
-    public function getPendingRequest(int $id, Entity\Station $station): ?Entity\StationRequest
+    public function getPendingRequest(int|string $id, Entity\Station $station): ?Entity\StationRequest
     {
         return $this->repository->findOneBy(
             [
@@ -82,11 +82,7 @@ class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Verify that Track ID exists with station.
-        $media_item = $this->mediaRepo->findByUniqueId($trackId, $station);
-
-        if (!($media_item instanceof Entity\StationMedia)) {
-            throw new Exception(__('The song ID you specified could not be found in the station.'));
-        }
+        $media_item = $this->mediaRepo->requireByUniqueId($trackId, $station);
 
         if (!$media_item->isRequestable()) {
             throw new Exception(__('The song ID you specified cannot be requested for this station.'));

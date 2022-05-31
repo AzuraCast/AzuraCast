@@ -33,6 +33,9 @@ class Repository
         }
     }
 
+    /**
+     * @return ObjectRepository<TEntity>
+     */
     public function getRepository(): ObjectRepository
     {
         return $this->repository;

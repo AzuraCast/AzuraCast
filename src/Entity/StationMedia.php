@@ -191,6 +191,7 @@ class StationMedia implements
     ]
     protected int $art_updated_at = 0;
 
+    /** @var Collection<int, StationPlaylistMedia> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class),
@@ -199,6 +200,7 @@ class StationMedia implements
     ]
     protected Collection $playlists;
 
+    /** @var Collection<int, StationMediaCustomField> */
     #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationMediaCustomField::class)]
     protected Collection $custom_fields;
 
@@ -428,13 +430,16 @@ class StationMedia implements
     }
 
     /**
-     * @return Collection<CustomField>
+     * @return Collection<int, StationMediaCustomField>
      */
     public function getCustomFields(): Collection
     {
         return $this->custom_fields;
     }
 
+    /**
+     * @param Collection<int, StationMediaCustomField> $custom_fields
+     */
     public function setCustomFields(Collection $custom_fields): void
     {
         $this->custom_fields = $custom_fields;
@@ -462,7 +467,7 @@ class StationMedia implements
     }
 
     /**
-     * @return Collection<StationPlaylistMedia>
+     * @return Collection<int, StationPlaylistMedia>
      */
     public function getPlaylists(): Collection
     {

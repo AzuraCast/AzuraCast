@@ -222,6 +222,9 @@ final class CloneAction extends StationsController
         return $response->withJson(Entity\Api\Status::created());
     }
 
+    /**
+     * @param Collection<int, mixed> $collection
+     */
     private function cloneCollection(
         Collection $collection,
         Entity\Station $newStation,

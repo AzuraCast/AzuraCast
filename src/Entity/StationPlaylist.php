@@ -181,17 +181,20 @@ class StationPlaylist implements
     ]
     protected int $queue_reset_at = 0;
 
+    /** @var Collection<int, StationPlaylistMedia> */
     #[
         ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY'),
         ORM\OrderBy(['weight' => 'ASC'])
     ]
     protected Collection $media_items;
 
+    /** @var Collection<int, StationPlaylistFolder> */
     #[
         ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')
     ]
     protected Collection $folders;
 
+    /** @var Collection<int, StationSchedule> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY'),
@@ -438,7 +441,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<StationPlaylistMedia>
+     * @return Collection<int, StationPlaylistMedia>
      */
     public function getMediaItems(): Collection
     {
@@ -446,7 +449,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<StationPlaylistFolder>
+     * @return Collection<int, StationPlaylistFolder>
      */
     public function getFolders(): Collection
     {
@@ -454,7 +457,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<StationSchedule>
+     * @return Collection<int, StationSchedule>
      */
     public function getScheduleItems(): Collection
     {

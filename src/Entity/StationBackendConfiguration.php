@@ -10,6 +10,9 @@ use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 
+/**
+ * @extends ArrayCollection<string, mixed>
+ */
 class StationBackendConfiguration extends ArrayCollection
 {
     public const CHARSET = 'charset';

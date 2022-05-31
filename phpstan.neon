@@ -5,7 +5,6 @@ includes:
 parameters:
     level: 8
 
-    checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
 
     paths:

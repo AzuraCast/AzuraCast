@@ -136,8 +136,8 @@ class AuditLog implements EventSubscriber
         $associated = [];
         $disassociated = [];
 
+        /** @var PersistentCollection<int, object> $collection */
         foreach ($uow->getScheduledCollectionUpdates() as $collection) {
-            /** @var PersistentCollection $collection */
             $owner = $collection->getOwner();
 
             if (null === $owner) {
@@ -180,8 +180,8 @@ class AuditLog implements EventSubscriber
             }
         }
 
+        /** @var PersistentCollection<int, object> $collection */
         foreach ($uow->getScheduledCollectionDeletions() as $collection) {
-            /** @var PersistentCollection $collection */
             $owner = $collection->getOwner();
 
             if (null === $owner) {
@@ -259,6 +259,11 @@ class AuditLog implements EventSubscriber
         return !$em->getMetadataFactory()->isTransient($class);
     }
 
+    /**
+     * @template TObject of object
+     * @param ReflectionClass<TObject> $refl
+     * @return bool
+     */
     protected function isAuditable(ReflectionClass $refl): bool
     {
         $auditable = $refl->getAttributes(Auditable::class);

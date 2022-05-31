@@ -331,6 +331,7 @@ final class ListAction
             }
         );
 
+        /** @var array<int, Entity\Api\FileList> $result */
         $paginator = Paginator::fromArray($result, $request);
 
         // Add processor-intensive data for just this page.

@@ -105,6 +105,7 @@ class User implements Stringable, IdentifiableEntityInterface
     ]
     protected int $updated_at;
 
+    /** @var Collection<int, Role> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER'),
@@ -117,6 +118,7 @@ class User implements Stringable, IdentifiableEntityInterface
     ]
     protected Collection $roles;
 
+    /** @var Collection<int, ApiKey> */
     #[
         ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class),
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
@@ -262,7 +264,7 @@ class User implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<Role>
+     * @return Collection<int, Role>
      */
     public function getRoles(): Collection
     {
@@ -270,7 +272,7 @@ class User implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<ApiKey>
+     * @return Collection<int, ApiKey>
      */
     public function getApiKeys(): Collection
     {

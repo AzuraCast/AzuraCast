@@ -227,7 +227,7 @@ class Scheduler
     }
 
     /**
-     * @param Collection<Entity\StationSchedule> $scheduleItems
+     * @param Collection<int, Entity\StationSchedule> $scheduleItems
      * @param CarbonInterface $now
      * @return Entity\StationSchedule|null
      */

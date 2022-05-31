@@ -99,6 +99,7 @@ class StationStreamer implements
     ]
     protected int $art_updated_at = 0;
 
+    /** @var Collection<int, StationSchedule> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(mappedBy: 'streamer', targetEntity: StationSchedule::class),
@@ -228,7 +229,7 @@ class StationStreamer implements
     }
 
     /**
-     * @return Collection<StationSchedule>
+     * @return Collection<int, StationSchedule>
      */
     public function getScheduleItems(): Collection
     {

@@ -303,6 +303,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?string $default_album_art_url = null;
 
+    /** @var Collection<int, SongHistory> */
     #[
         ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class),
         ORM\OrderBy(['timestamp_start' => 'desc'])
@@ -351,6 +352,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?StorageLocation $podcasts_storage_location = null;
 
+    /** @var Collection<int, StationStreamer> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
     protected Collection $streamers;
 
@@ -366,21 +368,26 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $fallback_path = null;
 
+    /** @var Collection<int, RolePermission> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
+    /** @var Collection<int, StationPlaylist> */
     #[
         ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class),
         ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
     ]
     protected Collection $playlists;
 
+    /** @var Collection<int, StationMount> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationMount::class)]
     protected Collection $mounts;
 
+    /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
+    /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
         mappedBy: 'station',
         targetEntity: StationWebhook::class,
@@ -389,6 +396,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     protected Collection $webhooks;
 
+    /** @var Collection<int, SftpUser> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
     protected Collection $sftp_users;
 
@@ -398,6 +406,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->backend_type = BackendAdapters::Liquidsoap->value;
 
         $this->history = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
@@ -941,7 +950,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<SongHistory>
+     * @return Collection<int, SongHistory>
      */
     public function getHistory(): Collection
     {
@@ -949,7 +958,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationStreamer>
+     * @return Collection<int, StationStreamer>
      */
     public function getStreamers(): Collection
     {
@@ -1065,7 +1074,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<RolePermission>
+     * @return Collection<int, RolePermission>
      */
     public function getPermissions(): Collection
     {
@@ -1073,7 +1082,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationMedia>
+     * @return Collection<int, StationMedia>
      */
     public function getMedia(): Collection
     {
@@ -1081,7 +1090,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationPlaylist>
+     * @return Collection<int, StationPlaylist>
      */
     public function getPlaylists(): Collection
     {
@@ -1089,7 +1098,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationMount>
+     * @return Collection<int, StationMount>
      */
     public function getMounts(): Collection
     {
@@ -1097,7 +1106,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationRemote>
+     * @return Collection<int, StationRemote>
      */
     public function getRemotes(): Collection
     {
@@ -1105,7 +1114,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationWebhook>
+     * @return Collection<int, StationWebhook>
      */
     public function getWebhooks(): Collection
     {
@@ -1113,7 +1122,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<SftpUser>
+     * @return Collection<int, SftpUser>
      */
     public function getSftpUsers(): Collection
     {

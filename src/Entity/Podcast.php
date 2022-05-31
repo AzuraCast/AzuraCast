@@ -51,9 +51,11 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
 
+    /** @var Collection<int, PodcastCategory> */
     #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastCategory::class)]
     protected Collection $categories;
 
+    /** @var Collection<int, PodcastEpisode> */
     #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastEpisode::class)]
     protected Collection $episodes;
 
@@ -155,7 +157,7 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection|PodcastCategory[]
+     * @return Collection<int, PodcastCategory>
      */
     public function getCategories(): Collection
     {
@@ -163,7 +165,7 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection|PodcastEpisode[]
+     * @return Collection<int, PodcastEpisode>
      */
     public function getEpisodes(): Collection
     {

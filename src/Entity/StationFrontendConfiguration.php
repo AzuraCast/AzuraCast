@@ -7,6 +7,9 @@ namespace App\Entity;
 use App\Utilities\Strings;
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @extends ArrayCollection<string, mixed>
+ */
 class StationFrontendConfiguration extends ArrayCollection
 {
     public function __construct(array $elements = [])

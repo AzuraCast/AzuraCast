@@ -55,6 +55,7 @@ class Relay implements IdentifiableEntityInterface
     ]
     protected int $updated_at;
 
+    /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(mappedBy: 'relay', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
@@ -129,6 +130,9 @@ class Relay implements IdentifiableEntityInterface
         $this->updated_at = $updated_at;
     }
 
+    /**
+     * @return Collection<int, StationRemote>
+     */
     public function getRemotes(): Collection
     {
         return $this->remotes;

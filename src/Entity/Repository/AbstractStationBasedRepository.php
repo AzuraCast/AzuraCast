@@ -7,15 +7,15 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity\Interfaces\StationAwareInterface;
 use App\Entity\Station;
+use App\Exception\NotFoundException;
 
 /**
  * @template TEntity as object
+ * @extends Repository<TEntity>
  */
 abstract class AbstractStationBasedRepository extends Repository
 {
     /**
-     * @param int|string $id
-     * @param Station $station
      * @return TEntity|null
      */
     public function findForStation(int|string $id, Station $station): ?object
@@ -27,5 +27,17 @@ abstract class AbstractStationBasedRepository extends Repository
         }
 
         return null;
+    }
+
+    /**
+     * @return TEntity
+     */
+    public function requireForStation(int|string $id, Station $station): object
+    {
+        $record = $this->findForStation($id, $station);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 }

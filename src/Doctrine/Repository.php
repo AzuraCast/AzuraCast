@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Doctrine;
 
 use App\Environment;
+use App\Exception\NotFoundException;
 use Azura\Normalizer\DoctrineEntityNormalizer;
 use Closure;
 use Doctrine\Persistence\ObjectRepository;
@@ -51,12 +52,23 @@ class Repository
     }
 
     /**
-     * @param int|string $id
      * @return TEntity|null
      */
     public function find(int|string $id): ?object
     {
         return $this->em->find($this->entityClass, $id);
+    }
+
+    /**
+     * @return TEntity
+     */
+    public function requireRecord(int|string $id): object
+    {
+        $record = $this->find($id);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 
     /**

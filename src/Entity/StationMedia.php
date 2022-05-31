@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\Interfaces\PathAwareInterface;
-use App\Entity\Interfaces\ProcessableMediaInterface;
-use App\Entity\Interfaces\SongInterface;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\OpenApi;
@@ -28,7 +24,11 @@ use Symfony\Component\Serializer\Annotation as Serializer;
     ORM\Index(columns: ['title', 'artist', 'album'], name: 'search_idx'),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface, IdentifiableEntityInterface
+class StationMedia implements
+    Interfaces\SongInterface,
+    Interfaces\ProcessableMediaInterface,
+    Interfaces\PathAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\HasSongFields;

@@ -61,7 +61,10 @@ class SongApiGenerator
             $response->custom_fields = $this->getCustomFields();
         }
 
-        $response->art = $this->getAlbumArtUrl($song, $station, $baseUri, $allowRemoteArt);
+        $response->art = UriResolver::resolve(
+            $baseUri ?? $this->router->getBaseUrl(),
+            $this->getAlbumArtUrl($song, $station, $allowRemoteArt)
+        );
 
         return $response;
     }
@@ -69,38 +72,42 @@ class SongApiGenerator
     protected function getAlbumArtUrl(
         Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
-        ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false
     ): UriInterface {
-        if (null === $baseUri) {
-            $baseUri = $this->router->getBaseUrl();
-        }
-
         if (null !== $station && $song instanceof Entity\StationMedia) {
             $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
-
             if (0 !== $mediaUpdatedTimestamp) {
-                $path = $this->router->named(
-                    'api:stations:media:art',
-                    [
+                return $this->router->named(
+                    route_name: 'api:stations:media:art',
+                    route_params: [
                         'station_id' => $station->getId(),
                         'media_id' => $song->getUniqueId() . '-' . $mediaUpdatedTimestamp,
                     ]
                 );
-
-                return UriResolver::resolve($baseUri, $path);
             }
         }
 
-        $path = ($allowRemoteArt && $this->remoteAlbumArt->enableForApis())
-            ? $this->remoteAlbumArt->getUrlForSong($song)
-            : null;
-
-        if (null === $path) {
-            $path = $this->stationRepo->getDefaultAlbumArtUrl($station);
+        if ($allowRemoteArt && $this->remoteAlbumArt->enableForApis()) {
+            $url = $this->remoteAlbumArt->getUrlForSong($song);
+            if (null !== $url) {
+                return Utils::uriFor($url);
+            }
         }
 
-        return UriResolver::resolve($baseUri, Utils::uriFor($path));
+        if (null !== $station) {
+            $currentStreamer = $station->getCurrentStreamer();
+            if (null !== $currentStreamer && 0 !== $currentStreamer->getArtUpdatedAt()) {
+                return $this->router->named(
+                    route_name: 'api:stations:streamer:art',
+                    route_params: [
+                        'station_id' => $station->getIdRequired(),
+                        'streamer_id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
+                    ],
+                );
+            }
+        }
+
+        return $this->stationRepo->getDefaultAlbumArtUrl($station);
     }
 
     /**

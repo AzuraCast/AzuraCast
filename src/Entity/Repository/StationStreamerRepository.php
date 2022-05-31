@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
+use App\Flysystem\StationFilesystems;
+use App\Media\AlbumArt;
 use App\Radio\AutoDJ\Scheduler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @extends Repository<Entity\StationStreamer>
+ * @extends AbstractStationBasedRepository<Entity\StationStreamer>
  */
-class StationStreamerRepository extends Repository
+class StationStreamerRepository extends AbstractStationBasedRepository
 {
     protected Scheduler $scheduler;
 
@@ -101,17 +102,58 @@ class StationStreamerRepository extends Repository
         return true;
     }
 
-    public function getStreamer(Entity\Station $station, string $username = ''): ?Entity\StationStreamer
-    {
+    public function getStreamer(
+        Entity\Station $station,
+        string $username = '',
+        bool $activeOnly = true
+    ): ?Entity\StationStreamer {
+        $criteria = [
+            'station' => $station,
+            'streamer_username' => $username,
+        ];
+
+        if ($activeOnly) {
+            $criteria['is_active'] = 1;
+        }
+
         /** @var Entity\StationStreamer|null $streamer */
-        $streamer = $this->repository->findOneBy(
-            [
-                'station' => $station,
-                'streamer_username' => $username,
-                'is_active' => 1,
-            ]
-        );
+        $streamer = $this->repository->findOneBy($criteria);
 
         return $streamer;
+    }
+
+    public function writeArtwork(
+        Entity\StationStreamer $streamer,
+        string $rawArtworkString
+    ): void {
+        $artworkPath = Entity\StationStreamer::getArtworkPath($streamer->getIdRequired());
+        $artworkString = AlbumArt::resize($rawArtworkString);
+
+        $fsConfig = (new StationFilesystems($streamer->getStation()))->getConfigFilesystem();
+        $fsConfig->write($artworkPath, $artworkString);
+
+        $streamer->setArtUpdatedAt(time());
+        $this->em->persist($streamer);
+    }
+
+    public function removeArtwork(
+        Entity\StationStreamer $streamer
+    ): void {
+        $artworkPath = Entity\StationStreamer::getArtworkPath($streamer->getIdRequired());
+
+        $fsConfig = (new StationFilesystems($streamer->getStation()))->getConfigFilesystem();
+        $fsConfig->delete($artworkPath);
+
+        $streamer->setArtUpdatedAt(0);
+        $this->em->persist($streamer);
+    }
+
+    public function delete(
+        Entity\StationStreamer $streamer
+    ): void {
+        $this->removeArtwork($streamer);
+
+        $this->em->remove($streamer);
+        $this->em->flush();
     }
 }

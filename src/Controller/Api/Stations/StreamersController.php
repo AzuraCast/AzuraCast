@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Radio\AutoDJ\Scheduler;
+use App\Service\Flow\UploadedFile;
 use Carbon\CarbonInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /** @extends AbstractScheduledEntityController<Entity\StationStreamer> */
 #[
@@ -146,6 +151,17 @@ final class StreamersController extends AbstractScheduledEntityController
     protected string $entityClass = Entity\StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
 
+    public function __construct(
+        Entity\Repository\StationScheduleRepository $scheduleRepo,
+        Scheduler $scheduler,
+        ReloadableEntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
+    ) {
+        parent::__construct($scheduleRepo, $scheduler, $em, $serializer, $validator);
+    }
+
     public function listAction(
         ServerRequest $request,
         Response $response,
@@ -176,6 +192,35 @@ final class StreamersController extends AbstractScheduledEntityController
         }
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
+    }
+
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
+        $station = $request->getStation();
+
+        $parsedBody = (array)$request->getParsedBody();
+
+        /** @var Entity\StationStreamer $record */
+        $record = $this->editRecord(
+            $parsedBody,
+            new Entity\StationStreamer($station)
+        );
+
+        if (!empty($parsedBody['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+            $this->streamerRepo->writeArtwork(
+                $record,
+                $artwork->readAndDeleteUploadedFile()
+            );
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
+
+        return $response->withJson($this->viewRecord($record, $request));
     }
 
     public function scheduleAction(
@@ -234,10 +279,24 @@ final class StreamersController extends AbstractScheduledEntityController
     {
         $return = parent::viewRecord($record, $request);
 
+        $router = $request->getRouter();
         $isInternal = ('true' === $request->getParam('internal', 'false'));
-        $return['links']['broadcasts'] = (string)$request->getRouter()->fromHere(
+
+        $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
+        $return['art'] = (string)$router->fromHere(
+            route_name: 'api:stations:streamer:art',
+            route_params: ['streamer_id' => $record->getIdRequired() . '|' . $record->getArtUpdatedAt()],
+            absolute: !$isInternal
+        );
+
+        $return['links']['broadcasts'] = (string)$router->fromHere(
             route_name: 'api:stations:streamer:broadcasts',
             route_params: ['id' => $record->getId()],
+            absolute: !$isInternal
+        );
+        $return['links']['art'] = (string)$router->fromHere(
+            route_name: 'api:stations:streamer:art-internal',
+            route_params: ['streamer_id' => $record->getId()],
             absolute: !$isInternal
         );
 
@@ -257,5 +316,14 @@ final class StreamersController extends AbstractScheduledEntityController
         }
 
         return $station;
+    }
+
+    protected function deleteRecord(object $record): void
+    {
+        if (!($record instanceof Entity\StationStreamer)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $this->streamerRepo->delete($record);
     }
 }

@@ -22,6 +22,9 @@ release channel, you can take advantage of these new features and fixes.
   will automatically disconnect the listener and prevent them from reconnecting for a time period (configurable via the
   station profile). THis can help prevent DJs from accidentally leaving their stream online and broadcasting "dead air".
 
+- Streamers/DJs can have custom artwork uploaded for each streamer; during the streamer's broadcasts, if no other album
+  art is available, the streamer's artwork will appear as the cover art instead.
+
 ## Code Quality/Technical Changes
 
 - Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP

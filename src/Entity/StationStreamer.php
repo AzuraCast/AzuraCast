@@ -32,7 +32,8 @@ use const PASSWORD_ARGON2ID;
 class StationStreamer implements
     Stringable,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -91,6 +92,12 @@ class StationStreamer implements
         Attributes\AuditIgnore
     ]
     protected ?int $reactivate_at = null;
+
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
+    protected int $art_updated_at = 0;
 
     #[
         OA\Property(type: "array", items: new OA\Items()),
@@ -208,6 +215,18 @@ class StationStreamer implements
         $this->reactivate_at = time() + $seconds;
     }
 
+    public function getArtUpdatedAt(): int
+    {
+        return $this->art_updated_at;
+    }
+
+    public function setArtUpdatedAt(int $art_updated_at): self
+    {
+        $this->art_updated_at = $art_updated_at;
+
+        return $this;
+    }
+
     /**
      * @return Collection<StationSchedule>
      */
@@ -224,5 +243,10 @@ class StationStreamer implements
     public function __clone()
     {
         $this->reactivate_at = null;
+    }
+
+    public static function getArtworkPath(int|string $streamer_id): string
+    {
+        return 'streamer_' . $streamer_id . '.jpg';
     }
 }

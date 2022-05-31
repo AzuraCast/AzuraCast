@@ -75,7 +75,7 @@ class StationQueue implements
     #[ORM\Column(nullable: true)]
     protected ?int $duration = null;
 
-    public function __construct(Station $station, SongInterface $song)
+    public function __construct(Station $station, Interfaces\SongInterface $song)
     {
         $this->setSong($song);
         $this->station = $station;

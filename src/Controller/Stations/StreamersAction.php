@@ -66,6 +66,7 @@ final class StreamersAction
             title: __('Streamer/DJ Accounts'),
             props: [
                 'listUrl' => (string)$router->fromHere('api:stations:streamers'),
+                'newArtUrl' => (string)$router->fromHere('api:stations:streamers:new-art'),
                 'scheduleUrl' => (string)$router->fromHere('api:stations:streamers:schedule'),
                 'stationTimeZone' => $station->getTimezone(),
                 'connectionInfo' => [

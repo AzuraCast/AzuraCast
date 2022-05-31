@@ -279,6 +279,32 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
 
+            // Streamers public pages
+            $group->get(
+                '/streamer/{streamer_id}/art',
+                Controller\Api\Stations\Streamers\Art\GetArtAction::class
+            )->setName('api:stations:streamer:art');
+
+            // Streamers internal pages
+            $group->post('/streamers/art', Controller\Api\Stations\Streamers\Art\PostArtAction::class)
+                ->setName('api:stations:streamers:new-art')
+                ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
+
+            $group->group(
+                '/streamer/{streamer_id}',
+                function (RouteCollectorProxy $group) {
+                    $group->post(
+                        '/art',
+                        Controller\Api\Stations\Streamers\Art\PostArtAction::class
+                    )->setName('api:stations:streamer:art-internal');
+
+                    $group->delete(
+                        '/art',
+                        Controller\Api\Stations\Streamers\Art\DeleteArtAction::class
+                    );
+                }
+            )->add(new Middleware\Permissions(StationPermissions::Streamers, true));
+
             $station_api_endpoints = [
                 [
                     'file',

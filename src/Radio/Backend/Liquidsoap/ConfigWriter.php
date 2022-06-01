@@ -273,6 +273,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $scheduleSwitches = [];
         $scheduleSwitchesInterrupting = [];
+        $scheduleSwitchesRemoteUrl = [];
 
         foreach ($station->getPlaylists() as $playlist) {
             if (!$playlist->getIsEnabled()) {
@@ -285,8 +286,9 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistVarName .= '_' . $playlist->getId();
             }
 
-            $playlistVarNames[] = $playlistVarName;
+            $scheduleItems = $playlist->getScheduleItems();
 
+            $playlistVarNames[] = $playlistVarName;
             $playlistConfigLines = [];
 
             if (Entity\Enums\PlaylistSources::Songs === $playlist->getSourceEnum()) {
@@ -316,28 +318,37 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                     . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+            } elseif (Entity\Enums\PlaylistRemoteTypes::Playlist === $playlist->getRemoteTypeEnum()) {
+                $playlistFunc = 'playlist("'
+                    . self::cleanUpString($playlist->getRemoteUrl())
+                    . '")';
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
-                switch ($playlist->getRemoteTypeEnum()) {
-                    case Entity\Enums\PlaylistRemoteTypes::Playlist:
-                        $playlistFunc = 'playlist("'
-                            . self::cleanUpString($playlist->getRemoteUrl())
-                            . '")';
-                        $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
-                        break;
-
-                    case Entity\Enums\PlaylistRemoteTypes::Stream:
-                    default:
-                        $remote_url = $playlist->getRemoteUrl();
-                        if (null !== $remote_url) {
-                            $buffer = $playlist->getRemoteBuffer();
-                            $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
-
-                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "' . self::cleanUpString(
-                                $remote_url
-                            ) . '")))';
-                        }
-                        break;
+                // Special handling for Remote Stream URLs.
+                $remote_url = $playlist->getRemoteUrl();
+                if (null === $remote_url) {
+                    continue;
                 }
+
+                $buffer = $playlist->getRemoteBuffer();
+                $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
+
+                $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "'
+                    . self::cleanUpString($remote_url) . '")))';
+
+                if (0 === $scheduleItems->count()) {
+                    // We cannot play unscheduled remote URL playlists.
+                    continue;
+                }
+
+                $event->appendLines($playlistConfigLines);
+                foreach ($scheduleItems as $scheduleItem) {
+                    $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
+
+                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
+                    $scheduleSwitchesRemoteUrl[] = $schedule_timing;
+                }
+                continue;
             }
 
             if ($playlist->getIsJingle()) {
@@ -354,8 +365,6 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistVarName = 'once(' . $playlistVarName . ')';
             }
 
-            $scheduleItems = $playlist->getScheduleItems();
-
             switch ($playlist->getTypeEnum()) {
                 case Entity\Enums\PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
@@ -363,6 +372,7 @@ class ConfigWriter implements EventSubscriberInterface
                             $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
+
                             if ($playlist->backendInterruptOtherSongs()) {
                                 $scheduleSwitchesInterrupting[] = $schedule_timing;
                             } else {
@@ -392,6 +402,7 @@ class ConfigWriter implements EventSubscriberInterface
                             $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
                             $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistScheduleVar . ')';
+
                             if ($playlist->backendInterruptOtherSongs()) {
                                 $scheduleSwitchesInterrupting[] = $schedule_timing;
                             } else {
@@ -412,6 +423,7 @@ class ConfigWriter implements EventSubscriberInterface
                                 . $this->getScheduledPlaylistPlayTime($event, $scheduleItem) . ')';
 
                             $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
+
                             if ($playlist->backendInterruptOtherSongs()) {
                                 $scheduleSwitchesInterrupting[] = $schedule_timing;
                             } else {
@@ -420,6 +432,7 @@ class ConfigWriter implements EventSubscriberInterface
                         }
                     } else {
                         $schedule_timing = '({ ' . $minutePlayTime . ' }, ' . $playlistVarName . ')';
+
                         if ($playlist->backendInterruptOtherSongs()) {
                             $scheduleSwitchesInterrupting[] = $schedule_timing;
                         } else {
@@ -559,10 +572,28 @@ class ConfigWriter implements EventSubscriberInterface
             interrupting_queue = request.queue(id="{$interruptingQueueName}")
             interrupting_queue = cue_cut(id="cue_{$interruptingQueueName}", interrupting_queue)
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
-            
-            add_skip_command(radio)
             EOF
         );
+
+        if (!empty($scheduleSwitchesRemoteUrl)) {
+            $event->appendLines(['# Remote URL Schedule Switches']);
+
+            foreach (array_chunk($scheduleSwitchesRemoteUrl, 168, true) as $scheduleSwitchesChunk) {
+                $scheduleSwitchesChunk[] = '({true}, radio)';
+                $event->appendLines(
+                    [
+                        sprintf(
+                            'radio = switch(id="schedule_switch", track_sensitive=false, [ %s ])',
+                            implode(', ', $scheduleSwitchesChunk)
+                        ),
+                    ]
+                );
+            }
+        }
+
+        $event->appendLines([
+            'add_skip_command(radio)',
+        ]);
     }
 
     /**

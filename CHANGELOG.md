@@ -27,6 +27,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We can now write custom Nginx configuration on a per-station basis and automatically reload it on-the-fly without
+  losing any active connections. This allows us to replace our standard `/radio/8000` web proxy URLs with
+  station-specific `/listen/station_name` ones, among other improvements.
+
 - Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP
   to using Unix domain socket files. This not only reduces the number of used ports but improves performance.
 
@@ -41,6 +45,9 @@ release channel, you can take advantage of these new features and fixes.
 - SFTP support is now enabled for Ansible users as well.
 
 ## Bug Fixes
+
+- Playlists powered by remote stream URLs will once again work as expected. Note that these playlist types _must_ be
+  scheduled, as otherwise their indefinite duration will cause problems with radio operation.
 
 - A bug preventing SFTP from properly supporting SSH public keys has been fixed.
 

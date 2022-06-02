@@ -553,19 +553,17 @@ return static function (RouteCollectorProxy $group) {
                 ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
 
             $group->group(
-                '/streamer/{id}',
+                '/streamer/{streamer_id}',
                 function (RouteCollectorProxy $group) {
                     $group->get(
                         '/broadcasts',
                         Controller\Api\Stations\Streamers\BroadcastsController::class . ':listAction'
-                    )
-                        ->setName('api:stations:streamer:broadcasts');
+                    )->setName('api:stations:streamer:broadcasts');
 
                     $group->get(
                         '/broadcast/{broadcast_id}/download',
                         Controller\Api\Stations\Streamers\BroadcastsController::class . ':downloadAction'
-                    )
-                        ->setName('api:stations:streamer:broadcast:download');
+                    )->setName('api:stations:streamer:broadcast:download');
 
                     $group->delete(
                         '/broadcast/{broadcast_id}',

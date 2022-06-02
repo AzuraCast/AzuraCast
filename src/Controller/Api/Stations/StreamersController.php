@@ -291,7 +291,7 @@ final class StreamersController extends AbstractScheduledEntityController
 
         $return['links']['broadcasts'] = (string)$router->fromHere(
             route_name: 'api:stations:streamer:broadcasts',
-            route_params: ['id' => $record->getId()],
+            route_params: ['streamer_id' => $record->getId()],
             absolute: !$isInternal
         );
         $return['links']['art'] = (string)$router->fromHere(

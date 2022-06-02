@@ -139,6 +139,12 @@ export default {
             ],
         };
 
+        function mergeCustom(objValue, srcValue) {
+            if (_.isArray(objValue)) {
+                return objValue.concat(srcValue);
+            }
+        }
+
         if (this.showAdvanced) {
             const advancedValidations = {
                 form: {
@@ -170,7 +176,7 @@ export default {
                 ],
             };
 
-            _.merge(formValidations, advancedValidations);
+            _.mergeWith(formValidations, advancedValidations, mergeCustom);
         }
 
         if (this.showAdminTab) {
@@ -187,7 +193,7 @@ export default {
                 ]
             };
 
-            _.merge(formValidations, adminValidations);
+            _.mergeWith(formValidations, adminValidations, mergeCustom);
 
             if (this.showAdvanced) {
                 const advancedAdminValidations = {
@@ -199,11 +205,9 @@ export default {
                     ]
                 }
 
-                _.merge(formValidations, advancedAdminValidations);
+                _.mergeWith(formValidations, advancedAdminValidations, mergeCustom);
             }
         }
-
-        console.log(formValidations);
 
         return formValidations;
     },
@@ -211,7 +215,8 @@ export default {
         return {
             loading: true,
             error: null,
-            form: {}
+            form: {},
+            station: {},
         };
     },
     watch: {

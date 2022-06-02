@@ -16,7 +16,7 @@ final class Version20220406121125 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station_queue DROP log');
+        $this->addSql('ALTER TABLE station_queue DROP IF EXISTS log');
     }
 
     public function postUp(Schema $schema): void
@@ -36,6 +36,8 @@ final class Version20220406121125 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station_queue ADD log LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci` COMMENT \'(DC2Type:json)\'');
+        $this->addSql(
+            'ALTER TABLE station_queue ADD log LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci` COMMENT \'(DC2Type:json)\''
+        );
     }
 }

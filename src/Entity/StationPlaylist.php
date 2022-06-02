@@ -29,8 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class StationPlaylist implements
     Stringable,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface,
-    Interfaces\StationAwareInterface
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

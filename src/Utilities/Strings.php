@@ -112,4 +112,20 @@ class Strings
 
         return self::truncateText(rtrim($url, '/'), $length);
     }
+
+    public static function getProgrammaticString(string $str): string
+    {
+        $result = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
+        if (null === $result || false === $result) {
+            throw new \RuntimeException('Cannot parse input string.');
+        }
+
+        $result = mb_ereg_replace("([\.]{2,})", '.', $result);
+        if (null === $result || false === $result) {
+            throw new \RuntimeException('Cannot parse input string.');
+        }
+
+        $result = str_replace(' ', '_', $result);
+        return mb_strtolower($result);
+    }
 }

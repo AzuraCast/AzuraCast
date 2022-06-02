@@ -26,8 +26,7 @@ class StationMount implements
     Stringable,
     Interfaces\StationMountInterface,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface,
-    Interfaces\StationAwareInterface
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

@@ -32,8 +32,7 @@ use const PASSWORD_ARGON2ID;
 class StationStreamer implements
     Stringable,
     Interfaces\StationCloneAwareInterface,
-    Interfaces\IdentifiableEntityInterface,
-    Interfaces\StationAwareInterface
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

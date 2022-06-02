@@ -6,7 +6,7 @@ namespace App\Entity\Interfaces;
 
 use App\Entity;
 
-interface StationCloneAwareInterface
+interface StationCloneAwareInterface extends StationAwareInterface
 {
     public function setStation(Entity\Station $station): void;
 }

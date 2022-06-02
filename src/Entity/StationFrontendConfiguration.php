@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Utilities\Strings;
-use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @extends ArrayCollection<string, mixed>
- */
-class StationFrontendConfiguration extends ArrayCollection
+class StationFrontendConfiguration extends AbstractStationConfiguration
 {
     public function __construct(array $elements = [])
     {

@@ -6,14 +6,11 @@ namespace App\Entity;
 
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Radio\Enums\AudioProcessingMethods;
+use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\StreamFormats;
-use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 
-/**
- * @extends ArrayCollection<string, mixed>
- */
-class StationBackendConfiguration extends ArrayCollection
+class StationBackendConfiguration extends AbstractStationConfiguration
 {
     public const CHARSET = 'charset';
 
@@ -104,7 +101,8 @@ class StationBackendConfiguration extends ArrayCollection
     }
 
     public const AUTODJ_QUEUE_LENGTH = 'autodj_queue_length';
-    public const DEFAULT_QUEUE_LENGTH = 3;
+
+    protected const DEFAULT_QUEUE_LENGTH = 3;
 
     public function getAutoDjQueueLength(): int
     {
@@ -192,13 +190,19 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const CROSSFADE_TYPE = 'crossfade_type';
 
-    public const CROSSFADE_NORMAL = 'normal';
-    public const CROSSFADE_DISABLED = 'none';
-    public const CROSSFADE_SMART = 'smart';
+    protected const CROSSFADE_NORMAL = 'normal';
+    protected const CROSSFADE_DISABLED = 'none';
+    protected const CROSSFADE_SMART = 'smart';
+
+    public function getCrossfadeTypeEnum(): CrossfadeModes
+    {
+        return CrossfadeModes::tryFrom($this->get(self::CROSSFADE_TYPE) ?? '')
+            ?? CrossfadeModes::default();
+    }
 
     public function getCrossfadeType(): string
     {
-        return $this->get(self::CROSSFADE_TYPE) ?? self::CROSSFADE_NORMAL;
+        return $this->getCrossfadeTypeEnum()->value;
     }
 
     public function setCrossfadeType(string $crossfadeType): void
@@ -208,7 +212,7 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const CROSSFADE = 'crossfade';
 
-    public const DEFAULT_CROSSFADE_DURATION = 2;
+    protected const DEFAULT_CROSSFADE_DURATION = 2;
 
     public function getCrossfade(): float
     {
@@ -223,9 +227,9 @@ class StationBackendConfiguration extends ArrayCollection
     public function getCrossfadeDuration(): float
     {
         $crossfade = $this->getCrossfade();
-        $crossfadeType = $this->getCrossfadeType();
+        $crossfadeType = $this->getCrossfadeTypeEnum();
 
-        if (self::CROSSFADE_DISABLED !== $crossfadeType && $crossfade > 0) {
+        if (CrossfadeModes::Disabled !== $crossfadeType && $crossfade > 0) {
             return round($crossfade * 1.5, 2);
         }
 
@@ -239,7 +243,7 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';
 
-    public const DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
+    protected const DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
     public function getDuplicatePreventionTimeRange(): int
     {

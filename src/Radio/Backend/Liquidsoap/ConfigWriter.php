@@ -9,6 +9,7 @@ use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
+use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Radio\Enums\StreamFormats;
@@ -714,12 +715,12 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-        $crossfade_type = $settings->getCrossfadeType();
+        $crossfadeType = $settings->getCrossfadeTypeEnum();
         $crossfade = $settings->getCrossfade();
         $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
+            $crossfadeIsSmart = (CrossfadeModes::Smart === $crossfadeType) ? 'true' : 'false';
             $event->appendLines([
                 sprintf(
                     'radio = crossfade(smart=%1$s, duration=%2$s, fade_out=%3$s, fade_in=%3$s, radio)',

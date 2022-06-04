@@ -38,6 +38,7 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: "Stations: Automation"),
 
             new OA\Tag(name: "Stations: History"),
+            new OA\Tag(name: "Stations: HLS Streams"),
             new OA\Tag(name: "Stations: Listeners"),
             new OA\Tag(name: "Stations: Schedules"),
             new OA\Tag(name: "Stations: Media"),

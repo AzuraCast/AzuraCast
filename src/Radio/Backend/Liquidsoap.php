@@ -40,6 +40,11 @@ class Liquidsoap extends AbstractBackend
         return true;
     }
 
+    public function supportsHls(): bool
+    {
+        return true;
+    }
+
     /**
      * @inheritDoc
      */

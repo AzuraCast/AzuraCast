@@ -99,6 +99,19 @@ class Station implements ResolvableUrlInterface
     #[OA\Property]
     public array $remotes = [];
 
+    #[OA\Property(
+        description: 'If the station has HLS streaming enabled.',
+        example: true
+    )]
+    public bool $hls_enabled = false;
+
+    /** @var string|null|UriInterface */
+    #[OA\Property(
+        description: 'The full URL to listen to the HLS stream for the station.',
+        example: 'https://example.com/hls/azuratest_radio/live.m3u8'
+    )]
+    public $hls_url;
+
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
@@ -117,5 +130,9 @@ class Station implements ResolvableUrlInterface
                 $mount->resolveUrls($base);
             }
         }
+
+        $this->hls_url = (null !== $this->hls_url)
+            ? (string)Router::resolveUri($base, $this->hls_url, true)
+            : null;
     }
 }

@@ -5,6 +5,13 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **HLS Support**: We now support the HTTP Live Streaming (HLS) format from directly within the AzuraCast web UI. Once
+  enabled, you can configure the various bitrates and formats of your HLS stream the same way you would configure mount
+  points; unlike mount points, however, your connecting listeners will automatically pick the one that suits their
+  bandwidth the best. While this technology was originally developed for Apple devices, it has seen widespread adoption
+  elsewhere. Note that because of how HLS is delivered, we cannot currently retrieve listener statistics for these
+  streams.
+
 - **Integrated Stereo Tool Support**: We now support the popular premium sound processing tool, Stereo Tool. Because the
   software is proprietary, you must first upload a copy of it via the System Administration page; you can then configure
   Stereo Tool on a per-station level, including uploading your own custom `.sts` configuration file.

@@ -223,6 +223,12 @@ return function (App\Event\BuildStationMenu $e) {
                         'visible' => $frontend->supportsMounts(),
                         'permission' => StationPermissions::MountPoints,
                     ],
+                    'hls_streams' => [
+                        'label' => __('HLS Streams'),
+                        'url' => (string)$router->fromHere('stations:hls_streams:index'),
+                        'visible' => $backend->supportsHls(),
+                        'permission' => StationPermissions::MountPoints,
+                    ],
                     'remotes' => [
                         'label' => __('Remote Relays'),
                         'icon' => 'router',

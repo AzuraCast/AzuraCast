@@ -10,6 +10,7 @@ use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\BadNameException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
+use App\Http\Router;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -24,7 +25,8 @@ abstract class AbstractAdapter
         protected EntityManagerInterface $em,
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
-        protected LoggerInterface $logger
+        protected LoggerInterface $logger,
+        protected Router $router,
     ) {
     }
 

@@ -313,6 +313,12 @@ return static function (RouteCollectorProxy $group) {
                     StationPermissions::Media,
                 ],
                 [
+                    'hls_stream',
+                    'hls_streams',
+                    Controller\Api\Stations\HlsStreamsController::class,
+                    StationPermissions::MountPoints,
+                ],
+                [
                     'mount',
                     'mounts',
                     Controller\Api\Stations\MountsController::class,

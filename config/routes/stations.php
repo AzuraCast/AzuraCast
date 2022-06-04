@@ -38,6 +38,10 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:files:index')
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
+            $group->get('/hls_streams', Controller\Stations\HlsStreamsAction::class)
+                ->setName('stations:hls_streams:index')
+                ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
+
             $group->get('/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
                 ->setName('stations:util:ls_config')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));

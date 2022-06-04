@@ -7,6 +7,7 @@ namespace App\Radio\Frontend;
 use App\Entity;
 use App\Environment;
 use App\Http\Router;
+use App\Nginx\CustomUrls;
 use App\Radio\AbstractAdapter;
 use App\Radio\Enums\StreamFormats;
 use App\Xml\Reader;
@@ -26,18 +27,18 @@ use Supervisor\SupervisorInterface;
 abstract class AbstractFrontend extends AbstractAdapter
 {
     public function __construct(
-        protected AdapterFactory $adapterFactory,
-        protected Client $http_client,
-        protected Router $router,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\Repository\StationMountRepository $stationMountRepo,
         Environment $environment,
         EntityManagerInterface $em,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Router $router,
+        protected AdapterFactory $adapterFactory,
+        protected Client $http_client,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\StationMountRepository $stationMountRepo,
     ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
+        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger, $router);
     }
 
     /**
@@ -116,7 +117,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         ) {
             // Web proxy support.
             return $base_url
-                ->withPath($base_url->getPath() . '/listen/' . $station->getShortName());
+                ->withPath($base_url->getPath() . CustomUrls::getListenUrl($station));
         }
 
         // Remove port number and other decorations.

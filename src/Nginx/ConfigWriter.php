@@ -20,6 +20,7 @@ final class ConfigWriter implements EventSubscriberInterface
             WriteNginxConfiguration::class => [
                 ['writeRadioSection', 35],
                 ['writeWebDjSection', 30],
+                ['writeHlsSection', 25],
             ],
         ];
     }
@@ -75,6 +76,36 @@ final class ConfigWriter implements EventSubscriberInterface
                 include proxy_params;
 
                 proxy_pass http://127.0.0.1:{$autoDjPort}/$2;
+            }
+            NGINX
+        );
+    }
+
+    public function writeHlsSection(WriteNginxConfiguration $event): void
+    {
+        $station = $event->getStation();
+
+        if (!$station->getEnableHls()) {
+            return;
+        }
+
+        $hlsBaseUrl = CustomUrls::getHlsUrl($station);
+        $hlsFolder = $station->getRadioHlsDir();
+
+        $event->appendBlock(
+            <<<NGINX
+            # Reverse proxy the frontend broadcast.
+            location {$hlsBaseUrl} {
+                types {
+                    application/vnd.apple.mpegurl m3u8;
+                    video/mp2t ts;
+                }
+                
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Cache-Control' 'no-cache';
+                
+                alias {$hlsFolder};
+                try_files \$uri =404;
             }
             NGINX
         );

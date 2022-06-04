@@ -20,6 +20,7 @@ class Station extends AbstractFixture
         $station->setEnableRequests(true);
         $station->setFrontendType(FrontendAdapters::Icecast->value);
         $station->setBackendType(BackendAdapters::Liquidsoap->value);
+        $station->setEnableHls(true);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
 
         $station->ensureDirectoriesExist();

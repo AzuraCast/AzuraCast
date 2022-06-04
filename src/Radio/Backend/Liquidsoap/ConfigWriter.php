@@ -56,6 +56,7 @@ class ConfigWriter implements EventSubscriberInterface
                 ['writeHarborConfiguration', 20],
                 ['writePreBroadcastConfiguration', 10],
                 ['writeLocalBroadcastConfiguration', 5],
+                ['writeHlsBroadcastConfiguration', 2],
                 ['writeRemoteBroadcastConfiguration', 0],
                 ['writePostBroadcastConfiguration', -5],
             ],
@@ -1026,6 +1027,89 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $event->appendLines($ls_config);
+    }
+
+    public function writeHlsBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
+    {
+        $station = $event->getStation();
+
+        if (!$station->getEnableHls()) {
+            return;
+        }
+
+        $lsConfig = [
+            '# HLS Broadcasting',
+        ];
+
+        // Configure the outbound broadcast.
+        $hlsStreams = [];
+
+        foreach ($station->getHlsStreams() as $hlsStream) {
+            $streamVarName = self::cleanUpVarName($hlsStream->getName());
+
+            $streamCodec = match ($hlsStream->getFormatEnum()) {
+                StreamFormats::Aac => 'aac',
+                StreamFormats::Mp3 => 'mp3',
+                default => null
+            };
+
+            if (null === $streamCodec) {
+                continue;
+            }
+
+            $streamBitrate = $hlsStream->getBitrate() ?? 128;
+
+            $lsConfig[] = <<<LS
+            {$streamVarName} = %ffmpeg(
+                format="mpegts",
+                %audio(
+                    codec="{$streamCodec}",
+                    channels=2,
+                    b="{$streamBitrate}k"
+                )
+            )
+            LS;
+
+            $hlsStreams[] = $streamVarName;
+        }
+
+        if (empty($hlsStreams)) {
+            return;
+        }
+
+        $lsConfig[] = 'hls_streams = [' . implode(
+            ', ',
+            array_map(
+                static fn($row) => '("' . $row . '", ' . $row . ')',
+                $hlsStreams
+            )
+        ) . ']';
+
+        $event->appendLines($lsConfig);
+
+        $configDir = $station->getRadioConfigDir();
+        $hlsBaseDir = $station->getRadioHlsDir();
+
+        $event->appendBlock(
+            <<<LS
+            def hls_segment_name(~position,~extname,stream_name) =
+                timestamp = int_of_float(gettimeofday())
+                duration = 2
+                "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
+            end
+            
+            output.file.hls(playlist="live.m3u8",
+                segment_duration=2.0,
+                segments=5,
+                segments_overhead=5,
+                segment_name=hls_segment_name,
+                persist_at="{$configDir}/hls.config",
+                "{$hlsBaseDir}",
+                hls_streams,
+                radio
+            )
+            LS
+        );
     }
 
     /**

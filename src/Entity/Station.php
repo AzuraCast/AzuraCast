@@ -262,6 +262,16 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected bool $enable_on_demand_download = true;
 
     #[
+        OA\Property(
+            description: "Whether HLS streaming is enabled.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected bool $enable_hls = false;
+
+    #[
         ORM\Column,
         Attributes\AuditIgnore
     ]
@@ -387,6 +397,10 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
+    /** @var Collection<int, StationHlsStream> */
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationHlsStream::class)]
+    protected Collection $hls_streams;
+
     /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
         mappedBy: 'station',
@@ -410,6 +424,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->playlists = new ArrayCollection();
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
+        $this->hls_streams = new ArrayCollection();
         $this->webhooks = new ArrayCollection();
         $this->streamers = new ArrayCollection();
         $this->sftp_users = new ArrayCollection();
@@ -664,6 +679,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->ensureDirectoryExists($this->getRadioPlaylistsDir());
         $this->ensureDirectoryExists($this->getRadioConfigDir());
         $this->ensureDirectoryExists($this->getRadioTempDir());
+        $this->ensureDirectoryExists($this->getRadioHlsDir());
 
         if (null === $this->media_storage_location) {
             $storageLocation = new StorageLocation(
@@ -731,6 +747,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRadioTempDir(): string
     {
         return $this->radio_base_dir . '/temp';
+    }
+
+    public function getRadioHlsDir(): string
+    {
+        return $this->radio_base_dir . '/hls';
     }
 
     public function getNowplaying(): ?Api\NowPlaying\NowPlaying
@@ -875,6 +896,16 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setEnableOnDemandDownload(bool $enable_on_demand_download): void
     {
         $this->enable_on_demand_download = $enable_on_demand_download;
+    }
+
+    public function getEnableHls(): bool
+    {
+        return $this->enable_hls;
+    }
+
+    public function setEnableHls(bool $enable_hls): void
+    {
+        $this->enable_hls = $enable_hls;
     }
 
     public function getIsEnabled(): bool
@@ -1111,6 +1142,14 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRemotes(): Collection
     {
         return $this->remotes;
+    }
+
+    /**
+     * @return Collection<int, StationHlsStream>
+     */
+    public function getHlsStreams(): Collection
+    {
+        return $this->hls_streams;
     }
 
     /**

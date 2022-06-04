@@ -314,14 +314,22 @@ class StationsController extends AbstractAdminApiCrudController
         // Get the original values to check for changes.
         $old_frontend = $original_record['frontend_type'];
         $old_backend = $original_record['backend_type'];
+        $old_hls = (bool)$original_record['enable_hls'];
 
         $frontend_changed = ($old_frontend !== $station->getFrontendType());
         $backend_changed = ($old_backend !== $station->getBackendType());
         $adapter_changed = $frontend_changed || $backend_changed;
 
+        $hls_changed = $old_hls !== $station->getEnableHls();
+
         if ($frontend_changed) {
             $frontend = $this->adapters->getFrontendAdapter($station);
             $this->stationRepo->resetMounts($station, $frontend);
+        }
+
+        if ($hls_changed || $backend_changed) {
+            $backend = $this->adapters->getBackendAdapter($station);
+            $this->stationRepo->resetHls($station, $backend);
         }
 
         if ($adapter_changed || !$station->getIsEnabled()) {

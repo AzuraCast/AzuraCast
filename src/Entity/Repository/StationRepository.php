@@ -9,6 +9,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
+use App\Radio\Backend\AbstractBackend;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Service\Flow\UploadedFile;
 use Azura\Files\ExtendedFilesystemInterface;
@@ -99,6 +100,22 @@ final class StationRepository extends Repository
             // Create default mount points.
             foreach ($frontend_adapter->getDefaultMounts($station) as $mount) {
                 $this->em->persist($mount);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function resetHls(Entity\Station $station, AbstractBackend $backend): void
+    {
+        foreach ($station->getHlsStreams() as $hlsStream) {
+            $this->em->remove($hlsStream);
+        }
+
+        if ($station->getEnableHls() && $backend->supportsHls()) {
+            foreach ($backend->getDefaultHlsStreams($station) as $hlsStream) {
+                $this->em->persist($hlsStream);
             }
         }
 

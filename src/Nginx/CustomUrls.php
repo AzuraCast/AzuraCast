@@ -18,6 +18,11 @@ final class CustomUrls
         return '/webdj/' . $station->getShortName();
     }
 
+    public static function getHlsUrl(Station $station): string
+    {
+        return '/hls/' . $station->getShortName();
+    }
+
     /**
      * Returns a custom path if X-Accel-Redirect is configured for the path provided.
      */

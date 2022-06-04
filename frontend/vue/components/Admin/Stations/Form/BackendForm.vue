@@ -70,6 +70,16 @@
                             </b-form-radio-group>
                         </template>
                     </b-wrapped-form-group>
+
+                    <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_hls"
+                                             :field="form.enable_hls">
+                        <template #label="{lang}">
+                            <translate :key="lang">Enable HTTP Live Streaming (HLS)</translate>
+                        </template>
+                        <template #description="{lang}">
+                            <translate :key="lang">HTTP Live Streaming (HLS) is a new adaptive-bitrate technology supported by some clients. It does not use the standard broadcasting frontends.</translate>
+                        </template>
+                    </b-wrapped-form-checkbox>
                 </b-form-row>
             </b-form-fieldset>
 

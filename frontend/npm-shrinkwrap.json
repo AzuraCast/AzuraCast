@@ -39,6 +39,7 @@
         "gulp-run-command": "0.0.10",
         "gulp-sourcemaps": "^3",
         "gulp-uglify": "^3.0.2",
+        "hls.js": "^1.1.5",
         "humanize-duration": "^3.27.0",
         "imports-loader": "^3.0.0",
         "jquery": "^3.6.0",
@@ -5298,6 +5299,11 @@
       "bin": {
         "he": "bin/he"
       }
+    },
+    "node_modules/hls.js": {
+      "version": "1.1.5",
+      "resolved": "https://registry.npmjs.org/hls.js/-/hls.js-1.1.5.tgz",
+      "integrity": "sha512-mQX5TSNtJEzGo5HPpvcQgCu+BWoKDQM6YYtg/KbgWkmVAcqOCvSTi0SuqG2ZJLXxIzdnFcKU2z7Mrw/YQWhPOA=="
     },
     "node_modules/homedir-polyfill": {
       "version": "1.0.3",
@@ -13768,6 +13774,11 @@
       "version": "1.2.0",
       "resolved": "https://registry.npmjs.org/he/-/he-1.2.0.tgz",
       "integrity": "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw=="
+    },
+    "hls.js": {
+      "version": "1.1.5",
+      "resolved": "https://registry.npmjs.org/hls.js/-/hls.js-1.1.5.tgz",
+      "integrity": "sha512-mQX5TSNtJEzGo5HPpvcQgCu+BWoKDQM6YYtg/KbgWkmVAcqOCvSTi0SuqG2ZJLXxIzdnFcKU2z7Mrw/YQWhPOA=="
     },
     "homedir-polyfill": {
       "version": "1.0.3",

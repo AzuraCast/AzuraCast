@@ -50,9 +50,10 @@ abstract class AbstractBackend extends AbstractAdapter
                 $record->setName($name);
                 $record->setFormat(StreamFormats::Aac->value);
                 $record->setBitrate($bitrate);
+                return $record;
             },
             ['aac_lofi', 'aac_midfi', 'aac_hifi'],
-            [64, 128, 256]
+            [48, 96, 192]
         );
     }
 

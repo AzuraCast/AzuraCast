@@ -152,7 +152,6 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::DJ_BUFFER, $buffer);
     }
 
-
     public const AUDIO_PROCESSING_METHOD = 'audio_processing_method';
 
     public function getAudioProcessingMethod(): ?string
@@ -183,7 +182,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getStereoToolLicenseKey(): ?string
     {
-        return $this->get(self::STEREO_TOOL_LICENSE_KEY) ?? null;
+        return $this->get(self::STEREO_TOOL_LICENSE_KEY);
     }
 
     public function setStereoToolLicenseKey(?string $licenseKey): void
@@ -195,7 +194,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getStereoToolConfigurationPath(): ?string
     {
-        return $this->get(self::STEREO_TOOL_CONFIGURATION_PATH) ?? null;
+        return $this->get(self::STEREO_TOOL_CONFIGURATION_PATH);
     }
 
     public function setStereoToolConfigurationPath(?string $stereoToolConfigurationPath): void

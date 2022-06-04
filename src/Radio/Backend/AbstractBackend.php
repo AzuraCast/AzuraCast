@@ -62,7 +62,6 @@ abstract class AbstractBackend extends AbstractAdapter
             throw new \RuntimeException('Cannot generate HLS URL.');
         }
 
-        $radio_port = $station->getFrontendConfig()->getPort();
         $baseUrl ??= $this->router->getBaseUrl();
 
         return $baseUrl->withPath(

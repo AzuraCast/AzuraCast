@@ -64,15 +64,15 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public const RECORD_STREAMS_FORMAT = 'record_streams_format';
 
-    public function getRecordStreamsFormat(): ?string
+    public function getRecordStreamsFormat(): string
     {
-        return $this->get(self::RECORD_STREAMS_FORMAT);
+        return $this->getRecordStreamsFormatEnum()->value;
     }
 
-    public function getRecordStreamsFormatEnum(): ?StreamFormats
+    public function getRecordStreamsFormatEnum(): StreamFormats
     {
-        $recordStreamsFormat = $this->getRecordStreamsFormat();
-        return StreamFormats::tryFrom(strtolower($recordStreamsFormat ?? ''));
+        return StreamFormats::tryFrom($this->get(self::RECORD_STREAMS_FORMAT) ?? '')
+            ?? StreamFormats::Mp3;
     }
 
     public function setRecordStreamsFormat(?string $format): void
@@ -86,6 +86,18 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
 
         $this->set(self::RECORD_STREAMS_FORMAT, $format);
+    }
+
+    public const RECORD_STREAMS_BITRATE = 'record_streams_bitrate';
+
+    public function getRecordStreamsBitrate(): int
+    {
+        return (int)($this->get(self::RECORD_STREAMS_BITRATE) ?? 128);
+    }
+
+    public function setRecordStreamsBitrate(?int $bitrate): void
+    {
+        $this->set(self::RECORD_STREAMS_BITRATE, $bitrate);
     }
 
     public const USE_MANUAL_AUTODJ = 'use_manual_autodj';
@@ -125,6 +137,21 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         $this->set(self::DJ_MOUNT_POINT, $mountPoint);
     }
+
+    public const DJ_BUFFER = 'dj_buffer';
+
+    protected const DEFAULT_DJ_BUFFER = 5;
+
+    public function getDjBuffer(): int
+    {
+        return (int)$this->get(self::DJ_BUFFER, self::DEFAULT_DJ_BUFFER);
+    }
+
+    public function setDjBuffer(?int $buffer): void
+    {
+        $this->set(self::DJ_BUFFER, $buffer);
+    }
+
 
     public const AUDIO_PROCESSING_METHOD = 'audio_processing_method';
 
@@ -278,5 +305,45 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         } else {
             $this->set(self::PERFORMANCE_MODE, $perfModeEnum->value);
         }
+    }
+
+    public const CUSTOM_TOP = 'custom_config_top';
+    public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
+    public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
+    public const CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+    public const CUSTOM_PRE_BROADCAST = 'custom_config';
+    public const CUSTOM_BOTTOM = 'custom_config_bottom';
+
+    /** @return array<int, string> */
+    public static function getCustomConfigurationSections(): array
+    {
+        return [
+            self::CUSTOM_TOP,
+            self::CUSTOM_PRE_PLAYLISTS,
+            self::CUSTOM_PRE_FADE,
+            self::CUSTOM_PRE_LIVE,
+            self::CUSTOM_PRE_BROADCAST,
+            self::CUSTOM_BOTTOM,
+        ];
+    }
+
+    public function getCustomConfigurationSection(string $section): ?string
+    {
+        $allSections = self::getCustomConfigurationSections();
+        if (!in_array($section, $allSections, true)) {
+            throw new \LogicException('Invalid custom configuration section.');
+        }
+
+        return $this->get($section);
+    }
+
+    public function setCustomConfigurationSection(string $section, ?string $value = null): void
+    {
+        $allSections = self::getCustomConfigurationSections();
+        if (!in_array($section, $allSections, true)) {
+            throw new \LogicException('Invalid custom configuration section.');
+        }
+
+        $this->set($section, $value);
     }
 }

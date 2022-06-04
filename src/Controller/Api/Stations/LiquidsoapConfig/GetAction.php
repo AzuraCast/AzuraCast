@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\LiquidsoapConfig;
 
+use App\Entity\StationBackendConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Psr\Http\Message\ResponseInterface;
 
 final class GetAction
@@ -19,8 +19,8 @@ final class GetAction
         $backendConfig = $request->getStation()->getBackendConfig();
 
         $return = [];
-        foreach (ConfigWriter::getCustomConfigurationSections() as $field) {
-            $return[$field] = $backendConfig[$field] ?? null;
+        foreach (StationBackendConfiguration::getCustomConfigurationSections() as $field) {
+            $return[$field] = $backendConfig->getCustomConfigurationSection($field);
         }
 
         return $response->withJson($return);

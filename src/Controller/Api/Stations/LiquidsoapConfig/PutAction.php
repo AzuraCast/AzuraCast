@@ -10,7 +10,6 @@ use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -34,9 +33,9 @@ final class PutAction
         $station = $this->em->refetch($request->getStation());
 
         $backendConfig = $station->getBackendConfig();
-        foreach (ConfigWriter::getCustomConfigurationSections() as $field) {
+        foreach (Entity\StationBackendConfiguration::getCustomConfigurationSections() as $field) {
             if (isset($body[$field])) {
-                $backendConfig->set($field, $body[$field]);
+                $backendConfig->setCustomConfigurationSection($field, $body[$field]);
             }
         }
 

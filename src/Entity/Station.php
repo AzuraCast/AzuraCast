@@ -501,24 +501,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationFrontendConfiguration|array $frontend_config,
         bool $force_overwrite = false
     ): void {
-        if (!($frontend_config instanceof StationFrontendConfiguration)) {
-            $config = new StationFrontendConfiguration(
-                ($force_overwrite) ? [] : (array)$this->frontend_config,
+        if (is_array($frontend_config)) {
+            $frontend_config = new StationFrontendConfiguration(
+                $force_overwrite ? $frontend_config : array_merge((array)$this->backend_config, $frontend_config)
             );
-
-            foreach ($frontend_config as $key => $val) {
-                $config->set($key, $val);
-            }
-
-            $frontend_config = $config;
         }
 
         $config = $frontend_config->toArray();
-
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
-
         $this->frontend_config = $config;
     }
 
@@ -571,16 +563,10 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationBackendConfiguration|array $backend_config,
         bool $force_overwrite = false
     ): void {
-        if (!($backend_config instanceof StationBackendConfiguration)) {
-            $config = new StationBackendConfiguration(
-                ($force_overwrite) ? [] : (array)$this->backend_config
+        if (is_array($backend_config)) {
+            $backend_config = new StationBackendConfiguration(
+                $force_overwrite ? $backend_config : array_merge((array)$this->backend_config, $backend_config)
             );
-
-            foreach ($backend_config as $key => $val) {
-                $config->set($key, $val);
-            }
-
-            $backend_config = $config;
         }
 
         $config = $backend_config->toArray();

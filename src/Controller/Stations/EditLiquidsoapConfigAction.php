@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
+use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
@@ -31,7 +32,7 @@ final class EditLiquidsoapConfigAction
             throw new StationUnsupportedException();
         }
 
-        $configSections = Liquidsoap\ConfigWriter::getCustomConfigurationSections();
+        $configSections = StationBackendConfiguration::getCustomConfigurationSections();
         $tokens = Liquidsoap\ConfigWriter::getDividerString();
 
         $event = new WriteLiquidsoapConfiguration($station, true, false);

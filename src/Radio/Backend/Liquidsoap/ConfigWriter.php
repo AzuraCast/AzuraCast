@@ -25,13 +25,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigWriter implements EventSubscriberInterface
 {
-    public const CUSTOM_TOP = 'custom_config_top';
-    public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
-    public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
-    public const CUSTOM_PRE_FADE = 'custom_config_pre_fade';
-    public const CUSTOM_PRE_BROADCAST = 'custom_config';
-    public const CUSTOM_BOTTOM = 'custom_config_bottom';
-
     public function __construct(
         protected EntityManagerInterface $em,
         protected Entity\Repository\SettingsRepository $settingsRepo,
@@ -81,11 +74,13 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $settings = $event->getStation()->getBackendConfig();
-        if (!empty($settings[$sectionName])) {
+        $customConfig = $settings->getCustomConfigurationSection($sectionName);
+
+        if (!empty($customConfig)) {
             $event->appendLines(
                 [
                     '# Custom Configuration (Specified in Station Profile)',
-                    $settings[$sectionName],
+                    $customConfig,
                 ]
             );
         }
@@ -107,7 +102,7 @@ class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_TOP);
+        $this->writeCustomConfigurationSection($event, Entity\StationBackendConfiguration::CUSTOM_TOP);
 
         $station = $event->getStation();
 
@@ -257,7 +252,7 @@ class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_PLAYLISTS);
+        $this->writeCustomConfigurationSection($event, Entity\StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];
@@ -713,7 +708,7 @@ class ConfigWriter implements EventSubscriberInterface
         $settings = $event->getStation()->getBackendConfig();
 
         // Write pre-crossfade section.
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
+        $this->writeCustomConfigurationSection($event, Entity\StationBackendConfiguration::CUSTOM_PRE_FADE);
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
         $crossfadeType = $settings->getCrossfadeTypeEnum();
@@ -741,7 +736,7 @@ class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_LIVE);
+        $this->writeCustomConfigurationSection($event, Entity\StationBackendConfiguration::CUSTOM_PRE_LIVE);
 
         $settings = $station->getBackendConfig();
         $charset = $settings->getCharset();
@@ -817,7 +812,7 @@ class ConfigWriter implements EventSubscriberInterface
             'on_disconnect = live_disconnected',
         ];
 
-        $djBuffer = (int)($settings['dj_buffer'] ?? 5);
+        $djBuffer = $settings->getDjBuffer();
         if (0 !== $djBuffer) {
             $harbor_params[] = 'buffer = ' . self::toFloat($djBuffer);
             $harbor_params[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
@@ -848,8 +843,8 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         if ($recordLiveStreams) {
-            $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum() ?? StreamFormats::Mp3;
-            $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
+            $recordLiveStreamsFormat = $settings->getRecordStreamsFormatEnum();
+            $recordLiveStreamsBitrate = $settings->getRecordStreamsBitrate();
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
             $recordExtension = $recordLiveStreamsFormat->getExtension();
@@ -998,7 +993,7 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         // Custom configuration
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
+        $this->writeCustomConfigurationSection($event, Entity\StationBackendConfiguration::CUSTOM_PRE_BROADCAST);
     }
 
     public function writeLocalBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -1234,22 +1229,7 @@ class ConfigWriter implements EventSubscriberInterface
 
     public function writePostBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        $this->writeCustomConfigurationSection($event, self::CUSTOM_BOTTOM);
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getCustomConfigurationSections(): array
-    {
-        return [
-            self::CUSTOM_TOP,
-            self::CUSTOM_PRE_PLAYLISTS,
-            self::CUSTOM_PRE_FADE,
-            self::CUSTOM_PRE_LIVE,
-            self::CUSTOM_PRE_BROADCAST,
-            self::CUSTOM_BOTTOM,
-        ];
+        $this->writeCustomConfigurationSection($event, Entity\StationBackendConfiguration::CUSTOM_BOTTOM);
     }
 
     /**

@@ -1084,7 +1084,7 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<LS
             def hls_segment_name(~position,~extname,stream_name) =
-                timestamp = int_of_float(gettimeofday())
+                timestamp = int_of_float(time())
                 duration = 4
                 "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
             end

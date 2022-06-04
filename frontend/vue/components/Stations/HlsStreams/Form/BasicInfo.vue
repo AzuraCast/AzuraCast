@@ -64,10 +64,6 @@ export default {
                 {
                     value: 'aac',
                     text: 'AAC'
-                },
-                {
-                    value: 'mp3',
-                    text: 'MP3'
                 }
             ];
         },

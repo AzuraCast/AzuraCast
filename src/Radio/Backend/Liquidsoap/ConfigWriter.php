@@ -1042,13 +1042,7 @@ class ConfigWriter implements EventSubscriberInterface
         foreach ($station->getHlsStreams() as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->getName());
 
-            $streamCodec = match ($hlsStream->getFormatEnum()) {
-                StreamFormats::Aac => 'aac',
-                StreamFormats::Mp3 => 'mp3',
-                default => null
-            };
-
-            if (null === $streamCodec) {
+            if (StreamFormats::Aac !== $hlsStream->getFormatEnum()) {
                 continue;
             }
 
@@ -1058,9 +1052,11 @@ class ConfigWriter implements EventSubscriberInterface
             {$streamVarName} = %ffmpeg(
                 format="mpegts",
                 %audio(
-                    codec="{$streamCodec}",
+                    codec="aac",
+                    samplerate=44100,
                     channels=2,
-                    b="{$streamBitrate}k"
+                    b="{$streamBitrate}k",
+                    profile="aac_low"
                 )
             )
             LS;
@@ -1073,12 +1069,12 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $lsConfig[] = 'hls_streams = [' . implode(
-            ', ',
-            array_map(
-                static fn($row) => '("' . $row . '", ' . $row . ')',
-                $hlsStreams
-            )
-        ) . ']';
+                ', ',
+                array_map(
+                    static fn($row) => '("' . $row . '", ' . $row . ')',
+                    $hlsStreams
+                )
+            ) . ']';
 
         $event->appendLines($lsConfig);
 
@@ -1089,12 +1085,12 @@ class ConfigWriter implements EventSubscriberInterface
             <<<LS
             def hls_segment_name(~position,~extname,stream_name) =
                 timestamp = int_of_float(gettimeofday())
-                duration = 2
+                duration = 4
                 "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
             end
             
             output.file.hls(playlist="live.m3u8",
-                segment_duration=2.0,
+                segment_duration=4.0,
                 segments=5,
                 segments_overhead=5,
                 segment_name=hls_segment_name,

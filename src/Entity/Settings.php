@@ -625,6 +625,23 @@ class Settings implements Stringable
     }
 
     #[
+        OA\Property(description: "The output format for the automated backup.", example: 'zip'),
+        ORM\Column(nullable: true),
+        Groups(self::GROUP_BACKUP)
+    ]
+    protected ?string $backup_format = null;
+
+    public function getBackupFormat(): ?string
+    {
+        return $this->backup_format;
+    }
+
+    public function setBackupFormat(?string $backup_format): void
+    {
+        $this->backup_format = $backup_format;
+    }
+
+    #[
         OA\Property(
             description: "The UNIX timestamp when automated backup was last run.",
             example: OpenApi::SAMPLE_TIMESTAMP

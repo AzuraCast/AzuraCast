@@ -99,9 +99,9 @@ class RunBackupTask extends AbstractTask
             return;
         }
 
-        $now_utc = CarbonImmutable::now('UTC');
+        $nowUtc = CarbonImmutable::now('UTC');
 
-        $threshold = $now_utc->subDay()->getTimestamp();
+        $threshold = $nowUtc->subDay()->getTimestamp();
         $last_run = $settings->getBackupLastRun();
 
         if ($last_run <= $threshold) {
@@ -110,7 +110,7 @@ class RunBackupTask extends AbstractTask
 
             if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
-                $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $now_utc);
+                $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $nowUtc);
 
                 /** @var CarbonInterface[] $backupTimesToCheck */
                 $backupTimesToCheck = [
@@ -121,7 +121,7 @@ class RunBackupTask extends AbstractTask
                 foreach ($backupTimesToCheck as $backupStart) {
                     $backupEnd = $backupStart->addMinutes(15);
 
-                    if ($now_utc->between($backupStart, $backupEnd)) {
+                    if ($nowUtc->between($backupStart, $backupEnd)) {
                         $isWithinTimecode = true;
                         break;
                     }
@@ -138,9 +138,11 @@ class RunBackupTask extends AbstractTask
                 $storageLocationId = null;
             }
 
+            $pathExt = $settings->getBackupFormat() ?? 'zip';
+
             $message = new Message\BackupMessage();
             $message->storageLocationId = $storageLocationId;
-            $message->path = 'automatic_backup_' . gmdate('Ymd_His') . '.zip';
+            $message->path = 'automatic_backup_' . $nowUtc->format('Ymd_His') . '.' . $pathExt;
             $message->excludeMedia = $settings->getBackupExcludeMedia();
 
             $this->messageBus->dispatch($message);

@@ -57,6 +57,16 @@
                                        :options="storageLocationOptions"></b-form-select>
                     </template>
                 </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="$v.form.backup_format">
+                    <template #label="{lang}">
+                        <translate :key="lang">Backup Format</translate>
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
+                                            :options="formatOptions"></b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
             </b-form-row>
         </b-form-fieldset>
     </modal-form>
@@ -104,7 +114,8 @@ export default {
             'backup_time_code': {},
             'backup_exclude_media': {},
             'backup_keep_copies': {},
-            'backup_storage_location': {}
+            'backup_storage_location': {},
+            'backup_format': {},
         }
     },
     computed: {
@@ -113,7 +124,23 @@ export default {
         },
         storageLocationOptions() {
             return objectToFormOptions(this.storageLocations);
-        }
+        },
+        formatOptions() {
+            return [
+                {
+                    value: 'zip',
+                    text: 'Zip',
+                },
+                {
+                    value: 'tgz',
+                    text: 'TarGz'
+                },
+                {
+                    value: 'tzst',
+                    text: 'ZStd'
+                }
+            ];
+        },
     },
     methods: {
         open() {
@@ -137,7 +164,8 @@ export default {
                 backup_time_code: null,
                 backup_exclude_media: null,
                 backup_keep_copies: null,
-                backup_storage_location: null
+                backup_storage_location: null,
+                backup_format: null,
             };
         },
         close() {

@@ -330,8 +330,12 @@ class ConfigWriter implements EventSubscriberInterface
                 $buffer = $playlist->getRemoteBuffer();
                 $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., input.http(max_buffer=' . $buffer . '., "'
-                    . self::cleanUpString($remote_url) . '")))';
+                $inputFunc = (str_ends_with($remote_url, 'm3u8'))
+                    ? 'input.hls'
+                    : 'input.http';
+
+                $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., '
+                    . $inputFunc . '("' . self::cleanUpString($remote_url) . '")))';
 
                 if (0 === $scheduleItems->count()) {
                     // We cannot play unscheduled remote URL playlists.

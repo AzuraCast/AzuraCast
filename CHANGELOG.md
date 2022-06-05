@@ -32,6 +32,8 @@ release channel, you can take advantage of these new features and fixes.
 - Streamers/DJs can have custom artwork uploaded for each streamer; during the streamer's broadcasts, if no other album
   art is available, the streamer's artwork will appear as the cover art instead.
 
+- You can now customize the compression used for automatic backups.
+
 ## Code Quality/Technical Changes
 
 - We can now write custom Nginx configuration on a per-station basis and automatically reload it on-the-fly without
@@ -55,6 +57,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Playlists powered by remote stream URLs will once again work as expected. Note that these playlist types _must_ be
   scheduled, as otherwise their indefinite duration will cause problems with radio operation.
+
+- Remote URL playlists will now also support HLS (.m3u8) URLs.
 
 - A bug preventing SFTP from properly supporting SSH public keys has been fixed.
 

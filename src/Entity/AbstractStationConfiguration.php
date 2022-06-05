@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-abstract class AbstractStationConfiguration
+abstract class AbstractStationConfiguration implements \JsonSerializable
 {
     public function __construct(
         private array $data = []
@@ -20,6 +20,11 @@ abstract class AbstractStationConfiguration
             $return[(string)$constantVal] = $this->get($constantVal);
         }
         return $return;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 
     protected function get(string $key, mixed $default = null): mixed

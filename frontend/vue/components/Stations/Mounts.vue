@@ -32,7 +32,8 @@
                     <template v-if="row.item.enable_autodj">
                         <translate key="lang_autodj_enabled">Enabled</translate>
                         -
-                        {{ row.item.autodj_bitrate }}kbps {{ row.item.autodj_format|upper }}
+                        <template v-if="row.item.autodj_format != 'flac'">{{ row.item.autodj_bitrate }}kbps </template>
+                        {{ row.item.autodj_format|upper }}
                     </template>
                     <template v-else>
                         <translate key="lang_autodj_disabled">Disabled</translate>

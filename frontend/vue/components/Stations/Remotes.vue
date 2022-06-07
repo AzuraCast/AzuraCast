@@ -58,14 +58,15 @@ import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import RemoteEditModal from "./Remotes/EditModal";
+import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
 import '~/vendor/sweetalert.js';
 
 export default {
     name: 'StationMounts',
     components: {RemoteEditModal, InfoCard, Icon, EditModal, DataTable},
+    mixins: [StationMayNeedRestart],
     props: {
         listUrl: String,
-        restartStatusUrl: String
     },
     data() {
         return {
@@ -110,16 +111,6 @@ export default {
                 }
             });
         },
-        mayNeedRestart() {
-            this.axios.get(this.restartStatusUrl).then((resp) => {
-                if (resp.data.needs_restart) {
-                    this.needsRestart();
-                }
-            });
-        },
-        needsRestart() {
-            document.dispatchEvent(new CustomEvent("station-needs-restart"));
-        }
     }
 };
 </script>

@@ -51,13 +51,14 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './HlsStreams/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
+import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
 
 export default {
     name: 'StationHlsStreams',
     components: {InfoCard, Icon, EditModal, DataTable},
+    mixins: [StationMayNeedRestart],
     props: {
-        listUrl: String,
-        restartStatusUrl: String
+        listUrl: String
     },
     data() {
         return {
@@ -103,16 +104,6 @@ export default {
                 }
             });
         },
-        mayNeedRestart() {
-            this.axios.get(this.restartStatusUrl).then((resp) => {
-                if (resp.data.needs_restart) {
-                    this.needsRestart();
-                }
-            });
-        },
-        needsRestart() {
-            document.dispatchEvent(new CustomEvent("station-needs-restart"));
-        }
     }
 };
 </script>

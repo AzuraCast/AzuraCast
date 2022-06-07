@@ -63,21 +63,22 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
+import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
 
 export default {
     name: 'StationMounts',
     components: {InfoCard, Icon, EditModal, DataTable},
+    mixins: [StationMayNeedRestart],
     props: {
         listUrl: String,
         newIntroUrl: String,
-        restartStatusUrl: String,
         stationFrontendType: String,
         showAdvanced: {
             type: Boolean,
             default: true
         },
     },
-    data () {
+    data() {
         return {
             fields: [
                 {key: 'display_name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
@@ -105,7 +106,7 @@ export default {
         doEdit(url) {
             this.$refs.editModal.edit(url);
         },
-        doDelete (url) {
+        doDelete(url) {
             this.$confirmDelete({
                 title: this.$gettext('Delete Mount Point?'),
             }).then((result) => {
@@ -119,16 +120,6 @@ export default {
                     });
                 }
             });
-        },
-        mayNeedRestart() {
-            this.axios.get(this.restartStatusUrl).then((resp) => {
-                if (resp.data.needs_restart) {
-                    this.needsRestart();
-                }
-            });
-        },
-        needsRestart() {
-            document.dispatchEvent(new CustomEvent("station-needs-restart"));
         }
     }
 };

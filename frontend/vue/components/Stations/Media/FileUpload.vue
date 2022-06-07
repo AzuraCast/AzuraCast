@@ -10,28 +10,27 @@ import FlowUpload from '~/components/Common/FlowUpload';
 
 export default {
     name: 'FileUpload',
-    components: { FlowUpload },
+    components: {FlowUpload},
     props: {
         uploadUrl: String,
         currentDirectory: String,
         searchPhrase: String,
         validMimeTypes: {
             type: Array,
-            default () {
+            default() {
                 return ['audio/*'];
             }
         }
     },
-    data () {
+    data() {
         return {
             flow: null,
             files: []
         };
     },
     computed: {
-        flowConfiguration () {
+        flowConfiguration() {
             return {
-                testChunks: true,
                 query: () => {
                     return {
                         'currentDirectory': this.currentDirectory,
@@ -42,7 +41,7 @@ export default {
         }
     },
     methods: {
-        onFlowUpload () {
+        onFlowUpload() {
             this.$emit('relist');
         }
     }

@@ -120,14 +120,22 @@ class Flow
 
         $file->moveTo($chunkPath);
 
-        if ($flowChunkNumber === $targetChunks && self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
-            return self::createFileFromChunks(
-                $tempDir,
-                $chunkBaseDir,
-                $flowIdentifier,
-                $flowFilename,
-                $targetChunks
-            );
+        clearstatcache();
+
+        if ($flowChunkNumber === $targetChunks) {
+            // Handle last chunk.
+            if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
+                return self::createFileFromChunks(
+                    $tempDir,
+                    $chunkBaseDir,
+                    $flowIdentifier,
+                    $flowFilename,
+                    $targetChunks
+                );
+            }
+
+            // Upload succeeded, but re-trigger upload anyway for the above.
+            return $response->withStatus(204, 'No Content');
         }
 
         // Return an OK status to indicate that the chunk upload itself succeeded.
@@ -218,33 +226,10 @@ class Flow
 
         // rename the temporary directory (to avoid access from other
         // concurrent chunk uploads) and then delete it.
-        if (rename($chunkBaseDir, $chunkBaseDir . '_UNUSED')) {
-            self::rrmdir($chunkBaseDir . '_UNUSED');
-        } else {
-            self::rrmdir($chunkBaseDir);
-        }
+        (new Filesystem())->remove([
+            $chunkBaseDir,
+        ]);
 
         return $uploadedFile;
-    }
-
-    /**
-     * Delete a directory RECURSIVELY
-     *
-     * @param string $dir - directory path
-     *
-     * @link http://php.net/manual/en/function.rmdir.php
-     */
-    protected static function rrmdir(string $dir): void
-    {
-        if (is_dir($dir)) {
-            foreach (array_diff(scandir($dir, SCANDIR_SORT_NONE) ?: [], ['.', '..']) as $object) {
-                if (is_dir($dir . '/' . $object)) {
-                    self::rrmdir($dir . '/' . $object);
-                } else {
-                    unlink($dir . '/' . $object);
-                }
-            }
-            rmdir($dir);
-        }
     }
 }

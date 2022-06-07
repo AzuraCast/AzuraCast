@@ -50,8 +50,8 @@ class Reader
             /** @var Stream[] $videoStreams */
             $videoStreams = $ffprobe->streams($path)->videos()->all();
             foreach ($videoStreams as $videoStream) {
-                $codecName = $videoStream->get('codec_name');
-                if ($codecName !== 'mjpeg') {
+                $streamDisposition = $videoStream->get('disposition');
+                if (!isset($streamDisposition['attached_pic']) || 1 !== $streamDisposition['attached_pic']) {
                     continue;
                 }
 

@@ -7,7 +7,6 @@ namespace App\Controller\Api\Internal;
 use App\Entity\SftpUser;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -79,9 +78,7 @@ final class SftpAuthAction
         }
 
         $quotaRaw = $storageLocation->getStorageQuotaBytes();
-        $quota = ($quotaRaw instanceof BigInteger)
-            ? (string)$quotaRaw
-            : 0;
+        $quota = $quotaRaw ?? 0;
 
         $row = [
             'status' => 1,
@@ -96,6 +93,9 @@ final class SftpAuthAction
             ],
         ];
 
-        return $response->withJson($row);
+        return $response->withJson(
+            $row,
+            options: JSON_NUMERIC_CHECK
+        );
     }
 }

@@ -69,6 +69,8 @@ class NowPlaying implements ResolvableUrlInterface
     {
         $this->station->resolveUrls($base);
 
+        $this->live->resolveUrls($base);
+
         if ($this->now_playing instanceof ResolvableUrlInterface) {
             $this->now_playing->resolveUrls($base);
         }

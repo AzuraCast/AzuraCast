@@ -5,6 +5,22 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+There have been no new features/changes since the last stable release.
+
+## Code Quality/Technical Changes
+
+There have been no code quality/technical changes since the last stable release.
+
+## Bug Fixes
+
+There have been no new bug fixes since the last stable release.
+
+---
+
+# AzuraCast 0.17.0 (Jun 6, 2022)
+
+## New Features/Changes
+
 - **HLS Support**: We now support the HTTP Live Streaming (HLS) format from directly within the AzuraCast web UI. Once
   enabled, you can configure the various bitrates and formats of your HLS stream the same way you would configure mount
   points; unlike mount points, however, your connecting listeners will automatically pick the one that suits their

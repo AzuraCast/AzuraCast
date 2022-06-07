@@ -48,17 +48,18 @@ import {validationMixin} from "vuelidate";
 import _ from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
+import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
 
 export default {
     name: 'StationsLiquidsoapConfig',
     components: {InfoCard, BFormFieldset, BWrappedFormGroup, BFormMarkup},
     props: {
         settingsUrl: String,
-        restartStatusUrl: String,
         config: Array,
         sections: Array,
     },
     mixins: [
+        StationMayNeedRestart,
         validationMixin
     ],
     validations() {
@@ -113,14 +114,7 @@ export default {
                 this.mayNeedRestart();
                 this.relist();
             });
-        },
-        mayNeedRestart() {
-            this.axios.get(this.restartStatusUrl).then((resp) => {
-                if (resp.data.needs_restart) {
-                    document.dispatchEvent(new CustomEvent("station-needs-restart"));
-                }
-            });
-        },
+        }
     }
 }
 </script>

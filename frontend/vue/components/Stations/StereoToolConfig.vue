@@ -57,12 +57,13 @@
 <script>
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
+import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
 
 export default {
     name: 'StationsStereoToolConfiguration',
     components: {InfoCard, FlowUpload},
+    mixins: [StationMayNeedRestart],
     props: {
-        restartStatusUrl: String,
         recordHasStereoToolConfiguration: Boolean,
         apiUrl: String
     },
@@ -87,13 +88,6 @@ export default {
                 this.mayNeedRestart();
                 this.hasStereoToolConfiguration = false;
                 this.$notifySuccess();
-            });
-        },
-        mayNeedRestart() {
-            this.axios.get(this.restartStatusUrl).then((resp) => {
-                if (resp.data.needs_restart) {
-                    document.dispatchEvent(new CustomEvent("station-needs-restart"));
-                }
             });
         },
     }

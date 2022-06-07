@@ -4,8 +4,8 @@ info:
   description: 'AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by AzuraCast expose a public API for viewing now playing data, making requests and more.'
   license:
     name: 'Apache 2.0'
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.15.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 0.16.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -167,7 +167,7 @@ paths:
     get:
       tags:
         - 'Administration: Relays'
-      description: 'Returns all necessary information to relay all ''relayable'' stations.'
+      description: "Returns all necessary information to relay all 'relayable' stations."
       operationId: internalGetRelayDetails
       responses:
         '200':
@@ -303,6 +303,24 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  /admin/cpu/stats:
+    get:
+      tags:
+        - 'Administration: CPU stats'
+      description: 'Return a list of all CPU usage stats.'
+      operationId: getCpuStats
+      responses:
+        '200':
+          description: Success
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -771,7 +789,7 @@ paths:
     get:
       tags:
         - Miscellaneous
-      description: 'Returns the time (with formatting) in GMT and the user''s local time zone, if logged in.'
+      description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in."
       operationId: 3092a8238a915a0b6b324f2a90942a94
       responses:
         '200':
@@ -784,7 +802,7 @@ paths:
     get:
       tags:
         - 'Now Playing'
-      description: 'Returns a full summary of all stations'' current state.'
+      description: "Returns a full summary of all stations' current state."
       responses:
         '200':
           description: Success
@@ -798,7 +816,7 @@ paths:
     get:
       tags:
         - 'Now Playing'
-      description: 'Returns a full summary of the specified station''s current state.'
+      description: "Returns a full summary of the specified station's current state."
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -898,6 +916,64 @@ paths:
       tags:
         - 'Stations: Automation'
       description: 'Run automated assignment.'
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/station/{station_id}/fallback':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Get the custom fallback track for a station.'
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Stations: General'
+      description: 'Update the custom fallback track for the station.'
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - 'Stations: General'
+      description: 'Removes the custom fallback track for a station.'
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1091,6 +1167,152 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Api_DetailedSongHistory'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/station/{station_id}/hls_streams':
+    get:
+      tags:
+        - 'Stations: HLS Streams'
+      description: 'List all current HLS streams.'
+      operationId: getHlsStreams
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationMount'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Stations: HLS Streams'
+      description: 'Create a new HLS stream.'
+      operationId: addHlsStream
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationMount'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationMount'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+  '/station/{station_id}/hls_stream/{id}':
+    get:
+      tags:
+        - 'Stations: HLS Streams'
+      description: 'Retrieve details for a single HLS stream.'
+      operationId: getHlsStream
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'HLS Stream ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationMount'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    put:
+      tags:
+        - 'Stations: HLS Streams'
+      description: 'Update details of a single HLS stream.'
+      operationId: editHlsStream
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'HLS Stream ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationMount'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - 'Stations: HLS Streams'
+      description: 'Delete a single HLS stream.'
+      operationId: deleteHlsStream
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+        -
+          name: id
+          in: path
+          description: 'HLS Stream ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -2729,6 +2951,64 @@ paths:
       security:
         -
           ApiKey: []
+  '/station/{station_id}/stereo-tool-configuration':
+    get:
+      tags:
+        - 'Stations: Broadcasting'
+      description: 'Get the Stereo Tool configuration file for a station.'
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          description: Success
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    post:
+      tags:
+        - 'Stations: Broadcasting'
+      description: 'Update the Stereo Tool configuration file for a station.'
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
+    delete:
+      tags:
+        - 'Stations: Broadcasting'
+      description: 'Removes the Stereo Tool configuration file for a station.'
+      parameters:
+        -
+          $ref: '#/components/parameters/StationIdRequired'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '403':
+          $ref: '#/components/responses/AccessDenied'
+        '404':
+          $ref: '#/components/responses/RecordNotFound'
+        '500':
+          $ref: '#/components/responses/GenericError'
+      security:
+        -
+          ApiKey: []
   '/station/{station_id}/streamers':
     get:
       tags:
@@ -3133,6 +3413,34 @@ components:
           type: string
           example: 'https://your-region.digitaloceanspaces.com'
           nullable: true
+        sftpHost:
+          description: 'The host for SFTP adapters'
+          type: string
+          example: 127.0.0.1
+          nullable: true
+        sftpUsername:
+          description: 'The username for SFTP adapters'
+          type: string
+          example: root
+          nullable: true
+        sftpPassword:
+          description: 'The password for SFTP adapters'
+          type: string
+          example: abc123
+          nullable: true
+        sftpPort:
+          description: 'The port for SFTP adapters'
+          type: integer
+          example: 20
+          nullable: true
+        sftpPrivateKey:
+          description: 'The private key for SFTP adapters'
+          type: string
+          nullable: true
+        sftpPrivateKeyPassPhrase:
+          description: 'The private key pass phrase for SFTP adapters'
+          type: string
+          nullable: true
         storageQuota:
           type: string
           example: '50 GB'
@@ -3180,6 +3488,8 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
+        -
           properties:
             listeners_start:
               description: 'Number of listeners when the song playback started.'
@@ -3190,11 +3500,9 @@ components:
               type: integer
               example: 105
             delta_total:
-              description: 'The sum total change of listeners between the song''s start and ending.'
+              description: "The sum total change of listeners between the song's start and ending."
               type: integer
               example: 11
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
     Api_Error:
       properties:
         code:
@@ -3226,25 +3534,17 @@ components:
     Api_Listener:
       properties:
         ip:
-          description: 'The listener''s IP address'
+          description: "The listener's IP address"
           type: string
           example: 127.0.0.1
         user_agent:
-          description: 'The listener''s HTTP User-Agent'
+          description: "The listener's HTTP User-Agent"
           type: string
           example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
         hash:
           description: 'A unique identifier for this listener/user agent (used for unique calculations).'
           type: string
           example: ''
-        client:
-          description: 'The listener''s client details (extracted from user-agent)'
-          type: string
-          example: ''
-        is_mobile:
-          description: 'Whether the user-agent is likely a mobile browser.'
-          type: boolean
-          example: true
         mount_is_local:
           description: 'Whether the user is connected to a local mount point or a remote one.'
           type: boolean
@@ -3265,6 +3565,10 @@ components:
           description: 'Number of seconds that the user has been connected.'
           type: integer
           example: 30
+        device:
+          description: 'Device metadata, if available'
+          type: array
+          items: {  }
         location:
           description: 'Location metadata, if available'
           type: array
@@ -3274,29 +3578,29 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/Api_Status'
+        -
           properties:
             links:
               type: array
               items:
                 type: string
                 example: 'http://localhost/api/record/1'
-        -
-          $ref: '#/components/schemas/Api_Status'
     Api_NowPlaying_CurrentSong:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
+        -
           properties:
             elapsed:
-              description: 'Elapsed time of the song''s playback since it started.'
+              description: "Elapsed time of the song's playback since it started."
               type: integer
               example: 25
             remaining:
               description: 'Remaining time in the song, in seconds.'
               type: integer
               example: 155
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
     Api_NowPlaying_Listeners:
       properties:
         total:
@@ -3450,10 +3754,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
+        hls_enabled:
+          description: 'If the station has HLS streaming enabled.'
+          type: boolean
+          example: true
+        hls_url:
+          description: 'The full URL to listen to the HLS stream for the station.'
+          example: 'https://example.com/hls/azuratest_radio/live.m3u8'
+          nullable: true
       type: object
     Api_NowPlaying_StationMount:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
         -
           properties:
             path:
@@ -3464,8 +3778,6 @@ components:
               description: 'If the mount is the default mount for the parent station'
               type: boolean
               example: true
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
     Api_NowPlaying_StationQueue:
       properties:
         cued_at:
@@ -3521,6 +3833,8 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/HasLinks'
+        -
           properties:
             id:
               type: string
@@ -3561,11 +3875,11 @@ components:
               type: array
               items:
                 type: string
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_PodcastEpisode:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
         -
           properties:
             id:
@@ -3593,8 +3907,6 @@ components:
               nullable: true
             art_updated_at:
               type: integer
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_PodcastMedia:
       properties:
         id:
@@ -3616,7 +3928,7 @@ components:
     Api_Song:
       properties:
         id:
-          description: 'The song''s 32-character unique identifier hash'
+          description: "The song's 32-character unique identifier hash"
           type: string
           example: 9f33bbc912c19603e51be8e0987d076b
         text:
@@ -3639,6 +3951,10 @@ components:
           description: 'The song genre.'
           type: string
           example: Rock
+        isrc:
+          description: 'The International Standard Recording Code (ISRC) of the file.'
+          type: string
+          example: US28E1600021
         lyrics:
           description: 'Lyrics to the song.'
           type: string
@@ -3679,7 +3995,7 @@ components:
           type: integer
           example: 1
         song_id:
-          description: 'The song''s 32-character unique identifier hash'
+          description: "The song's 32-character unique identifier hash"
           type: string
           example: 9f33bbc912c19603e51be8e0987d076b
         artist:
@@ -3694,6 +4010,10 @@ components:
     Api_StationQueueDetailed:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
+        -
+          $ref: '#/components/schemas/HasLinks'
         -
           properties:
             sent_to_autodj:
@@ -3712,13 +4032,11 @@ components:
               type: array
               items: {  }
               nullable: true
-        -
-          $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_StationRemote:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
         -
           properties:
             id:
@@ -3790,8 +4108,6 @@ components:
               description: 'The most recent number of total (non-unique) listeners.'
               type: integer
               example: 12
-        -
-          $ref: '#/components/schemas/HasLinks'
     Api_StationRequest:
       properties:
         request_id:
@@ -3819,10 +4135,14 @@ components:
             - streamer
           example: playlist
         name:
-          description: 'Either the playlist or streamer''s display name.'
+          description: "Either the playlist or streamer's display name."
           type: string
           example: 'Example Schedule Entry'
         title:
+          description: 'The name of the event.'
+          type: string
+          example: 'Example Schedule Entry'
+        description:
           description: 'The full name of the type and name combined.'
           type: string
           example: 'Playlist: Example Schedule Entry'
@@ -3927,6 +4247,8 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
           properties:
             name:
               type: string
@@ -3937,11 +4259,11 @@ components:
               description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
               type: string
               nullable: true
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     Relay:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             base_url:
@@ -3960,21 +4282,20 @@ components:
             updated_at:
               type: integer
               example: 1609480800
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     Role:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
               type: string
               example: 'Super Administrator'
             permissions:
+              description: 'RolePermission> */'
               type: array
               items: {  }
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     Settings:
       properties:
         app_unique_identifier:
@@ -4005,7 +4326,7 @@ components:
           type: boolean
           example: 'false'
         api_access_control:
-          description: 'API ''Access-Control-Allow-Origin'' header'
+          description: "API 'Access-Control-Allow-Origin' header"
           type: string
           example: '*'
           nullable: true
@@ -4104,6 +4425,11 @@ components:
           type: integer
           example: 1
           nullable: true
+        backup_format:
+          description: 'The output format for the automated backup.'
+          type: string
+          example: zip
+          nullable: true
         backup_last_run:
           description: 'The UNIX timestamp when automated backup was last run.'
           type: integer
@@ -4126,7 +4452,7 @@ components:
           type: integer
           example: 1609480800
         external_ip:
-          description: 'This installation''s external IP.'
+          description: "This installation's external IP."
           type: string
           example: 192.168.1.1
           nullable: true
@@ -4140,7 +4466,7 @@ components:
           type: integer
           example: 1609480800
         enable_advanced_features:
-          description: 'Whether to enable ''advanced'' functionality in the system that is intended for power users.'
+          description: "Whether to enable 'advanced' functionality in the system that is intended for power users."
           type: boolean
           example: false
         mail_enabled:
@@ -4195,6 +4521,8 @@ components:
       type: object
       allOf:
         -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
           properties:
             username:
               type: string
@@ -4203,11 +4531,11 @@ components:
             publicKeys:
               type: string
               nullable: true
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     Station:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -4219,7 +4547,7 @@ components:
               type: string
               example: azuratest_radio
             is_enabled:
-              description: 'If set to ''false'', prevents the station from broadcasting but leaves it in the database.'
+              description: "If set to 'false', prevents the station from broadcasting but leaves it in the database."
               type: boolean
               example: true
             frontend_type:
@@ -4288,15 +4616,19 @@ components:
               type: boolean
               example: true
             enable_on_demand:
-              description: 'Whether this station has a public ''on-demand'' streaming and download page.'
+              description: "Whether this station has a public 'on-demand' streaming and download page."
               type: boolean
               example: true
             enable_on_demand_download:
-              description: 'Whether the ''on-demand'' page offers download capability.'
+              description: "Whether the 'on-demand' page offers download capability."
+              type: boolean
+              example: true
+            enable_hls:
+              description: 'Whether HLS streaming is enabled.'
               type: boolean
               example: true
             api_history_items:
-              description: 'The number of ''last played'' history items to show for a station in API responses.'
+              description: "The number of 'last played' history items to show for a station in API responses."
               type: integer
               example: 5
             timezone:
@@ -4309,11 +4641,31 @@ components:
               type: string
               example: 'https://example.com/image.jpg'
               nullable: true
+    StationHlsStream:
+      type: object
+      allOf:
         -
           $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              type: string
+              example: aac_lofi
+            format:
+              type: string
+              example: aac
+              nullable: true
+            bitrate:
+              type: integer
+              example: 128
+              nullable: true
     StationMedia:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          $ref: '#/components/schemas/HasSongFields'
         -
           properties:
             unique_id:
@@ -4322,7 +4674,7 @@ components:
               example: 69b536afc7ebbf16457b8645
               nullable: true
             album:
-              description: 'The name of the media file''s album.'
+              description: "The name of the media file's album."
               type: string
               example: 'Test Album'
               nullable: true
@@ -4402,15 +4754,14 @@ components:
               type: integer
               example: 1609480800
             playlists:
+              description: 'StationPlaylistMedia> */'
               type: array
               items: {  }
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
-        -
-          $ref: '#/components/schemas/HasSongFields'
     StationMount:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -4470,11 +4821,11 @@ components:
               description: 'The most recent number of total (non-unique) listeners.'
               type: integer
               example: 12
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     StationPlaylist:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -4524,7 +4875,7 @@ components:
               type: boolean
               example: true
             include_in_on_demand:
-              description: 'Whether this playlist''s media is included in ''on demand'' download/streaming if enabled.'
+              description: "Whether this playlist's media is included in 'on demand' download/streaming if enabled."
               type: boolean
               example: true
             include_in_automation:
@@ -4538,13 +4889,14 @@ components:
               type: boolean
               example: true
             schedule_items:
+              description: 'StationSchedule> */'
               type: array
               items: {  }
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     StationSchedule:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             start_time:
@@ -4561,12 +4913,12 @@ components:
             loop_once:
               type: boolean
               example: false
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     StationStreamer:
       description: 'Station streamers (DJ accounts) allowed to broadcast to a station.'
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             streamer_username:
@@ -4594,10 +4946,9 @@ components:
               example: 1609480800
               nullable: true
             schedule_items:
+              description: 'StationSchedule> */'
               type: array
               items: {  }
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     StationStreamerBroadcast:
       description: 'Each individual broadcast associated with a streamer.'
       type: object
@@ -4607,6 +4958,8 @@ components:
     StationWebhook:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             name:
@@ -4633,8 +4986,6 @@ components:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
               items: {  }
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
     HasAutoIncrementId:
       properties:
         id:
@@ -4664,6 +5015,8 @@ components:
     User:
       type: object
       allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
             email:
@@ -4696,10 +5049,9 @@ components:
               type: integer
               example: 1609480800
             roles:
+              description: 'Role> */'
               type: array
               items: {  }
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
   responses:
     Success:
       description: Success
@@ -4750,6 +5102,8 @@ tags:
   -
     name: 'Stations: General'
   -
+    name: 'Stations: Broadcasting'
+  -
     name: 'Stations: Song Requests'
   -
     name: 'Stations: Service Control'
@@ -4757,6 +5111,8 @@ tags:
     name: 'Stations: Automation'
   -
     name: 'Stations: History'
+  -
+    name: 'Stations: HLS Streams'
   -
     name: 'Stations: Listeners'
   -

@@ -5,6 +5,7 @@
 
 use App\Environment;
 use App\Event;
+use App\Exception;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -27,7 +28,7 @@ return [
     Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
 
     // HTTP client
-    GuzzleHttp\Client::class => static function (Psr\Log\LoggerInterface $logger) {
+    GuzzleHttp\HandlerStack::class => static function (Psr\Log\LoggerInterface $logger) {
         $stack = GuzzleHttp\HandlerStack::create();
 
         $stack->unshift(
@@ -49,19 +50,19 @@ return [
             )
         );
 
-        return new GuzzleHttp\Client(
-            [
-                'handler' => $stack,
-                GuzzleHttp\RequestOptions::HTTP_ERRORS => false,
-                GuzzleHttp\RequestOptions::TIMEOUT => 3.0,
-            ]
-        );
+        return $stack;
     },
 
+    GuzzleHttp\Client::class => static fn(GuzzleHttp\HandlerStack $stack) => new GuzzleHttp\Client(
+        [
+            'handler' => $stack,
+            GuzzleHttp\RequestOptions::HTTP_ERRORS => false,
+            GuzzleHttp\RequestOptions::TIMEOUT => 3.0,
+        ]
+    ),
+
     // DBAL
-    Doctrine\DBAL\Connection::class => static function (Doctrine\ORM\EntityManagerInterface $em) {
-        return $em->getConnection();
-    },
+    Doctrine\DBAL\Connection::class => static fn(Doctrine\ORM\EntityManagerInterface $em) => $em->getConnection(),
 
     // Doctrine Entity Manager
     App\Doctrine\DecoratedEntityManager::class => static function (
@@ -72,8 +73,13 @@ return [
         App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         Psr\EventDispatcher\EventDispatcherInterface $dispatcher
     ) {
+        $dbSettings = $environment->getDatabaseSettings();
+        if (isset($dbSettings['unix_socket'])) {
+            unset($dbSettings['host'], $dbSettings['port']);
+        }
+
         $connectionOptions = array_merge(
-            $environment->getDatabaseSettings(),
+            $dbSettings,
             [
                 'driver' => 'pdo_mysql',
                 'charset' => 'utf8mb4',
@@ -96,7 +102,7 @@ return [
                 $environment->getTempDirectory() . '/proxies',
                 $doctrineCache
             );
-            
+
             $config->setAutoGenerateProxyClasses(
                 Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS
             );
@@ -156,7 +162,11 @@ return [
         $settings = $environment->getRedisSettings();
 
         $redis = new Redis();
-        $redis->connect($settings['host'], $settings['port'], 15);
+        if (isset($settings['socket'])) {
+            $redis->connect($settings['socket']);
+        } else {
+            $redis->connect($settings['host'], $settings['port'], 15);
+        }
         $redis->select($settings['db']);
 
         return $redis;
@@ -339,9 +349,7 @@ return [
         return $builder->getValidator();
     },
 
-    Pheanstalk\Pheanstalk::class => static function () {
-        return Pheanstalk\Pheanstalk::create('127.0.0.1', 11300);
-    },
+    Pheanstalk\Pheanstalk::class => static fn() => Pheanstalk\Pheanstalk::create('127.0.0.1', 11300),
 
     App\MessageQueue\QueueManagerInterface::class => static function (
         Environment $environment,
@@ -357,7 +365,7 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        App\LockFactory $lockFactory,
+        \App\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
@@ -483,28 +491,19 @@ return [
         Environment $environment,
         Psr\Log\LoggerInterface $logger
     ) {
-        $uri = $environment->getUriToStations()
-            ->withPort(9001)
-            ->withPath('/RPC2');
-
         $client = new fXmlRpc\Client(
-            (string)$uri,
+            'http://localhost/RPC2',
             new fXmlRpc\Transport\PsrTransport(
-                new Http\Factory\Guzzle\RequestFactory,
-                new GuzzleHttp\Client
+                new GuzzleHttp\Psr7\HttpFactory(),
+                new GuzzleHttp\Client([
+                    'curl' => [
+                        \CURLOPT_UNIX_SOCKET_PATH => '/var/run/supervisor.sock',
+                    ],
+                ])
             )
         );
 
         return new Supervisor\Supervisor($client, $logger);
-    },
-
-    // Image Manager
-    Intervention\Image\ImageManager::class => static function () {
-        return new Intervention\Image\ImageManager(
-            [
-                'driver' => 'gd',
-            ]
-        );
     },
 
     // NowPlaying Adapter factory
@@ -512,12 +511,23 @@ return [
         GuzzleHttp\Client $httpClient,
         Psr\Log\LoggerInterface $logger
     ) {
+        $httpFactory = new GuzzleHttp\Psr7\HttpFactory();
+
         return new NowPlaying\AdapterFactory(
-            new Http\Factory\Guzzle\UriFactory,
-            new Http\Factory\Guzzle\RequestFactory,
+            $httpFactory,
+            $httpFactory,
             $httpClient,
             $logger
         );
     },
 
+    App\Assets::class => static fn(Environment $env) => new App\Assets(
+        $env,
+        require __DIR__ . '/assets.php'
+    ),
+
+    App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
+        $di,
+        require __DIR__ . '/webhooks.php'
+    ),
 ];

@@ -119,7 +119,7 @@ use OpenApi\Attributes as OA;
         ]
     )
 ]
-class CustomFieldsController extends AbstractAdminApiCrudController
+final class CustomFieldsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\CustomField::class;
     protected string $resourceRouteName = 'api:admin:custom_field';

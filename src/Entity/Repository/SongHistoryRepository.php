@@ -5,30 +5,23 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Radio\Backend\Liquidsoap\Command\FeedbackCommand;
 use App\Radio\Enums\BackendAdapters;
 use Carbon\CarbonImmutable;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
- * @extends Repository<Entity\SongHistory>
+ * @extends AbstractStationBasedRepository<Entity\SongHistory>
  */
-class SongHistoryRepository extends Repository
+final class SongHistoryRepository extends AbstractStationBasedRepository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected ListenerRepository $listenerRepository,
-        protected StationQueueRepository $stationQueueRepository,
-        protected FeedbackCommand $liquidsoapFeedback,
+        private readonly ListenerRepository $listenerRepository,
+        private readonly StationQueueRepository $stationQueueRepository,
+        private readonly FeedbackCommand $liquidsoapFeedback,
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
     /**

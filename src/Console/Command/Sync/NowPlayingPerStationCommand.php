@@ -10,11 +10,13 @@ use App\Entity\Station;
 use App\Sync\NowPlaying\Task\BuildQueueTask;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand(
     name: 'azuracast:sync:nowplaying:station',
@@ -50,8 +52,8 @@ class NowPlayingPerStationCommand extends CommandAbstract
         }
 
         $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
+            function (LogRecord $record) use ($station) {
+                $record->extra['station'] = [
                     'id' => $station->getId(),
                     'name' => $station->getName(),
                 ];
@@ -63,7 +65,7 @@ class NowPlayingPerStationCommand extends CommandAbstract
 
         try {
             $this->buildQueueTask->run($station);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 'Queue builder error: ' . $e->getMessage(),
                 ['exception' => $e]
@@ -72,7 +74,7 @@ class NowPlayingPerStationCommand extends CommandAbstract
 
         try {
             $this->nowPlayingTask->run($station);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 'Now Playing error: ' . $e->getMessage(),
                 ['exception' => $e]

@@ -16,13 +16,13 @@ class Twitter extends AbstractConnector
 {
     public const NAME = 'twitter';
 
-    protected EntityManagerInterface $em;
-
-    public function __construct(Logger $logger, Client $httpClient, EntityManagerInterface $em)
-    {
+    public function __construct(
+        Logger $logger,
+        Client $httpClient,
+        protected EntityManagerInterface $em,
+        protected HandlerStack $handlerStack,
+    ) {
         parent::__construct($logger, $httpClient);
-
-        $this->em = $em;
     }
 
     protected function getRateLimitTime(Entity\StationWebhook $webhook): ?int
@@ -55,8 +55,7 @@ class Twitter extends AbstractConnector
         }
 
         // Set up Twitter OAuth
-        /** @var HandlerStack $stack */
-        $stack = clone $this->httpClient->getConfig('handler');
+        $stack = clone $this->handlerStack;
 
         $middleware = new Oauth1(
             [

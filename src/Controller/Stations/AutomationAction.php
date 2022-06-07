@@ -8,11 +8,12 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class AutomationAction
+final class AutomationAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        string $station_id
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -23,7 +24,7 @@ class AutomationAction
             title: __('Automated Assignment'),
             props: [
                 'settingsUrl' => (string)$router->fromHere('api:stations:automation:settings'),
-                'runUrl'      => (string)$router->fromHere('api:stations:automation:run'),
+                'runUrl' => (string)$router->fromHere('api:stations:automation:run'),
             ],
         );
     }

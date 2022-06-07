@@ -1,3 +1,0 @@
----
-- name: restart cron
-  service: name=cron enabled=yes state=restarted

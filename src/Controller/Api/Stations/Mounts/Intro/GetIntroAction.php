@@ -37,18 +37,23 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class GetIntroAction
+final class GetIntroAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationMountRepository $mountRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationMountRepository $mountRepo,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         set_time_limit(600);
 
         $station = $request->getStation();
-        $mount = $mountRepo->find($station, $id);
+        $mount = $this->mountRepo->findForStation($id, $station);
 
         if ($mount instanceof Entity\StationMount) {
             $introPath = $mount->getIntroPath();

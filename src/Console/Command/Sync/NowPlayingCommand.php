@@ -6,7 +6,7 @@ namespace App\Console\Command\Sync;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Environment;
-use App\LockFactory;
+use App\Lock\LockFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,6 +14,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
+use function random_int;
 
 #[AsCommand(
     name: 'azuracast:sync:nowplaying',
@@ -81,7 +83,7 @@ class NowPlayingCommand extends AbstractSyncCommand
 
                     if (!isset($this->processes[$shortName])) {
                         $npTimestamp = (int)$activeStation['nowplaying_timestamp'];
-                        if (time() > $npTimestamp + \random_int(5, 15)) {
+                        if (time() > $npTimestamp + random_int(5, 15)) {
                             $this->start($io, $shortName);
 
                             usleep(250000);

@@ -417,7 +417,7 @@ class StationMount implements
         $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 
         $response->listeners = new Api\NowPlaying\Listeners(
-            total:  $this->listeners_total,
+            total: $this->listeners_total,
             unique: $this->listeners_unique
         );
 

@@ -10,16 +10,17 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class GetQuotaAction
+final class GetQuotaAction
 {
     public function __construct(
-        protected EntityManagerInterface $em
+        private readonly EntityManagerInterface $em
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        string $station_id,
         string $type = null
     ): ResponseInterface {
         $typeEnum = Entity\Enums\StorageLocationTypes::tryFrom($type ?? '')
@@ -35,19 +36,19 @@ class GetQuotaAction
         };
 
         return $response->withJson([
-            'used'            => $storageLocation->getStorageUsed(),
-            'used_bytes'      => (string)$storageLocation->getStorageUsedBytes(),
-            'used_percent'    => $storageLocation->getStorageUsePercentage(),
-            'available'       => $storageLocation->getStorageAvailable(),
+            'used' => $storageLocation->getStorageUsed(),
+            'used_bytes' => (string)$storageLocation->getStorageUsedBytes(),
+            'used_percent' => $storageLocation->getStorageUsePercentage(),
+            'available' => $storageLocation->getStorageAvailable(),
             'available_bytes' => (string)$storageLocation->getStorageAvailableBytes(),
-            'quota'           => $storageLocation->getStorageQuota(),
-            'quota_bytes'     => (string)$storageLocation->getStorageQuotaBytes(),
-            'is_full'         => $storageLocation->isStorageFull(),
-            'num_files'       => $numFiles,
+            'quota' => $storageLocation->getStorageQuota(),
+            'quota_bytes' => (string)$storageLocation->getStorageQuotaBytes(),
+            'is_full' => $storageLocation->isStorageFull(),
+            'num_files' => $numFiles,
         ]);
     }
 
-    protected function getNumStationMedia(Entity\Station $station): int
+    private function getNumStationMedia(Entity\Station $station): int
     {
         return (int)$this->em->createQuery(
             <<<'DQL'
@@ -58,7 +59,7 @@ class GetQuotaAction
             ->getSingleScalarResult();
     }
 
-    protected function getNumStationPodcastMedia(Entity\Station $station): int
+    private function getNumStationPodcastMedia(Entity\Station $station): int
     {
         return (int)$this->em->createQuery(
             <<<'DQL'

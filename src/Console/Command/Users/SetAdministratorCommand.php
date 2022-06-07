@@ -54,8 +54,8 @@ class SetAdministratorCommand extends CommandAbstract
             $this->em->flush();
 
             $io->text(
-                __(
-                    'The account associated with e-mail address "%s" has been set as an administrator',
+                sprintf(
+                    __('The account associated with e-mail address "%s" has been set as an administrator'),
                     $user->getEmail()
                 )
             );

@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Entity;
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class GetOrderAction extends AbstractPlaylistsAction
+final class GetOrderAction
 {
+    public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly ReloadableEntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $station = $request->getStation();
-        $record = $this->requireRecord($station, $id);
+        $record = $this->playlistRepo->requireForStation($id, $station);
 
         if (
-            Entity\Enums\PlaylistSources::Songs !== $record->getSourceEnum()
-            || Entity\Enums\PlaylistOrders::Sequential !== $record->getOrderEnum()
+            PlaylistSources::Songs !== $record->getSourceEnum()
+            || PlaylistOrders::Sequential !== $record->getOrderEnum()
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
@@ -42,7 +52,7 @@ class GetOrderAction extends AbstractPlaylistsAction
 
         return $response->withJson(
             array_map(
-                function (array $row) use ($router, $station): array {
+                static function (array $row) use ($router, $station): array {
                     $row['media']['links'] = [
                         'play' => (string)$router->named(
                             'api:stations:files:play',

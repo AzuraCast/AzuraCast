@@ -34,13 +34,18 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class PostIntroAction
+final class PostIntroAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationMountRepository $mountRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationMountRepository $mountRepo,
-        ?int $id = null
+        string $station_id,
+        ?string $id = null
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -50,13 +55,8 @@ class PostIntroAction
         }
 
         if (null !== $id) {
-            $mount = $mountRepo->find($station, $id);
-            if (null === $mount) {
-                return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
-            }
-
-            $mountRepo->setIntro($mount, $flowResponse);
+            $mount = $this->mountRepo->requireForStation($id, $station);
+            $this->mountRepo->setIntro($mount, $flowResponse);
 
             return $response->withJson(Entity\Api\Status::updated());
         }

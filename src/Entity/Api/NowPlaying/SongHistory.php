@@ -60,8 +60,6 @@ class SongHistory implements ResolvableUrlInterface
      */
     public function resolveUrls(UriInterface $base): void
     {
-        if ($this->song instanceof ResolvableUrlInterface) {
-            $this->song->resolveUrls($base);
-        }
+        $this->song->resolveUrls($base);
     }
 }

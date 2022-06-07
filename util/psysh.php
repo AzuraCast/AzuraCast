@@ -6,9 +6,9 @@ use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LogLevel;
 
-$autoloader = require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-$di = App\AppFactory::buildContainer($autoloader,
+$di = App\AppFactory::buildContainer(
     [
         App\Environment::BASE_DIR => dirname(__DIR__),
         App\Environment::LOG_LEVEL => LogLevel::DEBUG,

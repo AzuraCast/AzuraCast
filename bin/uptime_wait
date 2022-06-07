@@ -92,17 +92,17 @@ class UptimeWait
     protected function checkDatabase(): bool
     {
         try {
-            $defaultHost = $this->isStandalone() ? 'localhost' : 'mariadb';
-
             $dbOptions = [
-                    'host' => $_ENV['MYSQL_HOST'] ?? $defaultHost,
+                    'host' => $_ENV['MYSQL_HOST'] ?? 'localhost',
                     'port' => (int)($_ENV['MYSQL_PORT'] ?? 3306),
                     'dbname' => $_ENV['MYSQL_DATABASE'] ?? 'azuracast',
                     'user' => $_ENV['MYSQL_USER'] ?? 'azuracast',
                     'password' => $_ENV['MYSQL_PASSWORD'] ?? 'azur4c457',
             ];
 
-            $dsn = 'mysql:host=' . $dbOptions['host'] . ';port=' . $dbOptions['port']
+            $dsn = ('localhost' === $dbOptions['host'])
+                    ? 'mysql:unix_socket=/run/mysqld/mysqld.sock;dbname=' . $dbOptions['dbname']
+                    : 'mysql:host=' . $dbOptions['host'] . ';port=' . $dbOptions['port']
                     . ';dbname=' . $dbOptions['dbname'];
 
             $dbh = new PDO($dsn, $dbOptions['user'], $dbOptions['password']);
@@ -121,12 +121,14 @@ class UptimeWait
 
     protected function checkRedis(): bool
     {
-        $defaultHost = $this->isStandalone() ? 'localhost' : 'redis';
-
         $enableRedis = $this->envToBool($_ENV['ENABLE_REDIS'] ?? true);
-        $redisHost = $_ENV['REDIS_HOST'] ?? $defaultHost;
+        $redisHost = $_ENV['REDIS_HOST'] ?? 'localhost';
         $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
         $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
+
+        $redisSocket = ('localhost' === $redisHost)
+                ? '/run/redis/redis.sock'
+                : null;
 
         if (!$enableRedis) {
             $this->println('Redis disabled; skipping Redis check...');
@@ -135,7 +137,11 @@ class UptimeWait
 
         try {
             $redis = new Redis();
-            $redis->connect($redisHost, $redisPort, 15);
+            if (null !== $redisSocket) {
+                $redis->connect($redisSocket);
+            } else {
+                $redis->connect($redisHost, $redisPort, 15);
+            }
             $redis->select($redisDb);
 
             $redis->ping();
@@ -159,11 +165,6 @@ class UptimeWait
         return str_starts_with(strtolower($value), 'y')
                 || 'true' === strtolower($value)
                 || '1' === $value;
-    }
-
-    protected function isStandalone(): bool
-    {
-        return $this->envToBool($_ENV['DOCKER_IS_STANDALONE'] ?? false);
     }
 
     protected function println(string $line): void

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Message;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\MessageQueue\QueueManager;
 use App\MessageQueue\QueueManagerInterface;
 
 class DispatchWebhookMessage extends AbstractUniqueMessage

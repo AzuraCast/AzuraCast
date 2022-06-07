@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\Interfaces\PathAwareInterface;
-use App\Entity\Interfaces\ProcessableMediaInterface;
-use App\Entity\Interfaces\SongInterface;
+use App\Media\Metadata;
+use App\Media\MetadataInterface;
 use App\OpenApi;
 use App\Utilities\Time;
-use Azura\MetadataManager\Metadata;
-use Azura\MetadataManager\MetadataInterface;
 use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,7 +24,11 @@ use Symfony\Component\Serializer\Annotation as Serializer;
     ORM\Index(columns: ['title', 'artist', 'album'], name: 'search_idx'),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface, IdentifiableEntityInterface
+class StationMedia implements
+    Interfaces\SongInterface,
+    Interfaces\ProcessableMediaInterface,
+    Interfaces\PathAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\HasSongFields;
@@ -191,6 +191,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     ]
     protected int $art_updated_at = 0;
 
+    /** @var Collection<int, StationPlaylistMedia> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class),
@@ -199,6 +200,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     ]
     protected Collection $playlists;
 
+    /** @var Collection<int, StationMediaCustomField> */
     #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationMediaCustomField::class)]
     protected Collection $custom_fields;
 
@@ -428,13 +430,16 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     }
 
     /**
-     * @return Collection<CustomField>
+     * @return Collection<int, StationMediaCustomField>
      */
     public function getCustomFields(): Collection
     {
         return $this->custom_fields;
     }
 
+    /**
+     * @param Collection<int, StationMediaCustomField> $custom_fields
+     */
     public function setCustomFields(Collection $custom_fields): void
     {
         $this->custom_fields = $custom_fields;
@@ -462,7 +467,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     }
 
     /**
-     * @return Collection<StationPlaylistMedia>
+     * @return Collection<int, StationPlaylistMedia>
      */
     public function getPlaylists(): Collection
     {

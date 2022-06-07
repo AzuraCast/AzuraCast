@@ -20,7 +20,8 @@ class SongHistoryApiGenerator
     public function __invoke(
         Entity\SongHistory $record,
         ?UriInterface $baseUri = null,
-        bool $allowRemoteArt = false
+        bool $allowRemoteArt = false,
+        bool $isNowPlaying = false,
     ): SongHistory {
         $response = new SongHistory();
         $response->sh_id = $record->getIdRequired();
@@ -43,17 +44,19 @@ class SongHistoryApiGenerator
 
         if (null !== $record->getMedia()) {
             $response->song = ($this->songApiGenerator)(
-                $record->getMedia(),
-                $record->getStation(),
-                $baseUri,
-                $allowRemoteArt
+                song: $record->getMedia(),
+                station: $record->getStation(),
+                baseUri: $baseUri,
+                allowRemoteArt: $allowRemoteArt,
+                isNowPlaying: $isNowPlaying
             );
         } else {
             $response->song = ($this->songApiGenerator)(
-                $record,
-                $record->getStation(),
-                $baseUri,
-                $allowRemoteArt
+                song: $record,
+                station: $record->getStation(),
+                baseUri: $baseUri,
+                allowRemoteArt: $allowRemoteArt,
+                isNowPlaying: $isNowPlaying
             );
         }
 

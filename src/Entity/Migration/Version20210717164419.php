@@ -29,7 +29,7 @@ final class Version20210717164419 extends AbstractMigration
         $this->setEmptyWhereNull('station_remotes', 'url');
     }
 
-    protected function setEmptyWhereNull(string $table, string $field): void
+    private function setEmptyWhereNull(string $table, string $field): void
     {
         $this->connection->update(
             $table,

@@ -26,8 +26,8 @@ class GeoLite extends AbstractIpGeolocator
 
     public static function getAttribution(): string
     {
-        return __(
-            'This product includes GeoLite2 data created by MaxMind, available from %s.',
+        return sprintf(
+            __('This product includes GeoLite2 data created by MaxMind, available from %s.'),
             '<a href="https://www.maxmind.com">https://www.maxmind.com</a>'
         );
     }

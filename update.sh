@@ -34,12 +34,13 @@ else
 fi
 
 APP_ENV="${APP_ENV:-production}"
-UPDATE_REVISION="${UPDATE_REVISION:-77}"
+UPDATE_REVISION="${UPDATE_REVISION:-87}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV, Update revision: $UPDATE_REVISION)"
 
 if [[ ${APP_ENV} == "production" ]]; then
   if [[ -d ".git" ]]; then
+    git config --global --add safe.directory /var/azuracast/www
     git reset --hard
     git pull
   else

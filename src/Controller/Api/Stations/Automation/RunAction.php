@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Automation;
 
-use App\Controller\Api\Admin\StationsController;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -29,17 +28,22 @@ use Throwable;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class RunAction extends StationsController
+final class RunAction
 {
+    public function __construct(
+        private readonly RunAutomatedAssignmentTask $syncTask,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        RunAutomatedAssignmentTask $syncTask
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
         try {
-            $syncTask->runStation($station, true);
+            $this->syncTask->runStation($station, true);
             return $response->withJson(Entity\Api\Status::success());
         } catch (Throwable $e) {
             return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));

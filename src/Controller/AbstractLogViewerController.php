@@ -22,19 +22,23 @@ abstract class AbstractLogViewerController
 
         $stationConfigDir = $station->getRadioConfigDir();
 
-        switch ($station->getBackendTypeEnum()) {
-            case BackendAdapters::Liquidsoap:
-                $log_paths['liquidsoap_log'] = [
-                    'name' => __('Liquidsoap Log'),
-                    'path' => $stationConfigDir . '/liquidsoap.log',
-                    'tail' => true,
-                ];
-                $log_paths['liquidsoap_liq'] = [
-                    'name' => __('Liquidsoap Configuration'),
-                    'path' => $stationConfigDir . '/liquidsoap.liq',
-                    'tail' => false,
-                ];
-                break;
+        $log_paths['station_nginx'] = [
+            'name' => __('Station Nginx Configuration'),
+            'path' => $stationConfigDir . '/nginx.conf',
+            'tail' => false,
+        ];
+
+        if (BackendAdapters::Liquidsoap === $station->getBackendTypeEnum()) {
+            $log_paths['liquidsoap_log'] = [
+                'name' => __('Liquidsoap Log'),
+                'path' => $stationConfigDir . '/liquidsoap.log',
+                'tail' => true,
+            ];
+            $log_paths['liquidsoap_liq'] = [
+                'name' => __('Liquidsoap Configuration'),
+                'path' => $stationConfigDir . '/liquidsoap.liq',
+                'tail' => false,
+            ];
         }
 
         switch ($station->getFrontendTypeEnum()) {

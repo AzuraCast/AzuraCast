@@ -1,0 +1,6 @@
+[program:beanstalkd]
+command=beanstalkd -p 11300 -z 262140
+user=azuracast
+numprocs=1
+autostart=true
+autorestart=unexpected

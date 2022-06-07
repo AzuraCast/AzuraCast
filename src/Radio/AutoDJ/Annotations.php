@@ -10,6 +10,7 @@ use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Annotations implements EventSubscriberInterface
@@ -52,7 +53,7 @@ class Annotations implements EventSubscriberInterface
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         if (null === $queueRow) {
-            throw new \RuntimeException('Queue is empty for station.');
+            throw new RuntimeException('Queue is empty for station.');
         }
 
         $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);

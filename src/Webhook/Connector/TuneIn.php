@@ -36,7 +36,7 @@ class TuneIn extends AbstractConnector
 
         try {
             $response = $this->httpClient->get(
-                'http://air.radiotime.com/Playing.ashx',
+                'https://air.radiotime.com/Playing.ashx',
                 [
                     'query' => [
                         'partnerId' => $config['partner_id'],

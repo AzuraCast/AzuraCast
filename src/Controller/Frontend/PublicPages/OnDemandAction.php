@@ -11,17 +11,19 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class OnDemandAction
+final class OnDemandAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        bool $embed = false
+        string $station_id,
+        ?string $embed = null
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -33,7 +35,7 @@ class OnDemandAction
         }
 
         // Get list of custom fields.
-        $customFieldsRaw = $em->createQuery(
+        $customFieldsRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT cf.id, cf.short_name, cf.name
                 FROM App\Entity\CustomField cf ORDER BY cf.name ASC
@@ -52,12 +54,12 @@ class OnDemandAction
         $router = $request->getRouter();
 
         $pageClass = 'ondemand station-' . $station->getShortName();
-        if ($embed) {
+        if (null !== $embed) {
             $pageClass .= ' embed';
         }
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicOnDemand',
             id: 'station-on-demand',
             layout: 'minimal',

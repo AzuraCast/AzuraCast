@@ -58,7 +58,7 @@
         </div>
         <div class="datatable-main">
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                     :current-page="currentPage" @row-selected="onRowSelected" :items="itemProvider"
+                     :current-page.sync="currentPage" @row-selected="onRowSelected" :items="itemProvider"
                      :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
                      :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
@@ -205,7 +205,7 @@ export default {
         requestConfig: Function,
         requestProcess: Function
     },
-    data () {
+    data() {
         let allFields = [];
         _.forEach(this.fields, function (field) {
             allFields.push({
@@ -234,38 +234,38 @@ export default {
             flushCache: false
         };
     },
-    mounted () {
+    mounted() {
         this.loadStoredSettings();
     },
     computed: {
-        langRefreshTooltip () {
+        langRefreshTooltip() {
             return this.$gettext('Refresh rows');
         },
-        langPerPageTooltip () {
+        langPerPageTooltip() {
             return this.$gettext('Rows per page');
         },
-        langSelectFieldsTooltip () {
+        langSelectFieldsTooltip() {
             return this.$gettext('Select displayed fields');
         },
-        langSelectAll () {
+        langSelectAll() {
             return this.$gettext('Select all visible rows');
         },
-        langSelectRow () {
+        langSelectRow() {
             return this.$gettext('Select');
         },
-        langDeselectRow () {
+        langDeselectRow() {
             return this.$gettext('Deselect');
         },
-        langSearch () {
+        langSearch() {
             return this.$gettext('Search');
         },
-        langNoRecords () {
+        langNoRecords() {
             return this.$gettext('No records to display.');
         },
-        langLoading () {
+        langLoading() {
             return this.$gettext('Loading...');
         },
-        visibleFields () {
+        visibleFields() {
             let fields = this.allFields.slice();
 
             if (this.selectable) {
@@ -291,7 +291,7 @@ export default {
                 return field.visible;
             });
         },
-        selectableFields () {
+        selectableFields() {
             return _.filter(this.allFields.slice(), (field) => {
                 return field.selectable;
             });
@@ -317,8 +317,13 @@ export default {
             }
         }
     },
+    watch: {
+        filter() {
+            this.currentPage = 1;
+        }
+    },
     methods: {
-        loadStoredSettings () {
+        loadStoredSettings() {
             if (store.enabled && store.get(this.storeKey) !== undefined) {
                 let settings = store.get(this.storeKey);
 
@@ -334,7 +339,7 @@ export default {
                 }
             }
         },
-        storeSettings () {
+        storeSettings() {
             if (!store.enabled) {
                 return;
             }
@@ -348,10 +353,10 @@ export default {
 
             store.set(this.storeKey, settings);
         },
-        getPerPageLabel (num) {
+        getPerPageLabel(num) {
             return (num === 0) ? 'All' : num.toString();
         },
-        setPerPage (num) {
+        setPerPage(num) {
             this.perPage = num;
             this.storeSettings();
         },
@@ -379,15 +384,14 @@ export default {
             this.flushCache = true;
             this.refresh();
         },
-        relist () {
+        relist() {
             this.flushCache = true;
             this.refresh();
         },
-        setFilter (newTerm) {
-            this.currentPage = 1;
+        setFilter(newTerm) {
             this.filter = newTerm;
         },
-        loadItems (ctx, callback) {
+        loadItems(ctx, callback) {
             let queryParams = {
                 internal: true
             };
@@ -416,7 +420,7 @@ export default {
                 }
             }
 
-            let requestConfig = { params: queryParams };
+            let requestConfig = {params: queryParams};
             if (typeof this.requestConfig === 'function') {
                 requestConfig = this.requestConfig(requestConfig);
             }
@@ -439,18 +443,18 @@ export default {
                 callback([]);
             });
         },
-        onRowSelected (items) {
+        onRowSelected(items) {
             this.selected = items;
             this.$emit('row-selected', items);
         },
-        toggleSelected () {
+        toggleSelected() {
             if (this.allSelected) {
                 this.$refs.table.clearSelected();
             } else {
                 this.$refs.table.selectAllRows();
             }
         },
-        onFiltered (filter) {
+        onFiltered(filter) {
             this.$emit('filtered', filter);
         }
     }

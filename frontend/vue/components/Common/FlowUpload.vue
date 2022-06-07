@@ -2,11 +2,10 @@
     <div class="flow-upload">
         <div class="upload-progress">
             <div class="uploading-file pt-1" v-for="(file, _) in files" :id="'file_upload_' + file.uniqueIdentifier"
-                 :class="{ 'text-success': file.is_completed, 'text-danger': file.error }">
+                 v-if="file.is_visible" :class="{ 'text-success': file.is_completed, 'text-danger': file.error }">
                 <h6 class="fileuploadname m-0">{{ file.name }}</h6>
-                <div class="progress" v-if="!file.is_completed">
-                    <div class="progress-bar" :style="{ width: file.progress_percent+'%' }"></div>
-                </div>
+                <b-progress v-if="!file.is_completed" :value="file.progress_percent" :max="100"
+                            show-progress class="h-15 my-1"></b-progress>
                 <div class="upload-status" v-if="file.error">
                     {{ file.error }}
                 </div>
@@ -81,24 +80,24 @@ export default {
         },
         validMimeTypes: {
             type: Array,
-            default () {
+            default() {
                 return ['*'];
             }
         },
         flowConfiguration: {
             type: Object,
-            default () {
+            default() {
                 return {};
             }
         }
     },
-    data () {
+    data() {
         return {
             flow: null,
             files: []
         };
     },
-    mounted () {
+    mounted() {
         let defaultConfig = {
             target: () => {
                 return this.targetUrl
@@ -114,6 +113,7 @@ export default {
             uploadMethod: 'POST',
             testMethod: 'GET',
             method: 'multipart',
+            maxChunkRetries: 3,
             testChunks: false
         };
         let config = _.defaultsDeep({}, this.flowConfiguration, defaultConfig);
@@ -158,20 +158,28 @@ export default {
 
         this.flow.on('error', (message, file, chunk) => {
             console.error(message, file, chunk);
+
+            let messageJson = JSON.parse(message);
+
+            file.error = messageJson.message.split(': ')[1];
+            this.$emit('error', file, messageJson);
         });
 
         this.flow.on('complete', () => {
-            this.files = [];
+            _.forEach(this.files, (file) => {
+                file.is_visible = false;
+            });
+
             this.$emit('complete');
         });
     },
     computed: {
-        validMimeTypesList () {
+        validMimeTypesList() {
             return this.validMimeTypes.join(', ');
         }
     },
     methods: {
-        formatFileSize (bytes) {
+        formatFileSize(bytes) {
             return formatFileSize(bytes);
         }
     }

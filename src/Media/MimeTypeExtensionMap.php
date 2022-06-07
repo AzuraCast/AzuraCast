@@ -14,7 +14,7 @@ class MimeTypeExtensionMap extends GeneratedExtensionToMimeTypeMap
 
     public function lookupMimeType(string $extension): ?string
     {
-        return self::MIME_TYPES_FOR_EXTENSIONS[$extension]
+        return parent::lookupMimeType($extension)
             ?? self::ADDED_MIME_TYPES[$extension]
             ?? null;
     }

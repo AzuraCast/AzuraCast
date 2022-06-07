@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\CustomAssets;
 
-use App\Assets\AssetFactory;
+use App\Assets\AssetTypes;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class DeleteCustomAssetAction
+final class DeleteCustomAssetAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment,
         string $type
     ): ResponseInterface {
-        $customAsset = AssetFactory::createForType($environment, $type);
-
+        $customAsset = AssetTypes::from($type)->createObject();
         $customAsset->delete();
 
         return $response->withJson(Entity\Api\Status::success());

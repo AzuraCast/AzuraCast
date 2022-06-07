@@ -188,6 +188,7 @@ services:
       - www_uploads:/var/azuracast/uploads
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - stereo_tool_install:/var/azuracast/servers/stereo_tool
       - geolite_install:/var/azuracast/geoip
       - sftpgo_data:/var/azuracast/sftpgo/persist
       - backups:/var/azuracast/backups
@@ -207,6 +208,7 @@ volumes:
   letsencrypt: { }
   letsencrypt_acme: { }
   shoutcast2_install: { }
+  stereo_tool_install: { }
   geolite_install: { }
   sftpgo_data: { }
   station_data: { }

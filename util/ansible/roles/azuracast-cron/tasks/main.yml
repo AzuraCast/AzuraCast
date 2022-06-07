@@ -15,9 +15,22 @@
 - name: Install Cron file
   command: >-
     crontab -u azuracast {{ tmp_base }}/azuracast_cron
-  notify: restart cron
 
 - name: Clean up temp Cron file
   file:
     path: "{{ tmp_base }}/azuracast_cron"
     state: absent
+
+- name: Install Cron Supervisord conf
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/cron.conf
+    force: true
+    mode: 0644
+
+- name: Disable Cron service
+  service:
+    name: "cron"
+    enabled: false
+    state: stopped
+  ignore_errors: true

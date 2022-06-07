@@ -11,7 +11,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildQueue extends Event
 {
-    protected ?Entity\StationQueue $nextSong = null;
+    /** @var Entity\StationQueue[] */
+    protected array $nextSongs = [];
 
     protected CarbonInterface $expectedCueTime;
 
@@ -22,6 +23,7 @@ class BuildQueue extends Event
         ?CarbonInterface $expectedCueTime = null,
         ?CarbonInterface $expectedPlayTime = null,
         protected ?string $lastPlayedSongId = null,
+        protected bool $isInterrupting = false
     ) {
         $this->expectedCueTime = $expectedCueTime ?? CarbonImmutable::now($station->getTimezoneObject());
         $this->expectedPlayTime = $expectedPlayTime ?? CarbonImmutable::now($station->getTimezoneObject());
@@ -47,35 +49,47 @@ class BuildQueue extends Event
         return $this->lastPlayedSongId;
     }
 
-    public function getNextSong(): ?Entity\StationQueue
+    public function isInterrupting(): bool
     {
-        return $this->nextSong;
+        return $this->isInterrupting;
     }
 
-    public function setNextSong(?Entity\StationQueue $nextSong): bool
+    /**
+     * @return Entity\StationQueue[]
+     */
+    public function getNextSongs(): array
     {
-        if (null === $nextSong) {
+        return $this->nextSongs;
+    }
+
+    /**
+     * @param Entity\StationQueue|Entity\StationQueue[]|null $nextSongs
+     * @return bool
+     */
+    public function setNextSongs(Entity\StationQueue|array|null $nextSongs): bool
+    {
+        if (null === $nextSongs) {
             return false;
         }
 
-        if ($this->lastPlayedSongId === $nextSong->getSongId()) {
-            return false;
+        if (!is_array($nextSongs)) {
+            if ($this->lastPlayedSongId === $nextSongs->getSongId()) {
+                return false;
+            }
+
+            $this->nextSongs = [$nextSongs];
+        } else {
+            $this->nextSongs = $nextSongs;
         }
 
-        $this->nextSong = $nextSong;
         $this->stopPropagation();
         return true;
     }
 
-    public function hasNextSong(): bool
-    {
-        return (null !== $this->nextSong);
-    }
-
     public function __toString(): string
     {
-        return (null !== $this->nextSong)
-            ? (string)$this->nextSong
+        return !empty($this->nextSongs)
+            ? implode(', ', array_map('strval', $this->nextSongs))
             : 'No Song';
     }
 }

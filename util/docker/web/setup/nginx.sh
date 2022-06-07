@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
 set -x
 
-$minimal_apt_get_install nginx nginx-common nginx-extras openssl
+apt-get install -y --no-install-recommends nginx nginx-common openssl libnginx-mod-nchan
 
 # Install nginx and configuration
 cp /bd_build/web/nginx/proxy_params.conf /etc/nginx/proxy_params

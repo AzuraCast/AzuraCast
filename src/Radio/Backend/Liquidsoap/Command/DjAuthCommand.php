@@ -6,6 +6,7 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity;
 use Monolog\Logger;
+use RuntimeException;
 
 class DjAuthCommand extends AbstractCommand
 {
@@ -22,7 +23,7 @@ class DjAuthCommand extends AbstractCommand
         array $payload = []
     ): bool {
         if (!$station->getEnableStreamers()) {
-            throw new \RuntimeException('Attempted DJ authentication when streamers are disabled on this station.');
+            throw new RuntimeException('Attempted DJ authentication when streamers are disabled on this station.');
         }
 
         $user = $payload['user'] ?? '';

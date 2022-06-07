@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start'),
     ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')
 ]
-class SongHistory implements SongInterface, IdentifiableEntityInterface
+class SongHistory implements
+    Interfaces\SongInterface,
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;

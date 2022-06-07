@@ -10,34 +10,30 @@ class CertificateLocator
 {
     public static function findCertificate(): Certificate
     {
-        $environment = Environment::getInstance();
+        // Check environment variable for a virtual host.
+        $certBase = '/etc/nginx/certs';
 
-        if ($environment->isDockerRevisionAtLeast(10)) {
-            // Check environment variable for a virtual host.
-            $certBase = '/etc/nginx/certs';
+        if (is_dir($certBase)) {
+            if (!empty($_ENV['VIRTUAL_HOST'])) {
+                $vhost = $_ENV['VIRTUAL_HOST'];
+                $domainKey = $certBase . '/' . $vhost . '.key';
+                $domainCert = $certBase . '/' . $vhost . '.crt';
 
-            if (is_dir($certBase)) {
-                if (!empty($_ENV['VIRTUAL_HOST'])) {
-                    $vhost = $_ENV['VIRTUAL_HOST'];
-                    $domainKey = $certBase . '/' . $vhost . '.key';
-                    $domainCert = $certBase . '/' . $vhost . '.crt';
-
-                    if (file_exists($domainKey) && file_exists($domainCert)) {
-                        return new Certificate($domainKey, $domainCert);
-                    }
+                if (file_exists($domainKey) && file_exists($domainCert)) {
+                    return new Certificate($domainKey, $domainCert);
                 }
+            }
 
-                $generatedKey = $certBase . '/ssl.key';
-                $generatedCert = $certBase . '/ssl.crt';
-                if (file_exists($generatedKey) && file_exists($generatedCert)) {
-                    return new Certificate($generatedKey, $generatedCert);
-                }
+            $generatedKey = $certBase . '/ssl.key';
+            $generatedCert = $certBase . '/ssl.crt';
+            if (file_exists($generatedKey) && file_exists($generatedCert)) {
+                return new Certificate($generatedKey, $generatedCert);
+            }
 
-                $defaultKey = $certBase . '/default.key';
-                $defaultCert = $certBase . '/default.crt';
-                if (file_exists($defaultKey) && file_exists($defaultCert)) {
-                    return new Certificate($defaultKey, $defaultCert);
-                }
+            $defaultKey = $certBase . '/default.key';
+            $defaultCert = $certBase . '/default.crt';
+            if (file_exists($defaultKey) && file_exists($defaultCert)) {
+                return new Certificate($defaultKey, $defaultCert);
             }
         }
 

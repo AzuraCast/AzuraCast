@@ -7,6 +7,9 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 use App\Entity;
 use App\Radio\Enums\BackendAdapters;
 use Monolog\Logger;
+use Monolog\LogRecord;
+use ReflectionClass;
+use Throwable;
 
 abstract class AbstractCommand
 {
@@ -21,8 +24,8 @@ abstract class AbstractCommand
         ?array $payload = []
     ): string {
         $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
+            function (LogRecord $record) use ($station) {
+                $record->extra['station'] = [
                     'id' => $station->getId(),
                     'name' => $station->getName(),
                 ];
@@ -30,7 +33,7 @@ abstract class AbstractCommand
             }
         );
 
-        $className = (new \ReflectionClass(static::class))->getShortName();
+        $className = (new ReflectionClass(static::class))->getShortName();
         $this->logger->debug(
             sprintf('Running Internal Command %s', $className),
             [
@@ -49,12 +52,13 @@ abstract class AbstractCommand
 
             if (true === $result) {
                 return 'true';
-            } elseif (false === $result) {
-                return 'false';
-            } else {
-                return (string)$result;
             }
-        } catch (\Throwable $e) {
+            if (false === $result) {
+                return 'false';
+            }
+
+            return (string)$result;
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
                     'Error with Internal Command %s: %s',

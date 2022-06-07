@@ -222,7 +222,7 @@ class StationSchedule implements IdentifiableEntityInterface
             7 => 'Sun',
         ];
 
-        if (null !== $days) {
+        if ([] !== $days) {
             $displayDays = [];
             foreach ($days as $day) {
                 $displayDays[] = $daysOfWeek[$day];

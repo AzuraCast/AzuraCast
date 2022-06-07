@@ -18,19 +18,20 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class ListAction
+final class ListAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\CustomFieldRepository $customFieldRepo,
-        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        private readonly CacheInterface $cache,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        CacheInterface $cache
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -41,7 +42,7 @@ class ListAction
         }
 
         $cacheKey = 'ondemand_' . $station->getId();
-        $trackList = $cache->get(
+        $trackList = $this->cache->get(
             $cacheKey,
             function (CacheItem $item) use ($station, $request) {
                 $item->expiresAfter(300);
@@ -51,9 +52,9 @@ class ListAction
 
         $trackList = new ArrayCollection($trackList);
 
-        $params = $request->getQueryParams();
+        $queryParams = $request->getQueryParams();
 
-        $searchPhrase = trim($params['searchPhrase'] ?? '');
+        $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
         if (!empty($searchPhrase)) {
             $searchFields = [
                 'media_title',
@@ -79,9 +80,9 @@ class ListAction
             );
         }
 
-        if (!empty($params['sort'])) {
-            $sortField = $params['sort'];
-            $sortDirection = $params['sortOrder'] ?? Criteria::ASC;
+        if (!empty($queryParams['sort'])) {
+            $sortField = $queryParams['sort'];
+            $sortDirection = $queryParams['sortOrder'] ?? Criteria::ASC;
 
             $criteria = new Criteria();
             $criteria->orderBy([$sortField => $sortDirection]);
@@ -95,7 +96,7 @@ class ListAction
     /**
      * @return mixed[]
      */
-    protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
+    private function buildTrackList(Entity\Station $station, RouterInterface $router): array
     {
         $list = [];
 
@@ -128,7 +129,10 @@ class ListAction
                 $row = new Entity\Api\StationOnDemand();
 
                 $row->track_id = $media->getUniqueId();
-                $row->media = ($this->songApiGenerator)($media, $station);
+                $row->media = ($this->songApiGenerator)(
+                    song: $media,
+                    station: $station
+                );
                 $row->playlist = $playlist['name'];
                 $row->download_url = (string)$router->named(
                     'api:stations:ondemand:download',

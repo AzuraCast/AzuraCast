@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Attributes\Auditable;
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use OpenApi\Attributes as OA;
+use phpseclib3\Crypt\PublicKeyLoader;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;
@@ -21,7 +22,9 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['username']),
     Auditable
 ]
-class SftpUser implements IdentifiableEntityInterface
+class SftpUser implements
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -101,7 +104,9 @@ class SftpUser implements IdentifiableEntityInterface
 
         $pubKeysRaw = trim($this->publicKeys);
         if (!empty($pubKeysRaw)) {
-            return array_filter(array_map('trim', explode("\n", $pubKeysRaw)));
+            return array_filter(
+                array_map([$this, 'cleanPublicKey'], explode("\n", $pubKeysRaw))
+            );
         }
 
         return [];
@@ -120,9 +125,19 @@ class SftpUser implements IdentifiableEntityInterface
 
         if (!empty($pubKey)) {
             $pubKeys = $this->getPublicKeysArray();
-            return in_array($pubKey, $pubKeys, true);
+            return in_array($this->cleanPublicKey($pubKey), $pubKeys, true);
         }
 
         return false;
+    }
+
+    public function cleanPublicKey(string $pubKeyRaw): ?string
+    {
+        try {
+            $pkObj = PublicKeyLoader::loadPublicKey(trim($pubKeyRaw));
+            return trim($pkObj->toString('OpenSSH', ['comment' => '']));
+        } catch (Exception) {
+            return null;
+        }
     }
 }

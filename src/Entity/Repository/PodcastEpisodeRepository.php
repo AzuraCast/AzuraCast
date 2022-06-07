@@ -7,32 +7,24 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Exception\InvalidPodcastMediaFileException;
 use App\Exception\StorageLocationFullException;
+use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use Azura\Files\ExtendedFilesystemInterface;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\PodcastEpisode>
  */
-class PodcastEpisodeRepository extends Repository
+final class PodcastEpisodeRepository extends Repository
 {
     public function __construct(
-        protected ImageManager $imageManager,
-        protected MetadataManager $metadataManager,
         ReloadableEntityManagerInterface $entityManager,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger
+        private readonly MetadataManager $metadataManager
     ) {
-        parent::__construct($entityManager, $serializer, $environment, $logger);
+        parent::__construct($entityManager);
     }
 
     public function fetchEpisodeForStation(Entity\Station $station, string $episodeId): ?Entity\PodcastEpisode
@@ -85,17 +77,7 @@ class PodcastEpisodeRepository extends Repository
         Entity\PodcastEpisode $episode,
         string $rawArtworkString
     ): void {
-        $episodeArtwork = $this->imageManager->make($rawArtworkString);
-        $episodeArtwork->fit(
-            3000,
-            3000,
-            function (Constraint $constraint): void {
-                $constraint->upsize();
-            }
-        );
-
-        $episodeArtwork->encode('jpg');
-        $episodeArtworkString = $episodeArtwork->getEncoded();
+        $episodeArtworkString = AlbumArt::resize($rawArtworkString);
 
         $storageLocation = $episode->getPodcast()->getStorageLocation();
         $fs = $storageLocation->getFilesystem();

@@ -11,7 +11,6 @@ use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\Flash;
 use App\Utilities\Strings;
-use App\Version;
 
 class BaseUrlCheck
 {
@@ -55,8 +54,8 @@ class BaseUrlCheck
             // phpcs:enable Generic.Files.LineLength
 
             $notification = new Notification();
-            $notification->title = __(
-                'Your "Base URL" setting (%s) does not match the URL you are currently using (%s).',
+            $notification->title = sprintf(
+                __('Your "Base URL" setting (%s) does not match the URL you are currently using (%s).'),
                 Strings::truncateUrl((string)$baseUriWithoutRequest),
                 Strings::truncateUrl((string)$baseUriWithRequest)
             );

@@ -100,6 +100,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[Attributes\AuditIgnore]
     protected ?string $storageUsed = null;
 
+    /** @var Collection<int, StationMedia> */
     #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]
     protected Collection $media;
 
@@ -462,7 +463,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationMedia>
+     * @return Collection<int, StationMedia>
      */
     public function getMedia(): Collection
     {
@@ -508,7 +509,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
             $client = $this->getS3Client();
             $client->listObjectsV2(
                 [
-                    'Bucket'   => $this->s3Bucket,
+                    'Bucket' => $this->s3Bucket,
                     'max-keys' => 1,
                 ]
             );
@@ -550,12 +551,12 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $s3Options = array_filter(
             [
                 'credentials' => [
-                    'key'    => $this->s3CredentialKey,
+                    'key' => $this->s3CredentialKey,
                     'secret' => $this->s3CredentialSecret,
                 ],
-                'region'      => $this->s3Region,
-                'version'     => $this->s3Version,
-                'endpoint'    => $this->s3Endpoint,
+                'region' => $this->s3Region,
+                'version' => $this->s3Version,
+                'endpoint' => $this->s3Endpoint,
             ]
         );
         return new S3Client($s3Options);

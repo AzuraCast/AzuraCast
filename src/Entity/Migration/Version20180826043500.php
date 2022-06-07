@@ -17,10 +17,10 @@ final class Version20180826043500 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        $this->changeCharset('utf8mb4', 'utf8mb4_general_ci');
+        $this->changeCharset('utf8mb4_general_ci');
     }
 
-    private function changeCharset(string $charset, string $collate): void
+    private function changeCharset(string $collate): void
     {
         $db_name = $this->connection->getDatabase() ?? 'azuracast';
 
@@ -51,7 +51,9 @@ final class Version20180826043500 extends AbstractMigration
         ];
 
         $sqlLines = [
-            'ALTER DATABASE ' . $this->connection->quoteIdentifier($db_name) . ' CHARACTER SET = ' . $charset . ' COLLATE = ' . $collate,
+            'ALTER DATABASE ' . $this->connection->quoteIdentifier(
+                $db_name
+            ) . ' CHARACTER SET = utf8mb4 COLLATE = ' . $collate,
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',
         ];
@@ -60,7 +62,11 @@ final class Version20180826043500 extends AbstractMigration
         }
 
         foreach ($tables as $table_name) {
-            $this->addSql('ALTER TABLE ' . $this->connection->quoteIdentifier($table_name) . ' CONVERT TO CHARACTER SET ' . $charset . ' COLLATE ' . $collate);
+            $this->addSql(
+                'ALTER TABLE ' . $this->connection->quoteIdentifier(
+                    $table_name
+                ) . ' CONVERT TO CHARACTER SET utf8mb4 COLLATE ' . $collate
+            );
         }
 
         $sqlLines = [
@@ -77,6 +83,6 @@ final class Version20180826043500 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        $this->changeCharset('utf8mb4', 'utf8mb4_unicode_ci');
+        $this->changeCharset('utf8mb4_unicode_ci');
     }
 }

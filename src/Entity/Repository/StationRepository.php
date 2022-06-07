@@ -4,33 +4,28 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Assets\AssetFactory;
+use App\Assets\AlbumArtCustomAsset;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Flysystem\StationFilesystems;
+use App\Radio\Backend\AbstractBackend;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Service\Flow\UploadedFile;
 use Azura\Files\ExtendedFilesystemInterface;
 use Closure;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\Station>
  */
-class StationRepository extends Repository
+final class StationRepository extends Repository
 {
     public function __construct(
-        protected SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger
+        private readonly SettingsRepository $settingsRepo
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
     /**
@@ -55,15 +50,14 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param bool|string $add_blank
-     * @param Closure|NULL $display
-     * @param string $pk
-     * @param string $order_by
-     *
-     * @return mixed[]
+     * @inheritDoc
      */
-    public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name'): array
-    {
+    public function fetchSelect(
+        bool|string $add_blank = false,
+        Closure $display = null,
+        string $pk = 'id',
+        string $order_by = 'name'
+    ): array {
         $select = [];
 
         // Specify custom text in the $add_blank parameter to override.
@@ -104,11 +98,24 @@ class StationRepository extends Repository
         // Create default mountpoints if station supports them.
         if ($frontend_adapter->supportsMounts()) {
             // Create default mount points.
-            foreach ($frontend_adapter->getDefaultMounts() as $mount_point) {
-                $mount_record = new Entity\StationMount($station);
-                $this->fromArray($mount_record, $mount_point);
+            foreach ($frontend_adapter->getDefaultMounts($station) as $mount) {
+                $this->em->persist($mount);
+            }
+        }
 
-                $this->em->persist($mount_record);
+        $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    public function resetHls(Entity\Station $station, AbstractBackend $backend): void
+    {
+        foreach ($station->getHlsStreams() as $hlsStream) {
+            $this->em->remove($hlsStream);
+        }
+
+        if ($station->getEnableHls() && $backend->supportsHls()) {
+            foreach ($backend->getDefaultHlsStreams($station) as $hlsStream) {
+                $this->em->persist($hlsStream);
             }
         }
 
@@ -166,11 +173,7 @@ class StationRepository extends Repository
         }
 
         $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
-        if (null !== $customUrl) {
-            return $customUrl;
-        }
-
-        return AssetFactory::createAlbumArt($this->environment)->getUri();
+        return $customUrl ?? (new AlbumArtCustomAsset())->getUri();
     }
 
     public function setFallback(
@@ -217,6 +220,57 @@ class StationRepository extends Repository
         $this->doDeleteFallback($station, $fs);
 
         $station->setFallbackPath(null);
+        $this->em->persist($station);
+        $this->em->flush();
+    }
+
+    public function setStereoToolConfiguration(
+        Entity\Station $station,
+        UploadedFile $file,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+
+        $backendConfig = $station->getBackendConfig();
+
+        if (null !== $backendConfig->getStereoToolConfigurationPath()) {
+            $this->doDeleteStereoToolConfiguration($station, $fs);
+            $backendConfig->setStereoToolConfigurationPath(null);
+        }
+
+        $stereoToolConfigurationPath = 'stereo-tool.sts';
+        $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $stereoToolConfigurationPath);
+
+        $backendConfig->setStereoToolConfigurationPath($stereoToolConfigurationPath);
+        $station->setBackendConfig($backendConfig);
+
+        $this->em->persist($station);
+        $this->em->flush();
+    }
+
+    public function doDeleteStereoToolConfiguration(
+        Entity\Station $station,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $backendConfig = $station->getBackendConfig();
+        if (null === $backendConfig->getStereoToolConfigurationPath()) {
+            return;
+        }
+
+        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+        $fs->delete($backendConfig->getStereoToolConfigurationPath());
+    }
+
+    public function clearStereoToolConfiguration(
+        Entity\Station $station,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $this->doDeleteStereoToolConfiguration($station, $fs);
+
+        $backendConfig = $station->getBackendConfig();
+        $backendConfig->setStereoToolConfigurationPath(null);
+        $station->setBackendConfig($backendConfig);
+
         $this->em->persist($station);
         $this->em->flush();
     }

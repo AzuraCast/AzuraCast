@@ -12,6 +12,7 @@ use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
 use GuzzleHttp\Psr7\Uri;
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 
@@ -234,7 +235,7 @@ class StationRemote implements
     public function setType(string $type): void
     {
         if (null === RemoteAdapters::tryFrom($type)) {
-            throw new \InvalidArgumentException('Invalid type specified.');
+            throw new InvalidArgumentException('Invalid type specified.');
         }
 
         $this->type = $type;
@@ -270,7 +271,6 @@ class StationRemote implements
         $this->admin_password = $admin_password;
     }
 
-    /** @inheritdoc */
     public function getAutodjMount(): ?string
     {
         if (RemoteAdapters::Icecast !== $this->getTypeEnum()) {
@@ -314,7 +314,6 @@ class StationRemote implements
      * StationMountInterface compliance methods
      */
 
-    /** @inheritdoc */
     public function getAutodjPort(): ?int
     {
         return $this->getSourcePort() ?? $this->getUrlAsUri()->getPort();
@@ -402,7 +401,7 @@ class StationRemote implements
         $response->url = $adapter->getPublicUrl($this);
 
         $response->listeners = new Api\NowPlaying\Listeners(
-            total:  $this->listeners_total,
+            total: $this->listeners_total,
             unique: $this->listeners_unique
         );
 

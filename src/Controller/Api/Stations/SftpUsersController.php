@@ -133,7 +133,7 @@ use OpenApi\Attributes as OA;
         ]
     )
 ]
-class SftpUsersController extends AbstractStationApiCrudController
+final class SftpUsersController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\SftpUser::class;
     protected string $resourceRouteName = 'api:stations:sftp-user';

@@ -10,6 +10,6 @@ use App\Entity;
 /**
  * @extends Repository<Entity\Role>
  */
-class RoleRepository extends Repository
+final class RoleRepository extends Repository
 {
 }

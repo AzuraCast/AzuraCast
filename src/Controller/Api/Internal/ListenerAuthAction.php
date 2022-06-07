@@ -12,13 +12,18 @@ use App\Radio\Frontend\Blocklist\BlocklistParser;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-class ListenerAuthAction
+final class ListenerAuthAction
 {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly BlocklistParser $blocklistParser
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        LoggerInterface $logger,
-        BlocklistParser $blocklistParser
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -26,7 +31,7 @@ class ListenerAuthAction
         if (!$acl->isAllowed(StationPermissions::View, $station->getId())) {
             $authKey = $request->getQueryParam('api_auth', '');
             if (!$station->validateAdapterApiKey($authKey)) {
-                $logger->error(
+                $this->logger->error(
                     'Invalid API key supplied for internal API call.',
                     [
                         'station_id' => $station->getId(),
@@ -42,8 +47,8 @@ class ListenerAuthAction
         $listenerIp = $request->getParam('ip') ?? '';
 
         if (
-            $blocklistParser->isIpExplicitlyAllowed($listenerIp, $station)
-            || !$blocklistParser->isCountryBanned($listenerIp, $station)
+            $this->blocklistParser->isIpExplicitlyAllowed($listenerIp, $station)
+            || !$this->blocklistParser->isCountryBanned($listenerIp, $station)
         ) {
             return $response->withHeader('icecast-auth-user', '1');
         }

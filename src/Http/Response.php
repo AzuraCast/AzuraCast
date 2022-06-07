@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http;
 
+use App\Nginx\CustomUrls;
 use Azura\Files\Adapter\LocalAdapterInterface;
 use Azura\Files\ExtendedFilesystemInterface;
 use InvalidArgumentException;
 use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 
 final class Response extends \Slim\Http\Response
 {
@@ -81,36 +81,6 @@ final class Response extends \Slim\Http\Response
     }
 
     /**
-     * Stream the contents of a file directly through to the response.
-     *
-     * @param string $file_path
-     * @param null $file_name
-     *
-     * @return static
-     */
-    public function renderFile(string $file_path, $file_name = null): Response
-    {
-        set_time_limit(600);
-
-        if (null === $file_name) {
-            $file_name = basename($file_path);
-        }
-
-        $stream = $this->streamFactory->createStreamFromFile($file_path);
-
-        $response = $this->response
-            ->withHeader('Pragma', 'public')
-            ->withHeader('Expires', '0')
-            ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-            ->withHeader('Content-Type', mime_content_type($file_path) ?: '')
-            ->withHeader('Content-Length', (string)filesize($file_path))
-            ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name)
-            ->withBody($stream);
-
-        return new Response($response, $this->streamFactory);
-    }
-
-    /**
      * Write a string of file data to the response as if it is a file for download.
      *
      * @param string $file_data
@@ -132,37 +102,6 @@ final class Response extends \Slim\Http\Response
         }
 
         $response->getBody()->write($file_data);
-
-        return new Response($response, $this->streamFactory);
-    }
-
-    /**
-     * Write a stream to the response as if it is a file for download.
-     *
-     * @param StreamInterface $fileStream
-     * @param string $contentType
-     * @param string|null $fileName
-     *
-     * @return static
-     */
-    public function renderStreamAsFile(
-        StreamInterface $fileStream,
-        string $contentType,
-        ?string $fileName = null
-    ): Response {
-        set_time_limit(600);
-
-        $response = $this->response
-            ->withHeader('Pragma', 'public')
-            ->withHeader('Expires', '0')
-            ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-            ->withHeader('Content-Type', $contentType);
-
-        if ($fileName !== null) {
-            $response = $response->withHeader('Content-Disposition', 'attachment; filename=' . $fileName);
-        }
-
-        $response = $response->withBody($fileStream);
 
         return new Response($response, $this->streamFactory);
     }
@@ -196,21 +135,11 @@ final class Response extends \Slim\Http\Response
 
         $adapter = $filesystem->getAdapter();
         if ($adapter instanceof LocalAdapterInterface) {
-            $localPath = $filesystem->getLocalPath($path);
-
             // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
-            $specialPaths = [
-                '/var/azuracast/backups' => '/internal/backups',
-                '/var/azuracast/stations' => '/internal/stations',
-            ];
-
-            foreach ($specialPaths as $diskPath => $nginxPath) {
-                if (str_starts_with($localPath, $diskPath)) {
-                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
-
-                    return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
-                        ->withHeader('X-Accel-Redirect', $accelPath);
-                }
+            $accelPath = CustomUrls::getXAccelPath($filesystem->getLocalPath($path));
+            if (null !== $accelPath) {
+                return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
+                    ->withHeader('X-Accel-Redirect', $accelPath);
             }
         }
 

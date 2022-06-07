@@ -11,11 +11,12 @@ use App\Http\ServerRequest;
 use League\Flysystem\UnableToCreateDirectory;
 use Psr\Http\Message\ResponseInterface;
 
-class MakeDirectoryAction
+final class MakeDirectoryAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        string $station_id
     ): ResponseInterface {
         $currentDir = $request->getParam('currentDirectory', '');
         $newDirName = $request->getParam('name', '');

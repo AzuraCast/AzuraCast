@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
-use App\Environment;
-use Azura\Normalizer\DoctrineEntityNormalizer;
+use App\Exception\NotFoundException;
 use Closure;
 use Doctrine\Persistence\ObjectRepository;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @template TEntity as object
@@ -24,10 +20,7 @@ class Repository
     protected ObjectRepository $repository;
 
     public function __construct(
-        protected ReloadableEntityManagerInterface $em,
-        protected Serializer $serializer,
-        protected Environment $environment,
-        protected LoggerInterface $logger
+        protected ReloadableEntityManagerInterface $em
     ) {
         if (!isset($this->entityClass)) {
             /** @var class-string<TEntity> $defaultClass */
@@ -40,9 +33,37 @@ class Repository
         }
     }
 
+    /**
+     * @return ObjectRepository<TEntity>
+     */
     public function getRepository(): ObjectRepository
     {
         return $this->repository;
+    }
+
+    public function getEntityManager(): ReloadableEntityManagerInterface
+    {
+        return $this->em;
+    }
+
+    /**
+     * @return TEntity|null
+     */
+    public function find(int|string $id): ?object
+    {
+        return $this->em->find($this->entityClass, $id);
+    }
+
+    /**
+     * @return TEntity
+     */
+    public function requireRecord(int|string $id): object
+    {
+        $record = $this->find($id);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 
     /**
@@ -108,43 +129,5 @@ class Repository
         }
 
         return $select;
-    }
-
-    /**
-     * FromArray (A Doctrine 1 Classic)
-     *
-     * @param object $entity
-     * @param array $source
-     */
-    public function fromArray(object $entity, array $source): object
-    {
-        return $this->serializer->denormalize(
-            $source,
-            get_class($entity),
-            null,
-            [
-                AbstractNormalizer::OBJECT_TO_POPULATE => $entity,
-            ]
-        );
-    }
-
-    /**
-     * ToArray (A Doctrine 1 Classic)
-     *
-     * @param object $entity
-     * @param bool $deep Iterate through collections associated with this item.
-     * @param bool $form_mode Return values in a format suitable for ZendForm setDefault function.
-     *
-     * @return mixed[]
-     */
-    public function toArray(object $entity, bool $deep = false, bool $form_mode = false): array
-    {
-        return (array)$this->serializer->normalize(
-            $entity,
-            null,
-            [
-                DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => $form_mode,
-            ]
-        );
     }
 }

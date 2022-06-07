@@ -8,6 +8,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 class MoveBroadcastsTask extends AbstractTask
 {
@@ -35,7 +36,7 @@ class MoveBroadcastsTask extends AbstractTask
             try {
                 /** @var Entity\StorageLocation $storageLocation */
                 $this->processForStorageLocation($storageLocation);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
                     'storageLocation' => (string)$storageLocation,
                 ]);
@@ -63,7 +64,7 @@ class MoveBroadcastsTask extends AbstractTask
                 ->notName('*.tmp')
                 ->depth(1);
 
-            $this->logger->debug('Files', ['files', iterator_to_array($finder)]);
+            $this->logger->debug('Files', ['files', iterator_to_array($finder, false)]);
 
             foreach ($finder as $file) {
                 $this->logger->debug('File', ['file' => $file]);

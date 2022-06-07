@@ -11,21 +11,21 @@ use App\Http\Router;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PlayerAction
+final class PlayerAction
 {
+    public function __construct(
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly Entity\Repository\StationRepository $stationRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
-        Entity\Repository\CustomFieldRepository $customFieldRepo,
-        Entity\Repository\StationRepository $stationRepo,
-        ?string $embed = null
+        string $station_id,
+        ?string $embed = null,
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response
-            ->withHeader('X-Frame-Options', '*')
-            ->withHeader('X-Robots-Tag', 'index, nofollow');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -34,10 +34,10 @@ class PlayerAction
 
         $baseUrl = $request->getRouter()->getBaseUrl();
 
-        $np = $npApiGenerator->currentOrEmpty($station);
+        $np = $this->npApiGenerator->currentOrEmpty($station);
         $np->resolveUrls($baseUrl);
 
-        $defaultAlbumArtUri = $stationRepo->getDefaultAlbumArtUrl($station);
+        $defaultAlbumArtUri = $this->stationRepo->getDefaultAlbumArtUrl($station);
         $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
 
         $autoplay = !empty($request->getQueryParam('autoplay'));
@@ -47,7 +47,9 @@ class PlayerAction
             : 'frontend/public/index';
 
         return $request->getView()->renderToResponse(
-            $response,
+            $response
+                ->withHeader('X-Frame-Options', '*')
+                ->withHeader('X-Robots-Tag', 'index, nofollow'),
             $templateName,
             [
                 'isSocial' => ('social' === $embed),
@@ -55,7 +57,7 @@ class PlayerAction
                 'station' => $station,
                 'defaultAlbumArt' => $defaultAlbumArt,
                 'nowplaying' => $np,
-                'customFields' => $customFieldRepo->fetchArray(),
+                'customFields' => $this->customFieldRepo->fetchArray(),
             ]
         );
     }

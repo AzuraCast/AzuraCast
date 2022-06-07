@@ -9,12 +9,16 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PermissionsAction
+final class PermissionsAction
 {
+    public function __construct(
+        private readonly StationRepository $stationRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        StationRepository $stationRepo
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -27,7 +31,7 @@ class PermissionsAction
             title: __('Roles & Permissions'),
             props: [
                 'listUrl' => (string)$router->fromHere('api:admin:roles'),
-                'stations' => $stationRepo->fetchSelect(),
+                'stations' => $this->stationRepo->fetchSelect(),
                 'globalPermissions' => $actions['global'],
                 'stationPermissions' => $actions['station'],
             ]

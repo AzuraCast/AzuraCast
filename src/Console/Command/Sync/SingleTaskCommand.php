@@ -6,9 +6,12 @@ namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
 use App\Sync\Task\AbstractTask;
+use InvalidArgumentException;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
+use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,7 +46,7 @@ class SingleTaskCommand extends CommandAbstract
 
         try {
             $this->runTask($task);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $io->error($e->getMessage());
             return 1;
         }
@@ -60,12 +63,12 @@ class SingleTaskCommand extends CommandAbstract
         bool $force = false
     ): void {
         if (!$this->di->has($task)) {
-            throw new \InvalidArgumentException('Task not found.');
+            throw new InvalidArgumentException('Task not found.');
         }
 
         $taskClass = $this->di->get($task);
         if (!($taskClass instanceof AbstractTask)) {
-            throw new \InvalidArgumentException('Specified class is not a synchronized task.');
+            throw new InvalidArgumentException('Specified class is not a synchronized task.');
         }
 
         $taskShortName = self::getClassShortName($task);
@@ -73,8 +76,8 @@ class SingleTaskCommand extends CommandAbstract
 
         $startTime = microtime(true);
         $this->logger->pushProcessor(
-            function ($record) use ($taskShortName) {
-                $record['extra']['task'] = $taskShortName;
+            function (LogRecord $record) use ($taskShortName) {
+                $record->extra['task'] = $taskShortName;
                 return $record;
             }
         );
@@ -106,6 +109,6 @@ class SingleTaskCommand extends CommandAbstract
      */
     public static function getClassShortName(string $taskClass): string
     {
-        return (new \ReflectionClass($taskClass))->getShortName();
+        return (new ReflectionClass($taskClass))->getShortName();
     }
 }

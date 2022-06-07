@@ -135,12 +135,10 @@ class UsersController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\User::class;
     protected string $resourceRouteName = 'api:admin:user';
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
             ->from(Entity\User::class, 'e');
@@ -179,7 +177,7 @@ class UsersController extends AbstractAdminApiCrudController
         $return['is_me'] = $currentUser->getIdRequired() === $record->getIdRequired();
 
         $return['links'] = [
-            'self'       => (string)$router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
@@ -187,7 +185,7 @@ class UsersController extends AbstractAdminApiCrudController
             'masquerade' => (string)$router->fromHere(
                 route_name: 'account:masquerade',
                 route_params: [
-                    'id'   => $record->getIdRequired(),
+                    'id' => $record->getIdRequired(),
                     'csrf' => $csrf->generate(MasqueradeAction::CSRF_NAMESPACE),
                 ],
                 absolute: !$isInternal
@@ -197,8 +195,11 @@ class UsersController extends AbstractAdminApiCrudController
         return $return;
     }
 
-    public function editAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        string $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {
@@ -217,8 +218,11 @@ class UsersController extends AbstractAdminApiCrudController
         return $response->withJson(Entity\Api\Status::updated());
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        string $id
+    ): ResponseInterface {
         $record = $this->getRecord($id);
 
         if (null === $record) {

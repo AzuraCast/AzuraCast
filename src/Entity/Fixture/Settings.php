@@ -28,8 +28,7 @@ class Settings extends AbstractFixture
         $settings->setExternalIp('127.0.0.1');
         $settings->setEnableAdvancedFeatures(true);
 
-        $isDemoMode = (!empty(getenv('INIT_DEMO_API_KEY') ?: ''));
-        if ($isDemoMode) {
+        if (!empty(getenv('INIT_DEMO_API_KEY') ?: '')) {
             $settings->setAnalytics(Entity\Enums\AnalyticsLevel::NoIp->value);
             $settings->setCheckForUpdates(false);
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Backup;
 
-use App\Console\Command\CommandAbstract;
-use App\Console\Command\Traits;
 use App\Entity;
 use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Throwable;
 
 use const PATHINFO_EXTENSION;
 
@@ -24,22 +23,20 @@ use const PATHINFO_EXTENSION;
     name: 'azuracast:backup',
     description: 'Back up the AzuraCast database and statistics (and optionally media).',
 )]
-class BackupCommand extends CommandAbstract
+class BackupCommand extends AbstractBackupCommand
 {
-    use Traits\PassThruProcess;
-
     public function __construct(
-        protected Environment $environment,
-        protected EntityManagerInterface $em,
+        Environment $environment,
+        EntityManagerInterface $em,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
     ) {
-        parent::__construct();
+        parent::__construct($environment, $em);
     }
 
     protected function configure(): void
     {
         $this->addArgument('path', InputArgument::REQUIRED)
-            ->addOption('storage-location-id', null, InputOption::VALUE_OPTIONAL, '', '')
+            ->addOption('storage-location-id', null, InputOption::VALUE_OPTIONAL)
             ->addOption('exclude-media', null, InputOption::VALUE_NONE);
     }
 
@@ -105,7 +102,7 @@ class BackupCommand extends CommandAbstract
         $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
         try {
             $fsUtils->mkdir($tmp_dir_mariadb);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $io->error($e->getMessage());
             return 1;
         }
@@ -117,22 +114,19 @@ class BackupCommand extends CommandAbstract
 
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
 
-        $connSettings = $this->environment->getDatabaseSettings();
+        [$commandFlags, $commandEnvVars] = $this->getDatabaseSettingsAsCliFlags();
 
-        // phpcs:disable Generic.Files.LineLength
+        $commandFlags[] = '--add-drop-table';
+        $commandFlags[] = '--default-character-set=UTF8MB4';
+
+        $commandEnvVars['DB_DEST'] = $path_db_dump;
+
         $this->passThruProcess(
             $io,
-            'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
+            'mysqldump ' . implode(' ', $commandFlags) . ' $DB_DATABASE > $DB_DEST',
             $tmp_dir_mariadb,
-            [
-                'DB_HOST' => $connSettings['host'],
-                'DB_DATABASE' => $connSettings['dbname'],
-                'DB_USERNAME' => $connSettings['user'],
-                'DB_PASSWORD' => $connSettings['password'],
-                'DB_DEST' => $path_db_dump,
-            ]
+            $commandEnvVars
         );
-        // phpcs:enable
 
         $files_to_backup[] = $path_db_dump;
         $io->newLine();
@@ -243,7 +237,10 @@ class BackupCommand extends CommandAbstract
 
         $io->success(
             [
-                __('Backup complete in %.2f seconds.', $time_diff),
+                sprintf(
+                    __('Backup complete in %.2f seconds.'),
+                    $time_diff
+                ),
             ]
         );
         return 0;

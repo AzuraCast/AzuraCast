@@ -52,26 +52,32 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-class DeleteArtAction
+final class DeleteArtAction
 {
+    public function __construct(
+        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\PodcastEpisodeRepository $episodeRepo,
-        EntityManagerInterface $em,
+        string $station_id,
+        string $podcast_id,
         string $episode_id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $episode = $episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
         if ($episode === null) {
             return $response->withStatus(404)
                 ->withJson(Entity\Api\Error::notFound());
         }
 
-        $episodeRepo->removeEpisodeArt($episode);
-        $em->persist($episode);
-        $em->flush();
+        $this->episodeRepo->removeEpisodeArt($episode);
+        $this->em->persist($episode);
+        $this->em->flush();
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

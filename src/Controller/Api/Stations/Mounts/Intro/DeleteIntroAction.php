@@ -33,23 +33,23 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class DeleteIntroAction
+final class DeleteIntroAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationMountRepository $mountRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationMountRepository $mountRepo,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $station = $request->getStation();
-        $mount = $mountRepo->find($station, $id);
 
-        if (null === $mount) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $mountRepo->clearIntro($mount);
+        $mount = $this->mountRepo->requireForStation($id, $station);
+        $this->mountRepo->clearIntro($mount);
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

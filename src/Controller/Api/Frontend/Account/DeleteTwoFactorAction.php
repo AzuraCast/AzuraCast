@@ -4,20 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
-use App\Controller\Api\Admin\UsersController;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class DeleteTwoFactorAction extends UsersController
+final class DeleteTwoFactorAction
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __construct(
+        private readonly ReloadableEntityManagerInterface $em,
+    ) {
+    }
+
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $user = $request->getUser();
         $user = $this->em->refetch($user);
 
-        $user->setTwoFactorSecret(null);
+        $user->setTwoFactorSecret();
         $this->em->persist($user);
         $this->em->flush();
 

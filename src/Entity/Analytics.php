@@ -60,8 +60,7 @@ class Analytics implements IdentifiableEntityInterface
     ) {
         $utc = new DateTimeZone('UTC');
 
-        $moment = CarbonImmutable::parse($moment, $utc);
-        $this->moment = $moment->shiftTimezone($utc);
+        $this->moment = CarbonImmutable::parse($moment, $utc)->shiftTimezone($utc);
 
         $this->station = $station;
         $this->type = $type;

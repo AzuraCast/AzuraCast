@@ -1,8 +1,16 @@
 <?php
+
 /** @var App\Entity\Station $station */
-$this->layout('main', ['title' =>
-    __('Station Broadcasting Disabled')
+$this->layout('main', [
+    'title' =>
+        __('Station Broadcasting Disabled'),
 ]);
 ?>
 
-<p><?=__('Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.', $router->fromHere('stations:profile:edit')) ?></p>
+<p>
+    <?= sprintf(
+        __(
+            'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.'
+        ),
+        $router->fromHere('stations:profile:edit')
+    ) ?></p>

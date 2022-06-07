@@ -180,6 +180,8 @@ class View extends Engine
             public function render(array $data = []): string
             {
                 $this->data($data);
+
+                /** @noinspection UselessUnsetInspection */
                 unset($data);
 
                 $content = '<div id="' . $this->data['id'] . '"></div>';
@@ -190,13 +192,16 @@ class View extends Engine
             }
         };
 
-        $vueTemplate->layout($layout, array_merge(
-            [
-                'title' => $title,
-                'manual' => true,
-            ],
-            $layoutParams
-        ));
+        $vueTemplate->layout(
+            $layout,
+            array_merge(
+                [
+                    'title' => $title,
+                    'manual' => true,
+                ],
+                $layoutParams
+            )
+        );
 
         $this->assets->addVueRender($component, '#' . $id, $props);
 

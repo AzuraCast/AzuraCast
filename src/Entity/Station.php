@@ -19,10 +19,12 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 use Stringable;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -260,6 +262,16 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected bool $enable_on_demand_download = true;
 
     #[
+        OA\Property(
+            description: "Whether HLS streaming is enabled.",
+            example: true
+        ),
+        ORM\Column,
+        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected bool $enable_hls = false;
+
+    #[
         ORM\Column,
         Attributes\AuditIgnore
     ]
@@ -301,6 +313,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?string $default_album_art_url = null;
 
+    /** @var Collection<int, SongHistory> */
     #[
         ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class),
         ORM\OrderBy(['timestamp_start' => 'desc'])
@@ -349,6 +362,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?StorageLocation $podcasts_storage_location = null;
 
+    /** @var Collection<int, StationStreamer> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
     protected Collection $streamers;
 
@@ -364,21 +378,30 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $fallback_path = null;
 
+    /** @var Collection<int, RolePermission> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
+    /** @var Collection<int, StationPlaylist> */
     #[
         ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class),
         ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
     ]
     protected Collection $playlists;
 
+    /** @var Collection<int, StationMount> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationMount::class)]
     protected Collection $mounts;
 
+    /** @var Collection<int, StationRemote> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
+    /** @var Collection<int, StationHlsStream> */
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationHlsStream::class)]
+    protected Collection $hls_streams;
+
+    /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
         mappedBy: 'station',
         targetEntity: StationWebhook::class,
@@ -387,6 +410,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     )]
     protected Collection $webhooks;
 
+    /** @var Collection<int, SftpUser> */
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
     protected Collection $sftp_users;
 
@@ -396,9 +420,11 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->backend_type = BackendAdapters::Liquidsoap->value;
 
         $this->history = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
+        $this->hls_streams = new ArrayCollection();
         $this->webhooks = new ArrayCollection();
         $this->streamers = new ArrayCollection();
         $this->sftp_users = new ArrayCollection();
@@ -456,7 +482,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setFrontendType(?string $frontend_type = null): void
     {
         if (null !== $frontend_type && null === FrontendAdapters::tryFrom($frontend_type)) {
-            throw new \InvalidArgumentException('Invalid frontend type specified.');
+            throw new InvalidArgumentException('Invalid frontend type specified.');
         }
 
         $this->frontend_type = $frontend_type;
@@ -475,24 +501,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationFrontendConfiguration|array $frontend_config,
         bool $force_overwrite = false
     ): void {
-        if (!($frontend_config instanceof StationFrontendConfiguration)) {
-            $config = new StationFrontendConfiguration(
-                ($force_overwrite) ? [] : (array)$this->frontend_config,
+        if (is_array($frontend_config)) {
+            $frontend_config = new StationFrontendConfiguration(
+                $force_overwrite ? $frontend_config : array_merge((array)$this->backend_config, $frontend_config)
             );
-
-            foreach ($frontend_config as $key => $val) {
-                $config->set($key, $val);
-            }
-
-            $frontend_config = $config;
         }
 
         $config = $frontend_config->toArray();
-
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
-
         $this->frontend_config = $config;
     }
 
@@ -511,7 +529,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setBackendType(string $backend_type = null): void
     {
         if (null !== $backend_type && null === BackendAdapters::tryFrom($backend_type)) {
-            throw new \InvalidArgumentException('Invalid frontend type specified.');
+            throw new InvalidArgumentException('Invalid frontend type specified.');
         }
 
         $this->backend_type = $backend_type;
@@ -523,6 +541,13 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function useManualAutoDJ(): bool
     {
         return $this->getBackendConfig()->useManualAutoDj();
+    }
+
+    public function supportsAutoDjQueue(): bool
+    {
+        return $this->getIsEnabled()
+            && !$this->useManualAutoDJ()
+            && BackendAdapters::None !== $this->getBackendTypeEnum();
     }
 
     public function getBackendConfig(): StationBackendConfiguration
@@ -538,16 +563,10 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationBackendConfiguration|array $backend_config,
         bool $force_overwrite = false
     ): void {
-        if (!($backend_config instanceof StationBackendConfiguration)) {
-            $config = new StationBackendConfiguration(
-                ($force_overwrite) ? [] : (array)$this->backend_config
+        if (is_array($backend_config)) {
+            $backend_config = new StationBackendConfiguration(
+                $force_overwrite ? $backend_config : array_merge((array)$this->backend_config, $backend_config)
             );
-
-            foreach ($backend_config as $key => $val) {
-                $config->set($key, $val);
-            }
-
-            $backend_config = $config;
         }
 
         $config = $backend_config->toArray();
@@ -646,6 +665,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->ensureDirectoryExists($this->getRadioPlaylistsDir());
         $this->ensureDirectoryExists($this->getRadioConfigDir());
         $this->ensureDirectoryExists($this->getRadioTempDir());
+        $this->ensureDirectoryExists($this->getRadioHlsDir());
 
         if (null === $this->media_storage_location) {
             $storageLocation = new StorageLocation(
@@ -713,6 +733,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRadioTempDir(): string
     {
         return $this->radio_base_dir . '/temp';
+    }
+
+    public function getRadioHlsDir(): string
+    {
+        return $this->radio_base_dir . '/hls';
     }
 
     public function getNowplaying(): ?Api\NowPlaying\NowPlaying
@@ -859,6 +884,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->enable_on_demand_download = $enable_on_demand_download;
     }
 
+    public function getEnableHls(): bool
+    {
+        return $this->enable_hls;
+    }
+
+    public function setEnableHls(bool $enable_hls): void
+    {
+        $this->enable_hls = $enable_hls;
+    }
+
     public function getIsEnabled(): bool
     {
         return $this->is_enabled;
@@ -932,7 +967,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<SongHistory>
+     * @return Collection<int, SongHistory>
      */
     public function getHistory(): Collection
     {
@@ -940,7 +975,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationStreamer>
+     * @return Collection<int, StationStreamer>
      */
     public function getStreamers(): Collection
     {
@@ -962,7 +997,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getMediaStorageLocation(): StorageLocation
     {
         if (null === $this->media_storage_location) {
-            throw new \RuntimeException('Media storage location not initialized.');
+            throw new RuntimeException('Media storage location not initialized.');
         }
         return $this->media_storage_location;
     }
@@ -970,7 +1005,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
         if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getTypeEnum()) {
-            throw new \RuntimeException('Invalid storage location.');
+            throw new RuntimeException('Invalid storage location.');
         }
 
         $this->media_storage_location = $storageLocation;
@@ -979,7 +1014,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRecordingsStorageLocation(): StorageLocation
     {
         if (null === $this->recordings_storage_location) {
-            throw new \RuntimeException('Recordings storage location not initialized.');
+            throw new RuntimeException('Recordings storage location not initialized.');
         }
         return $this->recordings_storage_location;
     }
@@ -987,7 +1022,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
         if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getTypeEnum()) {
-            throw new \RuntimeException('Invalid storage location.');
+            throw new RuntimeException('Invalid storage location.');
         }
 
         $this->recordings_storage_location = $storageLocation;
@@ -996,7 +1031,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getPodcastsStorageLocation(): StorageLocation
     {
         if (null === $this->podcasts_storage_location) {
-            throw new \RuntimeException('Podcasts storage location not initialized.');
+            throw new RuntimeException('Podcasts storage location not initialized.');
         }
         return $this->podcasts_storage_location;
     }
@@ -1004,7 +1039,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
         if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getTypeEnum()) {
-            throw new \RuntimeException('Invalid storage location.');
+            throw new RuntimeException('Invalid storage location.');
         }
 
         $this->podcasts_storage_location = $storageLocation;
@@ -1016,7 +1051,7 @@ class Station implements Stringable, IdentifiableEntityInterface
             StorageLocationTypes::StationMedia => $this->getMediaStorageLocation(),
             StorageLocationTypes::StationRecordings => $this->getRecordingsStorageLocation(),
             StorageLocationTypes::StationPodcasts => $this->getPodcastsStorageLocation(),
-            default => throw new \InvalidArgumentException('Invalid storage location.')
+            default => throw new InvalidArgumentException('Invalid storage location.')
         };
     }
 
@@ -1056,7 +1091,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<RolePermission>
+     * @return Collection<int, RolePermission>
      */
     public function getPermissions(): Collection
     {
@@ -1064,7 +1099,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationMedia>
+     * @return Collection<int, StationMedia>
      */
     public function getMedia(): Collection
     {
@@ -1072,7 +1107,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationPlaylist>
+     * @return Collection<int, StationPlaylist>
      */
     public function getPlaylists(): Collection
     {
@@ -1080,7 +1115,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationMount>
+     * @return Collection<int, StationMount>
      */
     public function getMounts(): Collection
     {
@@ -1088,7 +1123,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationRemote>
+     * @return Collection<int, StationRemote>
      */
     public function getRemotes(): Collection
     {
@@ -1096,7 +1131,15 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<StationWebhook>
+     * @return Collection<int, StationHlsStream>
+     */
+    public function getHlsStreams(): Collection
+    {
+        return $this->hls_streams;
+    }
+
+    /**
+     * @return Collection<int, StationWebhook>
      */
     public function getWebhooks(): Collection
     {
@@ -1104,7 +1147,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection<SftpUser>
+     * @return Collection<int, SftpUser>
      */
     public function getSftpUsers(): Collection
     {

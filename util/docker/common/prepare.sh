@@ -1,14 +1,11 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
 set -x
 
 ## Prevent initramfs updates from trying to run grub and lilo.
 ## https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
 ## http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
 export INITRD=no
-mkdir -p /etc/container_environment
-echo -n no > /etc/container_environment/INITRD
 
 # Add default timezone.
 echo "UTC" > /etc/timezone
@@ -35,46 +32,29 @@ dpkg-divert --local --rename --add /usr/bin/ischroot
 ln -sf /bin/true /usr/bin/ischroot
 
 # apt-utils fix for Ubuntu 16.04
-$minimal_apt_get_install apt-utils
+apt-get install -y --no-install-recommends apt-utils
 
 ## Install HTTPS support for APT.
-$minimal_apt_get_install apt-transport-https ca-certificates
+apt-get install -y --no-install-recommends apt-transport-https ca-certificates
 
 ## Install add-apt-repository
-$minimal_apt_get_install software-properties-common
+apt-get install -y --no-install-recommends software-properties-common
 
 ## Upgrade all packages.
 apt-get dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold"
 
 ## Fix locale.
-$minimal_apt_get_install language-pack-en
+apt-get install -y --no-install-recommends language-pack-en
 
 locale-gen en_US
 update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
 
-echo -n en_US.UTF-8 > /etc/container_environment/LANG
-echo -n en_US.UTF-8 > /etc/container_environment/LC_CTYPE
-
 # Make init folders
 mkdir -p /etc/my_init.d
-mkdir -p /etc/my_init.pre_shutdown.d
-mkdir -p /etc/my_init.post_shutdown.d
-mkdir -p /etc/container_environment
-touch /etc/container_environment.sh
-touch /etc/container_environment.json
-chmod 700 /etc/container_environment
 
-groupadd -g 8377 docker_env
-chown :docker_env /etc/container_environment.sh /etc/container_environment.json
-chmod 640 /etc/container_environment.sh /etc/container_environment.json
-ln -s /etc/container_environment.sh /etc/profile.d/
-
-# Install runit and other common scripts.
-$minimal_apt_get_install runit gosu curl wget tar zip unzip git rsync tzdata gpg-agent openssh-client
+# Install other common scripts.
+apt-get install -y --no-install-recommends tini gosu curl wget tar zip unzip git rsync tzdata gpg-agent openssh-client
 
 # Add scripts
 cp -rT /bd_build/scripts/ /usr/local/bin
 chmod -R a+x /usr/local/bin
-
-mkdir -p /etc/service.full/
-mkdir -p /etc/service.minimal/

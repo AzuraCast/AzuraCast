@@ -9,12 +9,16 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class UsersAction
+final class UsersAction
 {
+    public function __construct(
+        private readonly RoleRepository $roleRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        RoleRepository $roleRepo
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -25,7 +29,7 @@ class UsersAction
             title: __('Users'),
             props: [
                 'listUrl' => (string)$router->fromHere('api:admin:users'),
-                'roles' => $roleRepo->fetchSelect(),
+                'roles' => $this->roleRepo->fetchSelect(),
             ]
         );
     }

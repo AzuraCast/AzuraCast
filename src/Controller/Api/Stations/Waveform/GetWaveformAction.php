@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Waveform;
 
-use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
@@ -12,12 +11,17 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class GetWaveformAction
+final class GetWaveformAction
 {
+    public function __construct(
+        private readonly StationMediaRepository $mediaRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        StationMediaRepository $mediaRepo,
+        string $station_id,
         string $media_id
     ): ResponseInterface {
         $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
@@ -36,14 +40,11 @@ class GetWaveformAction
             }
         }
 
-        $media = $mediaRepo->findByUniqueId($media_id, $station);
-        if (!($media instanceof StationMedia)) {
-            return $response->withStatus(500)->withJson(new Error(500, 'Media not found.'));
-        }
+        $media = $this->mediaRepo->requireByUniqueId($media_id, $station);
 
         $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
         if (!$fsMedia->fileExists($waveformPath)) {
-            $mediaRepo->updateWaveform($media);
+            $this->mediaRepo->updateWaveform($media);
         }
 
         return $response->streamFilesystemFile($fsMedia, $waveformPath, null, 'inline');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use App\LockFactory;
+use App\Lock\LockFactory;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -31,7 +31,7 @@ final class HandleUniqueMiddleware implements MiddlewareInterface
         $message = $envelope->getMessage();
 
         $lock = $this->lockFactory->createLock('message_queue_' . $message->getIdentifier(), $message->getTtl());
-        if ($lock->acquire() === false) {
+        if (!$lock->acquire()) {
             throw new UnrecoverableMessageHandlingException(
                 'A queued message matching this one is already being handled.'
             );

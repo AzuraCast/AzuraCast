@@ -145,17 +145,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class FilesController extends AbstractStationApiCrudController
+final class FilesController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
     public function __construct(
-        protected Adapters $adapters,
-        protected MessageBus $messageBus,
-        protected Entity\Repository\CustomFieldRepository $customFieldsRepo,
-        protected Entity\Repository\StationMediaRepository $mediaRepo,
-        protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly Adapters $adapters,
+        private readonly MessageBus $messageBus,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldsRepo,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -163,8 +163,11 @@ class FilesController extends AbstractStationApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
         $query = $this->em->createQuery(
@@ -177,8 +180,11 @@ class FilesController extends AbstractStationApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
         $station = $this->getStation($request);
 
         $mediaStorage = $station->getMediaStorageLocation();
@@ -214,8 +220,8 @@ class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        mixed $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);
@@ -294,7 +300,7 @@ class FilesController extends AbstractStationApiCrudController
                     $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
                         [
                             'station' => $station,
-                            'id'      => $playlist_id,
+                            'id' => $playlist_id,
                         ]
                     );
 
@@ -350,7 +356,7 @@ class FilesController extends AbstractStationApiCrudController
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,
-                    $field             => $id,
+                    $field => $id,
                 ]
             );
 

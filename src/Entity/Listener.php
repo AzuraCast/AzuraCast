@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
@@ -16,7 +15,9 @@ use NowPlaying\Result\Client;
     ORM\Index(columns: ['device_os_family'], name: 'idx_statistics_os'),
     ORM\Index(columns: ['device_browser_family'], name: 'idx_statistics_browser')
 ]
-class Listener implements IdentifiableEntityInterface
+class Listener implements
+    Interfaces\IdentifiableEntityInterface,
+    Interfaces\StationAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

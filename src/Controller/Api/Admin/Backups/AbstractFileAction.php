@@ -11,7 +11,7 @@ use InvalidArgumentException;
 abstract class AbstractFileAction
 {
     public function __construct(
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo
+        protected readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
     }
 

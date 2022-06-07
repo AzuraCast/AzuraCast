@@ -50,7 +50,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class SettingsController extends AbstractApiCrudController
+final class SettingsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Settings::class;
 

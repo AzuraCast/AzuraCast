@@ -24,6 +24,9 @@
 
                         <data-table ref="datatable" id="station_streamers" :fields="fields"
                                     :api-url="listUrl">
+                            <template #cell(art)="row">
+                                <album-art :src="row.item.art"></album-art>
+                            </template>
                             <template #cell(streamer_username)="row">
                                 <code>{{ row.item.streamer_username }}</code>
                                 <div>
@@ -60,7 +63,7 @@
         </div>
 
         <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
-                    @relist="relist"></edit-modal>
+                    :new-art-url="newArtUrl" @relist="relist"></edit-modal>
         <broadcasts-modal ref="broadcastsModal"></broadcasts-modal>
     </div>
 </template>
@@ -72,20 +75,22 @@ import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '~/components/Common/ScheduleView';
 import Icon from '~/components/Common/Icon';
 import ConnectionInfo from "./Streamers/ConnectionInfo";
+import AlbumArt from "~/components/Common/AlbumArt";
 
 export default {
     name: 'StationStreamers',
-    components: {ConnectionInfo, Icon, EditModal, BroadcastsModal, DataTable, Schedule},
+    components: {AlbumArt, ConnectionInfo, Icon, EditModal, BroadcastsModal, DataTable, Schedule},
     props: {
         listUrl: String,
+        newArtUrl: String,
         scheduleUrl: String,
-        filesUrl: String,
         stationTimeZone: String,
         connectionInfo: Object
     },
     data() {
         return {
             fields: [
+                {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
                 {key: 'display_name', label: this.$gettext('Display Name'), sortable: true},
                 {key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: true},
                 {key: 'comments', label: this.$gettext('Notes'), sortable: false},
@@ -94,30 +99,30 @@ export default {
         };
     },
     computed: {
-        langAccountListTab () {
+        langAccountListTab() {
             return this.$gettext('Account List');
         },
-        langScheduleViewTab () {
+        langScheduleViewTab() {
             return this.$gettext('Schedule View');
         }
     },
     methods: {
-        relist () {
+        relist() {
             this.$refs.datatable.refresh();
         },
-        doCreate () {
+        doCreate() {
             this.$refs.editModal.create();
         },
-        doCalendarClick (event) {
+        doCalendarClick(event) {
             this.doEdit(event.extendedProps.edit_url);
         },
-        doEdit (url) {
+        doEdit(url) {
             this.$refs.editModal.edit(url);
         },
-        doShowBroadcasts (url) {
+        doShowBroadcasts(url) {
             this.$refs.broadcastsModal.open(url);
         },
-        doDelete (url) {
+        doDelete(url) {
             this.$confirmDelete({
                 title: this.$gettext('Delete Streamer?'),
             }).then((result) => {

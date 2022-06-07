@@ -10,12 +10,16 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ThemeAction
+final class ThemeAction
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        EntityManagerInterface $em
+        Response $response
     ): ResponseInterface {
         $user = $request->getUser();
 
@@ -26,8 +30,8 @@ class ThemeAction
         };
         $user->setTheme($newTheme->value);
 
-        $em->persist($user);
-        $em->flush();
+        $this->em->persist($user);
+        $this->em->flush();
 
         $referrer = $request->getHeaderLine('Referer');
         return $response->withRedirect(

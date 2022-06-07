@@ -4,21 +4,34 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Entity;
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
+use App\Entity\StationPlaylistMedia;
+use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
 
-class CloneAction extends AbstractPlaylistsAction
+final class CloneAction
 {
+    public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly ReloadableEntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
-        $record = $this->requireRecord($request->getStation(), $id);
+        $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $data = (array)$request->getParsedBody();
 
@@ -42,10 +55,10 @@ class CloneAction extends AbstractPlaylistsAction
         );
         $copier->addFilter(
             new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylistMedia::class, 'media')
+            new DeepCopy\Matcher\PropertyMatcher(StationPlaylistMedia::class, 'media')
         );
 
-        /** @var Entity\StationPlaylist $newRecord */
+        /** @var StationPlaylist $newRecord */
         $newRecord = $copier->copy($record);
 
         $newRecord->setName($data['name'] ?? ($record->getName() . ' - Copy'));
@@ -56,7 +69,7 @@ class CloneAction extends AbstractPlaylistsAction
 
         if (in_array('schedule', $toClone, true)) {
             foreach ($record->getScheduleItems() as $oldScheduleItem) {
-                /** @var Entity\StationSchedule $newScheduleItem */
+                /** @var StationSchedule $newScheduleItem */
                 $newScheduleItem = $copier->copy($oldScheduleItem);
                 $newScheduleItem->setPlaylist($newRecord);
 
@@ -66,14 +79,14 @@ class CloneAction extends AbstractPlaylistsAction
 
         if (in_array('media', $toClone, true)) {
             foreach ($record->getFolders() as $oldPlaylistFolder) {
-                /** @var Entity\StationPlaylistFolder $newPlaylistFolder */
+                /** @var StationPlaylistFolder $newPlaylistFolder */
                 $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
                 $newPlaylistFolder->setPlaylist($newRecord);
                 $this->em->persist($newPlaylistFolder);
             }
 
             foreach ($record->getMediaItems() as $oldMediaItem) {
-                /** @var Entity\StationPlaylistMedia $newMediaItem */
+                /** @var StationPlaylistMedia $newMediaItem */
                 $newMediaItem = $copier->copy($oldMediaItem);
 
                 $newMediaItem->setPlaylist($newRecord);
@@ -83,6 +96,6 @@ class CloneAction extends AbstractPlaylistsAction
 
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::created());
+        return $response->withJson(Status::created());
     }
 }

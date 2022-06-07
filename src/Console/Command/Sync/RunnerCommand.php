@@ -7,15 +7,19 @@ namespace App\Console\Command\Sync;
 use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Event\GetSyncTasks;
-use App\LockFactory;
+use App\Lock\LockFactory;
+use App\Sync\Task\AbstractTask;
 use Carbon\CarbonImmutable;
 use Cron\CronExpression;
+use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
+use function usleep;
 
 #[AsCommand(
     name: 'azuracast:sync:run',
@@ -46,7 +50,7 @@ class RunnerCommand extends AbstractSyncCommand
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
 
-        $now = CarbonImmutable::now(new \DateTimeZone('UTC'));
+        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
 
         foreach ($syncTasksEvent->getTasks() as $taskClass) {
             $schedulePattern = $taskClass::getSchedulePattern();
@@ -71,12 +75,12 @@ class RunnerCommand extends AbstractSyncCommand
             $this->checkRunningProcesses();
         }
 
-        \usleep(250000);
+        usleep(250000);
     }
 
     /**
      * @param SymfonyStyle $io
-     * @param class-string $taskClass
+     * @param class-string<AbstractTask> $taskClass
      */
     protected function start(
         SymfonyStyle $io,

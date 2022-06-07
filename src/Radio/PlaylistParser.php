@@ -24,10 +24,6 @@ class PlaylistParser
             );
         }
 
-        $filter_line = static function ($line) {
-            return trim($line);
-        };
-
         // Process as a simple list of files or M3U-style playlist.
         $lines = preg_split(
             "/[\r\n]+/",        // regex supports Windows, Linux/Unix & Old Macs EOL's
@@ -39,7 +35,7 @@ class PlaylistParser
             return [];
         }
         return array_filter(
-            array_map($filter_line, $lines),
+            array_map('trim', $lines),
             static function ($line) {
                 return $line[0] !== '#';
             }

@@ -8,6 +8,7 @@
 import store from 'store';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
 import vueStore from '~/store.js';
+import Hls from 'hls.js';
 
 export default {
     props: {
@@ -116,22 +117,35 @@ export default {
 
                 this.audio.volume = getLogarithmicVolume(this.volume);
 
-                this.audio.src = this.current.url;
+                if (this.current.isHls) {
+                    // HLS playback support
+                    if (Hls.isSupported()) {
+                        let hls = new Hls();
+                        hls.loadSource(this.current.url);
+                        hls.attachMedia(this.audio);
+                    } else if (this.audio.canPlayType('application/vnd.apple.mpegurl')) {
+                        this.audio.src = this.current.url;
+                    }
+                } else {
+                    // Standard streams
+                    this.audio.src = this.current.url;
 
-                // Firefox caches the downloaded stream, this causes playback issues.
-                // Giving the browser a new url on each start bypasses the old cache/buffer
-                if (navigator.userAgent.includes("Firefox")) {
-                  this.audio.src += "?refresh=" + Date.now();
+                    // Firefox caches the downloaded stream, this causes playback issues.
+                    // Giving the browser a new url on each start bypasses the old cache/buffer
+                    if (navigator.userAgent.includes("Firefox")) {
+                        this.audio.src += "?refresh=" + Date.now();
+                    }
                 }
 
                 this.audio.load();
                 this.audio.play();
             });
         },
-        toggle(url, isStream) {
+        toggle(url, isStream, isHls) {
             vueStore.commit('player/toggle', {
                 url: url,
-                isStream: isStream
+                isStream: isStream,
+                isHls: isHls,
             });
         },
         getVolume() {

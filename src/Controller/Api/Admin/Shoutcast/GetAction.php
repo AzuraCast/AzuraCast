@@ -9,17 +9,21 @@ use App\Http\ServerRequest;
 use App\Radio\Frontend\Shoutcast;
 use Psr\Http\Message\ResponseInterface;
 
-class GetAction
+final class GetAction
 {
+    public function __construct(
+        private readonly Shoutcast $shoutcast,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Shoutcast $shoutcast
+        Response $response
     ): ResponseInterface {
         return $response->withJson(
             [
                 'success' => true,
-                'version' => $shoutcast->getVersion(),
+                'version' => $this->shoutcast->getVersion(),
             ]
         );
     }

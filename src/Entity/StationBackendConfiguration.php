@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Enums\StationBackendPerformanceModes;
+use App\Radio\Enums\AudioProcessingMethods;
+use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\StreamFormats;
-use Doctrine\Common\Collections\ArrayCollection;
+use InvalidArgumentException;
 
-class StationBackendConfiguration extends ArrayCollection
+class StationBackendConfiguration extends AbstractStationConfiguration
 {
     public const CHARSET = 'charset';
 
@@ -62,15 +64,15 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const RECORD_STREAMS_FORMAT = 'record_streams_format';
 
-    public function getRecordStreamsFormat(): ?string
+    public function getRecordStreamsFormat(): string
     {
-        return $this->get(self::RECORD_STREAMS_FORMAT);
+        return $this->getRecordStreamsFormatEnum()->value;
     }
 
-    public function getRecordStreamsFormatEnum(): ?StreamFormats
+    public function getRecordStreamsFormatEnum(): StreamFormats
     {
-        $recordStreamsFormat = $this->getRecordStreamsFormat();
-        return StreamFormats::tryFrom(strtolower($recordStreamsFormat ?? ''));
+        return StreamFormats::tryFrom($this->get(self::RECORD_STREAMS_FORMAT) ?? '')
+            ?? StreamFormats::Mp3;
     }
 
     public function setRecordStreamsFormat(?string $format): void
@@ -80,10 +82,22 @@ class StationBackendConfiguration extends ArrayCollection
         }
 
         if (null !== $format && null === StreamFormats::tryFrom($format)) {
-            throw new \InvalidArgumentException('Invalid recording type specified.');
+            throw new InvalidArgumentException('Invalid recording type specified.');
         }
 
         $this->set(self::RECORD_STREAMS_FORMAT, $format);
+    }
+
+    public const RECORD_STREAMS_BITRATE = 'record_streams_bitrate';
+
+    public function getRecordStreamsBitrate(): int
+    {
+        return (int)($this->get(self::RECORD_STREAMS_BITRATE) ?? 128);
+    }
+
+    public function setRecordStreamsBitrate(?int $bitrate): void
+    {
+        $this->set(self::RECORD_STREAMS_BITRATE, $bitrate);
     }
 
     public const USE_MANUAL_AUTODJ = 'use_manual_autodj';
@@ -99,7 +113,8 @@ class StationBackendConfiguration extends ArrayCollection
     }
 
     public const AUTODJ_QUEUE_LENGTH = 'autodj_queue_length';
-    public const DEFAULT_QUEUE_LENGTH = 3;
+
+    protected const DEFAULT_QUEUE_LENGTH = 3;
 
     public function getAutoDjQueueLength(): int
     {
@@ -123,16 +138,68 @@ class StationBackendConfiguration extends ArrayCollection
         $this->set(self::DJ_MOUNT_POINT, $mountPoint);
     }
 
-    public const USE_NORMALIZER = 'nrj';
+    public const DJ_BUFFER = 'dj_buffer';
 
-    public function useNormalizer(): bool
+    protected const DEFAULT_DJ_BUFFER = 5;
+
+    public function getDjBuffer(): int
     {
-        return $this->get(self::USE_NORMALIZER) ?? false;
+        return (int)$this->get(self::DJ_BUFFER, self::DEFAULT_DJ_BUFFER);
     }
 
-    public function setUseNormalizer(?bool $useNormalizer): void
+    public function setDjBuffer(?int $buffer): void
     {
-        $this->set(self::USE_NORMALIZER, $useNormalizer);
+        $this->set(self::DJ_BUFFER, $buffer);
+    }
+
+    public const AUDIO_PROCESSING_METHOD = 'audio_processing_method';
+
+    public function getAudioProcessingMethod(): ?string
+    {
+        return $this->getAudioProcessingMethodEnum()->value;
+    }
+
+    public function getAudioProcessingMethodEnum(): AudioProcessingMethods
+    {
+        return AudioProcessingMethods::tryFrom($this->get(self::AUDIO_PROCESSING_METHOD) ?? '')
+            ?? AudioProcessingMethods::default();
+    }
+
+    public function setAudioProcessingMethod(?string $method): void
+    {
+        if (null !== $method) {
+            $method = strtolower($method);
+        }
+
+        if (null !== $method && null === AudioProcessingMethods::tryFrom($method)) {
+            throw new \InvalidArgumentException('Invalid audio processing method specified.');
+        }
+
+        $this->set(self::AUDIO_PROCESSING_METHOD, $method);
+    }
+
+    public const STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
+
+    public function getStereoToolLicenseKey(): ?string
+    {
+        return $this->get(self::STEREO_TOOL_LICENSE_KEY);
+    }
+
+    public function setStereoToolLicenseKey(?string $licenseKey): void
+    {
+        $this->set(self::STEREO_TOOL_LICENSE_KEY, $licenseKey);
+    }
+
+    public const STEREO_TOOL_CONFIGURATION_PATH = 'stereo_tool_configuration_path';
+
+    public function getStereoToolConfigurationPath(): ?string
+    {
+        return $this->get(self::STEREO_TOOL_CONFIGURATION_PATH);
+    }
+
+    public function setStereoToolConfigurationPath(?string $stereoToolConfigurationPath): void
+    {
+        $this->set(self::STEREO_TOOL_CONFIGURATION_PATH, $stereoToolConfigurationPath);
     }
 
     public const USE_REPLAYGAIN = 'enable_replaygain_metadata';
@@ -149,13 +216,19 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const CROSSFADE_TYPE = 'crossfade_type';
 
-    public const CROSSFADE_NORMAL = 'normal';
-    public const CROSSFADE_DISABLED = 'none';
-    public const CROSSFADE_SMART = 'smart';
+    protected const CROSSFADE_NORMAL = 'normal';
+    protected const CROSSFADE_DISABLED = 'none';
+    protected const CROSSFADE_SMART = 'smart';
+
+    public function getCrossfadeTypeEnum(): CrossfadeModes
+    {
+        return CrossfadeModes::tryFrom($this->get(self::CROSSFADE_TYPE) ?? '')
+            ?? CrossfadeModes::default();
+    }
 
     public function getCrossfadeType(): string
     {
-        return $this->get(self::CROSSFADE_TYPE) ?? self::CROSSFADE_NORMAL;
+        return $this->getCrossfadeTypeEnum()->value;
     }
 
     public function setCrossfadeType(string $crossfadeType): void
@@ -165,7 +238,7 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const CROSSFADE = 'crossfade';
 
-    public const DEFAULT_CROSSFADE_DURATION = 2;
+    protected const DEFAULT_CROSSFADE_DURATION = 2;
 
     public function getCrossfade(): float
     {
@@ -180,9 +253,9 @@ class StationBackendConfiguration extends ArrayCollection
     public function getCrossfadeDuration(): float
     {
         $crossfade = $this->getCrossfade();
-        $crossfadeType = $this->getCrossfadeType();
+        $crossfadeType = $this->getCrossfadeTypeEnum();
 
-        if (self::CROSSFADE_DISABLED !== $crossfadeType && $crossfade > 0) {
+        if (CrossfadeModes::Disabled !== $crossfadeType && $crossfade > 0) {
             return round($crossfade * 1.5, 2);
         }
 
@@ -196,7 +269,7 @@ class StationBackendConfiguration extends ArrayCollection
 
     public const DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';
 
-    public const DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
+    protected const DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
     public function getDuplicatePreventionTimeRange(): int
     {
@@ -231,5 +304,45 @@ class StationBackendConfiguration extends ArrayCollection
         } else {
             $this->set(self::PERFORMANCE_MODE, $perfModeEnum->value);
         }
+    }
+
+    public const CUSTOM_TOP = 'custom_config_top';
+    public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
+    public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
+    public const CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+    public const CUSTOM_PRE_BROADCAST = 'custom_config';
+    public const CUSTOM_BOTTOM = 'custom_config_bottom';
+
+    /** @return array<int, string> */
+    public static function getCustomConfigurationSections(): array
+    {
+        return [
+            self::CUSTOM_TOP,
+            self::CUSTOM_PRE_PLAYLISTS,
+            self::CUSTOM_PRE_FADE,
+            self::CUSTOM_PRE_LIVE,
+            self::CUSTOM_PRE_BROADCAST,
+            self::CUSTOM_BOTTOM,
+        ];
+    }
+
+    public function getCustomConfigurationSection(string $section): ?string
+    {
+        $allSections = self::getCustomConfigurationSections();
+        if (!in_array($section, $allSections, true)) {
+            throw new \LogicException('Invalid custom configuration section.');
+        }
+
+        return $this->get($section);
+    }
+
+    public function setCustomConfigurationSection(string $section, ?string $value = null): void
+    {
+        $allSections = self::getCustomConfigurationSections();
+        if (!in_array($section, $allSections, true)) {
+            throw new \LogicException('Invalid custom configuration section.');
+        }
+
+        $this->set($section, $value);
     }
 }

@@ -17,6 +17,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 class PlaylistFileWriter implements EventSubscriberInterface
 {
@@ -136,7 +137,7 @@ class PlaylistFileWriter implements EventSubscriberInterface
             try {
                 $this->eventDispatcher->dispatch($event);
                 $playlistFile[] = $event->buildAnnotations();
-            } catch (\Throwable $e) {
+            } catch (Throwable) {
             }
         }
 

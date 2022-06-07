@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.16.1';
+    public const FALLBACK_VERSION = '0.17.0';
 
     // phpcs:disable Generic.Files.LineLength
     public const LATEST_COMPOSE_REVISION = 12;
@@ -126,11 +126,8 @@ class Version
 
     /**
      * Run the specified process and return its output.
-     *
-     * @param array $proc
-     * @param string $default
      */
-    protected function runProcess(array $proc, $default = ''): string
+    protected function runProcess(array $proc, string $default = ''): string
     {
         $process = new Process($proc);
         $process->setWorkingDirectory($this->repoDir);

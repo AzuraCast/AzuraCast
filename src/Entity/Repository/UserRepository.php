@@ -10,13 +10,8 @@ use App\Entity;
 /**
  * @extends Repository<Entity\User>
  */
-class UserRepository extends Repository
+final class UserRepository extends Repository
 {
-    public function find(int $id): ?Entity\User
-    {
-        return $this->repository->find($id);
-    }
-
     public function findByEmail(string $email): ?Entity\User
     {
         return $this->repository->findOneby(['email' => $email]);

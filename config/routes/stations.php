@@ -13,7 +13,7 @@ return static function (RouteCollectorProxy $app) {
         function (RouteCollectorProxy $group) {
             $group->get(
                 '',
-                function (ServerRequest $request, Response $response) {
+                function (ServerRequest $request, Response $response, ...$params) {
                     return $response->withRedirect(
                         (string)$request->getRouter()->fromHere('stations:profile:index')
                     );
@@ -26,6 +26,10 @@ return static function (RouteCollectorProxy $app) {
             )->setName('stations:automation:index')
                 ->add(new Middleware\Permissions(StationPermissions::Automation, true));
 
+            $group->get('/bulk-media', Controller\Stations\BulkMediaAction::class)
+                ->setName('stations:bulk-media')
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
+
             $group->get('/fallback', Controller\Stations\FallbackAction::class)
                 ->setName('stations:fallback')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
@@ -34,8 +38,16 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:files:index')
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
+            $group->get('/hls_streams', Controller\Stations\HlsStreamsAction::class)
+                ->setName('stations:hls_streams:index')
+                ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
+
             $group->get('/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
                 ->setName('stations:util:ls_config')
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
+            $group->get('/stereo_tool_config', Controller\Stations\UploadStereoToolConfigAction::class)
+                ->setName('stations:stereo_tool_config')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->group(

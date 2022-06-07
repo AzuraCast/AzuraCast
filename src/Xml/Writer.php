@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Xml;
 
+use RuntimeException;
 use XMLWriter;
 
 class Writer
@@ -71,7 +72,7 @@ class Writer
                     $branchType = 'string';
                 }
             } elseif ($branchType !== (is_numeric($key) ? 'numeric' : 'string')) {
-                throw new \RuntimeException('Mixing of string and numeric keys is not allowed');
+                throw new RuntimeException('Mixing of string and numeric keys is not allowed');
             }
 
             if ($branchType === 'numeric') {

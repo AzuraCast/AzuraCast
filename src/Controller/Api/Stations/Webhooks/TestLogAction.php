@@ -6,24 +6,29 @@ namespace App\Controller\Api\Stations\Webhooks;
 
 use App\Controller\Api\Traits\HasLogViewer;
 use App\Entity;
+use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Messenger\MessageBus;
 
-class TestLogAction extends AbstractWebhooksAction
+final class TestLogAction
 {
     use HasLogViewer;
+
+    public function __construct(
+        private readonly StationWebhookRepository $webhookRepo
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        MessageBus $messageBus,
-        int $id,
+        string $station_id,
+        string $id,
         string $path
     ): ResponseInterface {
-        $this->requireRecord($request->getStation(), $id);
+        $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $logPathPortion = 'webhook_test_' . $id;
         if (!str_contains($path, $logPathPortion)) {
@@ -37,8 +42,7 @@ class TestLogAction extends AbstractWebhooksAction
         return $this->streamLogToResponse(
             $request,
             $response,
-            $tempPath,
-            true
+            $tempPath
         );
     }
 }

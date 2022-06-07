@@ -4,10 +4,13 @@
  */
 
 use App\Enums\StationPermissions;
+use App\Radio\Enums\AudioProcessingMethods;
 
 return function (App\Event\BuildStationMenu $e) {
     $request = $e->getRequest();
     $station = $e->getStation();
+
+    $backendConfig = $station->getBackendConfig();
 
     $router = $request->getRouter();
     $backend = $request->getStationBackend();
@@ -101,6 +104,13 @@ return function (App\Event\BuildStationMenu $e) {
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:sftp_users:index'),
                         'visible' => App\Service\SftpGo::isSupportedForStation($station),
+                        'permission' => StationPermissions::Media,
+                    ],
+                    'bulk_media' => [
+                        'label' => __('Bulk Media Import/Export'),
+                        'class' => 'text-muted',
+                        'url' => (string)$router->fromHere('stations:bulk-media'),
+                        'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
                 ],
@@ -213,6 +223,12 @@ return function (App\Event\BuildStationMenu $e) {
                         'visible' => $frontend->supportsMounts(),
                         'permission' => StationPermissions::MountPoints,
                     ],
+                    'hls_streams' => [
+                        'label' => __('HLS Streams'),
+                        'url' => (string)$router->fromHere('stations:hls_streams:index'),
+                        'visible' => $backend->supportsHls(),
+                        'permission' => StationPermissions::MountPoints,
+                    ],
                     'remotes' => [
                         'label' => __('Remote Relays'),
                         'icon' => 'router',
@@ -231,6 +247,15 @@ return function (App\Event\BuildStationMenu $e) {
                         'url' => (string)$router->fromHere('stations:util:ls_config'),
                         'visible' => $settings->getEnableAdvancedFeatures()
                             && $backend instanceof App\Radio\Backend\Liquidsoap,
+                        'permission' => StationPermissions::Broadcasting,
+                    ],
+                    'stations:stereo_tool_config' => [
+                        'label' => __('Upload Stereo Tool Configuration'),
+                        'class' => 'text-muted',
+                        'url' => (string)$router->fromHere('stations:stereo_tool_config'),
+                        'visible' => $settings->getEnableAdvancedFeatures()
+                            && $backend instanceof App\Radio\Backend\Liquidsoap
+                            && AudioProcessingMethods::StereoTool === $backendConfig->getAudioProcessingMethodEnum(),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'queue' => [

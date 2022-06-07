@@ -49,22 +49,19 @@ use Psr\SimpleCache\CacheInterface;
         ]
     )
 ]
-class NowPlayingAction
+final class NowPlayingAction
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected CacheInterface $cache
+        private readonly EntityManagerInterface $em,
+        private readonly CacheInterface $cache
     ) {
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param int|string|null $station_id
-     */
-    public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        ?string $station_id = null
+    ): ResponseInterface {
         $router = $request->getRouter();
 
         if (!empty($station_id)) {
@@ -86,8 +83,8 @@ class NowPlayingAction
         );
     }
 
-    protected function getForStation(
-        string|int $station,
+    private function getForStation(
+        string $station,
         RouterInterface $router
     ): ?Entity\Api\NowPlaying\NowPlaying {
         // Check cache first.
@@ -114,7 +111,7 @@ class NowPlayingAction
                     ->getSingleResult();
 
                 $np = $npResult['nowplaying'] ?? null;
-            } catch (NoResultException $e) {
+            } catch (NoResultException) {
                 return null;
             }
         }
@@ -128,7 +125,7 @@ class NowPlayingAction
         return null;
     }
 
-    protected function getForAllStations(
+    private function getForAllStations(
         RouterInterface $router,
         bool $publicOnly = false,
     ): array {

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -f /etc/service/mariadb/run ]; then
+if [ ! -f /etc/supervisor/minimal.conf.d/mariadb.conf ]; then
     echo "MariaDB disabled. Skipping DB initialization..."
     exit 0
 fi

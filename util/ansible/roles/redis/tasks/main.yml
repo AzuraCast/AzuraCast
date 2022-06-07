@@ -8,14 +8,33 @@
   apt:
     name: redis-server
 
-- name: Enable and restart all core services
+- name: Install Redis Conf
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    force: true
+    owner: "redis"
+    mode: 0644
+
+- name: Create Redis run dir
+  file:
+    path: /run/redis/
+    owner: "redis"
+    state: directory
+
+- name: Install Redis Supervisord conf
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/redis.conf
+    force: true
+    mode: 0644
+
+- name: Disable Redis services
   service:
-    name: "{{ redis_service_to_restart }}"
-    enabled: true
-    state: restarted
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
   ignore_errors: true
-  loop:
+  with_items:
     - "redis-server"
     - "redis"
-  loop_control:
-    loop_var: redis_service_to_restart

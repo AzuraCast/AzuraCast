@@ -11,7 +11,8 @@
                                               :is-shoutcast-installed="isShoutcastInstalled"
                                               :countries="countries"
                                               :show-advanced="showAdvanced"></admin-stations-frontend-form>
-                <admin-stations-backend-form :form="$v.form" :tab-class="getTabClass($v.backendTab)"
+                <admin-stations-backend-form :form="$v.form" :station="station" :tab-class="getTabClass($v.backendTab)"
+                                             :is-stereo-tool-installed="isStereoToolInstalled"
                                              :show-advanced="showAdvanced"></admin-stations-backend-form>
                 <admin-stations-admin-form v-if="showAdminTab" :tab-class="getTabClass($v.adminTab)" :form="$v.form"
                                            :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl"
@@ -35,7 +36,7 @@
 <script>
 import {validationMixin} from "vuelidate";
 import {decimal, numeric, required, url} from 'vuelidate/dist/validators.min.js';
-import {BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
 import AdminStationsBackendForm from "./Form/BackendForm";
@@ -58,6 +59,10 @@ export const StationFormProps = {
         timezones: Object,
         // Frontend
         isShoutcastInstalled: {
+            type: Boolean,
+            default: false
+        },
+        isStereoToolInstalled: {
             type: Boolean,
             default: false
         },
@@ -95,6 +100,7 @@ export default {
                 timezone: {},
                 enable_public_page: {},
                 enable_on_demand: {},
+                enable_hls: {},
                 default_album_art_url: {},
                 enable_on_demand_download: {},
                 frontend_type: {required},
@@ -108,7 +114,8 @@ export default {
                 backend_config: {
                     crossfade_type: {},
                     crossfade: {decimal},
-                    nrj: {},
+                    audio_processing_method: {},
+                    stereo_tool_license_key: {},
                     record_streams: {},
                     record_streams_format: {},
                     record_streams_bitrate: {},
@@ -132,6 +139,12 @@ export default {
                 'form.request_threshold', 'form.enable_streamers', 'form.disconnect_deactivate_streamer'
             ],
         };
+
+        function mergeCustom(objValue, srcValue) {
+            if (_.isArray(objValue)) {
+                return objValue.concat(srcValue);
+            }
+        }
 
         if (this.showAdvanced) {
             const advancedValidations = {
@@ -164,7 +177,7 @@ export default {
                 ],
             };
 
-            _.merge(formValidations, advancedValidations);
+            _.mergeWith(formValidations, advancedValidations, mergeCustom);
         }
 
         if (this.showAdminTab) {
@@ -181,7 +194,7 @@ export default {
                 ]
             };
 
-            _.merge(formValidations, adminValidations);
+            _.mergeWith(formValidations, adminValidations, mergeCustom);
 
             if (this.showAdvanced) {
                 const advancedAdminValidations = {
@@ -193,11 +206,9 @@ export default {
                     ]
                 }
 
-                _.merge(formValidations, advancedAdminValidations);
+                _.mergeWith(formValidations, advancedAdminValidations, mergeCustom);
             }
         }
-
-        console.log(formValidations);
 
         return formValidations;
     },
@@ -205,7 +216,8 @@ export default {
         return {
             loading: true,
             error: null,
-            form: {}
+            form: {},
+            station: {},
         };
     },
     watch: {
@@ -245,6 +257,7 @@ export default {
                 timezone: 'UTC',
                 enable_public_page: true,
                 enable_on_demand: false,
+                enable_hls: false,
                 default_album_art_url: '',
                 enable_on_demand_download: true,
                 frontend_type: FRONTEND_ICECAST,
@@ -258,7 +271,8 @@ export default {
                 backend_config: {
                     crossfade_type: 'normal',
                     crossfade: 2,
-                    nrj: false,
+                    audio_processing_method: AUDIO_PROCESSING_NONE,
+                    stereo_tool_license_key: '',
                     record_streams: false,
                     record_streams_format: 'mp3',
                     record_streams_bitrate: 128,
@@ -316,6 +330,12 @@ export default {
                 }
             }
 
+            this.station = {
+                stereo_tool_configuration_file_path: null,
+                links: {
+                    stereo_tool_configuration: null
+                }
+            };
             this.form = form;
         },
         reset() {

@@ -9,17 +9,14 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class ScheduleAction
+final class ScheduleAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        bool $embed = false
+        string $station_id,
+        ?string $embed = null
     ): ResponseInterface {
-        // Override system-wide iframe refusal
-        $response = $response
-            ->withHeader('X-Frame-Options', '*');
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -29,12 +26,13 @@ class ScheduleAction
         $router = $request->getRouter();
 
         $pageClass = 'schedule station-' . $station->getShortName();
-        if ($embed) {
+        if (null !== $embed) {
             $pageClass .= ' embed';
         }
 
         return $request->getView()->renderVuePage(
-            response: $response,
+            response: $response
+                ->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicSchedule',
             id: 'station-schedule',
             layout: 'minimal',

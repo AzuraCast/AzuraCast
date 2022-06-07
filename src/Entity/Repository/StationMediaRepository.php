@@ -7,19 +7,17 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Exception\CannotProcessMediaException;
+use App\Exception\NotFoundException;
+use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
 use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
 use League\Flysystem\FilesystemException;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
+use Monolog\Registry;
 
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
@@ -28,49 +26,48 @@ use const JSON_UNESCAPED_SLASHES;
 /**
  * @extends Repository<Entity\StationMedia>
  */
-class StationMediaRepository extends Repository
+final class StationMediaRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected MetadataManager $metadataManager,
-        protected RemoteAlbumArt $remoteAlbumArt,
-        protected CustomFieldRepository $customFieldRepo,
-        protected StationPlaylistMediaRepository $spmRepo,
-        protected StorageLocationRepository $storageLocationRepo,
-        protected UnprocessableMediaRepository $unprocessableMediaRepo,
-        protected ImageManager $imageManager
+        private readonly MetadataManager $metadataManager,
+        private readonly RemoteAlbumArt $remoteAlbumArt,
+        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly UnprocessableMediaRepository $unprocessableMediaRepo
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
-    /**
-     * @param mixed $id
-     * @param Entity\Station|Entity\StorageLocation $source
-     *
-     */
-    public function find(mixed $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
+    public function findForStation(int|string $id, Entity\Station $station): ?Entity\StationMedia
     {
-        if (is_string($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
-            $media = $this->findByUniqueId($id, $source);
+        if (!is_numeric($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
+            $media = $this->findByUniqueId($id, $station);
             if ($media instanceof Entity\StationMedia) {
                 return $media;
             }
         }
 
-        $storageLocation = $this->getStorageLocation($source);
+        $storageLocation = $this->getStorageLocation($station);
 
         /** @var Entity\StationMedia|null $media */
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'id'               => $id,
+                'id' => $id,
             ]
         );
 
         return $media;
+    }
+
+    public function requireForStation(int|string $id, Entity\Station $station): Entity\StationMedia
+    {
+        $record = $this->findForStation($id, $station);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 
     /**
@@ -86,7 +83,7 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'path'             => $path,
+                'path' => $path,
             ]
         );
 
@@ -120,11 +117,22 @@ class StationMediaRepository extends Repository
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
-                'unique_id'        => $uniqueId,
+                'unique_id' => $uniqueId,
             ]
         );
 
         return $media;
+    }
+
+    public function requireByUniqueId(
+        string $uniqueId,
+        Entity\Station|Entity\StorageLocation $source
+    ): Entity\StationMedia {
+        $record = $this->findByUniqueId($uniqueId, $source);
+        if (null === $record) {
+            throw new NotFoundException();
+        }
+        return $record;
     }
 
     protected function getStorageLocation(Entity\Station|Entity\StorageLocation $source): Entity\StorageLocation
@@ -205,7 +213,10 @@ class StationMediaRepository extends Repository
             $mediaMtime = time();
         } else {
             if (!$fs->fileExists($path)) {
-                throw new CannotProcessMediaException(sprintf('Media path "%s" not found.', $path));
+                throw CannotProcessMediaException::forPath(
+                    $path,
+                    sprintf('Media path "%s" not found.', $path)
+                );
             }
 
             $mediaMtime = $fs->lastModified($path);
@@ -281,7 +292,7 @@ class StationMediaRepository extends Repository
             try {
                 $this->writeAlbumArt($media, $artwork, $fs);
             } catch (Exception $exception) {
-                $this->logger->error(
+                Registry::getInstance('app')->error(
                     sprintf(
                         'Album Artwork for "%s" could not be processed: "%s"',
                         $filePath,
@@ -331,19 +342,10 @@ class StationMediaRepository extends Repository
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
 
-        $albumArt = $this->imageManager->make($rawArtString);
-        $albumArt->fit(
-            1200,
-            1200,
-            function (Constraint $constraint): void {
-                $constraint->upsize();
-            }
-        );
-
         $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-        $albumArtStream = $albumArt->stream('jpg');
+        $albumArtString = AlbumArt::resize($rawArtString);
 
-        $fs->writeStream($albumArtPath, $albumArtStream->detach());
+        $fs->write($albumArtPath, $albumArtString);
     }
 
     public function removeAlbumArt(

@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Entity;
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\StationPlaylistImportResult;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\StationMedia;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
@@ -12,21 +17,28 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
-class ImportAction extends AbstractPlaylistsAction
+final class ImportAction
 {
+    public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly ReloadableEntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        int $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
-        $playlist = $this->requireRecord($request->getStation(), $id);
+        $playlist = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $files = $request->getUploadedFiles();
 
         if (empty($files['playlist_file'])) {
             return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, 'No "playlist_file" provided.'));
+                ->withJson(new Error(500, 'No "playlist_file" provided.'));
         }
 
         /** @var UploadedFileInterface $file */
@@ -34,7 +46,7 @@ class ImportAction extends AbstractPlaylistsAction
 
         if (UPLOAD_ERR_OK !== $file->getError()) {
             return $response->withStatus(500)
-                ->withJson(Entity\Api\Error::fromFileError($file->getError()));
+                ->withJson(Error::fromFileError($file->getError()));
         }
 
         $playlistFile = $file->getStream()->getContents();
@@ -129,21 +141,21 @@ class ImportAction extends AbstractPlaylistsAction
                     ->setParameter('matched_ids', $matches)
                     ->execute();
 
-                /** @var Entity\StationMedia[] $mediaById */
+                /** @var StationMedia[] $mediaById */
                 $mediaById = [];
                 foreach ($matchedMediaRaw as $row) {
-                    /** @var Entity\StationMedia $row */
+                    /** @var StationMedia $row */
                     $mediaById[$row->getId()] = $row;
                 }
 
-                $weight = $playlistMediaRepo->getHighestSongWeight($playlist);
+                $weight = $this->spmRepo->getHighestSongWeight($playlist);
 
                 // Split this process to preserve the order of the imported items.
                 foreach ($matches as $mediaId) {
                     $weight++;
 
                     $media = $mediaById[$mediaId];
-                    $playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
+                    $this->spmRepo->addMediaToPlaylist($media, $playlist, $weight);
 
                     $foundPaths++;
                 }
@@ -153,10 +165,10 @@ class ImportAction extends AbstractPlaylistsAction
         }
 
         return $response->withJson(
-            new Entity\Api\StationPlaylistImportResult(
+            new StationPlaylistImportResult(
                 true,
-                __(
-                    'Playlist successfully imported; %d of %d files were successfully matched.',
+                sprintf(
+                    __('Playlist successfully imported; %d of %d files were successfully matched.'),
                     $foundPaths,
                     $totalPaths
                 ),

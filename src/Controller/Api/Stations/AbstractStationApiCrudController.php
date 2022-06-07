@@ -6,7 +6,6 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -18,17 +17,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
  */
 abstract class AbstractStationApiCrudController extends AbstractApiCrudController
 {
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
         $station = $this->getStation($request);
 
-        $query = $this->em->createQuery('SELECT e
+        $query = $this->em->createQuery(
+            'SELECT e
             FROM ' . $this->entityClass . ' e
-            WHERE e.station = :station')
+            WHERE e.station = :station'
+        )
             ->setParameter('station', $station);
 
         return $this->listPaginatedFromQuery($request, $response, $query);
@@ -45,12 +45,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         return $request->getStation();
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function createAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
         $station = $this->getStation($request);
         $row = $this->createRecord((array)$request->getParsedBody(), $station);
 
@@ -80,19 +79,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         );
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param string|int $station_id
-     * @param string|int $id
-     *
-     * @throws Exception
-     */
     public function getAction(
         ServerRequest $request,
         Response $response,
-        mixed $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);
@@ -122,17 +113,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         );
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param string|int $station_id
-     * @param string|int $id
-     */
     public function editAction(
         ServerRequest $request,
         Response $response,
-        mixed $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 
@@ -146,17 +131,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         return $response->withJson(Entity\Api\Status::updated());
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param string|int $station_id
-     * @param string|int $id
-     */
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        mixed $station_id,
-        mixed $id
+        string $station_id,
+        string $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 

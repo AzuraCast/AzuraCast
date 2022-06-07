@@ -25,7 +25,7 @@ trait HasScheduleDisplay
             throw new InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
         }
 
-        $startDate = $startDate->startOf('day');
+        $startDate = $startDate->subDay()->startOf('day');
 
         $endDateStr = substr($params['end'], 0, 10);
         $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);

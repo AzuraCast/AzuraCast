@@ -9,7 +9,7 @@ use App\Entity;
 /**
  * @extends AbstractAdminApiCrudController<Entity\ApiKey>
  */
-class ApiKeysController extends AbstractAdminApiCrudController
+final class ApiKeysController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\ApiKey::class;
     protected string $resourceRouteName = 'api:admin:api-key';

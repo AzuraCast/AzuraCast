@@ -6,11 +6,13 @@ namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
 use App\Environment;
-use App\LockFactory;
+use App\Lock\LockFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;
 use Symfony\Component\Process\Process;
+
+use function random_int;
 
 abstract class AbstractSyncCommand extends CommandAbstract
 {
@@ -34,7 +36,7 @@ abstract class AbstractSyncCommand extends CommandAbstract
             $process = $processGroup['process'];
 
             // 10% chance that refresh will be called
-            if (\random_int(1, 100) <= 10) {
+            if (random_int(1, 100) <= 10) {
                 $lock->refresh();
             }
 
@@ -93,7 +95,7 @@ abstract class AbstractSyncCommand extends CommandAbstract
 
         $this->processes[$processKey] = [
             'process' => $process,
-            'lock'    => $lock,
+            'lock' => $lock,
         ];
     }
 }

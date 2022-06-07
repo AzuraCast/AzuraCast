@@ -31,9 +31,11 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
     ]
     protected string $name;
 
+    /** @var Collection<int, User> */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
     protected Collection $users;
 
+    /** @var Collection<int, RolePermission> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)
@@ -56,11 +58,17 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
         $this->name = $this->truncateString($name, 100);
     }
 
+    /**
+     * @return Collection<int, User>
+     */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
+    /**
+     * @return Collection<int, RolePermission>
+     */
     public function getPermissions(): Collection
     {
         return $this->permissions;

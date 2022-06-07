@@ -12,19 +12,18 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             $console = $event->getConsole();
             $di = $event->getContainer();
 
-            // Doctrine ORM/DBAL
-            Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
-
-            // Add Doctrine Migrations
             /** @var Doctrine\ORM\EntityManagerInterface $em */
             $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
 
+            // Doctrine ORM/DBAL
+            Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
+                $console,
+                new Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
+            );
+
+            // Add Doctrine Migrations
             /** @var Environment $environment */
             $environment = $di->get(Environment::class);
-
-            $helper_set = $console->getHelperSet();
-            $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
-            $helper_set->set($doctrine_helpers->get('em'), 'em');
 
             $migrationConfigurations = [
                 'migrations_paths' => [
@@ -135,7 +134,9 @@ return function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\CleanupLoginTokensTask::class,
                 App\Sync\Task\CleanupRelaysTask::class,
                 App\Sync\Task\CleanupStorageTask::class,
+                App\Sync\Task\EnforceBroadcastTimesTask::class,
                 App\Sync\Task\MoveBroadcastsTask::class,
+                App\Sync\Task\QueueInterruptingTracks::class,
                 App\Sync\Task\ReactivateStreamerTask::class,
                 App\Sync\Task\RotateLogsTask::class,
                 App\Sync\Task\RunAnalyticsTask::class,
@@ -151,10 +152,6 @@ return function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
         App\Notification\Check\BaseUrlCheck::class
-    );
-    $dispatcher->addCallableListener(
-        Event\GetNotifications::class,
-        App\Notification\Check\ComposeVersionCheck::class
     );
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
@@ -186,11 +183,20 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         -10
     );
 
+    $dispatcher->addCallableListener(
+        Event\Media\ReadMetadata::class,
+        App\Media\Metadata\Reader::class
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\WriteMetadata::class,
+        App\Media\Metadata\Writer::class
+    );
+
     $dispatcher->addServiceSubscriber(
         [
-            App\Media\MetadataManager::class,
             App\Console\ErrorHandler::class,
-            App\Radio\AutoDJ\Queue::class,
+            App\Nginx\ConfigWriter::class,
+            App\Radio\AutoDJ\QueueBuilder::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,
             App\Radio\Backend\Liquidsoap\PlaylistFileWriter::class,

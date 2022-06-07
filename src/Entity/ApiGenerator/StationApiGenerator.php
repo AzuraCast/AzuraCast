@@ -23,12 +23,13 @@ class StationApiGenerator
         bool $showAllMounts = false
     ): Entity\Api\NowPlaying\Station {
         $fa = $this->adapters->getFrontendAdapter($station);
+        $backend = $this->adapters->getBackendAdapter($station);
         $remoteAdapters = $this->adapters->getRemoteAdapters($station);
 
         $response = new Entity\Api\NowPlaying\Station();
         $response->id = (int)$station->getId();
         $response->name = (string)$station->getName();
-        $response->shortcode = (string)$station->getShortName();
+        $response->shortcode = $station->getShortName();
         $response->description = (string)$station->getDescription();
         $response->frontend = (string)$station->getFrontendType();
         $response->backend = (string)$station->getBackendType();
@@ -67,6 +68,11 @@ class StationApiGenerator
             }
         }
         $response->remotes = $remotes;
+
+        $response->hls_enabled = $backend->supportsHls() && $station->getEnableHls();
+        $response->hls_url = ($response->hls_enabled)
+            ? $backend->getHlsUrl($station, $baseUri)
+            : null;
 
         return $response;
     }

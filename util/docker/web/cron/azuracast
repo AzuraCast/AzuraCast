@@ -1,2 +1,4 @@
+SHELL=/bin/bash
+BASH_ENV=/container.env
 * * * * *   root        /usr/local/bin/cron_task azuracast_cli azuracast:sync:run
 30 */6 * * *   root     /usr/local/bin/temp_cleanup

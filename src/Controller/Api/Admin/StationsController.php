@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 /** @extends AbstractAdminApiCrudController<Entity\Station> */
 #[
@@ -155,12 +156,10 @@ class StationsController extends AbstractAdminApiCrudController
         parent::__construct($reloadableEm, $serializer, $validator);
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param Response $response
-     */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
             ->from(Entity\Station::class, 'e');
@@ -195,7 +194,7 @@ class StationsController extends AbstractAdminApiCrudController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'self'   => (string)$router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
@@ -205,7 +204,7 @@ class StationsController extends AbstractAdminApiCrudController
                 route_params: ['station_id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'clone'  => (string)$router->fromHere(
+            'clone' => (string)$router->fromHere(
                 route_name: 'api:admin:station:clone',
                 route_params: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
@@ -233,7 +232,7 @@ class StationsController extends AbstractAdminApiCrudController
         ];
 
         foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
-            $context[AbstractNormalizer::CALLBACKS][$locationKey] = fn(
+            $context[AbstractNormalizer::CALLBACKS][$locationKey] = static fn(
                 array $value
             ) => $value['id'];
         }
@@ -315,14 +314,22 @@ class StationsController extends AbstractAdminApiCrudController
         // Get the original values to check for changes.
         $old_frontend = $original_record['frontend_type'];
         $old_backend = $original_record['backend_type'];
+        $old_hls = (bool)$original_record['enable_hls'];
 
         $frontend_changed = ($old_frontend !== $station->getFrontendType());
         $backend_changed = ($old_backend !== $station->getBackendType());
         $adapter_changed = $frontend_changed || $backend_changed;
 
+        $hls_changed = $old_hls !== $station->getEnableHls();
+
         if ($frontend_changed) {
             $frontend = $this->adapters->getFrontendAdapter($station);
             $this->stationRepo->resetMounts($station, $frontend);
+        }
+
+        if ($hls_changed || $backend_changed) {
+            $backend = $this->adapters->getBackendAdapter($station);
+            $this->stationRepo->resetHls($station, $backend);
         }
 
         if ($adapter_changed || !$station->getIsEnabled()) {
@@ -331,7 +338,7 @@ class StationsController extends AbstractAdminApiCrudController
                     station: $station,
                     forceRestart: true
                 );
-            } catch (\Throwable $e) {
+            } catch (Throwable) {
             }
         }
 

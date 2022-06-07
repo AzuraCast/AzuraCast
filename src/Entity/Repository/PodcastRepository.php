@@ -7,30 +7,22 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Exception\StorageLocationFullException;
+use App\Media\AlbumArt;
 use Azura\Files\ExtendedFilesystemInterface;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @extends Repository<Entity\Podcast>
  */
-class PodcastRepository extends Repository
+final class PodcastRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $entityManager,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected ImageManager $imageManager,
-        protected PodcastEpisodeRepository $podcastEpisodeRepo,
+        private readonly PodcastEpisodeRepository $podcastEpisodeRepo,
     ) {
-        parent::__construct($entityManager, $serializer, $environment, $logger);
+        parent::__construct($entityManager);
     }
 
     public function fetchPodcastForStation(Entity\Station $station, string $podcastId): ?Entity\Podcast
@@ -87,16 +79,7 @@ class PodcastRepository extends Repository
         $storageLocation = $podcast->getStorageLocation();
         $fs ??= $storageLocation->getFilesystem();
 
-        $podcastArtwork = $this->imageManager->make($rawArtworkString);
-        $podcastArtwork->fit(
-            3000,
-            3000,
-            function (Constraint $constraint): void {
-                $constraint->upsize();
-            }
-        );
-        $podcastArtwork->encode('jpg');
-        $podcastArtworkString = $podcastArtwork->getEncoded();
+        $podcastArtworkString = AlbumArt::resize($rawArtworkString);
 
         $podcastArtworkSize = strlen($podcastArtworkString);
         if (!$storageLocation->canHoldFile($podcastArtworkSize)) {

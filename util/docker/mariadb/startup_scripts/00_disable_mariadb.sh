@@ -4,6 +4,5 @@
 if [ "$MYSQL_HOST" != "localhost" ]; then
     echo "MariaDB host is not localhost; disabling MariaDB..."
 
-    rm -rf /etc/service/mariadb
-    rm -rf /etc/service.minimal/mariadb
+    rm -rf /etc/supervisor/minimal.conf.d/mariadb.conf
 fi

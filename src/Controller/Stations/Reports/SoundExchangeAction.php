@@ -9,12 +9,14 @@ use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 
-class SoundExchangeAction
+final class SoundExchangeAction
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $station = $request->getStation();
-        $tzObject = $station->getTimezoneObject();
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
+        $tzObject = $request->getStation()->getTimezoneObject();
 
         $defaultStartDate = CarbonImmutable::parse('first day of last month', $tzObject)->format('Y-m-d');
         $defaultEndDate = CarbonImmutable::parse('last day of last month', $tzObject)->format('Y-m-d');
@@ -27,9 +29,9 @@ class SoundExchangeAction
             id: 'station-report-soundexchange',
             title: __('SoundExchange Report'),
             props: [
-                'apiUrl'    => (string)$router->fromHere('api:stations:reports:soundexchange'),
+                'apiUrl' => (string)$router->fromHere('api:stations:reports:soundexchange'),
                 'startDate' => $defaultStartDate,
-                'endDate'   => $defaultEndDate,
+                'endDate' => $defaultEndDate,
             ]
         );
     }

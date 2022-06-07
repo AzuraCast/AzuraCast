@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\AppFactory;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Enums\ApplicationEnvironment;
 use App\Environment;
@@ -38,16 +39,10 @@ class Module extends Framework implements DoctrineProvider
 
     public function _initialize(): void
     {
-        /** @var string $container_class The fully qualified name of the container class. */
-        $container_class = $this->config['container'];
-
-        $autoloader = $GLOBALS['autoloader'];
-
-        $this->app = $container_class::createApp(
-            $autoloader,
+        $this->app = AppFactory::createApp(
             [
                 Environment::BASE_DIR => Configuration::projectDir(),
-                Environment::APP_ENV  => ApplicationEnvironment::Testing->value,
+                Environment::APP_ENV => ApplicationEnvironment::Testing->value,
             ]
         );
 

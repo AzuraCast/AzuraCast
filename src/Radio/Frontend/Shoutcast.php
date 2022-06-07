@@ -24,12 +24,6 @@ class Shoutcast extends AbstractFrontend
     public function getBinary(): ?string
     {
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
-
-        // Docker versions before 3 included the SC binary across the board.
-        if ($this->environment->isDocker() && !$this->environment->isDockerRevisionAtLeast(3)) {
-            return $new_path;
-        }
-
         return file_exists($new_path)
             ? $new_path
             : null;
@@ -60,7 +54,7 @@ class Shoutcast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        $baseUrl = $this->environment->getUriToStations()
+        $baseUrl = $this->environment->getLocalUri()
             ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);

@@ -10,8 +10,8 @@ services:
       - "127.0.0.1:3306:3306"
       - "127.0.0.1:6379:6379"
     volumes:
-      - ./util/local_ssl:/etc/nginx/certs
-      - ./vendor:/var/azuracast/www/vendor
-      - .:/var/azuracast/www
+      - $PWD/util/local_ssl:/etc/nginx/certs
+      - $PWD/vendor:/var/azuracast/www/vendor
+      - $PWD:/var/azuracast/www
     extra_hosts:
       - "host.docker.internal:host-gateway"

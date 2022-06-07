@@ -8,7 +8,10 @@ declare(strict_types=1);
 
 namespace App\Xml;
 
+use RuntimeException;
 use XMLReader;
+
+use const LIBXML_XINCLUDE;
 
 /**
  * XML config reader.
@@ -32,14 +35,14 @@ class Reader
         }
 
         /** @var XMLReader|false $reader */
-        $reader = XMLReader::XML($string, null, \LIBXML_XINCLUDE);
+        $reader = XMLReader::XML($string, null, LIBXML_XINCLUDE);
         if (false === $reader) {
             return false;
         }
 
         set_error_handler(
-            function ($error, $message = '') {
-                throw new \RuntimeException(
+            static function ($error, $message = '') {
+                throw new RuntimeException(
                     sprintf('Error reading XML string: %s', $message),
                     $error
                 );

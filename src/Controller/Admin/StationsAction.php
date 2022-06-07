@@ -10,13 +10,17 @@ use App\Radio\Adapters;
 use App\VueComponent\StationFormComponent;
 use Psr\Http\Message\ResponseInterface;
 
-class StationsAction
+final class StationsAction
 {
+    public function __construct(
+        private readonly StationFormComponent $stationFormComponent,
+        private readonly Adapters $adapters
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        StationFormComponent $stationFormComponent,
-        Adapters $adapters
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 
@@ -26,11 +30,11 @@ class StationsAction
             id: 'admin-stations',
             title: __('Stations'),
             props: array_merge(
-                $stationFormComponent->getProps($request),
+                $this->stationFormComponent->getProps($request),
                 [
-                    'listUrl'       => (string)$router->fromHere('api:admin:stations'),
-                    'frontendTypes' => $adapters->listFrontendAdapters(false),
-                    'backendTypes'  => $adapters->listBackendAdapters(false),
+                    'listUrl' => (string)$router->fromHere('api:admin:stations'),
+                    'frontendTypes' => $this->adapters->listFrontendAdapters(),
+                    'backendTypes' => $this->adapters->listBackendAdapters(),
                 ]
             )
         );

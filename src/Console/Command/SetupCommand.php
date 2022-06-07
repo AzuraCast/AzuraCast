@@ -59,7 +59,7 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:station-queues:clear');
 
         $restartArgs = [];
-        if ($this->environment->isDockerStandalone()) {
+        if ($this->environment->isDocker()) {
             $restartArgs['--no-supervisor-restart'] = true;
         }
 
@@ -87,7 +87,10 @@ class SetupCommand extends CommandAbstract
             $io->success(
                 [
                     __('AzuraCast installation complete!'),
-                    __('Visit %s to complete setup.', 'http://' . $public_ip),
+                    sprintf(
+                        __('Visit %s to complete setup.'),
+                        'http://' . $public_ip
+                    ),
                 ]
             );
         }

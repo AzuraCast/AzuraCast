@@ -45,9 +45,9 @@ class Assets
 
     public function __construct(
         protected Environment $environment,
-        Config $config
+        array $libraries,
     ) {
-        foreach ($config->get('assets') as $library_name => $library) {
+        foreach ($libraries as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
 
@@ -57,7 +57,7 @@ class Assets
         $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/webpack.json');
         $this->addVueComponents($vueComponents);
 
-        $this->csp_nonce = (string)preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
+        $this->csp_nonce = (string)preg_replace('/[^A-Za-z\d+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
     }
 
@@ -253,9 +253,9 @@ class Assets
 
         $this->addInlineJs(
             <<<JS
-                let ${name};
+                let {$name};
                 $(function () {
-                    ${name} = ${nameWithoutPrefix}.default('${elementId}', ${propsJson});
+                    {$name} = {$nameWithoutPrefix}.default('{$elementId}', {$propsJson});
                 });
             JS
         );

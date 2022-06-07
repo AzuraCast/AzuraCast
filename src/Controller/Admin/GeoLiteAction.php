@@ -6,15 +6,13 @@ namespace App\Controller\Admin;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
-class GeoLiteAction
+final class GeoLiteAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Version $version
+        Response $response
     ): ResponseInterface {
         $router = $request->getRouter();
 

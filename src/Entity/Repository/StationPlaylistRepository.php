@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\Repository;
 use App\Entity;
 
 /**
- * @extends Repository<Entity\StationPlaylist>
+ * @extends AbstractStationBasedRepository<Entity\StationPlaylist>
  */
-class StationPlaylistRepository extends Repository
+final class StationPlaylistRepository extends AbstractStationBasedRepository
 {
+    /**
+     * @return Entity\StationPlaylist[]
+     */
+    public function getAllForStation(Entity\Station $station): array
+    {
+        return $this->repository->findBy([
+            'station' => $station,
+        ]);
+    }
+
     public function stationHasActivePlaylists(Entity\Station $station): bool
     {
         foreach ($station->getPlaylists() as $playlist) {

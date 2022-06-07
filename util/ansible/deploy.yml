@@ -25,6 +25,7 @@
     - php
     - redis
     - beanstalkd
+    - sftpgo
     - mariadb
     - azuracast-db-install
     - ufw

@@ -29,8 +29,7 @@ class UpdateCheck
 
         $settings = $this->settingsRepo->readSettings();
 
-        $checkForUpdates = $settings->getCheckForUpdates();
-        if (!$checkForUpdates) {
+        if (!$settings->getCheckForUpdates()) {
             return;
         }
 
@@ -46,13 +45,13 @@ class UpdateCheck
 
         if (ReleaseChannel::Stable === $releaseChannel && $updateData['needs_release_update']) {
             $notificationParts = [
-                '<b>' . __(
-                    'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.',
+                '<b>' . sprintf(
+                    __('AzuraCast <a href="%s" target="_blank">version %s</a> is now available.'),
                     Version::CHANGELOG_URL,
                     $updateData['latest_release']
                 ) . '</b>',
-                __(
-                    'You are currently running version %s. Updating is highly recommended.',
+                sprintf(
+                    __('You are currently running version %s. Updating is highly recommended.'),
                     $updateData['current_release']
                 ),
             ];
@@ -71,8 +70,8 @@ class UpdateCheck
         if (ReleaseChannel::RollingRelease === $releaseChannel && $updateData['needs_rolling_update']) {
             $notificationParts = [];
 
-            $notificationParts[] = '<b>' . __(
-                'Your installation is currently %d update(s) behind the latest version.',
+            $notificationParts[] = '<b>' . sprintf(
+                __('Your installation is currently %d update(s) behind the latest version.'),
                 $updateData['rolling_updates_available']
             ) . '</b>';
 

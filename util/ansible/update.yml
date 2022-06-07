@@ -20,25 +20,27 @@
     - role: "azuracast-config"
 
     - role: "azuracast-radio"
-      when: update_revision|int < 77
+      when: update_revision|int < 82
 
     - role: "supervisord"
-      when: update_revision|int < 13
 
     - role: "mariadb"
-      when: update_revision|int < 63
+      when: update_revision|int < 87
 
     - role: "nginx"
-      when: update_revision|int < 75
+      when: update_revision|int < 87
 
     - role: "redis"
-      when: update_revision|int < 57
+      when: update_revision|int < 87
 
     - role: "beanstalkd"
-      when: update_revision|int < 67
+      when: update_revision|int < 87
+
+    - role: "sftpgo"
+      when: update_revision|int < 87
 
     - role: "php"
-      when: update_revision|int < 68
+      when: update_revision|int < 87
 
     - role: "composer"
 
@@ -46,16 +48,15 @@
       when: update_revision|int < 58
 
     - role: "ufw"
-      when: update_revision|int < 12
+      when: update_revision|int < 86
 
     - role: "dbip"
       when: update_revision|int < 51
 
-    - role: "services"
-      when: update_revision|int < 13
-
     - role: "azuracast-cron"
-      when: update_revision|int < 72
+      when: update_revision|int < 87
+
+    - role: "services"
 
     - role: "azuracast-build"
 

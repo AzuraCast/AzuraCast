@@ -13,6 +13,7 @@ use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -37,7 +38,6 @@ class StationPlaylist implements
     public const DEFAULT_REMOTE_BUFFER = 20;
 
     public const OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
-    public const OPTION_LOOP_PLAYLIST_ONCE = 'loop_once';
     public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
     public const OPTION_MERGE = 'merge';
 
@@ -180,17 +180,20 @@ class StationPlaylist implements
     ]
     protected int $queue_reset_at = 0;
 
+    /** @var Collection<int, StationPlaylistMedia> */
     #[
         ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY'),
         ORM\OrderBy(['weight' => 'ASC'])
     ]
     protected Collection $media_items;
 
+    /** @var Collection<int, StationPlaylistFolder> */
     #[
         ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')
     ]
     protected Collection $folders;
 
+    /** @var Collection<int, StationSchedule> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY'),
@@ -251,7 +254,7 @@ class StationPlaylist implements
     public function setType(string $type): void
     {
         if (null === PlaylistTypes::tryFrom($type)) {
-            throw new \InvalidArgumentException('Invalid playlist type.');
+            throw new InvalidArgumentException('Invalid playlist type.');
         }
 
         $this->type = $type;
@@ -270,7 +273,7 @@ class StationPlaylist implements
     public function setSource(string $source): void
     {
         if (null === PlaylistSources::tryFrom($source)) {
-            throw new \InvalidArgumentException('Invalid playlist source.');
+            throw new InvalidArgumentException('Invalid playlist source.');
         }
 
         $this->source = $source;
@@ -289,7 +292,7 @@ class StationPlaylist implements
     public function setOrder(string $order): void
     {
         if (null === PlaylistOrders::tryFrom($order)) {
-            throw new \InvalidArgumentException('Invalid playlist order.');
+            throw new InvalidArgumentException('Invalid playlist order.');
         }
 
         $this->order = $order;
@@ -318,7 +321,7 @@ class StationPlaylist implements
     public function setRemoteType(?string $remote_type): void
     {
         if (null !== $remote_type && null === PlaylistRemoteTypes::tryFrom($remote_type)) {
-            throw new \InvalidArgumentException('Invalid playlist remote type.');
+            throw new InvalidArgumentException('Invalid playlist remote type.');
         }
 
         $this->remote_type = $remote_type;
@@ -437,7 +440,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<StationPlaylistMedia>
+     * @return Collection<int, StationPlaylistMedia>
      */
     public function getMediaItems(): Collection
     {
@@ -445,7 +448,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<StationPlaylistFolder>
+     * @return Collection<int, StationPlaylistFolder>
      */
     public function getFolders(): Collection
     {
@@ -453,7 +456,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<StationSchedule>
+     * @return Collection<int, StationSchedule>
      */
     public function getScheduleItems(): Collection
     {
@@ -462,17 +465,16 @@ class StationPlaylist implements
 
     /**
      * Indicates whether a playlist is enabled and has content which can be scheduled by an AutoDJ scheduler.
+     *
+     * @param bool $interrupting Whether determining "playability" for an interrupting queue or a regular one.
      */
-    public function isPlayable(): bool
+    public function isPlayable(bool $interrupting = false): bool
     {
-        // Any "advanced" settings are not managed by AzuraCast AutoDJ.
-        if (
-            !$this->is_enabled
-            || $this->backendInterruptOtherSongs()
-            || $this->backendMerge()
-            || $this->backendLoopPlaylistOnce()
-            || $this->backendPlaySingleTrack()
-        ) {
+        if (!$this->is_enabled) {
+            return false;
+        }
+
+        if ($interrupting !== $this->backendInterruptOtherSongs()) {
             return false;
         }
 
@@ -510,12 +512,6 @@ class StationPlaylist implements
     {
         $backend_options = $this->getBackendOptions();
         return in_array(self::OPTION_MERGE, $backend_options, true);
-    }
-
-    public function backendLoopPlaylistOnce(): bool
-    {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_LOOP_PLAYLIST_ONCE, $backend_options, true);
     }
 
     public function backendPlaySingleTrack(): bool

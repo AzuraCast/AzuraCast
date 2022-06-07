@@ -5,15 +5,88 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features in the Rolling Release since the latest Stable release.
+There have been no new features/changes since the last stable release.
 
 ## Code Quality/Technical Changes
 
-There have been no technical changes in the Rolling Release since the latest Stable release.
+There have been no code quality/technical changes since the last stable release.
 
 ## Bug Fixes
 
-There have been no new bug fixes in the Rolling Release since the latest Stable release.
+There have been no new bug fixes since the last stable release.
+
+---
+
+# AzuraCast 0.17.0 (Jun 6, 2022)
+
+## New Features/Changes
+
+- **HLS Support**: We now support the HTTP Live Streaming (HLS) format from directly within the AzuraCast web UI. Once
+  enabled, you can configure the various bitrates and formats of your HLS stream the same way you would configure mount
+  points; unlike mount points, however, your connecting listeners will automatically pick the one that suits their
+  bandwidth the best. While this technology was originally developed for Apple devices, it has seen widespread adoption
+  elsewhere. Note that because of how HLS is delivered, we cannot currently retrieve listener statistics for these
+  streams.
+
+- **Integrated Stereo Tool Support**: We now support the popular premium sound processing tool, Stereo Tool. Because the
+  software is proprietary, you must first upload a copy of it via the System Administration page; you can then configure
+  Stereo Tool on a per-station level, including uploading your own custom `.sts` configuration file.
+
+- **Bulk Media CSV Import/Export**: You can now export all of your station's media and its associated metadata into a
+  CSV file for editing in spreadsheet software of your choice. Once you've made your changes, upload the modified file
+  from the same page and all of the changes will be applied in bulk, including basic metadata, associated playlists,
+  cue/fade points, and custom fields.
+
+- We have updated AzuraCast's AutoDJ scheduler to be able to handle the "Advanced" playlist configuration options
+  itself, notably including the "Interrupt Other Tracks" setting. This means that enabling these settings will no longer
+  force a playlist to use Liquidsoap for its scheduling.
+
+- If the "Enforce Schedule" setting is enabled for a streamer and they overrun their scheduled time slot, the system
+  will automatically disconnect the listener and prevent them from reconnecting for a time period (configurable via the
+  station profile). THis can help prevent DJs from accidentally leaving their stream online and broadcasting "dead air".
+
+- Streamers/DJs can have custom artwork uploaded for each streamer; during the streamer's broadcasts, if no other album
+  art is available, the streamer's artwork will appear as the cover art instead.
+
+- You can now customize the compression used for automatic backups.
+
+## Code Quality/Technical Changes
+
+- We can now write custom Nginx configuration on a per-station basis and automatically reload it on-the-fly without
+  losing any active connections. This allows us to replace our standard `/radio/8000` web proxy URLs with
+  station-specific `/listen/station_name` ones, among other improvements.
+
+- Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP
+  to using Unix domain socket files. This not only reduces the number of used ports but improves performance.
+
+- Internal services using ports from 9000-9010 have been moved to use other ports or sockets; while our default port
+  allocation does not use these ports, many stations need to use ports in that range for legacy purposes, which should
+  once again be possible.
+
+- Docker users can now debug Slim Application Errors by editing the `SHOW_DETAILED_ERRORS` in the `azuracast.env` file,
+  reports should be submitted to our [issues](https://github.com/azuracast/azuracast/issues) section for review by our
+  team.
+
+- SFTP support is now enabled for Ansible users as well.
+
+## Bug Fixes
+
+- Playlists powered by remote stream URLs will once again work as expected. Note that these playlist types _must_ be
+  scheduled, as otherwise their indefinite duration will cause problems with radio operation.
+
+- Remote URL playlists will now also support HLS (.m3u8) URLs.
+
+- A bug preventing SFTP from properly supporting SSH public keys has been fixed.
+
+- A minor security issue where SFTP would not properly disable if a station switched storage locations to a non-local
+  one has been resolved.
+
+- The library used to handle translations for the PHP side of the application has been switched, which should avoid many
+  of the errors being seen by users not able to see translations in some sections of the site.
+
+- When searching for items in searchable tables, the page will correctly reset to page 1.
+
+- "Schedule View" now properly shows events that start on Saturday and roll over into Sunday.
 
 ---
 
@@ -147,9 +220,10 @@ There have been no new bug fixes in the Rolling Release since the latest Stable 
   incorporated several soft-reload improvements that allow us to rebuild configuration files without disconnecting
   listeners. Both the "Restart to Apply Changes" and the "Restart System Broadcasting" link inside the 'Utilities'
   submenu will now soft-reload, which will not disconnect listeners on Icecast.
-  
+
 - **Blocking User Agents**: Station owners can now block specific user agents (or user-agent patterns, with wildcards)
-  from connecting to their streams. This will prevent bots or malicious users from consuming excess bandwidth and appearing
+  from connecting to their streams. This will prevent bots or malicious users from consuming excess bandwidth and
+  appearing
   in system-wide reports.
 
 ## Code Quality/Technical Changes
@@ -163,7 +237,7 @@ There have been no new bug fixes in the Rolling Release since the latest Stable 
 - We have updated how we handle Listener Reports to significantly reduce both memory and overall processing times,
   meaning stations with large listener counts can now more easily view and export reports for long time periods.
 
-- Updated to Liquidsoap version 2.0.3 on Ansible and Docker, this change includes some stability fixes and a patch for a 
+- Updated to Liquidsoap version 2.0.3 on Ansible and Docker, this change includes some stability fixes and a patch for a
   memory leak within Liquidsoap version 2.0.2. We are still working on resolving some minor issues with it. Refer to our
   megathread for more information [#5017](https://github.com/AzuraCast/AzuraCast/issues/5017)
 

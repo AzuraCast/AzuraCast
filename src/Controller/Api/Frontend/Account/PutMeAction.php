@@ -12,10 +12,12 @@ use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class PutMeAction extends UsersController
+final class PutMeAction extends UsersController
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $user = $request->getUser();
         $user = $this->em->refetch($user);
 

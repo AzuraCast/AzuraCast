@@ -64,6 +64,24 @@
                 </tr>
                 </tbody>
             </template>
+
+            <template v-if="np.station.hls_enabled">
+                <thead>
+                <tr>
+                    <th colspan="3" key="lang_streams_hls" v-translate>HTTP Live Streaming (HLS)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="align-middle">
+                    <td class="pr-1">
+                        <play-button icon-class="outlined" :url="np.station.hls_url" is-stream is-hls></play-button>
+                    </td>
+                    <td class="pl-1" colspan="2">
+                        <a v-bind:href="np.station.hls_url" target="_blank">{{ np.station.hls_url }}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </template>
         </table>
         <div class="card-actions">
             <a class="btn btn-outline-primary" :href="np.station.playlist_pls_url">

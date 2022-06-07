@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
-class GetLogAction
+final class GetLogAction
 {
     use HasLogViewer;
 
@@ -21,6 +21,6 @@ class GetLogAction
     ): ResponseInterface {
         $logPath = File::validateTempPath($path);
 
-        return $this->streamLogToResponse($request, $response, $logPath, true);
+        return $this->streamLogToResponse($request, $response, $logPath);
     }
 }

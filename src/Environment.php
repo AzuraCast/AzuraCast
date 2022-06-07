@@ -33,9 +33,6 @@ class Environment
 
     public const ASSET_URL = 'ASSETS_URL';
 
-    public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
-    public const DOCKER_IS_STANDALONE = 'DOCKER_IS_STANDALONE';
-
     public const LANG = 'LANG';
 
     public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
@@ -73,7 +70,7 @@ class Environment
 
         self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
-        self::IS_CLI    => ('cli' === PHP_SAPI),
+        self::IS_CLI => ('cli' === PHP_SAPI),
 
         self::ASSET_URL => '/static',
 
@@ -83,11 +80,11 @@ class Environment
         self::ENABLE_REDIS => true,
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
-        self::SYNC_LONG_EXECUTION_TIME  => 1800,
+        self::SYNC_LONG_EXECUTION_TIME => 1800,
 
-        self::PROFILING_EXTENSION_ENABLED   => 0,
+        self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
-        self::PROFILING_EXTENSION_HTTP_KEY  => 'dev',
+        self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
     ];
 
     public function __construct(array $elements = [])
@@ -209,42 +206,14 @@ class Environment
         return $this->getParentDirectory() . '/stations';
     }
 
-    public function isDockerRevisionAtLeast(int $version): bool
+    public function getInternalUri(): UriInterface
     {
-        if (!$this->isDocker()) {
-            return false;
-        }
-
-        $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
-        return ($compareVersion >= $version);
+        return new Uri('http://127.0.0.1:6010');
     }
 
-    public function isDockerStandalone(): bool
+    public function getLocalUri(): UriInterface
     {
-        if (!$this->isDocker()) {
-            return false;
-        }
-
-        return self::envToBool($this->data[self::DOCKER_IS_STANDALONE] ?? false);
-    }
-
-    public function getUriToWeb(): UriInterface
-    {
-        return match (true) {
-            $this->isDockerStandalone() => new Uri('http://127.0.0.1:9010'),
-            $this->isDockerRevisionAtLeast(5) => new Uri('http://web'),
-            $this->isDocker() => new Uri('http://nginx'),
-            default => new Uri('http://127.0.0.1')
-        };
-    }
-
-    public function getUriToStations(): UriInterface
-    {
-        return match (true) {
-            $this->isDockerStandalone() => new Uri('http://127.0.0.1'),
-            $this->isDocker() => new Uri('http://stations'),
-            default => new Uri('http://127.0.0.1'),
-        };
+        return new Uri('http://127.0.0.1');
     }
 
     public function getLang(): ?string
@@ -317,19 +286,19 @@ class Environment
      */
     public function getDatabaseSettings(): array
     {
-        $defaultHost = match (true) {
-            $this->isDockerStandalone() => 'localhost',
-            $this->isDocker() => 'mariadb',
-            default => 'localhost'
-        };
-
-        return [
-            'host' => $this->data[self::DB_HOST] ?? $defaultHost,
+        $dbSettings = [
+            'host' => $this->data[self::DB_HOST] ?? 'localhost',
             'port' => (int)($this->data[self::DB_PORT] ?? 3306),
             'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
             'user' => $this->data[self::DB_USER] ?? 'azuracast',
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
+
+        if ('localhost' === $dbSettings['host']) {
+            $dbSettings['unix_socket'] = '/run/mysqld/mysqld.sock';
+        }
+
+        return $dbSettings;
     }
 
     public function enableRedis(): bool
@@ -342,17 +311,17 @@ class Environment
      */
     public function getRedisSettings(): array
     {
-        $defaultHost = match (true) {
-            $this->isDockerStandalone() => 'localhost',
-            $this->isDocker() => 'redis',
-            default => 'localhost'
-        };
-
-        return [
-            'host' => $this->data[self::REDIS_HOST] ?? $defaultHost,
+        $redisSettings = [
+            'host' => $this->data[self::REDIS_HOST] ?? 'localhost',
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
+
+        if ('localhost' === $redisSettings['host']) {
+            $redisSettings['socket'] = '/run/redis/redis.sock';
+        }
+
+        return $redisSettings;
     }
 
     public function isProfilingExtensionEnabled(): bool
@@ -375,7 +344,6 @@ class Environment
         return new self([
             self::IS_CLI => $existingEnv->isCli(),
             self::IS_DOCKER => $existingEnv->isDocker(),
-            self::DOCKER_IS_STANDALONE => $existingEnv->isDockerStandalone(),
         ]);
     }
 

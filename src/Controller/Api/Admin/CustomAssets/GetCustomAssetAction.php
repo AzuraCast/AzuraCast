@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\CustomAssets;
 
-use App\Assets\AssetFactory;
-use App\Environment;
+use App\Assets\AssetTypes;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class GetCustomAssetAction
+final class GetCustomAssetAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Environment $environment,
         string $type
     ): ResponseInterface {
-        $customAsset = AssetFactory::createForType($environment, $type);
+        $customAsset = AssetTypes::from($type)->createObject();
 
         return $response->withJson(
             [

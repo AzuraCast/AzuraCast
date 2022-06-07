@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'podcast'),
     Attributes\Auditable
 ]
-class Podcast implements IdentifiableEntityInterface
+class Podcast implements Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;
@@ -52,9 +51,11 @@ class Podcast implements IdentifiableEntityInterface
     #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
 
+    /** @var Collection<int, PodcastCategory> */
     #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastCategory::class)]
     protected Collection $categories;
 
+    /** @var Collection<int, PodcastEpisode> */
     #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastEpisode::class)]
     protected Collection $episodes;
 
@@ -156,7 +157,7 @@ class Podcast implements IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection|PodcastCategory[]
+     * @return Collection<int, PodcastCategory>
      */
     public function getCategories(): Collection
     {
@@ -164,7 +165,7 @@ class Podcast implements IdentifiableEntityInterface
     }
 
     /**
-     * @return Collection|PodcastEpisode[]
+     * @return Collection<int, PodcastEpisode>
      */
     public function getEpisodes(): Collection
     {

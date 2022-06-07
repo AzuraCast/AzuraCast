@@ -5,37 +5,30 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 /**
- * @extends Repository<Entity\StationRequest>
+ * @extends AbstractStationBasedRepository<Entity\StationRequest>
  */
-class StationRequestRepository extends Repository
+final class StationRequestRepository extends AbstractStationBasedRepository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger,
-        protected StationMediaRepository $mediaRepo,
-        protected DeviceDetector $deviceDetector,
-        protected BlocklistParser $blocklistParser,
-        protected AutoDJ\DuplicatePrevention $duplicatePrevention,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly DeviceDetector $deviceDetector,
+        private readonly BlocklistParser $blocklistParser,
+        private readonly AutoDJ\DuplicatePrevention $duplicatePrevention,
     ) {
-        parent::__construct($em, $serializer, $environment, $logger);
+        parent::__construct($em);
     }
 
-    public function getPendingRequest(int $id, Entity\Station $station): ?Entity\StationRequest
+    public function getPendingRequest(int|string $id, Entity\Station $station): ?Entity\StationRequest
     {
         return $this->repository->findOneBy(
             [
@@ -83,11 +76,7 @@ class StationRequestRepository extends Repository
         }
 
         // Verify that Track ID exists with station.
-        $media_item = $this->mediaRepo->findByUniqueId($trackId, $station);
-
-        if (!($media_item instanceof Entity\StationMedia)) {
-            throw new Exception(__('The song ID you specified could not be found in the station.'));
-        }
+        $media_item = $this->mediaRepo->requireByUniqueId($trackId, $station);
 
         if (!$media_item->isRequestable()) {
             throw new Exception(__('The song ID you specified cannot be requested for this station.'));
@@ -121,9 +110,7 @@ class StationRequestRepository extends Repository
 
             if (count($recent_requests) > 0) {
                 throw new Exception(
-                    __(
-                        'You have submitted a request too recently! Please wait before submitting another one.'
-                    )
+                    __('You have submitted a request too recently! Please wait before submitting another one.')
                 );
             }
         }
@@ -247,9 +234,7 @@ class StationRequestRepository extends Repository
 
         if ($isDuplicate) {
             throw new Exception(
-                __(
-                    'This song or artist has been played too recently. Wait a while before requesting it again.'
-                )
+                __('This song or artist has been played too recently. Wait a while before requesting it again.')
             );
         }
 

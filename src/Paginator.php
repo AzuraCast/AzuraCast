@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use App\Http\Response;
-use App\Http\Router;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use Countable;
@@ -21,6 +20,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
+/**
+ * @template TKey of array-key
+ * @template T of mixed
+ * @implements IteratorAggregate<TKey, T>
+ */
 class Paginator implements IteratorAggregate, Countable
 {
     protected RouterInterface $router;
@@ -40,6 +44,9 @@ class Paginator implements IteratorAggregate, Countable
     /** @var callable|null A callable postprocessor that can be run on each result. */
     protected $postprocessor;
 
+    /**
+     * @param Pagerfanta<T> $paginator
+     */
     public function __construct(
         protected Pagerfanta $paginator,
         ServerRequestInterface $request
@@ -179,23 +186,21 @@ class Paginator implements IteratorAggregate, Countable
         }
 
         $pageLinks = [];
-        if ($this->router instanceof Router) {
-            $pageLinks['first'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => 1]);
+        $pageLinks['first'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => 1]);
 
-            $prevPage = $this->paginator->hasPreviousPage()
-                ? $this->paginator->getPreviousPage()
-                : 1;
+        $prevPage = $this->paginator->hasPreviousPage()
+            ? $this->paginator->getPreviousPage()
+            : 1;
 
-            $pageLinks['previous'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
+        $pageLinks['previous'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
 
-            $nextPage = $this->paginator->hasNextPage()
-                ? $this->paginator->getNextPage()
-                : $this->paginator->getNbPages();
+        $nextPage = $this->paginator->hasNextPage()
+            ? $this->paginator->getNextPage()
+            : $this->paginator->getNbPages();
 
-            $pageLinks['next'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
+        $pageLinks['next'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
 
-            $pageLinks['last'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
-        }
+        $pageLinks['last'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
 
         return $response->withJson(
             [
@@ -209,6 +214,13 @@ class Paginator implements IteratorAggregate, Countable
         );
     }
 
+    /**
+     * @template XKey of array-key
+     * @template X of mixed
+     *
+     * @param array<XKey, X> $input
+     * @return static<XKey, X>
+     */
     public static function fromArray(array $input, ServerRequestInterface $request): self
     {
         return new self(
@@ -217,6 +229,13 @@ class Paginator implements IteratorAggregate, Countable
         );
     }
 
+    /**
+     * @template XKey of array-key
+     * @template X of mixed
+     *
+     * @param Collection<XKey, X> $collection
+     * @return static<XKey, X>
+     */
     public static function fromCollection(Collection $collection, ServerRequestInterface $request): self
     {
         return new self(
@@ -225,6 +244,9 @@ class Paginator implements IteratorAggregate, Countable
         );
     }
 
+    /**
+     * @return static<int, mixed>
+     */
     public static function fromQueryBuilder(QueryBuilder $qb, ServerRequestInterface $request): self
     {
         return new self(
@@ -233,6 +255,9 @@ class Paginator implements IteratorAggregate, Countable
         );
     }
 
+    /**
+     * @return static<int, mixed>
+     */
     public static function fromQuery(Query $query, ServerRequestInterface $request): self
     {
         return new self(

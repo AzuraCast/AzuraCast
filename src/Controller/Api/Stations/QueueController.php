@@ -92,25 +92,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-class QueueController extends AbstractStationApiCrudController
+final class QueueController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
     public function __construct(
-        protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Queue $queue,
         App\Doctrine\ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
+        private readonly Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Queue $queue,
     ) {
         parent::__construct($em, $serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
         $query = $this->queueRepo->getUnplayedQuery($station);
@@ -155,8 +156,11 @@ class QueueController extends AbstractStationApiCrudController
         return $apiResponse;
     }
 
-    public function clearAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function clearAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
         $this->queueRepo->clearUpcomingQueue($station);
 

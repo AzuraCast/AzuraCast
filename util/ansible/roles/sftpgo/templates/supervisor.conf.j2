@@ -1,0 +1,10 @@
+[program:sftpgo]
+command=sftpgo serve -l ""
+dir=/var/azuracast/sftpgo
+user=azuracast
+priority=700
+numprocs=1
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true

@@ -11,7 +11,7 @@ use Generator;
 /**
  * @extends Repository<Entity\UnprocessableMedia>
  */
-class UnprocessableMediaRepository extends Repository
+final class UnprocessableMediaRepository extends Repository
 {
     public function findByPath(string $path, Entity\StorageLocation $storageLocation): ?Entity\UnprocessableMedia
     {

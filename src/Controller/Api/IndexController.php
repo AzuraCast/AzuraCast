@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexController
+final class IndexController
 {
     #[OA\Get(
         path: '/status',
@@ -25,8 +25,10 @@ class IndexController
             ),
         ]
     )]
-    public function statusAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function statusAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         return $response->withJson(new Entity\Api\SystemStatus());
     }
 
@@ -43,8 +45,10 @@ class IndexController
             ),
         ]
     )]
-    public function timeAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function timeAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         return $response->withJson(new Entity\Api\Time());
     }
 }

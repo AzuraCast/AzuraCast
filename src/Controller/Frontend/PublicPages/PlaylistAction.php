@@ -9,11 +9,12 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PlaylistAction
+final class PlaylistAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        string $station_id,
         string $format = 'pls'
     ): ResponseInterface {
         $station = $request->getStation();

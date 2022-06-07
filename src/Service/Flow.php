@@ -65,13 +65,13 @@ class Flow
             return self::handleStandardUpload($request, $tempDir);
         }
 
-        $flowIdentifier = $params['flowIdentifier'] ?? '';
+        $flowIdentifier = $params['flowIdentifier'];
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
 
         $targetSize = (int)($params['flowTotalSize'] ?? 0);
-        $targetChunks = (int)($params['flowTotalChunks'] ?? 1);
+        $targetChunks = (int)($params['flowTotalChunks']);
 
-        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier ?: ('upload-' . date('Ymd')));
+        $flowFilename = $params['flowFilename'] ?? ($flowIdentifier);
 
         // init the destination file (format <filename.ext>.part<#chunk>
         $chunkBaseDir = $tempDir . '/' . $flowIdentifier;
@@ -120,14 +120,22 @@ class Flow
 
         $file->moveTo($chunkPath);
 
-        if ($flowChunkNumber === $targetChunks && self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
-            return self::createFileFromChunks(
-                $tempDir,
-                $chunkBaseDir,
-                $flowIdentifier,
-                $flowFilename,
-                $targetChunks
-            );
+        clearstatcache();
+
+        if ($flowChunkNumber === $targetChunks) {
+            // Handle last chunk.
+            if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
+                return self::createFileFromChunks(
+                    $tempDir,
+                    $chunkBaseDir,
+                    $flowIdentifier,
+                    $flowFilename,
+                    $targetChunks
+                );
+            }
+
+            // Upload succeeded, but re-trigger upload anyway for the above.
+            return $response->withStatus(204, 'No Content');
         }
 
         // Return an OK status to indicate that the chunk upload itself succeeded.
@@ -218,34 +226,10 @@ class Flow
 
         // rename the temporary directory (to avoid access from other
         // concurrent chunk uploads) and then delete it.
-        if (rename($chunkBaseDir, $chunkBaseDir . '_UNUSED')) {
-            self::rrmdir($chunkBaseDir . '_UNUSED');
-        } else {
-            self::rrmdir($chunkBaseDir);
-        }
+        (new Filesystem())->remove([
+            $chunkBaseDir,
+        ]);
 
         return $uploadedFile;
-    }
-
-    /**
-     * Delete a directory RECURSIVELY
-     *
-     * @param string $dir - directory path
-     *
-     * @link http://php.net/manual/en/function.rmdir.php
-     */
-    protected static function rrmdir(string $dir): void
-    {
-        if (is_dir($dir)) {
-            $objects = array_diff(scandir($dir, SCANDIR_SORT_NONE) ?: [], ['.', '..']);
-            foreach ($objects as $object) {
-                if (is_dir($dir . '/' . $object)) {
-                    self::rrmdir($dir . '/' . $object);
-                } else {
-                    unlink($dir . '/' . $object);
-                }
-            }
-            rmdir($dir);
-        }
     }
 }

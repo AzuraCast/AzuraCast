@@ -225,7 +225,7 @@ export default {
         sftpUrl: String,
         supportsImmediateQueue: Boolean
     },
-    data () {
+    data() {
         let fields = [
             {key: 'path', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
             {key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false},
@@ -238,6 +238,7 @@ export default {
             },
             {key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
             {key: 'media_genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false},
+            {key: 'media_isrc', label: this.$gettext('ISRC'), sortable: true, selectable: true, visible: false},
             {key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true}
         ];
 
@@ -252,7 +253,7 @@ export default {
         });
 
         fields.push(
-            { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
+            {key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true},
             {
                 key: 'timestamp',
                 label: this.$gettext('Modified'),
@@ -273,7 +274,7 @@ export default {
                 selectable: true,
                 visible: true
             },
-            { key: 'commands', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }
+            {key: 'commands', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
         );
 
         return {
@@ -289,17 +290,17 @@ export default {
             searchPhrase: null
         };
     },
-    created () {
+    created() {
         window.addEventListener('hashchange', this.onHashChange);
     },
-    destroyed () {
+    destroyed() {
         window.removeEventListener('hashchange', this.onHashChange);
     },
-    mounted () {
+    mounted() {
         this.onHashChange();
     },
     computed: {
-        langAlbumArt () {
+        langAlbumArt() {
             return this.$gettext('Album Art');
         },
         langRenameButton() {
@@ -328,17 +329,17 @@ export default {
         onRefreshed() {
             this.$eventHub.$emit('refreshed');
         },
-        onTriggerNavigate () {
+        onTriggerNavigate() {
             this.$refs.datatable.navigate();
         },
-        onTriggerRelist () {
+        onTriggerRelist() {
             this.$refs.quota.update();
             this.$refs.datatable.relist();
         },
-        onAddPlaylist (row) {
+        onAddPlaylist(row) {
             this.playlists.push(row);
         },
-        onHashChange () {
+        onHashChange() {
             // Load directory from URL hash, if applicable.
             let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
 
@@ -351,28 +352,28 @@ export default {
                 }
             }
         },
-        playAudio (url) {
+        playAudio(url) {
             this.$eventHub.$emit('player_toggle', url);
         },
-        changeDirectory (newDir) {
+        changeDirectory(newDir) {
             window.location.hash = newDir;
 
             this.currentDirectory = newDir;
             this.onTriggerNavigate();
         },
-        filter (newFilter) {
+        filter(newFilter) {
             this.$refs.datatable.setFilter(newFilter);
         },
-        onFiltered (newFilter) {
+        onFiltered(newFilter) {
             this.searchPhrase = newFilter;
         },
-        rename (path) {
+        rename(path) {
             this.$refs.renameModal.open(path);
         },
-        edit (recordUrl, albumArtUrl, audioUrl, waveformUrl) {
+        edit(recordUrl, albumArtUrl, audioUrl, waveformUrl) {
             this.$refs.editModal.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
         },
-        requestConfig (config) {
+        requestConfig(config) {
             config.params.currentDirectory = this.currentDirectory;
             return config;
         }

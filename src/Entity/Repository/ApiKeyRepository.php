@@ -9,6 +9,6 @@ use App\Entity;
 /**
  * @extends AbstractSplitTokenRepository<Entity\ApiKey>
  */
-class ApiKeyRepository extends AbstractSplitTokenRepository
+final class ApiKeyRepository extends AbstractSplitTokenRepository
 {
 }

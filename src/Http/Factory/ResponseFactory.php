@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Factory;
 
 use App\Http\Response;
-use Http\Factory\Guzzle\ResponseFactory as GuzzleResponseFactory;
-use Http\Factory\Guzzle\StreamFactory;
+use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Factory\DecoratedResponseFactory;
 
@@ -14,10 +13,8 @@ class ResponseFactory extends DecoratedResponseFactory
 {
     public function __construct()
     {
-        $responseFactory = new GuzzleResponseFactory();
-        $streamFactory = new StreamFactory();
-
-        parent::__construct($responseFactory, $streamFactory);
+        $httpFactory = new HttpFactory();
+        parent::__construct($httpFactory, $httpFactory);
     }
 
     /**

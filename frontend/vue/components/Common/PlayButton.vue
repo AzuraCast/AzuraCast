@@ -20,6 +20,10 @@ export default {
             type: Boolean,
             default: false
         },
+        isHls: {
+            type: Boolean,
+            default: false
+        },
         iconClass: String
     },
     computed: {
@@ -53,7 +57,8 @@ export default {
         toggle() {
             store.commit('player/toggle', {
                 url: this.url,
-                isStream: this.isStream
+                isStream: this.isStream,
+                isHls: this.isHls
             });
         }
     }

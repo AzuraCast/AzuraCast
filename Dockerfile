@@ -4,6 +4,11 @@
 FROM ghcr.io/azuracast/icecast-kh-ac:2.4.0-kh15-ac2 AS icecast
 
 #
+# MariaDB stage (for later copy)
+#
+FROM mariadb:10.7-focal AS mariadb
+
+#
 # Golang dependencies build step
 #
 FROM golang:1.17-buster AS dockerize
@@ -16,7 +21,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM mariadb:10.7-focal
+FROM ubuntu:focal
 
 ENV TZ="UTC"
 
@@ -27,37 +32,40 @@ COPY --from=dockerize /go/bin/dockerize /usr/local/bin
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 
+# Import MariaDB scripts.
+COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
+COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
+
 # Run base build process
 COPY ./util/docker/common /bd_build/
 RUN chmod a+x /bd_build/*.sh \
     && /bd_build/prepare.sh \
     && /bd_build/add_user.sh \
-    && /bd_build/cleanup.sh
+    && /bd_build/cleanup.sh \
+    && rm -rf /bd_build
 
 # Build each set of dependencies in their own step for cacheability.
 ARG ARM_FULL_BUILD
+
+COPY ./util/docker/supervisor /bd_build/supervisor/
+RUN bash /bd_build/supervisor/setup.sh \
+    && rm -rf /bd_build/supervisor
+
 COPY ./util/docker/stations /bd_build/stations/
 RUN bash /bd_build/stations/setup.sh \
-    && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/stations
 
 COPY ./util/docker/web /bd_build/web/
 RUN bash /bd_build/web/setup.sh \
-    && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/web
 
 COPY ./util/docker/mariadb /bd_build/mariadb/
 RUN bash /bd_build/mariadb/setup.sh \
-    && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/mariadb
 
 COPY ./util/docker/redis /bd_build/redis/
 RUN bash /bd_build/redis/setup.sh \
-    && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/redis
-
-RUN bash /bd_build/post_setup.sh \
-    && rm -rf /bd_build
 
 #
 # START Operations as `azuracast` user
@@ -93,6 +101,7 @@ EXPOSE 8000-8999
 ENV LANG="en_US.UTF-8" \
     DOCKER_IS_STANDALONE="true" \
     APPLICATION_ENV="production" \
+    MARIADB_AUTO_UPGRADE=1 \
     MYSQL_HOST="localhost" \
     MYSQL_PORT=3306 \
     MYSQL_USER="azuracast" \
@@ -113,5 +122,5 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=*
 
 # Entrypoint and default command
-ENTRYPOINT ["/usr/local/bin/my_init"]
+ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]
 CMD ["--no-main-command"]

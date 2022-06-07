@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
             title: 'AzuraCast',
             license: new OA\License(
                 name: 'Apache 2.0',
-                url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+                url: "https://www.apache.org/licenses/LICENSE-2.0.html"
             ),
         ),
         servers: [
@@ -32,11 +32,13 @@ use OpenApi\Attributes as OA;
             ),
 
             new OA\Tag(name: "Stations: General"),
+            new OA\Tag(name: "Stations: Broadcasting"),
             new OA\Tag(name: "Stations: Song Requests"),
             new OA\Tag(name: "Stations: Service Control"),
             new OA\Tag(name: "Stations: Automation"),
 
             new OA\Tag(name: "Stations: History"),
+            new OA\Tag(name: "Stations: HLS Streams"),
             new OA\Tag(name: "Stations: Listeners"),
             new OA\Tag(name: "Stations: Schedules"),
             new OA\Tag(name: "Stations: Media"),

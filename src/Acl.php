@@ -72,9 +72,9 @@ class Acl
     public function listPermissions(): array
     {
         if (!isset($this->permissions)) {
-            /** @var array<string,array> $permissions */
+            /** @var array<string,array<string, string>> $permissions */
             $permissions = [
-                'global'  => [],
+                'global' => [],
                 'station' => [],
             ];
 
@@ -135,8 +135,10 @@ class Acl
         $numRoles = $user->getRoles()->count();
         if ($numRoles > 0) {
             if ($numRoles === 1) {
+                /** @var Entity\Role $role */
                 $role = $user->getRoles()->first();
-                return $this->roleAllowed($role->getId(), $action, $stationId);
+
+                return $this->roleAllowed($role->getIdRequired(), $action, $stationId);
             }
 
             $roles = [];

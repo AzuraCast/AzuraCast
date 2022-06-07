@@ -8,6 +8,7 @@ use App\Entity;
 use Exception;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 class CleanupStorageTask extends AbstractTask
 {
@@ -22,7 +23,7 @@ class CleanupStorageTask extends AbstractTask
             try {
                 /** @var Entity\Station $station */
                 $this->cleanStationTempFiles($station);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
                     'station' => (string)$station,
                 ]);
@@ -34,7 +35,7 @@ class CleanupStorageTask extends AbstractTask
             try {
                 /** @var Entity\StorageLocation $storageLocation */
                 $this->cleanMediaStorageLocation($storageLocation);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
                     'storageLocation' => (string)$storageLocation,
                 ]);
@@ -80,7 +81,7 @@ class CleanupStorageTask extends AbstractTask
 
         if (0 === count($allUniqueIds)) {
             $this->logger->notice(
-                sprintf('Skipping storage location %s: no media found.', (string)$storageLocation)
+                sprintf('Skipping storage location %s: no media found.', $storageLocation)
             );
             return;
         }

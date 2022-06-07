@@ -6,6 +6,7 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Environment;
+use App\Nginx\Nginx;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand(
     name: 'azuracast:radio:restart',
@@ -26,6 +28,7 @@ class RestartRadioCommand extends CommandAbstract
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationRepository $stationRepo,
         protected Configuration $configuration,
+        protected Nginx $nginx,
     ) {
         parent::__construct();
     }
@@ -73,13 +76,22 @@ class RestartRadioCommand extends CommandAbstract
                     reloadSupervisor: !$noSupervisorRestart,
                     forceRestart: true
                 );
-            } catch (\Throwable $e) {
+
+                $this->nginx->writeConfiguration(
+                    station: $station,
+                    reloadIfChanged: false
+                );
+            } catch (Throwable $e) {
                 $io->error([
                     $station . ': ' . $e->getMessage(),
                 ]);
             }
 
             $io->progressAdvance();
+        }
+
+        if (!$noSupervisorRestart) {
+            $this->nginx->reload();
         }
 
         $io->progressFinish();

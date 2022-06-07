@@ -37,14 +37,18 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class GetArtAction
+final class GetArtAction
 {
+    public function __construct(
+        private readonly Entity\Repository\StationRepository $stationRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\PodcastRepository $podcastRepo,
-        string $podcast_id,
+        string $station_id,
+        string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -61,7 +65,7 @@ class GetArtAction
         }
 
         return $response->withRedirect(
-            (string)$stationRepo->getDefaultAlbumArtUrl($station),
+            (string)$this->stationRepo->getDefaultAlbumArtUrl($station),
             302
         );
     }

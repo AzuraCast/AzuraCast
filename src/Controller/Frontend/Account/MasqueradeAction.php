@@ -11,20 +11,24 @@ use App\Http\ServerRequest;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
-class MasqueradeAction
+final class MasqueradeAction
 {
     public const CSRF_NAMESPACE = 'user_masquerade';
+
+    public function __construct(
+        private readonly Entity\Repository\UserRepository $userRepo,
+    ) {
+    }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\UserRepository $userRepo,
-        int $id,
+        string $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, self::CSRF_NAMESPACE);
 
-        $user = $userRepo->find($id);
+        $user = $this->userRepo->find($id);
 
         if (!($user instanceof Entity\User)) {
             throw new NotFoundException(__('User not found.'));

@@ -71,7 +71,7 @@ abstract class AbstractBuildMenu extends Event
      */
     protected function filterMenuItem(array $item): bool
     {
-        if (isset($item['items']) && empty($item['items'])) {
+        if (isset($item['items']) && 0 === count($item['items'])) {
             return false;
         }
 

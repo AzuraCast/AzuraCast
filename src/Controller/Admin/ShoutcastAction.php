@@ -7,15 +7,16 @@ namespace App\Controller\Admin;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
-class ShoutcastAction
+final class ShoutcastAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
         if ('x86_64' !== php_uname('m')) {
-            throw new \RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
+            throw new RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
         }
 
         $router = $request->getRouter();

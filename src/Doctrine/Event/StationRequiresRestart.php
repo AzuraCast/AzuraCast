@@ -44,6 +44,7 @@ class StationRequiresRestart implements EventSubscriber
             foreach ($collection as $entity) {
                 if (
                     ($entity instanceof Entity\StationMount)
+                    || ($entity instanceof Entity\StationHlsStream)
                     || ($entity instanceof Entity\StationRemote && $entity->isEditable())
                     || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())
                 ) {

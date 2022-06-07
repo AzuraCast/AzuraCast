@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 use InvalidArgumentException;
-use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
@@ -39,18 +38,7 @@ class File
      */
     public static function sanitizeFileName(string $str): string
     {
-        $result = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
-        if (null === $result || false === $result) {
-            throw new RuntimeException('Cannot parse input string.');
-        }
-
-        $result = mb_ereg_replace("([\.]{2,})", '.', $result);
-        if (null === $result || false === $result) {
-            throw new RuntimeException('Cannot parse input string.');
-        }
-
-        $result = str_replace(' ', '_', $result);
-        return mb_strtolower($result);
+        return Strings::getProgrammaticString($str);
     }
 
     public static function generateTempPath(string $pattern = ''): string

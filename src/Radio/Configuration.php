@@ -14,6 +14,7 @@ use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
+use RuntimeException;
 use Supervisor\Exception\SupervisorException;
 use Supervisor\SupervisorInterface;
 
@@ -22,10 +23,9 @@ class Configuration
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
     public const PROTECTED_PORTS = [
-        9000, // PHP-FPM external
-        9001, // Supervisord
-        9005, // PHP-FPM internal
-        9010, // Nginx internal
+        3306, // MariaDB
+        6010, // Nginx internal
+        6379, // Redis
         8080, // Common debug port
         80,   // HTTP
         443,  // HTTPS
@@ -105,7 +105,7 @@ class Configuration
 
         if (!$station->getIsEnabled()) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new \RuntimeException('Station is disabled.');
+            throw new RuntimeException('Station is disabled.');
         }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
@@ -114,7 +114,7 @@ class Configuration
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new \RuntimeException('Station has no local services.');
+            throw new RuntimeException('Station has no local services.');
         }
 
         // If using AutoDJ and there is no media, don't spin up services.
@@ -123,7 +123,7 @@ class Configuration
             && !$this->stationPlaylistRepo->stationHasActivePlaylists($station)
         ) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new \RuntimeException('Station has no media assigned to playlists.');
+            throw new RuntimeException('Station has no media assigned to playlists.');
         }
 
         // Get group information
@@ -175,8 +175,8 @@ class Configuration
                         $backend->reload($station);
                         $frontend->reload($station);
                     } else {
-                        $this->supervisor->stopProcessGroup($backend_group, true);
-                        $this->supervisor->startProcessGroup($backend_group, true);
+                        $this->supervisor->stopProcessGroup($backend_group);
+                        $this->supervisor->startProcessGroup($backend_group);
                     }
                 } catch (SupervisorException) {
                 }
@@ -484,7 +484,7 @@ class Configuration
 
         // Try forcing the group to stop, but don't hard-fail if it doesn't.
         try {
-            $this->supervisor->stopProcessGroup($station_group, true);
+            $this->supervisor->stopProcessGroup($station_group);
             $this->supervisor->removeProcessGroup($station_group);
         } catch (SupervisorException) {
         }

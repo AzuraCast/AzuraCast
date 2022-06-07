@@ -15,23 +15,19 @@ return static function (RouteCollectorProxy $app) {
             $group->group(
                 '/debug',
                 function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\DebugController::class)
+                    $group->get('', Controller\Admin\Debug\IndexAction::class)
                         ->setName('admin:debug:index');
 
-                    $group->get('/clear-cache', Controller\Admin\DebugController::class . ':clearCacheAction')
+                    $group->get('/clear-cache', Controller\Admin\Debug\ClearCacheAction::class)
                         ->setName('admin:debug:clear-cache');
 
                     $group->get(
                         '/clear-queue[/{queue}]',
-                        Controller\Admin\DebugController::class . ':clearQueueAction'
-                    )
-                        ->setName('admin:debug:clear-queue');
+                        Controller\Admin\Debug\ClearQueueAction::class
+                    )->setName('admin:debug:clear-queue');
 
-                    $group->get('/sync/{task}', Controller\Admin\DebugController::class . ':syncAction')
+                    $group->get('/sync/{task}', Controller\Admin\Debug\SyncAction::class)
                         ->setName('admin:debug:sync');
-
-                    $group->get('/log/{path}', Controller\Admin\DebugController::class . ':logAction')
-                        ->setName('admin:debug:log');
 
                     $group->group(
                         '/station/{station_id}',
@@ -39,22 +35,22 @@ return static function (RouteCollectorProxy $app) {
                             $group->map(
                                 ['GET', 'POST'],
                                 '/nowplaying',
-                                Controller\Admin\DebugController::class . ':nowplayingAction'
+                                Controller\Admin\Debug\NowPlayingAction::class
                             )->setName('admin:debug:nowplaying');
 
                             $group->map(
                                 ['GET', 'POST'],
                                 '/nextsong',
-                                Controller\Admin\DebugController::class . ':nextSongAction'
+                                Controller\Admin\Debug\NextSongAction::class
                             )->setName('admin:debug:nextsong');
 
                             $group->map(
                                 ['GET', 'POST'],
                                 '/clearqueue',
-                                Controller\Admin\DebugController::class . ':clearStationQueueAction'
+                                Controller\Admin\Debug\ClearStationQueueAction::class
                             )->setName('admin:debug:clear-station-queue');
 
-                            $group->post('/telnet', Controller\Admin\DebugController::class . ':telnetAction')
+                            $group->post('/telnet', Controller\Admin\Debug\TelnetAction::class)
                                 ->setName('admin:debug:telnet');
                         }
                     )->add(Middleware\GetStation::class);
@@ -66,6 +62,9 @@ return static function (RouteCollectorProxy $app) {
                 function (RouteCollectorProxy $group) {
                     $group->get('/shoutcast', Controller\Admin\ShoutcastAction::class)
                         ->setName('admin:install_shoutcast:index');
+
+                    $group->get('/stereo_tool', Controller\Admin\StereoToolAction::class)
+                        ->setName('admin:install_stereo_tool:index');
 
                     $group->get('/geolite', Controller\Admin\GeoLiteAction::class)
                         ->setName('admin:install_geolite:index');

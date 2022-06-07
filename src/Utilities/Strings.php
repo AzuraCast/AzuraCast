@@ -8,12 +8,8 @@ class Strings
 {
     /**
      * Truncate text (adding "..." if needed)
-     *
-     * @param string $text
-     * @param int $limit
-     * @param string $pad
      */
-    public static function truncateText(string $text, $limit = 80, $pad = '...'): string
+    public static function truncateText(string $text, int $limit = 80, string $pad = '...'): string
     {
         mb_internal_encoding('UTF-8');
 
@@ -115,5 +111,21 @@ class Strings
         $url = str_replace(['http://', 'https://', 'www.'], '', $url);
 
         return self::truncateText(rtrim($url, '/'), $length);
+    }
+
+    public static function getProgrammaticString(string $str): string
+    {
+        $result = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
+        if (null === $result || false === $result) {
+            throw new \RuntimeException('Cannot parse input string.');
+        }
+
+        $result = mb_ereg_replace("([\.]{2,})", '.', $result);
+        if (null === $result || false === $result) {
+            throw new \RuntimeException('Cannot parse input string.');
+        }
+
+        $result = str_replace(' ', '_', $result);
+        return mb_strtolower($result);
     }
 }

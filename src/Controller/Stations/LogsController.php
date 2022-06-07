@@ -10,10 +10,13 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class LogsController extends AbstractLogViewerController
+final class LogsController extends AbstractLogViewerController
 {
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        string $station_id
+    ): ResponseInterface {
         $station = $request->getStation();
 
         return $request->getView()->renderToResponse($response, 'stations/logs/index', [
@@ -21,8 +24,12 @@ class LogsController extends AbstractLogViewerController
         ]);
     }
 
-    public function viewAction(ServerRequest $request, Response $response, string $log): ResponseInterface
-    {
+    public function viewAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id,
+        string $log,
+    ): ResponseInterface {
         $station = $request->getStation();
         $log_areas = $this->getStationLogs($station);
 

@@ -54,7 +54,7 @@ class Icecast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        $baseUrl = $this->environment->getUriToStations()
+        $baseUrl = $this->environment->getLocalUri()
             ->withPort($radioPort);
 
         $npAdapter = $this->adapterFactory->getIcecastAdapter($baseUrl);
@@ -116,12 +116,6 @@ class Icecast extends AbstractFrontend
 
         $certPaths = CertificateLocator::findCertificate();
 
-        $xForwardedFor = match (true) {
-            $this->environment->isDockerStandalone() => '127.0.0.1',
-            $this->environment->isDocker() => ['172.*.*.*', '192.*.*.*'],
-            default => '127.0.0.1',
-        };
-
         $config = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
@@ -167,7 +161,7 @@ class Icecast extends AbstractFrontend
                 // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
                 'deny-agents' => $this->writeUserAgentBansFile($station),
-                'x-forwarded-for' => $xForwardedFor,
+                'x-forwarded-for' => '127.0.0.1',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
@@ -247,7 +241,7 @@ class Icecast extends AbstractFrontend
 
             $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
             if (!empty($bannedCountries)) {
-                $mountAuthenticationUrl = $this->environment->getUriToWeb()
+                $mountAuthenticationUrl = $this->environment->getInternalUri()
                     ->withPath('/api/internal/' . $station->getIdRequired() . '/listener-auth')
                     ->withQuery(
                         http_build_query([

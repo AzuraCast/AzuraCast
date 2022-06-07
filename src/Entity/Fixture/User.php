@@ -21,7 +21,11 @@ class User extends AbstractFixture implements DependentFixtureInterface
             $demo_user->setEmail('demo@azuracast.com');
             $demo_user->setNewPassword('demo');
             $demo_user->setName('AzuraCast Demo User');
-            $demo_user->getRoles()->add($this->getReference('demo_role'));
+
+            /** @var Entity\Role $demoRole */
+            $demoRole = $this->getReference('demo_role');
+            $demo_user->getRoles()->add($demoRole);
+
             $manager->persist($demo_user);
 
             $this->addReference('demo_user', $demo_user);
@@ -32,7 +36,9 @@ class User extends AbstractFixture implements DependentFixtureInterface
             $admin_user->setNewPassword($admin_password);
             $admin_user->setTheme('dark');
 
-            $admin_user->getRoles()->add($this->getReference('admin_role'));
+            /** @var Entity\Role $adminRole */
+            $adminRole = $this->getReference('admin_role');
+            $admin_user->getRoles()->add($adminRole);
 
             $admin_2fa_secret = getenv('INIT_ADMIN_2FA_SECRET');
             if (!empty($admin_2fa_secret)) {

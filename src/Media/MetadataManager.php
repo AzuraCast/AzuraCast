@@ -4,40 +4,19 @@ declare(strict_types=1);
 
 namespace App\Media;
 
-use App\Environment;
 use App\Event\Media\ReadMetadata;
 use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
-use App\Utilities\File;
-use App\Utilities\Json;
-use Azura\MetadataManager\Metadata;
-use Azura\MetadataManager\MetadataInterface;
-use GuzzleHttp\Client;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use RuntimeException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\Process;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
-class MetadataManager implements EventSubscriberInterface
+class MetadataManager
 {
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher,
-        protected Client $httpClient,
-        protected Environment $environment
+        protected LoggerInterface $logger,
     ) {
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            ReadMetadata::class => [
-                ['readFromId3', 0],
-            ],
-            WriteMetadata::class => [
-                ['writeToId3', 0],
-            ],
-        ];
     }
 
     public function read(string $filePath): MetadataInterface
@@ -50,113 +29,45 @@ class MetadataManager implements EventSubscriberInterface
             );
         }
 
-        $event = new ReadMetadata($filePath);
-        $this->eventDispatcher->dispatch($event);
-
-        return $event->getMetadata();
-    }
-
-    public function readFromId3(ReadMetadata $event): void
-    {
-        $sourceFilePath = $event->getPath();
-
-        $jsonOutput = File::generateTempPath('metadata.json');
-        $artOutput = File::generateTempPath('metadata.jpg');
-
         try {
-            $phpBinaryPath = (new PhpExecutableFinder())->find();
-            if (false === $phpBinaryPath) {
-                throw new RuntimeException('Could not find PHP executable path.');
-            }
+            $event = new ReadMetadata($filePath);
+            $this->eventDispatcher->dispatch($event);
 
-            $scriptPath = $this->environment->getBaseDirectory() . '/vendor/bin/metadata-manager';
-
-            $process = new Process(
+            return $event->getMetadata();
+        } catch (Throwable $e) {
+            $this->logger->error(
+                sprintf(
+                    'Cannot read metadata for file "%s": %s',
+                    $filePath,
+                    $e->getMessage()
+                ),
                 [
-                    $phpBinaryPath,
-                    $scriptPath,
-                    'read',
-                    $sourceFilePath,
-                    $jsonOutput,
-                    $artOutput,
+                    'path' => $filePath,
+                    'exception' => $e,
                 ]
             );
 
-            $process->mustRun();
-
-            $metadataJson = Json::loadFromFile($jsonOutput);
-            $metadata = Metadata::fromJson($metadataJson);
-
-            if (is_file($artOutput)) {
-                $artwork = file_get_contents($artOutput) ?: null;
-                $metadata->setArtwork($artwork);
-            }
-
-            $event->setMetadata($metadata);
-        } finally {
-            @unlink($jsonOutput);
-            @unlink($artOutput);
+            return new Metadata();
         }
     }
 
     public function write(MetadataInterface $metadata, string $filePath): void
     {
-        $event = new WriteMetadata($metadata, $filePath);
-        $this->eventDispatcher->dispatch($event);
-    }
-
-    public function writeToId3(WriteMetadata $event): void
-    {
-        $destFilePath = $event->getPath();
-
-        $metadata = $event->getMetadata();
-        if (null === $metadata) {
-            return;
-        }
-
-        $jsonInput = File::generateTempPath('metadata.json');
-        $artInput = File::generateTempPath('metadata.jpg');
-
         try {
-            // Write input files for the metadata process.
-            file_put_contents(
-                $jsonInput,
-                json_encode($metadata, JSON_THROW_ON_ERROR)
+            $event = new WriteMetadata($metadata, $filePath);
+            $this->eventDispatcher->dispatch($event);
+        } catch (Throwable $e) {
+            $this->logger->error(
+                sprintf(
+                    'Cannot write metadata for file "%s": %s',
+                    $filePath,
+                    $e->getMessage()
+                ),
+                [
+                    'path' => $filePath,
+                    'exception' => $e,
+                ]
             );
-
-            $artwork = $metadata->getArtwork();
-            if (null !== $artwork) {
-                file_put_contents(
-                    $artInput,
-                    $artwork
-                );
-            }
-
-            // Run remote process.
-            $phpBinaryPath = (new PhpExecutableFinder())->find();
-            if (false === $phpBinaryPath) {
-                throw new RuntimeException('Could not find PHP executable path.');
-            }
-
-            $scriptPath = $this->environment->getBaseDirectory() . '/vendor/bin/metadata-manager';
-
-            $processCommand = [
-                $phpBinaryPath,
-                $scriptPath,
-                'write',
-                $destFilePath,
-                $jsonInput,
-            ];
-
-            if (null !== $artwork) {
-                $processCommand[] = $artInput;
-            }
-
-            $process = new Process($processCommand);
-            $process->run();
-        } finally {
-            @unlink($jsonInput);
-            @unlink($artInput);
         }
     }
 }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Assets\AssetFactory;
+use App\Assets\BackgroundCustomAsset;
+use App\Assets\BrowserIconCustomAsset;
 use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
 use App\Http\ServerRequest;
-use App\Service\NChan;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Customization
@@ -39,7 +39,7 @@ class Customization
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
 
         // Register current theme
-        $this->theme = $this->determineTheme($request, false);
+        $this->theme = $this->determineTheme($request);
         $this->publicTheme = $this->determineTheme($request, true);
 
         // Register locale
@@ -109,13 +109,13 @@ class Customization
     {
         $publicCss = $this->settings->getPublicCustomCss() ?? '';
 
-        $background = AssetFactory::createBackground($this->environment);
+        $background = new BackgroundCustomAsset();
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
             $publicCss .= <<<CSS
             [data-theme] body.page-minimal {
-                background-image: url('${backgroundUrl}');
+                background-image: url('{$backgroundUrl}');
             }
             CSS;
         }
@@ -141,7 +141,7 @@ class Customization
 
     public function getBrowserIconUrl(int $size = 256): string
     {
-        return AssetFactory::createBrowserIcon($this->environment)->getUrlForSize($size);
+        return (new BrowserIconCustomAsset())->getUrlForSize($size);
     }
 
     /**
@@ -184,10 +184,6 @@ class Customization
 
     public function useWebSocketsForNowPlaying(): bool
     {
-        if (!NChan::isSupported()) {
-            return false;
-        }
-
         return $this->settings->getEnableWebsockets();
     }
 

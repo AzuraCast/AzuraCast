@@ -42,12 +42,17 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class PostMediaAction
+final class PostMediaAction
 {
+    public function __construct(
+        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        string $station_id,
         string $podcast_id,
         ?string $episode_id = null
     ): ResponseInterface {
@@ -59,7 +64,7 @@ class PostMediaAction
         }
 
         if (null !== $episode_id) {
-            $episode = $episodeRepo->fetchEpisodeForStation($station, $episode_id);
+            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
 
             if (null === $episode) {
                 return $response->withStatus(404)
@@ -67,7 +72,7 @@ class PostMediaAction
             }
 
             $fsStation = new StationFilesystems($station);
-            $episodeRepo->uploadMedia(
+            $this->episodeRepo->uploadMedia(
                 $episode,
                 $flowResponse->getClientFilename(),
                 $flowResponse->getUploadedPath(),

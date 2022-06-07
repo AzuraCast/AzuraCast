@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Http\ServerRequest;
+use App\Lock\LockFactory;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -70,7 +71,7 @@ class RateLimit
         $rateLimiterFactory = new RateLimiterFactory($config, $cacheStore, $this->lockFactory);
         $rateLimiter = $rateLimiterFactory->create($key);
 
-        if (false === $rateLimiter->consume(1)->isAccepted()) {
+        if (!$rateLimiter->consume()->isAccepted()) {
             throw new Exception\RateLimitExceededException();
         }
     }

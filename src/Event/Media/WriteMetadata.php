@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Event\Media;
 
-use Azura\MetadataManager\MetadataInterface;
+use App\Media\MetadataInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class WriteMetadata extends Event

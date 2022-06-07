@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
 set -x
 
-$minimal_apt_get_install flac
+apt-get install -y --no-install-recommends flac

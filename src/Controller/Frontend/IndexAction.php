@@ -9,15 +9,19 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexAction
+final class IndexAction
 {
+    public function __construct(
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Response $response
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
-        $settings = $settingsRepo->readSettings();
+        $settings = $this->settingsRepo->readSettings();
         if (!$settings->isSetupComplete()) {
             return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
         }

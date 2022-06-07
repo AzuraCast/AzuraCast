@@ -7,6 +7,7 @@ namespace App\Radio\Frontend\Blocklist;
 use App\Entity;
 use App\Radio\Enums\FrontendAdapters;
 use App\Service\IpGeolocation;
+use InvalidArgumentException;
 use PhpIP\IP;
 use PhpIP\IPBlock;
 
@@ -84,7 +85,7 @@ class BlocklistParser
                         }
                     }
                 }
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
             }
         }
 

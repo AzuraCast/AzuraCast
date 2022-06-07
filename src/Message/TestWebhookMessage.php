@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Message;
 
 use App\Environment;
-use App\MessageQueue\QueueManagerInterface;
 
 class TestWebhookMessage extends AbstractUniqueMessage
 {
@@ -22,10 +21,5 @@ class TestWebhookMessage extends AbstractUniqueMessage
     public function getTtl(): ?float
     {
         return Environment::getInstance()->getSyncLongExecutionTime();
-    }
-
-    public function getQueue(): string
-    {
-        return QueueManagerInterface::QUEUE_NORMAL_PRIORITY;
     }
 }

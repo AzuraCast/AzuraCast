@@ -34,18 +34,23 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-class DeleteArtAction
+final class DeleteArtAction
 {
+    public function __construct(
+        private readonly Entity\Repository\PodcastRepository $podcastRepo,
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\PodcastRepository $podcastRepo,
-        EntityManagerInterface $em,
-        string $podcast_id,
+        string $station_id,
+        string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $podcast = $podcastRepo->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcast_id);
 
         if ($podcast === null) {
             return $response->withStatus(404)
@@ -57,9 +62,9 @@ class DeleteArtAction
                 );
         }
 
-        $podcastRepo->removePodcastArt($podcast);
-        $em->persist($podcast);
-        $em->flush();
+        $this->podcastRepo->removePodcastArt($podcast);
+        $this->em->persist($podcast);
+        $this->em->flush();
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

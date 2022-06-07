@@ -21,7 +21,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM ubuntu:focal
+FROM ubuntu:20.04
 
 ENV TZ="UTC"
 

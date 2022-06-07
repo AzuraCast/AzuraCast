@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
+use App\Entity\Api\ResolvableUrlInterface;
+use App\Http\Router;
 use OpenApi\Attributes as OA;
+use Psr\Http\Message\UriInterface;
 
 #[OA\Schema(
     schema: 'Api_NowPlaying_Live',
     type: 'object'
 )]
-class Live
+class Live implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Whether the stream is known to currently have a live DJ.',
@@ -21,8 +24,7 @@ class Live
     #[OA\Property(
         description: 'The current active streamer/DJ, if one is available.',
         example: 'DJ Jazzy Jeff'
-    )
-    ]
+    )]
     public string $streamer_name = '';
 
     #[OA\Property(
@@ -31,13 +33,17 @@ class Live
     )]
     public ?int $broadcast_start = null;
 
-    public function __construct(
-        bool $is_live = false,
-        string $streamer_name = '',
-        ?int $broadcast_start = null
-    ) {
-        $this->is_live = $is_live;
-        $this->streamer_name = $streamer_name;
-        $this->broadcast_start = $broadcast_start;
+    /** @var string|UriInterface|null */
+    #[OA\Property(
+        description: 'URL to the streamer artwork (if available).',
+        example: 'https://picsum.photos/1200/1200'
+    )]
+    public $art = null;
+
+    public function resolveUrls(UriInterface $base): void
+    {
+        $this->art = (null !== $this->art)
+            ? (string)Router::resolveUri($base, $this->art, true)
+            : null;
     }
 }

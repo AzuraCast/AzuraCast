@@ -14,28 +14,13 @@ use Psr\Http\Message\UriInterface;
 
 class SongApiGenerator
 {
-    protected EntityManagerInterface $em;
-
-    protected Router $router;
-
-    protected Entity\Repository\StationRepository $stationRepo;
-
-    protected Entity\Repository\CustomFieldRepository $customFieldRepo;
-
-    protected RemoteAlbumArt $remoteAlbumArt;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Router $router,
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\CustomFieldRepository $customFieldRepo,
-        RemoteAlbumArt $remoteAlbumArt
+        protected EntityManagerInterface $em,
+        protected Router $router,
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected Entity\Repository\CustomFieldRepository $customFieldRepo,
+        protected RemoteAlbumArt $remoteAlbumArt
     ) {
-        $this->em = $em;
-        $this->router = $router;
-        $this->stationRepo = $stationRepo;
-        $this->customFieldRepo = $customFieldRepo;
-        $this->remoteAlbumArt = $remoteAlbumArt;
     }
 
     public function __invoke(

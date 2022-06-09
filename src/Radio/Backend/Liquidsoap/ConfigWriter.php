@@ -272,6 +272,8 @@ class ConfigWriter implements EventSubscriberInterface
         $scheduleSwitchesInterrupting = [];
         $scheduleSwitchesRemoteUrl = [];
 
+        $fallbackRemoteUrl = null;
+
         foreach ($station->getPlaylists() as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
@@ -322,27 +324,29 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
                 // Special handling for Remote Stream URLs.
-                $remote_url = $playlist->getRemoteUrl();
-                if (null === $remote_url) {
+                $remoteUrl = $playlist->getRemoteUrl();
+                if (null === $remoteUrl) {
                     continue;
                 }
 
                 $buffer = $playlist->getRemoteBuffer();
                 $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $inputFunc = (str_ends_with($remote_url, 'm3u8'))
+                $inputFunc = (str_ends_with($remoteUrl, 'm3u8'))
                     ? 'input.hls'
                     : 'input.http';
 
-                $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., '
-                    . $inputFunc . '("' . self::cleanUpString($remote_url) . '")))';
+                $remoteUrlFunc = 'mksafe(buffer(buffer=' . $buffer . '., '
+                    . $inputFunc . '("' . self::cleanUpString($remoteUrl) . '")))';
 
                 if (0 === $scheduleItems->count()) {
-                    // We cannot play unscheduled remote URL playlists.
+                    $fallbackRemoteUrl = $remoteUrlFunc;
                     continue;
                 }
 
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $remoteUrlFunc;
                 $event->appendLines($playlistConfigLines);
+
                 foreach ($scheduleItems as $scheduleItem) {
                     $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
@@ -557,6 +561,16 @@ class ConfigWriter implements EventSubscriberInterface
                 
                 ref_dynamic = ref(dynamic);
                 thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
+                EOF
+            );
+        }
+
+        // Handle remote URL fallbacks.
+        if (null !== $fallbackRemoteUrl) {
+            $event->appendBlock(
+                <<< EOF
+                remote_url = {$fallbackRemoteUrl}
+                radio = fallback(id="fallback_remote_url", track_sensitive = false, [remote_url, radio])
                 EOF
             );
         }

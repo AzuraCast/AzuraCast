@@ -272,11 +272,15 @@ class StationPlaylist implements
 
     public function setSource(string $source): void
     {
-        if (null === PlaylistSources::tryFrom($source)) {
+        $enum = PlaylistSources::tryFrom($source);
+        if (null === $enum) {
             throw new InvalidArgumentException('Invalid playlist source.');
         }
 
         $this->source = $source;
+        if (PlaylistSources::RemoteUrl === $enum) {
+            $this->type = PlaylistTypes::Standard->value;
+        }
     }
 
     public function getOrder(): string

@@ -4,7 +4,6 @@
 
         <b-tabs content-class="mt-3">
             <form-basic-info :form="$v.form"></form-basic-info>
-            <form-source :form="$v.form"></form-source>
             <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                            :station-time-zone="stationTimeZone"></form-schedule>
             <form-advanced :form="$v.form" v-if="enableAdvancedFeatures"></form-advanced>
@@ -16,7 +15,6 @@
 <script>
 import {required} from 'vuelidate/dist/validators.min.js';
 import FormBasicInfo from './Form/BasicInfo';
-import FormSource from './Form/Source';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
 import BaseEditModal from '~/components/Common/BaseEditModal';
@@ -24,7 +22,7 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 export default {
     name: 'EditModal',
     emits: ['needs-restart'],
-    components: {FormSchedule, FormSource, FormBasicInfo, FormAdvanced},
+    components: {FormSchedule, FormBasicInfo, FormAdvanced},
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
@@ -59,8 +57,8 @@ export default {
             'backend_options': {},
             'schedule_items': {
                 $each: {
-                    'start_time': { required },
-                    'end_time': { required },
+                    'start_time': {required},
+                    'end_time': {required},
                     'start_date': {},
                     'end_date': {},
                     'days': {},
@@ -70,7 +68,7 @@ export default {
         }
     },
     methods: {
-        resetForm () {
+        resetForm() {
             this.form = {
                 'name': '',
                 'is_enabled': true,

@@ -7,7 +7,10 @@ release channel, you can take advantage of these new features and fixes.
 
 - **LetsEncrypt via the Web**: We now support configuring LetsEncrypt via the web interface. If you had previously set
   up LetsEncrypt via the command line, your settings will be imported automatically. This update also adds LetsEncrypt
-  support for Ansible installations.
+  support for Ansible installations. Note: If you are mounting a custom SSL certificate, the mounting locations have
+  been updated to the following:
+    - Full chain certificate: `/var/azuracast/acme/ssl.crt`
+    - Private Key: `/var/azuracast/acme/ssl.key`
 
 ## Code Quality/Technical Changes
 

@@ -33,21 +33,6 @@
       - nginx-common
       - libnginx-mod-nchan
 
-- name: Create nginx ssl directory
-  file:
-    path: "/etc/nginx/ssl"
-    state: directory
-    owner: root
-    group: root
-    mode: 0744
-
-- name: Create self-signed SSL cert
-  command: >-
-    openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650
-    -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca
-  args:
-    creates: /etc/nginx/ssl/server.crt
-
 - name: Remove default nginx site symlink
   file:
     path: "/etc/nginx/sites-enabled/default"
@@ -80,6 +65,25 @@
     regexp: 'sendfile on;'
     replace: 'sendfile off;'
   when: app_env == "development"
+
+- name: Create self-signed SSL cert
+  command: >-
+    openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650
+    -keyout {{ app_base }}/acme/default.key -out {{ app_base }}/acme/default.crt -extensions v3_ca
+  args:
+    creates: "{{ app_base }}/acme/default.crt"
+
+- name: Link self-signed SSL key if applicable.
+  file:
+    path: "{{ app_base }}/acme/ssl.key"
+    state: link
+    src: "{{ app_base }}/acme/default.key"
+
+- name: Link self-signed SSL cert if applicable.
+  file:
+    path: "{{ app_base }}/acme/ssl.crt"
+    state: link
+    src: "{{ app_base }}/acme/default.crt"
 
 - name: Install Nginx Supervisord conf
   template:

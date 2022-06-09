@@ -89,6 +89,16 @@ return static function (RouteCollectorProxy $group) {
                         Controller\Api\Admin\SendTestMessageAction::class
                     )->setName('api:admin:send-test-message');
 
+                    $group->put(
+                        '/acme',
+                        Controller\Api\Admin\Acme\GenerateCertificateAction::class
+                    )->setName('api:admin:acme');
+
+                    $group->get(
+                        '/acme-log/{path}',
+                        Controller\Api\Admin\Acme\CertificateLogAction::class
+                    )->setName('api:admin:acme-log');
+
                     $group->get(
                         '/custom_assets/{type}',
                         Controller\Api\Admin\CustomAssets\GetCustomAssetAction::class

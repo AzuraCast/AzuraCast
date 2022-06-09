@@ -5,7 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features/changes since the last stable release.
+- **LetsEncrypt via the Web**: We now support configuring LetsEncrypt via the web interface. If you had previously set
+  up LetsEncrypt via the command line, your settings will be imported automatically. This update also adds LetsEncrypt
+  support for Ansible installations.
 
 ## Code Quality/Technical Changes
 

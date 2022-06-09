@@ -138,6 +138,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\MoveBroadcastsTask::class,
                 App\Sync\Task\QueueInterruptingTracks::class,
                 App\Sync\Task\ReactivateStreamerTask::class,
+                App\Sync\Task\RenewAcmeCertTask::class,
                 App\Sync\Task\RotateLogsTask::class,
                 App\Sync\Task\RunAnalyticsTask::class,
                 App\Sync\Task\RunAutomatedAssignmentTask::class,

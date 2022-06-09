@@ -6,6 +6,7 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Environment;
+use App\Service\Acme;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,6 +21,7 @@ class InitializeCommand extends CommandAbstract
     public function __construct(
         protected Environment $environment,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Acme $acme,
     ) {
         parent::__construct();
     }
@@ -67,6 +69,13 @@ class InitializeCommand extends CommandAbstract
 
         // Ensure default storage locations exist.
         $this->storageLocationRepo->createDefaultStorageLocations();
+
+        // Pull Acme certificates if necessary.
+        try {
+            $this->acme->getCertificate();
+        } catch (\Exception) {
+            // Noop
+        }
 
         $io->newLine();
         $io->success(

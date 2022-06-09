@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity;
-use App\Radio\CertificateLocator;
 use App\Radio\Enums\StreamFormats;
+use App\Service\Acme;
 use App\Utilities;
 use App\Xml\Writer;
 use Exception;
@@ -114,7 +114,7 @@ class Icecast extends AbstractFrontend
         $settingsBaseUrl = $settings->getBaseUrl() ?: '';
         $baseUrl = Utilities\Urls::getUri($settingsBaseUrl) ?? new Uri('http://localhost');
 
-        $certPaths = CertificateLocator::findCertificate();
+        [$certPath, $certKey] = Acme::getCertificatePaths();
 
         $config = [
             'location' => 'AzuraCast',
@@ -127,13 +127,13 @@ class Icecast extends AbstractFrontend
                 'client-timeout' => 30,
                 'header-timeout' => 15,
                 'source-timeout' => 10,
-                'burst-size'     => 65535,
+                'burst-size' => 65535,
             ],
             'authentication' => [
                 'source-password' => $frontendConfig->getSourcePassword(),
-                'relay-password'  => $frontendConfig->getRelayPassword(),
-                'admin-user'      => 'admin',
-                'admin-password'  => $frontendConfig->getAdminPassword(),
+                'relay-password' => $frontendConfig->getRelayPassword(),
+                'admin-user' => 'admin',
+                'admin-password' => $frontendConfig->getAdminPassword(),
             ],
 
             'listen-socket' => [
@@ -154,8 +154,8 @@ class Icecast extends AbstractFrontend
                         '@dest' => '/status.xsl',
                     ],
                 ],
-                'ssl-private-key' => $certPaths->getKeyPath(),
-                'ssl-certificate' => $certPaths->getCertPath(),
+                'ssl-private-key' => $certKey,
+                'ssl-certificate' => $certPath,
                 // phpcs:disable Generic.Files.LineLength
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 // phpcs:enable
@@ -232,9 +232,9 @@ class Icecast extends AbstractFrontend
             $mountRelayUri = $mount_row->getRelayUrlAsUri();
             if (null !== $mountRelayUri) {
                 $config['relay'][] = [
-                    'server'      => $mountRelayUri->getHost(),
-                    'port'        => $mountRelayUri->getPort(),
-                    'mount'       => $mountRelayUri->getPath(),
+                    'server' => $mountRelayUri->getHost(),
+                    'port' => $mountRelayUri->getPort(),
+                    'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mount_row->getName(),
                 ];
             }

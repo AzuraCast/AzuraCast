@@ -33,6 +33,7 @@ final class SettingsAction
                     'group' => Settings::GROUP_GENERAL,
                 ]),
                 'testMessageUrl' => (string)$router->named('api:admin:send-test-message'),
+                'acmeUrl' => (string)$router->named('api:admin:acme'),
                 'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
             ],
         );

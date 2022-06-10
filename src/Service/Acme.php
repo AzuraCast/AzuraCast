@@ -83,21 +83,21 @@ final class Acme
 
         if (empty($acmeEmail)) {
             $acmeEmail = getenv('LETSENCRYPT_EMAIL');
+            if (!empty($acmeEmail)) {
+                $settings->setAcmeEmail($acmeEmail);
+                $this->settingsRepo->writeSettings($settings);
+            }
         }
+
         if (empty($acmeDomain)) {
             $acmeDomain = getenv('LETSENCRYPT_HOST');
+            if (empty($acmeDomain)) {
+                throw new \RuntimeException('Skipping LetsEncrypt; no domain(s) set.');
+            } else {
+                $settings->setAcmeDomains($acmeDomain);
+                $this->settingsRepo->writeSettings($settings);
+            }
         }
-        if (empty($acmeDomain)) {
-            $acmeDomain = $settings->getBaseUrlAsUri()?->getHost();
-        }
-
-        if (empty($acmeEmail) || empty($acmeDomain)) {
-            throw new \RuntimeException('Missing e-mail address or domain(s).');
-        }
-
-        $settings->setAcmeEmail($acmeEmail);
-        $settings->setAcmeDomains($acmeDomain);
-        $this->settingsRepo->writeSettings($settings);
 
         // Account certificate registration.
         if (file_exists($acmeDir . '/account_key.pem')) {
@@ -107,7 +107,9 @@ final class Acme
             $fs->dumpFile($acmeDir . '/account_key.pem', $accountKey);
             $acme->loadAccountKey($accountKey);
 
-            $acme->register(true, $acmeEmail);
+            if (!empty($acmeEmail)) {
+                $acme->register(true, $acmeEmail);
+            }
         }
 
         // Renewal check.

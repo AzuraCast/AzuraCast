@@ -44,17 +44,6 @@
             </template>
 
             <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_acme_email"
-                                      :field="form.acme_email" input-type="email">
-                    <template #label="{lang}">
-                        <translate :key="lang">E-mail Address</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate
-                            :key="lang">Enter your e-mail address to receive updates about your certificate.</translate>
-                    </template>
-                </b-wrapped-form-group>
-
                 <b-wrapped-form-group class="col-md-6" id="edit_form_acme_domains"
                                       :field="form.acme_domains">
                     <template #label="{lang}">
@@ -66,13 +55,24 @@
                     </template>
                 </b-wrapped-form-group>
 
+                <b-wrapped-form-group class="col-md-6" id="edit_form_acme_email"
+                                      :field="form.acme_email" input-type="email">
+                    <template #label="{lang}">
+                        <translate :key="lang">E-mail Address (Optional)</translate>
+                    </template>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">Enter your e-mail address to receive updates about your certificate.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
                 <div class="form-group col">
                     <b-button size="sm" variant="primary" :disabled="form.$anyDirty" @click="generateAcmeCert">
                         <icon icon="badge"></icon>
                         <translate key="lang_btn_acme_cert">Generate/Renew Certificate</translate>
                         <span v-if="form.$anyDirty">
-                            (<translate key="lang_btn_acme_cert_save_changes">Save Changes first</translate>)
-                        </span>
+                        (<translate key="lang_btn_acme_cert_save_changes">Save Changes first</translate>)
+                    </span>
                     </b-button>
                 </div>
             </b-form-row>

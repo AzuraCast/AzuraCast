@@ -201,14 +201,6 @@ setup-ports() {
 }
 
 #
-# Configure the settings used by LetsEncrypt.
-#
-setup-letsencrypt() {
-  envfile-set "LETSENCRYPT_HOST" "" "Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt"
-  envfile-set "LETSENCRYPT_EMAIL" "" "Optional e-mail address for expiration updates"
-}
-
-#
 # Configure release mode settings.
 #
 setup-release() {
@@ -792,13 +784,14 @@ uninstall() {
 }
 
 #
-# Create and link a LetsEncrypt SSL certificate.
-# Usage: ./docker.sh letsencrypt-create
+# LetsEncrypt: Now managed via the Web UI.
 #
+setup-letsencrypt() {
+  echo "LetsEncrypt is now managed from within the web interface."
+}
+
 letsencrypt-create() {
   setup-letsencrypt
-  docker-compose down
-  docker-compose up -d
   exit
 }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity;
-use App\Radio\CertificateLocator;
+use App\Service\Acme;
 use Exception;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
@@ -111,7 +111,7 @@ class Shoutcast extends AbstractFrontend
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
 
-        $certPaths = CertificateLocator::findCertificate();
+        [$certPath, $certKey] = Acme::getCertificatePaths();
 
         $config = [
             'password' => $frontendConfig->getSourcePassword(),
@@ -128,8 +128,8 @@ class Shoutcast extends AbstractFrontend
             'saveagentlistonexit' => '0',
             'licenceid' => $frontendConfig->getScLicenseId(),
             'userid' => $frontendConfig->getScUserId(),
-            'sslCertificateFile' => $certPaths->getCertPath(),
-            'sslCertificateKeyFile' => $certPaths->getKeyPath(),
+            'sslCertificateFile' => $certPath,
+            'sslCertificateKeyFile' => $certKey,
         ];
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
@@ -168,7 +168,7 @@ class Shoutcast extends AbstractFrontend
 
         $configFileOutput = '';
         foreach ($config as $config_key => $config_value) {
-            $configFileOutput .= $config_key . '=' . str_replace("\n", '', (string) $config_value) . "\n";
+            $configFileOutput .= $config_key . '=' . str_replace("\n", '', (string)$config_value) . "\n";
         }
 
         return $configFileOutput;

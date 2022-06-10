@@ -48,5 +48,6 @@
     - "{{ app_base }}/servers/icecast2"
     - "{{ app_base }}/servers/stereo_tool"
     - "{{ app_base }}/uploads"
+    - "{{ app_base }}/acme/challenges"
   loop_control:
     loop_var: azuracast_config_sys_directory

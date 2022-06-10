@@ -48,6 +48,9 @@
     "name": "sftpgo.db",
     "users_base_dir": "/var/azuracast/stations",
     "external_auth_hook": "http://127.0.0.1:6010/api/internal/sftp-auth",
-    "external_auth_scope": 0
+    "external_auth_scope": 0,
+    "auto_backup": {
+      "enabled": false
+    }
   }
 }

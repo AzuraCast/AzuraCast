@@ -53,13 +53,8 @@ server {
     listen 80;
     listen 443 default_server http2 ssl;
 
-{{if exists "/etc/nginx/certs/ssl.crt"}}
-    ssl_certificate        /etc/nginx/certs/ssl.crt;
-    ssl_certificate_key    /etc/nginx/certs/ssl.key;
-{{else}}
-    ssl_certificate        /etc/nginx/certs/default.crt;
-    ssl_certificate_key    /etc/nginx/certs/default.key;
-{{end}}
+    ssl_certificate        /var/azuracast/acme/ssl.crt;
+    ssl_certificate_key    /var/azuracast/acme/ssl.key;
 
     ssl_protocols TLSv1.3 TLSv1.2;
     ssl_prefer_server_ciphers on;
@@ -79,8 +74,8 @@ server {
     add_header Referrer-Policy no-referrer-when-downgrade;
 
     # LetsEncrypt handling
-    location /.well-known/acme-challenge/ {
-        root /usr/share/nginx/html;
+    location /.well-known/acme-challenge {
+        alias /var/azuracast/acme/challenges;
         try_files $uri =404;
     }
 

@@ -140,8 +140,12 @@ class ConfigWriter implements EventSubscriberInterface
             autodj_ping_attempts = ref(0)
             ignore(autodj_ping_attempts)
             
-            # Track live-enabled status script-wide for fades.
+            # Track live-enabled status.
             live_enabled = ref(false)
+            ignore(live_enabled)
+            
+            # Track live transition for crossfades.
+            to_live = ref(false)
             ignore(live_enabled)
             EOF
         );
@@ -272,6 +276,8 @@ class ConfigWriter implements EventSubscriberInterface
         $scheduleSwitchesInterrupting = [];
         $scheduleSwitchesRemoteUrl = [];
 
+        $fallbackRemoteUrl = null;
+
         foreach ($station->getPlaylists() as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
@@ -322,27 +328,29 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
                 // Special handling for Remote Stream URLs.
-                $remote_url = $playlist->getRemoteUrl();
-                if (null === $remote_url) {
+                $remoteUrl = $playlist->getRemoteUrl();
+                if (null === $remoteUrl) {
                     continue;
                 }
 
                 $buffer = $playlist->getRemoteBuffer();
                 $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $inputFunc = (str_ends_with($remote_url, 'm3u8'))
+                $inputFunc = (str_ends_with($remoteUrl, 'm3u8'))
                     ? 'input.hls'
                     : 'input.http';
 
-                $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., '
-                    . $inputFunc . '("' . self::cleanUpString($remote_url) . '")))';
+                $remoteUrlFunc = 'mksafe(buffer(buffer=' . $buffer . '., '
+                    . $inputFunc . '("' . self::cleanUpString($remoteUrl) . '")))';
 
                 if (0 === $scheduleItems->count()) {
-                    // We cannot play unscheduled remote URL playlists.
+                    $fallbackRemoteUrl = $remoteUrlFunc;
                     continue;
                 }
 
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $remoteUrlFunc;
                 $event->appendLines($playlistConfigLines);
+
                 foreach ($scheduleItems as $scheduleItem) {
                     $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
@@ -561,6 +569,16 @@ class ConfigWriter implements EventSubscriberInterface
             );
         }
 
+        // Handle remote URL fallbacks.
+        if (null !== $fallbackRemoteUrl) {
+            $event->appendBlock(
+                <<< EOF
+                remote_url = {$fallbackRemoteUrl}
+                radio = fallback(id="fallback_remote_url", track_sensitive = false, [remote_url, radio])
+                EOF
+            );
+        }
+
         $requestsQueueName = LiquidsoapQueues::Requests->value;
         $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
@@ -720,15 +738,24 @@ class ConfigWriter implements EventSubscriberInterface
         $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeIsSmart = (CrossfadeModes::Smart === $crossfadeType) ? 'true' : 'false';
-            $event->appendLines([
-                sprintf(
-                    'radio = crossfade(smart=%1$s, duration=%2$s, fade_out=%3$s, fade_in=%3$s, radio)',
-                    $crossfadeIsSmart,
-                    self::toFloat($crossDuration),
-                    self::toFloat($crossfade)
-                ),
-            ]);
+            $crossfadeMethod = (CrossfadeModes::Smart === $crossfadeType) ? 'cross.smart' : 'cross.simple';
+            $crossfadeDuration = self::toFloat($crossfade);
+
+            $event->appendBlock(
+                <<<LS
+                def live_aware_crossfade(old, new) =
+                    if !to_live then
+                        # If going to the live show, play a simple sequence
+                        sequence([fade.out(old.source),fade.in(new.source)])
+                    else
+                        # Otherwise, use the smart transition
+                        {$crossfadeMethod}(old.source, new.source, fade_in={$crossfadeDuration}, fade_out={$crossfadeDuration})
+                    end
+                end
+                
+                radio = cross(live_aware_crossfade, radio)
+                LS
+            );
         }
     }
 
@@ -842,7 +869,22 @@ class ConfigWriter implements EventSubscriberInterface
             end
             live = map_metadata(insert_missing, live)
             
-            radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
+            radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
+            
+            # Skip non-live track when live DJ goes live. 
+            def check_live() =
+                if live.is_ready() then
+                    if not !to_live then
+                        to_live := true
+                        radio_without_live.skip()
+                    end
+                else
+                    to_live := false
+                end
+            end
+            
+            # Continuously check on live.
+            radio = source.on_frame(radio, check_live)
             EOF
         );
 

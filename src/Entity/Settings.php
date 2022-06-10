@@ -1006,6 +1006,40 @@ class Settings implements Stringable
         $this->avatar_default_url = $avatarDefaultUrl;
     }
 
+    #[
+        OA\Property(description: "ACME (LetsEncrypt) e-mail address.", example: ""),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
+    protected ?string $acme_email = null;
+
+    public function getAcmeEmail(): ?string
+    {
+        return $this->acme_email;
+    }
+
+    public function setAcmeEmail(?string $acme_email): void
+    {
+        $this->acme_email = $acme_email;
+    }
+
+    #[
+        OA\Property(description: "ACME (LetsEncrypt) domain name(s).", example: ""),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
+    protected ?string $acme_domains = null;
+
+    public function getAcmeDomains(): ?string
+    {
+        return $this->acme_domains;
+    }
+
+    public function setAcmeDomains(?string $acme_domains): void
+    {
+        $this->acme_domains = $acme_domains;
+    }
+
     public function __toString(): string
     {
         return 'Settings';

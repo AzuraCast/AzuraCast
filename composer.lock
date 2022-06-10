@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0f53f37fc280407f5070076e53e3bc2",
+    "content-hash": "13899e60907b126bd3c5b7ea5cbf1278",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6241,6 +6241,50 @@
                 "source": "https://github.com/rlanvin/php-ip/tree/v3.0.0"
             },
             "time": "2022-03-02T08:51:37+00:00"
+        },
+        {
+            "name": "skoerfgen/acmecert",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/skoerfgen/ACMECert.git",
+                "reference": "706564824eed25896b2e02d80095bd82c051fc2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/skoerfgen/ACMECert/zipball/706564824eed25896b2e02d80095bd82c051fc2d",
+                "reference": "706564824eed25896b2e02d80095bd82c051fc2d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": ">=5.6.0"
+            },
+            "suggest": {
+                "ext-curl": "Optional for better http performance"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "skoerfgen\\ACMECert\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Körfgen",
+                    "homepage": "https://github.com/skoerfgen"
+                }
+            ],
+            "description": "PHP client library for Let's Encrypt and other ACME v2 - RFC 8555 compatible Certificate Authorities",
+            "support": {
+                "issues": "https://github.com/skoerfgen/ACMECert/issues",
+                "source": "https://github.com/skoerfgen/ACMECert"
+            },
+            "time": "2022-04-22T23:10:20+00:00"
         },
         {
             "name": "slim/http",

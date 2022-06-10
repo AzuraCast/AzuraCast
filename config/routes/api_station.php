@@ -13,26 +13,6 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:index')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->group(
-                '/automation',
-                function (RouteCollectorProxy $group) {
-                    $group->get(
-                        '/settings',
-                        Controller\Api\Stations\Automation\GetSettingsAction::class
-                    )->setName('api:stations:automation:settings');
-
-                    $group->put(
-                        '/settings',
-                        Controller\Api\Stations\Automation\PutSettingsAction::class
-                    );
-
-                    $group->put(
-                        '/run',
-                        Controller\Api\Stations\Automation\RunAction::class
-                    )->setName('api:stations:automation:run');
-                }
-            )->add(new Middleware\Permissions(StationPermissions::Automation, true));
-
             $group->get('/nowplaying', Controller\Api\NowPlayingAction::class . ':indexAction');
 
             $group->map(
@@ -516,11 +496,6 @@ return static function (RouteCollectorProxy $group) {
                             )->setName('api:stations:reports:requests:delete');
                         }
                     )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
-
-                    $group->get(
-                        '/performance',
-                        Controller\Api\Stations\Reports\PerformanceAction::class
-                    )->setName('api:stations:reports:performance');
 
                     $group->get(
                         '/overview/charts',

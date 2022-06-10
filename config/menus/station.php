@@ -119,21 +119,9 @@ return function (App\Event\BuildStationMenu $e) {
             'playlists' => [
                 'label' => __('Playlists'),
                 'icon' => 'queue_music',
-                'items' => [
-                    'playlists' => [
-                        'label' => __('Playlists'),
-                        'url' => (string)$router->fromHere('stations:playlists:index'),
-                        'visible' => $backend->supportsMedia(),
-                        'permission' => StationPermissions::Media,
-                    ],
-                    'automation' => [
-                        'label' => __('Automated Assignment'),
-                        'class' => 'text-muted',
-                        'url' => (string)$router->fromHere('stations:automation:index'),
-                        'visible' => $backend->supportsMedia(),
-                        'permission' => StationPermissions::Automation,
-                    ],
-                ],
+                'url' => (string)$router->fromHere('stations:playlists:index'),
+                'visible' => $backend->supportsMedia(),
+                'permission' => StationPermissions::Media,
             ],
 
             'podcasts' => [
@@ -199,11 +187,6 @@ return function (App\Event\BuildStationMenu $e) {
                     'reports_timeline' => [
                         'label' => __('Song Playback Timeline'),
                         'url' => (string)$router->fromHere('stations:reports:timeline'),
-                    ],
-                    'reports_performance' => [
-                        'label' => __('Song Listener Impact'),
-                        'url' => (string)$router->fromHere('stations:reports:performance'),
-                        'visible' => $backend->supportsMedia(),
                     ],
                     'reports_soundexchange' => [
                         'label' => __('SoundExchange Royalties'),

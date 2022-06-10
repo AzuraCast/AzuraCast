@@ -5,11 +5,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features/changes since the last stable release.
+- **LetsEncrypt via the Web**: We now support configuring LetsEncrypt via the web interface. If you had previously set
+  up LetsEncrypt via the command line, your settings will be imported automatically. This update also adds LetsEncrypt
+  support for Ansible installations. Note: If you are mounting a custom SSL certificate, the mounting locations have
+  been updated to the following:
+    - Full chain certificate: `/var/azuracast/acme/ssl.crt`
+    - Private Key: `/var/azuracast/acme/ssl.key`
+
+- When a live DJ disconnects, the AutoDJ will automatically skip to the next available track when resuming the regular
+  broadcast.
 
 ## Code Quality/Technical Changes
 
-There have been no code quality/technical changes since the last stable release.
+- Automated station playlist assignment (and the corresponding Song Performance Report) is being retired. Internally,
+  this functionality was not well-explained, and likely does not work the way station operators expect it to. With the
+  upcoming development of new, better reporting tools, this functionality will no longer be required.
 
 ## Bug Fixes
 
@@ -54,7 +64,8 @@ There have been no new bug fixes since the last stable release.
 
 - We can now write custom Nginx configuration on a per-station basis and automatically reload it on-the-fly without
   losing any active connections. This allows us to replace our standard `/radio/8000` web proxy URLs with
-  station-specific `/listen/station_name` ones, among other improvements.
+  station-specific `/listen/station_name` ones, among other improvements. If you are already using the
+  older `/radio/8000`-style URLs, those will continue to work, and we have no plans to retire them in the near future.
 
 - Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP
   to using Unix domain socket files. This not only reduces the number of used ports but improves performance.

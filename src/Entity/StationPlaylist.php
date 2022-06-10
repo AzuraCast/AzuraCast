@@ -151,12 +151,6 @@ class StationPlaylist implements
     protected bool $include_in_on_demand = false;
 
     #[
-        OA\Property(example: false),
-        ORM\Column
-    ]
-    protected bool $include_in_automation = false;
-
-    #[
         OA\Property(example: "interrupt,loop_once,single_track,merge"),
         ORM\Column(length: 255, nullable: true)
     ]
@@ -272,11 +266,15 @@ class StationPlaylist implements
 
     public function setSource(string $source): void
     {
-        if (null === PlaylistSources::tryFrom($source)) {
+        $enum = PlaylistSources::tryFrom($source);
+        if (null === $enum) {
             throw new InvalidArgumentException('Invalid playlist source.');
         }
 
         $this->source = $source;
+        if (PlaylistSources::RemoteUrl === $enum) {
+            $this->type = PlaylistTypes::Standard->value;
+        }
     }
 
     public function getOrder(): string
@@ -397,16 +395,6 @@ class StationPlaylist implements
     public function isRequestable(): bool
     {
         return ($this->is_enabled && $this->include_in_requests);
-    }
-
-    public function getIncludeInAutomation(): bool
-    {
-        return $this->include_in_automation;
-    }
-
-    public function setIncludeInAutomation(bool $include_in_automation): void
-    {
-        $this->include_in_automation = $include_in_automation;
     }
 
     public function getAvoidDuplicates(): bool

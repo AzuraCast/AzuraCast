@@ -25,11 +25,6 @@ class Station_ReportsCest extends CestAbstract
         $I->seeResponseCodeIs(200);
         $I->see('Song Playback Timeline');
 
-        $I->amOnPage('/station/' . $station_id . '/reports/performance');
-
-        $I->seeResponseCodeIs(200);
-        $I->see('Song Listener Impact');
-
         $I->amOnPage('/station/' . $station_id . '/reports/requests');
 
         $I->seeResponseCodeIs(200);

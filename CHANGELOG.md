@@ -14,7 +14,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
-There have been no code quality/technical changes since the last stable release.
+- Automated station playlist assignment (and the corresponding Song Performance Report) is being retired. Internally,
+  this functionality was not well-explained, and likely does not work the way station operators expect it to. With the
+  upcoming development of new, better reporting tools, this functionality will no longer be required.
 
 ## Bug Fixes
 

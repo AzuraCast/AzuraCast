@@ -20,12 +20,6 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->setName('stations:index:index');
 
-            $group->get(
-                '/automation',
-                Controller\Stations\AutomationAction::class
-            )->setName('stations:automation:index')
-                ->add(new Middleware\Permissions(StationPermissions::Automation, true));
-
             $group->get('/bulk-media', Controller\Stations\BulkMediaAction::class)
                 ->setName('stations:bulk-media')
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
@@ -103,11 +97,6 @@ return static function (RouteCollectorProxy $app) {
 
                     $group->get('/timeline', Controller\Stations\Reports\TimelineAction::class)
                         ->setName('stations:reports:timeline');
-
-                    $group->get(
-                        '/performance',
-                        Controller\Stations\Reports\PerformanceAction::class
-                    )->setName('stations:reports:performance');
 
                     $group->get('/listeners', Controller\Stations\Reports\ListenersAction::class)
                         ->setName('stations:reports:listeners');

@@ -46,9 +46,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    // Taxonomical groups for permission-based serialization.
-    public const GROUP_AUTOMATION = 'automation';
-
     #[
         OA\Property(description: "The full display name of the station.", example: "AzuraTest Radio"),
         ORM\Column(length: 100, nullable: false),
@@ -165,20 +162,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore
     ]
     protected ?int $nowplaying_timestamp = null;
-
-    #[
-        OA\Property(type: "array", items: new OA\Items()),
-        ORM\Column(type: 'json', nullable: true),
-        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected ?array $automation_settings = null;
-
-    #[
-        ORM\Column(nullable: true),
-        Attributes\AuditIgnore,
-        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected ?int $automation_timestamp = 0;
 
     #[
         OA\Property(
@@ -765,29 +748,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
     {
         $this->nowplaying_timestamp = $nowplaying_timestamp;
-    }
-
-    /**
-     * @return mixed[]|null
-     */
-    public function getAutomationSettings(): ?array
-    {
-        return $this->automation_settings;
-    }
-
-    public function setAutomationSettings(array $automation_settings = null): void
-    {
-        $this->automation_settings = $automation_settings;
-    }
-
-    public function getAutomationTimestamp(): ?int
-    {
-        return $this->automation_timestamp;
-    }
-
-    public function setAutomationTimestamp(int $automation_timestamp = null): void
-    {
-        $this->automation_timestamp = $automation_timestamp;
     }
 
     public function getEnableRequests(): bool

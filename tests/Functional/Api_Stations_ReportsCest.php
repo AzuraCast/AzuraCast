@@ -116,35 +116,6 @@ class Api_Stations_ReportsCest extends CestAbstract
         $this->testReportCsv($I, $requestUrl, $csvHeaders);
     }
 
-    /**
-     * @before setupComplete
-     * @before login
-     */
-    public function downloadPerformanceReportCsv(\FunctionalTester $I): void
-    {
-        $I->wantTo('Download station song impact CSV via API.');
-
-        $station = $this->getTestStation();
-        $uriBase = '/api/station/' . $station->getId();
-        $requestUrl = $uriBase . '/reports/performance?format=csv';
-
-        $csvHeaders = [
-            'Song Title',
-            'Song Artist',
-            'Filename',
-            'Length',
-            'Current Playlist',
-            'Delta Joins',
-            'Delta Losses',
-            'Delta Total',
-            'Play Count',
-            'Play Percentage',
-            'Weighted Ratio',
-        ];
-
-        $this->testReportCsv($I, $requestUrl, $csvHeaders);
-    }
-
     protected function testReportCsv(
         \FunctionalTester $I,
         string $url,

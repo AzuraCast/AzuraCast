@@ -158,7 +158,7 @@
 
                     <b-form-group>
                         <b-form-row>
-                            <b-wrapped-form-group class="col-md-6" id="form_edit_weight" :field="form.weight">
+                            <b-wrapped-form-group class="col-md-12" id="form_edit_weight" :field="form.weight">
                                 <template #label="{lang}">
                                     <translate :key="lang">Playlist Weight</translate>
                                 </template>
@@ -170,16 +170,6 @@
                                                    :state="props.state"></b-form-select>
                                 </template>
                             </b-wrapped-form-group>
-
-                            <b-wrapped-form-checkbox class="col-md-6" id="form_edit_include_in_automation"
-                                                     :field="form.include_in_automation">
-                                <template #label="{lang}">
-                                    <translate :key="lang">Include in Automated Assignment</translate>
-                                </template>
-                                <template #description="{lang}">
-                                    <translate :key="lang">If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.</translate>
-                                </template>
-                            </b-wrapped-form-checkbox>
                         </b-form-row>
                     </b-form-group>
                 </b-form-fieldset>

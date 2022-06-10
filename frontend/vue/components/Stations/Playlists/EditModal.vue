@@ -52,7 +52,6 @@ export default {
             'play_per_minutes': {},
             'play_per_hour_minute': {},
             'include_in_requests': {},
-            'include_in_automation': {},
             'avoid_duplicates': {},
             'backend_options': {},
             'schedule_items': {
@@ -85,7 +84,6 @@ export default {
                 'play_per_minutes': 0,
                 'play_per_hour_minute': 0,
                 'include_in_requests': true,
-                'include_in_automation': false,
                 'avoid_duplicates': true,
                 'backend_options': [],
                 'schedule_items': []

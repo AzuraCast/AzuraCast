@@ -140,8 +140,12 @@ class ConfigWriter implements EventSubscriberInterface
             autodj_ping_attempts = ref(0)
             ignore(autodj_ping_attempts)
             
-            # Track live-enabled status script-wide for fades.
+            # Track live-enabled status.
             live_enabled = ref(false)
+            ignore(live_enabled)
+            
+            # Track live transition for crossfades.
+            to_live = ref(false)
             ignore(live_enabled)
             EOF
         );
@@ -734,15 +738,24 @@ class ConfigWriter implements EventSubscriberInterface
         $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeIsSmart = (CrossfadeModes::Smart === $crossfadeType) ? 'true' : 'false';
-            $event->appendLines([
-                sprintf(
-                    'radio = crossfade(smart=%1$s, duration=%2$s, fade_out=%3$s, fade_in=%3$s, radio)',
-                    $crossfadeIsSmart,
-                    self::toFloat($crossDuration),
-                    self::toFloat($crossfade)
-                ),
-            ]);
+            $crossfadeMethod = (CrossfadeModes::Smart === $crossfadeType) ? 'cross.smart' : 'cross.simple';
+            $crossfadeDuration = self::toFloat($crossfade);
+
+            $event->appendBlock(
+                <<<LS
+                def live_aware_crossfade(old, new) =
+                    if !to_live then
+                        # If going to the live show, play a simple sequence
+                        sequence([fade.out(old.source),fade.in(new.source)])
+                    else
+                        # Otherwise, use the smart transition
+                        {$crossfadeMethod}(old.source, new.source, fade_in={$crossfadeDuration}, fade_out={$crossfadeDuration})
+                    end
+                end
+                
+                radio = cross(live_aware_crossfade, radio)
+                LS
+            );
         }
     }
 
@@ -856,7 +869,22 @@ class ConfigWriter implements EventSubscriberInterface
             end
             live = map_metadata(insert_missing, live)
             
-            radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
+            radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
+            
+            # Skip non-live track when live DJ goes live. 
+            def check_live() =
+                if live.is_ready() then
+                    if not !to_live then
+                        to_live := true
+                        radio_without_live.skip()
+                    end
+                else
+                    to_live := false
+                end
+            end
+            
+            # Continuously check on live.
+            radio = source.on_frame(radio, check_live)
             EOF
         );
 

@@ -12,6 +12,9 @@ release channel, you can take advantage of these new features and fixes.
     - Full chain certificate: `/var/azuracast/acme/ssl.crt`
     - Private Key: `/var/azuracast/acme/ssl.key`
 
+- When a live DJ disconnects, the AutoDJ will automatically skip to the next available track when resuming the regular
+  broadcast.
+
 ## Code Quality/Technical Changes
 
 - Automated station playlist assignment (and the corresponding Song Performance Report) is being retired. Internally,

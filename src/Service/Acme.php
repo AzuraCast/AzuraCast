@@ -109,6 +109,8 @@ final class Acme
 
             if (!empty($acmeEmail)) {
                 $acme->register(true, $acmeEmail);
+            } else {
+                $acme->register(true);
             }
         }
 

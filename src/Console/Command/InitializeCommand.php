@@ -70,13 +70,6 @@ class InitializeCommand extends CommandAbstract
         // Ensure default storage locations exist.
         $this->storageLocationRepo->createDefaultStorageLocations();
 
-        // Pull Acme certificates if necessary.
-        try {
-            $this->acme->getCertificate();
-        } catch (\Exception) {
-            // Noop
-        }
-
         $io->newLine();
         $io->success(
             [

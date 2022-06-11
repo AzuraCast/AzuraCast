@@ -17,6 +17,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- For stations using Liquidsoap, we now use the now-playing track information sent to us by Liquidsoap as the
+  authoritative source of the currently playing track. This should remove a significant number of issues with
+  Icecast/Shoutcast mangling song names and causing mismatches within our system. For non-Liquidsoap station operators,
+  the currently playing song is still based on what is reported by Icecast/Shoutcast.
+
 - Automated station playlist assignment (and the corresponding Song Performance Report) is being retired. Internally,
   this functionality was not well-explained, and likely does not work the way station operators expect it to. With the
   upcoming development of new, better reporting tools, this functionality will no longer be required.

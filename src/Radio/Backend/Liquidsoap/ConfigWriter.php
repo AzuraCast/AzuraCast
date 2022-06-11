@@ -749,7 +749,7 @@ class ConfigWriter implements EventSubscriberInterface
                         sequence([fade.out(old.source),fade.in(new.source)])
                     else
                         # Otherwise, use the smart transition
-                        {$crossfadeMethod}(old.source, new.source, fade_in={$crossfadeDuration}, fade_out={$crossfadeDuration})
+                        {$crossfadeMethod}(old, new, fade_in={$crossfadeDuration}, fade_out={$crossfadeDuration})
                     end
                 end
                 

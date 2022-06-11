@@ -286,7 +286,7 @@ return [
         $logger = new Monolog\Logger($environment->getAppName());
         $loggingLevel = $environment->getLogLevel();
 
-        if ($environment->isDocker() || $environment->isCli()) {
+        if ($environment->isCli() || $environment->isDocker()) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
@@ -365,15 +365,18 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        \App\Lock\LockFactory $lockFactory,
+        App\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
         Environment $environment
     ) {
+        $loggingLevel = $environment->getLogLevel();
+        $busLogger = new Psr\Log\NullLogger();
+
         // Configure message sending middleware
         $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
-        $sendMessageMiddleware->setLogger($logger);
+        $sendMessageMiddleware->setLogger($busLogger);
 
         // Configure message handling middleware
         $handlers = [];
@@ -395,7 +398,7 @@ return [
             $handlersLocator,
             true
         );
-        $handleMessageMiddleware->setLogger($logger);
+        $handleMessageMiddleware->setLogger($busLogger);
 
         // Add unique protection middleware
         $uniqueMiddleware = new App\MessageQueue\HandleUniqueMiddleware($lockFactory);

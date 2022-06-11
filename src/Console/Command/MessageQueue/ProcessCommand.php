@@ -12,6 +12,8 @@ use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheMiddleware;
 use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use Psr\Log\NullLogger;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,17 +76,21 @@ class ProcessCommand extends CommandAbstract
                 : 30;
         }
 
-        $this->eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $this->logger));
+        $busLogger = (LogLevel::DEBUG === $this->environment->getLogLevel())
+            ? $this->logger
+            : new NullLogger();
+
+        $this->eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $busLogger));
 
         try {
-            $worker = new Worker($receivers, $this->messageBus, $this->eventDispatcher, $this->logger);
+            $worker = new Worker($receivers, $this->messageBus, $this->eventDispatcher, $busLogger);
             $worker->run();
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('Message queue error: %s', $e->getMessage()),
                 [
                     'workerName' => $workerName,
-                    'exception'  => $e,
+                    'exception' => $e,
                 ]
             );
             return 1;

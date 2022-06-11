@@ -1,6 +1,5 @@
 [global]
-
-error_log = syslog
+error_log = /dev/stderr
 daemonize = no
 
 [www]
@@ -22,7 +21,6 @@ pm.status_path = /status
 pm.process_idle_timeout = 60s
 
 chdir = /
-
 clear_env=No
 catch_workers_output = yes
 decorate_workers_output = no

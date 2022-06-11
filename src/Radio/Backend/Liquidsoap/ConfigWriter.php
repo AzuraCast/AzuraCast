@@ -738,8 +738,14 @@ class ConfigWriter implements EventSubscriberInterface
         $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeMethod = (CrossfadeModes::Smart === $crossfadeType) ? 'cross.smart' : 'cross.simple';
             $crossfadeDuration = self::toFloat($crossfade);
+            if (CrossfadeModes::Smart === $crossfadeType) {
+                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfadeDuration
+                    . ', fade_out=' . $crossfadeDuration . ')';
+            } else {
+                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfadeDuration
+                    . ', fade_out=' . $crossfadeDuration . ')';
+            }
 
             $event->appendBlock(
                 <<<LS
@@ -749,7 +755,7 @@ class ConfigWriter implements EventSubscriberInterface
                         sequence([fade.out(old.source),fade.in(new.source)])
                     else
                         # Otherwise, use the smart transition
-                        {$crossfadeMethod}(old, new, fade_in={$crossfadeDuration}, fade_out={$crossfadeDuration})
+                        {$crossfadeFunc}
                     end
                 end
                 

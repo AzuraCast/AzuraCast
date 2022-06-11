@@ -121,9 +121,5 @@ class Annotations implements EventSubscriberInterface
             $queueRow->setTimestampCued(time());
             $this->em->persist($queueRow);
         }
-
-        // The "get next song" function is only called when a streamer is not live.
-        $this->streamerRepo->onDisconnect($event->getStation());
-        $this->em->flush();
     }
 }

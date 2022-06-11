@@ -6,6 +6,7 @@ namespace App\Entity\ApiGenerator;
 
 use App\Entity;
 use App\Http\Router;
+use App\Radio\Enums\BackendAdapters;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
@@ -47,37 +48,25 @@ class NowPlayingApiGenerator
             unique: $npResult->listeners->unique
         );
 
-        // Pull from current NP data if song details haven't changed .
-        if (
-            $npOld instanceof Entity\Api\NowPlaying\NowPlaying
-            && $this->tracksMatch($npResult->currentSong, $npOld->now_playing?->song->id)
-        ) {
-            $previousHistory = $this->historyRepo->getCurrent($station);
+        $updateSongFromNowPlaying = (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum());
 
-            if (null === $previousHistory) {
-                $previousHistory = ($npOld->now_playing?->song)
-                    ? Entity\Song::createFromApiSong($npOld->now_playing->song)
-                    : Entity\Song::createOffline();
-            }
-
-            $sh_obj = $this->historyRepo->register($previousHistory, $station, $np);
-
-            $np->song_history = $npOld->song_history;
-        } else {
-            // SongHistory registration must ALWAYS come before the history/nextsong calls
-            // otherwise they will not have up-to-date database info!
-            $sh_obj = $this->historyRepo->register(
-                Entity\Song::createFromNowPlayingSong($npResult->currentSong),
+        try {
+            $sh_obj = $this->historyRepo->updateFromNowPlaying(
                 $station,
-                $np
+                $np->listeners->current,
+                ($updateSongFromNowPlaying)
+                    ? Entity\Song::createFromNowPlayingSong($npResult->currentSong)
+                    : null
             );
-
-            $np->song_history = $this->songHistoryApiGenerator->fromArray(
-                $this->historyRepo->getVisibleHistory($station),
-                $baseUri,
-                true
-            );
+        } catch (\Exception) {
+            return $this->offlineApi($station, $baseUri);
         }
+
+        $np->song_history = $this->songHistoryApiGenerator->fromArray(
+            $this->historyRepo->getVisibleHistory($station),
+            $baseUri,
+            true
+        );
 
         $nextVisibleSong = $this->queueRepo->getNextVisible($station);
         if (null === $nextVisibleSong) {

@@ -1009,6 +1009,7 @@ class ConfigWriter implements EventSubscriberInterface
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_title = ref("")
             last_artist = ref("")
+            last_song_id = ref("")
             
             def handle_jingle_mode(m) = 
                 if (m["jingle_mode"] == "true") then
@@ -1024,7 +1025,9 @@ class ConfigWriter implements EventSubscriberInterface
             # Send metadata changes back to AzuraCast
             def metadata_updated(m) =
                 def f() =
-                    if (m["song_id"] != "") then
+                    if (m["song_id"] != "" and m["song_id"] != !last_song_id) then
+                        last_song_id := m["song_id"]
+                        
                         j = json()
                         j.add("song_id", m["song_id"])
                         j.add("media_id", m["media_id"])
@@ -1121,12 +1124,12 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $lsConfig[] = 'hls_streams = [' . implode(
-            ', ',
-            array_map(
-                static fn($row) => '("' . $row . '", ' . $row . ')',
-                $hlsStreams
-            )
-        ) . ']';
+                ', ',
+                array_map(
+                    static fn($row) => '("' . $row . '", ' . $row . ')',
+                    $hlsStreams
+                )
+            ) . ']';
 
         $event->appendLines($lsConfig);
 

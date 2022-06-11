@@ -397,6 +397,12 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
     protected Collection $sftp_users;
 
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(name: 'current_song_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')
+    ]
+    protected ?SongHistory $current_song = null;
+
     public function __construct()
     {
         $this->frontend_type = FrontendAdapters::Icecast->value;
@@ -1114,10 +1120,22 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->sftp_users;
     }
 
+    public function getCurrentSong(): ?SongHistory
+    {
+        return $this->current_song;
+    }
+
+    public function setCurrentSong(?SongHistory $current_song): void
+    {
+        $this->current_song = $current_song;
+    }
+
     public function clearCache(): void
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
+
+        $this->current_song = null;
     }
 
     public function __toString(): string

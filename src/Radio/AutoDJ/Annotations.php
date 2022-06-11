@@ -120,6 +120,7 @@ class Annotations implements EventSubscriberInterface
             $queueRow->setSentToAutodj();
             $queueRow->setTimestampCued(time());
             $this->em->persist($queueRow);
+            $this->em->flush();
         }
     }
 }

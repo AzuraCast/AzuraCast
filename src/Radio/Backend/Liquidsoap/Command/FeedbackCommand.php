@@ -49,6 +49,16 @@ class FeedbackCommand extends AbstractCommand
         Entity\Station $station,
         array $payload
     ): Entity\SongHistory {
+        if ($payload['is_live']) {
+            return new Entity\SongHistory(
+                $station,
+                Entity\Song::createFromArray([
+                    'artist' => $payload['artist'] ?? '',
+                    'title' => $payload['title'] ?? '',
+                ])
+            );
+        }
+
         if (empty($payload['media_id'])) {
             throw new RuntimeException('No payload provided.');
         }

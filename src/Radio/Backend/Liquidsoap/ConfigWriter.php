@@ -868,9 +868,9 @@ class ConfigWriter implements EventSubscriberInterface
             
             def insert_missing(m) =
                 if m == [] then
-                    [("title", "Live Broadcast")]
+                    [("title", "Live Broadcast"), ("is_live", "true")]
                 else
-                    m
+                    [("is_live", "true")]
                 end
             end
             live = map_metadata(insert_missing, live)
@@ -1025,18 +1025,31 @@ class ConfigWriter implements EventSubscriberInterface
             # Send metadata changes back to AzuraCast
             def metadata_updated(m) =
                 def f() =
-                    if (m["song_id"] != "" and m["song_id"] != !last_song_id) then
-                        last_song_id := m["song_id"]
-                        
+                    if (m["is_live"] == "true") then
                         j = json()
-                        j.add("song_id", m["song_id"])
-                        j.add("media_id", m["media_id"])
-                        j.add("playlist_id", m["playlist_id"])
-                    
+                        j.add("is_live", true)
+                        j.add("artist", m["artist"])
+                        j.add("title", m["title"])
+                        
                         _ = azuracast_api_call(
                             "feedback",
                             json.stringify(j)
-                        )
+                        )                                        
+                    else
+                        if (m["song_id"] != "" and m["song_id"] != !last_song_id) then
+                            last_song_id := m["song_id"]
+                            
+                            j = json()
+                            j.add("is_live", false)
+                            j.add("song_id", m["song_id"])
+                            j.add("media_id", m["media_id"])
+                            j.add("playlist_id", m["playlist_id"])
+                        
+                            _ = azuracast_api_call(
+                                "feedback",
+                                json.stringify(j)
+                            )
+                        end
                     end
                 end
                 

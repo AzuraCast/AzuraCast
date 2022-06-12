@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App;
+use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
@@ -59,6 +60,8 @@ use Psr\Http\Message\ResponseInterface;
 ]
 final class HistoryController
 {
+    use AcceptsDateRange;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
@@ -76,14 +79,9 @@ final class HistoryController
         $station = $request->getStation();
         $station_tz = $station->getTimezoneObject();
 
-        $params = $request->getQueryParams();
-        if (!empty($params['start']) && !empty($params['end'])) {
-            $start = CarbonImmutable::parse($params['start'], $station_tz)->setSecond(0);
-            $end = CarbonImmutable::parse($params['end'], $station_tz)->setSecond(59);
-        } else {
-            $start = CarbonImmutable::parse('-2 weeks', $station_tz);
-            $end = CarbonImmutable::now($station_tz);
-        }
+        $dateRange = $this->getDateRange($request, $station_tz);
+        $start = $dateRange->getStart();
+        $end = $dateRange->getEnd();
 
         $qb = $this->em->createQueryBuilder();
 
@@ -99,7 +97,7 @@ final class HistoryController
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $format = $params['format'] ?? 'json';
+        $format = $request->getQueryParam('format', 'json');
 
         if ('csv' === $format) {
             $csvFilename = sprintf(
@@ -117,7 +115,7 @@ final class HistoryController
             );
         }
 
-        $search_phrase = trim($params['searchPhrase'] ?? '');
+        $search_phrase = trim($request->getQueryParam('searchPhrase'));
         if (!empty($search_phrase)) {
             $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

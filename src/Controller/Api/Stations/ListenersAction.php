@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -42,6 +43,8 @@ use Psr\Http\Message\ResponseInterface;
 ]
 final class ListenersAction
 {
+    use AcceptsDateRange;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\ListenerRepository $listenerRepo,
@@ -70,12 +73,12 @@ final class ListenersAction
 
             $listenersIterator = $this->listenerRepo->iterateLiveListenersArray($station);
         } else {
-            $start = CarbonImmutable::parse($queryParams['start'], $stationTz)
-                ->setSecond(0);
+            $dateRange = $this->getDateRange($request, $stationTz);
+
+            $start = $dateRange->getStart();
             $startTimestamp = $start->getTimestamp();
 
-            $end = CarbonImmutable::parse($queryParams['end'] ?? $queryParams['start'], $stationTz)
-                ->setSecond(59);
+            $end = $dateRange->getEnd();
             $endTimestamp = $end->getTimestamp();
 
             $range = $start->format('Y-m-d_H-i-s') . '_to_' . $end->format('Y-m-d_H-i-s');

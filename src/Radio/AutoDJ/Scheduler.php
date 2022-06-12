@@ -8,6 +8,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
+use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\Collection;
@@ -276,23 +277,42 @@ class Scheduler
             return false;
         }
 
+        /** @var DateRange[] $comparePeriods */
         $comparePeriods = [];
 
         if ($startTime->equalTo($endTime)) {
             // Create intervals for "play once" type dates.
-            $comparePeriods[] = [$startTime, $endTime->addMinutes(15)];
-            $comparePeriods[] = [$startTime->subDay(), $endTime->subDay()->addMinutes(15)];
-            $comparePeriods[] = [$startTime->addDay(), $endTime->addDay()->addMinutes(15)];
+            $comparePeriods[] = new DateRange(
+                $startTime,
+                $endTime->addMinutes(15)
+            );
+            $comparePeriods[] = new DateRange(
+                $startTime->subDay(),
+                $endTime->subDay()->addMinutes(15)
+            );
+            $comparePeriods[] = new DateRange(
+                $startTime->addDay(),
+                $endTime->addDay()->addMinutes(15)
+            );
         } elseif ($startTime->greaterThan($endTime)) {
             // Create intervals for overnight playlists (one from yesterday to today, one from today to tomorrow).
-            $comparePeriods[] = [$startTime->subDay(), $endTime];
-            $comparePeriods[] = [$startTime, $endTime->addDay()];
+            $comparePeriods[] = new DateRange(
+                $startTime->subDay(),
+                $endTime
+            );
+            $comparePeriods[] = new DateRange(
+                $startTime,
+                $endTime->addDay()
+            );
         } else {
-            $comparePeriods[] = [$startTime, $endTime];
+            $comparePeriods[] = new DateRange(
+                $startTime,
+                $endTime
+            );
         }
 
-        foreach ($comparePeriods as [$start, $end]) {
-            if ($this->shouldPlayInSchedulePeriod($schedule, $start, $end, $now)) {
+        foreach ($comparePeriods as $dateRange) {
+            if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now)) {
                 return true;
             }
         }
@@ -302,16 +322,15 @@ class Scheduler
 
     protected function shouldPlayInSchedulePeriod(
         Entity\StationSchedule $schedule,
-        CarbonInterface $start,
-        CarbonInterface $end,
+        DateRange $dateRange,
         CarbonInterface $now
     ): bool {
-        if (!$now->between($start, $end)) {
+        if (!$dateRange->contains($now)) {
             return false;
         }
 
         // Check day-of-week limitations.
-        $dayToCheck = $start->dayOfWeekIso;
+        $dayToCheck = $dateRange->getStart()->dayOfWeekIso;
         if (!$this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
             return false;
         }
@@ -325,7 +344,7 @@ class Scheduler
         // Handle "Play Single Track" advanced setting.
         if (
             $playlist->backendPlaySingleTrack()
-            && $playlist->getPlayedAt() >= $start->getTimestamp()
+            && $playlist->getPlayedAt() >= $dateRange->getStartTimestamp()
         ) {
             return false;
         }
@@ -333,7 +352,7 @@ class Scheduler
         // Handle "Loop Once" schedule specification.
         if (
             $schedule->getLoopOnce()
-            && !$this->shouldPlaylistLoopNow($schedule, $now, $start, $end)
+            && !$this->shouldPlaylistLoopNow($schedule, $dateRange, $now)
         ) {
             return false;
         }
@@ -343,9 +362,8 @@ class Scheduler
 
     protected function shouldPlaylistLoopNow(
         Entity\StationSchedule $schedule,
+        DateRange $dateRange,
         CarbonInterface $now,
-        CarbonInterface $startTime,
-        CarbonInterface $endTime
     ): bool {
         $this->logger->debug('Checking if playlist should loop now.');
 
@@ -364,13 +382,13 @@ class Scheduler
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
         $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
 
-        if (!$playlistPlayedAt->between($startTime, $endTime)) {
+        if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
 
             $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
-                $now = $startTime->subSecond();
+                $now = $dateRange->getStart()->subSecond();
 
                 $this->logger->debug('Resetting playlist queue with now override', [$now]);
 
@@ -391,14 +409,12 @@ class Scheduler
             $now->getTimezone()
         );
 
-        if (!$isQueueEmpty && !$playlistQueueResetAt->between($startTime, $endTime)) {
+        if (!$isQueueEmpty && !$dateRange->contains($playlistQueueResetAt)) {
             $this->logger->debug('Playlist should loop.');
-
             return true;
         }
 
         $this->logger->debug('Playlist should NOT loop.');
-
         return false;
     }
 

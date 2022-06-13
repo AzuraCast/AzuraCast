@@ -115,7 +115,7 @@ final class HistoryController
             );
         }
 
-        $search_phrase = trim($request->getQueryParam('searchPhrase'));
+        $search_phrase = trim($request->getQueryParam('searchPhrase') ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

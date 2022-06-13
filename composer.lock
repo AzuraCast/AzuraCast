@@ -208,12 +208,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/doctrine-entity-normalizer.git",
-                "reference": "f322c2247b8032dfae92dd50b206788b060b57bc"
+                "reference": "4cfa9d03f049e38991bb2dddaf291c2a6390bf22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/f322c2247b8032dfae92dd50b206788b060b57bc",
-                "reference": "f322c2247b8032dfae92dd50b206788b060b57bc",
+                "url": "https://api.github.com/repos/AzuraCast/doctrine-entity-normalizer/zipball/4cfa9d03f049e38991bb2dddaf291c2a6390bf22",
+                "reference": "4cfa9d03f049e38991bb2dddaf291c2a6390bf22",
                 "shasum": ""
             },
             "require": {
@@ -259,7 +259,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-04-20T09:10:41+00:00"
+            "time": "2022-06-12T14:29:46+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",

@@ -508,9 +508,14 @@ return static function (RouteCollectorProxy $group) {
                     )->setName('api:stations:reports:best-and-worst');
 
                     $group->get(
-                        '/overview/most-played',
-                        Controller\Api\Stations\Reports\Overview\MostPlayedAction::class
-                    )->setName('api:stations:reports:most-played');
+                        '/overview/by-browser',
+                        Controller\Api\Stations\Reports\Overview\ByBrowser::class
+                    )->setName('api:stations:reports:by-browser');
+
+                    $group->get(
+                        '/overview/by-country',
+                        Controller\Api\Stations\Reports\Overview\ByCountry::class
+                    )->setName('api:stations:reports:by-country');
 
                     $group->get(
                         '/soundexchange',

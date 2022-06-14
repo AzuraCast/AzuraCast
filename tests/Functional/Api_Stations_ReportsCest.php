@@ -21,15 +21,15 @@ class Api_Stations_ReportsCest extends CestAbstract
         $uriBase = '/api/station/' . $station->getId();
 
         $I->sendGet($uriBase . '/reports/overview/charts');
-
         $I->seeResponseCodeIs(200);
 
         $I->sendGet($uriBase . '/reports/overview/best-and-worst');
-
         $I->seeResponseCodeIs(200);
 
-        $I->sendGet($uriBase . '/reports/overview/most-played');
+        $I->sendGet($uriBase . '/reports/overview/by-browser');
+        $I->seeResponseCodeIs(200);
 
+        $I->sendGet($uriBase . '/reports/overview/by-country');
         $I->seeResponseCodeIs(200);
     }
 

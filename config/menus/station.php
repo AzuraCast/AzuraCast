@@ -172,7 +172,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'permission' => StationPermissions::Reports,
                 'items' => [
                     'reports_overview' => [
-                        'label' => __('Statistics Overview'),
+                        'label' => __('Station Statistics'),
                         'url' => (string)$router->fromHere('stations:reports:overview'),
                     ],
                     'reports_listeners' => [

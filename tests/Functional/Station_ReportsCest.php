@@ -18,7 +18,7 @@ class Station_ReportsCest extends CestAbstract
         $I->amOnPAge('/station/' . $station_id . '/reports/overview');
 
         $I->seeResponseCodeIs(200);
-        $I->see('Statistics Overview');
+        $I->see('Station Statistics');
 
         $I->amOnPage('/station/' . $station_id . '/reports/timeline');
 

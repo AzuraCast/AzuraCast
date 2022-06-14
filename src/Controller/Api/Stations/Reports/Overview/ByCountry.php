@@ -30,9 +30,9 @@ final class ByCountry extends AbstractReportAction
 
         $statsRaw = $this->em->getConnection()->fetchAllAssociative(
             <<<'SQL'
-                SELECT DISTINCT l.location_country AS country_code, 
-                                COUNT(l.listener_hash) AS listeners, 
-                                SUM(l.connected_seconds) AS connected_seconds
+                SELECT l.location_country AS country_code, 
+                       COUNT(l.listener_hash) AS listeners,
+                       SUM(l.connected_seconds) AS connected_seconds
                 FROM (
                     SELECT location_country, SUM(timestamp_end - timestamp_start) AS connected_seconds, listener_hash
                     FROM listener
@@ -42,6 +42,7 @@ final class ByCountry extends AbstractReportAction
                     AND timestamp_start <= :end
                     GROUP BY listener_hash
                 ) AS l
+                GROUP BY l.location_country
             SQL,
             [
                 'station_id' => $station->getIdRequired(),

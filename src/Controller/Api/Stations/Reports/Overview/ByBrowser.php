@@ -29,9 +29,9 @@ final class ByBrowser extends AbstractReportAction
 
         $stats = $this->em->getConnection()->fetchAllAssociative(
             <<<'SQL'
-                SELECT DISTINCT l.device_browser_family AS browser, 
-                                COUNT(l.listener_hash) AS listeners, 
-                                SUM(l.connected_seconds) AS connected_seconds
+                SELECT device_browser_family AS browser, 
+                       COUNT(l.listener_hash) AS listeners, 
+                       SUM(l.connected_seconds) AS connected_seconds
                 FROM (
                     SELECT device_browser_family, 
                            SUM(timestamp_end - timestamp_start) AS connected_seconds, 
@@ -44,6 +44,7 @@ final class ByBrowser extends AbstractReportAction
                     AND device_is_browser = 1
                     GROUP BY listener_hash
                 ) AS l
+                GROUP BY l.device_browser_family
             SQL,
             [
                 'station_id' => $station->getIdRequired(),

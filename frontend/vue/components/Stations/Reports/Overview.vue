@@ -30,6 +30,15 @@
                 </listeners-by-time-period-tab>
             </b-tab>
 
+            <b-tab>
+                <template #title>
+                    <translate key="tab_streams">Streams</translate>
+                </template>
+
+                <streams-tab :api-url="byStreamUrl" :date-range="dateRange">
+                </streams-tab>
+            </b-tab>
+
             <b-tab v-if="showFullAnalytics">
                 <template #title>
                     <translate key="tab_browsers">Browsers</translate>
@@ -58,9 +67,11 @@ import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab";
 import BestAndWorstTab from "./Overview/BestAndWorstTab";
 import BrowsersTab from "./Overview/BrowsersTab";
 import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab";
+import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab";
 
 export default {
     components: {
+        StreamsTab,
         CountriesTab,
         BrowsersTab,
         BestAndWorstTab,
@@ -72,6 +83,7 @@ export default {
         showFullAnalytics: Boolean,
         listenersByTimePeriodUrl: String,
         bestAndWorstUrl: String,
+        byStreamUrl: String,
         byBrowserUrl: String,
         byCountryUrl: String,
     },

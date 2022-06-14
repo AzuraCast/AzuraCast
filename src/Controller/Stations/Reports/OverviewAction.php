@@ -42,6 +42,7 @@ final class OverviewAction
                 'showFullAnalytics' => Entity\Enums\AnalyticsLevel::All === $analyticsLevel,
                 'listenersByTimePeriodUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
                 'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),
+                'byStreamUrl' => (string)$router->fromHere('api:stations:reports:by-stream'),
                 'byBrowserUrl' => (string)$router->fromHere('api:stations:reports:by-browser'),
                 'byCountryUrl' => (string)$router->fromHere('api:stations:reports:by-country'),
             ]

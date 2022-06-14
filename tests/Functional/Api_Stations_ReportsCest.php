@@ -26,6 +26,9 @@ class Api_Stations_ReportsCest extends CestAbstract
         $I->sendGet($uriBase . '/reports/overview/best-and-worst');
         $I->seeResponseCodeIs(200);
 
+        $I->sendGet($uriBase . '/reports/overview/by-stream');
+        $I->seeResponseCodeIs(200);
+
         $I->sendGet($uriBase . '/reports/overview/by-browser');
         $I->seeResponseCodeIs(200);
 

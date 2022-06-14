@@ -1,49 +1,47 @@
 <template>
-    <b-tab :title="langTitle">
-        <b-overlay variant="card" :show="loading">
-            <div class="card-body py-5" v-if="loading">
-                &nbsp;
+    <b-overlay variant="card" :show="loading">
+        <div class="card-body py-5" v-if="loading">
+            &nbsp;
+        </div>
+        <div v-else>
+            <div class="card-body">
+                <b-row>
+                    <b-col md="6" class="mb-4">
+                        <fieldset>
+                            <legend>
+                                <translate key="hdr_top_by_listeners">Top Countries by Listeners</translate>
+                            </legend>
+
+                            <pie-chart style="width: 100%;" :data="top_listeners.datasets"
+                                       :labels="top_listeners.labels">
+                                <span v-html="top_listeners.alt"></span>
+                            </pie-chart>
+                        </fieldset>
+                    </b-col>
+                    <b-col md="6" class="mb-4">
+                        <fieldset>
+                            <legend>
+                                <translate
+                                    key="hdr_top_by_connected_seconds">Top Countries by Connected Time</translate>
+                            </legend>
+
+                            <pie-chart style="width: 100%;" :data="top_connected_time.datasets"
+                                       :labels="top_connected_time.labels">
+                                <span v-html="top_connected_time.alt"></span>
+                            </pie-chart>
+                        </fieldset>
+                    </b-col>
+                </b-row>
             </div>
-            <div v-else>
-                <div class="card-body">
-                    <b-row>
-                        <b-col md="6" class="mb-4">
-                            <fieldset>
-                                <legend>
-                                    <translate key="hdr_top_by_listeners">Top Countries by Listeners</translate>
-                                </legend>
 
-                                <pie-chart style="width: 100%;" :data="top_listeners.datasets"
-                                           :labels="top_listeners.labels">
-                                    <span v-html="top_listeners.alt"></span>
-                                </pie-chart>
-                            </fieldset>
-                        </b-col>
-                        <b-col md="6" class="mb-4">
-                            <fieldset>
-                                <legend>
-                                    <translate
-                                        key="hdr_top_by_connected_seconds">Top Countries by Connected Time</translate>
-                                </legend>
-
-                                <pie-chart style="width: 100%;" :data="top_connected_time.datasets"
-                                           :labels="top_connected_time.labels">
-                                    <span v-html="top_connected_time.alt"></span>
-                                </pie-chart>
-                            </fieldset>
-                        </b-col>
-                    </b-row>
-                </div>
-
-                <data-table ref="datatable" id="browsers_table" paginated handle-client-side
-                            :fields="fields" :responsive="false" :items="all">
-                    <template #cell(connected_seconds_calc)="row">
-                        {{ formatTime(row.item.connected_seconds) }}
-                    </template>
-                </data-table>
-            </div>
-        </b-overlay>
-    </b-tab>
+            <data-table ref="datatable" id="browsers_table" paginated handle-client-side
+                        :fields="fields" :responsive="false" :items="all">
+                <template #cell(connected_seconds_calc)="row">
+                    {{ formatTime(row.item.connected_seconds) }}
+                </template>
+            </data-table>
+        </div>
+    </b-overlay>
 </template>
 
 <script>
@@ -51,10 +49,12 @@ import {DateTime} from "luxon";
 import PieChart from "~/components/Common/PieChart";
 import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
+import IsMounted from "~/components/Common/IsMounted";
 
 export default {
     name: 'CountriesTab',
     components: {DataTable, PieChart},
+    mixins: [IsMounted],
     props: {
         dateRange: Object,
         apiUrl: String,
@@ -83,12 +83,9 @@ export default {
     },
     watch: {
         dateRange() {
-            this.relist();
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Countries');
+            if (this.isMounted) {
+                this.relist();
+            }
         }
     },
     mounted() {

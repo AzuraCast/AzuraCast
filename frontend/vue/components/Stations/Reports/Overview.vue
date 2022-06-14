@@ -12,17 +12,41 @@
         </div>
 
         <b-tabs pills lazy nav-class="card-header-pills" nav-wrapper-class="card-header">
-            <best-and-worst-tab :api-url="bestAndWorstUrl" :date-range="dateRange">
-            </best-and-worst-tab>
+            <b-tab>
+                <template #title>
+                    <translate key="tab_best_and_worst">Best & Worst</translate>
+                </template>
 
-            <listeners-by-time-period-tab :api-url="listenersByTimePeriodUrl" :date-range="dateRange">
-            </listeners-by-time-period-tab>
+                <best-and-worst-tab :api-url="bestAndWorstUrl" :date-range="dateRange">
+                </best-and-worst-tab>
+            </b-tab>
 
-            <browsers-tab v-if="showFullAnalytics" :api-url="byBrowserUrl" :date-range="dateRange">
-            </browsers-tab>
+            <b-tab>
+                <template #title>
+                    <translate key="tab_by_time_period">Listeners By Time Period</translate>
+                </template>
 
-            <countries-tab v-if="showFullAnalytics" :api-url="byCountryUrl" :date-range="dateRange">
-            </countries-tab>
+                <listeners-by-time-period-tab :api-url="listenersByTimePeriodUrl" :date-range="dateRange">
+                </listeners-by-time-period-tab>
+            </b-tab>
+
+            <b-tab v-if="showFullAnalytics">
+                <template #title>
+                    <translate key="tab_browsers">Browsers</translate>
+                </template>
+
+                <browsers-tab :api-url="byBrowserUrl" :date-range="dateRange">
+                </browsers-tab>
+            </b-tab>
+
+            <b-tab v-if="showFullAnalytics">
+                <template #title>
+                    <translate key="tab_countries">Countries</translate>
+                </template>
+
+                <countries-tab :api-url="byCountryUrl" :date-range="dateRange">
+                </countries-tab>
+            </b-tab>
         </b-tabs>
     </section>
 </template>

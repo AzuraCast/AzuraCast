@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </div>
-                <b-tabs pills card lazy>
+                <b-tabs pills card>
                     <b-tab key="live" active @click="setIsLive(true)" :title="langLiveListeners" no-body></b-tab>
                     <b-tab key="not-live" @click="setIsLive(false)" :title="langListenerHistory" no-body></b-tab>
                 </b-tabs>

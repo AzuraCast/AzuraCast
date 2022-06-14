@@ -1,11 +1,12 @@
 <template>
-    <b-tab :title="langTitle" lazy>
+    <div>
         <p>
             <translate key="lang_waveform_editor_desc">Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.</translate>
         </p>
 
         <b-form-group>
-            <waveform ref="waveform" :audio-url="audioUrl" :waveform-url="waveformUrl" @ready="updateRegions"></waveform>
+            <waveform ref="waveform" :audio-url="audioUrl" :waveform-url="waveformUrl"
+                      @ready="updateRegions"></waveform>
         </b-form-group>
         <b-form-group>
             <b-button-group>
@@ -42,7 +43,7 @@
                 </b-button>
             </b-button-group>
         </b-form-group>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -57,33 +58,28 @@ export default {
         audioUrl: String,
         waveformUrl: String
     },
-    computed: {
-        langTitle () {
-            return this.$gettext('Visual Cue Editor');
-        }
-    },
     methods: {
-        playAudio () {
+        playAudio() {
             this.$refs.waveform.play();
         },
-        stopAudio () {
+        stopAudio() {
             this.$refs.waveform.stop();
         },
-        setCueIn () {
+        setCueIn() {
             let currentTime = this.$refs.waveform.getCurrentTime();
 
             this.form.cue_in = Math.round((currentTime) * 10) / 10;
 
             this.updateRegions();
         },
-        setCueOut () {
+        setCueOut() {
             let currentTime = this.$refs.waveform.getCurrentTime();
 
             this.form.cue_out = Math.round((currentTime) * 10) / 10;
 
             this.updateRegions();
         },
-        setFadeOverlap () {
+        setFadeOverlap() {
             let duration = this.$refs.waveform.getDuration();
             let cue_out = this.form.cue_out || duration;
             let currentTime = this.$refs.waveform.getCurrentTime();
@@ -92,7 +88,7 @@ export default {
 
             this.updateRegions();
         },
-        setFadeIn () {
+        setFadeIn() {
             let currentTime = this.$refs.waveform.getCurrentTime();
             let cue_in = this.form.cue_in || 0;
 
@@ -100,7 +96,7 @@ export default {
 
             this.updateRegions();
         },
-        setFadeOut () {
+        setFadeOut() {
             let currentTime = this.$refs.waveform.getCurrentTime();
             let duration = this.$refs.waveform.getDuration();
             let cue_out = this.form.cue_out || duration;
@@ -109,7 +105,7 @@ export default {
 
             this.updateRegions();
         },
-        updateRegions () {
+        updateRegions() {
             let duration = this.$refs.waveform.getDuration();
 
             let cue_in = this.form.cue_in || 0;

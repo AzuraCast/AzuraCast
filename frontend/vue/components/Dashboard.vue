@@ -23,7 +23,8 @@
             </div>
 
             <template v-if="!notificationsLoading && notifications.length > 0">
-                <div v-for="notification in notifications" class="card-body d-flex align-items-center" :class="'alert-'+notification.type" role="alert">
+                <div v-for="notification in notifications" class="card-body d-flex align-items-center"
+                     :class="'alert-'+notification.type" role="alert">
                     <div class="flex-shrink-0 mr-3" v-if="'info' === notification.type">
                         <icon class="lg" icon="info"></icon>
                     </div>
@@ -51,7 +52,10 @@
                     </h3>
                 </div>
                 <div class="flex-shrink-0">
-                    <b-button variant="outline-light" size="sm" class="py-2" @click="toggleCharts">{{ langShowHideCharts }}</b-button>
+                    <b-button variant="outline-light" size="sm" class="py-2" @click="toggleCharts">{{
+                            langShowHideCharts
+                        }}
+                    </b-button>
                 </div>
             </div>
             <b-collapse id="charts" v-model="chartsVisible">
@@ -60,12 +64,20 @@
                         &nbsp;
                     </div>
                     <b-tabs pills card lazy v-else>
-                        <b-tab :title="langAverageListenersTab" active>
+                        <b-tab active>
+                            <template #title>
+                                <translate key="tab_average_listeners">Average Listeners</translate>
+                            </template>
+
                             <time-series-chart style="width: 100%;" :data="chartsData.average.metrics">
                                 <span v-html="chartsData.average.alt"></span>
                             </time-series-chart>
                         </b-tab>
-                        <b-tab :title="langUniqueListenersTab">
+                        <b-tab>
+                            <template #title>
+                                <translate key="tab_unique_listeners">Unique Listeners</translate>
+                            </template>
+
                             <time-series-chart style="width: 100%;" :data="chartsData.unique.metrics">
                                 <span v-html="chartsData.unique.alt"></span>
                             </time-series-chart>
@@ -196,7 +208,7 @@ export default {
         stationsUrl: String,
         showAlbumArt: Boolean
     },
-    data () {
+    data() {
         return {
             userLoading: true,
             user: {
@@ -227,20 +239,14 @@ export default {
         };
     },
     computed: {
-        langAverageListenersTab () {
-            return this.$gettext('Average Listeners');
-        },
-        langUniqueListenersTab () {
-            return this.$gettext('Unique Listeners');
-        },
-        langShowHideCharts () {
+        langShowHideCharts() {
             if (this.chartsVisible) {
                 return this.$gettext('Hide Charts');
             }
             return this.$gettext('Show Charts');
         }
     },
-    created () {
+    created() {
         if (store.enabled) {
             this.chartsVisible = store.get('dashboard_show_chart', true);
         } else {
@@ -275,14 +281,14 @@ export default {
         this.updateNowPlaying();
     },
     methods: {
-        toggleCharts () {
+        toggleCharts() {
             this.chartsVisible = !this.chartsVisible;
 
             if (store.enabled) {
                 store.set('dashboard_show_chart', this.chartsVisible);
             }
         },
-        updateNowPlaying () {
+        updateNowPlaying() {
             this.axios.get(this.stationsUrl).then((response) => {
                 this.stationsLoading = false;
                 this.stations = response.data;

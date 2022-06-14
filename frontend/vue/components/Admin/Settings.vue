@@ -17,14 +17,32 @@
 
             <b-overlay variant="card" :show="loading">
                 <b-tabs card lazy justified>
-                    <settings-general-tab :form="$v.form"
-                                          :tab-class="getTabClass($v.generalTab)"></settings-general-tab>
-                    <settings-security-privacy-tab :form="$v.form"
-                                                   :tab-class="getTabClass($v.securityPrivacyTab)"></settings-security-privacy-tab>
-                    <settings-services-tab :form="$v.form" :tab-class="getTabClass($v.servicesTab)"
-                                           :release-channel="releaseChannel"
-                                           :test-message-url="testMessageUrl"
-                                           :acme-url="acmeUrl"></settings-services-tab>
+                    <b-tab :title-link-class="getTabClass($v.generalTab)">
+                        <template #title>
+                            <translate key="tab_general">Settings</translate>
+                        </template>
+
+                        <settings-general-tab :form="$v.form"></settings-general-tab>
+                    </b-tab>
+
+                    <b-tab :title-link-class="getTabClass($v.securityPrivacyTab)">
+                        <template #title>
+                            <translate key="tab_security_privacy">Security & Privacy</translate>
+                        </template>
+
+                        <settings-security-privacy-tab :form="$v.form"></settings-security-privacy-tab>
+                    </b-tab>
+
+                    <b-tab :title-link-class="getTabClass($v.servicesTab)">
+                        <template #title>
+                            <translate key="tab_services">Services</translate>
+                        </template>
+
+                        <settings-services-tab :form="$v.form"
+                                               :release-channel="releaseChannel"
+                                               :test-message-url="testMessageUrl"
+                                               :acme-url="acmeUrl"></settings-services-tab>
+                    </b-tab>
                 </b-tabs>
             </b-overlay>
 

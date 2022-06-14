@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="title">
+    <div>
         <b-form-group>
             <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_config_bot_token" :field="form.config.bot_token">
@@ -62,7 +62,7 @@
                 </b-wrapped-form-group>
             </b-form-row>
         </b-form-group>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -73,7 +73,6 @@ export default {
     name: 'Telegram',
     components: {CommonFormattingInfo, BWrappedFormGroup},
     props: {
-        title: String,
         form: Object
     },
     computed: {

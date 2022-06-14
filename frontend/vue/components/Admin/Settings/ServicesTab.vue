@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+    <div>
         <b-form-fieldset>
             <template #label>
                 <translate key="lang_section_update_checks">AzuraCast Update Checks</translate>
@@ -223,7 +223,7 @@
         <streaming-log-modal ref="acmeModal"></streaming-log-modal>
 
         <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -248,15 +248,11 @@ export default {
     },
     props: {
         form: Object,
-        tabClass: {},
         releaseChannel: String,
         testMessageUrl: String,
         acmeUrl: String,
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Services');
-        },
         langReleaseChannel() {
             return (this.releaseChannel === 'stable')
                 ? this.$gettext('Stable')

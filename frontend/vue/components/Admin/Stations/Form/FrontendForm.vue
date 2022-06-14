@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+    <div>
         <b-form-fieldset>
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
@@ -171,7 +171,7 @@
                 </b-form-row>
             </b-form-fieldset>
         </b-form-fieldset>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -185,7 +185,6 @@ export default {
     components: {BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
-        tabClass: {},
         isShoutcastInstalled: {
             type: Boolean,
             default: false
@@ -197,9 +196,6 @@ export default {
         },
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Broadcasting');
-        },
         frontendTypeOptions() {
             let frontendOptions = [
                 {

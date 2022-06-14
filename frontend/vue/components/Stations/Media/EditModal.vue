@@ -3,16 +3,53 @@
                 @submit="doEdit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3">
-            <media-form-basic-info :form="$v.form"></media-form-basic-info>
-            <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
-            <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
-            <media-form-custom-fields v-if="customFields.length > 0" :form="$v.form"
-                                      :custom-fields="customFields"></media-form-custom-fields>
-            <media-form-waveform-editor :form="form" :audio-url="audioUrl"
-                                        :waveform-url="waveformUrl"></media-form-waveform-editor>
-            <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
-        </b-tabs>
+            <b-tab active>
+                <template #title>
+                    <translate key="tab_basic_info">Basic Information</translate>
+                </template>
 
+                <media-form-basic-info :form="$v.form"></media-form-basic-info>
+            </b-tab>
+            <b-tab>
+                <template #title>
+                    <translate key="tab_playlists">Playlists</translate>
+                </template>
+
+                <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
+            </b-tab>
+            <b-tab lazy>
+                <template #title>
+                    <translate key="tab_album_art">Album Art</translate>
+                </template>
+
+                <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
+            </b-tab>
+
+            <b-tab v-if="customFields.length > 0">
+                <template #title>
+                    <translate key="tab_custom_fields">Custom Fields</translate>
+                </template>
+
+                <media-form-custom-fields :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
+            </b-tab>
+
+            <b-tab lazy>
+                <template #title>
+                    <translate key="tab_waveform_editor">Visual Cue Editor</translate>
+                </template>
+
+                <media-form-waveform-editor :form="form" :audio-url="audioUrl"
+                                            :waveform-url="waveformUrl"></media-form-waveform-editor>
+            </b-tab>
+
+            <b-tab>
+                <template #title>
+                    <translate key="tab_advanced">Advanced</translate>
+                </template>
+
+                <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
+            </b-tab>
+        </b-tabs>
     </modal-form>
 </template>
 <script>
@@ -43,7 +80,7 @@ export default {
         customFields: Array,
         playlists: Array
     },
-    data () {
+    data() {
         return {
             loading: true,
             recordUrl: null,
@@ -55,7 +92,7 @@ export default {
             form: {}
         };
     },
-    validations () {
+    validations() {
         let validations = {
             form: {
                 path: {
@@ -86,7 +123,7 @@ export default {
         return validations;
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Edit Media');
         }
     },
@@ -123,7 +160,7 @@ export default {
                 custom_fields: customFields
             };
         },
-        open (recordUrl, albumArtUrl, audioUrl, waveformUrl) {
+        open(recordUrl, albumArtUrl, audioUrl, waveformUrl) {
             this.resetForm();
 
             this.loading = true;

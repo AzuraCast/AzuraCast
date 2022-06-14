@@ -4,20 +4,47 @@
 
         <b-form class="form vue-form" @submit.prevent="submit">
             <b-tabs :card="!isModal" lazy justified :content-class="tabContentClass">
-                <admin-stations-profile-form :form="$v.form" :tab-class="getTabClass($v.profileTab)"
-                                             :timezones="timezones"
-                                             :show-advanced="showAdvanced"></admin-stations-profile-form>
-                <admin-stations-frontend-form :form="$v.form" :tab-class="getTabClass($v.frontendTab)"
-                                              :is-shoutcast-installed="isShoutcastInstalled"
-                                              :countries="countries"
-                                              :show-advanced="showAdvanced"></admin-stations-frontend-form>
-                <admin-stations-backend-form :form="$v.form" :station="station" :tab-class="getTabClass($v.backendTab)"
-                                             :is-stereo-tool-installed="isStereoToolInstalled"
-                                             :show-advanced="showAdvanced"></admin-stations-backend-form>
-                <admin-stations-admin-form v-if="showAdminTab" :tab-class="getTabClass($v.adminTab)" :form="$v.form"
-                                           :is-edit-mode="isEditMode" :storage-location-api-url="storageLocationApiUrl"
-                                           :show-advanced="showAdvanced">
-                </admin-stations-admin-form>
+                <b-tab :title-link-class="getTabClass($v.profileTab)" active>
+                    <template #title>
+                        <translate key="tab_profile">Profile</translate>
+                    </template>
+
+                    <admin-stations-profile-form :form="$v.form" :timezones="timezones"
+                                                 :show-advanced="showAdvanced"></admin-stations-profile-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass($v.frontendTab)">
+                    <template #title>
+                        <translate key="tab_frontend">Broadcasting</translate>
+                    </template>
+
+                    <admin-stations-frontend-form :form="$v.form"
+                                                  :is-shoutcast-installed="isShoutcastInstalled"
+                                                  :countries="countries"
+                                                  :show-advanced="showAdvanced"></admin-stations-frontend-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass($v.backendTab)">
+                    <template #title>
+                        <translate key="tab_backend">AutoDJ</translate>
+                    </template>
+
+                    <admin-stations-backend-form :form="$v.form" :station="station"
+                                                 :is-stereo-tool-installed="isStereoToolInstalled"
+                                                 :show-advanced="showAdvanced"></admin-stations-backend-form>
+                </b-tab>
+
+                <b-tab v-if="showAdminTab" :title-link-class="getTabClass($v.adminTab)">
+                    <template #title>
+                        <translate key="tab_admin">Administration</translate>
+                    </template>
+
+                    <admin-stations-admin-form :form="$v.form"
+                                               :is-edit-mode="isEditMode"
+                                               :storage-location-api-url="storageLocationApiUrl"
+                                               :show-advanced="showAdvanced">
+                    </admin-stations-admin-form>
+                </b-tab>
             </b-tabs>
 
             <slot name="submitButton">

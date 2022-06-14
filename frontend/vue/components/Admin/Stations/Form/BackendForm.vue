@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+    <div>
         <b-form-fieldset>
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
@@ -420,7 +420,7 @@
                 </b-form-row>
             </b-form-fieldset>
         </b-form-fieldset>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -442,7 +442,6 @@ export default {
     props: {
         form: Object,
         station: Object,
-        tabClass: {},
         isStereoToolInstalled: {
             type: Boolean,
             default: true
@@ -453,9 +452,6 @@ export default {
         },
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('AutoDJ');
-        },
         backendTypeOptions() {
             return [
                 {

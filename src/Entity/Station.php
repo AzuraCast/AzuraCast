@@ -921,7 +921,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->default_album_art_url);
+        return Urls::tryParseUserUrl(
+            $this->default_album_art_url,
+            'Station ' . $this->__toString() . ' Default Album Art URL'
+        );
     }
 
     /**

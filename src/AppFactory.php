@@ -10,9 +10,9 @@ use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use DI;
 use Monolog\ErrorHandler;
+use Monolog\Logger;
 use Monolog\Registry;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\Strategies\RequestResponseNamedArgs;
@@ -102,7 +102,7 @@ class AppFactory
         $di = $containerBuilder->build();
 
         // Monolog setup
-        $logger = $di->get(LoggerInterface::class);
+        $logger = $di->get(Logger::class);
         $errorHandler = new ErrorHandler($logger);
         $errorHandler->registerFatalHandler();
 

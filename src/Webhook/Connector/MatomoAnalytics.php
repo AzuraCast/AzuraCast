@@ -7,10 +7,10 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use App\Http\RouterInterface;
 use App\Radio\Adapters;
+use App\Utilities\Urls;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
-use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 
@@ -67,7 +67,11 @@ class MatomoAnalytics extends AbstractConnector
         }
 
         // Build Matomo URI
-        $apiUrl = (new Uri($config['matomo_url']))->withPath('/matomo.php');
+        $apiUrl = Urls::parseUserUrl(
+            $config['matomo_url'],
+            'Matomo Analytics URL',
+        )->withPath('/matomo.php');
+
         $apiToken = $config['token'] ?? null;
 
         $stationName = $station->getName();

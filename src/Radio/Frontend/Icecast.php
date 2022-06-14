@@ -109,10 +109,8 @@ class Icecast extends AbstractFrontend
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
 
-        $settings = $this->settingsRepo->readSettings();
-
-        $settingsBaseUrl = $settings->getBaseUrl() ?: '';
-        $baseUrl = Utilities\Urls::getUri($settingsBaseUrl) ?? new Uri('http://localhost');
+        $settingsBaseUrl = $this->settingsRepo->readSettings()->getBaseUrlAsUri();
+        $baseUrl = $settingsBaseUrl ?? new Uri('http://localhost');
 
         [$certPath, $certKey] = Acme::getCertificatePaths();
 

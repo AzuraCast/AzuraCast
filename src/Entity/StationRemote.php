@@ -11,7 +11,6 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
-use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Stringable;
@@ -297,17 +296,24 @@ class StationRemote implements
 
     public function getUrlAsUri(): UriInterface
     {
-        return new Uri($this->url);
+        return Utilities\Urls::parseUserUrl(
+            $this->url,
+            'Remote Relay ' . $this->__toString() . ' URL'
+        );
     }
 
     public function setUrl(string $url): void
     {
-        if (!empty($url) && !str_starts_with($url, 'http')) {
-            /** @noinspection HttpUrlsUsage */
-            $url = 'http://' . $url;
-        }
+        if (empty($url)) {
+            $this->url = '';
+        } else {
+            $uri = Utilities\Urls::parseUserUrl(
+                $url,
+                'Remote Relay URL'
+            );
 
-        $this->url = $this->truncateString($url);
+            $this->url = $this->truncateString((string)$uri);
+        }
     }
 
     /*

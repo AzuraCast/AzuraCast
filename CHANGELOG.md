@@ -5,6 +5,17 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Statistics Overhaul**: We've improved and expanded the reporting tools available to stations. The following reports
+  are now available under a unified "Station Statistics" page; for each of these reports, you can specify a custom date
+  range to narrow results:
+    - Best/Worst Performing and Most Played Songs (All analytics levels)
+    - Listeners by Day/Day of Week/Hour (All analytics levels)
+    - Listeners by Total Listening Time (All analytics levels)
+    - Listeners by Stream, i.e. Mount Point/Relay (All analytics levels)
+    - Listeners by Client, i.e. Mobile/Desktop/Crawler/etc. (Full analytics only)
+    - Listeners by Browser Family, i.e. Chrome/Firefox/etc. (Full analytics only)
+    - Listeners by Country (Full analytics only)
+
 - **LetsEncrypt via the Web**: We now support configuring LetsEncrypt via the web interface. If you had previously set
   up LetsEncrypt via the command line, your settings will be imported automatically. This update also adds LetsEncrypt
   support for Ansible installations. Note: If you are mounting a custom SSL certificate, the mounting locations have

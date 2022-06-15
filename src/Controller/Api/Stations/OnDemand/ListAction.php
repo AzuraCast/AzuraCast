@@ -70,7 +70,7 @@ final class ListAction
             $trackList = $trackList->filter(
                 function ($row) use ($searchFields, $searchPhrase) {
                     foreach ($searchFields as $searchField) {
-                        if (false !== stripos($row[$searchField], $searchPhrase)) {
+                        if (false !== stripos($row[$searchField] ?? '', $searchPhrase)) {
                             return true;
                         }
                     }

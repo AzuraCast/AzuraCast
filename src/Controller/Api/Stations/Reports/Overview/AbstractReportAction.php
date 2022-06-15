@@ -21,7 +21,7 @@ abstract class AbstractReportAction
 
     protected function isAllAnalyticsEnabled(): bool
     {
-        return AnalyticsLevel::All !== $this->settingsRepo->readSettings()->getAnalyticsEnum();
+        return AnalyticsLevel::All === $this->settingsRepo->readSettings()->getAnalyticsEnum();
     }
 
     protected function isAnalyticsEnabled(): bool
@@ -31,10 +31,14 @@ abstract class AbstractReportAction
 
     protected function buildChart(
         array $rows,
-        string $valueLabel
+        string $valueLabel,
+        ?int $limitResults = 10
     ): array {
         arsort($rows);
-        $topRows = array_slice($rows, 0, 10);
+
+        $topRows = (null !== $limitResults)
+            ? array_slice($rows, 0, $limitResults)
+            : $rows;
 
         $alt = ['<dl>'];
         $labels = [];

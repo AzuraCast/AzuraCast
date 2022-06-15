@@ -45,6 +45,8 @@ final class OverviewAction
                 'byStreamUrl' => (string)$router->fromHere('api:stations:reports:by-stream'),
                 'byBrowserUrl' => (string)$router->fromHere('api:stations:reports:by-browser'),
                 'byCountryUrl' => (string)$router->fromHere('api:stations:reports:by-country'),
+                'byClientUrl' => (string)$router->fromHere('api:stations:reports:by-client'),
+                'listeningTimeUrl' => (string)$router->fromHere('api:stations:reports:by-listening-time'),
             ]
         );
     }

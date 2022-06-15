@@ -523,6 +523,16 @@ return static function (RouteCollectorProxy $group) {
                     )->setName('api:stations:reports:by-stream');
 
                     $group->get(
+                        '/overview/by-client',
+                        Controller\Api\Stations\Reports\Overview\ByClient::class
+                    )->setName('api:stations:reports:by-client');
+
+                    $group->get(
+                        '/overview/by-listening-time',
+                        Controller\Api\Stations\Reports\Overview\ByListeningTime::class
+                    )->setName('api:stations:reports:by-listening-time');
+
+                    $group->get(
                         '/soundexchange',
                         Controller\Api\Stations\Reports\SoundExchangeAction::class
                     )->setName('api:stations:reports:soundexchange');

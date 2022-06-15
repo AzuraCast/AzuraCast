@@ -18,7 +18,7 @@ final class ByCountry extends AbstractReportAction
         string $station_id
     ): ResponseInterface {
         // Get current analytics level.
-        if ($this->isAllAnalyticsEnabled()) {
+        if (!$this->isAllAnalyticsEnabled()) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
         }

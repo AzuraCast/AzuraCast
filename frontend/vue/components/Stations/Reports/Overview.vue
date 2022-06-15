@@ -32,11 +32,29 @@
 
             <b-tab>
                 <template #title>
+                    <translate key="tab_listening_time">Listening Time</translate>
+                </template>
+
+                <listening-time-tab :api-url="listeningTimeUrl" :date-range="dateRange">
+                </listening-time-tab>
+            </b-tab>
+
+            <b-tab>
+                <template #title>
                     <translate key="tab_streams">Streams</translate>
                 </template>
 
                 <streams-tab :api-url="byStreamUrl" :date-range="dateRange">
                 </streams-tab>
+            </b-tab>
+
+            <b-tab v-if="showFullAnalytics">
+                <template #title>
+                    <translate key="tab_clients">Clients</translate>
+                </template>
+
+                <clients-tab :api-url="byClientUrl" :date-range="dateRange">
+                </clients-tab>
             </b-tab>
 
             <b-tab v-if="showFullAnalytics">
@@ -66,11 +84,15 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab";
 import BestAndWorstTab from "./Overview/BestAndWorstTab";
 import BrowsersTab from "./Overview/BrowsersTab";
-import CountriesTab from "~/components/Stations/Reports/Overview/CountriesTab";
-import StreamsTab from "~/components/Stations/Reports/Overview/StreamsTab";
+import CountriesTab from "./Overview/CountriesTab";
+import StreamsTab from "./Overview/StreamsTab";
+import ClientsTab from "./Overview/ClientsTab";
+import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab";
 
 export default {
     components: {
+        ListeningTimeTab,
+        ClientsTab,
         StreamsTab,
         CountriesTab,
         BrowsersTab,
@@ -84,8 +106,10 @@ export default {
         listenersByTimePeriodUrl: String,
         bestAndWorstUrl: String,
         byStreamUrl: String,
+        byClientUrl: String,
         byBrowserUrl: String,
         byCountryUrl: String,
+        listeningTimeUrl: String
     },
     data() {
         let nowTz = DateTime.now().setZone(this.stationTimeZone);

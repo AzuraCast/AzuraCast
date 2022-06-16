@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.17.1 (Jun 16, 2022)
+
+## New Features/Changes
+
 - **Statistics Overhaul**: We've improved and expanded the reporting tools available to stations. The following reports
   are now available under a unified "Station Statistics" page; for each of these reports, you can specify a custom date
   range to narrow results:

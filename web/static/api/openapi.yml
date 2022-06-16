@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.17.0
+  version: 0.17.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -899,26 +899,6 @@ paths:
                 format: int64
               -
                 type: string
-      responses:
-        '200':
-          $ref: '#/components/responses/Success'
-        '403':
-          $ref: '#/components/responses/AccessDenied'
-        '404':
-          $ref: '#/components/responses/RecordNotFound'
-        '500':
-          $ref: '#/components/responses/GenericError'
-      security:
-        -
-          ApiKey: []
-  '/station/{station_id}/automation/run':
-    put:
-      tags:
-        - 'Stations: Automation'
-      description: 'Run automated assignment.'
-      parameters:
-        -
-          $ref: '#/components/parameters/StationIdRequired'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -3631,6 +3611,10 @@ components:
           type: integer
           example: '1591548318'
           nullable: true
+        art:
+          description: 'URL to the streamer artwork (if available).'
+          example: 'https://picsum.photos/1200/1200'
+          nullable: true
       type: object
     Api_NowPlaying:
       properties:
@@ -4516,6 +4500,16 @@ components:
           type: string
           example: ''
           nullable: true
+        acme_email:
+          description: 'ACME (LetsEncrypt) e-mail address.'
+          type: string
+          example: ''
+          nullable: true
+        acme_domains:
+          description: 'ACME (LetsEncrypt) domain name(s).'
+          type: string
+          example: ''
+          nullable: true
       type: object
     SftpUser:
       type: object
@@ -4584,9 +4578,6 @@ components:
               type: string
               example: /var/azuracast/stations/azuratest_radio
               nullable: true
-            automation_settings:
-              type: array
-              items: {  }
             enable_requests:
               description: 'Whether listeners can request songs to play on this station.'
               type: boolean
@@ -4878,9 +4869,6 @@ components:
               description: "Whether this playlist's media is included in 'on demand' download/streaming if enabled."
               type: boolean
               example: true
-            include_in_automation:
-              type: boolean
-              example: false
             backend_options:
               type: string
               example: 'interrupt,loop_once,single_track,merge'

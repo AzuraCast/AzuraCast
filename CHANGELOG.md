@@ -39,7 +39,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
-There have been no new bug fixes since the last stable release.
+- Performance should be improved on several site components that previously were supposed to "lazy-load" their sub-items
+  but did not properly do so.
+
+- The incidence of "Malformed URI" exceptions should be greatly reduced, and if they occur the system will log what URL
+  is causing the problem.
 
 ---
 

@@ -188,6 +188,7 @@ export default {
                         banned_user_agents: {}
                     },
                     backend_config: {
+                        hls_segment_length: {numeric},
                         dj_port: {numeric},
                         telnet_port: {numeric},
                         dj_mount_point: {},
@@ -326,6 +327,7 @@ export default {
                         banned_user_agents: '',
                     },
                     backend_config: {
+                        hls_segment_length: 4,
                         dj_port: '',
                         telnet_port: '',
                         dj_mount_point: '/',

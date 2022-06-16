@@ -307,6 +307,18 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
     }
 
+    public const HLS_SEGMENT_LENGTH = 'hls_segment_length';
+
+    public function getHlsSegmentLength(): int
+    {
+        return $this->get(self::HLS_SEGMENT_LENGTH, 4);
+    }
+
+    public function setHlsSegmentLength(?int $length): void
+    {
+        $this->set(self::HLS_SEGMENT_LENGTH, $length);
+    }
+
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';

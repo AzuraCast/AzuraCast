@@ -83,6 +83,24 @@
                 </b-form-row>
             </b-form-fieldset>
 
+            <b-form-fieldset v-if="showAdvanced && form.enable_hls.$model">
+                <template #label>
+                    <translate key="lang_hls">HTTP Live Streaming (HLS)</translate>
+                </template>
+
+                <b-form-fieldset>
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_hls_segment_length"
+                                              :field="form.backend_config.hls_segment_length" input-type="number"
+                                              :input-attrs="{ min: '0', max: '60' }" advanced>
+                            <template #label="{lang}">
+                                <translate :key="lang">Segment Length (Seconds)</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+                </b-form-fieldset>
+            </b-form-fieldset>
+
             <b-form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
                 <template #label>
                     <translate key="lang_hdr_stereo_tool">Stereo Tool</translate>

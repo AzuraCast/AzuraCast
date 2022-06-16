@@ -7,17 +7,18 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Carbon\CarbonImmutable;
+use App\Utilities\DateRange;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class BestAndWorstAction
+final class BestAndWorstAction extends AbstractReportAction
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        EntityManagerInterface $em,
         private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator
     ) {
+        parent::__construct($settingsRepo, $em);
     }
 
     public function __invoke(
@@ -25,17 +26,25 @@ final class BestAndWorstAction
         Response $response,
         string $station_id
     ): ResponseInterface {
-        $station = $request->getStation();
-        $station_tz = $station->getTimezoneObject();
-
         // Get current analytics level.
-        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        if (!$this->isAnalyticsEnabled()) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
-        /* Song "Deltas" (Changes in Listener Count) */
-        $songPerformanceThreshold = CarbonImmutable::parse('-2 days', $station_tz)->getTimestamp();
+        $dateRange = $this->getDateRange($request, $request->getStation()->getTimezoneObject());
+
+        return $response->withJson([
+            'bestAndWorst' => $this->getBestAndWorst($request, $dateRange),
+            'mostPlayed' => $this->getMostPlayed($request, $dateRange),
+        ]);
+    }
+
+    private function getBestAndWorst(
+        ServerRequest $request,
+        DateRange $dateRange
+    ): array {
+        $station = $request->getStation();
 
         // Get all songs played in timeline.
         $baseQuery = $this->em->createQueryBuilder()
@@ -43,8 +52,9 @@ final class BestAndWorstAction
             ->from(Entity\SongHistory::class, 'sh')
             ->where('sh.station = :station')
             ->setParameter('station', $station)
-            ->andWhere('sh.timestamp_start >= :timestamp')
-            ->setParameter('timestamp', $songPerformanceThreshold)
+            ->andWhere('sh.timestamp_start <= :end AND sh.timestamp_end >= :start')
+            ->setParameter('start', $dateRange->getStartTimestamp())
+            ->setParameter('end', $dateRange->getEndTimestamp())
             ->andWhere('sh.listeners_start IS NOT NULL')
             ->andWhere('sh.timestamp_end != 0')
             ->setMaxResults(5);
@@ -76,6 +86,44 @@ final class BestAndWorstAction
             );
         }
 
-        return $response->withJson($stats);
+        return $stats;
+    }
+
+    private function getMostPlayed(
+        ServerRequest $request,
+        DateRange $dateRange
+    ): array {
+        $station = $request->getStation();
+
+        $rawRows = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
+                FROM App\Entity\SongHistory sh
+                WHERE sh.station = :station 
+                AND sh.timestamp_start <= :end
+                AND sh.timestamp_end >= :start
+                GROUP BY sh.song_id
+                ORDER BY records DESC
+            DQL
+        )->setParameter('station', $request->getStation())
+            ->setParameter('start', $dateRange->getStartTimestamp())
+            ->setParameter('end', $dateRange->getEndTimestamp())
+            ->setMaxResults(10)
+            ->getArrayResult();
+
+        $baseUrl = $request->getRouter()->getBaseUrl();
+
+        return array_map(
+            function ($row) use ($station, $baseUrl) {
+                $song = ($this->songApiGenerator)(Entity\Song::createFromArray($row), $station);
+                $song->resolveUrls($baseUrl);
+
+                return [
+                    'song' => $song,
+                    'num_plays' => $row['records'],
+                ];
+            },
+            $rawRows
+        );
     }
 }

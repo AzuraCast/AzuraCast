@@ -6,9 +6,8 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Radio\Backend\Liquidsoap\Command\FeedbackCommand;
-use App\Radio\Enums\BackendAdapters;
 use Carbon\CarbonImmutable;
+use RuntimeException;
 
 /**
  * @extends AbstractStationBasedRepository<Entity\SongHistory>
@@ -18,8 +17,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
     public function __construct(
         ReloadableEntityManagerInterface $em,
         private readonly ListenerRepository $listenerRepository,
-        private readonly StationQueueRepository $stationQueueRepository,
-        private readonly FeedbackCommand $liquidsoapFeedback,
+        private readonly StationQueueRepository $stationQueueRepository
     ) {
         parent::__construct($em);
     }
@@ -58,123 +56,74 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         return $records;
     }
 
-    public function register(
-        Entity\Interfaces\SongInterface $song,
+    public function updateFromNowPlaying(
         Entity\Station $station,
-        Entity\Api\NowPlaying\NowPlaying $np
+        int $listeners,
+        ?Entity\Interfaces\SongInterface $song = null,
     ): Entity\SongHistory {
-        // Pull the most recent history item for this station.
-        $last_sh = $this->getCurrent($station);
+        $currentSong = $station->getCurrentSong();
 
-        $listeners = $np->listeners->current;
-
-        if ($last_sh instanceof Entity\SongHistory) {
-            if ($last_sh->getSongId() === $song->getSongId()) {
-                // Updating the existing SongHistory item with a new data point.
-                $last_sh->addDeltaPoint($listeners);
-
-                $this->em->persist($last_sh);
-                $this->em->flush();
-
-                return $last_sh;
+        if (null !== $song && $this->isDifferentFromCurrentSong($station, $song)) {
+            // Handle track transition.
+            $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
+            if (null !== $upcomingTrack) {
+                $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);
+                $newSong = Entity\SongHistory::fromQueue($upcomingTrack);
+            } else {
+                $newSong = new Entity\SongHistory($station, $song);
             }
 
+            $currentSong = $this->changeCurrentSong($station, $newSong);
+        }
+
+        if (null === $currentSong) {
+            throw new RuntimeException('No track to update.');
+        }
+
+        $currentSong->addDeltaPoint($listeners);
+
+        $this->em->persist($currentSong);
+        $this->em->flush();
+
+        return $currentSong;
+    }
+
+    public function isDifferentFromCurrentSong(
+        Entity\Station $station,
+        Entity\Interfaces\SongInterface $toCompare
+    ): bool {
+        $currentSong = $station->getCurrentSong();
+        return !(null !== $currentSong) || $currentSong->getSongId() !== $toCompare->getSongId();
+    }
+
+    public function changeCurrentSong(
+        Entity\Station $station,
+        Entity\SongHistory $newCurrentSong
+    ): Entity\SongHistory {
+        $previousCurrentSong = $station->getCurrentSong();
+
+        if (null !== $previousCurrentSong) {
             // Wrapping up processing on the previous SongHistory item (if present).
-            $last_sh->setTimestampEnd(time());
-            $last_sh->setListenersEnd($listeners);
+            $previousCurrentSong->playbackEnded();
 
-            // Calculate "delta" data for previous item, based on all data points.
-            $last_sh->addDeltaPoint($listeners);
-
-            $delta_points = (array)$last_sh->getDeltaPoints();
-
-            $delta_positive = 0;
-            $delta_negative = 0;
-            $delta_total = 0;
-
-            for ($i = 1, $iMax = count($delta_points); $i < $iMax; $i++) {
-                $current_delta = $delta_points[$i];
-                $previous_delta = $delta_points[$i - 1];
-
-                $delta_delta = $current_delta - $previous_delta;
-                $delta_total += $delta_delta;
-
-                if ($delta_delta > 0) {
-                    $delta_positive += $delta_delta;
-                } elseif ($delta_delta < 0) {
-                    $delta_negative += (int)abs($delta_delta);
-                }
-            }
-
-            $last_sh->setDeltaPositive((int)$delta_positive);
-            $last_sh->setDeltaNegative((int)$delta_negative);
-            $last_sh->setDeltaTotal((int)$delta_total);
-
-            $last_sh->setUniqueListeners(
+            $previousCurrentSong->setUniqueListeners(
                 $this->listenerRepository->getUniqueListeners(
                     $station,
-                    $last_sh->getTimestampStart(),
+                    $previousCurrentSong->getTimestampStart(),
                     time()
                 )
             );
 
-            $this->em->persist($last_sh);
+            $this->em->persist($previousCurrentSong);
         }
 
-        $sh = $this->newSongHistoryEntry($station, $song);
+        $newCurrentSong->setTimestampStart(time());
+        $this->em->persist($newCurrentSong);
 
-        $currentStreamer = $station->getCurrentStreamer();
-        if ($currentStreamer instanceof Entity\StationStreamer) {
-            $sh->setStreamer($currentStreamer);
-        }
+        $station->setCurrentSong($newCurrentSong);
+        $this->em->persist($station);
 
-        $sh->setTimestampStart(time());
-        $sh->setListenersStart($listeners);
-        $sh->addDeltaPoint($listeners);
-
-        $this->em->persist($sh);
-        $this->em->flush();
-
-        return $sh;
-    }
-
-    protected function newSongHistoryEntry(
-        Entity\Station $station,
-        Entity\Interfaces\SongInterface $song
-    ): Entity\SongHistory {
-        // Look for an already cued but unplayed song.
-        $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
-
-        if (null !== $upcomingTrack) {
-            $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);
-            return Entity\SongHistory::fromQueue($upcomingTrack);
-        }
-
-        // Check Liquidsoap's feedback cache for a record.
-        if (BackendAdapters::Liquidsoap === $station->getBackendTypeEnum()) {
-            $sh = $this->liquidsoapFeedback->registerFromFeedback($station, $song);
-            if (null !== $sh) {
-                return $sh;
-            }
-        }
-
-        return new Entity\SongHistory($station, $song);
-    }
-
-    public function getCurrent(Entity\Station $station): ?Entity\SongHistory
-    {
-        return $this->em->createQuery(
-            <<<'DQL'
-                SELECT sh
-                FROM App\Entity\SongHistory sh
-                WHERE sh.station = :station
-                AND sh.timestamp_start != 0
-                AND (sh.timestamp_end IS NULL OR sh.timestamp_end = 0)
-                ORDER BY sh.timestamp_start DESC
-            DQL
-        )->setParameter('station', $station)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        return $newCurrentSong;
     }
 
     /**

@@ -12,9 +12,11 @@ use App\Media\BatchUtilities;
 use App\Message\AddNewMediaMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
+use LogicException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
+use Throwable;
 
 final class SftpEventAction
 {
@@ -83,7 +85,7 @@ final class SftpEventAction
             };
 
             return $response->withJson(['success' => true]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('SFTP Event: %s', $e->getMessage()),
                 [
@@ -159,7 +161,7 @@ final class SftpEventAction
         ?string $newPath
     ): void {
         if (null === $newPath) {
-            throw new \LogicException('No new path specified for rename.');
+            throw new LogicException('No new path specified for rename.');
         }
 
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);

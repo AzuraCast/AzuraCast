@@ -8,15 +8,18 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
-final class ChartsAction
+final class ChartsAction extends AbstractReportAction
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        EntityManagerInterface $em,
         private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
     ) {
+        parent::__construct($settingsRepo, $em);
     }
 
     public function __invoke(
@@ -24,24 +27,23 @@ final class ChartsAction
         Response $response,
         string $station_id
     ): ResponseInterface {
-        $station = $request->getStation();
-        $station_tz = $station->getTimezoneObject();
-
         // Get current analytics level.
-        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        if (!$this->isAnalyticsEnabled()) {
             return $response->withStatus(400)
                 ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
-        /* Statistics */
-        $statisticsThreshold = CarbonImmutable::parse('-1 month', $station_tz);
+        $station = $request->getStation();
+        $stationTz = $station->getTimezoneObject();
+
+        $dateRange = $this->getDateRange($request, $stationTz);
 
         $stats = [];
 
         // Statistics by day.
-        $dailyStats = $this->analyticsRepo->findForStationAfterTime(
+        $dailyStats = $this->analyticsRepo->findForStationInRange(
             $station,
-            $statisticsThreshold
+            $dateRange
         );
 
         $daily_chart = new stdClass();
@@ -60,7 +62,7 @@ final class ChartsAction
         foreach ($dailyStats as $stat) {
             /** @var CarbonImmutable $statTime */
             $statTime = $stat['moment'];
-            $statTime = $statTime->shiftTimezone($station_tz);
+            $statTime = $statTime->shiftTimezone($stationTz);
 
             $avg_row = new stdClass();
             $avg_row->x = $statTime->getTimestampMs();
@@ -127,9 +129,9 @@ final class ChartsAction
         ];
 
         // Statistics by hour.
-        $hourlyStats = $this->analyticsRepo->findForStationAfterTime(
+        $hourlyStats = $this->analyticsRepo->findForStationInRange(
             $station,
-            $statisticsThreshold,
+            $dateRange,
             Entity\Analytics::INTERVAL_HOURLY
         );
 
@@ -138,7 +140,7 @@ final class ChartsAction
         foreach ($hourlyStats as $stat) {
             /** @var CarbonImmutable $statTime */
             $statTime = $stat['moment'];
-            $statTime = $statTime->shiftTimezone($station_tz);
+            $statTime = $statTime->shiftTimezone($stationTz);
 
             $hour = $statTime->hour;
             $totals_by_hour[$hour][] = $stat['number_avg'];

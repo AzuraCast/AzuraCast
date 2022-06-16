@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+    <div>
         <b-form-fieldset>
             <template #label>
                 <translate key="lang_privacy_hdr">Privacy</translate>
@@ -73,7 +73,7 @@
                 </b-wrapped-form-group>
             </b-form-row>
         </b-form-fieldset>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -85,13 +85,7 @@ export default {
     name: 'SettingsSecurityPrivacyTab',
     components: {BWrappedFormCheckbox, BFormFieldset, BWrappedFormGroup},
     props: {
-        form: Object,
-        tabClass: {},
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Security & Privacy');
-        },
+        form: Object
     }
 }
 </script>

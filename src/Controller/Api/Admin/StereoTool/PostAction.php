@@ -15,11 +15,6 @@ use Symfony\Component\Process\Process;
 
 final class PostAction
 {
-    public function __construct(
-        private readonly StereoTool $stereoTool
-    ) {
-    }
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -29,7 +24,7 @@ final class PostAction
             return $flowResponse;
         }
 
-        $binaryPath = $this->stereoTool->getBinaryPath();
+        $binaryPath = StereoTool::getBinaryPath();
         if (is_file($binaryPath)) {
             unlink($binaryPath);
         }

@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="title">
+    <div>
         <b-form-group>
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_to" :field="form.config.to">
@@ -30,7 +30,7 @@
                 </b-wrapped-form-group>
             </b-form-row>
         </b-form-group>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -41,7 +41,6 @@ export default {
     name: 'Email',
     components: {CommonFormattingInfo, BWrappedFormGroup},
     props: {
-        title: String,
         form: Object
     }
 }

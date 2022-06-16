@@ -1,26 +1,24 @@
 <template>
-    <b-tab :title="langTitle" lazy>
-        <b-form-group>
-            <b-row>
-                <b-col md="4">
-                    <b-img :src="albumArtSrc" :alt="langTitle" rounded fluid></b-img>
-                    <br>
-                    <b-button block variant="link" class="text-danger mt-2" @click="deleteArt">
-                        <translate key="lang_btn_delete_art">Delete Album Art</translate>
-                    </b-button>
-                </b-col>
-                <b-col md="8">
-                    <b-form-group label-for="edit_form_art">
-                        <template #label>
-                            <translate key="lang_btn_replace_art">Replace Album Cover Art</translate>
-                        </template>
-                        <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"
-                                     @input="uploadNewArt"></b-form-file>
-                    </b-form-group>
-                </b-col>
-            </b-row>
-        </b-form-group>
-    </b-tab>
+    <b-form-group>
+        <b-row>
+            <b-col md="4">
+                <b-img :src="albumArtSrc" rounded fluid></b-img>
+                <br>
+                <b-button block variant="link" class="text-danger mt-2" @click="deleteArt">
+                    <translate key="lang_btn_delete_art">Delete Album Art</translate>
+                </b-button>
+            </b-col>
+            <b-col md="8">
+                <b-form-group label-for="edit_form_art">
+                    <template #label>
+                        <translate key="lang_btn_replace_art">Replace Album Cover Art</translate>
+                    </template>
+                    <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"
+                                 @input="uploadNewArt"></b-form-file>
+                </b-form-group>
+            </b-col>
+        </b-row>
+    </b-form-group>
 </template>
 
 <script>
@@ -30,27 +28,22 @@ export default {
     props: {
         albumArtUrl: String
     },
-    data () {
+    data() {
         return {
             artFile: null,
             albumArtSrc: null
         };
     },
-    computed: {
-        langTitle () {
-            return this.$gettext('Album Art');
-        }
-    },
     watch: {
         albumArtUrl: {
             immediate: true,
-            handler (newVal, oldVal) {
+            handler(newVal, oldVal) {
                 this.albumArtSrc = newVal;
             }
         }
     },
     methods: {
-        uploadNewArt () {
+        uploadNewArt() {
             if (null === this.artFile) {
                 return;
             }
@@ -65,7 +58,7 @@ export default {
                 this.reloadArt();
             });
         },
-        deleteArt () {
+        deleteArt() {
             this.axios.delete(this.albumArtUrl).then((resp) => {
                 this.reloadArt();
             }).catch((err) => {
@@ -73,7 +66,7 @@ export default {
                 this.reloadArt();
             });
         },
-        reloadArt () {
+        reloadArt() {
             this.artFile = null;
             this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
         }

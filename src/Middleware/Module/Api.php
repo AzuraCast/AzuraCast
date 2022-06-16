@@ -71,7 +71,10 @@ class Api
 
                     $origins = [];
                     foreach ($rawOrigins as $rawOrigin) {
-                        $uri = Urls::getUri($rawOrigin);
+                        $uri = Urls::tryParseUserUrl(
+                            $rawOrigin,
+                            'System Setting Access-Control-Allowo-Origin'
+                        );
                         if (null !== $uri) {
                             if (empty($uri->getScheme())) {
                                 $origins[] = (string)($uri->withScheme('http'));

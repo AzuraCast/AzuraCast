@@ -46,9 +46,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    // Taxonomical groups for permission-based serialization.
-    public const GROUP_AUTOMATION = 'automation';
-
     #[
         OA\Property(description: "The full display name of the station.", example: "AzuraTest Radio"),
         ORM\Column(length: 100, nullable: false),
@@ -165,20 +162,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         Attributes\AuditIgnore
     ]
     protected ?int $nowplaying_timestamp = null;
-
-    #[
-        OA\Property(type: "array", items: new OA\Items()),
-        ORM\Column(type: 'json', nullable: true),
-        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected ?array $automation_settings = null;
-
-    #[
-        ORM\Column(nullable: true),
-        Attributes\AuditIgnore,
-        Serializer\Groups([self::GROUP_AUTOMATION, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected ?int $automation_timestamp = 0;
 
     #[
         OA\Property(
@@ -414,6 +397,12 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
     protected Collection $sftp_users;
 
+    #[
+        ORM\ManyToOne,
+        ORM\JoinColumn(name: 'current_song_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')
+    ]
+    protected ?SongHistory $current_song = null;
+
     public function __construct()
     {
         $this->frontend_type = FrontendAdapters::Icecast->value;
@@ -508,7 +497,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
 
         $config = $frontend_config->toArray();
-        if ($this->frontend_config != $config) {
+        if ($this->frontend_config !== $config) {
             $this->setNeedsRestart(true);
         }
         $this->frontend_config = $config;
@@ -571,7 +560,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         $config = $backend_config->toArray();
 
-        if ($this->backend_config != $config) {
+        if ($this->backend_config !== $config) {
             $this->setNeedsRestart(true);
         }
 
@@ -767,29 +756,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->nowplaying_timestamp = $nowplaying_timestamp;
     }
 
-    /**
-     * @return mixed[]|null
-     */
-    public function getAutomationSettings(): ?array
-    {
-        return $this->automation_settings;
-    }
-
-    public function setAutomationSettings(array $automation_settings = null): void
-    {
-        $this->automation_settings = $automation_settings;
-    }
-
-    public function getAutomationTimestamp(): ?int
-    {
-        return $this->automation_timestamp;
-    }
-
-    public function setAutomationTimestamp(int $automation_timestamp = null): void
-    {
-        $this->automation_timestamp = $automation_timestamp;
-    }
-
     public function getEnableRequests(): bool
     {
         return $this->enable_requests;
@@ -955,7 +921,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->default_album_art_url);
+        return Urls::tryParseUserUrl(
+            $this->default_album_art_url,
+            'Station ' . $this->__toString() . ' Default Album Art URL'
+        );
     }
 
     /**
@@ -1154,10 +1123,22 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->sftp_users;
     }
 
+    public function getCurrentSong(): ?SongHistory
+    {
+        return $this->current_song;
+    }
+
+    public function setCurrentSong(?SongHistory $current_song): void
+    {
+        $this->current_song = $current_song;
+    }
+
     public function clearCache(): void
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
+
+        $this->current_song = null;
     }
 
     public function __toString(): string

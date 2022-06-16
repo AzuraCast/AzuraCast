@@ -8,9 +8,6 @@ namespace App\Enums;
 
 use App\Environment;
 use App\Http\ServerRequest;
-use Gettext\GettextTranslator;
-use Gettext\TranslatorFunctions;
-use Gettext\TranslatorInterface;
 use Locale;
 use PhpMyAdmin\MoTranslator\Loader;
 use Psr\Http\Message\ServerRequestInterface;

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -17,6 +16,8 @@ use const JSON_PRETTY_PRINT;
 
 final class AuditLogAction
 {
+    use AcceptsDateRange;
+
     public function __construct(
         protected EntityManagerInterface $em
     ) {
@@ -26,16 +27,9 @@ final class AuditLogAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $tz = new DateTimeZone('UTC');
-
-        $allParams = $request->getParams();
-        if (!empty($allParams['start']) && !empty($allParams['end'])) {
-            $start = CarbonImmutable::parse($allParams['start'], $tz)->setSecond(0);
-            $end = CarbonImmutable::parse($allParams['end'], $tz)->setSecond(59);
-        } else {
-            $start = CarbonImmutable::parse('-2 weeks', $tz);
-            $end = CarbonImmutable::now($tz);
-        }
+        $dateRange = $this->getDateRange($request);
+        $start = $dateRange->getStart();
+        $end = $dateRange->getEnd();
 
         $qb = $this->em->createQueryBuilder();
 
@@ -45,7 +39,7 @@ final class AuditLogAction
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $search_phrase = trim($allParams['searchPhrase'] ?? '');
+        $search_phrase = trim($request->getQueryParam('searchPhrase', ''));
         if (!empty($search_phrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

@@ -17,13 +17,32 @@
 
             <b-overlay variant="card" :show="loading">
                 <b-tabs card lazy justified>
-                    <settings-general-tab :form="$v.form"
-                                          :tab-class="getTabClass($v.generalTab)"></settings-general-tab>
-                    <settings-security-privacy-tab :form="$v.form"
-                                                   :tab-class="getTabClass($v.securityPrivacyTab)"></settings-security-privacy-tab>
-                    <settings-services-tab :form="$v.form" :tab-class="getTabClass($v.servicesTab)"
-                                           :release-channel="releaseChannel"
-                                           :test-message-url="testMessageUrl"></settings-services-tab>
+                    <b-tab :title-link-class="getTabClass($v.generalTab)">
+                        <template #title>
+                            <translate key="tab_general">Settings</translate>
+                        </template>
+
+                        <settings-general-tab :form="$v.form"></settings-general-tab>
+                    </b-tab>
+
+                    <b-tab :title-link-class="getTabClass($v.securityPrivacyTab)">
+                        <template #title>
+                            <translate key="tab_security_privacy">Security & Privacy</translate>
+                        </template>
+
+                        <settings-security-privacy-tab :form="$v.form"></settings-security-privacy-tab>
+                    </b-tab>
+
+                    <b-tab :title-link-class="getTabClass($v.servicesTab)">
+                        <template #title>
+                            <translate key="tab_services">Services</translate>
+                        </template>
+
+                        <settings-services-tab :form="$v.form"
+                                               :release-channel="releaseChannel"
+                                               :test-message-url="testMessageUrl"
+                                               :acme-url="acmeUrl"></settings-services-tab>
+                    </b-tab>
                 </b-tabs>
             </b-overlay>
 
@@ -52,6 +71,7 @@ export default {
     props: {
         apiUrl: String,
         testMessageUrl: String,
+        acmeUrl: String,
         releaseChannel: {
             type: String,
             default: 'rolling',
@@ -84,6 +104,8 @@ export default {
             api_access_control: {},
 
             check_for_updates: {},
+            acme_email: {},
+            acme_domains: {},
             mail_enabled: {},
             mail_sender_name: {},
             mail_sender_email: {},
@@ -106,7 +128,9 @@ export default {
             'form.analytics', 'form.always_use_ssl', 'form.api_access_control'
         ],
         servicesTab: [
-            'form.check_for_updates', 'form.mail_enabled', 'form.mail_sender_name', 'form.mail_sender_email',
+            'form.check_for_updates',
+            'form.acme_email', 'form.acme_domains',
+            'form.mail_enabled', 'form.mail_sender_name', 'form.mail_sender_email',
             'form.mail_smtp_host', 'form.mail_smtp_port', 'form.mail_smtp_secure', 'form.mail_smtp_username',
             'form.mail_smtp_password', 'form.avatar_service', 'form.avatar_default_url',
             'form.use_external_album_art_in_apis', 'form.use_external_album_art_when_processing_media',
@@ -148,6 +172,8 @@ export default {
                 api_access_control: data.api_access_control,
 
                 check_for_updates: data.check_for_updates,
+                acme_email: data.acme_email,
+                acme_domains: data.acme_domains,
                 mail_enabled: data.mail_enabled,
                 mail_sender_name: data.mail_sender_name,
                 mail_sender_email: data.mail_sender_email,

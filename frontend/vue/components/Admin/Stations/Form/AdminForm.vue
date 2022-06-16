@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+    <div>
         <b-form-group>
             <b-form-fieldset>
                 <b-form-row>
@@ -64,7 +64,7 @@
                 </b-overlay>
             </b-form-fieldset>
         </b-form-group>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -78,7 +78,6 @@ export default {
     components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
-        tabClass: {},
         isEditMode: Boolean,
         storageLocationApiUrl: String,
         showAdvanced: {
@@ -98,11 +97,6 @@ export default {
     },
     mounted() {
         this.loadLocations();
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Administration');
-        },
     },
     methods: {
         loadLocations() {

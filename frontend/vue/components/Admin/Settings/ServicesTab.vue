@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass">
+    <div>
         <b-form-fieldset>
             <template #label>
                 <translate key="lang_section_update_checks">AzuraCast Update Checks</translate>
@@ -32,6 +32,49 @@
                             :key="lang">Show new releases within your update channel on the AzuraCast homepage.</translate>
                     </template>
                 </b-wrapped-form-checkbox>
+            </b-form-row>
+        </b-form-fieldset>
+
+        <b-form-fieldset>
+            <template #label>
+                <translate key="lang_section_letsencrypt">LetsEncrypt</translate>
+            </template>
+            <template #description>
+                <translate key="lang_section_letsencrypt_desc">LetsEncrypt provides simple, free SSL certificates allowing you to secure traffic through your control panel and radio streams.</translate>
+            </template>
+
+            <b-form-row>
+                <b-wrapped-form-group class="col-md-6" id="edit_form_acme_domains"
+                                      :field="form.acme_domains">
+                    <template #label="{lang}">
+                        <translate :key="lang">Domain Name(s)</translate>
+                    </template>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <b-wrapped-form-group class="col-md-6" id="edit_form_acme_email"
+                                      :field="form.acme_email" input-type="email">
+                    <template #label="{lang}">
+                        <translate :key="lang">E-mail Address (Optional)</translate>
+                    </template>
+                    <template #description="{lang}">
+                        <translate
+                            :key="lang">Enter your e-mail address to receive updates about your certificate.</translate>
+                    </template>
+                </b-wrapped-form-group>
+
+                <div class="form-group col">
+                    <b-button size="sm" variant="primary" :disabled="form.$anyDirty" @click="generateAcmeCert">
+                        <icon icon="badge"></icon>
+                        <translate key="lang_btn_acme_cert">Generate/Renew Certificate</translate>
+                        <span v-if="form.$anyDirty">
+                        (<translate key="lang_btn_acme_cert_save_changes">Save Changes first</translate>)
+                    </span>
+                    </b-button>
+                </div>
             </b-form-row>
         </b-form-fieldset>
 
@@ -177,8 +220,10 @@
             </b-form-row>
         </b-form-fieldset>
 
+        <streaming-log-modal ref="acmeModal"></streaming-log-modal>
+
         <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -188,23 +233,26 @@ import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal";
 import Icon from "~/components/Common/Icon";
+import StreamingLogModal from "~/components/Common/StreamingLogModal";
 
 export default {
     name: 'SettingsServicesTab',
     components: {
+        StreamingLogModal,
         Icon,
-        AdminSettingsTestMessageModal, BWrappedFormCheckbox, BFormFieldset, BWrappedFormGroup, BFormMarkup
+        AdminSettingsTestMessageModal,
+        BWrappedFormCheckbox,
+        BFormFieldset,
+        BWrappedFormGroup,
+        BFormMarkup
     },
     props: {
         form: Object,
-        tabClass: {},
         releaseChannel: String,
         testMessageUrl: String,
+        acmeUrl: String,
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Services');
-        },
         langReleaseChannel() {
             return (this.releaseChannel === 'stable')
                 ? this.$gettext('Stable')
@@ -226,6 +274,15 @@ export default {
                 }
             ]
         },
+    },
+    methods: {
+        generateAcmeCert() {
+            this.$wrapWithLoading(
+                this.axios.put(this.acmeUrl)
+            ).then((resp) => {
+                this.$refs.acmeModal.show(resp.data.links.log);
+            });
+        }
     }
 }
 </script>

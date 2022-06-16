@@ -6,9 +6,9 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use DateTimeInterface;
 
 /**
  * @extends Repository<Entity\Analytics>
@@ -18,19 +18,20 @@ final class AnalyticsRepository extends Repository
     /**
      * @return mixed[]
      */
-    public function findForStationAfterTime(
+    public function findForStationInRange(
         Entity\Station $station,
-        DateTimeInterface $threshold,
+        DateRange $dateRange,
         string $type = Entity\Analytics::INTERVAL_DAILY
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
                 SELECT a FROM App\Entity\Analytics a
-                WHERE a.station = :station AND a.type = :type AND a.moment >= :threshold
+                WHERE a.station = :station AND a.type = :type AND a.moment BETWEEN :start AND :end
             DQL
         )->setParameter('station', $station)
             ->setParameter('type', $type)
-            ->setParameter('threshold', $threshold)
+            ->setParameter('start', $dateRange->getStart())
+            ->setParameter('end', $dateRange->getEnd())
             ->getArrayResult();
     }
 

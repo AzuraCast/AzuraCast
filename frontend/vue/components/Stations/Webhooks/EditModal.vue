@@ -4,8 +4,16 @@
 
         <type-select v-if="!type" :webhook-types="webhookTypes" @select="setType"></type-select>
         <b-tabs v-else lazy content-class="mt-3">
-            <basic-info :trigger-options="triggerOptions" :form="$v.form"></basic-info>
-            <component :is="formComponent" :title="typeTitle" :form="$v.form"></component>
+            <b-tab active>
+                <template #title>
+                    <translate key="tab_basic_info">Basic Info</translate>
+                </template>
+
+                <basic-info :trigger-options="triggerOptions" :form="$v.form"></basic-info>
+            </b-tab>
+            <b-tab :title="typeTitle">
+                <component :is="formComponent" :form="$v.form"></component>
+            </b-tab>
         </b-tabs>
 
     </modal-form>
@@ -64,7 +72,7 @@ export default {
                 ? this.$gettext('Edit Web Hook')
                 : this.$gettext('Add Web Hook');
         },
-        triggerOptions () {
+        triggerOptions() {
             if (!this.type) {
                 return [];
             }

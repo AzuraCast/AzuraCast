@@ -13,7 +13,8 @@ usermod -aG www-data azuracast
 
 mkdir -p /var/azuracast/www /var/azuracast/stations /var/azuracast/servers/shoutcast2 \
   /var/azuracast/servers/stereo_tool /var/azuracast/backups /var/azuracast/www_tmp \
-  /var/azuracast/uploads /var/azuracast/geoip /var/azuracast/dbip
+  /var/azuracast/uploads /var/azuracast/geoip /var/azuracast/dbip \
+  /var/azuracast/acme
 
 chown -R azuracast:azuracast /var/azuracast
 chmod -R 777 /var/azuracast/www_tmp

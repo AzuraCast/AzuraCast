@@ -15,7 +15,7 @@
   become_user: azuracast
   shell: >-
     php {{ www_base }}/bin/console azuracast:setup
-  when: update_mode|bool
+  when: not update_mode|bool
 
 - name: Migrate Legacy Configuration (Update Mode)
   become: true

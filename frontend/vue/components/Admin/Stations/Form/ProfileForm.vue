@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" :title-link-class="tabClass" active>
+    <div>
         <b-form-fieldset>
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
@@ -125,7 +125,7 @@
                 </b-wrapped-form-checkbox>
             </b-form-row>
         </b-form-fieldset>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -139,7 +139,6 @@ export default {
     components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
     props: {
         form: Object,
-        tabClass: {},
         timezones: Object,
         showAdvanced: {
             type: Boolean,
@@ -147,9 +146,6 @@ export default {
         },
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Profile');
-        },
         timezoneOptions() {
             return objectToFormOptions(this.timezones);
         },

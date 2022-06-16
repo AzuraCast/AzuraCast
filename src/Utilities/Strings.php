@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use RuntimeException;
+
 class Strings
 {
     /**
@@ -117,12 +119,12 @@ class Strings
     {
         $result = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
         if (null === $result || false === $result) {
-            throw new \RuntimeException('Cannot parse input string.');
+            throw new RuntimeException('Cannot parse input string.');
         }
 
         $result = mb_ereg_replace("([\.]{2,})", '.', $result);
         if (null === $result || false === $result) {
-            throw new \RuntimeException('Cannot parse input string.');
+            throw new RuntimeException('Cannot parse input string.');
         }
 
         $result = str_replace(' ', '_', $result);

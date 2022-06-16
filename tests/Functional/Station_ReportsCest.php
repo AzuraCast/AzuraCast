@@ -18,17 +18,12 @@ class Station_ReportsCest extends CestAbstract
         $I->amOnPAge('/station/' . $station_id . '/reports/overview');
 
         $I->seeResponseCodeIs(200);
-        $I->see('Statistics Overview');
+        $I->see('Station Statistics');
 
         $I->amOnPage('/station/' . $station_id . '/reports/timeline');
 
         $I->seeResponseCodeIs(200);
         $I->see('Song Playback Timeline');
-
-        $I->amOnPage('/station/' . $station_id . '/reports/performance');
-
-        $I->seeResponseCodeIs(200);
-        $I->see('Song Listener Impact');
 
         $I->amOnPage('/station/' . $station_id . '/reports/requests');
 

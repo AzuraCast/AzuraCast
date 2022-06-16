@@ -7,47 +7,35 @@ namespace App\Controller\Api\Traits;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
-use Carbon\CarbonImmutable;
+use App\Utilities\DateRange;
 use Carbon\CarbonInterface;
-use InvalidArgumentException;
 
 trait HasScheduleDisplay
 {
-    protected function getDateRange(ServerRequest $request): array
+    use AcceptsDateRange;
+
+    protected function getScheduleDateRange(ServerRequest $request): DateRange
     {
         $tz = $request->getStation()->getTimezoneObject();
-        $params = $request->getQueryParams();
+        $dateRange = $this->getDateRange($request, $tz);
 
-        $startDateStr = substr($params['start'], 0, 10);
-        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz);
-
-        if (false === $startDate) {
-            throw new InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
-        }
-
-        $startDate = $startDate->subDay()->startOf('day');
-
-        $endDateStr = substr($params['end'], 0, 10);
-        $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
-
-        if (false === $endDate) {
-            throw new InvalidArgumentException(sprintf('Could not parse end date: "%s"', $endDateStr));
-        }
-
-        $endDate = $endDate->endOf('day');
-
-        return [$startDate, $endDate];
+        return new DateRange(
+            $dateRange->getStart()->subDay()->startOf('day'),
+            $dateRange->getEnd()->endOf('day')
+        );
     }
 
     protected function getEvents(
-        CarbonInterface $startDate,
-        CarbonInterface $endDate,
+        DateRange $dateRange,
         CarbonInterface $now,
         Scheduler $scheduler,
         array $scheduleItems,
         callable $rowRender
     ): array {
         $events = [];
+
+        $startDate = $dateRange->getStart();
+        $endDate = $dateRange->getEnd();
 
         foreach ($scheduleItems as $scheduleItem) {
             /** @var Entity\StationSchedule $scheduleItem */

@@ -259,9 +259,14 @@ class SongHistory implements
         return $this->delta_points;
     }
 
-    public function addDeltaPoint(mixed $delta_point): void
+    public function addDeltaPoint(int $delta_point): void
     {
         $delta_points = (array)$this->delta_points;
+
+        if (0 === count($delta_points)) {
+            $this->setListenersStart($delta_point);
+        }
+
         $delta_points[] = $delta_point;
         $this->delta_points = $delta_points;
     }
@@ -275,6 +280,47 @@ class SongHistory implements
             return !$this->playlist->getIsJingle();
         }
         return true;
+    }
+
+    public function playbackEnded(): void
+    {
+        $this->setTimestampEnd(time());
+
+        $deltaPoints = (array)$this->getDeltaPoints();
+
+        if (0 !== count($deltaPoints)) {
+            $this->setListenersEnd(end($deltaPoints));
+            reset($deltaPoints);
+
+            $deltaPositive = 0;
+            $deltaNegative = 0;
+            $deltaTotal = 0;
+
+            $previousDelta = null;
+            foreach ($deltaPoints as $currentDelta) {
+                if (null !== $previousDelta) {
+                    $deltaDelta = $currentDelta - $previousDelta;
+                    $deltaTotal += $deltaDelta;
+
+                    if ($deltaDelta > 0) {
+                        $deltaPositive += $deltaDelta;
+                    } elseif ($deltaDelta < 0) {
+                        $deltaNegative += (int)abs($deltaDelta);
+                    }
+                }
+
+                $previousDelta = $currentDelta;
+            }
+
+            $this->setDeltaPositive((int)$deltaPositive);
+            $this->setDeltaNegative((int)$deltaNegative);
+            $this->setDeltaTotal((int)$deltaTotal);
+        } else {
+            $this->setListenersEnd(0);
+            $this->setDeltaPositive(0);
+            $this->setDeltaNegative(0);
+            $this->setDeltaTotal(0);
+        }
     }
 
     public function __toString(): string

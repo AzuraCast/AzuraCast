@@ -6,8 +6,8 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Monolog\Logger;
-use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 
 class FeedbackCommand extends AbstractCommand
@@ -16,14 +16,50 @@ class FeedbackCommand extends AbstractCommand
         Logger $logger,
         protected EntityManagerInterface $em,
         protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected CacheInterface $cache
+        protected Entity\Repository\SongHistoryRepository $historyRepo
     ) {
         parent::__construct($logger);
     }
 
-    protected function doRun(Entity\Station $station, bool $asAutoDj = false, array $payload = []): bool
-    {
+    protected function doRun(
+        Entity\Station $station,
+        bool $asAutoDj = false,
+        array $payload = []
+    ): bool {
         // Process extra metadata sent by Liquidsoap (if it exists).
+        try {
+            $historyRow = $this->getSongHistory($station, $payload);
+
+            $this->historyRepo->changeCurrentSong($station, $historyRow);
+
+            $this->em->flush();
+            return true;
+        } catch (Exception $e) {
+            $this->logger->error(
+                sprintf('Liquidsoap feedback error: %s', $e->getMessage()),
+                [
+                    'exception' => $e,
+                ]
+            );
+
+            return false;
+        }
+    }
+
+    private function getSongHistory(
+        Entity\Station $station,
+        array $payload
+    ): Entity\SongHistory {
+        if ($payload['is_live']) {
+            return new Entity\SongHistory(
+                $station,
+                Entity\Song::createFromArray([
+                    'artist' => $payload['artist'] ?? '',
+                    'title' => $payload['title'] ?? '',
+                ])
+            );
+        }
+
         if (empty($payload['media_id'])) {
             throw new RuntimeException('No payload provided.');
         }
@@ -31,6 +67,10 @@ class FeedbackCommand extends AbstractCommand
         $media = $this->em->find(Entity\StationMedia::class, $payload['media_id']);
         if (!$media instanceof Entity\StationMedia) {
             throw new RuntimeException('Media ID does not exist for station.');
+        }
+
+        if (!$this->historyRepo->isDifferentFromCurrentSong($station, $media)) {
+            throw new RuntimeException('Song is not different from current song.');
         }
 
         $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
@@ -48,58 +88,27 @@ class FeedbackCommand extends AbstractCommand
                 }
             }
 
-            $sq->setSentToAutodj();
-            $sq->setTimestampPlayed(time());
-
             $this->em->persist($sq);
             $this->em->flush();
-        } else {
-            // If not, store the feedback information in the temporary cache for later checking.
-            $this->cache->set(
-                $this->getFeedbackCacheName($station),
-                $payload,
-                3600
-            );
-        }
 
-        return true;
-    }
+            $this->queueRepo->trackPlayed($station, $sq);
 
-    public function registerFromFeedback(
-        Entity\Station $station,
-        Entity\Interfaces\SongInterface $song
-    ): ?Entity\SongHistory {
-        $cacheKey = $this->getFeedbackCacheName($station);
+            $sh = Entity\SongHistory::fromQueue($sq);
+            $this->em->persist($sh);
 
-        if (!$this->cache->has($cacheKey)) {
-            return null;
-        }
-
-        $extraMetadata = (array)$this->cache->get($cacheKey);
-        if ($song->getSongId() !== ($extraMetadata['song_id'] ?? null)) {
-            return null;
-        }
-
-        $media = $this->em->find(Entity\StationMedia::class, $extraMetadata['media_id']);
-        if (!$media instanceof Entity\StationMedia) {
-            return null;
+            return $sh;
         }
 
         $history = new Entity\SongHistory($station, $media);
         $history->setMedia($media);
 
-        if (!empty($extraMetadata['playlist_id'])) {
-            $playlist = $this->em->find(Entity\StationPlaylist::class, $extraMetadata['playlist_id']);
+        if (!empty($payload['playlist_id'])) {
+            $playlist = $this->em->find(Entity\StationPlaylist::class, $payload['playlist_id']);
             if ($playlist instanceof Entity\StationPlaylist) {
                 $history->setPlaylist($playlist);
             }
         }
 
         return $history;
-    }
-
-    protected function getFeedbackCacheName(Entity\Station $station): string
-    {
-        return 'liquidsoap.feedback_' . $station->getIdRequired();
     }
 }

@@ -240,7 +240,10 @@ class StationMount implements
 
     public function getRelayUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->relay_url);
+        return Urls::tryParseUserUrl(
+            $this->relay_url,
+            'Mount Point ' . $this->__toString() . ' Relay URL'
+        );
     }
 
     public function setRelayUrl(?string $relay_url = null): void
@@ -312,7 +315,10 @@ class StationMount implements
 
     public function getCustomListenUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->custom_listen_url);
+        return Urls::tryParseUserUrl(
+            $this->custom_listen_url,
+            'Mount Point ' . $this->__toString() . ' Listen URL'
+        );
     }
 
     public function setCustomListenUrl(?string $custom_listen_url = null): void

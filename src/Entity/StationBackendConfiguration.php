@@ -9,6 +9,7 @@ use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\StreamFormats;
 use InvalidArgumentException;
+use LogicException;
 
 class StationBackendConfiguration extends AbstractStationConfiguration
 {
@@ -172,7 +173,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
 
         if (null !== $method && null === AudioProcessingMethods::tryFrom($method)) {
-            throw new \InvalidArgumentException('Invalid audio processing method specified.');
+            throw new InvalidArgumentException('Invalid audio processing method specified.');
         }
 
         $this->set(self::AUDIO_PROCESSING_METHOD, $method);
@@ -306,6 +307,18 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
     }
 
+    public const HLS_SEGMENT_LENGTH = 'hls_segment_length';
+
+    public function getHlsSegmentLength(): int
+    {
+        return $this->get(self::HLS_SEGMENT_LENGTH, 4);
+    }
+
+    public function setHlsSegmentLength(?int $length): void
+    {
+        $this->set(self::HLS_SEGMENT_LENGTH, $length);
+    }
+
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
@@ -330,7 +343,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         $allSections = self::getCustomConfigurationSections();
         if (!in_array($section, $allSections, true)) {
-            throw new \LogicException('Invalid custom configuration section.');
+            throw new LogicException('Invalid custom configuration section.');
         }
 
         return $this->get($section);
@@ -340,7 +353,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         $allSections = self::getCustomConfigurationSections();
         if (!in_array($section, $allSections, true)) {
-            throw new \LogicException('Invalid custom configuration section.');
+            throw new LogicException('Invalid custom configuration section.');
         }
 
         $this->set($section, $value);

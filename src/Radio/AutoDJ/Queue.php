@@ -43,7 +43,7 @@ class Queue
         $expectedCueTime = CarbonImmutable::now($tzObject);
 
         // Get expected play time of each item.
-        $currentSong = $this->historyRepo->getCurrent($station);
+        $currentSong = $station->getCurrentSong();
         if (null !== $currentSong) {
             $expectedPlayTime = $this->addDurationToTime(
                 $station,

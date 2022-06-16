@@ -10,23 +10,27 @@ import {Chart} from 'chart.js';
 import {Tableau20} from '~/vendor/chartjs-colorschemes/colorschemes.tableau.js';
 
 export default {
-    name: 'DayOfWeekChart',
+    name: 'PieChart',
     inheritAttrs: true,
     props: {
         options: Object,
         data: Array,
-        labels: Array
+        labels: Array,
+        aspectRatio: {
+            type: Number,
+            default: 2
+        }
     },
-    data () {
+    data() {
         return {
             _chart: null
         };
     },
-    mounted () {
+    mounted() {
         this.renderChart();
     },
     methods: {
-        renderChart () {
+        renderChart() {
             const defaultOptions = {
                 type: 'pie',
                 data: {
@@ -34,7 +38,7 @@ export default {
                     datasets: this.data
                 },
                 options: {
-                    aspectRatio: 4,
+                    aspectRatio: this.aspectRatio,
                     plugins: {
                         colorschemes: {
                             scheme: Tableau20
@@ -50,7 +54,7 @@ export default {
             this._chart = new Chart(this.$refs.canvas.getContext('2d'), chartOptions);
         }
     },
-    beforeDestroy () {
+    beforeDestroy() {
         if (this._chart) {
             this._chart.destroy();
         }

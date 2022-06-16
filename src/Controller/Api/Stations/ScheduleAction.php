@@ -74,18 +74,17 @@ final class ScheduleAction
         $queryParams = $request->getQueryParams();
 
         if (isset($queryParams['start'])) {
-            [$startDate, $endDate] = $this->getDateRange($request);
+            $dateRange = $this->getScheduleDateRange($request);
 
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_'
-                . $startDate->format('Ymd') . '-'
-                . $endDate->format('Ymd');
+                . $dateRange->getStart()->format('Ymd') . '-'
+                . $dateRange->getEnd()->format('Ymd');
 
             $events = $this->cache->get(
                 $cacheKey,
                 function (CacheItem $item) use (
                     $station,
-                    $startDate,
-                    $endDate
+                    $dateRange
                 ) {
                     $item->expiresAfter(600);
 
@@ -93,8 +92,7 @@ final class ScheduleAction
                     $events = $this->scheduleRepo->getAllScheduledItemsForStation($station);
 
                     return $this->getEvents(
-                        $startDate,
-                        $endDate,
+                        $dateRange,
                         $nowTz,
                         $this->scheduler,
                         $events,

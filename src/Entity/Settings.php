@@ -76,18 +76,25 @@ class Settings implements Stringable
 
     public function getBaseUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->base_url);
+        return Urls::tryParseUserUrl(
+            $this->base_url,
+            'System Base URL',
+        );
     }
 
     public function setBaseUrl(?string $baseUrl): void
     {
-        if (null === $baseUrl) {
+        if (empty($baseUrl)) {
             $this->base_url = null;
             return;
         }
 
         // Filter the base URL to avoid trailing slashes and other problems.
-        $baseUri = new Uri($baseUrl);
+        $baseUri = Urls::parseUserUrl(
+            $baseUrl,
+            'System Base URL'
+        );
+
         if ('' === $baseUri->getScheme()) {
             $baseUri = $baseUri->withScheme('http');
         }
@@ -375,7 +382,10 @@ class Settings implements Stringable
 
     public function getHomepageRedirectUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->homepage_redirect_url);
+        return Urls::tryParseUserUrl(
+            $this->homepage_redirect_url,
+            'Homepage Redirect URL',
+        );
     }
 
     public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
@@ -397,7 +407,10 @@ class Settings implements Stringable
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
     {
-        return Urls::getUri($this->default_album_art_url);
+        return Urls::tryParseUserUrl(
+            $this->default_album_art_url,
+            'Default Album Art URL',
+        );
     }
 
     public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
@@ -1004,6 +1017,40 @@ class Settings implements Stringable
     public function setAvatarDefaultUrl(?string $avatarDefaultUrl): void
     {
         $this->avatar_default_url = $avatarDefaultUrl;
+    }
+
+    #[
+        OA\Property(description: "ACME (LetsEncrypt) e-mail address.", example: ""),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
+    protected ?string $acme_email = null;
+
+    public function getAcmeEmail(): ?string
+    {
+        return $this->acme_email;
+    }
+
+    public function setAcmeEmail(?string $acme_email): void
+    {
+        $this->acme_email = $acme_email;
+    }
+
+    #[
+        OA\Property(description: "ACME (LetsEncrypt) domain name(s).", example: ""),
+        ORM\Column(length: 255, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
+    protected ?string $acme_domains = null;
+
+    public function getAcmeDomains(): ?string
+    {
+        return $this->acme_domains;
+    }
+
+    public function setAcmeDomains(?string $acme_domains): void
+    {
+        $this->acme_domains = $acme_domains;
     }
 
     public function __toString(): string

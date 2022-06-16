@@ -76,6 +76,18 @@ final class StationRepository extends Repository
     }
 
     /**
+     * @return iterable<Entity\Station>
+     */
+    public function iterateEnabledStations(): iterable
+    {
+        return $this->em->createQuery(
+            <<<DQL
+            SELECT s FROM App\Entity\Station s WHERE s.is_enabled = 1
+            DQL
+        )->toIterable();
+    }
+
+    /**
      * @param string $short_code
      */
     public function findByShortCode(string $short_code): ?Entity\Station

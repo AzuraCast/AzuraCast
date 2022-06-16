@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
+use App\Http\Router;
+use App\Radio\Enums\BackendAdapters;
+use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
@@ -21,7 +24,8 @@ class NowPlayingApiGenerator
         protected Entity\Repository\SongHistoryRepository $historyRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
-        protected EventDispatcherInterface $eventDispatcher
+        protected EventDispatcherInterface $eventDispatcher,
+        protected Router $router,
     ) {
     }
 
@@ -45,37 +49,25 @@ class NowPlayingApiGenerator
             unique: $npResult->listeners->unique
         );
 
-        // Pull from current NP data if song details haven't changed .
-        if (
-            $npOld instanceof Entity\Api\NowPlaying\NowPlaying
-            && $this->tracksMatch($npResult->currentSong, $npOld->now_playing?->song->id)
-        ) {
-            $previousHistory = $this->historyRepo->getCurrent($station);
+        $updateSongFromNowPlaying = (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum());
 
-            if (null === $previousHistory) {
-                $previousHistory = ($npOld->now_playing?->song)
-                    ? Entity\Song::createFromApiSong($npOld->now_playing->song)
-                    : Entity\Song::createOffline();
-            }
-
-            $sh_obj = $this->historyRepo->register($previousHistory, $station, $np);
-
-            $np->song_history = $npOld->song_history;
-        } else {
-            // SongHistory registration must ALWAYS come before the history/nextsong calls
-            // otherwise they will not have up-to-date database info!
-            $sh_obj = $this->historyRepo->register(
-                Entity\Song::createFromNowPlayingSong($npResult->currentSong),
+        try {
+            $sh_obj = $this->historyRepo->updateFromNowPlaying(
                 $station,
-                $np
+                $np->listeners->current,
+                ($updateSongFromNowPlaying)
+                    ? Entity\Song::createFromNowPlayingSong($npResult->currentSong)
+                    : null
             );
-
-            $np->song_history = $this->songHistoryApiGenerator->fromArray(
-                $this->historyRepo->getVisibleHistory($station),
-                $baseUri,
-                true
-            );
+        } catch (Exception) {
+            return $this->offlineApi($station, $baseUri);
         }
+
+        $np->song_history = $this->songHistoryApiGenerator->fromArray(
+            $this->historyRepo->getVisibleHistory($station),
+            $baseUri,
+            true
+        );
 
         $nextVisibleSong = $this->queueRepo->getNextVisible($station);
         if (null === $nextVisibleSong) {
@@ -89,17 +81,29 @@ class NowPlayingApiGenerator
         }
 
         // Detect and report live DJ status
-        if ($station->getIsStreamerLive()) {
-            $current_streamer = $station->getCurrentStreamer();
-            $streamer_name = ($current_streamer instanceof Entity\StationStreamer)
-                ? $current_streamer->getDisplayName()
-                : 'Live DJ';
+        $currentStreamer = $station->getCurrentStreamer();
 
+        if (null !== $currentStreamer) {
             $broadcastStart = $this->broadcastRepo->getLatestBroadcast($station)?->getTimestampStart();
 
-            $np->live = new Entity\Api\NowPlaying\Live(true, $streamer_name, $broadcastStart);
+            $live = new Entity\Api\NowPlaying\Live();
+            $live->is_live = true;
+            $live->streamer_name = $currentStreamer->getDisplayName();
+            $live->broadcast_start = $broadcastStart;
+
+            if (0 !== $currentStreamer->getArtUpdatedAt()) {
+                $live->art = $this->router->named(
+                    route_name: 'api:stations:streamer:art',
+                    route_params: [
+                        'station_id' => $station->getIdRequired(),
+                        'streamer_id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
+                    ],
+                );
+            }
+
+            $np->live = $live;
         } else {
-            $np->live = new Entity\Api\NowPlaying\Live(false);
+            $np->live = new Entity\Api\NowPlaying\Live();
         }
 
         $apiSongHistory = ($this->songHistoryApiGenerator)(
@@ -169,7 +173,7 @@ class NowPlayingApiGenerator
             );
         }
 
-        $np->live = new Entity\Api\NowPlaying\Live(false);
+        $np->live = new Entity\Api\NowPlaying\Live();
 
         $np->update();
         return $np;

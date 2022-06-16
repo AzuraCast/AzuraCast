@@ -33,9 +33,9 @@ class EnvFile extends AbstractEnvFile
                     'required' => true,
                 ],
                 'AZURACAST_VERSION' => [
-                    'name'     => __('Release Channel'),
-                    'options'  => ['latest', 'stable'],
-                    'default'  => 'latest',
+                    'name' => __('Release Channel'),
+                    'options' => ['latest', 'stable'],
+                    'default' => 'latest',
                     'required' => true,
                 ],
                 'AZURACAST_HTTP_PORT' => [
@@ -83,20 +83,6 @@ class EnvFile extends AbstractEnvFile
                 'AZURACAST_COMPOSE_PRIVILEGED' => [
                     'name' => __('Advanced: Use Privileged Docker Settings'),
                     'default' => true,
-                ],
-                'LETSENCRYPT_HOST' => [
-                    'name'        => __('LetsEncrypt Domain Name(s)'),
-                    'default'     => '',
-                    'description' => __(
-                        'Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt.'
-                    ),
-                ],
-                'LETSENCRYPT_EMAIL' => [
-                    'name'        => __('LetsEncrypt E-mail Address'),
-                    'default'     => '',
-                    'description' => __(
-                        'Optionally provide an e-mail address for updates from LetsEncrypt.',
-                    ),
                 ],
             ];
         }

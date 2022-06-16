@@ -21,15 +21,18 @@ class Api_Stations_ReportsCest extends CestAbstract
         $uriBase = '/api/station/' . $station->getId();
 
         $I->sendGet($uriBase . '/reports/overview/charts');
-
         $I->seeResponseCodeIs(200);
 
         $I->sendGet($uriBase . '/reports/overview/best-and-worst');
-
         $I->seeResponseCodeIs(200);
 
-        $I->sendGet($uriBase . '/reports/overview/most-played');
+        $I->sendGet($uriBase . '/reports/overview/by-stream');
+        $I->seeResponseCodeIs(200);
 
+        $I->sendGet($uriBase . '/reports/overview/by-browser');
+        $I->seeResponseCodeIs(200);
+
+        $I->sendGet($uriBase . '/reports/overview/by-country');
         $I->seeResponseCodeIs(200);
     }
 
@@ -111,35 +114,6 @@ class Api_Stations_ReportsCest extends CestAbstract
             'Artist',
             'Playlist',
             'Streamer',
-        ];
-
-        $this->testReportCsv($I, $requestUrl, $csvHeaders);
-    }
-
-    /**
-     * @before setupComplete
-     * @before login
-     */
-    public function downloadPerformanceReportCsv(\FunctionalTester $I): void
-    {
-        $I->wantTo('Download station song impact CSV via API.');
-
-        $station = $this->getTestStation();
-        $uriBase = '/api/station/' . $station->getId();
-        $requestUrl = $uriBase . '/reports/performance?format=csv';
-
-        $csvHeaders = [
-            'Song Title',
-            'Song Artist',
-            'Filename',
-            'Length',
-            'Current Playlist',
-            'Delta Joins',
-            'Delta Losses',
-            'Delta Total',
-            'Play Count',
-            'Play Percentage',
-            'Weighted Ratio',
         ];
 
         $this->testReportCsv($I, $requestUrl, $csvHeaders);

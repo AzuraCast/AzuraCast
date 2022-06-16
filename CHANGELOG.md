@@ -5,15 +5,55 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features/changes since the last stable release.
-
 ## Code Quality/Technical Changes
-
-There have been no code quality/technical changes since the last stable release.
 
 ## Bug Fixes
 
-There have been no new bug fixes since the last stable release.
+---
+
+# AzuraCast 0.17.1 (Jun 16, 2022)
+
+## New Features/Changes
+
+- **Statistics Overhaul**: We've improved and expanded the reporting tools available to stations. The following reports
+  are now available under a unified "Station Statistics" page; for each of these reports, you can specify a custom date
+  range to narrow results:
+    - Best/Worst Performing and Most Played Songs (All analytics levels)
+    - Listeners by Day/Day of Week/Hour (All analytics levels)
+    - Listeners by Total Listening Time (All analytics levels)
+    - Listeners by Stream, i.e. Mount Point/Relay (All analytics levels)
+    - Listeners by Client, i.e. Mobile/Desktop/Crawler/etc. (Full analytics only)
+    - Listeners by Browser Family, i.e. Chrome/Firefox/etc. (Full analytics only)
+    - Listeners by Country (Full analytics only)
+
+- **LetsEncrypt via the Web**: We now support configuring LetsEncrypt via the web interface. If you had previously set
+  up LetsEncrypt via the command line, your settings will be imported automatically. This update also adds LetsEncrypt
+  support for Ansible installations. Note: If you are mounting a custom SSL certificate, the mounting locations have
+  been updated to the following:
+    - Full chain certificate: `/var/azuracast/acme/ssl.crt`
+    - Private Key: `/var/azuracast/acme/ssl.key`
+
+- When a live DJ disconnects, the AutoDJ will automatically skip to the next available track when resuming the regular
+  broadcast.
+
+## Code Quality/Technical Changes
+
+- For stations using Liquidsoap, we now use the now-playing track information sent to us by Liquidsoap as the
+  authoritative source of the currently playing track. This should remove a significant number of issues with
+  Icecast/Shoutcast mangling song names and causing mismatches within our system. For non-Liquidsoap station operators,
+  the currently playing song is still based on what is reported by Icecast/Shoutcast.
+
+- Automated station playlist assignment (and the corresponding Song Performance Report) is being retired. Internally,
+  this functionality was not well-explained, and likely does not work the way station operators expect it to. With the
+  upcoming development of new, better reporting tools, this functionality will no longer be required.
+
+## Bug Fixes
+
+- Performance should be improved on several site components that previously were supposed to "lazy-load" their sub-items
+  but did not properly do so.
+
+- The incidence of "Malformed URI" exceptions should be greatly reduced, and if they occur the system will log what URL
+  is causing the problem.
 
 ---
 
@@ -54,7 +94,8 @@ There have been no new bug fixes since the last stable release.
 
 - We can now write custom Nginx configuration on a per-station basis and automatically reload it on-the-fly without
   losing any active connections. This allows us to replace our standard `/radio/8000` web proxy URLs with
-  station-specific `/listen/station_name` ones, among other improvements.
+  station-specific `/listen/station_name` ones, among other improvements. If you are already using the
+  older `/radio/8000`-style URLs, those will continue to work, and we have no plans to retire them in the near future.
 
 - Since AzuraCast's services are all now accessible via `localhost`, several connections have been switched from TCP/IP
   to using Unix domain socket files. This not only reduces the number of used ports but improves performance.

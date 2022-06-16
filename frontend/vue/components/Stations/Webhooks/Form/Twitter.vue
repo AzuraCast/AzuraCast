@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="title">
+    <div>
         <b-form-group>
             <template #label>
                 <translate key="lang_twitter_instructions_hdr">Twitter Account Details</translate>
@@ -80,7 +80,7 @@
                 </b-wrapped-form-group>
             </b-form-row>
         </b-form-group>
-    </b-tab>
+    </div>
 </template>
 
 <script>
@@ -91,7 +91,6 @@ export default {
     name: 'Twitter',
     components: {CommonFormattingInfo, BWrappedFormGroup},
     props: {
-        title: String,
         form: Object
     },
     computed: {

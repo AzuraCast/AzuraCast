@@ -13,26 +13,6 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:index')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->group(
-                '/automation',
-                function (RouteCollectorProxy $group) {
-                    $group->get(
-                        '/settings',
-                        Controller\Api\Stations\Automation\GetSettingsAction::class
-                    )->setName('api:stations:automation:settings');
-
-                    $group->put(
-                        '/settings',
-                        Controller\Api\Stations\Automation\PutSettingsAction::class
-                    );
-
-                    $group->put(
-                        '/run',
-                        Controller\Api\Stations\Automation\RunAction::class
-                    )->setName('api:stations:automation:run');
-                }
-            )->add(new Middleware\Permissions(StationPermissions::Automation, true));
-
             $group->get('/nowplaying', Controller\Api\NowPlayingAction::class . ':indexAction');
 
             $group->map(
@@ -518,11 +498,6 @@ return static function (RouteCollectorProxy $group) {
                     )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
                     $group->get(
-                        '/performance',
-                        Controller\Api\Stations\Reports\PerformanceAction::class
-                    )->setName('api:stations:reports:performance');
-
-                    $group->get(
                         '/overview/charts',
                         Controller\Api\Stations\Reports\Overview\ChartsAction::class
                     )->setName('api:stations:reports:overview-charts');
@@ -533,9 +508,29 @@ return static function (RouteCollectorProxy $group) {
                     )->setName('api:stations:reports:best-and-worst');
 
                     $group->get(
-                        '/overview/most-played',
-                        Controller\Api\Stations\Reports\Overview\MostPlayedAction::class
-                    )->setName('api:stations:reports:most-played');
+                        '/overview/by-browser',
+                        Controller\Api\Stations\Reports\Overview\ByBrowser::class
+                    )->setName('api:stations:reports:by-browser');
+
+                    $group->get(
+                        '/overview/by-country',
+                        Controller\Api\Stations\Reports\Overview\ByCountry::class
+                    )->setName('api:stations:reports:by-country');
+
+                    $group->get(
+                        '/overview/by-stream',
+                        Controller\Api\Stations\Reports\Overview\ByStream::class
+                    )->setName('api:stations:reports:by-stream');
+
+                    $group->get(
+                        '/overview/by-client',
+                        Controller\Api\Stations\Reports\Overview\ByClient::class
+                    )->setName('api:stations:reports:by-client');
+
+                    $group->get(
+                        '/overview/by-listening-time',
+                        Controller\Api\Stations\Reports\Overview\ByListeningTime::class
+                    )->setName('api:stations:reports:by-listening-time');
 
                     $group->get(
                         '/soundexchange',

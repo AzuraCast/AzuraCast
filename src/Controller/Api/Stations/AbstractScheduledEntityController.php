@@ -41,12 +41,12 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         array $scheduleItems,
         callable $rowRender
     ): ResponseInterface {
-        [$startDate, $endDate] = $this->getDateRange($request);
+        $dateRange = $this->getScheduleDateRange($request);
 
         $station = $request->getStation();
         $now = CarbonImmutable::now($station->getTimezoneObject());
 
-        $events = $this->getEvents($startDate, $endDate, $now, $this->scheduler, $scheduleItems, $rowRender);
+        $events = $this->getEvents($dateRange, $now, $this->scheduler, $scheduleItems, $rowRender);
         return $response->withJson($events);
     }
 

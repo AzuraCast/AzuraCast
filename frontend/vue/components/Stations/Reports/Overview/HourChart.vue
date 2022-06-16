@@ -16,16 +16,16 @@ export default {
         data: Array,
         labels: Array
     },
-    data () {
+    data() {
         return {
             _chart: null
         };
     },
-    mounted () {
+    mounted() {
         this.renderChart();
     },
     methods: {
-        renderChart () {
+        renderChart() {
             const defaultOptions = {
                 type: 'bar',
                 data: {
@@ -33,7 +33,7 @@ export default {
                     datasets: this.data
                 },
                 options: {
-                    aspectRatio: 4,
+                    aspectRatio: 2,
                     plugins: {
                         colorschemes: {
                             scheme: Tableau20
@@ -65,7 +65,7 @@ export default {
             this._chart = new Chart(this.$refs.canvas.getContext('2d'), chartOptions);
         }
     },
-    beforeDestroy () {
+    beforeDestroy() {
         if (this._chart) {
             this._chart.destroy();
         }

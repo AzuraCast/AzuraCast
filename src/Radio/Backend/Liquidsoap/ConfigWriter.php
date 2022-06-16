@@ -140,8 +140,12 @@ class ConfigWriter implements EventSubscriberInterface
             autodj_ping_attempts = ref(0)
             ignore(autodj_ping_attempts)
             
-            # Track live-enabled status script-wide for fades.
+            # Track live-enabled status.
             live_enabled = ref(false)
+            ignore(live_enabled)
+            
+            # Track live transition for crossfades.
+            to_live = ref(false)
             ignore(live_enabled)
             EOF
         );
@@ -272,6 +276,8 @@ class ConfigWriter implements EventSubscriberInterface
         $scheduleSwitchesInterrupting = [];
         $scheduleSwitchesRemoteUrl = [];
 
+        $fallbackRemoteUrl = null;
+
         foreach ($station->getPlaylists() as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
@@ -322,27 +328,29 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
             } else {
                 // Special handling for Remote Stream URLs.
-                $remote_url = $playlist->getRemoteUrl();
-                if (null === $remote_url) {
+                $remoteUrl = $playlist->getRemoteUrl();
+                if (null === $remoteUrl) {
                     continue;
                 }
 
                 $buffer = $playlist->getRemoteBuffer();
                 $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $inputFunc = (str_ends_with($remote_url, 'm3u8'))
+                $inputFunc = (str_ends_with($remoteUrl, 'm3u8'))
                     ? 'input.hls'
                     : 'input.http';
 
-                $playlistConfigLines[] = $playlistVarName . ' = mksafe(buffer(buffer=' . $buffer . '., '
-                    . $inputFunc . '("' . self::cleanUpString($remote_url) . '")))';
+                $remoteUrlFunc = 'mksafe(buffer(buffer=' . $buffer . '., '
+                    . $inputFunc . '("' . self::cleanUpString($remoteUrl) . '")))';
 
                 if (0 === $scheduleItems->count()) {
-                    // We cannot play unscheduled remote URL playlists.
+                    $fallbackRemoteUrl = $remoteUrlFunc;
                     continue;
                 }
 
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $remoteUrlFunc;
                 $event->appendLines($playlistConfigLines);
+
                 foreach ($scheduleItems as $scheduleItem) {
                     $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
@@ -561,6 +569,16 @@ class ConfigWriter implements EventSubscriberInterface
             );
         }
 
+        // Handle remote URL fallbacks.
+        if (null !== $fallbackRemoteUrl) {
+            $event->appendBlock(
+                <<< EOF
+                remote_url = {$fallbackRemoteUrl}
+                radio = fallback(id="fallback_remote_url", track_sensitive = false, [remote_url, radio])
+                EOF
+            );
+        }
+
         $requestsQueueName = LiquidsoapQueues::Requests->value;
         $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
@@ -720,15 +738,30 @@ class ConfigWriter implements EventSubscriberInterface
         $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeIsSmart = (CrossfadeModes::Smart === $crossfadeType) ? 'true' : 'false';
-            $event->appendLines([
-                sprintf(
-                    'radio = crossfade(smart=%1$s, duration=%2$s, fade_out=%3$s, fade_in=%3$s, radio)',
-                    $crossfadeIsSmart,
-                    self::toFloat($crossDuration),
-                    self::toFloat($crossfade)
-                ),
-            ]);
+            $crossfadeDuration = self::toFloat($crossfade);
+            if (CrossfadeModes::Smart === $crossfadeType) {
+                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfadeDuration
+                    . ', fade_out=' . $crossfadeDuration . ')';
+            } else {
+                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfadeDuration
+                    . ', fade_out=' . $crossfadeDuration . ')';
+            }
+
+            $event->appendBlock(
+                <<<LS
+                def live_aware_crossfade(old, new) =
+                    if !to_live then
+                        # If going to the live show, play a simple sequence
+                        sequence([fade.out(old.source),fade.in(new.source)])
+                    else
+                        # Otherwise, use the smart transition
+                        {$crossfadeFunc}
+                    end
+                end
+                
+                radio = cross(live_aware_crossfade, radio)
+                LS
+            );
         }
     }
 
@@ -835,14 +868,29 @@ class ConfigWriter implements EventSubscriberInterface
             
             def insert_missing(m) =
                 if m == [] then
-                    [("title", "Live Broadcast")]
+                    [("title", "Live Broadcast"), ("is_live", "true")]
                 else
-                    m
+                    [("is_live", "true")]
                 end
             end
             live = map_metadata(insert_missing, live)
             
-            radio = fallback(id="live_fallback", replay_metadata=true, track_sensitive=false, [live, radio])
+            radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
+            
+            # Skip non-live track when live DJ goes live. 
+            def check_live() =
+                if live.is_ready() then
+                    if not !to_live then
+                        to_live := true
+                        radio_without_live.skip()
+                    end
+                else
+                    to_live := false
+                end
+            end
+            
+            # Continuously check on live.
+            radio = source.on_frame(radio, check_live)
             EOF
         );
 
@@ -961,6 +1009,7 @@ class ConfigWriter implements EventSubscriberInterface
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_title = ref("")
             last_artist = ref("")
+            last_song_id = ref("")
             
             def handle_jingle_mode(m) = 
                 if (m["jingle_mode"] == "true") then
@@ -976,16 +1025,31 @@ class ConfigWriter implements EventSubscriberInterface
             # Send metadata changes back to AzuraCast
             def metadata_updated(m) =
                 def f() =
-                    if (m["song_id"] != "") then
+                    if (m["is_live"] == "true") then
                         j = json()
-                        j.add("song_id", m["song_id"])
-                        j.add("media_id", m["media_id"])
-                        j.add("playlist_id", m["playlist_id"])
-                    
+                        j.add("is_live", true)
+                        j.add("artist", m["artist"])
+                        j.add("title", m["title"])
+                        
                         _ = azuracast_api_call(
                             "feedback",
                             json.stringify(j)
-                        )
+                        )                                        
+                    else
+                        if (m["song_id"] != "" and m["song_id"] != !last_song_id) then
+                            last_song_id := m["song_id"]
+                            
+                            j = json()
+                            j.add("is_live", false)
+                            j.add("song_id", m["song_id"])
+                            j.add("media_id", m["media_id"])
+                            j.add("playlist_id", m["playlist_id"])
+                        
+                            _ = azuracast_api_call(
+                                "feedback",
+                                json.stringify(j)
+                            )
+                        end
                     end
                 end
                 
@@ -1084,17 +1148,18 @@ class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $hlsBaseDir = $station->getRadioHlsDir();
+        $hlsSegmentLength = $station->getBackendConfig()->getHlsSegmentLength();
 
         $event->appendBlock(
             <<<LS
             def hls_segment_name(~position,~extname,stream_name) =
                 timestamp = int_of_float(time())
-                duration = 4
+                duration = {$hlsSegmentLength}
                 "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
             end
             
             output.file.hls(playlist="live.m3u8",
-                segment_duration=4.0,
+                segment_duration={$hlsSegmentLength}.0,
                 segments=5,
                 segments_overhead=5,
                 segment_name=hls_segment_name,

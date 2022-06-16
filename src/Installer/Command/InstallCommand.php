@@ -241,23 +241,6 @@ class InstallCommand extends Command
                 $env['AZURACAST_STATION_PORTS'] = implode(',', $stationPorts);
             }
 
-            $customizeLetsEncrypt = $io->confirm(
-                __('Set up LetsEncrypt?'),
-                false
-            );
-
-            if ($customizeLetsEncrypt) {
-                $env['LETSENCRYPT_HOST'] = $io->ask(
-                    $envConfig['LETSENCRYPT_HOST']['description'],
-                    $env['LETSENCRYPT_HOST'] ?? ''
-                );
-
-                $env['LETSENCRYPT_EMAIL'] = $io->ask(
-                    $envConfig['LETSENCRYPT_EMAIL']['description'],
-                    $env['LETSENCRYPT_EMAIL'] ?? ''
-                );
-            }
-
             $azuracastEnv['COMPOSER_PLUGIN_MODE'] = $io->confirm(
                 $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
                 $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)

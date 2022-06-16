@@ -22,22 +22,31 @@ final class OverviewAction
         string $station_id
     ): ResponseInterface {
         // Get current analytics level.
-        if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
+        $settings = $this->settingsRepo->readSettings();
+
+        if (!$settings->isAnalyticsEnabled()) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
             return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
         }
 
         $router = $request->getRouter();
+        $analyticsLevel = $settings->getAnalyticsEnum();
 
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Vue_StationsReportsOverview',
             id: 'vue-reports-overview',
-            title: __('Statistics Overview'),
+            title: __('Station Statistics'),
             props: [
-                'chartsUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
+                'stationTz' => $request->getStation()->getTimezone(),
+                'showFullAnalytics' => Entity\Enums\AnalyticsLevel::All === $analyticsLevel,
+                'listenersByTimePeriodUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
                 'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),
-                'mostPlayedUrl' => (string)$router->fromHere('api:stations:reports:most-played'),
+                'byStreamUrl' => (string)$router->fromHere('api:stations:reports:by-stream'),
+                'byBrowserUrl' => (string)$router->fromHere('api:stations:reports:by-browser'),
+                'byCountryUrl' => (string)$router->fromHere('api:stations:reports:by-country'),
+                'byClientUrl' => (string)$router->fromHere('api:stations:reports:by-client'),
+                'listeningTimeUrl' => (string)$router->fromHere('api:stations:reports:by-listening-time'),
             ]
         );
     }

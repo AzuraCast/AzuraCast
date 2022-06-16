@@ -4,7 +4,7 @@
             <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title" key="lang_queue" v-translate>Song Requests</h2>
             </b-card-header>
-            <b-tabs pills card lazy>
+            <b-tabs pills card>
                 <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
                        :title="tab.title" no-body></b-tab>
             </b-tabs>

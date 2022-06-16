@@ -27,11 +27,11 @@
     - beanstalkd
     - sftpgo
     - mariadb
-    - azuracast-db-install
     - ufw
     - dbip
     - composer
     - services
+    - azuracast-db-install
     - azuracast-build
     - azuracast-setup
     - azuracast-cron

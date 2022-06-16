@@ -7,6 +7,7 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Carbon\CarbonImmutable;
+use RuntimeException;
 
 /**
  * @extends AbstractStationBasedRepository<Entity\SongHistory>
@@ -76,7 +77,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         }
 
         if (null === $currentSong) {
-            throw new \RuntimeException('No track to update.');
+            throw new RuntimeException('No track to update.');
         }
 
         $currentSong->addDeltaPoint($listeners);

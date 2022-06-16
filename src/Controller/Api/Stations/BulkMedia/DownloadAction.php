@@ -11,6 +11,7 @@ use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 final class DownloadAction
 {
@@ -52,7 +53,7 @@ final class DownloadAction
         $filename = $station->getShortName() . '_all_media.csv';
 
         if (!($tempFile = tmpfile())) {
-            throw new \RuntimeException('Could not create temp file.');
+            throw new RuntimeException('Could not create temp file.');
         }
         $csv = Writer::createFromStream($tempFile);
 

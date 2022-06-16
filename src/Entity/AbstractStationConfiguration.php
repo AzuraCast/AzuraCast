@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-abstract class AbstractStationConfiguration implements \JsonSerializable
+use JsonSerializable;
+use ReflectionClassConstant;
+use ReflectionObject;
+
+abstract class AbstractStationConfiguration implements JsonSerializable
 {
     public function __construct(
         private array $data = []
@@ -13,16 +17,16 @@ abstract class AbstractStationConfiguration implements \JsonSerializable
 
     public function toArray(): array
     {
-        $reflClass = new \ReflectionObject($this);
+        $reflClass = new ReflectionObject($this);
 
         $return = [];
-        foreach ($reflClass->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $constantVal) {
+        foreach ($reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC) as $constantVal) {
             $return[(string)$constantVal] = $this->get($constantVal);
         }
         return $return;
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

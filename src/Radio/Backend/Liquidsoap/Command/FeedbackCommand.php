@@ -6,6 +6,7 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Monolog\Logger;
 use RuntimeException;
 
@@ -33,7 +34,7 @@ class FeedbackCommand extends AbstractCommand
 
             $this->em->flush();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error(
                 sprintf('Liquidsoap feedback error: %s', $e->getMessage()),
                 [

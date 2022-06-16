@@ -14,6 +14,7 @@ use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use App\Service\Flow\UploadedFile;
 use Carbon\CarbonInterface;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -321,7 +322,7 @@ final class StreamersController extends AbstractScheduledEntityController
     protected function deleteRecord(object $record): void
     {
         if (!($record instanceof Entity\StationStreamer)) {
-            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $this->streamerRepo->delete($record);

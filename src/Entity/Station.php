@@ -497,7 +497,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
 
         $config = $frontend_config->toArray();
-        if ($this->frontend_config != $config) {
+        if ($this->frontend_config !== $config) {
             $this->setNeedsRestart(true);
         }
         $this->frontend_config = $config;
@@ -560,7 +560,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
         $config = $backend_config->toArray();
 
-        if ($this->backend_config != $config) {
+        if ($this->backend_config !== $config) {
             $this->setNeedsRestart(true);
         }
 

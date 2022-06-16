@@ -9,6 +9,7 @@ use App\Nginx\CustomUrls;
 use App\Radio\AbstractAdapter;
 use App\Radio\Enums\StreamFormats;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 
 abstract class AbstractBackend extends AbstractAdapter
 {
@@ -60,7 +61,7 @@ abstract class AbstractBackend extends AbstractAdapter
     public function getHlsUrl(Entity\Station $station, UriInterface $baseUrl = null): UriInterface
     {
         if (!$this->supportsHls()) {
-            throw new \RuntimeException('Cannot generate HLS URL.');
+            throw new RuntimeException('Cannot generate HLS URL.');
         }
 
         $baseUrl ??= $this->router->getBaseUrl();

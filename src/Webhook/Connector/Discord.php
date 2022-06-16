@@ -6,7 +6,7 @@ namespace App\Webhook\Connector;
 
 use App\Entity;
 use GuzzleHttp\Exception\TransferException;
-use Monolog\Logger;
+use Monolog\Level;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook
@@ -144,7 +144,7 @@ class Discord extends AbstractConnector
             );
 
             $this->logger->addRecord(
-                ($response->getStatusCode() !== 204 ? Logger::ERROR : Logger::DEBUG),
+                ($response->getStatusCode() !== 204 ? Level::Error : Level::Debug),
                 sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
                 ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
             );

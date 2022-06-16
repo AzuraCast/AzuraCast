@@ -6,6 +6,7 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Service\Acme;
+use Exception;
 use Psr\Log\LoggerInterface;
 
 final class RenewAcmeCertTask extends AbstractTask
@@ -27,7 +28,7 @@ final class RenewAcmeCertTask extends AbstractTask
     {
         try {
             $this->acme->getCertificate();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->warning(
                 sprintf('ACME Failed: %s', $e->getMessage()),
                 [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lock;
 
 use App\Environment;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\LockFactory as SymfonyLockFactory;
@@ -44,7 +45,7 @@ class LockFactory extends SymfonyLockFactory
             try {
                 $lock->release();
                 $lock->acquire(true);
-            } catch (\Exception) {
+            } catch (Exception) {
                 return false;
             }
         } elseif (!$lock->acquire()) {

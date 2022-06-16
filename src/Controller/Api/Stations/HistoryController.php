@@ -18,6 +18,7 @@ use Doctrine\ORM\Query;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 #[
     OA\Get(
@@ -147,7 +148,7 @@ final class HistoryController
         string $filename
     ): ResponseInterface {
         if (!($tempFile = tmpfile())) {
-            throw new \RuntimeException('Could not create temp file.');
+            throw new RuntimeException('Could not create temp file.');
         }
         $csv = Writer::createFromStream($tempFile);
 

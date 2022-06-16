@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use Exception;
 use GuzzleHttp\Psr7\Exception\MalformedUriException;
 use GuzzleHttp\Psr7\Uri;
+use LogicException;
 use Psr\Http\Message\UriInterface;
 
 class Urls
@@ -35,7 +37,7 @@ class Urls
     ): UriInterface {
         try {
             if (empty($url)) {
-                throw new \LogicException('No URL specified.');
+                throw new LogicException('No URL specified.');
             }
 
             $url = trim($url);
@@ -48,8 +50,8 @@ class Urls
                 }
                 throw $ex;
             }
-        } catch (\Exception $e) {
-            throw new \LogicException(
+        } catch (Exception $e) {
+            throw new LogicException(
                 message: sprintf('Could not parse %s URL "%s": %s', $context, $url, $e->getMessage()),
                 previous: $e
             );
@@ -66,7 +68,7 @@ class Urls
 
         try {
             return self::parseUserUrl($url, $context);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Logger::getInstance()->error(
                 sprintf('Could not parse %s URL "%s": %s', $context, $url, $e->getMessage()),
                 [

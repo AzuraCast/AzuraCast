@@ -9,6 +9,7 @@ use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\StreamFormats;
 use InvalidArgumentException;
+use LogicException;
 
 class StationBackendConfiguration extends AbstractStationConfiguration
 {
@@ -172,7 +173,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
 
         if (null !== $method && null === AudioProcessingMethods::tryFrom($method)) {
-            throw new \InvalidArgumentException('Invalid audio processing method specified.');
+            throw new InvalidArgumentException('Invalid audio processing method specified.');
         }
 
         $this->set(self::AUDIO_PROCESSING_METHOD, $method);
@@ -330,7 +331,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         $allSections = self::getCustomConfigurationSections();
         if (!in_array($section, $allSections, true)) {
-            throw new \LogicException('Invalid custom configuration section.');
+            throw new LogicException('Invalid custom configuration section.');
         }
 
         return $this->get($section);
@@ -340,7 +341,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         $allSections = self::getCustomConfigurationSections();
         if (!in_array($section, $allSections, true)) {
-            throw new \LogicException('Invalid custom configuration section.');
+            throw new LogicException('Invalid custom configuration section.');
         }
 
         $this->set($section, $value);

@@ -6,6 +6,7 @@ namespace App\Console\Command\Acme;
 
 use App\Console\Command\CommandAbstract;
 use App\Service\Acme;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +31,7 @@ final class GetCertificateCommand extends CommandAbstract
 
         try {
             $this->acme->getCertificate();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->error($e->getMessage());
             return 1;
         }

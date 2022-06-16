@@ -7,6 +7,7 @@ namespace App\Entity\ApiGenerator;
 use App\Entity;
 use App\Http\Router;
 use App\Radio\Enums\BackendAdapters;
+use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
@@ -58,7 +59,7 @@ class NowPlayingApiGenerator
                     ? Entity\Song::createFromNowPlayingSong($npResult->currentSong)
                     : null
             );
-        } catch (\Exception) {
+        } catch (Exception) {
             return $this->offlineApi($station, $baseUri);
         }
 

@@ -15,7 +15,6 @@ use App\Message;
 use App\Radio\Adapters;
 use DeepCopy\DeepCopy;
 use Exception;
-use Monolog\Logger;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -79,8 +78,7 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
 
             $npResult = $event->getResult();
         } catch (Exception $e) {
-            $this->logger->log(
-                Logger::ERROR,
+            $this->logger->error(
                 $e->getMessage(),
                 [
                     'file' => $e->getFile(),
@@ -95,9 +93,9 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         $this->logger->debug(
             'Final NowPlaying Response for Station',
             [
-                'id'   => $station->getId(),
+                'id' => $station->getId(),
                 'name' => $station->getName(),
-                'np'   => $npResult,
+                'np' => $npResult,
             ]
         );
 

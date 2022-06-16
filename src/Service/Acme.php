@@ -11,9 +11,11 @@ use App\Message\AbstractMessage;
 use App\Message\GenerateAcmeCertificate;
 use App\Nginx\Nginx;
 use App\Radio\Adapters;
+use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
+use RuntimeException;
 use skoerfgen\ACMECert\ACMECert;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -45,7 +47,7 @@ final class Acme
 
             try {
                 $this->getCertificate();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error(
                     sprintf('ACME Error: %s', $e->getMessage()),
                     [
@@ -92,7 +94,7 @@ final class Acme
         if (empty($acmeDomain)) {
             $acmeDomain = getenv('LETSENCRYPT_HOST');
             if (empty($acmeDomain)) {
-                throw new \RuntimeException('Skipping LetsEncrypt; no domain(s) set.');
+                throw new RuntimeException('Skipping LetsEncrypt; no domain(s) set.');
             } else {
                 $settings->setAcmeDomains($acmeDomain);
                 $this->settingsRepo->writeSettings($settings);
@@ -103,7 +105,7 @@ final class Acme
         if (file_exists($acmeDir . '/account_key.pem')) {
             $acme->loadAccountKey('file://' . $acmeDir . '/account_key.pem');
         } else {
-            $accountKey = $acme->generateECKey('P-384');
+            $accountKey = $acme->generateECKey();
             $fs->dumpFile($acmeDir . '/account_key.pem', $accountKey);
             $acme->loadAccountKey($accountKey);
 
@@ -120,7 +122,7 @@ final class Acme
             && file_exists($acmeDir . '/acme.crt')
             && $acme->getRemainingDays('file://' . $acmeDir . '/acme.crt') > self::THRESHOLD_DAYS
         ) {
-            throw new \RuntimeException('Certificate does not need renewal.');
+            throw new RuntimeException('Certificate does not need renewal.');
         }
 
         $fs->mkdir($acmeDir . '/challenges');
@@ -143,7 +145,7 @@ final class Acme
         };
 
         if (!file_exists($acmeDir . '/acme.key')) {
-            $acmeKey = $acme->generateECKey('P-384');
+            $acmeKey = $acme->generateECKey();
             $fs->dumpFile($acmeDir . '/acme.key', $acmeKey);
         }
 
@@ -184,7 +186,7 @@ final class Acme
                     $frontend->reload($station);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error(
                 sprintf('ACME: Could not reload all adapters: %s', $e->getMessage()),
                 [

@@ -152,15 +152,18 @@ export default {
         this.flow.on('error', (message, file, chunk) => {
             console.error(message, file, chunk);
 
-            let messageText = '';
+            let messageText = this.$gettext('Could not upload file.');
             try {
-                let messageJson = JSON.parse(message);
-                messageText = messageJson.message;
-                if (messageText.indexOf(': ') > -1) {
-                    messageText = messageText.split(': ')[1];
+                if (typeof message !== 'undefined') {
+                    let messageJson = JSON.parse(message);
+                    if (typeof messageJson.message !== 'undefined') {
+                        messageText = messageJson.message;
+                        if (messageText.indexOf(': ') > -1) {
+                            messageText = messageText.split(': ')[1];
+                        }
+                    }
                 }
             } catch (e) {
-                messageText = this.$gettext('Could not upload file.');
             }
 
             file.error = messageText;

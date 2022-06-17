@@ -43,7 +43,7 @@ final class StereoTool
         $process = new Process([$binaryPath, '--help']);
         $process->setWorkingDirectory(dirname($binaryPath));
         $process->setTimeout(5.0);
-        
+
         try {
             $process->run();
         } catch (ProcessTimedOutException) {

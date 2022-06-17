@@ -42,7 +42,12 @@ final class StereoTool
         $process = new Process([$binaryPath, '--help']);
         $process->setWorkingDirectory(dirname($binaryPath));
         $process->setTimeout(5.0);
-        $process->run();
+
+        try {
+            $process->run();
+        } catch (\RuntimeException $e) {
+            return null;
+        }
 
         if (!$process->isSuccessful()) {
             return null;

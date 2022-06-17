@@ -11,6 +11,7 @@ use App\Radio\StereoTool;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 final class PostAction
@@ -36,7 +37,13 @@ final class PostAction
         $process = new Process([$binaryPath, '--help']);
         $process->setWorkingDirectory(dirname($binaryPath));
         $process->setTimeout(5.0);
-        $process->run();
+
+        try {
+            $process->run();
+        } catch (ProcessTimedOutException) {
+            unlink($binaryPath);
+            throw new RuntimeException('Incompatible binary for StereoTool was uploaded.');
+        }
 
         if (!$process->isSuccessful()) {
             unlink($binaryPath);

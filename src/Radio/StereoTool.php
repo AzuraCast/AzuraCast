@@ -6,6 +6,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Environment;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 final class StereoTool
@@ -42,7 +43,12 @@ final class StereoTool
         $process = new Process([$binaryPath, '--help']);
         $process->setWorkingDirectory(dirname($binaryPath));
         $process->setTimeout(5.0);
-        $process->run();
+        
+        try {
+            $process->run();
+        } catch (ProcessTimedOutException) {
+            return null;
+        }
 
         if (!$process->isSuccessful()) {
             return null;

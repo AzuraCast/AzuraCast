@@ -26,7 +26,7 @@ final class OverviewAction
 
         if (!$settings->isAnalyticsEnabled()) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
-            return $request->getView()->renderToResponse($response, 'stations/reports/restricted');
+            return $request->getView()->renderToResponse($response, 'stations/reports_restricted');
         }
 
         $router = $request->getRouter();

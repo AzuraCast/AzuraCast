@@ -51,7 +51,7 @@ final class HlsStreamsAction
                 return $response->withRedirect((string)$request->getRouter()->fromHere('stations:hls:index'));
             }
 
-            return $view->renderToResponse($response, 'stations/hls/disabled');
+            return $view->renderToResponse($response, 'stations/hls_disabled');
         }
 
         $router = $request->getRouter();

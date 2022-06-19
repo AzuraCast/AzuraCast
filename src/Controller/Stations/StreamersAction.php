@@ -51,7 +51,7 @@ final class StreamersAction
                 return $response->withRedirect((string)$request->getRouter()->fromHere('stations:streamers:index'));
             }
 
-            return $view->renderToResponse($response, 'stations/streamers/disabled');
+            return $view->renderToResponse($response, 'stations/streamers_disabled');
         }
 
         $settings = $this->settingsRepo->readSettings();

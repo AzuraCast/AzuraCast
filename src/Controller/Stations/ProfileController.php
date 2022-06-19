@@ -30,7 +30,7 @@ final class ProfileController
         $view = $request->getView();
 
         if (!$station->getIsEnabled()) {
-            return $view->renderToResponse($response, 'stations/profile/disabled');
+            return $view->renderToResponse($response, 'stations/profile_disabled');
         }
 
         // Statistics about backend playback.

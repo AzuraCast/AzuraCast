@@ -6,10 +6,6 @@ declare(strict_types=1);
 
 namespace App\Radio\Enums;
 
-use App\Radio\Frontend\Icecast;
-use App\Radio\Frontend\Remote;
-use App\Radio\Frontend\Shoutcast;
-
 enum AudioProcessingMethods: string
 {
     case Liquidsoap = 'nrj';

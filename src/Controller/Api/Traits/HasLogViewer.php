@@ -102,8 +102,6 @@ trait HasLogViewer
             array_pop($logParts);
         }
 
-        $logParts = str_replace(['>', '<'], ['&gt;', '&lt;'], $logParts);
-
         $log = implode("\n", $logParts);
         $log = mb_convert_encoding($log, 'UTF-8', 'UTF-8');
 

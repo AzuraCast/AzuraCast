@@ -349,12 +349,16 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
     protected Collection $streamers;
 
-    #[ORM\Column(nullable: true)]
+    #[
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore
+    ]
     protected ?int $current_streamer_id = null;
 
     #[
         ORM\ManyToOne,
-        ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')
+        ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL'),
+        Attributes\AuditIgnore
     ]
     protected ?StationStreamer $current_streamer = null;
 
@@ -399,7 +403,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         ORM\ManyToOne,
-        ORM\JoinColumn(name: 'current_song_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')
+        ORM\JoinColumn(name: 'current_song_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL'),
+        Attributes\AuditIgnore
     ]
     protected ?SongHistory $current_song = null;
 

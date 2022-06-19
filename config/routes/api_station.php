@@ -640,6 +640,17 @@ return static function (RouteCollectorProxy $group) {
                     )->setName('api:stations:webhook:test-log');
                 }
             )->add(new Middleware\Permissions(StationPermissions::WebHooks, true));
+
+            $group->group(
+                '',
+                function (RouteCollectorProxy $group) {
+                    $group->get('/logs', Controller\Api\Stations\LogsAction::class)
+                        ->setName('api:stations:logs');
+
+                    $group->get('/log/{log}', Controller\Api\Stations\LogsAction::class)
+                        ->setName('api:stations:log');
+                }
+            )->add(new Middleware\Permissions(StationPermissions::Logs, true));
         }
     )->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);

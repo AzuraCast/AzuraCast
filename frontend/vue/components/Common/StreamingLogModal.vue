@@ -22,7 +22,7 @@ export default {
     components: {StreamingLogView},
     data() {
         return {
-            logUrl: null,
+            logUrl: null
         };
     },
     computed: {

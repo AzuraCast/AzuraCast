@@ -91,17 +91,9 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:custom_fields:index')
                 ->add(new Middleware\Permissions(GlobalPermissions::CustomFields));
 
-            $group->group(
-                '/logs',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\LogsController::class)
-                        ->setName('admin:logs:index');
-
-                    $group->get('/view/{station_id}/{log}', Controller\Admin\LogsController::class . ':viewAction')
-                        ->setName('admin:logs:view')
-                        ->add(Middleware\GetStation::class);
-                }
-            )->add(new Middleware\Permissions(GlobalPermissions::Logs));
+            $group->get('/logs', Controller\Admin\LogsAction::class)
+                ->setName('admin:logs:index')
+                ->add(new Middleware\Permissions(GlobalPermissions::Logs));
 
             $group->get('/permissions', Controller\Admin\PermissionsAction::class)
                 ->setName('admin:permissions:index')

@@ -2,47 +2,64 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\Admin;
 
-use App\Controller\AbstractLogViewerController;
-use App\Entity;
+use App\Controller\Api\Traits\HasLogViewer;
 use App\Environment;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class LogsController extends AbstractLogViewerController
+final class LogsAction
 {
+    use HasLogViewer;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Environment $environment
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        ?string $log = null
     ): ResponseInterface {
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
-        $station_logs = [];
+        $logPaths = $this->getGlobalLogs();
 
-        foreach ($stations as $station) {
-            /** @var Entity\Station $station */
-            $station_logs[$station->getId()] = [
-                'name' => $station->getName(),
-                'logs' => $this->getStationLogs($station),
-            ];
+        if (null === $log) {
+            $router = $request->getRouter();
+            return $response->withJson(
+                [
+                    'logs' => array_map(
+                        function (string $key, array $row) use ($router) {
+                            $row['key'] = $key;
+                            $row['links'] = [
+                                'self' => (string)$router->named(
+                                    'api:admin:log',
+                                    [
+                                        'log' => $key,
+                                    ]
+                                ),
+                            ];
+                            return $row;
+                        },
+                        array_keys($logPaths),
+                        array_values($logPaths)
+                    ),
+                ]
+            );
         }
 
-        return $request->getView()->renderToResponse(
+        if (!isset($logPaths[$log])) {
+            throw new Exception('Invalid log file specified.');
+        }
+
+        return $this->streamLogToResponse(
+            $request,
             $response,
-            'admin/logs/index',
-            [
-                'global_logs' => $this->getGlobalLogs(),
-                'station_logs' => $station_logs,
-            ]
+            $logPaths[$log]['path'],
+            $logPaths[$log]['tail'] ?? true
         );
     }
 
@@ -84,25 +101,5 @@ final class LogsController extends AbstractLogViewerController
         }
 
         return $logPaths;
-    }
-
-    public function viewAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $log
-    ): ResponseInterface {
-        if ('global' === $station_id) {
-            $log_areas = $this->getGlobalLogs();
-        } else {
-            $log_areas = $this->getStationLogs($request->getStation());
-        }
-
-        if (!isset($log_areas[$log])) {
-            throw new Exception('Invalid log file specified.');
-        }
-
-        $logArea = $log_areas[$log];
-        return $this->streamLogToResponse($request, $response, $logArea['path'], $logArea['tail'] ?? true);
     }
 }

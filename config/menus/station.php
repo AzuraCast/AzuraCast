@@ -139,7 +139,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'label' => __('Streamer/DJ Accounts'),
                         'icon' => 'mic',
                         'url' => (string)$router->fromHere('stations:streamers:index'),
-                        'visible' => $backend->supportsStreamers(),
+                        'visible' => $backend->supportsStreamers() && $station->getEnableStreamers(),
                         'permission' => StationPermissions::Streamers,
                     ],
 
@@ -209,7 +209,7 @@ return function (App\Event\BuildStationMenu $e) {
                     'hls_streams' => [
                         'label' => __('HLS Streams'),
                         'url' => (string)$router->fromHere('stations:hls_streams:index'),
-                        'visible' => $backend->supportsHls(),
+                        'visible' => $backend->supportsHls() && $station->getEnableHls(),
                         'permission' => StationPermissions::MountPoints,
                     ],
                     'remotes' => [

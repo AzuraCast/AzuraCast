@@ -734,17 +734,17 @@ class ConfigWriter implements EventSubscriberInterface
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
         $crossfadeType = $settings->getCrossfadeTypeEnum();
-        $crossfade = $settings->getCrossfade();
-        $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeDuration = self::toFloat($crossfade);
+            $crossfade = self::toFloat($settings->getCrossfade());
+            $crossDuration = self::toFloat($settings->getCrossfadeDuration());
+
             if (CrossfadeModes::Smart === $crossfadeType) {
-                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfadeDuration
-                    . ', fade_out=' . $crossfadeDuration . ')';
+                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfade
+                    . ', fade_out=' . $crossfade . ')';
             } else {
-                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfadeDuration
-                    . ', fade_out=' . $crossfadeDuration . ')';
+                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfade
+                    . ', fade_out=' . $crossfade . ')';
             }
 
             $event->appendBlock(
@@ -759,7 +759,7 @@ class ConfigWriter implements EventSubscriberInterface
                     end
                 end
                 
-                radio = cross(live_aware_crossfade, radio)
+                radio = cross(minimum=0., duration={$crossDuration}, live_aware_crossfade, radio)
                 LS
             );
         }
@@ -1137,12 +1137,12 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $lsConfig[] = 'hls_streams = [' . implode(
-                ', ',
-                array_map(
-                    static fn($row) => '("' . $row . '", ' . $row . ')',
-                    $hlsStreams
-                )
-            ) . ']';
+            ', ',
+            array_map(
+                static fn($row) => '("' . $row . '", ' . $row . ')',
+                $hlsStreams
+            )
+        ) . ']';
 
         $event->appendLines($lsConfig);
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Session;
 
-use App\Traits\AvailableStaticallyTrait;
 use Mezzio\Session\SessionInterface;
 
 /**
@@ -12,8 +11,6 @@ use Mezzio\Session\SessionInterface;
  */
 class Flash
 {
-    use AvailableStaticallyTrait;
-
     public const SESSION_KEY = 'flash';
 
     public const SUCCESS = 'success';

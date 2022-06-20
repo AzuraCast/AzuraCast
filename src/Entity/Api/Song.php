@@ -62,12 +62,11 @@ class Song implements ResolvableUrlInterface
     )]
     public string $lyrics = '';
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'URL to the album artwork (if available).',
         example: 'https://picsum.photos/1200/1200'
     )]
-    public $art = '';
+    public string|UriInterface $art = '';
 
     #[OA\Property(
         type: 'array',

@@ -33,12 +33,12 @@ class Live implements ResolvableUrlInterface
     )]
     public ?int $broadcast_start = null;
 
-    /** @var string|UriInterface|null */
     #[OA\Property(
         description: 'URL to the streamer artwork (if available).',
-        example: 'https://picsum.photos/1200/1200'
+        example: 'https://picsum.photos/1200/1200',
+        nullable: true
     )]
-    public $art = null;
+    public string|UriInterface|null $art = null;
 
     public function resolveUrls(UriInterface $base): void
     {

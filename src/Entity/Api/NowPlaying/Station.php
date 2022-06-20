@@ -51,12 +51,11 @@ class Station implements ResolvableUrlInterface
     )]
     public string $backend = '';
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The full URL to listen to the default mount of the station',
         example: 'http://localhost:8000/radio.mp3'
     )]
-    public $listen_url;
+    public string|UriInterface $listen_url;
 
     #[OA\Property(
         description: 'The public URL of the station.',
@@ -64,26 +63,23 @@ class Station implements ResolvableUrlInterface
     )]
     public ?string $url = null;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The public player URL for the station.',
         example: 'https://example.com/public/example_station'
     )]
-    public $public_player_url;
+    public string|UriInterface $public_player_url;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The playlist download URL in PLS format.',
         example: 'https://example.com/public/example_station/playlist.pls'
     )]
-    public $playlist_pls_url;
+    public string|UriInterface $playlist_pls_url;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The playlist download URL in M3U format.',
         example: 'https://example.com/public/example_station/playlist.m3u'
     )]
-    public $playlist_m3u_url;
+    public string|UriInterface $playlist_m3u_url;
 
     #[OA\Property(
         description: 'If the station is public (i.e. should be shown in listings of all stations)',
@@ -105,12 +101,12 @@ class Station implements ResolvableUrlInterface
     )]
     public bool $hls_enabled = false;
 
-    /** @var string|null|UriInterface */
     #[OA\Property(
         description: 'The full URL to listen to the HLS stream for the station.',
-        example: 'https://example.com/hls/azuratest_radio/live.m3u8'
+        example: 'https://example.com/hls/azuratest_radio/live.m3u8',
+        nullable: true
     )]
-    public $hls_url;
+    public string|UriInterface|null $hls_url = null;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

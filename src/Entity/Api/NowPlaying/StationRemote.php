@@ -25,12 +25,11 @@ class StationRemote
     )]
     public string $name;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'Full listening URL specific to this mount',
         example: 'http://localhost:8000/radio.mp3'
     )]
-    public $url;
+    public string|UriInterface $url;
 
     #[OA\Property(
         description: 'Bitrate (kbps) of the broadcasted audio (if known)',

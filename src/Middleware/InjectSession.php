@@ -67,10 +67,7 @@ class InjectSession implements MiddlewareInterface
         $session = new LazySession($sessionPersistence, $request);
 
         $csrf = new Csrf($session, $this->environment);
-        Csrf::setInstance($csrf);
-
         $flash = new Flash($session);
-        Flash::setInstance($flash);
 
         $request = $request->withAttribute(ServerRequest::ATTR_SESSION, $session)
             ->withAttribute(ServerRequest::ATTR_SESSION_CSRF, $csrf)

@@ -146,7 +146,7 @@ class ConfigWriter implements EventSubscriberInterface
             
             # Track live transition for crossfades.
             to_live = ref(false)
-            ignore(live_enabled)
+            ignore(to_live)
             EOF
         );
 
@@ -1137,12 +1137,12 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $lsConfig[] = 'hls_streams = [' . implode(
-            ', ',
-            array_map(
-                static fn($row) => '("' . $row . '", ' . $row . ')',
-                $hlsStreams
-            )
-        ) . ']';
+                ', ',
+                array_map(
+                    static fn($row) => '("' . $row . '", ' . $row . ')',
+                    $hlsStreams
+                )
+            ) . ']';
 
         $event->appendLines($lsConfig);
 

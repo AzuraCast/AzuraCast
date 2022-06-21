@@ -12,6 +12,7 @@ use App\Nginx\Nginx;
 use App\OpenApi;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -105,6 +106,7 @@ use Throwable;
 final class ServicesController
 {
     public function __construct(
+        private readonly EntityManagerInterface $em,
         private readonly Configuration $configuration,
         private readonly Nginx $nginx,
     ) {
@@ -139,6 +141,10 @@ final class ServicesController
         $station = $request->getStation();
 
         try {
+            $station->setHasStarted(true);
+            $this->em->persist($station);
+            $this->em->flush();
+
             $this->configuration->writeConfiguration(
                 station: $station,
                 forceRestart: true
@@ -166,6 +172,10 @@ final class ServicesController
         $station = $request->getStation();
 
         try {
+            $station->setHasStarted(true);
+            $this->em->persist($station);
+            $this->em->flush();
+
             $this->configuration->writeConfiguration(
                 station: $station,
                 forceRestart: true,

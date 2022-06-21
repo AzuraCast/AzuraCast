@@ -103,6 +103,11 @@ class Configuration
         $supervisorConfig = [];
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
+        if (!$station->getHasStarted()) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new RuntimeException('Station has not started yet.');
+        }
+
         if (!$station->getIsEnabled()) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
             throw new RuntimeException('Station is disabled.');
@@ -180,14 +185,10 @@ class Configuration
                     }
                 } catch (SupervisorException) {
                 }
-
-                $was_restarted = true;
-            }
-
-            if ($was_restarted) {
-                $this->markAsStarted($station);
             }
         }
+
+        $this->markAsStarted($station);
     }
 
     /**
@@ -449,15 +450,15 @@ class Configuration
         [, $program_name] = explode(':', $adapter->getProgramName($station));
 
         $config_lines = [
-            'user'                    => 'azuracast',
-            'priority'                => $priority ?? 50,
-            'command'                 => $adapter->getCommand($station),
-            'directory'               => $station->getRadioConfigDir(),
-            'environment'             => 'TZ="' . $station->getTimezone() . '"',
-            'stdout_logfile'          => $adapter->getLogPath($station),
+            'user' => 'azuracast',
+            'priority' => $priority ?? 50,
+            'command' => $adapter->getCommand($station),
+            'directory' => $station->getRadioConfigDir(),
+            'environment' => 'TZ="' . $station->getTimezone() . '"',
+            'stdout_logfile' => $adapter->getLogPath($station),
             'stdout_logfile_maxbytes' => '5MB',
-            'stdout_logfile_backups'  => '10',
-            'redirect_stderr'         => 'true',
+            'stdout_logfile_backups' => '10',
+            'redirect_stderr' => 'true',
         ];
 
         $supervisor_config[] = '[program:' . $program_name . ']';

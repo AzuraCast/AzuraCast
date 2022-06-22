@@ -9,6 +9,7 @@ use App\Environment;
 use App\Http\Router;
 use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
+use App\Radio\Configuration;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -43,9 +44,9 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     /**
      * @inheritdoc
      */
-    public function getProgramName(Entity\Station $station): string
+    public function getSupervisorProgramName(Entity\Station $station): string
     {
-        return 'station_' . $station->getId() . ':station_' . $station->getId() . '_frontend';
+        return Configuration::getSupervisorProgramName($station, 'frontend');
     }
 
     /**

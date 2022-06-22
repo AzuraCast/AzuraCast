@@ -104,7 +104,7 @@ abstract class AbstractLocalAdapter
             return true;
         }
 
-        $program_name = $this->getProgramName($station);
+        $program_name = $this->getSupervisorFullName($station);
 
         try {
             return $this->supervisor->getProcess($program_name)->isRunning();
@@ -142,7 +142,16 @@ abstract class AbstractLocalAdapter
      *
      * @param Entity\Station $station
      */
-    abstract public function getProgramName(Entity\Station $station): string;
+    abstract public function getSupervisorProgramName(Entity\Station $station): string;
+
+    public function getSupervisorFullName(Entity\Station $station): string
+    {
+        return sprintf(
+            '%s:%s',
+            Configuration::getSupervisorGroupName($station),
+            $this->getSupervisorProgramName($station)
+        );
+    }
 
     /**
      * Restart the executable service.
@@ -176,7 +185,7 @@ abstract class AbstractLocalAdapter
     public function stop(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
+            $program_name = $this->getSupervisorFullName($station);
 
             try {
                 $this->supervisor->stopProcess($program_name);
@@ -201,7 +210,7 @@ abstract class AbstractLocalAdapter
     public function start(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
+            $program_name = $this->getSupervisorFullName($station);
 
             try {
                 $this->supervisor->startProcess($program_name);

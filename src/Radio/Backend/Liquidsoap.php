@@ -9,6 +9,7 @@ use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
+use App\Radio\Configuration;
 use App\Radio\Enums\LiquidsoapQueues;
 use LogicException;
 use Psr\Http\Message\UriInterface;
@@ -317,8 +318,8 @@ class Liquidsoap extends AbstractLocalAdapter
         }
     }
 
-    public function getProgramName(Entity\Station $station): string
+    public function getSupervisorProgramName(Entity\Station $station): string
     {
-        return 'station_' . $station->getIdRequired() . ':station_' . $station->getIdRequired() . '_backend';
+        return Configuration::getSupervisorProgramName($station, 'backend');
     }
 }

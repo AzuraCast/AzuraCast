@@ -140,13 +140,13 @@ class Configuration
         // Write group section of config
         $programs = [];
         if (null !== $backend && $backend->hasCommand($station)) {
-            $programs[] = (explode(':', $backend->getProgramName($station)))[1];
+            $programs[] = $backend->getSupervisorProgramName($station);
         }
         if (null !== $frontend && $frontend->hasCommand($station)) {
-            $programs[] = (explode(':', $frontend->getProgramName($station)))[1];
+            $programs[] = $frontend->getSupervisorProgramName($station);
         }
 
-        $stationGroup = 'station_' . $station->getIdRequired();
+        $stationGroup = self::getSupervisorGroupName($station);
 
         $supervisorConfig[] = '[group:' . $stationGroup . ']';
         $supervisorConfig[] = 'programs=' . implode(',', $programs);
@@ -448,7 +448,7 @@ class Configuration
         AbstractLocalAdapter $adapter,
         ?int $priority
     ): string {
-        [, $program_name] = explode(':', $adapter->getProgramName($station));
+        $program_name = $adapter->getSupervisorProgramName($station);
 
         $config_lines = [
             'user' => 'azuracast',
@@ -517,5 +517,15 @@ class Configuration
         }
 
         return $defaultPorts;
+    }
+
+    public static function getSupervisorGroupName(Station $station): string
+    {
+        return 'station_' . $station->getIdRequired();
+    }
+
+    public static function getSupervisorProgramName(Station $station, string $category): string
+    {
+        return 'station_' . $station->getIdRequired() . '_' . $category;
     }
 }

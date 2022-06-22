@@ -25,7 +25,7 @@ class Icecast extends AbstractFrontend
     public function reload(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
+            $program_name = $this->getSupervisorFullName($station);
 
             try {
                 $this->supervisor->signalProcess($program_name, 'HUP');

@@ -74,7 +74,7 @@ class NowPlayingCommand extends AbstractSyncCommand
                     <<<'DQL'
                     SELECT s.id, s.short_name, s.nowplaying_timestamp
                     FROM App\Entity\Station s
-                    WHERE s.is_enabled = 1
+                    WHERE s.is_enabled = 1 AND s.has_started = 1
                     DQL
                 )->getArrayResult();
 

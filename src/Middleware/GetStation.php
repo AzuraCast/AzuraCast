@@ -7,7 +7,6 @@ namespace App\Middleware;
 use App\Entity;
 use App\Entity\Repository\StationRepository;
 use App\Http\ServerRequest;
-use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -20,8 +19,7 @@ use Slim\Routing\RouteContext;
 class GetStation implements MiddlewareInterface
 {
     public function __construct(
-        protected StationRepository $station_repo,
-        protected Adapters $adapters
+        protected StationRepository $station_repo
     ) {
     }
 
@@ -35,15 +33,7 @@ class GetStation implements MiddlewareInterface
             $record = $this->station_repo->findByIdentifier($id);
 
             if ($record instanceof Entity\Station) {
-                $backend = $this->adapters->getBackendAdapter($record);
-                $frontend = $this->adapters->getFrontendAdapter($record);
-                $remotes = $this->adapters->getRemoteAdapters($record);
-
-                $request = $request
-                    ->withAttribute(ServerRequest::ATTR_STATION, $record)
-                    ->withAttribute(ServerRequest::ATTR_STATION_BACKEND, $backend)
-                    ->withAttribute(ServerRequest::ATTR_STATION_FRONTEND, $frontend)
-                    ->withAttribute(ServerRequest::ATTR_STATION_REMOTES, $remotes);
+                $request = $request->withAttribute(ServerRequest::ATTR_STATION, $record);
             }
         }
 

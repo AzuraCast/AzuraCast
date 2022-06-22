@@ -101,7 +101,7 @@ final class BatchAction
             $fs
         );
 
-        $this->writePlaylistChanges($request, $affectedPlaylists);
+        $this->writePlaylistChanges($station, $affectedPlaylists);
 
         return $result;
     }
@@ -193,7 +193,7 @@ final class BatchAction
 
         $this->em->flush();
 
-        $this->writePlaylistChanges($request, $affectedPlaylists);
+        $this->writePlaylistChanges($station, $affectedPlaylists);
 
         return $result;
     }
@@ -440,13 +440,11 @@ final class BatchAction
     }
 
     private function writePlaylistChanges(
-        ServerRequest $request,
+        Entity\Station $station,
         array $playlists
     ): void {
         // Write new PLS playlist configuration.
-        $backend = $request->getStationBackend();
-
-        if ($backend instanceof Liquidsoap) {
+        if ($station->getBackendTypeEnum()->isEnabled()) {
             foreach ($playlists as $playlistId => $playlistRow) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new Message\WritePlaylistFileMessage();

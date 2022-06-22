@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\StationUnsupportedException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Nginx\Nginx;
 use App\OpenApi;
-use App\Radio\Backend\Liquidsoap;
+use App\Radio\Adapters;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
@@ -109,6 +110,7 @@ final class ServicesController
         private readonly EntityManagerInterface $em,
         private readonly Configuration $configuration,
         private readonly Nginx $nginx,
+        private readonly Adapters $adapters,
     ) {
     }
 
@@ -119,13 +121,13 @@ final class ServicesController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
+        $backend = $this->adapters->getBackendAdapter($station);
+        $frontend = $this->adapters->getFrontendAdapter($station);
 
         return $response->withJson(
             new Entity\Api\StationServiceStatus(
-                $backend->isRunning($station),
-                $frontend->isRunning($station),
+                null !== $backend && $backend->isRunning($station),
+                null !== $frontend && $frontend->isRunning($station),
                 $station->getHasStarted(),
                 $station->getNeedsRestart()
             )
@@ -202,7 +204,11 @@ final class ServicesController
         string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
-        $frontend = $request->getStationFrontend();
+        $frontend = $this->adapters->getFrontendAdapter($station);
+
+        if (null === $frontend) {
+            throw new StationUnsupportedException();
+        }
 
         switch ($do) {
             case 'stop':
@@ -242,20 +248,20 @@ final class ServicesController
         string $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
+        $backend = $this->adapters->getBackendAdapter($station);
+
+        if (null === $backend) {
+            throw new StationUnsupportedException();
+        }
 
         switch ($do) {
             case 'skip':
-                if ($backend instanceof Liquidsoap) {
-                    $backend->skip($station);
-                }
+                $backend->skip($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
 
             case 'disconnect':
-                if ($backend instanceof Liquidsoap) {
-                    $backend->disconnectStreamer($station);
-                }
+                $backend->disconnectStreamer($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
 

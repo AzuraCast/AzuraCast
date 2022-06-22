@@ -12,6 +12,7 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Radio\Adapters;
 use App\Service\Flow\UploadedFile;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -152,7 +153,8 @@ final class MountsController extends AbstractStationApiCrudController
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        private readonly Entity\Repository\StationMountRepository $mountRepo
+        private readonly Entity\Repository\StationMountRepository $mountRepo,
+        private readonly Adapters $adapters,
     ) {
         parent::__construct($em, $serializer, $validator);
     }
@@ -195,8 +197,9 @@ final class MountsController extends AbstractStationApiCrudController
         $return = parent::viewRecord($record, $request);
 
         $station = $request->getStation();
-        $frontend = $request->getStationFrontend();
         $router = $request->getRouter();
+
+        $frontend = $this->adapters->getFrontendAdapter($station);
 
         $return['links']['intro'] = (string)$router->fromHere(
             route_name: 'api:stations:mounts:intro',
@@ -204,11 +207,13 @@ final class MountsController extends AbstractStationApiCrudController
             absolute: true
         );
 
-        $return['links']['listen'] = (string)Router::resolveUri(
-            $router->getBaseUrl(),
-            $frontend->getUrlForMount($station, $record),
-            true
-        );
+        if (null !== $frontend) {
+            $return['links']['listen'] = (string)Router::resolveUri(
+                $router->getBaseUrl(),
+                $frontend->getUrlForMount($station, $record),
+                true
+            );
+        }
 
         return $return;
     }
@@ -259,8 +264,7 @@ final class MountsController extends AbstractStationApiCrudController
     {
         $station = parent::getStation($request);
 
-        $frontend = $request->getStationFrontend();
-        if (!$frontend->supportsMounts()) {
+        if (!$station->getFrontendTypeEnum()->supportsMounts()) {
             throw new StationUnsupportedException();
         }
 

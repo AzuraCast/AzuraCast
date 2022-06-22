@@ -35,10 +35,12 @@ class OnSslRenewal extends CommandAbstract
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
-            $frontend = $this->adapters->getFrontendAdapter($station);
-            if ($frontend->supportsReload()) {
-                $frontend->write($station);
-                $frontend->reload($station);
+            if ($station->getFrontendTypeEnum()->supportsReload()) {
+                $frontend = $this->adapters->getFrontendAdapter($station);
+                if (null !== $frontend) {
+                    $frontend->write($station);
+                    $frontend->reload($station);
+                }
             }
         }
 

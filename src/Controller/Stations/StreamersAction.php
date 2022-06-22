@@ -8,6 +8,7 @@ use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use App\Service\AzuraCastCentral;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,7 +16,8 @@ final class StreamersAction
 {
     public function __construct(
         private readonly AzuraCastCentral $acCentral,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Adapters $adapters,
     ) {
     }
 
@@ -25,9 +27,9 @@ final class StreamersAction
         string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
+        $backend = $this->adapters->getBackendAdapter($station);
 
-        if (!$backend->supportsStreamers() && !$station->getEnableStreamers()) {
+        if (null === $backend || !$station->getEnableStreamers()) {
             throw new StationUnsupportedException();
         }
 

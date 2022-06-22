@@ -8,43 +8,14 @@ use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Nginx\CustomUrls;
+use App\Radio\AbstractLocalAdapter;
 use App\Radio\Enums\LiquidsoapQueues;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class Liquidsoap extends AbstractBackend
+class Liquidsoap extends AbstractLocalAdapter
 {
-    public function supportsMedia(): bool
-    {
-        return true;
-    }
-
-    public function supportsRequests(): bool
-    {
-        return true;
-    }
-
-    public function supportsStreamers(): bool
-    {
-        return true;
-    }
-
-    public function supportsWebStreaming(): bool
-    {
-        return true;
-    }
-
-    public function supportsImmediateQueue(): bool
-    {
-        return true;
-    }
-
-    public function supportsHls(): bool
-    {
-        return true;
-    }
-
     /**
      * @inheritDoc
      */
@@ -234,6 +205,14 @@ class Liquidsoap extends AbstractBackend
             : null;
     }
 
+    public function getHlsUrl(Entity\Station $station, UriInterface $baseUrl = null): UriInterface
+    {
+        $baseUrl ??= $this->router->getBaseUrl();
+        return $baseUrl->withPath(
+            $baseUrl->getPath() . CustomUrls::getHlsUrl($station) . '/live.m3u8'
+        );
+    }
+
     public function isQueueEmpty(
         Entity\Station $station,
         LiquidsoapQueues $queue
@@ -336,5 +315,10 @@ class Liquidsoap extends AbstractBackend
         if (1 === $process->getExitCode()) {
             throw new LogicException($process->getOutput());
         }
+    }
+
+    public function getProgramName(Entity\Station $station): string
+    {
+        return 'station_' . $station->getIdRequired() . ':station_' . $station->getIdRequired() . '_backend';
     }
 }

@@ -24,8 +24,7 @@ final class PlaylistsAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $backend = $request->getStationBackend();
-        if (!$backend->supportsMedia()) {
+        if (!$station->getBackendTypeEnum()->isEnabled()) {
             throw new Exception(__('This feature is not currently supported on this station.'));
         }
 

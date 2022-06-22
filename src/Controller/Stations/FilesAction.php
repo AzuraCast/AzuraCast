@@ -40,7 +40,7 @@ final class FilesAction
 
         $router = $request->getRouter();
 
-        $backend = $request->getStationBackend();
+        $backendEnum = $station->getBackendTypeEnum();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -63,7 +63,7 @@ final class FilesAction
                 'stationTimeZone' => $station->getTimezone(),
                 'showSftp' => SftpGo::isSupportedForStation($station),
                 'sftpUrl' => (string)$router->fromHere('stations:sftp_users:index'),
-                'supportsImmediateQueue' => $backend->supportsImmediateQueue(),
+                'supportsImmediateQueue' => $backendEnum->isEnabled(),
             ],
         );
     }

@@ -18,7 +18,7 @@ use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
 
-abstract class AbstractAdapter
+abstract class AbstractLocalAdapter
 {
     public function __construct(
         protected Environment $environment,
@@ -153,14 +153,6 @@ abstract class AbstractAdapter
     {
         $this->stop($station);
         $this->start($station);
-    }
-
-    /**
-     * @return bool Whether this adapter supports a non-destructive reload.
-     */
-    public function supportsReload(): bool
-    {
-        return false;
     }
 
     /**

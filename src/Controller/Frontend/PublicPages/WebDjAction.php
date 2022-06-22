@@ -9,13 +9,14 @@ use App\Exception\StationNotFoundException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Backend\Liquidsoap;
+use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
 final class WebDjAction
 {
     public function __construct(
-        private readonly Assets $assets
+        private readonly Assets $assets,
+        private readonly Adapters $adapters,
     ) {
     }
 
@@ -34,9 +35,8 @@ final class WebDjAction
             throw new StationUnsupportedException();
         }
 
-        $backend = $request->getStationBackend();
-
-        if (!($backend instanceof Liquidsoap)) {
+        $backend = $this->adapters->getBackendAdapter($station);
+        if (null === $backend) {
             throw new StationUnsupportedException();
         }
 

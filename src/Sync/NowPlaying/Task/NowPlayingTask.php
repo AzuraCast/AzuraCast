@@ -63,15 +63,11 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
 
         $include_clients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
 
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-        $remote_adapters = $this->adapters->getRemoteAdapters($station);
-
         // Build the new "raw" NowPlaying data.
         try {
             $event = new GenerateRawNowPlaying(
+                $this->adapters,
                 $station,
-                $frontend_adapter,
-                $remote_adapters,
                 $include_clients
             );
             $this->eventDispatcher->dispatch($event);
@@ -121,15 +117,13 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
     public function loadRawFromFrontend(GenerateRawNowPlaying $event): void
     {
         try {
-            $result = $event
-                ->getFrontend()
-                ->getNowPlaying($event->getStation(), $event->includeClients());
+            $result = $event->getFrontend()?->getNowPlaying($event->getStation(), $event->includeClients());
+            if (null !== $result) {
+                $event->setResult($result);
+            }
         } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-            return;
         }
-
-        $event->setResult($result);
     }
 
     public function addToRawFromRemotes(GenerateRawNowPlaying $event): void
@@ -137,11 +131,11 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         $result = $event->getResult();
 
         // Loop through all remotes and update NP data accordingly.
-        foreach ($event->getRemotes() as $ra_proxy) {
+        foreach ($event->getRemotes() as [$remote, $adapter]) {
             try {
-                $result = $ra_proxy->getAdapter()->updateNowPlaying(
+                $result = $adapter->updateNowPlaying(
                     $result,
-                    $ra_proxy->getRemote(),
+                    $remote,
                     $event->includeClients()
                 );
             } catch (Exception $e) {

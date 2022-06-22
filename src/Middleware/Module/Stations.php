@@ -29,14 +29,9 @@ class Stations
         $view = $request->getView();
 
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
-
         $view->addData(
             [
                 'station' => $station,
-                'frontend' => $frontend,
-                'backend' => $backend,
             ]
         );
 

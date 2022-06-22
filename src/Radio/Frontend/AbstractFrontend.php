@@ -8,8 +8,7 @@ use App\Entity;
 use App\Environment;
 use App\Http\Router;
 use App\Nginx\CustomUrls;
-use App\Radio\AbstractAdapter;
-use App\Radio\Enums\StreamFormats;
+use App\Radio\AbstractLocalAdapter;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -24,7 +23,7 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Supervisor\SupervisorInterface;
 
-abstract class AbstractFrontend extends AbstractAdapter
+abstract class AbstractFrontend extends AbstractLocalAdapter
 {
     public function __construct(
         Environment $environment,
@@ -39,31 +38,6 @@ abstract class AbstractFrontend extends AbstractAdapter
         protected Entity\Repository\StationMountRepository $stationMountRepo,
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger, $router);
-    }
-
-    /**
-     * @return bool Whether the station supports multiple mount points per station
-     */
-    public function supportsMounts(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the default mounts when resetting or initializing a station.
-     *
-     * @return Entity\StationMount[]
-     */
-    public function getDefaultMounts(Entity\Station $station): array
-    {
-        $record = new Entity\StationMount($station);
-        $record->setName('/radio.mp3');
-        $record->setIsDefault(true);
-        $record->setEnableAutodj(true);
-        $record->setAutodjFormat(StreamFormats::Mp3->value);
-        $record->setAutodjBitrate(128);
-
-        return [$record];
     }
 
     /**

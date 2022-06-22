@@ -27,8 +27,7 @@ final class EditLiquidsoapConfigAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $backend = $request->getStationBackend();
-        if (!($backend instanceof Liquidsoap)) {
+        if (!$station->getBackendTypeEnum()->isEnabled()) {
             throw new StationUnsupportedException();
         }
 

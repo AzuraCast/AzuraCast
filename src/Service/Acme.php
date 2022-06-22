@@ -176,13 +176,13 @@ final class Acme
             $this->nginx->reload();
 
             foreach ($this->stationRepo->iterateEnabledStations() as $station) {
-                if (!$station->getHasStarted()) {
+                $frontendType = $station->getFrontendTypeEnum();
+                if (!$station->getHasStarted() || !$frontendType->supportsReload()) {
                     continue;
                 }
 
                 $frontend = $this->adapters->getFrontendAdapter($station);
-
-                if ($frontend->supportsReload() && $frontend->isRunning($station)) {
+                if (null !== $frontend && $frontend->isRunning($station)) {
                     $frontend->reload($station);
                 }
             }

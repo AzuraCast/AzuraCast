@@ -17,9 +17,8 @@ final class HlsStreamsAction
         string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
 
-        if (!$backend->supportsHls() || !$station->getEnableHls()) {
+        if (!$station->getBackendTypeEnum()->isEnabled() || !$station->getEnableHls()) {
             throw new StationUnsupportedException();
         }
 

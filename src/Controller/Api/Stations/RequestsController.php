@@ -81,8 +81,7 @@ final class RequestsController
         $station = $request->getStation();
 
         // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
-        if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
+        if (!$station->getBackendTypeEnum()->isEnabled() || !$station->getEnableRequests()) {
             return $response->withStatus(403)
                 ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
         }
@@ -190,8 +189,7 @@ final class RequestsController
         $station = $request->getStation();
 
         // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
-        if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
+        if (!$station->getBackendTypeEnum()->isEnabled() || !$station->getEnableRequests()) {
             return $response->withStatus(403)
                 ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
         }

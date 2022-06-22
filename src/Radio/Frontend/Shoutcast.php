@@ -13,11 +13,6 @@ use Symfony\Component\Process\Process;
 
 class Shoutcast extends AbstractFrontend
 {
-    public function supportsMounts(): bool
-    {
-        return true;
-    }
-
     /**
      * @inheritDoc
      */

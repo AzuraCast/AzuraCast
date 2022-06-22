@@ -5,25 +5,32 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
 use const ARRAY_FILTER_USE_KEY;
 
 final class UpdateMetadataAction
 {
+    public function __construct(
+        private readonly Adapters $adapters,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
         string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
 
-        if (!method_exists($backend, 'updateMetadata')) {
-            return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, 'This function is not supported on this station.'));
+        $backend = $this->adapters->getBackendAdapter($station);
+
+        if (null === $backend) {
+            throw new StationUnsupportedException();
         }
 
         $allowedMetaFields = [

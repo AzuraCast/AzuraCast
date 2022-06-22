@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,7 +16,8 @@ final class ProfileAction
     public function __construct(
         private readonly Entity\Repository\StationScheduleRepository $scheduleRepo,
         private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
-        private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+        private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator,
+        private readonly Adapters $adapters,
     ) {
     }
 
@@ -25,8 +27,8 @@ final class ProfileAction
         string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
+        $backend = $this->adapters->getBackendAdapter($station);
+        $frontend = $this->adapters->getFrontendAdapter($station);
 
         $baseUri = new Uri('');
         $nowPlayingApi = $this->nowPlayingApiGenerator->currentOrEmpty($station, $baseUri);
@@ -38,8 +40,8 @@ final class ProfileAction
         $apiResponse->cache = 'database';
 
         $apiResponse->services = new Entity\Api\StationServiceStatus(
-            $backend->isRunning($station),
-            $frontend->isRunning($station),
+            null !== $backend && $backend->isRunning($station),
+            null !== $frontend && $frontend->isRunning($station),
             $station->getHasStarted(),
             $station->getNeedsRestart()
         );

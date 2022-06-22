@@ -22,16 +22,6 @@ class Icecast extends AbstractFrontend
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function supportsMounts(): bool
-    {
-        return true;
-    }
-
-    public function supportsReload(): bool
-    {
-        return true;
-    }
-
     public function reload(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {

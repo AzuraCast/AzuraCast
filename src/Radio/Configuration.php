@@ -113,51 +113,52 @@ class Configuration
             throw new RuntimeException('Station is disabled.');
         }
 
+        $frontendEnum = $station->getFrontendTypeEnum();
+        $backendEnum = $station->getBackendTypeEnum();
+
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
 
         // If no processes need to be managed, remove any existing config.
-        if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
+        if (
+            (null === $frontend || !$frontend->hasCommand($station))
+            && (null === $backend || !$backend->hasCommand($station))
+        ) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
             throw new RuntimeException('Station has no local services.');
         }
 
         // If using AutoDJ and there is no media, don't spin up services.
         if (
-            BackendAdapters::None !== $station->getBackendTypeEnum()
+            $backendEnum->isEnabled()
             && !$this->stationPlaylistRepo->stationHasActivePlaylists($station)
         ) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
             throw new RuntimeException('Station has no media assigned to playlists.');
         }
 
-        // Get group information
-        $backend_name = $backend->getProgramName($station);
-        [$backend_group, $backend_program] = explode(':', $backend_name);
-
-        $frontend_name = $frontend->getProgramName($station);
-        [, $frontend_program] = explode(':', $frontend_name);
-
         // Write group section of config
         $programs = [];
-        if ($backend->hasCommand($station)) {
-            $programs[] = $backend_program;
+        if (null !== $backend && $backend->hasCommand($station)) {
+            $programs[] = (explode(':', $backend->getProgramName($station)))[2];
         }
-        if ($frontend->hasCommand($station)) {
-            $programs[] = $frontend_program;
+        if (null !== $frontend && $frontend->hasCommand($station)) {
+            $programs[] = (explode(':', $frontend->getProgramName($station)))[2];
         }
 
-        $supervisorConfig[] = '[group:' . $backend_group . ']';
+        $stationGroup = 'station_' . $station->getIdRequired();
+
+        $supervisorConfig[] = '[group:' . $stationGroup . ']';
         $supervisorConfig[] = 'programs=' . implode(',', $programs);
         $supervisorConfig[] = '';
 
         // Write frontend
-        if ($frontend->hasCommand($station)) {
+        if (null !== $frontend && $frontend->hasCommand($station)) {
             $supervisorConfig[] = $this->writeConfigurationSection($station, $frontend, 90);
         }
 
         // Write backend
-        if ($backend->hasCommand($station)) {
+        if (null !== $backend && $backend->hasCommand($station)) {
             $supervisorConfig[] = $this->writeConfigurationSection($station, $backend, 100);
         }
 
@@ -166,22 +167,22 @@ class Configuration
         file_put_contents($supervisorConfigFile, $supervisor_config_data);
 
         // Write supporting configurations.
-        $frontend->write($station);
-        $backend->write($station);
+        $frontend?->write($station);
+        $backend?->write($station);
 
         // Reload Supervisord and process groups
         if ($reloadSupervisor) {
             $affected_groups = $this->reloadSupervisor();
-            $was_restarted = in_array($backend_group, $affected_groups, true);
+            $was_restarted = in_array($stationGroup, $affected_groups, true);
 
             if (!$was_restarted && $forceRestart) {
                 try {
-                    if ($attemptReload && ($backend->supportsReload() || $frontend->supportsReload())) {
-                        $backend->reload($station);
-                        $frontend->reload($station);
+                    if ($attemptReload && ($backendEnum->isEnabled() || $frontendEnum->supportsReload())) {
+                        $backend?->reload($station);
+                        $frontend?->reload($station);
                     } else {
-                        $this->supervisor->stopProcessGroup($backend_group);
-                        $this->supervisor->startProcessGroup($backend_group);
+                        $this->supervisor->stopProcessGroup($stationGroup);
+                        $this->supervisor->startProcessGroup($stationGroup);
                     }
                 } catch (SupervisorException) {
                 }
@@ -310,8 +311,8 @@ class Configuration
     public function assignRadioPorts(Station $station, bool $force = false): void
     {
         if (
-            FrontendAdapters::Remote !== $station->getFrontendTypeEnum()
-            || BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()
+            $station->getFrontendTypeEnum()->isEnabled()
+            || $station->getBackendTypeEnum()->isEnabled()
         ) {
             $frontend_config = $station->getFrontendConfig();
             $backend_config = $station->getBackendConfig();
@@ -444,7 +445,7 @@ class Configuration
 
     protected function writeConfigurationSection(
         Station $station,
-        AbstractAdapter $adapter,
+        AbstractLocalAdapter $adapter,
         ?int $priority
     ): string {
         [, $program_name] = explode(':', $adapter->getProgramName($station));

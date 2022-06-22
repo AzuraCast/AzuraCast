@@ -22,9 +22,8 @@ class StationApiGenerator
         ?UriInterface $baseUri = null,
         bool $showAllMounts = false
     ): Entity\Api\NowPlaying\Station {
-        $fa = $this->adapters->getFrontendAdapter($station);
+        $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
-        $remoteAdapters = $this->adapters->getRemoteAdapters($station);
 
         $response = new Entity\Api\NowPlaying\Station();
         $response->id = (int)$station->getId();
@@ -35,7 +34,7 @@ class StationApiGenerator
         $response->backend = (string)$station->getBackendType();
         $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
-        $response->listen_url = $fa->getStreamUrl($station, $baseUri);
+        $response->listen_url = $frontend?->getStreamUrl($station, $baseUri);
 
         $response->public_player_url = (string)$this->router->named(
             'public:index',
@@ -51,26 +50,31 @@ class StationApiGenerator
         );
 
         $mounts = [];
-        if ($fa->supportsMounts() && $station->getMounts()->count() > 0) {
+        if (
+            null !== $frontend && $station->getFrontendTypeEnum()->supportsMounts() && $station->getMounts()->count(
+            ) > 0
+        ) {
             foreach ($station->getMounts() as $mount) {
                 if ($showAllMounts || $mount->getIsVisibleOnPublicPages()) {
-                    $mounts[] = $mount->api($fa, $baseUri);
+                    $mounts[] = $mount->api($frontend, $baseUri);
                 }
             }
         }
         $response->mounts = $mounts;
 
         $remotes = [];
-        foreach ($remoteAdapters as $ra_proxy) {
-            $remote = $ra_proxy->getRemote();
+        foreach ($station->getRemotes() as $remote) {
             if ($showAllMounts || $remote->getIsVisibleOnPublicPages()) {
-                $remotes[] = $remote->api($ra_proxy->getAdapter());
+                $remotes[] = $remote->api(
+                    $this->adapters->getRemoteAdapter($station, $remote)
+                );
             }
         }
+
         $response->remotes = $remotes;
 
-        $response->hls_enabled = $backend->supportsHls() && $station->getEnableHls();
-        $response->hls_url = ($response->hls_enabled)
+        $response->hls_enabled = $station->getBackendTypeEnum()->isEnabled() && $station->getEnableHls();
+        $response->hls_url = (null !== $backend && $response->hls_enabled)
             ? $backend->getHlsUrl($station, $baseUri)
             : null;
 

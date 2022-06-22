@@ -145,8 +145,7 @@ final class HlsStreamsController extends AbstractStationApiCrudController
     {
         $station = parent::getStation($request);
 
-        $backend = $request->getStationBackend();
-        if (!$backend->supportsHls()) {
+        if (!$station->getBackendTypeEnum()->isEnabled()) {
             throw new StationUnsupportedException();
         }
 

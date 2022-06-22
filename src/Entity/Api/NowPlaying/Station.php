@@ -55,7 +55,7 @@ class Station implements ResolvableUrlInterface
         description: 'The full URL to listen to the default mount of the station',
         example: 'http://localhost:8000/radio.mp3'
     )]
-    public string|UriInterface $listen_url;
+    public string|UriInterface|null $listen_url;
 
     #[OA\Property(
         description: 'The public URL of the station.',
@@ -115,7 +115,9 @@ class Station implements ResolvableUrlInterface
      */
     public function resolveUrls(UriInterface $base): void
     {
-        $this->listen_url = (string)Router::resolveUri($base, $this->listen_url, true);
+        $this->listen_url = (null !== $this->listen_url)
+            ? (string)Router::resolveUri($base, $this->listen_url, true)
+            : null;
 
         $this->public_player_url = (string)Router::resolveUri($base, $this->public_player_url, true);
         $this->playlist_pls_url = (string)Router::resolveUri($base, $this->playlist_pls_url, true);

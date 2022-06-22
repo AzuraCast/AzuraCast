@@ -140,10 +140,10 @@ class Configuration
         // Write group section of config
         $programs = [];
         if (null !== $backend && $backend->hasCommand($station)) {
-            $programs[] = (explode(':', $backend->getProgramName($station)))[2];
+            $programs[] = (explode(':', $backend->getProgramName($station)))[1];
         }
         if (null !== $frontend && $frontend->hasCommand($station)) {
-            $programs[] = (explode(':', $frontend->getProgramName($station)))[2];
+            $programs[] = (explode(':', $frontend->getProgramName($station)))[1];
         }
 
         $stationGroup = 'station_' . $station->getIdRequired();

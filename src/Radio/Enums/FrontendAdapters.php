@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignoreFile
-
 declare(strict_types=1);
 
 namespace App\Radio\Enums;
@@ -55,7 +53,7 @@ enum FrontendAdapters: string implements AdapterTypeInterface
     {
         return self::Icecast === $this;
     }
-    
+
     public static function default(): self
     {
         return self::Icecast;

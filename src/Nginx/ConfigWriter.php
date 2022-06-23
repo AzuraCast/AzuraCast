@@ -35,13 +35,11 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $listenBaseUrl = CustomUrls::getListenUrl($station);
-
         $port = $station->getFrontendConfig()->getPort();
 
         $event->appendBlock(
             <<<NGINX
-            # Reverse proxy the frontend broadcast.
-            location ~ ^{$listenBaseUrl}(/?)(.*)\$ {
+            location ~ ^({$listenBaseUrl}|/radio/{$port})(/?)(.*)\$ {
                 include proxy_params;
                 
                 proxy_intercept_errors    on;
@@ -50,7 +48,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 proxy_connect_timeout     60;
                 
                 proxy_set_header Host localhost:{$port};
-                proxy_pass http://127.0.0.1:{$port}/\$2?\$args;
+                proxy_pass http://127.0.0.1:{$port}/\$3?\$args;
             }
             NGINX
         );
@@ -72,10 +70,10 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<NGINX
             # Reverse proxy the WebDJ connection.
-            location ~ ^{$webDjBaseUrl}(/?)(.*)\$ {
+            location ~ ^({$webDjBaseUrl}|/radio/{$autoDjPort})(/?)(.*)\$ {
                 include proxy_params;
 
-                proxy_pass http://127.0.0.1:{$autoDjPort}/$2;
+                proxy_pass http://127.0.0.1:{$autoDjPort}/$3;
             }
             NGINX
         );

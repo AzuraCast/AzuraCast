@@ -664,51 +664,61 @@ backup() {
 # ./docker.sh restore [/custom/backup/dir/custombackupname.zip]
 #
 restore() {
-  local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
-  BACKUP_PATH=$(readlink -f ${1:-"./backup.tar.gz"})
-  BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
-  BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
-  BACKUP_EXT="${BACKUP_FILENAME##*.}"
-  shift
-
   if [[ ! -f .env ]] || [[ ! -f azuracast.env ]]; then
     echo "AzuraCast hasn't been installed yet on this server."
     echo "You should run './docker.sh install' first before restoring."
     exit 1
   fi
 
-  if [[ ! -f ${BACKUP_PATH} ]]; then
-    echo "File '${BACKUP_PATH}' does not exist. Nothing to restore."
-    exit 1
-  fi
-
   if ask "Restoring will remove any existing AzuraCast installation data, replacing it with your backup. Continue?" Y; then
-    docker-compose down -v
+    if [[ $1 != "" ]]; then
+      local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
+      BACKUP_PATH=$(readlink -f ${1:-"./backup.tar.gz"})
+      BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
+      BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
+      BACKUP_EXT="${BACKUP_FILENAME##*.}"
+      shift
 
-    docker volume create azuracast_backups
+      if [[ ! -f ${BACKUP_PATH} ]]; then
+        echo "File '${BACKUP_PATH}' does not exist. Nothing to restore."
+        exit 1
+      fi
 
-    # Move from local filesystem to Docker volume
-    docker run --rm -v "$BACKUP_DIR:/backup_src" \
-      -v "azuracast_backups:/backup_dest" \
-      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+      docker-compose down -v
+      docker volume create azuracast_backups
 
-    # Prepare permissions
-    if [[ $EUID -ne 0 ]]; then
-      .env --file .env set AZURACAST_PUID="$(id -u)"
-      .env --file .env set AZURACAST_PGID="$(id -g)"
+      # Move from local filesystem to Docker volume
+      docker run --rm -v "$BACKUP_DIR:/backup_src" \
+        -v "azuracast_backups:/backup_dest" \
+        busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+
+      # Prepare permissions
+      if [[ $EUID -ne 0 ]]; then
+        .env --file .env set AZURACAST_PUID="$(id -u)"
+        .env --file .env set AZURACAST_PGID="$(id -g)"
+      fi
+
+      docker-compose run --rm web -- azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+
+      # Move file back from volume to local filesystem
+      docker run --rm -v "azuracast_backups:/backup_src" \
+        -v "$BACKUP_DIR:/backup_dest" \
+        busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+
+      docker-compose down
+      docker-compose up -d
+    else
+      docker-compose down
+
+      # Remove all volumes except the backup volume.
+      docker volume rm -f $(docker volume ls | grep -v "azuracast_backups" | awk 'NR>1 {print $2}')
+
+      docker-compose run --rm web -- azuracast_restore "$@"
+
+      docker-compose down
+      docker-compose up -d
     fi
-
-    docker-compose run --rm web -- azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
-
-    # Move file back from volume to local filesystem
-    docker run --rm -v "azuracast_backups:/backup_src" \
-      -v "$BACKUP_DIR:/backup_dest" \
-      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
-
-    docker-compose down
-    docker-compose up -d
   fi
-
   exit
 }
 

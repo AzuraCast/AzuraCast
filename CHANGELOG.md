@@ -9,6 +9,7 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Remote URL Playlists should now be functioning normally (Thanks to the Liquidsoap team for fixing!)
 ---
 
 # AzuraCast 0.17.1 (Jun 16, 2022)

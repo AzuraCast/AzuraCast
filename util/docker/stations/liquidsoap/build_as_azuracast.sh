@@ -5,7 +5,7 @@ set -x
 opam init --disable-sandboxing -a --bare && opam switch create 4.13.1
 
 # Pin specific commit of Liquidsoap
-# opam pin add --no-action liquidsoap https://github.com/savonet/liquidsoap.git#dee2e1553b87e6343d37df4525025af2bea24da8
+opam pin add --no-action liquidsoap https://github.com/savonet/liquidsoap.git#d5cf13e37b5da960da1599cb0cc2ad89274d896a
 
 opam install -y ladspa.0.2.2 ffmpeg.1.1.3 ffmpeg-avutil.1.1.3 ffmpeg-avcodec.1.1.3 ffmpeg-avdevice.1.1.3 \
     ffmpeg-av.1.1.3 ffmpeg-avfilter.1.1.3 ffmpeg-swresample.1.1.3 ffmpeg-swscale.1.1.3 frei0r.0.1.2 \

@@ -157,7 +157,7 @@ class Shoutcast extends AbstractFrontend
             }
 
             if ($mount_row->getMaxListenerDuration()) {
-                $config['streammaxuser_' . $i] = $mount_row->getMaxListenerDuration();
+                $config['streamlistenertime_' . $i] = $mount_row->getMaxListenerDuration();
             }
         }
 

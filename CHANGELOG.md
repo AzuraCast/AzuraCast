@@ -5,9 +5,26 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- HLS streams now have full listener analytics support and will appear in station statistics and reports.
+
 ## Code Quality/Technical Changes
 
+- You can now run `./docker.sh restore` with no arguments (i.e. exactly as specified here) to view a list of backups
+  that are stored inside the Docker backups volume. This prevents you from needing to copy the backup file out of the
+  Docker directory before restoring it.
+
 ## Bug Fixes
+
+- A bug causing a CPU overrun when trying to load Now Playing data for a station that had not started yet has been
+  fixed.
+
+- A bug causing stations to incorrectly be flagged as "Needs Restart" after routine updates has been resolved.
+
+- A bug causing HLS streams to not properly disconnect when played via the web player has been resolved.
+
+- If maximum listener duration is set, it will now properly be enforced by Shoutcast.
+
+- The `/radio/8xx5` aliases for WebDJ connections have been re-added.
 
 ---
 

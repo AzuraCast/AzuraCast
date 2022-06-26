@@ -160,6 +160,8 @@ final class ListenerRepository extends Repository
                 $record['mount_id'] = (int)$mountId;
             } elseif ('remote' === $mountType) {
                 $record['remote_id'] = (int)$mountId;
+            } elseif ('hls' === $mountType) {
+                $record['hls_stream_id'] = (int)$mountId;
             }
         }
 
@@ -171,7 +173,7 @@ final class ListenerRepository extends Repository
         return $record;
     }
 
-    protected function batchAddDeviceDetails(array $record): array
+    private function batchAddDeviceDetails(array $record): array
     {
         $userAgent = $record['listener_user_agent'];
 
@@ -194,7 +196,7 @@ final class ListenerRepository extends Repository
         return $record;
     }
 
-    protected function batchAddLocationDetails(array $record): array
+    private function batchAddLocationDetails(array $record): array
     {
         $ip = $record['listener_ip'];
 

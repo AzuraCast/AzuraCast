@@ -17,7 +17,8 @@ final class ByStream extends AbstractReportAction
         SettingsRepository $settingsRepo,
         EntityManagerInterface $em,
         private readonly Entity\Repository\StationMountRepository $mountRepo,
-        private readonly Entity\Repository\StationRemoteRepository $remoteRepo
+        private readonly Entity\Repository\StationRemoteRepository $remoteRepo,
+        private readonly Entity\Repository\StationHlsStreamRepository $hlsStreamRepo,
     ) {
         parent::__construct($settingsRepo, $em);
     }
@@ -44,11 +45,12 @@ final class ByStream extends AbstractReportAction
                        COUNT(l.listener_hash) AS listeners, 
                        SUM(l.connected_seconds) AS connected_seconds
                 FROM (
-                    SELECT IF (
-                        mount_id IS NOT NULL, 
-                        CONCAT('local_', mount_id),
-                        CONCAT('remote_', remote_id)
-                    ) AS stream_id,
+                    SELECT CASE
+                        WHEN mount_id IS NOT NULL THEN CONCAT('local_', mount_id)
+                        WHEN hls_stream_id IS NOT NULL THEN CONCAT('hls_', hls_stream_id)
+                        WHEN remote_id IS NOT NULL THEN CONCAT('remote_', remote_id)
+                        ELSE 'unknown'
+                    END AS stream_id,
                         SUM(timestamp_end - timestamp_start) AS connected_seconds,
                         listener_hash
                     FROM listener
@@ -72,6 +74,9 @@ final class ByStream extends AbstractReportAction
         }
         foreach ($this->remoteRepo->getDisplayNames($station) as $id => $displayName) {
             $streamLookup['remote_' . $id] = $displayName;
+        }
+        foreach ($this->hlsStreamRepo->getDisplayNames($station) as $id => $displayName) {
+            $streamLookup['hls_' . $id] = $displayName;
         }
 
         $listenersByStream = [];

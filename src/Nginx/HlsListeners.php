@@ -52,8 +52,12 @@ final class HlsListeners
             );
         }
 
+        $logContents = array_reverse($logContents);
+
+        $streamsByName = [];
         $clientsByStream = [];
         foreach ($hlsStreams as $hlsStream) {
+            $streamsByName[$hlsStream->getName()] = $hlsStream->getIdRequired();
             $clientsByStream[$hlsStream->getName()] = 0;
         }
 
@@ -65,8 +69,10 @@ final class HlsListeners
                 && isset($clientsByStream[$client->mount])
                 && !isset($allClients[$client->uid])
             ) {
-                $allClients[$client->uid] = $client;
                 $clientsByStream[$client->mount]++;
+
+                $client->mount = 'hls_' . $streamsByName[$client->mount];
+                $allClients[$client->uid] = $client;
             }
         }
 

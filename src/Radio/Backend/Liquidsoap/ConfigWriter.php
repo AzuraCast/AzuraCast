@@ -1007,49 +1007,42 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<EOF
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
-            last_title = ref("")
-            last_artist = ref("")
-            last_song_id = ref("")
-            
+            last_metadata = ref([])
             def handle_jingle_mode(m) = 
                 if (m["jingle_mode"] == "true") then
-                    [("title", !last_title), ("artist", !last_artist)]                
+                    !last_metadata    
                 else
-                    last_title := m["title"]
-                    last_artist := m["artist"]
+                    last_metadata := m
                     m
                 end
             end
-            radio = map_metadata(handle_jingle_mode, radio)
+            radio = map_metadata(update=false, handle_jingle_mode, radio)
             
             # Send metadata changes back to AzuraCast
+            last_title = ref("")
+            last_artist = ref("")
+            
             def metadata_updated(m) =
                 def f() =
-                    if (m["is_live"] == "true") then
+                    if (m["title"] != !last_title and m["artist"] != !last_artist) then
+                        last_title := m["title"]
+                        last_artist := m["artist"]
+                        
                         j = json()
-                        j.add("is_live", true)
-                        j.add("artist", m["artist"])
-                        j.add("title", m["title"])
+                        
+                        if (m["song_id"] != "") then
+                            j.add("song_id", m["song_id"])
+                            j.add("media_id", m["media_id"])
+                            j.add("playlist_id", m["playlist_id"])
+                        else
+                            j.add("artist", m["artist"])
+                            j.add("title", m["title"])
+                        end
                         
                         _ = azuracast_api_call(
                             "feedback",
                             json.stringify(j)
-                        )                                        
-                    else
-                        if (m["song_id"] != "" and m["song_id"] != !last_song_id) then
-                            last_song_id := m["song_id"]
-                            
-                            j = json()
-                            j.add("is_live", false)
-                            j.add("song_id", m["song_id"])
-                            j.add("media_id", m["media_id"])
-                            j.add("playlist_id", m["playlist_id"])
-                        
-                            _ = azuracast_api_call(
-                                "feedback",
-                                json.stringify(j)
-                            )
-                        end
+                        )
                     end
                 end
                 

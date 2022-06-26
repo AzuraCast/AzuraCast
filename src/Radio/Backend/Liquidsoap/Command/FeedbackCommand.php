@@ -50,7 +50,7 @@ class FeedbackCommand extends AbstractCommand
         Entity\Station $station,
         array $payload
     ): Entity\SongHistory {
-        if ($payload['is_live']) {
+        if (isset($payload['artist'])) {
             return new Entity\SongHistory(
                 $station,
                 Entity\Song::createFromArray([

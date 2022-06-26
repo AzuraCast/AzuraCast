@@ -52,6 +52,14 @@ http {
     # Logging Settings
     ##
 
+    log_format hls_json escape=json '{'
+        '"msec": "$msec",'
+        '"ua": "$http_user_agent",'
+        '"ip": "$remote_addr",'
+        '"ip_xff": "$http_x_forwarded_for",'
+        '"uri": "$request_uri"'
+        '}';
+
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
 

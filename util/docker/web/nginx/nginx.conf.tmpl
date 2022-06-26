@@ -20,6 +20,14 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
+    log_format hls_json escape=json '{'
+        '"msec": "$msec",'
+        '"ua": "$http_user_agent",'
+        '"ip": "$remote_addr",'
+        '"ip_xff": "$http_x_forwarded_for",'
+        '"uri": "$request_uri"'
+        '}';
+
     access_log off;
     server_tokens off;
     keepalive_timeout 65;

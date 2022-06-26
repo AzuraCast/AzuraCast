@@ -12,6 +12,7 @@ use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Http\RouterInterface;
 use App\Message;
+use App\Nginx\HlsListeners;
 use App\Radio\Adapters;
 use DeepCopy\DeepCopy;
 use Exception;
@@ -35,6 +36,7 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
         protected ReloadableEntityManagerInterface $em,
         protected LoggerInterface $logger,
+        protected HlsListeners $hlsListeners,
     ) {
     }
 
@@ -51,6 +53,7 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
             GenerateRawNowPlaying::class => [
                 ['loadRawFromFrontend', 10],
                 ['addToRawFromRemotes', 0],
+                ['addToRawFromHls', -10],
             ],
         ];
     }
@@ -144,6 +147,21 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         }
 
         $event->setResult($result);
+    }
+
+    public function addToRawFromHls(GenerateRawNowPlaying $event): void
+    {
+        try {
+            $event->setResult(
+                $this->hlsListeners->updateNowPlaying(
+                    $event->getResult(),
+                    $event->getStation(),
+                    $event->includeClients()
+                )
+            );
+        } catch (Exception $e) {
+            $this->logger->error(sprintf('HLS error: %s', $e->getMessage()));
+        }
     }
 
     protected function dispatchWebhooks(

@@ -62,6 +62,11 @@ final class Nginx
         $this->supervisor->signalProcess(self::PROCESS_NAME, 'HUP');
     }
 
+    public function reopenLogs(): void
+    {
+        $this->supervisor->signalProcess(self::PROCESS_NAME, 'USR1');
+    }
+
     private function getConfigPath(Station $station): string
     {
         return $station->getRadioConfigDir() . '/nginx.conf';

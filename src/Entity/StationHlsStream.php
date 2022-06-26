@@ -54,6 +54,12 @@ class StationHlsStream implements
     ]
     protected ?int $bitrate = 128;
 
+    #[
+        ORM\Column,
+        Attributes\AuditIgnore
+    ]
+    protected int $listeners = 0;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -105,6 +111,16 @@ class StationHlsStream implements
     public function setBitrate(?int $bitrate): void
     {
         $this->bitrate = $bitrate;
+    }
+
+    public function getListeners(): int
+    {
+        return $this->listeners;
+    }
+
+    public function setListeners(int $listeners): void
+    {
+        $this->listeners = $listeners;
     }
 
     public function __toString(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nginx;
 
+use App\Entity\Station;
 use App\Event\Nginx\WriteNginxConfiguration;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
@@ -89,6 +90,8 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsBaseUrl = CustomUrls::getHlsUrl($station);
         $hlsFolder = $station->getRadioHlsDir();
 
+        $hlsLogPath = self::getHlsLogFile($station);
+
         $event->appendBlock(
             <<<NGINX
             # Reverse proxy the frontend broadcast.
@@ -96,6 +99,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 types {
                     application/vnd.apple.mpegurl m3u8;
                     video/mp2t ts;
+                }
+                
+                location ~ \.m3u8$ {
+                    access_log {$hlsLogPath} hls_json;
                 }
                 
                 add_header 'Access-Control-Allow-Origin' '*';
@@ -106,5 +113,10 @@ final class ConfigWriter implements EventSubscriberInterface
             }
             NGINX
         );
+    }
+
+    public static function getHlsLogFile(Station $station): string
+    {
+        return $station->getRadioConfigDir() . '/hls.log';
     }
 }

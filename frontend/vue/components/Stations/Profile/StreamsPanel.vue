@@ -76,8 +76,12 @@
                     <td class="pr-1">
                         <play-button icon-class="outlined" :url="np.station.hls_url" is-stream is-hls></play-button>
                     </td>
-                    <td class="pl-1" colspan="2">
+                    <td class="pl-1">
                         <a v-bind:href="np.station.hls_url" target="_blank">{{ np.station.hls_url }}</a>
+                    </td>
+                    <td class="pl-1 text-right">
+                        <icon class="sm align-middle" icon="headset"></icon>
+                        <span class="listeners-total">{{ np.station.hls_listeners }}</span>
                     </td>
                 </tr>
                 </tbody>

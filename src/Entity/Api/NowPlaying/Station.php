@@ -108,6 +108,12 @@ class Station implements ResolvableUrlInterface
     )]
     public string|UriInterface|null $hls_url = null;
 
+    #[OA\Property(
+        description: 'HLS Listeners',
+        example: 1
+    )]
+    public int $hls_listeners = 0;
+
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *

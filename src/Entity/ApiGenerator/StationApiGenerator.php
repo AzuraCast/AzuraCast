@@ -78,6 +78,12 @@ class StationApiGenerator
             ? $backend->getHlsUrl($station, $baseUri)
             : null;
 
+        $hlsListeners = 0;
+        foreach ($station->getHlsStreams() as $hlsStream) {
+            $hlsListeners += $hlsStream->getListeners();
+        }
+        $response->hls_listeners = $hlsListeners;
+
         return $response;
     }
 }

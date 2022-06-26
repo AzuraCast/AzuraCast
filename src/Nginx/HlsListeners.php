@@ -82,7 +82,7 @@ final class HlsListeners
         $result->listeners->total = $result->listeners->unique = count($allClients);
 
         $result->clients = ($includeClients)
-            ? $allClients
+            ? array_values($allClients)
             : [];
 
         $this->logger->debug('HLS response', ['response' => $result]);

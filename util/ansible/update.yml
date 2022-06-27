@@ -20,7 +20,7 @@
     - role: "azuracast-config"
 
     - role: "azuracast-radio"
-      when: update_revision|int < 82
+      when: update_revision|int < 91
 
     - role: "supervisord"
 

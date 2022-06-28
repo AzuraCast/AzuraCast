@@ -191,6 +191,8 @@ export default {
                     },
                     backend_config: {
                         hls_segment_length: {numeric},
+                        hls_segments_in_playlist: {numeric},
+                        hls_segments_overhead: {numeric},
                         dj_port: {numeric},
                         telnet_port: {numeric},
                         dj_mount_point: {},
@@ -332,6 +334,8 @@ export default {
                     },
                     backend_config: {
                         hls_segment_length: 4,
+                        hls_segments_in_playlist: 5,
+                        hls_segments_overhead: 2,
                         dj_port: '',
                         telnet_port: '',
                         dj_mount_point: '/',

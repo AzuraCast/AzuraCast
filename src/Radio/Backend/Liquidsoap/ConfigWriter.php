@@ -1141,7 +1141,11 @@ class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $hlsBaseDir = $station->getRadioHlsDir();
-        $hlsSegmentLength = $station->getBackendConfig()->getHlsSegmentLength();
+
+        $backendConfig = $station->getBackendConfig();
+        $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
+        $hlsSegmentsInPlaylist = $backendConfig->getHlsSegmentsInPlaylist();
+        $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
 
         $event->appendBlock(
             <<<LS
@@ -1153,8 +1157,8 @@ class ConfigWriter implements EventSubscriberInterface
             
             output.file.hls(playlist="live.m3u8",
                 segment_duration={$hlsSegmentLength}.0,
-                segments=5,
-                segments_overhead=5,
+                segments={$hlsSegmentsInPlaylist},
+                segments_overhead={$hlsSegmentsOverhead},
                 segment_name=hls_segment_name,
                 persist_at="{$configDir}/hls.config",
                 "{$hlsBaseDir}",

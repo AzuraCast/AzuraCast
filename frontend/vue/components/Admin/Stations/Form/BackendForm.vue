@@ -107,13 +107,35 @@
                                 <translate :key="lang">Make HLS Stream Default in Public Player</translate>
                             </template>
                         </b-wrapped-form-checkbox>
+                    </b-form-row>
+                </b-form-fieldset>
 
-                        <b-wrapped-form-group v-if="showAdvanced" class="col-md-6"
+                <b-form-fieldset v-if="showAdvanced && form.enable_hls.$model">
+                    <b-form-row>
+                        <b-wrapped-form-group class="col-md-4"
                                               id="edit_form_backend_hls_segment_length"
                                               :field="form.backend_config.hls_segment_length" input-type="number"
                                               :input-attrs="{ min: '0', max: '60' }" advanced>
                             <template #label="{lang}">
                                 <translate :key="lang">Segment Length (Seconds)</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-4"
+                                              id="edit_form_backend_hls_segments_in_playlist"
+                                              :field="form.backend_config.hls_segments_in_playlist" input-type="number"
+                                              :input-attrs="{ min: '0', max: '60' }" advanced>
+                            <template #label="{lang}">
+                                <translate :key="lang">Segments in Playlist</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-4"
+                                              id="edit_form_backend_hls_segments_overhead"
+                                              :field="form.backend_config.hls_segments_overhead" input-type="number"
+                                              :input-attrs="{ min: '0', max: '60' }" advanced>
+                            <template #label="{lang}">
+                                <translate :key="lang">Segments Overhead</translate>
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

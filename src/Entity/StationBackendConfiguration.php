@@ -319,6 +319,30 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_SEGMENT_LENGTH, $length);
     }
 
+    public const HLS_SEGMENTS_IN_PLAYLIST = 'hls_segments_in_playlist';
+
+    public function getHlsSegmentsInPlaylist(): int
+    {
+        return $this->get(self::HLS_SEGMENTS_IN_PLAYLIST, 5);
+    }
+
+    public function setHlsSegmentsInPlaylist(?int $value): void
+    {
+        $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
+    }
+
+    public const HLS_SEGMENTS_OVERHEAD = 'hls_segments_overhead';
+
+    public function getHlsSegmentsOverhead(): int
+    {
+        return $this->get(self::HLS_SEGMENTS_OVERHEAD, 2);
+    }
+
+    public function setHlsSegmentsOverhead(?int $value): void
+    {
+        $this->set(self::HLS_SEGMENTS_OVERHEAD, $value);
+    }
+
     public const HLS_ENABLE_ON_PUBLIC_PLAYER = 'hls_enable_on_public_player';
 
     public function getHlsEnableOnPublicPlayer(): bool

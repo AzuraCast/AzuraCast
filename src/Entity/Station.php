@@ -497,7 +497,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     ): void {
         if (is_array($frontend_config)) {
             $frontend_config = new StationFrontendConfiguration(
-                $force_overwrite ? $frontend_config : array_merge((array)$this->backend_config, $frontend_config)
+                $force_overwrite ? $frontend_config : array_merge((array)$this->frontend_config, $frontend_config)
             );
         }
 

@@ -15,14 +15,14 @@
             <translate key="new_api_key_3">Your full API key is below:</translate>
         </p>
 
-        <div class="well">
+        <div class="px-2">
             <code id="api_key">{{ newKey }}</code>
-            <div class="buttons">
+            <div class="buttons pt-2">
                 <copy-to-clipboard-button :text="newKey"></copy-to-clipboard-button>
             </div>
         </div>
 
-        <p class="card-text">
+        <p class="card-text pt-3">
             <translate key="new_api_key_4">When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself.</translate>
         </p>
         <p class="card-text">

@@ -49,7 +49,7 @@
 
         <div class="radio-controls">
             <play-button class="radio-control-play-button" icon-class="outlined lg" :url="current_stream.url"
-                         is-stream></play-button>
+                         :is-hls="current_stream.hls" is-stream></play-button>
 
             <div class="radio-control-select-stream">
                 <div v-if="this.streams.length > 1" class="dropdown">
@@ -59,7 +59,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btn-select-stream">
                         <a class="dropdown-item" v-for="stream in streams" href="javascript:"
-                           @click="switchStream(stream)">
+                           @click.prevent="switchStream(stream)">
                             {{ stream.name }}
                         </a>
                     </div>
@@ -208,12 +208,12 @@
 </style>
 
 <script>
-
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import NowPlaying, {nowPlayingProps} from '~/components/Common/NowPlaying';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
-
+import IsMounted from "~/components/Common/IsMounted";
+import Hls from "hls.js";
 
 export const radioPlayerProps = {
     ...nowPlayingProps,
@@ -223,10 +223,15 @@ export const radioPlayerProps = {
             required: true
         },
         initialNowPlaying: {
-            type: Object,
-            default() {
-                return NowPlaying;
-            }
+            type: Object
+        },
+        showHls: {
+            type: Boolean,
+            default: true
+        },
+        hlsIsDefault: {
+            type: Boolean,
+            default: true
         },
         useNchan: {
             type: Boolean,
@@ -245,21 +250,20 @@ export const radioPlayerProps = {
 
 export default {
     components: {PlayButton, Icon, NowPlaying, AudioPlayer},
-    mixins: [radioPlayerProps],
+    mixins: [radioPlayerProps, IsMounted],
     data() {
         return {
-            'is_mounted': false,
             'np': this.initialNowPlaying,
             'np_elapsed': 0,
             'current_stream': {
                 'name': '',
-                'url': ''
+                'url': '',
+                'hls': false,
             },
             'clock_interval': null
         };
     },
     mounted() {
-        this.is_mounted = true;
         this.clock_interval = setInterval(this.iterateTimer, 1000);
 
         if (this.autoplay) {
@@ -267,12 +271,6 @@ export default {
         }
     },
     computed: {
-        lang_play_btn() {
-            return this.$gettext('Play');
-        },
-        lang_stop_btn() {
-            return this.$gettext('Stop');
-        },
         lang_mute_btn() {
             return this.$gettext('Mute');
         },
@@ -287,19 +285,37 @@ export default {
         },
         streams() {
             let all_streams = [];
+
+            if (this.enable_hls) {
+                all_streams.push({
+                    'name': this.$gettext('HLS'),
+                    'url': this.np.station.hls_url,
+                    'hls': true,
+                });
+            }
+
             this.np.station.mounts.forEach(function (mount) {
                 all_streams.push({
                     'name': mount.name,
-                    'url': mount.url
+                    'url': mount.url,
+                    'hls': false,
                 });
             });
             this.np.station.remotes.forEach(function (remote) {
                 all_streams.push({
                     'name': remote.name,
-                    'url': remote.url
+                    'url': remote.url,
+                    'hls': false,
                 });
             });
             return all_streams;
+        },
+        enable_hls() {
+            if (!this.showHls || !this.np.station.hls_enabled) {
+                return false;
+            }
+
+            return Hls.isSupported();
         },
         time_percent() {
             let time_played = this.np_elapsed;
@@ -334,7 +350,7 @@ export default {
         },
         volume: {
             get() {
-                if (!this.is_mounted) {
+                if (!this.isMounted) {
                     return;
                 }
 
@@ -348,7 +364,7 @@ export default {
     methods: {
         switchStream(new_stream) {
             this.current_stream = new_stream;
-            this.$refs.player.toggle(this.current_stream.url, true);
+            this.$refs.player.toggle(this.current_stream.url, true, this.current_stream.hls);
         },
         setNowPlaying(np_new) {
             this.np = np_new;
@@ -356,21 +372,23 @@ export default {
 
             // Set a "default" current stream if none exists.
             if (this.current_stream.url === '' && this.streams.length > 0) {
-                let current_stream = null;
+                if (this.hlsIsDefault && this.enable_hls) {
+                    this.current_stream = this.streams[0];
+                } else {
+                    let current_stream = null;
+                    if (np_new.station.listen_url !== '') {
+                        this.streams.forEach(function (stream) {
+                            if (stream.url === np_new.station.listen_url) {
+                                current_stream = stream;
+                            }
+                        });
+                    }
 
-                if (np_new.station.listen_url !== '') {
-                    this.streams.forEach(function (stream) {
-                        if (stream.url === np_new.station.listen_url) {
-                            current_stream = stream;
-                        }
-                    });
+                    if (current_stream === null) {
+                        current_stream = this.streams[0];
+                    }
+                    this.current_stream = current_stream;
                 }
-
-                if (current_stream === null) {
-                    current_stream = this.streams[0];
-                }
-
-                this.current_stream = current_stream;
             }
         },
         iterateTimer() {

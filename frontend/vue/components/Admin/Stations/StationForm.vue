@@ -139,6 +139,8 @@ export default {
                 },
                 backend_type: {required},
                 backend_config: {
+                    hls_enable_on_public_player: {},
+                    hls_is_default: {},
                     crossfade_type: {},
                     crossfade: {decimal},
                     audio_processing_method: {},
@@ -297,6 +299,8 @@ export default {
                 },
                 backend_type: BACKEND_LIQUIDSOAP,
                 backend_config: {
+                    hls_enable_on_public_player: true,
+                    hls_is_default: true,
                     crossfade_type: 'normal',
                     crossfade: 2,
                     audio_processing_method: AUDIO_PROCESSING_NONE,

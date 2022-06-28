@@ -48,10 +48,14 @@ final class PlayerAction
         $customization = $request->getCustomization();
         $router = $request->getRouter();
 
+        $backendConfig = $station->getBackendConfig();
+
         $props = [
             'initialNowPlaying' => $np,
             'showAlbumArt' => !$customization->hideAlbumArt(),
             'autoplay' => !empty($request->getQueryParam('autoplay')),
+            'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
+            'hlsIsDefault' => $backendConfig->getHlsIsDefault(),
         ];
 
         if ($customization->useWebSocketsForNowPlaying()) {

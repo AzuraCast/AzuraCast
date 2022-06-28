@@ -109,11 +109,6 @@ export default {
     components: {PlayButton, Icon},
     props: {
         np: Object
-    },
-    methods: {
-        toggle(url) {
-            this.$eventHub.$emit('player_toggle', url);
-        }
     }
 };
 </script>

@@ -15,7 +15,12 @@
                     {{ np.live.streamer_name }}
                 </h6>
 
-                <div v-if="np.now_playing.song.title !== ''">
+                <div v-if="!np.is_online">
+                    <h4 class="now-playing-title text-muted">
+                        <translate key="station_offline">Station Offline</translate>
+                    </h4>
+                </div>
+                <div v-else-if="np.now_playing.song.title !== ''">
                     <h4 class="now-playing-title">{{ np.now_playing.song.title }}</h4>
                     <h5 class="now-playing-artist">{{ np.now_playing.song.artist }}</h5>
                 </div>
@@ -219,7 +224,7 @@ export const radioPlayerProps = {
         },
         initialNowPlaying: {
             type: Object,
-            default () {
+            default() {
                 return NowPlaying;
             }
         },
@@ -253,7 +258,7 @@ export default {
             'clock_interval': null
         };
     },
-    mounted () {
+    mounted() {
         this.is_mounted = true;
         this.clock_interval = setInterval(this.iterateTimer, 1000);
 
@@ -262,25 +267,25 @@ export default {
         }
     },
     computed: {
-        lang_play_btn () {
+        lang_play_btn() {
             return this.$gettext('Play');
         },
-        lang_stop_btn () {
+        lang_stop_btn() {
             return this.$gettext('Stop');
         },
-        lang_mute_btn () {
+        lang_mute_btn() {
             return this.$gettext('Mute');
         },
-        lang_volume_slider () {
+        lang_volume_slider() {
             return this.$gettext('Volume');
         },
-        lang_full_volume_btn () {
+        lang_full_volume_btn() {
             return this.$gettext('Full Volume');
         },
-        lang_album_art_alt () {
+        lang_album_art_alt() {
             return this.$gettext('Album Art');
         },
-        streams () {
+        streams() {
             let all_streams = [];
             this.np.station.mounts.forEach(function (mount) {
                 all_streams.push({
@@ -296,7 +301,7 @@ export default {
             });
             return all_streams;
         },
-        time_percent () {
+        time_percent() {
             let time_played = this.np_elapsed;
             let time_total = this.np.now_playing.duration;
 
@@ -309,7 +314,7 @@ export default {
 
             return (time_played / time_total) * 100;
         },
-        time_display_played () {
+        time_display_played() {
             let time_played = this.np_elapsed;
             let time_total = this.np.now_playing.duration;
 
@@ -323,29 +328,29 @@ export default {
 
             return this.formatTime(time_played);
         },
-        time_display_total () {
+        time_display_total() {
             let time_total = this.np.now_playing.duration;
             return (time_total) ? this.formatTime(time_total) : null;
         },
         volume: {
-            get () {
+            get() {
                 if (!this.is_mounted) {
                     return;
                 }
 
                 return this.$refs.player.getVolume();
             },
-            set (vol) {
+            set(vol) {
                 this.$refs.player.setVolume(vol);
             }
         }
     },
     methods: {
-        switchStream (new_stream) {
+        switchStream(new_stream) {
             this.current_stream = new_stream;
             this.$refs.player.toggle(this.current_stream.url, true);
         },
-        setNowPlaying (np_new) {
+        setNowPlaying(np_new) {
             this.np = np_new;
             this.$emit('np_updated', np_new);
 
@@ -368,7 +373,7 @@ export default {
                 this.current_stream = current_stream;
             }
         },
-        iterateTimer () {
+        iterateTimer() {
             let current_time = Math.floor(Date.now() / 1000);
             let np_elapsed = current_time - this.np.now_playing.played_at;
             if (np_elapsed < 0) {
@@ -378,7 +383,7 @@ export default {
             }
             this.np_elapsed = np_elapsed;
         },
-        formatTime (time) {
+        formatTime(time) {
             let sec_num = parseInt(time, 10);
 
             let hours = Math.floor(sec_num / 3600);

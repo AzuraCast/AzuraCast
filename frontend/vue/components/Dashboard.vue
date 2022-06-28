@@ -159,7 +159,10 @@
                                 <album-art v-if="showAlbumArt" :src="item.now_playing.song.art"
                                            class="flex-shrink-0 pr-3"></album-art>
 
-                                <div v-if="item.now_playing.song.title !== ''" class="flex-fill">
+                                <div v-if="!item.is_online" class="flex-fill text-muted">
+                                    <translate key="station_offline">Station Offline</translate>
+                                </div>
+                                <div v-else-if="item.now_playing.song.title !== ''" class="flex-fill">
                                     <strong><span class="nowplaying-title">
                                         {{ item.now_playing.song.title }}
                                     </span></strong><br>

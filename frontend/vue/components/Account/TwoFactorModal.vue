@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
+                @submit="doSubmit" @hidden="clearContents" no-enforce-focus>
 
         <b-row>
             <b-col md="7">

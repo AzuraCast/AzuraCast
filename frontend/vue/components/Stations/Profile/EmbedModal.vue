@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="embed_modal" ref="modal" :title="langTitle" hide-footer>
+    <b-modal size="lg" id="embed_modal" ref="modal" :title="langTitle" hide-footer no-enforce-focus>
         <b-row>
             <b-col md="7">
                 <b-card class="mb-3" no-body>
@@ -53,7 +53,8 @@
                 <h2 class="card-title" v-translate key="lang_embed_preview">Preview</h2>
             </div>
             <b-card-body :body-bg-variant="selectedTheme">
-                <iframe width="100%" :src="embedUrl" frameborder="0" style="width: 100%; border: 0;" :style="{ 'min-height': this.embedHeight }"></iframe>
+                <iframe width="100%" :src="embedUrl" frameborder="0" style="width: 100%; border: 0;"
+                        :style="{ 'min-height': this.embedHeight }"></iframe>
             </b-card-body>
         </b-card>
     </b-modal>
@@ -129,16 +130,16 @@ export default {
         };
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Embed Widgets');
         },
-        langEmbedType () {
+        langEmbedType() {
             return this.$gettext('Widget Type');
         },
-        langTheme () {
+        langTheme() {
             return this.$gettext('Theme');
         },
-        baseEmbedUrl () {
+        baseEmbedUrl() {
             switch (this.selectedType) {
                 case 'history':
                     return this.publicHistoryEmbedUri;
@@ -157,10 +158,10 @@ export default {
                     return this.publicPageEmbedUri;
             }
         },
-        embedUrl () {
+        embedUrl() {
             return this.baseEmbedUrl + '?theme=' + this.selectedTheme;
         },
-        bgVariant () {
+        bgVariant() {
             switch (this.selectedTheme) {
                 case 'light':
                     return 'dark';
@@ -169,7 +170,7 @@ export default {
                     return 'light';
             }
         },
-        embedHeight () {
+        embedHeight() {
             switch (this.selectedType) {
                 case 'ondemand':
                     return '400px';
@@ -188,12 +189,12 @@ export default {
                     return '150px';
             }
         },
-        embedCode () {
+        embedCode() {
             return '<iframe src="' + this.embedUrl + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + this.embedHeight + '; border: 0;"></iframe>';
         }
     },
     methods: {
-        open () {
+        open() {
             this.$refs.modal.show();
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <b-modal :size="size" :centered="centered" :id="id" ref="modal" :title="title" :busy="loading" @shown="onShown"
-             @hidden="onHidden">
+             @hidden="onHidden" :no-enforce-focus="noEnforceFocus">
         <template #default="slotProps">
             <b-overlay variant="card" :show="loading">
                 <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
@@ -64,6 +64,10 @@ export default {
         disableSaveButton: {
             type: Boolean,
             default: false
+        },
+        noEnforceFocus: {
+            type: Boolean,
+            default: false,
         },
         error: {
             type: String

@@ -21,11 +21,11 @@ final class DeleteArtAction
         ServerRequest $request,
         Response $response,
         string $station_id,
-        string $streamer_id
+        string $id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $streamer = $this->streamerRepo->requireForStation($streamer_id, $station);
+        $streamer = $this->streamerRepo->requireForStation($id, $station);
 
         $this->streamerRepo->removeArtwork($streamer);
         $this->streamerRepo->getEntityManager()

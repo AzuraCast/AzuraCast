@@ -7,7 +7,6 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
@@ -255,19 +254,5 @@ final class MountsController extends AbstractStationApiCrudController
         $this->mountRepo->destroy($record);
 
         return $response->withJson(Entity\Api\Status::deleted());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getStation(ServerRequest $request): Entity\Station
-    {
-        $station = parent::getStation($request);
-
-        if (!$station->getFrontendTypeEnum()->supportsMounts()) {
-            throw new StationUnsupportedException();
-        }
-
-        return $station;
     }
 }

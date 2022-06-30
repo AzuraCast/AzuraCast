@@ -14,6 +14,10 @@ class Api_Stations_StreamersCest extends CestAbstract
 
         // Create new record
         $station = $this->getTestStation();
+        $station->setEnableStreamers(true);
+        $this->em->persist($station);
+        $this->em->flush();
+
         $listUrl = '/api/station/' . $station->getId() . '/streamers';
 
         $I->sendPOST(

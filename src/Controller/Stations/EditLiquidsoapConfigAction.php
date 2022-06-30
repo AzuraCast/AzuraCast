@@ -6,7 +6,6 @@ namespace App\Controller\Stations;
 
 use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
@@ -26,10 +25,6 @@ final class EditLiquidsoapConfigAction
         string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-
-        if (!$station->getBackendTypeEnum()->isEnabled()) {
-            throw new StationUnsupportedException();
-        }
 
         $configSections = StationBackendConfiguration::getCustomConfigurationSections();
         $tokens = Liquidsoap\ConfigWriter::getDividerString();

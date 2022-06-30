@@ -3,6 +3,7 @@
  * Administrative dashboard configuration.
  */
 
+use App\Enums\StationFeatures;
 use App\Enums\StationPermissions;
 use App\Radio\Enums\AudioProcessingMethods;
 
@@ -13,8 +14,6 @@ return function (App\Event\BuildStationMenu $e) {
     $backendConfig = $station->getBackendConfig();
 
     $router = $request->getRouter();
-
-    $backendEnum = $station->getBackendTypeEnum();
     $frontendEnum = $station->getFrontendTypeEnum();
 
     $willDisconnectMessage = __('Restart broadcasting? This will disconnect any current listeners.');
@@ -63,33 +62,30 @@ return function (App\Event\BuildStationMenu $e) {
             'media' => [
                 'label' => __('Media'),
                 'icon' => 'library_music',
+                'visible' => StationFeatures::Media->supportedForStation($station),
                 'items' => [
                     'files' => [
                         'label' => __('Music Files'),
                         'icon' => 'library_music',
                         'url' => (string)$router->fromHere('stations:files:index'),
-                        'visible' => $backendEnum->isEnabled(),
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_duplicates' => [
                         'label' => __('Duplicate Songs'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:duplicates',
-                        'visible' => $backendEnum->isEnabled(),
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_unprocessable' => [
                         'label' => __('Unprocessable Files'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:unprocessable',
-                        'visible' => $backendEnum->isEnabled(),
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_unassigned' => [
                         'label' => __('Unassigned Files'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:unassigned',
-                        'visible' => $backendEnum->isEnabled(),
                         'permission' => StationPermissions::Media,
                     ],
                     'ondemand' => [
@@ -111,7 +107,6 @@ return function (App\Event\BuildStationMenu $e) {
                         'label' => __('Bulk Media Import/Export'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:bulk-media'),
-                        'visible' => $backendEnum->isEnabled(),
                         'permission' => StationPermissions::Media,
                     ],
                 ],
@@ -121,7 +116,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Playlists'),
                 'icon' => 'queue_music',
                 'url' => (string)$router->fromHere('stations:playlists:index'),
-                'visible' => $backendEnum->isEnabled(),
+                'visible' => StationFeatures::Media->supportedForStation($station),
                 'permission' => StationPermissions::Media,
             ],
 
@@ -129,18 +124,19 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Podcasts'),
                 'icon' => 'cast',
                 'url' => (string)$router->fromHere('stations:podcasts:index'),
+                'visible' => StationFeatures::Podcasts->supportedForStation($station),
                 'permission' => StationPermissions::Podcasts,
             ],
 
             'live_streaming' => [
                 'label' => __('Live Streaming'),
                 'icon' => 'mic',
+                'visible' => StationFeatures::Streamers->supportedForStation($station),
                 'items' => [
                     'streamers' => [
                         'label' => __('Streamer/DJ Accounts'),
                         'icon' => 'mic',
                         'url' => (string)$router->fromHere('stations:streamers:index'),
-                        'visible' => $backendEnum->isEnabled() && $station->getEnableStreamers(),
                         'permission' => StationPermissions::Streamers,
                     ],
 
@@ -154,7 +150,7 @@ return function (App\Event\BuildStationMenu $e) {
                             true
                         )
                             ->withScheme('https'),
-                        'visible' => $station->getEnablePublicPage() && $station->getEnableStreamers(),
+                        'visible' => $station->getEnablePublicPage(),
                         'external' => true,
                     ],
                 ],
@@ -164,6 +160,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Web Hooks'),
                 'icon' => 'code',
                 'url' => (string)$router->fromHere('stations:webhooks:index'),
+                'visible' => StationFeatures::Webhooks->supportedForStation($station),
                 'permission' => StationPermissions::WebHooks,
             ],
 
@@ -204,32 +201,34 @@ return function (App\Event\BuildStationMenu $e) {
                         'label' => __('Mount Points'),
                         'icon' => 'wifi_tethering',
                         'url' => (string)$router->fromHere('stations:mounts:index'),
-                        'visible' => $frontendEnum->supportsMounts(),
+                        'visible' => StationFeatures::MountPoints->supportedForStation($station),
                         'permission' => StationPermissions::MountPoints,
                     ],
                     'hls_streams' => [
                         'label' => __('HLS Streams'),
                         'url' => (string)$router->fromHere('stations:hls_streams:index'),
-                        'visible' => $backendEnum->isEnabled() && $station->getEnableHls(),
+                        'visible' => StationFeatures::HlsStreams->supportedForStation($station),
                         'permission' => StationPermissions::MountPoints,
                     ],
                     'remotes' => [
                         'label' => __('Remote Relays'),
                         'icon' => 'router',
                         'url' => (string)$router->fromHere('stations:remotes:index'),
+                        'visible' => StationFeatures::RemoteRelays->supportedForStation($station),
                         'permission' => StationPermissions::RemoteRelays,
                     ],
                     'fallback' => [
                         'label' => __('Custom Fallback File'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:fallback'),
+                        'visible' => StationFeatures::Media->supportedForStation($station),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'ls_config' => [
                         'label' => __('Edit Liquidsoap Configuration'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:util:ls_config'),
-                        'visible' => $settings->getEnableAdvancedFeatures() && $backendEnum->isEnabled(),
+                        'visible' => StationFeatures::CustomLiquidsoapConfig->supportedForStation($station),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'stations:stereo_tool_config' => [
@@ -237,7 +236,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:stereo_tool_config'),
                         'visible' => $settings->getEnableAdvancedFeatures()
-                            && App\Radio\Enums\BackendAdapters::Liquidsoap === $backendEnum
+                            && StationFeatures::Media->supportedForStation($station)
                             && AudioProcessingMethods::StereoTool === $backendConfig->getAudioProcessingMethodEnum(),
                         'permission' => StationPermissions::Broadcasting,
                     ],

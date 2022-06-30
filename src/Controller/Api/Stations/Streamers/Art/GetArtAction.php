@@ -21,14 +21,14 @@ final class GetArtAction
         ServerRequest $request,
         Response $response,
         string $station_id,
-        string $streamer_id
+        string $id
     ): ResponseInterface {
         // If a timestamp delimiter is added, strip it automatically.
-        $streamer_id = explode('|', $streamer_id, 2)[0];
+        $id = explode('|', $id, 2)[0];
 
         $station = $request->getStation();
 
-        $artworkPath = Entity\StationStreamer::getArtworkPath($streamer_id);
+        $artworkPath = Entity\StationStreamer::getArtworkPath($id);
 
         $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
         if ($fsConfig->fileExists($artworkPath)) {

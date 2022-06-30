@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -16,12 +15,6 @@ final class HlsStreamsAction
         Response $response,
         string $station_id
     ): ResponseInterface {
-        $station = $request->getStation();
-
-        if (!$station->getBackendTypeEnum()->isEnabled() || !$station->getEnableHls()) {
-            throw new StationUnsupportedException();
-        }
-
         $router = $request->getRouter();
         return $request->getView()->renderVuePage(
             response: $response,

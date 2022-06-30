@@ -25,12 +25,12 @@ final class BroadcastsController extends AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         string $station_id,
-        ?string $streamer_id = null
+        ?string $id = null
     ): ResponseInterface {
         $station = $request->getStation();
 
-        if (null !== $streamer_id) {
-            $streamer = $this->getStreamer($station, $streamer_id);
+        if (null !== $id) {
+            $streamer = $this->getStreamer($station, $id);
 
             if (null === $streamer) {
                 return $response->withStatus(404)
@@ -66,13 +66,13 @@ final class BroadcastsController extends AbstractApiCrudController
         $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         $paginator->setPostprocessor(
-            function ($row) use ($streamer_id, $is_bootgrid, $router, $fsRecordings) {
+            function ($row) use ($id, $is_bootgrid, $router, $fsRecordings) {
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);
                 $recordingPath = $row->getRecordingPath();
 
-                if (null === $streamer_id) {
+                if (null === $id) {
                     $streamer = $row->getStreamer();
                     $return['streamer'] = [
                         'id' => $streamer->getId(),
@@ -85,7 +85,7 @@ final class BroadcastsController extends AbstractApiCrudController
                     $routeParams = [
                         'broadcast_id' => $row->getId(),
                     ];
-                    if (null === $streamer_id) {
+                    if (null === $id) {
                         $routeParams['id'] = $row->getStreamer()->getId();
                     }
 
@@ -126,7 +126,7 @@ final class BroadcastsController extends AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         string $station_id,
-        string $streamer_id,
+        string $id,
         string $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -159,7 +159,7 @@ final class BroadcastsController extends AbstractApiCrudController
         ServerRequest $request,
         Response $response,
         string $station_id,
-        string $streamer_id,
+        string $id,
         string $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();

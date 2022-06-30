@@ -20,8 +20,7 @@ return static function (RouteCollectorProxy $group) {
                 ['GET', 'POST'],
                 '/nowplaying/update',
                 Controller\Api\Stations\UpdateMetadataAction::class
-            )
-                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+            )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/profile', Controller\Api\Stations\ProfileAction::class)
                 ->setName('api:stations:profile')
@@ -38,17 +37,12 @@ return static function (RouteCollectorProxy $group) {
                 Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
             )->add(new Middleware\Permissions(StationPermissions::Profile, true));
 
-            $group->get('/quota[/{type}]', Controller\Api\Stations\GetQuotaAction::class)
-                ->setName('api:stations:quota')
-                ->add(new Middleware\Permissions(StationPermissions::View, true));
-
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');
 
-            $group->get('/history', Controller\Api\Stations\HistoryController::class)
-                ->setName('api:stations:history')
-                ->add(new Middleware\Permissions(StationPermissions::Reports, true));
-
+            /*
+             * Upcoming Song Queue
+             */
             $group->group(
                 '/queue',
                 function (RouteCollectorProxy $group) {
@@ -63,7 +57,11 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
+            /*
+             * Song Requests
+             */
             $group->get('/requests', Controller\Api\Stations\RequestsController::class . ':listAction')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
                 ->setName('api:requests:list');
 
             $group->map(
@@ -72,35 +70,18 @@ return static function (RouteCollectorProxy $group) {
                 Controller\Api\Stations\RequestsController::class . ':submitAction'
             )
                 ->setName('api:requests:submit')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
+            /*
+             * On-Demand Streaming
+             */
             $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
                 ->setName('api:stations:ondemand:list');
 
             $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
                 ->setName('api:stations:ondemand:download')
                 ->add(new Middleware\RateLimit('ondemand', 1, 2));
-
-            $group->get('/listeners', Controller\Api\Stations\ListenersAction::class)
-                ->setName('api:listeners:index')
-                ->add(new Middleware\Permissions(StationPermissions::Reports, true));
-
-            $group->get(
-                '/waveform/{media_id:[a-zA-Z0-9\-]+}.json',
-                Controller\Api\Stations\Waveform\GetWaveformAction::class
-            )->setName('api:stations:media:waveform');
-
-            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
-                ->setName('api:stations:media:art');
-
-            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}', Controller\Api\Stations\Art\GetArtAction::class)
-                ->setName('api:stations:media:art-internal');
-
-            $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)
-                ->add(new Middleware\Permissions(StationPermissions::Media, true));
-
-            $group->delete('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\DeleteArtAction::class)
-                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             /*
              * Podcast Public Pages
@@ -231,6 +212,28 @@ return static function (RouteCollectorProxy $group) {
             /*
              * Files/Media
              */
+
+            $group->get('/quota[/{type}]', Controller\Api\Stations\GetQuotaAction::class)
+                ->setName('api:stations:quota')
+                ->add(new Middleware\Permissions(StationPermissions::View, true));
+
+            $group->get(
+                '/waveform/{media_id:[a-zA-Z0-9\-]+}.json',
+                Controller\Api\Stations\Waveform\GetWaveformAction::class
+            )->setName('api:stations:media:waveform');
+
+            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
+                ->setName('api:stations:media:art');
+
+            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}', Controller\Api\Stations\Art\GetArtAction::class)
+                ->setName('api:stations:media:art-internal');
+
+            $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
+
+            $group->delete('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\DeleteArtAction::class)
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
+
             $group->group(
                 '',
                 function (RouteCollectorProxy $group) {
@@ -561,6 +564,15 @@ return static function (RouteCollectorProxy $group) {
             /*
              * Reports
              */
+
+            $group->get('/history', Controller\Api\Stations\HistoryController::class)
+                ->setName('api:stations:history')
+                ->add(new Middleware\Permissions(StationPermissions::Reports, true));
+
+            $group->get('/listeners', Controller\Api\Stations\ListenersAction::class)
+                ->setName('api:listeners:index')
+                ->add(new Middleware\Permissions(StationPermissions::Reports, true));
+
             $group->group(
                 '/reports',
                 function (RouteCollectorProxy $group) {
@@ -627,7 +639,7 @@ return static function (RouteCollectorProxy $group) {
             )->add(new Middleware\Permissions(StationPermissions::Reports, true));
 
             /*
-             * Streamers Extras
+             * Streamers
              */
             $group->get(
                 '/streamer/{id}/art',

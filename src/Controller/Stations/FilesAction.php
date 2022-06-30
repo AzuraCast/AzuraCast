@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Entity;
+use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
-use App\Service\SftpGo;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -61,7 +61,7 @@ final class FilesAction
                 'customFields' => $this->customFieldRepo->fetchArray(),
                 'validMimeTypes' => MimeType::getProcessableTypes(),
                 'stationTimeZone' => $station->getTimezone(),
-                'showSftp' => SftpGo::isSupportedForStation($station),
+                'showSftp' => StationFeatures::Sftp->supportedForStation($station),
                 'sftpUrl' => (string)$router->fromHere('stations:sftp_users:index'),
                 'supportsImmediateQueue' => $backendEnum->isEnabled(),
             ],

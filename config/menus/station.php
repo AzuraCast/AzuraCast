@@ -100,7 +100,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'label' => __('SFTP Users'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:sftp_users:index'),
-                        'visible' => App\Service\SftpGo::isSupportedForStation($station),
+                        'visible' => StationFeatures::Sftp->supportedForStation($station),
                         'permission' => StationPermissions::Media,
                     ],
                     'bulk_media' => [

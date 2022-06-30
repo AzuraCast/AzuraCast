@@ -17,6 +17,7 @@ enum StationFeatures
     case Streamers;
     case Webhooks;
     case Podcasts;
+    case Requests;
 
     public function supportedForStation(Station $station): bool
     {
@@ -28,6 +29,7 @@ enum StationFeatures
             self::Sftp => $backendEnabled && $station->getMediaStorageLocation()->isLocal(),
             self::MountPoints => $station->getFrontendTypeEnum()->supportsMounts(),
             self::HlsStreams => $backendEnabled && $station->getEnableHls(),
+            self::Requests => $backendEnabled && $station->getEnableRequests(),
             self::Webhooks, self::Podcasts => true,
         };
     }

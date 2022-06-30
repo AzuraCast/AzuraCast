@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Environment;
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
-use App\Service\SftpGo;
 use Psr\Http\Message\ResponseInterface;
 
 final class SftpUsersAction
@@ -25,12 +23,6 @@ final class SftpUsersAction
         Response $response,
         string $station_id
     ): ResponseInterface {
-        $station = $request->getStation();
-
-        if (!SftpGo::isSupportedForStation($station)) {
-            throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
-        }
-
         $baseUrl = $request->getRouter()->getBaseUrl()
             ->withScheme('sftp')
             ->withPort(null);

@@ -90,7 +90,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
         if (!$isAuthenticated) {
             // Check for any request (on any station) within the last $threshold_seconds.
-            $thresholdMins = $station->getRequestThreshold() ?? 5;
+            $thresholdMins = $station->getRequestDelay() ?? 5;
             $thresholdSeconds = $thresholdMins * 60;
 
             // Always have a minimum threshold to avoid flooding.
@@ -98,17 +98,17 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                 $thresholdSeconds = 15;
             }
 
-            $recent_requests = $this->em->createQuery(
+            $recentRequests = (int)$this->em->createQuery(
                 <<<'DQL'
-                    SELECT sr FROM App\Entity\StationRequest sr
+                    SELECT COUNT(sr.id) FROM App\Entity\StationRequest sr
                     WHERE sr.ip = :user_ip
                     AND sr.timestamp >= :threshold
                 DQL
             )->setParameter('user_ip', $ip)
                 ->setParameter('threshold', time() - $thresholdSeconds)
-                ->getArrayResult();
+                ->getSingleScalarResult();
 
-            if (count($recent_requests) > 0) {
+            if ($recentRequests > 0) {
                 throw new Exception(
                     __('You have submitted a request too recently! Please wait before submitting another one.')
                 );

@@ -1024,7 +1024,7 @@ class ConfigWriter implements EventSubscriberInterface
             
             def metadata_updated(m) =
                 def f() =
-                    if (m["title"] != !last_title and m["artist"] != !last_artist) then
+                    if (m["title"] != !last_title or m["artist"] != !last_artist) then
                         last_title := m["title"]
                         last_artist := m["artist"]
                         

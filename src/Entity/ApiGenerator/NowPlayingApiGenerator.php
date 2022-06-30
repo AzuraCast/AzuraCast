@@ -6,7 +6,7 @@ namespace App\Entity\ApiGenerator;
 
 use App\Entity;
 use App\Http\Router;
-use App\Radio\Enums\BackendAdapters;
+use App\Utilities\Logger;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\CurrentSong;
@@ -35,7 +35,9 @@ class NowPlayingApiGenerator
     ): Entity\Api\NowPlaying\NowPlaying {
         $baseUri = new Uri('');
 
-        if (empty($npResult->currentSong->text)) {
+        $updateSongFromNowPlaying = !$station->getBackendTypeEnum()->isEnabled();
+
+        if ($updateSongFromNowPlaying && empty($npResult->currentSong->text)) {
             return $this->offlineApi($station, $baseUri);
         }
 
@@ -49,8 +51,6 @@ class NowPlayingApiGenerator
             unique: $npResult->listeners->unique
         );
 
-        $updateSongFromNowPlaying = (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum());
-
         try {
             $sh_obj = $this->historyRepo->updateFromNowPlaying(
                 $station,
@@ -59,7 +59,9 @@ class NowPlayingApiGenerator
                     ? Entity\Song::createFromNowPlayingSong($npResult->currentSong)
                     : null
             );
-        } catch (Exception) {
+        } catch (Exception $e) {
+            Logger::getInstance()->error($e->getMessage(), ['exception' => $e]);
+
             return $this->offlineApi($station, $baseUri);
         }
 
@@ -96,7 +98,7 @@ class NowPlayingApiGenerator
                     route_name: 'api:stations:streamer:art',
                     route_params: [
                         'station_id' => $station->getIdRequired(),
-                        'streamer_id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
+                        'id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
                     ],
                 );
             }

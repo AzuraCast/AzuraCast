@@ -88,7 +88,7 @@ class SongApiGenerator
                     route_name: 'api:stations:streamer:art',
                     route_params: [
                         'station_id' => $station->getIdRequired(),
-                        'streamer_id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
+                        'id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
                     ],
                 );
             }

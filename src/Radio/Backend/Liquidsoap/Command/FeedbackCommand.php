@@ -51,12 +51,18 @@ class FeedbackCommand extends AbstractCommand
         array $payload
     ): Entity\SongHistory {
         if (isset($payload['artist'])) {
+            $newSong = Entity\Song::createFromArray([
+                'artist' => $payload['artist'] ?? '',
+                'title' => $payload['title'] ?? '',
+            ]);
+
+            if (!$this->historyRepo->isDifferentFromCurrentSong($station, $newSong)) {
+                throw new RuntimeException('Song is not different from current song.');
+            }
+
             return new Entity\SongHistory(
                 $station,
-                Entity\Song::createFromArray([
-                    'artist' => $payload['artist'] ?? '',
-                    'title' => $payload['title'] ?? '',
-                ])
+                $newSong
             );
         }
 

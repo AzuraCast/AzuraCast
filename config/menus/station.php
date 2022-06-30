@@ -264,10 +264,10 @@ return function (App\Event\BuildStationMenu $e) {
                 ],
             ],
 
-            'help' => [
-                'label' => __('Help'),
+            'logs' => [
+                'label' => __('Logs'),
                 'icon' => 'support',
-                'url' => (string)$router->fromHere('stations:help'),
+                'url' => (string)$router->fromHere('stations:logs'),
                 'permission' => StationPermissions::Logs,
             ],
         ]

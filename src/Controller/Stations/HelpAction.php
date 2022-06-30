@@ -19,9 +19,9 @@ final class HelpAction
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsHelp',
-            id: 'stations-help',
-            title: __('Help'),
+            component: 'Vue_StationsLogs',
+            id: 'stations-logs',
+            title: __('Logs'),
             props: [
                 'logsUrl' => (string)$router->fromHere('api:stations:logs'),
             ],

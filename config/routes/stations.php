@@ -48,8 +48,8 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('stations:stereo_tool_config')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
-            $group->get('/help', Controller\Stations\HelpAction::class)
-                ->setName('stations:help')
+            $group->get('/logs', Controller\Stations\logs::class)
+                ->setName('stations:logs')
                 ->add(new Middleware\Permissions(StationPermissions::Logs, true));
 
             $group->get('/playlists', Controller\Stations\PlaylistsAction::class)

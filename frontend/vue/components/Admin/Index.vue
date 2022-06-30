@@ -7,15 +7,20 @@
         <b-row>
             <b-col v-for="(panel, key) in adminPanels" :key="key" sm="12" lg="4" class="mb-4">
                 <b-card no-body>
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title flex-fill">
-                            <icon :icon="panel.icon"></icon>
-                            {{ panel.label }}
-                        </h2>
+                    <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
+                        <div class="flex-fill">
+                            <h2 class="card-title">{{ panel.label }}</h2>
+                        </div>
+                        <div class="flex-shrink-0 pt-1">
+                            <icon class="lg" :icon="panel.icon"></icon>
+                        </div>
                     </b-card-header>
 
                     <b-list-group>
-                        <b-list-group-item v-for="(item, key) in panel.items" :key="key" :href="item.url">{{ item.label }}</b-list-group-item>
+                        <b-list-group-item v-for="(item, key) in panel.items" :key="key" :href="item.url">{{
+                                item.label
+                            }}
+                        </b-list-group-item>
                     </b-list-group>
                 </b-card>
             </b-col>
@@ -37,7 +42,8 @@
                         </div>
 
                         <div class="flex-shrink-0">
-                            <b-button variant="outline-light" size="sm" class="py-2" @click.prevent="showCpuStatsHelpModal">
+                            <b-button variant="outline-light" size="sm" class="py-2"
+                                      @click.prevent="showCpuStatsHelpModal">
                                 <icon icon="help_outline"></icon>
                             </b-button>
                         </div>
@@ -46,7 +52,8 @@
                     <b-card-body>
                         <h5 class="mb-1 text-center">{{ formatCpuName(stats.cpu.total.name) }}</h5>
 
-                        <b-progress max="100" :label="formatPercentageString(stats.cpu.total.usage)" class="h-20 mb-3 mt-2">
+                        <b-progress max="100" :label="formatPercentageString(stats.cpu.total.usage)"
+                                    class="h-20 mb-3 mt-2">
                             <b-progress-bar variant="danger" :value="stats.cpu.total.steal"></b-progress-bar>
                             <b-progress-bar variant="warning" :value="stats.cpu.total.io_wait"></b-progress-bar>
                             <b-progress-bar variant="primary" :value="stats.cpu.total.usage"></b-progress-bar>
@@ -131,7 +138,8 @@
                                 </div>
 
                                 <div class="flex-shrink-0">
-                                    <b-button variant="outline-light" size="sm" class="py-2" @click.prevent="showMemoryStatsHelpModal">
+                                    <b-button variant="outline-light" size="sm" class="py-2"
+                                              @click.prevent="showMemoryStatsHelpModal">
                                         <icon icon="help_outline"></icon>
                                     </b-button>
                                 </div>
@@ -144,9 +152,11 @@
                                     {{ stats.memory.readable.total }}
                                 </h6>
 
-                                <b-progress :max="stats.memory.bytes.total" :label="stats.memory.readable.used" class="h-20 mb-3 mt-2">
+                                <b-progress :max="stats.memory.bytes.total" :label="stats.memory.readable.used"
+                                            class="h-20 mb-3 mt-2">
                                     <b-progress-bar variant="primary" :value="stats.memory.bytes.used"></b-progress-bar>
-                                    <b-progress-bar variant="warning" :value="stats.memory.bytes.cached"></b-progress-bar>
+                                    <b-progress-bar variant="warning"
+                                                    :value="stats.memory.bytes.cached"></b-progress-bar>
                                 </b-progress>
 
                                 <b-row>
@@ -181,7 +191,8 @@
                                     {{ stats.disk.readable.total }}
                                 </h6>
 
-                                <b-progress :max="stats.disk.bytes.total" :label="stats.disk.readable.used" class="h-20 mb-3 mt-2">
+                                <b-progress :max="stats.disk.bytes.total" :label="stats.disk.readable.used"
+                                            class="h-20 mb-3 mt-2">
                                     <b-progress-bar variant="primary" :value="stats.disk.bytes.used"></b-progress-bar>
                                 </b-progress>
 
@@ -210,7 +221,8 @@
                     </b-card-header>
 
                     <b-tabs content-class="mt-3">
-                        <b-tab v-for="netInterface in stats.network" :key="netInterface.interface_name" :title="netInterface.interface_name" pills card>
+                        <b-tab v-for="netInterface in stats.network" :key="netInterface.interface_name"
+                               :title="netInterface.interface_name" pills card>
                             <b-row class="mb-3">
                                 <b-col class="mb-3">
                                     <h5 class="mb-1 text-center">
@@ -299,7 +311,7 @@ export default {
             }
         };
     },
-    created () {
+    created() {
         this.updateStats();
     },
     methods: {
@@ -337,7 +349,7 @@ export default {
 
             return [item];
         },
-        updateStats () {
+        updateStats() {
             this.axios.get(this.statsUrl).then((response) => {
                 this.stats = response.data;
 

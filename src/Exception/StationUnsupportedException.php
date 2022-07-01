@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class StationUnsupportedException extends Exception
+final class StationUnsupportedException extends Exception
 {
     public function __construct(
         string $message = 'This feature is not currently supported on this station.',

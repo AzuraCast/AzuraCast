@@ -6,7 +6,7 @@ namespace App\Service\IpGeolocator;
 
 use App\Environment;
 
-class GeoLite extends AbstractIpGeolocator
+final class GeoLite extends AbstractIpGeolocator
 {
     public static function getReaderShortName(): string
     {

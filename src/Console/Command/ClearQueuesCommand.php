@@ -14,10 +14,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:station-queues:clear',
     description: 'Clear all unplayed station queues.'
 )]
-class ClearQueuesCommand extends CommandAbstract
+final class ClearQueuesCommand extends CommandAbstract
 {
     public function __construct(
-        protected StationQueueRepository $queueRepo,
+        private readonly StationQueueRepository $queueRepo,
     ) {
         parent::__construct();
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Avatar;
 
-class Gravatar implements AvatarServiceInterface
+final class Gravatar implements AvatarServiceInterface
 {
     public const BASE_URL = 'https://www.gravatar.com/avatar';
 

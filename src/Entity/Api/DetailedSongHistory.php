@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_DetailedSongHistory',
     type: 'object'
 )]
-class DetailedSongHistory extends SongHistory
+final class DetailedSongHistory extends SongHistory
 {
     use LoadFromParentObject;
 

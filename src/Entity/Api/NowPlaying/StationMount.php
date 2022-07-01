@@ -13,7 +13,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_NowPlaying_StationMount',
     type: 'object'
 )]
-class StationMount extends StationRemote implements ResolvableUrlInterface
+final class StationMount extends StationRemote implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'The relative path that corresponds to this mount point',

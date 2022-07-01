@@ -16,10 +16,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:account:list',
     description: 'List all accounts in the system.',
 )]
-class ListCommand extends CommandAbstract
+final class ListCommand extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em
+        private readonly EntityManagerInterface $em
     ) {
         parent::__construct();
     }

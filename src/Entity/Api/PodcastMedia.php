@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_PodcastMedia',
     type: 'object'
 )]
-class PodcastMedia
+final class PodcastMedia
 {
     #[OA\Property]
     public ?string $id = null;

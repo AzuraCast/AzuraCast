@@ -16,15 +16,15 @@ use JsonException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 
-class MusicBrainz
+final class MusicBrainz
 {
     public const API_BASE_URL = 'https://musicbrainz.org/ws/2/';
 
     public const COVER_ART_ARCHIVE_BASE_URL = 'https://coverartarchive.org/';
 
     public function __construct(
-        protected Client $httpClient,
-        protected LockFactory $lockFactory
+        private readonly Client $httpClient,
+        private readonly LockFactory $lockFactory
     ) {
     }
 

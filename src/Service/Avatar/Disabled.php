@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Avatar;
 
-class Disabled implements AvatarServiceInterface
+final class Disabled implements AvatarServiceInterface
 {
     public function getServiceName(): string
     {

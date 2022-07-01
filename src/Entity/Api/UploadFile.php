@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     schema: 'Api_UploadFile',
     type: 'object'
 )]
-class UploadFile
+final class UploadFile
 {
     #[
         OA\Property(

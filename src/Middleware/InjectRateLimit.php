@@ -14,10 +14,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Inject core services into the request object for use further down the stack.
  */
-class InjectRateLimit implements MiddlewareInterface
+final class InjectRateLimit implements MiddlewareInterface
 {
     public function __construct(
-        protected RateLimit $rateLimit
+        private readonly RateLimit $rateLimit
     ) {
     }
 

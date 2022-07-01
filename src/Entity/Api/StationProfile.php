@@ -7,7 +7,7 @@ namespace App\Entity\Api;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Traits\LoadFromParentObject;
 
-class StationProfile extends NowPlaying
+final class StationProfile extends NowPlaying
 {
     use LoadFromParentObject;
 

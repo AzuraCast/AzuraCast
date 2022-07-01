@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_StationOnDemand',
     type: 'object'
 )]
-class StationOnDemand implements ResolvableUrlInterface
+final class StationOnDemand implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Track ID unique identifier',

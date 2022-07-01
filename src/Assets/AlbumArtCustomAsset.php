@@ -8,7 +8,7 @@ use App\Environment;
 use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 
-class AlbumArtCustomAsset extends AbstractCustomAsset
+final class AlbumArtCustomAsset extends AbstractCustomAsset
 {
     protected function getPattern(): string
     {

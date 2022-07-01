@@ -16,7 +16,7 @@ use LogicException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class Liquidsoap extends AbstractLocalAdapter
+final class Liquidsoap extends AbstractLocalAdapter
 {
     /**
      * @inheritDoc

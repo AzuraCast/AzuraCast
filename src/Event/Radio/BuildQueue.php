@@ -9,21 +9,21 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BuildQueue extends Event
+final class BuildQueue extends Event
 {
     /** @var Entity\StationQueue[] */
-    protected array $nextSongs = [];
+    private array $nextSongs = [];
 
-    protected CarbonInterface $expectedCueTime;
+    private CarbonInterface $expectedCueTime;
 
-    protected CarbonInterface $expectedPlayTime;
+    private CarbonInterface $expectedPlayTime;
 
     public function __construct(
-        protected Entity\Station $station,
+        private readonly Entity\Station $station,
         ?CarbonInterface $expectedCueTime = null,
         ?CarbonInterface $expectedPlayTime = null,
-        protected ?string $lastPlayedSongId = null,
-        protected bool $isInterrupting = false
+        private readonly ?string $lastPlayedSongId = null,
+        private readonly bool $isInterrupting = false
     ) {
         $this->expectedCueTime = $expectedCueTime ?? CarbonImmutable::now($station->getTimezoneObject());
         $this->expectedPlayTime = $expectedPlayTime ?? CarbonImmutable::now($station->getTimezoneObject());

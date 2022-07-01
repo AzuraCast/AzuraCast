@@ -13,7 +13,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_NowPlaying_Live',
     type: 'object'
 )]
-class Live implements ResolvableUrlInterface
+final class Live implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Whether the stream is known to currently have a live DJ.',

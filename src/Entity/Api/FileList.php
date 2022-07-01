@@ -6,7 +6,7 @@ namespace App\Entity\Api;
 
 use App\Entity\Api\Traits\HasLinks;
 
-class FileList
+final class FileList
 {
     use HasLinks;
 

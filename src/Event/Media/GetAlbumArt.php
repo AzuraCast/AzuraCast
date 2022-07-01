@@ -7,12 +7,12 @@ namespace App\Event\Media;
 use App\Entity;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class GetAlbumArt extends Event
+final class GetAlbumArt extends Event
 {
-    protected ?string $albumArt = null;
+    private ?string $albumArt = null;
 
     public function __construct(
-        protected Entity\Interfaces\SongInterface $song
+        private readonly Entity\Interfaces\SongInterface $song
     ) {
     }
 

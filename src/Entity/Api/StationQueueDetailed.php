@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_StationQueueDetailed',
     type: 'object'
 )]
-class StationQueueDetailed extends StationQueue
+final class StationQueueDetailed extends StationQueue
 {
     use LoadFromParentObject;
     use HasLinks;

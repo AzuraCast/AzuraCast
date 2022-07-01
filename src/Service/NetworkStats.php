@@ -9,7 +9,7 @@ use App\Service\NetworkStats\NetworkData\Received;
 use App\Service\NetworkStats\NetworkData\Transmitted;
 use Brick\Math\BigDecimal;
 
-class NetworkStats
+final class NetworkStats
 {
     public static function getNetworkUsage(): array
     {

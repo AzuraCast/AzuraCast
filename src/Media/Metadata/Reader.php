@@ -16,7 +16,7 @@ use FFMpeg\FFProbe\DataMapping\Stream;
 use Throwable;
 use voku\helper\UTF8;
 
-class Reader
+final class Reader
 {
     public function __invoke(ReadMetadata $event): void
     {

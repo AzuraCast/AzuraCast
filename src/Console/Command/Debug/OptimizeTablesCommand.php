@@ -15,10 +15,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:debug:optimize-tables',
     description: 'Optimize all tables in the database.',
 )]
-class OptimizeTablesCommand extends CommandAbstract
+final class OptimizeTablesCommand extends CommandAbstract
 {
     public function __construct(
-        protected Connection $db
+        private readonly Connection $db
     ) {
         parent::__construct();
     }

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-class AudioWaveform
+final class AudioWaveform
 {
     /**
      * @return mixed[]

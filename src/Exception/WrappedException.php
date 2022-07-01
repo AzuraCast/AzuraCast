@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpException;
 use Throwable;
 
-class WrappedException extends HttpException
+final class WrappedException extends HttpException
 {
     public function __construct(
         ServerRequestInterface $request,

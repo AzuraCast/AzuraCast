@@ -16,17 +16,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * The internal steps of the AutoDJ Queue building process.
  */
-class QueueBuilder implements EventSubscriberInterface
+final class QueueBuilder implements EventSubscriberInterface
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Logger $logger,
-        protected Scheduler $scheduler,
-        protected DuplicatePrevention $duplicatePrevention,
-        protected CacheInterface $cache,
-        protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        protected Entity\Repository\StationRequestRepository $requestRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Logger $logger,
+        private readonly Scheduler $scheduler,
+        private readonly DuplicatePrevention $duplicatePrevention,
+        private readonly CacheInterface $cache,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly Entity\Repository\StationRequestRepository $requestRepo,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo
     ) {
     }
 

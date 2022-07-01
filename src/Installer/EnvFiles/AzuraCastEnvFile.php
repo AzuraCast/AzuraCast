@@ -11,7 +11,7 @@ use Psr\Log\LogLevel;
 
 use function __;
 
-class AzuraCastEnvFile extends AbstractEnvFile
+final class AzuraCastEnvFile extends AbstractEnvFile
 {
     /** @inheritDoc */
     public static function getConfiguration(Environment $environment): array

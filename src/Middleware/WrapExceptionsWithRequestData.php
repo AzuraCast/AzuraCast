@@ -14,12 +14,8 @@ use Throwable;
 /**
  * Wrap all exceptions thrown past this point with rich metadata.
  */
-class WrapExceptionsWithRequestData implements MiddlewareInterface
+final class WrapExceptionsWithRequestData implements MiddlewareInterface
 {
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {

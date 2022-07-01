@@ -16,10 +16,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:settings:list',
     description: 'List all settings in the AzuraCast settings database.',
 )]
-class ListCommand extends CommandAbstract
+final class ListCommand extends CommandAbstract
 {
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsTableRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsTableRepo,
     ) {
         parent::__construct();
     }

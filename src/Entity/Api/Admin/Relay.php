@@ -12,7 +12,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_Admin_Relay',
     type: 'object'
 )]
-class Relay implements Entity\Api\ResolvableUrlInterface
+final class Relay implements Entity\Api\ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Station ID',

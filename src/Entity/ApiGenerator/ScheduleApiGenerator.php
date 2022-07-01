@@ -8,7 +8,7 @@ use App\Entity;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
-class ScheduleApiGenerator
+final class ScheduleApiGenerator
 {
     public function __invoke(
         Entity\StationSchedule $scheduleItem,

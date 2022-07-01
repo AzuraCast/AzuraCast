@@ -17,12 +17,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     description: 'Clear all application caches.',
     aliases: ['cache:clear']
 )]
-class ClearCacheCommand extends CommandAbstract
+final class ClearCacheCommand extends CommandAbstract
 {
     public function __construct(
-        protected AdapterInterface $cache,
-        protected EntityManagerInterface $em,
-        protected SettingsRepository $settingsRepo,
+        private readonly AdapterInterface $cache,
+        private readonly EntityManagerInterface $em,
+        private readonly SettingsRepository $settingsRepo,
     ) {
         parent::__construct();
     }

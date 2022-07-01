@@ -6,7 +6,7 @@ namespace App\Radio\Remote;
 
 use NowPlaying\AdapterFactory;
 
-class Shoutcast2 extends AbstractRemote
+final class Shoutcast2 extends AbstractRemote
 {
     protected function getAdapterType(): string
     {

@@ -9,7 +9,7 @@ use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Factory\DecoratedResponseFactory;
 
-class ResponseFactory extends DecoratedResponseFactory
+final class ResponseFactory extends DecoratedResponseFactory
 {
     public function __construct()
     {

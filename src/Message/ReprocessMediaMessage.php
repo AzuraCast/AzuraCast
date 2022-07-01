@@ -6,7 +6,7 @@ namespace App\Message;
 
 use App\MessageQueue\QueueManagerInterface;
 
-class ReprocessMediaMessage extends AbstractUniqueMessage
+final class ReprocessMediaMessage extends AbstractUniqueMessage
 {
     /** @var int The numeric identifier for the StationMedia record being processed. */
     public int $media_id;

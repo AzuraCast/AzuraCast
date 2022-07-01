@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class InvalidRequestAttribute extends Exception
+final class InvalidRequestAttribute extends Exception
 {
     public function __construct(
         string $message = 'Invalid request attribute.',

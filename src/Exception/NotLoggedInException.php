@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotLoggedInException extends Exception
+final class NotLoggedInException extends Exception
 {
     public function __construct(
         string $message = 'Not logged in.',

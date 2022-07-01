@@ -8,10 +8,10 @@ use App\Entity;
 use App\Environment;
 use App\Flysystem\StationFilesystems;
 
-class FallbackFile
+final class FallbackFile
 {
     public function __construct(
-        protected Environment $environment
+        private readonly Environment $environment
     ) {
     }
 

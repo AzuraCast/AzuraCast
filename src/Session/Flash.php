@@ -9,7 +9,7 @@ use Mezzio\Session\SessionInterface;
 /**
  * Quick message queue service.
  */
-class Flash
+final class Flash
 {
     public const SESSION_KEY = 'flash';
 
@@ -18,10 +18,10 @@ class Flash
     public const ERROR = 'danger';
     public const INFO = 'info';
 
-    protected ?array $messages = null;
+    private ?array $messages = null;
 
     public function __construct(
-        protected SessionInterface $session
+        private readonly SessionInterface $session
     ) {
     }
 

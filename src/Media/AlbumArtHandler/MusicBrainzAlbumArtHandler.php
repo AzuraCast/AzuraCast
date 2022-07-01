@@ -8,10 +8,10 @@ use App\Entity;
 use App\Service\MusicBrainz;
 use Psr\Log\LoggerInterface;
 
-class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
+final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
     public function __construct(
-        protected MusicBrainz $musicBrainz,
+        private readonly MusicBrainz $musicBrainz,
         LoggerInterface $logger
     ) {
         parent::__construct($logger);

@@ -8,7 +8,7 @@ use App\Exception\SupervisorException;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotRunningException extends SupervisorException
+final class NotRunningException extends SupervisorException
 {
     public function __construct(
         string $message = 'Process was not running yet.',

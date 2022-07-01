@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_NowPlaying_CurrentSong',
     type: 'object'
 )]
-class CurrentSong extends SongHistory
+final class CurrentSong extends SongHistory
 {
     use LoadFromParentObject;
 

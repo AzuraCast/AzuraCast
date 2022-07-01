@@ -14,10 +14,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Set the current route on the URL object, and inject the URL object into the router.
  */
-class InjectRouter implements MiddlewareInterface
+final class InjectRouter implements MiddlewareInterface
 {
     public function __construct(
-        protected RouterInterface $router
+        private readonly RouterInterface $router
     ) {
     }
 

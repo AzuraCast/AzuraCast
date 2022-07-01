@@ -14,18 +14,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
-class Permissions
+final class Permissions
 {
     public function __construct(
-        protected string|PermissionInterface $action,
-        protected bool $use_station = false
+        private readonly string|PermissionInterface $action,
+        private readonly bool $use_station = false
     ) {
     }
 
-    /**
-     * @param ServerRequest $request
-     * @param RequestHandlerInterface $handler
-     */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->use_station) {

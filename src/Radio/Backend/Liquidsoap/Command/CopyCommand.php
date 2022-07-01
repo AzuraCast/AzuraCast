@@ -8,7 +8,7 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use RuntimeException;
 
-class CopyCommand extends AbstractCommand
+final class CopyCommand extends AbstractCommand
 {
     protected function doRun(Entity\Station $station, bool $asAutoDj = false, array $payload = []): string
     {

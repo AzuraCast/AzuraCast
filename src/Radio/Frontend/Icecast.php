@@ -15,7 +15,7 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 
-class Icecast extends AbstractFrontend
+final class Icecast extends AbstractFrontend
 {
     public const LOGLEVEL_DEBUG = 4;
     public const LOGLEVEL_INFO = 3;

@@ -6,7 +6,7 @@ namespace App\Message;
 
 use App\MessageQueue\QueueManagerInterface;
 
-class WritePlaylistFileMessage extends AbstractUniqueMessage
+final class WritePlaylistFileMessage extends AbstractUniqueMessage
 {
     /** @var int The numeric identifier for the StationPlaylist record being processed. */
     public int $playlist_id;

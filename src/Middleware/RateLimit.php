@@ -11,12 +11,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Apply a rate limit for requests on this page and throw an exception if the limit is exceeded.
  */
-class RateLimit
+final class RateLimit
 {
     public function __construct(
-        protected string $rl_group = 'default',
-        protected int $rl_interval = 5,
-        protected int $rl_limit = 2
+        private readonly string $rl_group = 'default',
+        private readonly int $rl_interval = 5,
+        private readonly int $rl_limit = 2
     ) {
     }
 

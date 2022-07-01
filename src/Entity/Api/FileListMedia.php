@@ -6,7 +6,7 @@ namespace App\Entity\Api;
 
 use App\Entity\Api\Traits\HasLinks;
 
-class FileListMedia extends Song
+final class FileListMedia extends Song
 {
     use HasLinks;
 

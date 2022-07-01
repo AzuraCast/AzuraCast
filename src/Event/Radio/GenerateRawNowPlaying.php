@@ -10,14 +10,14 @@ use App\Radio\Frontend\AbstractFrontend;
 use NowPlaying\Result\Result;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class GenerateRawNowPlaying extends Event
+final class GenerateRawNowPlaying extends Event
 {
-    protected ?Result $result = null;
+    private ?Result $result = null;
 
     public function __construct(
-        protected Adapters $adapters,
-        protected Station $station,
-        protected bool $include_clients = false
+        private readonly Adapters $adapters,
+        private readonly Station $station,
+        private readonly bool $include_clients = false
     ) {
     }
 

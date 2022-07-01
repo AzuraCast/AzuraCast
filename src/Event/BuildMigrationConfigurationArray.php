@@ -6,11 +6,11 @@ namespace App\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BuildMigrationConfigurationArray extends Event
+final class BuildMigrationConfigurationArray extends Event
 {
     public function __construct(
-        protected array $migrationConfigurations,
-        protected string $baseDir
+        private array $migrationConfigurations,
+        private readonly string $baseDir
     ) {
     }
 

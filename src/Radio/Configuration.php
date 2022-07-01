@@ -18,7 +18,7 @@ use RuntimeException;
 use Supervisor\Exception\SupervisorException;
 use Supervisor\SupervisorInterface;
 
-class Configuration
+final class Configuration
 {
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
@@ -33,12 +33,12 @@ class Configuration
     ];
 
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Adapters $adapters,
-        protected SupervisorInterface $supervisor,
-        protected Logger $logger,
-        protected Environment $environment,
-        protected StationPlaylistRepository $stationPlaylistRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Adapters $adapters,
+        private readonly SupervisorInterface $supervisor,
+        private readonly Logger $logger,
+        private readonly Environment $environment,
+        private readonly StationPlaylistRepository $stationPlaylistRepo
     ) {
     }
 

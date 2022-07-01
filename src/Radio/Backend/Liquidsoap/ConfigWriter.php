@@ -17,22 +17,16 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
 use App\Radio\StereoTool;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ConfigWriter implements EventSubscriberInterface
+final class ConfigWriter implements EventSubscriberInterface
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Liquidsoap $liquidsoap,
-        protected Environment $environment,
-        protected LoggerInterface $logger,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected FallbackFile $fallbackFile
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Liquidsoap $liquidsoap,
+        private readonly Environment $environment,
+        private readonly FallbackFile $fallbackFile
     ) {
     }
 

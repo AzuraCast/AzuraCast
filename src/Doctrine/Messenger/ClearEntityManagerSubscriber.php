@@ -9,10 +9,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 
-class ClearEntityManagerSubscriber implements EventSubscriberInterface
+final class ClearEntityManagerSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        protected EntityManagerInterface $em
+        private readonly EntityManagerInterface $em
     ) {
     }
 
@@ -37,7 +37,7 @@ class ClearEntityManagerSubscriber implements EventSubscriberInterface
         $this->clearEntityManagers();
     }
 
-    protected function clearEntityManagers(): void
+    private function clearEntityManagers(): void
     {
         $this->em->clear();
         gc_collect_cycles();

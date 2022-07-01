@@ -8,7 +8,7 @@ use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
-class Settings extends AbstractFixture
+final class Settings extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {

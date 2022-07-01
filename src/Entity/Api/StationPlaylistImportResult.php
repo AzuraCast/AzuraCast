@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-class StationPlaylistImportResult extends Status
+final class StationPlaylistImportResult extends Status
 {
     public array $import_results = [];
 

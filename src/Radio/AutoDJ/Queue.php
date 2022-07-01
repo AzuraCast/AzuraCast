@@ -18,15 +18,14 @@ use Psr\SimpleCache\CacheInterface;
 /**
  * Public methods related to the AutoDJ Queue process.
  */
-class Queue
+final class Queue
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Logger $logger,
-        protected CacheInterface $cache,
-        protected EventDispatcherInterface $dispatcher,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Entity\Repository\SongHistoryRepository $historyRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Logger $logger,
+        private readonly CacheInterface $cache,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo
     ) {
     }
 

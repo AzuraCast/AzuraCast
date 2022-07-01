@@ -7,9 +7,9 @@ namespace App\Event;
 use App\Sync\Task\AbstractTask;
 use Generator;
 
-class GetSyncTasks
+final class GetSyncTasks
 {
-    protected array $tasks = [];
+    private array $tasks = [];
 
     /**
      * @return Generator|class-string<AbstractTask>[]

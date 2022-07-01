@@ -9,7 +9,7 @@ use App\Service\NetworkStats\NetworkData\Transmitted;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 
-class NetworkData
+final class NetworkData
 {
     public function __construct(
         public readonly string $interfaceName,

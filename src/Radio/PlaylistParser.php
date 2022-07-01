@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
-class PlaylistParser
+final class PlaylistParser
 {
     /**
      * @return string[]

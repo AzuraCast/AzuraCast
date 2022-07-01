@@ -29,14 +29,14 @@ use Throwable;
     description: 'Process the message queue.',
     aliases: ['queue:process']
 )]
-class ProcessCommand extends CommandAbstract
+final class ProcessCommand extends CommandAbstract
 {
     public function __construct(
-        protected MessageBus $messageBus,
-        protected CallableEventDispatcherInterface $eventDispatcher,
-        protected QueueManagerInterface $queueManager,
-        protected LoggerInterface $logger,
-        protected Environment $environment,
+        private readonly MessageBus $messageBus,
+        private readonly CallableEventDispatcherInterface $eventDispatcher,
+        private readonly QueueManagerInterface $queueManager,
+        private readonly LoggerInterface $logger,
+        private readonly Environment $environment,
     ) {
         parent::__construct();
     }

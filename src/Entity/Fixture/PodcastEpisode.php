@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
 
-class PodcastEpisode extends AbstractFixture implements DependentFixtureInterface
+final class PodcastEpisode extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
         protected Entity\Repository\PodcastEpisodeRepository $episodeRepo

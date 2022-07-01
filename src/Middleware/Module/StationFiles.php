@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Module middleware for the file management pages.
  */
-class StationFiles
+final class StationFiles
 {
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {

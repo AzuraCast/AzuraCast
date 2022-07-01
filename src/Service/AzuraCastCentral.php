@@ -11,16 +11,16 @@ use Exception;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 
-class AzuraCastCentral
+final class AzuraCastCentral
 {
-    protected const BASE_URL = 'https://central.azuracast.com';
+    private const BASE_URL = 'https://central.azuracast.com';
 
     public function __construct(
-        protected Environment $environment,
-        protected Version $version,
-        protected Client $httpClient,
-        protected LoggerInterface $logger,
-        protected Entity\Repository\SettingsRepository $settingsRepo
+        private readonly Environment $environment,
+        private readonly Version $version,
+        private readonly Client $httpClient,
+        private readonly LoggerInterface $logger,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 
@@ -32,9 +32,9 @@ class AzuraCastCentral
     public function checkForUpdates(): ?array
     {
         $request_body = [
-            'id'              => $this->getUniqueIdentifier(),
-            'is_docker'       => $this->environment->isDocker(),
-            'environment'     => $this->environment->getAppEnvironmentEnum()->value,
+            'id' => $this->getUniqueIdentifier(),
+            'is_docker' => $this->environment->isDocker(),
+            'environment' => $this->environment->getAppEnvironmentEnum()->value,
             'release_channel' => $this->version->getReleaseChannelEnum()->value,
         ];
 

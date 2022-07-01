@@ -14,15 +14,15 @@ use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 
-class LastFm
+final class LastFm
 {
     public const API_BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
-    protected ?string $apiKey = null;
+    private ?string $apiKey = null;
 
     public function __construct(
-        protected Client $httpClient,
-        protected LockFactory $lockFactory,
+        private readonly Client $httpClient,
+        private readonly LockFactory $lockFactory,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->apiKey = $settingsRepo->readSettings()->getLastFmApiKey();

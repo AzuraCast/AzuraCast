@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Avatar;
 
-class Libravatar implements AvatarServiceInterface
+final class Libravatar implements AvatarServiceInterface
 {
     public const BASE_URL = 'https://seccdn.libravatar.org/avatar';
 

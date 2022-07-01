@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class StationNotFoundException extends Exception
+final class StationNotFoundException extends Exception
 {
     public function __construct(
         string $message = 'Station not found.',

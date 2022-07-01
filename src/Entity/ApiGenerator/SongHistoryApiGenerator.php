@@ -8,13 +8,11 @@ use App\Entity;
 use App\Entity\Api\NowPlaying\SongHistory;
 use Psr\Http\Message\UriInterface;
 
-class SongHistoryApiGenerator
+final class SongHistoryApiGenerator
 {
-    protected SongApiGenerator $songApiGenerator;
-
-    public function __construct(SongApiGenerator $songApiGenerator)
-    {
-        $this->songApiGenerator = $songApiGenerator;
+    public function __construct(
+        private readonly SongApiGenerator $songApiGenerator
+    ) {
     }
 
     public function __invoke(

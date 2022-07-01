@@ -11,7 +11,7 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class Shoutcast extends AbstractFrontend
+final class Shoutcast extends AbstractFrontend
 {
     /**
      * @inheritDoc

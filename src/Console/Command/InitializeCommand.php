@@ -6,7 +6,6 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Environment;
-use App\Service\Acme;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,12 +15,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:setup:initialize',
     description: 'Ensure key settings are initialized within AzuraCast.',
 )]
-class InitializeCommand extends CommandAbstract
+final class InitializeCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        protected Acme $acme,
+        private readonly Environment $environment,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct();
     }

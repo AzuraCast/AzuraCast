@@ -13,7 +13,7 @@ use function stripos;
 /**
  * Static class that facilitates the uploading, reading and deletion of files in a controlled directory.
  */
-class File
+final class File
 {
     /**
      * @param string $path

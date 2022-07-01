@@ -9,7 +9,7 @@ use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use Mezzio\Session\SessionInterface;
 
-class Auth
+final class Auth
 {
     public const SESSION_IS_LOGIN_COMPLETE_KEY = 'is_login_complete';
     public const SESSION_USER_ID_KEY = 'user_id';
@@ -18,14 +18,14 @@ class Auth
     /** @var int The window of valid one-time passwords outside the current timestamp. */
     public const TOTP_WINDOW = 5;
 
-    protected bool|User|null $user = null;
+    private bool|User|null $user = null;
 
-    protected bool|User|null $masqueraded_user = null;
+    private bool|User|null $masqueraded_user = null;
 
     public function __construct(
-        protected UserRepository $userRepo,
-        protected SessionInterface $session,
-        protected Environment $environment
+        private readonly UserRepository $userRepo,
+        private readonly SessionInterface $session,
+        private readonly Environment $environment
     ) {
     }
 

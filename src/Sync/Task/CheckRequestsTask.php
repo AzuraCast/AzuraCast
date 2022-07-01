@@ -13,12 +13,12 @@ use App\Radio\Enums\LiquidsoapQueues;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
-class CheckRequestsTask extends AbstractTask
+final class CheckRequestsTask extends AbstractTask
 {
     public function __construct(
-        protected Entity\Repository\StationRequestRepository $requestRepo,
-        protected Adapters $adapters,
-        protected EventDispatcherInterface $dispatcher,
+        private readonly Entity\Repository\StationRequestRepository $requestRepo,
+        private readonly Adapters $adapters,
+        private readonly EventDispatcherInterface $dispatcher,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

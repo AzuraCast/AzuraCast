@@ -16,12 +16,12 @@ use const LIBXML_XINCLUDE;
 /**
  * XML config reader.
  */
-class Reader
+final class Reader
 {
     /**
      * Nodes to handle as plain text.
      */
-    protected static array $textNodes = [
+    private static array $textNodes = [
         XMLReader::TEXT,
         XMLReader::CDATA,
         XMLReader::WHITESPACE,
@@ -58,7 +58,7 @@ class Reader
         return $return;
     }
 
-    protected static function processNextElement(XMLReader $reader): string|array
+    private static function processNextElement(XMLReader $reader): string|array
     {
         $children = [];
         $text = '';
@@ -114,7 +114,7 @@ class Reader
      *
      * @return string[]
      */
-    protected static function getAttributes(XMLReader $reader): array
+    private static function getAttributes(XMLReader $reader): array
     {
         $attributes = [];
 

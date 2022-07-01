@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\Uri;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 
-class Urls
+final class Urls
 {
     public static function getUri(?string $url): ?UriInterface
     {

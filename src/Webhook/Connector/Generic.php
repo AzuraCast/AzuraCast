@@ -7,7 +7,7 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use GuzzleHttp\Exception\TransferException;
 
-class Generic extends AbstractConnector
+final class Generic extends AbstractConnector
 {
     public const NAME = 'generic';
 

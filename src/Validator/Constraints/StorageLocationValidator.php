@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace App\Validator\Constraints;
 
 use App\Entity;
-use App\Radio\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class StorageLocationValidator extends ConstraintValidator
+final class StorageLocationValidator extends ConstraintValidator
 {
     public function __construct(
-        protected Configuration $configuration,
-        protected EntityManagerInterface $em,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 

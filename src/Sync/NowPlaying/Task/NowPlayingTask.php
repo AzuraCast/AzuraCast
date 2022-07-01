@@ -23,20 +23,20 @@ use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
+final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
 {
     public function __construct(
-        protected Adapters $adapters,
-        protected CacheInterface $cache,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected MessageBus $messageBus,
-        protected RouterInterface $router,
-        protected Entity\Repository\ListenerRepository $listenerRepo,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
-        protected ReloadableEntityManagerInterface $em,
-        protected LoggerInterface $logger,
-        protected HlsListeners $hlsListeners,
+        private readonly Adapters $adapters,
+        private readonly CacheInterface $cache,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MessageBus $messageBus,
+        private readonly RouterInterface $router,
+        private readonly Entity\Repository\ListenerRepository $listenerRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly LoggerInterface $logger,
+        private readonly HlsListeners $hlsListeners,
     ) {
     }
 

@@ -129,6 +129,10 @@ final class LogsAction
                     'tail' => false,
                 ];
                 break;
+
+            case FrontendAdapters::Remote:
+                // Noop
+                break;
         }
 
         return $logPaths;

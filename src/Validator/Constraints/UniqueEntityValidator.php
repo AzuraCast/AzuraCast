@@ -35,10 +35,10 @@ use function is_string;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class UniqueEntityValidator extends ConstraintValidator
+final class UniqueEntityValidator extends ConstraintValidator
 {
     public function __construct(
-        protected EntityManagerInterface $em
+        private readonly EntityManagerInterface $em
     ) {
     }
 

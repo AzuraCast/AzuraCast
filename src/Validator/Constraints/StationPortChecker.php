@@ -8,7 +8,7 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class StationPortChecker extends Constraint
+final class StationPortChecker extends Constraint
 {
     public function getTargets(): string
     {

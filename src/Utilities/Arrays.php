@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
-class Arrays
+final class Arrays
 {
     /**
      * Flatten an array from format:

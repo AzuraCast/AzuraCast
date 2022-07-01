@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
-class Time
+final class Time
 {
     public static function displayTimeToSeconds(string|float|int $seconds = null): ?float
     {

@@ -5,24 +5,20 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Radio\Adapters;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 use TheIconic\Tracking\GoogleAnalytics\Analytics;
 use TheIconic\Tracking\GoogleAnalytics\Network\HttpClient;
 
-class GoogleAnalytics extends AbstractConnector
+final class GoogleAnalytics extends AbstractConnector
 {
     public const NAME = 'google_analytics';
 
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        protected EntityManagerInterface $em,
-        protected Adapters $adapters,
-        protected Entity\Repository\ListenerRepository $listenerRepo
+        private readonly Entity\Repository\ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
     }

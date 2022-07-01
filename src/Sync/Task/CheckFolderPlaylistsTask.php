@@ -11,11 +11,10 @@ use Azura\Files\ExtendedFilesystemInterface;
 use Doctrine\ORM\Query;
 use Psr\Log\LoggerInterface;
 
-class CheckFolderPlaylistsTask extends AbstractTask
+final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
-        protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        protected Entity\Repository\StationPlaylistFolderRepository $folderRepo,
+        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
     ) {

@@ -12,7 +12,7 @@ use GuzzleHttp\Exception\TransferException;
  *
  * @package App\Webhook\Connector
  */
-class Telegram extends AbstractConnector
+final class Telegram extends AbstractConnector
 {
     public const NAME = 'telegram';
 

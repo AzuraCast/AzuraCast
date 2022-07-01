@@ -7,7 +7,7 @@ namespace App\Utilities;
 use JsonException;
 use RuntimeException;
 
-class Json
+final class Json
 {
     public static function loadFromFile(
         string $path,

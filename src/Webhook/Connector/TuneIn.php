@@ -7,7 +7,7 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use GuzzleHttp\Exception\TransferException;
 
-class TuneIn extends AbstractConnector
+final class TuneIn extends AbstractConnector
 {
     public const NAME = 'tunein';
 

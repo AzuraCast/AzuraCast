@@ -30,7 +30,7 @@ final class Icecast extends AbstractFrontend
             try {
                 $this->supervisor->signalProcess($program_name, 'HUP');
                 $this->logger->info(
-                    'Adapter "' . static::class . '" reloaded.',
+                    'Adapter "' . self::class . '" reloaded.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {

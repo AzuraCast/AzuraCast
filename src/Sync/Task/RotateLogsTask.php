@@ -6,28 +6,22 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Environment;
 use App\Nginx\ConfigWriter;
 use App\Nginx\Nginx;
-use App\Radio\Adapters;
 use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
-use Supervisor\SupervisorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
-class RotateLogsTask extends AbstractTask
+final class RotateLogsTask extends AbstractTask
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        protected Environment $environment,
-        protected Adapters $adapters,
-        protected SupervisorInterface $supervisor,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        protected Nginx $nginx,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly Nginx $nginx,
     ) {
         parent::__construct($em, $logger);
     }
@@ -85,7 +79,7 @@ class RotateLogsTask extends AbstractTask
         }
     }
 
-    protected function rotateBackupStorage(
+    private function rotateBackupStorage(
         Entity\StorageLocation $storageLocation,
         int $copiesToKeep
     ): void {
@@ -115,7 +109,7 @@ class RotateLogsTask extends AbstractTask
         }
     }
 
-    protected function cleanUpIcecastLog(Entity\Station $station): void
+    private function cleanUpIcecastLog(Entity\Station $station): void
     {
         $config_path = $station->getRadioConfigDir();
 
@@ -135,7 +129,7 @@ class RotateLogsTask extends AbstractTask
         }
     }
 
-    protected function rotateHlsLog(Entity\Station $station): bool
+    private function rotateHlsLog(Entity\Station $station): bool
     {
         $hlsLogFile = ConfigWriter::getHlsLogFile($station);
         $hlsLogBackup = $hlsLogFile . '.1';

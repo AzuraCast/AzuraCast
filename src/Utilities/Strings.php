@@ -6,7 +6,7 @@ namespace App\Utilities;
 
 use RuntimeException;
 
-class Strings
+final class Strings
 {
     /**
      * Truncate text (adding "..." if needed)

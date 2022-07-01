@@ -11,13 +11,13 @@ use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\CacheStorage;
 
-class RateLimit
+final class RateLimit
 {
-    protected CacheItemPoolInterface $psr6Cache;
+    private CacheItemPoolInterface $psr6Cache;
 
     public function __construct(
-        protected LockFactory $lockFactory,
-        protected Environment $environment,
+        private readonly LockFactory $lockFactory,
+        private readonly Environment $environment,
         CacheItemPoolInterface $cacheItemPool
     ) {
         $this->psr6Cache = new ProxyAdapter($cacheItemPool, 'ratelimit.');

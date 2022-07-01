@@ -11,7 +11,7 @@ namespace App\Xml;
 use RuntimeException;
 use XMLWriter;
 
-class Writer
+final class Writer
 {
     public static function toString(
         array $config,
@@ -20,7 +20,7 @@ class Writer
         return self::processConfig($config, $baseElement);
     }
 
-    protected static function processConfig(
+    private static function processConfig(
         array $config,
         string $baseElement = 'xml-config'
     ): string {
@@ -53,7 +53,7 @@ class Writer
         return $writer->outputMemory();
     }
 
-    protected static function addBranch(
+    private static function addBranch(
         mixed $branchName,
         array $config,
         XMLWriter $writer
@@ -98,7 +98,7 @@ class Writer
         }
     }
 
-    protected static function attributesFirst(mixed $a, mixed $b): int
+    private static function attributesFirst(mixed $a, mixed $b): int
     {
         if (str_starts_with((string)$a, '@')) {
             return -1;

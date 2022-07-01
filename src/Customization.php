@@ -12,22 +12,22 @@ use App\Enums\SupportedThemes;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Customization
+final class Customization
 {
-    protected ?Entity\User $user = null;
+    private ?Entity\User $user = null;
 
-    protected Entity\Settings $settings;
+    private Entity\Settings $settings;
 
-    protected SupportedLocales $locale;
+    private SupportedLocales $locale;
 
-    protected SupportedThemes $theme;
+    private SupportedThemes $theme;
 
-    protected SupportedThemes $publicTheme;
+    private SupportedThemes $publicTheme;
 
-    protected string $instanceName = '';
+    private string $instanceName = '';
 
     public function __construct(
-        protected Environment $environment,
+        private readonly Environment $environment,
         Entity\Repository\SettingsRepository $settingsRepo,
         ServerRequestInterface $request
     ) {
@@ -46,7 +46,7 @@ class Customization
         $this->locale = SupportedLocales::createFromRequest($this->environment, $request);
     }
 
-    protected function determineTheme(
+    private function determineTheme(
         ServerRequestInterface $request,
         bool $isPublicTheme = false
     ): SupportedThemes {
@@ -185,9 +185,5 @@ class Customization
     public function useWebSocketsForNowPlaying(): bool
     {
         return $this->settings->getEnableWebsockets();
-    }
-
-    public function registerLocale(SupportedLocales $locale): void
-    {
     }
 }

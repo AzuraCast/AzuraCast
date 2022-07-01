@@ -6,6 +6,7 @@ namespace App\Nginx;
 
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonException;
 use NowPlaying\Result\Client;
 use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
@@ -102,7 +103,7 @@ final class HlsListeners
     ): ?Client {
         try {
             $rowJson = json_decode($row, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException) {
+        } catch (JsonException) {
             return null;
         }
 

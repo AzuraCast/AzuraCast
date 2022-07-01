@@ -18,9 +18,11 @@
 
 - name: Create Redis run dir
   file:
-    path: /run/redis/
+    path: "/run/redis"
     owner: "redis"
+    group: "redis"
     state: directory
+    mode: 0775
 
 - name: Install Redis Supervisord conf
   template:

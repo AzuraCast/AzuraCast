@@ -1351,4 +1351,10 @@ class ConfigWriter implements EventSubscriberInterface
     {
         return self::cleanUpVarName('playlist_' . $playlist->getShortName());
     }
+
+    public static function annotateString(string $str): string
+    {
+        $str = mb_convert_encoding($str, 'UTF-8');
+        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
+    }
 }

@@ -39,7 +39,7 @@ final class Shoutcast extends AbstractFrontend
             return null;
         }
 
-        return preg_match('/^SHOUTcast .* v(\S+) .*$/i', $process->getOutput(), $matches)
+        return preg_match('/^Shoutcast .* v(\S+) .*$/i', $process->getOutput(), $matches)
             ? $matches[1]
             : null;
     }

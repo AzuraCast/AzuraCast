@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
-                <translate key="lang_title">Install SHOUTcast 2 DNAS</translate>
+                <translate key="lang_title">Install Shoutcast 2 DNAS</translate>
             </h2>
         </div>
 
@@ -16,20 +16,20 @@
                             </legend>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1a">SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary.</translate>
+                                <translate key="lang_instructions_1a">Shoutcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the Shoutcast binary.</translate>
                             </p>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1b">In order to install SHOUTcast:</translate>
+                                <translate key="lang_instructions_1b">In order to install Shoutcast:</translate>
                             </p>
 
                             <ul>
                                 <li>
-                                    <translate key="lang_instructions_2">Download the Linux x64 binary from the SHOUTcast Radio Manager:</translate>
+                                    <translate key="lang_instructions_2">Download the Linux x64 binary from the Shoutcast Radio Manager:</translate>
                                     <br>
                                     <a href="https://radiomanager.shoutcast.com/register/serverSoftwareFreemium"
                                        target="_blank">
-                                        <translate key="lang_instructions_2_url">SHOUTcast Radio Manager</translate>
+                                        <translate key="lang_instructions_2_url">Shoutcast Radio Manager</translate>
                                     </a>
                                 </li>
                                 <li>
@@ -54,7 +54,7 @@
                             </p>
                             <p v-else class="text-danger card-text">
                                 <translate
-                                    key="lang_not_installed">SHOUTcast 2 DNAS is not currently installed on this installation.</translate>
+                                    key="lang_not_installed">Shoutcast 2 DNAS is not currently installed on this installation.</translate>
                             </p>
                         </fieldset>
 
@@ -83,7 +83,7 @@ export default {
     },
     computed: {
         langInstalledVersion() {
-            const text = this.$gettext('SHOUTcast version "%{ version }" is currently installed.');
+            const text = this.$gettext('Shoutcast version "%{ version }" is currently installed.');
             return this.$gettextInterpolate(text, {
                 version: this.version
             });

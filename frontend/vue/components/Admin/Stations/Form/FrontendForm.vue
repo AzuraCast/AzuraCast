@@ -26,14 +26,14 @@
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_license_id"
                                           :field="form.frontend_config.sc_license_id">
                         <template #label="{lang}">
-                            <translate :key="lang">SHOUTcast License ID</translate>
+                            <translate :key="lang">Shoutcast License ID</translate>
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_user_id"
                                           :field="form.frontend_config.sc_user_id">
                         <template #label="{lang}">
-                            <translate :key="lang">SHOUTcast User ID</translate>
+                            <translate :key="lang">Shoutcast User ID</translate>
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>
@@ -206,7 +206,7 @@ export default {
 
             if (this.isShoutcastInstalled) {
                 frontendOptions.push({
-                    text: this.$gettext('Use SHOUTcast DNAS 2 on this server.'),
+                    text: this.$gettext('Use Shoutcast DNAS 2 on this server.'),
                     value: FRONTEND_SHOUTCAST
                 });
             }

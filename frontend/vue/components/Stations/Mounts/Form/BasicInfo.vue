@@ -110,7 +110,7 @@ export default {
             return this.$gettext('Basic Info');
         },
         langAuthhashDesc() {
-            let text = 'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the SHOUTcast web site</a>.';
+            let text = 'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the Shoutcast web site</a>.';
             let url = 'https://radiomanager.shoutcast.com/';
 
             return this.$gettextInterpolate(this.$gettext(text), {url: url});

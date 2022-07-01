@@ -60,7 +60,7 @@ use Throwable;
     OA\Post(
         path: '/station/{station_id}/frontend/{action}',
         operationId: 'doFrontendServiceAction',
-        description: 'Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)',
+        description: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)',
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Stations: Service Control'],
         parameters: [

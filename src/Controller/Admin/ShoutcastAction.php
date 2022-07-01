@@ -16,7 +16,7 @@ final class ShoutcastAction
         Response $response
     ): ResponseInterface {
         if ('x86_64' !== php_uname('m')) {
-            throw new RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
+            throw new RuntimeException('Shoutcast cannot be installed on non-X86_64 systems.');
         }
 
         $router = $request->getRouter();
@@ -25,7 +25,7 @@ final class ShoutcastAction
             response: $response,
             component: 'Vue_AdminShoutcast',
             id: 'admin-shoutcast',
-            title: __('Install SHOUTcast 2 DNAS'),
+            title: __('Install Shoutcast 2 DNAS'),
             props: [
                 'apiUrl' => (string)$router->named('api:admin:shoutcast'),
             ],

@@ -119,12 +119,12 @@ final class LogsAction
 
             case FrontendAdapters::Shoutcast:
                 $logPaths['shoutcast_log'] = [
-                    'name' => __('SHOUTcast Log'),
+                    'name' => __('Shoutcast Log'),
                     'path' => $stationConfigDir . '/shoutcast.log',
                     'tail' => true,
                 ];
                 $logPaths['shoutcast_conf'] = [
-                    'name' => __('SHOUTcast Configuration'),
+                    'name' => __('Shoutcast Configuration'),
                     'path' => $stationConfigDir . '/sc_serv.conf',
                     'tail' => false,
                 ];

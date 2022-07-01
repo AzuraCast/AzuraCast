@@ -93,7 +93,7 @@ return function (App\Event\BuildAdminMenu $e) {
                         'permission' => GlobalPermissions::Stations,
                     ],
                     'shoutcast' => [
-                        'label' => __('Install SHOUTcast'),
+                        'label' => __('Install Shoutcast'),
                         'url' => (string)$router->named('admin:install_shoutcast:index'),
                         'permission' => GlobalPermissions::All,
                     ],

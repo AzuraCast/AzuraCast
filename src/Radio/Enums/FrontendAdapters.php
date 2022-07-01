@@ -22,7 +22,7 @@ enum FrontendAdapters: string implements AdapterTypeInterface
     {
         return match ($this) {
             self::Icecast => 'Icecast 2.4',
-            self::Shoutcast => 'SHOUTcast DNAS 2',
+            self::Shoutcast => 'Shoutcast DNAS 2',
             self::Remote => 'Remote',
         };
     }

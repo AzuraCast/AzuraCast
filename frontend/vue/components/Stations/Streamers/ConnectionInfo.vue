@@ -35,7 +35,7 @@
         </div>
         <div class="card-body">
             <h3 class="card-subtitle mt-0">
-                <translate key="lang_connection_shoutcast_hdr">SHOUTcast Clients</translate>
+                <translate key="lang_connection_shoutcast_hdr">Shoutcast Clients</translate>
             </h3>
             <dl>
                 <dt class="mb-1">

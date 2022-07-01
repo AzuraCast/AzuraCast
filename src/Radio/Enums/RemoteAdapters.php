@@ -11,8 +11,8 @@ use App\Radio\Remote\Shoutcast2;
 
 enum RemoteAdapters: string implements AdapterTypeInterface
 {
-    case SHOUTcast1 = 'shoutcast1';
-    case SHOUTcast2 = 'shoutcast2';
+    case Shoutcast1 = 'shoutcast1';
+    case Shoutcast2 = 'shoutcast2';
     case Icecast = 'icecast';
     case AzuraRelay = 'azurarelay';
 
@@ -24,8 +24,8 @@ enum RemoteAdapters: string implements AdapterTypeInterface
     public function getName(): string
     {
         return match ($this) {
-            self::SHOUTcast1 => 'SHOUTcast 1',
-            self::SHOUTcast2 => 'SHOUTcast 2',
+            self::Shoutcast1 => 'Shoutcast 1',
+            self::Shoutcast2 => 'Shoutcast 2',
             self::Icecast => 'Icecast',
             self::AzuraRelay => 'AzuraRelay',
         };
@@ -34,8 +34,8 @@ enum RemoteAdapters: string implements AdapterTypeInterface
     public function getClass(): string
     {
         return match ($this) {
-            self::SHOUTcast1 => Shoutcast1::class,
-            self::SHOUTcast2 => Shoutcast2::class,
+            self::Shoutcast1 => Shoutcast1::class,
+            self::Shoutcast2 => Shoutcast2::class,
             self::Icecast => Icecast::class,
             self::AzuraRelay => AzuraRelay::class,
         };

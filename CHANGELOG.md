@@ -353,7 +353,7 @@ release channel, you can take advantage of these new features and fixes.
 
 - You can now clear the entire upcoming song queue with a single button click.
 
-- If you are using the SHOUTcast broadcasting software, you can input your user ID and license ID directly via the
+- If you are using the Shoutcast broadcasting software, you can input your user ID and license ID directly via the
   station profile.
 
 ## Code Quality/Technical Changes
@@ -510,7 +510,7 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
-- Remote relays to legacy SHOUTcast 1 installations should once again work as expected (#4408).
+- Remote relays to legacy Shoutcast 1 installations should once again work as expected (#4408).
 
 - An issue causing localized date/time formats to not appear on some station management pages was fixed (#4394).
 
@@ -1040,7 +1040,7 @@ stable version before making these major changes.
   you those permissions. (#3097)
 - Fixed a bug where you could continue into AzuraCast without finishing setup. (#2958)
 - Icecast now uses the same SSL certificate your web connection uses via LetsEncrypt setup. (#2969)
-- Connecting to a SHOUTcast 1 remote relay works again. (#2989)
+- Connecting to a Shoutcast 1 remote relay works again. (#2989)
 - The "Play" icon will now properly switch between playing and not-playing states for only the actively playing item. (
   # 3170)
 
@@ -1581,7 +1581,7 @@ of new improvements have rolled out over the last month, along with a ton of bug
   time zone setting, but schedules were based on UTC and constantly had to be converted back and forth from the user's
   local time. This conversion caused a number of problems. To address them, we completely restructured the time zone
   system. Now, each _station_ has its own time zone, and all scheduled playlists are based on this time zone. Liquidsoap
-  and Icecast/SHOUTcast are also run in this time zone, so schedule times (and logs) will always be consistent.
+  and Icecast/Shoutcast are also run in this time zone, so schedule times (and logs) will always be consistent.
 
 - **API Parity**: We've done a _lot_ of work to make all of the core functionality of AzuraCast available via our REST
   API, and we're pleased to announce that as of this release, all major functions are possible entirely via API calls,
@@ -1826,7 +1826,7 @@ incremental update on the roadmap to our version 1.0 release.
   itself. This helps to preserve the self-contained nature of AzuraCast and avoid unnecessary downtime caused by
   third-party services.
 
-- You can now install another version of SHOUTcast even if a different version is already installed.
+- You can now install another version of Shoutcast even if a different version is already installed.
 
 ## Bug Fixes
 
@@ -1895,7 +1895,7 @@ incremental update on the roadmap to our version 1.0 release.
   itself. This helps to preserve the self-contained nature of AzuraCast and avoid unnecessary downtime caused by
   third-party services.
 
-- You can now install another version of SHOUTcast even if a different version is already installed.
+- You can now install another version of Shoutcast even if a different version is already installed.
 
 ## Bug Fixes
 
@@ -1921,17 +1921,17 @@ update status.
 
 ## Major Updates
 
-- **SHOUTcast 2 DNAS is no longer bundled with AzuraCast.** While SHOUTcast has been a popular offering that was bundled
+- **Shoutcast 2 DNAS is no longer bundled with AzuraCast.** While Shoutcast has been a popular offering that was bundled
   with AzuraCast after significant demand, it has always been non-free, proprietary software, the only component in the
-  AzuraCast stack that is not free and open-source. With the release of SHOUTcast's
+  AzuraCast stack that is not free and open-source. With the release of Shoutcast's
   new ["freemium" pricing structure](https://www.shoutcast.com/Pricing) has also come a new, more aggressive license
-  associated with distribution of the software. As such, AzuraCast can no longer bundle SHOUTcast 2 DNAS with new
+  associated with distribution of the software. As such, AzuraCast can no longer bundle Shoutcast 2 DNAS with new
   installations, and we strongly recommend that any stations that can use Icecast do so. We do still support the
-  software, however, and you can manually install it by uploading the `.tar.gz` file provided by SHOUTcast into a new
+  software, however, and you can manually install it by uploading the `.tar.gz` file provided by Shoutcast into a new
   page in the system administration.
 
 - **Our support for Icecast is now even better suited for commercial radio stations.** Along with our withdrawal of
-  out-of-the-box support for SHOUTcast, we've been working hard to make improvements to our Icecast integration so it
+  out-of-the-box support for Shoutcast, we've been working hard to make improvements to our Icecast integration so it
   can better serve commercial radio stations that depend on reliable, accurate reporting. If you're using the latest
   version of AzuraCast, you will now see much more accurate information on your listeners, especially if you're using
   the Docker installation or operating behind CloudFlare protection.
@@ -1952,8 +1952,8 @@ update status.
 - **The core "Now Playing" library is a standalone PHP library now.** We're always looking for new ways to give back to
   the open-source software community. Now, along with [AzuraForms](https://github.com/AzuraCast/azuraforms), we have
   spun off our [NowPlaying](https://github.com/AzuraCast/nowplaying) library to be a standalone component you can
-  include in your own PHP code. It's very useful for abstracting out the differences between Icecast, SHOUTcast 1 and
-  SHOUTcast 2 sources into a single return format.
+  include in your own PHP code. It's very useful for abstracting out the differences between Icecast, Shoutcast 1 and
+  Shoutcast 2 sources into a single return format.
 
 - **AzuraCast now has early support for plugins.** Many of you have wanted to customize the internal workings of
   AzuraCast without needing to fork the main codebase and maintain your own copy. You can now do this with the help of

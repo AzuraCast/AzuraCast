@@ -197,7 +197,7 @@ class StationRemote implements
     {
         $password = $this->getSourcePassword();
 
-        if (RemoteAdapters::SHOUTcast2 === $this->getTypeEnum()) {
+        if (RemoteAdapters::Shoutcast2 === $this->getTypeEnum()) {
             $mount = $this->getSourceMount();
             if (empty($mount)) {
                 $mount = $this->getMount();
@@ -344,7 +344,7 @@ class StationRemote implements
         $urlScheme = $this->getUrlAsUri()->getScheme();
 
         return match ($this->getAutodjAdapterTypeEnum()) {
-            RemoteAdapters::SHOUTcast1, RemoteAdapters::SHOUTcast2 => StreamProtocols::Icy,
+            RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => StreamProtocols::Icy,
             default => ('https' === $urlScheme) ? StreamProtocols::Https : StreamProtocols::Http
         };
     }

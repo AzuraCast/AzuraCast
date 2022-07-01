@@ -94,25 +94,12 @@ final class Annotations implements EventSubscriberInterface
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
             'liq_amplify' => $media->getAmplify() ?? 0.0,
-            'liq_cross_duration' => $media->getFadeOverlap(),
-            'liq_fade_in' => $media->getFadeIn(),
-            'liq_fade_out' => $media->getFadeOut(),
+            'liq_cross_duration' => $media->getFadeOverlap() ?? $backendConfig->getCrossfadeDuration(),
+            'liq_fade_in' => $media->getFadeIn() ?? $backendConfig->getCrossfade(),
+            'liq_fade_out' => $media->getFadeOut() ?? $backendConfig->getCrossfade(),
             'liq_cue_in' => $media->getCueIn(),
             'liq_cue_out' => $media->getCueOut(),
         ];
-
-        $defaults = [
-            'liq_amplify' => 0.0,
-            'liq_cross_duration' => $backendConfig->getCrossfadeDuration(),
-            'liq_fade_in' => $backendConfig->getCrossfade(),
-            'liq_fade_out' => $backendConfig->getCrossfade(),
-        ];
-
-        foreach ($defaults as $defaultKey => $defaultVal) {
-            if (empty($annotationsRaw[$defaultKey])) {
-                $annotationsRaw[$defaultKey] = $defaultVal;
-            }
-        }
 
         // Safety checks for cue lengths.
         if ($annotationsRaw['liq_cue_out'] < 0) {

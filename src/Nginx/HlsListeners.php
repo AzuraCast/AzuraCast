@@ -65,7 +65,7 @@ final class HlsListeners
         $allClients = [];
         $i = 1;
         foreach ($logContents as $logRow) {
-            $client = $this->parseRow($logRow, $timestamp, $i);
+            $client = $this->parseRow($logRow, $timestamp);
             if (
                 null !== $client
                 && isset($clientsByStream[$client->mount])
@@ -73,9 +73,12 @@ final class HlsListeners
             ) {
                 $clientsByStream[$client->mount]++;
 
-                $client->mount = 'hls_' . $streamsByName[$client->mount];
-                $allClients[$client->uid] = $client;
+                $clientHash = $client->uid;
 
+                $client->uid = (string)$i;
+                $client->mount = 'hls_' . $streamsByName[$client->mount];
+
+                $allClients[$clientHash] = $client;
                 $i++;
             }
         }
@@ -102,8 +105,7 @@ final class HlsListeners
 
     private function parseRow(
         string $row,
-        int $threshold,
-        int $uid
+        int $threshold
     ): ?Client {
         try {
             $rowJson = json_decode($row, true, 512, JSON_THROW_ON_ERROR);
@@ -131,7 +133,7 @@ final class HlsListeners
         $ua = $rowJson['ua'];
 
         return new Client(
-            uid: (string)$uid,
+            uid: md5($ip . '_' . $ua),
             ip: $ip,
             userAgent: $ua,
             connectedSeconds: 1,

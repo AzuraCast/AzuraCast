@@ -8,7 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class HelpAction
+final class LogsAction
 {
     public function __invoke(
         ServerRequest $request,

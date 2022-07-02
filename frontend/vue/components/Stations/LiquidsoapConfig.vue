@@ -24,7 +24,7 @@
                     <b-form-fieldset v-for="(row, index) in config" :key="index" class="mb-0">
                         <b-wrapped-form-group v-if="row.is_field" :field="$v.form[row.field_name]"
                                               :id="'form_edit_'+row.field_name" input-type="textarea"
-                                              :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 50, rows: 5}">
+                                              :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}">
                         </b-wrapped-form-group>
                         <b-form-markup v-else :id="'form_section_'+index">
                             <pre class="typography-body-1">{{ row.markup }}</pre>

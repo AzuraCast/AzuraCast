@@ -293,7 +293,7 @@ final class Environment
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
 
-        if ('localhost' === $dbSettings['host']) {
+        if ('localhost' === $dbSettings['host'] && $this->isDocker()) {
             $dbSettings['unix_socket'] = '/run/mysqld/mysqld.sock';
         }
 
@@ -316,7 +316,7 @@ final class Environment
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
 
-        if ('localhost' === $redisSettings['host']) {
+        if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
             $redisSettings['socket'] = '/run/redis/redis.sock';
         }
 

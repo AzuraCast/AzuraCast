@@ -6,7 +6,6 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Service\IpGeolocation;
 use App\Service\IpGeolocator\GeoLite;
 use Exception;
 use GuzzleHttp\Client;
@@ -15,14 +14,13 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class UpdateGeoLiteTask extends AbstractTask
+final class UpdateGeoLiteTask extends AbstractTask
 {
-    protected const UPDATE_THRESHOLD = 86000;
+    private const UPDATE_THRESHOLD = 86000;
 
     public function __construct(
-        protected Client $httpClient,
-        protected IpGeolocation $geoLite,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Client $httpClient,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
     ) {

@@ -15,10 +15,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:internal:ip',
     description: 'Get the external IP address for this instance.',
 )]
-class GetIpCommand extends CommandAbstract
+final class GetIpCommand extends CommandAbstract
 {
     public function __construct(
-        protected AzuraCastCentral $acCentral,
+        private readonly AzuraCastCentral $acCentral,
     ) {
         parent::__construct();
     }

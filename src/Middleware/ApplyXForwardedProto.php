@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Apply the "X-Forwarded-Proto" header if it exists.
  */
-class ApplyXForwardedProto implements MiddlewareInterface
+final class ApplyXForwardedProto implements MiddlewareInterface
 {
     /**
      * @param ServerRequestInterface $request

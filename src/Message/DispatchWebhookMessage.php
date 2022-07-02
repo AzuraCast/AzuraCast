@@ -7,7 +7,7 @@ namespace App\Message;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\MessageQueue\QueueManagerInterface;
 
-class DispatchWebhookMessage extends AbstractUniqueMessage
+final class DispatchWebhookMessage extends AbstractUniqueMessage
 {
     public int $station_id;
 

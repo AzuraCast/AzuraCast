@@ -8,7 +8,7 @@ use App\Exception\SupervisorException;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class AlreadyRunningException extends SupervisorException
+final class AlreadyRunningException extends SupervisorException
 {
     public function __construct(
         string $message = 'Process was already running.',

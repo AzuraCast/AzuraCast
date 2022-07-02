@@ -15,7 +15,7 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 
-class Icecast extends AbstractFrontend
+final class Icecast extends AbstractFrontend
 {
     public const LOGLEVEL_DEBUG = 4;
     public const LOGLEVEL_INFO = 3;
@@ -30,7 +30,7 @@ class Icecast extends AbstractFrontend
             try {
                 $this->supervisor->signalProcess($program_name, 'HUP');
                 $this->logger->info(
-                    'Adapter "' . static::class . '" reloaded.',
+                    'Adapter "' . self::class . '" reloaded.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {

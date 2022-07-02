@@ -11,11 +11,11 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 
-class Mail implements MailerInterface
+final class Mail implements MailerInterface
 {
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected MailerInterface $mailer
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly MailerInterface $mailer
     ) {
     }
 

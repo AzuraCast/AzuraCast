@@ -8,10 +8,10 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Psr\Log\LoggerInterface;
 
-class CleanupLoginTokensTask extends AbstractTask
+final class CleanupLoginTokensTask extends AbstractTask
 {
     public function __construct(
-        protected Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

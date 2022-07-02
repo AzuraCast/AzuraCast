@@ -8,7 +8,7 @@ use App\Service\CpuStats\CpuData;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 
-class CpuStats
+final class CpuStats
 {
     /**
      * @return CpuData[]

@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_StationServiceStatus',
     type: 'object'
 )]
-class StationServiceStatus
+final class StationServiceStatus
 {
     #[OA\Property(example: true)]
     public bool $backend_running;

@@ -24,12 +24,12 @@ use Symfony\Component\Yaml\Yaml;
 #[AsCommand(
     name: 'install'
 )]
-class InstallCommand extends Command
+final class InstallCommand extends Command
 {
     public const DEFAULT_BASE_DIRECTORY = '/installer';
 
     public function __construct(
-        protected Environment $environment
+        private readonly Environment $environment
     ) {
         parent::__construct();
     }

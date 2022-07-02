@@ -15,13 +15,13 @@ use Doctrine\Common\Collections\Collection;
 use Monolog\Logger;
 use Monolog\LogRecord;
 
-class Scheduler
+final class Scheduler
 {
     public function __construct(
-        protected Logger $logger,
-        protected StationPlaylistMediaRepository $spmRepo,
-        protected StationQueueRepository $queueRepo,
-        protected ReloadableEntityManagerInterface $em,
+        private readonly Logger $logger,
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly StationQueueRepository $queueRepo,
+        private readonly ReloadableEntityManagerInterface $em,
     ) {
     }
 

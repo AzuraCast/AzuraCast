@@ -38,7 +38,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 use const SCANDIR_SORT_NONE;
 
-class Flow
+final class Flow
 {
     /**
      * Process the request and return a response if necessary, or the completed file details if successful.

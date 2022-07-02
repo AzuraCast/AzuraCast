@@ -6,7 +6,7 @@ namespace App\Message;
 
 use App\Environment;
 
-class TestWebhookMessage extends AbstractUniqueMessage
+final class TestWebhookMessage extends AbstractUniqueMessage
 {
     public int $webhookId;
 

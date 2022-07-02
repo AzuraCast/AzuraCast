@@ -10,14 +10,14 @@ use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class DeviceDetector
+final class DeviceDetector
 {
-    protected CacheInterface $cache;
+    private CacheInterface $cache;
 
-    protected \DeviceDetector\DeviceDetector $dd;
+    private \DeviceDetector\DeviceDetector $dd;
 
     /** @var array<string, DeviceResult> */
-    protected array $deviceResults = [];
+    private array $deviceResults = [];
 
     public function __construct(
         CacheItemPoolInterface $psr6Cache

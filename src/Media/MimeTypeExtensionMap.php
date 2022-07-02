@@ -6,7 +6,7 @@ namespace App\Media;
 
 use League\MimeTypeDetection\GeneratedExtensionToMimeTypeMap;
 
-class MimeTypeExtensionMap extends GeneratedExtensionToMimeTypeMap
+final class MimeTypeExtensionMap extends GeneratedExtensionToMimeTypeMap
 {
     public const ADDED_MIME_TYPES = [
         'stm' => 'audio/x-mod',

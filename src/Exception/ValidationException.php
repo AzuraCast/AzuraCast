@@ -9,7 +9,7 @@ use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
 
-class ValidationException extends Exception
+final class ValidationException extends Exception
 {
     protected ConstraintViolationListInterface $detailedErrors;
 

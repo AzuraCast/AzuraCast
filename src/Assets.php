@@ -21,30 +21,30 @@ use function random_bytes;
  * Inspired by Asseter by Adam Banaszkiewicz: https://github.com/requtize
  * @link      https://github.com/requtize/assetter
  */
-class Assets
+final class Assets
 {
     use RequestAwareTrait;
 
     /** @var array<string, array> Known libraries loaded in initialization. */
-    protected array $libraries = [];
+    private array $libraries = [];
 
     /** @var array<string, string> An optional array lookup for versioned files. */
-    protected array $versioned_files = [];
+    private array $versioned_files = [];
 
     /** @var array<string, array> Loaded libraries. */
-    protected array $loaded = [];
+    private array $loaded = [];
 
     /** @var bool Whether the current loaded libraries have been sorted by order. */
-    protected bool $is_sorted = true;
+    private bool $is_sorted = true;
 
     /** @var string A randomly generated number-used-once (nonce) for inline CSP. */
-    protected string $csp_nonce;
+    private string $csp_nonce;
 
     /** @var array The loaded domains that should be included in the CSP header. */
-    protected array $csp_domains;
+    private array $csp_domains;
 
     public function __construct(
-        protected Environment $environment,
+        private readonly Environment $environment,
         array $libraries,
     ) {
         foreach ($libraries as $library_name => $library) {
@@ -61,7 +61,7 @@ class Assets
         $this->csp_domains = [];
     }
 
-    protected function addVueComponents(array $vueComponents = []): void
+    private function addVueComponents(array $vueComponents = []): void
     {
         if (!empty($vueComponents['entrypoints'])) {
             foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
@@ -417,7 +417,7 @@ class Assets
     /**
      * Sort the list of loaded libraries.
      */
-    protected function sort(): void
+    private function sort(): void
     {
         if (!$this->is_sorted) {
             uasort(
@@ -431,7 +431,7 @@ class Assets
         }
     }
 
-    protected function resolveAttributes(array $file, array $defaults): array
+    private function resolveAttributes(array $file, array $defaults): array
     {
         if (isset($file['src'])) {
             $defaults['src'] = $this->getUrl($file['src']);
@@ -457,7 +457,7 @@ class Assets
      *
      * @return string[]
      */
-    protected function compileAttributes(array $attributes): array
+    private function compileAttributes(array $attributes): array
     {
         $compiled_attributes = [];
         foreach ($attributes as $attr_key => $attr_val) {
@@ -531,7 +531,7 @@ class Assets
      *
      * @param string $src
      */
-    protected function addDomainToCsp(string $src): void
+    private function addDomainToCsp(string $src): void
     {
         $uri = new Uri($src);
 

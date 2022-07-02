@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
-class MoveBroadcastsTask extends AbstractTask
+final class MoveBroadcastsTask extends AbstractTask
 {
     public static function getSchedulePattern(): string
     {
@@ -20,8 +20,8 @@ class MoveBroadcastsTask extends AbstractTask
     public function __construct(
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        protected Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
     ) {
         parent::__construct($em, $logger);
     }

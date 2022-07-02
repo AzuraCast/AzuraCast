@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_NowPlaying_Listeners',
     type: 'object'
 )]
-class Listeners
+final class Listeners
 {
     #[OA\Property(
         description: 'Total non-unique current listeners',

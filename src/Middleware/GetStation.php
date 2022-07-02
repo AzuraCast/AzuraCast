@@ -16,10 +16,10 @@ use Slim\Routing\RouteContext;
 /**
  * Retrieve the station specified in the request parameters, and throw an error if none exists but one is required.
  */
-class GetStation implements MiddlewareInterface
+final class GetStation implements MiddlewareInterface
 {
     public function __construct(
-        protected StationRepository $station_repo
+        private readonly StationRepository $station_repo
     ) {
     }
 

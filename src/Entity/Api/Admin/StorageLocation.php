@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_Admin_StorageLocation',
     type: 'object'
 )]
-class StorageLocation
+final class StorageLocation
 {
     use Entity\Api\Traits\HasLinks;
     use LoadFromParentObject;

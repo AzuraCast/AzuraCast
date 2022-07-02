@@ -18,10 +18,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:account:reset-password',
     description: 'Reset the password of the specified account.',
 )]
-class ResetPasswordCommand extends CommandAbstract
+final class ResetPasswordCommand extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em
+        private readonly EntityManagerInterface $em
     ) {
         parent::__construct();
     }

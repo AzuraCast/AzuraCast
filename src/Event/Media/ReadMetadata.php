@@ -8,12 +8,12 @@ use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class ReadMetadata extends Event
+final class ReadMetadata extends Event
 {
-    protected ?MetadataInterface $metadata = null;
+    private ?MetadataInterface $metadata = null;
 
     public function __construct(
-        protected string $path
+        private readonly string $path
     ) {
     }
 

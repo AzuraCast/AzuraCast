@@ -6,7 +6,7 @@ namespace App\Security;
 
 use InvalidArgumentException;
 
-class SplitToken
+final class SplitToken
 {
     public const SEPARATOR = ':';
 

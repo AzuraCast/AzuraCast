@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Entity;
-use App\Environment;
 use App\Nginx\Nginx;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,14 +19,12 @@ use Throwable;
     name: 'azuracast:radio:restart',
     description: 'Restart all radio stations, or a single one if specified.',
 )]
-class RestartRadioCommand extends CommandAbstract
+final class RestartRadioCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment,
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected Configuration $configuration,
-        protected Nginx $nginx,
+        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly Configuration $configuration,
+        private readonly Nginx $nginx,
     ) {
         parent::__construct();
     }

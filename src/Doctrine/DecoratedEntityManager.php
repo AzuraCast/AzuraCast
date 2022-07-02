@@ -9,9 +9,9 @@ use Closure;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
-class DecoratedEntityManager extends EntityManagerDecorator implements ReloadableEntityManagerInterface
+final class DecoratedEntityManager extends EntityManagerDecorator implements ReloadableEntityManagerInterface
 {
-    protected Closure $createEm;
+    private Closure $createEm;
 
     public function __construct(callable $createEm)
     {

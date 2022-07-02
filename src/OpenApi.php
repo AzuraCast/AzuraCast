@@ -104,7 +104,7 @@ use OpenApi\Attributes as OA;
         in: "header"
     )
 ]
-class OpenApi
+final class OpenApi
 {
     public const SAMPLE_TIMESTAMP = 1609480800;
 

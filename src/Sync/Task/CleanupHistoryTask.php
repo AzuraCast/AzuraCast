@@ -8,13 +8,13 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Psr\Log\LoggerInterface;
 
-class CleanupHistoryTask extends AbstractTask
+final class CleanupHistoryTask extends AbstractTask
 {
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\Repository\SongHistoryRepository $historyRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Entity\Repository\ListenerRepository $listenerRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\Repository\SongHistoryRepository $historyRepo,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Entity\Repository\ListenerRepository $listenerRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

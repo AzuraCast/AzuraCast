@@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
     name: 'azuracast:internal:on-ssl-renewal',
     description: 'Reload broadcast frontends when an SSL certificate changes.',
 )]
-class OnSslRenewal extends CommandAbstract
+final class OnSslRenewal extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Adapters $adapters,
+        private readonly EntityManagerInterface $em,
+        private readonly Adapters $adapters,
     ) {
         parent::__construct();
     }

@@ -11,12 +11,12 @@ use Azura\Files\ExtendedFilesystemInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
 
-class BatchUtilities
+final class BatchUtilities
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationMediaRepository $mediaRepo,
-        protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
     ) {
     }
 

@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class PermissionDeniedException extends Exception
+final class PermissionDeniedException extends Exception
 {
     public function __construct(
         string $message = 'Permission denied.',

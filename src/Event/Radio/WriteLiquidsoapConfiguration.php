@@ -7,14 +7,14 @@ namespace App\Event\Radio;
 use App\Entity\Station;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class WriteLiquidsoapConfiguration extends Event
+final class WriteLiquidsoapConfiguration extends Event
 {
-    protected array $configLines = [];
+    private array $configLines = [];
 
     public function __construct(
-        protected Station $station,
-        protected bool $forEditing = false,
-        protected bool $writeToDisk = true
+        private readonly Station $station,
+        private readonly bool $forEditing = false,
+        private readonly bool $writeToDisk = true
     ) {
     }
 

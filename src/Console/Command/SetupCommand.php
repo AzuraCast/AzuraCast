@@ -17,12 +17,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:setup',
     description: 'Run all general AzuraCast setup steps.',
 )]
-class SetupCommand extends CommandAbstract
+final class SetupCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected AzuraCastCentral $acCentral,
+        private readonly Environment $environment,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly AzuraCastCentral $acCentral,
     ) {
         parent::__construct();
     }

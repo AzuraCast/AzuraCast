@@ -10,13 +10,13 @@ use Exception;
 use Monolog\Logger;
 use RuntimeException;
 
-class FeedbackCommand extends AbstractCommand
+final class FeedbackCommand extends AbstractCommand
 {
     public function __construct(
         Logger $logger,
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Entity\Repository\SongHistoryRepository $historyRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Entity\Repository\SongHistoryRepository $historyRepo
     ) {
         parent::__construct($logger);
     }

@@ -9,10 +9,10 @@ use App\Entity\Station;
 use App\Enums\PermissionInterface;
 use App\Http\ServerRequest;
 
-class BuildStationMenu extends AbstractBuildMenu
+final class BuildStationMenu extends AbstractBuildMenu
 {
     public function __construct(
-        protected Station $station,
+        private readonly Station $station,
         ServerRequest $request,
         Settings $settings
     ) {

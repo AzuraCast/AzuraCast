@@ -11,11 +11,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ReopenEntityManagerMiddleware implements MiddlewareInterface
+final class ReopenEntityManagerMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        protected DecoratedEntityManager $em,
-        protected Environment $environment
+        private readonly DecoratedEntityManager $em,
+        private readonly Environment $environment
     ) {
     }
 

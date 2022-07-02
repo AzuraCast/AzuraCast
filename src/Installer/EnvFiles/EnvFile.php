@@ -9,7 +9,7 @@ use App\Radio\Configuration;
 
 use function __;
 
-class EnvFile extends AbstractEnvFile
+final class EnvFile extends AbstractEnvFile
 {
     /** @inheritDoc */
     public static function getConfiguration(Environment $environment): array

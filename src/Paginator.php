@@ -25,30 +25,30 @@ use Traversable;
  * @template T of mixed
  * @implements IteratorAggregate<TKey, T>
  */
-class Paginator implements IteratorAggregate, Countable
+final class Paginator implements IteratorAggregate, Countable
 {
-    protected RouterInterface $router;
+    private RouterInterface $router;
 
     /** @var int<1,max> The maximum number of records that can be viewed per page for unauthenticated users. */
-    protected int $maxPerPage = 25;
+    private int $maxPerPage = 25;
 
     /** @var bool Whether the current request is from jQuery Bootgrid */
-    protected bool $isBootgrid = false;
+    private bool $isBootgrid = false;
 
     /** @var bool Whether the user is currently authenticated on this request. */
-    protected bool $isAuthenticated = false;
+    private bool $isAuthenticated = false;
 
     /** @var bool Whether to show pagination controls. */
-    protected bool $isDisabled = true;
+    private bool $isDisabled = true;
 
     /** @var callable|null A callable postprocessor that can be run on each result. */
-    protected $postprocessor;
+    private $postprocessor;
 
     /**
      * @param Pagerfanta<T> $paginator
      */
     public function __construct(
-        protected Pagerfanta $paginator,
+        private readonly Pagerfanta $paginator,
         ServerRequestInterface $request
     ) {
         $this->router = $request->getAttribute(ServerRequest::ATTR_ROUTER);

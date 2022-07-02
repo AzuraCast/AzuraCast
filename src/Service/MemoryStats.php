@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Service\MemoryStats\MemoryData;
 
-class MemoryStats
+final class MemoryStats
 {
     public static function getMemoryUsage(): MemoryData
     {

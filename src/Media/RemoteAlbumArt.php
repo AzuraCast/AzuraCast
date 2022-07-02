@@ -16,16 +16,16 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
 
-class RemoteAlbumArt
+final class RemoteAlbumArt
 {
     public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
     public function __construct(
-        protected LoggerInterface $logger,
-        protected CacheInterface $cache,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected Client $httpClient
+        private readonly LoggerInterface $logger,
+        private readonly CacheInterface $cache,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Client $httpClient
     ) {
     }
 

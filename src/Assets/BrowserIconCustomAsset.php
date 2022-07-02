@@ -8,7 +8,7 @@ use App\Environment;
 use Intervention\Image\Image;
 use Symfony\Component\Filesystem\Filesystem;
 
-class BrowserIconCustomAsset extends AbstractCustomAsset
+final class BrowserIconCustomAsset extends AbstractCustomAsset
 {
     public const ICON_SIZES = [
         16, // Favicon

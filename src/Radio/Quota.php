@@ -9,7 +9,7 @@ use Brick\Math;
 /**
  * Static utility class for managing quotas.
  */
-class Quota
+final class Quota
 {
     public static function getPercentage(Math\BigInteger $size, Math\BigInteger $total): int
     {

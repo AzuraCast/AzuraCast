@@ -16,11 +16,11 @@ use Slim\Routing\RouteContext;
 /**
  * Module middleware for the /admin pages.
  */
-class Admin
+final class Admin
 {
     public function __construct(
-        protected EventDispatcherInterface $dispatcher,
-        protected SettingsRepository $settingsRepo
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

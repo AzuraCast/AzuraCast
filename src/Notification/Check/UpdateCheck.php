@@ -11,11 +11,11 @@ use App\Event\GetNotifications;
 use App\Session\Flash;
 use App\Version;
 
-class UpdateCheck
+final class UpdateCheck
 {
     public function __construct(
-        protected Version $version,
-        protected Entity\Repository\SettingsRepository $settingsRepo
+        private readonly Version $version,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 

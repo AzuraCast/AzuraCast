@@ -2727,7 +2727,7 @@ paths:
     post:
       tags:
         - 'Stations: Service Control'
-      description: 'Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)'
+      description: 'Perform service control actions on the radio frontend (Icecast, Shoutcast, etc.)'
       operationId: doFrontendServiceAction
       parameters:
         -
@@ -3746,6 +3746,10 @@ components:
           description: 'The full URL to listen to the HLS stream for the station.'
           example: 'https://example.com/hls/azuratest_radio/live.m3u8'
           nullable: true
+        hls_listeners:
+          description: 'HLS Listeners'
+          type: integer
+          example: 1
       type: object
     Api_NowPlaying_StationMount:
       type: object

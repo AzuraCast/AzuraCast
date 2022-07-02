@@ -13,24 +13,19 @@ use Symfony\Component\Process\Process;
 /**
  * App Core Framework Version
  */
-class Version
+final class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
     public const FALLBACK_VERSION = '0.17.1';
 
-    // phpcs:disable Generic.Files.LineLength
-    public const LATEST_COMPOSE_REVISION = 12;
-    public const LATEST_COMPOSE_URL = 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml';
-
     public const UPDATE_URL = 'https://docs.azuracast.com/en/getting-started/updates';
     public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';
-    // phpcs:enable
 
-    protected string $repoDir;
+    private string $repoDir;
 
     public function __construct(
-        protected CacheInterface $cache,
-        protected Environment $environment
+        private readonly CacheInterface $cache,
+        private readonly Environment $environment
     ) {
         $this->repoDir = $environment->getBaseDirectory();
     }
@@ -84,7 +79,7 @@ class Version
      *
      * @return mixed[]
      */
-    protected function getRawDetails(): array
+    private function getRawDetails(): array
     {
         if (!is_dir($this->repoDir . '/.git')) {
             return [];
@@ -127,7 +122,7 @@ class Version
     /**
      * Run the specified process and return its output.
      */
-    protected function runProcess(array $proc, string $default = ''): string
+    private function runProcess(array $proc, string $default = ''): string
     {
         $process = new Process($proc);
         $process->setWorkingDirectory($this->repoDir);
@@ -182,19 +177,5 @@ class Version
     {
         $details = $this->getDetails();
         return $details['commit_short'] ?? null;
-    }
-
-    /**
-     * Check if the installation has been modified by the user from the release build.
-     */
-    public function isInstallationModified(): bool
-    {
-        // We can't detect if release builds are changed, so always return true.
-        if (!is_dir($this->repoDir . '/.git')) {
-            return true;
-        }
-
-        $changed_files = $this->runProcess(['git', 'status', '-s']);
-        return !empty($changed_files);
     }
 }

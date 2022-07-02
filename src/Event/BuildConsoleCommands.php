@@ -8,13 +8,13 @@ use App\Console\Application;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BuildConsoleCommands extends Event
+final class BuildConsoleCommands extends Event
 {
-    protected array $aliases = [];
+    private array $aliases = [];
 
     public function __construct(
-        protected Application $cli,
-        protected ContainerInterface $di
+        private readonly Application $cli,
+        private readonly ContainerInterface $di
     ) {
     }
 

@@ -11,10 +11,10 @@ use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\Connection as Messen
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
-class QueueManager extends AbstractQueueManager
+final class QueueManager extends AbstractQueueManager
 {
     public function __construct(
-        protected Pheanstalk $pheanstalk
+        private readonly Pheanstalk $pheanstalk
     ) {
     }
 

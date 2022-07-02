@@ -436,7 +436,7 @@
                         </template>
                         <template #description="{lang}">
                             <translate :key="lang">For most cases, use the default UTF-8 encoding. The older ISO-8859-1
-                                encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy
+                                encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy
                                 software.
                             </translate>
                         </template>

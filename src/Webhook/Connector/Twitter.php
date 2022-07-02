@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Monolog\Logger;
 
-class Twitter extends AbstractConnector
+final class Twitter extends AbstractConnector
 {
     public const NAME = 'twitter';
 
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        protected EntityManagerInterface $em,
-        protected HandlerStack $handlerStack,
+        private readonly HandlerStack $handlerStack,
     ) {
         parent::__construct($logger, $httpClient);
     }

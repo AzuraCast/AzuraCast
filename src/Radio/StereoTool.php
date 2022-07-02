@@ -6,6 +6,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Environment;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 
 final class StereoTool
@@ -45,7 +46,7 @@ final class StereoTool
 
         try {
             $process->run();
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException) {
             return null;
         }
 

@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NoFileUploadedException extends Exception
+final class NoFileUploadedException extends Exception
 {
     public function __construct(
         string $message = 'No file was uploaded.',

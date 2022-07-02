@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_NewRecord',
     type: 'object'
 )]
-class NewRecord extends Status
+final class NewRecord extends Status
 {
     #[OA\Property(
         items: new OA\Items(type: 'string', example: 'http://localhost/api/record/1')

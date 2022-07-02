@@ -15,12 +15,12 @@ use Slim\App;
 /**
  * Remove trailing slash from all URLs when routing.
  */
-class EnforceSecurity implements MiddlewareInterface
+final class EnforceSecurity implements MiddlewareInterface
 {
-    protected ResponseFactoryInterface $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         App $app
     ) {
         $this->responseFactory = $app->getResponseFactory();

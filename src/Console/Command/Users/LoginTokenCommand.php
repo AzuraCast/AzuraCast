@@ -18,12 +18,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:account:login-token',
     description: 'Create a unique login recovery URL for the specified account.',
 )]
-class LoginTokenCommand extends CommandAbstract
+final class LoginTokenCommand extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
-        protected RouterInterface $router,
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly RouterInterface $router,
     ) {
         parent::__construct();
     }

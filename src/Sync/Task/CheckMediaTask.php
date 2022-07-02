@@ -19,14 +19,13 @@ use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class CheckMediaTask extends AbstractTask
+final class CheckMediaTask extends AbstractTask
 {
     public function __construct(
-        protected Entity\Repository\StationMediaRepository $mediaRepo,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        protected MessageBus $messageBus,
-        protected QueueManagerInterface $queueManager,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly MessageBus $messageBus,
+        private readonly QueueManagerInterface $queueManager,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

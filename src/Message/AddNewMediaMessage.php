@@ -6,7 +6,7 @@ namespace App\Message;
 
 use App\MessageQueue\QueueManagerInterface;
 
-class AddNewMediaMessage extends AbstractUniqueMessage
+final class AddNewMediaMessage extends AbstractUniqueMessage
 {
     /** @var int The numeric identifier for the StorageLocation entity. */
     public int $storage_location_id;

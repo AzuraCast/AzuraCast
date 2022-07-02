@@ -11,13 +11,13 @@ use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
-class CheckUpdatesTask extends AbstractTask
+final class CheckUpdatesTask extends AbstractTask
 {
-    protected const UPDATE_THRESHOLD = 3780;
+    private const UPDATE_THRESHOLD = 3780;
 
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected AzuraCastCentral $azuracastCentral,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly AzuraCastCentral $azuracastCentral,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

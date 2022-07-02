@@ -16,10 +16,10 @@ use Psr\Container\ContainerInterface;
 /**
  * Manager class for radio adapters.
  */
-class Adapters
+final class Adapters
 {
     public function __construct(
-        protected ContainerInterface $adapters
+        private readonly ContainerInterface $adapters
     ) {
     }
 

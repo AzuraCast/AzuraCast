@@ -6,6 +6,7 @@ namespace App\Nginx;
 
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonException;
 use NowPlaying\Result\Client;
 use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
@@ -62,6 +63,7 @@ final class HlsListeners
         }
 
         $allClients = [];
+        $i = 1;
         foreach ($logContents as $logRow) {
             $client = $this->parseRow($logRow, $timestamp);
             if (
@@ -71,8 +73,13 @@ final class HlsListeners
             ) {
                 $clientsByStream[$client->mount]++;
 
+                $clientHash = $client->uid;
+
+                $client->uid = (string)$i;
                 $client->mount = 'hls_' . $streamsByName[$client->mount];
-                $allClients[$client->uid] = $client;
+
+                $allClients[$clientHash] = $client;
+                $i++;
             }
         }
 
@@ -102,7 +109,7 @@ final class HlsListeners
     ): ?Client {
         try {
             $rowJson = json_decode($row, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException) {
+        } catch (JsonException) {
             return null;
         }
 

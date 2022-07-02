@@ -8,9 +8,9 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class CannotProcessMediaException extends Exception
+final class CannotProcessMediaException extends Exception
 {
-    protected ?string $path = null;
+    private ?string $path = null;
 
     public function __construct(
         string $message = 'Cannot process media file.',

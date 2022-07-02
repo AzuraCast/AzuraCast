@@ -25,7 +25,7 @@ final class PostAction
         Response $response
     ): ResponseInterface {
         if ('x86_64' !== php_uname('m')) {
-            throw new RuntimeException('SHOUTcast cannot be installed on non-X86_64 systems.');
+            throw new RuntimeException('Shoutcast cannot be installed on non-X86_64 systems.');
         }
 
         $flowResponse = Flow::process($request, $response);

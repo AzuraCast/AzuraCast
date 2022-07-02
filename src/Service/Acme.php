@@ -116,10 +116,16 @@ final class Acme
             }
         }
 
+        $domains = array_map(
+            'trim',
+            explode(',', $acmeDomain)
+        );
+
         // Renewal check.
         if (
             !$force
             && file_exists($acmeDir . '/acme.crt')
+            && $domains === $acme->getSAN('file://' . $acmeDir . '/acme.crt')
             && $acme->getRemainingDays('file://' . $acmeDir . '/acme.crt') > self::THRESHOLD_DAYS
         ) {
             throw new RuntimeException('Certificate does not need renewal.');
@@ -128,8 +134,7 @@ final class Acme
         $fs->mkdir($acmeDir . '/challenges');
 
         $domainConfig = [];
-        foreach (explode(',', $acmeDomain) as $domain) {
-            $domain = trim($domain);
+        foreach ($domains as $domain) {
             $domainConfig[$domain] = ['challenge' => 'http-01'];
         }
 

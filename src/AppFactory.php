@@ -18,7 +18,7 @@ use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\Strategies\RequestResponseNamedArgs;
 
-class AppFactory
+final class AppFactory
 {
     public static function createApp(
         array $appEnvironment = [],

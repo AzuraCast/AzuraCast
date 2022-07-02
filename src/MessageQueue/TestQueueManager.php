@@ -7,7 +7,7 @@ namespace App\MessageQueue;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-class TestQueueManager extends AbstractQueueManager
+final class TestQueueManager extends AbstractQueueManager
 {
     public function clearQueue(string $queueName): void
     {

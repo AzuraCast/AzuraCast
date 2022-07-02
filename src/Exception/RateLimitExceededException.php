@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class RateLimitExceededException extends Exception
+final class RateLimitExceededException extends Exception
 {
     public function __construct(
         string $message = 'You have exceeded the rate limit for this application.',

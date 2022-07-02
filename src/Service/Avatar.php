@@ -10,7 +10,7 @@ use App\Service\Avatar\Disabled;
 use App\Service\Avatar\Gravatar;
 use App\Service\Avatar\Libravatar;
 
-class Avatar
+final class Avatar
 {
     public const DEFAULT_SIZE = 64;
 
@@ -23,7 +23,7 @@ class Avatar
     public const DEFAULT_SERVICE = self::SERVICE_LIBRAVATAR;
 
     public function __construct(
-        protected SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

@@ -10,7 +10,7 @@ use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
-class CleanupStorageTask extends AbstractTask
+final class CleanupStorageTask extends AbstractTask
 {
     public static function getSchedulePattern(): string
     {

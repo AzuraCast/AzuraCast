@@ -11,21 +11,19 @@ use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 
-class NowPlayingApiGenerator
+final class NowPlayingApiGenerator
 {
     public function __construct(
-        protected SongApiGenerator $songApiGenerator,
-        protected SongHistoryApiGenerator $songHistoryApiGenerator,
-        protected StationApiGenerator $stationApiGenerator,
-        protected StationQueueApiGenerator $stationQueueApiGenerator,
-        protected Entity\Repository\SongHistoryRepository $historyRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected Router $router,
+        private readonly SongApiGenerator $songApiGenerator,
+        private readonly SongHistoryApiGenerator $songHistoryApiGenerator,
+        private readonly StationApiGenerator $stationApiGenerator,
+        private readonly StationQueueApiGenerator $stationQueueApiGenerator,
+        private readonly Entity\Repository\SongHistoryRepository $historyRepo,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
+        private readonly Router $router,
     ) {
     }
 

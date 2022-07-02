@@ -17,11 +17,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:media:reprocess',
     description: 'Manually reload all media metadata from file.',
 )]
-class ReprocessMediaCommand extends CommandAbstract
+final class ReprocessMediaCommand extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $stationRepo,
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationRepository $stationRepo,
     ) {
         parent::__construct();
     }

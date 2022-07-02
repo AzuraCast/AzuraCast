@@ -6,7 +6,7 @@ namespace App\Radio\Remote;
 
 use NowPlaying\AdapterFactory;
 
-class Icecast extends AbstractRemote
+final class Icecast extends AbstractRemote
 {
     protected function getAdapterType(): string
     {

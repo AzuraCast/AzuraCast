@@ -12,7 +12,7 @@ use Exception;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\StorageAttributes;
 
-class UpdateStorageLocationSizesTask extends AbstractTask
+final class UpdateStorageLocationSizesTask extends AbstractTask
 {
     public static function getSchedulePattern(): string
     {
@@ -70,7 +70,7 @@ class UpdateStorageLocationSizesTask extends AbstractTask
 
         $this->logger->info('Storage location size updated.', [
             'storageLocation' => (string)$storageLocation,
-            'size'            => Quota::getReadableSize($used),
+            'size' => Quota::getReadableSize($used),
         ]);
     }
 }

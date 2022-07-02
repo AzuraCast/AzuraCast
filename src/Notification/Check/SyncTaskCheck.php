@@ -9,10 +9,10 @@ use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\Flash;
 
-class SyncTaskCheck
+final class SyncTaskCheck
 {
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 

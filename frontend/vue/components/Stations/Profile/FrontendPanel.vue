@@ -124,7 +124,7 @@ export default {
             if (this.frontendType === FRONTEND_ICECAST) {
                 return 'Icecast';
             } else if (this.frontendType === FRONTEND_SHOUTCAST) {
-                return 'SHOUTcast';
+                return 'Shoutcast';
             }
             return '';
         },

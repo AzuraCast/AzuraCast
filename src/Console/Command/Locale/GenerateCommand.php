@@ -24,10 +24,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     description: 'Generate the translation locale file.',
     aliases: ['locale:generate']
 )]
-class GenerateCommand extends CommandAbstract
+final class GenerateCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment
+        private readonly Environment $environment
     ) {
         parent::__construct();
     }

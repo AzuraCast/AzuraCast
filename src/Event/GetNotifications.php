@@ -8,12 +8,12 @@ use App\Entity\Api\Notification;
 use App\Http\ServerRequest;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class GetNotifications extends Event
+final class GetNotifications extends Event
 {
-    protected array $notifications = [];
+    private array $notifications = [];
 
     public function __construct(
-        protected ServerRequest $request
+        private readonly ServerRequest $request
     ) {
     }
 

@@ -23,14 +23,14 @@ use Symfony\Component\Cache\Adapter\ProxyAdapter;
 /**
  * Inject the session object into the request.
  */
-class InjectSession implements MiddlewareInterface
+final class InjectSession implements MiddlewareInterface
 {
-    protected CacheItemPoolInterface $cachePool;
+    private CacheItemPoolInterface $cachePool;
 
     public function __construct(
         CacheItemPoolInterface $cachePool,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Environment $environment
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Environment $environment
     ) {
         if ($environment->isCli()) {
             $cachePool = new ArrayAdapter();
@@ -57,10 +57,6 @@ class InjectSession implements MiddlewareInterface
         );
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $sessionPersistence = $this->getSessionPersistence($request);

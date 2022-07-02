@@ -13,12 +13,12 @@ use Carbon\CarbonInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class RunBackupTask extends AbstractTask
+final class RunBackupTask extends AbstractTask
 {
     public function __construct(
-        protected MessageBus $messageBus,
-        protected Application $console,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly MessageBus $messageBus,
+        private readonly Application $console,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

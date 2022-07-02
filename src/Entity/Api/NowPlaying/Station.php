@@ -13,7 +13,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_NowPlaying_Station',
     type: 'object'
 )]
-class Station implements ResolvableUrlInterface
+final class Station implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Station ID',

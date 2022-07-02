@@ -8,21 +8,18 @@ use App\Entity;
 use App\Environment;
 use GuzzleHttp\Client;
 use Monolog\Logger;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const JSON_PRETTY_PRINT;
 
-class LocalWebhookHandler
+final class LocalWebhookHandler
 {
     public const NAME = 'local';
 
     public function __construct(
-        protected Logger $logger,
-        protected Client $httpClient,
-        protected CacheInterface $cache,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Environment $environment,
+        private readonly Logger $logger,
+        private readonly Client $httpClient,
+        private readonly Environment $environment,
     ) {
     }
 

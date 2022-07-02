@@ -18,10 +18,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     description: 'Clear the contents of the message queue.',
     aliases: ['queue:clear']
 )]
-class ClearCommand extends CommandAbstract
+final class ClearCommand extends CommandAbstract
 {
     public function __construct(
-        protected QueueManagerInterface $queueManager,
+        private readonly QueueManagerInterface $queueManager,
     ) {
         parent::__construct();
     }

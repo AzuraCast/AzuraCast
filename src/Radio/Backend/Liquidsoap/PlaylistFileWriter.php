@@ -19,14 +19,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
-class PlaylistFileWriter implements EventSubscriberInterface
+final class PlaylistFileWriter implements EventSubscriberInterface
 {
     public function __construct(
-        protected LoggerInterface $logger,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected ReloadableEntityManagerInterface $em,
-        protected Filesystem $fsUtils,
-        protected Liquidsoap $liquidsoap,
+        private readonly LoggerInterface $logger,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly Filesystem $fsUtils,
+        private readonly Liquidsoap $liquidsoap,
     ) {
     }
 

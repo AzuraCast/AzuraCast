@@ -9,11 +9,11 @@ use App\Http\Router;
 use App\Radio\Adapters;
 use Psr\Http\Message\UriInterface;
 
-class StationApiGenerator
+final class StationApiGenerator
 {
     public function __construct(
-        protected Adapters $adapters,
-        protected Router $router
+        private readonly Adapters $adapters,
+        private readonly Router $router
     ) {
     }
 

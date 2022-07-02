@@ -7,10 +7,10 @@ namespace App\Event;
 use Slim\App;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BuildRoutes extends Event
+final class BuildRoutes extends Event
 {
     public function __construct(
-        protected App $app
+        private readonly App $app
     ) {
     }
 

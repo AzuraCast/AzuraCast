@@ -10,10 +10,10 @@ use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\Flash;
 
-class ProfilerAdvisorCheck
+final class ProfilerAdvisorCheck
 {
     public function __construct(
-        protected Environment $environment
+        private readonly Environment $environment
     ) {
     }
 

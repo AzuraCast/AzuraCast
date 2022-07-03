@@ -213,7 +213,6 @@ import NowPlaying, {nowPlayingProps} from '~/components/Common/NowPlaying';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import IsMounted from "~/components/Common/IsMounted";
-import Hls from "hls.js";
 
 export const radioPlayerProps = {
     ...nowPlayingProps,
@@ -311,11 +310,7 @@ export default {
             return all_streams;
         },
         enable_hls() {
-            if (!this.showHls || !this.np.station.hls_enabled) {
-                return false;
-            }
-
-            return Hls.isSupported();
+            return this.showHls && this.np.station.hls_enabled;
         },
         time_percent() {
             let time_played = this.np_elapsed;

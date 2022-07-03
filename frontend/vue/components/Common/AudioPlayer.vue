@@ -130,6 +130,8 @@ export default {
                         this.hls.attachMedia(this.audio);
                     } else if (this.audio.canPlayType('application/vnd.apple.mpegurl')) {
                         this.audio.src = this.current.url;
+                    } else {
+                        console.log('Your browser does not support HLS.');
                     }
                 } else {
                     // Standard streams

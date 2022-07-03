@@ -1,9 +1,9 @@
-user  azuracast;
-worker_processes  auto;
+user azuracast;
+worker_processes auto;
 worker_rlimit_nofile 65000;
 
-error_log  /dev/stderr warn;
-pid        /var/run/nginx.pid;
+error_log stderr;
+pid /var/run/nginx.pid;
 
 include /etc/nginx/modules-enabled/*.conf;
 

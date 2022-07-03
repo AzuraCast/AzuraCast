@@ -96,7 +96,7 @@ final class LogsAction
             ];
             $logPaths['service_cron'] = [
                 'name' => sprintf($langServiceLog, __('Cron')),
-                'path' => $tempDir . '/service_cron.log',
+                'path' => $tempDir . '/service_crond.log',
                 'tail' => true,
             ];
             $logPaths['service_nginx'] = [

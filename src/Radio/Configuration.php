@@ -82,10 +82,6 @@ final class Configuration
 
     /**
      * Write all configuration changes to the filesystem and reload supervisord.
-     *
-     * @param Station $station
-     * @param bool $forceRestart Always restart this station's supervisor instances, even if nothing changed.
-     * @throws Exception\NotFoundException
      */
     public function writeConfiguration(
         Station $station,
@@ -138,28 +134,74 @@ final class Configuration
         }
 
         // Write group section of config
+        $programNames = [];
         $programs = [];
+
         if (null !== $backend && $backend->hasCommand($station)) {
-            $programs[] = $backend->getSupervisorProgramName($station);
+            $programName = $backend->getSupervisorProgramName($station);
+
+            $programs[$programName] = $backend;
+            $programNames[] = $programName;
+
+            if ($this->environment->isDocker()) {
+                $programNames[] = $programName . '_log';
+            }
         }
+
         if (null !== $frontend && $frontend->hasCommand($station)) {
-            $programs[] = $frontend->getSupervisorProgramName($station);
+            $programName = $frontend->getSupervisorProgramName($station);
+
+            $programs[$programName] = $frontend;
+            $programNames[] = $programName;
+
+            if ($this->environment->isDocker()) {
+                $programNames[] = $programName . '_log';
+            }
         }
 
         $stationGroup = self::getSupervisorGroupName($station);
 
         $supervisorConfig[] = '[group:' . $stationGroup . ']';
-        $supervisorConfig[] = 'programs=' . implode(',', $programs);
+        $supervisorConfig[] = 'programs=' . implode(',', $programNames);
         $supervisorConfig[] = '';
 
-        // Write frontend
-        if (null !== $frontend && $frontend->hasCommand($station)) {
-            $supervisorConfig[] = $this->writeConfigurationSection($station, $frontend, 90);
-        }
+        foreach ($programs as $programName => $adapter) {
+            $logPath = $adapter->getLogPath($station);
+            $configLines = [
+                'user' => 'azuracast',
+                'priority' => 950,
+                'command' => $adapter->getCommand($station),
+                'directory' => $station->getRadioConfigDir(),
+                'environment' => 'TZ="' . $station->getTimezone() . '"',
+                'stdout_logfile' => $logPath,
+                'stdout_logfile_maxbytes' => '5MB',
+                'stdout_logfile_backups' => '5',
+                'redirect_stderr' => 'true',
+            ];
 
-        // Write backend
-        if (null !== $backend && $backend->hasCommand($station)) {
-            $supervisorConfig[] = $this->writeConfigurationSection($station, $backend, 100);
+            $supervisorConfig[] = '[program:' . $programName . ']';
+            foreach ($configLines as $configKey => $configValue) {
+                $supervisorConfig[] = $configKey . '=' . $configValue;
+            }
+            $supervisorConfig[] = '';
+
+            if ($this->environment->isDocker()) {
+                $configLines = [
+                    'user' => 'azuracast',
+                    'priority' => 950,
+                    'command' => 'tail_with_prefix ' . $programName . ' ' . $logPath,
+                    'directory' => $station->getRadioConfigDir(),
+                    'stdout_logfile' => '/proc/1/fd/1',
+                    'stdout_logfile_maxbytes' => '0',
+                    'redirect_stderr' => 'true',
+                ];
+
+                $supervisorConfig[] = '[program:' . $programName . '_log]';
+                foreach ($configLines as $configKey => $configValue) {
+                    $supervisorConfig[] = $configKey . '=' . $configValue;
+                }
+                $supervisorConfig[] = '';
+            }
         }
 
         // Write config contents
@@ -192,16 +234,13 @@ final class Configuration
         $this->markAsStarted($station);
     }
 
-    /**
-     * @param Station $station
-     */
-    protected function getSupervisorConfigFile(Station $station): string
+    private function getSupervisorConfigFile(Station $station): string
     {
         $configDir = $station->getRadioConfigDir();
         return $configDir . '/supervisord.conf';
     }
 
-    protected function unlinkAndStopStation(
+    private function unlinkAndStopStation(
         Station $station,
         bool $reloadSupervisor = true
     ): void {
@@ -219,7 +258,7 @@ final class Configuration
         $this->em->flush();
     }
 
-    protected function stopForStation(Station $station): void
+    private function stopForStation(Station $station): void
     {
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
@@ -234,7 +273,7 @@ final class Configuration
         $this->markAsStarted($station);
     }
 
-    protected function markAsStarted(Station $station): void
+    private function markAsStarted(Station $station): void
     {
         $station->setHasStarted(true);
         $station->setNeedsRestart(false);
@@ -246,10 +285,8 @@ final class Configuration
 
     /**
      * Trigger a supervisord reload and restart all relevant services.
-     *
-     * @return mixed[] A list of affected service groups (either stopped, removed or
      */
-    protected function reloadSupervisor(): array
+    private function reloadSupervisor(): array
     {
         $reload_result = $this->supervisor->reloadConfig();
 
@@ -304,9 +341,6 @@ final class Configuration
 
     /**
      * Assign the first available port range to this station, or ensure it already is configured properly.
-     *
-     * @param Station $station
-     * @param bool $force
      */
     public function assignRadioPorts(Station $station, bool $force = false): void
     {
@@ -344,10 +378,6 @@ final class Configuration
 
     /**
      * Determine the first available 10-port block that has no stations occupying it.
-     *
-     * @param Station|null $station A station to exclude, or null to include all stations.
-     *
-     * @return int The first available radio port to use.
      */
     public function getFirstAvailableRadioPort(Station $station = null): int
     {
@@ -382,10 +412,6 @@ final class Configuration
 
     /**
      * Get an array of all used ports across the system, except the ones used by the station specified (if specified).
-     *
-     * @param Station|null $except_station
-     *
-     * @return mixed[]
      */
     public function getUsedPorts(Station $except_station = null): array
     {
@@ -441,34 +467,6 @@ final class Configuration
         }
 
         return $used_ports;
-    }
-
-    protected function writeConfigurationSection(
-        Station $station,
-        AbstractLocalAdapter $adapter,
-        ?int $priority
-    ): string {
-        $program_name = $adapter->getSupervisorProgramName($station);
-
-        $config_lines = [
-            'user' => 'azuracast',
-            'priority' => $priority ?? 50,
-            'command' => $adapter->getCommand($station),
-            'directory' => $station->getRadioConfigDir(),
-            'environment' => 'TZ="' . $station->getTimezone() . '"',
-            'stdout_logfile' => $adapter->getLogPath($station),
-            'stdout_logfile_maxbytes' => '5MB',
-            'stdout_logfile_backups' => '10',
-            'redirect_stderr' => 'true',
-        ];
-
-        $supervisor_config[] = '[program:' . $program_name . ']';
-        foreach ($config_lines as $config_key => $config_value) {
-            $supervisor_config[] = $config_key . '=' . $config_value;
-        }
-        $supervisor_config[] = '';
-
-        return implode("\n", $supervisor_config);
     }
 
     /**

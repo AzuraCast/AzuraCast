@@ -77,7 +77,39 @@ final class LogsAction
             'tail' => true,
         ];
 
-        if (!$this->environment->isDocker()) {
+        if ($this->environment->isDocker()) {
+            $langServiceLog = __('%s Service Log');
+            $logPaths['service_mariadb'] = [
+                'name' => sprintf($langServiceLog, __('MariaDB')),
+                'path' => $tempDir . '/service_mariadb.log',
+                'tail' => true,
+            ];
+            $logPaths['service_redis'] = [
+                'name' => sprintf($langServiceLog, __('Redis')),
+                'path' => $tempDir . '/service_redis.log',
+                'tail' => true,
+            ];
+            $logPaths['service_beanstalkd'] = [
+                'name' => sprintf($langServiceLog, __('Beanstalkd')),
+                'path' => $tempDir . '/service_beanstalkd.log',
+                'tail' => true,
+            ];
+            $logPaths['service_cron'] = [
+                'name' => sprintf($langServiceLog, __('Cron')),
+                'path' => $tempDir . '/service_cron.log',
+                'tail' => true,
+            ];
+            $logPaths['service_nginx'] = [
+                'name' => sprintf($langServiceLog, __('Nginx')),
+                'path' => $tempDir . '/service_nginx.log',
+                'tail' => true,
+            ];
+            $logPaths['service_sftpgo'] = [
+                'name' => sprintf($langServiceLog, __('SFTPGo')),
+                'path' => $tempDir . '/service_sftpgo.log',
+                'tail' => true,
+            ];
+        } else {
             $logPaths['nginx_access'] = [
                 'name' => __('Nginx Access Log'),
                 'path' => $tempDir . '/access.log',

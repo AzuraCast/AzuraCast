@@ -5,7 +5,18 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- HLS streams now have full listener analytics support and will appear in station statistics and reports.
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.17.2 (Jul 5, 2022)
+
+## New Features/Changes
+
+- **Full HLS Support**: HLS streams can now be listed in the public player (and preferred, if selected). HLS streams now
+  also have full listener analytics support and will appear in station statistics and reports.
 
 ## Code Quality/Technical Changes
 
@@ -13,7 +24,16 @@ release channel, you can take advantage of these new features and fixes.
   that are stored inside the Docker backups volume. This prevents you from needing to copy the backup file out of the
   Docker directory before restoring it.
 
+- Several service logs are now available via the System Logs web UI even on Docker installations.
+
+- SHOUTcast has been renamed to Shoutcast in all locations.
+
 ## Bug Fixes
+
+- Fixed instances where "Copy to Clipboard" in a modal dialog box didn't actually copy to the clipboard.
+
+- A minor bug causing the textareas on the "Edit Liquidsoap Configuration" page to erroneously scroll out of view when a
+  textarea was being updated has been fixed.
 
 - A bug causing a CPU overrun when trying to load Now Playing data for a station that had not started yet has been
   fixed.

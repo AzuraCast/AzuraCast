@@ -98,7 +98,7 @@ final class ListenerRepository extends Repository
             function () use ($station, $clients): void {
                 $existingClientsRaw = $this->em->createQuery(
                     <<<'DQL'
-                        SELECT l.id, l.listener_uid, l.listener_hash
+                        SELECT l.id, l.listener_hash
                         FROM App\Entity\Listener l
                         WHERE l.station = :station
                         AND l.timestamp_end = 0
@@ -108,13 +108,11 @@ final class ListenerRepository extends Repository
                 $existingClientsIterator = $existingClientsRaw->toIterable([], $existingClientsRaw::HYDRATE_ARRAY);
                 $existingClients = [];
                 foreach ($existingClientsIterator as $client) {
-                    $identifier = $client['listener_uid'] . '_' . $client['listener_hash'];
-                    $existingClients[$identifier] = $client['id'];
+                    $existingClients[$client['listener_hash']] = $client['id'];
                 }
 
                 foreach ($clients as $client) {
-                    $listenerHash = Entity\Listener::calculateListenerHash($client);
-                    $identifier = $client->uid . '_' . $listenerHash;
+                    $identifier = Entity\Listener::calculateListenerHash($client);
 
                     // Check for an existing record for this client.
                     if (isset($existingClients[$identifier])) {
@@ -160,6 +158,8 @@ final class ListenerRepository extends Repository
                 $record['mount_id'] = (int)$mountId;
             } elseif ('remote' === $mountType) {
                 $record['remote_id'] = (int)$mountId;
+            } elseif ('hls' === $mountType) {
+                $record['hls_stream_id'] = (int)$mountId;
             }
         }
 
@@ -171,7 +171,7 @@ final class ListenerRepository extends Repository
         return $record;
     }
 
-    protected function batchAddDeviceDetails(array $record): array
+    private function batchAddDeviceDetails(array $record): array
     {
         $userAgent = $record['listener_user_agent'];
 
@@ -194,7 +194,7 @@ final class ListenerRepository extends Repository
         return $record;
     }
 
-    protected function batchAddLocationDetails(array $record): array
+    private function batchAddLocationDetails(array $record): array
     {
         $ip = $record['listener_ip'];
 

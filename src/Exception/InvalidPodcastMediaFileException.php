@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class InvalidPodcastMediaFileException extends Exception
+final class InvalidPodcastMediaFileException extends Exception
 {
     public function __construct(
         string $message = 'Invalid Podcast Media mime type.',

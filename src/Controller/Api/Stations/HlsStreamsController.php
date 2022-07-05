@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Exception\StationUnsupportedException;
-use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 
@@ -137,19 +135,4 @@ final class HlsStreamsController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationHlsStream::class;
     protected string $resourceRouteName = 'api:stations:hls_stream';
-
-    /**
-     * @inheritDoc
-     */
-    protected function getStation(ServerRequest $request): Entity\Station
-    {
-        $station = parent::getStation($request);
-
-        $backend = $request->getStationBackend();
-        if (!$backend->supportsHls()) {
-            throw new StationUnsupportedException();
-        }
-
-        return $station;
-    }
 }

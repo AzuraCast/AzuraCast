@@ -22,14 +22,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:sync:task',
     description: 'Task to run a specific scheduled task.',
 )]
-class SingleTaskCommand extends CommandAbstract
+final class SingleTaskCommand extends CommandAbstract
 {
-    protected array $processes = [];
-
     public function __construct(
-        protected ContainerInterface $di,
-        protected CacheInterface $cache,
-        protected Logger $logger,
+        private readonly ContainerInterface $di,
+        private readonly CacheInterface $cache,
+        private readonly Logger $logger,
     ) {
         parent::__construct();
     }

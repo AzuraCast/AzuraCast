@@ -6,19 +6,16 @@ namespace App\Session;
 
 use App\Environment;
 use App\Exception;
-use App\Traits\AvailableStaticallyTrait;
 use Mezzio\Session\SessionInterface;
 
-class Csrf
+final class Csrf
 {
-    use AvailableStaticallyTrait;
-
     public const CODE_LENGTH = 10;
     public const DEFAULT_NAMESPACE = 'general';
 
     public function __construct(
-        protected SessionInterface $session,
-        protected Environment $environment
+        private readonly SessionInterface $session,
+        private readonly Environment $environment
     ) {
     }
 

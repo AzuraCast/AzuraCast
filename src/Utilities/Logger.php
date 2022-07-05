@@ -9,8 +9,10 @@ use Monolog\Registry;
 
 final class Logger
 {
+    public const INSTANCE_NAME = 'app';
+
     public static function getInstance(): MonologLogger
     {
-        return Registry::getInstance('app');
+        return Registry::getInstance(self::INSTANCE_NAME);
     }
 }

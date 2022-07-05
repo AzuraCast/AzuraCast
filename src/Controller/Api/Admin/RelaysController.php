@@ -52,8 +52,6 @@ final class RelaysController
 
         $return = [];
         foreach ($stations as $station) {
-            $fa = $this->adapters->getFrontendAdapter($station);
-
             $row = new Entity\Api\Admin\Relay();
             $row->id = $station->getIdRequired();
             $row->name = $station->getName();
@@ -70,7 +68,9 @@ final class RelaysController
             $row->admin_pw = $frontend_config->getAdminPassword();
 
             $mounts = [];
-            if ($station->getMounts()->count() > 0) {
+
+            $fa = $this->adapters->getFrontendAdapter($station);
+            if (null !== $fa && $station->getMounts()->count() > 0) {
                 foreach ($station->getMounts() as $mount) {
                     /** @var Entity\StationMount $mount */
                     $mounts[] = $mount->api($fa);

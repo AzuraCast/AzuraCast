@@ -11,7 +11,6 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Radio\Adapters;
 use App\Radio\Configuration;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -147,7 +146,6 @@ class StationsController extends AbstractAdminApiCrudController
         protected Entity\Repository\StationRepository $stationRepo,
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Adapters $adapters,
         protected Configuration $configuration,
         protected ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
@@ -323,13 +321,11 @@ class StationsController extends AbstractAdminApiCrudController
         $hls_changed = $old_hls !== $station->getEnableHls();
 
         if ($frontend_changed) {
-            $frontend = $this->adapters->getFrontendAdapter($station);
-            $this->stationRepo->resetMounts($station, $frontend);
+            $this->stationRepo->resetMounts($station);
         }
 
         if ($hls_changed || $backend_changed) {
-            $backend = $this->adapters->getBackendAdapter($station);
-            $this->stationRepo->resetHls($station, $backend);
+            $this->stationRepo->resetHls($station);
         }
 
         if ($adapter_changed || !$station->getIsEnabled()) {
@@ -355,8 +351,7 @@ class StationsController extends AbstractAdminApiCrudController
         $this->configuration->initializeConfiguration($station);
 
         // Create default mountpoints if station supports them.
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-        $this->stationRepo->resetMounts($station, $frontend_adapter);
+        $this->stationRepo->resetMounts($station);
 
         return $station;
     }

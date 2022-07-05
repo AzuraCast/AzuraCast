@@ -319,6 +319,54 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_SEGMENT_LENGTH, $length);
     }
 
+    public const HLS_SEGMENTS_IN_PLAYLIST = 'hls_segments_in_playlist';
+
+    public function getHlsSegmentsInPlaylist(): int
+    {
+        return $this->get(self::HLS_SEGMENTS_IN_PLAYLIST, 5);
+    }
+
+    public function setHlsSegmentsInPlaylist(?int $value): void
+    {
+        $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
+    }
+
+    public const HLS_SEGMENTS_OVERHEAD = 'hls_segments_overhead';
+
+    public function getHlsSegmentsOverhead(): int
+    {
+        return $this->get(self::HLS_SEGMENTS_OVERHEAD, 2);
+    }
+
+    public function setHlsSegmentsOverhead(?int $value): void
+    {
+        $this->set(self::HLS_SEGMENTS_OVERHEAD, $value);
+    }
+
+    public const HLS_ENABLE_ON_PUBLIC_PLAYER = 'hls_enable_on_public_player';
+
+    public function getHlsEnableOnPublicPlayer(): bool
+    {
+        return $this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER, false);
+    }
+
+    public function setHlsEnableOnPublicPlayer(?bool $enable): void
+    {
+        $this->set(self::HLS_ENABLE_ON_PUBLIC_PLAYER, $enable);
+    }
+
+    public const HLS_IS_DEFAULT = 'hls_is_default';
+
+    public function getHlsIsDefault(): bool
+    {
+        return $this->get(self::HLS_IS_DEFAULT, false);
+    }
+
+    public function setHlsIsDefault(?bool $value): void
+    {
+        $this->set(self::HLS_IS_DEFAULT, $value);
+    }
+
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';

@@ -14,7 +14,7 @@
                             <legend>
                                 <translate key="lang_instructions">Instructions</translate>
                             </legend>
-                            
+
                             <p class="card-text">
                                 <translate key="lang_disclaimer">Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding.</translate>
                             </p>
@@ -60,7 +60,7 @@
                             </p>
                         </fieldset>
 
-                        <flow-upload :target-url="apiUrl" @complete="relist"></flow-upload>
+                        <flow-upload :target-url="apiUrl" @complete="relist" @error="onError"></flow-upload>
                     </div>
                 </b-form-row>
             </b-overlay>
@@ -95,6 +95,9 @@ export default {
         this.relist();
     },
     methods: {
+        onError(file, message) {
+            this.$notifyError(message);
+        },
         relist() {
             this.loading = true;
             this.axios.get(this.apiUrl).then((resp) => {

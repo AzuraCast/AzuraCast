@@ -27,7 +27,7 @@ use Stringable;
  * Portions inspired by DataDog's audit bundle for Doctrine:
  * https://github.com/DATA-DOG/DataDogAuditBundle/blob/master/src/DataDog/AuditBundle/EventSubscriber/AuditSubscriber.php
  */
-class AuditLog implements EventSubscriber
+final class AuditLog implements EventSubscriber
 {
     /**
      * @return string[]

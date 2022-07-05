@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_Time',
     type: 'object'
 )]
-class Time
+final class Time
 {
     #[OA\Property(
         description: 'The current UNIX timestamp',

@@ -8,43 +8,16 @@ use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Nginx\CustomUrls;
+use App\Radio\AbstractLocalAdapter;
+use App\Radio\Backend\Liquidsoap\ConfigWriter;
+use App\Radio\Configuration;
 use App\Radio\Enums\LiquidsoapQueues;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class Liquidsoap extends AbstractBackend
+final class Liquidsoap extends AbstractLocalAdapter
 {
-    public function supportsMedia(): bool
-    {
-        return true;
-    }
-
-    public function supportsRequests(): bool
-    {
-        return true;
-    }
-
-    public function supportsStreamers(): bool
-    {
-        return true;
-    }
-
-    public function supportsWebStreaming(): bool
-    {
-        return true;
-    }
-
-    public function supportsImmediateQueue(): bool
-    {
-        return true;
-    }
-
-    public function supportsHls(): bool
-    {
-        return true;
-    }
-
     /**
      * @inheritDoc
      */
@@ -83,78 +56,6 @@ class Liquidsoap extends AbstractBackend
         $frontend_port = $frontend_config->getPort() ?? (8000 + (($station->getId() - 1) * 10));
 
         return $frontend_port + 5;
-    }
-
-    /**
-     * Assemble a list of annotations for LiquidSoap.
-     *
-     * Liquidsoap expects a string similar to:
-     *     annotate:type="song",album="$ALBUM",display_desc="$FULLSHOWNAME",
-     *     liq_start_next="2.5",liq_fade_in="3.5",liq_fade_out="3.5":$SONGPATH
-     *
-     * @param Entity\StationMedia $media
-     *
-     * @return mixed[]
-     */
-    public function annotateMedia(Entity\StationMedia $media): array
-    {
-        $annotations = [];
-        $annotation_types = [
-            'title' => $media->getTitle(),
-            'artist' => $media->getArtist(),
-            'duration' => $media->getLength(),
-            'song_id' => $media->getSongId(),
-            'media_id' => $media->getId(),
-            'liq_amplify' => $media->getAmplify() ?? 0.0,
-            'liq_cross_duration' => $media->getFadeOverlap(),
-            'liq_fade_in' => $media->getFadeIn(),
-            'liq_fade_out' => $media->getFadeOut(),
-            'liq_cue_in' => $media->getCueIn(),
-            'liq_cue_out' => $media->getCueOut(),
-        ];
-
-        // Safety checks for cue lengths.
-        if ($annotation_types['liq_cue_out'] < 0) {
-            $cue_out = abs($annotation_types['liq_cue_out']);
-            if (0.0 === $cue_out || $cue_out > $annotation_types['duration']) {
-                $annotation_types['liq_cue_out'] = null;
-            } else {
-                $annotation_types['liq_cue_out'] = max(0, $annotation_types['duration'] - $cue_out);
-            }
-        }
-        if ($annotation_types['liq_cue_out'] > $annotation_types['duration']) {
-            $annotation_types['liq_cue_out'] = null;
-        }
-        if ($annotation_types['liq_cue_in'] > $annotation_types['duration']) {
-            $annotation_types['liq_cue_in'] = null;
-        }
-
-        foreach ($annotation_types as $annotation_name => $prop) {
-            if (null === $prop) {
-                continue;
-            }
-
-            $prop = self::annotateString((string)$prop);
-
-            // Convert Liquidsoap-specific annotations to floats.
-            if ('duration' === $annotation_name || str_starts_with($annotation_name, 'liq')) {
-                $prop = Liquidsoap\ConfigWriter::toFloat($prop);
-            }
-
-            if ('liq_amplify' === $annotation_name) {
-                $prop .= 'dB';
-            }
-
-            $annotations[$annotation_name] = $prop;
-        }
-
-        return $annotations;
-    }
-
-    public static function annotateString(string $str): string
-    {
-        $str = mb_convert_encoding($str, 'UTF-8');
-        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
     }
 
     /**
@@ -234,6 +135,14 @@ class Liquidsoap extends AbstractBackend
             : null;
     }
 
+    public function getHlsUrl(Entity\Station $station, UriInterface $baseUrl = null): UriInterface
+    {
+        $baseUrl ??= $this->router->getBaseUrl();
+        return $baseUrl->withPath(
+            $baseUrl->getPath() . CustomUrls::getHlsUrl($station) . '/live.m3u8'
+        );
+    }
+
     public function isQueueEmpty(
         Entity\Station $station,
         LiquidsoapQueues $queue
@@ -277,7 +186,7 @@ class Liquidsoap extends AbstractBackend
     {
         $metaStr = [];
         foreach ($newMeta as $metaKey => $metaVal) {
-            $metaStr[] = $metaKey . '="' . self::annotateString($metaVal) . '"';
+            $metaStr[] = $metaKey . '="' . ConfigWriter::annotateString($metaVal) . '"';
         }
 
         return $this->command(
@@ -336,5 +245,10 @@ class Liquidsoap extends AbstractBackend
         if (1 === $process->getExitCode()) {
             throw new LogicException($process->getOutput());
         }
+    }
+
+    public function getSupervisorProgramName(Entity\Station $station): string
+    {
+        return Configuration::getSupervisorProgramName($station, 'backend');
     }
 }

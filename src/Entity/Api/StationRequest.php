@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_StationRequest',
     type: 'object'
 )]
-class StationRequest implements ResolvableUrlInterface
+final class StationRequest implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Requestable ID unique identifier',

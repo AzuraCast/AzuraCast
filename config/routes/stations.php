@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller;
+use App\Enums\StationFeatures;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -30,41 +31,40 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/files', Controller\Stations\FilesAction::class)
                 ->setName('stations:files:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->get('/hls_streams', Controller\Stations\HlsStreamsAction::class)
                 ->setName('stations:hls_streams:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::HlsStreams))
                 ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
 
             $group->get('/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
                 ->setName('stations:util:ls_config')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::CustomLiquidsoapConfig))
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/stereo_tool_config', Controller\Stations\UploadStereoToolConfigAction::class)
                 ->setName('stations:stereo_tool_config')
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
-            $group->group(
-                '/logs',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Stations\LogsController::class)
-                        ->setName('stations:logs:index');
-
-                    $group->get('/view/{log}', Controller\Stations\LogsController::class . ':viewAction')
-                        ->setName('stations:logs:view');
-                }
-            )->add(new Middleware\Permissions(StationPermissions::Logs, true));
+            $group->get('/logs', Controller\Stations\LogsAction::class)
+                ->setName('stations:logs')
+                ->add(new Middleware\Permissions(StationPermissions::Logs, true));
 
             $group->get('/playlists', Controller\Stations\PlaylistsAction::class)
                 ->setName('stations:playlists:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->get('/podcasts', Controller\Stations\PodcastsAction::class)
                 ->setName('stations:podcasts:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Podcasts))
                 ->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
 
             $group->get('/mounts', Controller\Stations\MountsAction::class)
                 ->setName('stations:mounts:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::MountPoints))
                 ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
 
             $group->get('/profile', Controller\Stations\ProfileController::class)
@@ -83,10 +83,12 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/queue', Controller\Stations\QueueAction::class)
                 ->setName('stations:queue:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
                 ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/remotes', Controller\Stations\RemotesAction::class)
                 ->setName('stations:remotes:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::RemoteRelays))
                 ->add(new Middleware\Permissions(StationPermissions::RemoteRelays, true));
 
             $group->group(
@@ -115,14 +117,17 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/sftp_users', Controller\Stations\SftpUsersAction::class)
                 ->setName('stations:sftp_users:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Sftp))
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->get('/streamers', Controller\Stations\StreamersAction::class)
                 ->setName('stations:streamers:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Streamers))
                 ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
 
             $group->get('/webhooks', Controller\Stations\WebhooksAction::class)
                 ->setName('stations:webhooks:index')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::Webhooks))
                 ->add(new Middleware\Permissions(StationPermissions::WebHooks, true));
         }
     )

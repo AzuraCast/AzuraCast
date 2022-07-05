@@ -21,14 +21,14 @@ use function random_int;
     name: 'azuracast:sync:nowplaying',
     description: 'Task to run the Now Playing worker task.'
 )]
-class NowPlayingCommand extends AbstractSyncCommand
+final class NowPlayingCommand extends AbstractSyncCommand
 {
     public function __construct(
         LoggerInterface $logger,
         LockFactory $lockFactory,
         Environment $environment,
-        protected EntityManagerInterface $em,
-        protected SettingsRepository $settingsRepo,
+        private readonly EntityManagerInterface $em,
+        private readonly SettingsRepository $settingsRepo,
     ) {
         parent::__construct($logger, $lockFactory, $environment);
     }
@@ -74,7 +74,7 @@ class NowPlayingCommand extends AbstractSyncCommand
                     <<<'DQL'
                     SELECT s.id, s.short_name, s.nowplaying_timestamp
                     FROM App\Entity\Station s
-                    WHERE s.is_enabled = 1
+                    WHERE s.is_enabled = 1 AND s.has_started = 1
                     DQL
                 )->getArrayResult();
 

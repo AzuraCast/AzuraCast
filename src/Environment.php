@@ -7,16 +7,15 @@ namespace App;
 use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
 use App\Radio\Configuration;
-use App\Traits\AvailableStaticallyTrait;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LogLevel;
 
-class Environment
+final class Environment
 {
-    use AvailableStaticallyTrait;
+    private static Environment $instance;
 
-    protected array $data = [];
+    private array $data = [];
 
     // Core settings values
     public const APP_NAME = 'APP_NAME';
@@ -65,7 +64,7 @@ class Environment
     public const REDIS_DB = 'REDIS_DB';
 
     // Default settings
-    protected array $defaults = [
+    private array $defaults = [
         self::APP_NAME => 'AzuraCast',
 
         self::LOG_LEVEL => LogLevel::NOTICE,
@@ -294,7 +293,7 @@ class Environment
             'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
 
-        if ('localhost' === $dbSettings['host']) {
+        if ('localhost' === $dbSettings['host'] && $this->isDocker()) {
             $dbSettings['unix_socket'] = '/run/mysqld/mysqld.sock';
         }
 
@@ -317,7 +316,7 @@ class Environment
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
 
-        if ('localhost' === $redisSettings['host']) {
+        if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
             $redisSettings['socket'] = '/run/redis/redis.sock';
         }
 
@@ -363,5 +362,15 @@ class Environment
         return str_starts_with(strtolower($value), 'y')
             || 'true' === strtolower($value)
             || '1' === $value;
+    }
+
+    public static function getInstance(): Environment
+    {
+        return self::$instance;
+    }
+
+    public static function setInstance(Environment $instance): void
+    {
+        self::$instance = $instance;
     }
 }

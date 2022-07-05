@@ -11,7 +11,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class RolePermission extends AbstractFixture implements DependentFixtureInterface
+final class RolePermission extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {

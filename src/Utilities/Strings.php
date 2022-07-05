@@ -6,7 +6,7 @@ namespace App\Utilities;
 
 use RuntimeException;
 
-class Strings
+final class Strings
 {
     /**
      * Truncate text (adding "..." if needed)
@@ -103,7 +103,7 @@ class Strings
      * @param string|null $url
      * @param int $length
      */
-    public static function truncateUrl(?string $url, $length = 40): string
+    public static function truncateUrl(?string $url, int $length = 40): string
     {
         if (null === $url) {
             return '';

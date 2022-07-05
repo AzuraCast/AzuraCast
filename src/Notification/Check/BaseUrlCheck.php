@@ -7,16 +7,14 @@ namespace App\Notification\Check;
 use App\Entity\Api\Notification;
 use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
-use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\Flash;
 use App\Utilities\Strings;
 
-class BaseUrlCheck
+final class BaseUrlCheck
 {
     public function __construct(
-        protected SettingsRepository $settingsRepo,
-        protected Environment $environment
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

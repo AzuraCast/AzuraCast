@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_StationSchedule',
     type: 'object'
 )]
-class StationSchedule
+final class StationSchedule
 {
     public const TYPE_PLAYLIST = 'playlist';
     public const TYPE_STREAMER = 'streamer';

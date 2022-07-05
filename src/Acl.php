@@ -17,17 +17,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use function in_array;
 use function is_array;
 
-class Acl
+final class Acl
 {
     use RequestAwareTrait;
 
-    protected array $permissions;
+    private array $permissions;
 
-    protected ?array $actions;
+    private ?array $actions;
 
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected EventDispatcherInterface $dispatcher
+        private readonly EntityManagerInterface $em,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
         $this->reload();
     }

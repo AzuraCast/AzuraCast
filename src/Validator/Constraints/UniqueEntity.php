@@ -25,7 +25,7 @@ use function is_string;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class UniqueEntity extends Constraint
+final class UniqueEntity extends Constraint
 {
     /** @var class-string|null */
     public ?string $entityClass = null;
@@ -68,7 +68,7 @@ class UniqueEntity extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }

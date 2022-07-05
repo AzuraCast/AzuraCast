@@ -9,8 +9,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
-use App\Radio\Backend\AbstractBackend;
-use App\Radio\Frontend\AbstractFrontend;
+use App\Radio\Enums\StreamFormats;
 use App\Service\Flow\UploadedFile;
 use Azura\Files\ExtendedFilesystemInterface;
 use Closure;
@@ -88,46 +87,48 @@ final class StationRepository extends Repository
     }
 
     /**
-     * @param string $short_code
-     */
-    public function findByShortCode(string $short_code): ?Entity\Station
-    {
-        return $this->repository->findOneBy(['short_name' => $short_code]);
-    }
-
-    /**
      * Reset mount points to their adapter defaults (in the event of an adapter change).
-     *
-     * @param Entity\Station $station
-     * @param AbstractFrontend $frontend_adapter
      */
-    public function resetMounts(Entity\Station $station, AbstractFrontend $frontend_adapter): void
+    public function resetMounts(Entity\Station $station): void
     {
         foreach ($station->getMounts() as $mount) {
             $this->em->remove($mount);
         }
 
         // Create default mountpoints if station supports them.
-        if ($frontend_adapter->supportsMounts()) {
-            // Create default mount points.
-            foreach ($frontend_adapter->getDefaultMounts($station) as $mount) {
-                $this->em->persist($mount);
-            }
+        if ($station->getFrontendTypeEnum()->supportsMounts()) {
+            $record = new Entity\StationMount($station);
+            $record->setName('/radio.mp3');
+            $record->setIsDefault(true);
+            $record->setEnableAutodj(true);
+            $record->setAutodjFormat(StreamFormats::Mp3->value);
+            $record->setAutodjBitrate(128);
+            $this->em->persist($record);
         }
 
         $this->em->flush();
         $this->em->refresh($station);
     }
 
-    public function resetHls(Entity\Station $station, AbstractBackend $backend): void
+    public function resetHls(Entity\Station $station): void
     {
         foreach ($station->getHlsStreams() as $hlsStream) {
             $this->em->remove($hlsStream);
         }
 
-        if ($station->getEnableHls() && $backend->supportsHls()) {
-            foreach ($backend->getDefaultHlsStreams($station) as $hlsStream) {
-                $this->em->persist($hlsStream);
+        if ($station->getEnableHls() && $station->getBackendTypeEnum()->isEnabled()) {
+            $streams = [
+                'aac_lofi' => 48,
+                'aac_midfi' => 96,
+                'aac_hifi' => 192,
+            ];
+
+            foreach ($streams as $name => $bitrate) {
+                $record = new Entity\StationHlsStream($station);
+                $record->setName($name);
+                $record->setFormat(StreamFormats::Aac->value);
+                $record->setBitrate($bitrate);
+                $this->em->persist($record);
             }
         }
 

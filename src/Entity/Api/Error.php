@@ -13,7 +13,7 @@ use Throwable;
     schema: 'Api_Error',
     type: 'object'
 )]
-class Error
+final class Error
 {
     #[OA\Property(
         description: 'The numeric code of the error.',

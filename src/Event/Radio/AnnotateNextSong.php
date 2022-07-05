@@ -13,20 +13,20 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @package App\Event\Radio
  */
-class AnnotateNextSong extends Event
+final class AnnotateNextSong extends Event
 {
-    protected ?string $songPath;
+    private ?string $songPath;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
-    protected array $annotations = [];
+    private array $annotations = [];
 
     public function __construct(
-        protected Entity\Station $station,
-        protected ?Entity\StationQueue $queue = null,
-        protected ?Entity\StationMedia $media = null,
-        protected ?Entity\StationPlaylist $playlist = null,
-        protected ?Entity\StationRequest $request = null,
-        protected bool $asAutoDj = false
+        private readonly Entity\Station $station,
+        private readonly ?Entity\StationQueue $queue = null,
+        private readonly ?Entity\StationMedia $media = null,
+        private readonly ?Entity\StationPlaylist $playlist = null,
+        private readonly ?Entity\StationRequest $request = null,
+        private readonly bool $asAutoDj = false
     ) {
     }
 

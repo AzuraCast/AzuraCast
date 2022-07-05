@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Lock;
 
-use App\Environment;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\BlockingStoreInterface;
@@ -12,10 +11,9 @@ use Symfony\Component\Lock\LockFactory as SymfonyLockFactory;
 use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Lock\PersistingStoreInterface;
 
-class LockFactory extends SymfonyLockFactory
+final class LockFactory extends SymfonyLockFactory
 {
     public function __construct(
-        protected Environment $environment,
         PersistingStoreInterface $lockStore,
         LoggerInterface $logger
     ) {
@@ -55,7 +53,7 @@ class LockFactory extends SymfonyLockFactory
         return $lock;
     }
 
-    protected function getPrefixedResourceName(string $resource): string
+    private function getPrefixedResourceName(string $resource): string
     {
         return 'lock_' . $resource;
     }

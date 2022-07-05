@@ -10,12 +10,12 @@ use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class Plugins
+final class Plugins
 {
     /** @var array An array of all plugins and their capabilities. */
-    protected array $plugins = [];
+    private array $plugins = [];
 
-    protected Inflector $inflector;
+    private Inflector $inflector;
 
     public function __construct(string $baseDir)
     {

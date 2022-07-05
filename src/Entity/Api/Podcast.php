@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_Podcast',
     type: 'object'
 )]
-class Podcast
+final class Podcast
 {
     use HasLinks;
 

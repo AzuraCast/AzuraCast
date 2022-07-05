@@ -10,9 +10,9 @@ use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactoryInterface;
 
-class UuidV6Generator extends AbstractIdGenerator
+final class UuidV6Generator extends AbstractIdGenerator
 {
-    protected UuidFactoryInterface $factory;
+    private readonly UuidFactoryInterface $factory;
 
     public function __construct()
     {

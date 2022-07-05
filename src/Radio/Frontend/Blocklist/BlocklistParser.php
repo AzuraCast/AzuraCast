@@ -11,10 +11,10 @@ use InvalidArgumentException;
 use PhpIP\IP;
 use PhpIP\IPBlock;
 
-class BlocklistParser
+final class BlocklistParser
 {
     public function __construct(
-        protected IpGeolocation $ipGeolocation
+        private readonly IpGeolocation $ipGeolocation
     ) {
     }
 

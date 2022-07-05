@@ -6,7 +6,7 @@ namespace App\Service\CpuStats;
 
 use Brick\Math\BigInteger;
 
-class CpuData
+final class CpuData
 {
     public readonly string $name;
 
@@ -95,34 +95,34 @@ class CpuData
 
     public static function fromCoreData(string $name, array $coreData): self
     {
-        $user = (int) $coreData[0];
-        $nice = (int) $coreData[1];
-        $system = (int) $coreData[2];
-        $idle = (int) $coreData[3];
+        $user = (int)$coreData[0];
+        $nice = (int)$coreData[1];
+        $system = (int)$coreData[2];
+        $idle = (int)$coreData[3];
 
         $iowait = null;
         if (isset($coreData[4])) {
-            $iowait = (int) $coreData[4];
+            $iowait = (int)$coreData[4];
         }
 
         $irq = null;
         if (isset($coreData[5])) {
-            $irq = (int) $coreData[5];
+            $irq = (int)$coreData[5];
         }
 
         $softirq = null;
         if (isset($coreData[6])) {
-            $softirq = (int) $coreData[6];
+            $softirq = (int)$coreData[6];
         }
 
         $steal = null;
         if (isset($coreData[7])) {
-            $steal = (int) $coreData[7];
+            $steal = (int)$coreData[7];
         }
 
         $guest = null;
         if (isset($coreData[8])) {
-            $guest = (int) $coreData[8];
+            $guest = (int)$coreData[8];
         }
 
         return new self(

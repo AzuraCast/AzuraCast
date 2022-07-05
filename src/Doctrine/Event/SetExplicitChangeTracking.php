@@ -9,7 +9,7 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class SetExplicitChangeTracking implements EventSubscriber
+final class SetExplicitChangeTracking implements EventSubscriber
 {
     /**
      * @return string[]

@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_SystemStatus',
     type: 'object'
 )]
-class SystemStatus
+final class SystemStatus
 {
     #[OA\Property(
         description: 'Whether the service is online or not (should always be true)',

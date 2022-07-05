@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_StationRemote',
     type: 'object'
 )]
-class StationRemote
+final class StationRemote
 {
     use LoadFromParentObject;
     use HasLinks;

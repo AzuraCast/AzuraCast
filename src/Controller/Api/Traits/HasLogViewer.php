@@ -18,7 +18,8 @@ trait HasLogViewer
         ServerRequest $request,
         Response $response,
         string $log_path,
-        bool $tail_file = true
+        bool $tail_file = true,
+        array $filteredTerms = []
     ): ResponseInterface {
         clearstatcache();
 
@@ -28,7 +29,10 @@ trait HasLogViewer
 
         if (!$tail_file) {
             $log = file_get_contents($log_path) ?: '';
-            $log_contents = $this->processLog($request, $log);
+            $log_contents = $this->processLog(
+                rawLog: $log,
+                filteredTerms: $filteredTerms
+            );
 
             return $response->withJson(
                 [
@@ -66,7 +70,12 @@ trait HasLogViewer
             $log_contents_raw = fread($fp, $log_visible_size) ?: '';
             fclose($fp);
 
-            $log_contents = $this->processLog($request, $log_contents_raw, $cut_first_line, true);
+            $log_contents = $this->processLog(
+                rawLog: $log_contents_raw,
+                cutFirstLine: $cut_first_line,
+                cutEmptyLastLine: true,
+                filteredTerms: $filteredTerms
+            );
         }
 
         return $response->withJson(
@@ -78,11 +87,11 @@ trait HasLogViewer
         );
     }
 
-    protected function processLog(
-        ServerRequest $request,
+    private function processLog(
         string $rawLog,
         bool $cutFirstLine = false,
-        bool $cutEmptyLastLine = false
+        bool $cutEmptyLastLine = false,
+        array $filteredTerms = []
     ): string {
         $logParts = explode("\n", $rawLog);
 
@@ -93,9 +102,9 @@ trait HasLogViewer
             array_pop($logParts);
         }
 
-        $logParts = str_replace(['>', '<'], ['&gt;', '&lt;'], $logParts);
-
         $log = implode("\n", $logParts);
-        return mb_convert_encoding($log, 'UTF-8', 'UTF-8');
+        $log = mb_convert_encoding($log, 'UTF-8', 'UTF-8');
+
+        return str_replace($filteredTerms, '(PASSWORD)', $log);
     }
 }

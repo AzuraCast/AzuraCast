@@ -13,24 +13,24 @@ use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class IpGeolocation
+final class IpGeolocation
 {
-    protected bool $isInitialized = false;
+    private bool $isInitialized = false;
 
-    protected ?Reader $reader;
+    private ?Reader $reader;
 
-    protected ?string $readerShortName;
+    private ?string $readerShortName;
 
-    protected string $attribution = '';
+    private string $attribution = '';
 
-    protected CacheInterface $cache;
+    private CacheInterface $cache;
 
     public function __construct(CacheItemPoolInterface $psr6Cache)
     {
         $this->cache = new ProxyAdapter($psr6Cache, 'ip_geo.');
     }
 
-    protected function initialize(): void
+    private function initialize(): void
     {
         if ($this->isInitialized) {
             return;

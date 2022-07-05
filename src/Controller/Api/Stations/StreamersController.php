@@ -7,7 +7,6 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -286,37 +285,22 @@ final class StreamersController extends AbstractScheduledEntityController
         $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
         $return['art'] = (string)$router->fromHere(
             route_name: 'api:stations:streamer:art',
-            route_params: ['streamer_id' => $record->getIdRequired() . '|' . $record->getArtUpdatedAt()],
+            route_params: ['id' => $record->getIdRequired() . '|' . $record->getArtUpdatedAt()],
             absolute: !$isInternal
         );
 
         $return['links']['broadcasts'] = (string)$router->fromHere(
             route_name: 'api:stations:streamer:broadcasts',
-            route_params: ['streamer_id' => $record->getId()],
+            route_params: ['id' => $record->getId()],
             absolute: !$isInternal
         );
         $return['links']['art'] = (string)$router->fromHere(
             route_name: 'api:stations:streamer:art-internal',
-            route_params: ['streamer_id' => $record->getId()],
+            route_params: ['id' => $record->getId()],
             absolute: !$isInternal
         );
 
         return $return;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getStation(ServerRequest $request): Entity\Station
-    {
-        $station = parent::getStation($request);
-
-        $backend = $request->getStationBackend();
-        if (!$backend->supportsStreamers()) {
-            throw new StationUnsupportedException();
-        }
-
-        return $station;
     }
 
     protected function deleteRecord(object $record): void

@@ -7,10 +7,16 @@ namespace App\Controller\Frontend\PublicPages;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
 final class PlaylistAction
 {
+    public function __construct(
+        private readonly Adapters $adapters,
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -22,31 +28,31 @@ final class PlaylistAction
         $streams = [];
         $stream_urls = [];
 
-        $fa = $request->getStationFrontend();
-        foreach ($station->getMounts() as $mount) {
-            /** @var Entity\StationMount $mount */
-            if (!$mount->getIsVisibleOnPublicPages()) {
-                continue;
+        $fa = $this->adapters->getFrontendAdapter($station);
+        if (null !== $fa) {
+            foreach ($station->getMounts() as $mount) {
+                /** @var Entity\StationMount $mount */
+                if (!$mount->getIsVisibleOnPublicPages()) {
+                    continue;
+                }
+
+                $stream_url = $fa->getUrlForMount($station, $mount);
+
+                $stream_urls[] = $stream_url;
+                $streams[] = [
+                    'name' => $station->getName() . ' - ' . $mount->getDisplayName(),
+                    'url' => $stream_url,
+                ];
             }
-
-            $stream_url = $fa->getUrlForMount($station, $mount);
-
-            $stream_urls[] = $stream_url;
-            $streams[] = [
-                'name' => $station->getName() . ' - ' . $mount->getDisplayName(),
-                'url' => $stream_url,
-            ];
         }
 
-        foreach ($request->getStationRemotes() as $remote_proxy) {
-            $adapter = $remote_proxy->getAdapter();
-            $remote = $remote_proxy->getRemote();
-
+        foreach ($station->getRemotes() as $remote) {
             if (!$remote->getIsVisibleOnPublicPages()) {
                 continue;
             }
 
-            $stream_url = $adapter->getPublicUrl($remote);
+            $stream_url = $this->adapters->getRemoteAdapter($station, $remote)
+                ->getPublicUrl($remote);
 
             $stream_urls[] = $stream_url;
             $streams[] = [

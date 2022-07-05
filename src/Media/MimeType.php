@@ -6,7 +6,7 @@ namespace App\Media;
 
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
 
-class MimeType
+final class MimeType
 {
     /**
      * @return string[]

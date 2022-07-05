@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-class Notification
+final class Notification
 {
     public string $title;
 

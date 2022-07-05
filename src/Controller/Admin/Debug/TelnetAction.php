@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Debug;
 
+use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Backend\Liquidsoap;
+use App\Radio\Adapters;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Monolog\Logger;
@@ -15,7 +16,8 @@ use Psr\Http\Message\ResponseInterface;
 final class TelnetAction
 {
     public function __construct(
-        private readonly Logger $logger
+        private readonly Logger $logger,
+        private readonly Adapters $adapters
     ) {
     }
 
@@ -28,19 +30,21 @@ final class TelnetAction
         $this->logger->pushHandler($testHandler);
 
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
+        $backend = $this->adapters->getBackendAdapter($station);
 
-        if ($backend instanceof Liquidsoap) {
-            $command = $request->getParam('command');
-
-            $telnetResponse = $backend->command($station, $command);
-            $this->logger->debug(
-                'Telnet Command Response',
-                [
-                    'response' => $telnetResponse,
-                ]
-            );
+        if (null === $backend) {
+            throw new StationUnsupportedException();
         }
+
+        $command = $request->getParam('command');
+
+        $telnetResponse = $backend->command($station, $command);
+        $this->logger->debug(
+            'Telnet Command Response',
+            [
+                'response' => $telnetResponse,
+            ]
+        );
 
         $this->logger->popHandler();
 

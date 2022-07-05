@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class CsrfValidationException extends Exception
+final class CsrfValidationException extends Exception
 {
     public function __construct(
         string $message = 'CSRF Validation Error',

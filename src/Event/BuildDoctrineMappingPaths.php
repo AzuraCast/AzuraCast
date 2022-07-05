@@ -6,11 +6,11 @@ namespace App\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BuildDoctrineMappingPaths extends Event
+final class BuildDoctrineMappingPaths extends Event
 {
     public function __construct(
-        protected array $mappingClassesPaths,
-        protected string $baseDir
+        private array $mappingClassesPaths,
+        private readonly string $baseDir
     ) {
     }
 

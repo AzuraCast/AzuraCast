@@ -8,10 +8,10 @@ use App\Entity;
 use App\Service\LastFm;
 use Psr\Log\LoggerInterface;
 
-class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
+final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {
     public function __construct(
-        protected LastFm $lastFm,
+        private readonly LastFm $lastFm,
         LoggerInterface $logger
     ) {
         parent::__construct($logger);

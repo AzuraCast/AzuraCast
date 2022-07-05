@@ -23,12 +23,12 @@ use const PATHINFO_EXTENSION;
     name: 'azuracast:backup',
     description: 'Back up the AzuraCast database and statistics (and optionally media).',
 )]
-class BackupCommand extends AbstractBackupCommand
+final class BackupCommand extends AbstractBackupCommand
 {
     public function __construct(
         Environment $environment,
         EntityManagerInterface $em,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
     ) {
         parent::__construct($environment, $em);
     }

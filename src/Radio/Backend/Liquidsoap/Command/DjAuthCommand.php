@@ -8,11 +8,11 @@ use App\Entity;
 use Monolog\Logger;
 use RuntimeException;
 
-class DjAuthCommand extends AbstractCommand
+final class DjAuthCommand extends AbstractCommand
 {
     public function __construct(
         Logger $logger,
-        protected Entity\Repository\StationStreamerRepository $streamerRepo,
+        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
     ) {
         parent::__construct($logger);
     }

@@ -14,10 +14,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:config:migrate',
     description: 'Migrate existing configuration to new INI format if any exists.',
 )]
-class MigrateConfigCommand extends CommandAbstract
+final class MigrateConfigCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment,
+        private readonly Environment $environment,
     ) {
         parent::__construct();
     }
@@ -58,11 +58,11 @@ class MigrateConfigCommand extends CommandAbstract
         // Migrate from older environment variable names to new ones.
         $settingsToMigrate = [
             'application_env' => Environment::APP_ENV,
-            'db_host'         => Environment::DB_HOST,
-            'db_port'         => Environment::DB_PORT,
-            'db_name'         => Environment::DB_NAME,
-            'db_username'     => Environment::DB_USER,
-            'db_password'     => Environment::DB_PASSWORD,
+            'db_host' => Environment::DB_HOST,
+            'db_port' => Environment::DB_PORT,
+            'db_name' => Environment::DB_NAME,
+            'db_username' => Environment::DB_USER,
+            'db_password' => Environment::DB_PASSWORD,
         ];
 
         foreach ($settingsToMigrate as $oldSetting => $newSetting) {

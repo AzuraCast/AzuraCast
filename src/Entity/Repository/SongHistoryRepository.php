@@ -118,6 +118,12 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         }
 
         $newCurrentSong->setTimestampStart(time());
+
+        $currentStreamer = $station->getCurrentStreamer();
+        if (null !== $currentStreamer) {
+            $newCurrentSong->setStreamer($currentStreamer);
+        }
+
         $this->em->persist($newCurrentSong);
 
         $station->setCurrentSong($newCurrentSong);

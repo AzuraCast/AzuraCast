@@ -24,19 +24,19 @@ use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
-class ErrorHandler extends \Slim\Handlers\ErrorHandler
+final class ErrorHandler extends \Slim\Handlers\ErrorHandler
 {
-    protected bool $returnJson = false;
+    private bool $returnJson = false;
 
-    protected bool $showDetailed = false;
+    private bool $showDetailed = false;
 
-    protected string $loggerLevel = LogLevel::ERROR;
+    private string $loggerLevel = LogLevel::ERROR;
 
     public function __construct(
-        protected FactoryInterface $factory,
-        protected Router $router,
-        protected InjectSession $injectSession,
-        protected Environment $environment,
+        private readonly FactoryInterface $factory,
+        private readonly Router $router,
+        private readonly InjectSession $injectSession,
+        private readonly Environment $environment,
         App $app,
         Logger $logger,
     ) {

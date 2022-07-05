@@ -60,7 +60,7 @@ use Monolog\Level;
  * inline	bool	whether or not this field should display inline
  */
 
-class Discord extends AbstractConnector
+final class Discord extends AbstractConnector
 {
     public const NAME = 'discord';
 

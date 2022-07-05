@@ -6,7 +6,7 @@ namespace App\Service\NetworkStats\NetworkData;
 
 use Brick\Math\BigInteger;
 
-class Transmitted
+final class Transmitted
 {
     /**
      * The total number of bytes of data transmitted by the interface.

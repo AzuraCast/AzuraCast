@@ -15,13 +15,13 @@ use Monolog\Logger;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-class QueueInterruptingTracks extends AbstractTask
+final class QueueInterruptingTracks extends AbstractTask
 {
     public function __construct(
-        protected Queue $queue,
-        protected Adapters $adapters,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected Logger $monolog,
+        private readonly Queue $queue,
+        private readonly Adapters $adapters,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Logger $monolog,
         ReloadableEntityManagerInterface $em,
     ) {
         parent::__construct($em, $monolog);

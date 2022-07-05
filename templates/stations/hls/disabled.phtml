@@ -1,9 +1,0 @@
-<?php
-
-$this->layout('main', ['title' => __('HLS Streams')]) ?>
-
-<p><?= __('HLS is currently disabled for this station. To enable HLS, click the button below.') ?></p>
-
-<a class="btn btn-lg btn-success" role="button" href="<?= $router->fromHere(null, [], ['enable' => true]) ?>">
-    <?= __('Enable HLS') ?>
-</a>

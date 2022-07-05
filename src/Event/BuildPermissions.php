@@ -6,10 +6,10 @@ namespace App\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BuildPermissions extends Event
+final class BuildPermissions extends Event
 {
     public function __construct(
-        protected array $permissions
+        private array $permissions
     ) {
     }
 

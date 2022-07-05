@@ -9,13 +9,13 @@ use App\Entity;
 use Carbon\CarbonImmutable;
 use Psr\Log\LoggerInterface;
 
-class RunAnalyticsTask extends AbstractTask
+final class RunAnalyticsTask extends AbstractTask
 {
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\Repository\AnalyticsRepository $analyticsRepo,
-        protected Entity\Repository\ListenerRepository $listenerRepo,
-        protected Entity\Repository\SongHistoryRepository $historyRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
+        private readonly Entity\Repository\ListenerRepository $listenerRepo,
+        private readonly Entity\Repository\SongHistoryRepository $historyRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

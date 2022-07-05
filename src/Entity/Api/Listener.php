@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_Listener',
     type: 'object'
 )]
-class Listener
+final class Listener
 {
     #[OA\Property(
         description: 'The listener\'s IP address',

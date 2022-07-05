@@ -8,6 +8,7 @@ use App\Console\Application;
 use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
+use App\Utilities\Logger as AppLogger;
 use DI;
 use Monolog\ErrorHandler;
 use Monolog\Logger;
@@ -17,7 +18,7 @@ use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\Strategies\RequestResponseNamedArgs;
 
-class AppFactory
+final class AppFactory
 {
     public static function createApp(
         array $appEnvironment = [],
@@ -106,7 +107,7 @@ class AppFactory
         $errorHandler = new ErrorHandler($logger);
         $errorHandler->registerFatalHandler();
 
-        Registry::addLogger($logger, 'app', true);
+        Registry::addLogger($logger, AppLogger::INSTANCE_NAME, true);
 
         return $di;
     }

@@ -7,11 +7,11 @@ namespace App\Event\Media;
 use App\Media\MetadataInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class WriteMetadata extends Event
+final class WriteMetadata extends Event
 {
     public function __construct(
-        protected MetadataInterface $metadata,
-        protected string $path
+        private readonly MetadataInterface $metadata,
+        private readonly string $path
     ) {
     }
 

@@ -80,13 +80,6 @@ final class RequestsController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
-        if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
-            return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
-        }
-
         $playlistIds = $this->getRequestablePlaylists($station);
 
         $qb = $this->em->createQueryBuilder();
@@ -188,13 +181,6 @@ final class RequestsController
         string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
-
-        // Verify that the station supports requests.
-        $ba = $request->getStationBackend();
-        if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
-            return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
-        }
 
         try {
             $user = $request->getUser();

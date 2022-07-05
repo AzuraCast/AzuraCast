@@ -20,7 +20,7 @@
     - role: "azuracast-config"
 
     - role: "azuracast-radio"
-      when: update_revision|int < 82
+      when: update_revision|int < 92
 
     - role: "supervisord"
 
@@ -28,10 +28,10 @@
       when: update_revision|int < 87
 
     - role: "nginx"
-      when: update_revision|int < 88
+      when: update_revision|int < 90
 
     - role: "redis"
-      when: update_revision|int < 87
+      when: update_revision|int < 93
 
     - role: "beanstalkd"
       when: update_revision|int < 87

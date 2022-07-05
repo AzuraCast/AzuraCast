@@ -139,6 +139,8 @@ export default {
                 },
                 backend_type: {required},
                 backend_config: {
+                    hls_enable_on_public_player: {},
+                    hls_is_default: {},
                     crossfade_type: {},
                     crossfade: {decimal},
                     audio_processing_method: {},
@@ -189,6 +191,8 @@ export default {
                     },
                     backend_config: {
                         hls_segment_length: {numeric},
+                        hls_segments_in_playlist: {numeric},
+                        hls_segments_overhead: {numeric},
                         dj_port: {numeric},
                         telnet_port: {numeric},
                         dj_mount_point: {},
@@ -297,6 +301,8 @@ export default {
                 },
                 backend_type: BACKEND_LIQUIDSOAP,
                 backend_config: {
+                    hls_enable_on_public_player: false,
+                    hls_is_default: false,
                     crossfade_type: 'normal',
                     crossfade: 2,
                     audio_processing_method: AUDIO_PROCESSING_NONE,
@@ -328,6 +334,8 @@ export default {
                     },
                     backend_config: {
                         hls_segment_length: 4,
+                        hls_segments_in_playlist: 5,
+                        hls_segments_overhead: 2,
                         dj_port: '',
                         telnet_port: '',
                         dj_mount_point: '/',

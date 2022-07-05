@@ -26,24 +26,9 @@ parameters:
 			path: src/Entity/Migration/Version20201204043539.php
 
 		-
-			message: "#^Static property App\\\\Environment\\:\\:\\$instance \\(static\\(App\\\\Environment\\)\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: src/Environment.php
-
-		-
 			message: "#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationListInterface to string\\.$#"
 			count: 1
 			path: src/Exception/ValidationException.php
-
-		-
-			message: "#^Static property App\\\\Session\\\\Csrf\\:\\:\\$instance \\(static\\(App\\\\Session\\\\Csrf\\)\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: src/Session/Csrf.php
-
-		-
-			message: "#^Static property App\\\\Session\\\\Flash\\:\\:\\$instance \\(static\\(App\\\\Session\\\\Flash\\)\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: src/Session/Flash.php
 
 		-
 			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\) expects class\\-string\\<object\\>, class\\-string\\|false given\\.$#"

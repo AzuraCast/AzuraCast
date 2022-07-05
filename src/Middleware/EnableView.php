@@ -14,10 +14,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Inject the view object into the request and prepare it for rendering templates.
  */
-class EnableView implements MiddlewareInterface
+final class EnableView implements MiddlewareInterface
 {
     public function __construct(
-        protected View $view
+        private readonly View $view
     ) {
     }
 

@@ -10,13 +10,13 @@ use Exception;
 use Monolog\Logger;
 use RuntimeException;
 
-class FeedbackCommand extends AbstractCommand
+final class FeedbackCommand extends AbstractCommand
 {
     public function __construct(
         Logger $logger,
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected Entity\Repository\SongHistoryRepository $historyRepo
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Entity\Repository\SongHistoryRepository $historyRepo
     ) {
         parent::__construct($logger);
     }
@@ -50,13 +50,19 @@ class FeedbackCommand extends AbstractCommand
         Entity\Station $station,
         array $payload
     ): Entity\SongHistory {
-        if ($payload['is_live']) {
+        if (isset($payload['artist'])) {
+            $newSong = Entity\Song::createFromArray([
+                'artist' => $payload['artist'] ?? '',
+                'title' => $payload['title'] ?? '',
+            ]);
+
+            if (!$this->historyRepo->isDifferentFromCurrentSong($station, $newSong)) {
+                throw new RuntimeException('Song is not different from current song.');
+            }
+
             return new Entity\SongHistory(
                 $station,
-                Entity\Song::createFromArray([
-                    'artist' => $payload['artist'] ?? '',
-                    'title' => $payload['title'] ?? '',
-                ])
+                $newSong
             );
         }
 

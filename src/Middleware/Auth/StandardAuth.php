@@ -13,10 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class StandardAuth extends AbstractAuth
+final class StandardAuth extends AbstractAuth
 {
     public function __construct(
-        protected Entity\Repository\UserRepository $userRepo,
+        private readonly Entity\Repository\UserRepository $userRepo,
         Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Acl $acl
@@ -28,8 +28,8 @@ class StandardAuth extends AbstractAuth
     {
         // Initialize the Auth for this request.
         $auth = new Auth(
-            userRepo:    $this->userRepo,
-            session:     $request->getAttribute(ServerRequest::ATTR_SESSION),
+            userRepo: $this->userRepo,
+            session: $request->getAttribute(ServerRequest::ATTR_SESSION),
             environment: $this->environment,
         );
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;

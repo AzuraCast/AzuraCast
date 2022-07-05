@@ -106,6 +106,6 @@ class Song implements SongInterface
 
     public static function createOffline(): self
     {
-        return self::createFromText('Stream Offline');
+        return self::createFromText('Station Offline');
     }
 }

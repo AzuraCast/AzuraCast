@@ -7,6 +7,7 @@ namespace App\Controller\Stations;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +19,7 @@ final class ProfileController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly StationFormComponent $stationFormComponent,
+        private readonly Adapters $adapters,
     ) {
     }
 
@@ -30,7 +32,7 @@ final class ProfileController
         $view = $request->getView();
 
         if (!$station->getIsEnabled()) {
-            return $view->renderToResponse($response, 'stations/profile/disabled');
+            return $view->renderToResponse($response, 'stations/profile_disabled');
         }
 
         // Statistics about backend playback.
@@ -57,9 +59,9 @@ final class ProfileController
 
         $csrf = $request->getCsrf()->generate(self::CSRF_NAMESPACE);
 
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
+        $backendEnum = $station->getBackendTypeEnum();
 
+        $frontend = $this->adapters->getFrontendAdapter($station);
         $frontendConfig = $station->getFrontendConfig();
 
         $acl = $request->getAcl();
@@ -75,8 +77,8 @@ final class ProfileController
                 'backendType' => $station->getBackendType(),
                 'frontendType' => $station->getFrontendType(),
                 'stationTimeZone' => $station->getTimezone(),
-                'stationSupportsRequests' => $backend->supportsRequests(),
-                'stationSupportsStreamers' => $backend->supportsStreamers(),
+                'stationSupportsRequests' => $backendEnum->isEnabled(),
+                'stationSupportsStreamers' => $backendEnum->isEnabled(),
                 'enableRequests' => $station->getEnableRequests(),
                 'enableStreamers' => $station->getEnableStreamers(),
                 'enablePublicPage' => $station->getEnablePublicPage(),
@@ -175,7 +177,7 @@ final class ProfileController
                 ),
 
                 // Frontend
-                'frontendAdminUri' => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
+                'frontendAdminUri' => (string)$frontend?->getAdminUrl($station, $router->getBaseUrl()),
                 'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
                 'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
                 'frontendRelayPassword' => $frontendConfig->getRelayPassword(),

@@ -91,11 +91,11 @@ export default {
                 },
                 {
                     value: REMOTE_SHOUTCAST1,
-                    text: 'SHOUTcast v1',
+                    text: 'Shoutcast v1',
                 },
                 {
                     value: REMOTE_SHOUTCAST2,
-                    text: 'SHOUTcast v2',
+                    text: 'Shoutcast v2',
                 }
             ];
         },

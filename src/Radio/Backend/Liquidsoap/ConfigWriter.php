@@ -17,22 +17,16 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
 use App\Radio\StereoTool;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ConfigWriter implements EventSubscriberInterface
+final class ConfigWriter implements EventSubscriberInterface
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Liquidsoap $liquidsoap,
-        protected Environment $environment,
-        protected LoggerInterface $logger,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected FallbackFile $fallbackFile
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Liquidsoap $liquidsoap,
+        private readonly Environment $environment,
+        private readonly FallbackFile $fallbackFile
     ) {
     }
 
@@ -146,7 +140,7 @@ class ConfigWriter implements EventSubscriberInterface
             
             # Track live transition for crossfades.
             to_live = ref(false)
-            ignore(live_enabled)
+            ignore(to_live)
             EOF
         );
 
@@ -734,17 +728,17 @@ class ConfigWriter implements EventSubscriberInterface
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
         $crossfadeType = $settings->getCrossfadeTypeEnum();
-        $crossfade = $settings->getCrossfade();
-        $crossDuration = $settings->getCrossfadeDuration();
 
         if ($settings->isCrossfadeEnabled()) {
-            $crossfadeDuration = self::toFloat($crossfade);
+            $crossfade = self::toFloat($settings->getCrossfade());
+            $crossDuration = self::toFloat($settings->getCrossfadeDuration());
+
             if (CrossfadeModes::Smart === $crossfadeType) {
-                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfadeDuration
-                    . ', fade_out=' . $crossfadeDuration . ')';
+                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfade
+                    . ', fade_out=' . $crossfade . ')';
             } else {
-                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfadeDuration
-                    . ', fade_out=' . $crossfadeDuration . ')';
+                $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfade
+                    . ', fade_out=' . $crossfade . ')';
             }
 
             $event->appendBlock(
@@ -759,7 +753,7 @@ class ConfigWriter implements EventSubscriberInterface
                     end
                 end
                 
-                radio = cross(live_aware_crossfade, radio)
+                radio = cross(minimum=0., duration={$crossDuration}, live_aware_crossfade, radio)
                 LS
             );
         }
@@ -1007,49 +1001,42 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<<EOF
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
-            last_title = ref("")
-            last_artist = ref("")
-            last_song_id = ref("")
-            
+            last_metadata = ref([])
             def handle_jingle_mode(m) = 
                 if (m["jingle_mode"] == "true") then
-                    [("title", !last_title), ("artist", !last_artist)]                
+                    !last_metadata    
                 else
-                    last_title := m["title"]
-                    last_artist := m["artist"]
+                    last_metadata := m
                     m
                 end
             end
-            radio = map_metadata(handle_jingle_mode, radio)
+            radio = map_metadata(update=false, handle_jingle_mode, radio)
             
             # Send metadata changes back to AzuraCast
+            last_title = ref("")
+            last_artist = ref("")
+            
             def metadata_updated(m) =
                 def f() =
-                    if (m["is_live"] == "true") then
+                    if (m["title"] != !last_title or m["artist"] != !last_artist) then
+                        last_title := m["title"]
+                        last_artist := m["artist"]
+                        
                         j = json()
-                        j.add("is_live", true)
-                        j.add("artist", m["artist"])
-                        j.add("title", m["title"])
+                        
+                        if (m["song_id"] != "") then
+                            j.add("song_id", m["song_id"])
+                            j.add("media_id", m["media_id"])
+                            j.add("playlist_id", m["playlist_id"])
+                        else
+                            j.add("artist", m["artist"])
+                            j.add("title", m["title"])
+                        end
                         
                         _ = azuracast_api_call(
                             "feedback",
                             json.stringify(j)
-                        )                                        
-                    else
-                        if (m["song_id"] != "" and m["song_id"] != !last_song_id) then
-                            last_song_id := m["song_id"]
-                            
-                            j = json()
-                            j.add("is_live", false)
-                            j.add("song_id", m["song_id"])
-                            j.add("media_id", m["media_id"])
-                            j.add("playlist_id", m["playlist_id"])
-                        
-                            _ = azuracast_api_call(
-                                "feedback",
-                                json.stringify(j)
-                            )
-                        end
+                        )
                     end
                 end
                 
@@ -1148,7 +1135,11 @@ class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $hlsBaseDir = $station->getRadioHlsDir();
-        $hlsSegmentLength = $station->getBackendConfig()->getHlsSegmentLength();
+
+        $backendConfig = $station->getBackendConfig();
+        $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
+        $hlsSegmentsInPlaylist = $backendConfig->getHlsSegmentsInPlaylist();
+        $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
 
         $event->appendBlock(
             <<<LS
@@ -1160,8 +1151,8 @@ class ConfigWriter implements EventSubscriberInterface
             
             output.file.hls(playlist="live.m3u8",
                 segment_duration={$hlsSegmentLength}.0,
-                segments=5,
-                segments_overhead=5,
+                segments={$hlsSegmentsInPlaylist},
+                segments_overhead={$hlsSegmentsOverhead},
                 segment_name=hls_segment_name,
                 persist_at="{$configDir}/hls.config",
                 "{$hlsBaseDir}",
@@ -1353,5 +1344,11 @@ class ConfigWriter implements EventSubscriberInterface
     public static function getPlaylistVariableName(Entity\StationPlaylist $playlist): string
     {
         return self::cleanUpVarName('playlist_' . $playlist->getShortName());
+    }
+
+    public static function annotateString(string $str): string
+    {
+        $str = mb_convert_encoding($str, 'UTF-8');
+        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
     }
 }

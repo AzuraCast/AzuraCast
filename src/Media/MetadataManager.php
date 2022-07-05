@@ -11,11 +11,11 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class MetadataManager
+final class MetadataManager
 {
     public function __construct(
-        protected EventDispatcherInterface $eventDispatcher,
-        protected LoggerInterface $logger,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
     ) {
     }
 

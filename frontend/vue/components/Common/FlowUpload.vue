@@ -149,20 +149,25 @@ export default {
             this.$emit('success', file, messageJson);
         });
 
-        this.flow.on('fileError', (file, message) => {
-
-            let messageJson = JSON.parse(message);
-            file.error = messageJson.message;
-            this.$emit('error', file, messageJson);
-        });
-
         this.flow.on('error', (message, file, chunk) => {
             console.error(message, file, chunk);
 
-            let messageJson = JSON.parse(message);
+            let messageText = this.$gettext('Could not upload file.');
+            try {
+                if (typeof message !== 'undefined') {
+                    let messageJson = JSON.parse(message);
+                    if (typeof messageJson.message !== 'undefined') {
+                        messageText = messageJson.message;
+                        if (messageText.indexOf(': ') > -1) {
+                            messageText = messageText.split(': ')[1];
+                        }
+                    }
+                }
+            } catch (e) {
+            }
 
-            file.error = messageJson.message.split(': ')[1];
-            this.$emit('error', file, messageJson);
+            file.error = messageText;
+            this.$emit('error', file, messageText);
         });
 
         this.flow.on('complete', () => {

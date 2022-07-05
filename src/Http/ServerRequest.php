@@ -10,7 +10,6 @@ use App\Customization;
 use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Exception;
-use App\Radio;
 use App\RateLimit;
 use App\Session;
 use App\View;
@@ -30,9 +29,6 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     public const ATTR_CUSTOMIZATION = 'customization';
     public const ATTR_AUTH = 'auth';
     public const ATTR_STATION = 'station';
-    public const ATTR_STATION_BACKEND = 'station_backend';
-    public const ATTR_STATION_FRONTEND = 'station_frontend';
-    public const ATTR_STATION_REMOTES = 'station_remotes';
     public const ATTR_USER = 'user';
 
     public function getView(): View
@@ -93,34 +89,6 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     public function getStation(): Entity\Station
     {
         return $this->getAttributeOfClass(self::ATTR_STATION, Entity\Station::class);
-    }
-
-    public function getStationFrontend(): Radio\Frontend\AbstractFrontend
-    {
-        return $this->getAttributeOfClass(self::ATTR_STATION_FRONTEND, Radio\Frontend\AbstractFrontend::class);
-    }
-
-    public function getStationBackend(): Radio\Backend\AbstractBackend
-    {
-        return $this->getAttributeOfClass(self::ATTR_STATION_BACKEND, Radio\Backend\AbstractBackend::class);
-    }
-
-    /**
-     * @return Radio\Remote\AdapterProxy[]
-     * @throws Exception\InvalidRequestAttribute
-     */
-    public function getStationRemotes(): array
-    {
-        $remotes = $this->serverRequest->getAttribute(self::ATTR_STATION_REMOTES);
-
-        if (null === $remotes) {
-            throw new Exception\InvalidRequestAttribute(sprintf(
-                'Attribute "%s" was not set.',
-                self::ATTR_STATION_REMOTES
-            ));
-        }
-
-        return $remotes;
     }
 
     /**

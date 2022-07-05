@@ -18,13 +18,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
-class GetCurrentUser implements MiddlewareInterface
+final class GetCurrentUser implements MiddlewareInterface
 {
     public function __construct(
-        protected Entity\Repository\UserRepository $userRepo,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Environment $environment,
-        protected Acl $acl
+        private readonly Entity\Repository\UserRepository $userRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Environment $environment,
+        private readonly Acl $acl
     ) {
     }
 

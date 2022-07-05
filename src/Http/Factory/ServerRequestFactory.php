@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\ServerRequestCreatorInterface;
 
-class ServerRequestFactory implements ServerRequestFactoryInterface, ServerRequestCreatorInterface
+final class ServerRequestFactory implements ServerRequestFactoryInterface, ServerRequestCreatorInterface
 {
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {

@@ -6,25 +6,21 @@ namespace App\Webhook\Connector;
 
 use App\Entity;
 use App\Http\RouterInterface;
-use App\Radio\Adapters;
 use App\Utilities\Urls;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 
-class MatomoAnalytics extends AbstractConnector
+final class MatomoAnalytics extends AbstractConnector
 {
     public const NAME = 'matomo_analytics';
 
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        protected RouterInterface $router,
-        protected EntityManagerInterface $em,
-        protected Adapters $adapters,
-        protected Entity\Repository\ListenerRepository $listenerRepo
+        private readonly RouterInterface $router,
+        private readonly Entity\Repository\ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
     }

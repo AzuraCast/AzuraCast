@@ -6,6 +6,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Exception\NotFoundException;
+use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
@@ -15,26 +16,20 @@ use Psr\Container\ContainerInterface;
 /**
  * Manager class for radio adapters.
  */
-class Adapters
+final class Adapters
 {
     public function __construct(
-        protected ContainerInterface $adapters
+        private readonly ContainerInterface $adapters
     ) {
     }
 
-    /**
-     * @param Entity\Station $station
-     *
-     * @throws NotFoundException
-     */
-    public function getFrontendAdapter(Entity\Station $station): Frontend\AbstractFrontend
+    public function getFrontendAdapter(Entity\Station $station): ?Frontend\AbstractFrontend
     {
-        $class_name = $station->getFrontendTypeEnum()->getClass();
-        if ($this->adapters->has($class_name)) {
-            return $this->adapters->get($class_name);
-        }
+        $className = $station->getFrontendTypeEnum()->getClass();
 
-        throw new NotFoundException('Adapter not found: ' . $class_name);
+        return (null !== $className && $this->adapters->has($className))
+            ? $this->adapters->get($className)
+            : null;
     }
 
     /**
@@ -46,19 +41,13 @@ class Adapters
         return $this->listAdaptersFromEnum(FrontendAdapters::cases(), $checkInstalled);
     }
 
-    /**
-     * @param Entity\Station $station
-     *
-     * @throws NotFoundException
-     */
-    public function getBackendAdapter(Entity\Station $station): Backend\AbstractBackend
+    public function getBackendAdapter(Entity\Station $station): ?Liquidsoap
     {
-        $class_name = $station->getBackendTypeEnum()->getClass();
-        if ($this->adapters->has($class_name)) {
-            return $this->adapters->get($class_name);
-        }
+        $className = $station->getBackendTypeEnum()->getClass();
 
-        throw new NotFoundException('Adapter not found: ' . $class_name);
+        return (null !== $className && $this->adapters->has($className))
+            ? $this->adapters->get($className)
+            : null;
     }
 
     /**
@@ -68,21 +57,6 @@ class Adapters
     public function listBackendAdapters(bool $checkInstalled = false): array
     {
         return $this->listAdaptersFromEnum(BackendAdapters::cases(), $checkInstalled);
-    }
-
-    /**
-     * @param Entity\Station $station
-     *
-     * @return Remote\AdapterProxy[]
-     * @throws NotFoundException
-     */
-    public function getRemoteAdapters(Entity\Station $station): array
-    {
-        $remote_adapters = [];
-        foreach ($station->getRemotes() as $remote) {
-            $remote_adapters[] = new Remote\AdapterProxy($this->getRemoteAdapter($station, $remote), $remote);
-        }
-        return $remote_adapters;
     }
 
     public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
@@ -113,8 +87,8 @@ class Adapters
         $adapters = [];
         foreach ($cases as $adapter) {
             $adapters[$adapter->getValue()] = [
-                'enum'  => $adapter,
-                'name'  => $adapter->getName(),
+                'enum' => $adapter,
+                'name' => $adapter->getName(),
                 'class' => $adapter->getClass(),
             ];
         }
@@ -123,7 +97,11 @@ class Adapters
             return array_filter(
                 $adapters,
                 function ($adapter_info) {
-                    /** @var AbstractAdapter $adapter */
+                    if (null === $adapter_info['class']) {
+                        return true;
+                    }
+
+                    /** @var AbstractLocalAdapter $adapter */
                     $adapter = $this->adapters->get($adapter_info['class']);
                     return $adapter->isInstalled();
                 }

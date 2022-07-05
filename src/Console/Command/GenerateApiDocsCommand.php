@@ -19,12 +19,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:api:docs',
     description: 'Trigger regeneration of AzuraCast API documentation.',
 )]
-class GenerateApiDocsCommand extends CommandAbstract
+final class GenerateApiDocsCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment,
-        protected Version $version,
-        protected LoggerInterface $logger
+        private readonly Environment $environment,
+        private readonly Version $version,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }

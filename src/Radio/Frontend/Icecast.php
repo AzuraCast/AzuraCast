@@ -15,32 +15,22 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 
-class Icecast extends AbstractFrontend
+final class Icecast extends AbstractFrontend
 {
     public const LOGLEVEL_DEBUG = 4;
     public const LOGLEVEL_INFO = 3;
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function supportsMounts(): bool
-    {
-        return true;
-    }
-
-    public function supportsReload(): bool
-    {
-        return true;
-    }
-
     public function reload(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
+            $program_name = $this->getSupervisorFullName($station);
 
             try {
                 $this->supervisor->signalProcess($program_name, 'HUP');
                 $this->logger->info(
-                    'Adapter "' . static::class . '" reloaded.',
+                    'Adapter "' . self::class . '" reloaded.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {

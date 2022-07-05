@@ -19,10 +19,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     description: 'Convert translated locale files into PHP arrays.',
     aliases: ['locale:import']
 )]
-class ImportCommand extends CommandAbstract
+final class ImportCommand extends CommandAbstract
 {
     public function __construct(
-        protected Environment $environment
+        private readonly Environment $environment
     ) {
         parent::__construct();
     }

@@ -11,13 +11,8 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
-class Shoutcast extends AbstractFrontend
+final class Shoutcast extends AbstractFrontend
 {
-    public function supportsMounts(): bool
-    {
-        return true;
-    }
-
     /**
      * @inheritDoc
      */
@@ -44,7 +39,7 @@ class Shoutcast extends AbstractFrontend
             return null;
         }
 
-        return preg_match('/^SHOUTcast .* v(\S+) .*$/i', $process->getOutput(), $matches)
+        return preg_match('/^Shoutcast .* v(\S+) .*$/i', $process->getOutput(), $matches)
             ? $matches[1]
             : null;
     }
@@ -162,7 +157,7 @@ class Shoutcast extends AbstractFrontend
             }
 
             if ($mount_row->getMaxListenerDuration()) {
-                $config['streammaxuser_' . $i] = $mount_row->getMaxListenerDuration();
+                $config['streamlistenertime_' . $i] = $mount_row->getMaxListenerDuration();
             }
         }
 

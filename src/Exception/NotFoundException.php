@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class NotFoundException extends Exception
+final class NotFoundException extends Exception
 {
     public function __construct(
         string $message = 'Record not found.',

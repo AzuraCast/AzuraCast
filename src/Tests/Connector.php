@@ -29,7 +29,7 @@ class Connector extends AbstractBrowser
      *
      * @return BrowserKitResponse An origin response instance
      */
-    public function doRequest($request)
+    public function doRequest($request): BrowserKitResponse
     {
         $_COOKIE = $request->getCookies();
         $_SERVER = $request->getServer();

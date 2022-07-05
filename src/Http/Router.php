@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Entity;
-use App\Environment;
 use App\Traits\RequestAwareTrait;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -16,16 +15,15 @@ use Slim\Interfaces\RouteInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Routing\RouteContext;
 
-class Router implements RouterInterface
+final class Router implements RouterInterface
 {
     use RequestAwareTrait;
 
-    protected ?UriInterface $baseUrl = null;
+    private ?UriInterface $baseUrl = null;
 
     public function __construct(
-        protected Environment $environment,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected RouteParserInterface $routeParser
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly RouteParserInterface $routeParser
     ) {
     }
 
@@ -49,7 +47,7 @@ class Router implements RouterInterface
         return $this->buildBaseUrl($useRequest);
     }
 
-    protected function buildBaseUrl(bool $useRequest = true): UriInterface
+    private function buildBaseUrl(bool $useRequest = true): UriInterface
     {
         $settings = $this->settingsRepo->readSettings();
 

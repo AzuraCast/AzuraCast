@@ -10,13 +10,11 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class StationPortCheckerValidator extends ConstraintValidator
+final class StationPortCheckerValidator extends ConstraintValidator
 {
-    protected Configuration $configuration;
-
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
+    public function __construct(
+        private readonly Configuration $configuration
+    ) {
     }
 
     public function validate(mixed $value, Constraint $constraint): void

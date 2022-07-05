@@ -16,10 +16,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:settings:set',
     description: 'Set the value of a setting in the AzuraCast settings database.',
 )]
-class SetCommand extends CommandAbstract
+final class SetCommand extends CommandAbstract
 {
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsTableRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsTableRepo,
     ) {
         parent::__construct();
     }

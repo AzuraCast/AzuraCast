@@ -12,14 +12,14 @@ use GuzzleHttp\Psr7\UriResolver;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UriInterface;
 
-class SongApiGenerator
+final class SongApiGenerator
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Router $router,
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected Entity\Repository\CustomFieldRepository $customFieldRepo,
-        protected RemoteAlbumArt $remoteAlbumArt
+        private readonly EntityManagerInterface $em,
+        private readonly Router $router,
+        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly RemoteAlbumArt $remoteAlbumArt
     ) {
     }
 
@@ -88,7 +88,7 @@ class SongApiGenerator
                     route_name: 'api:stations:streamer:art',
                     route_params: [
                         'station_id' => $station->getIdRequired(),
-                        'streamer_id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
+                        'id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
                     ],
                 );
             }

@@ -25,14 +25,14 @@ use function usleep;
     name: 'azuracast:sync:run',
     description: 'Task to run the minute\'s synchronized tasks.'
 )]
-class RunnerCommand extends AbstractSyncCommand
+final class RunnerCommand extends AbstractSyncCommand
 {
     public function __construct(
         LoggerInterface $logger,
         LockFactory $lockFactory,
         Environment $environment,
-        protected EventDispatcherInterface $dispatcher,
-        protected SettingsRepository $settingsRepo,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly SettingsRepository $settingsRepo,
     ) {
         parent::__construct($logger, $lockFactory, $environment);
     }
@@ -69,7 +69,7 @@ class RunnerCommand extends AbstractSyncCommand
         return 0;
     }
 
-    protected function manageStartedEvents(SymfonyStyle $io): void
+    private function manageStartedEvents(SymfonyStyle $io): void
     {
         while ($this->processes) {
             $this->checkRunningProcesses();
@@ -82,7 +82,7 @@ class RunnerCommand extends AbstractSyncCommand
      * @param SymfonyStyle $io
      * @param class-string<AbstractTask> $taskClass
      */
-    protected function start(
+    private function start(
         SymfonyStyle $io,
         string $taskClass,
     ): void {

@@ -10,13 +10,11 @@ use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ErrorHandler implements EventSubscriberInterface
+final class ErrorHandler implements EventSubscriberInterface
 {
-    protected LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     /**

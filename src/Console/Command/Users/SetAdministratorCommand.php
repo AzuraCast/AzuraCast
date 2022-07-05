@@ -17,11 +17,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:account:set-administrator',
     description: 'Set the account specified as a global administrator.',
 )]
-class SetAdministratorCommand extends CommandAbstract
+final class SetAdministratorCommand extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\RolePermissionRepository $permsRepo,
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\RolePermissionRepository $permsRepo,
     ) {
         parent::__construct();
     }

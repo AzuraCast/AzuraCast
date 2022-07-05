@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Entity\Repository\SettingsRepository;
-use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -23,11 +22,6 @@ final class PlaylistsAction
         string $station_id
     ): ResponseInterface {
         $station = $request->getStation();
-
-        $backend = $request->getStationBackend();
-        if (!$backend->supportsMedia()) {
-            throw new Exception(__('This feature is not currently supported on this station.'));
-        }
 
         $settings = $this->settingsRepo->readSettings();
         $router = $request->getRouter();

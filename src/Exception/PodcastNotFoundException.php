@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class PodcastNotFoundException extends Exception
+final class PodcastNotFoundException extends Exception
 {
     public function __construct(
         string $message = 'Podcast not found.',

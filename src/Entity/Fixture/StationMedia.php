@@ -10,13 +10,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
 
-class StationMedia extends AbstractFixture implements DependentFixtureInterface
+final class StationMedia extends AbstractFixture implements DependentFixtureInterface
 {
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    public function __construct(Entity\Repository\StationMediaRepository $mediaRepo)
-    {
-        $this->mediaRepo = $mediaRepo;
+    public function __construct(
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo
+    ) {
     }
 
     public function load(ObjectManager $manager): void

@@ -15,7 +15,7 @@ use ReflectionObject;
  * A hook into Doctrine's event listener to mark a station as
  * needing restart if one of its related entities is changed.
  */
-class StationRequiresRestart implements EventSubscriber
+final class StationRequiresRestart implements EventSubscriber
 {
     /**
      * @inheritDoc

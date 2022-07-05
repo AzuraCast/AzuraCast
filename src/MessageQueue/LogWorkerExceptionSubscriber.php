@@ -8,10 +8,10 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 
-class LogWorkerExceptionSubscriber implements EventSubscriberInterface
+final class LogWorkerExceptionSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        protected LoggerInterface $logger
+        private readonly LoggerInterface $logger
     ) {
     }
 

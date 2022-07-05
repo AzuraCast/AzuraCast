@@ -8,35 +8,12 @@ $this->layout(
     'minimal',
     [
         'page_class' => 'page-station-public-player station-' . $station->getShortName(),
-        'title'      => $this->e($station->getName()),
+        'title' => $this->e($station->getName()),
     ]
 );
 
-$props = [
-    'stationName' => $station->getName(),
-    'enableRequests' => $station->getEnableRequests(),
-    'autoplay' => $autoplay,
-    'downloadPlaylistUri' => (string)$router->named(
-        'public:playlist',
-        ['station_id' => $station->getShortName(), 'format' => 'pls']
-    ),
-    'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
-    'customFields' => $customFields,
-    'initialNowPlaying' => $nowplaying,
-    'showAlbumArt' => !$customization->hideAlbumArt(),
-];
-
-if ($customization->useWebSocketsForNowPlaying()) {
-    $props['useNchan'] = true;
-    $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
-} else {
-    $props['useNchan'] = false;
-    $props['nowPlayingUri'] = (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]);
-}
-
 /** @var \App\Assets $assets */
-$assets
-    ->addVueRender('Vue_PublicFullPlayer', '#public-radio-player', $props);
+$assets->addVueRender('Vue_PublicFullPlayer', '#public-radio-player', $props);
 
 // Register PWA service worker
 $swJsRoute = (string)$router->named('public:sw');

@@ -8,7 +8,7 @@ use App\Environment;
 use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 
-class BackgroundCustomAsset extends AbstractCustomAsset
+final class BackgroundCustomAsset extends AbstractCustomAsset
 {
     protected function getPattern(): string
     {

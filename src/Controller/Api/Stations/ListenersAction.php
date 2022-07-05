@@ -51,6 +51,7 @@ final class ListenersAction
         private readonly Entity\Repository\ListenerRepository $listenerRepo,
         private readonly Entity\Repository\StationMountRepository $mountRepo,
         private readonly Entity\Repository\StationRemoteRepository $remoteRepo,
+        private readonly Entity\Repository\StationHlsStreamRepository $hlsStreamRepo,
     ) {
     }
 
@@ -101,6 +102,7 @@ final class ListenersAction
 
         $mountNames = $this->mountRepo->getDisplayNames($station);
         $remoteNames = $this->remoteRepo->getDisplayNames($station);
+        $hlsStreamNames = $this->hlsStreamRepo->getDisplayNames($station);
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];
@@ -139,6 +141,9 @@ final class ListenersAction
             if (null !== $listener['mount_id']) {
                 $api->mount_is_local = true;
                 $api->mount_name = $mountNames[$listener['mount_id']];
+            } elseif (null !== $listener['hls_stream_id']) {
+                $api->mount_is_local = true;
+                $api->mount_name = $hlsStreamNames[$listener['hls_stream_id']];
             } elseif (null !== $listener['remote_id']) {
                 $api->mount_is_local = false;
                 $api->mount_name = $remoteNames[$listener['remote_id']];

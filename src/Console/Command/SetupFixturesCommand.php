@@ -21,12 +21,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:setup:fixtures',
     description: 'Install fixtures for demo / local development.',
 )]
-class SetupFixturesCommand extends CommandAbstract
+final class SetupFixturesCommand extends CommandAbstract
 {
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected ContainerInterface $di,
-        protected Environment $environment,
+        private readonly EntityManagerInterface $em,
+        private readonly ContainerInterface $di,
+        private readonly Environment $environment,
     ) {
         parent::__construct();
     }

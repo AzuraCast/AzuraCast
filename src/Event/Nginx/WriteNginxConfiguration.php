@@ -7,13 +7,13 @@ namespace App\Event\Nginx;
 use App\Entity\Station;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class WriteNginxConfiguration extends Event
+final class WriteNginxConfiguration extends Event
 {
-    protected array $configLines = [];
+    private array $configLines = [];
 
     public function __construct(
-        protected Station $station,
-        protected bool $writeToDisk = true
+        private readonly Station $station,
+        private readonly bool $writeToDisk = true
     ) {
     }
 

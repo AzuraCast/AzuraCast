@@ -22,15 +22,13 @@ use Throwable;
     name: 'azuracast:sync:nowplaying:station',
     description: 'Task to run the Now Playing worker task for a specific station.',
 )]
-class NowPlayingPerStationCommand extends CommandAbstract
+final class NowPlayingPerStationCommand extends CommandAbstract
 {
-    protected array $processes = [];
-
     public function __construct(
-        protected StationRepository $stationRepo,
-        protected BuildQueueTask $buildQueueTask,
-        protected NowPlayingTask $nowPlayingTask,
-        protected Logger $logger,
+        private readonly StationRepository $stationRepo,
+        private readonly BuildQueueTask $buildQueueTask,
+        private readonly NowPlayingTask $nowPlayingTask,
+        private readonly Logger $logger,
     ) {
         parent::__construct();
     }

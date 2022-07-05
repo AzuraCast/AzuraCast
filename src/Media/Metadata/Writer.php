@@ -9,7 +9,7 @@ use JamesHeinrich\GetID3\GetID3;
 use JamesHeinrich\GetID3\WriteTags;
 use RuntimeException;
 
-class Writer
+final class Writer
 {
     public function __invoke(WriteMetadata $event): void
     {

@@ -11,22 +11,22 @@ use Azura\Files\ExtendedFilesystemInterface;
 use Azura\Files\LocalFilesystem;
 use Azura\Files\RemoteFilesystem;
 
-class StationFilesystems
+final class StationFilesystems
 {
-    protected ExtendedFilesystemInterface $fsMedia;
+    private ExtendedFilesystemInterface $fsMedia;
 
-    protected ExtendedFilesystemInterface $fsRecordings;
+    private ExtendedFilesystemInterface $fsRecordings;
 
-    protected ExtendedFilesystemInterface $fsPodcasts;
+    private ExtendedFilesystemInterface $fsPodcasts;
 
-    protected LocalFilesystem $fsPlaylists;
+    private LocalFilesystem $fsPlaylists;
 
-    protected LocalFilesystem $fsConfig;
+    private LocalFilesystem $fsConfig;
 
-    protected LocalFilesystem $fsTemp;
+    private LocalFilesystem $fsTemp;
 
     public function __construct(
-        protected Entity\Station $station
+        private readonly Entity\Station $station
     ) {
     }
 

@@ -14,19 +14,17 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
-use Symfony\Component\Messenger\MessageBus;
 
-class Dispatcher
+final class Dispatcher
 {
     public function __construct(
-        protected Environment $environment,
-        protected Logger $logger,
-        protected EntityManagerInterface $em,
-        protected MessageBus $messageBus,
-        protected RouterInterface $router,
-        protected LocalWebhookHandler $localHandler,
-        protected ConnectorLocator $connectors,
-        protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen
+        private readonly Environment $environment,
+        private readonly Logger $logger,
+        private readonly EntityManagerInterface $em,
+        private readonly RouterInterface $router,
+        private readonly LocalWebhookHandler $localHandler,
+        private readonly ConnectorLocator $connectors,
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen
     ) {
     }
 

@@ -19,12 +19,11 @@ use Symfony\Component\VarDumper\VarDumper;
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
  */
-class Api
+final class Api
 {
     public function __construct(
-        protected Entity\Repository\ApiKeyRepository $apiKeyRepo,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Environment $environment
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Environment $environment
     ) {
     }
 

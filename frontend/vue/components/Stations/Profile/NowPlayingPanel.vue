@@ -24,21 +24,31 @@
                                 <translate key="lang_profile_nowplaying_title">Now Playing</translate>
                             </h6>
                             <div class="media">
-                                <a class="mr-2" v-if="np.now_playing.song.art" :href="np.now_playing.song.art" data-fancybox target="_blank">
-                                    <img class="rounded" :src="np.now_playing.song.art" alt="Album Art" style="width: 50px;">
+                                <a class="mr-2" v-if="np.now_playing.song.art" :href="np.now_playing.song.art"
+                                   data-fancybox target="_blank">
+                                    <img class="rounded" :src="np.now_playing.song.art" alt="Album Art"
+                                         style="width: 50px;">
                                 </a>
                                 <div class="media-body">
-                                    <div v-if="np.now_playing.song.title !== ''">
+                                    <div v-if="!np.is_online">
+                                        <h5 class="media-heading m-0 text-muted">
+                                            <translate key="station_offline">Station Offline</translate>
+                                        </h5>
+                                    </div>
+                                    <div v-else-if="np.now_playing.song.title !== ''">
                                         <h5 class="media-heading m-0" style="line-height: 1;">
                                             {{ np.now_playing.song.title }}<br>
                                             <small>{{ np.now_playing.song.artist }}</small>
                                         </h5>
                                     </div>
                                     <div v-else>
-                                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
+                                        <h5 class="media-heading m-0" style="line-height: 1;">
+                                            {{ np.now_playing.song.text }}</h5>
                                     </div>
                                     <div v-if="np.now_playing.playlist">
-                                        <small class="text-muted"><translate key="lang_profile_nowplaying_playlist">Playlist</translate>: {{ np.now_playing.playlist }}</small>
+                                        <small class="text-muted">
+                                            <translate key="lang_profile_nowplaying_playlist">Playlist</translate>
+                                            : {{ np.now_playing.playlist }}</small>
                                     </div>
                                     <div class="nowplaying-progress" v-if="timeDisplay">
                                         <small>{{ timeDisplay }}</small>
@@ -55,8 +65,10 @@
                             </h6>
 
                             <div class="media">
-                                <a class="mr-2" v-if="np.playing_next.song.art" :href="np.playing_next.song.art" data-fancybox target="_blank">
-                                    <img :src="np.playing_next.song.art" class="rounded" alt="Album Art" style="width: 40px;">
+                                <a class="mr-2" v-if="np.playing_next.song.art" :href="np.playing_next.song.art"
+                                   data-fancybox target="_blank">
+                                    <img :src="np.playing_next.song.art" class="rounded" alt="Album Art"
+                                         style="width: 40px;">
                                 </a>
                                 <div class="media-body">
                                     <div v-if="np.playing_next.song.title !== ''">
@@ -66,11 +78,14 @@
                                         </h5>
                                     </div>
                                     <div v-else>
-                                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
+                                        <h5 class="media-heading m-0" style="line-height: 1;">
+                                            {{ np.playing_next.song.text }}</h5>
                                     </div>
 
                                     <div v-if="np.playing_next.playlist">
-                                        <small class="text-muted"><translate key="lang_profile_nowplaying_playlist">Playlist</translate>: {{ np.playing_next.playlist }}</small>
+                                        <small class="text-muted">
+                                            <translate key="lang_profile_nowplaying_playlist">Playlist</translate>
+                                            : {{ np.playing_next.playlist }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -91,11 +106,13 @@
         </b-overlay>
 
         <div class="card-actions flex-shrink" v-if="isLiquidsoap && userCanManageBroadcasting">
-            <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" v-if="!np.live.is_live" :href="backendSkipSongUri">
+            <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button"
+               v-if="!np.live.is_live" :href="backendSkipSongUri">
                 <icon icon="skip_next"></icon>
                 <translate key="lang_backend_skip">Skip Song</translate>
             </a>
-            <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" v-if="np.live.is_live" :href="backendDisconnectStreamerUri">
+            <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button"
+               v-if="np.live.is_live" :href="backendDisconnectStreamerUri">
                 <icon icon="volume_off"></icon>
                 <translate key="lang_backend_disconnect">Disconnect Streamer</translate>
             </a>
@@ -129,18 +146,18 @@ export default {
             clockInterval: null
         };
     },
-    mounted () {
+    mounted() {
         this.clockInterval = setInterval(this.iterateTimer, 1000);
     },
     computed: {
-        langListeners () {
+        langListeners() {
             let translated = this.$ngettext('%{listeners} Listener', '%{listeners} Listeners', this.np.listeners.total);
-            return this.$gettextInterpolate(translated, { listeners: this.np.listeners.total });
+            return this.$gettextInterpolate(translated, {listeners: this.np.listeners.total});
         },
-        isLiquidsoap () {
+        isLiquidsoap() {
             return this.backendType === BACKEND_LIQUIDSOAP;
         },
-        timeDisplay () {
+        timeDisplay() {
             let time_played = this.npElapsed;
             let time_total = this.np.now_playing.duration;
 
@@ -156,7 +173,7 @@ export default {
         }
     },
     methods: {
-        iterateTimer () {
+        iterateTimer() {
             let current_time = Math.floor(Date.now() / 1000);
             let np_elapsed = current_time - this.np.now_playing.played_at;
             if (np_elapsed < 0) {
@@ -167,7 +184,7 @@ export default {
 
             this.npElapsed = np_elapsed;
         },
-        formatTime (time) {
+        formatTime(time) {
             let sec_num = parseInt(time, 10);
 
             let hours = Math.floor(sec_num / 3600);

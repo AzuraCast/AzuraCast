@@ -17,6 +17,7 @@ export default {
     data() {
         return {
             'audio': null,
+            'hls': null,
             'volume': 55,
             'duration': 0,
             'currentTime': 0
@@ -76,6 +77,10 @@ export default {
                 this.audio.pause();
                 this.audio.src = '';
             }
+            if (this.hls !== null) {
+                this.hls.destroy();
+                this.hls = null;
+            }
 
             this.duration = 0;
             this.currentTime = 0;
@@ -120,11 +125,13 @@ export default {
                 if (this.current.isHls) {
                     // HLS playback support
                     if (Hls.isSupported()) {
-                        let hls = new Hls();
-                        hls.loadSource(this.current.url);
-                        hls.attachMedia(this.audio);
+                        this.hls = new Hls();
+                        this.hls.loadSource(this.current.url);
+                        this.hls.attachMedia(this.audio);
                     } else if (this.audio.canPlayType('application/vnd.apple.mpegurl')) {
                         this.audio.src = this.current.url;
+                    } else {
+                        console.log('Your browser does not support HLS.');
                     }
                 } else {
                     // Standard streams

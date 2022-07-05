@@ -18,7 +18,7 @@ use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
 
-abstract class AbstractAdapter
+abstract class AbstractLocalAdapter
 {
     public function __construct(
         protected Environment $environment,
@@ -104,7 +104,7 @@ abstract class AbstractAdapter
             return true;
         }
 
-        $program_name = $this->getProgramName($station);
+        $program_name = $this->getSupervisorFullName($station);
 
         try {
             return $this->supervisor->getProcess($program_name)->isRunning();
@@ -142,7 +142,16 @@ abstract class AbstractAdapter
      *
      * @param Entity\Station $station
      */
-    abstract public function getProgramName(Entity\Station $station): string;
+    abstract public function getSupervisorProgramName(Entity\Station $station): string;
+
+    public function getSupervisorFullName(Entity\Station $station): string
+    {
+        return sprintf(
+            '%s:%s',
+            Configuration::getSupervisorGroupName($station),
+            $this->getSupervisorProgramName($station)
+        );
+    }
 
     /**
      * Restart the executable service.
@@ -153,14 +162,6 @@ abstract class AbstractAdapter
     {
         $this->stop($station);
         $this->start($station);
-    }
-
-    /**
-     * @return bool Whether this adapter supports a non-destructive reload.
-     */
-    public function supportsReload(): bool
-    {
-        return false;
     }
 
     /**
@@ -184,7 +185,7 @@ abstract class AbstractAdapter
     public function stop(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
+            $program_name = $this->getSupervisorFullName($station);
 
             try {
                 $this->supervisor->stopProcess($program_name);
@@ -209,7 +210,7 @@ abstract class AbstractAdapter
     public function start(Entity\Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
+            $program_name = $this->getSupervisorFullName($station);
 
             try {
                 $this->supervisor->startProcess($program_name);

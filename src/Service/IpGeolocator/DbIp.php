@@ -6,7 +6,7 @@ namespace App\Service\IpGeolocator;
 
 use App\Environment;
 
-class DbIp extends AbstractIpGeolocator
+final class DbIp extends AbstractIpGeolocator
 {
     public static function getReaderShortName(): string
     {

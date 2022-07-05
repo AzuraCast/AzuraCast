@@ -12,6 +12,7 @@ use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Http\RouterInterface;
 use App\Message;
+use App\Nginx\HlsListeners;
 use App\Radio\Adapters;
 use DeepCopy\DeepCopy;
 use Exception;
@@ -22,19 +23,20 @@ use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
+final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
 {
     public function __construct(
-        protected Adapters $adapters,
-        protected CacheInterface $cache,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected MessageBus $messageBus,
-        protected RouterInterface $router,
-        protected Entity\Repository\ListenerRepository $listenerRepo,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
-        protected ReloadableEntityManagerInterface $em,
-        protected LoggerInterface $logger,
+        private readonly Adapters $adapters,
+        private readonly CacheInterface $cache,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MessageBus $messageBus,
+        private readonly RouterInterface $router,
+        private readonly Entity\Repository\ListenerRepository $listenerRepo,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly LoggerInterface $logger,
+        private readonly HlsListeners $hlsListeners,
     ) {
     }
 
@@ -51,6 +53,7 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
             GenerateRawNowPlaying::class => [
                 ['loadRawFromFrontend', 10],
                 ['addToRawFromRemotes', 0],
+                ['addToRawFromHls', -10],
             ],
         ];
     }
@@ -63,15 +66,11 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
 
         $include_clients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
 
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-        $remote_adapters = $this->adapters->getRemoteAdapters($station);
-
         // Build the new "raw" NowPlaying data.
         try {
             $event = new GenerateRawNowPlaying(
+                $this->adapters,
                 $station,
-                $frontend_adapter,
-                $remote_adapters,
                 $include_clients
             );
             $this->eventDispatcher->dispatch($event);
@@ -121,15 +120,13 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
     public function loadRawFromFrontend(GenerateRawNowPlaying $event): void
     {
         try {
-            $result = $event
-                ->getFrontend()
-                ->getNowPlaying($event->getStation(), $event->includeClients());
+            $result = $event->getFrontend()?->getNowPlaying($event->getStation(), $event->includeClients());
+            if (null !== $result) {
+                $event->setResult($result);
+            }
         } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-            return;
         }
-
-        $event->setResult($result);
     }
 
     public function addToRawFromRemotes(GenerateRawNowPlaying $event): void
@@ -137,11 +134,11 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         $result = $event->getResult();
 
         // Loop through all remotes and update NP data accordingly.
-        foreach ($event->getRemotes() as $ra_proxy) {
+        foreach ($event->getRemotes() as [$remote, $adapter]) {
             try {
-                $result = $ra_proxy->getAdapter()->updateNowPlaying(
+                $result = $adapter->updateNowPlaying(
                     $result,
-                    $ra_proxy->getRemote(),
+                    $remote,
                     $event->includeClients()
                 );
             } catch (Exception $e) {
@@ -150,6 +147,21 @@ class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterfac
         }
 
         $event->setResult($result);
+    }
+
+    public function addToRawFromHls(GenerateRawNowPlaying $event): void
+    {
+        try {
+            $event->setResult(
+                $this->hlsListeners->updateNowPlaying(
+                    $event->getResult(),
+                    $event->getStation(),
+                    $event->includeClients()
+                )
+            );
+        } catch (Exception $e) {
+            $this->logger->error(sprintf('HLS error: %s', $e->getMessage()));
+        }
     }
 
     protected function dispatchWebhooks(

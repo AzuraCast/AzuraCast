@@ -10,7 +10,6 @@ use App\Entity;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Adapters;
 use App\Radio\Configuration;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
@@ -36,7 +35,6 @@ final class CloneAction extends StationsController
         Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Entity\Repository\StationQueueRepository $queueRepo,
-        Adapters $adapters,
         Configuration $configuration,
         ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
@@ -47,7 +45,6 @@ final class CloneAction extends StationsController
             $stationRepo,
             $storageLocationRepo,
             $queueRepo,
-            $adapters,
             $configuration,
             $reloadableEm,
             $serializer,
@@ -164,10 +161,7 @@ final class CloneAction extends StationsController
             $this->cloneCollection($record->getMounts(), $newStation, $copier);
         } else {
             $newStation = $this->reloadableEm->refetch($newStation);
-
-            // Create default mountpoints if station supports them.
-            $frontendAdapter = $this->adapters->getFrontendAdapter($newStation);
-            $this->stationRepo->resetMounts($newStation, $frontendAdapter);
+            $this->stationRepo->resetMounts($newStation);
         }
 
         if (in_array(self::CLONE_REMOTES, $toClone, true)) {

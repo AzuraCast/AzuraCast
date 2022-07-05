@@ -21,7 +21,7 @@ final class PostArtAction
         ServerRequest $request,
         Response $response,
         string $station_id,
-        ?string $streamer_id = null
+        ?string $id = null
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -30,8 +30,8 @@ final class PostArtAction
             return $flowResponse;
         }
 
-        if (null !== $streamer_id) {
-            $streamer = $this->streamerRepo->requireForStation($streamer_id, $station);
+        if (null !== $id) {
+            $streamer = $this->streamerRepo->requireForStation($id, $station);
 
             $this->streamerRepo->writeArtwork(
                 $streamer,

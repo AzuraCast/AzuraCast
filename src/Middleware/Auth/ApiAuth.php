@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ApiAuth extends AbstractAuth
+final class ApiAuth extends AbstractAuth
 {
     public const API_CSRF_NAMESPACE = 'api';
 
@@ -40,7 +40,7 @@ class ApiAuth extends AbstractAuth
         return parent::process($request, $handler);
     }
 
-    protected function getApiUser(ServerRequestInterface $request): ?Entity\User
+    private function getApiUser(ServerRequestInterface $request): ?Entity\User
     {
         $apiKey = $this->getApiKey($request);
 
@@ -53,8 +53,8 @@ class ApiAuth extends AbstractAuth
 
         // Fallback to session login if available.
         $auth = new Auth(
-            userRepo:    $this->userRepo,
-            session:     $request->getAttribute(ServerRequest::ATTR_SESSION),
+            userRepo: $this->userRepo,
+            session: $request->getAttribute(ServerRequest::ATTR_SESSION),
             environment: $this->environment,
         );
 
@@ -83,7 +83,7 @@ class ApiAuth extends AbstractAuth
         return null;
     }
 
-    protected function getApiKey(ServerRequestInterface $request): ?string
+    private function getApiKey(ServerRequestInterface $request): ?string
     {
         // Check authorization header
         $authHeaders = $request->getHeader('Authorization');

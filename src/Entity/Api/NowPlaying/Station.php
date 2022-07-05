@@ -13,7 +13,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_NowPlaying_Station',
     type: 'object'
 )]
-class Station implements ResolvableUrlInterface
+final class Station implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Station ID',
@@ -51,12 +51,11 @@ class Station implements ResolvableUrlInterface
     )]
     public string $backend = '';
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The full URL to listen to the default mount of the station',
         example: 'http://localhost:8000/radio.mp3'
     )]
-    public $listen_url;
+    public string|UriInterface|null $listen_url;
 
     #[OA\Property(
         description: 'The public URL of the station.',
@@ -64,26 +63,23 @@ class Station implements ResolvableUrlInterface
     )]
     public ?string $url = null;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The public player URL for the station.',
         example: 'https://example.com/public/example_station'
     )]
-    public $public_player_url;
+    public string|UriInterface $public_player_url;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The playlist download URL in PLS format.',
         example: 'https://example.com/public/example_station/playlist.pls'
     )]
-    public $playlist_pls_url;
+    public string|UriInterface $playlist_pls_url;
 
-    /** @var string|UriInterface */
     #[OA\Property(
         description: 'The playlist download URL in M3U format.',
         example: 'https://example.com/public/example_station/playlist.m3u'
     )]
-    public $playlist_m3u_url;
+    public string|UriInterface $playlist_m3u_url;
 
     #[OA\Property(
         description: 'If the station is public (i.e. should be shown in listings of all stations)',
@@ -105,12 +101,18 @@ class Station implements ResolvableUrlInterface
     )]
     public bool $hls_enabled = false;
 
-    /** @var string|null|UriInterface */
     #[OA\Property(
         description: 'The full URL to listen to the HLS stream for the station.',
-        example: 'https://example.com/hls/azuratest_radio/live.m3u8'
+        example: 'https://example.com/hls/azuratest_radio/live.m3u8',
+        nullable: true
     )]
-    public $hls_url;
+    public string|UriInterface|null $hls_url = null;
+
+    #[OA\Property(
+        description: 'HLS Listeners',
+        example: 1
+    )]
+    public int $hls_listeners = 0;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
@@ -119,7 +121,9 @@ class Station implements ResolvableUrlInterface
      */
     public function resolveUrls(UriInterface $base): void
     {
-        $this->listen_url = (string)Router::resolveUri($base, $this->listen_url, true);
+        $this->listen_url = (null !== $this->listen_url)
+            ? (string)Router::resolveUri($base, $this->listen_url, true)
+            : null;
 
         $this->public_player_url = (string)Router::resolveUri($base, $this->public_player_url, true);
         $this->playlist_pls_url = (string)Router::resolveUri($base, $this->playlist_pls_url, true);

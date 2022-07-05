@@ -21,10 +21,10 @@ use Slim\Routing\RouteContext;
 /**
  * Require that the podcast has a published episode for public access
  */
-class RequirePublishedPodcastEpisodeMiddleware
+final class RequirePublishedPodcastEpisodeMiddleware
 {
     public function __construct(
-        protected PodcastRepository $podcastRepository
+        private readonly PodcastRepository $podcastRepository
     ) {
     }
 
@@ -56,7 +56,7 @@ class RequirePublishedPodcastEpisodeMiddleware
         return $response;
     }
 
-    protected function getLoggedInUser(ServerRequest $request): ?User
+    private function getLoggedInUser(ServerRequest $request): ?User
     {
         try {
             return $request->getUser();
@@ -65,12 +65,12 @@ class RequirePublishedPodcastEpisodeMiddleware
         }
     }
 
-    protected function canUserManageStationPodcasts(User $user, Station $station, Acl $acl): bool
+    private function canUserManageStationPodcasts(User $user, Station $station, Acl $acl): bool
     {
         return $acl->userAllowed($user, StationPermissions::Podcasts, $station->getId());
     }
 
-    protected function getPodcastIdFromRequest(ServerRequest $request): ?string
+    private function getPodcastIdFromRequest(ServerRequest $request): ?string
     {
         $routeArgs = RouteContext::fromRequest($request)->getRoute()?->getArguments();
 
@@ -83,7 +83,7 @@ class RequirePublishedPodcastEpisodeMiddleware
         return $podcastId;
     }
 
-    protected function checkPodcastHasPublishedEpisodes(Station $station, string $podcastId): bool
+    private function checkPodcastHasPublishedEpisodes(Station $station, string $podcastId): bool
     {
         $podcastId = explode('|', $podcastId, 2)[0];
 

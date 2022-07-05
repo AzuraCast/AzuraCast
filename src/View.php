@@ -17,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
-class View extends Engine
+final class View extends Engine
 {
     use RequestAwareTrait;
 
@@ -26,7 +26,7 @@ class View extends Engine
         EventDispatcherInterface $dispatcher,
         Version $version,
         RouterInterface $router,
-        protected Assets $assets
+        private Assets $assets
     ) {
         parent::__construct($environment->getViewsDirectory(), 'phtml');
 

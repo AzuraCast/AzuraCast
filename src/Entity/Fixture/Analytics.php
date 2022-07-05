@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class Analytics extends AbstractFixture implements DependentFixtureInterface
+final class Analytics extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {

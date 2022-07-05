@@ -43,6 +43,13 @@ class Listener implements
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationRemote $remote = null;
 
+    #[ORM\Column(nullable: true)]
+    protected ?int $hls_stream_id = null;
+
+    #[ORM\ManyToOne(targetEntity: StationHlsStream::class)]
+    #[ORM\JoinColumn(name: 'hls_stream_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?StationHlsStream $hls_stream = null;
+
     #[ORM\Column]
     protected int $listener_uid;
 
@@ -116,6 +123,21 @@ class Listener implements
     public function setRemote(?StationRemote $remote): void
     {
         $this->remote = $remote;
+    }
+
+    public function getHlsStream(): ?StationHlsStream
+    {
+        return $this->hls_stream;
+    }
+
+    public function getHlsStreamId(): ?int
+    {
+        return $this->hls_stream_id;
+    }
+
+    public function setHlsStream(?StationHlsStream $hls_stream): void
+    {
+        $this->hls_stream = $hls_stream;
     }
 
     public function getListenerUid(): int

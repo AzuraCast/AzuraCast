@@ -188,6 +188,17 @@ return static function (RouteCollectorProxy $group) {
                 Controller\Api\Admin\Stations\StorageLocationsAction::class
             )->setName('api:admin:stations:storage-locations')
                 ->add(new Middleware\Permissions(GlobalPermissions::Stations));
+
+            $group->group(
+                '',
+                function (RouteCollectorProxy $group) {
+                    $group->get('/logs', Controller\Api\Admin\LogsAction::class)
+                        ->setName('api:admin:logs');
+
+                    $group->get('/log/{log}', Controller\Api\Admin\LogsAction::class)
+                        ->setName('api:admin:log');
+                }
+            )->add(new Middleware\Permissions(GlobalPermissions::Logs));
         }
     );
 };

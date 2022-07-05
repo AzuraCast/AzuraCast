@@ -13,7 +13,9 @@
                 <b-col xl="6" lg="7" md="12" sm="12" class="d-flex my-2">
                     <div class="flex-fill">
                         <div class="input-group">
-                            <span class="icon glyphicon input-group-addon search"></span>
+                            <div class="input-group-prepend text-muted">
+                                <icon icon="search"></icon>
+                            </div>
                             <b-form-input debounce="200" v-model="filter" type="search"
                                           class="search-field form-control"
                                           :placeholder="langSearch"></b-form-input>

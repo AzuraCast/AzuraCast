@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     schema: 'Api_StationPlaylistQueue',
     type: 'object'
 )]
-class StationPlaylistQueue
+final class StationPlaylistQueue
 {
     #[OA\Property(
         description: 'ID of the StationPlaylistMedia record associating this track with the playlist',

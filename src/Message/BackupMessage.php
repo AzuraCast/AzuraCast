@@ -6,7 +6,7 @@ namespace App\Message;
 
 use App\MessageQueue\QueueManagerInterface;
 
-class BackupMessage extends AbstractUniqueMessage
+final class BackupMessage extends AbstractUniqueMessage
 {
     /** @var int|null The storage location to back up to. */
     public ?int $storageLocationId = null;

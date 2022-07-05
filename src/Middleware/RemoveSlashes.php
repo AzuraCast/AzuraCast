@@ -13,12 +13,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Remove trailing slash from all URLs when routing.
  */
-class RemoveSlashes implements MiddlewareInterface
+final class RemoveSlashes implements MiddlewareInterface
 {
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $uri = $request->getUri();

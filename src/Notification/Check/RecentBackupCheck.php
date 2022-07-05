@@ -11,11 +11,11 @@ use App\Event\GetNotifications;
 use App\Session\Flash;
 use Carbon\CarbonImmutable;
 
-class RecentBackupCheck
+final class RecentBackupCheck
 {
     public function __construct(
-        protected Environment $environment,
-        protected Entity\Repository\SettingsRepository $settingsRepo
+        private readonly Environment $environment,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 

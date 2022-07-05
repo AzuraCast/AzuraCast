@@ -8,7 +8,7 @@ use App\Exception;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class BootstrapException extends Exception
+final class BootstrapException extends Exception
 {
     public function __construct(
         string $message = '',

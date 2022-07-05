@@ -14,11 +14,11 @@ use DateTime;
 use DateTimeZone;
 use Symfony\Component\Intl\Countries;
 
-class StationFormComponent implements VueComponentInterface
+final class StationFormComponent implements VueComponentInterface
 {
     public function __construct(
-        protected Adapters $adapters,
-        protected SettingsRepository $settingsRepo
+        private readonly Adapters $adapters,
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -39,7 +39,7 @@ class StationFormComponent implements VueComponentInterface
         ];
     }
 
-    protected function getTimezones(): array
+    private function getTimezones(): array
     {
         $tzSelect = [
             'UTC' => [

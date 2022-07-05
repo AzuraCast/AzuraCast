@@ -10,14 +10,14 @@ use GuzzleHttp\Client;
 use Monolog\Logger;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class Email extends AbstractConnector
+final class Email extends AbstractConnector
 {
     public const NAME = 'email';
 
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        protected Mail $mail
+        private readonly Mail $mail
     ) {
         parent::__construct($logger, $httpClient);
     }

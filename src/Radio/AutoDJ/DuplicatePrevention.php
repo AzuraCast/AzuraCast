@@ -7,7 +7,7 @@ namespace App\Radio\AutoDJ;
 use App\Entity;
 use Monolog\Logger;
 
-class DuplicatePrevention
+final class DuplicatePrevention
 {
     public const ARTIST_SEPARATORS = [
         ', ',

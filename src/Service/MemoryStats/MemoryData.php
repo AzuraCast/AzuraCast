@@ -7,7 +7,7 @@ namespace App\Service\MemoryStats;
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
 
-class MemoryData
+final class MemoryData
 {
     public function __construct(
         public readonly BigInteger $memTotal,

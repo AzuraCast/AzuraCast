@@ -10,7 +10,7 @@ use App\Radio\Enums\FrontendAdapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
-class Station extends AbstractFixture
+final class Station extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {

@@ -21,7 +21,7 @@ use const JSON_THROW_ON_ERROR;
  * attribute of the PSR-7 request. This implementation is transparent to any controllers
  * using this code.
  */
-class HandleMultipartJson implements MiddlewareInterface
+final class HandleMultipartJson implements MiddlewareInterface
 {
     /**
      * @param ServerRequestInterface $request

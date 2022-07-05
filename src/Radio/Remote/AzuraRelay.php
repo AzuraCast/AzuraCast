@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use NowPlaying\Result\Result;
 
-class AzuraRelay extends AbstractRemote
+final class AzuraRelay extends AbstractRemote
 {
     public function updateNowPlaying(
         Result $np,

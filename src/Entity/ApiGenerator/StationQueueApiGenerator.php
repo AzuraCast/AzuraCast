@@ -7,13 +7,11 @@ namespace App\Entity\ApiGenerator;
 use App\Entity;
 use Psr\Http\Message\UriInterface;
 
-class StationQueueApiGenerator
+final class StationQueueApiGenerator
 {
-    protected SongApiGenerator $songApiGenerator;
-
-    public function __construct(SongApiGenerator $songApiGenerator)
-    {
-        $this->songApiGenerator = $songApiGenerator;
+    public function __construct(
+        private readonly SongApiGenerator $songApiGenerator
+    ) {
     }
 
     public function __invoke(

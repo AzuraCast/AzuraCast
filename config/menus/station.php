@@ -3,6 +3,7 @@
  * Administrative dashboard configuration.
  */
 
+use App\Enums\StationFeatures;
 use App\Enums\StationPermissions;
 use App\Radio\Enums\AudioProcessingMethods;
 
@@ -13,13 +14,12 @@ return function (App\Event\BuildStationMenu $e) {
     $backendConfig = $station->getBackendConfig();
 
     $router = $request->getRouter();
-    $backend = $request->getStationBackend();
-    $frontend = $request->getStationFrontend();
+    $frontendEnum = $station->getFrontendTypeEnum();
 
     $willDisconnectMessage = __('Restart broadcasting? This will disconnect any current listeners.');
     $willNotDisconnectMessage = __('Reload broadcasting? Current listeners will not be disconnected.');
 
-    $reloadSupported = $frontend->supportsReload();
+    $reloadSupported = $frontendEnum->supportsReload();
     $reloadMessage = $reloadSupported ? $willNotDisconnectMessage : $willDisconnectMessage;
 
     $settings = $e->getSettings();
@@ -62,33 +62,30 @@ return function (App\Event\BuildStationMenu $e) {
             'media' => [
                 'label' => __('Media'),
                 'icon' => 'library_music',
+                'visible' => StationFeatures::Media->supportedForStation($station),
                 'items' => [
                     'files' => [
                         'label' => __('Music Files'),
                         'icon' => 'library_music',
                         'url' => (string)$router->fromHere('stations:files:index'),
-                        'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_duplicates' => [
                         'label' => __('Duplicate Songs'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:duplicates',
-                        'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_unprocessable' => [
                         'label' => __('Unprocessable Files'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:unprocessable',
-                        'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_unassigned' => [
                         'label' => __('Unassigned Files'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:files:index') . '#special:unassigned',
-                        'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
                     'ondemand' => [
@@ -103,14 +100,13 @@ return function (App\Event\BuildStationMenu $e) {
                         'label' => __('SFTP Users'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:sftp_users:index'),
-                        'visible' => App\Service\SftpGo::isSupportedForStation($station),
+                        'visible' => StationFeatures::Sftp->supportedForStation($station),
                         'permission' => StationPermissions::Media,
                     ],
                     'bulk_media' => [
                         'label' => __('Bulk Media Import/Export'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:bulk-media'),
-                        'visible' => $backend->supportsMedia(),
                         'permission' => StationPermissions::Media,
                     ],
                 ],
@@ -120,7 +116,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Playlists'),
                 'icon' => 'queue_music',
                 'url' => (string)$router->fromHere('stations:playlists:index'),
-                'visible' => $backend->supportsMedia(),
+                'visible' => StationFeatures::Media->supportedForStation($station),
                 'permission' => StationPermissions::Media,
             ],
 
@@ -128,18 +124,19 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Podcasts'),
                 'icon' => 'cast',
                 'url' => (string)$router->fromHere('stations:podcasts:index'),
+                'visible' => StationFeatures::Podcasts->supportedForStation($station),
                 'permission' => StationPermissions::Podcasts,
             ],
 
             'live_streaming' => [
                 'label' => __('Live Streaming'),
                 'icon' => 'mic',
+                'visible' => StationFeatures::Streamers->supportedForStation($station),
                 'items' => [
                     'streamers' => [
                         'label' => __('Streamer/DJ Accounts'),
                         'icon' => 'mic',
                         'url' => (string)$router->fromHere('stations:streamers:index'),
-                        'visible' => $backend->supportsStreamers(),
                         'permission' => StationPermissions::Streamers,
                     ],
 
@@ -153,7 +150,7 @@ return function (App\Event\BuildStationMenu $e) {
                             true
                         )
                             ->withScheme('https'),
-                        'visible' => $station->getEnablePublicPage() && $station->getEnableStreamers(),
+                        'visible' => $station->getEnablePublicPage(),
                         'external' => true,
                     ],
                 ],
@@ -163,6 +160,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Web Hooks'),
                 'icon' => 'code',
                 'url' => (string)$router->fromHere('stations:webhooks:index'),
+                'visible' => StationFeatures::Webhooks->supportedForStation($station),
                 'permission' => StationPermissions::WebHooks,
             ],
 
@@ -203,33 +201,34 @@ return function (App\Event\BuildStationMenu $e) {
                         'label' => __('Mount Points'),
                         'icon' => 'wifi_tethering',
                         'url' => (string)$router->fromHere('stations:mounts:index'),
-                        'visible' => $frontend->supportsMounts(),
+                        'visible' => StationFeatures::MountPoints->supportedForStation($station),
                         'permission' => StationPermissions::MountPoints,
                     ],
                     'hls_streams' => [
                         'label' => __('HLS Streams'),
                         'url' => (string)$router->fromHere('stations:hls_streams:index'),
-                        'visible' => $backend->supportsHls(),
+                        'visible' => StationFeatures::HlsStreams->supportedForStation($station),
                         'permission' => StationPermissions::MountPoints,
                     ],
                     'remotes' => [
                         'label' => __('Remote Relays'),
                         'icon' => 'router',
                         'url' => (string)$router->fromHere('stations:remotes:index'),
+                        'visible' => StationFeatures::RemoteRelays->supportedForStation($station),
                         'permission' => StationPermissions::RemoteRelays,
                     ],
                     'fallback' => [
                         'label' => __('Custom Fallback File'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:fallback'),
+                        'visible' => StationFeatures::Media->supportedForStation($station),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'ls_config' => [
                         'label' => __('Edit Liquidsoap Configuration'),
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:util:ls_config'),
-                        'visible' => $settings->getEnableAdvancedFeatures()
-                            && $backend instanceof App\Radio\Backend\Liquidsoap,
+                        'visible' => StationFeatures::CustomLiquidsoapConfig->supportedForStation($station),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'stations:stereo_tool_config' => [
@@ -237,7 +236,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:stereo_tool_config'),
                         'visible' => $settings->getEnableAdvancedFeatures()
-                            && $backend instanceof App\Radio\Backend\Liquidsoap
+                            && StationFeatures::Media->supportedForStation($station)
                             && AudioProcessingMethods::StereoTool === $backendConfig->getAudioProcessingMethodEnum(),
                         'permission' => StationPermissions::Broadcasting,
                     ],
@@ -265,10 +264,10 @@ return function (App\Event\BuildStationMenu $e) {
                 ],
             ],
 
-            'help' => [
-                'label' => __('Help'),
-                'icon' => 'support',
-                'url' => (string)$router->fromHere('stations:logs:index'),
+            'logs' => [
+                'label' => __('Logs'),
+                'icon' => 'web_stories',
+                'url' => (string)$router->fromHere('stations:logs'),
                 'permission' => StationPermissions::Logs,
             ],
         ]

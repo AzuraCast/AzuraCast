@@ -347,7 +347,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsEnableOnPublicPlayer(): bool
     {
-        return $this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER, true);
+        return $this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER, false);
     }
 
     public function setHlsEnableOnPublicPlayer(?bool $enable): void
@@ -359,7 +359,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsIsDefault(): bool
     {
-        return $this->get(self::HLS_IS_DEFAULT, true);
+        return $this->get(self::HLS_IS_DEFAULT, false);
     }
 
     public function setHlsIsDefault(?bool $value): void

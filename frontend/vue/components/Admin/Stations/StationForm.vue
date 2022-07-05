@@ -301,8 +301,8 @@ export default {
                 },
                 backend_type: BACKEND_LIQUIDSOAP,
                 backend_config: {
-                    hls_enable_on_public_player: true,
-                    hls_is_default: true,
+                    hls_enable_on_public_player: false,
+                    hls_is_default: false,
                     crossfade_type: 'normal',
                     crossfade: 2,
                     audio_processing_method: AUDIO_PROCESSING_NONE,

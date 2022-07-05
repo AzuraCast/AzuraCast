@@ -283,7 +283,7 @@ msgstr ""
 #: ./vue/components/Admin/Settings/ServicesTab.vue:172
 #: ./vue/components/Admin/Settings/ServicesTab.vue:1
 #: ./vue/components/Public/OnDemand.vue:41
-#: ./vue/components/Public/Player.vue:74
+#: ./vue/components/Public/Player.vue:73
 #: ./vue/components/Public/Requests.vue:61
 #: ./vue/components/Stations/Media.vue:157
 #: ./vue/components/Stations/Media/EditModal.vue:20
@@ -2149,7 +2149,7 @@ msgstr ""
 
 #: ./vue/components/Common/Waveform.vue:37
 #: ./vue/components/InlinePlayer.vue:34
-#: ./vue/components/Public/Player.vue:71
+#: ./vue/components/Public/Player.vue:70
 msgid "Full Volume"
 msgstr ""
 
@@ -2243,7 +2243,7 @@ msgstr ""
 msgid "History"
 msgstr ""
 
-#: ./vue/components/Public/Player.vue:81
+#: ./vue/components/Public/Player.vue:80
 msgid "HLS"
 msgstr ""
 
@@ -2900,6 +2900,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Queue.vue:16
 #: ./vue/components/Stations/Queue.vue:3
+#: /var/azuracast/www/config/menus/station.php:268
 msgid "Logs"
 msgstr ""
 
@@ -3166,7 +3167,7 @@ msgstr ""
 
 #: ./vue/components/Common/Waveform.vue:28
 #: ./vue/components/InlinePlayer.vue:25
-#: ./vue/components/Public/Player.vue:65
+#: ./vue/components/Public/Player.vue:64
 msgid "Mute"
 msgstr ""
 
@@ -5896,7 +5897,7 @@ msgstr ""
 
 #: ./vue/components/Common/Waveform.vue:65
 #: ./vue/components/InlinePlayer.vue:21
-#: ./vue/components/Public/Player.vue:68
+#: ./vue/components/Public/Player.vue:67
 msgid "Volume"
 msgstr ""
 
@@ -6066,8 +6067,7 @@ msgstr ""
 msgid "Bulk Media Import/Export"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/HelpAction.php:24
-#: /var/azuracast/www/config/menus/station.php:268
+#: /var/azuracast/www/src/Controller/Stations/LogsAction.php:24
 #: /var/azuracast/www/templates/main.phtml:107
 msgid "Help"
 msgstr ""
@@ -6385,19 +6385,48 @@ msgstr ""
 msgid "AzuraCast Application Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:82
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:81
+#, php-format
+msgid "%s Service Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:83
+msgid "MariaDB"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:88
+msgid "Redis"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:93
+msgid "Beanstalkd"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:98
+msgid "Cron"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:103
+msgid "Nginx"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:108
+msgid "SFTPGo"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:114
 msgid "Nginx Access Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:87
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:119
 msgid "Nginx Error Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:92
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:124
 msgid "PHP Application Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:97
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:129
 msgid "Supervisord Log"
 msgstr ""
 

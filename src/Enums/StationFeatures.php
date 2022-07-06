@@ -24,13 +24,13 @@ enum StationFeatures
         $backendEnabled = $station->getBackendTypeEnum()->isEnabled();
 
         return match ($this) {
-            self::Media, self::RemoteRelays, self::CustomLiquidsoapConfig => $backendEnabled,
+            self::Media, self::CustomLiquidsoapConfig => $backendEnabled,
             self::Streamers => $backendEnabled && $station->getEnableStreamers(),
             self::Sftp => $backendEnabled && $station->getMediaStorageLocation()->isLocal(),
             self::MountPoints => $station->getFrontendTypeEnum()->supportsMounts(),
             self::HlsStreams => $backendEnabled && $station->getEnableHls(),
             self::Requests => $backendEnabled && $station->getEnableRequests(),
-            self::Webhooks, self::Podcasts => true,
+            self::Webhooks, self::Podcasts, self::RemoteRelays => true,
         };
     }
 }

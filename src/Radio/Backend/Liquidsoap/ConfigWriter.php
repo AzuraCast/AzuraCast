@@ -108,7 +108,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $stationTz = self::cleanUpString($station->getTimezone());
 
         $event->appendBlock(
-            <<<EOF
+            <<<LIQ
             init.daemon.set(false)
             init.daemon.pidfile.path.set("{$pidfile}")
             
@@ -141,7 +141,7 @@ final class ConfigWriter implements EventSubscriberInterface
             # Track live transition for crossfades.
             to_live = ref(false)
             ignore(to_live)
-            EOF
+            LIQ
         );
 
         $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
@@ -151,7 +151,7 @@ final class ConfigWriter implements EventSubscriberInterface
         );
 
         $event->appendBlock(
-            <<<EOF
+            <<<LIQ
             azuracast_api_url = "{$stationApiUrl}"
             azuracast_api_key = "{$stationApiAuth}"
             
@@ -177,7 +177,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     "false"
                 end
             end
-            EOF
+            LIQ
         );
 
         $mediaStorageLocation = $station->getMediaStorageLocation();
@@ -186,7 +186,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $stationMediaDir = $mediaStorageLocation->getFilteredPath();
 
             $event->appendBlock(
-                <<<EOF
+                <<<LIQ
                 station_media_dir = "{$stationMediaDir}"
                 def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
                     ["#{station_media_dir}/#{arg}"]
@@ -198,11 +198,11 @@ final class ConfigWriter implements EventSubscriberInterface
                     doc="Pull files from AzuraCast media directory.",
                     syntax="media:uri"
                 )
-                EOF
+                LIQ
             );
         } else {
             $event->appendBlock(
-                <<<EOF
+                <<<LIQ
                 def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
                     timeout_ms = 1000 * (int_of_float(maxtime) - int_of_float(time()))
                     
@@ -219,7 +219,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     doc="Pull files from AzuraCast media directory.",
                     syntax="media:uri"
                 )
-                EOF
+                LIQ
             );
         }
 
@@ -235,13 +235,13 @@ final class ConfigWriter implements EventSubscriberInterface
             };
 
             $event->appendBlock(
-                <<<EOF
+                <<<LIQ
                 # Optimize Performance
                 runtime.gc.set(runtime.gc.get().{
                   space_overhead = {$gcSpaceOverhead},
                   allocation_policy = 2
                 })
-                EOF
+                LIQ
             );
         }
     }
@@ -505,7 +505,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         if (!$station->useManualAutoDJ()) {
             $event->appendBlock(
-                <<< EOF
+                <<< LIQ
                 # AutoDJ Next Song Script
                 def autodj_next_song() =
                     response = azuracast_api_call(
@@ -559,17 +559,17 @@ final class ConfigWriter implements EventSubscriberInterface
                 
                 ref_dynamic = ref(dynamic);
                 thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
-                EOF
+                LIQ
             );
         }
 
         // Handle remote URL fallbacks.
         if (null !== $fallbackRemoteUrl) {
             $event->appendBlock(
-                <<< EOF
+                <<< LIQ
                 remote_url = {$fallbackRemoteUrl}
                 radio = fallback(id="fallback_remote_url", track_sensitive = false, [remote_url, radio])
-                EOF
+                LIQ
             );
         }
 
@@ -577,7 +577,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
         $event->appendBlock(
-            <<< EOF
+            <<< LIQ
             requests = request.queue(id="{$requestsQueueName}")
             requests = cue_cut(id="cue_{$requestsQueueName}", requests)
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
@@ -585,7 +585,7 @@ final class ConfigWriter implements EventSubscriberInterface
             interrupting_queue = request.queue(id="{$interruptingQueueName}")
             interrupting_queue = cue_cut(id="cue_{$interruptingQueueName}", interrupting_queue)
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
-            EOF
+            LIQ
         );
 
         if (!empty($scheduleSwitchesRemoteUrl)) {
@@ -627,7 +627,7 @@ final class ConfigWriter implements EventSubscriberInterface
      * @param Entity\StationSchedule $playlistSchedule
      * @return string
      */
-    protected function getScheduledPlaylistPlayTime(
+    private function getScheduledPlaylistPlayTime(
         WriteLiquidsoapConfiguration $event,
         Entity\StationSchedule $playlistSchedule
     ): string {
@@ -786,7 +786,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $recordLiveStreams = $settings->recordStreams();
 
         $event->appendBlock(
-            <<< EOF
+            <<< LIQ
             # DJ Authentication
             last_authenticated_dj = ref("")
             live_dj = ref("")
@@ -839,7 +839,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 live_enabled := false
                 live_dj := ""
             end
-            EOF
+            LIQ
         );
 
         $harbor_params = [
@@ -863,7 +863,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $harborParams = implode(', ', $harbor_params);
 
         $event->appendBlock(
-            <<<EOF
+            <<<LIQ
             # A Pre-DJ source of radio that can be broadcast if needed',
             radio_without_live = radio
             ignore(radio_without_live)
@@ -896,7 +896,7 @@ final class ConfigWriter implements EventSubscriberInterface
             
             # Continuously check on live.
             radio = source.on_frame(radio, check_live)
-            EOF
+            LIQ
         );
 
         if ($recordLiveStreams) {
@@ -909,7 +909,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $recordPathPrefix = Entity\StationStreamerBroadcast::PATH_PREFIX;
 
             $event->appendBlock(
-                <<< EOF
+                <<< LIQ
                 # Record Live Broadcasts
                 recording_base_path = "{$recordBasePath}"
                 recording_extension = "{$recordExtension}"
@@ -934,7 +934,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         ()
                     end
                 )
-                EOF
+                LIQ
             );
         }
     }
@@ -945,23 +945,23 @@ final class ConfigWriter implements EventSubscriberInterface
         $settings = $station->getBackendConfig();
 
         $event->appendBlock(
-            <<<EOF
+            <<<LIQ
             # Allow for Telnet-driven insertion of custom metadata.
             radio = server.insert_metadata(id="custom_metadata", radio)
             
             # Apply amplification metadata (if supplied)
             radio = amplify(override="liq_amplify", 1., radio)
-            EOF
+            LIQ
         );
 
         // NRJ normalization
         if (AudioProcessingMethods::Liquidsoap === $settings->getAudioProcessingMethodEnum()) {
             $event->appendBlock(
-                <<<EOF
+                <<<LIQ
                 # Normalization and Compression
                 radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
                 radio = compress.exponential(radio, mu = 1.0)
-                EOF
+                LIQ
             );
         }
 
@@ -982,21 +982,21 @@ final class ConfigWriter implements EventSubscriberInterface
             }
 
             $event->appendBlock(
-                <<<EOF
+                <<<LIQ
                 # Stereo Tool Pipe
                 radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
-                EOF
+                LIQ
             );
         }
 
         // Replaygain metadata
         if ($settings->useReplayGain()) {
             $event->appendBlock(
-                <<<EOF
+                <<<LIQ
                 # Replaygain Metadata
                 enable_replaygain_metadata()
                 radio = replaygain(radio)
-                EOF
+                LIQ
             );
         }
 
@@ -1004,25 +1004,13 @@ final class ConfigWriter implements EventSubscriberInterface
         $errorFile = $this->fallbackFile->getFallbackPathForStation($station);
 
         $event->appendBlock(
-            <<<EOF
+            <<<LIQ
             radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "{$errorFile}")])
-            EOF
+            LIQ
         );
 
         $event->appendBlock(
-            <<<EOF
-            # Handle "Jingle Mode" tracks by replaying the previous metadata.
-            last_metadata = ref([])
-            def handle_jingle_mode(m) = 
-                if (m["jingle_mode"] == "true") then
-                    !last_metadata    
-                else
-                    last_metadata := m
-                    m
-                end
-            end
-            radio = map_metadata(update=false, handle_jingle_mode, radio)
-            
+            <<<LIQ
             # Send metadata changes back to AzuraCast
             last_title = ref("")
             last_artist = ref("")
@@ -1055,7 +1043,20 @@ final class ConfigWriter implements EventSubscriberInterface
             end
             
             radio.on_metadata(metadata_updated)
-            EOF
+            
+            # Handle "Jingle Mode" tracks by replaying the previous metadata.
+            last_metadata = ref([])
+            def handle_jingle_mode(m) = 
+                if (m["jingle_mode"] == "true") then
+                    !last_metadata    
+                else
+                    last_metadata := m
+                    m
+                end
+            end
+            
+            radio = metadata.map(update=false, handle_jingle_mode, radio)
+            LIQ
         );
 
         // Custom configuration
@@ -1114,7 +1115,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $streamBitrate = $hlsStream->getBitrate() ?? 128;
 
-            $lsConfig[] = <<<LS
+            $lsConfig[] = <<<LIQ
             {$streamVarName} = %ffmpeg(
                 format="mpegts",
                 %audio(
@@ -1125,7 +1126,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     profile="aac_low"
                 )
             )
-            LS;
+            LIQ;
 
             $hlsStreams[] = $streamVarName;
         }
@@ -1153,7 +1154,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
 
         $event->appendBlock(
-            <<<LS
+            <<<LIQ
             def hls_segment_name(~position,~extname,stream_name) =
                 timestamp = int_of_float(time())
                 duration = {$hlsSegmentLength}
@@ -1170,7 +1171,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 hls_streams,
                 radio
             )
-            LS
+            LIQ
         );
     }
 

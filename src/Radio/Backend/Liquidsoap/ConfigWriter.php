@@ -604,9 +604,20 @@ final class ConfigWriter implements EventSubscriberInterface
             }
         }
 
-        $event->appendLines([
-            'add_skip_command(radio)',
-        ]);
+        $event->appendBlock(
+            <<<LIQ
+            def add_skip_command(s) =
+                def skip(_) =
+                    source.skip(s)
+                    "Done!"
+                end
+                
+                server.register(namespace="radio", usage="skip", description="Skip the current song.", "skip",skip)
+            end
+            
+            add_skip_command(radio)
+            LIQ
+        );
     }
 
     /**

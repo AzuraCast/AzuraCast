@@ -18,7 +18,7 @@ final class Version20220706235608 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE song_history ADD is_visible TINYINT(1) NOT NULL');
         $this->addSql('CREATE INDEX idx_is_visible ON song_history (is_visible)');
-        
+
         $this->addSql('UPDATE song_history SET is_visible=1');
     }
 

@@ -13,7 +13,7 @@
                 <thead>
                 <tr>
                     <th colspan="2" key="lang_streams_local" v-translate>Local Streams</th>
-                    <th key="lang_streams_listeners" v-translate>Listeners</th>
+                    <th class="text-right" key="lang_streams_listeners" v-translate>Listeners</th>
                 </tr>
                 </thead>
                 <tbody>

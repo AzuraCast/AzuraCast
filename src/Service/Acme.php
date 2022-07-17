@@ -106,7 +106,6 @@ final class Acme
             $acme->loadAccountKey('file://' . $acmeDir . '/account_key.pem');
         } else {
             $accountKey = $acme->generateECKey();
-            $fs->dumpFile($acmeDir . '/account_key.pem', $accountKey);
             $acme->loadAccountKey($accountKey);
 
             if (!empty($acmeEmail)) {
@@ -114,6 +113,7 @@ final class Acme
             } else {
                 $acme->register(true);
             }
+            $fs->dumpFile($acmeDir . '/account_key.pem', $accountKey);
         }
 
         $domains = array_map(

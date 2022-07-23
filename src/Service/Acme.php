@@ -125,7 +125,7 @@ final class Acme
         if (
             !$force
             && file_exists($acmeDir . '/acme.crt')
-            && $domains === $acme->getSAN('file://' . $acmeDir . '/acme.crt')
+            && empty(array_diff($domains, $acme->getSAN('file://' . $acmeDir . '/acme.crt')))
             && $acme->getRemainingDays('file://' . $acmeDir . '/acme.crt') > self::THRESHOLD_DAYS
         ) {
             throw new RuntimeException('Certificate does not need renewal.');

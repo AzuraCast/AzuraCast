@@ -30,6 +30,9 @@ release channel, you can take advantage of these new features and fixes.
 - Fixed a bug with logging (Liquidsoap, Docker, etc) to reduce CPU load issues. 
 
 - Fixed missing city fields in listener data.
+
+- Fixed renewal checks & minor ACME issues for HTTPs (Thanks to skoerfgen)
+
 ---
 
 # AzuraCast 0.17.2 (Jul 5, 2022)

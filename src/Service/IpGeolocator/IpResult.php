@@ -31,7 +31,7 @@ final class IpResult
         }
 
         $record->region = $ipInfo['subdivisions'][0]['names']['en'] ?? null;
-        $record->city = $ipInfo['city'][0]['names']['en'] ?? null;
+        $record->city = $ipInfo['city']['names']['en'] ?? null;
         $record->country = $ipInfo['country']['iso_code'] ?? null;
         $record->description = implode(
             ', ',

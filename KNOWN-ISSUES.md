@@ -18,10 +18,7 @@ This file will include the majority of the known issues we're aware of with Azur
 
 ### High Priority Bugs
 We class bugs as 'high priority' when it impacts a large amount of users, related to CPU and Memory usages or security bugs. These bugs can be complex to debug and requires a large  amount of investigation and reviewing by our team.
-
-- Abnormally high CPU and Memory usages for Liquidsoap (Impacts 0.15 onwards) [#5099](https://github.com/AzuraCast/AzuraCast/issues/5099)
  
-- Docker installations `overlay` sub directories consuming abnormally high storage (Impacts very limited users) [#5127](https://github.com/AzuraCast/AzuraCast/issues/5127) [#5077](https://github.com/AzuraCast/AzuraCast/issues/5077)
 
 ### Medium Priority
 
@@ -32,8 +29,6 @@ We class bugs as 'high priority' when it impacts a large amount of users, relate
 - Deleting a station can fail to remove it from supervisord (very limited users impacted) [#4898](https://github.com/AzuraCast/AzuraCast/issues/4898)
 
 - Remote Album Art can't find artwork that exists on Last.FM [#5103](https://github.com/AzuraCast/AzuraCast/issues/5103)
-
-
 
 - No metadata for FLAC mount point (Upstream issue) - [#5008](https://github.com/AzuraCast/AzuraCast/issues/5008)
 

@@ -12,7 +12,7 @@ release channel, you can take advantage of these new features and fixes.
 ---
 
 # AzuraCast 0.17.3 (Aug 3, 2022) 
-- Note: Development has slowed down while we continue to assist SilverEagle a emergency he is currently experiencing
+- Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term home. 
   If you wish to assist SilverEagle during these times, please review this GitHub issue - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
 
 ## New Features/Changes

@@ -142,10 +142,6 @@ final class Configuration
 
             $programs[$programName] = $backend;
             $programNames[] = $programName;
-
-            if ($this->environment->isDocker()) {
-                $programNames[] = $programName . '_log';
-            }
         }
 
         if (null !== $frontend && $frontend->hasCommand($station)) {
@@ -153,10 +149,6 @@ final class Configuration
 
             $programs[$programName] = $frontend;
             $programNames[] = $programName;
-
-            if ($this->environment->isDocker()) {
-                $programNames[] = $programName . '_log';
-            }
         }
 
         $stationGroup = self::getSupervisorGroupName($station);
@@ -166,14 +158,13 @@ final class Configuration
         $supervisorConfig[] = '';
 
         foreach ($programs as $programName => $adapter) {
-            $logPath = $adapter->getLogPath($station);
             $configLines = [
                 'user' => 'azuracast',
                 'priority' => 950,
                 'command' => $adapter->getCommand($station),
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => 'TZ="' . $station->getTimezone() . '"',
-                'stdout_logfile' => $logPath,
+                'stdout_logfile' => $adapter->getLogPath($station),
                 'stdout_logfile_maxbytes' => '5MB',
                 'stdout_logfile_backups' => '5',
                 'redirect_stderr' => 'true',
@@ -184,24 +175,6 @@ final class Configuration
                 $supervisorConfig[] = $configKey . '=' . $configValue;
             }
             $supervisorConfig[] = '';
-
-            if ($this->environment->isDocker()) {
-                $configLines = [
-                    'user' => 'azuracast',
-                    'priority' => 950,
-                    'command' => 'tail_with_prefix ' . $programName . ' ' . $logPath,
-                    'directory' => $station->getRadioConfigDir(),
-                    'stdout_logfile' => '/proc/1/fd/1',
-                    'stdout_logfile_maxbytes' => '0',
-                    'redirect_stderr' => 'true',
-                ];
-
-                $supervisorConfig[] = '[program:' . $programName . '_log]';
-                foreach ($configLines as $configKey => $configValue) {
-                    $supervisorConfig[] = $configKey . '=' . $configValue;
-                }
-                $supervisorConfig[] = '';
-            }
         }
 
         // Write config contents

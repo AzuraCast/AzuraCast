@@ -40,14 +40,14 @@ class SongHistory implements
     protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationPlaylist $playlist = null;
 
     #[ORM\Column(nullable: true)]
     protected ?int $streamer_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationStreamer $streamer = null;
 
     #[ORM\Column(nullable: true)]
@@ -61,7 +61,7 @@ class SongHistory implements
     protected ?int $request_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationRequest $request = null;
 
     #[ORM\Column]

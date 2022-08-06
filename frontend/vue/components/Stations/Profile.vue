@@ -1,37 +1,34 @@
 <template>
-    <div class="row" id="profile">
-        <div class="col-lg-7">
-            <profile-header v-bind="$props"></profile-header>
+    <div>
+        <profile-header v-bind="$props"></profile-header>
 
-            <profile-now-playing :np="np" v-bind="$props"></profile-now-playing>
+        <div class="row" id="profile">
+            <div class="col-lg-7">
+                <profile-now-playing :np="np" v-bind="$props"></profile-now-playing>
 
-            <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
+                <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
 
-            <div class="row" v-if="stationSupportsRequests || stationSupportsStreamers">
-                <div class="col" v-if="stationSupportsRequests">
-                    <profile-requests v-bind="$props"></profile-requests>
-                </div>
-                <div class="col" v-if="stationSupportsStreamers">
-                    <profile-streamers v-bind="$props"></profile-streamers>
-                </div>
+                <profile-streams :np="np" v-bind="$props"></profile-streams>
+
+                <profile-public-pages v-bind="$props"></profile-public-pages>
             </div>
 
-            <profile-public-pages v-bind="$props"></profile-public-pages>
-        </div>
+            <div class="col-lg-5">
+                <profile-requests v-if="stationSupportsRequests" v-bind="$props"></profile-requests>
 
-        <div class="col-lg-5">
-            <profile-streams :np="np" v-bind="$props"></profile-streams>
+                <profile-streamers v-if="stationSupportsStreamers" v-bind="$props"></profile-streamers>
 
-            <template v-if="hasActiveFrontend">
-                <profile-frontend :np="np" v-bind="$props"></profile-frontend>
-            </template>
+                <template v-if="hasActiveFrontend">
+                    <profile-frontend :np="np" v-bind="$props"></profile-frontend>
+                </template>
 
-            <template v-if="hasActiveBackend">
-                <profile-backend :np="np" v-bind="$props"></profile-backend>
-            </template>
-            <template v-else>
-                <profile-backend-none></profile-backend-none>
-            </template>
+                <template v-if="hasActiveBackend">
+                    <profile-backend :np="np" v-bind="$props"></profile-backend>
+                </template>
+                <template v-else>
+                    <profile-backend-none></profile-backend-none>
+                </template>
+            </div>
         </div>
     </div>
 </template>
@@ -81,7 +78,7 @@ export default {
         stationSupportsRequests: Boolean,
         stationSupportsStreamers: Boolean
     },
-    data () {
+    data() {
         return {
             np: {
                 ...NowPlaying,
@@ -94,19 +91,19 @@ export default {
             }
         };
     },
-    mounted () {
+    mounted() {
         this.checkNowPlaying();
     },
     computed: {
-        hasActiveFrontend () {
+        hasActiveFrontend() {
             return this.frontendType !== FRONTEND_REMOTE;
         },
-        hasActiveBackend () {
+        hasActiveBackend() {
             return this.backendType !== BACKEND_NONE;
         },
     },
     methods: {
-        checkNowPlaying () {
+        checkNowPlaying() {
             this.axios.get(this.profileApiUri).then((response) => {
                 let np = response.data;
                 np.loading = false;

@@ -9,7 +9,6 @@ use App\Http\Router;
 use App\Utilities\Logger;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
-use NowPlaying\Result\CurrentSong;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 
@@ -50,21 +49,47 @@ final class NowPlayingApiGenerator
         );
 
         try {
-            $sh_obj = $this->historyRepo->updateFromNowPlaying(
+            if ($updateSongFromNowPlaying) {
+                $this->historyRepo->updateSongFromNowPlaying(
+                    $station,
+                    Entity\Song::createFromNowPlayingSong($npResult->currentSong)
+                );
+            }
+
+            $this->historyRepo->updateListenersFromNowPlaying(
                 $station,
-                $np->listeners->current,
-                ($updateSongFromNowPlaying)
-                    ? Entity\Song::createFromNowPlayingSong($npResult->currentSong)
-                    : null
+                $np->listeners->current
             );
+
+            $history = $this->historyRepo->getVisibleHistory(
+                $station,
+                $station->getApiHistoryItems() + 1
+            );
+
+            $currentSong = array_shift($history);
+
+            if (null === $currentSong) {
+                throw new \RuntimeException('No current song.');
+            }
         } catch (Exception $e) {
             Logger::getInstance()->error($e->getMessage(), ['exception' => $e]);
 
             return $this->offlineApi($station, $baseUri);
         }
 
+        $apiSongHistory = ($this->songHistoryApiGenerator)(
+            record: $currentSong,
+            baseUri: $baseUri,
+            allowRemoteArt: true,
+            isNowPlaying: true
+        );
+
+        $apiCurrentSong = new Entity\Api\NowPlaying\CurrentSong();
+        $apiCurrentSong->fromParentObject($apiSongHistory);
+        $np->now_playing = $apiCurrentSong;
+
         $np->song_history = $this->songHistoryApiGenerator->fromArray(
-            $this->historyRepo->getVisibleHistory($station),
+            $history,
             $baseUri,
             true
         );
@@ -106,17 +131,6 @@ final class NowPlayingApiGenerator
             $np->live = new Entity\Api\NowPlaying\Live();
         }
 
-        $apiSongHistory = ($this->songHistoryApiGenerator)(
-            record: $sh_obj,
-            baseUri: $baseUri,
-            allowRemoteArt: true,
-            isNowPlaying: true
-        );
-        $apiCurrentSong = new Entity\Api\NowPlaying\CurrentSong();
-        $apiCurrentSong->fromParentObject($apiSongHistory);
-
-        $np->now_playing = $apiCurrentSong;
-
         $np->update();
         return $np;
     }
@@ -138,7 +152,7 @@ final class NowPlayingApiGenerator
         return $np ?? $this->offlineApi($station, $baseUri);
     }
 
-    protected function offlineApi(
+    private function offlineApi(
         Entity\Station $station,
         ?UriInterface $baseUri = null
     ): Entity\Api\NowPlaying\NowPlaying {
@@ -177,13 +191,5 @@ final class NowPlayingApiGenerator
 
         $np->update();
         return $np;
-    }
-
-    protected function tracksMatch(
-        Entity\Song|array|string|CurrentSong $currentSong,
-        ?string $oldSongId
-    ): bool {
-        $current_song_hash = Entity\Song::getSongHash($currentSong);
-        return (0 === strcmp($current_song_hash, $oldSongId ?? ''));
     }
 }

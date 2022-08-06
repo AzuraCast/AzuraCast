@@ -11,6 +11,30 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.17.3 (Aug 3, 2022) 
+- Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term home. 
+  If you wish to assist SilverEagle during these times, please review this GitHub issue - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
+
+## New Features/Changes
+
+## Code Quality/Technical Changes
+
+- In previous versions, "Jingle Mode" playlists wouldn't appear when displayed to users _or_ in the listener timeline
+  reports. This makes it difficult to diagnose the full playback history of the station. The station playback timeline
+  will now include jingle playlists, while they will remain hidden from public view.
+
+## Bug Fixes
+
+- Fixed a bug where the station could not be skipped if a Remote URL playlist was enabled.
+
+- Fixed a bug with logging (Liquidsoap, Docker, etc) to reduce CPU load issues. 
+
+- Fixed missing city fields in listener data.
+
+- Fixed renewal checks & minor ACME issues for HTTPs (Thanks to skoerfgen)
+
+---
+
 # AzuraCast 0.17.2 (Jul 5, 2022)
 
 ## New Features/Changes

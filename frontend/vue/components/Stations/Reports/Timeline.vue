@@ -45,13 +45,15 @@
                 </template>
             </template>
             <template #cell(song)="row">
-                <template v-if="row.item.song.title">
-                    <b>{{ row.item.song.title }}</b><br>
-                    {{ row.item.song.artist }}
-                </template>
-                <template v-else>
-                    {{ row.item.song.text }}
-                </template>
+                <div :class="{'text-muted': !row.item.is_visible}">
+                    <template v-if="row.item.song.title">
+                        <b>{{ row.item.song.title }}</b><br>
+                        {{ row.item.song.artist }}
+                    </template>
+                    <template v-else>
+                        {{ row.item.song.text }}
+                    </template>
+                </div>
             </template>
             <template #cell(source)="row">
                 <template v-if="row.item.is_request">

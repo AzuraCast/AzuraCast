@@ -33,4 +33,10 @@ final class DetailedSongHistory extends SongHistory
         example: 11
     )]
     public int $delta_total = 0;
+
+    #[OA\Property(
+        description: 'Whether the entry is visible on public playlists.',
+        example: true
+    )]
+    public bool $is_visible = true;
 }

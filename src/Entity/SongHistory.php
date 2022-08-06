@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity,
     ORM\Table(name: 'song_history'),
+    ORM\Index(columns: ['is_visible'], name: 'idx_is_visible'),
     ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start'),
     ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')
 ]
@@ -39,14 +40,14 @@ class SongHistory implements
     protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationPlaylist $playlist = null;
 
     #[ORM\Column(nullable: true)]
     protected ?int $streamer_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationStreamer $streamer = null;
 
     #[ORM\Column(nullable: true)]
@@ -60,7 +61,7 @@ class SongHistory implements
     protected ?int $request_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationRequest $request = null;
 
     #[ORM\Column]
@@ -92,6 +93,9 @@ class SongHistory implements
 
     #[ORM\Column(type: 'json', nullable: true)]
     protected mixed $delta_points = null;
+
+    #[ORM\Column]
+    protected bool $is_visible = true;
 
     public function __construct(
         Station $station,
@@ -271,6 +275,21 @@ class SongHistory implements
         $this->delta_points = $delta_points;
     }
 
+    public function getIsVisible(): bool
+    {
+        return $this->is_visible;
+    }
+
+    public function setIsVisible(bool $is_visible): void
+    {
+        $this->is_visible = $is_visible;
+    }
+
+    public function updateVisibility(): void
+    {
+        $this->is_visible = !($this->playlist instanceof StationPlaylist) || !$this->playlist->getIsJingle();
+    }
+
     /**
      * @return bool Whether the record should be shown in APIs (i.e. is not a jingle)
      */
@@ -339,6 +358,7 @@ class SongHistory implements
         $sh->setRequest($queue->getRequest());
         $sh->setPlaylist($queue->getPlaylist());
         $sh->setDuration($queue->getDuration());
+        $sh->updateVisibility();
 
         return $sh;
     }

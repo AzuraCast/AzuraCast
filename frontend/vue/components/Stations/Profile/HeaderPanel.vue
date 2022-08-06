@@ -1,16 +1,14 @@
 <template>
-    <div class="card mb-4">
-        <div class="card-header bg-primary-dark d-flex align-items-center">
-            <div class="flex-fill">
-                <h2 class="card-title">{{ stationName }}</h2>
-                <h3 class="card-subtitle">{{ stationDescription }}</h3>
-            </div>
-            <div class="flex-shrink-0" v-if="userCanManageProfile">
-                <a class="btn btn-bg" role="button" :href="manageProfileUri">
-                    <icon icon="edit"></icon>
-                    <translate key="lang_profile_btn_edit">Edit Profile</translate>
-                </a>
-            </div>
+    <div class="outside-card-header d-flex align-items-center mb-1">
+        <div class="flex-fill">
+            <h2>{{ stationName }}</h2>
+            <h3 v-if="stationDescription">{{ stationDescription }}</h3>
+        </div>
+        <div class="flex-shrink-0" v-if="userCanManageProfile">
+            <a class="btn btn-primary btn-lg" role="button" :href="manageProfileUri">
+                <icon icon="edit"></icon>
+                <translate key="lang_profile_btn_edit">Edit Profile</translate>
+            </a>
         </div>
     </div>
 </template>

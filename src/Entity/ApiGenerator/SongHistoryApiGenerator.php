@@ -88,6 +88,8 @@ final class SongHistoryApiGenerator
         $response->listeners_start = (int)$record->getListenersStart();
         $response->listeners_end = (int)$record->getListenersEnd();
         $response->delta_total = $record->getDeltaTotal();
+        $response->is_visible = $record->getIsVisible();
+
         return $response;
     }
 }

@@ -175,7 +175,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     {
         return $this->command(
             $station,
-            'interrupting_fallback.skip'
+            'radio.skip'
         );
     }
 

@@ -7,19 +7,15 @@ namespace App\Entity\Migration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20220724223136 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Prevent request/streamer/playlist deletion from cascading to song history.';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD16164427EB8A5');
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD1616425F432AD');
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD161646BBD148');
@@ -30,7 +26,6 @@ final class Version20220724223136 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD161646BBD148');
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD1616425F432AD');
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD16164427EB8A5');

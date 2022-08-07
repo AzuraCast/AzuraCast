@@ -2,10 +2,11 @@
 set -e
 set -x
 
-# apt-get install -y --no-install-recommends python3-minimal python3-pip
-# pip3 install setuptools supervisor
+apt-get install -y --no-install-recommends python3-minimal python3-pip
+pip3 install setuptools supervisor \
+    git+https://github.com/coderanger/supervisor-stdout
 
-apt-get install -y --no-install-recommends supervisor
+# apt-get install -y --no-install-recommends supervisor
 
 mkdir -p /etc/supervisor
 mkdir -p /etc/supervisor/full.conf.d/

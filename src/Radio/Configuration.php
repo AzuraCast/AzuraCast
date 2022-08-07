@@ -168,6 +168,8 @@ final class Configuration
                 'stdout_logfile_maxbytes' => '5MB',
                 'stdout_logfile_backups' => '5',
                 'redirect_stderr' => 'true',
+                'stdout_events_enabled' => 'true',
+                'stderr_events_enabled' => 'true',
             ];
 
             $supervisorConfig[] = '[program:' . $programName . ']';

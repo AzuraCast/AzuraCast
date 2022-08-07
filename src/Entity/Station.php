@@ -1170,6 +1170,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->is_streamer_live = false;
         $this->needs_restart = false;
         $this->has_started = false;
+        $this->current_song = null;
 
         $this->media_storage_location = null;
         $this->recordings_storage_location = null;

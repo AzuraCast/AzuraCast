@@ -79,6 +79,10 @@ export default {
     },
     filters: {
         upper(data) {
+            if (!data) {
+                return '';
+            }
+
             let upper = [];
             data.split(' ').forEach((word) => {
                 upper.push(word.toUpperCase());

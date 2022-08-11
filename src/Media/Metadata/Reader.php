@@ -24,62 +24,64 @@ final class Reader
 
         $ffprobe = FFProbe::create();
         $format = $ffprobe->format($path);
+        $streams = $ffprobe->streams($path);
 
         $metadata = new Metadata();
+        $metadata->setMimeType(MimeType::getMimeTypeFromFile($path));
 
-        if (is_numeric($format->get('duration'))) {
-            $metadata->setDuration(
-                Time::displayTimeToSeconds($format->get('duration')) ?? 0.0
-            );
+        $duration = $this->getDuration($format, $streams);
+        if (null !== $duration) {
+            $metadata->setDuration($duration);
         }
 
+        $metadata->setTags($this->aggregateMetaTags(
+            $format,
+            $streams
+        ));
+
+        $metadata->setArtwork($this->getAlbumArt(
+            $streams,
+            $path
+        ));
+
+        $event->setMetadata($metadata);
+    }
+
+    private function getDuration(
+        FFProbe\DataMapping\Format $format,
+        FFProbe\DataMapping\StreamCollection $streams
+    ): ?float {
+        $formatDuration = $format->get('duration');
+        if (is_numeric($formatDuration)) {
+            return Time::displayTimeToSeconds($formatDuration);
+        }
+
+        /** @var Stream $stream */
+        foreach ($streams->audios() as $stream) {
+            $duration = $stream->get('duration');
+            if (is_numeric($duration)) {
+                return Time::displayTimeToSeconds($duration);
+            }
+        }
+
+        return null;
+    }
+
+    private function aggregateMetaTags(
+        FFProbe\DataMapping\Format $format,
+        FFProbe\DataMapping\StreamCollection $streams
+    ): array {
         $toProcess = [
             $format->get('comments'),
             $format->get('tags'),
         ];
 
-        $metaTags = $this->aggregateMetaTags($toProcess);
-
-        $metadata->setTags($metaTags);
-        $metadata->setMimeType(MimeType::getMimeTypeFromFile($path));
-
-        try {
-            // Pull album art directly from relevant streams.
-            $ffmpeg = FFMpeg::create();
-
-            /** @var Stream[] $videoStreams */
-            $videoStreams = $ffprobe->streams($path)->videos()->all();
-            foreach ($videoStreams as $videoStream) {
-                $streamDisposition = $videoStream->get('disposition');
-                if (!isset($streamDisposition['attached_pic']) || 1 !== $streamDisposition['attached_pic']) {
-                    continue;
-                }
-
-                $artOutput = File::generateTempPath('artwork.jpg');
-                @unlink($artOutput); // Ffmpeg won't overwrite the empty file.
-
-                $ffmpeg->getFFMpegDriver()->command([
-                    '-i',
-                    $path,
-                    '-an',
-                    '-vcodec',
-                    'copy',
-                    $artOutput,
-                ]);
-
-                $metadata->setArtwork(file_get_contents($artOutput) ?: null);
-                @unlink($artOutput);
-                break;
-            }
-        } catch (Throwable) {
-            $metadata->setArtwork(null);
+        /** @var Stream $stream */
+        foreach ($streams->audios() as $stream) {
+            $toProcess[] = $stream->get('comments');
+            $toProcess[] = $stream->get('tags');
         }
 
-        $event->setMetadata($metadata);
-    }
-
-    protected function aggregateMetaTags(array $toProcess): array
-    {
         $metaTags = [];
 
         foreach ($toProcess as $tagSet) {
@@ -107,7 +109,44 @@ final class Reader
         return $metaTags;
     }
 
-    protected function cleanUpString(?string $original): string
+    private function getAlbumArt(
+        FFProbe\DataMapping\StreamCollection $streams,
+        string $path
+    ): ?string {
+        // Pull album art directly from relevant streams.
+        $ffmpeg = FFMpeg::create();
+
+        try {
+            /** @var Stream $videoStream */
+            foreach ($streams->videos() as $videoStream) {
+                $streamDisposition = $videoStream->get('disposition');
+                if (!isset($streamDisposition['attached_pic']) || 1 !== $streamDisposition['attached_pic']) {
+                    continue;
+                }
+
+                $artOutput = File::generateTempPath('artwork.jpg');
+                @unlink($artOutput); // Ffmpeg won't overwrite the empty file.
+
+                $ffmpeg->getFFMpegDriver()->command([
+                    '-i',
+                    $path,
+                    '-an',
+                    '-vcodec',
+                    'copy',
+                    $artOutput,
+                ]);
+
+                $artContent = file_get_contents($artOutput) ?: null;
+                @unlink($artOutput);
+                return $artContent;
+            }
+        } catch (Throwable) {
+        }
+
+        return null;
+    }
+
+    private function cleanUpString(?string $original): string
     {
         $original ??= '';
 

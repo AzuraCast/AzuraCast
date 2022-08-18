@@ -37,8 +37,7 @@ final class Configuration
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
         private readonly Logger $logger,
-        private readonly Environment $environment,
-        private readonly StationPlaylistRepository $stationPlaylistRepo
+        private readonly Environment $environment
     ) {
     }
 
@@ -122,15 +121,6 @@ final class Configuration
         ) {
             $this->unlinkAndStopStation($station, $reloadSupervisor);
             throw new RuntimeException('Station has no local services.');
-        }
-
-        // If using AutoDJ and there is no media, don't spin up services.
-        if (
-            $backendEnum->isEnabled()
-            && !$this->stationPlaylistRepo->stationHasActivePlaylists($station)
-        ) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new RuntimeException('Station has no media assigned to playlists.');
         }
 
         // Write group section of config

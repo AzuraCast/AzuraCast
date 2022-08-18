@@ -7,13 +7,31 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- In a previous version, we added a rule that would prevent stations from starting up unless they had at least one
+  active playlist with at least one music file to play. Several stations reported unique edge cases that didn't work
+  with this configuration, so it has been removed.
+
 ## Bug Fixes
+
+- Fixed a bug preventing the Remote Relays page from showing in some situations.
+
+- Fixed a bug where sometimes, stations would create in an incomplete state with uninitialized storage locations, thus
+  becoming impossible to manage or modify.
+
+- Fixed an issue preventing station cloning from working.
+
+- Jingles will no longer appear on the "best/worst performing songs" lists.
+
+- Fixed a bug preventing Ogg (Vorbis, Opus, etc) files from being correctly processed.
 
 ---
 
-# AzuraCast 0.17.3 (Aug 3, 2022) 
-- Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term home. 
-  If you wish to assist SilverEagle during these times, please review this GitHub issue - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
+# AzuraCast 0.17.3 (Aug 3, 2022)
+
+- Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term
+  home.
+  If you wish to assist SilverEagle during these times, please review this GitHub issue
+  - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
 
 ## New Features/Changes
 

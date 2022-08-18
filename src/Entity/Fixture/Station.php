@@ -22,7 +22,7 @@ final class Station extends AbstractFixture
         $station->setBackendType(BackendAdapters::Liquidsoap->value);
         $station->setEnableHls(true);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
-
+        $station->setHasStarted(true);
         $station->ensureDirectoriesExist();
 
         $mediaStorage = $station->getMediaStorageLocation();

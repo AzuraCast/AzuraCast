@@ -24,6 +24,8 @@ return function (App\Event\BuildStationMenu $e) {
 
     $settings = $e->getSettings();
 
+    $hasLocalServices = $station->hasLocalServices();
+
     $e->merge(
         [
             'start_station' => [
@@ -33,7 +35,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'url' => (string)$router->fromHere('api:stations:reload'),
                 'class' => 'api-call text-success',
                 'confirm' => $reloadMessage,
-                'visible' => !$station->getHasStarted(),
+                'visible' => $hasLocalServices && !$station->getHasStarted(),
                 'permission' => StationPermissions::Broadcasting,
             ],
             'restart_station' => [
@@ -44,7 +46,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'class' => 'api-call text-warning btn-restart-station '
                     . (!$station->getNeedsRestart() ? 'd-none' : ''),
                 'confirm' => $reloadMessage,
-                'visible' => $station->getHasStarted(),
+                'visible' => $hasLocalServices && $station->getHasStarted(),
                 'permission' => StationPermissions::Broadcasting,
             ],
             'profile' => [
@@ -245,6 +247,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'class' => 'text-muted',
                         'url' => (string)$router->fromHere('stations:queue:index'),
                         'permission' => StationPermissions::Broadcasting,
+                        'visible' => $station->supportsAutoDjQueue(),
                     ],
                     'reload' => [
                         'label' => __('Reload Configuration'),
@@ -252,7 +255,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'url' => (string)$router->fromHere('api:stations:reload'),
                         'confirm' => $willNotDisconnectMessage,
                         'permission' => StationPermissions::Broadcasting,
-                        'visible' => $reloadSupported,
+                        'visible' => $hasLocalServices && $reloadSupported,
                     ],
                     'restart' => [
                         'label' => __('Restart Broadcasting'),
@@ -260,6 +263,7 @@ return function (App\Event\BuildStationMenu $e) {
                         'url' => (string)$router->fromHere('api:stations:restart'),
                         'confirm' => $willDisconnectMessage,
                         'permission' => StationPermissions::Broadcasting,
+                        'visible' => $hasLocalServices,
                     ],
                 ],
             ],

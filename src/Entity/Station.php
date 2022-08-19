@@ -549,6 +549,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         return new StationBackendConfiguration((array)$this->backend_config);
     }
 
+    public function hasLocalServices(): bool
+    {
+        return $this->getIsEnabled() &&
+            ($this->getBackendTypeEnum()->isEnabled() || $this->getFrontendTypeEnum()->isEnabled());
+    }
+
     /**
      * @param array|StationBackendConfiguration $backend_config
      * @param bool $force_overwrite

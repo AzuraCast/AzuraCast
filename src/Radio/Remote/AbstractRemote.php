@@ -98,7 +98,7 @@ abstract class AbstractRemote
             if (!str_starts_with($customPath, '/')) {
                 $customPath = '/' . $customPath;
             }
-            return (string)$uri->withPath($customPath);
+            return (string)$uri->withPath($uri->getPath() . $customPath);
         }
 
         return (string)$uri;

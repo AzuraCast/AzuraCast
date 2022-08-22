@@ -24,6 +24,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug preventing Ogg (Vorbis, Opus, etc) files from being correctly processed.
 
+- Fixed a bug where two stations that had a shared string in their short names (i.e. `station` and `station_1`) would
+  conflict with one another, causing the public listening URLs of the latter station to fail to resolve correctly.
+
+- Fixed a bug where directories in the "Move Files" modal weren't sorted by path.
+
 ---
 
 # AzuraCast 0.17.3 (Aug 3, 2022)
@@ -31,7 +36,7 @@ release channel, you can take advantage of these new features and fixes.
 - Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term
   home.
   If you wish to assist SilverEagle during these times, please review this GitHub issue
-  - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
+    - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
 
 ## New Features/Changes
 

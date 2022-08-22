@@ -38,7 +38,7 @@ final class ListDirectoriesAction
 
                 return true;
             }
-        );
+        )->sortByPath();
 
         $directories = [];
         foreach ($directoriesRaw as $directory) {

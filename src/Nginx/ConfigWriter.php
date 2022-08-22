@@ -40,7 +40,11 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<NGINX
-            location ~ ^({$listenBaseUrl}|/radio/{$port})(/?)(.*)\$ {
+            location ~ ^({$listenBaseUrl}|/radio/{$port})\$ {
+                return 302 \$uri/;
+            }
+
+            location ~ ^({$listenBaseUrl}|/radio/{$port})/(.*)\$ {
                 include proxy_params;
                 
                 proxy_intercept_errors    on;
@@ -49,7 +53,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 proxy_connect_timeout     60;
                 
                 proxy_set_header Host localhost:{$port};
-                proxy_pass http://127.0.0.1:{$port}/\$3?\$args;
+                proxy_pass http://127.0.0.1:{$port}/\$2?\$args;
             }
             NGINX
         );

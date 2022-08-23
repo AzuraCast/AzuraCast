@@ -146,13 +146,13 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
+        $event->addAnnotations([
+            'playlist_id' => $playlist->getId(),
+        ]);
+
         if ($playlist->getIsJingle()) {
             $event->addAnnotations([
                 'jingle_mode' => 'true',
-            ]);
-        } else {
-            $event->addAnnotations([
-                'playlist_id' => $playlist->getId(),
             ]);
         }
     }

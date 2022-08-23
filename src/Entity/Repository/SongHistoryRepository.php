@@ -114,6 +114,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
             $this->em->persist($previousCurrentSong);
         }
 
+        $newCurrentSong->setListenersFromLastSong($previousCurrentSong);
         $newCurrentSong->setTimestampStart(time());
         $newCurrentSong->updateVisibility();
 

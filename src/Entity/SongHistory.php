@@ -275,6 +275,19 @@ class SongHistory implements
         $this->delta_points = $delta_points;
     }
 
+    public function setListenersFromLastSong(?SongHistory $lastSong): void
+    {
+        if (null === $lastSong) {
+            $this->addDeltaPoint(0);
+            return;
+        }
+
+        $deltaPoints = (array)$lastSong->getDeltaPoints();
+        $lastDeltaPoint = array_pop($deltaPoints);
+
+        $this->addDeltaPoint($lastDeltaPoint);
+    }
+
     public function getIsVisible(): bool
     {
         return $this->is_visible;

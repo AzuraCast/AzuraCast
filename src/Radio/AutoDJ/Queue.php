@@ -224,7 +224,7 @@ final class Queue
         return $nextSongs;
     }
 
-    protected function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
+    private function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
     {
         $duration ??= 1;
 
@@ -252,7 +252,7 @@ final class Queue
         );
     }
 
-    protected function getQueueRowLogCacheKey(Entity\StationQueue $queueRow): string
+    private function getQueueRowLogCacheKey(Entity\StationQueue $queueRow): string
     {
         return 'queue_log.' . $queueRow->getIdRequired();
     }

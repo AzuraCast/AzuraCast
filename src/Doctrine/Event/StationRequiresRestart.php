@@ -29,7 +29,7 @@ final class StationRequiresRestart implements EventSubscriber
 
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         $collections_to_check = [

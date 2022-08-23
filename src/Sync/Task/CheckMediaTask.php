@@ -173,7 +173,7 @@ final class CheckMediaTask extends AbstractTask
         $this->logger->debug(sprintf('Media processed for "%s".', $storageLocation), $stats);
     }
 
-    protected function processExistingMediaRows(
+    private function processExistingMediaRows(
         Entity\StorageLocation $storageLocation,
         array $queuedMediaUpdates,
         array &$musicFiles,
@@ -230,7 +230,7 @@ final class CheckMediaTask extends AbstractTask
         $this->em->clear();
     }
 
-    protected function processUnprocessableMediaRows(
+    private function processUnprocessableMediaRows(
         Entity\StorageLocation $storageLocation,
         array &$musicFiles,
         array &$stats
@@ -273,7 +273,7 @@ final class CheckMediaTask extends AbstractTask
         $this->em->clear();
     }
 
-    protected function processNewFiles(
+    private function processNewFiles(
         Entity\StorageLocation $storageLocation,
         array $queuedNewFiles,
         array $musicFiles,

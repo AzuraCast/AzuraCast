@@ -43,7 +43,7 @@ final class CleanupStorageTask extends AbstractTask
         }
     }
 
-    protected function cleanStationTempFiles(Entity\Station $station): void
+    private function cleanStationTempFiles(Entity\Station $station): void
     {
         $tempDir = $station->getRadioTempDir();
         $finder = new Finder();
@@ -61,7 +61,7 @@ final class CleanupStorageTask extends AbstractTask
         }
     }
 
-    protected function cleanMediaStorageLocation(Entity\StorageLocation $storageLocation): void
+    private function cleanMediaStorageLocation(Entity\StorageLocation $storageLocation): void
     {
         $fs = $storageLocation->getFilesystem();
 

@@ -184,7 +184,7 @@ final class QueueBuilder implements EventSubscriberInterface
      *
      * @param array $original
      */
-    protected function weightedShuffle(array &$original): void
+    private function weightedShuffle(array &$original): void
     {
         $new = $original;
 
@@ -218,7 +218,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      * @return Entity\StationQueue|Entity\StationQueue[]|null
      */
-    protected function playSongFromPlaylist(
+    private function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
         CarbonInterface $expectedPlayTime,
@@ -282,7 +282,7 @@ final class QueueBuilder implements EventSubscriberInterface
         return null;
     }
 
-    protected function makeQueueFromApi(
+    private function makeQueueFromApi(
         Entity\Api\StationPlaylistQueue $validTrack,
         Entity\StationPlaylist $playlist,
         CarbonInterface $expectedPlayTime,
@@ -305,7 +305,7 @@ final class QueueBuilder implements EventSubscriberInterface
         return $stationQueueEntry;
     }
 
-    protected function getSongFromRemotePlaylist(
+    private function getSongFromRemotePlaylist(
         Entity\StationPlaylist $playlist,
         CarbonInterface $expectedPlayTime
     ): ?Entity\StationQueue {
@@ -340,7 +340,7 @@ final class QueueBuilder implements EventSubscriberInterface
      *
      * @return mixed[]|null
      */
-    protected function getMediaFromRemoteUrl(Entity\StationPlaylist $playlist): ?array
+    private function getMediaFromRemoteUrl(Entity\StationPlaylist $playlist): ?array
     {
         $remoteType = $playlist->getRemoteTypeEnum() ?? Entity\Enums\PlaylistRemoteTypes::Stream;
 
@@ -380,7 +380,7 @@ final class QueueBuilder implements EventSubscriberInterface
             : null;
     }
 
-    protected function getRandomMediaIdFromPlaylist(
+    private function getRandomMediaIdFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates
@@ -394,7 +394,7 @@ final class QueueBuilder implements EventSubscriberInterface
         return array_shift($mediaQueue);
     }
 
-    protected function getSequentialMediaIdFromPlaylist(
+    private function getSequentialMediaIdFromPlaylist(
         Entity\StationPlaylist $playlist
     ): ?Entity\Api\StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
@@ -405,7 +405,7 @@ final class QueueBuilder implements EventSubscriberInterface
         return array_shift($mediaQueue);
     }
 
-    protected function getShuffledMediaIdFromPlaylist(
+    private function getShuffledMediaIdFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates

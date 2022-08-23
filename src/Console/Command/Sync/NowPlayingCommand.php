@@ -60,7 +60,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
         return 0;
     }
 
-    protected function loop(SymfonyStyle $io, int $timeout): void
+    private function loop(SymfonyStyle $io, int $timeout): void
     {
         $threshold = time() + $timeout;
 
@@ -98,7 +98,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
         }
     }
 
-    protected function start(
+    private function start(
         SymfonyStyle $io,
         string $shortName
     ): void {

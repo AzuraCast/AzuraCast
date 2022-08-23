@@ -42,7 +42,7 @@ final class UpdateStorageLocationSizesTask extends AbstractTask
         }
     }
 
-    protected function updateStorageLocationSize(Entity\StorageLocation $storageLocation): void
+    private function updateStorageLocationSize(Entity\StorageLocation $storageLocation): void
     {
         $fs = $storageLocation->getFilesystem();
 

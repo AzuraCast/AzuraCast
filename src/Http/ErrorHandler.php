@@ -67,7 +67,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
     }
 
-    protected function shouldReturnJson(ServerRequestInterface $req): bool
+    private function shouldReturnJson(ServerRequestInterface $req): bool
     {
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
 

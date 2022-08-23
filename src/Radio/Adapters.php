@@ -82,7 +82,7 @@ final class Adapters
      * @param bool $checkInstalled
      * @return mixed[]
      */
-    protected function listAdaptersFromEnum(array $cases, bool $checkInstalled = false): array
+    private function listAdaptersFromEnum(array $cases, bool $checkInstalled = false): array
     {
         $adapters = [];
         foreach ($cases as $adapter) {

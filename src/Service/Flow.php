@@ -142,7 +142,7 @@ final class Flow
         return $response->withStatus(200, 'OK');
     }
 
-    protected static function handleStandardUpload(
+    private static function handleStandardUpload(
         ServerRequest $request,
         string $tempDir
     ): UploadedFile {
@@ -171,7 +171,7 @@ final class Flow
      * @param int $targetSize
      * @param int $targetChunkNumber
      */
-    protected static function allPartsExist(
+    private static function allPartsExist(
         string $chunkBaseDir,
         int $targetSize,
         int $targetChunkNumber
@@ -187,7 +187,7 @@ final class Flow
         return ($chunkSize === $targetSize && $chunkNumber === $targetChunkNumber);
     }
 
-    protected static function createFileFromChunks(
+    private static function createFileFromChunks(
         string $tempDir,
         string $chunkBaseDir,
         string $chunkIdentifier,

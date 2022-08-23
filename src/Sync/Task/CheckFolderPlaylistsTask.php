@@ -80,7 +80,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         }
     }
 
-    protected function processPlaylist(
+    private function processPlaylist(
         Entity\Station $station,
         Entity\StationPlaylist $playlist,
         ExtendedFilesystemInterface $fsMedia,

@@ -157,7 +157,7 @@ final class DuplicatePrevention
         return null;
     }
 
-    protected function getArtistParts(string $artists): array
+    private function getArtistParts(string $artists): array
     {
         $dividerString = chr(7);
 
@@ -174,7 +174,7 @@ final class DuplicatePrevention
         );
     }
 
-    protected function prepareStringForMatching(string $string): string
+    private function prepareStringForMatching(string $string): string
     {
         return mb_strtolower(trim($string));
     }

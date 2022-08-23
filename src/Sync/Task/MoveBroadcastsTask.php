@@ -44,7 +44,7 @@ final class MoveBroadcastsTask extends AbstractTask
         }
     }
 
-    protected function processForStorageLocation(Entity\StorageLocation $storageLocation): void
+    private function processForStorageLocation(Entity\StorageLocation $storageLocation): void
     {
         if ($storageLocation->isStorageFull()) {
             $this->logger->error('Storage location is full; skipping broadcasts.', [

@@ -1178,7 +1178,7 @@ final class ConfigWriter implements EventSubscriberInterface
     /**
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      */
-    protected function getOutputString(
+    private function getOutputString(
         Entity\Station $station,
         Entity\Interfaces\StationMountInterface $mount,
         string $idPrefix,
@@ -1246,7 +1246,7 @@ final class ConfigWriter implements EventSubscriberInterface
         return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
-    protected function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
+    private function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
     {
         switch ($format) {
             case StreamFormats::Aac:

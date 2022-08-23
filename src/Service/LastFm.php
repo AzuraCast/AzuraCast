@@ -99,7 +99,7 @@ final class LastFm
         return $responseJson;
     }
 
-    protected function createExceptionFromErrorCode(int $errorCode): RuntimeException
+    private function createExceptionFromErrorCode(int $errorCode): RuntimeException
     {
         $errorDescriptions = [
             2 => 'Invalid service - This service does not exist',

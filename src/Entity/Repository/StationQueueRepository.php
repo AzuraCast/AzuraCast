@@ -192,13 +192,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return $cuedPlaylistContentCount > 0;
     }
 
-    protected function getRecentBaseQuery(Entity\Station $station): QueryBuilder
-    {
-        return $this->getBaseQuery($station)
-            ->orderBy('sq.timestamp_cued', 'DESC');
-    }
-
-    protected function getUnplayedBaseQuery(Entity\Station $station): QueryBuilder
+    private function getUnplayedBaseQuery(Entity\Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)
             ->andWhere('sq.is_played = 0')
@@ -206,7 +200,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->addOrderBy('sq.timestamp_cued', 'ASC');
     }
 
-    protected function getBaseQuery(Entity\Station $station): QueryBuilder
+    private function getBaseQuery(Entity\Station $station): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('sq, sm, sp')

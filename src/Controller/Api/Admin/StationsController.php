@@ -354,7 +354,7 @@ class StationsController extends AbstractAdminApiCrudController
 
             // Create default mountpoints if station supports them.
             $this->stationRepo->resetMounts($station);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->em->remove($station);
             $this->em->flush();
 

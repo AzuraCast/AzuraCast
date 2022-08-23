@@ -134,7 +134,7 @@ final class MusicBrainz
         return $response['recordings'];
     }
 
-    protected function quoteQuery(string $query): string
+    private function quoteQuery(string $query): string
     {
         return '"' . str_replace('"', '\'', $query) . '"';
     }

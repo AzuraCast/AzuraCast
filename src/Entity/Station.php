@@ -353,7 +353,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?int $current_streamer_id = null;
+    private ?int $current_streamer_id = null;
 
     #[
         ORM\ManyToOne,

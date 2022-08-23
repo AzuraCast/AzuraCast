@@ -62,7 +62,7 @@ final class BlocklistParser
         return $this->isIpInList($ip, $bannedIps);
     }
 
-    protected function isIpInList(
+    private function isIpInList(
         string $listenerIp,
         string $ipList
     ): bool {
@@ -107,15 +107,8 @@ final class BlocklistParser
 
         $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp);
 
-        if (null !== $listenerLocation->country) {
-            foreach ($bannedCountries as $countryCode) {
-                if ($countryCode === $listenerLocation->country) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return (null !== $listenerLocation->country)
+            && in_array($listenerLocation->country, $bannedCountries, true);
     }
 
     public function isUserAgentBanned(

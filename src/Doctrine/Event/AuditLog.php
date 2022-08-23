@@ -41,7 +41,7 @@ final class AuditLog implements EventSubscriber
 
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         $singleAuditLogs = $this->handleSingleUpdates($em, $uow);
@@ -58,7 +58,7 @@ final class AuditLog implements EventSubscriber
     }
 
     /** @return Entity\AuditLog[] */
-    protected function handleSingleUpdates(
+    private function handleSingleUpdates(
         EntityManagerInterface $em,
         UnitOfWork $uow
     ): array {
@@ -129,7 +129,7 @@ final class AuditLog implements EventSubscriber
     }
 
     /** @return Entity\AuditLog[] */
-    protected function handleCollectionUpdates(
+    private function handleCollectionUpdates(
         UnitOfWork $uow
     ): array {
         $newRecords = [];
@@ -240,7 +240,7 @@ final class AuditLog implements EventSubscriber
         return $newRecords;
     }
 
-    protected function isEntity(EntityManagerInterface $em, mixed $class): bool
+    private function isEntity(EntityManagerInterface $em, mixed $class): bool
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
@@ -264,7 +264,7 @@ final class AuditLog implements EventSubscriber
      * @param ReflectionClass<TObject> $refl
      * @return bool
      */
-    protected function isAuditable(ReflectionClass $refl): bool
+    private function isAuditable(ReflectionClass $refl): bool
     {
         $auditable = $refl->getAttributes(Auditable::class);
         return !empty($auditable);
@@ -275,7 +275,7 @@ final class AuditLog implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function getIdentifier(object $entity): string
+    private function getIdentifier(object $entity): string
     {
         if ($entity instanceof Stringable) {
             return (string)$entity;

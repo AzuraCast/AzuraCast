@@ -798,6 +798,8 @@ uninstall() {
 #
 setup-letsencrypt() {
   echo "LetsEncrypt is now managed from within the web interface."
+  echo "You can manage it via the 'Administration' panel, then 'System Settings'."
+  echo "Under 'Services' you will find the LetsEncrypt settings." 
 }
 
 letsencrypt-create() {

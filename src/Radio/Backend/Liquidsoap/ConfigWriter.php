@@ -746,7 +746,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             if (CrossfadeModes::Smart === $crossfadeType) {
                 $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfade
-                    . ', fade_out=' . $crossfade . ')';
+                    . ', fade_out=' . $crossfade . ', default=smart_cross_dcross)';
             } else {
                 $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfade
                     . ', fade_out=' . $crossfade . ')';
@@ -754,6 +754,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<<LS
+                smart_cross_quiet  = fun (a)   -> (blank(duration=a):source)
+                smart_cross_delay  = fun (a)   -> (sequence([smart_cross_quiet(5.),a]):source)
+                smart_cross_dcross = fun (a,b) -> (add(normalize=false,[smart_cross_delay(b),a]):source)
+                
                 def live_aware_crossfade(old, new) =
                     if !to_live then
                         # If going to the live show, play a simple sequence

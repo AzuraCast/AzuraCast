@@ -1042,7 +1042,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 thread.run(f)
             end
             
-            radio.on_track(metadata_updated)
+            radio.on_metadata(metadata_updated)
             
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_metadata = ref([])

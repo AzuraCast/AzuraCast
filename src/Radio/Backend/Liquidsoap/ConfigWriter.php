@@ -1042,7 +1042,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 thread.run(f)
             end
             
-            radio.on_metadata(metadata_updated)
+            radio.on_track(metadata_updated)
             
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_metadata = ref([])
@@ -1055,7 +1055,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
             end
             
-            radio = metadata.map(update=false, handle_jingle_mode, radio)
+            radio = metadata.map(update=false, strip=true, handle_jingle_mode, radio)
             LIQ
         );
 

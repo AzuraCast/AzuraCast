@@ -29,6 +29,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug where directories in the "Move Files" modal weren't sorted by path.
 
+- Fixed a situation where scheduled items could be queued to play before a DJ/streamer goes live, then be cued to play
+  after they have finished, even if their scheduled time slot has ended during that broadcast.
+
+- Fixed a bug preventing multiple playlists and/or custom fields from appearing in the bulk media CSV export.
+
 ---
 
 # AzuraCast 0.17.3 (Aug 3, 2022)

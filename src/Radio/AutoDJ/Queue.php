@@ -25,7 +25,8 @@ final class Queue
         private readonly Logger $logger,
         private readonly CacheInterface $cache,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Scheduler $scheduler,
     ) {
     }
 
@@ -79,6 +80,11 @@ final class Queue
                     $queueLength = 1;
                 }
             } else {
+                if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                    $this->em->remove($queueRow);
+                    continue;
+                }
+
                 $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                 $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
 
@@ -234,6 +240,21 @@ final class Queue
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
+    }
+
+    private function isQueueRowStillValid(
+        Entity\StationQueue $queueRow,
+        CarbonInterface $expectedPlayTime
+    ): bool {
+        $playlist = $queueRow->getPlaylist();
+        if (null === $playlist) {
+            return true;
+        }
+
+        return $this->scheduler->isPlaylistScheduledToPlayNow(
+            $playlist,
+            $expectedPlayTime
+        );
     }
 
     public function getQueueRowLog(Entity\StationQueue $queueRow): ?array

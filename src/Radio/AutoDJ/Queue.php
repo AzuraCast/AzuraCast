@@ -251,10 +251,11 @@ final class Queue
             return true;
         }
 
-        return $this->scheduler->isPlaylistScheduledToPlayNow(
-            $playlist,
-            $expectedPlayTime
-        );
+        return $playlist->getIsEnabled() &&
+            $this->scheduler->isPlaylistScheduledToPlayNow(
+                $playlist,
+                $expectedPlayTime
+            );
     }
 
     public function getQueueRowLog(Entity\StationQueue $queueRow): ?array

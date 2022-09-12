@@ -34,7 +34,7 @@ final class Queue
     {
         // Early-fail if the station is disabled.
         if (!$station->supportsAutoDjQueue()) {
-            $this->logger->notice('Cannot build queue: station does not support AutoDJ queue.');
+            $this->logger->info('Cannot build queue: station does not support AutoDJ queue.');
             return;
         }
 

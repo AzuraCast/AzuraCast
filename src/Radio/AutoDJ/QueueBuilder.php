@@ -432,6 +432,11 @@ final class QueueBuilder implements EventSubscriberInterface
 
     public function getNextSongFromRequests(BuildQueue $event): void
     {
+        // Don't use this to cue requests.
+        if ($event->isInterrupting()) {
+            return;
+        }
+
         $expectedPlayTime = $event->getExpectedPlayTime();
 
         $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $expectedPlayTime);

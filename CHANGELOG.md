@@ -34,6 +34,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug preventing multiple playlists and/or custom fields from appearing in the bulk media CSV export.
 
+- Fixed a bug causing song requests to use the interrupting queue instead of the regular song queue.
+
 ---
 
 # AzuraCast 0.17.3 (Aug 3, 2022)

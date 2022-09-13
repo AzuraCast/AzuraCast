@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Media\Metadata;
 
 use App\Event\Media\ReadMetadata;
+use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
 use App\Media\MimeType;
 use App\Utilities\Arrays;
@@ -89,19 +90,32 @@ final class Reader
                 continue;
             }
 
-            foreach ($tagSet as $tagName => $tagContents) {
-                if (!empty($tagContents) && !isset($metaTags[$tagName])) {
-                    $tagValue = $tagContents;
-                    if (is_array($tagValue)) {
-                        // Skip pictures
-                        if (isset($tagValue['data'])) {
-                            continue;
-                        }
-                        $flatValue = Arrays::flattenArray($tagValue);
-                        $tagValue = implode(', ', $flatValue);
-                    }
+            foreach ($tagSet as $tagName => $tagValue) {
+                if (empty($tagValue)) {
+                    continue;
+                }
 
-                    $metaTags[strtolower((string)$tagName)] = $this->cleanUpString((string)$tagValue);
+                $tagEnum = MetadataTags::getTag((string)$tagName);
+                if (null === $tagEnum) {
+                    continue;
+                }
+
+                if (is_array($tagValue)) {
+                    // Skip pictures
+                    if (isset($tagValue['data'])) {
+                        continue;
+                    }
+                    $flatValue = Arrays::flattenArray($tagValue);
+                    $tagValue = implode(', ', $flatValue);
+                }
+
+                $tagValue = $this->cleanUpString((string)$tagValue);
+
+                $tagName = $tagEnum->value;
+                if (isset($metaTags[$tagName])) {
+                    $metaTags[$tagName] .= ', ' . $tagValue;
+                } else {
+                    $metaTags[$tagName] = $tagValue;
                 }
             }
         }

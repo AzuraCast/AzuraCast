@@ -1,7 +1,7 @@
 services:
   installer:
     container_name: azuracast_installer
-    image: 'ghcr.io/azuracast/azuracast:${AZURACAST_VERSION:-latest}'
+    image: 'azuracast.docker.scarf.sh/azuracast/azuracast:${AZURACAST_VERSION:-latest}'
     volumes:
       - './:/installer'
     restart: 'no'

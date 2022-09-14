@@ -1,17 +1,31 @@
 #
-# Icecast build stage (for later copy)
+# Icecast build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:2.4.0-kh15-ac2 AS icecast
+FROM ubuntu:jammy AS icecast
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \
+    curl git ca-certificates \
+    build-essential libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp/install_icecast
+
+RUN curl -fsSL -o icecast.tar.gz https://github.com/AzuraCast/icecast-kh-ac/archive/refs/tags/2.4.0-kh15-ac2.tar.gz \
+    && tar -xzvf icecast.tar.gz --strip-components=1 \
+    && ./configure \
+    && make \
+    && make install
 
 #
 # MariaDB stage (for later copy)
 #
-FROM mariadb:10.7-focal AS mariadb
+FROM mariadb:10.9-jammy AS mariadb
 
 #
 # Golang dependencies build step
 #
-FROM golang:1.17-buster AS dockerize
+FROM golang:1-bullseye AS dockerize
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -21,7 +35,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 ENV TZ="UTC"
 

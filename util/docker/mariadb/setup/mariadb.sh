@@ -4,11 +4,11 @@ set -x
 
 apt-get install -y --no-install-recommends tzdata libjemalloc2 pwgen xz-utils zstd dirmngr apt-transport-https
 
-sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el,s390x] https://atl.mirrors.knownhost.com/mariadb/repo/10.7/ubuntu focal main'
+sudo curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
+sudo sh -c "echo 'deb https://atl.mirrors.knownhost.com/mariadb/repo/10.9/ubuntu jammy main' >>/etc/apt/sources.list"
 
 # Pulled from MariaDB Docker container
-export MARIADB_MAJOR=10.7
+export MARIADB_MAJOR=10.9
 
 {
   echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password password 'unused';

@@ -532,6 +532,19 @@ update() {
       rm docker.new.sh
     fi
 
+    # Check Docker version.
+    DOCKER_VERSION=$(docker version -f "{{.Server.Version}}")
+    DOCKER_VERSION_MAJOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 1)
+
+    if [ "${DOCKER_VERSION_MAJOR}" -ge 20 ]; then
+      echo "Docker server (version ${DOCKER_VERSION}) meets minimum version requirements."
+    else
+      if ask "Docker is out of date on this server. Attempt automatic upgrade?" Y; then
+        install-docker
+        install-docker-compose
+      fi
+    fi
+
     run-installer --update "$@"
 
     # Check for updated Docker Compose config.

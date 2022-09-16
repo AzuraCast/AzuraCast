@@ -24,6 +24,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:cache:clear' => Command\ClearCacheCommand::class,
         'azuracast:setup:initialize' => Command\InitializeCommand::class,
         'azuracast:config:migrate' => Command\MigrateConfigCommand::class,
+        'azuracast:setup:migrate' => Command\MigrateDbCommand::class,
         'azuracast:setup:fixtures' => Command\SetupFixturesCommand::class,
         'azuracast:setup' => Command\SetupCommand::class,
         'azuracast:radio:restart' => Command\RestartRadioCommand::class,

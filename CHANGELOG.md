@@ -7,6 +7,13 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- **Smarter database migrations:** A common source of problems with AzuraCast upgrades is experiencing a faulty or
+  interrupted database migration, leaving your database in a state that we can't automatically recover from. While we
+  can't wrap database changes in transactions due to our use of MariaDB, we can do the next best thing, which is to take
+  an automatic snapshot of your database just prior to the migration and roll back to that automatically upon failure.
+  This even applies if the entire update process is stopped and restarted, where the original database will be restored
+  on the second update attempt.
+
 - In a previous version, we added a rule that would prevent stations from starting up unless they had at least one
   active playlist with at least one music file to play. Several stations reported unique edge cases that didn't work
   with this configuration, so it has been removed.

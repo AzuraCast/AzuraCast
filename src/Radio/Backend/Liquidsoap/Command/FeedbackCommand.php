@@ -52,7 +52,7 @@ final class FeedbackCommand extends AbstractCommand
     ): Entity\SongHistory {
         if (isset($payload['artist'])) {
             $newSong = Entity\Song::createFromArray([
-                'artist' => $payload['artist'] ?? '',
+                'artist' => $payload['artist'],
                 'title' => $payload['title'] ?? '',
             ]);
 

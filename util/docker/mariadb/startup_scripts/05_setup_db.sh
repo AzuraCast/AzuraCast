@@ -51,5 +51,7 @@ if [ -z "$DATABASE_ALREADY_EXISTS" ]; then
 #elif mysql_upgrade --check-if-upgrade-is-needed; then
 elif _check_if_upgrade_is_needed; then
     find "$DATADIR" -type f -name 'ib_logfile*' -delete
+    touch "$DATADIR/ib_logfile0"
+
     docker_mariadb_upgrade "$@"
 fi

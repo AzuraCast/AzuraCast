@@ -50,11 +50,5 @@ if [ -z "$DATABASE_ALREADY_EXISTS" ]; then
 # MDEV-27636 mariadb_upgrade --check-if-upgrade-is-needed cannot be run offline
 #elif mysql_upgrade --check-if-upgrade-is-needed; then
 elif _check_if_upgrade_is_needed; then
-    find "$DATADIR" -type f -name 'ib_logfile*' -delete
-    touch "$DATADIR/ib_logfile0"
-
     docker_mariadb_upgrade "$@"
-elif [ ! -f "$DATADIR/ib_logfile0" ]; then
-    # Temporary workaround for users who upgraded without creating a blank ib_logfile0.
-    touch "$DATADIR/ib_logfile0"
 fi

@@ -719,7 +719,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $customFunctionBody[] = '    current_time = time()';
             $customFunctionBody[] = '    result = (' . implode(' and ', $conditions) . ')';
-            $customFunctionBody[] = '    log("' . implode(' and ', $conditions) . ' = #{result} (#{current_time})")';
             $customFunctionBody[] = '    result';
             $customFunctionBody[] = 'end';
             $event->appendLines($customFunctionBody);

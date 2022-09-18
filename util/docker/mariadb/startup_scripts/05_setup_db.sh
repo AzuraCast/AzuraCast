@@ -54,4 +54,7 @@ elif _check_if_upgrade_is_needed; then
     touch "$DATADIR/ib_logfile0"
 
     docker_mariadb_upgrade "$@"
+elif [ ! -f "$DATADIR/ib_logfile0" ]; then
+    # Temporary workaround for users who upgraded without creating a blank ib_logfile0.
+    touch "$DATADIR/ib_logfile0"
 fi

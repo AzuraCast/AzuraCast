@@ -58,7 +58,7 @@
     "sass": "^1.39.2",
     "sass-loader": "^13",
     "store": "^2",
-    "sweetalert2": "^11",
+    "sweetalert2": "11.4.8",
     "vue": "^2 <3",
     "vue-axios": "^3.3.6",
     "vue-clipboard2": "^0.3.3",

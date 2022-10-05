@@ -57,7 +57,7 @@
         "sass": "^1.39.2",
         "sass-loader": "^13",
         "store": "^2",
-        "sweetalert2": "^11",
+        "sweetalert2": "11.4.8",
         "vue": "^2 <3",
         "vue-axios": "^3.3.6",
         "vue-clipboard2": "^0.3.3",
@@ -8914,9 +8914,9 @@
       }
     },
     "node_modules/sweetalert2": {
-      "version": "11.4.33",
-      "resolved": "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.33.tgz",
-      "integrity": "sha512-gnXH7c7xFzs9BtmHBVH4Fl/cEKhOhf4gv6UuZpFqUoFWtwIKG5sjNkcDNYW+8v3wyFestLab5qI4i1H1MkN0Pg==",
+      "version": "11.4.8",
+      "resolved": "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.8.tgz",
+      "integrity": "sha512-BDS/+E8RwaekGSxCPUbPnsRAyQ439gtXkTF/s98vY2l9DaVEOMjGj1FaQSorfGREKsbbxGSP7UXboibL5vgTMA==",
       "funding": {
         "type": "individual",
         "url": "https://sweetalert2.github.io/#donations"
@@ -16845,9 +16845,9 @@
       }
     },
     "sweetalert2": {
-      "version": "11.4.33",
-      "resolved": "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.33.tgz",
-      "integrity": "sha512-gnXH7c7xFzs9BtmHBVH4Fl/cEKhOhf4gv6UuZpFqUoFWtwIKG5sjNkcDNYW+8v3wyFestLab5qI4i1H1MkN0Pg=="
+      "version": "11.4.8",
+      "resolved": "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.8.tgz",
+      "integrity": "sha512-BDS/+E8RwaekGSxCPUbPnsRAyQ439gtXkTF/s98vY2l9DaVEOMjGj1FaQSorfGREKsbbxGSP7UXboibL5vgTMA=="
     },
     "tapable": {
       "version": "2.2.1",

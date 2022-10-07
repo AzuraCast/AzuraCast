@@ -697,7 +697,10 @@ restore() {
         exit 1
       fi
 
-      docker-compose down -v
+      docker-compose down
+
+      # Remove most AzuraCast volumes but preserve some essential ones.
+      docker volume rm -f $(docker volume ls | grep 'azuracast' | grep -v 'station\|install' | awk 'NR>1 {print $2}')
       docker volume create azuracast_backups
 
       # Move from local filesystem to Docker volume
@@ -721,10 +724,10 @@ restore() {
       docker-compose down --timeout 30
       docker-compose up -d
     else
-      docker-compose down --timeout 30
+      docker-compose down
 
-      # Remove all volumes except the backup volume.
-      docker volume rm -f $(docker volume ls | grep -v "azuracast_backups" | awk 'NR>1 {print $2}')
+      # Remove most AzuraCast volumes but preserve some essential ones.
+      docker volume rm -f $(docker volume ls | grep 'azuracast' | grep -v 'station\|backups\|install' | awk 'NR>1 {print $2}')
 
       docker-compose run --rm web -- azuracast_restore "$@"
 

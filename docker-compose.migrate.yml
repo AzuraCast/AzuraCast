@@ -1,5 +1,0 @@
-services:
-  web:
-    volumes:
-      - /var/azuracast/stations:/var/azuracast/stations
-      - /var/azuracast/backups:/var/azuracast/backups

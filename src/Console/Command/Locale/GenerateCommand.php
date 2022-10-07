@@ -37,7 +37,7 @@ final class GenerateCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
         $io->title('Generate Locales');
 
-        $exportDir = $this->environment->getBaseDirectory() . '/resources/locale';
+        $exportDir = $this->environment->getBaseDirectory() . '/translations';
 
         $translations = Translations::create('default');
         $destFile = $exportDir . '/default.pot';

@@ -276,7 +276,7 @@ msgstr ""
 #: ./vue/components/Public/Requests.vue:34
 #: ./vue/components/Stations/Media.vue:92
 #: ./vue/components/Stations/Playlists/ReorderModal.vue:12
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:27
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:78
 msgid "Album"
 msgstr ""
 
@@ -394,7 +394,7 @@ msgstr ""
 #: ./vue/components/Stations/Media.vue:87
 #: ./vue/components/Stations/Playlists/QueueModal.vue:10
 #: ./vue/components/Stations/Playlists/ReorderModal.vue:11
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:30
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:79
 msgid "Artist"
 msgstr ""
 
@@ -575,8 +575,8 @@ msgid "AzuraCast will scan the uploaded file for matches in this station's music
 msgstr ""
 
 #: ./vue/components/Stations/Media/MoveFilesModal.vue:6
-#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:50
 #: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:40
+#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:50
 msgid "Back"
 msgstr ""
 
@@ -674,7 +674,7 @@ msgstr ""
 #: ./vue/components/Admin/Stations.vue:24
 #: ./vue/components/Admin/Stations/StationForm.vue:16
 #: ./vue/components/Admin/Stations/StationForm.vue:1
-#: /var/azuracast/www/config/menus/station.php:197
+#: /var/azuracast/www/config/menus/station.php:199
 msgid "Broadcasting"
 msgstr ""
 
@@ -1175,14 +1175,14 @@ msgstr ""
 
 #: ./vue/components/Stations/Fallback.vue:4
 #: /var/azuracast/www/src/Controller/Stations/FallbackAction.php:26
-#: /var/azuracast/www/config/menus/station.php:221
+#: /var/azuracast/www/config/menus/station.php:223
 msgid "Custom Fallback File"
 msgstr ""
 
 #: ./vue/components/Admin/CustomFields.vue:4
 #: ./vue/components/Stations/Media/EditModal.vue:28
 #: ./vue/components/Stations/Media/EditModal.vue:1
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:23
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:24
 #: /var/azuracast/www/config/menus/admin.php:86
 msgid "Custom Fields"
 msgstr ""
@@ -1407,7 +1407,7 @@ msgstr ""
 msgid "Delete Queue Item?"
 msgstr ""
 
-#: ./vue/components/Stations/Remotes.vue:46
+#: ./vue/components/Stations/Remotes.vue:50
 msgid "Delete Remote Relay?"
 msgstr ""
 
@@ -1738,7 +1738,7 @@ msgstr ""
 
 #: ./vue/components/Stations/LiquidsoapConfig.vue:5
 #: /var/azuracast/www/src/Controller/Stations/EditLiquidsoapConfigAction.php:61
-#: /var/azuracast/www/config/menus/station.php:228
+#: /var/azuracast/www/config/menus/station.php:230
 msgid "Edit Liquidsoap Configuration"
 msgstr ""
 
@@ -1760,8 +1760,9 @@ msgstr ""
 
 #: ./vue/components/Account.vue:38
 #: ./vue/components/Account/EditModal.vue:35
-#: ./vue/components/Stations/Profile/HeaderPanel.vue:10
+#: ./vue/components/Stations/Profile/HeaderPanel.vue:9
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:211
+#: /var/azuracast/www/templates/stations/sidebar.phtml:23
 msgid "Edit Profile"
 msgstr ""
 
@@ -2183,7 +2184,7 @@ msgstr ""
 #: ./vue/components/Admin/Stations/Form/ProfileForm.vue:1
 #: ./vue/components/Public/Requests.vue:35
 #: ./vue/components/Stations/Media.vue:93
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:46
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:85
 msgid "Genre"
 msgstr ""
 
@@ -2249,7 +2250,7 @@ msgstr ""
 
 #: ./vue/components/Stations/HlsStreams.vue:4
 #: /var/azuracast/www/src/Controller/Stations/HlsStreamsAction.php:23
-#: /var/azuracast/www/config/menus/station.php:208
+#: /var/azuracast/www/config/menus/station.php:210
 msgid "HLS Streams"
 msgstr ""
 
@@ -2579,7 +2580,7 @@ msgstr ""
 #: ./vue/components/Stations/Media.vue:94
 #: ./vue/components/Stations/Media/Form/BasicInfo.vue:44
 #: ./vue/components/Stations/Media/Form/BasicInfo.vue:1
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:51
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:86
 msgid "ISRC"
 msgstr ""
 
@@ -2592,7 +2593,6 @@ msgstr ""
 #: ./vue/components/Account/EditForm.vue:1
 #: ./vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:31
 #: ./vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:1
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:52
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:56
 msgid "Language"
 msgstr ""
@@ -2690,7 +2690,6 @@ msgid "Leave blank to use the default Telegram API URL (recommended)."
 msgstr ""
 
 #: ./vue/components/Stations/Media.vue:95
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:53
 msgid "Length"
 msgstr ""
 
@@ -2754,7 +2753,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Queue.vue:41
 #: ./vue/components/Stations/Queue.vue:2
-#: ./vue/components/Stations/Reports/Timeline.vue:55
+#: ./vue/components/Stations/Reports/Timeline.vue:57
 #: ./vue/components/Stations/Reports/Timeline.vue:2
 #: ./vue/components/Stations/Reports/Timeline.vue:1
 msgid "Listener Request"
@@ -2771,16 +2770,16 @@ msgstr ""
 #: ./vue/components/Stations/Reports/Overview/ListeningTimeTab.vue:25
 #: ./vue/components/Stations/Reports/Timeline.vue:37
 #: /var/azuracast/www/src/Controller/Stations/Reports/ListenersAction.php:25
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByStream.php:100
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:74
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:117
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:167
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:85
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByStream.php:100
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
 #: /var/azuracast/www/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:177
-#: /var/azuracast/www/config/menus/station.php:177
+#: /var/azuracast/www/config/menus/station.php:179
 msgid "Listeners"
 msgstr ""
 
@@ -2851,7 +2850,7 @@ msgstr ""
 msgid "Live stream disconnected."
 msgstr ""
 
-#: ./vue/components/Stations/Reports/Timeline.vue:62
+#: ./vue/components/Stations/Reports/Timeline.vue:64
 #: ./vue/components/Stations/Reports/Timeline.vue:9
 #: ./vue/components/Stations/Reports/Timeline.vue:1
 msgid "Live Streamer:"
@@ -2887,8 +2886,8 @@ msgstr ""
 
 #: ./vue/components/Admin/Users.vue:30
 #: ./vue/components/Admin/Users.vue:3
-#: /var/azuracast/www/templates/frontend/account/login.phtml:6
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:3
+#: /var/azuracast/www/templates/frontend/account/login.phtml:6
 msgid "Log In"
 msgstr ""
 
@@ -2900,7 +2899,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Queue.vue:16
 #: ./vue/components/Stations/Queue.vue:3
-#: /var/azuracast/www/config/menus/station.php:268
+#: /var/azuracast/www/config/menus/station.php:272
 msgid "Logs"
 msgstr ""
 
@@ -3007,7 +3006,7 @@ msgid "MaxMind License Key"
 msgstr ""
 
 #: ./vue/components/Stations/Podcasts/EpisodeForm/Media.vue:26
-#: /var/azuracast/www/config/menus/station.php:63
+#: /var/azuracast/www/config/menus/station.php:65
 msgid "Media"
 msgstr ""
 
@@ -3134,7 +3133,7 @@ msgstr ""
 #: ./vue/components/Admin/Stations/CloneModalForm.vue:29
 #: ./vue/components/Stations/Mounts.vue:4
 #: /var/azuracast/www/src/Controller/Stations/MountsAction.php:33
-#: /var/azuracast/www/config/menus/station.php:201
+#: /var/azuracast/www/config/menus/station.php:203
 msgid "Mount Points"
 msgstr ""
 
@@ -3161,7 +3160,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Media.vue:8
 #: /var/azuracast/www/src/Controller/Stations/FilesAction.php:49
-#: /var/azuracast/www/config/menus/station.php:68
+#: /var/azuracast/www/config/menus/station.php:70
 msgid "Music Files"
 msgstr ""
 
@@ -3408,7 +3407,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:28
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:26
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/OnDemandAction.php:66
-#: /var/azuracast/www/config/menus/station.php:92
+#: /var/azuracast/www/config/menus/station.php:94
 msgid "On-Demand Media"
 msgstr ""
 
@@ -3668,7 +3667,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Queue.vue:44
 #: ./vue/components/Stations/Queue.vue:5
-#: ./vue/components/Stations/Reports/Timeline.vue:58
+#: ./vue/components/Stations/Reports/Timeline.vue:60
 #: ./vue/components/Stations/Reports/Timeline.vue:5
 #: ./vue/components/Stations/Reports/Timeline.vue:1
 msgid "Playlist:"
@@ -3685,7 +3684,7 @@ msgstr ""
 #: ./vue/components/Stations/Playlists.vue:6
 #: ./vue/components/Stations/Profile/BackendPanel.vue:19
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsAction.php:33
-#: /var/azuracast/www/config/menus/station.php:116
+#: /var/azuracast/www/config/menus/station.php:118
 msgid "Playlists"
 msgstr ""
 
@@ -3719,7 +3718,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:34
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:32
 #: /var/azuracast/www/src/Controller/Stations/PodcastsAction.php:33
-#: /var/azuracast/www/config/menus/station.php:124
+#: /var/azuracast/www/config/menus/station.php:126
 msgid "Podcasts"
 msgstr ""
 
@@ -3766,7 +3765,7 @@ msgstr ""
 #: ./vue/components/Admin/Stations/StationForm.vue:8
 #: ./vue/components/Admin/Stations/StationForm.vue:1
 #: /var/azuracast/www/src/Controller/Stations/ProfileController.php:74
-#: /var/azuracast/www/config/menus/station.php:51
+#: /var/azuracast/www/config/menus/station.php:53
 msgid "Profile"
 msgstr ""
 
@@ -3790,7 +3789,7 @@ msgstr ""
 #: ./vue/components/Stations/Podcasts/ListView.vue:3
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:16
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:14
-#: /var/azuracast/www/config/menus/station.php:56
+#: /var/azuracast/www/config/menus/station.php:58
 msgid "Public Page"
 msgstr ""
 
@@ -3900,7 +3899,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/StreamsPanel.vue:3
 #: ./vue/components/Stations/Remotes.vue:4
 #: /var/azuracast/www/src/Controller/Stations/RemotesAction.php:24
-#: /var/azuracast/www/config/menus/station.php:214
+#: /var/azuracast/www/config/menus/station.php:216
 msgid "Remote Relays"
 msgstr ""
 
@@ -4111,8 +4110,8 @@ msgstr ""
 
 #: ./vue/components/Stations/Podcasts/ListView.vue:33
 #: ./vue/components/Stations/Podcasts/ListView.vue:8
-#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:53
 #: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:43
+#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:53
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:76
 msgid "RSS Feed"
 msgstr ""
@@ -4488,7 +4487,7 @@ msgstr ""
 
 #: ./vue/components/Stations/SftpUsers.vue:5
 #: /var/azuracast/www/src/Controller/Stations/SftpUsersAction.php:38
-#: /var/azuracast/www/config/menus/station.php:100
+#: /var/azuracast/www/config/menus/station.php:102
 msgid "SFTP Users"
 msgstr ""
 
@@ -4664,7 +4663,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Reports/Timeline.vue:5
 #: /var/azuracast/www/src/Controller/Stations/Reports/TimelineAction.php:25
-#: /var/azuracast/www/config/menus/station.php:186
+#: /var/azuracast/www/config/menus/station.php:188
 msgid "Song Playback Timeline"
 msgstr ""
 
@@ -4675,7 +4674,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/RequestsPanel.vue:3
 #: ./vue/components/Stations/Reports/Requests.vue:4
 #: /var/azuracast/www/src/Controller/Stations/Reports/RequestsAction.php:25
-#: /var/azuracast/www/config/menus/station.php:181
+#: /var/azuracast/www/config/menus/station.php:183
 msgid "Song Requests"
 msgstr ""
 
@@ -4804,7 +4803,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Reports/Overview.vue:5
 #: /var/azuracast/www/src/Controller/Stations/Reports/OverviewAction.php:39
-#: /var/azuracast/www/config/menus/station.php:173
+#: /var/azuracast/www/config/menus/station.php:175
 msgid "Station Statistics"
 msgstr ""
 
@@ -4955,7 +4954,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Streamers.vue:7
 #: /var/azuracast/www/src/Controller/Stations/StreamersAction.php:37
-#: /var/azuracast/www/config/menus/station.php:137
+#: /var/azuracast/www/config/menus/station.php:139
 msgid "Streamer/DJ Accounts"
 msgstr ""
 
@@ -5508,7 +5507,7 @@ msgstr ""
 #: ./vue/components/Stations/Playlists/ReorderModal.vue:10
 #: ./vue/components/Stations/Webhooks/Form/Discord.vue:27
 #: ./vue/components/Stations/Webhooks/Form/Discord.vue:1
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:79
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:87
 msgid "Title"
 msgstr ""
 
@@ -5691,7 +5690,7 @@ msgstr ""
 
 #: ./vue/components/Stations/Queue.vue:4
 #: /var/azuracast/www/src/Controller/Stations/QueueAction.php:25
-#: /var/azuracast/www/config/menus/station.php:244
+#: /var/azuracast/www/config/menus/station.php:246
 msgid "Upcoming Song Queue"
 msgstr ""
 
@@ -5725,7 +5724,7 @@ msgstr ""
 #: ./vue/components/Admin/Stations/Form/BackendForm.vue:1
 #: ./vue/components/Stations/StereoToolConfig.vue:4
 #: /var/azuracast/www/src/Controller/Stations/UploadStereoToolConfigAction.php:25
-#: /var/azuracast/www/config/menus/station.php:235
+#: /var/azuracast/www/config/menus/station.php:237
 msgid "Upload Stereo Tool Configuration"
 msgstr ""
 
@@ -5916,7 +5915,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:22
 #: ./vue/components/Stations/Profile/PublicPagesPanel.vue:20
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/WebDjAction.php:61
-#: /var/azuracast/www/config/menus/station.php:144
+#: /var/azuracast/www/config/menus/station.php:146
 msgid "Web DJ"
 msgstr ""
 
@@ -5943,7 +5942,7 @@ msgstr ""
 #: ./vue/components/Admin/Stations/CloneModalForm.vue:45
 #: ./vue/components/Stations/Webhooks.vue:4
 #: /var/azuracast/www/src/Controller/Stations/WebhooksAction.php:36
-#: /var/azuracast/www/config/menus/station.php:160
+#: /var/azuracast/www/config/menus/station.php:162
 msgid "Web Hooks"
 msgstr ""
 
@@ -6063,7 +6062,7 @@ msgid "ZStandard compression"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/BulkMediaAction.php:24
-#: /var/azuracast/www/config/menus/station.php:107
+#: /var/azuracast/www/config/menus/station.php:109
 msgid "Bulk Media Import/Export"
 msgstr ""
 
@@ -6080,40 +6079,12 @@ msgstr ""
 msgid "Episode not found."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardAction.php:36
-#: /var/azuracast/www/templates/system/error_http.phtml:17
-#: /var/azuracast/www/templates/system/error_general.phtml:17
-#: /var/azuracast/www/templates/main.phtml:78
-msgid "Dashboard"
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:111
+msgid "Set Up AzuraCast"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:61
-msgid "Too many login attempts"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:62
-msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:99
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:108
-#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:30
-#: /var/azuracast/www/src/Controller/Frontend/Account/MasqueradeAction.php:41
-msgid "Logged in successfully."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:100
-msgid "Complete the setup process to get started."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:119
-#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:43
-msgid "Login unsuccessful"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:119
-#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:43
-msgid "Your credentials could not be verified."
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:189
+msgid "Setup has already been completed!"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Frontend/Account/ForgotPasswordAction.php:44
@@ -6137,6 +6108,39 @@ msgstr ""
 msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Frontend/Account/MasqueradeAction.php:34
+msgid "User not found."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/MasqueradeAction.php:41
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:30
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:99
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:108
+msgid "Logged in successfully."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:43
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:119
+msgid "Login unsuccessful"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:43
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:119
+msgid "Your credentials could not be verified."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:61
+msgid "Too many login attempts"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:62
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:100
+msgid "Complete the setup process to get started."
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Frontend/Account/RecoverAction.php:36
 msgid "Invalid token specified."
 msgstr ""
@@ -6149,52 +6153,25 @@ msgstr ""
 msgid "Your password has been updated."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/MasqueradeAction.php:34
-msgid "User not found."
+#: /var/azuracast/www/src/Controller/Frontend/DashboardAction.php:36
+#: /var/azuracast/www/templates/system/error_http.phtml:17
+#: /var/azuracast/www/templates/system/error_general.phtml:17
+#: /var/azuracast/www/templates/main.phtml:78
+msgid "Dashboard"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:111
-msgid "Set Up AzuraCast"
+#: /var/azuracast/www/src/Controller/Admin/Debug/NextSongAction.php:45
+#: /var/azuracast/www/src/Controller/Admin/Debug/TelnetAction.php:56
+#: /var/azuracast/www/src/Controller/Admin/Debug/NowPlayingAction.php:43
+#: /var/azuracast/www/src/Controller/Admin/Debug/SyncAction.php:57
+#: /var/azuracast/www/src/Controller/Admin/Debug/ClearStationQueueAction.php:48
+msgid "Debug Output"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:189
-msgid "Setup has already been completed!"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/BulkMedia/UploadAction.php:162
-#, php-format
-msgid "%d files processed."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Streamers/BroadcastsController.php:144
-msgid "No recording available."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/FilesController.php:193
-msgid "This station is out of available storage space."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/ListAction.php:41
-#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/DownloadAction.php:31
-msgid "This station does not support on-demand streaming."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:61
-msgid "Bot/Crawler"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
-msgid "Desktop Browser"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
-msgid "Non-Browser"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByStream.php:101
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
 msgid "Connected Seconds"
 msgstr ""
 
@@ -6230,6 +6207,49 @@ msgstr ""
 msgid "More than Two Hours"
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:61
+msgid "Bot/Crawler"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
+msgid "Desktop Browser"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
+msgid "Non-Browser"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ImportAction.php:171
+#, php-format
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/PutOrderAction.php:36
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/GetOrderAction.php:37
+msgid "This playlist is not a sequential playlist."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ToggleAction.php:36
+msgid "Playlist enabled."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ToggleAction.php:37
+msgid "Playlist disabled."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:35
+msgid "Playlist reshuffled."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/BulkMedia/UploadAction.php:162
+#, php-format
+msgid "%d files processed."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/FilesController.php:193
+msgid "This station is out of available storage space."
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Api/Stations/LogsAction.php:83
 msgid "Station Nginx Configuration"
 msgstr ""
@@ -6260,32 +6280,6 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/LogsAction.php:127
 msgid "Shoutcast Configuration"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Podcasts/Art/DeleteArtAction.php:60
-msgid "Podcast not found!"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ToggleAction.php:36
-msgid "Playlist enabled."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ToggleAction.php:37
-msgid "Playlist disabled."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/PutOrderAction.php:36
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/GetOrderAction.php:37
-msgid "This playlist is not a sequential playlist."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:35
-msgid "Playlist reshuffled."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/ImportAction.php:171
-#, php-format
-msgid "Playlist successfully imported; %d of %d files were successfully matched."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
@@ -6324,12 +6318,25 @@ msgstr ""
 msgid "Streamer disconnected."
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Api/Stations/Streamers/BroadcastsController.php:144
+msgid "No recording available."
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Api/Stations/Webhooks/ToggleAction.php:36
 msgid "Web hook enabled."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Webhooks/ToggleAction.php:37
 msgid "Web hook disabled."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Podcasts/Art/DeleteArtAction.php:60
+msgid "Podcast not found!"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/ListAction.php:41
+#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/DownloadAction.php:31
+msgid "This station does not support on-demand streaming."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:304
@@ -6341,6 +6348,10 @@ msgstr ""
 msgid "File Processing"
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:26
+msgid "No directory specified"
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:29
 msgid "File not specified."
 msgstr ""
@@ -6349,36 +6360,20 @@ msgstr ""
 msgid "New path not specified."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:26
-msgid "No directory specified"
-msgstr ""
-
 #: /var/azuracast/www/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:130
 msgid "All Stations"
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:213
+msgid "You cannot modify yourself."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:236
+msgid "You cannot remove yourself."
+msgstr ""
+
 #: /var/azuracast/www/src/Controller/Api/Admin/Backups/AbstractFileAction.php:35
 msgid "Backup not found."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:47
-msgid "Test Message"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:50
-msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:64
-msgid "Test message sent successfully."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:19
-msgid "Create a new storage location based on the base directory."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Admin/StereoTool/PostAction.php:37
-msgid "Invalid binary uploaded."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:75
@@ -6430,257 +6425,41 @@ msgstr ""
 msgid "Supervisord Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:213
-msgid "You cannot modify yourself."
+#: /var/azuracast/www/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:19
+msgid "Create a new storage location based on the base directory."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:236
-msgid "You cannot remove yourself."
+#: /var/azuracast/www/src/Controller/Api/Admin/StereoTool/PostAction.php:37
+msgid "Invalid binary uploaded."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/Debug/TelnetAction.php:56
-#: /var/azuracast/www/src/Controller/Admin/Debug/ClearStationQueueAction.php:48
-#: /var/azuracast/www/src/Controller/Admin/Debug/NowPlayingAction.php:43
-#: /var/azuracast/www/src/Controller/Admin/Debug/NextSongAction.php:45
-#: /var/azuracast/www/src/Controller/Admin/Debug/SyncAction.php:57
-msgid "Debug Output"
+#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:47
+msgid "Test Message"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:28
-msgid "Album Artist Sort Order"
+#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:50
+msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:29
-msgid "Album Sort Order"
+#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:64
+msgid "Test message sent successfully."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:31
-msgid "Band"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:32
-msgid "Bpm"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:33
-msgid "Comment"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:34
-msgid "Commercial Information"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:35
-msgid "Composer"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:36
-msgid "Composer Sort Order"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:37
-msgid "Conductor"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:38
-msgid "Content Group Description"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:39
-msgid "Copyright"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:40
-msgid "Copyright Message"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:41
-msgid "Encoded By"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:42
-msgid "Encoder Settings"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:43
-msgid "Encoding Time"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:44
-msgid "File Owner"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:45
-msgid "File Type"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:47
-msgid "Initial Key"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:48
-msgid "Internet Radio Station Name"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:49
-msgid "Internet Radio Station Owner"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:50
-msgid "Involved People List"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:54
-msgid "Linked Information"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:55
-msgid "Lyricist"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:56
-msgid "Media Type"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:57
-msgid "Mood"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:58
-msgid "Music CD Identifier"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:59
-msgid "Musician Credits List"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:60
-msgid "Original Album"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:61
-msgid "Original Artist"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:62
-msgid "Original Filename"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:63
-msgid "Original Lyricist"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:64
-msgid "Original Release Time"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:65
-msgid "Original Year"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:66
-msgid "Part Of A Compilation"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:67
-msgid "Part Of A Set"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:68
-msgid "Performer Sort Order"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:69
-msgid "Playlist Delay"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:70
-msgid "Produced Notice"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:71
-msgid "Publisher"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:72
-msgid "Recording Time"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:73
-msgid "Release Time"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:74
-msgid "Remixer"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:75
-msgid "Set Subtitle"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:76
-msgid "Subtitle"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:77
-msgid "Tagging Time"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:78
-msgid "Terms Of Use"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:80
-msgid "Title Sort Order"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:81
-msgid "Track Number"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:82
-msgid "Unsynchronised Lyric"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:83
-msgid "URL Artist"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:84
-msgid "URL File"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:85
-msgid "URL Payment"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:86
-msgid "URL Publisher"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:87
-msgid "URL Source"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:88
-msgid "URL Station"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:89
-msgid "URL User"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:90
-msgid "Year"
-msgstr ""
-
-#: /var/azuracast/www/src/Validator/Constraints/StationPortCheckerValidator.php:41
+#: /var/azuracast/www/src/Service/IpGeolocator/GeoLite.php:30
 #, php-format
-msgid "The port %s is in use by another station."
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
 msgstr ""
 
-#: /var/azuracast/www/src/Validator/Constraints/UniqueEntityValidator.php:176
-msgid "This value is already used."
+#: /var/azuracast/www/src/Service/IpGeolocator/DbIp.php:29
+msgid "IP Geolocation by DB-IP"
+msgstr ""
+
+#: /var/azuracast/www/src/Service/IpGeolocation.php:58
+msgid "GeoLite database not configured for this installation. See System Administration for instructions."
+msgstr ""
+
+#: /var/azuracast/www/src/Doctrine/Repository.php:111
+msgid "Select..."
 msgstr ""
 
 #: /var/azuracast/www/src/Validator/Constraints/StorageLocationValidator.php:36
@@ -6693,331 +6472,13 @@ msgstr ""
 msgid "Storage location %s already exists."
 msgstr ""
 
-#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:20
-msgid "This feature is not currently supported on this station."
-msgstr ""
-
-#: /var/azuracast/www/src/Doctrine/Repository.php:111
-msgid "Select..."
-msgstr ""
-
-#: /var/azuracast/www/src/Service/IpGeolocator/DbIp.php:29
-msgid "IP Geolocation by DB-IP"
-msgstr ""
-
-#: /var/azuracast/www/src/Service/IpGeolocator/GeoLite.php:30
+#: /var/azuracast/www/src/Validator/Constraints/StationPortCheckerValidator.php:41
 #, php-format
-msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
+msgid "The port %s is in use by another station."
 msgstr ""
 
-#: /var/azuracast/www/src/Service/IpGeolocation.php:58
-msgid "GeoLite database not configured for this installation. See System Administration for instructions."
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:26
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:22
-msgid "All Permissions"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:27
-msgid "View Station Page"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:28
-msgid "View Station Reports"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:29
-msgid "View Station Logs"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:30
-msgid "Manage Station Profile"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:31
-msgid "Manage Station Broadcasting"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:32
-msgid "Manage Station Streamers"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:33
-msgid "Manage Station Mount Points"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:34
-msgid "Manage Station Remote Relays"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:35
-msgid "Manage Station Media"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:36
-msgid "Manage Station Automation"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:37
-msgid "Manage Station Web Hooks"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/StationPermissions.php:38
-msgid "Manage Station Podcasts"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:23
-msgid "View Administration Page"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:24
-msgid "View System Logs"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:25
-msgid "Administer Settings"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:26
-msgid "Administer API Keys"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:27
-msgid "Administer Stations"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:28
-msgid "Administer Custom Fields"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:29
-msgid "Administer Backups"
-msgstr ""
-
-#: /var/azuracast/www/src/Enums/GlobalPermissions.php:30
-msgid "Administer Storage Locations"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:44
-msgid "AzuraCast Setup"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:45
-msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:51
-msgid "Installing Data Fixtures"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:57
-msgid "Refreshing All Stations"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:80
-msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:89
-msgid "AzuraCast installation complete!"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
-#, php-format
-msgid "Visit %s to complete setup."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:104
-msgid "Configuration successfully written."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Users/SetAdministratorCommand.php:58
-#, php-format
-msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Users/SetAdministratorCommand.php:66
-msgid "Account not found."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:96
-msgid "AzuraCast Backup"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:97
-msgid "Please wait while a backup is generated..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:100
-msgid "Creating temporary directories..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:113
-msgid "Backing up MariaDB..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:153
-msgid "Creating backup archive..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:229
-msgid "Cleaning up temporary files..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:241
-#, php-format
-msgid "Backup complete in %.2f seconds."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Backup/RestoreCommand.php:74
-#, php-format
-msgid "Backup path %s not found!"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:31
-msgid "Initialize AzuraCast"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:32
-msgid "Initializing essential settings..."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:37
-#, php-format
-msgid "Environment: %s"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:41
-#, php-format
-msgid "Installation Method: %s"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:48
-msgid "Running Database Migrations"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:59
-msgid "Generating Database Proxy Classes"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:64
-msgid "Reload System Data"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:74
-msgid "AzuraCast is now initialized."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:63
-msgid "Fixtures loaded."
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Locale/ImportCommand.php:58
-#, php-format
-msgid "Imported locale: %s"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Settings/ListCommand.php:30
-msgid "AzuraCast Settings"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Settings/ListCommand.php:33
-msgid "Setting Key"
-msgstr ""
-
-#: /var/azuracast/www/src/Console/Command/Settings/ListCommand.php:34
-msgid "Setting Value"
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/ApiGenerator/ScheduleApiGenerator.php:56
-#, php-format
-msgid "Playlist: %s"
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/ApiGenerator/ScheduleApiGenerator.php:61
-#, php-format
-msgid "Streamer: %s"
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:63
-msgid "This station does not accept requests currently."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:70
-msgid "Search engine crawlers are not permitted to use this feature."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:75
-msgid "You are not permitted to submit requests."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:82
-msgid "The song ID you specified cannot be requested for this station."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:113
-msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:158
-msgid "Duplicate request: this song was already requested and will play soon."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:237
-msgid "This song or artist has been played too recently. Wait a while before requesting it again."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Status.php:33
-msgid "Changes saved successfully."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Status.php:38
-msgid "Record created successfully."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Status.php:43
-msgid "Record updated successfully."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Status.php:48
-msgid "Record deleted successfully."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:71
-msgid "Record not found"
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:77
-msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:78
-msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:79
-msgid "The uploaded file was only partially uploaded."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:80
-msgid "No file was uploaded."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:81
-msgid "No temporary directory is available."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:82
-msgid "Could not write to filesystem."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:83
-msgid "Upload halted by a PHP extension."
-msgstr ""
-
-#: /var/azuracast/www/src/Entity/Api/Error.php:84
-msgid "Unspecified error."
+#: /var/azuracast/www/src/Validator/Constraints/UniqueEntityValidator.php:176
+msgid "This value is already used."
 msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractLocalAdapter.php:249
@@ -7054,16 +6515,6 @@ msgstr ""
 
 #: /var/azuracast/www/src/Radio/AbstractLocalAdapter.php:296
 msgid "Check the log for details."
-msgstr ""
-
-#: /var/azuracast/www/src/Http/ErrorHandler.php:171
-#: /var/azuracast/www/src/Http/ErrorHandler.php:181
-msgid "You must be logged in to access this page."
-msgstr ""
-
-#: /var/azuracast/www/src/Http/ErrorHandler.php:199
-#: /var/azuracast/www/src/Http/ErrorHandler.php:209
-msgid "You do not have permission to access this portion of the site."
 msgstr ""
 
 #: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:35
@@ -7384,35 +6835,24 @@ msgstr ""
 msgid "Server configuration complete!"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/RecentBackupCheck.php:49
-msgid "Installation Not Recently Backed Up"
+#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:37
+msgid "The performance profiling extension is currently enabled on this installation."
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/RecentBackupCheck.php:50
-msgid "This installation has not been backed up in the last two weeks."
+#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:38
+msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:38
-msgid "Synchronization Disabled"
+#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:44
+msgid "Profiler Control Panel"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:39
-msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
+#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:56
+msgid "Performance profiling is currently enabled for all requests."
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:53
-msgid "Synchronization Not Recently Run"
-msgstr ""
-
-#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:54
-msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
-msgstr ""
-
-#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:61
-#: /var/azuracast/www/config/menus/admin.php:44
-#: /var/azuracast/www/templates/admin/debug/index.phtml:7
-#: /var/azuracast/www/templates/admin/debug/index.phtml:16
-msgid "System Debugger"
+#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:57
+msgid "This can have an adverse impact on system performance. You should disable this when possible."
 msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:46
@@ -7463,24 +6903,435 @@ msgstr ""
 msgid "New AzuraCast Updates Available"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:37
-msgid "The performance profiling extension is currently enabled on this installation."
+#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:38
+msgid "Synchronization Disabled"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:38
-msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
+#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:39
+msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:44
-msgid "Profiler Control Panel"
+#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:53
+msgid "Synchronization Not Recently Run"
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:56
-msgid "Performance profiling is currently enabled for all requests."
+#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:54
+msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
 msgstr ""
 
-#: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:57
-msgid "This can have an adverse impact on system performance. You should disable this when possible."
+#: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:61
+#: /var/azuracast/www/config/menus/admin.php:44
+#: /var/azuracast/www/templates/admin/debug/index.phtml:7
+#: /var/azuracast/www/templates/admin/debug/index.phtml:16
+msgid "System Debugger"
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/RecentBackupCheck.php:49
+msgid "Installation Not Recently Backed Up"
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/RecentBackupCheck.php:50
+msgid "This installation has not been backed up in the last two weeks."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/ApiGenerator/ScheduleApiGenerator.php:56
+#, php-format
+msgid "Playlist: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/ApiGenerator/ScheduleApiGenerator.php:61
+#, php-format
+msgid "Streamer: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:71
+msgid "Record not found"
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:77
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:78
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:79
+msgid "The uploaded file was only partially uploaded."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:80
+msgid "No file was uploaded."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:81
+msgid "No temporary directory is available."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:82
+msgid "Could not write to filesystem."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:83
+msgid "Upload halted by a PHP extension."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Error.php:84
+msgid "Unspecified error."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Status.php:33
+msgid "Changes saved successfully."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Status.php:38
+msgid "Record created successfully."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Status.php:43
+msgid "Record updated successfully."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Api/Status.php:48
+msgid "Record deleted successfully."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:63
+msgid "This station does not accept requests currently."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:70
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:75
+msgid "You are not permitted to submit requests."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:82
+msgid "The song ID you specified cannot be requested for this station."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:113
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:158
+msgid "Duplicate request: this song was already requested and will play soon."
+msgstr ""
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:237
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:104
+msgid "Configuration successfully written."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/RestoreCommand.php:75
+#, php-format
+msgid "Backup path %s not found!"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:97
+msgid "AzuraCast Backup"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:98
+msgid "Please wait while a backup is generated..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:101
+msgid "Creating temporary directories..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:114
+msgid "Backing up MariaDB..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:141
+msgid "Creating backup archive..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:217
+msgid "Cleaning up temporary files..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Backup/BackupCommand.php:229
+#, php-format
+msgid "Backup complete in %.2f seconds."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:31
+msgid "Initialize AzuraCast"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:32
+msgid "Initializing essential settings..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:37
+#, php-format
+msgid "Environment: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:41
+#, php-format
+msgid "Installation Method: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:48
+msgid "Running Database Migrations"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:56
+msgid "Generating Database Proxy Classes"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:61
+msgid "Reload System Data"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/InitializeCommand.php:71
+msgid "AzuraCast is now initialized."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Settings/ListCommand.php:30
+msgid "AzuraCast Settings"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Settings/ListCommand.php:33
+msgid "Setting Key"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Settings/ListCommand.php:34
+msgid "Setting Value"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:25
+msgid "Database Migrations"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:33
+msgid "Database is already up to date!"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:38
+msgid "Backing up initial database state..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:47
+msgid "We detected a database restore file from a previous (possibly failed) migration."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:48
+msgid "Attempting to restore that now..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:56
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:109
+#, php-format
+msgid "Restore failed: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:68
+#, php-format
+msgid "Initial backup failed: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:77
+msgid "Running database migrations..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:91
+#, php-format
+msgid "Database migration failed: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:96
+msgid "Attempting to roll back to previous database state..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:102
+msgid "Your database was restored due to a failed migration."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:103
+msgid "Please report this bug to our developers."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/MigrateDbCommand.php:121
+msgid "Database migration completed!"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:63
+msgid "Fixtures loaded."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Users/SetAdministratorCommand.php:58
+#, php-format
+msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Users/SetAdministratorCommand.php:66
+msgid "Account not found."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/Locale/ImportCommand.php:58
+#, php-format
+msgid "Imported locale: %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:44
+msgid "AzuraCast Setup"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:45
+msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:51
+msgid "Installing Data Fixtures"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:57
+msgid "Refreshing All Stations"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:80
+msgid "AzuraCast is now updated to the latest version!"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:89
+msgid "AzuraCast installation complete!"
+msgstr ""
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:91
+#, php-format
+msgid "Visit %s to complete setup."
+msgstr ""
+
+#: /var/azuracast/www/src/Http/ErrorHandler.php:172
+#: /var/azuracast/www/src/Http/ErrorHandler.php:184
+msgid "You must be logged in to access this page."
+msgstr ""
+
+#: /var/azuracast/www/src/Http/ErrorHandler.php:202
+#: /var/azuracast/www/src/Http/ErrorHandler.php:214
+msgid "You do not have permission to access this portion of the site."
+msgstr ""
+
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:80
+msgid "BPM"
+msgstr ""
+
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:81
+msgid "Comment"
+msgstr ""
+
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:82
+msgid "Composer"
+msgstr ""
+
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:83
+msgid "Copyright"
+msgstr ""
+
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:84
+msgid "Encoded By"
+msgstr ""
+
+#: /var/azuracast/www/src/Media/Enums/MetadataTags.php:88
+msgid "Year"
+msgstr ""
+
+#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:20
+msgid "This feature is not currently supported on this station."
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:22
+#: /var/azuracast/www/src/Enums/StationPermissions.php:26
+msgid "All Permissions"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:23
+msgid "View Administration Page"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:24
+msgid "View System Logs"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:25
+msgid "Administer Settings"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:26
+msgid "Administer API Keys"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:27
+msgid "Administer Stations"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:28
+msgid "Administer Custom Fields"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:29
+msgid "Administer Backups"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/GlobalPermissions.php:30
+msgid "Administer Storage Locations"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:27
+msgid "View Station Page"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:28
+msgid "View Station Reports"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:29
+msgid "View Station Logs"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:30
+msgid "Manage Station Profile"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:31
+msgid "Manage Station Broadcasting"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:32
+msgid "Manage Station Streamers"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:33
+msgid "Manage Station Mount Points"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:34
+msgid "Manage Station Remote Relays"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:35
+msgid "Manage Station Media"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:36
+msgid "Manage Station Automation"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:37
+msgid "Manage Station Web Hooks"
+msgstr ""
+
+#: /var/azuracast/www/src/Enums/StationPermissions.php:38
+msgid "Manage Station Podcasts"
 msgstr ""
 
 #: /var/azuracast/www/config/menus/station.php:19
@@ -7491,51 +7342,51 @@ msgstr ""
 msgid "Reload broadcasting? Current listeners will not be disconnected."
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:30
+#: /var/azuracast/www/config/menus/station.php:32
 msgid "Start Station"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:31
+#: /var/azuracast/www/config/menus/station.php:33
 msgid "Ready to start broadcasting? Click to start your station."
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:40
+#: /var/azuracast/www/config/menus/station.php:42
 msgid "Reload to Apply Changes"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:41
+#: /var/azuracast/www/config/menus/station.php:43
 msgid "Click to restart your station and apply configuration changes."
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:74
+#: /var/azuracast/www/config/menus/station.php:76
 msgid "Duplicate Songs"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:80
+#: /var/azuracast/www/config/menus/station.php:82
 msgid "Unprocessable Files"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:86
+#: /var/azuracast/www/config/menus/station.php:88
 msgid "Unassigned Files"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:132
+#: /var/azuracast/www/config/menus/station.php:134
 msgid "Live Streaming"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:168
+#: /var/azuracast/www/config/menus/station.php:170
 msgid "Reports"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:190
+#: /var/azuracast/www/config/menus/station.php:192
 msgid "SoundExchange Royalties"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:250
+#: /var/azuracast/www/config/menus/station.php:253
 msgid "Reload Configuration"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:258
+#: /var/azuracast/www/config/menus/station.php:261
 msgid "Restart Broadcasting"
 msgstr ""
 
@@ -7659,8 +7510,100 @@ msgstr ""
 msgid "Powered by %s"
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/sidebar.phtml:13
-msgid "Station Time"
+#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:65
+#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:99
+msgid "View Details"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:98
+msgid "No entries found."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
+msgid "Enter Two-Factor Code"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
+msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:20
+msgid "Security Code"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
+#: /var/azuracast/www/templates/frontend/account/login.phtml:64
+#: /var/azuracast/www/templates/frontend/account/login.phtml:67
+#: /var/azuracast/www/templates/frontend/account/forgot.phtml:27
+msgid "Sign in"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:6
+#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:17
+#: /var/azuracast/www/templates/frontend/account/forgot.phtml:6
+#: /var/azuracast/www/templates/frontend/account/forgot.phtml:15
+msgid "Forgot Password"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:22
+msgid "This installation's administrator has not configured this functionality."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:25
+msgid "Contact an administrator to reset your password following the instructions in our documentation:"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:31
+msgid "Password Reset Instructions"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:20
+msgid "Welcome!"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:23
+#, php-format
+msgid "Welcome to %s!"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:43
+#: /var/azuracast/www/templates/frontend/account/forgot.phtml:23
+msgid "name@example.com"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:52
+msgid "Enter your password"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:60
+msgid "Remember me"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:71
+msgid "Please log in to continue."
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:74
+msgid "Forgot your password?"
+msgstr ""
+
+#: /var/azuracast/www/templates/frontend/account/forgot.phtml:30
+msgid "Send Recovery E-mail"
+msgstr ""
+
+#: /var/azuracast/www/templates/system/log_view.phtml:33
+msgid "Details"
+msgstr ""
+
+#: /var/azuracast/www/templates/mail/forgot.phtml:7
+#, php-format
+msgid "An account recovery link has been requested for your account on \"%s\"."
+msgstr ""
+
+#: /var/azuracast/www/templates/mail/forgot.phtml:10
+msgid "Click the link below to log in to your account."
 msgstr ""
 
 #: /var/azuracast/www/templates/stations/profile_disabled.phtml:6
@@ -7672,6 +7615,10 @@ msgstr ""
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
 msgstr ""
 
+#: /var/azuracast/www/templates/stations/sidebar.js.phtml:15
+msgid "Please wait..."
+msgstr ""
+
 #: /var/azuracast/www/templates/stations/reports_restricted.phtml:1
 #: /var/azuracast/www/templates/stations/reports_restricted.phtml:5
 msgid "Report Not Available"
@@ -7681,41 +7628,8 @@ msgstr ""
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
 msgstr ""
 
-#: /var/azuracast/www/templates/stations/sidebar.js.phtml:15
-msgid "Please wait..."
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/relays/index.phtml:21
-msgid "Is Public"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/relays/index.phtml:22
-msgid "First Connected"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/relays/index.phtml:23
-msgid "Latest Update"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/relays/index.phtml:35
-msgid "Yes"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/relays/index.phtml:35
-msgid "No"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/debug/sync.phtml:7
-#: /var/azuracast/www/templates/admin/debug/sync.phtml:14
-msgid "Run Synchronization Task"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/debug/sync.phtml:19
-msgid "Debug Home"
-msgstr ""
-
-#: /var/azuracast/www/templates/admin/debug/sync.phtml:24
-msgid "The synchronization task is running in the background. The log below will update automatically."
+#: /var/azuracast/www/templates/stations/sidebar.phtml:15
+msgid "Station Time"
 msgstr ""
 
 #: /var/azuracast/www/templates/admin/debug/index.phtml:22
@@ -7798,91 +7712,37 @@ msgstr ""
 msgid "Execute Command"
 msgstr ""
 
-#: /var/azuracast/www/templates/system/log_view.phtml:33
-msgid "Details"
+#: /var/azuracast/www/templates/admin/debug/sync.phtml:7
+#: /var/azuracast/www/templates/admin/debug/sync.phtml:14
+msgid "Run Synchronization Task"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:20
-msgid "Welcome!"
+#: /var/azuracast/www/templates/admin/debug/sync.phtml:19
+msgid "Debug Home"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:23
-#, php-format
-msgid "Welcome to %s!"
+#: /var/azuracast/www/templates/admin/debug/sync.phtml:24
+msgid "The synchronization task is running in the background. The log below will update automatically."
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:43
-#: /var/azuracast/www/templates/frontend/account/forgot.phtml:23
-msgid "name@example.com"
+#: /var/azuracast/www/templates/admin/relays/index.phtml:21
+msgid "Is Public"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:52
-msgid "Enter your password"
+#: /var/azuracast/www/templates/admin/relays/index.phtml:22
+msgid "First Connected"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:60
-msgid "Remember me"
+#: /var/azuracast/www/templates/admin/relays/index.phtml:23
+msgid "Latest Update"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:64
-#: /var/azuracast/www/templates/frontend/account/login.phtml:67
-#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
-#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
-#: /var/azuracast/www/templates/frontend/account/forgot.phtml:27
-msgid "Sign in"
+#: /var/azuracast/www/templates/admin/relays/index.phtml:35
+msgid "Yes"
 msgstr ""
 
-#: /var/azuracast/www/templates/frontend/account/login.phtml:71
-msgid "Please log in to continue."
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/login.phtml:74
-msgid "Forgot your password?"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
-msgid "Enter Two-Factor Code"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
-msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
-#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:20
-msgid "Security Code"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:6
-#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:17
-#: /var/azuracast/www/templates/frontend/account/forgot.phtml:6
-#: /var/azuracast/www/templates/frontend/account/forgot.phtml:15
-msgid "Forgot Password"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:22
-msgid "This installation's administrator has not configured this functionality."
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:25
-msgid "Contact an administrator to reset your password following the instructions in our documentation:"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/forgot_disabled.phtml:31
-msgid "Password Reset Instructions"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/account/forgot.phtml:30
-msgid "Send Recovery E-mail"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:65
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:99
-msgid "View Details"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:98
-msgid "No entries found."
+#: /var/azuracast/www/templates/admin/relays/index.phtml:35
+msgid "No"
 msgstr ""
 
 #: /var/azuracast/www/templates/main.phtml:46
@@ -7919,13 +7779,4 @@ msgstr ""
 
 #: /var/azuracast/www/templates/main.phtml:182
 msgid "Donate to support AzuraCast!"
-msgstr ""
-
-#: /var/azuracast/www/templates/mail/forgot.phtml:7
-#, php-format
-msgid "An account recovery link has been requested for your account on \"%s\"."
-msgstr ""
-
-#: /var/azuracast/www/templates/mail/forgot.phtml:10
-msgid "Click the link below to log in to your account."
 msgstr ""

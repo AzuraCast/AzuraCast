@@ -32,7 +32,7 @@ final class ImportCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
         $io->title('Import Locales');
 
-        $localesBase = $this->environment->getBaseDirectory() . '/resources/locale';
+        $localesBase = $this->environment->getBaseDirectory() . '/translations';
 
         $supportedLocales = SupportedLocales::cases();
         $defaultLocale = SupportedLocales::default();

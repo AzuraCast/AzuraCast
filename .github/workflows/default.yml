@@ -74,7 +74,7 @@ jobs:
       - name: Clear existing locales.
         if: github.event_name == 'push' || github.event_name == 'schedule'
         run: |
-          rm -rf resources/locale/*.UTF-8
+          rm -rf translations/*.UTF-8
 
       - name: Generate new translations from existing code.
         if: github.event_name == 'push' || github.event_name == 'schedule'
@@ -152,7 +152,7 @@ jobs:
           name: assets
           if-no-files-found: error
           path: |
-            resources/locale
+            translations
             web/static/dist
             web/static/webpack_dist
             web/static/webpack.json

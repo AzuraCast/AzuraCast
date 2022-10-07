@@ -561,7 +561,7 @@ update() {
 
     if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
       docker-compose -f docker-compose.new.yml pull
-      docker-compose down
+      docker-compose down --timeout 30
 
       cp docker-compose.yml docker-compose.backup.yml
       mv docker-compose.new.yml docker-compose.yml
@@ -569,7 +569,7 @@ update() {
       rm docker-compose.new.yml
 
       docker-compose pull
-      docker-compose down
+      docker-compose down --timeout 30
     fi
 
     docker-compose run --rm web -- azuracast_update "$@"
@@ -718,17 +718,17 @@ restore() {
         -v "$BACKUP_DIR:/backup_dest" \
         busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 
-      docker-compose down
+      docker-compose down --timeout 30
       docker-compose up -d
     else
-      docker-compose down
+      docker-compose down --timeout 30
 
       # Remove all volumes except the backup volume.
       docker volume rm -f $(docker volume ls | grep -v "azuracast_backups" | awk 'NR>1 {print $2}')
 
       docker-compose run --rm web -- azuracast_restore "$@"
 
-      docker-compose down
+      docker-compose down --timeout 30
       docker-compose up -d
     fi
   fi
@@ -752,7 +752,7 @@ restore-legacy() {
   cd "$APP_BASE_DIR" || exit
 
   if [ -f "$BACKUP_PATH" ]; then
-    docker-compose down
+    docker-compose down --timeout 30
 
     docker volume rm azuracast_db_data azuracast_station_data
     docker volume create azuracast_db_data
@@ -827,7 +827,7 @@ letsencrypt-create() {
 change-ports() {
   setup-ports
 
-  docker-compose down
+  docker-compose down --timeout 30
   docker-compose up -d
 }
 
@@ -841,7 +841,7 @@ up() {
 
 down() {
   echo "Shutting down AzuraCast services..."
-  docker-compose down
+  docker-compose down --timeout 30
 }
 
 restart() {

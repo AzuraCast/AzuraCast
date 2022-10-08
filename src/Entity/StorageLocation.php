@@ -597,7 +597,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $creds = (!empty($this->dropboxAppKey) && !empty($this->dropboxAppSecret))
             ? [$this->dropboxAppKey, $this->dropboxAppSecret]
             : $this->dropboxAuthToken;
-        
+
         return new Client($creds);
     }
 

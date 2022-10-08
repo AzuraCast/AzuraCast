@@ -61,7 +61,7 @@ final class GetArtAction
 
         if ($fsPodcasts->fileExists($podcastPath)) {
             return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                ->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline');
+                ->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline', false);
         }
 
         return $response->withRedirect(

@@ -72,7 +72,7 @@ final class Api
                     foreach ($rawOrigins as $rawOrigin) {
                         $uri = Urls::tryParseUserUrl(
                             $rawOrigin,
-                            'System Setting Access-Control-Allowo-Origin'
+                            'System Setting Access-Control-Allow-Origin'
                         );
                         if (null !== $uri) {
                             if (empty($uri->getScheme())) {

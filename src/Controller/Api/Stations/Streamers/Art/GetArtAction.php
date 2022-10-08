@@ -33,7 +33,7 @@ final class GetArtAction
         $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
         if ($fsConfig->fileExists($artworkPath)) {
             return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                ->streamFilesystemFile($fsConfig, $artworkPath, null, 'inline');
+                ->streamFilesystemFile($fsConfig, $artworkPath, null, 'inline', false);
         }
 
         return $response->withRedirect(

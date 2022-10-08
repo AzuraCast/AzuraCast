@@ -71,7 +71,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Check frontend blocklist and apply it to requests.
-        if (!$this->blocklistParser->isAllowed($ip, $userAgent, $station)) {
+        if (!$this->blocklistParser->isAllowed($station, $ip, $userAgent)) {
             throw new Exception(__('You are not permitted to submit requests.'));
         }
 

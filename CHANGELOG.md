@@ -14,6 +14,11 @@ release channel, you can take advantage of these new features and fixes.
   This even applies if the entire update process is stopped and restarted, where the original database will be restored
   on the second update attempt.
 
+- The enforcement of IP block rules has changed; now, if you have a list of "Allowed" IP addresses, this will be
+  considered authoritative when evaluating whether a connecting listener is allowed; if the user is not on the allowed
+  list, their connection will be rejected. If the "Allowed" list is empty, the previous normal rules (blocked IPs,
+  countries, user agents, etc) will be followed instead.
+
 - Storage locations using Dropbox can now use an App Key and App Secret to authenticate instead of auth tokens, which
   have been phased out in recent updates.
 

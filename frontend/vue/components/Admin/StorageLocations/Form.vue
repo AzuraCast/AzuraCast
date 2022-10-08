@@ -104,16 +104,30 @@
             <b-card-body>
                 <b-form-group>
                     <b-form-row>
+                        <b-wrapped-form-group class="col-md-6" id="form_edit_dropboxApiKey"
+                                              :field="form.dropboxApiKey">
+                            <template #label="{lang}">
+                                <translate :key="lang">Dropbox API Key</translate>
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <b-wrapped-form-group class="col-md-6" id="form_edit_dropboxApiSecret"
+                                              :field="form.dropboxApiSecret">
+                            <template #label="{lang}">
+                                <translate :key="lang">Dropbox API Secret</translate>
+                            </template>
+                        </b-wrapped-form-group>
+                    </b-form-row>
+
+                    <p class="mx-2 typography-subheading text-center">
+                        <translate key="form_dropbox_or">or</translate>
+                    </p>
+
+                    <b-form-row>
                         <b-wrapped-form-group class="col-md-12" id="form_edit_dropboxAuthToken"
                                               :field="form.dropboxAuthToken">
                             <template #label="{lang}">
                                 <translate :key="lang">Dropbox Generated Access Token</translate>
-                            </template>
-                            <template #description="{lang}">
-                                <a href="https://dropbox.tech/developers/generate-an-access-token-for-your-own-account"
-                                   target="_blank">
-                                    <translate :key="lang">Learn More about Dropbox Auth Tokens</translate>
-                                </a>
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

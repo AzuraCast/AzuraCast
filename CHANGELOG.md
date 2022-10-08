@@ -14,6 +14,9 @@ release channel, you can take advantage of these new features and fixes.
   This even applies if the entire update process is stopped and restarted, where the original database will be restored
   on the second update attempt.
 
+- Storage locations using Dropbox can now use an App Key and App Secret to authenticate instead of auth tokens, which
+  have been phased out in recent updates.
+
 - In a previous version, we added a rule that would prevent stations from starting up unless they had at least one
   active playlist with at least one music file to play. Several stations reported unique edge cases that didn't work
   with this configuration, so it has been removed.

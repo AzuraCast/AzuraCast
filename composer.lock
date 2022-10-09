@@ -350,12 +350,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "634ca1ddfee7c0516636343489d7f3d3c632d41e"
+                "reference": "501fa6ef20e23d9e60f951758c2e0d4961bc5695"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/634ca1ddfee7c0516636343489d7f3d3c632d41e",
-                "reference": "634ca1ddfee7c0516636343489d7f3d3c632d41e",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/501fa6ef20e23d9e60f951758c2e0d4961bc5695",
+                "reference": "501fa6ef20e23d9e60f951758c2e0d4961bc5695",
                 "shasum": ""
             },
             "require": {
@@ -413,7 +413,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-04-14T00:44:07+00:00"
+            "time": "2022-10-09T02:12:25+00:00"
         },
         {
             "name": "azuracast/slim-callable-eventdispatcher",

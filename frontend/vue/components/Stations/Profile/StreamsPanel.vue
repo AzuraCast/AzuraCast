@@ -41,7 +41,7 @@
                 <thead>
                 <tr>
                     <th colspan="2" key="lang_streams_remote" v-translate>Remote Relays</th>
-                    <th key="lang_streams_listeners" v-translate>Listeners</th>
+                    <th class="text-right" key="lang_streams_listeners" v-translate>Listeners</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,7 +68,8 @@
             <template v-if="np.station.hls_enabled">
                 <thead>
                 <tr>
-                    <th colspan="3" key="lang_streams_hls" v-translate>HTTP Live Streaming (HLS)</th>
+                    <th colspan="2" key="lang_streams_hls" v-translate>HTTP Live Streaming (HLS)</th>
+                    <th class="text-right" key="lang_streams_listeners" v-translate>Listeners</th>
                 </tr>
                 </thead>
                 <tbody>

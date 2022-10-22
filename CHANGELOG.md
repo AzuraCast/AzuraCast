@@ -26,6 +26,8 @@ release channel, you can take advantage of these new features and fixes.
   active playlist with at least one music file to play. Several stations reported unique edge cases that didn't work
   with this configuration, so it has been removed.
 
+- Ansible installations now support Ubuntu 22.04 (Jammy) along with existing support for 20.04 (Focal).
+
 ## Bug Fixes
 
 - Fixed a bug preventing the Remote Relays page from showing in some situations.

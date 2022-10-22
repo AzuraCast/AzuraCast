@@ -28,7 +28,7 @@ return [
     Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
 
     // HTTP client
-    GuzzleHttp\HandlerStack::class => static function (Psr\Log\LoggerInterface $logger) {
+    App\Service\GuzzleFactory::class => static function (Psr\Log\LoggerInterface $logger) {
         $stack = GuzzleHttp\HandlerStack::create();
 
         $stack->unshift(
@@ -50,29 +50,35 @@ return [
             )
         );
 
-        return $stack;
+        return new App\Service\GuzzleFactory(
+            [
+                'handler' => $stack,
+                GuzzleHttp\RequestOptions::HTTP_ERRORS => false,
+                GuzzleHttp\RequestOptions::TIMEOUT => 3.0,
+            ]
+        );
     },
 
-    GuzzleHttp\Client::class => static fn(GuzzleHttp\HandlerStack $stack) => new GuzzleHttp\Client(
-        [
-            'handler' => $stack,
-            GuzzleHttp\RequestOptions::HTTP_ERRORS => false,
-            GuzzleHttp\RequestOptions::TIMEOUT => 3.0,
-        ]
-    ),
+    GuzzleHttp\Client::class => static fn(App\Service\GuzzleFactory $guzzleFactory) => $guzzleFactory->buildClient(),
 
     // DBAL
     Doctrine\DBAL\Connection::class => static fn(Doctrine\ORM\EntityManagerInterface $em) => $em->getConnection(),
 
     // Doctrine Entity Manager
     App\Doctrine\DecoratedEntityManager::class => static function (
-        Doctrine\Common\Cache\Cache $doctrineCache,
+        Psr\Cache\CacheItemPoolInterface $psr6Cache,
         Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
         App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         Psr\EventDispatcher\EventDispatcherInterface $dispatcher
     ) {
+        if ($environment->isCli()) {
+            $psr6Cache = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+        } else {
+            $psr6Cache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'doctrine.');
+        }
+
         $dbSettings = $environment->getDatabaseSettings();
         if (isset($dbSettings['unix_socket'])) {
             unset($dbSettings['host'], $dbSettings['port']);
@@ -96,17 +102,6 @@ return [
         );
 
         try {
-            // Fetch and store entity manager.
-            $config = Doctrine\ORM\Tools\Setup::createConfiguration(
-                !$environment->isProduction(),
-                $environment->getTempDirectory() . '/proxies',
-                $doctrineCache
-            );
-
-            $config->setAutoGenerateProxyClasses(
-                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS
-            );
-
             $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
 
             $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
@@ -117,10 +112,17 @@ return [
 
             $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
-            $attributeDriver = new Doctrine\ORM\Mapping\Driver\AttributeDriver(
-                $mappingClassesPaths
+            // Fetch and store entity manager.
+            $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+                $mappingClassesPaths,
+                !$environment->isProduction(),
+                $environment->getTempDirectory() . '/proxies',
+                $psr6Cache
             );
-            $config->setMetadataDriverImpl($attributeDriver);
+
+            $config->setAutoGenerateProxyClasses(
+                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
+            );
 
             // Debug mode:
             // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
@@ -203,19 +205,6 @@ return [
     ),
     Psr\SimpleCache\CacheInterface::class => static function (Psr\Cache\CacheItemPoolInterface $cache) {
         return new Symfony\Component\Cache\Psr16Cache($cache);
-    },
-
-    // Doctrine cache
-    Doctrine\Common\Cache\Cache::class => static function (
-        Environment $environment,
-        Psr\Cache\CacheItemPoolInterface $psr6Cache
-    ) {
-        if ($environment->isCli()) {
-            $psr6Cache = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        }
-
-        $proxyCache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'doctrine.');
-        return Doctrine\Common\Cache\Psr6\DoctrineProvider::wrap($proxyCache);
     },
 
     // Symfony Lock adapter

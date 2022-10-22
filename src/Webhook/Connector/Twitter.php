@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Service\GuzzleFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Monolog\Logger;
 
@@ -18,7 +18,7 @@ final class Twitter extends AbstractConnector
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        private readonly HandlerStack $handlerStack,
+        private readonly GuzzleFactory $guzzleFactory,
     ) {
         parent::__construct($logger, $httpClient);
     }
@@ -53,7 +53,7 @@ final class Twitter extends AbstractConnector
         }
 
         // Set up Twitter OAuth
-        $stack = clone $this->handlerStack;
+        $stack = clone $this->guzzleFactory->getHandlerStack();
 
         $middleware = new Oauth1(
             [

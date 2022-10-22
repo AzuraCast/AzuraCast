@@ -1,8 +1,9 @@
 ---
-- name: Add Redis PPA repository
+- name: Add Redis PPA repository (Focal)
   apt_repository:
     repo: "ppa:chris-lea/redis-server"
     update_cache: true
+  when: ansible_distribution_release == 'focal'
 
 - name: Install Redis
   apt:

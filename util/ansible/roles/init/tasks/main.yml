@@ -12,9 +12,10 @@
 
 - name: Ubuntu Version Check
   fail:
-    msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu 20.04 LTS."
+    msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu 20.04 LTS (Focal) or 22.04 LTS (Jammy)."
   when:
     - ansible_distribution_release != 'focal'
+    - ansible_distribution_release != 'jammy'
 
 - name: Add multiverse repository
   apt_repository:
@@ -50,13 +51,8 @@
       - zip
       - unzip
       - zstd
-
-- name: Install Focal Packages (20.04)
-  apt:
-    name:
       - software-properties-common
       - python3-pip
-  when: ansible_distribution_release == 'focal'
 
 - name: Update pip components
   pip:

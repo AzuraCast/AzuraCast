@@ -162,6 +162,10 @@ final class Icecast extends AbstractFrontend
             ],
         ];
 
+        $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
+        $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
+        $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
+
         foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */
 
@@ -227,8 +231,7 @@ final class Icecast extends AbstractFrontend
                 ];
             }
 
-            $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
-            if (!empty($bannedCountries)) {
+            if ($useListenerAuth) {
                 $mountAuthenticationUrl = $this->environment->getInternalUri()
                     ->withPath('/api/internal/' . $station->getIdRequired() . '/listener-auth')
                     ->withQuery(

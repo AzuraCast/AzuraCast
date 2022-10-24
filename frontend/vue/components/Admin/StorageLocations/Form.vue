@@ -105,16 +105,16 @@
                 <b-form-group>
                     <b-form-row>
                         <b-wrapped-form-group class="col-md-6" id="form_edit_dropboxApiKey"
-                                              :field="form.dropboxApiKey">
+                                              :field="form.dropboxAppKey">
                             <template #label="{lang}">
-                                <translate :key="lang">Dropbox API Key</translate>
+                                <translate :key="lang">Dropbox App Key</translate>
                             </template>
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_dropboxApiSecret"
-                                              :field="form.dropboxApiSecret">
+                                              :field="form.dropboxAppSecret">
                             <template #label="{lang}">
-                                <translate :key="lang">Dropbox API Secret</translate>
+                                <translate :key="lang">Dropbox App Secret</translate>
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

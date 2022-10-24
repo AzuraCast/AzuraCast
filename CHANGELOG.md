@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed an issue preventing the new Dropbox app key/app secret from saving.
+
 ---
 
 # AzuraCast 0.17.4 (Oct 24, 2022)

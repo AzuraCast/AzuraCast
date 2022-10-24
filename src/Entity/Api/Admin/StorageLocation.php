@@ -75,6 +75,24 @@ final class StorageLocation
     public ?string $s3Endpoint = null;
 
     #[OA\Property(
+        description: 'The optional Dropbox Auth Token.',
+        example: ''
+    )]
+    public ?string $dropboxAuthToken = null;
+
+    #[OA\Property(
+        description: 'The optional Dropbox App Key.',
+        example: ''
+    )]
+    public ?string $dropboxAppKey = null;
+
+    #[OA\Property(
+        description: 'The optional Dropbox App Secret.',
+        example: ''
+    )]
+    public ?string $dropboxAppSecret = null;
+
+    #[OA\Property(
         description: 'The host for SFTP adapters',
         example: '127.0.0.1'
     )]

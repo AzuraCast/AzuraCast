@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed changing the station's URL stub (short name) not prompting the user to reload the station configuration.
+
 - Fixed an issue preventing the new Dropbox app key/app secret from saving.
 
 ---

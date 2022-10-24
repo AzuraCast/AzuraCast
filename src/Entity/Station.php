@@ -453,7 +453,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
 
         $shortName = self::generateShortName($shortName);
-        $this->short_name = $this->truncateString($shortName, 100);
+
+        $shortName = $this->truncateString($shortName, 100);
+        if ($this->short_name !== $shortName) {
+            $this->setNeedsRestart(true);
+        }
+        $this->short_name = $shortName;
     }
 
     public function setIsEnabled(bool $is_enabled): void

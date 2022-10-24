@@ -140,7 +140,7 @@ export default {
             listeners: [],
             dateRange: {
                 startDate: nowTz.minus({days: 1}).toJSDate(),
-                endDate: nowTz
+                endDate: nowTz.toJSDate()
             },
             fields: [
                 {key: 'ip', label: this.$gettext('IP'), sortable: false},

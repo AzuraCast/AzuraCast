@@ -7,6 +7,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+## Bug Fixes
+
+---
+
+# AzuraCast 0.17.4 (Oct 24, 2022)
+
+## Code Quality/Technical Changes
+
 - **Smarter database migrations:** A common source of problems with AzuraCast upgrades is experiencing a faulty or
   interrupted database migration, leaving your database in a state that we can't automatically recover from. While we
   can't wrap database changes in transactions due to our use of MariaDB, we can do the next best thing, which is to take

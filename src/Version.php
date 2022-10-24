@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
 final class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.17.3';
+    public const FALLBACK_VERSION = '0.17.4';
 
     public const UPDATE_URL = 'https://docs.azuracast.com/en/getting-started/updates';
     public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';

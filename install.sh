@@ -21,13 +21,11 @@ fi
 sudo apt-get update
 sudo apt-get install -q -y software-properties-common
 
-if [[ $DISTRIB_CODENAME == "focal" ]]; then
+if [[ $DISTRIB_CODENAME == "focal" || $DISTRIB_CODENAME == "jammy" ]]; then
   sudo apt-get install -q -y ansible python3-pip python3-mysqldb
 else
-  sudo add-apt-repository -y ppa:ansible/ansible
-  sudo apt-get update
-
-  sudo apt-get install -q -y python2.7 python-pip python-mysqldb ansible
+  echo "Ansible installation is only supported on Ubuntu Focal (20.04) or Jammy (22.04)."
+  exit 0
 fi
 
 APP_ENV="${APP_ENV:-production}"

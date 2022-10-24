@@ -164,7 +164,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         }
     }
 
-    protected function dispatchWebhooks(
+    private function dispatchWebhooks(
         Entity\Station $station,
         NowPlaying $npOriginal
     ): void {

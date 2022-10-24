@@ -50,7 +50,7 @@ final class QueueManager extends AbstractQueueManager
         );
     }
 
-    protected function getConnection(string $queueName): MessengerConnection
+    private function getConnection(string $queueName): MessengerConnection
     {
         return new MessengerConnection(
             [

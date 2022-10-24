@@ -7,7 +7,7 @@ apt-get install -y --no-install-recommends libao-dev libasound2-dev libavcodec-d
     libavutil-dev libfaad-dev libfdk-aac-dev libflac-dev libfreetype-dev libgd-dev libjack-dev \
     libjpeg-dev liblo-dev libmad0-dev libmagic-dev libmp3lame-dev libopus-dev libpng-dev libportaudio2 \
     libpulse-dev libsamplerate0-dev libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libshine-dev libsoundtouch-dev libspeex-dev \
-    libsrt-dev libswresample-dev libswscale-dev libtag1-dev libtheora-dev libtiff-dev libx11-dev libxpm-dev \
+    libsrt-openssl-dev libswresample-dev libswscale-dev libtag1-dev libtheora-dev libtiff-dev libx11-dev libxpm-dev \
     bubblewrap ffmpeg
 
 # Optional audio plugins
@@ -21,8 +21,8 @@ if [[ "$(uname -m)" = "aarch64" && ${ARM_FULL_BUILD} == "false" ]]; then
     ARCHITECTURE=arm64
 fi
 
-# wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.0.5/liquidsoap_2.0.5-ubuntu-focal-1_${ARCHITECTURE}.deb"
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.1.x/liquidsoap-d5cf13e_2.1.0-ubuntu-focal-1_${ARCHITECTURE}.deb"
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.1.2/liquidsoap_2.1.2-ubuntu-jammy-1_${ARCHITECTURE}.deb"
+# wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.1.x/liquidsoap-d5cf13e_2.1.0-ubuntu-focal-1_${ARCHITECTURE}.deb"
 
 dpkg -i /tmp/liquidsoap.deb
 apt-get install -y -f --no-install-recommends

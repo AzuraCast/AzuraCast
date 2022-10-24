@@ -2,18 +2,29 @@
 /**
  * @var \App\Entity\Station $station
  * @var \App\Assets $assets
+ * @var \App\Acl $acl
  */
 
 $assets->addInlineJs($this->fetch('stations/sidebar.js', ['station' => $station]), 95);
 ?>
 
 <div class="navdrawer-header">
-    <a class="navbar-brand px-0" href="<?=$router->fromHere('stations:profile:index') ?>">
-        <div><?=$this->e($station->getName()) ?></div>
-        <div class="xs" id="station-time" title="<?=$this->e(__('Station Time')) ?>">
-            <?=date('H:i:s T') ?>
-        </div>
-    </a>
+    <div class="d-flex align-items-center">
+        <a class="navbar-brand px-0 flex-fill" href="<?= $router->fromHere('stations:profile:index') ?>">
+            <div><?= $this->e($station->getName()) ?></div>
+            <div class="xs" id="station-time" title="<?= $this->e(__('Station Time')) ?>">
+                <?= date('H:i:s T') ?>
+            </div>
+        </a>
+        <?php
+        if ($acl->isAllowed(App\Enums\StationPermissions::Profile, $station)): ?>
+            <a class="navbar-brand ml-0 flex-shrink-0" href="<?= $router->fromHere('stations:profile:edit') ?>">
+                <i class="material-icons sm">edit</i>
+                <span class="sr-only"><?= __('Edit Profile') ?>
+            </a>
+        <?php
+        endif; ?>
+    </div>
 </div>
 
 <?php

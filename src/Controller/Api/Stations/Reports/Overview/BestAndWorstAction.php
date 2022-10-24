@@ -55,6 +55,7 @@ final class BestAndWorstAction extends AbstractReportAction
             ->andWhere('sh.timestamp_start <= :end AND sh.timestamp_end >= :start')
             ->setParameter('start', $dateRange->getStartTimestamp())
             ->setParameter('end', $dateRange->getEndTimestamp())
+            ->andWhere('sh.is_visible = 1')
             ->andWhere('sh.listeners_start IS NOT NULL')
             ->andWhere('sh.timestamp_end != 0')
             ->setMaxResults(5);
@@ -100,6 +101,7 @@ final class BestAndWorstAction extends AbstractReportAction
                 SELECT sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station 
+                AND sh.is_visible = 1
                 AND sh.timestamp_start <= :end
                 AND sh.timestamp_end >= :start
                 GROUP BY sh.song_id

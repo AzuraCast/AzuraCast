@@ -5,6 +5,8 @@ if [ ! -f /etc/supervisor/minimal.conf.d/mariadb.conf ]; then
     exit 0
 fi
 
+export MARIADB_AUTO_UPGRADE=1
+
 source /usr/local/bin/db_entrypoint.sh
 
 set -- mysqld

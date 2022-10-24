@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.17.3
+  version: 0.17.4
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -3343,7 +3343,8 @@ components:
         mounts:
           description: '*/'
           type: array
-          items: {  }
+          items:
+            $ref: '#/components/schemas/Api_NowPlaying_StationMount'
       type: object
     Api_Admin_StorageLocation:
       properties:
@@ -3483,6 +3484,10 @@ components:
               description: "The sum total change of listeners between the song's start and ending."
               type: integer
               example: 11
+            is_visible:
+              description: 'Whether the entry is visible on public playlists.'
+              type: boolean
+              example: true
     Api_Error:
       properties:
         code:

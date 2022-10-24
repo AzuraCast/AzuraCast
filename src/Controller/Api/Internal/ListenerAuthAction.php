@@ -46,10 +46,7 @@ final class ListenerAuthAction
         $station = $request->getStation();
         $listenerIp = $request->getParam('ip') ?? '';
 
-        if (
-            $this->blocklistParser->isIpExplicitlyAllowed($listenerIp, $station)
-            || !$this->blocklistParser->isCountryBanned($listenerIp, $station)
-        ) {
+        if ($this->blocklistParser->isAllowed($station, $listenerIp)) {
             return $response->withHeader('icecast-auth-user', '1');
         }
 

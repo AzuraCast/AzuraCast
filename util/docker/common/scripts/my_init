@@ -14,10 +14,10 @@ done
 echo "** Running Supervisord..."
 
 if [ "$1" = '--no-main-command' ]; then
-    exec /usr/bin/supervisord -c /etc/supervisor/supervisord-full.conf --nodaemon
+    exec supervisord -c /etc/supervisor/supervisord-full.conf --nodaemon
 fi
 
-/usr/bin/supervisord -c /etc/supervisor/supervisord-minimal.conf
+supervisord -c /etc/supervisor/supervisord-minimal.conf
 
 echo "** Supervisord started."
 echo "** Running uptime_wait..."

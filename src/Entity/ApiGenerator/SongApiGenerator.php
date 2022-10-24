@@ -55,7 +55,7 @@ final class SongApiGenerator
         return $response;
     }
 
-    protected function getAlbumArtUrl(
+    private function getAlbumArtUrl(
         Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
         bool $allowRemoteArt = false,
@@ -104,7 +104,7 @@ final class SongApiGenerator
      *
      * @return mixed[]
      */
-    protected function getCustomFields(?int $media_id = null): array
+    private function getCustomFields(?int $media_id = null): array
     {
         $fields = $this->customFieldRepo->getFieldIds();
 

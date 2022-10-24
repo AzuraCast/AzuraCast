@@ -130,7 +130,7 @@ final class MatomoAnalytics extends AbstractConnector
         return $this->sendBatch($apiUrl, $apiToken, $entries);
     }
 
-    protected function sendBatch(UriInterface $apiUrl, ?string $apiToken, array $entries): bool
+    private function sendBatch(UriInterface $apiUrl, ?string $apiToken, array $entries): bool
     {
         if (empty($entries)) {
             return true;

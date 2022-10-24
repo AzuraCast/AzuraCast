@@ -11,9 +11,64 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
-# AzuraCast 0.17.3 (Aug 3, 2022) 
-- Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term home. 
-  If you wish to assist SilverEagle during these times, please review this GitHub issue - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
+# AzuraCast 0.17.4 (Oct 24, 2022)
+
+## Code Quality/Technical Changes
+
+- **Smarter database migrations:** A common source of problems with AzuraCast upgrades is experiencing a faulty or
+  interrupted database migration, leaving your database in a state that we can't automatically recover from. While we
+  can't wrap database changes in transactions due to our use of MariaDB, we can do the next best thing, which is to take
+  an automatic snapshot of your database just prior to the migration and roll back to that automatically upon failure.
+  This even applies if the entire update process is stopped and restarted, where the original database will be restored
+  on the second update attempt.
+
+- The enforcement of IP block rules has changed; now, if you have a list of "Allowed" IP addresses, this will be
+  considered authoritative when evaluating whether a connecting listener is allowed; if the user is not on the allowed
+  list, their connection will be rejected. If the "Allowed" list is empty, the previous normal rules (blocked IPs,
+  countries, user agents, etc) will be followed instead.
+
+- Storage locations using Dropbox can now use an App Key and App Secret to authenticate instead of auth tokens, which
+  have been phased out in recent updates.
+
+- In a previous version, we added a rule that would prevent stations from starting up unless they had at least one
+  active playlist with at least one music file to play. Several stations reported unique edge cases that didn't work
+  with this configuration, so it has been removed.
+
+- Ansible installations now support Ubuntu 22.04 (Jammy) along with existing support for 20.04 (Focal).
+
+## Bug Fixes
+
+- Fixed a bug preventing the Remote Relays page from showing in some situations.
+
+- Fixed a bug where sometimes, stations would create in an incomplete state with uninitialized storage locations, thus
+  becoming impossible to manage or modify.
+
+- Fixed an issue preventing station cloning from working.
+
+- Jingles will no longer appear on the "best/worst performing songs" lists.
+
+- Fixed a bug preventing Ogg (Vorbis, Opus, etc) files from being correctly processed.
+
+- Fixed a bug where two stations that had a shared string in their short names (i.e. `station` and `station_1`) would
+  conflict with one another, causing the public listening URLs of the latter station to fail to resolve correctly.
+
+- Fixed a bug where directories in the "Move Files" modal weren't sorted by path.
+
+- Fixed a situation where scheduled items could be queued to play before a DJ/streamer goes live, then be cued to play
+  after they have finished, even if their scheduled time slot has ended during that broadcast.
+
+- Fixed a bug preventing multiple playlists and/or custom fields from appearing in the bulk media CSV export.
+
+- Fixed a bug causing song requests to use the interrupting queue instead of the regular song queue.
+
+---
+
+# AzuraCast 0.17.3 (Aug 3, 2022)
+
+- Note: Development has slowed down while we continue to assist SilverEagle as he continues to find a new long term
+  home.
+  If you wish to assist SilverEagle during these times, please review this GitHub issue
+    - [#5593](https://github.com/AzuraCast/AzuraCast/issues/5593)
 
 ## New Features/Changes
 

@@ -135,7 +135,7 @@ final class StationMediaRepository extends Repository
         return $record;
     }
 
-    protected function getStorageLocation(Entity\Station|Entity\StorageLocation $source): Entity\StorageLocation
+    private function getStorageLocation(Entity\Station|Entity\StorageLocation $source): Entity\StorageLocation
     {
         if ($source instanceof Entity\Station) {
             return $source->getMediaStorageLocation();
@@ -461,7 +461,7 @@ final class StationMediaRepository extends Repository
         return $affectedPlaylists;
     }
 
-    protected function getFilesystem(Entity\StationMedia $media): ExtendedFilesystemInterface
+    private function getFilesystem(Entity\StationMedia $media): ExtendedFilesystemInterface
     {
         return $media->getStorageLocation()->getFilesystem();
     }

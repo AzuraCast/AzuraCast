@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="logs_modal" size="lg" ref="modal" :title="langLogView" @hidden="clearContents">
+    <b-modal id="logs_modal" size="lg" ref="modal" :title="langLogView" @hidden="clearContents" no-enforce-focus>
         <streaming-log-view ref="logView" :log-url="logUrl"></streaming-log-view>
 
         <template #modal-footer>

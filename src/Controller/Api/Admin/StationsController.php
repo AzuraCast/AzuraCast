@@ -348,10 +348,18 @@ class StationsController extends AbstractAdminApiCrudController
         $this->em->persist($station);
         $this->em->flush();
 
-        $this->configuration->initializeConfiguration($station);
+        try {
+            // Initialize station folder configuration.
+            $this->configuration->initializeConfiguration($station);
 
-        // Create default mountpoints if station supports them.
-        $this->stationRepo->resetMounts($station);
+            // Create default mountpoints if station supports them.
+            $this->stationRepo->resetMounts($station);
+        } catch (Throwable $e) {
+            $this->em->remove($station);
+            $this->em->flush();
+
+            throw $e;
+        }
 
         return $station;
     }

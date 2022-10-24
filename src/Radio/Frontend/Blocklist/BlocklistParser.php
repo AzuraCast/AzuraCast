@@ -19,28 +19,42 @@ final class BlocklistParser
     }
 
     public function isAllowed(
+        Entity\Station $station,
         string $ip,
-        string $userAgent,
-        Entity\Station $station
+        ?string $userAgent = null
     ): bool {
-        if ($this->isIpExplicitlyAllowed($ip, $station)) {
-            return true;
+        if ($this->hasAllowedIps($station)) {
+            return $this->isIpExplicitlyAllowed($station, $ip);
         }
-        if ($this->isIpExplicitlyBanned($ip, $station)) {
+
+        if ($this->isIpExplicitlyBanned($station, $ip)) {
             return false;
         }
-        if ($this->isCountryBanned($ip, $station)) {
+
+        if ($this->isCountryBanned($station, $ip)) {
             return false;
         }
-        if ($this->isUserAgentBanned($userAgent, $station)) {
+
+        if (null !== $userAgent && $this->isUserAgentBanned($station, $userAgent)) {
             return false;
         }
+
         return true;
     }
 
-    public function isIpExplicitlyAllowed(
-        string $ip,
-        Entity\Station $station
+    private function hasAllowedIps(Entity\Station $station): bool
+    {
+        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+            return false;
+        }
+
+        $allowedIps = trim($station->getFrontendConfig()->getAllowedIps() ?? '');
+        return !empty($allowedIps);
+    }
+
+    private function isIpExplicitlyAllowed(
+        Entity\Station $station,
+        string $ip
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
             return false;
@@ -50,9 +64,9 @@ final class BlocklistParser
         return $this->isIpInList($ip, $allowedIps);
     }
 
-    public function isIpExplicitlyBanned(
-        string $ip,
-        Entity\Station $station
+    private function isIpExplicitlyBanned(
+        Entity\Station $station,
+        string $ip
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
             return false;
@@ -62,7 +76,7 @@ final class BlocklistParser
         return $this->isIpInList($ip, $bannedIps);
     }
 
-    protected function isIpInList(
+    private function isIpInList(
         string $listenerIp,
         string $ipList
     ): bool {
@@ -92,9 +106,9 @@ final class BlocklistParser
         return false;
     }
 
-    public function isCountryBanned(
-        string $listenerIp,
-        Entity\Station $station
+    private function isCountryBanned(
+        Entity\Station $station,
+        string $listenerIp
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
             return false;
@@ -107,20 +121,13 @@ final class BlocklistParser
 
         $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp);
 
-        if (null !== $listenerLocation->country) {
-            foreach ($bannedCountries as $countryCode) {
-                if ($countryCode === $listenerLocation->country) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return (null !== $listenerLocation->country)
+            && in_array($listenerLocation->country, $bannedCountries, true);
     }
 
     public function isUserAgentBanned(
-        string $listenerUserAgent,
-        Entity\Station $station
+        Entity\Station $station,
+        string $listenerUserAgent
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
             return false;

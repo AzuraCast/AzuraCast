@@ -1050,6 +1050,21 @@ class Settings implements Stringable
 
     public function setAcmeDomains(?string $acme_domains): void
     {
+        if (null !== $acme_domains) {
+            $acme_domains = implode(
+                ', ',
+                array_map(
+                    static function ($str) {
+                        $str = trim($str);
+                        $str = trim($str, '/');
+                        $str = str_replace(['http://', 'https://'], '', $str);
+                        return $str;
+                    },
+                    explode(',', $acme_domains)
+                )
+            );
+        }
+
         $this->acme_domains = $acme_domains;
     }
 

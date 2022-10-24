@@ -23,7 +23,7 @@ final class Acme
 {
     public const LETSENCRYPT_PROD = 'https://acme-v02.api.letsencrypt.org/directory';
     public const LETSENCRYPT_DEV = 'https://acme-staging-v02.api.letsencrypt.org/directory';
-    public const THRESHOLD_DAYS = 14;
+    public const THRESHOLD_DAYS = 30;
 
     public function __construct(
         private readonly SettingsRepository $settingsRepo,

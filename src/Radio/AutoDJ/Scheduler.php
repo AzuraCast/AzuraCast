@@ -118,7 +118,7 @@ final class Scheduler
         return null !== $scheduleItem;
     }
 
-    protected function shouldPlaylistPlayNowPerHour(
+    private function shouldPlaylistPlayNowPerHour(
         Entity\StationPlaylist $playlist,
         CarbonInterface $now
     ): bool {
@@ -140,7 +140,7 @@ final class Scheduler
         return !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, 30);
     }
 
-    protected function wasPlaylistPlayedInLastXMinutes(
+    private function wasPlaylistPlayedInLastXMinutes(
         Entity\StationPlaylist $playlist,
         CarbonInterface $now,
         int $minutes
@@ -154,7 +154,7 @@ final class Scheduler
         return ($playedAt > $threshold);
     }
 
-    protected function wasPlaylistPlayedRecently(
+    private function wasPlaylistPlayedRecently(
         Entity\StationPlaylist $playlist,
         array $recentPlaylistHistory = [],
         int $length = 15
@@ -232,7 +232,7 @@ final class Scheduler
      * @param CarbonInterface $now
      * @return Entity\StationSchedule|null
      */
-    protected function getActiveScheduleFromCollection(
+    private function getActiveScheduleFromCollection(
         Collection $scheduleItems,
         CarbonInterface $now
     ): ?Entity\StationSchedule {
@@ -320,7 +320,7 @@ final class Scheduler
         return false;
     }
 
-    protected function shouldPlayInSchedulePeriod(
+    private function shouldPlayInSchedulePeriod(
         Entity\StationSchedule $schedule,
         DateRange $dateRange,
         CarbonInterface $now
@@ -360,7 +360,7 @@ final class Scheduler
         return true;
     }
 
-    protected function shouldPlaylistLoopNow(
+    private function shouldPlaylistLoopNow(
         Entity\StationSchedule $schedule,
         DateRange $dateRange,
         CarbonInterface $now,

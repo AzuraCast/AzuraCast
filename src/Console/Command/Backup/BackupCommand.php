@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Backup;
 
+use App\Console\Command\AbstractDatabaseCommand;
 use App\Entity;
 use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +24,7 @@ use const PATHINFO_EXTENSION;
     name: 'azuracast:backup',
     description: 'Back up the AzuraCast database and statistics (and optionally media).',
 )]
-final class BackupCommand extends AbstractBackupCommand
+final class BackupCommand extends AbstractDatabaseCommand
 {
     public function __construct(
         Environment $environment,
@@ -113,20 +114,7 @@ final class BackupCommand extends AbstractBackupCommand
         $io->section(__('Backing up MariaDB...'));
 
         $path_db_dump = $tmp_dir_mariadb . '/db.sql';
-
-        [$commandFlags, $commandEnvVars] = $this->getDatabaseSettingsAsCliFlags();
-
-        $commandFlags[] = '--add-drop-table';
-        $commandFlags[] = '--default-character-set=UTF8MB4';
-
-        $commandEnvVars['DB_DEST'] = $path_db_dump;
-
-        $this->passThruProcess(
-            $io,
-            'mysqldump ' . implode(' ', $commandFlags) . ' $DB_DATABASE > $DB_DEST',
-            $tmp_dir_mariadb,
-            $commandEnvVars
-        );
+        $this->dumpDatabase($io, $path_db_dump);
 
         $files_to_backup[] = $path_db_dump;
         $io->newLine();

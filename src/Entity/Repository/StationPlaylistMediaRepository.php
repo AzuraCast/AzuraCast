@@ -303,7 +303,7 @@ final class StationPlaylistMediaRepository extends Repository
         return $notQueuedMediaCount === $totalMediaCount;
     }
 
-    protected function getCountPlaylistMediaBaseQuery(Entity\StationPlaylist $playlist): QueryBuilder
+    private function getCountPlaylistMediaBaseQuery(Entity\StationPlaylist $playlist): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('count(spm.id)')

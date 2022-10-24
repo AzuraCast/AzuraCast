@@ -4,5 +4,5 @@ api_token_env: CROWDIN_PERSONAL_TOKEN
 preserve_hierarchy: true
 
 files:
-  - source: /resources/locale/default.pot
-    translation: /resources/locale/%locale_with_underscore%.UTF-8/LC_MESSAGES/default.po
+  - source: /translations/default.pot
+    translation: /translations/%locale_with_underscore%.UTF-8/LC_MESSAGES/default.po

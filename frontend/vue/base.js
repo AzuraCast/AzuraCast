@@ -1,23 +1,18 @@
-import Vue
-  from 'vue';
-import axios
-  from 'axios';
-import VueAxios
-  from 'vue-axios';
-import GetTextPlugin
-  from 'vue-gettext';
-import translations
-  from '../../resources/locale/translations.json';
+import Vue from 'vue';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import GetTextPlugin from 'vue-gettext';
+import translations from '../../translations/translations.json';
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Configure localization
-  Vue.use(GetTextPlugin, {
-    defaultLanguage: 'en_US',
-    translations: translations,
-    silent: true
-  });
+    // Configure localization
+    Vue.use(GetTextPlugin, {
+        defaultLanguage: 'en_US',
+        translations: translations,
+        silent: true
+    });
 
-  if (typeof App.locale !== 'undefined') {
+    if (typeof App.locale !== 'undefined') {
     Vue.config.language = App.locale;
   }
 

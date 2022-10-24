@@ -49,10 +49,7 @@ final class InitializeCommand extends CommandAbstract
 
         $this->runCommand(
             $output,
-            'migrations:migrate',
-            [
-                '--allow-no-migration' => true,
-            ]
+            'azuracast:setup:migrate'
         );
 
         $io->newLine();

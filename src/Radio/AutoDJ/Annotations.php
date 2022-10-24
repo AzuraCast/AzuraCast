@@ -9,7 +9,6 @@ use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
@@ -43,11 +42,11 @@ final class Annotations implements EventSubscriberInterface
     public function annotateNextSong(
         Entity\Station $station,
         bool $asAutoDj = false,
-    ): string {
+    ): string|bool {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
 
         if (null === $queueRow) {
-            throw new RuntimeException('Queue is empty for station.');
+            return false;
         }
 
         $event = AnnotateNextSong::fromStationQueue($queueRow, $asAutoDj);
@@ -146,13 +145,13 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
+        $event->addAnnotations([
+            'playlist_id' => $playlist->getId(),
+        ]);
+
         if ($playlist->getIsJingle()) {
             $event->addAnnotations([
                 'jingle_mode' => 'true',
-            ]);
-        } else {
-            $event->addAnnotations([
-                'playlist_id' => $playlist->getId(),
             ]);
         }
     }

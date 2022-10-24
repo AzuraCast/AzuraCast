@@ -11,7 +11,7 @@ use Throwable;
 
 final class ValidationException extends Exception
 {
-    protected ConstraintViolationListInterface $detailedErrors;
+    private ConstraintViolationListInterface $detailedErrors;
 
     public function __construct(
         string $message = 'Validation error.',

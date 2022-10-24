@@ -110,7 +110,8 @@ final class Response extends \Slim\Http\Response
         ExtendedFilesystemInterface $filesystem,
         string $path,
         string $fileName = null,
-        string $disposition = 'attachment'
+        string $disposition = 'attachment',
+        bool $useXAccelRedirect = true
     ): ResponseInterface {
         /** @var FileAttributes $fileMeta */
         $fileMeta = $filesystem->getMetadata($path);
@@ -133,16 +134,18 @@ final class Response extends \Slim\Http\Response
             ->withHeader('Content-Length', (string)$fileMeta->fileSize())
             ->withHeader('X-Accel-Buffering', 'no');
 
-        $adapter = $filesystem->getAdapter();
-        if ($adapter instanceof LocalAdapterInterface) {
-            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
-            $accelPath = CustomUrls::getXAccelPath($filesystem->getLocalPath($path));
-            if (null !== $accelPath) {
-                return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
-                    ->withHeader('X-Accel-Redirect', $accelPath);
+        if ($useXAccelRedirect) {
+            $adapter = $filesystem->getAdapter();
+            if ($adapter instanceof LocalAdapterInterface) {
+                // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+                $accelPath = CustomUrls::getXAccelPath($filesystem->getLocalPath($path));
+                if (null !== $accelPath) {
+                    return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
+                        ->withHeader('X-Accel-Redirect', $accelPath);
+                }
             }
         }
 
-        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType() ?? '');
+        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType() ?? true);
     }
 }

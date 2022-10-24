@@ -21,7 +21,7 @@ final class NextSongCommand extends AbstractCommand
         Entity\Station $station,
         bool $asAutoDj = false,
         array $payload = []
-    ): string {
+    ): string|bool {
         return $this->annotations->annotateNextSong(
             $station,
             $asAutoDj

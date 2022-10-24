@@ -68,7 +68,7 @@ enum SupportedLocales: string
             $translator = Loader::getInstance();
             $translator->setlocale($this->value);
             $translator->textdomain('default');
-            $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/resources/locale');
+            $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/translations');
         }
 
         Loader::loadFunctions();

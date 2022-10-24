@@ -144,7 +144,7 @@ final class AppFactory
         return new Environment($environment);
     }
 
-    protected static function applyPhpSettings(Environment $environment): void
+    private static function applyPhpSettings(Environment $environment): void
     {
         error_reporting(
             $environment->isProduction()

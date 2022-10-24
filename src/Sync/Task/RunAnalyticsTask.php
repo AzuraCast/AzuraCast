@@ -51,7 +51,7 @@ final class RunAnalyticsTask extends AbstractTask
         }
     }
 
-    protected function updateAnalytics(bool $withListeners): void
+    private function updateAnalytics(bool $withListeners): void
     {
         $stationsRaw = $this->em->getRepository(Entity\Station::class)
             ->findAll();
@@ -84,7 +84,7 @@ final class RunAnalyticsTask extends AbstractTask
      * @param Entity\Station[] $stations
      * @param bool $withListeners
      */
-    protected function processDay(
+    private function processDay(
         CarbonImmutable $day,
         array $stations,
         bool $withListeners
@@ -249,12 +249,12 @@ final class RunAnalyticsTask extends AbstractTask
         $this->em->persist($dailyAllStationsRow);
     }
 
-    protected function purgeAnalytics(): void
+    private function purgeAnalytics(): void
     {
         $this->analyticsRepo->clearAll();
     }
 
-    protected function purgeListeners(): void
+    private function purgeListeners(): void
     {
         $this->listenerRepo->clearAll();
     }

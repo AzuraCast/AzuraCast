@@ -209,7 +209,7 @@ final class View extends Engine
         return $this->writeStringToResponse($response, $body);
     }
 
-    protected function writeStringToResponse(
+    private function writeStringToResponse(
         ResponseInterface $response,
         string $body
     ): ResponseInterface {

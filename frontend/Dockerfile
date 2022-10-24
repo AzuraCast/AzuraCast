@@ -5,7 +5,7 @@ RUN apk update \
 
 RUN groupdel dialout
 
-RUN mkdir -p /data/frontend/node_modules /data/resources/locale /data/web/static \
+RUN mkdir -p /data/frontend/node_modules /data/translations /data/web/static \
     && chown -R node:node /data
 
 RUN USER=node && \

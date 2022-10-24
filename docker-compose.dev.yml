@@ -2,10 +2,6 @@ services:
   web:
     build:
       context: .
-      # Control wether Liquidsoap should be built from source via OPAM or download the
-      # pre-built .deb file from the Liquidsoap GitHub Releases on ARM based machines
-      # args:
-      #   ARM_FULL_BUILD: true
     ports:
       - "127.0.0.1:3306:3306"
       - "127.0.0.1:6379:6379"

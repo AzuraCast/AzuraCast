@@ -51,7 +51,7 @@ final class CheckRequestsTask extends AbstractTask
         }
     }
 
-    protected function submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
+    private function submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);

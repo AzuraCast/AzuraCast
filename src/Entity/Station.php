@@ -353,7 +353,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         ORM\Column(nullable: true),
         Attributes\AuditIgnore
     ]
-    protected ?int $current_streamer_id = null;
+    private ?int $current_streamer_id = null;
 
     #[
         ORM\ManyToOne,
@@ -547,6 +547,12 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getBackendConfig(): StationBackendConfiguration
     {
         return new StationBackendConfiguration((array)$this->backend_config);
+    }
+
+    public function hasLocalServices(): bool
+    {
+        return $this->getIsEnabled() &&
+            ($this->getBackendTypeEnum()->isEnabled() || $this->getFrontendTypeEnum()->isEnabled());
     }
 
     /**
@@ -1170,6 +1176,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->is_streamer_live = false;
         $this->needs_restart = false;
         $this->has_started = false;
+        $this->current_song = null;
 
         $this->media_storage_location = null;
         $this->recordings_storage_location = null;

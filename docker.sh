@@ -532,6 +532,19 @@ update() {
       rm docker.new.sh
     fi
 
+    # Check Docker version.
+    DOCKER_VERSION=$(docker version -f "{{.Server.Version}}")
+    DOCKER_VERSION_MAJOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 1)
+
+    if [ "${DOCKER_VERSION_MAJOR}" -ge 20 ]; then
+      echo "Docker server (version ${DOCKER_VERSION}) meets minimum version requirements."
+    else
+      if ask "Docker is out of date on this server. Attempt automatic upgrade?" Y; then
+        install-docker
+        install-docker-compose
+      fi
+    fi
+
     run-installer --update "$@"
 
     # Check for updated Docker Compose config.
@@ -548,7 +561,7 @@ update() {
 
     if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
       docker-compose -f docker-compose.new.yml pull
-      docker-compose down
+      docker-compose down --timeout 30
 
       cp docker-compose.yml docker-compose.backup.yml
       mv docker-compose.new.yml docker-compose.yml
@@ -556,7 +569,7 @@ update() {
       rm docker-compose.new.yml
 
       docker-compose pull
-      docker-compose down
+      docker-compose down --timeout 30
     fi
 
     docker-compose run --rm web -- azuracast_update "$@"
@@ -684,7 +697,10 @@ restore() {
         exit 1
       fi
 
-      docker-compose down -v
+      docker-compose down
+
+      # Remove most AzuraCast volumes but preserve some essential ones.
+      docker volume rm -f $(docker volume ls | grep 'azuracast' | grep -v 'station\|install' | awk 'NR>1 {print $2}')
       docker volume create azuracast_backups
 
       # Move from local filesystem to Docker volume
@@ -705,17 +721,17 @@ restore() {
         -v "$BACKUP_DIR:/backup_dest" \
         busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 
-      docker-compose down
+      docker-compose down --timeout 30
       docker-compose up -d
     else
       docker-compose down
 
-      # Remove all volumes except the backup volume.
-      docker volume rm -f $(docker volume ls | grep -v "azuracast_backups" | awk 'NR>1 {print $2}')
+      # Remove most AzuraCast volumes but preserve some essential ones.
+      docker volume rm -f $(docker volume ls | grep 'azuracast' | grep -v 'station\|backups\|install' | awk 'NR>1 {print $2}')
 
       docker-compose run --rm web -- azuracast_restore "$@"
 
-      docker-compose down
+      docker-compose down --timeout 30
       docker-compose up -d
     fi
   fi
@@ -739,7 +755,7 @@ restore-legacy() {
   cd "$APP_BASE_DIR" || exit
 
   if [ -f "$BACKUP_PATH" ]; then
-    docker-compose down
+    docker-compose down --timeout 30
 
     docker volume rm azuracast_db_data azuracast_station_data
     docker volume create azuracast_db_data
@@ -798,6 +814,8 @@ uninstall() {
 #
 setup-letsencrypt() {
   echo "LetsEncrypt is now managed from within the web interface."
+  echo "You can manage it via the 'Administration' panel, then 'System Settings'."
+  echo "Under 'Services' you will find the LetsEncrypt settings." 
 }
 
 letsencrypt-create() {
@@ -812,7 +830,7 @@ letsencrypt-create() {
 change-ports() {
   setup-ports
 
-  docker-compose down
+  docker-compose down --timeout 30
   docker-compose up -d
 }
 
@@ -826,7 +844,7 @@ up() {
 
 down() {
   echo "Shutting down AzuraCast services..."
-  docker-compose down
+  docker-compose down --timeout 30
 }
 
 restart() {

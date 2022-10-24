@@ -37,7 +37,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
         $this->em->flush();
     }
 
-    protected function doDeleteIntro(
+    private function doDeleteIntro(
         Entity\StationMount $mount,
         ?ExtendedFilesystemInterface $fs = null
     ): void {

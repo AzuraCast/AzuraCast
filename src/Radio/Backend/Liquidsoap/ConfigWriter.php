@@ -719,7 +719,6 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $customFunctionBody[] = '    current_time = time()';
             $customFunctionBody[] = '    result = (' . implode(' and ', $conditions) . ')';
-            $customFunctionBody[] = '    log("' . implode(' and ', $conditions) . ' = #{result} (#{current_time})")';
             $customFunctionBody[] = '    result';
             $customFunctionBody[] = 'end';
             $event->appendLines($customFunctionBody);
@@ -878,7 +877,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     [("is_live", "true")]
                 end
             end
-            live = map_metadata(insert_missing, live)
+            live = metadata.map(insert_missing, live)
             
             radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
             
@@ -1055,7 +1054,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
             end
             
-            radio = metadata.map(update=false, handle_jingle_mode, radio)
+            radio = metadata.map(update=false, strip=true, handle_jingle_mode, radio)
             LIQ
         );
 
@@ -1178,7 +1177,7 @@ final class ConfigWriter implements EventSubscriberInterface
     /**
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      */
-    protected function getOutputString(
+    private function getOutputString(
         Entity\Station $station,
         Entity\Interfaces\StationMountInterface $mount,
         string $idPrefix,
@@ -1246,7 +1245,7 @@ final class ConfigWriter implements EventSubscriberInterface
         return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
-    protected function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
+    private function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
     {
         switch ($format) {
             case StreamFormats::Aac:

@@ -58,7 +58,7 @@ final class QueueInterruptingTracks extends AbstractTask
         }
     }
 
-    protected function queueForStation(Entity\Station $station): void
+    private function queueForStation(Entity\Station $station): void
     {
         if (!$station->supportsAutoDjQueue()) {
             return;

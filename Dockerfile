@@ -1,17 +1,26 @@
 #
-# Icecast build stage (for later copy)
+# Icecast build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:2.4.0-kh15-ac2 AS icecast
+FROM ubuntu:jammy AS icecast
 
-#
-# MariaDB stage (for later copy)
-#
-FROM mariadb:10.7-focal AS mariadb
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \
+    curl git ca-certificates \
+    build-essential libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp/install_icecast
+
+RUN curl -fsSL -o icecast.tar.gz https://github.com/AzuraCast/icecast-kh-ac/archive/refs/tags/2.4.0-kh15-ac2.tar.gz \
+    && tar -xzvf icecast.tar.gz --strip-components=1 \
+    && ./configure \
+    && make \
+    && make install
 
 #
 # Golang dependencies build step
 #
-FROM golang:1.17-buster AS dockerize
+FROM golang:1-bullseye AS dockerize
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -21,7 +30,7 @@ RUN go install github.com/jwilder/dockerize@latest
 #
 # Final build image
 #
-FROM ubuntu:focal
+FROM mariadb:10.9-jammy
 
 ENV TZ="UTC"
 
@@ -31,10 +40,6 @@ COPY --from=dockerize /go/bin/dockerize /usr/local/bin
 # Import Icecast-KH from build container
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
-
-# Import MariaDB scripts.
-COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
-COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
 
 # Run base build process
 COPY ./util/docker/common /bd_build/
@@ -101,7 +106,6 @@ EXPOSE 8000-8999
 ENV LANG="en_US.UTF-8" \
     DOCKER_IS_STANDALONE="true" \
     APPLICATION_ENV="production" \
-    MARIADB_AUTO_UPGRADE=1 \
     MYSQL_HOST="localhost" \
     MYSQL_PORT=3306 \
     MYSQL_USER="azuracast" \

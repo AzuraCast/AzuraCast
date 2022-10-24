@@ -39,7 +39,6 @@
       - libshine-dev
       - libsoundtouch-dev
       - libspeex-dev
-      - libsrt-dev
       - libswresample-dev
       - libswscale-dev
       - libtag1-dev
@@ -49,6 +48,18 @@
       - libxpm-dev
       - bubblewrap
       - ffmpeg
+
+- name: Install Focal Liquidsoap Dependencies (20.04)
+  apt:
+    name:
+      - libsrt-dev
+  when: ansible_distribution_release == 'focal'
+
+- name: Install Jammy Liquidsoap Dependencies (22.04)
+  apt:
+    name:
+      - libsrt-openssl-dev
+  when: ansible_distribution_release == 'jammy'
 
 - name: Install Optional Audio Plugins
   apt:
@@ -80,7 +91,7 @@
 
 - name: Install Liquidsoap
   apt:
-    deb: "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.1.x/liquidsoap-d5cf13e_2.1.0-ubuntu-focal-1_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
+    deb: "https://github.com/savonet/liquidsoap/releases/download/v2.1.2/liquidsoap_2.1.2-ubuntu-{{ ansible_distribution_release }}-1_{{ dpkg_arch.stdout_lines[0] | default('amd64') }}.deb"
 
 - name: Link Liquidsoap binary
   file:

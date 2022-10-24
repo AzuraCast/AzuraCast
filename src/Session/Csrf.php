@@ -85,7 +85,7 @@ final class Csrf
      *
      * @return string The randomly generated string.
      */
-    protected function randomString(int $length = self::CODE_LENGTH): string
+    private function randomString(int $length = self::CODE_LENGTH): string
     {
         $seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
         $max = strlen($seed) - 1;
@@ -98,7 +98,7 @@ final class Csrf
         return $string;
     }
 
-    protected function getSessionIdentifier(string $namespace): string
+    private function getSessionIdentifier(string $namespace): string
     {
         return 'csrf_' . $namespace;
     }

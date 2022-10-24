@@ -53,7 +53,7 @@ final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
         return null;
     }
 
-    protected function getImageFromArray(array $images): ?string
+    private function getImageFromArray(array $images): ?string
     {
         $imagesBySize = [];
         foreach ($images as $image) {

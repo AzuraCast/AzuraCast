@@ -278,7 +278,7 @@ final class InstallCommand extends Command
         return 0;
     }
 
-    protected function updateDockerCompose(
+    private function updateDockerCompose(
         string $dockerComposePath,
         AbstractEnvFile $env,
         AbstractEnvFile $azuracastEnv

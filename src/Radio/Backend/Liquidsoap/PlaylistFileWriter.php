@@ -101,7 +101,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         }
     }
 
-    protected function writePlaylistFile(Entity\StationPlaylist $playlist): void
+    private function writePlaylistFile(Entity\StationPlaylist $playlist): void
     {
         $station = $playlist->getStation();
 

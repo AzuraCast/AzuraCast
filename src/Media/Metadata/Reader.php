@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Media\Metadata;
 
 use App\Event\Media\ReadMetadata;
+use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
 use App\Media\MimeType;
 use App\Utilities\Arrays;
@@ -24,32 +25,114 @@ final class Reader
 
         $ffprobe = FFProbe::create();
         $format = $ffprobe->format($path);
+        $streams = $ffprobe->streams($path);
 
         $metadata = new Metadata();
+        $metadata->setMimeType(MimeType::getMimeTypeFromFile($path));
 
-        if (is_numeric($format->get('duration'))) {
-            $metadata->setDuration(
-                Time::displayTimeToSeconds($format->get('duration')) ?? 0.0
-            );
+        $duration = $this->getDuration($format, $streams);
+        if (null !== $duration) {
+            $metadata->setDuration($duration);
         }
 
+        $metadata->setTags($this->aggregateMetaTags(
+            $format,
+            $streams
+        ));
+
+        $metadata->setArtwork($this->getAlbumArt(
+            $streams,
+            $path
+        ));
+
+        $event->setMetadata($metadata);
+    }
+
+    private function getDuration(
+        FFProbe\DataMapping\Format $format,
+        FFProbe\DataMapping\StreamCollection $streams
+    ): ?float {
+        $formatDuration = $format->get('duration');
+        if (is_numeric($formatDuration)) {
+            return Time::displayTimeToSeconds($formatDuration);
+        }
+
+        /** @var Stream $stream */
+        foreach ($streams->audios() as $stream) {
+            $duration = $stream->get('duration');
+            if (is_numeric($duration)) {
+                return Time::displayTimeToSeconds($duration);
+            }
+        }
+
+        return null;
+    }
+
+    private function aggregateMetaTags(
+        FFProbe\DataMapping\Format $format,
+        FFProbe\DataMapping\StreamCollection $streams
+    ): array {
         $toProcess = [
             $format->get('comments'),
             $format->get('tags'),
         ];
 
-        $metaTags = $this->aggregateMetaTags($toProcess);
+        /** @var Stream $stream */
+        foreach ($streams->audios() as $stream) {
+            $toProcess[] = $stream->get('comments');
+            $toProcess[] = $stream->get('tags');
+        }
 
-        $metadata->setTags($metaTags);
-        $metadata->setMimeType(MimeType::getMimeTypeFromFile($path));
+        $metaTags = [];
+
+        foreach ($toProcess as $tagSet) {
+            if (empty($tagSet)) {
+                continue;
+            }
+
+            foreach ($tagSet as $tagName => $tagValue) {
+                if (empty($tagValue)) {
+                    continue;
+                }
+
+                $tagEnum = MetadataTags::getTag((string)$tagName);
+                if (null === $tagEnum) {
+                    continue;
+                }
+
+                if (is_array($tagValue)) {
+                    // Skip pictures
+                    if (isset($tagValue['data'])) {
+                        continue;
+                    }
+                    $flatValue = Arrays::flattenArray($tagValue);
+                    $tagValue = implode(', ', $flatValue);
+                }
+
+                $tagValue = $this->cleanUpString((string)$tagValue);
+
+                $tagName = $tagEnum->value;
+                if (isset($metaTags[$tagName])) {
+                    $metaTags[$tagName] .= ', ' . $tagValue;
+                } else {
+                    $metaTags[$tagName] = $tagValue;
+                }
+            }
+        }
+
+        return $metaTags;
+    }
+
+    private function getAlbumArt(
+        FFProbe\DataMapping\StreamCollection $streams,
+        string $path
+    ): ?string {
+        // Pull album art directly from relevant streams.
+        $ffmpeg = FFMpeg::create();
 
         try {
-            // Pull album art directly from relevant streams.
-            $ffmpeg = FFMpeg::create();
-
-            /** @var Stream[] $videoStreams */
-            $videoStreams = $ffprobe->streams($path)->videos()->all();
-            foreach ($videoStreams as $videoStream) {
+            /** @var Stream $videoStream */
+            foreach ($streams->videos() as $videoStream) {
                 $streamDisposition = $videoStream->get('disposition');
                 if (!isset($streamDisposition['attached_pic']) || 1 !== $streamDisposition['attached_pic']) {
                     continue;
@@ -67,47 +150,17 @@ final class Reader
                     $artOutput,
                 ]);
 
-                $metadata->setArtwork(file_get_contents($artOutput) ?: null);
+                $artContent = file_get_contents($artOutput) ?: null;
                 @unlink($artOutput);
-                break;
+                return $artContent;
             }
         } catch (Throwable) {
-            $metadata->setArtwork(null);
         }
 
-        $event->setMetadata($metadata);
+        return null;
     }
 
-    protected function aggregateMetaTags(array $toProcess): array
-    {
-        $metaTags = [];
-
-        foreach ($toProcess as $tagSet) {
-            if (empty($tagSet)) {
-                continue;
-            }
-
-            foreach ($tagSet as $tagName => $tagContents) {
-                if (!empty($tagContents) && !isset($metaTags[$tagName])) {
-                    $tagValue = $tagContents;
-                    if (is_array($tagValue)) {
-                        // Skip pictures
-                        if (isset($tagValue['data'])) {
-                            continue;
-                        }
-                        $flatValue = Arrays::flattenArray($tagValue);
-                        $tagValue = implode(', ', $flatValue);
-                    }
-
-                    $metaTags[strtolower((string)$tagName)] = $this->cleanUpString((string)$tagValue);
-                }
-            }
-        }
-
-        return $metaTags;
-    }
-
-    protected function cleanUpString(?string $original): string
+    private function cleanUpString(?string $original): string
     {
         $original ??= '';
 

@@ -46,8 +46,7 @@ final class DownloadAction
                 LEFT JOIN sm.playlists spm
                 LEFT JOIN sm.custom_fields smcf
                 WHERE sm.storage_location = :storageLocation
-                GROUP BY sm.id
-                DQL
+            DQL
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         $filename = $station->getShortName() . '_all_media.csv';

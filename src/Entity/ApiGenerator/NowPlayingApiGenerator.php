@@ -11,6 +11,7 @@ use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 
 final class NowPlayingApiGenerator
 {
@@ -69,7 +70,7 @@ final class NowPlayingApiGenerator
             $currentSong = array_shift($history);
 
             if (null === $currentSong) {
-                throw new \RuntimeException('No current song.');
+                throw new RuntimeException('No current song.');
             }
         } catch (Exception $e) {
             Logger::getInstance()->error($e->getMessage(), ['exception' => $e]);

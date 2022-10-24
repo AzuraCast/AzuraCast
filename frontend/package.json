@@ -2,10 +2,10 @@
   "name": "azuracast",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "gulp",
-    "watch": "gulp watch",
-    "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../resources/locale/frontend.pot $(find ./vue -type f -name '*.vue')",
-    "import-locales": "gettext-compile --output ../resources/locale/translations.json $(find ../resources/locale/*.UTF-8/LC_MESSAGES -type f -name 'default.po')"
+    "build" : "gulp",
+    "watch" : "gulp watch",
+    "generate-locales" : "gettext-extract --attribute v-translate --keywords '$gettext' --output ../translations/frontend.pot $(find ./vue -type f -name '*.vue')",
+    "import-locales" : "gettext-compile --output ../translations/translations.json $(find ../translations/*.UTF-8/LC_MESSAGES -type f -name 'default.po')"
   },
   "dependencies": {
     "@babel/core": "^7.15.5",
@@ -58,7 +58,7 @@
     "sass": "^1.39.2",
     "sass-loader": "^13",
     "store": "^2",
-    "sweetalert2": "^11",
+    "sweetalert2": "11.4.8",
     "vue": "^2 <3",
     "vue-axios": "^3.3.6",
     "vue-clipboard2": "^0.3.3",

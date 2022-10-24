@@ -25,7 +25,8 @@ final class Queue
         private readonly Logger $logger,
         private readonly CacheInterface $cache,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo
+        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly Scheduler $scheduler,
     ) {
     }
 
@@ -33,7 +34,7 @@ final class Queue
     {
         // Early-fail if the station is disabled.
         if (!$station->supportsAutoDjQueue()) {
-            $this->logger->notice('Cannot build queue: station does not support AutoDJ queue.');
+            $this->logger->info('Cannot build queue: station does not support AutoDJ queue.');
             return;
         }
 
@@ -79,6 +80,11 @@ final class Queue
                     $queueLength = 1;
                 }
             } else {
+                if (!$this->isQueueRowStillValid($queueRow, $expectedPlayTime)) {
+                    $this->em->remove($queueRow);
+                    continue;
+                }
+
                 $queueRow->setTimestampCued($expectedCueTime->getTimestamp());
                 $expectedCueTime = $this->addDurationToTime($station, $expectedCueTime, $queueRow->getDuration());
 
@@ -224,7 +230,7 @@ final class Queue
         return $nextSongs;
     }
 
-    protected function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
+    private function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
     {
         $duration ??= 1;
 
@@ -234,6 +240,22 @@ final class Queue
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
+    }
+
+    private function isQueueRowStillValid(
+        Entity\StationQueue $queueRow,
+        CarbonInterface $expectedPlayTime
+    ): bool {
+        $playlist = $queueRow->getPlaylist();
+        if (null === $playlist) {
+            return true;
+        }
+
+        return $playlist->getIsEnabled() &&
+            $this->scheduler->isPlaylistScheduledToPlayNow(
+                $playlist,
+                $expectedPlayTime
+            );
     }
 
     public function getQueueRowLog(Entity\StationQueue $queueRow): ?array
@@ -252,7 +274,7 @@ final class Queue
         );
     }
 
-    protected function getQueueRowLogCacheKey(Entity\StationQueue $queueRow): string
+    private function getQueueRowLogCacheKey(Entity\StationQueue $queueRow): string
     {
         return 'queue_log.' . $queueRow->getIdRequired();
     }

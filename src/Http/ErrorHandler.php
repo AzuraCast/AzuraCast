@@ -14,6 +14,7 @@ use App\Middleware\InjectSession;
 use App\Session\Flash;
 use App\View;
 use DI\FactoryInterface;
+use Mezzio\Session\Session;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -66,7 +67,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
     }
 
-    protected function shouldReturnJson(ServerRequestInterface $req): bool
+    private function shouldReturnJson(ServerRequestInterface $req): bool
     {
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
 
@@ -175,6 +176,8 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
             // Redirect to login page for not-logged-in users.
             $sessionPersistence = $this->injectSession->getSessionPersistence($this->request);
+
+            /** @var Session $session */
             $session = $sessionPersistence->initializeSessionFromRequest($this->request);
 
             $flash = new Flash($session);
@@ -202,6 +205,8 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             }
 
             $sessionPersistence = $this->injectSession->getSessionPersistence($this->request);
+
+            /** @var Session $session */
             $session = $sessionPersistence->initializeSessionFromRequest($this->request);
 
             $flash = new Flash($session);

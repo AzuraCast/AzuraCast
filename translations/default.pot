@@ -1619,11 +1619,11 @@ msgstr ""
 msgid "Download CSV"
 msgstr ""
 
-#: ./vue/components/Stations/Profile/StreamsPanel.vue:96
+#: ./vue/components/Stations/Profile/StreamsPanel.vue:97
 msgid "Download M3U"
 msgstr ""
 
-#: ./vue/components/Stations/Profile/StreamsPanel.vue:92
+#: ./vue/components/Stations/Profile/StreamsPanel.vue:93
 msgid "Download PLS"
 msgstr ""
 
@@ -1640,6 +1640,16 @@ msgid "Drag file(s) here to upload or"
 msgstr ""
 
 #: ./vue/components/Admin/StorageLocations/Form.vue:106
+#: ./vue/components/Admin/StorageLocations/Form.vue:1
+msgid "Dropbox API Key"
+msgstr ""
+
+#: ./vue/components/Admin/StorageLocations/Form.vue:112
+#: ./vue/components/Admin/StorageLocations/Form.vue:1
+msgid "Dropbox API Secret"
+msgstr ""
+
+#: ./vue/components/Admin/StorageLocations/Form.vue:124
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 msgid "Dropbox Generated Access Token"
 msgstr ""
@@ -2649,11 +2659,6 @@ msgstr ""
 msgid "Learn about Advanced Playlists"
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:110
-#: ./vue/components/Admin/StorageLocations/Form.vue:2
-msgid "Learn More about Dropbox Auth Tokens"
-msgstr ""
-
 #: ./vue/components/Admin/Settings/ServicesTab.vue:14
 #: ./vue/components/Admin/Settings/ServicesTab.vue:2
 msgid "Learn more about release channels in the AzuraCast docs."
@@ -2763,6 +2768,7 @@ msgstr ""
 #: ./vue/components/Dashboard.vue:121
 #: ./vue/components/Stations/Profile/StreamsPanel.vue:15
 #: ./vue/components/Stations/Profile/StreamsPanel.vue:43
+#: ./vue/components/Stations/Profile/StreamsPanel.vue:71
 #: ./vue/components/Stations/Profile/StreamsPanel.vue:4
 #: ./vue/components/Stations/Reports/Listeners.vue:8
 #: ./vue/components/Stations/Reports/Overview/CommonMetricsView.vue:33
@@ -3525,6 +3531,7 @@ msgstr ""
 msgid "Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line."
 msgstr ""
 
+#: ./vue/components/Admin/StorageLocations/Form.vue:118
 #: ./vue/components/Stations/Streamers/ConnectionInfo.vue:64
 msgid "or"
 msgstr ""
@@ -3981,7 +3988,7 @@ msgstr ""
 
 #: ./vue/components/Admin/StorageLocations.vue:64
 #: ./vue/components/Admin/StorageLocations/Form.vue:20
-#: ./vue/components/Admin/StorageLocations/Form.vue:122
+#: ./vue/components/Admin/StorageLocations/Form.vue:135
 #: ./vue/components/Admin/StorageLocations/Form.vue:12
 msgid "Remote: SFTP"
 msgstr ""
@@ -4454,33 +4461,33 @@ msgstr ""
 msgid "Setup instructions for broadcasting software are available on the AzuraCast wiki."
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:130
+#: ./vue/components/Admin/StorageLocations/Form.vue:143
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 msgid "SFTP Host"
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:148
+#: ./vue/components/Admin/StorageLocations/Form.vue:161
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 msgid "SFTP Password"
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:136
+#: ./vue/components/Admin/StorageLocations/Form.vue:149
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 #: /var/azuracast/www/src/Installer/EnvFiles/EnvFile.php:56
 msgid "SFTP Port"
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:160
+#: ./vue/components/Admin/StorageLocations/Form.vue:173
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 msgid "SFTP Private Key"
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:154
+#: ./vue/components/Admin/StorageLocations/Form.vue:167
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 msgid "SFTP Private Key Pass Phrase"
 msgstr ""
 
-#: ./vue/components/Admin/StorageLocations/Form.vue:142
+#: ./vue/components/Admin/StorageLocations/Form.vue:155
 #: ./vue/components/Admin/StorageLocations/Form.vue:1
 msgid "SFTP Username"
 msgstr ""

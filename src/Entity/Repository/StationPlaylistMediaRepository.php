@@ -162,10 +162,7 @@ final class StationPlaylistMediaRepository extends Repository
         );
     }
 
-    /**
-     * @return Entity\Api\StationPlaylistQueue[]
-     */
-    public function resetQueue(Entity\StationPlaylist $playlist, CarbonInterface $now = null): array
+    public function resetQueue(Entity\StationPlaylist $playlist, CarbonInterface $now = null): void
     {
         if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
@@ -219,8 +216,19 @@ final class StationPlaylistMediaRepository extends Repository
         $playlist->setQueueResetAt($now->getTimestamp());
         $this->em->persist($playlist);
         $this->em->flush();
+    }
 
-        return $this->getQueue($playlist);
+    public function resetAllQueues(Entity\Station $station): void
+    {
+        $now = CarbonImmutable::now($station->getTimezoneObject());
+
+        foreach ($station->getPlaylists() as $playlist) {
+            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+                continue;
+            }
+
+            $this->resetQueue($playlist, $now);
+        }
     }
 
     /**

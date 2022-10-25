@@ -415,19 +415,23 @@ final class QueueBuilder implements EventSubscriberInterface
             $mediaQueue = $this->spmRepo->resetQueue($playlist);
         }
 
-        if ($playlist->getAvoidDuplicates()) {
-            if ($allowDuplicates) {
-                $this->logger->warning(
-                    'Duplicate prevention yielded no playable song; resetting song queue.'
-                );
-
-                $mediaQueue = $this->spmRepo->resetQueue($playlist);
-            }
-
-            return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+        if (!$playlist->getAvoidDuplicates()) {
+            return array_shift($mediaQueue);
         }
 
-        return array_shift($mediaQueue);
+        $queueItem = $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+        if (null !== $queueItem || $allowDuplicates) {
+            return $queueItem;
+        }
+
+        // Reshuffle the queue.
+        $this->logger->warning(
+            'Duplicate prevention yielded no playable song; resetting song queue.'
+        );
+
+        $mediaQueue = $this->spmRepo->resetQueue($playlist);
+
+        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
     }
 
     public function getNextSongFromRequests(BuildQueue $event): void

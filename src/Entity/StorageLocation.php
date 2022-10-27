@@ -7,29 +7,16 @@ namespace App\Entity;
 use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
 use App\Exception\StorageLocationFullException;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
-use Aws\S3\S3Client;
-use Azura\Files\Adapter\AwsS3\AwsS3Adapter;
-use Azura\Files\Adapter\Dropbox\DropboxAdapter;
 use Azura\Files\Adapter\ExtendedAdapterInterface;
-use Azura\Files\Adapter\Local\LocalFilesystemAdapter;
-use Azura\Files\Adapter\LocalAdapterInterface;
-use Azura\Files\Adapter\Sftp\SftpAdapter;
 use Azura\Files\ExtendedFilesystemInterface;
-use Azura\Files\LocalFilesystem;
-use Azura\Files\RemoteFilesystem;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
-use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
-use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
-use League\Flysystem\Visibility;
-use RuntimeException;
-use Spatie\Dropbox\Client;
 use Stringable;
 
 #[
@@ -150,23 +137,6 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function getPath(): string
     {
         return $this->path;
-    }
-
-    public function getFilteredPath(): string
-    {
-        return match ($this->getAdapterEnum()) {
-            StorageLocationAdapters::S3, StorageLocationAdapters::Dropbox => trim($this->path, '/'),
-            default => rtrim($this->path, '/')
-        };
-    }
-
-    public function applyPath(?string $suffix = null): string
-    {
-        $suffix = (null !== $suffix)
-            ? '/' . ltrim($suffix, '/')
-            : '';
-
-        return $this->path . $suffix;
     }
 
     public function setPath(string $path): void
@@ -496,137 +466,35 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         return $this->media;
     }
 
-    public function getUri(?string $suffix = null): string
+    public function getStorageLocationAdapter(): StorageLocationAdapterInterface
     {
-        $path = $this->applyPath($suffix);
-
-        return match ($this->getAdapterEnum()) {
-            StorageLocationAdapters::S3 => $this->getS3ObjectUri($suffix),
-            StorageLocationAdapters::Dropbox => 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/'),
-            default => $path,
-        };
+        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        return new $adapterClass($this);
     }
 
-    protected function getS3ObjectUri(?string $suffix = null): string
+    public function getUri(?string $suffix = null): string
     {
-        $path = $this->applyPath($suffix);
+        return $this->getStorageLocationAdapter()->getUri($suffix);
+    }
 
-        $bucket = $this->s3Bucket;
-        if (null === $bucket) {
-            return 'No S3 Bucket Specified';
-        }
-
-        try {
-            $client = $this->getS3Client();
-            if (empty($path)) {
-                $objectUrl = $client->getObjectUrl($bucket, '/');
-                return rtrim($objectUrl, '/');
-            }
-
-            return $client->getObjectUrl($bucket, ltrim($path, '/'));
-        } catch (InvalidArgumentException $e) {
-            return 'Invalid URI (' . $e->getMessage() . ')';
-        }
+    public function getFilteredPath(): string
+    {
+        return $this->getStorageLocationAdapter()::filterPath($this->path);
     }
 
     public function validate(): void
     {
-        if (StorageLocationAdapters::S3 === $this->getAdapterEnum()) {
-            $client = $this->getS3Client();
-            $client->listObjectsV2(
-                [
-                    'Bucket' => $this->s3Bucket,
-                    'max-keys' => 1,
-                ]
-            );
-        }
-
-        $adapter = $this->getStorageAdapter();
-        $adapter->fileExists('/test');
+        $this->getStorageLocationAdapter()->validate();
     }
 
     public function getStorageAdapter(): ExtendedAdapterInterface
     {
-        $filteredPath = $this->getFilteredPath();
-
-        switch ($this->getAdapterEnum()) {
-            case StorageLocationAdapters::S3:
-                $bucket = $this->s3Bucket;
-                if (null === $bucket) {
-                    throw new RuntimeException('Amazon S3 bucket is empty.');
-                }
-                return new AwsS3Adapter($this->getS3Client(), $bucket, $filteredPath);
-
-            case StorageLocationAdapters::Dropbox:
-                return new DropboxAdapter($this->getDropboxClient(), $filteredPath);
-
-            case StorageLocationAdapters::Sftp:
-                return new SftpAdapter($this->getSftpConnectionProvider(), $filteredPath);
-
-            default:
-                return new LocalFilesystemAdapter($filteredPath);
-        }
-    }
-
-    protected function getS3Client(): S3Client
-    {
-        if (StorageLocationAdapters::S3 !== $this->getAdapterEnum()) {
-            throw new InvalidArgumentException('This storage location is not using the S3 adapter.');
-        }
-
-        $s3Options = array_filter(
-            [
-                'credentials' => [
-                    'key' => $this->s3CredentialKey,
-                    'secret' => $this->s3CredentialSecret,
-                ],
-                'region' => $this->s3Region,
-                'version' => $this->s3Version,
-                'endpoint' => $this->s3Endpoint,
-            ]
-        );
-        return new S3Client($s3Options);
-    }
-
-    protected function getDropboxClient(): Client
-    {
-        if (StorageLocationAdapters::Dropbox !== $this->getAdapterEnum()) {
-            throw new InvalidArgumentException('This storage location is not using the Dropbox adapter.');
-        }
-
-        $creds = (!empty($this->dropboxAppKey) && !empty($this->dropboxAppSecret))
-            ? [$this->dropboxAppKey, $this->dropboxAppSecret]
-            : $this->dropboxAuthToken;
-
-        return new Client($creds);
-    }
-
-    protected function getSftpConnectionProvider(): SftpConnectionProvider
-    {
-        if (StorageLocationAdapters::Sftp !== $this->getAdapterEnum()) {
-            throw new InvalidArgumentException('This storage location is not using the SFTP adapter.');
-        }
-
-        return new SftpConnectionProvider(
-            $this->sftpHost ?? '',
-            $this->sftpUsername ?? '',
-            $this->sftpPassword,
-            $this->sftpPrivateKey,
-            $this->sftpPrivateKeyPassPhrase,
-            $this->sftpPort ?? 22
-        );
+        return $this->getStorageLocationAdapter()->getStorageAdapter();
     }
 
     public function getFilesystem(): ExtendedFilesystemInterface
     {
-        $adapter = $this->getStorageAdapter();
-
-        return ($adapter instanceof LocalAdapterInterface)
-            ? new LocalFilesystem(
-                adapter: $adapter,
-                visibilityConverter: new PortableVisibilityConverter(defaultForDirectories: Visibility::PUBLIC)
-            )
-            : new RemoteFilesystem($adapter);
+        return $this->getStorageLocationAdapter()->getFilesystem();
     }
 
     public function __toString(): string

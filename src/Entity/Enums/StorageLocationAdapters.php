@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Enums;
 
+use App\Entity\StorageLocationAdapter\DropboxStorageLocationAdapter;
+use App\Entity\StorageLocationAdapter\LocalStorageLocationAdapter;
+use App\Entity\StorageLocationAdapter\S3StorageLocationAdapter;
+use App\Entity\StorageLocationAdapter\SftpStorageLocationAdapter;
+use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
+
 enum StorageLocationAdapters: string
 {
     case Local = 'local';
@@ -23,6 +29,19 @@ enum StorageLocationAdapters: string
             self::S3 => 'S3',
             self::Dropbox => 'Dropbox',
             self::Sftp => 'SFTP',
+        };
+    }
+
+    /**
+     * @return class-string<StorageLocationAdapterInterface>
+     */
+    public function getAdapterClass(): string
+    {
+        return match ($this) {
+            self::Local => LocalStorageLocationAdapter::class,
+            self::S3 => S3StorageLocationAdapter::class,
+            self::Dropbox => DropboxStorageLocationAdapter::class,
+            self::Sftp => SftpStorageLocationAdapter::class
         };
     }
 }

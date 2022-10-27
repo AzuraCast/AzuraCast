@@ -104,30 +104,13 @@
             <b-card-body>
                 <b-form-group>
                     <b-form-row>
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_dropboxApiKey"
-                                              :field="form.dropboxAppKey">
-                            <template #label="{lang}">
-                                <translate :key="lang">Dropbox App Key</translate>
-                            </template>
-                        </b-wrapped-form-group>
-
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_dropboxApiSecret"
-                                              :field="form.dropboxAppSecret">
-                            <template #label="{lang}">
-                                <translate :key="lang">Dropbox App Secret</translate>
-                            </template>
-                        </b-wrapped-form-group>
-                    </b-form-row>
-
-                    <p class="mx-2 typography-subheading text-center">
-                        <translate key="form_dropbox_or">or</translate>
-                    </p>
-
-                    <b-form-row>
                         <b-wrapped-form-group class="col-md-12" id="form_edit_dropboxAuthToken"
                                               :field="form.dropboxAuthToken">
                             <template #label="{lang}">
                                 <translate :key="lang">Dropbox Generated Access Token</translate>
+                            </template>
+                            <template #description="{lang}">
+                                <translate :key="lang">Note: Dropbox now only issues short-lived tokens that will not work for this purpose. If your token begins with "sl", it is short-lived and will not work correctly.</translate>
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

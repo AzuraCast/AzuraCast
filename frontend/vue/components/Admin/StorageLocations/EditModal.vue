@@ -40,8 +40,6 @@ export default {
                 's3Bucket': {},
                 's3Endpoint': {},
                 'dropboxAuthToken': {},
-                'dropboxAppKey': {},
-                'dropboxAppSecret': {},
                 'sftpHost': {},
                 'sftpPort': {},
                 'sftpUsername': {},
@@ -57,6 +55,7 @@ export default {
                 break;
 
             case 'dropbox':
+                validations.form.dropboxAuthToken = {required};
                 break;
 
             case 's3':
@@ -89,8 +88,6 @@ export default {
                 's3Bucket': null,
                 's3Endpoint': null,
                 'dropboxAuthToken': null,
-                'dropboxAppKey': null,
-                'dropboxAppSecret': null,
                 'sftpHost': null,
                 'sftpPort': '22',
                 'sftpUsername': null,

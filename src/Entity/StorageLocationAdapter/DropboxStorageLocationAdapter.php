@@ -24,13 +24,7 @@ final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocatio
     public function getUri(?string $suffix = null): string
     {
         $path = $this->applyPath($suffix);
-        $appKey = $this->storageLocation->getDropboxAppKey();
-
-        $uriPrefix = (!empty($appKey))
-            ? $appKey
-            : $this->storageLocation->getDropboxAuthToken();
-
-        return 'dropbox://' . $uriPrefix . '/' . ltrim($path, '/');
+        return 'dropbox://' . $this->storageLocation->getDropboxAuthToken() . '/' . ltrim($path, '/');
     }
 
     public function getStorageAdapter(): ExtendedAdapterInterface
@@ -42,14 +36,6 @@ final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocatio
 
     private function getClient(): Client
     {
-        $appKey = $this->storageLocation->getDropboxAppKey();
-        $appSecret = $this->storageLocation->getDropboxAppSecret();
-        $authToken = $this->storageLocation->getDropboxAuthToken();
-
-        $creds = (!empty($appKey) && !empty($appSecret))
-            ? [$appKey, $appSecret]
-            : $authToken;
-
-        return new Client($creds);
+        return new Client($this->storageLocation->getDropboxAuthToken());
     }
 }

@@ -62,12 +62,6 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
     protected ?string $dropboxAuthToken = null;
 
-    #[ORM\Column(name: 'dropbox_app_key', length: 255, nullable: true)]
-    protected ?string $dropboxAppKey = null;
-
-    #[ORM\Column(name: 'dropbox_app_secret', length: 255, nullable: true)]
-    protected ?string $dropboxAppSecret = null;
-
     #[ORM\Column(name: 'sftp_host', length: 255, nullable: true)]
     protected ?string $sftpHost = null;
 
@@ -212,26 +206,6 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function setDropboxAuthToken(?string $dropboxAuthToken): void
     {
         $this->dropboxAuthToken = $dropboxAuthToken;
-    }
-
-    public function getDropboxAppKey(): ?string
-    {
-        return $this->dropboxAppKey;
-    }
-
-    public function setDropboxAppKey(?string $dropboxAppKey): void
-    {
-        $this->dropboxAppKey = $dropboxAppKey;
-    }
-
-    public function getDropboxAppSecret(): ?string
-    {
-        return $this->dropboxAppSecret;
-    }
-
-    public function setDropboxAppSecret(?string $dropboxAppSecret): void
-    {
-        $this->dropboxAppSecret = $dropboxAppSecret;
     }
 
     public function getSftpHost(): ?string

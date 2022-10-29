@@ -58,6 +58,9 @@
                                     <span class="file-icon" v-if="row.item.is_dir">
                                         <icon icon="folder"></icon>
                                     </span>
+                                    <span class="file-icon" v-else-if="row.item.is_cover_art">
+                                        <icon icon="photo"></icon>
+                                    </span>
                                     <span class="file-icon" v-else>
                                         <icon icon="note"></icon>
                                     </span>
@@ -89,6 +92,8 @@
                             </div>
 
                             <album-art v-if="row.item.media_art" :src="row.item.media_art"
+                                       class="flex-shrink-1 pl-2"></album-art>
+                            <album-art v-else-if="row.item.is_cover_art" :src="row.item.links_download"
                                        class="flex-shrink-1 pl-2"></album-art>
                         </div>
                     </template>

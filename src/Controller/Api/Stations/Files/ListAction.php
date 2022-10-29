@@ -10,6 +10,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use App\Media\MimeType;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\Common\Collections\Criteria;
@@ -253,7 +254,11 @@ final class ListAction
                     $files = array_keys($mediaInDir);
                 }
             } else {
-                $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
+                $protectedPaths = [
+                    Entity\StationMedia::DIR_ALBUM_ART,
+                    Entity\StationMedia::DIR_WAVEFORMS,
+                    Entity\StationMedia::DIR_FOLDER_COVERS,
+                ];
 
                 $files = $fs->listContents($currentDir, false)->filter(
                     function (StorageAttributes $attributes) use ($currentDir, $protectedPaths) {
@@ -304,6 +309,9 @@ final class ListAction
                         __('File Not Processed: %s'),
                         Utilities\Strings::truncateText($unprocessableMedia[$row->path])
                     );
+                } elseif (MimeType::isPathImage($row->path)) {
+                    $row->is_cover_art = true;
+                    $row->text = __('Cover Art');
                 } else {
                     $row->text = __('File Processing');
                 }
@@ -337,11 +345,10 @@ final class ListAction
         // Add processor-intensive data for just this page.
         $stationId = $station->getIdRequired();
         $isInternal = (bool)$request->getParam('internal', false);
-        $defaultAlbumArtUrl = (string)$this->stationRepo->getDefaultAlbumArtUrl($station);
 
         $paginator->setPostprocessor(
-            static function (Entity\Api\FileList $row) use ($router, $stationId, $defaultAlbumArtUrl, $isInternal) {
-                return self::postProcessRow($row, $router, $stationId, $defaultAlbumArtUrl, $isInternal);
+            static function (Entity\Api\FileList $row) use ($router, $stationId, $isInternal) {
+                return self::postProcessRow($row, $router, $stationId, $isInternal);
             }
         );
 
@@ -397,19 +404,21 @@ final class ListAction
         Entity\Api\FileList $row,
         RouterInterface $router,
         int $stationId,
-        string $defaultAlbumArtUrl,
         bool $isInternal
     ): Entity\Api\FileList|array {
         if (null !== $row->media->media_id) {
-            $row->media->art = (0 === $row->media->art_updated_at)
-                ? $defaultAlbumArtUrl
-                : (string)$router->named(
-                    'api:stations:media:art',
-                    [
-                        'station_id' => $stationId,
-                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
-                    ]
-                );
+            $artMediaId = $row->media->unique_id;
+            if (0 !== $row->media->art_updated_at) {
+                $artMediaId .= '-' . $row->media->art_updated_at;
+            }
+
+            $row->media->art = (string)$router->named(
+                'api:stations:media:art',
+                [
+                    'station_id' => $stationId,
+                    'media_id' => $artMediaId,
+                ]
+            );
 
             $row->media->links = [
                 'play' => (string)$router->named(

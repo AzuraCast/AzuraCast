@@ -63,15 +63,18 @@ final class SongApiGenerator
     ): UriInterface {
         if (null !== $station && $song instanceof Entity\StationMedia) {
             $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
+            $mediaId = $song->getUniqueId();
             if (0 !== $mediaUpdatedTimestamp) {
-                return $this->router->named(
-                    route_name: 'api:stations:media:art',
-                    route_params: [
-                        'station_id' => $station->getId(),
-                        'media_id' => $song->getUniqueId() . '-' . $mediaUpdatedTimestamp,
-                    ]
-                );
+                $mediaId .= '-' . $mediaUpdatedTimestamp;
             }
+
+            return $this->router->named(
+                route_name: 'api:stations:media:art',
+                route_params: [
+                    'station_id' => $station->getId(),
+                    'media_id' => $mediaId,
+                ]
+            );
         }
 
         if ($allowRemoteArt && $this->remoteAlbumArt->enableForApis()) {

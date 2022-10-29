@@ -36,6 +36,7 @@ class StationMedia implements
     public const UNIQUE_ID_LENGTH = 24;
 
     public const DIR_ALBUM_ART = '.albumart';
+    public const DIR_FOLDER_COVERS = '.covers';
     public const DIR_WAVEFORMS = '.waveforms';
 
     #[
@@ -531,6 +532,19 @@ class StationMedia implements
     public static function getArtPath(string $uniqueId): string
     {
         return self::DIR_ALBUM_ART . '/' . $uniqueId . '.jpg';
+    }
+
+    public static function getFolderArtPath(string $folderHash): string
+    {
+        return self::DIR_FOLDER_COVERS . '/' . $folderHash . '.jpg';
+    }
+
+    public static function getFolderHashForPath(string $path): string
+    {
+        $folder = dirname($path);
+        return (!empty($folder))
+            ? md5($folder)
+            : 'base';
     }
 
     public static function getWaveformPath(string $uniqueId): string

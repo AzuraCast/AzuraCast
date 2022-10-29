@@ -22,6 +22,8 @@ final class FileList
 
     public bool $is_dir = false;
 
+    public bool $is_cover_art = false;
+
     public FileListMedia $media;
 
     public array $playlists = [];

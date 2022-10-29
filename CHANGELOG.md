@@ -5,6 +5,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Cover Art Files Support**: Many users keep the cover art for their media alongside the media in a separate image
+  file. AzuraCast now detects image files in the same folder as your media and uses it as the default album art for that
+  media. Because cover art files are often named a variety of things, we currently will use _any_ image file that exists
+  alongside media. You can also now view cover art via the Media Manager UI.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

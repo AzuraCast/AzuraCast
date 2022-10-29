@@ -24,7 +24,11 @@ final class ListDirectoriesAction
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
-        $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
+        $protectedPaths = [
+            Entity\StationMedia::DIR_ALBUM_ART,
+            Entity\StationMedia::DIR_WAVEFORMS,
+            Entity\StationMedia::DIR_FOLDER_COVERS,
+        ];
 
         $directoriesRaw = $fsMedia->listContents($currentDir, false)->filter(
             function (StorageAttributes $attrs) use ($protectedPaths) {

@@ -6,8 +6,9 @@ use App\Sync\Task;
 use Symfony\Component\Mailer;
 
 return [
-    Message\AddNewMediaMessage::class => Task\CheckMediaTask::class,
-    Message\ReprocessMediaMessage::class => Task\CheckMediaTask::class,
+    Message\AddNewMediaMessage::class => App\Media\MediaProcessor::class,
+    Message\ReprocessMediaMessage::class => App\Media\MediaProcessor::class,
+    Message\ProcessCoverArtMessage::class => App\Media\MediaProcessor::class,
 
     Message\WritePlaylistFileMessage::class => Liquidsoap\PlaylistFileWriter::class,
 

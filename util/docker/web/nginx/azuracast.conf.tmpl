@@ -6,6 +6,16 @@ upstream php-fpm-www {
     server unix:/var/run/php-fpm-www.sock;
 }
 
+{{if isTrue .Env.ENABLE_REDIS }}
+upstream redis_server {
+{{if isTrue .Env.REDIS_LOCAL }}
+    nchan_redis_server "redis://localhost:6379";
+{{else}}
+    nchan_redis_server "redis://{{ .Env.REDIS_HOST }}:{{ default .Env.REDIS_PORT "6379" }}";
+{{end}}
+}
+{{end}}
+
 # Internal connection handler for PubSub and internal API calls
 server {
     listen 127.0.0.1:6010;
@@ -41,6 +51,11 @@ server {
 
     location ~ /pub/([^\/]+)$ {
         nchan_publisher;
+
+    {{if isTrue .Env.ENABLE_REDIS }}
+        nchan_redis_pass redis_server;
+    {{end}}
+
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id $1;
 
@@ -142,6 +157,10 @@ server {
         nchan_access_control_allow_origin "*";
 
         nchan_subscriber;
+
+    {{if isTrue .Env.ENABLE_REDIS }}
+        nchan_redis_pass redis_server;
+    {{end}}
 
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id "$1";

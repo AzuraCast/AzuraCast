@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ENABLE_REDIS=${ENABLE_REDIS:-true}
+
 REDIS_LOCAL=false
 if [ -f /etc/supervisor/minimal.conf.d/redis.conf ]; then
     REDIS_LOCAL=true

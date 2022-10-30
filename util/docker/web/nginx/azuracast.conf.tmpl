@@ -62,22 +62,6 @@ server {
         nchan_message_buffer_length 1;
         nchan_message_timeout 16s;
     }
-
-    location ~ /sub/([^\/]+)$ {
-        nchan_access_control_allow_origin "*";
-
-        nchan_subscriber;
-
-    {{if isTrue .Env.ENABLE_REDIS }}
-        nchan_redis_pass redis_server;
-    {{end}}
-
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id "$1";
-        nchan_channel_id_split_delimiter ",";
-
-        nchan_subscriber_first_message -1;
-    }
 }
 
 server {
@@ -169,18 +153,20 @@ server {
     }
 
     # Subscribe endpoint
-    # Workaround for https://github.com/slact/nchan/issues/534
     location ~ /api/live/nowplaying/([^\/]+)$ {
-        include proxy_params;
+        nchan_access_control_allow_origin "*";
 
-        proxy_set_header If-None-Match '';
-        proxy_set_header If-Modified-Since '';
-        proxy_redirect off;
-        chunked_transfer_encoding off;
-        proxy_no_cache 1;
-        proxy_cache_bypass 1;
+        nchan_subscriber websocket longpoll chunked multipart-mixed;
 
-        proxy_pass http://127.0.0.1:6010/sub/$1;
+    {{if isTrue .Env.ENABLE_REDIS }}
+        nchan_redis_pass redis_server;
+    {{end}}
+
+        nchan_channel_group "azuracast_nowplaying";
+        nchan_channel_id "$1";
+        nchan_channel_id_split_delimiter ",";
+
+        nchan_subscriber_first_message -1;
     }
 
     # deny access to .htaccess files, if Apache's document root

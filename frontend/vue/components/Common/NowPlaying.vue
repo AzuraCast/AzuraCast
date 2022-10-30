@@ -38,7 +38,9 @@ export default {
     methods: {
         checkNowPlaying () {
             if (this.useNchan) {
-                this.nchan_subscriber = new NchanSubscriber(this.nowPlayingUri);
+                this.nchan_subscriber = new NchanSubscriber(this.nowPlayingUri, {
+                    subscriber: ['websocket', 'longpoll']
+                });
                 this.nchan_subscriber.on('message', (message, message_metadata) => {
                     let np_new = JSON.parse(message);
                     setTimeout(() => {

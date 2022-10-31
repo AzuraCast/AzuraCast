@@ -25,19 +25,13 @@ cp /bd_build/web/php/www.conf.tmpl /etc/php/${PHP_VERSION}/fpm/www.conf.tmpl
 # Install Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-# Download PHP-FPM healthcheck script
-apt-get install -y --no-install-recommends libfcgi-bin
-
-wget -O /usr/local/bin/php-fpm-healthcheck \
-  https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
-  && chmod +x /usr/local/bin/php-fpm-healthcheck
-
 # Install PHP SPX profiler
 apt-get install -y --no-install-recommends php${PHP_VERSION}-dev zlib1g-dev build-essential
 
-cd /bd_build
-git clone https://github.com/NoiseByNorthwest/php-spx.git
-cd php-spx
+mkdir -p /bd_build/web/php-spx
+cd /bd_build/web/php-spx
+
+git clone https://github.com/NoiseByNorthwest/php-spx.git .
 phpize
 ./configure
 make

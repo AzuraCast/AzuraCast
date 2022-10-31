@@ -1,31 +1,14 @@
 #
-# Icecast build step
-#
-FROM ubuntu:jammy AS icecast
-
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \
-    curl git ca-certificates \
-    build-essential libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /tmp/install_icecast
-
-RUN curl -fsSL -o icecast.tar.gz https://github.com/AzuraCast/icecast-kh-ac/archive/refs/tags/2.4.0-kh15-ac2.tar.gz \
-    && tar -xzvf icecast.tar.gz --strip-components=1 \
-    && ./configure \
-    && make \
-    && make install
-
-#
 # Golang dependencies build step
 #
-FROM golang:1-bullseye AS dockerize
+FROM golang:1-bullseye AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
 
 RUN go install github.com/jwilder/dockerize@latest
+
+RUN go install github.com/aptible/supercronic@latest
 
 #
 # Final build image
@@ -35,11 +18,8 @@ FROM mariadb:10.9-jammy
 ENV TZ="UTC"
 
 # Add Dockerize
-COPY --from=dockerize /go/bin/dockerize /usr/local/bin
-
-# Import Icecast-KH from build container
-COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
-COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
+COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
+COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

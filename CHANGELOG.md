@@ -12,6 +12,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Because both our Docker and Ansible installations are managed by Supervisor now, we can view the realtime status of
+  all essential application services, and even restart them directly from the web interface.
+
 ## Bug Fixes
 
 - Fixed a bug where if a station only had "Allowed IPs", it wouldn't be enforced.

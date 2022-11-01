@@ -31,6 +31,7 @@ final class IndexAction
             props: [
                 'adminPanels' => $viewData['admin_panels'] ?? [],
                 'statsUrl' => (string)$router->named('api:admin:server:stats'),
+                'servicesUrl' => (string)$router->named('api:admin:services'),
             ]
         );
     }

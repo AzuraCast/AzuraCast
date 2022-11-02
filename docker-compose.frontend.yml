@@ -8,7 +8,3 @@ services:
       - $PWD/frontend:/data/frontend
       - $PWD/translations:/data/translations
       - $PWD/web/static:/data/web/static
-      - frontend_node_modules:/data/frontend/node_modules
-
-volumes:
-  frontend_node_modules: { }

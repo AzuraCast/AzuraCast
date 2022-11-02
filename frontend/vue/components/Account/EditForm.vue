@@ -23,7 +23,7 @@
 
             <b-form-row>
                 <b-col md="6">
-                    <b-wrapped-form-group class="col-md-6" id="edit_form_locale"
+                    <b-wrapped-form-group id="edit_form_locale"
                                           :field="form.locale">
                         <template #label="{lang}">
                             <translate :key="lang">Language</translate>

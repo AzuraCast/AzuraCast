@@ -82,6 +82,14 @@ class User implements Stringable, IdentifiableEntityInterface
     protected ?string $theme = null;
 
     #[
+        OA\Property(example: true),
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?bool $show_24_hour_time = null;
+
+    #[
         OA\Property(example: "A1B2C3D4"),
         ORM\Column(length: 255, nullable: true),
         Attributes\AuditIgnore,
@@ -232,6 +240,16 @@ class User implements Stringable, IdentifiableEntityInterface
     public function setTheme(?string $theme = null): void
     {
         $this->theme = $theme;
+    }
+
+    public function getShow24HourTime(): ?bool
+    {
+        return $this->show_24_hour_time;
+    }
+
+    public function setShow24HourTime(?bool $show_24_hour_time): void
+    {
+        $this->show_24_hour_time = $show_24_hour_time;
     }
 
     public function getTwoFactorSecret(): ?string

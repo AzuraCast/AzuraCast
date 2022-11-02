@@ -267,7 +267,9 @@ export default {
                     if (!value) {
                         return '';
                     }
-                    return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
+                    return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(
+                        {...DateTime.DATETIME_MED, ...App.time_config}
+                    );
                 },
                 selectable: true,
                 visible: true

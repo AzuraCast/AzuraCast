@@ -10,6 +10,9 @@ release channel, you can take advantage of these new features and fixes.
   media. Because cover art files are often named a variety of things, we currently will use _any_ image file that exists
   alongside media. You can also now view cover art via the Media Manager UI.
 
+- **24-Hour Time Display Support**: You can now choose whether to view time in 12 or 24 hour format from your user
+  profile, or use the default settings for your locale.
+
 ## Code Quality/Technical Changes
 
 - Because both our Docker and Ansible installations are managed by Supervisor now, we can view the realtime status of

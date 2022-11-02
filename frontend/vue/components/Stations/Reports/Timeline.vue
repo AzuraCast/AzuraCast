@@ -165,10 +165,14 @@ export default {
             return Math.abs(val);
         },
         formatTimestamp(unix_timestamp) {
-            return DateTime.fromSeconds(unix_timestamp).toLocaleString(DateTime.DATETIME_SHORT);
+            return DateTime.fromSeconds(unix_timestamp).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...App.time_config}
+            );
         },
         formatTimestampStation(unix_timestamp) {
-            return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_SHORT);
+            return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...App.time_config}
+            );
         }
     }
 };

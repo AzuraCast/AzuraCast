@@ -80,14 +80,26 @@ return [
                     $localeShort = substr($locale, 0, 2);
                     $localeWithDashes = str_replace('_', '-', $locale);
 
+                    // User profile-specific 24-hour display setting.
+                    $userObj = $request->getAttribute(ServerRequest::ATTR_USER);
+                    $show24Hours = ($userObj instanceof App\Entity\User)
+                        ? $userObj->getShow24HourTime()
+                        : null;
+
+                    $timeConfig = new \stdClass();
+                    if (null !== $show24Hours) {
+                        $timeConfig->hour12 = !$show24Hours;
+                    }
+
                     $app = [
-                        'lang'               => [
-                            'confirm'  => __('Are you sure?'),
+                        'lang' => [
+                            'confirm' => __('Are you sure?'),
                             'advanced' => __('Advanced'),
                         ],
                         'locale' => $locale,
                         'locale_short' => $localeShort,
                         'locale_with_dashes' => $localeWithDashes,
+                        'time_config' => $timeConfig,
                         'api_csrf' => null,
                     ];
 

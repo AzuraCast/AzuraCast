@@ -60,15 +60,23 @@ export default {
                 row.time_until = start_moment.toRelative();
 
                 if (start_moment.hasSame(now, 'day')) {
-                    row.start_formatted = start_moment.toLocaleString(DateTime.TIME_SIMPLE);
+                    row.start_formatted = start_moment.toLocaleString(
+                        {...DateTime.TIME_SIMPLE, ...App.time_config}
+                    );
                 } else {
-                    row.start_formatted = start_moment.toLocaleString(DateTime.DATETIME_MED);
+                    row.start_formatted = start_moment.toLocaleString(
+                        {...DateTime.DATETIME_MED, ...App.time_config}
+                    );
                 }
 
                 if (end_moment.hasSame(start_moment, 'day')) {
-                    row.end_formatted = end_moment.toLocaleString(DateTime.TIME_SIMPLE);
+                    row.end_formatted = end_moment.toLocaleString(
+                        {...DateTime.TIME_SIMPLE, ...App.time_config}
+                    );
                 } else {
-                    row.end_formatted = end_moment.toLocaleString(DateTime.DATETIME_MED);
+                    row.end_formatted = end_moment.toLocaleString(
+                        {...DateTime.DATETIME_MED, ...App.time_config}
+                    );
                 }
 
                 return row;

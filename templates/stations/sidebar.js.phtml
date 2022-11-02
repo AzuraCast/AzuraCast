@@ -49,10 +49,12 @@ $(document).on('click', '.api-call', function (e) {
 $(function () {
     function updateClock() {
         let d = new Date();
-        let time = d.toLocaleString(App.locale_with_dashes, {
-            timeZone: <?=$this->escapeJs($station->getTimezone()) ?>,
-            timeStyle: 'long'
-        })
+
+        let timeConfig = App.time_config;
+        timeConfig.timeZone = <?=$this->escapeJs($station->getTimezone()) ?>;
+        timeConfig.timeStyle = 'long';
+
+        let time = d.toLocaleString(App.locale_with_dashes, timeConfig);
 
         $('#station-time').text(time);
     }

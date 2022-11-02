@@ -61,7 +61,9 @@ export default {
                     label: this.$gettext('Start Time'),
                     sortable: false,
                     formatter: (value, key, item) => {
-                        return DateTime.fromSeconds(value).toLocaleString(DateTime.DATETIME_MED);
+                        return DateTime.fromSeconds(value).toLocaleString(
+                            {...DateTime.DATETIME_MED, ...App.time_config}
+                        );
                     }
                 },
                 {
@@ -72,7 +74,9 @@ export default {
                         if (value === 0) {
                             return this.$gettext('Live');
                         }
-                        return DateTime.fromSeconds(value).toLocaleString(DateTime.DATETIME_MED);
+                        return DateTime.fromSeconds(value).toLocaleString(
+                            {...DateTime.DATETIME_MED, ...App.time_config}
+                        );
                     }
                 },
                 {

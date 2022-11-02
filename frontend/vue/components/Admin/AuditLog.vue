@@ -143,7 +143,9 @@ export default {
             this.$refs.datatable.relist();
         },
         formatTimestamp(unix_timestamp) {
-            return DateTime.fromSeconds(unix_timestamp).toLocaleString(DateTime.DATETIME_SHORT);
+            return DateTime.fromSeconds(unix_timestamp).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...App.time_config}
+            );
         }
     }
 }

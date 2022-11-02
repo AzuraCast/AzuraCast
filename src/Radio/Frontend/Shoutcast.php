@@ -109,7 +109,7 @@ final class Shoutcast extends AbstractFrontend
         [$certPath, $certKey] = Acme::getCertificatePaths();
 
         $publicUrl = $this->getPublicUrl($station);
-        $urlHost = $publicUrl->getHost();
+        $urlHost = $publicUrl->getScheme() . '://' . $publicUrl->getHost();
 
         $config = [
             'password' => $frontendConfig->getSourcePassword(),
@@ -133,10 +133,6 @@ final class Shoutcast extends AbstractFrontend
             'publicdns' => $urlHost,
             'publicip' => $urlHost,
         ];
-
-        if ('https' === $publicUrl->getScheme()) {
-            $config['alternateports'] = '443';
-        }
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {

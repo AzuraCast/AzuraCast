@@ -50,7 +50,7 @@ $(function () {
     function updateClock() {
         let d = new Date();
 
-        let timeConfig = App.time_config;
+        let timeConfig = {...App.time_config};
         timeConfig.timeZone = <?=$this->escapeJs($station->getTimezone()) ?>;
         timeConfig.timeStyle = 'long';
 

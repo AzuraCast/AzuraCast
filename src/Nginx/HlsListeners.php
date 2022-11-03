@@ -7,6 +7,7 @@ namespace App\Nginx;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
+use loophp\collection\Collection;
 use NowPlaying\Result\Client;
 use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
@@ -45,15 +46,12 @@ final class HlsListeners
             return $np;
         }
 
-        $logContents = file($hlsLogFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+        $logs = Collection::fromFile($hlsLogFile);
         if (is_file($hlsLogBackup) && filemtime($hlsLogBackup) >= $timestamp) {
-            $logContents = array_merge(
-                $logContents,
-                file($hlsLogBackup, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []
+            $logs = $logs->merge(
+                Collection::fromFile($hlsLogBackup)
             );
         }
-
-        $logContents = array_reverse($logContents);
 
         $streamsByName = [];
         $clientsByStream = [];
@@ -62,13 +60,19 @@ final class HlsListeners
             $clientsByStream[$hlsStream->getName()] = 0;
         }
 
+        $logs = $logs
+            ->lines()
+            ->reverse()
+            ->map(fn($row) => $this->parseRow($row, $timestamp)) // @phpstan-ignore-line
+            ->filter();
+
         $allClients = [];
         $i = 1;
-        foreach ($logContents as $logRow) {
-            $client = $this->parseRow($logRow, $timestamp);
+
+        /** @var Client $client */
+        foreach ($logs as $client) {
             if (
-                null !== $client
-                && isset($clientsByStream[$client->mount])
+                isset($clientsByStream[$client->mount])
                 && !isset($allClients[$client->uid])
             ) {
                 $clientsByStream[$client->mount]++;
@@ -107,6 +111,10 @@ final class HlsListeners
         string $row,
         int $threshold
     ): ?Client {
+        if (empty(trim($row))) {
+            return null;
+        }
+
         try {
             $rowJson = json_decode($row, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException) {

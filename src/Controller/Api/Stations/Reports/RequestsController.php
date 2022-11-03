@@ -46,7 +46,8 @@ final class RequestsController
         $paginator = Paginator::fromQuery($query, $request);
 
         $router = $request->getRouter();
-        $postProcessor = function ($row) use ($router) {
+
+        $paginator->setPostprocessor(function ($row) use ($router) {
             $row['links'] = [];
 
             if (0 === $row['played_at']) {
@@ -57,8 +58,7 @@ final class RequestsController
             }
 
             return $row;
-        };
-        $paginator->setPostprocessor($postProcessor);
+        });
 
         return $paginator->write($response);
     }

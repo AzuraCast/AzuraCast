@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use IteratorAggregate;
+use loophp\collection\Collection as loophpCollection;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Doctrine\Collections\CollectionAdapter;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -31,9 +32,6 @@ final class Paginator implements IteratorAggregate, Countable
 
     /** @var int<1,max> The maximum number of records that can be viewed per page for unauthenticated users. */
     private int $maxPerPage = 25;
-
-    /** @var bool Whether the current request is from jQuery Bootgrid */
-    private bool $isBootgrid = false;
 
     /** @var bool Whether the user is currently authenticated on this request. */
     private bool $isAuthenticated = false;
@@ -57,22 +55,14 @@ final class Paginator implements IteratorAggregate, Countable
         $this->isAuthenticated = ($user !== null);
 
         $params = $request->getQueryParams();
-        $this->isBootgrid = isset($params['rowCount']) || isset($params['searchPhrase']);
 
-        if ($this->isBootgrid) {
-            if (isset($params['rowCount'])) {
-                $this->setPerPage((int)$params['rowCount']);
-            }
-            if (isset($params['current'])) {
-                $this->setCurrentPage((int)$params['current']);
-            }
-        } else {
-            if (isset($params['per_page'])) {
-                $this->setPerPage((int)$params['per_page']);
-            }
-            if (isset($params['page'])) {
-                $this->setCurrentPage((int)$params['page']);
-            }
+        $perPage = $params['rowCount'] ?? $params['per_page'] ?? null;
+        $currentPage = $params['current'] ?? $params['page'] ?? null;
+        if (null !== $perPage) {
+            $this->setPerPage((int)$perPage);
+        }
+        if (null !== $currentPage) {
+            $this->setCurrentPage((int)$currentPage);
         }
     }
 
@@ -115,11 +105,6 @@ final class Paginator implements IteratorAggregate, Countable
         $this->isDisabled = false;
     }
 
-    public function isFromBootgrid(): bool
-    {
-        return $this->isBootgrid;
-    }
-
     public function setPostprocessor(callable $postprocessor): void
     {
         $this->postprocessor = $postprocessor;
@@ -155,34 +140,19 @@ final class Paginator implements IteratorAggregate, Countable
             $this->paginator->setMaxPerPage($maxPerPage);
         }
 
-        $iterator = $this->getIterator();
         $total = $this->count();
 
         $totalPages = $this->paginator->getNbPages();
 
+        $collection = loophpCollection::fromIterable($this->getIterator());
         if ($this->postprocessor) {
-            $results = [];
-            $postprocessor = $this->postprocessor;
-            foreach ($iterator as $result) {
-                $results[] = $postprocessor($result, $this);
-            }
-        } else {
-            $results = iterator_to_array($iterator, false);
+            $collection = $collection->map($this->postprocessor);
         }
+
+        $results = $collection->all();
 
         if ($this->isDisabled) {
             return $response->withJson($results);
-        }
-
-        if ($this->isBootgrid) {
-            return $response->withJson(
-                [
-                    'current' => $this->getCurrentPage(),
-                    'rowCount' => $this->getPerPage(),
-                    'total' => $total,
-                    'rows' => $results,
-                ]
-            );
         }
 
         $pageLinks = [];

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cbe0493b1bb2b62ab667d12fec4d738",
+    "content-hash": "97844b6342e82a1160846496db7f6981",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3804,6 +3804,78 @@
                 "source": "https://github.com/thephpleague/plates/tree/v3.4.0"
             },
             "time": "2020-12-25T05:00:37+00:00"
+        },
+        {
+            "name": "loophp/collection",
+            "version": "6.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/loophp/collection.git",
+                "reference": "7e22909259cd0804bc6e5be2754c7ff0c8ccb840"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/loophp/collection/zipball/7e22909259cd0804bc6e5be2754c7ff0c8ccb840",
+                "reference": "7e22909259cd0804bc6e5be2754c7ff0c8ccb840",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.4"
+            },
+            "require-dev": {
+                "amphp/parallel-functions": "^1",
+                "doctrine/collections": "^1.6",
+                "drupol/php-conventions": "^5",
+                "friends-of-phpspec/phpspec-code-coverage": "^6.1",
+                "infection/infection": "^0.23.0 || ^0.24.0",
+                "infection/phpspec-adapter": "^0.1.2",
+                "phpspec/phpspec": "^7.1",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "psr/cache": "^1.0",
+                "symfony/cache": "^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "loophp\\collection\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pol Dellaiera",
+                    "email": "pol.dellaiera@protonmail.com",
+                    "homepage": "https://not-a-number.io",
+                    "role": "author"
+                }
+            ],
+            "description": "A (memory) friendly, easy, lazy and modular collection class.",
+            "homepage": "https://github.com/loophp/collection",
+            "keywords": [
+                "collection",
+                "generator",
+                "iterator",
+                "yield"
+            ],
+            "support": {
+                "docs": "https://loophp-collection.rtfd.io",
+                "issues": "https://github.com/loophp/collection/issues",
+                "source": "https://github.com/loophp/collection"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/drupol",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.paypal.me/drupol",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2021-12-11T18:10:52+00:00"
         },
         {
             "name": "lstrojny/fxmlrpc",

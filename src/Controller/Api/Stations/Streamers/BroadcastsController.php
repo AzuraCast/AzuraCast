@@ -10,7 +10,6 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Utilities;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
@@ -60,13 +59,12 @@ final class BroadcastsController extends AbstractApiCrudController
 
         $paginator = Paginator::fromQuery($query, $request);
 
-        $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
         $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         $paginator->setPostprocessor(
-            function ($row) use ($id, $is_bootgrid, $router, $fsRecordings) {
+            function ($row) use ($id, $router, $fsRecordings) {
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);
@@ -109,10 +107,6 @@ final class BroadcastsController extends AbstractApiCrudController
                     ];
                 } else {
                     $return['recording'] = [];
-                }
-
-                if ($is_bootgrid) {
-                    return Utilities\Arrays::flattenArray($return, '_');
                 }
 
                 return $return;

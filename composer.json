@@ -52,6 +52,7 @@
     "league/flysystem-sftp-v3": "^3.0",
     "league/mime-type-detection": "^1.7",
     "league/plates": "^3.1",
+    "loophp/collection": "^6.0",
     "lstrojny/fxmlrpc": "dev-master",
     "marcw/rss-writer": "^0.4.0",
     "matomo/device-detector": "^6",

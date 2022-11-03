@@ -50,7 +50,7 @@ final class ListAction
 
         $cacheKeyParts = [
             'files_list',
-            $station->getId(),
+            $storageLocation->getIdRequired(),
             (!empty($currentDir)) ? 'dir_' . rawurlencode($currentDir) : 'root',
         ];
 
@@ -63,10 +63,9 @@ final class ListAction
         $flushCache = (bool)$request->getParam('flushCache', false);
 
         if (!$flushCache && $this->cache->has($cacheKey)) {
+            /** @var array<int, Entity\Api\FileList> $result */
             $result = $this->cache->get($cacheKey);
         } else {
-            $result = [];
-
             $pathLike = (empty($currentDir))
                 ? '%'
                 : $currentDir . '/%';
@@ -261,12 +260,15 @@ final class ListAction
                 ];
 
                 $files = $fs->listContents($currentDir, false)->filter(
-                    function (StorageAttributes $attributes) use ($currentDir, $protectedPaths) {
-                        return !($currentDir === '' && in_array($attributes->path(), $protectedPaths, true));
-                    }
+                    fn(StorageAttributes $attributes) => !($currentDir === '' && in_array(
+                        $attributes->path(),
+                        $protectedPaths,
+                        true
+                    ))
                 );
             }
 
+            $result = [];
             foreach ($files as $file) {
                 $row = new Entity\Api\FileList();
 
@@ -327,19 +329,15 @@ final class ListAction
 
         usort(
             $result,
-            static function (
-                Entity\Api\FileList $a,
-                Entity\Api\FileList $b
-            ) use (
+            static fn(Entity\Api\FileList $a, Entity\Api\FileList $b) => self::sortRows(
+                $a,
+                $b,
                 $searchPhrase,
                 $sort,
                 $sortOrder
-            ) {
-                return self::sortRows($a, $b, $searchPhrase, $sort, $sortOrder);
-            }
+            )
         );
 
-        /** @var array<int, Entity\Api\FileList> $result */
         $paginator = Paginator::fromArray($result, $request);
 
         // Add processor-intensive data for just this page.
@@ -347,9 +345,7 @@ final class ListAction
         $isInternal = (bool)$request->getParam('internal', false);
 
         $paginator->setPostprocessor(
-            static function (Entity\Api\FileList $row) use ($router, $stationId, $isInternal) {
-                return self::postProcessRow($row, $router, $stationId, $isInternal);
-            }
+            static fn(Entity\Api\FileList $row) => self::postProcessRow($row, $router, $stationId, $isInternal)
         );
 
         return $paginator->write($response);

@@ -90,7 +90,8 @@ final class ListAction
             $trackList = $trackList->matching($criteria);
         }
 
-        return Paginator::fromCollection($trackList, $request)->write($response);
+        return Paginator::fromCollection($trackList, $request)
+            ->write($response);
     }
 
     /**

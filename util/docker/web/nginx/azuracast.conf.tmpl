@@ -6,16 +6,6 @@ upstream php-fpm-www {
     server unix:/var/run/php-fpm-www.sock;
 }
 
-{{if isTrue .Env.ENABLE_REDIS }}
-upstream redis_server {
-{{if isTrue .Env.REDIS_LOCAL }}
-    nchan_redis_server "redis://localhost:6379";
-{{else}}
-    nchan_redis_server "redis://{{ .Env.REDIS_HOST }}:{{ default .Env.REDIS_PORT "6379" }}";
-{{end}}
-}
-{{end}}
-
 # Internal connection handler for PubSub and internal API calls
 server {
     listen 127.0.0.1:6010;
@@ -49,18 +39,9 @@ server {
         internal;
     }
 
-    location ~ /pub/([^\/]+)$ {
-        nchan_publisher;
-
-    {{if isTrue .Env.ENABLE_REDIS }}
-        nchan_redis_pass redis_server;
-    {{end}}
-
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id $1;
-
-        nchan_message_buffer_length 1;
-        nchan_message_timeout 16s;
+    location ~ /pub/(.*)$ {
+        push_stream_publisher admin;
+        push_stream_channels_path $1;
     }
 }
 
@@ -153,20 +134,11 @@ server {
     }
 
     # Subscribe endpoint
-    location ~ /api/live/nowplaying/([^\/]+)$ {
-        nchan_access_control_allow_origin "*";
+    location ~ /api/live/nowplaying/(.*)$ {
+        push_stream_subscriber;
+        push_stream_channels_path $1;
 
-        nchan_subscriber websocket longpoll chunked multipart-mixed;
-
-    {{if isTrue .Env.ENABLE_REDIS }}
-        nchan_redis_pass redis_server;
-    {{end}}
-
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id "$1";
-        nchan_channel_id_split_delimiter ",";
-
-        nchan_subscriber_first_message -1;
+        push_stream_allowed_origins "*";
     }
 
     # deny access to .htaccess files, if Apache's document root

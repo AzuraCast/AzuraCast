@@ -2,7 +2,30 @@
 set -e
 set -x
 
-apt-get install -y --no-install-recommends nginx nginx-common openssl libnginx-mod-nchan
+# Compile nginx and nginx-push-module
+add-apt-repository -y -s ppa:nginx/stable # -s is important b/c it allows source code access
+
+apt build-dep -y nginx
+cd /tmp
+apt source nginx
+
+cd /tmp/nginx-*/debian/modules
+git clone https://github.com/wandenberg/nginx-push-stream-module.git
+
+cd /tmp/nginx-*/debian
+patch -p0 < /bd_build/web/nginx/add_nginx_push_stream.patch
+
+cd /tmp/nginx-* && dpkg-buildpackage -uc -b -j2
+
+dpkg-deb -I /tmp/nginx-common_*.deb
+dpkg -i /tmp/nginx-common_*.deb
+
+rm -rf /tmp/*
+
+apt-mark hold nginx
+
+aptitude markauto $(apt-cache showsrc PACKAGE_NAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
+apt-get autoremove
 
 # Install nginx and configuration
 cp /bd_build/web/nginx/proxy_params.conf /etc/nginx/proxy_params

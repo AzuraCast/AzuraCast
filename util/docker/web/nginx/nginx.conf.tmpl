@@ -65,6 +65,9 @@ http {
       https on;
     }
 
+    push_stream_shared_memory_size 32M;
+    push_stream_message_ttl "1m";
+
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
 }

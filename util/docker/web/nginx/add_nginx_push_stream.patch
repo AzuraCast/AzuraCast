@@ -1,0 +1,11 @@
+diff -ur rules rules
+--- rules2      2022-11-03 16:45:08.340039369 +0000
++++ rules       2022-11-03 16:46:31.372965063 +0000
+@@ -73,6 +73,7 @@
+                        --with-http_dav_module \
+                        --with-http_slice_module \
+                        --with-threads \
++                       --add-module=$(MODULESDIR)/nginx-push-stream-module \
+             --add-dynamic-module=$(MODULESDIR)/http-geoip2
+ 
+ light_configure_flags := \

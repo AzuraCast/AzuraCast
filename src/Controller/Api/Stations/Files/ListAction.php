@@ -342,10 +342,9 @@ final class ListAction
 
         // Add processor-intensive data for just this page.
         $stationId = $station->getIdRequired();
-        $isInternal = (bool)$request->getParam('internal', false);
 
         $paginator->setPostprocessor(
-            static fn(Entity\Api\FileList $row) => self::postProcessRow($row, $router, $stationId, $isInternal)
+            static fn(Entity\Api\FileList $row) => self::postProcessRow($row, $router, $stationId)
         );
 
         return $paginator->write($response);
@@ -399,8 +398,7 @@ final class ListAction
     private static function postProcessRow(
         Entity\Api\FileList $row,
         RouterInterface $router,
-        int $stationId,
-        bool $isInternal
+        int $stationId
     ): Entity\Api\FileList|array {
         if (null !== $row->media->media_id) {
             $artMediaId = $row->media->unique_id;
@@ -453,15 +451,6 @@ final class ListAction
                 ['file' => $row->path]
             ),
         ];
-
-        if ($isInternal) {
-            $playlists = $row->playlists;
-            $row->playlists = [];
-
-            $flatRow = Utilities\Arrays::flattenArray($row, '_');
-            $flatRow['playlists'] = $playlists;
-            return $flatRow;
-        }
 
         return $row;
     }

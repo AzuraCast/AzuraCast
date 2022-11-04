@@ -59,47 +59,42 @@ export default {
         let fields = [
             {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true, selectable: true},
             {
-                key: 'song_title',
+                key: 'song.title',
                 label: this.$gettext('Title'),
                 sortable: true,
                 selectable: true,
                 visible: false,
-                formatter: (value, key, item) => item.song.title
             },
             {
-                key: 'song_artist',
+                key: 'song.artist',
                 label: this.$gettext('Artist'),
                 sortable: true,
                 selectable: true,
                 visible: false,
-                formatter: (value, key, item) => item.song.artist
             },
             {
-                key: 'song_album',
+                key: 'song.album',
                 label: this.$gettext('Album'),
                 sortable: true,
                 selectable: true,
-                visible: false,
-                formatter: (value, key, item) => item.song.album
+                visible: false
             },
             {
-                key: 'song_genre',
+                key: 'song.genre',
                 label: this.$gettext('Genre'),
                 sortable: true,
                 selectable: true,
-                visible: false,
-                formatter: (value, key, item) => item.song.genre
+                visible: false
             }
         ];
 
         _.forEach(this.customFields.slice(), (field) => {
             fields.push({
-                key: 'song_custom_fields_' + field.short_name,
+                key: 'song.custom_fields.' + field.short_name,
                 label: field.name,
                 sortable: false,
                 selectable: true,
-                visible: false,
-                formatter: (value, key, item) => item.song.custom_fields[field.short_name]
+                visible: false
             });
         });
 

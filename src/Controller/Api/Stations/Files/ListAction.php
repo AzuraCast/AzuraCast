@@ -399,7 +399,7 @@ final class ListAction
         Entity\Api\FileList $row,
         RouterInterface $router,
         int $stationId
-    ): Entity\Api\FileList|array {
+    ): Entity\Api\FileList {
         if (null !== $row->media->media_id) {
             $artMediaId = $row->media->unique_id;
             if (0 !== $row->media->art_updated_at) {

@@ -6,13 +6,14 @@ namespace App\Http;
 
 use App\Entity;
 use App\Traits\RequestAwareTrait;
+use FastRoute\RouteParser\Std;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteInterface;
-use Slim\Interfaces\RouteParserInterface;
 use Slim\Routing\RouteContext;
 
 final class Router implements RouterInterface
@@ -23,10 +24,24 @@ final class Router implements RouterInterface
 
     private ?RouteInterface $currentRoute = null;
 
+    private readonly array $routes;
+
+    private readonly Std $routeParser;
+
     public function __construct(
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly RouteParserInterface $routeParser
+        RouteCollectorInterface $routeCollector
     ) {
+        $routes = [];
+        foreach ($routeCollector->getRoutes() as $route) {
+            $routeName = $route->getName();
+            if (null !== $routeName) {
+                $routes[$routeName] = $route;
+            }
+        }
+        $this->routes = $routes;
+
+        $this->routeParser = new Std();
     }
 
     public function setRequest(?ServerRequestInterface $request): void
@@ -143,11 +158,72 @@ final class Router implements RouterInterface
         array $queryParams = [],
         bool $absolute = false
     ): UriInterface {
-        $relativeUri = new Uri($this->routeParser->relativeUrlFor($routeName, $routeParams, $queryParams));
+        $relativeUri = $this->getRelativeUri($routeName, $routeParams, $queryParams);
 
         return ($absolute)
             ? self::resolveUri($this->getBaseUrl(), $relativeUri, true)
             : $relativeUri;
+    }
+
+    private function getRelativeUri(string $routeName, array $data = [], array $queryParams = []): UriInterface
+    {
+        if (!isset($this->routes[$routeName])) {
+            throw new \InvalidArgumentException('Named route does not exist for name: ' . $routeName);
+        }
+
+        $pattern = $this->routes[$routeName]->getPattern();
+
+        $segments = [];
+        $segmentName = '';
+
+        /*
+         * $routes is an associative array of expressions representing a route as multiple segments
+         * There is an expression for each optional parameter plus one without the optional parameters
+         * The most specific is last, hence why we reverse the array before iterating over it
+         */
+        foreach (array_reverse($this->routeParser->parse($pattern)) as $expression) {
+            foreach ($expression as $segment) {
+                /*
+                 * Each $segment is either a string or an array of strings
+                 * containing optional parameters of an expression
+                 */
+                if (is_string($segment)) {
+                    $segments[] = $segment;
+                    continue;
+                }
+
+                /** @var string[] $segment */
+                /*
+                 * If we don't have a data element for this segment in the provided $data
+                 * we cancel testing to move onto the next expression with a less specific item
+                 */
+                if (!array_key_exists($segment[0], $data)) {
+                    $segments = [];
+                    $segmentName = $segment[0];
+                    break;
+                }
+
+                $segments[] = $data[$segment[0]];
+            }
+
+            /*
+             * If we get to this logic block we have found all the parameters
+             * for the provided $data which means we don't need to continue testing
+             * less specific expressions
+             */
+            if (!empty($segments)) {
+                break;
+            }
+        }
+
+        if (empty($segments)) {
+            throw new InvalidArgumentException('Missing data for URL segment: ' . $segmentName);
+        }
+
+        $url = new Uri(implode('', $segments));
+        return ($queryParams)
+            ? $url->withQuery(http_build_query($queryParams))
+            : $url;
     }
 
     /**

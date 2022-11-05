@@ -21,6 +21,8 @@ final class Router implements RouterInterface
 
     private ?UriInterface $baseUrl = null;
 
+    private ?RouteInterface $currentRoute = null;
+
     public function __construct(
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly RouteParserInterface $routeParser
@@ -31,25 +33,26 @@ final class Router implements RouterInterface
     {
         $this->request = $request;
         $this->baseUrl = null;
+
+        $this->currentRoute = (null !== $request)
+            ? RouteContext::fromRequest($request)->getRoute()
+            : null;
     }
 
-    public function getBaseUrl(?bool $useRequest = null): UriInterface
+    public function getBaseUrl(): UriInterface
     {
-        if (null === $useRequest) {
-            if (null === $this->baseUrl) {
-                $settings = $this->settingsRepo->readSettings();
-                $this->baseUrl = $this->buildBaseUrl($settings->getPreferBrowserUrl());
-            }
-
-            return $this->baseUrl;
+        if (null === $this->baseUrl) {
+            $this->baseUrl = $this->buildBaseUrl();
         }
 
-        return $this->buildBaseUrl($useRequest);
+        return $this->baseUrl;
     }
 
-    private function buildBaseUrl(bool $useRequest = true): UriInterface
+    public function buildBaseUrl(?bool $useRequest = null): UriInterface
     {
         $settings = $this->settingsRepo->readSettings();
+
+        $useRequest ??= $settings->getPreferBrowserUrl();
 
         $baseUrl = $settings->getBaseUrlAsUri() ?? new Uri('');
         $useHttps = $settings->getAlwaysUseSsl();
@@ -93,64 +96,58 @@ final class Router implements RouterInterface
      * @inheritDoc
      */
     public function fromHereWithQuery(
-        ?string $route_name = null,
-        array $route_params = [],
-        array $query_params = [],
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
         bool $absolute = false
     ): UriInterface {
         if ($this->request instanceof ServerRequestInterface) {
-            $query_params = array_merge($this->request->getQueryParams(), $query_params);
+            $queryParams = array_merge($this->request->getQueryParams(), $queryParams);
         }
 
-        return $this->fromHere($route_name, $route_params, $query_params, $absolute);
+        return $this->fromHere($routeName, $routeParams, $queryParams, $absolute);
     }
 
     /**
      * @inheritDoc
      */
     public function fromHere(
-        ?string $route_name = null,
-        array $route_params = [],
-        array $query_params = [],
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
         bool $absolute = false
     ): UriInterface {
-        if ($this->request instanceof ServerRequestInterface) {
-            $route = RouteContext::fromRequest($this->request)->getRoute();
-        } else {
-            $route = null;
+        if (null !== $this->currentRoute) {
+            if (null === $routeName) {
+                $routeName = $this->currentRoute->getName();
+            }
+
+            $routeParams = array_merge($this->currentRoute->getArguments(), $routeParams);
         }
 
-        if (null === $route_name && $route instanceof RouteInterface) {
-            $route_name = $route->getName();
-        }
-
-        if (null === $route_name) {
+        if (null === $routeName) {
             throw new InvalidArgumentException(
                 'Cannot specify a null route name if no existing route is configured.'
             );
         }
 
-        if ($route instanceof RouteInterface) {
-            $route_params = array_merge($route->getArguments(), $route_params);
-        }
-
-        return $this->named($route_name, $route_params, $query_params, $absolute);
+        return $this->named($routeName, $routeParams, $queryParams, $absolute);
     }
 
     /**
      * @inheritDoc
      */
     public function named(
-        string $route_name,
-        array $route_params = [],
-        array $query_params = [],
+        string $routeName,
+        array $routeParams = [],
+        array $queryParams = [],
         bool $absolute = false
     ): UriInterface {
-        return self::resolveUri(
-            $this->getBaseUrl(),
-            $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params),
-            $absolute
-        );
+        $relativeUri = new Uri($this->routeParser->relativeUrlFor($routeName, $routeParams, $queryParams));
+
+        return ($absolute)
+            ? self::resolveUri($this->getBaseUrl(), $relativeUri, true)
+            : $relativeUri;
     }
 
     /**
@@ -177,10 +174,10 @@ final class Router implements RouterInterface
         // URI has an authority solely because of its port.
         if ($rel->getAuthority() !== '' && $rel->getHost() === '' && $rel->getPort()) {
             // Strip the authority from the URI, then reapply the port after the merge.
-            $original_port = $rel->getPort();
+            $originalPort = $rel->getPort();
 
-            $new_uri = UriResolver::resolve($base, $rel->withScheme('')->withHost('')->withPort(null));
-            return $new_uri->withPort($original_port);
+            $newUri = UriResolver::resolve($base, $rel->withScheme('')->withHost('')->withPort(null));
+            return $newUri->withPort($originalPort);
         }
 
         return UriResolver::resolve($base, $rel);

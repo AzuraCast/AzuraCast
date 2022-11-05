@@ -48,8 +48,8 @@ final class LoginTokenCommand extends CommandAbstract
             $loginToken = $this->loginTokenRepo->createToken($user);
 
             $url = $this->router->named(
-                route_name: 'account:recover',
-                route_params: ['token' => $loginToken],
+                routeName: 'account:recover',
+                routeParams: ['token' => $loginToken],
                 absolute: true
             );
 

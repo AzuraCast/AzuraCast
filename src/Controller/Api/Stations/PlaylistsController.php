@@ -270,23 +270,23 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 !$isInternal
             ),
             'reshuffle' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:reshuffle',
-                route_params: ['id' => $record->getId()],
+                routeName: 'api:stations:playlist:reshuffle',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
             'queue' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:queue',
-                route_params: ['id' => $record->getId()],
+                routeName: 'api:stations:playlist:queue',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
             'import' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:import',
-                route_params: ['id' => $record->getId()],
+                routeName: 'api:stations:playlist:import',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
             'clone' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:clone',
-                route_params: ['id' => $record->getId()],
+                routeName: 'api:stations:playlist:clone',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
             'self' => (string)$router->fromHere(
@@ -299,8 +299,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
         foreach (['pls', 'm3u'] as $format) {
             $return['links']['export'][$format] = (string)$router->fromHere(
-                route_name: 'api:stations:playlist:export',
-                route_params: ['id' => $record->getId(), 'format' => $format],
+                routeName: 'api:stations:playlist:export',
+                routeParams: ['id' => $record->getId(), 'format' => $format],
                 absolute: !$isInternal
             );
         }

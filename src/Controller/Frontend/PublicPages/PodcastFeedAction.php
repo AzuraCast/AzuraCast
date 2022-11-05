@@ -137,7 +137,7 @@ final class PodcastFeedAction
         $channelLink = $podcast->getLink();
         if (empty($channelLink)) {
             $channelLink = (string)$serverRequest->getRouter()->fromHere(
-                route_name: 'public:podcast:episodes',
+                routeName: 'public:podcast:episodes',
                 absolute: true
             );
         }
@@ -238,8 +238,8 @@ final class PodcastFeedAction
 
         if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
             $podcastArtworkSrc = (string)$this->router->fromHere(
-                route_name: 'api:stations:podcast:art',
-                route_params: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
+                routeName: 'api:stations:podcast:art',
+                routeParams: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
                 absolute: true
             );
         }
@@ -276,8 +276,8 @@ final class PodcastFeedAction
             $episodeLink = $episode->getLink();
             if (empty($episodeLink)) {
                 $episodeLink = (string)$this->router->fromHere(
-                    route_name: 'public:podcast:episode',
-                    route_params: ['episode_id' => $episode->getId()],
+                    routeName: 'public:podcast:episode',
+                    routeParams: ['episode_id' => $episode->getId()],
                     absolute: true
                 );
             }
@@ -319,8 +319,8 @@ final class PodcastFeedAction
         $rssEnclosure = new RssEnclosure();
 
         $podcastMediaPlayUrl = (string)$this->router->fromHere(
-            route_name: 'api:stations:podcast:episode:download',
-            route_params: ['episode_id' => $episode->getId()],
+            routeName: 'api:stations:podcast:episode:download',
+            routeParams: ['episode_id' => $episode->getId()],
             absolute: true
         );
 
@@ -346,8 +346,8 @@ final class PodcastFeedAction
 
         if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
             $episodeArtworkSrc = (string)$this->router->fromHere(
-                route_name: 'api:stations:podcast:episode:art',
-                route_params: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
+                routeName: 'api:stations:podcast:episode:art',
+                routeParams: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
                 absolute: true
             );
         }

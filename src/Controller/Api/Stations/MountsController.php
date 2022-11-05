@@ -201,8 +201,8 @@ final class MountsController extends AbstractStationApiCrudController
         $frontend = $this->adapters->getFrontendAdapter($station);
 
         $return['links']['intro'] = (string)$router->fromHere(
-            route_name: 'api:stations:mounts:intro',
-            route_params: ['id' => $record->getId()],
+            routeName: 'api:stations:mounts:intro',
+            routeParams: ['id' => $record->getId()],
             absolute: true
         );
 

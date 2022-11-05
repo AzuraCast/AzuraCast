@@ -69,8 +69,8 @@ final class SongApiGenerator
             }
 
             return $this->router->named(
-                route_name: 'api:stations:media:art',
-                route_params: [
+                routeName: 'api:stations:media:art',
+                routeParams: [
                     'station_id' => $station->getId(),
                     'media_id' => $mediaId,
                 ]
@@ -88,8 +88,8 @@ final class SongApiGenerator
             $currentStreamer = $station->getCurrentStreamer();
             if (null !== $currentStreamer && 0 !== $currentStreamer->getArtUpdatedAt()) {
                 return $this->router->named(
-                    route_name: 'api:stations:streamer:art',
-                    route_params: [
+                    routeName: 'api:stations:streamer:art',
+                    routeParams: [
                         'station_id' => $station->getIdRequired(),
                         'id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
                     ],

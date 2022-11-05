@@ -198,8 +198,8 @@ final class RemotesController extends AbstractStationApiCrudController
 
         $return->links = [
             'self' => (string)$router->fromHere(
-                route_name: $this->resourceRouteName,
-                route_params: ['id' => $record->getIdRequired()],
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
         ];

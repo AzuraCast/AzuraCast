@@ -154,6 +154,11 @@ class User implements Stringable, IdentifiableEntityInterface
         return $this->name;
     }
 
+    public function getDisplayName(): string
+    {
+        return $this->name ?? $this->email;
+    }
+
     public function setName(?string $name = null): void
     {
         $this->name = $this->truncateNullableString($name, 100);

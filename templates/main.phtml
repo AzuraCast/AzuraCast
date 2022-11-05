@@ -10,6 +10,7 @@
  * @var App\Version $version
  * @var App\Http\ServerRequest $request
  * @var App\Environment $environment
+ * @var App\Entity\User $user
  */
 
 $manual ??= false;
@@ -48,34 +49,39 @@ endif; ?>">
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
     <?php
     if (!empty($sidebar)): ?>
-        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__(
+        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
-        )?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
+        ) ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar"
+                data-toggle="navdrawer" data-type="permanent">
             <span class="navbar-toggler-icon"></span>
         </button>
     <?php
     endif; ?>
 
-    <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard')?>">
+    <a class="navbar-brand ml-0 mr-auto" href="<?= $router->named('dashboard') ?>">
         azura<strong>cast</strong> <?php
         if (!empty($customization->getInstanceName())): ?>
-            <small><?=$this->e($customization->getInstanceName())?></small><?php
+            <small><?= $this->e($customization->getInstanceName()) ?></small><?php
         endif; ?>
     </a>
 
     <div id="radio-player-controls"></div>
 
-    <div class="dropdown ml-3">
-        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__(
+    <div class="dropdown ml-3 d-inline-flex align-items-center">
+        <div class="mr-2">
+            <?= $user->getDisplayName() ?>
+        </div>
+
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?= __(
             'Toggle Menu'
-        )?>" data-toggle="dropdown" type="button">
-            <i class="material-icons" aria-hidden="true">more_vert</i>
+        ) ?>" data-toggle="dropdown" type="button">
+            <i class="material-icons" aria-hidden="true">menu_open</i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             <li>
-                <a class="dropdown-item" href="<?=$router->named('dashboard')?>">
+                <a class="dropdown-item" href="<?= $router->named('dashboard') ?>">
                     <i class="material-icons" aria-hidden="true">home</i>
-                    <?=__('Dashboard')?>
+                    <?= __('Dashboard') ?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>

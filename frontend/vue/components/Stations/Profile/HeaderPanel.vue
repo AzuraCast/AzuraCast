@@ -1,5 +1,5 @@
 <template>
-    <div class="outside-card-header d-flex align-items-center mb-1">
+    <div class="outside-card-header d-flex align-items-center mb-3">
         <div class="flex-shrink-0 mr-3" v-if="np.station.listen_url">
             <play-button icon-class="outlined xl" :url="np.station.listen_url" is-stream></play-button>
         </div>

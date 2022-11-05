@@ -11,15 +11,14 @@ use Countable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Generator;
 use IteratorAggregate;
-use loophp\collection\Collection as loophpCollection;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Doctrine\Collections\CollectionAdapter;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Traversable;
 
 /**
  * @template TKey of array-key
@@ -120,9 +119,16 @@ final class Paginator implements IteratorAggregate, Countable
         $this->isDisabled = $isDisabled;
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): Generator
     {
-        return $this->paginator->getIterator();
+        $iterator = $this->paginator->getIterator();
+        if ($this->postprocessor) {
+            foreach ($iterator as $row) {
+                yield ($this->postprocessor)($row, $this);
+            }
+        } else {
+            yield from $iterator;
+        }
     }
 
     public function count(): int
@@ -144,12 +150,7 @@ final class Paginator implements IteratorAggregate, Countable
 
         $totalPages = $this->paginator->getNbPages();
 
-        $collection = loophpCollection::fromIterable($this->getIterator());
-        if ($this->postprocessor) {
-            $collection = $collection->map($this->postprocessor);
-        }
-
-        $results = $collection->all();
+        $results = iterator_to_array($this->getIterator(), false);
 
         if ($this->isDisabled) {
             return $response->withJson($results);

@@ -180,17 +180,17 @@
       "@dev-test"
     ],
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
-    "codeception-no-coverage": "codecept run --no-interaction",
-    "dev-test": [
+    "codeception-no-coverage" : "codecept run --no-interaction",
+    "dev-test" : [
       "@phplint",
       "@phpstan",
       "@phpcs",
       "@codeception-no-coverage"
     ],
-    "phpcbf": "phpcbf",
-    "phpcs": "phpcs",
-    "phplint": "parallel-lint . --exclude vendor",
-    "phpstan": "phpstan analyze --memory-limit=-1",
-    "shell": "psysh"
+    "phpcbf" : "phpcbf",
+    "phpcs" : "phpcs",
+    "phplint" : "parallel-lint . --exclude vendor",
+    "phpstan" : "phpstan analyze --xdebug --memory-limit=-1",
+    "shell" : "psysh"
   }
 }

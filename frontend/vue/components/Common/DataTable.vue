@@ -236,7 +236,7 @@ export default {
             flushCache: false
         };
     },
-    mounted() {
+    created() {
         this.loadStoredSettings();
     },
     computed: {
@@ -315,7 +315,7 @@ export default {
             }
 
             return (ctx, callback) => {
-                this.loadItems(ctx, callback);
+                return this.loadItems(ctx, callback);
             }
         }
     },
@@ -427,8 +427,7 @@ export default {
                 requestConfig = this.requestConfig(requestConfig);
             }
 
-            this.axios.get(ctx.apiUrl, requestConfig).then((resp) => {
-                this.flushCache = false;
+            return this.axios.get(ctx.apiUrl, requestConfig).then((resp) => {
                 this.totalRows = resp.data.total;
 
                 let rows = resp.data.rows;
@@ -436,13 +435,14 @@ export default {
                     rows = this.requestProcess(rows);
                 }
 
-                callback(rows);
+                return rows;
             }).catch((err) => {
-                this.flushCache = false;
                 this.totalRows = 0;
 
                 console.error(err.response.data.message);
-                callback([]);
+                return [];
+            }).finally(() => {
+                this.flushCache = false;
             });
         },
         onRowSelected(items) {

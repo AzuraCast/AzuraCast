@@ -1,0 +1,6 @@
+.material-icons {
+  &.xl {
+    @include reset-material-icons($material-icon-size * 2);
+    line-height: 0.5em;
+  }
+}

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <profile-header v-bind="$props"></profile-header>
+        <profile-header v-bind="$props" :np="np"></profile-header>
 
         <div class="row" id="profile">
             <div class="col-lg-7">

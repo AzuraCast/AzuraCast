@@ -20,6 +20,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed several issues contributing to slow load times on media manager pages.
+
 - Fixed a bug where if a station only had "Allowed IPs", it wouldn't be enforced.
 
 - Fixed changing the station's URL stub (short name) not prompting the user to reload the station configuration.

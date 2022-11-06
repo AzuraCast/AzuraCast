@@ -189,7 +189,7 @@ final class CheckMediaTask extends AbstractTask
 
         /** @var FileAttributes $file */
         foreach ($fsIterator as $file) {
-            $basename = basename($file->path());
+            $basename = basename($file->path(), '.jpg');
 
             if (!isset($coverFiles[$basename])) {
                 $fs->delete($file->path());

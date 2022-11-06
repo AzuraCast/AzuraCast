@@ -7,7 +7,6 @@ namespace App\Nginx;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
-use loophp\collection\Collection;
 use NowPlaying\Result\Client;
 use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
@@ -46,13 +45,6 @@ final class HlsListeners
             return $np;
         }
 
-        $logs = Collection::fromFile($hlsLogFile);
-        if (is_file($hlsLogBackup) && filemtime($hlsLogBackup) >= $timestamp) {
-            $logs = $logs->merge(
-                Collection::fromFile($hlsLogBackup)
-            );
-        }
-
         $streamsByName = [];
         $clientsByStream = [];
         foreach ($hlsStreams as $hlsStream) {
@@ -60,19 +52,24 @@ final class HlsListeners
             $clientsByStream[$hlsStream->getName()] = 0;
         }
 
-        $logs = $logs
-            ->lines()
-            ->reverse()
-            ->map(fn($row) => $this->parseRow($row, $timestamp)) // @phpstan-ignore-line
-            ->filter();
-
         $allClients = [];
         $i = 1;
 
-        /** @var Client $client */
-        foreach ($logs as $client) {
+        $logContents = file($hlsLogFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+        if (is_file($hlsLogBackup) && filemtime($hlsLogBackup) >= $timestamp) {
+            $logContents = array_merge(
+                $logContents,
+                file($hlsLogBackup, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []
+            );
+        }
+
+        $logContents = array_reverse($logContents);
+
+        foreach ($logContents as $logRow) {
+            $client = $this->parseRow($logRow, $timestamp);
             if (
-                isset($clientsByStream[$client->mount])
+                null !== $client
+                && isset($clientsByStream[$client->mount])
                 && !isset($allClients[$client->uid])
             ) {
                 $clientsByStream[$client->mount]++;

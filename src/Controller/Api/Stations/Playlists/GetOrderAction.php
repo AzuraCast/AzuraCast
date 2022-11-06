@@ -54,7 +54,7 @@ final class GetOrderAction
             array_map(
                 static function (array $row) use ($router, $station): array {
                     $row['media']['links'] = [
-                        'play' => (string)$router->named(
+                        'play' => $router->named(
                             'api:stations:files:play',
                             ['station_id' => $station->getIdRequired(), 'id' => $row['media']['unique_id']],
                             [],

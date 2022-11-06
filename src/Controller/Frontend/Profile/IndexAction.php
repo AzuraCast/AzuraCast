@@ -28,10 +28,10 @@ final class IndexAction
             id: 'account',
             title: __('My Account'),
             props: [
-                'userUrl' => (string)$router->named('api:frontend:account:me'),
-                'changePasswordUrl' => (string)$router->named('api:frontend:account:password'),
-                'twoFactorUrl' => (string)$router->named('api:frontend:account:two-factor'),
-                'apiKeysApiUrl' => (string)$router->named('api:frontend:api-keys'),
+                'userUrl' => $router->named('api:frontend:account:me'),
+                'changePasswordUrl' => $router->named('api:frontend:account:password'),
+                'twoFactorUrl' => $router->named('api:frontend:account:two-factor'),
+                'apiKeysApiUrl' => $router->named('api:frontend:api-keys'),
                 'supportedLocales' => $supportedLocales,
             ]
         );

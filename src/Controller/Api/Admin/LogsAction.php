@@ -35,7 +35,7 @@ final class LogsAction
                         function (string $key, array $row) use ($router) {
                             $row['key'] = $key;
                             $row['links'] = [
-                                'self' => (string)$router->named(
+                                'self' => $router->named(
                                     'api:admin:log',
                                     [
                                         'log' => $key,

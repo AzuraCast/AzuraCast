@@ -23,7 +23,7 @@ final class LogsAction
             id: 'stations-help',
             title: __('Help'),
             props: [
-                'logsUrl' => (string)$router->fromHere('api:stations:logs'),
+                'logsUrl' => $router->fromHere('api:stations:logs'),
             ],
         );
     }

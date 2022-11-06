@@ -17,6 +17,6 @@ final class LogoutAction
         $auth = $request->getAuth();
         $auth->logout();
 
-        return $response->withRedirect((string)$request->getRouter()->named('account:login'));
+        return $response->withRedirect($request->getRouter()->named('account:login'));
     }
 }

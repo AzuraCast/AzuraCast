@@ -36,7 +36,7 @@ final class TwoFactorAction
                     return $response->withRedirect($referrer);
                 }
 
-                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+                return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
             $flash->addMessage(

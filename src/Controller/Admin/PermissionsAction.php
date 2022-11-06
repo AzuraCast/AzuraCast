@@ -30,7 +30,7 @@ final class PermissionsAction
             id: 'admin-permissions',
             title: __('Roles & Permissions'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:admin:roles'),
+                'listUrl' => $router->fromHere('api:admin:roles'),
                 'stations' => $this->stationRepo->fetchSelect(),
                 'globalPermissions' => $actions['global'],
                 'stationPermissions' => $actions['station'],

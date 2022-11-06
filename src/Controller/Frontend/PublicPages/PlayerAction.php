@@ -63,7 +63,7 @@ final class PlayerAction
             $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
         } else {
             $props['useNchan'] = false;
-            $props['nowPlayingUri'] = (string)$router->named(
+            $props['nowPlayingUri'] = $router->named(
                 'api:nowplaying:index',
                 ['station_id' => $station->getId()]
             );
@@ -92,11 +92,11 @@ final class PlayerAction
         // Render full page player.
         $props['stationName'] = $station->getName();
         $props['enableRequests'] = $station->getEnableRequests();
-        $props['downloadPlaylistUri'] = (string)$router->named(
+        $props['downloadPlaylistUri'] = $router->named(
             'public:playlist',
             ['station_id' => $station->getShortName(), 'format' => 'pls']
         );
-        $props['requestListUri'] = (string)$router->named(
+        $props['requestListUri'] = $router->named(
             'api:requests:list',
             ['station_id' => $station->getId()]
         );

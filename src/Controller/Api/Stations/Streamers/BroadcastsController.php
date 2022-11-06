@@ -91,13 +91,13 @@ final class BroadcastsController extends AbstractApiCrudController
                         'path' => $recordingPath,
                         'size' => $fsRecordings->fileSize($recordingPath),
                         'links' => [
-                            'download' => (string)$router->fromHere(
+                            'download' => $router->fromHere(
                                 'api:stations:streamer:broadcast:download',
                                 $routeParams,
                                 [],
                                 true
                             ),
-                            'delete' => (string)$router->fromHere(
+                            'delete' => $router->fromHere(
                                 'api:stations:streamer:broadcast:delete',
                                 $routeParams,
                                 [],

@@ -19,13 +19,18 @@ interface RouterInterface
 
     /**
      * Simpler format for calling "named" routes with parameters.
-     *
-     * @param string $routeName
-     * @param array $routeParams
-     * @param array $queryParams
-     * @param boolean $absolute Whether to include the full URL.
      */
     public function named(
+        string $routeName,
+        array $routeParams = [],
+        array $queryParams = [],
+        bool $absolute = false
+    ): string;
+
+    /**
+     * Same as above, but returning a UriInterface.
+     */
+    public function namedAsUri(
         string $routeName,
         array $routeParams = [],
         array $queryParams = [],
@@ -34,13 +39,18 @@ interface RouterInterface
 
     /**
      * Return a named route based on the current page and its route arguments.
-     *
-     * @param string|null $routeName
-     * @param array $routeParams
-     * @param array $queryParams
-     * @param bool $absolute
      */
     public function fromHere(
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
+        bool $absolute = false
+    ): string;
+
+    /**
+     * Same as above, but returns a UriInterface.
+     */
+    public function fromHereAsUri(
         ?string $routeName = null,
         array $routeParams = [],
         array $queryParams = [],
@@ -49,13 +59,18 @@ interface RouterInterface
 
     /**
      * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
-     *
-     * @param string|null $routeName
-     * @param array $routeParams
-     * @param array $queryParams
-     * @param bool $absolute
      */
     public function fromHereWithQuery(
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
+        bool $absolute = false
+    ): string;
+
+    /**
+     * Same as above, but returns a UriInterface.
+     */
+    public function fromHereWithQueryAsUri(
         ?string $routeName = null,
         array $routeParams = [],
         array $queryParams = [],

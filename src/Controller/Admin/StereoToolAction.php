@@ -22,7 +22,7 @@ final class StereoToolAction
             id: 'admin-stereo-tool',
             title: __('Install Stereo Tool'),
             props: [
-                'apiUrl' => (string)$router->named('api:admin:stereo_tool'),
+                'apiUrl' => $router->named('api:admin:stereo_tool'),
             ],
         );
     }

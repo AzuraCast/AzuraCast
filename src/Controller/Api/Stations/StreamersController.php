@@ -260,7 +260,7 @@ final class StreamersController extends AbstractScheduledEntityController
                     'title' => $streamer->getDisplayName(),
                     'start' => $start->toIso8601String(),
                     'end' => $end->toIso8601String(),
-                    'edit_url' => (string)$request->getRouter()->named(
+                    'edit_url' => $request->getRouter()->named(
                         'api:stations:streamer',
                         ['station_id' => $station->getId(), 'id' => $streamer->getId()]
                     ),
@@ -283,18 +283,18 @@ final class StreamersController extends AbstractScheduledEntityController
         $isInternal = ('true' === $request->getParam('internal', 'false'));
 
         $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
-        $return['art'] = (string)$router->fromHere(
+        $return['art'] = $router->fromHere(
             routeName: 'api:stations:streamer:art',
             routeParams: ['id' => $record->getIdRequired() . '|' . $record->getArtUpdatedAt()],
             absolute: !$isInternal
         );
 
-        $return['links']['broadcasts'] = (string)$router->fromHere(
+        $return['links']['broadcasts'] = $router->fromHere(
             routeName: 'api:stations:streamer:broadcasts',
             routeParams: ['id' => $record->getId()],
             absolute: !$isInternal
         );
-        $return['links']['art'] = (string)$router->fromHere(
+        $return['links']['art'] = $router->fromHere(
             routeName: 'api:stations:streamer:art-internal',
             routeParams: ['id' => $record->getId()],
             absolute: !$isInternal

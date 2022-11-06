@@ -136,7 +136,7 @@ final class PodcastFeedAction
 
         $channelLink = $podcast->getLink();
         if (empty($channelLink)) {
-            $channelLink = (string)$serverRequest->getRouter()->fromHere(
+            $channelLink = $serverRequest->getRouter()->fromHere(
                 routeName: 'public:podcast:episodes',
                 absolute: true
             );
@@ -237,7 +237,7 @@ final class PodcastFeedAction
         );
 
         if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
-            $podcastArtworkSrc = (string)$this->router->fromHere(
+            $podcastArtworkSrc = $this->router->fromHere(
                 routeName: 'api:stations:podcast:art',
                 routeParams: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
                 absolute: true
@@ -275,7 +275,7 @@ final class PodcastFeedAction
 
             $episodeLink = $episode->getLink();
             if (empty($episodeLink)) {
-                $episodeLink = (string)$this->router->fromHere(
+                $episodeLink = $this->router->fromHere(
                     routeName: 'public:podcast:episode',
                     routeParams: ['episode_id' => $episode->getId()],
                     absolute: true
@@ -318,7 +318,7 @@ final class PodcastFeedAction
     ): RssEnclosure {
         $rssEnclosure = new RssEnclosure();
 
-        $podcastMediaPlayUrl = (string)$this->router->fromHere(
+        $podcastMediaPlayUrl = $this->router->fromHere(
             routeName: 'api:stations:podcast:episode:download',
             routeParams: ['episode_id' => $episode->getId()],
             absolute: true
@@ -345,7 +345,7 @@ final class PodcastFeedAction
         );
 
         if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
-            $episodeArtworkSrc = (string)$this->router->fromHere(
+            $episodeArtworkSrc = $this->router->fromHere(
                 routeName: 'api:stations:podcast:episode:art',
                 routeParams: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
                 absolute: true

@@ -42,7 +42,7 @@ final class ScheduleAction
                 'hide_footer' => true,
             ],
             props: [
-                'scheduleUrl' => (string)$router->named('api:stations:schedule', [
+                'scheduleUrl' => $router->named('api:stations:schedule', [
                     'station_id' => $station->getId(),
                 ]),
                 'stationName' => $station->getName(),

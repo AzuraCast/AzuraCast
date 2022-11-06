@@ -49,12 +49,12 @@ final class StationsAction
             $row->fromParentObject($np);
 
             $row->links = [
-                'public' => (string)$router->named('public:index', ['station_id' => $station->getShortName()]),
-                'manage' => (string)$router->named('stations:index:index', ['station_id' => $station->getId()]),
+                'public' => $router->named('public:index', ['station_id' => $station->getShortName()]),
+                'manage' => $router->named('stations:index:index', ['station_id' => $station->getId()]),
             ];
 
             if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $station->getId())) {
-                $row->links['listeners'] = (string)$router->named(
+                $row->links['listeners'] = $router->named(
                     'stations:reports:listeners',
                     ['station_id' => $station->getId()]
                 );

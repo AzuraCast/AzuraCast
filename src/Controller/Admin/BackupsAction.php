@@ -30,9 +30,9 @@ final class BackupsAction
             id: 'admin-backups',
             title: __('Backups'),
             props: [
-                'listUrl' => (string)$router->named('api:admin:backups'),
-                'runBackupUrl' => (string)$router->named('api:admin:backups:run'),
-                'settingsUrl' => (string)$router->named('api:admin:settings', [
+                'listUrl' => $router->named('api:admin:backups'),
+                'runBackupUrl' => $router->named('api:admin:backups:run'),
+                'settingsUrl' => $router->named('api:admin:settings', [
                     'group' => Entity\Settings::GROUP_BACKUP,
                 ]),
                 'isDocker' => $this->environment->isDocker(),

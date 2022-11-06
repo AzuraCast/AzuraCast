@@ -189,7 +189,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $response = $sessionPersistence->persistSession($session, $response);
 
             /** @var Response $response */
-            return $response->withRedirect((string)$this->router->named('account:login'));
+            return $response->withRedirect($this->router->named('account:login'));
         }
 
         if ($this->exception instanceof PermissionDeniedException) {
@@ -219,7 +219,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
             // Bounce back to homepage for permission-denied users.
             /** @var Response $response */
-            return $response->withRedirect((string)$this->router->named('home'));
+            return $response->withRedirect($this->router->named('home'));
         }
 
         /** @var Response $response */

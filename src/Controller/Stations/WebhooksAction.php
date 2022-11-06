@@ -35,7 +35,7 @@ final class WebhooksAction
             id: 'station-webhooks',
             title: __('Web Hooks'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:webhooks'),
+                'listUrl' => $router->fromHere('api:stations:webhooks'),
                 'webhookTypes' => $webhookConfig['webhooks'],
                 'webhookTriggers' => $webhookConfig['triggers'],
                 'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),

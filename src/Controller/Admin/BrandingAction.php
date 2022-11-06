@@ -24,16 +24,16 @@ final class BrandingAction
             id: 'admin-branding',
             title: __('Custom Branding'),
             props: [
-                'settingsApiUrl' => (string)$router->named('api:admin:settings', [
+                'settingsApiUrl' => $router->named('api:admin:settings', [
                     'group' => Settings::GROUP_BRANDING,
                 ]),
-                'browserIconApiUrl' => (string)$router->named('api:admin:custom_assets', [
+                'browserIconApiUrl' => $router->named('api:admin:custom_assets', [
                     'type' => AssetTypes::BrowserIcon->value,
                 ]),
-                'backgroundApiUrl' => (string)$router->named('api:admin:custom_assets', [
+                'backgroundApiUrl' => $router->named('api:admin:custom_assets', [
                     'type' => AssetTypes::Background->value,
                 ]),
-                'albumArtApiUrl' => (string)$router->named('api:admin:custom_assets', [
+                'albumArtApiUrl' => $router->named('api:admin:custom_assets', [
                     'type' => AssetTypes::AlbumArt->value,
                 ]),
             ],

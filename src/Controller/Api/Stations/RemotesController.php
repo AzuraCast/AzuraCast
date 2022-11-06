@@ -197,7 +197,7 @@ final class RemotesController extends AbstractStationApiCrudController
         $return->is_editable = $record->isEditable();
 
         $return->links = [
-            'self' => (string)$router->fromHere(
+            'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
                 routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal

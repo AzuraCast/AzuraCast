@@ -34,7 +34,7 @@ final class GenerateCertificateAction
             [
                 'success' => true,
                 'links' => [
-                    'log' => (string)$router->fromHere('api:admin:acme-log', [
+                    'log' => $router->fromHere('api:admin:acme-log', [
                         'path' => basename($tempFile),
                     ]),
                 ],

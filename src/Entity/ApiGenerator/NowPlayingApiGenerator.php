@@ -118,7 +118,7 @@ final class NowPlayingApiGenerator
             $live->broadcast_start = $broadcastStart;
 
             if (0 !== $currentStreamer->getArtUpdatedAt()) {
-                $live->art = $this->router->named(
+                $live->art = $this->router->namedAsUri(
                     routeName: 'api:stations:streamer:art',
                     routeParams: [
                         'station_id' => $station->getIdRequired(),

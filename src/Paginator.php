@@ -157,21 +157,21 @@ final class Paginator implements IteratorAggregate, Countable
         }
 
         $pageLinks = [];
-        $pageLinks['first'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => 1]);
+        $pageLinks['first'] = $this->router->fromHereWithQuery(null, [], ['page' => 1]);
 
         $prevPage = $this->paginator->hasPreviousPage()
             ? $this->paginator->getPreviousPage()
             : 1;
 
-        $pageLinks['previous'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
+        $pageLinks['previous'] = $this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
 
         $nextPage = $this->paginator->hasNextPage()
             ? $this->paginator->getNextPage()
             : $this->paginator->getNbPages();
 
-        $pageLinks['next'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
+        $pageLinks['next'] = $this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
 
-        $pageLinks['last'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
+        $pageLinks['last'] = $this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
 
         return $response->withJson(
             [

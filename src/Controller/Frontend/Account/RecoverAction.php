@@ -38,7 +38,7 @@ final class RecoverAction
                 Flash::ERROR
             );
 
-            return $response->withRedirect((string)$request->getRouter()->named('account:login'));
+            return $response->withRedirect($request->getRouter()->named('account:login'));
         }
 
         $csrf = $request->getCsrf();
@@ -73,7 +73,7 @@ final class RecoverAction
                     Flash::SUCCESS
                 );
 
-                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+                return $response->withRedirect($request->getRouter()->named('dashboard'));
             } catch (Throwable $e) {
                 $error = $e->getMessage();
             }

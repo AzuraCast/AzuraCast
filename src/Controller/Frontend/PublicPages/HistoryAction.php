@@ -52,7 +52,7 @@ final class HistoryAction
                 'useNchan' => $useNChan,
                 'nowPlayingUri' => $useNChan
                     ? '/api/live/nowplaying/' . urlencode($station->getShortName())
-                    : (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]),
+                    : $router->named('api:nowplaying:index', ['station_id' => $station->getId()]),
             ],
         );
     }

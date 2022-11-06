@@ -33,7 +33,7 @@ final class ServiceControlController
             $row['links'] = [];
 
             if ($canRestart) {
-                $row['links']['restart'] = (string)$router->fromHere(
+                $row['links']['restart'] = $router->fromHere(
                     'api:admin:services:restart',
                     ['service' => $service->name]
                 );

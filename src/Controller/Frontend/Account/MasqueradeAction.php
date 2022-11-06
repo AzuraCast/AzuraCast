@@ -42,6 +42,6 @@ final class MasqueradeAction
             Flash::SUCCESS
         );
 
-        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 }

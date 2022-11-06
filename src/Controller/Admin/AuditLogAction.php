@@ -22,7 +22,7 @@ final class AuditLogAction
             id: 'admin-audit-log',
             title: __('Audit Log'),
             props: [
-                'baseApiUrl' => (string)$router->fromHere('api:admin:auditlog'),
+                'baseApiUrl' => $router->fromHere('api:admin:auditlog'),
             ]
         );
     }

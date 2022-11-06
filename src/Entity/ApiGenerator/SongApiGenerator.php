@@ -68,7 +68,7 @@ final class SongApiGenerator
                 $mediaId .= '-' . $mediaUpdatedTimestamp;
             }
 
-            return $this->router->named(
+            return $this->router->namedAsUri(
                 routeName: 'api:stations:media:art',
                 routeParams: [
                     'station_id' => $station->getId(),
@@ -87,7 +87,7 @@ final class SongApiGenerator
         if ($isNowPlaying && null !== $station) {
             $currentStreamer = $station->getCurrentStreamer();
             if (null !== $currentStreamer && 0 !== $currentStreamer->getArtUpdatedAt()) {
-                return $this->router->named(
+                return $this->router->namedAsUri(
                     routeName: 'api:stations:streamer:art',
                     routeParams: [
                         'station_id' => $station->getIdRequired(),

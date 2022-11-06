@@ -23,7 +23,7 @@ final class IndexAction
         // Redirect to complete setup, if it hasn't been completed yet.
         $settings = $this->settingsRepo->readSettings();
         if (!$settings->isSetupComplete()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+            return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
 
         // Redirect to login screen if the user isn't logged in.
@@ -36,10 +36,10 @@ final class IndexAction
                 return $response->withRedirect((string)$homepageRedirect, 302);
             }
 
-            return $response->withRedirect((string)$request->getRouter()->named('account:login'));
+            return $response->withRedirect($request->getRouter()->named('account:login'));
         }
 
         // Redirect to dashboard if no other custom redirection rules exist.
-        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 }

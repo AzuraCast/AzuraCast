@@ -124,7 +124,7 @@ final class RequestsController
                 $row = new Entity\Api\StationRequest();
                 $row->song = ($this->songApiGenerator)($media_row, $station, $baseUrl);
                 $row->request_id = $media_row->getUniqueId();
-                $row->request_url = (string)$router->named(
+                $row->request_url = $router->named(
                     'api:requests:submit',
                     [
                         'station_id' => $station->getId(),

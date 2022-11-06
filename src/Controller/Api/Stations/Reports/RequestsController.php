@@ -51,7 +51,7 @@ final class RequestsController
             $row['links'] = [];
 
             if (0 === $row['played_at']) {
-                $row['links']['delete'] = (string)$router->fromHere(
+                $row['links']['delete'] = $router->fromHere(
                     'api:stations:reports:requests:delete',
                     ['request_id' => $row['id']]
                 );

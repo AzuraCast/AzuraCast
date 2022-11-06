@@ -29,11 +29,11 @@ final class SettingsAction
             id: 'admin-settings',
             title: __('System Settings'),
             props: [
-                'apiUrl' => (string)$router->named('api:admin:settings', [
+                'apiUrl' => $router->named('api:admin:settings', [
                     'group' => Settings::GROUP_GENERAL,
                 ]),
-                'testMessageUrl' => (string)$router->named('api:admin:send-test-message'),
-                'acmeUrl' => (string)$router->named('api:admin:acme'),
+                'testMessageUrl' => $router->named('api:admin:send-test-message'),
+                'acmeUrl' => $router->named('api:admin:acme'),
                 'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
             ],
         );

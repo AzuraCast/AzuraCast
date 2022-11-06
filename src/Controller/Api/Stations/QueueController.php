@@ -150,7 +150,12 @@ final class QueueController extends AbstractStationApiCrudController
         $apiResponse->log = $this->queue->getQueueRowLog($record);
 
         $apiResponse->links = [
-            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
+            'self' => $router->fromHere(
+                $this->resourceRouteName,
+                ['id' => $record->getId()],
+                [],
+                !$isInternal
+            ),
         ];
 
         return $apiResponse;

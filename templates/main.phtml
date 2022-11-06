@@ -96,38 +96,39 @@ endif; ?>">
             <?php
             endif; ?>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('profile:index')?>">
+                <a class="dropdown-item" href="<?= $router->named('profile:index') ?>">
                     <i class="material-icons" aria-hidden="true">account_circle</i>
-                    <?=__('My Account')?>
+                    <?= __('My Account') ?>
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('profile:theme')?>">
+                <a class="dropdown-item" href="<?= $router->named('profile:theme') ?>">
                     <i class="material-icons" aria-hidden="true">invert_colors</i>
-                    <?=__('Switch Theme')?>
+                    <?= __('Switch Theme') ?>
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="https://docs.azuracast.com/en/user-guide/troubleshooting" target="_blank">
+                <a class="dropdown-item" href="https://docs.azuracast.com/en/user-guide/troubleshooting"
+                   target="_blank">
                     <i class="material-icons" aria-hidden="true">help</i>
-                    <?=__('Help')?>
+                    <?= __('Help') ?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
             <?php
             if ($auth->isMasqueraded()): ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('account:endmasquerade')?>">
+                    <a class="dropdown-item" href="<?= $router->named('account:endmasquerade') ?>">
                         <i class="material-icons" aria-hidden="true">exit_to_app</i>
-                        <?=__('End Session')?>
+                        <?= __('End Session') ?>
                     </a>
                 </li>
             <?php
             else: ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('account:logout')?>">
+                    <a class="dropdown-item" href="<?= $router->named('account:logout') ?>">
                         <i class="material-icons" aria-hidden="true">exit_to_app</i>
-                        <?=__('Sign Out')?></a></li>
+                        <?= __('Sign Out') ?></a></li>
             <?php
             endif; ?>
         </ul>

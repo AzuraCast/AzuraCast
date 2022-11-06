@@ -22,8 +22,8 @@ final class HlsStreamsAction
             id: 'station-hls-streams',
             title: __('HLS Streams'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:hls_streams'),
-                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
+                'listUrl' => $router->fromHere('api:stations:hls_streams'),
+                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
             ],
         );
     }

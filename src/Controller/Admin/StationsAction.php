@@ -32,7 +32,7 @@ final class StationsAction
             props: array_merge(
                 $this->stationFormComponent->getProps($request),
                 [
-                    'listUrl' => (string)$router->fromHere('api:admin:stations'),
+                    'listUrl' => $router->fromHere('api:admin:stations'),
                     'frontendTypes' => $this->adapters->listFrontendAdapters(),
                     'backendTypes' => $this->adapters->listBackendAdapters(),
                 ]

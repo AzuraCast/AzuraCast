@@ -22,7 +22,7 @@ final class ApiKeysAction
             id: 'admin-api-keys',
             title: __('API Keys'),
             props: [
-                'apiUrl' => (string)$router->named('api:admin:api-keys'),
+                'apiUrl' => $router->named('api:admin:api-keys'),
             ],
         );
     }

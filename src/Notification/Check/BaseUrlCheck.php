@@ -59,7 +59,7 @@ final class BaseUrlCheck
             $notification->body = implode(' ', $notificationBodyParts);
             $notification->type = Flash::WARNING;
             $notification->actionLabel = __('System Settings');
-            $notification->actionUrl = (string)$router->named('admin:settings:index');
+            $notification->actionUrl = $router->named('admin:settings:index');
 
             $event->addNotification($notification);
         }

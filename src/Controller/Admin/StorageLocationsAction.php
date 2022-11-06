@@ -22,7 +22,7 @@ final class StorageLocationsAction
             id: 'admin-storage-locations',
             title: __('Storage Locations'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:admin:storage_locations'),
+                'listUrl' => $router->fromHere('api:admin:storage_locations'),
             ],
         );
     }

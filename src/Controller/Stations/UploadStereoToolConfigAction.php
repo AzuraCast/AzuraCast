@@ -24,9 +24,9 @@ final class UploadStereoToolConfigAction
             id: 'stations-stereo-tool-config',
             title: __('Upload Stereo Tool Configuration'),
             props: [
-                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
+                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
                 'recordHasStereoToolConfiguration' => !empty($backendConfig->getStereoToolConfigurationPath()),
-                'apiUrl' => (string)$router->fromHere('api:stations:stereo_tool_config'),
+                'apiUrl' => $router->fromHere('api:stations:stereo_tool_config'),
             ],
         );
     }

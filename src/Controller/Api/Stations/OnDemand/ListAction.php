@@ -135,7 +135,7 @@ final class ListAction
                     station: $station
                 );
                 $row->playlist = $playlist['name'];
-                $row->download_url = (string)$router->named(
+                $row->download_url = $router->named(
                     'api:stations:ondemand:download',
                     [
                         'station_id' => $station->getId(),

@@ -28,7 +28,7 @@ final class UsersAction
             id: 'admin-users',
             title: __('Users'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:admin:users'),
+                'listUrl' => $router->fromHere('api:admin:users'),
                 'roles' => $this->roleRepo->fetchSelect(),
             ]
         );

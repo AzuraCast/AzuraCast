@@ -35,7 +35,9 @@ final class StationFormComponent implements VueComponentInterface
             'isShoutcastInstalled' => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
             'isStereoToolInstalled' => StereoTool::isInstalled(),
             'countries' => Countries::getNames(),
-            'storageLocationApiUrl' => (string)$request->getRouter()->named('api:admin:stations:storage-locations'),
+            'storageLocationApiUrl' => $request->getRouter()->named(
+                'api:admin:stations:storage-locations'
+            ),
         ];
     }
 

@@ -40,7 +40,7 @@ final class ServiceCheck
                 $router = $request->getRouter();
 
                 $notification->actionLabel = __('Administration');
-                $notification->actionUrl = (string)$router->named('admin:index:index');
+                $notification->actionUrl = $router->named('admin:index:index');
                 // phpcs:enable
 
                 $event->addNotification($notification);

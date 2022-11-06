@@ -406,7 +406,7 @@ final class ListAction
                 $artMediaId .= '-' . $row->media->art_updated_at;
             }
 
-            $row->media->art = (string)$router->named(
+            $row->media->art = $router->named(
                 'api:stations:media:art',
                 [
                     'station_id' => $stationId,
@@ -415,21 +415,21 @@ final class ListAction
             );
 
             $row->media->links = [
-                'play' => (string)$router->named(
+                'play' => $router->named(
                     'api:stations:files:play',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                     [],
                     true
                 ),
-                'edit' => (string)$router->named(
+                'edit' => $router->named(
                     'api:stations:file',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                 ),
-                'art' => (string)$router->named(
+                'art' => $router->named(
                     'api:stations:media:art-internal',
                     ['station_id' => $stationId, 'media_id' => $row->media->media_id]
                 ),
-                'waveform' => (string)$router->named(
+                'waveform' => $router->named(
                     'api:stations:media:waveform',
                     [
                         'station_id' => $stationId,
@@ -440,12 +440,12 @@ final class ListAction
         }
 
         $row->links = [
-            'download' => (string)$router->named(
+            'download' => $router->named(
                 'api:stations:files:download',
                 ['station_id' => $stationId],
                 ['file' => $row->path]
             ),
-            'rename' => (string)$router->named(
+            'rename' => $router->named(
                 'api:stations:files:rename',
                 ['station_id' => $stationId],
                 ['file' => $row->path]

@@ -78,7 +78,7 @@ return static function (RouteCollectorProxy $group) {
                 '/relays',
                 function (ServerRequest $request, Response $response) {
                     return $response->withRedirect(
-                        (string)$request->getRouter()->fromHere('api:internal:relays')
+                        $request->getRouter()->fromHere('api:internal:relays')
                     );
                 }
             );

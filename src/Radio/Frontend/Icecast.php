@@ -9,7 +9,7 @@ use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
 use App\Utilities;
 use App\Xml\Writer;
-use Exception;
+use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
@@ -51,36 +51,47 @@ final class Icecast extends AbstractFrontend
 
         $npAdapter->setAdminPassword($feConfig->getAdminPassword());
 
-        $defaultResult = Result::blank();
-        $otherResults = [];
+        $mountPromises = [];
+        $defaultMountId = null;
 
         foreach ($station->getMounts() as $mount) {
-            try {
-                $result = $npAdapter->getNowPlaying($mount->getName(), $includeClients);
-
-                if (!empty($result->clients)) {
-                    foreach ($result->clients as $client) {
-                        $client->mount = 'local_' . $mount->getId();
-                    }
-                }
-            } catch (Exception $e) {
-                $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-
-                $result = Result::blank();
-            }
-
-            $mount->setListenersTotal($result->listeners->total);
-            $mount->setListenersUnique($result->listeners->unique ?? 0);
-            $this->em->persist($mount);
-
             if ($mount->getIsDefault()) {
-                $defaultResult = $result;
-            } else {
-                $otherResults[] = $result;
+                $defaultMountId = $mount->getIdRequired();
             }
+
+            $mountPromises[$mount->getIdRequired()] = $npAdapter->getNowPlayingAsync(
+                $mount->getName(),
+                $includeClients
+            )->then(
+                function (Result $result) use ($mount) {
+                    if (!empty($result->clients)) {
+                        foreach ($result->clients as $client) {
+                            $client->mount = 'local_' . $mount->getId();
+                        }
+                    }
+
+                    $mount->setListenersTotal($result->listeners->total);
+                    $mount->setListenersUnique($result->listeners->unique ?? 0);
+                    $this->em->persist($mount);
+
+                    return $result;
+                }
+            );
         }
 
+        $mountPromiseResults = Utils::settle($mountPromises)->wait();
+
         $this->em->flush();
+
+        $defaultResult = Result::blank();
+        $otherResults = [];
+        foreach ($mountPromiseResults as $mountId => $result) {
+            if ($mountId === $defaultMountId) {
+                $defaultResult = $result['value'] ?? Result::blank();
+            } else {
+                $otherResults[] = $result['value'] ?? Result::blank();
+            }
+        }
 
         foreach ($otherResults as $otherResult) {
             $defaultResult = $defaultResult->merge($otherResult);

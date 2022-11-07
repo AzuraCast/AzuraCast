@@ -292,7 +292,6 @@ export default {
                 files: [],
                 directories: []
             },
-
             currentDirectory: '',
             searchPhrase: null
         };
@@ -302,13 +301,19 @@ export default {
         let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
 
         if ('' !== urlHash) {
-            if (urlHash.substring(0, 9) === 'playlist:' || urlHash.substring(0, 8) === 'special:') {
-                window.location.hash = '';
-                this.filter(urlHash);
+            if (this.isFilterString(urlHash)) {
+                this.$nextTick(() => {
+                    this.onHashChange();
+                });
             } else {
                 this.currentDirectory = urlHash;
             }
         }
+
+        window.addEventListener('hashchange', this.onHashChange);
+    },
+    destroyed() {
+        window.removeEventListener('hashchange', this.onHashChange);
     },
     computed: {
         langAlbumArt() {
@@ -349,6 +354,18 @@ export default {
         },
         onAddPlaylist(row) {
             this.playlists.push(row);
+        },
+        onHashChange() {
+            // Handle links from the sidebar for special functions.
+            let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
+
+            if ('' !== urlHash && this.isFilterString(urlHash)) {
+                window.location.hash = '';
+                this.filter(urlHash);
+            }
+        },
+        isFilterString(str) {
+            return str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:';
         },
         playAudio(url) {
             this.$eventHub.$emit('player_toggle', url);

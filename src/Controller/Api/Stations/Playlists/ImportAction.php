@@ -16,6 +16,7 @@ use App\Radio\PlaylistParser;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Symfony\Component\Filesystem\Path;
 
 final class ImportAction
 {
@@ -76,14 +77,23 @@ final class ImportAction
 
             foreach ($media_info_raw as $row) {
                 $pathParts = explode('/', $row['path']);
+
                 $basename = File::sanitizeFileName(array_pop($pathParts));
+                $basenameWithoutExt = Path::getFilenameWithoutExtension($basename);
 
                 $path = (!empty($pathParts))
                     ? implode('/', $pathParts) . '/' . $basename
                     : $basename;
 
+                $pathWithoutExt = (!empty($pathParts))
+                    ? implode('/', $pathParts) . '/' . $basenameWithoutExt
+                    : $basenameWithoutExt;
+
                 $mediaLookup[$path] = $row['id'];
+                $mediaLookup[$pathWithoutExt] = $row['id'];
+
                 $basenameLookup[$basename] = $row['id'];
+                $basenameLookup[$basenameWithoutExt] = $row['id'];
             }
 
             // Run all paths against the lookup list of hashes.
@@ -95,8 +105,14 @@ final class ImportAction
 
                 // Work backwards from the basename to try to find matches.
                 $pathParts = explode('/', $path_raw);
+
                 $basename = File::sanitizeFileName(array_pop($pathParts));
+                $basenameWithoutExt = Path::getFilenameWithoutExtension($basename);
+
+                $pathPartsWithoutExt = $pathParts;
+
                 $pathParts[] = $basename;
+                $pathPartsWithoutExt[] = $basenameWithoutExt;
 
                 // Attempt full path matching if possible
                 if (count($pathParts) >= 2) {
@@ -105,12 +121,21 @@ final class ImportAction
                         if (isset($mediaLookup[$path])) {
                             return [$path, $mediaLookup[$path]];
                         }
+
+                        $pathWithoutExt = implode('/', array_slice($pathPartsWithoutExt, 0 - $i));
+                        if (isset($mediaLookup[$pathWithoutExt])) {
+                            return [$pathWithoutExt, $mediaLookup[$pathWithoutExt]];
+                        }
                     }
                 }
 
                 // Attempt basename-only matching
                 if (isset($basenameLookup[$basename])) {
                     return [$basename, $basenameLookup[$basename]];
+                }
+
+                if (isset($basenameLookup[$basenameWithoutExt])) {
+                    return [$basenameWithoutExt, $basenameLookup[$basenameWithoutExt]];
                 }
 
                 return [null, null];

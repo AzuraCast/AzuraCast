@@ -20,6 +20,7 @@ use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
 
 final class CheckMediaTask extends AbstractTask
@@ -189,7 +190,7 @@ final class CheckMediaTask extends AbstractTask
 
         /** @var FileAttributes $file */
         foreach ($fsIterator as $file) {
-            $basename = basename($file->path(), '.jpg');
+            $basename = Path::getFilenameWithoutExtension($file->path(), '.jpg');
 
             if (!isset($coverFiles[$basename])) {
                 $fs->delete($file->path());

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Event\Radio;
 
 use App\Entity\Station;
+use App\Entity\StationRemote;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Radio\Remote\AbstractRemote;
 use NowPlaying\Result\Result;
 use Symfony\Contracts\EventDispatcher\Event;
+use Traversable;
 
 final class GenerateRawNowPlaying extends Event
 {
@@ -31,16 +34,17 @@ final class GenerateRawNowPlaying extends Event
         return $this->adapters->getFrontendAdapter($this->station);
     }
 
-    public function getRemotes(): array
+    /**
+     * @return Traversable<StationRemote>
+     */
+    public function getRemotes(): Traversable
     {
-        $remotes = [];
-        foreach ($this->station->getRemotes() as $remote) {
-            $remotes[] = [
-                $remote,
-                $this->adapters->getRemoteAdapter($this->station, $remote),
-            ];
-        }
-        return $remotes;
+        return $this->station->getRemotes();
+    }
+
+    public function getRemoteAdapter(StationRemote $remote): AbstractRemote
+    {
+        return $this->adapters->getRemoteAdapter($this->station, $remote);
     }
 
     public function includeClients(): bool

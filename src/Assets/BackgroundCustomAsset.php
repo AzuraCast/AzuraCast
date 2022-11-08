@@ -80,9 +80,9 @@ final class BackgroundCustomAsset extends AbstractCustomAsset
                 $mtime = filemtime($path);
 
                 return Environment::getInstance()->getAssetUrl() . self::UPLOADS_URL_PREFIX . '/' . sprintf(
-                        $pattern,
-                        '.' . $mtime
-                    );
+                    $pattern,
+                    '.' . $mtime
+                );
             }
         }
 

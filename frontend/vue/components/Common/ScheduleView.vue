@@ -32,7 +32,18 @@ export default {
                 height: 'auto',
                 events: this.scheduleUrl,
                 eventClick: this.onEventClick,
-                eventDidMount: this.onEventDidMount
+                eventDidMount: this.onEventDidMount,
+                views: {
+                    timeGridWeek: {
+                        slotLabelFormat: {
+                            ...App.time_config,
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            omitZeroMinute: true,
+                            meridiem: 'short'
+                        }
+                    }
+                }
             }
         };
     },

@@ -95,7 +95,7 @@ $assets
                     <div class="buttons">
                         <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
                             'admin:debug:sync',
-                            ['task' => $task]
+                            ['task' => rawurlencode($task)]
                         ) ?>">
                             <?= __('Run Task') ?>
                         </a>

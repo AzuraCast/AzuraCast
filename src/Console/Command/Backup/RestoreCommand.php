@@ -120,6 +120,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
                     $io,
                     [
                         'unzip',
+                        '-o',
                         $path,
                     ],
                     '/'

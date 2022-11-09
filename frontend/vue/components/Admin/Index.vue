@@ -191,15 +191,15 @@
                         <b-row class="text-center" no-gutters>
                             <b-col>
                                 <h6>1-Min</h6>
-                                {{ stats.cpu.load[0] }}
+                                {{ stats.cpu.load[0].toFixed(2) }}
                             </b-col>
                             <b-col>
                                 <h6>5-Min</h6>
-                                {{ stats.cpu.load[1] }}
+                                {{ stats.cpu.load[1].toFixed(2) }}
                             </b-col>
                             <b-col>
                                 <h6>15-Min</h6>
-                                {{ stats.cpu.load[2] }}
+                                {{ stats.cpu.load[2].toFixed(2) }}
                             </b-col>
                         </b-row>
                     </b-card-footer>
@@ -223,7 +223,7 @@
                             <col style="width: 20%;">
                         </colgroup>
                         <tbody>
-                        <tr class="align-middle" v-for="service in services">
+                        <tr class="align-middle" v-for="service in services" :key="service.name">
                             <td class="text-center pr-2">
                                 <template v-if="service.running">
                                     <b-badge pill variant="success" :title="langServiceRunning">

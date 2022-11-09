@@ -7,24 +7,23 @@
 
             <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
                         :fields="fields" :api-url="listUrl">
-                <template #cell(recording_links_download)="row">
-                    <template v-if="row.item.recording_links_download">
+                <template #cell(recording.links.download)="row">
+                    <template v-if="row.item.recording.links.download">
                         <play-button class="file-icon" icon-class="outlined"
-                                     :url="row.item.recording_links_download"></play-button>
+                                     :url="row.item.recording.links.download"></play-button>
                         &nbsp;
-                        <a class="name" :href="row.item.recording_links_download" target="_blank" :title="langDownload">
+                        <a class="name" :href="row.item.recording.links.download" target="_blank" :title="langDownload">
                             <icon icon="cloud_download"></icon>
                         </a>
                     </template>
                     <template v-else>&nbsp;</template>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button-group size="sm" v-if="row.item.recording_links_download">
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.recording_links_delete)">
+                    <b-button-group size="sm">
+                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
                             <translate key="lang_btn_delete">Delete</translate>
                         </b-button>
                     </b-button-group>
-                    <template v-else>&nbsp;</template>
                 </template>
             </data-table>
         </template>
@@ -52,9 +51,10 @@ export default {
             listUrl: null,
             fields: [
                 {
-                    key: 'recording_links_download',
+                    key: 'recording.links.download',
                     label: ' ',
-                    sortable: false
+                    sortable: false,
+                    class: 'shrink pr-3'
                 },
                 {
                     key: 'timestampStart',
@@ -64,7 +64,8 @@ export default {
                         return DateTime.fromSeconds(value).toLocaleString(
                             {...DateTime.DATETIME_MED, ...App.time_config}
                         );
-                    }
+                    },
+                    class: 'pl-3'
                 },
                 {
                     key: 'timestampEnd',
@@ -80,7 +81,7 @@ export default {
                     }
                 },
                 {
-                    key: 'recording_size',
+                    key: 'recording.size',
                     label: this.$gettext('Size'),
                     sortable: false,
                     formatter: (value, key, item) => {
@@ -94,7 +95,8 @@ export default {
                 {
                     key: 'actions',
                     label: this.$gettext('Actions'),
-                    sortable: false
+                    sortable: false,
+                    class: 'shrink'
                 }
             ]
         };

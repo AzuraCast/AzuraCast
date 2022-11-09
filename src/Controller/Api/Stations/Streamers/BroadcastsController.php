@@ -60,11 +60,11 @@ final class BroadcastsController extends AbstractApiCrudController
         $paginator = Paginator::fromQuery($query, $request);
 
         $router = $request->getRouter();
-
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
         $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         $paginator->setPostprocessor(
-            function ($row) use ($id, $router, $fsRecordings) {
+            function ($row) use ($id, $router, $isInternal, $fsRecordings) {
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);
@@ -79,35 +79,36 @@ final class BroadcastsController extends AbstractApiCrudController
                     ];
                 }
 
-                if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
-                    $routeParams = [
-                        'broadcast_id' => $row->getId(),
-                    ];
-                    if (null === $id) {
-                        $routeParams['id'] = $row->getStreamer()->getId();
-                    }
+                $routeParams = [
+                    'broadcast_id' => $row->getId(),
+                ];
+                if (null === $id) {
+                    $routeParams['id'] = $row->getStreamer()->getId();
+                }
 
+                if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
                     $return['recording'] = [
                         'path' => $recordingPath,
                         'size' => $fsRecordings->fileSize($recordingPath),
                         'links' => [
                             'download' => $router->fromHere(
-                                'api:stations:streamer:broadcast:download',
-                                $routeParams,
-                                [],
-                                true
-                            ),
-                            'delete' => $router->fromHere(
-                                'api:stations:streamer:broadcast:delete',
-                                $routeParams,
-                                [],
-                                true
+                                routeName: 'api:stations:streamer:broadcast:download',
+                                routeParams: $routeParams,
+                                absolute: !$isInternal
                             ),
                         ],
                     ];
                 } else {
                     $return['recording'] = [];
                 }
+
+                $return['links'] = [
+                    'delete' => $router->fromHere(
+                        routeName: 'api:stations:streamer:broadcast:delete',
+                        routeParams: $routeParams,
+                        absolute: !$isInternal
+                    ),
+                ];
 
                 return $return;
             }
@@ -168,13 +169,11 @@ final class BroadcastsController extends AbstractApiCrudController
 
         if (!empty($recordingPath)) {
             $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
-
             $fsRecordings->delete($recordingPath);
-
-            $broadcast->clearRecordingPath();
-            $this->em->persist($broadcast);
-            $this->em->flush();
         }
+
+        $this->em->remove($broadcast);
+        $this->em->flush();
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

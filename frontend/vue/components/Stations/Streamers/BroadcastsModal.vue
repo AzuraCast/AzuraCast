@@ -7,12 +7,13 @@
 
             <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
                         :fields="fields" :api-url="listUrl">
-                <template #cell(recording.links.download)="row">
-                    <template v-if="row.item.recording.links.download">
+                <template #cell(download)="row">
+                    <template v-if="row.item.recording?.links?.download">
                         <play-button class="file-icon" icon-class="outlined"
-                                     :url="row.item.recording.links.download"></play-button>
+                                     :url="row.item.recording?.links?.download"></play-button>
                         &nbsp;
-                        <a class="name" :href="row.item.recording.links.download" target="_blank" :title="langDownload">
+                        <a class="name" :href="row.item.recording?.links?.download" target="_blank"
+                           :title="langDownload">
                             <icon icon="cloud_download"></icon>
                         </a>
                     </template>
@@ -51,7 +52,7 @@ export default {
             listUrl: null,
             fields: [
                 {
-                    key: 'recording.links.download',
+                    key: 'download',
                     label: ' ',
                     sortable: false,
                     class: 'shrink pr-3'
@@ -81,15 +82,15 @@ export default {
                     }
                 },
                 {
-                    key: 'recording.size',
+                    key: 'size',
                     label: this.$gettext('Size'),
                     sortable: false,
                     formatter: (value, key, item) => {
-                        if (!value) {
+                        if (!item.recording?.size) {
                             return '';
                         }
 
-                        return formatFileSize(value);
+                        return formatFileSize(item.recording.size);
                     }
                 },
                 {

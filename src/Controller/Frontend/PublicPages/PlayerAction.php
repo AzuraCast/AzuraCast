@@ -7,7 +7,6 @@ namespace App\Controller\Frontend\PublicPages;
 use App\Entity;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
-use App\Http\Router;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,7 +15,6 @@ final class PlayerAction
     public function __construct(
         private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
-        private readonly Entity\Repository\StationRepository $stationRepo,
     ) {
     }
 
@@ -40,9 +38,6 @@ final class PlayerAction
 
         $np = $this->npApiGenerator->currentOrEmpty($station);
         $np->resolveUrls($baseUrl);
-
-        $defaultAlbumArtUri = $this->stationRepo->getDefaultAlbumArtUrl($station);
-        $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
 
         // Build Vue props.
         $customization = $request->getCustomization();
@@ -108,7 +103,11 @@ final class PlayerAction
             [
                 'station' => $station,
                 'props' => $props,
-                'defaultAlbumArt' => $defaultAlbumArt,
+                'nowPlayingArtUri' => $router->named(
+                    routeName: 'api:nowplaying:art',
+                    routeParams: ['station_id' => $station->getShortName(), 'timestamp' => time()],
+                    absolute: true
+                ),
             ]
         );
     }

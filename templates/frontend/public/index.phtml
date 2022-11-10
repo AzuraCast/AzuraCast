@@ -38,7 +38,7 @@ $this->push('head');
 
 <meta property="og:title" content="<?= $this->e($station->getName() ?? '') ?>">
 <meta property="og:url" content="<?= $this->e($station->getUrl() ?? '') ?>">
-<meta property="og:image" content="<?= $defaultAlbumArt ?>">
+<meta property="og:image" content="<?= $nowPlayingArtUri ?>">
 
 <meta property="twitter:card" content="player">
 <meta property="twitter:player" content="<?= $router->named(

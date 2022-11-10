@@ -76,8 +76,15 @@ return static function (RouteCollectorProxy $app) {
                 }
             );
 
-            $group->get('/nowplaying[/{station_id}]', Controller\Api\NowPlayingAction::class)
-                ->setName('api:nowplaying:index');
+            $group->get(
+                '/nowplaying[/{station_id}]',
+                Controller\Api\NowPlayingController::class . ':getAction'
+            )->setName('api:nowplaying:index');
+
+            $group->get(
+                '/nowplaying/{station_id}/art[/{timestamp}.jpg]',
+                Controller\Api\NowPlayingController::class . ':getArtAction'
+            )->setName('api:nowplaying:art');
 
             $group->get('/stations', Controller\Api\Stations\IndexController::class . ':listAction')
                 ->setName('api:stations:list')

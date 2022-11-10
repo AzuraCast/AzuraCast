@@ -49,7 +49,7 @@ use Psr\SimpleCache\CacheInterface;
         ]
     )
 ]
-final class NowPlayingAction
+final class NowPlayingController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -57,7 +57,7 @@ final class NowPlayingAction
     ) {
     }
 
-    public function __invoke(
+    public function getAction(
         ServerRequest $request,
         Response $response,
         ?string $station_id = null
@@ -81,6 +81,23 @@ final class NowPlayingAction
                 $request->getAttribute('user') === null // If unauthenticated, hide non-public stations from full view.
             )
         );
+    }
+
+    public function getArtAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id,
+        ?string $timestamp = null
+    ): ResponseInterface {
+        $np = $this->getForStation($station_id, $request->getRouter());
+
+        $currentArt = $np?->now_playing?->song?->art;
+        if (null !== $currentArt) {
+            return $response->withRedirect((string)$currentArt, 302);
+        }
+
+        return $response->withStatus(404)
+            ->withJson(Entity\Api\Error::notFound());
     }
 
     private function getForStation(

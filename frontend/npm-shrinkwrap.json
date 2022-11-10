@@ -50,7 +50,6 @@
         "material-icons": "^1",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.33",
-        "nchan": "^1.0.10",
         "popper.js": "^1.16.1",
         "prettier": "^2",
         "roboto-fontface": "^0.10.0",
@@ -6686,11 +6685,6 @@
       "engines": {
         "node": ">=0.10.0"
       }
-    },
-    "node_modules/nchan": {
-      "version": "1.0.10",
-      "resolved": "https://registry.npmjs.org/nchan/-/nchan-1.0.10.tgz",
-      "integrity": "sha512-jB6fV/03M1AXT08I+hldsU5m2r4t2c7J1UnOsCIK/idowxtJ/nYAPwUahMwhFsuv453miOOCvhmao+kpcScb4Q=="
     },
     "node_modules/neo-async": {
       "version": "2.6.2",
@@ -15194,11 +15188,6 @@
           "integrity": "sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw=="
         }
       }
-    },
-    "nchan": {
-      "version": "1.0.10",
-      "resolved": "https://registry.npmjs.org/nchan/-/nchan-1.0.10.tgz",
-      "integrity": "sha512-jB6fV/03M1AXT08I+hldsU5m2r4t2c7J1UnOsCIK/idowxtJ/nYAPwUahMwhFsuv453miOOCvhmao+kpcScb4Q=="
     },
     "neo-async": {
       "version": "2.6.2",

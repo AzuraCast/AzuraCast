@@ -51,18 +51,10 @@ final class PlayerAction
             'autoplay' => !empty($request->getQueryParam('autoplay')),
             'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
             'hlsIsDefault' => $backendConfig->getHlsIsDefault(),
+            'nowPlayingUri' => $customization->useStaticNowPlaying()
+                ? '/api/nowplaying_static/' . urlencode($station->getShortName()) . '.json'
+                : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),
         ];
-
-        if ($customization->useWebSocketsForNowPlaying()) {
-            $props['useNchan'] = true;
-            $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
-        } else {
-            $props['useNchan'] = false;
-            $props['nowPlayingUri'] = $router->named(
-                'api:nowplaying:index',
-                ['station_id' => $station->getId()]
-            );
-        }
 
         // Render embedded player.
         if (!empty($embed)) {

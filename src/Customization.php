@@ -182,8 +182,8 @@ final class Customization
         return $this->settings->getHideProductName();
     }
 
-    public function useWebSocketsForNowPlaying(): bool
+    public function useStaticNowPlaying(): bool
     {
-        return $this->settings->getEnableWebsockets();
+        return $this->settings->getEnableStaticNowPlaying();
     }
 }

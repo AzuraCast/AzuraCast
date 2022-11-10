@@ -32,11 +32,7 @@ http {
     server_tokens off;
     keepalive_timeout 65;
 
-{{if eq .Env.APPLICATION_ENV "production"}}
     sendfile on;
-{{else}}
-    sendfile off;
-{{end}}
 
     client_max_body_size 50M;
     client_body_temp_path /tmp/app_nginx_client 1 1;

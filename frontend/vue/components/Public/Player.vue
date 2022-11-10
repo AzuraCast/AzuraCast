@@ -232,10 +232,6 @@ export const radioPlayerProps = {
             type: Boolean,
             default: true
         },
-        useNchan: {
-            type: Boolean,
-            default: true
-        },
         showAlbumArt: {
             type: Boolean,
             default: true

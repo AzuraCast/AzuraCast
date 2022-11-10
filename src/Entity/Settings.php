@@ -212,20 +212,20 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "Whether to use Websockets for Now Playing data updates.", example: "false"),
+        OA\Property(description: "Whether to use high-performance static JSON for Now Playing data updates.", example: "false"),
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]
-    protected bool $enable_websockets = false;
+    protected bool $enable_static_nowplaying = false;
 
-    public function getEnableWebsockets(): bool
+    public function getEnableStaticNowPlaying(): bool
     {
-        return $this->enable_websockets;
+        return $this->enable_static_nowplaying;
     }
 
-    public function setEnableWebsockets(bool $enableWebsockets): void
+    public function setEnableStaticNowPlaying(bool $enableStaticNowplaying): void
     {
-        $this->enable_websockets = $enableWebsockets;
+        $this->enable_static_nowplaying = $enableStaticNowplaying;
     }
 
     #[

@@ -6,26 +6,11 @@ upstream php-fpm-www {
     server unix:/var/run/php-fpm-www.sock;
 }
 
-upstream redis_server {
-    nchan_redis_server "redis://localhost:6379";
-}
-
 server {
     listen 127.0.0.1:6010;
 
     root {{ app_base }}/www/web;
     index index.php;
-
-    location ~ /pub/([^\/]+)$ {
-        nchan_publisher;
-        nchan_redis_pass redis_server;
-
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id $1;
-
-        nchan_message_buffer_length 1;
-        nchan_message_timeout 16s;
-    }
 
     # Default clean URL routing
     location / {
@@ -129,18 +114,6 @@ server {
         fastcgi_buffering off;
 
         internal;
-    }
-
-    # pub/sub endpoints
-    location ~ /api/live/nowplaying/([^\/]+)$ {
-        nchan_subscriber;
-        nchan_redis_pass redis_server;
-
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id "$1";
-        nchan_channel_id_split_delimiter ",";
-
-        nchan_subscriber_first_message -1;
     }
 
     # deny access to .htaccess files, if Apache's document root

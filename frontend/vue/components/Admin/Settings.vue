@@ -95,7 +95,7 @@ export default {
             prefer_browser_url: {},
             use_radio_proxy: {},
             history_keep_days: {required},
-            enable_websockets: {},
+            enable_static_nowplaying: {},
             enable_advanced_features: {},
 
             analytics: {required},
@@ -122,7 +122,7 @@ export default {
         },
         generalTab: [
             'form.base_url', 'form.instance_name', 'form.prefer_browser_url', 'form.use_radio_proxy',
-            'form.history_keep_days', 'form.enable_websockets', 'form.enable_advanced_features'
+            'form.history_keep_days', 'form.enable_static_nowplaying', 'form.enable_advanced_features'
         ],
         securityPrivacyTab: [
             'form.analytics', 'form.always_use_ssl', 'form.api_access_control'
@@ -163,7 +163,7 @@ export default {
                 prefer_browser_url: data.prefer_browser_url,
                 use_radio_proxy: data.use_radio_proxy,
                 history_keep_days: data.history_keep_days,
-                enable_websockets: data.enable_websockets,
+                enable_static_nowplaying: data.enable_static_nowplaying,
                 enable_advanced_features: data.enable_advanced_features,
 
                 analytics: data.analytics,

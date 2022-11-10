@@ -53,13 +53,14 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_websockets"
-                                     :field="form.enable_websockets">
+            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_static_nowplaying"
+                                     :field="form.enable_static_nowplaying">
                 <template #label="{lang}">
-                    <translate :key="lang">Use WebSockets for Now Playing Updates</translate>
+                    <translate :key="lang">Use Static Files for Now Playing Updates</translate>
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.</translate>
+                    <translate
+                        :key="lang">Uses static JSON files to serve Now Playing data on public pages. This improves performance but will cause problems if you use multiple base URLs.</translate>
                 </template>
             </b-wrapped-form-checkbox>
 

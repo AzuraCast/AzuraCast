@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use App\Http\ServerRequest;
-use App\Lock\LockFactory;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
 use Symfony\Component\RateLimiter\RateLimiterFactory;

@@ -23,7 +23,6 @@
     - supervisord
     - nginx
     - php
-    - redis
     - beanstalkd
     - sftpgo
     - mariadb

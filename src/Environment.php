@@ -58,11 +58,6 @@ final class Environment
     public const DB_USER = 'MYSQL_USER';
     public const DB_PASSWORD = 'MYSQL_PASSWORD';
 
-    public const ENABLE_REDIS = 'ENABLE_REDIS';
-    public const REDIS_HOST = 'REDIS_HOST';
-    public const REDIS_PORT = 'REDIS_PORT';
-    public const REDIS_DB = 'REDIS_DB';
-
     // Default settings
     private array $defaults = [
         self::APP_NAME => 'AzuraCast',
@@ -75,8 +70,6 @@ final class Environment
 
         self::AUTO_ASSIGN_PORT_MIN => 8000,
         self::AUTO_ASSIGN_PORT_MAX => 8499,
-
-        self::ENABLE_REDIS => true,
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
         self::SYNC_LONG_EXECUTION_TIME => 1800,
@@ -300,27 +293,9 @@ final class Environment
         return $dbSettings;
     }
 
-    public function enableRedis(): bool
+    public function useLocalDatabase(): bool
     {
-        return self::envToBool($this->data[self::ENABLE_REDIS] ?? true);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getRedisSettings(): array
-    {
-        $redisSettings = [
-            'host' => $this->data[self::REDIS_HOST] ?? 'localhost',
-            'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
-            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
-        ];
-
-        if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
-            $redisSettings['socket'] = '/run/redis/redis.sock';
-        }
-
-        return $redisSettings;
+        return 'localhost' === ($this->data[self::DB_HOST] ?? 'localhost');
     }
 
     public function isProfilingExtensionEnabled(): bool

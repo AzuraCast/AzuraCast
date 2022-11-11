@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Environment;
 use App\Exception\SupervisorException;
 use App\Service\ServiceControl\ServiceData;
 use Supervisor\Exception\Fault\BadNameException;
@@ -14,7 +15,8 @@ use Supervisor\SupervisorInterface;
 final class ServiceControl
 {
     public function __construct(
-        private readonly SupervisorInterface $supervisor
+        private readonly SupervisorInterface $supervisor,
+        private readonly Environment $environment
     ) {
     }
 
@@ -23,7 +25,7 @@ final class ServiceControl
     {
         $services = [];
 
-        foreach (self::getServiceNames() as $name => $description) {
+        foreach ($this->getServiceNames() as $name => $description) {
             try {
                 $isRunning = $this->supervisor->getProcess($name)->isRunning();
             } catch (BadNameException) {
@@ -42,7 +44,7 @@ final class ServiceControl
 
     public function restart(string $service): void
     {
-        $serviceNames = self::getServiceNames();
+        $serviceNames = $this->getServiceNames();
         if (!isset($serviceNames[$service])) {
             throw new \InvalidArgumentException(
                 sprintf('Service "%s" is not managed by AzuraCast.', $service)
@@ -61,9 +63,9 @@ final class ServiceControl
         }
     }
 
-    public static function getServiceNames(): array
+    public function getServiceNames(): array
     {
-        return [
+        $services = [
             'beanstalkd' => __('Message queue delivery service'),
             'cron' => __('Runs routine synchronized tasks'),
             'mariadb' => __('Database'),
@@ -71,8 +73,13 @@ final class ServiceControl
             'php-fpm' => __('PHP FastCGI Process Manager'),
             'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
-            'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
         ];
+
+        if (!$this->environment->useLocalDatabase()) {
+            unset($services['mariadb']);
+        }
+
+        return $services;
     }
 }

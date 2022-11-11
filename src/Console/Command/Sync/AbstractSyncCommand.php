@@ -6,7 +6,7 @@ namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
 use App\Environment;
-use App\Lock\LockFactory;
+use App\LockFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;

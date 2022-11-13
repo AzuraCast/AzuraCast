@@ -1,11 +1,11 @@
 <?php
 
+use App\CallableEventDispatcherInterface;
 use App\Environment;
 use App\Event;
 use App\Middleware;
-use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 
-return function (CallableEventDispatcherInterface $dispatcher) {
+return static function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addListener(
         Event\BuildConsoleCommands::class,
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {
@@ -177,14 +177,12 @@ return function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,
         App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class,
-        '__invoke',
-        10
+        priority: 10
     );
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,
         App\Media\AlbumArtHandler\MusicBrainzAlbumArtHandler::class,
-        '__invoke',
-        -10
+        priority: -10
     );
 
     $dispatcher->addCallableListener(

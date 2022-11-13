@@ -193,7 +193,7 @@ return [
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $dispatcher,
+        App\CallableEventDispatcherInterface $dispatcher,
         App\Version $version,
         Environment $environment
     ) {
@@ -218,11 +218,11 @@ return [
     },
 
     // Event Dispatcher
-    Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface::class => static function (
-        Slim\App $app,
+    App\CallableEventDispatcherInterface::class => static function (
+        DI\Container $di,
         App\Plugins $plugins
     ) {
-        $dispatcher = new Azura\SlimCallableEventDispatcher\SlimCallableEventDispatcher($app->getCallableResolver());
+        $dispatcher = new App\CallableEventDispatcher($di);
 
         // Register application default events.
         if (file_exists(__DIR__ . '/events.php')) {
@@ -235,7 +235,7 @@ return [
         return $dispatcher;
     },
     Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface::class
+        App\CallableEventDispatcherInterface::class
     ),
 
     // Monolog Logger

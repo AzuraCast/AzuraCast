@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "418f33f513ae89bfcf89c29142408445",
+    "content-hash": "5b92d9eab0dc7f1b2ca03aabeff2858c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -333,71 +333,6 @@
                 }
             ],
             "time": "2022-11-07T00:28:44+00:00"
-        },
-        {
-            "name": "azuracast/slim-callable-eventdispatcher",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AzuraCast/slim-callable-eventdispatcher.git",
-                "reference": "d8875710407a8af8bd66eb8a59d0a5c5e3448bee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/slim-callable-eventdispatcher/zipball/d8875710407a8af8bd66eb8a59d0a5c5e3448bee",
-                "reference": "d8875710407a8af8bd66eb8a59d0a5c5e3448bee",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=8.0",
-                "slim/slim": "^4",
-                "symfony/event-dispatcher": "^5|^6"
-            },
-            "require-dev": {
-                "php-parallel-lint/php-console-highlighter": "^0.5.0",
-                "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/phpstan": "^0.12",
-                "roave/security-advisories": "dev-latest"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Azura\\SlimCallableEventDispatcher\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Buster 'Silver Eagle' Neece",
-                    "email": "buster@busterneece.com"
-                }
-            ],
-            "description": "Bridge code that integrates Slim's CallableResolver and Symfony's Event Dispatcher to allow resolvable event listeners.",
-            "homepage": "https://github.com/AzuraCast/slim-callable-eventdispatcher",
-            "support": {
-                "issues": "https://github.com/AzuraCast/slim-callable-eventdispatcher/issues",
-                "source": "https://github.com/AzuraCast/slim-callable-eventdispatcher/tree/main"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/AzuraCast",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/azuracast",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/AzuraCast",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2022-01-20T07:54:58+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -13899,7 +13834,6 @@
         "azuracast/doctrine-batch-utilities": 20,
         "azuracast/doctrine-entity-normalizer": 20,
         "azuracast/nowplaying": 20,
-        "azuracast/slim-callable-eventdispatcher": 20,
         "lstrojny/fxmlrpc": 20,
         "php-di/php-di": 20,
         "rlanvin/php-ip": 20,

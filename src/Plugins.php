@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\Finder\Finder;

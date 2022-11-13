@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Command\MessageQueue;
 
+use App\CallableEventDispatcherInterface;
 use App\Console\Command\CommandAbstract;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\Environment;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheMiddleware;
-use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;

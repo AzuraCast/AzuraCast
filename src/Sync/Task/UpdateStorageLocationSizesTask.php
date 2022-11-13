@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity;
 use App\Radio\Quota;
-use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
 use Brick\Math\BigInteger;
 use Exception;
 use League\Flysystem\FileAttributes;

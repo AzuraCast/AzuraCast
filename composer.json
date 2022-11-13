@@ -26,7 +26,6 @@
     "ext-xml": "*",
     "ext-xmlreader": "*",
     "ext-xmlwriter": "*",
-    "azuracast/doctrine-batch-utilities": "dev-main",
     "azuracast/doctrine-entity-normalizer": "dev-main",
     "azuracast/nowplaying": "dev-main",
     "bacon/bacon-qr-code": "^2.0",

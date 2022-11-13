@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\OnDemand;
 
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
-use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;

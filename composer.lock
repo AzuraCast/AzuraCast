@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b92d9eab0dc7f1b2ca03aabeff2858c",
+    "content-hash": "000dc28cca8c41491fbef907f30c94c0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -149,61 +149,6 @@
                 "source": "https://github.com/aws/aws-sdk-php/tree/3.240.10"
             },
             "time": "2022-11-04T19:25:00+00:00"
-        },
-        {
-            "name": "azuracast/doctrine-batch-utilities",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AzuraCast/doctrine-batch-utilities.git",
-                "reference": "966264c0f30f05c653d877ab44612096b4557390"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/doctrine-batch-utilities/zipball/966264c0f30f05c653d877ab44612096b4557390",
-                "reference": "966264c0f30f05c653d877ab44612096b4557390",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/orm": "^2.10|^3.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "php-parallel-lint/php-console-highlighter": "^0.5.0",
-                "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/phpstan": "^0.12",
-                "roave/security-advisories": "dev-master"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Azura\\DoctrineBatchUtils\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Buster 'Silver Eagle' Neece",
-                    "email": "buster@busterneece.com",
-                    "homepage": "https://dashdev.net/"
-                }
-            ],
-            "description": "A customized fork of ocramius/DoctrineBatchUtils.",
-            "support": {
-                "issues": "https://github.com/AzuraCast/doctrine-batch-utilities/issues",
-                "source": "https://github.com/AzuraCast/doctrine-batch-utilities/tree/main"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/SlvrEagle23",
-                    "type": "github"
-                }
-            ],
-            "time": "2022-01-20T07:55:54+00:00"
         },
         {
             "name": "azuracast/doctrine-entity-normalizer",
@@ -13831,7 +13776,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "azuracast/doctrine-batch-utilities": 20,
         "azuracast/doctrine-entity-normalizer": 20,
         "azuracast/nowplaying": 20,
         "lstrojny/fxmlrpc": 20,

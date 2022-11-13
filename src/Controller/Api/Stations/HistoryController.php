@@ -6,12 +6,12 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use App\Controller\Api\Traits\AcceptsDateRange;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;

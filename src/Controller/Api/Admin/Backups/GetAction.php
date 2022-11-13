@@ -8,7 +8,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Azura\Files\Attributes\FileAttributes;
+use App\Flysystem\Attributes\FileAttributes;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\Enums\StorageLocationAdapters;
-use Azura\Files\Adapter\Dropbox\DropboxAdapter;
-use Azura\Files\Adapter\ExtendedAdapterInterface;
+use App\Flysystem\Adapter\DropboxAdapter;
+use App\Flysystem\Adapter\ExtendedAdapterInterface;
 use Spatie\Dropbox\Client;
 
 final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocationAdapter

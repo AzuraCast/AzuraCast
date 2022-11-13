@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\StorageLocation;
-use Azura\Files\ExtendedFilesystemInterface;
-use Azura\Files\RemoteFilesystem;
+use App\Flysystem\ExtendedFilesystemInterface;
+use App\Flysystem\RemoteFilesystem;
 
 abstract class AbstractStorageLocationLocationAdapter implements StorageLocationAdapterInterface
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\Enums\StorageLocationAdapters;
-use Azura\Files\Adapter\ExtendedAdapterInterface;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\Adapter\ExtendedAdapterInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 
 interface StorageLocationAdapterInterface
 {

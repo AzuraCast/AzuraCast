@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Nginx\CustomUrls;
-use Azura\Files\Adapter\LocalAdapterInterface;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\Adapter\LocalAdapterInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use InvalidArgumentException;
 use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;

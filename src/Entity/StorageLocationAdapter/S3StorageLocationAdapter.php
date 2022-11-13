@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\Enums\StorageLocationAdapters;
+use App\Flysystem\Adapter\AwsS3Adapter;
+use App\Flysystem\Adapter\ExtendedAdapterInterface;
 use Aws\S3\S3Client;
-use Azura\Files\Adapter\AwsS3\AwsS3Adapter;
-use Azura\Files\Adapter\ExtendedAdapterInterface;
 use InvalidArgumentException;
 
 final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdapter

@@ -9,7 +9,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 

@@ -7,7 +7,7 @@ namespace App\Entity\Repository;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Service\Flow\UploadedFile;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 
 /**
  * @extends AbstractStationBasedRepository<Entity\StationMount>

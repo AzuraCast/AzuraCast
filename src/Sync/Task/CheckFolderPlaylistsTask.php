@@ -7,7 +7,7 @@ namespace App\Sync\Task;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use Doctrine\ORM\Query;
 use Psr\Log\LoggerInterface;
 

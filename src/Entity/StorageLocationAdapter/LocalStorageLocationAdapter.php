@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\Enums\StorageLocationAdapters;
-use Azura\Files\Adapter\Local\LocalFilesystemAdapter;
-use Azura\Files\Adapter\LocalAdapterInterface;
-use Azura\Files\ExtendedFilesystemInterface;
-use Azura\Files\LocalFilesystem;
+use App\Flysystem\Adapter\LocalAdapterInterface;
+use App\Flysystem\Adapter\LocalFilesystemAdapter;
+use App\Flysystem\ExtendedFilesystemInterface;
+use App\Flysystem\LocalFilesystem;
 
 final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {

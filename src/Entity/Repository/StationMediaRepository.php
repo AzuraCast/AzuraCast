@@ -13,7 +13,7 @@ use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
 use App\Utilities\Logger;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
 use League\Flysystem\FilesystemException;

@@ -7,7 +7,7 @@ namespace App\Media;
 use App\Entity;
 use App\Utilities\File;
 use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
 

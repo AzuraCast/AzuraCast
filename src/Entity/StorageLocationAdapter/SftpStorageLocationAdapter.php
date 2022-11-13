@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\Enums\StorageLocationAdapters;
-use Azura\Files\Adapter\ExtendedAdapterInterface;
-use Azura\Files\Adapter\Sftp\SftpAdapter;
+use App\Flysystem\Adapter\ExtendedAdapterInterface;
+use App\Flysystem\Adapter\SftpAdapter;
 use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 
 final class SftpStorageLocationAdapter extends AbstractStorageLocationLocationAdapter

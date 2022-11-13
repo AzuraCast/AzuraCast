@@ -11,7 +11,7 @@ use App\Exception\InvalidPodcastMediaFileException;
 use App\Exception\StorageLocationFullException;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 

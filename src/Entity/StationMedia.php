@@ -6,9 +6,9 @@ namespace App\Entity;
 
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Utilities\Time;
-use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

@@ -105,7 +105,7 @@ export default {
             singleFile: !this.allowMultiple,
             headers: {
                 'Accept': 'application/json',
-                'X-API-CSRF': document.body.App.api_csrf
+                'X-API-CSRF': App.api_csrf
             },
             withCredentials: true,
             allowDuplicateUploads: true,

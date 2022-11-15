@@ -103,14 +103,14 @@ return [
                         'api_csrf' => null,
                     ];
 
-                    return 'document.body.App = ' . json_encode($app, JSON_THROW_ON_ERROR) . ';';
+                    return 'let App = ' . json_encode($app, JSON_THROW_ON_ERROR) . ';';
                 },
                 <<<'JS'
-                    document.body.currentTheme = document.documentElement.getAttribute('data-theme');
-                    if (document.body.currentTheme === 'browser') {
-                        document.body.currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                    let currentTheme = document.documentElement.getAttribute('data-theme');
+                    if (currentTheme === 'browser') {
+                        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
                     }
-                    document.body.App.theme = document.body.currentTheme;
+                    App.theme = currentTheme;
                 JS,
             ],
         ],
@@ -125,9 +125,6 @@ return [
                     'src' => 'dist/lib/sweetalert2/sweetalert2.min.js',
                     'defer' => true,
                 ],
-                [
-                    'src' => 'dist/lib/turbo/turbo.es2017-umd.js',
-                ],
             ],
         ],
         'inline' => [
@@ -139,7 +136,7 @@ return [
                         $csrfToken = $csrf->generate(ApiAuth::API_CSRF_NAMESPACE);
                         $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
                     }
-                    return "document.body.App.api_csrf = ${csrfJson};";
+                    return "App.api_csrf = ${csrfJson};";
                 },
             ],
         ],

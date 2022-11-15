@@ -19,7 +19,7 @@ export default {
     data() {
         return {
             calendarOptions: {
-                locale: App.locale_short,
+                locale: document.body.App.locale_short,
                 locales: allLocales,
                 plugins: [luxon2Plugin, timeGridPlugin],
                 initialView: 'timeGridWeek',
@@ -36,7 +36,7 @@ export default {
                 views: {
                     timeGridWeek: {
                         slotLabelFormat: {
-                            ...App.time_config,
+                            ...document.body.App.time_config,
                             hour: 'numeric',
                             minute: '2-digit',
                             omitZeroMinute: true,

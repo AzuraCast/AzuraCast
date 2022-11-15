@@ -193,13 +193,13 @@ export default {
         },
         formatTime (time) {
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_MED, ...App.time_config}
+                {...DateTime.DATETIME_MED, ...document.body.App.time_config}
             );
         },
         formatLength (length) {
             return humanizeDuration(length * 1000, {
                 round: true,
-                language: App.locale_short,
+                language: document.body.App.locale_short,
                 fallbacks: ['en']
             });
         },

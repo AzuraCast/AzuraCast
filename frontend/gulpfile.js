@@ -50,28 +50,33 @@ var jsFiles = {
       'node_modules/roboto-fontface/fonts/roboto/*'
     ]
   },
-  'luxon': {
-    files: [
-      'node_modules/luxon/build/global/luxon.min.js'
-    ]
-  },
-  'humanize-duration': {
-    files: [
-      'node_modules/humanize-duration/humanize-duration.js'
-    ]
-  },
-  'clipboard': {
-    base: 'node_modules/clipboard/dist',
-    files: [
-      'node_modules/clipboard/dist/clipboard.min.js'
-    ]
-  },
-  'webcaster': {
-    base: null,
-    files: [
-      'js/webcaster/*.js'
-    ]
-  },
+    'luxon': {
+        files: [
+            'node_modules/luxon/build/global/luxon.min.js'
+        ]
+    },
+    'humanize-duration': {
+        files: [
+            'node_modules/humanize-duration/humanize-duration.js'
+        ]
+    },
+    'clipboard': {
+        base: 'node_modules/clipboard/dist',
+        files: [
+            'node_modules/clipboard/dist/clipboard.min.js'
+        ]
+    },
+    'webcaster': {
+        base: null,
+        files: [
+            'js/webcaster/*.js'
+        ]
+    },
+    'turbo': {
+        files: [
+            'node_modules/@hotwired/turbo/dist/turbo.es2017-umd.js'
+        ]
+    }
 };
 
 var defaultTasks = Object.keys(jsFiles);

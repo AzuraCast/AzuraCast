@@ -18,7 +18,7 @@ $(document).on('click', '.api-call', function (e) {
             $.ajax({
                 type: 'POST',
                 headers: {
-                    "X-API-CSRF": App.api_csrf
+                    "X-API-CSRF": document.body.App.api_csrf
                 },
                 url: btn.attr('href'),
                 success: function (data) {
@@ -50,11 +50,11 @@ $(function () {
     function updateClock() {
         let d = new Date();
 
-        let timeConfig = {...App.time_config};
+        let timeConfig = {...document.body.App.time_config};
         timeConfig.timeZone = <?=$this->escapeJs($station->getTimezone()) ?>;
         timeConfig.timeStyle = 'long';
 
-        let time = d.toLocaleString(App.locale_with_dashes, timeConfig);
+        let time = d.toLocaleString(document.body.App.locale_with_dashes, timeConfig);
 
         $('#station-time').text(time);
     }

@@ -41,7 +41,7 @@ export default {
     },
     data() {
         return {
-            tileUrl: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/' + App.theme + '_all/{z}/{x}/{y}.png',
+            tileUrl: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/' + document.body.App.theme + '_all/{z}/{x}/{y}.png',
             tileAttribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
         }
     },

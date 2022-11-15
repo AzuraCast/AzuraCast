@@ -184,7 +184,7 @@ export default {
         },
         toLocaleTime(timestamp) {
             return DateTime.fromSeconds(timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, ...document.body.App.time_config}
             );
         },
         formatFileSize(size) {

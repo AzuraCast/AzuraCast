@@ -253,9 +253,8 @@ final class Assets
 
         $this->addInlineJs(
             <<<JS
-                let {$name};
                 $(function () {
-                    {$name} = {$nameWithoutPrefix}.default('{$elementId}', {$propsJson});
+                    document.body.{$name} = {$nameWithoutPrefix}.default('{$elementId}', {$propsJson});
                 });
             JS
         );
@@ -553,7 +552,8 @@ final class Assets
         $cspScriptSrc = $this->getCspDomains();
         $cspScriptSrc[] = "'self'";
         $cspScriptSrc[] = "'unsafe-eval'";
-        $cspScriptSrc[] = "'nonce-" . $this->getCspNonce() . "'";
+        $cspScriptSrc[] = "'unsafe-inline'";
+        // $cspScriptSrc[] = "'nonce-" . $this->getCspNonce() . "'";
         $csp[] = 'script-src ' . implode(' ', $cspScriptSrc);
 
         $cspWorkerSrc = [];

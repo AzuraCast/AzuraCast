@@ -105,7 +105,7 @@ export default {
         },
         formatTime(time) {
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_MED, ...App.time_config}
+                {...DateTime.DATETIME_MED, ...document.body.App.time_config}
             );
         },
         doDelete(url) {

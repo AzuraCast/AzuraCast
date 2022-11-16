@@ -44,8 +44,10 @@ final class DoctrineEntityNormalizer extends AbstractNormalizer implements Norma
 
     /**
      * Replicates the "toArray" functionality previously present in Doctrine 1.
+     *
+     * @return array|string|int|float|bool|\ArrayObject<int, mixed>|null
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = []): array
+    public function normalize(mixed $object, ?string $format = null, array $context = []): mixed
     {
         if (!is_object($object)) {
             throw new \InvalidArgumentException('Cannot normalize non-object.');

@@ -63,7 +63,7 @@ final class AppFactory
         }
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(new Event\BuildRoutes($app));
+        $eventDispatcher->dispatch(new Event\BuildRoutes($app, $container));
 
         return $app;
     }

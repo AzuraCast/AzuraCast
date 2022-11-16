@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP-DI Services
  */
@@ -133,7 +134,7 @@ return [
                 Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
             }
 
-            $eventManager = new Doctrine\Common\EventManager;
+            $eventManager = new Doctrine\Common\EventManager();
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
             $eventManager->addEventSubscriber($eventChangeTracking);
@@ -159,7 +160,6 @@ return [
         Environment $environment,
         Psr\Log\LoggerInterface $logger
     ) {
-        /** @var Symfony\Contracts\Cache\CacheInterface $cacheInterface */
         if ($environment->isTesting()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         } else {
@@ -268,7 +268,7 @@ return [
         $proxyCache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'annotations.');
 
         return new Doctrine\Common\Annotations\PsrCachedReader(
-            new Doctrine\Common\Annotations\AnnotationReader,
+            new Doctrine\Common\Annotations\AnnotationReader(),
             $proxyCache,
             !$settings->isProduction()
         );
@@ -289,7 +289,7 @@ return [
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),
         ];
         $encoders = [
-            new Symfony\Component\Serializer\Encoder\JsonEncoder,
+            new Symfony\Component\Serializer\Encoder\JsonEncoder(),
         ];
 
         return new Symfony\Component\Serializer\Serializer($normalizers, $encoders);
@@ -302,7 +302,9 @@ return [
     ) {
         $builder = new Symfony\Component\Validator\ValidatorBuilder();
         $builder->setConstraintValidatorFactory($constraintValidatorFactory);
-        $builder->enableAnnotationMapping($reader);
+        $builder->enableAnnotationMapping();
+        $builder->setDoctrineAnnotationReader($reader);
+
         return $builder->getValidator();
     },
 
@@ -386,7 +388,7 @@ return [
     // Mail functionality
     Symfony\Component\Mailer\Transport\TransportInterface::class => static function (
         App\Entity\Repository\SettingsRepository $settingsRepo,
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $eventDispatcher,
+        Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher,
         Monolog\Logger $logger
     ) {
         $settings = $settingsRepo->readSettings();
@@ -433,7 +435,7 @@ return [
     Symfony\Component\Mailer\Mailer::class => static function (
         Symfony\Component\Mailer\Transport\TransportInterface $transport,
         Symfony\Component\Messenger\MessageBus $messageBus,
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $eventDispatcher
+        Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
     ) {
         return new Symfony\Component\Mailer\Mailer(
             $transport,
@@ -480,11 +482,6 @@ return [
             $logger
         );
     },
-
-    App\Assets::class => static fn(Environment $env) => new App\Assets(
-        $env,
-        require __DIR__ . '/assets.php'
-    ),
 
     App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
         $di,

@@ -1,4 +1,5 @@
 <?php
+
 // An array of message queue types and the DI classes responsible for handling them.
 use App\Message;
 use App\Radio\Backend\Liquidsoap;

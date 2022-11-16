@@ -63,7 +63,7 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
             $app = $event->getApp();
 
             // Load app-specific route configuration.
-            $container = $app->getContainer();
+            $container = $event->getContainer();
 
             /** @var Environment $environment */
             $environment = $container->get(Environment::class);
@@ -90,8 +90,8 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
             $app->addRoutingMiddleware();
 
             // Redirects and updates that should happen before system middleware.
-            $app->add(new Middleware\RemoveSlashes);
-            $app->add(new Middleware\ApplyXForwardedProto);
+            $app->add(new Middleware\RemoveSlashes());
+            $app->add(new Middleware\ApplyXForwardedProto());
 
             // Use PSR-7 compatible sessions.
             $app->add(Middleware\InjectSession::class);

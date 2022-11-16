@@ -8,9 +8,14 @@ parameters:
     checkMissingIterableValueType: false
 
     paths:
-        - src
         - bin
+        - config
+        - src
+        - templates
         - web
+
+    excludePaths:
+        - config/routes.dev.php
 
     bootstrapFiles:
         - ./util/phpstan.php

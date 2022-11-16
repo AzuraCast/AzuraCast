@@ -34,9 +34,9 @@ final class GlobalSections
         $initialValue = $this->sections[$section] ?? '';
 
         $this->sections[$section] = match ($mode) {
-            Template::SECTION_MODE_REWRITE => $value,
             Template::SECTION_MODE_PREPEND => $value . $initialValue,
-            Template::SECTION_MODE_APPEND => $initialValue . $value
+            Template::SECTION_MODE_APPEND => $initialValue . $value,
+            default => $value
         };
     }
 
@@ -61,13 +61,13 @@ final class GlobalSections
         ob_start();
     }
 
-    public function appendStart($name): void
+    public function appendStart(string $name): void
     {
         $this->sectionMode = Template::SECTION_MODE_APPEND;
         $this->start($name);
     }
 
-    public function prependStart($name)
+    public function prependStart(string $name): void
     {
         $this->sectionMode = Template::SECTION_MODE_PREPEND;
         $this->start($name);
@@ -81,7 +81,7 @@ final class GlobalSections
             );
         }
 
-        $this->set($this->sectionName, ob_get_clean(), $this->sectionMode);
+        $this->set($this->sectionName, ob_get_clean() ?: null, $this->sectionMode);
 
         $this->sectionName = null;
         $this->sectionMode = Template::SECTION_MODE_REWRITE;

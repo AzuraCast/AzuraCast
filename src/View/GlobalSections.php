@@ -9,8 +9,10 @@ use LogicException;
 
 /**
  * A global section container for templates.
+ *
+ * @implements \ArrayAccess<string, string>
  */
-final class GlobalSections
+final class GlobalSections implements \ArrayAccess
 {
     private int $sectionMode = Template::SECTION_MODE_REWRITE;
     private array $sections = [];
@@ -21,9 +23,29 @@ final class GlobalSections
         return !empty($this->sections[$section]);
     }
 
+    public function offsetExists(mixed $offset): bool
+    {
+        return $this->has((string)$offset);
+    }
+
     public function get(string $section, ?string $default = null): ?string
     {
         return $this->sections[$section] ?? $default;
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->get((string)$offset);
+    }
+
+    public function unset(string $section): void
+    {
+        unset($this->sections[$section]);
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        $this->unset((string)$offset);
     }
 
     public function set(
@@ -38,6 +60,11 @@ final class GlobalSections
             Template::SECTION_MODE_APPEND => $initialValue . $value,
             default => $value
         };
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $this->set((string)$offset, (string)$value);
     }
 
     public function prepend(string $section, ?string $value): void

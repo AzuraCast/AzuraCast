@@ -18,7 +18,7 @@ final class IndexAction
         $view = $request->getView();
 
         // Remove the sidebar on the homepage.
-        $view->addData(['sidebar' => null]);
+        $view->getSections()->unset('sidebar');
 
         $view = $request->getView();
         $viewData = $view->getData();

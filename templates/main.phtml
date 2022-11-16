@@ -42,8 +42,6 @@ endif; ?>">
 
 <?= $this->fetch('partials/bodyjs') ?>
 
-<?= $sections->get('bodyjs') ?>
-
 <script>
     <?php
     $csrfJson = 'null';
@@ -54,10 +52,10 @@ endif; ?>">
     }
     ?>
 
-    $(function () {
-        App.api_csrf = <?=$csrfJson ?>;
-    });
+    App.api_csrf = <?=$csrfJson ?>;
 </script>
+
+<?= $sections->get('bodyjs') ?>
 
 <a class="sr-only sr-only-focusable" href="#content"><?= __('Skip to main content') ?></a>
 

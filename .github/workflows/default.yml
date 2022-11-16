@@ -41,11 +41,6 @@ jobs:
           extensions: intl, xdebug
           tools: composer:v2, cs2pr
 
-      - name: Setup PEAR extensions
-        run: |
-          pear channel-update pear.php.net
-          pear install maxminddb
-
       - name: Cache PHP dependencies
         uses: actions/cache@v2
         with:

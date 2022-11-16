@@ -1,18 +1,18 @@
 <?php
-/** @var */
+/**
+ * @var App\Http\RouterInterface $router
+ * @var App\Environment $environment
+ * @var string $token
+ */
 
 ?><?= __('Account Recovery') ?>
 
-
 <?= sprintf(__('An account recovery link has been requested for your account on "%s".'), $environment->getAppName()) ?>
-
 
 <?= __('Click the link below to log in to your account.') ?>
 
-
 <?= $router->named(
-    'account:recover',
-    ['token' => $token],
-    [],
-    true
+    routeName: 'account:recover',
+    routeParams: ['token' => $token],
+    absolute: true
 )?>

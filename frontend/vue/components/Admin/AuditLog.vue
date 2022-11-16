@@ -144,7 +144,7 @@ export default {
         },
         formatTimestamp(unix_timestamp) {
             return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...document.body.App.time_config}
+                {...DateTime.DATETIME_SHORT, ...App.time_config}
             );
         }
     }

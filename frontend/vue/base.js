@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
         silent: true
     });
 
-    if (typeof document.body.App.locale !== 'undefined') {
-        Vue.config.language = document.body.App.locale;
+    if (typeof App.locale !== 'undefined') {
+        Vue.config.language = App.locale;
     }
 
     // Configure auto-CSRF on requests
-    if (typeof document.body.App.api_csrf !== 'undefined') {
-        axios.defaults.headers.common['X-API-CSRF'] = document.body.App.api_csrf;
+    if (typeof App.api_csrf !== 'undefined') {
+        axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
     }
 
     Vue.use(VueAxios, axios);

@@ -82,7 +82,7 @@ export default {
     methods: {
         formatTime(time) {
             return this.getDateTime(time).toLocaleString(
-                {...DateTime.TIME_WITH_SECONDS, ...document.body.App.time_config}
+                {...DateTime.TIME_WITH_SECONDS, ...App.time_config}
             );
         },
         formatRelativeTime(time) {

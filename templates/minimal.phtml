@@ -7,10 +7,10 @@
  * @var App\Http\Router $router
  * @var App\Session\Flash $flash
  * @var App\Customization $customization
- * @var App\Assets $assets
  * @var App\Version $version
  * @var App\Http\ServerRequest $request
  * @var App\Environment $environment
+ * @var App\View\GlobalSections $sections
  */
 
 $title ??= null;
@@ -24,34 +24,35 @@ $hide_footer ??= false;
 
     <title><?= $customization->getPageTitle($title) ?></title>
 
-    <?= $this->fetch('partials/icons') ?>
+    <?= $this->fetch('partials/head') ?>
 
-    <?= $this->section('head') ?>
+    <?= $sections->get('head') ?>
 
-    <?php
-    $assets
-        ->load('minimal')
-        ->addInlineCss($customization->getCustomPublicCss())
-        ->addInlineJs($customization->getCustomPublicJs());
-
-    echo $assets->css();
-    echo $assets->js();
-    ?>
+    <style>
+        <?=$customization->getCustomPublicCss() ?>
+    </style>
 </head>
 
-<body class="page-minimal <?=$page_class ?? ''?>">
-<?=$assets->inlineJs()?>
+<body class="page-minimal <?= $page_class ?? '' ?>">
 
-<?=$this->section('content')?>
+<?= $this->fetch('partials/bodyjs') ?>
+
+<?= $sections->get('bodyjs') ?>
+
+<script>
+    <?=$customization->getCustomPublicJs() ?>
+</script>
+
+<?= $this->section('content') ?>
 
 <?php
 $hide_footer ??= false;
 if (!$customization->hideProductName() && !$hide_footer): ?>
     <footer id="footer" class="footer-alt" role="contentinfo">
-        <?=sprintf(
+        <?= sprintf(
             __('Powered by %s'),
             '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' '
-        )?>
+        ) ?>
     </footer>
 <?php
 endif; ?>

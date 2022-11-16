@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var App\Customization $customization
+ * @var App\Environment $environment
+ * @var App\Http\RouterInterface $router
+ */
 
 $this->layout(
     'minimal',
@@ -70,7 +75,7 @@ $this->layout(
 
             <p class="text-center"><?=__('Please log in to continue.')?> <?=sprintf(
                     '<a href="%s">%s</a>',
-                    (string)$router->named('account:forgot'),
+                    $router->named('account:forgot'),
                     __('Forgot your password?')
                 )?></p>
         </div>

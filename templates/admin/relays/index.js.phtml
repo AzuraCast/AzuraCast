@@ -1,6 +1,0 @@
-$(function () {
-    $('time[data-content]').each(function () {
-        let tz_display = $(this).data('content');
-        $(this).text(luxon.DateTime.fromSeconds(tz_display).toLocaleString(luxon.DateTime.TIME_SIMPLE));
-    });
-});

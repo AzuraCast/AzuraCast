@@ -63,7 +63,7 @@ export default {
                     sortable: false,
                     formatter: (value, key, item) => {
                         return DateTime.fromSeconds(value).toLocaleString(
-                            {...DateTime.DATETIME_MED, ...document.body.App.time_config}
+                            {...DateTime.DATETIME_MED, ...App.time_config}
                         );
                     },
                     class: 'pl-3'
@@ -77,7 +77,7 @@ export default {
                             return this.$gettext('Live');
                         }
                         return DateTime.fromSeconds(value).toLocaleString(
-                            {...DateTime.DATETIME_MED, ...document.body.App.time_config}
+                            {...DateTime.DATETIME_MED, ...App.time_config}
                         );
                     }
                 },

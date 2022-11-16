@@ -47,16 +47,15 @@ final class Stations
             $active_tab = $route_parts[1];
         }
 
-        $view->addData(
-            [
-                'sidebar' => $view->render(
-                    'stations/sidebar',
-                    [
-                        'menu' => $event->getFilteredMenu(),
-                        'active' => $active_tab,
-                    ]
-                ),
-            ]
+        $view->getSections()->set(
+            'sidebar',
+            $view->render(
+                'stations/sidebar',
+                [
+                    'menu' => $event->getFilteredMenu(),
+                    'active' => $active_tab,
+                ]
+            ),
         );
 
         return $handler->handle($request);

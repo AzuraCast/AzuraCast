@@ -7,10 +7,10 @@ namespace App;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
-use Doctrine\Inflector\InflectorFactory;
+use App\Utilities\Json;
+use App\View\GlobalSections;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
-use League\Plates\Template\Template;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,22 +21,25 @@ final class View extends Engine
 {
     use RequestAwareTrait;
 
+    private readonly GlobalSections $sections;
+
     public function __construct(
         Environment $environment,
         EventDispatcherInterface $dispatcher,
         Version $version,
-        RouterInterface $router,
-        private Assets $assets
+        RouterInterface $router
     ) {
         parent::__construct($environment->getViewsDirectory(), 'phtml');
+
+        $this->sections = new GlobalSections();
 
         // Add non-request-dependent content.
         $this->addData(
             [
+                'sections' => $this->sections,
                 'environment' => $environment,
                 'version' => $version,
                 'router' => $router,
-                'assets' => $this->assets,
             ]
         );
 
@@ -62,52 +65,29 @@ final class View extends Engine
             }
         );
 
+        $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/webpack.json');
         $this->registerFunction(
-            'mailto',
-            function ($address, $link_text = null) {
-                $address = substr(chunk_split(bin2hex(" $address"), 2, ';&#x'), 3, -3);
-                $link_text = $link_text ?? $address;
-                return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
-            }
+            'getVueComponentInfo',
+            fn(string $component) => $vueComponents['entrypoints'][$component] ?? null
         );
 
+        $versionedFiles = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/assets.json');
         $this->registerFunction(
-            'pluralize',
-            function ($word, $num = 0) {
-                if ((int)$num === 1) {
-                    return $word;
+            'assetUrl',
+            function (string $url) use ($environment, $versionedFiles): string {
+                if (isset($versionedFiles[$url])) {
+                    $url = $versionedFiles[$url];
                 }
 
-                return InflectorFactory::create()->build()->pluralize($word);
-            }
-        );
-
-        $this->registerFunction(
-            'truncate',
-            function ($text, $length = 80) {
-                return Utilities\Strings::truncateText($text, $length);
-            }
-        );
-
-        $this->registerFunction(
-            'truncateUrl',
-            function ($url) {
-                return Utilities\Strings::truncateUrl($url);
-            }
-        );
-
-        $this->registerFunction(
-            'link',
-            function ($url, $external = true, $truncate = true) {
-                $url = htmlspecialchars($url, ENT_QUOTES);
-
-                $a = ['href="' . $url . '"'];
-                if ($external) {
-                    $a[] = 'target="_blank"';
+                if (str_starts_with($url, 'http')) {
+                    return $url;
                 }
 
-                $a_body = ($truncate) ? Utilities\Strings::truncateUrl($url) : $url;
-                return '<a ' . implode(' ', $a) . '>' . $a_body . '</a>';
+                if (str_starts_with($url, '/')) {
+                    return $url;
+                }
+
+                return $environment->getAssetUrl() . '/' . $url;
             }
         );
 
@@ -116,13 +96,11 @@ final class View extends Engine
 
     public function setRequest(?ServerRequestInterface $request): void
     {
-        $this->assets = $this->assets->withRequest($request);
         $this->request = $request;
 
         if (null !== $request) {
             $this->addData(
                 [
-                    'assets' => $this->assets,
                     'request' => $request,
                     'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
                     'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
@@ -133,6 +111,11 @@ final class View extends Engine
                 ]
             );
         }
+    }
+
+    public function getSections(): GlobalSections
+    {
+        return $this->sections;
     }
 
     public function reset(): void
@@ -161,8 +144,10 @@ final class View extends Engine
         string $templateName,
         array $templateArgs = []
     ): ResponseInterface {
-        $template = $this->render($templateName, $templateArgs);
-        return $this->writeStringToResponse($response, $template);
+        $response->getBody()->write(
+            $this->render($templateName, $templateArgs)
+        );
+        return $response->withHeader('Content-type', 'text/html; charset=utf-8');
     }
 
     public function renderVuePage(
@@ -176,46 +161,17 @@ final class View extends Engine
     ): ResponseInterface {
         $id ??= $component;
 
-        $vueTemplate = new class ($this, 'vue') extends Template {
-            public function render(array $data = []): string
-            {
-                $this->data($data);
-
-                /** @noinspection UselessUnsetInspection */
-                unset($data);
-
-                $content = '<div id="' . $this->data['id'] . '"></div>';
-
-                $layout = $this->engine->make($this->layoutName);
-                $layout->sections = array_merge($this->sections, ['content' => $content]);
-                return $layout->render($this->layoutData);
-            }
-        };
-
-        $vueTemplate->layout(
-            $layout,
-            array_merge(
-                [
-                    'title' => $title,
-                    'manual' => true,
-                ],
-                $layoutParams
-            )
+        return $this->renderToResponse(
+            $response,
+            'system/vue_page',
+            [
+                'component' => $component,
+                'id' => $id,
+                'layout' => $layout,
+                'title' => $title,
+                'layoutParams' => $layoutParams,
+                'props' => $props,
+            ]
         );
-
-        $this->assets->addVueRender($component, '#' . $id, $props);
-
-        $body = $vueTemplate->render(['id' => $id]);
-        return $this->writeStringToResponse($response, $body);
-    }
-
-    private function writeStringToResponse(
-        ResponseInterface $response,
-        string $body
-    ): ResponseInterface {
-        $response->getBody()->write($body);
-        $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
-
-        return $this->assets->writeCsp($response);
     }
 }

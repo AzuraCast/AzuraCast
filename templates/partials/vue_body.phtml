@@ -1,0 +1,32 @@
+<?php
+/**
+ * @var string $component
+ * @var ?string $id
+ * @var array $props
+ * @var App\View\GlobalSections $sections
+ */
+
+$nameWithoutPrefix = str_replace('Vue_', '', $component);
+
+$componentDeps = $this->getVueComponentInfo($nameWithoutPrefix);
+$propsJson = json_encode($props, JSON_THROW_ON_ERROR);
+
+$scriptLines = [];
+foreach ($componentDeps['assets']['js'] ?? [] as $componentDep) {
+    $scriptLines[] = <<<HTML
+    <script src="{$this->assetUrl($componentDep)}"></script>
+    HTML;
+}
+
+$scriptLines[] = <<<HTML
+<script>
+$(function () {
+    {$component} = {$nameWithoutPrefix}.default('#{$id}', {$propsJson});
+});
+</script>
+HTML;
+
+$sections->append('bodyjs', implode("\n", $scriptLines));
+?>
+
+<div id="<?= $id ?>">Loading...</div>

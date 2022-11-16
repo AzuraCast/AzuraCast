@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (typeof App.locale !== 'undefined') {
-    Vue.config.language = App.locale;
-  }
+        Vue.config.language = App.locale;
+    }
 
-  // Configure auto-CSRF on requests
-  if (typeof App.api_csrf !== 'undefined') {
-    axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
-  }
+    // Configure auto-CSRF on requests
+    if (typeof App.api_csrf !== 'undefined') {
+        axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
+    }
 
   Vue.use(VueAxios, axios);
 

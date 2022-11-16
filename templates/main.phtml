@@ -6,11 +6,11 @@
  * @var App\Http\Router $router
  * @var App\Session\Flash $flash
  * @var App\Customization $customization
- * @var App\Assets $assets
  * @var App\Version $version
  * @var App\Http\ServerRequest $request
  * @var App\Environment $environment
  * @var App\Entity\User $user
+ * @var App\View\GlobalSections $sections
  */
 
 $manual ??= false;
@@ -26,29 +26,44 @@ $header ??= null;
 
     <title><?= $customization->getPageTitle($title) ?></title>
 
-    <?= $this->fetch('partials/icons') ?>
+    <?= $this->fetch('partials/head') ?>
 
-    <?= $this->section('head') ?>
+    <script src="<?= $this->assetUrl('dist/lib/sweetalert2/sweetalert2.min.js') ?>" defer></script>
 
-    <?php
-    $assets
-        ->load('main')
-        ->addInlineCss($customization->getCustomInternalCss());
+    <?= $sections->get('head') ?>
 
-    echo $assets->css();
-    echo $assets->js();
-    ?>
+    <style>
+        <?=$customization->getCustomInternalCss() ?>
+    </style>
 </head>
-<body class="page-full <?=$page_class ?? ''?> <?php
-if (!empty($sidebar)): ?>has-sidebar<?php
+<body class="page-full <?= $page_class ?? '' ?> <?php
+if ($sections->has('sidebar')): ?>has-sidebar<?php
 endif; ?>">
-<?=$assets->inlineJs()?>
 
-<a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content')?></a>
+<?= $this->fetch('partials/bodyjs') ?>
+
+<?= $sections->get('bodyjs') ?>
+
+<script>
+    <?php
+    $csrfJson = 'null';
+    $csrf = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_CSRF);
+    if ($csrf instanceof App\Session\Csrf) {
+        $csrfToken = $csrf->generate(App\Middleware\Auth\ApiAuth::API_CSRF_NAMESPACE);
+        $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
+    }
+    ?>
+
+    $(function () {
+        App.api_csrf = <?=$csrfJson ?>;
+    });
+</script>
+
+<a class="sr-only sr-only-focusable" href="#content"><?= __('Skip to main content') ?></a>
 
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
     <?php
-    if (!empty($sidebar)): ?>
+    if ($sections->has('sidebar')): ?>
         <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
         ) ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar"
@@ -136,10 +151,10 @@ endif; ?>">
 </header>
 
 <?php
-if (!empty($sidebar)): ?>
+if ($sections->has('sidebar')): ?>
     <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content">
-            <?=$sidebar?>
+            <?= $sections->get('sidebar') ?>
         </nav>
     </div>
 <?php
@@ -147,7 +162,7 @@ endif; ?>
 
 <section id="main">
     <section id="content" <?php
-    if (empty($sidebar)): ?>class="content-alt"<?php
+    if (!$sections->has('sidebar')): ?>class="content-alt"<?php
     endif; ?> role="main">
         <div class="container">
             <?php
@@ -177,7 +192,7 @@ endif; ?>
 </section>
 
 <footer id="footer" <?php
-if (empty($sidebar)): ?>class="footer-alt"<?php
+if (!$sections->has('sidebar')): ?>class="footer-alt"<?php
 endif; ?> role="contentinfo">
     <?= sprintf(
         __('Powered by %s'),

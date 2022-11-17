@@ -7,7 +7,6 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use App\Service\GuzzleFactory;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Monolog\Logger;
 
@@ -39,7 +38,7 @@ final class Twitter extends AbstractConnector
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
-    ): bool {
+    ): void {
         $config = $webhook->getConfig();
 
         if (
@@ -48,8 +47,7 @@ final class Twitter extends AbstractConnector
             || empty($config['token'])
             || empty($config['token_secret'])
         ) {
-            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return false;
+            throw $this->incompleteConfigException();
         }
 
         // Set up Twitter OAuth
@@ -74,28 +72,21 @@ final class Twitter extends AbstractConnector
         // Dispatch webhook
         $this->logger->debug('Posting to Twitter...');
 
-        try {
-            $response = $this->httpClient->request(
-                'POST',
-                'https://api.twitter.com/1.1/statuses/update.json',
-                [
-                    'auth' => 'oauth',
-                    'handler' => $stack,
-                    'form_params' => [
-                        'status' => $vars['message'],
-                    ],
-                ]
-            );
+        $response = $this->httpClient->request(
+            'POST',
+            'https://api.twitter.com/1.1/statuses/update.json',
+            [
+                'auth' => 'oauth',
+                'handler' => $stack,
+                'form_params' => [
+                    'status' => $vars['message'],
+                ],
+            ]
+        );
 
-            $this->logger->debug(
-                sprintf('Twitter returned code %d', $response->getStatusCode()),
-                ['response_body' => $response->getBody()->getContents()]
-            );
-        } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from Twitter (%d): %s', $e->getCode(), $e->getMessage()));
-            return false;
-        }
-
-        return true;
+        $this->logger->debug(
+            sprintf('Twitter returned code %d', $response->getStatusCode()),
+            ['response_body' => $response->getBody()->getContents()]
+        );
     }
 }

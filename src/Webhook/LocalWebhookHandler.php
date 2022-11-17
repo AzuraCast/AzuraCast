@@ -63,16 +63,5 @@ final class LocalWebhookHandler
             $staticNpPath,
             json_encode($np, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) ?: ''
         );
-
-        // Send Nchan notification.
-        $this->logger->debug('Dispatching Nchan notification...');
-
-        $this->httpClient->post(
-            $this->environment->getInternalUri()
-                ->withPath('/pub/' . urlencode($station->getShortName())),
-            [
-                'json' => $np,
-            ]
-        );
     }
 }

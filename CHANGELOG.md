@@ -5,6 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Mastodon Posting Support**: Publish to Mastodon via a Web Hook, the same way you do with Twitter!
+
 - **Cover Art Files Support**: Many users keep the cover art for their media alongside the media in a separate image
   file. AzuraCast now detects image files in the same folder as your media and uses it as the default album art for that
   media. Because cover art files are often named a variety of things, we currently will use _any_ image file that exists
@@ -19,6 +21,8 @@ release channel, you can take advantage of these new features and fixes.
   all essential application services, and even restart them directly from the web interface.
 
 ## Bug Fixes
+
+- Fixed an issue where listener connection times over a day didn't properly show up.
 
 - Fixed several issues contributing to slow load times on media manager pages.
 

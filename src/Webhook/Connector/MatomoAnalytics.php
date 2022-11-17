@@ -8,7 +8,6 @@ use App\Entity;
 use App\Http\RouterInterface;
 use App\Utilities\Urls;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 
@@ -33,12 +32,11 @@ final class MatomoAnalytics extends AbstractConnector
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
-    ): bool {
+    ): void {
         $config = $webhook->getConfig();
 
         if (empty($config['matomo_url']) || empty($config['site_id'])) {
-            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return false;
+            throw $this->incompleteConfigException();
         }
 
         // Get listen URLs for each mount point.
@@ -119,21 +117,19 @@ final class MatomoAnalytics extends AbstractConnector
             $i++;
 
             if (100 === $i) {
-                if (!$this->sendBatch($apiUrl, $apiToken, $entries)) {
-                    return false;
-                }
+                $this->sendBatch($apiUrl, $apiToken, $entries);
                 $entries = [];
                 $i = 0;
             }
         }
 
-        return $this->sendBatch($apiUrl, $apiToken, $entries);
+        $this->sendBatch($apiUrl, $apiToken, $entries);
     }
 
-    private function sendBatch(UriInterface $apiUrl, ?string $apiToken, array $entries): bool
+    private function sendBatch(UriInterface $apiUrl, ?string $apiToken, array $entries): void
     {
         if (empty($entries)) {
-            return true;
+            return;
         }
 
         $jsonBody = [
@@ -148,20 +144,13 @@ final class MatomoAnalytics extends AbstractConnector
 
         $this->logger->debug('Message body for Matomo API Query', ['body' => $jsonBody]);
 
-        try {
-            $response = $this->httpClient->post($apiUrl, [
-                'json' => $jsonBody,
-            ]);
+        $response = $this->httpClient->post($apiUrl, [
+            'json' => $jsonBody,
+        ]);
 
-            $this->logger->debug(
-                sprintf('Matomo returned code %d', $response->getStatusCode()),
-                ['response_body' => $response->getBody()->getContents()]
-            );
-        } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from Matomo (%d): %s', $e->getCode(), $e->getMessage()));
-            return false;
-        }
-
-        return true;
+        $this->logger->debug(
+            sprintf('Matomo returned code %d', $response->getStatusCode()),
+            ['response_body' => $response->getBody()->getContents()]
+        );
     }
 }

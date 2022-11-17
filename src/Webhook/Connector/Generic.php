@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use GuzzleHttp\Exception\TransferException;
 
 final class Generic extends AbstractConnector
 {
@@ -19,43 +18,35 @@ final class Generic extends AbstractConnector
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
-    ): bool {
+    ): void {
         $config = $webhook->getConfig();
 
         $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return false;
+            throw $this->incompleteConfigException();
         }
 
-        try {
-            $request_options = [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => $np,
-                'timeout' => (float)($config['timeout'] ?? 5.0),
+        $request_options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'json' => $np,
+            'timeout' => (float)($config['timeout'] ?? 5.0),
+        ];
+
+        if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {
+            $request_options['auth'] = [
+                $config['basic_auth_username'],
+                $config['basic_auth_password'],
             ];
-
-            if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {
-                $request_options['auth'] = [
-                    $config['basic_auth_username'],
-                    $config['basic_auth_password'],
-                ];
-            }
-
-            $response = $this->httpClient->request('POST', $webhook_url, $request_options);
-
-            $this->logger->debug(
-                sprintf('Generic webhook returned code %d', $response->getStatusCode()),
-                ['response_body' => $response->getBody()->getContents()]
-            );
-        } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from generic webhook (%d): %s', $e->getCode(), $e->getMessage()));
-            return false;
         }
 
-        return true;
+        $response = $this->httpClient->request('POST', $webhook_url, $request_options);
+
+        $this->logger->debug(
+            sprintf('Generic webhook returned code %d', $response->getStatusCode()),
+            ['response_body' => $response->getBody()->getContents()]
+        );
     }
 }

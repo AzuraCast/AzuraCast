@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use GuzzleHttp\Exception\TransferException;
 use Monolog\Level;
 
 /*
@@ -72,14 +71,13 @@ final class Discord extends AbstractConnector
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
-    ): bool {
+    ): void {
         $config = $webhook->getConfig();
 
         $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return false;
+            throw $this->incompleteConfigException();
         }
 
         $raw_vars = [
@@ -131,29 +129,22 @@ final class Discord extends AbstractConnector
         // Dispatch webhook
         $this->logger->debug('Dispatching Discord webhook...');
 
-        try {
-            $response = $this->httpClient->request(
-                'POST',
-                $webhook_url,
-                [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                    ],
-                    'json' => $webhook_body,
-                ]
-            );
+        $response = $this->httpClient->request(
+            'POST',
+            $webhook_url,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $webhook_body,
+            ]
+        );
 
-            $this->logger->addRecord(
-                ($response->getStatusCode() !== 204 ? Level::Error : Level::Debug),
-                sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
-                ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
-            );
-        } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
-            return false;
-        }
-
-        return true;
+        $this->logger->addRecord(
+            ($response->getStatusCode() !== 204 ? Level::Error : Level::Debug),
+            sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
+            ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
+        );
     }
 
     /** @noinspection HttpUrlsUsage */

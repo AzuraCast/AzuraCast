@@ -61,6 +61,12 @@ return [
             'description' => __('Automatically send a tweet.'),
             'triggers' => $allTriggers,
         ],
+        Connector\Mastodon::NAME => [
+            'class' => Connector\Mastodon::class,
+            'name' => __('Mastodon Post'),
+            'description' => __('Automatically publish to a Mastodon instance.'),
+            'triggers' => [],
+        ],
         Connector\GoogleAnalytics::NAME => [
             'class' => Connector\GoogleAnalytics::class,
             'name' => __('Google Analytics Integration'),

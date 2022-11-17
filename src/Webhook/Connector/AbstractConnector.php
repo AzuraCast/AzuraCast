@@ -114,4 +114,14 @@ abstract class AbstractConnector implements ConnectorInterface
         $pattern = sprintf(UrlValidator::PATTERN, 'http|https');
         return (preg_match($pattern, $url)) ? $url : null;
     }
+
+    protected function incompleteConfigException(): \InvalidArgumentException
+    {
+        return new \InvalidArgumentException(
+            sprintf(
+                'Webhook %s is missing necessary configuration. Skipping...',
+                static::NAME
+            ),
+        );
+    }
 }

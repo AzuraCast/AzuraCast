@@ -31,11 +31,10 @@ final class GoogleAnalytics extends AbstractConnector
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
-    ): bool {
+    ): void {
         $config = $webhook->getConfig();
         if (empty($config['tracking_id'])) {
-            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return false;
+            throw $this->incompleteConfigException();
         }
 
         // Get listen URLs for each mount point.
@@ -95,7 +94,5 @@ final class GoogleAnalytics extends AbstractConnector
         }
 
         $analytics->sendEnqueuedHits();
-
-        return true;
     }
 }

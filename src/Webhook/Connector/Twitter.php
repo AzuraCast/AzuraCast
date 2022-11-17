@@ -47,7 +47,7 @@ final class Twitter extends AbstractConnector
             || empty($config['token'])
             || empty($config['token_secret'])
         ) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         // Set up Twitter OAuth

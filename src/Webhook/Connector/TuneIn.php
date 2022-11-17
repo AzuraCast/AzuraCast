@@ -27,7 +27,7 @@ final class TuneIn extends AbstractConnector
         $config = $webhook->getConfig();
 
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         $this->logger->debug('Dispatching TuneIn AIR API call...');

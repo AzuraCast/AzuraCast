@@ -24,6 +24,7 @@ final class View extends Engine
     private readonly GlobalSections $sections;
 
     public function __construct(
+        Customization $customization,
         Environment $environment,
         EventDispatcherInterface $dispatcher,
         Version $version,
@@ -37,6 +38,7 @@ final class View extends Engine
         $this->addData(
             [
                 'sections' => $this->sections,
+                'customization' => $customization,
                 'environment' => $environment,
                 'version' => $version,
                 'router' => $router,
@@ -99,17 +101,25 @@ final class View extends Engine
         $this->request = $request;
 
         if (null !== $request) {
-            $this->addData(
-                [
-                    'request' => $request,
-                    'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
-                    'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
-                    'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
-                    'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
-                    'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-                    'user' => $request->getAttribute(ServerRequest::ATTR_USER),
-                ]
-            );
+            $requestData = [
+                'request' => $request,
+                'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
+                'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
+                'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
+                'user' => $request->getAttribute(ServerRequest::ATTR_USER),
+            ];
+
+            $router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
+            if (null !== $router) {
+                $requestData['router'] = $router;
+            }
+
+            $customization = $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION);
+            if (null !== $customization) {
+                $requestData['customization'] = $customization;
+            }
+
+            $this->addData($requestData);
         }
     }
 

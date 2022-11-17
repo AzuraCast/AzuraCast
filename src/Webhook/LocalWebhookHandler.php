@@ -6,7 +6,6 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Environment;
-use GuzzleHttp\Client;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -18,7 +17,6 @@ final class LocalWebhookHandler
 
     public function __construct(
         private readonly Logger $logger,
-        private readonly Client $httpClient,
         private readonly Environment $environment,
     ) {
     }

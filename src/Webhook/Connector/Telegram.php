@@ -30,7 +30,7 @@ final class Telegram extends AbstractConnector
         $chat_id = trim($config['chat_id'] ?? '');
 
         if (empty($bot_token) || empty($chat_id)) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         $messages = $this->replaceVariables(

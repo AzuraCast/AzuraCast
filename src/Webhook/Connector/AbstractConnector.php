@@ -115,12 +115,12 @@ abstract class AbstractConnector implements ConnectorInterface
         return (preg_match($pattern, $url)) ? $url : null;
     }
 
-    protected function incompleteConfigException(): \InvalidArgumentException
+    protected function incompleteConfigException(string $name): \InvalidArgumentException
     {
         return new \InvalidArgumentException(
             sprintf(
                 'Webhook %s is missing necessary configuration. Skipping...',
-                static::NAME
+                $name
             ),
         );
     }

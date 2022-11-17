@@ -77,7 +77,7 @@ final class Discord extends AbstractConnector
         $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         $raw_vars = [

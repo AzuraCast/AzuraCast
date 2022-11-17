@@ -51,7 +51,16 @@ final class Dispatcher
         $triggers = $message->triggers;
 
         // Always dispatch the special "local" updater task.
-        $this->localHandler->dispatch($station, $np);
+        try {
+            $this->localHandler->dispatch($station, $np);
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
+                [
+                    'exception' => $e,
+                ]
+            );
+        }
 
         if ($this->environment->isTesting()) {
             $this->logger->notice('In testing mode; no webhooks dispatched.');
@@ -74,18 +83,12 @@ final class Dispatcher
                 $this->logger->debug(sprintf('Dispatching connector "%s".', $webhook->getType()));
 
                 try {
-                    if ($connectorObj->dispatch($station, $webhook, $np, $triggers)) {
-                        $webhook->updateLastSentTimestamp();
-                        $this->em->persist($webhook);
-                    }
+                    $connectorObj->dispatch($station, $webhook, $np, $triggers);
+                    $webhook->updateLastSentTimestamp();
+                    $this->em->persist($webhook);
                 } catch (\Throwable $e) {
                     $this->logger->error(
-                        sprintf(
-                            '%s L%d: %s',
-                            $e->getFile(),
-                            $e->getLine(),
-                            $e->getMessage()
-                        ),
+                        sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
                         [
                             'exception' => $e,
                         ]

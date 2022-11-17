@@ -34,7 +34,7 @@ final class GoogleAnalytics extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
         if (empty($config['tracking_id'])) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         // Get listen URLs for each mount point.

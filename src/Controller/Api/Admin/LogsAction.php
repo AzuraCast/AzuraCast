@@ -9,6 +9,7 @@ use App\Environment;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\ServiceControl;
 use Psr\Http\Message\ResponseInterface;
 
 final class LogsAction
@@ -16,7 +17,8 @@ final class LogsAction
     use HasLogViewer;
 
     public function __construct(
-        private readonly Environment $environment
+        private readonly Environment $environment,
+        private readonly ServiceControl $serviceControl,
     ) {
     }
 
@@ -78,37 +80,19 @@ final class LogsAction
         ];
 
         if ($this->environment->isDocker()) {
-            $langServiceLog = __('%s Service Log');
-            $logPaths['service_mariadb'] = [
-                'name' => sprintf($langServiceLog, __('MariaDB')),
-                'path' => $tempDir . '/service_mariadb.log',
-                'tail' => true,
-            ];
-            $logPaths['service_redis'] = [
-                'name' => sprintf($langServiceLog, __('Redis')),
-                'path' => $tempDir . '/service_redis.log',
-                'tail' => true,
-            ];
-            $logPaths['service_beanstalkd'] = [
-                'name' => sprintf($langServiceLog, __('Beanstalkd')),
-                'path' => $tempDir . '/service_beanstalkd.log',
-                'tail' => true,
-            ];
-            $logPaths['service_cron'] = [
-                'name' => sprintf($langServiceLog, __('Cron')),
-                'path' => $tempDir . '/service_crond.log',
-                'tail' => true,
-            ];
-            $logPaths['service_nginx'] = [
-                'name' => sprintf($langServiceLog, __('Nginx')),
-                'path' => $tempDir . '/service_nginx.log',
-                'tail' => true,
-            ];
-            $logPaths['service_sftpgo'] = [
-                'name' => sprintf($langServiceLog, __('SFTPGo')),
-                'path' => $tempDir . '/service_sftpgo.log',
-                'tail' => true,
-            ];
+            $langServiceLog = __('Service Log: %s (%s)');
+
+            foreach ($this->serviceControl->getServiceNames() as $serviceKey => $serviceName) {
+                $logPath = $tempDir . '/service_' . $serviceKey . '.log';
+
+                if (is_file($logPath)) {
+                    $logPaths['service_' . $serviceKey] = [
+                        'name' => sprintf($langServiceLog, $serviceKey, $serviceName),
+                        'path' => $logPath,
+                        'tail' => true,
+                    ];
+                }
+            }
         } else {
             $logPaths['nginx_access'] = [
                 'name' => __('Nginx Access Log'),

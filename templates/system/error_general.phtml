@@ -10,11 +10,11 @@ $this->layout('minimal', [
         <div class="card-body">
             <h2 class="display-1 mt-2">500</h2>
             <p>
-                <?=$exception->getMessage() ?><br>
-                <?=basename($exception->getFile()) ?> : <?=$exception->getLine() ?>
+                <?= $exception->getMessage() ?><br>
+                <?= basename($exception->getFile()) ?> : <?= $exception->getLine() ?>
             </p>
 
-            <a role="button" title="<?=__('Dashboard') ?>" class="btn btn-login btn-primary btn-float" href="<?=$router->named('home') ?>">
+            <a role="button" title="<?= __('Dashboard') ?>" class="btn btn-login btn-primary btn-float" href="/">
                 <i class="material-icons" aria-hidden="true">home</i>
             </a>
         </div>

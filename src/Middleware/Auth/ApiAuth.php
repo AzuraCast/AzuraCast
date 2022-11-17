@@ -6,6 +6,7 @@ namespace App\Middleware\Auth;
 
 use App\Acl;
 use App\Auth;
+use App\Customization;
 use App\Entity;
 use App\Environment;
 use App\Exception\CsrfValidationException;
@@ -21,13 +22,13 @@ final class ApiAuth extends AbstractAuth
     public const API_CSRF_NAMESPACE = 'api';
 
     public function __construct(
-        protected Entity\Repository\UserRepository $userRepo,
         protected Entity\Repository\ApiKeyRepository $apiKeyRepo,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\UserRepository $userRepo,
         Environment $environment,
-        Acl $acl
+        Acl $acl,
+        Customization $customization
     ) {
-        parent::__construct($settingsRepo, $environment, $acl);
+        parent::__construct($userRepo, $environment, $acl, $customization);
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

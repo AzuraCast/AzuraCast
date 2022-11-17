@@ -34,7 +34,7 @@ final class Mastodon extends AbstractConnector
         $accessToken = trim($config['access_token'] ?? '');
 
         if (empty($instanceUrl) || empty($accessToken)) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         $messages = $this->replaceVariables(

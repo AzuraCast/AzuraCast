@@ -36,7 +36,7 @@ final class MatomoAnalytics extends AbstractConnector
         $config = $webhook->getConfig();
 
         if (empty($config['matomo_url']) || empty($config['site_id'])) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         // Get listen URLs for each mount point.

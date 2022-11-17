@@ -40,7 +40,7 @@ final class Email extends AbstractConnector
         $emailBody = $config['message'];
 
         if (empty($emailTo) || empty($emailSubject) || empty($emailBody)) {
-            throw $this->incompleteConfigException();
+            throw $this->incompleteConfigException(self::NAME);
         }
 
         $email = $this->mail->createMessage();

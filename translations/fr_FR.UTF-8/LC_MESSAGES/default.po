@@ -6355,7 +6355,7 @@ msgstr "Activez la fonctionnalité \"fusion\" de composer pour combiner le fichi
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:70
 msgid "Minimum Port for Station Port Assignment"
-msgstr "Port maximum pour l'affectation des ports de la station"
+msgstr "Port minimum pour l'affectation des ports de la station"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:71
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:77

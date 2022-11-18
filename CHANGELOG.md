@@ -20,7 +20,12 @@ release channel, you can take advantage of these new features and fixes.
 - Because both our Docker and Ansible installations are managed by Supervisor now, we can view the realtime status of
   all essential application services, and even restart them directly from the web interface.
 
+- If you enter the link for a public player page into a media player app (i.e. VLC), it will automatically redirect to
+  the playlist file and play appropriately.
+
 ## Bug Fixes
+
+- HLS streams will now be included in Playlist (PLS/M3U) file downloads.
 
 - Fixed an issue where listener connection times over a day didn't properly show up.
 

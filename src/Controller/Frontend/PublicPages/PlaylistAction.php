@@ -61,6 +61,27 @@ final class PlaylistAction
             ];
         }
 
+        if ($station->getEnableHls() && $station->getBackendTypeEnum()->isEnabled()) {
+            $backend = $this->adapters->getBackendAdapter($station);
+            $backendConfig = $station->getBackendConfig();
+
+            if (null !== $backend && $backendConfig->getHlsEnableOnPublicPlayer()) {
+                $streamUrl = $backend->getHlsUrl($station);
+                $streamRow = [
+                    'name' => $station->getName() . ' - HLS',
+                    'url' => (string)$streamUrl,
+                ];
+
+                if ($backendConfig->getHlsIsDefault()) {
+                    array_unshift($stream_urls, $streamUrl);
+                    array_unshift($streams, $streamRow);
+                } else {
+                    $stream_urls[] = $streamUrl;
+                    $streams[] = $streamRow;
+                }
+            }
+        }
+
         $format = strtolower($format);
         switch ($format) {
             // M3U Playlist Format

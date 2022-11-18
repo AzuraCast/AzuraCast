@@ -76,13 +76,24 @@ final class PlayerAction
             );
         }
 
-        // Render full page player.
-        $props['stationName'] = $station->getName();
-        $props['enableRequests'] = $station->getEnableRequests();
         $props['downloadPlaylistUri'] = $router->named(
             'public:playlist',
             ['station_id' => $station->getShortName(), 'format' => 'pls']
         );
+
+        // Auto-redirect requests from players to the playlist (PLS) download.
+        $userAgent = strtolower($request->getHeaderLine('User-Agent'));
+        $players = ['mpv', 'player', 'vlc', 'applecoremedia'];
+        foreach ($players as $player) {
+            if (str_contains($userAgent, $player)) {
+                return $response->withRedirect($props['downloadPlaylistUri']);
+            }
+        }
+
+        // Render full page player.
+        $props['stationName'] = $station->getName();
+        $props['enableRequests'] = $station->getEnableRequests();
+
         $props['requestListUri'] = $router->named(
             'api:requests:list',
             ['station_id' => $station->getId()]

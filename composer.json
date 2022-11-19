@@ -2,7 +2,7 @@
   "name": "azuracast/azuracast",
   "type": "project",
   "description": "The AzuraCast self-hosted web radio station management suite.",
-  "license": "Apache-2.0",
+  "license": "AGPL-3.0-or-later",
   "authors": [
     {
       "name": "Buster Neece",
@@ -42,7 +42,7 @@
     "guzzlehttp/guzzle": "^7.0",
     "guzzlehttp/oauth-subscriber": "^0.6.0",
     "intervention/image": "^2.6",
-    "james-heinrich/getid3": "v2.0.0-beta4",
+    "james-heinrich/getid3": "v2.0.0-beta5",
     "league/csv": "^9.6",
     "league/flysystem-aws-s3-v3": "^3.0",
     "league/flysystem-sftp-v3": "^3.0",
@@ -176,17 +176,17 @@
       "@dev-test"
     ],
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
-    "codeception-no-coverage" : "codecept run --no-interaction",
-    "dev-test" : [
+    "codeception-no-coverage": "codecept run --no-interaction",
+    "dev-test": [
       "@phplint",
       "@phpstan",
       "@phpcs",
       "@codeception-no-coverage"
     ],
-    "phpcbf" : "phpcbf",
-    "phpcs" : "phpcs",
-    "phplint" : "parallel-lint . --exclude vendor",
-    "phpstan" : "phpstan analyze --xdebug --memory-limit=-1",
-    "shell" : "psysh"
+    "phpcbf": "phpcbf",
+    "phpcs": "phpcs",
+    "phplint": "parallel-lint . --exclude vendor",
+    "phpstan": "phpstan analyze --xdebug --memory-limit=-1",
+    "shell": "psysh"
   }
 }

@@ -28,31 +28,14 @@ final class Writer
 
         $pathExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        $tagFormats = null;
-        switch ($pathExt) {
-            case 'mp3':
-            case 'mp2':
-            case 'mp1':
-            case 'riff':
-                $tagFormats = ['id3v1', 'id3v2.3'];
-                break;
-
-            case 'mpc':
-                $tagFormats = ['ape'];
-                break;
-
-            case 'flac':
-                $tagFormats = ['metaflac'];
-                break;
-
-            case 'real':
-                $tagFormats = ['real'];
-                break;
-
-            case 'ogg':
-                $tagFormats = ['vorbiscomment'];
-                break;
-        }
+        $tagFormats = match ($pathExt) {
+            'mp3', 'mp2', 'mp1', 'riff' => ['id3v1', 'id3v2.3'],
+            'mpc' => ['ape'],
+            'flac' => ['metaflac'],
+            'real' => ['real'],
+            'ogg' => ['vorbiscomment'],
+            default => null,
+        };
 
         if (null === $tagFormats) {
             throw new RuntimeException('Cannot write tag formats based on file type.');

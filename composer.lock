@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63eb5cc6c2cd506f1692daa172b11923",
+    "content-hash": "92ebefe9268eb37e3a81618211c0df27",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2841,16 +2841,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v2.0.0-beta4",
+            "version": "v2.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "5ad79104e937e7d9c8a9141a97e1f063dd1123f8"
+                "reference": "4e7aca96e7f4cf5ce6e08bca998334f567259965"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/5ad79104e937e7d9c8a9141a97e1f063dd1123f8",
-                "reference": "5ad79104e937e7d9c8a9141a97e1f063dd1123f8",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/4e7aca96e7f4cf5ce6e08bca998334f567259965",
+                "reference": "4e7aca96e7f4cf5ce6e08bca998334f567259965",
                 "shasum": ""
             },
             "require": {
@@ -2920,9 +2920,9 @@
             ],
             "support": {
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
-                "source": "https://github.com/JamesHeinrich/getID3/tree/v2.0.0-beta4"
+                "source": "https://github.com/JamesHeinrich/getID3/tree/v2.0.0-beta5"
             },
-            "time": "2021-10-06T16:23:45+00:00"
+            "time": "2022-10-28T11:52:26+00:00"
         },
         {
             "name": "laminas/laminas-code",

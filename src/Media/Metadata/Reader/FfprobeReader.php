@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Media\Metadata;
+namespace App\Media\Metadata\Reader;
 
 use App\Event\Media\ReadMetadata;
 use App\Media\Enums\MetadataTags;
@@ -10,22 +10,33 @@ use App\Media\Metadata;
 use App\Media\MimeType;
 use App\Utilities\Arrays;
 use App\Utilities\File;
+use App\Utilities\Strings;
 use App\Utilities\Time;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
+use Psr\Log\LoggerInterface;
 use Throwable;
-use voku\helper\UTF8;
 
-final class Reader
+final class FfprobeReader
 {
+    private readonly FFProbe $ffprobe;
+
+    private readonly FFMpeg $ffmpeg;
+
+    public function __construct(
+        LoggerInterface $logger
+    ) {
+        $this->ffprobe = FFProbe::create([], $logger);
+        $this->ffmpeg = FFMpeg::create([], $logger, $this->ffprobe);
+    }
+
     public function __invoke(ReadMetadata $event): void
     {
         $path = $event->getPath();
 
-        $ffprobe = FFProbe::create();
-        $format = $ffprobe->format($path);
-        $streams = $ffprobe->streams($path);
+        $format = $this->ffprobe->format($path);
+        $streams = $this->ffprobe->streams($path);
 
         $metadata = new Metadata();
         $metadata->setMimeType(MimeType::getMimeTypeFromFile($path));
@@ -35,15 +46,19 @@ final class Reader
             $metadata->setDuration($duration);
         }
 
-        $metadata->setTags($this->aggregateMetaTags(
-            $format,
-            $streams
-        ));
+        $metadata->setTags(
+            $this->aggregateMetaTags(
+                $format,
+                $streams
+            )
+        );
 
-        $metadata->setArtwork($this->getAlbumArt(
-            $streams,
-            $path
-        ));
+        $metadata->setArtwork(
+            $this->getAlbumArt(
+                $streams,
+                $path
+            )
+        );
 
         $event->setMetadata($metadata);
     }
@@ -109,7 +124,7 @@ final class Reader
                     $tagValue = implode(', ', $flatValue);
                 }
 
-                $tagValue = $this->cleanUpString((string)$tagValue);
+                $tagValue = Strings::stringToUtf8((string)$tagValue);
 
                 $tagName = $tagEnum->value;
                 if (isset($metaTags[$tagName])) {
@@ -128,8 +143,6 @@ final class Reader
         string $path
     ): ?string {
         // Pull album art directly from relevant streams.
-        $ffmpeg = FFMpeg::create();
-
         try {
             /** @var Stream $videoStream */
             foreach ($streams->videos() as $videoStream) {
@@ -141,7 +154,7 @@ final class Reader
                 $artOutput = File::generateTempPath('artwork.jpg');
                 @unlink($artOutput); // Ffmpeg won't overwrite the empty file.
 
-                $ffmpeg->getFFMpegDriver()->command([
+                $this->ffmpeg->getFFMpegDriver()->command([
                     '-i',
                     $path,
                     '-an',
@@ -158,21 +171,5 @@ final class Reader
         }
 
         return null;
-    }
-
-    private function cleanUpString(?string $original): string
-    {
-        $original ??= '';
-
-        $string = UTF8::encode('UTF-8', $original);
-        $string = UTF8::fix_simple_utf8($string);
-        return UTF8::clean(
-            $string,
-            true,
-            true,
-            true,
-            true,
-            true
-        );
     }
 }

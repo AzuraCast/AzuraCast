@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 use RuntimeException;
+use voku\helper\UTF8;
 
 final class Strings
 {
@@ -129,5 +130,21 @@ final class Strings
 
         $result = str_replace(' ', '_', $result);
         return mb_strtolower($result);
+    }
+
+    public static function stringToUtf8(?string $original): string
+    {
+        $original ??= '';
+
+        $string = UTF8::encode('UTF-8', $original);
+        $string = UTF8::fix_simple_utf8($string);
+        return UTF8::clean(
+            $string,
+            true,
+            true,
+            true,
+            true,
+            true
+        );
     }
 }

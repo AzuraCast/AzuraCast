@@ -187,7 +187,12 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
 
     $dispatcher->addCallableListener(
         Event\Media\ReadMetadata::class,
-        App\Media\Metadata\Reader::class
+        App\Media\Metadata\Reader\PhpReader::class,
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\ReadMetadata::class,
+        App\Media\Metadata\Reader\FfprobeReader::class,
+        priority: -10
     );
     $dispatcher->addCallableListener(
         Event\Media\WriteMetadata::class,

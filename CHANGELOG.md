@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.17.5 (Nov 21, 2022)
+
+## New Features/Changes
+
 - **Mastodon Posting Support**: Publish to Mastodon via a Web Hook, the same way you do with Twitter!
 
 - **Cover Art Files Support**: Many users keep the cover art for their media alongside the media in a separate image

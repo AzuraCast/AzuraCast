@@ -18,7 +18,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
@@ -388,6 +388,7 @@ final class BatchAction
 
             if (!isset($queuedMediaUpdates[$mediaId])) {
                 $message = new Message\ReprocessMediaMessage();
+                $message->storage_location_id = $storageLocation->getIdRequired();
                 $message->media_id = $mediaId;
                 $message->force = true;
 
@@ -400,7 +401,7 @@ final class BatchAction
 
             if (!isset($queuedNewFiles[$path])) {
                 $message = new Message\AddNewMediaMessage();
-                $message->storage_location_id = (int)$storageLocation->getId();
+                $message->storage_location_id = $storageLocation->getIdRequired();
                 $message->path = $unprocessable->getPath();
 
                 $this->messageBus->dispatch($message);

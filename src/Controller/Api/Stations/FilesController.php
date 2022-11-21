@@ -10,6 +10,7 @@ use App\Exception\ValidationException;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Media\MediaProcessor;
 use App\Message\WritePlaylistFileMessage;
 use App\OpenApi;
 use App\Radio\Adapters;
@@ -156,6 +157,7 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly Entity\Repository\CustomFieldRepository $customFieldsRepo,
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly MediaProcessor $mediaProcessor,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -206,13 +208,19 @@ final class FilesController extends AbstractStationApiCrudController
         }
 
         // Write file to temp path.
-        $temp_path = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
-        file_put_contents($temp_path, $api_record->getFileContents());
+        $tempPath = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
+        file_put_contents($tempPath, $api_record->getFileContents());
 
         // Process temp path as regular media record.
-        $record = $this->mediaRepo->getOrCreate($station, $api_record->getSanitizedPath(), $temp_path);
+        $record = $this->mediaProcessor->processAndUpload(
+            $mediaStorage,
+            $api_record->getSanitizedPath(),
+            $tempPath
+        );
 
-        $return = $this->viewRecord($record, $request);
+        $return = (null !== $record)
+            ? $this->viewRecord($record, $request)
+            : Entity\Api\Status::success();
 
         return $response->withJson($return);
     }

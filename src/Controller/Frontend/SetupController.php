@@ -43,7 +43,7 @@ final class SetupController
         Response $response
     ): ResponseInterface {
         $current_step = $this->getSetupStep($request);
-        return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+        return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
     }
 
     /**
@@ -57,7 +57,7 @@ final class SetupController
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'register' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
         $csrf = $request->getCsrf();
@@ -97,7 +97,7 @@ final class SetupController
                 $acl = $request->getAcl();
                 $acl->reload();
 
-                return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+                return $response->withRedirect($request->getRouter()->named('setup:index'));
             } catch (Throwable $e) {
                 $error = $e->getMessage();
             }
@@ -127,8 +127,10 @@ final class SetupController
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'station' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
+            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
+
+        $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -138,8 +140,8 @@ final class SetupController
             props: array_merge(
                 $this->stationFormComponent->getProps($request),
                 [
-                    'createUrl' => (string)$request->getRouter()->named('api:admin:stations'),
-                    'continueUrl' => (string)$request->getRouter()->named('setup:settings'),
+                    'createUrl' => $router->named('api:admin:stations'),
+                    'continueUrl' => $router->named('setup:settings'),
                 ]
             )
         );
@@ -158,7 +160,7 @@ final class SetupController
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'settings' && $this->environment->isProduction()) {
-            return $response->withRedirect((string)$router->named('setup:' . $current_step));
+            return $response->withRedirect($router->named('setup:' . $current_step));
         }
 
         return $request->getView()->renderVuePage(
@@ -167,11 +169,11 @@ final class SetupController
             id: 'setup-settings',
             title: __('System Settings'),
             props: [
-                'apiUrl' => (string)$router->named('api:admin:settings', [
+                'apiUrl' => $router->named('api:admin:settings', [
                     'group' => Entity\Settings::GROUP_GENERAL,
                 ]),
                 'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
-                'continueUrl' => (string)$router->named('dashboard'),
+                'continueUrl' => $router->named('dashboard'),
             ],
         );
     }
@@ -188,7 +190,7 @@ final class SetupController
     ): ResponseInterface {
         $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
 
-        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 
     /**

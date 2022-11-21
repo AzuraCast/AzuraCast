@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Entity;
 use App\Exception\RateLimitExceededException;
-use App\Lock\LockFactory;
+use App\LockFactory;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;

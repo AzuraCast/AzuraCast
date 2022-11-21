@@ -24,8 +24,8 @@ final class RequestsAction
             id: 'station-report-requests',
             title: __('Song Requests'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:reports:requests'),
-                'clearUrl' => (string)$router->fromHere('api:stations:reports:requests:clear'),
+                'listUrl' => $router->fromHere('api:stations:reports:requests'),
+                'clearUrl' => $router->fromHere('api:stations:reports:requests:clear'),
                 'stationTimeZone' => $station->getTimezone(),
             ]
         );

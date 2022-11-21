@@ -24,7 +24,7 @@ final class TimelineAction
             id: 'station-report-timeline',
             title: __('Song Playback Timeline'),
             props: [
-                'baseApiUrl' => (string)$router->fromHere('api:stations:history'),
+                'baseApiUrl' => $router->fromHere('api:stations:history'),
                 'stationTimeZone' => $station->getTimezone(),
             ]
         );

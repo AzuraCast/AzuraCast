@@ -1,6 +1,10 @@
 <?php
 /**
- * @var \App\Assets $assets
+ * @var App\View\GlobalSections $sections
+ * @var App\Http\RouterInterface $router
+ * @var array $stations
+ * @var array $sync_times
+ * @var array $queue_totals
  */
 
 $this->layout('main', [
@@ -8,9 +12,19 @@ $this->layout('main', [
     'manual' => true,
 ]);
 
-$assets
-    ->load('luxon')
-    ->addInlineJs($this->fetch('admin/debug/index.js'), 99);
+$sections->appendStart('bodyjs');
+?>
+<script src="<?= $this->assetUrl('dist/lib/luxon/luxon.min.js') ?>"></script>
+
+<script>
+    jQuery(function ($) {
+        $('time[data-duration]').each(function () {
+            $(this).text(luxon.DateTime.fromSeconds($(this).data('duration')).toRelative());
+        });
+    });
+</script>
+<?php
+$sections->end();
 ?>
 
 <h2 class="outside-card-header mb-1"><?= __('System Debugger') ?></h2>
@@ -95,7 +109,7 @@ $assets
                     <div class="buttons">
                         <a class="btn btn-sm btn-primary" role="button" href="<?= $router->named(
                             'admin:debug:sync',
-                            ['task' => $task]
+                            ['task' => rawurlencode($task)]
                         ) ?>">
                             <?= __('Run Task') ?>
                         </a>
@@ -183,7 +197,7 @@ $assets
                         </div>
                     </div>
                     <?php
-                    if ($station['backend_type'] === \App\Radio\Enums\BackendAdapters::Liquidsoap->value): ?>
+                    if ($station['backend_type'] === App\Radio\Enums\BackendAdapters::Liquidsoap->value): ?>
                         <div class="col-md-4">
                             <h5><?= __('Send Liquidsoap Telnet Command') ?></h5>
 

@@ -102,6 +102,7 @@ final class CleanupStorageTask extends AbstractTask
                 foreach ($fs->listContents($dirBase, true) as $row) {
                     $path = $row->path();
 
+
                     $filename = pathinfo($path, PATHINFO_FILENAME);
                     if (!isset($allUniqueIds[$filename])) {
                         $fs->delete($path);

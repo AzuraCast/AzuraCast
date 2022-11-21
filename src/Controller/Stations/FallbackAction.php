@@ -25,7 +25,7 @@ final class FallbackAction
             id: 'station-fallback',
             title: __('Custom Fallback File'),
             props: [
-                'apiUrl' => (string)$router->fromHere('api:stations:fallback'),
+                'apiUrl' => $router->fromHere('api:stations:fallback'),
                 'recordHasFallback' => !empty($station->getFallbackPath()),
             ],
         );

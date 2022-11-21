@@ -220,7 +220,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
                     'title' => $playlist->getName(),
                     'start' => $start->toIso8601String(),
                     'end' => $end->toIso8601String(),
-                    'edit_url' => (string)$request->getRouter()->named(
+                    'edit_url' => $request->getRouter()->named(
                         'api:stations:playlist',
                         ['station_id' => $station->getId(), 'id' => $playlist->getId()]
                     ),
@@ -257,39 +257,39 @@ final class PlaylistsController extends AbstractScheduledEntityController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'toggle' => (string)$router->fromHere(
+            'toggle' => $router->fromHere(
                 'api:stations:playlist:toggle',
                 ['id' => $record->getId()],
                 [],
                 !$isInternal
             ),
-            'order' => (string)$router->fromHere(
+            'order' => $router->fromHere(
                 'api:stations:playlist:order',
                 ['id' => $record->getId()],
                 [],
                 !$isInternal
             ),
-            'reshuffle' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:reshuffle',
-                route_params: ['id' => $record->getId()],
+            'reshuffle' => $router->fromHere(
+                routeName: 'api:stations:playlist:reshuffle',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'queue' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:queue',
-                route_params: ['id' => $record->getId()],
+            'queue' => $router->fromHere(
+                routeName: 'api:stations:playlist:queue',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'import' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:import',
-                route_params: ['id' => $record->getId()],
+            'import' => $router->fromHere(
+                routeName: 'api:stations:playlist:import',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'clone' => (string)$router->fromHere(
-                route_name: 'api:stations:playlist:clone',
-                route_params: ['id' => $record->getId()],
+            'clone' => $router->fromHere(
+                routeName: 'api:stations:playlist:clone',
+                routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'self' => (string)$router->fromHere(
+            'self' => $router->fromHere(
                 $this->resourceRouteName,
                 ['id' => $record->getId()],
                 [],
@@ -298,9 +298,9 @@ final class PlaylistsController extends AbstractScheduledEntityController
         ];
 
         foreach (['pls', 'm3u'] as $format) {
-            $return['links']['export'][$format] = (string)$router->fromHere(
-                route_name: 'api:stations:playlist:export',
-                route_params: ['id' => $record->getId(), 'format' => $format],
+            $return['links']['export'][$format] = $router->fromHere(
+                routeName: 'api:stations:playlist:export',
+                routeParams: ['id' => $record->getId(), 'format' => $format],
                 absolute: !$isInternal
             );
         }

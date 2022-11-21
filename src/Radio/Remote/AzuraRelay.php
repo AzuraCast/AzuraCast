@@ -6,17 +6,16 @@ namespace App\Radio\Remote;
 
 use App\Entity;
 use App\Environment;
+use GuzzleHttp\Promise\Create;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use NowPlaying\Result\Result;
 
 final class AzuraRelay extends AbstractRemote
 {
-    public function updateNowPlaying(
-        Result $np,
-        Entity\StationRemote $remote,
-        bool $includeClients = false
-    ): Result {
+    public function getNowPlayingAsync(Entity\StationRemote $remote, bool $includeClients = false): PromiseInterface
+    {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
 
@@ -45,12 +44,11 @@ final class AzuraRelay extends AbstractRemote
             $remote->setListenersTotal($result->listeners->total);
             $remote->setListenersUnique($result->listeners->unique ?? 0);
             $this->em->persist($remote);
-            $this->em->flush();
 
-            return $np->merge($result);
+            return Create::promiseFor($result);
         }
 
-        return $np;
+        return Create::promiseFor(null);
     }
 
     protected function getAdapterType(): string

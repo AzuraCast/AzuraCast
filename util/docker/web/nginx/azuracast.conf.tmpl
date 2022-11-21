@@ -38,15 +38,6 @@ server {
 
         internal;
     }
-
-    location ~ /pub/([^\/]+)$ {
-        nchan_publisher;
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id $1;
-
-        nchan_message_buffer_length 1;
-        nchan_message_timeout 16s;
-    }
 }
 
 server {
@@ -135,19 +126,6 @@ server {
     # Return 404 for all other php files not matching the front controller
     location ~ \.php$ {
         return 404;
-    }
-
-    # pub/sub endpoints
-    location ~ /api/live/nowplaying/([^\/]+)$ {
-        nchan_access_control_allow_origin "*";
-
-        nchan_subscriber;
-
-        nchan_channel_group "azuracast_nowplaying";
-        nchan_channel_id "$1";
-        nchan_channel_id_split_delimiter ",";
-
-        nchan_subscriber_first_message -1;
     }
 
     # deny access to .htaccess files, if Apache's document root

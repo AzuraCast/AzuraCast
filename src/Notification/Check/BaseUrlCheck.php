@@ -9,7 +9,6 @@ use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\Flash;
-use App\Utilities\Strings;
 
 final class BaseUrlCheck
 {
@@ -36,8 +35,8 @@ final class BaseUrlCheck
             return;
         }
 
-        $baseUriWithRequest = $router->getBaseUrl(true);
-        $baseUriWithoutRequest = $router->getBaseUrl(false);
+        $baseUriWithRequest = $router->buildBaseUrl(true);
+        $baseUriWithoutRequest = $router->buildBaseUrl(false);
 
         if ((string)$baseUriWithoutRequest !== (string)$baseUriWithRequest) {
             // phpcs:disable Generic.Files.LineLength
@@ -54,13 +53,13 @@ final class BaseUrlCheck
             $notification = new Notification();
             $notification->title = sprintf(
                 __('Your "Base URL" setting (%s) does not match the URL you are currently using (%s).'),
-                Strings::truncateUrl((string)$baseUriWithoutRequest),
-                Strings::truncateUrl((string)$baseUriWithRequest)
+                (string)$baseUriWithoutRequest,
+                (string)$baseUriWithRequest
             );
             $notification->body = implode(' ', $notificationBodyParts);
             $notification->type = Flash::WARNING;
             $notification->actionLabel = __('System Settings');
-            $notification->actionUrl = (string)$router->named('admin:settings:index');
+            $notification->actionUrl = $router->named('admin:settings:index');
 
             $event->addNotification($notification);
         }

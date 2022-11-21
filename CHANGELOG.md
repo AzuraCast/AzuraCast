@@ -11,6 +11,44 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.17.5 (Nov 21, 2022)
+
+## New Features/Changes
+
+- **Mastodon Posting Support**: Publish to Mastodon via a Web Hook, the same way you do with Twitter!
+
+- **Cover Art Files Support**: Many users keep the cover art for their media alongside the media in a separate image
+  file. AzuraCast now detects image files in the same folder as your media and uses it as the default album art for that
+  media. Because cover art files are often named a variety of things, we currently will use _any_ image file that exists
+  alongside media. You can also now view cover art via the Media Manager UI.
+
+- **24-Hour Time Display Support**: You can now choose whether to view time in 12 or 24 hour format from your user
+  profile, or use the default settings for your locale.
+
+## Code Quality/Technical Changes
+
+- Because both our Docker and Ansible installations are managed by Supervisor now, we can view the realtime status of
+  all essential application services, and even restart them directly from the web interface.
+
+- If you enter the link for a public player page into a media player app (i.e. VLC), it will automatically redirect to
+  the playlist file and play appropriately.
+
+## Bug Fixes
+
+- HLS streams will now be included in Playlist (PLS/M3U) file downloads.
+
+- Fixed an issue where listener connection times over a day didn't properly show up.
+
+- Fixed several issues contributing to slow load times on media manager pages.
+
+- Fixed a bug where if a station only had "Allowed IPs", it wouldn't be enforced.
+
+- Fixed changing the station's URL stub (short name) not prompting the user to reload the station configuration.
+
+- Fixed an issue preventing the new Dropbox app key/app secret from saving.
+
+---
+
 # AzuraCast 0.17.4 (Oct 24, 2022)
 
 ## Code Quality/Technical Changes

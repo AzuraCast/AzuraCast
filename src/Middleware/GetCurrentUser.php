@@ -22,9 +22,9 @@ final class GetCurrentUser implements MiddlewareInterface
 {
     public function __construct(
         private readonly Entity\Repository\UserRepository $userRepo,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly Environment $environment,
-        private readonly Acl $acl
+        private readonly Acl $acl,
+        private readonly Customization $customization
     ) {
     }
 
@@ -44,11 +44,7 @@ final class GetCurrentUser implements MiddlewareInterface
             ->withAttribute('is_logged_in', (null !== $user));
 
         // Initialize Customization (timezones, locales, etc) based on the current logged in user.
-        $customization = new Customization(
-            environment: $this->environment,
-            settingsRepo: $this->settingsRepo,
-            request: $request
-        );
+        $customization = $this->customization->withRequest($request);
 
         // Initialize ACL (can only be initialized after Customization as it contains localizations).
         $acl = $this->acl->withRequest($request);

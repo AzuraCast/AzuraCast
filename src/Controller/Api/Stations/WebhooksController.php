@@ -192,19 +192,19 @@ final class WebhooksController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'self' => (string)$router->fromHere(
-                route_name: $this->resourceRouteName,
-                route_params: ['id' => $record->getIdRequired()],
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'toggle' => (string)$router->fromHere(
-                route_name: 'api:stations:webhook:toggle',
-                route_params: ['id' => $record->getIdRequired()],
+            'toggle' => $router->fromHere(
+                routeName: 'api:stations:webhook:toggle',
+                routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'test' => (string)$router->fromHere(
-                route_name: 'api:stations:webhook:test',
-                route_params: ['id' => $record->getIdRequired()],
+            'test' => $router->fromHere(
+                routeName: 'api:stations:webhook:test',
+                routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
         ];

@@ -10,10 +10,13 @@ use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
 use App\Http\ServerRequest;
+use App\Traits\RequestAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Customization
 {
+    use RequestAwareTrait;
+
     private ?Entity\User $user = null;
 
     private Entity\Settings $settings;
@@ -28,22 +31,34 @@ final class Customization
 
     public function __construct(
         private readonly Environment $environment,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        ServerRequestInterface $request
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->settings = $settingsRepo->readSettings();
 
         $this->instanceName = $this->settings->getInstanceName() ?? '';
 
-        // Register current user
-        $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
+        $this->user = null;
+        $this->theme = SupportedThemes::default();
+        $this->publicTheme = $this->settings->getPublicThemeEnum();
 
-        // Register current theme
-        $this->theme = $this->determineTheme($request);
-        $this->publicTheme = $this->determineTheme($request, true);
+        $this->locale = SupportedLocales::default();
+    }
 
-        // Register locale
-        $this->locale = SupportedLocales::createFromRequest($this->environment, $request);
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+
+        if (null !== $request) {
+            // Register current user
+            $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
+
+            // Register current theme
+            $this->theme = $this->determineTheme($request);
+            $this->publicTheme = $this->determineTheme($request, true);
+
+            // Register locale
+            $this->locale = SupportedLocales::createFromRequest($this->environment, $request);
+        }
     }
 
     private function determineTheme(
@@ -182,8 +197,8 @@ final class Customization
         return $this->settings->getHideProductName();
     }
 
-    public function useWebSocketsForNowPlaying(): bool
+    public function useStaticNowPlaying(): bool
     {
-        return $this->settings->getEnableWebsockets();
+        return $this->settings->getEnableStaticNowPlaying();
     }
 }

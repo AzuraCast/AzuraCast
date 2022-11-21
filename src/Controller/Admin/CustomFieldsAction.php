@@ -23,7 +23,7 @@ final class CustomFieldsAction
             id: 'admin-custom-fields',
             title: __('Custom Fields'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:admin:custom_fields'),
+                'listUrl' => $router->fromHere('api:admin:custom_fields'),
                 'autoAssignTypes' => MetadataTags::getNames(),
             ]
         );

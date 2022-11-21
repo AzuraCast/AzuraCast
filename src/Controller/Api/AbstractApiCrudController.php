@@ -10,7 +10,6 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Utilities;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -46,19 +45,7 @@ abstract class AbstractApiCrudController
     ): ResponseInterface {
         $paginator = Paginator::fromQuery($query, $request);
 
-        $isBootgrid = $paginator->isFromBootgrid();
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
-
-        $postProcessor ??= function ($row) use ($isBootgrid, $isInternal, $request) {
-            $return = $this->viewRecord($row, $request);
-
-            // Older jQuery Bootgrid requests should be "flattened".
-            if ($isBootgrid && !$isInternal) {
-                return Utilities\Arrays::flattenArray($return, '_');
-            }
-
-            return $return;
-        };
+        $postProcessor ??= fn($row) => $this->viewRecord($row, $request);
         $paginator->setPostprocessor($postProcessor);
 
         return $paginator->write($response);
@@ -82,9 +69,9 @@ abstract class AbstractApiCrudController
 
         if ($record instanceof IdentifiableEntityInterface) {
             $return['links'] = [
-                'self' => (string)$router->fromHere(
-                    route_name: $this->resourceRouteName,
-                    route_params: ['id' => $record->getIdRequired()],
+                'self' => $router->fromHere(
+                    routeName: $this->resourceRouteName,
+                    routeParams: ['id' => $record->getIdRequired()],
                     absolute: !$isInternal
                 ),
             ];

@@ -183,7 +183,9 @@ export default {
             return DateTime.fromSeconds(timestamp).toRelative();
         },
         toLocaleTime(timestamp) {
-            return DateTime.fromSeconds(timestamp).toLocaleString(DateTime.DATETIME_SHORT);
+            return DateTime.fromSeconds(timestamp).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...App.time_config}
+            );
         },
         formatFileSize(size) {
             return formatFileSize(size);

@@ -48,15 +48,14 @@ final class Admin
         );
 
         // These two intentionally separated (the sidebar needs admin_panels).
-        $view->addData(
-            [
-                'sidebar' => $view->render(
-                    'admin/sidebar',
-                    [
-                        'active_tab' => $active_tab,
-                    ]
-                ),
-            ]
+        $view->getSections()->set(
+            'sidebar',
+            $view->render(
+                'admin/sidebar',
+                [
+                    'active_tab' => $active_tab,
+                ]
+            )
         );
 
         return $handler->handle($request);

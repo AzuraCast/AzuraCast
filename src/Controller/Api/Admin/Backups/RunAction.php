@@ -46,7 +46,7 @@ final class RunAction
             'excludeMedia' => $message->excludeMedia,
             'outputPath' => $message->outputPath,
             'links' => [
-                'log' => (string)$router->named(
+                'log' => $router->named(
                     'api:admin:backups:log',
                     ['path' => basename($tempFile)]
                 ),

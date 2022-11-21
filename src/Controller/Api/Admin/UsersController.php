@@ -177,14 +177,14 @@ class UsersController extends AbstractAdminApiCrudController
         $return['is_me'] = $currentUser->getIdRequired() === $record->getIdRequired();
 
         $return['links'] = [
-            'self' => (string)$router->fromHere(
-                route_name: $this->resourceRouteName,
-                route_params: ['id' => $record->getIdRequired()],
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
                 absolute: !$isInternal
             ),
-            'masquerade' => (string)$router->fromHere(
-                route_name: 'account:masquerade',
-                route_params: [
+            'masquerade' => $router->fromHere(
+                routeName: 'account:masquerade',
+                routeParams: [
                     'id' => $record->getIdRequired(),
                     'csrf' => $csrf->generate(MasqueradeAction::CSRF_NAMESPACE),
                 ],

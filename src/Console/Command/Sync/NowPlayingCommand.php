@@ -6,7 +6,7 @@ namespace App\Console\Command\Sync;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Environment;
-use App\Lock\LockFactory;
+use App\LockFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

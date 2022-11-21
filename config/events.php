@@ -1,11 +1,11 @@
 <?php
 
+use App\CallableEventDispatcherInterface;
 use App\Environment;
 use App\Event;
 use App\Middleware;
-use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 
-return function (CallableEventDispatcherInterface $dispatcher) {
+return static function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addListener(
         Event\BuildConsoleCommands::class,
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {
@@ -63,7 +63,7 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             $app = $event->getApp();
 
             // Load app-specific route configuration.
-            $container = $app->getContainer();
+            $container = $event->getContainer();
 
             /** @var Environment $environment */
             $environment = $container->get(Environment::class);
@@ -90,8 +90,8 @@ return function (CallableEventDispatcherInterface $dispatcher) {
             $app->addRoutingMiddleware();
 
             // Redirects and updates that should happen before system middleware.
-            $app->add(new Middleware\RemoveSlashes);
-            $app->add(new Middleware\ApplyXForwardedProto);
+            $app->add(new Middleware\RemoveSlashes());
+            $app->add(new Middleware\ApplyXForwardedProto());
 
             // Use PSR-7 compatible sessions.
             $app->add(Middleware\InjectSession::class);
@@ -169,23 +169,30 @@ return function (CallableEventDispatcherInterface $dispatcher) {
         Event\GetNotifications::class,
         App\Notification\Check\ProfilerAdvisorCheck::class
     );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\ServiceCheck::class
+    );
 
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,
         App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class,
-        '__invoke',
-        10
+        priority: 10
     );
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,
         App\Media\AlbumArtHandler\MusicBrainzAlbumArtHandler::class,
-        '__invoke',
-        -10
+        priority: -10
     );
 
     $dispatcher->addCallableListener(
         Event\Media\ReadMetadata::class,
-        App\Media\Metadata\Reader::class
+        App\Media\Metadata\Reader\PhpReader::class,
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\ReadMetadata::class,
+        App\Media\Metadata\Reader\FfprobeReader::class,
+        priority: -10
     );
     $dispatcher->addCallableListener(
         Event\Media\WriteMetadata::class,

@@ -42,7 +42,7 @@ final class TestAction
             [
                 'success' => true,
                 'links' => [
-                    'log' => (string)$router->fromHere('api:stations:webhook:test-log', [
+                    'log' => $router->fromHere('api:stations:webhook:test-log', [
                         'path' => basename($tempFile),
                     ]),
                 ],

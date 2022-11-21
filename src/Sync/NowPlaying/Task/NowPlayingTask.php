@@ -16,6 +16,7 @@ use App\Nginx\HlsListeners;
 use App\Radio\Adapters;
 use DeepCopy\DeepCopy;
 use Exception;
+use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -131,21 +132,26 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 
     public function addToRawFromRemotes(GenerateRawNowPlaying $event): void
     {
-        $result = $event->getResult();
-
         // Loop through all remotes and update NP data accordingly.
-        foreach ($event->getRemotes() as [$remote, $adapter]) {
-            try {
-                $result = $adapter->updateNowPlaying(
-                    $result,
-                    $remote,
-                    $event->includeClients()
-                );
-            } catch (Exception $e) {
-                $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-            }
+        $remotePromises = [];
+        foreach ($event->getRemotes() as $remote) {
+            $remotePromises[] = $event->getRemoteAdapter($remote)->getNowPlayingAsync(
+                $remote,
+                $event->includeClients()
+            );
         }
 
+        $remotePromiseResults = Utils::settle($remotePromises)->wait();
+
+        $this->em->flush();
+
+        $result = $event->getResult();
+        foreach ($remotePromiseResults as $promiseResult) {
+            $remoteNp = $promiseResult['value'] ?? null;
+            if (null !== $remoteNp) {
+                $result = $result->merge($remoteNp);
+            }
+        }
         $event->setResult($result);
     }
 

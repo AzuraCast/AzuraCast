@@ -6,7 +6,6 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Environment;
-use GuzzleHttp\Client;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -18,7 +17,6 @@ final class LocalWebhookHandler
 
     public function __construct(
         private readonly Logger $logger,
-        private readonly Client $httpClient,
         private readonly Environment $environment,
     ) {
     }
@@ -62,17 +60,6 @@ final class LocalWebhookHandler
         $fsUtils->dumpFile(
             $staticNpPath,
             json_encode($np, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) ?: ''
-        );
-
-        // Send Nchan notification.
-        $this->logger->debug('Dispatching Nchan notification...');
-
-        $this->httpClient->post(
-            $this->environment->getInternalUri()
-                ->withPath('/pub/' . urlencode($station->getShortName())),
-            [
-                'json' => $np,
-            ]
         );
     }
 }

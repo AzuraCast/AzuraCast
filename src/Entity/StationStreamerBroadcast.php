@@ -91,9 +91,4 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
     {
         $this->recordingPath = $recordingPath;
     }
-
-    public function clearRecordingPath(): void
-    {
-        $this->recordingPath = null;
-    }
 }

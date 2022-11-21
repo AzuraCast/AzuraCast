@@ -34,7 +34,7 @@ final class HistoryAction
         $customization = $request->getCustomization();
         $router = $request->getRouter();
 
-        $useNChan = $customization->useWebSocketsForNowPlaying();
+        $useStatic = $customization->useStaticNowPlaying();
 
         return $request->getView()->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
@@ -49,10 +49,9 @@ final class HistoryAction
             props: [
                 'initialNowPlaying' => $np,
                 'showAlbumArt' => !$customization->hideAlbumArt(),
-                'useNchan' => $useNChan,
-                'nowPlayingUri' => $useNChan
-                    ? '/api/live/nowplaying/' . urlencode($station->getShortName())
-                    : (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]),
+                'nowPlayingUri' => $useStatic
+                    ? '/api/nowplaying_static/' . urlencode($station->getShortName()) . '.json'
+                    : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),
             ],
         );
     }

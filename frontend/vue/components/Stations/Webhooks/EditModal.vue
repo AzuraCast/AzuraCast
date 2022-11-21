@@ -24,14 +24,15 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";
 import _ from "lodash";
-import Generic from "~/components/Stations/Webhooks/Form/Generic";
-import Email from "~/components/Stations/Webhooks/Form/Email";
-import Tunein from "~/components/Stations/Webhooks/Form/Tunein";
-import Discord from "~/components/Stations/Webhooks/Form/Discord";
-import Telegram from "~/components/Stations/Webhooks/Form/Telegram";
-import Twitter from "~/components/Stations/Webhooks/Form/Twitter";
-import GoogleAnalytics from "~/components/Stations/Webhooks/Form/GoogleAnalytics";
-import MatomoAnalytics from "~/components/Stations/Webhooks/Form/MatomoAnalytics";
+import Generic from "./Form/Generic";
+import Email from "./Form/Email";
+import Tunein from "./Form/Tunein";
+import Discord from "./Form/Discord";
+import Telegram from "./Form/Telegram";
+import Twitter from "./Form/Twitter";
+import GoogleAnalytics from "./Form/GoogleAnalytics";
+import MatomoAnalytics from "./Form/MatomoAnalytics";
+import Mastodon from "./Form/Mastodon";
 
 export default {
     name: 'EditModal',
@@ -191,6 +192,23 @@ export default {
                         token_secret: '',
                         rate_limit: 0,
                         message: this.langTwitterDefaultMessage
+                    }
+                },
+                'mastodon': {
+                    component: Mastodon,
+                    validations: {
+                        instance_url: {required},
+                        access_token: {required},
+                        rate_limit: {},
+                        message: {required},
+                        visibility: {required}
+                    },
+                    defaultConfig: {
+                        instance_url: '',
+                        access_token: '',
+                        rate_limit: 0,
+                        message: this.langTwitterDefaultMessage,
+                        visibility: 'public'
                     }
                 },
                 'google_analytics': {

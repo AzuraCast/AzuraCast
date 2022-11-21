@@ -29,7 +29,7 @@ final class SoundExchangeAction
             id: 'station-report-soundexchange',
             title: __('SoundExchange Report'),
             props: [
-                'apiUrl' => (string)$router->fromHere('api:stations:reports:soundexchange'),
+                'apiUrl' => $router->fromHere('api:stations:reports:soundexchange'),
                 'startDate' => $defaultStartDate,
                 'endDate' => $defaultEndDate,
             ]

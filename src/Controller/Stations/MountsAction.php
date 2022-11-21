@@ -32,9 +32,9 @@ final class MountsAction
             id: 'station-mounts',
             title: __('Mount Points'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:mounts'),
-                'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
-                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
+                'listUrl' => $router->fromHere('api:stations:mounts'),
+                'newIntroUrl' => $router->fromHere('api:stations:mounts:new-intro'),
+                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
                 'stationFrontendType' => $station->getFrontendType(),
                 'showAdvanced' => $settings->getEnableAdvancedFeatures(),
             ],

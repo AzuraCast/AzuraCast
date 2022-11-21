@@ -5,11 +5,11 @@
                     :responsive="false" :api-url="requestListUri">
             <template #cell(name)="row">
                 <div class="d-flex align-items-center">
-                    <album-art v-if="showAlbumArt" :src="row.item.song_art" :width="40"
+                    <album-art v-if="showAlbumArt" :src="row.item.song.art" :width="40"
                                class="flex-shrink-1 pr-3"></album-art>
                     <div class="flex-fill">
-                        {{ row.item.song_title }}<br>
-                        <small>{{ row.item.song_artist }}</small>
+                        {{ row.item.song.title }}<br>
+                        <small>{{ row.item.song.artist }}</small>
                     </div>
                 </div>
             </template>
@@ -57,22 +57,40 @@ export default {
     },
     data () {
         let fields = [
-            { key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true, selectable: true },
-            { key: 'song_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false },
+            {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true, selectable: true},
             {
-                key: 'song_artist',
+                key: 'song.title',
+                label: this.$gettext('Title'),
+                sortable: true,
+                selectable: true,
+                visible: false,
+            },
+            {
+                key: 'song.artist',
                 label: this.$gettext('Artist'),
+                sortable: true,
+                selectable: true,
+                visible: false,
+            },
+            {
+                key: 'song.album',
+                label: this.$gettext('Album'),
                 sortable: true,
                 selectable: true,
                 visible: false
             },
-            { key: 'song_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
-            { key: 'song_genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false }
+            {
+                key: 'song.genre',
+                label: this.$gettext('Genre'),
+                sortable: true,
+                selectable: true,
+                visible: false
+            }
         ];
 
         _.forEach(this.customFields.slice(), (field) => {
             fields.push({
-                key: 'song_custom_fields_' + field.short_name,
+                key: 'song.custom_fields.' + field.short_name,
                 label: field.name,
                 sortable: false,
                 selectable: true,

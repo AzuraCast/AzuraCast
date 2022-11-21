@@ -58,6 +58,18 @@ return static function (RouteCollectorProxy $group) {
             $group->get('/server/stats', Controller\Api\Admin\ServerStatsAction::class)
                 ->setName('api:admin:server:stats');
 
+            $group->get(
+                '/services',
+                Controller\Api\Admin\ServiceControlController::class . ':getAction'
+            )->setName('api:admin:services')
+                ->add(new Middleware\Permissions(GlobalPermissions::View));
+
+            $group->post(
+                '/services/restart/{service}',
+                Controller\Api\Admin\ServiceControlController::class . ':restartAction'
+            )->setName('api:admin:services:restart')
+                ->add(new Middleware\Permissions(GlobalPermissions::All));
+
             $group->get('/permissions', Controller\Api\Admin\PermissionsAction::class)
                 ->add(new Middleware\Permissions(GlobalPermissions::All));
 
@@ -66,7 +78,7 @@ return static function (RouteCollectorProxy $group) {
                 '/relays',
                 function (ServerRequest $request, Response $response) {
                     return $response->withRedirect(
-                        (string)$request->getRouter()->fromHere('api:internal:relays')
+                        $request->getRouter()->fromHere('api:internal:relays')
                     );
                 }
             );

@@ -35,7 +35,7 @@ final class ThemeAction
 
         $referrer = $request->getHeaderLine('Referer');
         return $response->withRedirect(
-            $referrer ?: (string)$request->getRouter()->named('dashboard')
+            $referrer ?: $request->getRouter()->named('dashboard')
         );
     }
 }

@@ -8,7 +8,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Azura\Files\Attributes\FileAttributes;
+use App\Flysystem\Attributes\FileAttributes;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
@@ -61,11 +61,11 @@ final class GetAction
         $paginator = Paginator::fromArray($backups, $request);
         $paginator->setPostprocessor(function ($row) use ($router) {
             $row['links'] = [
-                'download' => (string)$router->fromHere(
+                'download' => $router->fromHere(
                     'api:admin:backups:download',
                     ['path' => $row['pathEncoded']]
                 ),
-                'delete' => (string)$router->fromHere(
+                'delete' => $router->fromHere(
                     'api:admin:backups:delete',
                     ['path' => $row['pathEncoded']]
                 ),

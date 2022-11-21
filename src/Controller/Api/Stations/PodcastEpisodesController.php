@@ -376,26 +376,26 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         $return->art_updated_at = $record->getArtUpdatedAt();
         $return->has_custom_art = (0 !== $return->art_updated_at);
 
-        $return->art = (string)$router->fromHere(
-            route_name: 'api:stations:podcast:episode:art',
-            route_params: ['episode_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
+        $return->art = $router->fromHere(
+            routeName: 'api:stations:podcast:episode:art',
+            routeParams: ['episode_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
             absolute: true
         );
 
         $return->links = [
-            'self' => (string)$router->fromHere(
-                route_name: $this->resourceRouteName,
-                route_params: ['episode_id' => $record->getId()],
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public' => (string)$router->fromHere(
-                route_name: 'public:podcast:episode',
-                route_params: ['episode_id' => $record->getId()],
+            'public' => $router->fromHere(
+                routeName: 'public:podcast:episode',
+                routeParams: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'download' => (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episode:download',
-                route_params: ['episode_id' => $record->getId()],
+            'download' => $router->fromHere(
+                routeName: 'api:stations:podcast:episode:download',
+                routeParams: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             ),
         ];
@@ -404,14 +404,14 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         $station = $request->getStation();
 
         if ($acl->isAllowed(StationPermissions::Podcasts, $station)) {
-            $return->links['art'] = (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episode:art-internal',
-                route_params: ['episode_id' => $record->getId()],
+            $return->links['art'] = $router->fromHere(
+                routeName: 'api:stations:podcast:episode:art-internal',
+                routeParams: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             );
-            $return->links['media'] = (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episode:media-internal',
-                route_params: ['episode_id' => $record->getId()],
+            $return->links['media'] = $router->fromHere(
+                routeName: 'api:stations:podcast:episode:media-internal',
+                routeParams: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             );
         }

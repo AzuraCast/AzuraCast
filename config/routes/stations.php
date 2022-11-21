@@ -16,7 +16,7 @@ return static function (RouteCollectorProxy $app) {
                 '',
                 function (ServerRequest $request, Response $response, ...$params) {
                     return $response->withRedirect(
-                        (string)$request->getRouter()->fromHere('stations:profile:index')
+                        $request->getRouter()->fromHere('stations:profile:index')
                     );
                 }
             )->setName('stations:index:index');

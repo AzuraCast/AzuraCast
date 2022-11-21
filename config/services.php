@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP-DI Services
  */
@@ -133,7 +134,7 @@ return [
                 Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
             }
 
-            $eventManager = new Doctrine\Common\EventManager;
+            $eventManager = new Doctrine\Common\EventManager();
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
             $eventManager->addEventSubscriber($eventChangeTracking);
@@ -155,42 +156,19 @@ return [
     App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
-    // Redis cache
-    Redis::class => static function (Environment $environment) {
-        if (!$environment->enableRedis()) {
-            throw new App\Exception\BootstrapException('Redis is disabled on this installation.');
-        }
-
-        $settings = $environment->getRedisSettings();
-
-        $redis = new Redis();
-        if (isset($settings['socket'])) {
-            $redis->connect($settings['socket']);
-        } else {
-            $redis->connect($settings['host'], $settings['port'], 15);
-        }
-        $redis->select($settings['db']);
-
-        return $redis;
-    },
-
     Symfony\Contracts\Cache\CacheInterface::class => static function (
         Environment $environment,
-        Psr\Log\LoggerInterface $logger,
-        ContainerInterface $di
+        Psr\Log\LoggerInterface $logger
     ) {
-        /** @var Symfony\Contracts\Cache\CacheInterface $cacheInterface */
         if ($environment->isTesting()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        } elseif (!$environment->enableRedis()) {
+        } else {
             $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';
             $cacheInterface = new Symfony\Component\Cache\Adapter\FilesystemAdapter(
                 '',
                 0,
                 $tempDir
             );
-        } else {
-            $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
         }
 
         $cacheInterface->setLogger($logger);
@@ -203,29 +181,19 @@ return [
     Psr\Cache\CacheItemPoolInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),
-    Psr\SimpleCache\CacheInterface::class => static function (Psr\Cache\CacheItemPoolInterface $cache) {
-        return new Symfony\Component\Cache\Psr16Cache($cache);
-    },
+    Psr\SimpleCache\CacheInterface::class => static fn(
+        Psr\Cache\CacheItemPoolInterface $cache
+    ) => new Symfony\Component\Cache\Psr16Cache($cache),
 
     // Symfony Lock adapter
-    Symfony\Component\Lock\PersistingStoreInterface::class => static function (
-        ContainerInterface $di,
+    Symfony\Component\Lock\PersistingStoreInterface::class => static fn(
         Environment $environment
-    ) {
-        if ($environment->enableRedis()) {
-            $redis = $di->get(Redis::class);
-            $store = new Symfony\Component\Lock\Store\RedisStore($redis);
-        } else {
-            $store = new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
-        }
-
-        return $store;
-    },
+    ) => new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory()),
 
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $dispatcher,
+        App\CallableEventDispatcherInterface $dispatcher,
         App\Version $version,
         Environment $environment
     ) {
@@ -250,11 +218,11 @@ return [
     },
 
     // Event Dispatcher
-    Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface::class => static function (
-        Slim\App $app,
+    App\CallableEventDispatcherInterface::class => static function (
+        DI\Container $di,
         App\Plugins $plugins
     ) {
-        $dispatcher = new Azura\SlimCallableEventDispatcher\SlimCallableEventDispatcher($app->getCallableResolver());
+        $dispatcher = new App\CallableEventDispatcher($di);
 
         // Register application default events.
         if (file_exists(__DIR__ . '/events.php')) {
@@ -267,7 +235,7 @@ return [
         return $dispatcher;
     },
     Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface::class
+        App\CallableEventDispatcherInterface::class
     ),
 
     // Monolog Logger
@@ -300,7 +268,7 @@ return [
         $proxyCache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'annotations.');
 
         return new Doctrine\Common\Annotations\PsrCachedReader(
-            new Doctrine\Common\Annotations\AnnotationReader,
+            new Doctrine\Common\Annotations\AnnotationReader(),
             $proxyCache,
             !$settings->isProduction()
         );
@@ -317,11 +285,11 @@ return [
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new Azura\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
+            new App\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),
         ];
         $encoders = [
-            new Symfony\Component\Serializer\Encoder\JsonEncoder,
+            new Symfony\Component\Serializer\Encoder\JsonEncoder(),
         ];
 
         return new Symfony\Component\Serializer\Serializer($normalizers, $encoders);
@@ -334,7 +302,9 @@ return [
     ) {
         $builder = new Symfony\Component\Validator\ValidatorBuilder();
         $builder->setConstraintValidatorFactory($constraintValidatorFactory);
-        $builder->enableAnnotationMapping($reader);
+        $builder->enableAnnotationMapping();
+        $builder->setDoctrineAnnotationReader($reader);
+
         return $builder->getValidator();
     },
 
@@ -354,7 +324,7 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        App\Lock\LockFactory $lockFactory,
+        App\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
@@ -418,7 +388,7 @@ return [
     // Mail functionality
     Symfony\Component\Mailer\Transport\TransportInterface::class => static function (
         App\Entity\Repository\SettingsRepository $settingsRepo,
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $eventDispatcher,
+        Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher,
         Monolog\Logger $logger
     ) {
         $settings = $settingsRepo->readSettings();
@@ -465,7 +435,7 @@ return [
     Symfony\Component\Mailer\Mailer::class => static function (
         Symfony\Component\Mailer\Transport\TransportInterface $transport,
         Symfony\Component\Messenger\MessageBus $messageBus,
-        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $eventDispatcher
+        Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
     ) {
         return new Symfony\Component\Mailer\Mailer(
             $transport,
@@ -512,11 +482,6 @@ return [
             $logger
         );
     },
-
-    App\Assets::class => static fn(Environment $env) => new App\Assets(
-        $env,
-        require __DIR__ . '/assets.php'
-    ),
 
     App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
         $di,

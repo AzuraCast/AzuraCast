@@ -22,7 +22,7 @@ final class GeoLiteAction
             id: 'admin-geolite',
             title: __('Install GeoLite IP Database'),
             props: [
-                'apiUrl' => (string)$router->named('api:admin:geolite'),
+                'apiUrl' => $router->named('api:admin:geolite'),
             ],
         );
     }

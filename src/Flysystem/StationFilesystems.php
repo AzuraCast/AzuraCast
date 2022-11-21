@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Flysystem;
 
 use App\Entity;
-use Azura\Files\Adapter\Local\LocalFilesystemAdapter;
-use Azura\Files\Adapter\LocalAdapterInterface;
-use Azura\Files\ExtendedFilesystemInterface;
-use Azura\Files\LocalFilesystem;
-use Azura\Files\RemoteFilesystem;
+use App\Flysystem\Adapter\LocalAdapterInterface;
+use App\Flysystem\Adapter\LocalFilesystemAdapter;
 
 final class StationFilesystems
 {

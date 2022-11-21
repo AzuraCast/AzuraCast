@@ -1,35 +1,46 @@
 <?php
-
-/** @var \App\Assets $assets */
-$assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
-
 /**
  * @var array $menu
  * @var string $active
  * @var \App\Http\Router $router
+ * @var \App\View\GlobalSections $sections
  */
 
 $active ??= null;
+
+$sections->appendStart('bodyjs');
+?>
+<script>
+    $(function () {
+        $('.navdrawer-nav a[title]').tooltip({
+            'html': true,
+            'placement': 'right',
+            'boundary': 'viewport'
+        });
+    });
+</script>
+<?php
+$sections->end();
 ?>
 <ul class="navdrawer-nav">
     <?php
     foreach ($menu as $category_id => $category): ?>
         <li class="nav-item">
-            <a class="nav-link <?=($category['class'] ?? '')?> <?php
+            <a class="nav-link <?= ($category['class'] ?? '') ?> <?php
             if ($active === $category_id): ?>active<?php
             endif; ?>"
                <?php
-               if (empty($category['items'])): ?>href="<?=$category['url']?>" <?php
-               else: ?>data-toggle="collapse" href="#sidebar-submenu-<?=$category_id?>"<?php
+               if (empty($category['items'])): ?>href="<?= $category['url'] ?>" <?php
+               else: ?>data-toggle="collapse" href="#sidebar-submenu-<?= $category_id ?>"<?php
             endif; ?>
                <?php
                if ($category['external'] ?? false): ?>target="_blank"<?php
             endif; ?>
                <?php
-               if (isset($category['confirm'])): ?>data-confirm-title="<?=$this->e($category['confirm'])?>"<?php
+               if (isset($category['confirm'])): ?>data-confirm-title="<?= $this->e($category['confirm']) ?>"<?php
             endif; ?>
                <?php
-               if (isset($category['title'])): ?>title="<?=$this->e($category['title'])?>"<?php
+               if (isset($category['title'])): ?>title="<?= $this->e($category['title']) ?>"<?php
             endif; ?>>
                 <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category['icon']?></i>
                 <?=$category['label']?>

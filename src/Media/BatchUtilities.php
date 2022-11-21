@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Utilities\File;
-use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
-use Azura\Files\ExtendedFilesystemInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
 

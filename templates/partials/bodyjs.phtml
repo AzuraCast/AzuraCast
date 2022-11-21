@@ -1,0 +1,65 @@
+<?php
+/** @var Psr\Http\Message\RequestInterface $request */
+
+/** @var App\Session\Flash|null $flashObj */
+$flashObj = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_FLASH);
+
+$notifies = [];
+
+if (null !== $flashObj && $flashObj->hasMessages()) {
+    foreach ($flashObj->getMessages() as $message) {
+        $notifyMessage = str_replace(['"', "\n"], ['\'', '<br>'], $message['text']);
+        $notifies[] = 'notify("' . $notifyMessage . '", "' . $message['color'] . '");';
+    }
+}
+
+$localeObj = $request->getAttribute(App\Http\ServerRequest::ATTR_LOCALE);
+
+$locale = ($localeObj instanceof App\Enums\SupportedLocales)
+    ? $localeObj->value
+    : App\Enums\SupportedLocales::default()->value;
+
+$locale = explode('.', $locale, 2)[0];
+$localeShort = substr($locale, 0, 2);
+$localeWithDashes = str_replace('_', '-', $locale);
+
+// User profile-specific 24-hour display setting.
+$userObj = $request->getAttribute(App\Http\ServerRequest::ATTR_USER);
+$show24Hours = ($userObj instanceof App\Entity\User)
+    ? $userObj->getShow24HourTime()
+    : null;
+
+$timeConfig = new \stdClass();
+if (null !== $show24Hours) {
+    $timeConfig->hour12 = !$show24Hours;
+}
+
+$app = [
+    'lang' => [
+        'confirm' => __('Are you sure?'),
+        'advanced' => __('Advanced'),
+    ],
+    'locale' => $locale,
+    'locale_short' => $localeShort,
+    'locale_with_dashes' => $localeWithDashes,
+    'time_config' => $timeConfig,
+    'api_csrf' => null,
+];
+?>
+
+<script type="text/javascript">
+    <?php if (!empty($notifies)): ?>
+    $(function () {
+        <?=implode('', $notifies) ?>;
+    });
+    <?php endif; ?>
+
+    let App = <?=json_encode($app, JSON_THROW_ON_ERROR) ?>;
+
+    let currentTheme = document.documentElement.getAttribute('data-theme');
+    if (currentTheme === 'browser') {
+        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+
+    App.theme = currentTheme;
+</script>

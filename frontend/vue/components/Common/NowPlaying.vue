@@ -1,7 +1,6 @@
 <template></template>
 <script>
 import NowPlaying from '~/components/Entity/NowPlaying';
-import NchanSubscriber from 'nchan';
 
 export const nowPlayingProps = {
     props: {
@@ -14,21 +13,12 @@ export const nowPlayingProps = {
             default () {
                 return NowPlaying;
             }
-        },
-        useNchan: {
-            type: Boolean,
-            default: true
         }
     }
 };
 
 export default {
     mixins: [nowPlayingProps],
-    data () {
-        return {
-            'nchan_subscriber': null
-        };
-    },
     mounted () {
         // Convert initial NP data from prop to data.
         this.setNowPlaying(this.initialNowPlaying);
@@ -37,24 +27,19 @@ export default {
     },
     methods: {
         checkNowPlaying () {
-            if (this.useNchan) {
-                this.nchan_subscriber = new NchanSubscriber(this.nowPlayingUri);
-                this.nchan_subscriber.on('message', (message, message_metadata) => {
-                    let np_new = JSON.parse(message);
-                    setTimeout(() => {
-                        this.setNowPlaying(np_new);
-                    }, 5000);
-                });
-                this.nchan_subscriber.start();
-            } else {
-                this.axios.get(this.nowPlayingUri).then((response) => {
-                    this.setNowPlaying(response.data);
+            this.axios.get(this.nowPlayingUri, {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                }
+            }).then((response) => {
+                this.setNowPlaying(response.data);
 
-                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
-                }).catch((error) => {
-                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
-                });
-            }
+                setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
+            }).catch((error) => {
+                setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
+            });
         },
         setNowPlaying (np_new) {
             // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)

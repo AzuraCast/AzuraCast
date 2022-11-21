@@ -17,6 +17,6 @@ final class EndMasqueradeAction
         $auth = $request->getAuth();
         $auth->endMasquerade();
 
-        return $response->withRedirect((string)$request->getRouter()->named('admin:users:index'));
+        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }
 }

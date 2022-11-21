@@ -7,6 +7,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Environment;
+use App\Media\MediaProcessor;
 use App\Security\SplitToken;
 use App\Tests\Module;
 use Psr\Container\ContainerInterface;
@@ -159,10 +160,10 @@ abstract class CestAbstract
         $storageFs = $storageLocation->getFilesystem();
         $storageFs->upload($songSrc, 'test.mp3');
 
-        /** @var Entity\Repository\StationMediaRepository $mediaRepo */
-        $mediaRepo = $this->di->get(Entity\Repository\StationMediaRepository::class);
+        /** @var MediaProcessor $mediaProcessor */
+        $mediaProcessor = $this->di->get(MediaProcessor::class);
 
-        return $mediaRepo->getOrCreate($storageLocation, 'test.mp3');
+        return $mediaProcessor->process($storageLocation, 'test.mp3');
     }
 
     protected function _cleanTables(): void

@@ -45,7 +45,7 @@ final class RequestsAction
             props: [
                 'customFields' => $this->customFieldRepo->fetchArray(),
                 'showAlbumArt' => !$customization->hideAlbumArt(),
-                'requestListUri' => (string)$router->named('api:requests:list', [
+                'requestListUri' => $router->named('api:requests:list', [
                     'station_id' => $station->getId(),
                 ]),
             ],

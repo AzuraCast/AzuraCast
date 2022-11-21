@@ -37,6 +37,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#2 \\$callback of method League\\\\Plates\\\\Engine\\:\\:registerFunction\\(\\) expects League\\\\Plates\\\\callback, Closure given\\.$#"
-			count: 7
+			count: 4
 			path: src/View.php
 

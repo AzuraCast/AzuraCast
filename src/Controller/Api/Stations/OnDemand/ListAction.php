@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\OnDemand;
 
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
-use Azura\DoctrineBatchUtils\ReadOnlyBatchIteratorAggregate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -90,7 +90,8 @@ final class ListAction
             $trackList = $trackList->matching($criteria);
         }
 
-        return Paginator::fromCollection($trackList, $request)->write($response);
+        return Paginator::fromCollection($trackList, $request)
+            ->write($response);
     }
 
     /**
@@ -134,7 +135,7 @@ final class ListAction
                     station: $station
                 );
                 $row->playlist = $playlist['name'];
-                $row->download_url = (string)$router->named(
+                $row->download_url = $router->named(
                     'api:stations:ondemand:download',
                     [
                         'station_id' => $station->getId(),

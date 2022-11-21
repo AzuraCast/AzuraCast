@@ -27,7 +27,7 @@ final class ShoutcastAction
             id: 'admin-shoutcast',
             title: __('Install Shoutcast 2 DNAS'),
             props: [
-                'apiUrl' => (string)$router->named('api:admin:shoutcast'),
+                'apiUrl' => $router->named('api:admin:shoutcast'),
             ],
         );
     }

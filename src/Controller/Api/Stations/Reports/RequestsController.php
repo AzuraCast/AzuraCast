@@ -46,19 +46,19 @@ final class RequestsController
         $paginator = Paginator::fromQuery($query, $request);
 
         $router = $request->getRouter();
-        $postProcessor = function ($row) use ($router) {
+
+        $paginator->setPostprocessor(function ($row) use ($router) {
             $row['links'] = [];
 
             if (0 === $row['played_at']) {
-                $row['links']['delete'] = (string)$router->fromHere(
+                $row['links']['delete'] = $router->fromHere(
                     'api:stations:reports:requests:delete',
                     ['request_id' => $row['id']]
                 );
             }
 
             return $row;
-        };
-        $paginator->setPostprocessor($postProcessor);
+        });
 
         return $paginator->write($response);
     }

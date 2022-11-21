@@ -9,6 +9,7 @@ use App\Exception\CannotProcessMediaException;
 use App\Exception\StorageLocationFullException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Media\MediaProcessor;
 use App\Service\Flow;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,7 +19,7 @@ final class FlowUploadAction
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly MediaProcessor $mediaProcessor,
         private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         private readonly LoggerInterface $logger
     ) {
@@ -54,7 +55,13 @@ final class FlowUploadAction
         }
 
         try {
-            $stationMedia = $this->mediaRepo->getOrCreate($station, $destPath, $flowResponse->getUploadedPath());
+            $tempPath = $flowResponse->getUploadedPath();
+
+            $stationMedia = $this->mediaProcessor->processAndUpload(
+                $mediaStorage,
+                $destPath,
+                $tempPath
+            );
         } catch (CannotProcessMediaException $e) {
             $this->logger->error(
                 $e->getMessageWithPath(),
@@ -67,7 +74,7 @@ final class FlowUploadAction
         }
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-        if (!empty($allParams['searchPhrase'])) {
+        if ($stationMedia instanceof Entity\StationMedia && !empty($allParams['searchPhrase'])) {
             $search_phrase = $allParams['searchPhrase'];
 
             if (str_starts_with($search_phrase, 'playlist:')) {

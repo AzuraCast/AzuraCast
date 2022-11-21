@@ -51,12 +51,15 @@
                     <template #cell(path)="row">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0 pr-2">
-                                <template v-if="row.item.media_is_playable">
-                                    <play-button :url="row.item.media_links_play" icon-class="outlined"></play-button>
+                                <template v-if="row.item.media.is_playable">
+                                    <play-button :url="row.item.media.links.play" icon-class="outlined"></play-button>
                                 </template>
                                 <template v-else>
                                     <span class="file-icon" v-if="row.item.is_dir">
                                         <icon icon="folder"></icon>
+                                    </span>
+                                    <span class="file-icon" v-else-if="row.item.is_cover_art">
+                                        <icon icon="photo"></icon>
                                     </span>
                                     <span class="file-icon" v-else>
                                         <icon icon="note"></icon>
@@ -71,24 +74,26 @@
                                         {{ row.item.path_short }}
                                     </a>
                                 </template>
-                                <template v-else-if="row.item.media_is_playable">
-                                    <a class="name" :href="row.item.media_links_play" target="_blank"
+                                <template v-else-if="row.item.media.is_playable">
+                                    <a class="name" :href="row.item.media.links.play" target="_blank"
                                        :title="row.item.name">
                                         {{ row.item.text }}
                                     </a>
                                 </template>
                                 <template v-else>
-                                    <a class="name" :href="row.item.links_download" target="_blank"
+                                    <a class="name" :href="row.item.links.download" target="_blank"
                                        :title="row.item.text">
                                         {{ row.item.path_short }}
                                     </a>
                                 </template>
                                 <br>
-                                <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
+                                <small v-if="row.item.media.is_playable">{{ row.item.path_short }}</small>
                                 <small v-else>{{ row.item.text }}</small>
                             </div>
 
-                            <album-art v-if="row.item.media_art" :src="row.item.media_art"
+                            <album-art v-if="row.item.media.art" :src="row.item.media.art"
+                                       class="flex-shrink-1 pl-2"></album-art>
+                            <album-art v-else-if="row.item.is_cover_art" :src="row.item.links.download"
                                        class="flex-shrink-1 pl-2"></album-art>
                         </div>
                     </template>
@@ -112,9 +117,9 @@
                         </template>
                     </template>
                     <template #cell(commands)="row">
-                        <template v-if="row.item.media_links_edit">
+                        <template v-if="row.item.media.links.edit">
                             <b-button size="sm" variant="primary"
-                                      @click.prevent="edit(row.item.media_links_edit, row.item.media_links_art, row.item.media_links_play, row.item.media_links_waveform)">
+                                      @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)">
                                 {{ langEditButton }}
                             </b-button>
                         </template>
@@ -228,23 +233,23 @@ export default {
     data() {
         let fields = [
             {key: 'path', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-            {key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false},
+            {key: 'media.title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false},
             {
-                key: 'media_artist',
+                key: 'media.artist',
                 label: this.$gettext('Artist'),
                 sortable: true,
                 selectable: true,
                 visible: false
             },
-            {key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
-            {key: 'media_genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false},
-            {key: 'media_isrc', label: this.$gettext('ISRC'), sortable: true, selectable: true, visible: false},
-            {key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true}
+            {key: 'media.album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
+            {key: 'media.genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false},
+            {key: 'media.isrc', label: this.$gettext('ISRC'), sortable: true, selectable: true, visible: false},
+            {key: 'media.length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true}
         ];
 
         _.forEach(this.customFields.slice(), (field) => {
             fields.push({
-                key: 'media_custom_fields_' + field.id,
+                key: 'media.custom_fields.' + field.id,
                 label: field.name,
                 sortable: true,
                 selectable: true,
@@ -262,7 +267,9 @@ export default {
                     if (!value) {
                         return '';
                     }
-                    return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(DateTime.DATETIME_MED);
+                    return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(
+                        {...DateTime.DATETIME_MED, ...App.time_config}
+                    );
                 },
                 selectable: true,
                 visible: true
@@ -285,19 +292,28 @@ export default {
                 files: [],
                 directories: []
             },
-
             currentDirectory: '',
             searchPhrase: null
         };
     },
     created() {
+        // Load directory from URL hash, if applicable.
+        let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+
+        if ('' !== urlHash) {
+            if (this.isFilterString(urlHash)) {
+                this.$nextTick(() => {
+                    this.onHashChange();
+                });
+            } else {
+                this.currentDirectory = urlHash;
+            }
+        }
+
         window.addEventListener('hashchange', this.onHashChange);
     },
     destroyed() {
         window.removeEventListener('hashchange', this.onHashChange);
-    },
-    mounted() {
-        this.onHashChange();
     },
     computed: {
         langAlbumArt() {
@@ -340,17 +356,16 @@ export default {
             this.playlists.push(row);
         },
         onHashChange() {
-            // Load directory from URL hash, if applicable.
+            // Handle links from the sidebar for special functions.
             let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
 
-            if ('' !== urlHash) {
-                if (urlHash.substr(0, 9) === 'playlist:' || urlHash.substr(0, 8) === 'special:') {
-                    window.location.hash = '';
-                    this.filter(urlHash);
-                } else {
-                    this.changeDirectory(urlHash);
-                }
+            if ('' !== urlHash && this.isFilterString(urlHash)) {
+                window.location.hash = '';
+                this.filter(urlHash);
             }
+        },
+        isFilterString(str) {
+            return str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:';
         },
         playAudio(url) {
             this.$eventHub.$emit('player_toggle', url);

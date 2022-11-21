@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Entity\Enums\PlaylistTypes;
-use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Environment;
@@ -37,7 +37,8 @@ final class Configuration
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
         private readonly Logger $logger,
-        private readonly Environment $environment
+        private readonly Environment $environment,
+        private readonly StationPlaylistMediaRepository $spmRepo,
     ) {
     }
 
@@ -77,6 +78,8 @@ final class Configuration
         }
 
         $this->em->flush();
+
+        $this->spmRepo->resetAllQueues($station);
     }
 
     /**

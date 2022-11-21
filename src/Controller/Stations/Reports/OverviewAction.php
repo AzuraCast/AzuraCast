@@ -40,13 +40,13 @@ final class OverviewAction
             props: [
                 'stationTz' => $request->getStation()->getTimezone(),
                 'showFullAnalytics' => Entity\Enums\AnalyticsLevel::All === $analyticsLevel,
-                'listenersByTimePeriodUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
-                'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),
-                'byStreamUrl' => (string)$router->fromHere('api:stations:reports:by-stream'),
-                'byBrowserUrl' => (string)$router->fromHere('api:stations:reports:by-browser'),
-                'byCountryUrl' => (string)$router->fromHere('api:stations:reports:by-country'),
-                'byClientUrl' => (string)$router->fromHere('api:stations:reports:by-client'),
-                'listeningTimeUrl' => (string)$router->fromHere('api:stations:reports:by-listening-time'),
+                'listenersByTimePeriodUrl' => $router->fromHere('api:stations:reports:overview-charts'),
+                'bestAndWorstUrl' => $router->fromHere('api:stations:reports:best-and-worst'),
+                'byStreamUrl' => $router->fromHere('api:stations:reports:by-stream'),
+                'byBrowserUrl' => $router->fromHere('api:stations:reports:by-browser'),
+                'byCountryUrl' => $router->fromHere('api:stations:reports:by-country'),
+                'byClientUrl' => $router->fromHere('api:stations:reports:by-client'),
+                'listeningTimeUrl' => $router->fromHere('api:stations:reports:by-listening-time'),
             ]
         );
     }

@@ -8,10 +8,10 @@ use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Enums\SupportedThemes;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
-use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -82,6 +82,14 @@ class User implements Stringable, IdentifiableEntityInterface
     protected ?string $theme = null;
 
     #[
+        OA\Property(example: true),
+        ORM\Column(nullable: true),
+        Attributes\AuditIgnore,
+        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected ?bool $show_24_hour_time = null;
+
+    #[
         OA\Property(example: "A1B2C3D4"),
         ORM\Column(length: 255, nullable: true),
         Attributes\AuditIgnore,
@@ -144,6 +152,11 @@ class User implements Stringable, IdentifiableEntityInterface
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getDisplayName(): string
+    {
+        return $this->name ?? $this->email;
     }
 
     public function setName(?string $name = null): void
@@ -232,6 +245,16 @@ class User implements Stringable, IdentifiableEntityInterface
     public function setTheme(?string $theme = null): void
     {
         $this->theme = $theme;
+    }
+
+    public function getShow24HourTime(): ?bool
+    {
+        return $this->show_24_hour_time;
+    }
+
+    public function setShow24HourTime(?bool $show_24_hour_time): void
+    {
+        $this->show_24_hour_time = $show_24_hour_time;
     }
 
     public function getTwoFactorSecret(): ?string

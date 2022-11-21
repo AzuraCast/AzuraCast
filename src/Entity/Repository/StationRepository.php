@@ -8,10 +8,10 @@ use App\Assets\AlbumArtCustomAsset;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Flow\UploadedFile;
-use Azura\Files\ExtendedFilesystemInterface;
 use Closure;
 use Psr\Http\Message\UriInterface;
 

@@ -32,10 +32,10 @@ final class PodcastsAction
             id: 'station-podcasts',
             title: __('Podcasts'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:podcasts'),
-                'newArtUrl' => (string)$router->fromHere('api:stations:podcasts:new-art'),
-                'stationUrl' => (string)$router->fromHere('stations:index:index'),
-                'quotaUrl' => (string)$router->fromHere('api:stations:quota', [
+                'listUrl' => $router->fromHere('api:stations:podcasts'),
+                'newArtUrl' => $router->fromHere('api:stations:podcasts:new-art'),
+                'stationUrl' => $router->fromHere('stations:index:index'),
+                'quotaUrl' => $router->fromHere('api:stations:quota', [
                     'type' => Entity\Enums\StorageLocationTypes::StationPodcasts->value,
                 ]),
                 'locale' => substr($locale->value, 0, 2),

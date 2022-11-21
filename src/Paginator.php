@@ -11,6 +11,7 @@ use Countable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Generator;
 use IteratorAggregate;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Doctrine\Collections\CollectionAdapter;
@@ -18,7 +19,6 @@ use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Traversable;
 
 /**
  * @template TKey of array-key
@@ -31,9 +31,6 @@ final class Paginator implements IteratorAggregate, Countable
 
     /** @var int<1,max> The maximum number of records that can be viewed per page for unauthenticated users. */
     private int $maxPerPage = 25;
-
-    /** @var bool Whether the current request is from jQuery Bootgrid */
-    private bool $isBootgrid = false;
 
     /** @var bool Whether the user is currently authenticated on this request. */
     private bool $isAuthenticated = false;
@@ -57,22 +54,14 @@ final class Paginator implements IteratorAggregate, Countable
         $this->isAuthenticated = ($user !== null);
 
         $params = $request->getQueryParams();
-        $this->isBootgrid = isset($params['rowCount']) || isset($params['searchPhrase']);
 
-        if ($this->isBootgrid) {
-            if (isset($params['rowCount'])) {
-                $this->setPerPage((int)$params['rowCount']);
-            }
-            if (isset($params['current'])) {
-                $this->setCurrentPage((int)$params['current']);
-            }
-        } else {
-            if (isset($params['per_page'])) {
-                $this->setPerPage((int)$params['per_page']);
-            }
-            if (isset($params['page'])) {
-                $this->setCurrentPage((int)$params['page']);
-            }
+        $perPage = $params['rowCount'] ?? $params['per_page'] ?? null;
+        $currentPage = $params['current'] ?? $params['page'] ?? null;
+        if (null !== $perPage) {
+            $this->setPerPage((int)$perPage);
+        }
+        if (null !== $currentPage) {
+            $this->setCurrentPage((int)$currentPage);
         }
     }
 
@@ -115,11 +104,6 @@ final class Paginator implements IteratorAggregate, Countable
         $this->isDisabled = false;
     }
 
-    public function isFromBootgrid(): bool
-    {
-        return $this->isBootgrid;
-    }
-
     public function setPostprocessor(callable $postprocessor): void
     {
         $this->postprocessor = $postprocessor;
@@ -135,9 +119,16 @@ final class Paginator implements IteratorAggregate, Countable
         $this->isDisabled = $isDisabled;
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): Generator
     {
-        return $this->paginator->getIterator();
+        $iterator = $this->paginator->getIterator();
+        if ($this->postprocessor) {
+            foreach ($iterator as $row) {
+                yield ($this->postprocessor)($row, $this);
+            }
+        } else {
+            yield from $iterator;
+        }
     }
 
     public function count(): int
@@ -155,52 +146,32 @@ final class Paginator implements IteratorAggregate, Countable
             $this->paginator->setMaxPerPage($maxPerPage);
         }
 
-        $iterator = $this->getIterator();
         $total = $this->count();
 
         $totalPages = $this->paginator->getNbPages();
 
-        if ($this->postprocessor) {
-            $results = [];
-            $postprocessor = $this->postprocessor;
-            foreach ($iterator as $result) {
-                $results[] = $postprocessor($result, $this);
-            }
-        } else {
-            $results = iterator_to_array($iterator, false);
-        }
+        $results = iterator_to_array($this->getIterator(), false);
 
         if ($this->isDisabled) {
             return $response->withJson($results);
         }
 
-        if ($this->isBootgrid) {
-            return $response->withJson(
-                [
-                    'current' => $this->getCurrentPage(),
-                    'rowCount' => $this->getPerPage(),
-                    'total' => $total,
-                    'rows' => $results,
-                ]
-            );
-        }
-
         $pageLinks = [];
-        $pageLinks['first'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => 1]);
+        $pageLinks['first'] = $this->router->fromHereWithQuery(null, [], ['page' => 1]);
 
         $prevPage = $this->paginator->hasPreviousPage()
             ? $this->paginator->getPreviousPage()
             : 1;
 
-        $pageLinks['previous'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
+        $pageLinks['previous'] = $this->router->fromHereWithQuery(null, [], ['page' => $prevPage]);
 
         $nextPage = $this->paginator->hasNextPage()
             ? $this->paginator->getNextPage()
             : $this->paginator->getNbPages();
 
-        $pageLinks['next'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
+        $pageLinks['next'] = $this->router->fromHereWithQuery(null, [], ['page' => $nextPage]);
 
-        $pageLinks['last'] = (string)$this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
+        $pageLinks['last'] = $this->router->fromHereWithQuery(null, [], ['page' => $totalPages]);
 
         return $response->withJson(
             [

@@ -31,7 +31,6 @@
     name:
       - nginx
       - nginx-common
-      - libnginx-mod-nchan
 
 - name: Remove default nginx site symlink
   file:

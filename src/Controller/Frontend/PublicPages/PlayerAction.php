@@ -7,7 +7,6 @@ namespace App\Controller\Frontend\PublicPages;
 use App\Entity;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
-use App\Http\Router;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,7 +15,6 @@ final class PlayerAction
     public function __construct(
         private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
-        private readonly Entity\Repository\StationRepository $stationRepo,
     ) {
     }
 
@@ -41,9 +39,6 @@ final class PlayerAction
         $np = $this->npApiGenerator->currentOrEmpty($station);
         $np->resolveUrls($baseUrl);
 
-        $defaultAlbumArtUri = $this->stationRepo->getDefaultAlbumArtUrl($station);
-        $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
-
         // Build Vue props.
         $customization = $request->getCustomization();
         $router = $request->getRouter();
@@ -56,18 +51,10 @@ final class PlayerAction
             'autoplay' => !empty($request->getQueryParam('autoplay')),
             'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
             'hlsIsDefault' => $backendConfig->getHlsIsDefault(),
+            'nowPlayingUri' => $customization->useStaticNowPlaying()
+                ? '/api/nowplaying_static/' . urlencode($station->getShortName()) . '.json'
+                : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),
         ];
-
-        if ($customization->useWebSocketsForNowPlaying()) {
-            $props['useNchan'] = true;
-            $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
-        } else {
-            $props['useNchan'] = false;
-            $props['nowPlayingUri'] = (string)$router->named(
-                'api:nowplaying:index',
-                ['station_id' => $station->getId()]
-            );
-        }
 
         // Render embedded player.
         if (!empty($embed)) {
@@ -89,14 +76,25 @@ final class PlayerAction
             );
         }
 
-        // Render full page player.
-        $props['stationName'] = $station->getName();
-        $props['enableRequests'] = $station->getEnableRequests();
-        $props['downloadPlaylistUri'] = (string)$router->named(
+        $props['downloadPlaylistUri'] = $router->named(
             'public:playlist',
             ['station_id' => $station->getShortName(), 'format' => 'pls']
         );
-        $props['requestListUri'] = (string)$router->named(
+
+        // Auto-redirect requests from players to the playlist (PLS) download.
+        $userAgent = strtolower($request->getHeaderLine('User-Agent'));
+        $players = ['mpv', 'player', 'vlc', 'applecoremedia'];
+        foreach ($players as $player) {
+            if (str_contains($userAgent, $player)) {
+                return $response->withRedirect($props['downloadPlaylistUri']);
+            }
+        }
+
+        // Render full page player.
+        $props['stationName'] = $station->getName();
+        $props['enableRequests'] = $station->getEnableRequests();
+
+        $props['requestListUri'] = $router->named(
             'api:requests:list',
             ['station_id' => $station->getId()]
         );
@@ -108,7 +106,11 @@ final class PlayerAction
             [
                 'station' => $station,
                 'props' => $props,
-                'defaultAlbumArt' => $defaultAlbumArt,
+                'nowPlayingArtUri' => $router->named(
+                    routeName: 'api:nowplaying:art',
+                    routeParams: ['station_id' => $station->getShortName(), 'timestamp' => time()],
+                    absolute: true
+                ),
             ]
         );
     }

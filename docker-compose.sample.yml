@@ -193,11 +193,11 @@ services:
       - acme:/var/azuracast/acme
       - db_data:/var/lib/mysql
     restart: unless-stopped
-    ulimits: &default-ulimits
+    ulimits:
       nofile:
         soft: 65536
         hard: 65536
-    logging: &default-logging
+    logging:
       options:
         max-size: "1m"
         max-file: "5"

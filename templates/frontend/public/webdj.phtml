@@ -1,0 +1,48 @@
+<?php
+/**
+ * @var App\View\GlobalSections $sections
+ */
+
+$this->layout(
+    'minimal',
+    [
+        'page_class' => 'dj station-' . $station->getShortName(),
+        'hide_footer' => true,
+        'title' => __('Web DJ') . ' - ' . $station->getName(),
+        'manual' => true,
+    ]
+);
+
+$jsLibs = [
+    $this->assetUrl('dist/lib/webcaster/libshine.js'),
+    $this->assetUrl('dist/lib/webcaster/libsamplerate.js'),
+    $this->assetUrl('dist/lib/webcaster/taglib.js'),
+    $this->assetUrl('dist/lib/webcaster/webcast.js'),
+];
+
+$libUrls = [];
+foreach ($jsLibs as $script) {
+    $libUrls[] = (string)($router->getBaseUrl()->withPath($script));
+}
+
+$scriptLines = [];
+foreach ($jsLibs as $jsLib) {
+    $scriptLines[] = <<<HTML
+    <script src="{$jsLib}"></script>
+    HTML;
+}
+
+$sections->append('bodyjs', implode("\n", $scriptLines));
+
+echo $this->fetch(
+    'partials/vue_body',
+    [
+        'component' => 'Vue_PublicWebDJ',
+        'id' => 'web_dj',
+        'props' => [
+            'stationName' => $station->getName(),
+            'libUrls' => $libUrls,
+            'baseUri' => $wss_url,
+        ],
+    ]
+);

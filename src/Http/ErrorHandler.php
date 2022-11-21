@@ -13,7 +13,6 @@ use App\Exception\PermissionDeniedException;
 use App\Middleware\InjectSession;
 use App\Session\Flash;
 use App\View;
-use DI\FactoryInterface;
 use Mezzio\Session\Session;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
@@ -34,7 +33,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
     private string $loggerLevel = LogLevel::ERROR;
 
     public function __construct(
-        private readonly FactoryInterface $factory,
+        private readonly View $view,
         private readonly Router $router,
         private readonly InjectSession $injectSession,
         private readonly Environment $environment,
@@ -142,14 +141,9 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
                 return $response->withJson($apiResponse);
             }
 
-            try {
-                $view = $this->factory->make(
-                    View::class,
-                    [
-                        'request' => $this->request,
-                    ]
-                );
+            $view = $this->view->withRequest($this->request);
 
+            try {
                 return $view->renderToResponse(
                     $response,
                     'system/error_http',
@@ -189,7 +183,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $response = $sessionPersistence->persistSession($session, $response);
 
             /** @var Response $response */
-            return $response->withRedirect((string)$this->router->named('account:login'));
+            return $response->withRedirect($this->router->named('account:login'));
         }
 
         if ($this->exception instanceof PermissionDeniedException) {
@@ -219,7 +213,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
             // Bounce back to homepage for permission-denied users.
             /** @var Response $response */
-            return $response->withRedirect((string)$this->router->named('home'));
+            return $response->withRedirect($this->router->named('home'));
         }
 
         /** @var Response $response */
@@ -247,14 +241,9 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->write($run->handleException($this->exception));
         }
 
-        try {
-            $view = $this->factory->make(
-                View::class,
-                [
-                    'request' => $this->request,
-                ]
-            );
+        $view = $this->view->withRequest($this->request);
 
+        try {
             return $view->renderToResponse(
                 $response,
                 'system/error_general',

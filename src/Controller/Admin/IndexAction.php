@@ -18,7 +18,7 @@ final class IndexAction
         $view = $request->getView();
 
         // Remove the sidebar on the homepage.
-        $view->addData(['sidebar' => null]);
+        $view->getSections()->unset('sidebar');
 
         $view = $request->getView();
         $viewData = $view->getData();
@@ -30,7 +30,8 @@ final class IndexAction
             title: __('Administration'),
             props: [
                 'adminPanels' => $viewData['admin_panels'] ?? [],
-                'statsUrl' => (string)$router->named('api:admin:server:stats'),
+                'statsUrl' => $router->named('api:admin:server:stats'),
+                'servicesUrl' => $router->named('api:admin:services'),
             ]
         );
     }

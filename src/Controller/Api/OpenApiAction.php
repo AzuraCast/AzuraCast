@@ -23,7 +23,7 @@ final class OpenApiAction
         $apiBaseUrl = str_replace(
             '/openapi.yml',
             '',
-            (string)$request->getRouter()->fromHere(absolute: true)
+            $request->getRouter()->fromHere(absolute: true)
         );
 
         $yaml = $this->apiDocsCommand->generate(true, $apiBaseUrl)?->toYaml();

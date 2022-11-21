@@ -312,31 +312,31 @@ final class PodcastsController extends AbstractApiCrudController
         $return->episodes = $episodes;
 
         $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
-        $return->art = (string)$router->fromHere(
-            route_name: 'api:stations:podcast:art',
-            route_params: ['podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
+        $return->art = $router->fromHere(
+            routeName: 'api:stations:podcast:art',
+            routeParams: ['podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
             absolute: true
         );
 
         $return->links = [
-            'self' => (string)$router->fromHere(
-                route_name: $this->resourceRouteName,
-                route_params: ['podcast_id' => $record->getId()],
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'episodes' => (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episodes',
-                route_params: ['podcast_id' => $record->getId()],
+            'episodes' => $router->fromHere(
+                routeName: 'api:stations:podcast:episodes',
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public_episodes' => (string)$router->fromHere(
-                route_name: 'public:podcast:episodes',
-                route_params: ['podcast_id' => $record->getId()],
+            'public_episodes' => $router->fromHere(
+                routeName: 'public:podcast:episodes',
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public_feed' => (string)$router->fromHere(
-                route_name: 'public:podcast:feed',
-                route_params: ['podcast_id' => $record->getId()],
+            'public_feed' => $router->fromHere(
+                routeName: 'public:podcast:feed',
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
         ];
@@ -344,20 +344,20 @@ final class PodcastsController extends AbstractApiCrudController
         $acl = $request->getAcl();
 
         if ($acl->isAllowed(StationPermissions::Podcasts, $station)) {
-            $return->links['art'] = (string)$router->fromHere(
-                route_name: 'api:stations:podcast:art-internal',
-                route_params: ['podcast_id' => $record->getId()],
+            $return->links['art'] = $router->fromHere(
+                routeName: 'api:stations:podcast:art-internal',
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
 
-            $return->links['episode_new_art'] = (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episodes:new-art',
-                route_params: ['podcast_id' => $record->getId()],
+            $return->links['episode_new_art'] = $router->fromHere(
+                routeName: 'api:stations:podcast:episodes:new-art',
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
-            $return->links['episode_new_media'] = (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episodes:new-media',
-                route_params: ['podcast_id' => $record->getId()],
+            $return->links['episode_new_media'] = $router->fromHere(
+                routeName: 'api:stations:podcast:episodes:new-media',
+                routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
         }

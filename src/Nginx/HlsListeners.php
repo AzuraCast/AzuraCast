@@ -45,6 +45,16 @@ final class HlsListeners
             return $np;
         }
 
+        $streamsByName = [];
+        $clientsByStream = [];
+        foreach ($hlsStreams as $hlsStream) {
+            $streamsByName[$hlsStream->getName()] = $hlsStream->getIdRequired();
+            $clientsByStream[$hlsStream->getName()] = 0;
+        }
+
+        $allClients = [];
+        $i = 1;
+
         $logContents = file($hlsLogFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
         if (is_file($hlsLogBackup) && filemtime($hlsLogBackup) >= $timestamp) {
             $logContents = array_merge(
@@ -55,15 +65,6 @@ final class HlsListeners
 
         $logContents = array_reverse($logContents);
 
-        $streamsByName = [];
-        $clientsByStream = [];
-        foreach ($hlsStreams as $hlsStream) {
-            $streamsByName[$hlsStream->getName()] = $hlsStream->getIdRequired();
-            $clientsByStream[$hlsStream->getName()] = 0;
-        }
-
-        $allClients = [];
-        $i = 1;
         foreach ($logContents as $logRow) {
             $client = $this->parseRow($logRow, $timestamp);
             if (
@@ -107,6 +108,10 @@ final class HlsListeners
         string $row,
         int $threshold
     ): ?Client {
+        if (empty(trim($row))) {
+            return null;
+        }
+
         try {
             $rowJson = json_decode($row, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException) {

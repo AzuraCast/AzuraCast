@@ -8,7 +8,6 @@ use App\Entity;
 use App\Service\Mail;
 use GuzzleHttp\Client;
 use Monolog\Logger;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 final class Email extends AbstractConnector
 {
@@ -30,10 +29,9 @@ final class Email extends AbstractConnector
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying\NowPlaying $np,
         array $triggers
-    ): bool {
+    ): void {
         if (!$this->mail->isEnabled()) {
-            $this->logger->error('E-mail delivery is not currently enabled. Skipping webhook delivery...');
-            return false;
+            throw new \RuntimeException('E-mail delivery is not currently enabled. Skipping webhook delivery...');
         }
 
         $config = $webhook->getConfig();
@@ -42,32 +40,24 @@ final class Email extends AbstractConnector
         $emailBody = $config['message'];
 
         if (empty($emailTo) || empty($emailSubject) || empty($emailBody)) {
-            $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return false;
+            throw $this->incompleteConfigException(self::NAME);
         }
 
-        try {
-            $email = $this->mail->createMessage();
+        $email = $this->mail->createMessage();
 
-            foreach (explode(',', $emailTo) as $emailToPart) {
-                $email->addTo(trim($emailToPart));
-            }
-
-            $vars = [
-                'subject' => $emailSubject,
-                'body' => $emailBody,
-            ];
-            $vars = $this->replaceVariables($vars, $np);
-
-            $email->subject($vars['subject']);
-            $email->text($vars['body']);
-
-            $this->mail->send($email);
-        } catch (TransportExceptionInterface $e) {
-            $this->logger->error(sprintf('Error from e-mail (%d): %s', $e->getCode(), $e->getMessage()));
-            return false;
+        foreach (explode(',', $emailTo) as $emailToPart) {
+            $email->addTo(trim($emailToPart));
         }
 
-        return true;
+        $vars = [
+            'subject' => $emailSubject,
+            'body' => $emailBody,
+        ];
+        $vars = $this->replaceVariables($vars, $np);
+
+        $email->subject($vars['subject']);
+        $email->text($vars['body']);
+
+        $this->mail->send($email);
     }
 }

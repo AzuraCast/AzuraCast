@@ -9,12 +9,12 @@ use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Environment;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
 use App\Utilities\Urls;
 use App\Validator\Constraints as AppAssert;
-use Azura\Normalizer\Attributes\DeepNormalize;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -453,7 +453,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
 
         $shortName = self::generateShortName($shortName);
-        $this->short_name = $this->truncateString($shortName, 100);
+
+        $shortName = $this->truncateString($shortName, 100);
+        if ($this->short_name !== $shortName) {
+            $this->setNeedsRestart(true);
+        }
+        $this->short_name = $shortName;
     }
 
     public function setIsEnabled(bool $is_enabled): void

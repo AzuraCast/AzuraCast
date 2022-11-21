@@ -69,7 +69,7 @@ final class OnDemandAction
                 'hide_footer' => true,
             ],
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:ondemand:list'),
+                'listUrl' => $router->fromHere('api:stations:ondemand:list'),
                 'showDownloadButton' => $station->getEnableOnDemandDownload(),
                 'customFields' => $customFields,
                 'stationName' => $station->getName(),

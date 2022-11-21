@@ -9,7 +9,7 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\StorageLocationFullException;
 use App\Media\AlbumArt;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 

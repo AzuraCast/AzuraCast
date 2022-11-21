@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Azura\DoctrineBatchUtils\ReadWriteBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractTask implements ScheduledTaskInterface
@@ -25,7 +25,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
     abstract public function run(bool $force = false): void;
 
     /**
-     * @return ReadWriteBatchIteratorAggregate|Entity\Station[]
+     * @return ReadWriteBatchIteratorAggregate<int, Entity\Station>
      */
     protected function iterateStations(): ReadWriteBatchIteratorAggregate
     {
@@ -42,7 +42,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
     /**
      * @param Entity\Enums\StorageLocationTypes $type
      *
-     * @return ReadWriteBatchIteratorAggregate|Entity\StorageLocation[]
+     * @return ReadWriteBatchIteratorAggregate<int, Entity\StorageLocation>
      */
     protected function iterateStorageLocations(Entity\Enums\StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
     {

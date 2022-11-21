@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Fixture;
 
 use App\Entity;
+use App\Media\MediaProcessor;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,7 +14,7 @@ use Symfony\Component\Finder\Finder;
 final class StationMedia extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo
+        private readonly MediaProcessor $mediaProcessor
     ) {
     }
 
@@ -46,7 +47,11 @@ final class StationMedia extends AbstractFixture implements DependentFixtureInte
             // Copy the file to the station media directory.
             $fs->upload($filePath, '/' . $fileBaseName);
 
-            $mediaRow = $this->mediaRepo->getOrCreate($mediaStorage, $fileBaseName);
+            $mediaRow = $this->mediaProcessor->process($mediaStorage, $fileBaseName);
+            if (null === $mediaRow) {
+                continue;
+            }
+
             $manager->persist($mediaRow);
 
             // Add the file to the playlist.

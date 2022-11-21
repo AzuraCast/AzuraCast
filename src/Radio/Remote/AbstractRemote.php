@@ -6,8 +6,8 @@ namespace App\Radio\Remote;
 
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise\PromiseInterface;
 use Monolog\Logger;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
@@ -23,18 +23,10 @@ abstract class AbstractRemote
     ) {
     }
 
-    /**
-     * @param Result $np
-     * @param Entity\StationRemote $remote
-     * @param bool $includeClients
-     *
-     * @return Result The aggregated now-playing result.
-     */
-    public function updateNowPlaying(
-        Result $np,
+    public function getNowPlayingAsync(
         Entity\StationRemote $remote,
         bool $includeClients = false
-    ): Result {
+    ): PromiseInterface {
         $adapterType = $this->getAdapterType();
 
         $npAdapter = $this->adapterFactory->getAdapter(
@@ -44,28 +36,23 @@ abstract class AbstractRemote
 
         $npAdapter->setAdminPassword($remote->getAdminPassword());
 
-        try {
-            $result = $npAdapter->getNowPlaying($remote->getMount(), $includeClients);
-
-            if (!empty($result->clients)) {
-                foreach ($result->clients as $client) {
-                    $client->mount = 'remote_' . $remote->getId();
+        return $npAdapter->getNowPlayingAsync($remote->getMount(), $includeClients)->then(
+            function (Result $result) use ($remote) {
+                if (!empty($result->clients)) {
+                    foreach ($result->clients as $client) {
+                        $client->mount = 'remote_' . $remote->getId();
+                    }
                 }
+
+                $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
+
+                $remote->setListenersTotal($result->listeners->total);
+                $remote->setListenersUnique($result->listeners->unique ?? 0);
+                $this->em->persist($remote);
+
+                return $result;
             }
-        } catch (Exception $e) {
-            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-
-            $result = Result::blank();
-        }
-
-        $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
-
-        $remote->setListenersTotal($result->listeners->total);
-        $remote->setListenersUnique($result->listeners->unique ?? 0);
-        $this->em->persist($remote);
-        $this->em->flush();
-
-        return $np->merge($result);
+        );
     }
 
     abstract protected function getAdapterType(): string;

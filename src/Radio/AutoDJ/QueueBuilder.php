@@ -143,7 +143,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 ['playlists' => $logPlaylists]
             );
 
-            $this->weightedShuffle($eligiblePlaylists);
+            $eligiblePlaylists = $this->weightedShuffle($eligiblePlaylists);
 
             // Loop through the playlists and attempt to play them with no duplicates first,
             // then loop through them again while allowing duplicates.
@@ -183,16 +183,16 @@ final class QueueBuilder implements EventSubscriberInterface
      * Based on: https://gist.github.com/savvot/e684551953a1716208fbda6c4bb2f344
      *
      * @param array $original
+     * @return array
      */
-    private function weightedShuffle(array &$original): void
+    private function weightedShuffle(array $original): array
     {
         $new = $original;
-
         $max = 1.0 / mt_getrandmax();
 
         array_walk(
             $new,
-            static function (&$value, $key) use ($max): void {
+            static function (&$value) use ($max): void {
                 $value = (mt_rand() * $max) ** (1.0 / $value);
             }
         );
@@ -206,7 +206,7 @@ final class QueueBuilder implements EventSubscriberInterface
             }
         );
 
-        $original = $new;
+        return $new;
     }
 
     /**
@@ -399,7 +399,8 @@ final class QueueBuilder implements EventSubscriberInterface
     ): ?Entity\Api\StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
-            $mediaQueue = $this->spmRepo->resetQueue($playlist);
+            $this->spmRepo->resetQueue($playlist);
+            $mediaQueue = $this->spmRepo->getQueue($playlist);
         }
 
         return array_shift($mediaQueue);
@@ -412,22 +413,28 @@ final class QueueBuilder implements EventSubscriberInterface
     ): ?Entity\Api\StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
-            $mediaQueue = $this->spmRepo->resetQueue($playlist);
+            $this->spmRepo->resetQueue($playlist);
+            $mediaQueue = $this->spmRepo->getQueue($playlist);
         }
 
-        if ($playlist->getAvoidDuplicates()) {
-            if ($allowDuplicates) {
-                $this->logger->warning(
-                    'Duplicate prevention yielded no playable song; resetting song queue.'
-                );
-
-                $mediaQueue = $this->spmRepo->resetQueue($playlist);
-            }
-
-            return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+        if (!$playlist->getAvoidDuplicates()) {
+            return array_shift($mediaQueue);
         }
 
-        return array_shift($mediaQueue);
+        $queueItem = $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+        if (null !== $queueItem || $allowDuplicates) {
+            return $queueItem;
+        }
+
+        // Reshuffle the queue.
+        $this->logger->warning(
+            'Duplicate prevention yielded no playable song; resetting song queue.'
+        );
+
+        $this->spmRepo->resetQueue($playlist);
+        $mediaQueue = $this->spmRepo->getQueue($playlist);
+
+        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
     }
 
     public function getNextSongFromRequests(BuildQueue $event): void

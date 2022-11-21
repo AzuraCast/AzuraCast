@@ -41,12 +41,12 @@ final class LoginAction
             )->getSingleScalarResult();
 
             if (0 === $num_users) {
-                return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+                return $response->withRedirect($request->getRouter()->named('setup:index'));
             }
         }
 
         if ($auth->isLoggedIn()) {
-            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
+            return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
         $flash = $request->getFlash();
@@ -88,7 +88,7 @@ final class LoginAction
 
                 // Redirect for 2FA.
                 if (!$auth->isLoginComplete()) {
-                    return $response->withRedirect((string)$request->getRouter()->named('account:login:2fa'));
+                    return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
                 }
 
                 // Redirect to complete setup if it's not completed yet.
@@ -101,7 +101,7 @@ final class LoginAction
                         ),
                         Flash::SUCCESS
                     );
-                    return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
+                    return $response->withRedirect($request->getRouter()->named('setup:index'));
                 }
 
                 $flash->addMessage(
@@ -111,7 +111,7 @@ final class LoginAction
 
                 $referrer = $session->get('login_referrer');
                 return $response->withRedirect(
-                    (!empty($referrer)) ? $referrer : (string)$request->getRouter()->named('dashboard')
+                    (!empty($referrer)) ? $referrer : $request->getRouter()->named('dashboard')
                 );
             }
 

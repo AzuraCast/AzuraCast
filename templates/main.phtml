@@ -6,10 +6,11 @@
  * @var App\Http\Router $router
  * @var App\Session\Flash $flash
  * @var App\Customization $customization
- * @var App\Assets $assets
  * @var App\Version $version
  * @var App\Http\ServerRequest $request
  * @var App\Environment $environment
+ * @var App\Entity\User $user
+ * @var App\View\GlobalSections $sections
  */
 
 $manual ??= false;
@@ -25,57 +26,75 @@ $header ??= null;
 
     <title><?= $customization->getPageTitle($title) ?></title>
 
-    <?= $this->fetch('partials/icons') ?>
+    <?= $this->fetch('partials/head') ?>
 
-    <?= $this->section('head') ?>
+    <script src="<?= $this->assetUrl('dist/lib/sweetalert2/sweetalert2.min.js') ?>" defer></script>
 
-    <?php
-    $assets
-        ->load('main')
-        ->addInlineCss($customization->getCustomInternalCss());
+    <?= $sections->get('head') ?>
 
-    echo $assets->css();
-    echo $assets->js();
-    ?>
+    <style>
+        <?=$customization->getCustomInternalCss() ?>
+    </style>
 </head>
-<body class="page-full <?=$page_class ?? ''?> <?php
-if (!empty($sidebar)): ?>has-sidebar<?php
+<body class="page-full <?= $page_class ?? '' ?> <?php
+if ($sections->has('sidebar')): ?>has-sidebar<?php
 endif; ?>">
-<?=$assets->inlineJs()?>
 
-<a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content')?></a>
+<?= $this->fetch('partials/bodyjs') ?>
+
+<script>
+    <?php
+    $csrfJson = 'null';
+    $csrf = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_CSRF);
+    if ($csrf instanceof App\Session\Csrf) {
+        $csrfToken = $csrf->generate(App\Middleware\Auth\ApiAuth::API_CSRF_NAMESPACE);
+        $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
+    }
+    ?>
+
+    App.api_csrf = <?=$csrfJson ?>;
+</script>
+
+<?= $sections->get('bodyjs') ?>
+
+<a class="sr-only sr-only-focusable" href="#content"><?= __('Skip to main content') ?></a>
 
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
     <?php
-    if (!empty($sidebar)): ?>
-        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__(
+    if ($sections->has('sidebar')): ?>
+        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
-        )?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
+        ) ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar"
+                data-toggle="navdrawer" data-type="permanent">
             <span class="navbar-toggler-icon"></span>
         </button>
     <?php
     endif; ?>
 
-    <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard')?>">
+    <a class="navbar-brand ml-0 mr-auto" href="<?= $router->named('dashboard') ?>">
         azura<strong>cast</strong> <?php
         if (!empty($customization->getInstanceName())): ?>
-            <small><?=$this->e($customization->getInstanceName())?></small><?php
+            <small><?= $this->e($customization->getInstanceName()) ?></small><?php
         endif; ?>
     </a>
 
     <div id="radio-player-controls"></div>
 
-    <div class="dropdown ml-3">
-        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__(
+    <div class="dropdown ml-3 d-inline-flex align-items-center">
+        <div class="mr-2">
+            <?= $user->getDisplayName() ?>
+        </div>
+
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?= __(
             'Toggle Menu'
-        )?>" data-toggle="dropdown" type="button">
-            <i class="material-icons" aria-hidden="true">more_vert</i>
+        ) ?>" data-toggle="dropdown" type="button">
+            <i class="material-icons" aria-hidden="true">menu_open</i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             <li>
-                <a class="dropdown-item" href="<?=$router->named('dashboard')?>">
+                <a class="dropdown-item" href="<?= $router->named('dashboard') ?>">
                     <i class="material-icons" aria-hidden="true">home</i>
-                    <?=__('Dashboard')?>
+                    <?= __('Dashboard') ?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
@@ -90,38 +109,39 @@ endif; ?>">
             <?php
             endif; ?>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('profile:index')?>">
+                <a class="dropdown-item" href="<?= $router->named('profile:index') ?>">
                     <i class="material-icons" aria-hidden="true">account_circle</i>
-                    <?=__('My Account')?>
+                    <?= __('My Account') ?>
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('profile:theme')?>">
+                <a class="dropdown-item" href="<?= $router->named('profile:theme') ?>">
                     <i class="material-icons" aria-hidden="true">invert_colors</i>
-                    <?=__('Switch Theme')?>
+                    <?= __('Switch Theme') ?>
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="https://docs.azuracast.com/en/user-guide/troubleshooting" target="_blank">
+                <a class="dropdown-item" href="https://docs.azuracast.com/en/user-guide/troubleshooting"
+                   target="_blank">
                     <i class="material-icons" aria-hidden="true">help</i>
-                    <?=__('Help')?>
+                    <?= __('Help') ?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
             <?php
             if ($auth->isMasqueraded()): ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('account:endmasquerade')?>">
+                    <a class="dropdown-item" href="<?= $router->named('account:endmasquerade') ?>">
                         <i class="material-icons" aria-hidden="true">exit_to_app</i>
-                        <?=__('End Session')?>
+                        <?= __('End Session') ?>
                     </a>
                 </li>
             <?php
             else: ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('account:logout')?>">
+                    <a class="dropdown-item" href="<?= $router->named('account:logout') ?>">
                         <i class="material-icons" aria-hidden="true">exit_to_app</i>
-                        <?=__('Sign Out')?></a></li>
+                        <?= __('Sign Out') ?></a></li>
             <?php
             endif; ?>
         </ul>
@@ -129,10 +149,10 @@ endif; ?>">
 </header>
 
 <?php
-if (!empty($sidebar)): ?>
+if ($sections->has('sidebar')): ?>
     <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content">
-            <?=$sidebar?>
+            <?= $sections->get('sidebar') ?>
         </nav>
     </div>
 <?php
@@ -140,7 +160,7 @@ endif; ?>
 
 <section id="main">
     <section id="content" <?php
-    if (empty($sidebar)): ?>class="content-alt"<?php
+    if (!$sections->has('sidebar')): ?>class="content-alt"<?php
     endif; ?> role="main">
         <div class="container">
             <?php
@@ -170,7 +190,7 @@ endif; ?>
 </section>
 
 <footer id="footer" <?php
-if (empty($sidebar)): ?>class="footer-alt"<?php
+if (!$sections->has('sidebar')): ?>class="footer-alt"<?php
 endif; ?> role="contentinfo">
     <?= sprintf(
         __('Powered by %s'),

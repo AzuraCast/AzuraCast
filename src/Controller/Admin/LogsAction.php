@@ -30,7 +30,7 @@ final class LogsAction
                 $stationLogs[] = [
                     'id' => $station->getIdRequired(),
                     'name' => $station->getName(),
-                    'url' => (string)$router->named('api:stations:logs', [
+                    'url' => $router->named('api:stations:logs', [
                         'station_id' => $station->getIdRequired(),
                     ]),
                 ];
@@ -43,7 +43,7 @@ final class LogsAction
             id: 'admin-logs',
             title: __('System Logs'),
             props: [
-                'systemLogsUrl' => (string)$router->fromHere('api:admin:logs'),
+                'systemLogsUrl' => $router->fromHere('api:admin:logs'),
                 'stationLogs' => $stationLogs,
             ],
         );

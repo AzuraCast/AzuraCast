@@ -7,14 +7,13 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Exception\CannotProcessMediaException;
 use App\Exception\NotFoundException;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
 use App\Utilities\Logger;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
 use League\Flysystem\FilesystemException;
@@ -33,8 +32,7 @@ final class StationMediaRepository extends Repository
         private readonly MetadataManager $metadataManager,
         private readonly RemoteAlbumArt $remoteAlbumArt,
         private readonly CustomFieldRepository $customFieldRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly UnprocessableMediaRepository $unprocessableMediaRepo
+        private readonly StationPlaylistMediaRepository $spmRepo
     ) {
         parent::__construct($em);
     }
@@ -142,102 +140,6 @@ final class StationMediaRepository extends Repository
         }
 
         return $source;
-    }
-
-    /**
-     * @param Entity\Station|Entity\StorageLocation $source
-     * @param string $path
-     * @param string|null $uploadedFrom The original uploaded path (if this is a new upload).
-     *
-     * @throws Exception
-     */
-    public function getOrCreate(
-        Entity\Station|Entity\StorageLocation $source,
-        string $path,
-        ?string $uploadedFrom = null
-    ): Entity\StationMedia {
-        $record = $this->findByPath($path, $source);
-        $storageLocation = $this->getStorageLocation($source);
-
-        $created = false;
-        if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia($storageLocation, $path);
-            $created = true;
-        }
-
-        try {
-            $reprocessed = $this->processMedia($record, $created, $uploadedFrom);
-        } catch (CannotProcessMediaException $e) {
-            $this->unprocessableMediaRepo->setForPath(
-                $storageLocation,
-                $path,
-                $e->getMessage()
-            );
-
-            throw $e;
-        }
-
-        if ($created || $reprocessed) {
-            $this->em->flush();
-
-            $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
-        }
-
-        return $record;
-    }
-
-    /**
-     * Run media through the "processing" steps: loading from file and setting up any missing metadata.
-     *
-     * @param Entity\StationMedia $media
-     * @param bool $force
-     * @param string|null $uploadedPath The uploaded path (if this is a new upload).
-     *
-     * @return bool Whether reprocessing was required for this file.
-     */
-    public function processMedia(
-        Entity\StationMedia $media,
-        bool $force = false,
-        ?string $uploadedPath = null
-    ): bool {
-        $fs = $this->getFilesystem($media);
-        $path = $media->getPath();
-
-        if (null !== $uploadedPath) {
-            try {
-                $this->loadFromFile($media, $uploadedPath, $fs);
-            } finally {
-                $fs->uploadAndDeleteOriginal($uploadedPath, $path);
-            }
-
-            $mediaMtime = time();
-        } else {
-            if (!$fs->fileExists($path)) {
-                throw CannotProcessMediaException::forPath(
-                    $path,
-                    sprintf('Media path "%s" not found.', $path)
-                );
-            }
-
-            $mediaMtime = $fs->lastModified($path);
-
-            // No need to update if all of these conditions are true.
-            if (!$force && !$media->needsReprocessing($mediaMtime)) {
-                return false;
-            }
-
-            $fs->withLocalFile(
-                $path,
-                function ($localPath) use ($media, $fs): void {
-                    $this->loadFromFile($media, $localPath, $fs);
-                }
-            );
-        }
-
-        $media->setMtime($mediaMtime);
-        $this->em->persist($media);
-
-        return true;
     }
 
     /**

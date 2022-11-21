@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var \App\Http\RouterInterface $router
+ * @var \App\View\GlobalSections $sections
+ */
 
 use Carbon\CarbonImmutable;
 
@@ -11,38 +15,44 @@ $this->layout(
     ]
 );
 
-/** @var \App\Assets $assets */
-$assets->addInlineJs(
-    $this->fetch('frontend/public/podcast-episodes.js', [])
+$sections->append(
+    'head',
+    <<<HTML
+    <link rel="alternate" type="application/rss+xml" title="{$this->e($podcast->getTitle())}" href="{$feedLink}">
+    HTML
 );
 
-$this->push('head');
+$sections->appendStart('bodyjs');
 ?>
-
-<link rel="alternate" type="application/rss+xml" title="<?=$this->e($podcast->getTitle())?>" href="<?=$feedLink?>">
-
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 <?php
-$this->end();
+$sections->end();
 ?>
 
 <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
     <div class="container pt-5 pb-5 h-100" style="flex: 1;">
         <div id="station_podcast_episodes">
             <div class="row">
-                <h1 class="mx-auto"><?=__('Episodes')?></h1>
+                <h1 class="mx-auto"><?= __('Episodes') ?></h1>
             </div>
 
             <div class="row mb-4">
-                <h2 class="mx-auto"><?=$this->e($podcast->getTitle())?></h2>
+                <h2 class="mx-auto"><?= $this->e($podcast->getTitle()) ?></h2>
             </div>
 
             <div class="row justify-content-center mb-4">
-                <a href="<?=$podcastsLink?>" class="btn btn-primary mr-2"><span class="material-icons">chevron_left</span><?=__(
+                <a href="<?= $podcastsLink ?>" class="btn btn-primary mr-2"><span
+                        class="material-icons">chevron_left</span><?= __(
                         'Back'
-                    )?></a>
-                <a href="<?=$feedLink?>" class="btn btn-warning" target="_blank"><span class="material-icons">rss_feed</span> <?=__(
+                    ) ?></a>
+                <a href="<?= $feedLink ?>" class="btn btn-warning" target="_blank"><span
+                        class="material-icons">rss_feed</span> <?= __(
                         'RSS Feed'
-                    )?></a>
+                    ) ?></a>
             </div>
 
             <div class="row justify-content-center">

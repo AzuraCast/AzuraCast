@@ -7,7 +7,7 @@ namespace App\Controller\Api\Admin\Backups;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Azura\Files\ExtendedFilesystemInterface;
+use App\Flysystem\ExtendedFilesystemInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class DeleteAction extends AbstractFileAction

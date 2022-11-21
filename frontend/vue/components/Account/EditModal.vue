@@ -37,7 +37,8 @@ export default {
                 name: {},
                 email: {required, email},
                 locale: {required},
-                theme: {required}
+                theme: {required},
+                show_24_hour_time: {}
             }
         };
     },
@@ -52,7 +53,8 @@ export default {
                 name: '',
                 email: '',
                 locale: 'default',
-                theme: 'browser'
+                theme: 'browser',
+                show_24_hour_time: null,
             };
         },
         open() {

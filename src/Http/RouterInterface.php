@@ -13,50 +13,67 @@ interface RouterInterface
 
     public function withRequest(?ServerRequestInterface $request): self;
 
-    public function getBaseUrl(?bool $useRequest = null): UriInterface;
+    public function getBaseUrl(): UriInterface;
+
+    public function buildBaseUrl(?bool $useRequest = null): UriInterface;
 
     /**
      * Simpler format for calling "named" routes with parameters.
-     *
-     * @param string $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param boolean $absolute Whether to include the full URL.
      */
     public function named(
-        string $route_name,
-        array $route_params = [],
-        array $query_params = [],
+        string $routeName,
+        array $routeParams = [],
+        array $queryParams = [],
+        bool $absolute = false
+    ): string;
+
+    /**
+     * Same as above, but returning a UriInterface.
+     */
+    public function namedAsUri(
+        string $routeName,
+        array $routeParams = [],
+        array $queryParams = [],
         bool $absolute = false
     ): UriInterface;
 
     /**
      * Return a named route based on the current page and its route arguments.
-     *
-     * @param string|null $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param bool $absolute
      */
     public function fromHere(
-        ?string $route_name = null,
-        array $route_params = [],
-        array $query_params = [],
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
+        bool $absolute = false
+    ): string;
+
+    /**
+     * Same as above, but returns a UriInterface.
+     */
+    public function fromHereAsUri(
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
         bool $absolute = false
     ): UriInterface;
 
     /**
      * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
-     *
-     * @param string|null $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param bool $absolute
      */
     public function fromHereWithQuery(
-        ?string $route_name = null,
-        array $route_params = [],
-        array $query_params = [],
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
+        bool $absolute = false
+    ): string;
+
+    /**
+     * Same as above, but returns a UriInterface.
+     */
+    public function fromHereWithQueryAsUri(
+        ?string $routeName = null,
+        array $routeParams = [],
+        array $queryParams = [],
         bool $absolute = false
     ): UriInterface;
 }

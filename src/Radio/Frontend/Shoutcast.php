@@ -6,7 +6,7 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Service\Acme;
-use Exception;
+use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
@@ -55,39 +55,50 @@ final class Shoutcast extends AbstractFrontend
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);
         $npAdapter->setAdminPassword($feConfig->getAdminPassword());
 
-        $defaultResult = Result::blank();
-        $otherResults = [];
+        $mountPromises = [];
+        $defaultMountId = null;
 
         $sid = 0;
         foreach ($station->getMounts() as $mount) {
             $sid++;
 
-            try {
-                $result = $npAdapter->getNowPlaying((string)$sid, $includeClients);
-
-                if (!empty($result->clients)) {
-                    foreach ($result->clients as $client) {
-                        $client->mount = 'local_' . $mount->getId();
-                    }
-                }
-            } catch (Exception $e) {
-                $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-
-                $result = Result::blank();
-            }
-
-            $mount->setListenersTotal($result->listeners->total);
-            $mount->setListenersUnique($result->listeners->unique ?? 0);
-            $this->em->persist($mount);
-
             if ($mount->getIsDefault()) {
-                $defaultResult = $result;
-            } else {
-                $otherResults[] = $result;
+                $defaultMountId = $sid;
             }
+
+            $mountPromises[$sid] = $npAdapter->getNowPlayingAsync(
+                (string)$sid,
+                $includeClients
+            )->then(
+                function (Result $result) use ($mount) {
+                    if (!empty($result->clients)) {
+                        foreach ($result->clients as $client) {
+                            $client->mount = 'local_' . $mount->getId();
+                        }
+                    }
+
+                    $mount->setListenersTotal($result->listeners->total);
+                    $mount->setListenersUnique($result->listeners->unique ?? 0);
+                    $this->em->persist($mount);
+
+                    return $result;
+                }
+            );
         }
 
+        $mountPromiseResults = Utils::settle($mountPromises)->wait();
+
         $this->em->flush();
+
+        $defaultResult = Result::blank();
+        $otherResults = [];
+        foreach ($mountPromiseResults as $mountId => $result) {
+            if ($mountId === $defaultMountId) {
+                $defaultResult = $result['value'] ?? Result::blank();
+            } else {
+                $otherResults[] = $result['value'] ?? Result::blank();
+            }
+        }
 
         foreach ($otherResults as $otherResult) {
             $defaultResult = $defaultResult->merge($otherResult);
@@ -108,6 +119,9 @@ final class Shoutcast extends AbstractFrontend
 
         [$certPath, $certKey] = Acme::getCertificatePaths();
 
+        $publicUrl = $this->getPublicUrl($station);
+        $urlHost = $publicUrl->getScheme() . '://' . $publicUrl->getHost();
+
         $config = [
             'password' => $frontendConfig->getSourcePassword(),
             'adminpassword' => $frontendConfig->getAdminPassword(),
@@ -125,6 +139,10 @@ final class Shoutcast extends AbstractFrontend
             'userid' => $frontendConfig->getScUserId(),
             'sslCertificateFile' => $certPath,
             'sslCertificateKeyFile' => $certKey,
+            'destdns' => $urlHost,
+            'destip' => $urlHost,
+            'publicdns' => $urlHost,
+            'publicip' => $urlHost,
         ];
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');

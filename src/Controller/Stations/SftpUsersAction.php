@@ -37,7 +37,7 @@ final class SftpUsersAction
             id: 'station-sftp-users',
             title: __('SFTP Users'),
             props: [
-                'listUrl' => (string)$router->fromHere('api:stations:sftp-users'),
+                'listUrl' => $router->fromHere('api:stations:sftp-users'),
                 'connectionInfo' => [
                     'url' => (string)$baseUrl,
                     'ip' => $this->acCentral->getIp(),

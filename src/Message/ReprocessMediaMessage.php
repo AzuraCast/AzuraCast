@@ -8,6 +8,9 @@ use App\MessageQueue\QueueManagerInterface;
 
 final class ReprocessMediaMessage extends AbstractUniqueMessage
 {
+    /** @var int The numeric identifier for the StorageLocation entity. */
+    public int $storage_location_id;
+
     /** @var int The numeric identifier for the StationMedia record being processed. */
     public int $media_id;
 

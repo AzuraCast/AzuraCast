@@ -191,11 +191,15 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
 
     protected function getBannedIps(Entity\Station $station): array
     {
+        return $this->getIpsAsArray($station->getFrontendConfig()->getBannedIps());
+    }
+
+    protected function getIpsAsArray(?string $ipString): array
+    {
         $ips = [];
 
-        $bannedIps = $station->getFrontendConfig()->getBannedIps();
-        if (!empty($bannedIps)) {
-            foreach (array_filter(array_map('trim', explode("\n", $bannedIps))) as $ip) {
+        if (!empty($ipString)) {
+            foreach (array_filter(array_map('trim', explode("\n", $ipString))) as $ip) {
                 try {
                     if (!str_contains($ip, '/')) {
                         $ipObj = IP::create($ip);

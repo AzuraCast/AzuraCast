@@ -28,6 +28,6 @@ final class ClearCacheAction
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);
 
-        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:debug:index'));
+        return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
     }
 }

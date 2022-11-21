@@ -24,7 +24,7 @@ final class ListenersAction
             id: 'station-report-listeners',
             title: __('Listeners'),
             props: [
-                'apiUrl' => (string)$router->fromHere('api:listeners:index'),
+                'apiUrl' => $router->fromHere('api:listeners:index'),
                 'stationTz' => $station->getTimezone(),
             ]
         );

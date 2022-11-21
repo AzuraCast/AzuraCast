@@ -10,6 +10,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use App\Media\MimeType;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\Common\Collections\Criteria;
@@ -49,7 +50,7 @@ final class ListAction
 
         $cacheKeyParts = [
             'files_list',
-            $station->getId(),
+            $storageLocation->getIdRequired(),
             (!empty($currentDir)) ? 'dir_' . rawurlencode($currentDir) : 'root',
         ];
 
@@ -62,10 +63,9 @@ final class ListAction
         $flushCache = (bool)$request->getParam('flushCache', false);
 
         if (!$flushCache && $this->cache->has($cacheKey)) {
+            /** @var array<int, Entity\Api\FileList> $result */
             $result = $this->cache->get($cacheKey);
         } else {
-            $result = [];
-
             $pathLike = (empty($currentDir))
                 ? '%'
                 : $currentDir . '/%';
@@ -253,15 +253,22 @@ final class ListAction
                     $files = array_keys($mediaInDir);
                 }
             } else {
-                $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
+                $protectedPaths = [
+                    Entity\StationMedia::DIR_ALBUM_ART,
+                    Entity\StationMedia::DIR_WAVEFORMS,
+                    Entity\StationMedia::DIR_FOLDER_COVERS,
+                ];
 
                 $files = $fs->listContents($currentDir, false)->filter(
-                    function (StorageAttributes $attributes) use ($currentDir, $protectedPaths) {
-                        return !($currentDir === '' && in_array($attributes->path(), $protectedPaths, true));
-                    }
+                    fn(StorageAttributes $attributes) => !($currentDir === '' && in_array(
+                        $attributes->path(),
+                        $protectedPaths,
+                        true
+                    ))
                 );
             }
 
+            $result = [];
             foreach ($files as $file) {
                 $row = new Entity\Api\FileList();
 
@@ -304,6 +311,9 @@ final class ListAction
                         __('File Not Processed: %s'),
                         Utilities\Strings::truncateText($unprocessableMedia[$row->path])
                     );
+                } elseif (MimeType::isPathImage($row->path)) {
+                    $row->is_cover_art = true;
+                    $row->text = __('Cover Art');
                 } else {
                     $row->text = __('File Processing');
                 }
@@ -319,30 +329,22 @@ final class ListAction
 
         usort(
             $result,
-            static function (
-                Entity\Api\FileList $a,
-                Entity\Api\FileList $b
-            ) use (
+            static fn(Entity\Api\FileList $a, Entity\Api\FileList $b) => self::sortRows(
+                $a,
+                $b,
                 $searchPhrase,
                 $sort,
                 $sortOrder
-            ) {
-                return self::sortRows($a, $b, $searchPhrase, $sort, $sortOrder);
-            }
+            )
         );
 
-        /** @var array<int, Entity\Api\FileList> $result */
         $paginator = Paginator::fromArray($result, $request);
 
         // Add processor-intensive data for just this page.
         $stationId = $station->getIdRequired();
-        $isInternal = (bool)$request->getParam('internal', false);
-        $defaultAlbumArtUrl = (string)$this->stationRepo->getDefaultAlbumArtUrl($station);
 
         $paginator->setPostprocessor(
-            static function (Entity\Api\FileList $row) use ($router, $stationId, $defaultAlbumArtUrl, $isInternal) {
-                return self::postProcessRow($row, $router, $stationId, $defaultAlbumArtUrl, $isInternal);
-            }
+            static fn(Entity\Api\FileList $row) => self::postProcessRow($row, $router, $stationId)
         );
 
         return $paginator->write($response);
@@ -396,37 +398,38 @@ final class ListAction
     private static function postProcessRow(
         Entity\Api\FileList $row,
         RouterInterface $router,
-        int $stationId,
-        string $defaultAlbumArtUrl,
-        bool $isInternal
-    ): Entity\Api\FileList|array {
+        int $stationId
+    ): Entity\Api\FileList {
         if (null !== $row->media->media_id) {
-            $row->media->art = (0 === $row->media->art_updated_at)
-                ? $defaultAlbumArtUrl
-                : (string)$router->named(
-                    'api:stations:media:art',
-                    [
-                        'station_id' => $stationId,
-                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
-                    ]
-                );
+            $artMediaId = $row->media->unique_id;
+            if (0 !== $row->media->art_updated_at) {
+                $artMediaId .= '-' . $row->media->art_updated_at;
+            }
+
+            $row->media->art = $router->named(
+                'api:stations:media:art',
+                [
+                    'station_id' => $stationId,
+                    'media_id' => $artMediaId,
+                ]
+            );
 
             $row->media->links = [
-                'play' => (string)$router->named(
+                'play' => $router->named(
                     'api:stations:files:play',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                     [],
                     true
                 ),
-                'edit' => (string)$router->named(
+                'edit' => $router->named(
                     'api:stations:file',
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                 ),
-                'art' => (string)$router->named(
+                'art' => $router->named(
                     'api:stations:media:art-internal',
                     ['station_id' => $stationId, 'media_id' => $row->media->media_id]
                 ),
-                'waveform' => (string)$router->named(
+                'waveform' => $router->named(
                     'api:stations:media:waveform',
                     [
                         'station_id' => $stationId,
@@ -437,26 +440,17 @@ final class ListAction
         }
 
         $row->links = [
-            'download' => (string)$router->named(
+            'download' => $router->named(
                 'api:stations:files:download',
                 ['station_id' => $stationId],
                 ['file' => $row->path]
             ),
-            'rename' => (string)$router->named(
+            'rename' => $router->named(
                 'api:stations:files:rename',
                 ['station_id' => $stationId],
                 ['file' => $row->path]
             ),
         ];
-
-        if ($isInternal) {
-            $playlists = $row->playlists;
-            $row->playlists = [];
-
-            $flatRow = Utilities\Arrays::flattenArray($row, '_');
-            $flatRow['playlists'] = $playlists;
-            return $flatRow;
-        }
 
         return $row;
     }

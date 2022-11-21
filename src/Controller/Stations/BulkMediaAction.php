@@ -23,7 +23,7 @@ final class BulkMediaAction
             id: 'station-bulk-media',
             title: __('Bulk Media Import/Export'),
             props: [
-                'apiUrl' => (string)$router->fromHere('api:stations:files:bulk'),
+                'apiUrl' => $router->fromHere('api:stations:files:bulk'),
             ],
         );
     }

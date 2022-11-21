@@ -60,8 +60,8 @@ final class EditLiquidsoapConfigAction
             id: 'station-liquidsoap-config',
             title: __('Edit Liquidsoap Configuration'),
             props: [
-                'settingsUrl' => (string)$router->fromHere('api:stations:liquidsoap-config'),
-                'restartStatusUrl' => (string)$router->fromHere('api:stations:restart-status'),
+                'settingsUrl' => $router->fromHere('api:stations:liquidsoap-config'),
+                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
                 'config' => $areas,
                 'sections' => $configSections,
             ],

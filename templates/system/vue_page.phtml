@@ -1,0 +1,29 @@
+<?php
+/**
+ * @var string $component
+ * @var ?string $id
+ * @var string $layout
+ * @var ?string $title
+ * @var array $layoutParams
+ * @var array $props
+ */
+
+$this->layout(
+    $layout ?? 'main',
+    array_merge(
+        [
+            'title' => $title ?? $id,
+            'manual' => true,
+        ],
+        $layoutParams ?? []
+    )
+);
+
+echo $this->fetch(
+    'partials/vue_body',
+    [
+        'component' => $component,
+        'id' => $id,
+        'props' => $props,
+    ]
+);

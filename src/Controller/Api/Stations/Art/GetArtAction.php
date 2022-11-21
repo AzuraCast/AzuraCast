@@ -9,6 +9,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Flysystem\ExtendedFilesystemInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -53,29 +54,59 @@ final class GetArtAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
-
-        $defaultArtRedirect = $response->withRedirect((string)$this->stationRepo->getDefaultAlbumArtUrl($station), 302);
+        if (str_contains($media_id, '-')) {
+            $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
+        }
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id, 2)[0];
 
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+
+        $mediaPath = $this->getMediaPath($station, $fsMedia, $media_id);
+        if (null !== $mediaPath) {
+            return $response->streamFilesystemFile(
+                $fsMedia,
+                $mediaPath,
+                null,
+                'inline',
+                false
+            );
+        }
+
+        return $response->withRedirect((string)$this->stationRepo->getDefaultAlbumArtUrl($station), 302);
+    }
+
+    private function getMediaPath(
+        Entity\Station $station,
+        ExtendedFilesystemInterface $fsMedia,
+        string $media_id
+    ): ?string {
         if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
             $mediaPath = Entity\StationMedia::getArtPath($media_id);
-        } else {
-            $media = $this->mediaRepo->findForStation($media_id, $station);
-            if ($media instanceof Entity\StationMedia) {
-                $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-            } else {
-                return $defaultArtRedirect;
+
+            if ($fsMedia->fileExists($mediaPath)) {
+                return $mediaPath;
             }
         }
 
-        if ($fsMedia->fileExists($mediaPath)) {
-            return $response->streamFilesystemFile($fsMedia, $mediaPath, null, 'inline', false);
+        $media = $this->mediaRepo->findForStation($media_id, $station);
+        if (!($media instanceof Entity\StationMedia)) {
+            return null;
         }
 
-        return $defaultArtRedirect;
+        $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
+        if ($fsMedia->fileExists($mediaPath)) {
+            return $mediaPath;
+        }
+
+        $folderPath = Entity\StationMedia::getFolderArtPath(
+            Entity\StationMedia::getFolderHashForPath($media->getPath())
+        );
+        if ($fsMedia->fileExists($folderPath)) {
+            return $folderPath;
+        }
+
+        return null;
     }
 }

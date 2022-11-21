@@ -7,7 +7,6 @@ namespace App\Radio;
 use App\Entity;
 use App\Environment;
 use App\Exception\Supervisor\AlreadyRunningException;
-use App\Exception\Supervisor\BadNameException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use App\Http\Router;
@@ -231,9 +230,6 @@ abstract class AbstractLocalAdapter
      * @param string $program_name
      * @param Entity\Station $station
      *
-     * @throws AlreadyRunningException
-     * @throws BadNameException
-     * @throws NotRunningException
      * @throws SupervisorException
      */
     protected function handleSupervisorException(
@@ -241,70 +237,11 @@ abstract class AbstractLocalAdapter
         string $program_name,
         Entity\Station $station
     ): void {
-        $class_parts = explode('\\', static::class);
-        $class_name = array_pop($class_parts);
+        $eNew = SupervisorException::fromSupervisorLibException($e, $program_name);
+        $eNew->addLoggingContext('station_id', $station->getId());
+        $eNew->addLoggingContext('station_name', $station->getName());
 
-        if ($e instanceof Fault\BadNameException) {
-            $e_headline = sprintf(
-                __('%s is not recognized as a service.'),
-                $class_name
-            );
-            $e_body = __('It may not be registered with Supervisor yet. Restarting broadcasting may help.');
-
-            $app_e = new BadNameException(
-                $e_headline . '; ' . $e_body,
-                $e->getCode(),
-                $e
-            );
-        } elseif ($e instanceof Fault\AlreadyStartedException) {
-            $e_headline = sprintf(
-                __('%s cannot start'),
-                $class_name
-            );
-            $e_body = __('It is already running.');
-
-            $app_e = new AlreadyRunningException(
-                $e_headline . '; ' . $e_body,
-                $e->getCode(),
-                $e
-            );
-        } elseif ($e instanceof Fault\NotRunningException) {
-            $e_headline = sprintf(
-                __('%s cannot stop'),
-                $class_name
-            );
-            $e_body = __('It is not running.');
-
-            $app_e = new NotRunningException(
-                $e_headline . '; ' . $e_body,
-                $e->getCode(),
-                $e
-            );
-        } else {
-            $e_headline = sprintf(
-                __('%s encountered an error'),
-                $class_name
-            );
-
-            // Get more detailed information for more significant errors.
-            $process_log = $this->supervisor->tailProcessStdoutLog($program_name, 0, 500);
-            $process_log = array_values(array_filter(explode("\n", $process_log[0])));
-            $process_log = array_slice($process_log, -6);
-
-            $e_body = (!empty($process_log))
-                ? implode('<br>', $process_log)
-                : __('Check the log for details.');
-
-            $app_e = new SupervisorException($e_headline, $e->getCode(), $e);
-            $app_e->addExtraData('supervisor_log', $process_log);
-            $app_e->addExtraData('supervisor_process_info', $this->supervisor->getProcessInfo($program_name));
-        }
-
-        $app_e->setFormattedMessage('<b>' . $e_headline . '</b><br>' . $e_body);
-        $app_e->addLoggingContext('station_id', $station->getId());
-        $app_e->addLoggingContext('station_name', $station->getName());
-
-        throw $app_e;
+        throw $eNew;
     }
 
     /**

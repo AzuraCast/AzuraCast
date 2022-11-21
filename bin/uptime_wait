@@ -74,7 +74,7 @@ class UptimeWait
 
         $elapsed = 0;
         while ($elapsed <= $this->timeout) {
-            if ($this->checkRedis() && $this->checkDatabase()) {
+            if ($this->checkDatabase()) {
                 $this->println('Services started up and ready!');
                 die(0);
             }
@@ -117,54 +117,6 @@ class UptimeWait
 
             return false;
         }
-    }
-
-    protected function checkRedis(): bool
-    {
-        $enableRedis = $this->envToBool($_ENV['ENABLE_REDIS'] ?? true);
-        $redisHost = $_ENV['REDIS_HOST'] ?? 'localhost';
-        $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
-        $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
-
-        $redisSocket = ('localhost' === $redisHost)
-                ? '/run/redis/redis.sock'
-                : null;
-
-        if (!$enableRedis) {
-            $this->println('Redis disabled; skipping Redis check...');
-            return true;
-        }
-
-        try {
-            $redis = new Redis();
-            if (null !== $redisSocket) {
-                $redis->connect($redisSocket);
-            } else {
-                $redis->connect($redisHost, $redisPort, 15);
-            }
-            $redis->select($redisDb);
-
-            $redis->ping();
-
-            return true;
-        } catch (Throwable $e) {
-            if ($this->debugMode) {
-                $this->println($e->getMessage());
-            }
-
-            return false;
-        }
-    }
-
-    protected function envToBool(string|bool $value): bool
-    {
-        if (is_bool($value)) {
-            return $value;
-        }
-
-        return str_starts_with(strtolower($value), 'y')
-                || 'true' === strtolower($value)
-                || '1' === $value;
     }
 
     protected function println(string $line): void

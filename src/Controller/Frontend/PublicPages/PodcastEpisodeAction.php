@@ -44,7 +44,7 @@ final class PodcastEpisodeAction
 
         $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episode_id);
 
-        $podcastEpisodesLink = (string)$router->named(
+        $podcastEpisodesLink = $router->named(
             'public:podcast:episodes',
             [
                 'station_id' => $station->getId(),
@@ -57,7 +57,7 @@ final class PodcastEpisodeAction
             return $response->withRedirect($podcastEpisodesLink);
         }
 
-        $feedLink = (string)$router->named(
+        $feedLink = $router->named(
             'public:podcast:feed',
             [
                 'station_id' => $station->getId(),

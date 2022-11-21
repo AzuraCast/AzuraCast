@@ -6472,17 +6472,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "29b6ecbcd3295a3fc3fc39aad22b162251078b1b"
+                "reference": "e8a5ac306748c5fc6f53ada6a68648eef5a1a286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/29b6ecbcd3295a3fc3fc39aad22b162251078b1b",
-                "reference": "29b6ecbcd3295a3fc3fc39aad22b162251078b1b",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/e8a5ac306748c5fc6f53ada6a68648eef5a1a286",
+                "reference": "e8a5ac306748c5fc6f53ada6a68648eef5a1a286",
                 "shasum": ""
             },
             "require": {
                 "lstrojny/fxmlrpc": ">=0.12",
-                "php": ">=8.0",
+                "php": ">=8.1",
                 "psr/log": ">=1"
             },
             "require-dev": {
@@ -6531,7 +6531,7 @@
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
                 "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2022-06-02T05:12:24+00:00"
+            "time": "2022-11-21T11:48:01+00:00"
         },
         {
             "name": "symfony/beanstalkd-messenger",

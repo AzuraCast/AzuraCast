@@ -10,6 +10,7 @@ use App\Service\ServiceControl\ServiceData;
 use Supervisor\Exception\Fault\BadNameException;
 use Supervisor\Exception\Fault\NotRunningException;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
+use Supervisor\ProcessStates;
 use Supervisor\SupervisorInterface;
 
 final class ServiceControl
@@ -27,7 +28,14 @@ final class ServiceControl
 
         foreach ($this->getServiceNames() as $name => $description) {
             try {
-                $isRunning = $this->supervisor->getProcess($name)->isRunning();
+                $isRunning = in_array(
+                    $this->supervisor->getProcess($name)->getState(),
+                    [
+                        ProcessStates::Running,
+                        ProcessStates::Starting,
+                    ],
+                    true
+                );
             } catch (BadNameException) {
                 $isRunning = false;
             }

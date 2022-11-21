@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.17.4
+  version: 0.17.5
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -3394,6 +3394,11 @@ components:
           type: string
           example: 'https://your-region.digitaloceanspaces.com'
           nullable: true
+        dropboxAuthToken:
+          description: 'The optional Dropbox Auth Token.'
+          type: string
+          example: ''
+          nullable: true
         sftpHost:
           description: 'The host for SFTP adapters'
           type: string
@@ -4323,8 +4328,8 @@ components:
           type: string
           example: '*'
           nullable: true
-        enable_websockets:
-          description: 'Whether to use Websockets for Now Playing data updates.'
+        enable_static_nowplaying:
+          description: 'Whether to use high-performance static JSON for Now Playing data updates.'
           type: boolean
           example: 'false'
         analytics:
@@ -5034,6 +5039,10 @@ components:
             theme:
               type: string
               example: dark
+              nullable: true
+            show_24_hour_time:
+              type: boolean
+              example: true
               nullable: true
             two_factor_secret:
               type: string

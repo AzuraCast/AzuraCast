@@ -124,7 +124,7 @@ final class Customization
     {
         $publicCss = $this->settings->getPublicCustomCss() ?? '';
 
-        $background = new BackgroundCustomAsset();
+        $background = new BackgroundCustomAsset($this->environment);
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
@@ -156,7 +156,7 @@ final class Customization
 
     public function getBrowserIconUrl(int $size = 256): string
     {
-        return (new BrowserIconCustomAsset())->getUrlForSize($size);
+        return (new BrowserIconCustomAsset($this->environment))->getUrlForSize($size);
     }
 
     /**

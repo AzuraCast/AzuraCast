@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
-use App\Environment;
 use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 
-final class AlbumArtCustomAsset extends AbstractCustomAsset
+final class AlbumArtCustomAsset extends AbstractMultiPatternCustomAsset
 {
-    protected function getPattern(): string
+    protected function getPatterns(): array
     {
-        return 'album_art%s.jpg';
+        return [
+            'default' => 'album_art%s.webp',
+            'image/jpeg' => 'album_art%s.jpg',
+        ];
     }
 
     protected function getDefaultUrl(): string
     {
-        return Environment::getInstance()->getAssetUrl() . '/img/generic_song.jpg';
+        return $this->environment->getAssetUrl() . '/img/generic_song.webp';
     }
 
     public function upload(Image $image): void
@@ -26,6 +28,14 @@ final class AlbumArtCustomAsset extends AbstractCustomAsset
         $newImage->resize(1500, 1500, function (Constraint $constraint) {
             $constraint->upsize();
         });
-        $newImage->save($this->getPath());
+
+        $this->delete();
+
+        $pattern = $this->getPattern();
+
+        $mimeType = $newImage->mime();
+        $quality = ('image/png' === $mimeType) ? 100 : 90;
+
+        $newImage->save($this->getPathForPattern($pattern), $quality);
     }
 }

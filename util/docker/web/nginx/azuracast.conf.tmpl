@@ -94,7 +94,7 @@ server {
     }
 
     location /static/uploads {
-        rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg)$ $1.$2 last;
+        rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg|webp)$ $1.$2 last;
 
         alias /var/azuracast/uploads;
         try_files $uri =404;

@@ -25,11 +25,13 @@ final class LocalWebhookHandler
         Entity\Station $station,
         Entity\Api\NowPlaying\NowPlaying $np
     ): void {
+        $fsUtils = new Filesystem();
+
+        $staticNpDir = $this->environment->getTempDirectory() . '/nowplaying';
+        $fsUtils->mkdir($staticNpDir);
+
         // Write local static file that the video stream (and other scripts) can use.
         $this->logger->debug('Writing local nowplaying text file...');
-
-        $configDir = $station->getRadioConfigDir();
-        $npFile = $configDir . '/nowplaying.txt';
 
         $npText = implode(
             ' - ',
@@ -45,16 +47,18 @@ final class LocalWebhookHandler
             $npText = $station->getName() ?? '';
         }
 
-        $fsUtils = new Filesystem();
+        $configDir = $station->getRadioConfigDir();
+        $npFile = $configDir . '/nowplaying.txt';
+        $npStaticFile = $staticNpDir . '/' . $station->getShortName() . '.txt';
 
-        // Atomic rename to ensure the file is always there.
         $fsUtils->dumpFile($npFile, $npText);
+        $fsUtils->dumpFile($npStaticFile, $npText);
 
         // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
         $this->logger->debug('Writing static nowplaying text file...');
 
-        $staticNpDir = $this->environment->getTempDirectory() . '/nowplaying';
-        $fsUtils->mkdir($staticNpDir);
+        $staticArtPath = $staticNpDir . '/' . $station->getShortName() . '.webp';
+
 
         $staticNpPath = $staticNpDir . '/' . $station->getShortName() . '.json';
         $fsUtils->dumpFile(

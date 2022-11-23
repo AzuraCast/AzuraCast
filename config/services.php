@@ -6,7 +6,6 @@
 
 use App\Environment;
 use App\Event;
-use App\Exception;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -102,55 +101,45 @@ return [
             ]
         );
 
-        try {
-            $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
+        $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
 
-            $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
-                $mappingClassesPaths,
-                $environment->getBaseDirectory()
-            );
-            $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
+        $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
+            $mappingClassesPaths,
+            $environment->getBaseDirectory()
+        );
+        $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
 
-            $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
+        $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
-            // Fetch and store entity manager.
-            $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
-                $mappingClassesPaths,
-                !$environment->isProduction(),
-                $environment->getTempDirectory() . '/proxies',
-                $psr6Cache
-            );
+        // Fetch and store entity manager.
+        $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+            $mappingClassesPaths,
+            !$environment->isProduction(),
+            $environment->getTempDirectory() . '/proxies',
+            $psr6Cache
+        );
 
-            $config->setAutoGenerateProxyClasses(
-                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
-            );
+        $config->setAutoGenerateProxyClasses(
+            Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
+        );
 
-            // Debug mode:
-            // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
+        // Debug mode:
+        // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
 
-            $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
+        $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
-            if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
-                Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
-            }
-
-            $eventManager = new Doctrine\Common\EventManager();
-            $eventManager->addEventSubscriber($eventRequiresRestart);
-            $eventManager->addEventSubscriber($eventAuditLog);
-            $eventManager->addEventSubscriber($eventChangeTracking);
-
-            return new App\Doctrine\DecoratedEntityManager(
-                function () use (
-                    $connectionOptions,
-                    $config,
-                    $eventManager
-                ) {
-                    return Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager);
-                }
-            );
-        } catch (Exception $e) {
-            throw new App\Exception\BootstrapException($e->getMessage());
+        if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
+            Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
         }
+
+        $eventManager = new Doctrine\Common\EventManager();
+        $eventManager->addEventSubscriber($eventRequiresRestart);
+        $eventManager->addEventSubscriber($eventAuditLog);
+        $eventManager->addEventSubscriber($eventChangeTracking);
+
+        return new App\Doctrine\DecoratedEntityManager(
+            fn() => Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager)
+        );
     },
 
     App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),

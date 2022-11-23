@@ -35,8 +35,7 @@ final class MediaProcessor
         if ($message instanceof ReprocessMediaMessage) {
             $mediaRow = $this->em->find(StationMedia::class, $message->media_id);
             if ($mediaRow instanceof StationMedia) {
-                $this->processMedia($storageLocation, $mediaRow, $message->force);
-                $this->em->flush();
+                $this->process($storageLocation, $mediaRow, $message->force);
             }
         } else {
             $this->process($storageLocation, $message->path);
@@ -105,11 +104,19 @@ final class MediaProcessor
 
     public function process(
         StorageLocation $storageLocation,
-        string $path,
+        string|StationMedia $pathOrMedia,
         bool $force = false
     ): ?StationMedia {
+        if ($pathOrMedia instanceof StationMedia) {
+            $record = $pathOrMedia;
+            $path = $pathOrMedia->getPath();
+        } else {
+            $record = null;
+            $path = $pathOrMedia;
+        }
+
         if (MimeType::isPathProcessable($path)) {
-            $record = $this->mediaRepo->findByPath($path, $storageLocation);
+            $record ??= $this->mediaRepo->findByPath($path, $storageLocation);
             $created = false;
             if (!($record instanceof StationMedia)) {
                 $record = new StationMedia($storageLocation, $path);
@@ -136,7 +143,7 @@ final class MediaProcessor
             return $record;
         }
 
-        if (MimeType::isPathImage($path)) {
+        if (null === $record && MimeType::isPathImage($path)) {
             $this->processCoverArt(
                 $storageLocation,
                 $path

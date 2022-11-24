@@ -6,7 +6,6 @@ namespace App\Doctrine;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Closure;
-use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
@@ -17,22 +16,6 @@ final class DecoratedEntityManager extends EntityManagerDecorator implements Rel
     public function __construct(callable $createEm)
     {
         parent::__construct($createEm());
-
-        try {
-            $this->getConnection()->getNativeConnection();
-        } catch (ConnectionException $e) {
-            if (2002 === $e->getCode()) {
-                throw new \Exception(
-                    sprintf(
-                        'Could not connect to the database. Check the error log for additional information. (%s)',
-                        $e->getMessage()
-                    ),
-                    $e->getCode()
-                );
-            }
-
-            throw $e;
-        }
 
         $this->createEm = $createEm(...);
     }

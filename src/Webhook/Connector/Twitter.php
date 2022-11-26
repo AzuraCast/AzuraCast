@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Service\GuzzleFactory;
@@ -65,30 +66,44 @@ final class Twitter extends AbstractConnector
         );
         $stack->push($middleware);
 
-        $raw_vars = [
-            'message' => $config['message'] ?? '',
+        // Dispatch webhook
+        $messages = [
+            WebhookTriggers::SongChanged->value => $config['message'] ?? '',
+            WebhookTriggers::LiveConnect->value => $config['message_live_connect'] ?? '',
+            WebhookTriggers::LiveDisconnect->value => $config['message_live_disconnect'] ?? '',
+            WebhookTriggers::StationOffline->value => $config['message_station_offline'] ?? '',
+            WebhookTriggers::StationOnline->value => $config['message_station_online'] ?? '',
         ];
 
-        $vars = $this->replaceVariables($raw_vars, $np);
+        foreach ($triggers as $trigger) {
+            $message = $messages[$trigger] ?? '';
+            if (empty($message)) {
+                $this->logger->error(
+                    'Cannot send Twitter message; message body for this trigger type is empty.'
+                );
+                return;
+            }
 
-        // Dispatch webhook
-        $this->logger->debug('Posting to Twitter...');
+            $vars = $this->replaceVariables(['message' => $message], $np);
 
-        $response = $this->httpClient->request(
-            'POST',
-            'https://api.twitter.com/1.1/statuses/update.json',
-            [
-                'auth' => 'oauth',
-                'handler' => $stack,
-                'form_params' => [
-                    'status' => $vars['message'],
-                ],
-            ]
-        );
+            $this->logger->debug('Posting to Twitter...');
 
-        $this->logger->debug(
-            sprintf('Twitter returned code %d', $response->getStatusCode()),
-            ['response_body' => $response->getBody()->getContents()]
-        );
+            $response = $this->httpClient->request(
+                'POST',
+                'https://api.twitter.com/1.1/statuses/update.json',
+                [
+                    'auth' => 'oauth',
+                    'handler' => $stack,
+                    'form_params' => [
+                        'status' => $vars['message'],
+                    ],
+                ]
+            );
+
+            $this->logger->debug(
+                sprintf('Twitter returned code %d', $response->getStatusCode()),
+                ['response_body' => $response->getBody()->getContents()]
+            );
+        }
     }
 }

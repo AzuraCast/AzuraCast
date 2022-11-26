@@ -51,25 +51,17 @@
                         <translate :key="lang">Only Post Once Every...</translate>
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="rateLimitOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-select :id="props.id" :options="rateLimitOptions" v-model="props.field.$model">
+                        </b-form-select>
                     </template>
                 </b-wrapped-form-group>
             </b-form-row>
         </b-form-group>
 
-        <common-formatting-info></common-formatting-info>
+        <common-formatting-info :now-playing-url="nowPlayingUrl"></common-formatting-info>
 
         <b-form-group>
             <b-form-row>
-                <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message"
-                                      input-type="textarea">
-                    <template #label="{lang}">
-                        <translate :key="lang">Message Body</translate>
-                    </template>
-                </b-wrapped-form-group>
-
                 <b-wrapped-form-group class="col-md-12" id="form_config_visibility" :field="form.config.visibility">
                     <template #label="{lang}">
                         <translate :key="lang">Message Visibility</translate>
@@ -80,6 +72,47 @@
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
+
+                <template v-if="hasTrigger('song_changed')">
+                    <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message"
+                                          input-type="textarea">
+                        <template #label="{lang}">
+                            <translate :key="lang">Message Body on Song Change</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </template>
+                <template v-if="hasTrigger('live_connect')">
+                    <b-wrapped-form-group class="col-md-12" id="form_config_message_live_connect"
+                                          :field="form.config.message_live_connect" input-type="textarea">
+                        <template #label="{lang}">
+                            <translate :key="lang">Message Body on Streamer/DJ Connect</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </template>
+                <template v-if="hasTrigger('live_disconnect')">
+                    <b-wrapped-form-group class="col-md-12" id="form_config_message_live_disconnect"
+                                          :field="form.config.message_live_disconnect" input-type="textarea">
+                        <template #label="{lang}">
+                            <translate :key="lang">Message Body on Streamer/DJ Disconnect</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </template>
+                <template v-if="hasTrigger('station_offline')">
+                    <b-wrapped-form-group class="col-md-12" id="form_config_message_station_offline"
+                                          :field="form.config.message_station_offline" input-type="textarea">
+                        <template #label="{lang}">
+                            <translate :key="lang">Message Body on Station Offline</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </template>
+                <template v-if="hasTrigger('station_online')">
+                    <b-wrapped-form-group class="col-md-12" id="form_config_message_station_online"
+                                          :field="form.config.message_station_online" input-type="textarea">
+                        <template #label="{lang}">
+                            <translate :key="lang">Message Body on Station Online</translate>
+                        </template>
+                    </b-wrapped-form-group>
+                </template>
             </b-form-row>
         </b-form-group>
     </div>
@@ -88,12 +121,14 @@
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./CommonFormattingInfo";
+import _ from 'lodash';
 
 export default {
     name: 'Twitter',
     components: {CommonFormattingInfo, BWrappedFormGroup},
     props: {
-        form: Object
+        form: Object,
+        nowPlayingUrl: String
     },
     computed: {
         langSeconds() {
@@ -161,6 +196,11 @@ export default {
                     value: 'private',
                 }
             ];
+        }
+    },
+    methods: {
+        hasTrigger(trigger) {
+            return _.includes(this.form.triggers.$model, trigger);
         }
     }
 }

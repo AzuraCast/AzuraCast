@@ -36,6 +36,7 @@ final class WebhooksAction
             title: __('Web Hooks'),
             props: [
                 'listUrl' => $router->fromHere('api:stations:webhooks'),
+                'nowPlayingUrl' => $router->fromHere('api:nowplaying:index'),
                 'webhookTypes' => $webhookConfig['webhooks'],
                 'webhookTriggers' => $webhookConfig['triggers'],
                 'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),

@@ -12,7 +12,7 @@
                 <basic-info :trigger-options="triggerOptions" :form="$v.form"></basic-info>
             </b-tab>
             <b-tab :title="typeTitle">
-                <component :is="formComponent" :form="$v.form"></component>
+                <component :is="formComponent" :now-playing-url="nowPlayingUrl" :form="$v.form"></component>
             </b-tab>
         </b-tabs>
 
@@ -39,6 +39,7 @@ export default {
     components: {BasicInfo, TypeSelect},
     mixins: [BaseEditModal],
     props: {
+        nowPlayingUrl: String,
         webhookTypes: Object,
         webhookTriggers: Object
     },
@@ -183,7 +184,11 @@ export default {
                         token: {required},
                         token_secret: {required},
                         rate_limit: {},
-                        message: {required}
+                        message: {},
+                        message_live_connect: {},
+                        message_live_disconnect: {},
+                        message_station_offline: {},
+                        message_station_online: {}
                     },
                     defaultConfig: {
                         consumer_key: '',
@@ -191,7 +196,11 @@ export default {
                         token: '',
                         token_secret: '',
                         rate_limit: 0,
-                        message: this.langTwitterDefaultMessage
+                        message: this.langTwitterDefaultMessage,
+                        message_live_connect: this.langTwitterDjOnMessage,
+                        message_live_disconnect: this.langTwitterDjOffMessage,
+                        message_station_offline: this.langTwitterStationOfflineMessage,
+                        message_station_online: this.langTwitterStationOnlineMessage
                     }
                 },
                 'mastodon': {
@@ -200,15 +209,23 @@ export default {
                         instance_url: {required},
                         access_token: {required},
                         rate_limit: {},
-                        message: {required},
-                        visibility: {required}
+                        visibility: {required},
+                        message: {},
+                        message_live_connect: {},
+                        message_live_disconnect: {},
+                        message_station_offline: {},
+                        message_station_online: {}
                     },
                     defaultConfig: {
                         instance_url: '',
                         access_token: '',
                         rate_limit: 0,
+                        visibility: 'public',
                         message: this.langTwitterDefaultMessage,
-                        visibility: 'public'
+                        message_live_connect: this.langTwitterDjOnMessage,
+                        message_live_disconnect: this.langTwitterDjOffMessage,
+                        message_station_offline: this.langTwitterStationOfflineMessage,
+                        message_station_online: this.langTwitterStationOnlineMessage
                     }
                 },
                 'google_analytics': {
@@ -259,6 +276,33 @@ export default {
                 url: '{{ station.public_player_url }}'
             });
         },
+        langTwitterDjOnMessage() {
+            let msg = this.$gettext('%{ dj } is now live on %{ station }! Tune in now: %{ url }');
+            return this.$gettextInterpolate(msg, {
+                dj: '{{ live.streamer_name }}',
+                station: '{{ station.name }}',
+                url: '{{ station.public_player_url }}'
+            });
+        },
+        langTwitterDjOffMessage() {
+            let msg = this.$gettext('Thanks for listening to %{ station }!');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}',
+            });
+        },
+        langTwitterStationOfflineMessage() {
+            let msg = this.$gettext('%{ station } is going offline for now.');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}'
+            });
+        },
+        langTwitterStationOnlineMessage() {
+            let msg = this.$gettext('%{ station } is back online! Tune in now: %{ url }');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}',
+                url: '{{ station.public_player_url }}'
+            });
+        }
     },
     methods: {
         resetForm() {

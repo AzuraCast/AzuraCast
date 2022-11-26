@@ -126,7 +126,7 @@ final class Dispatcher
 
             $connectorObj = $this->connectors->getConnector($webhook->getType());
             $connectorObj->dispatch($station, $webhook, $np, [
-                WebhookTriggers::All->value,
+                WebhookTriggers::SongChanged->value,
             ]);
         } catch (\Throwable $e) {
             $this->logger->error(

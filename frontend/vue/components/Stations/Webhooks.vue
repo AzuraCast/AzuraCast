@@ -53,7 +53,8 @@
 
         <streaming-log-modal ref="logModal"></streaming-log-modal>
         <edit-modal ref="editModal" :create-url="listUrl" :webhook-types="webhookTypes"
-                    :webhook-triggers="webhookTriggers" @relist="relist"></edit-modal>
+                    :webhook-triggers="webhookTriggers" :now-playing-url="nowPlayingUrl"
+                    @relist="relist"></edit-modal>
     </div>
 </template>
 
@@ -70,6 +71,7 @@ export default {
     components: {StreamingLogModal, InfoCard, Icon, EditModal, DataTable},
     props: {
         listUrl: String,
+        nowPlayingUrl: String,
         webhookTypes: Object,
         webhookTriggers: Object
     },

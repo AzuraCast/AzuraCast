@@ -183,15 +183,9 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         $np->cache = 'event';
 
         $npOld = $station->getNowplaying();
-        $triggers = [
-            WebhookTriggers::All->value,
-        ];
+        $triggers = [];
 
         if ($npOld instanceof NowPlaying) {
-            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
-                $triggers[] = WebhookTriggers::SongChanged->value;
-            }
-
             if ($npOld->listeners->current > $np->listeners->current) {
                 $triggers[] = WebhookTriggers::ListenerLost->value;
             } elseif ($npOld->listeners->current < $np->listeners->current) {
@@ -208,6 +202,10 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
                 $triggers[] = WebhookTriggers::StationOffline->value;
             } elseif (!$npOld->is_online && $np->is_online) {
                 $triggers[] = WebhookTriggers::StationOnline->value;
+            }
+
+            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
+                $triggers[] = WebhookTriggers::SongChanged->value;
             }
         }
 

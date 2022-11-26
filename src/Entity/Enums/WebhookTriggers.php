@@ -6,8 +6,6 @@ namespace App\Entity\Enums;
 
 enum WebhookTriggers: string
 {
-    case All = 'all';
-
     case SongChanged = 'song_changed';
     case ListenerGained = 'listener_gained';
     case ListenerLost = 'listener_lost';

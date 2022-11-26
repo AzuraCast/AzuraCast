@@ -5,6 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- On Mastodon and Twitter posts, you can now specify different message bodies for the different web hook trigger types (
+  i.e. live DJ connect/disconnect or station online/offline).
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

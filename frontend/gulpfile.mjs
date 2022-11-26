@@ -1,19 +1,25 @@
 'use strict';
 
-const gulp = require('gulp');
-const babel = require('gulp-babel');
-const del = require('del');
-const rev = require('gulp-rev');
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
-const sourcemaps = require('gulp-sourcemaps');
-const sass = require('gulp-dart-sass');
-const clean_css = require('gulp-clean-css');
-const revdel = require('gulp-rev-delete-original');
-const mode = require('gulp-mode')();
-const run = require('gulp-run-command').default;
+import gulp from 'gulp';
+import babel from 'gulp-babel';
+import del from 'del';
+import rev from 'gulp-rev';
+import concat from 'gulp-concat';
+import uglify from 'gulp-uglify';
+import gulp_sourcemaps from 'gulp-sourcemaps';
+import sass from 'gulp-dart-sass';
+import clean_css from 'gulp-clean-css';
+import revdel from 'gulp-rev-delete-original';
+import gulpmode from 'gulp-mode';
+import run_command from 'gulp-run-command';
 
-var jsFiles = {
+const { task, src, dest, parallel, watch, series } = gulp;
+const { manifest } = rev;
+const { init, write } = gulp_sourcemaps;
+const mode = gulpmode();
+const run = run_command.default;
+
+const jsFiles = {
     'jquery': {
         base: 'node_modules/jquery/dist',
         files: [
@@ -63,23 +69,23 @@ var jsFiles = {
     },
 };
 
-var defaultTasks = Object.keys(jsFiles);
+const defaultTasks = Object.keys(jsFiles);
 
 defaultTasks.forEach(function (libName) {
-    gulp.task('scripts:' + libName, function () {
-        return gulp.src(jsFiles[libName].files, {
+    task('scripts:' + libName, function () {
+        return src(jsFiles[libName].files, {
             base: jsFiles[libName].base
-        }).pipe(gulp.dest('../web/static/dist/lib/' + libName));
+        }).pipe(dest('../web/static/dist/lib/' + libName));
     });
 });
 
-gulp.task('bundle-deps', gulp.parallel(
+task('bundle-deps', parallel(
     defaultTasks.map(function (name) {
         return 'scripts:' + name;
     })
 ));
 
-gulp.task('clean', function () {
+task('clean', function () {
     return del([
         '../web/static/dist/**/*',
         '../web/static/webpack_dist/**/*',
@@ -88,52 +94,52 @@ gulp.task('clean', function () {
     ], {force: true});
 });
 
-gulp.task('concat-js', function () {
-    return gulp.src('./js/inc/*.js')
-        .pipe(sourcemaps.init())
+task('concat-js', function () {
+    return src('./js/inc/*.js')
+        .pipe(init())
         .pipe(babel({
             presets: ['@babel/env']
         }))
         .pipe(concat('app.js'))
         .pipe(uglify())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('../web/static/dist'));
+        .pipe(write())
+        .pipe(dest('../web/static/dist'));
 });
 
-gulp.task('build-vue', run('webpack -c webpack.config.js'));
+task('build-vue', run('webpack -c webpack.config.js'));
 
-gulp.task('build-js', function () {
-    return gulp.src(['./js/*.js'])
-        .pipe(sourcemaps.init())
+task('build-js', function () {
+    return src(['./js/*.js'])
+        .pipe(init())
         .pipe(uglify())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('../web/static/dist'));
+        .pipe(write())
+        .pipe(dest('../web/static/dist'));
 });
 
-gulp.task('build-css', function () {
-    return gulp.src(['./scss/style.scss'])
-        .pipe(mode.development(sourcemaps.init()))
+task('build-css', function () {
+    return src(['./scss/style.scss'])
+        .pipe(mode.development(init()))
         .pipe(sass())
         .pipe(clean_css())
-        .pipe(mode.development(sourcemaps.write()))
-        .pipe(gulp.dest('../web/static/dist'));
+        .pipe(mode.development(write()))
+        .pipe(dest('../web/static/dist'));
 });
 
-gulp.task('watch', function () {
-    gulp.watch([
+task('watch', function () {
+    watch([
         './vue/**',
         './js/**/*.js',
         './scss/**',
     ], buildAll);
 });
 
-const buildAll = gulp.series('clean', gulp.parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle-deps'), function () {
-    return gulp.src(['../web/static/dist/**/*.{js,css}'], {base: '../web/static/'})
+const buildAll = series('clean', parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle-deps'), function () {
+    return src(['../web/static/dist/**/*.{js,css}'], {base: '../web/static/'})
         .pipe(rev())
         .pipe(revdel())
-        .pipe(gulp.dest('../web/static/'))
-        .pipe(rev.manifest('assets.json'))
-        .pipe(gulp.dest('../web/static/'));
+        .pipe(dest('../web/static/'))
+        .pipe(manifest('assets.json'))
+        .pipe(dest('../web/static/'));
 });
 
-exports.default = buildAll
+export { buildAll as default };

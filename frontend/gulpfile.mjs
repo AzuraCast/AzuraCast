@@ -2,7 +2,7 @@
 
 import gulp from 'gulp';
 import babel from 'gulp-babel';
-import del from 'del';
+import { deleteAsync as del } from 'del';
 import rev from 'gulp-rev';
 import concat from 'gulp-concat';
 import uglify from 'gulp-uglify';

@@ -25,15 +25,6 @@ class StationWebhook implements
 
     public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
 
-    public const TRIGGER_ALL = 'all';
-    public const TRIGGER_SONG_CHANGED = 'song_changed';
-    public const TRIGGER_LISTENER_GAINED = 'listener_gained';
-    public const TRIGGER_LISTENER_LOST = 'listener_lost';
-    public const TRIGGER_LIVE_CONNECT = 'live_connect';
-    public const TRIGGER_LIVE_DISCONNECT = 'live_disconnect';
-    public const TRIGGER_STATION_OFFLINE = 'station_offline';
-    public const TRIGGER_STATION_ONLINE = 'station_online';
-
     #[ORM\Column(nullable: false)]
     protected int $station_id;
 

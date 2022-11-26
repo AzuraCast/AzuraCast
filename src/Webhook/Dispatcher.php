@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Webhook;
 
-use App\Entity;
+use App\Entity\ApiGenerator\NowPlayingApiGenerator;
+use App\Entity\Enums\WebhookTriggers;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 use App\Environment;
 use App\Http\RouterInterface;
 use App\Message;
@@ -22,7 +25,7 @@ final class Dispatcher
         private readonly RouterInterface $router,
         private readonly LocalWebhookHandler $localHandler,
         private readonly ConnectorLocator $connectors,
-        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen
+        private readonly NowPlayingApiGenerator $nowPlayingApiGen
     ) {
     }
 
@@ -42,8 +45,8 @@ final class Dispatcher
 
     private function handleDispatch(Message\DispatchWebhookMessage $message): void
     {
-        $station = $this->em->find(Entity\Station::class, $message->station_id);
-        if (!$station instanceof Entity\Station) {
+        $station = $this->em->find(Station::class, $message->station_id);
+        if (!$station instanceof Station) {
             return;
         }
 
@@ -67,9 +70,9 @@ final class Dispatcher
             return;
         }
 
-        /** @var Entity\StationWebhook[] $enabledWebhooks */
+        /** @var StationWebhook[] $enabledWebhooks */
         $enabledWebhooks = $station->getWebhooks()->filter(
-            function (Entity\StationWebhook $webhook) {
+            function (StationWebhook $webhook) {
                 return $webhook->getIsEnabled();
             }
         );
@@ -111,8 +114,8 @@ final class Dispatcher
         }
 
         try {
-            $webhook = $this->em->find(Entity\StationWebhook::class, $message->webhookId);
-            if (!($webhook instanceof Entity\StationWebhook)) {
+            $webhook = $this->em->find(StationWebhook::class, $message->webhookId);
+            if (!($webhook instanceof StationWebhook)) {
                 return;
             }
 
@@ -122,7 +125,9 @@ final class Dispatcher
             $np->cache = 'event';
 
             $connectorObj = $this->connectors->getConnector($webhook->getType());
-            $connectorObj->dispatch($station, $webhook, $np, [Entity\StationWebhook::TRIGGER_ALL]);
+            $connectorObj->dispatch($station, $webhook, $np, [
+                WebhookTriggers::All->value,
+            ]);
         } catch (\Throwable $e) {
             $this->logger->error(
                 sprintf(

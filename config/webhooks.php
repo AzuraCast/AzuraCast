@@ -4,24 +4,26 @@
  * Webhook Configuration
  */
 
-use App\Entity\StationWebhook;
+use App\Entity\Enums\WebhookTriggers;
 use App\Webhook\Connector;
 
-$triggers = [
-    StationWebhook::TRIGGER_SONG_CHANGED => __('Any time the currently playing song changes'),
-    StationWebhook::TRIGGER_LISTENER_GAINED => __('Any time the listener count increases'),
-    StationWebhook::TRIGGER_LISTENER_LOST => __('Any time the listener count decreases'),
-    StationWebhook::TRIGGER_LIVE_CONNECT => __('Any time a live streamer/DJ connects to the stream'),
-    StationWebhook::TRIGGER_LIVE_DISCONNECT => __('Any time a live streamer/DJ disconnects from the stream'),
-    StationWebhook::TRIGGER_STATION_OFFLINE => __('When the station broadcast goes offline.'),
-    StationWebhook::TRIGGER_STATION_ONLINE => __('When the station broadcast comes online.'),
+$allTriggers = [
+    WebhookTriggers::SongChanged->value,
+    WebhookTriggers::ListenerGained->value,
+    WebhookTriggers::ListenerLost->value,
+    WebhookTriggers::LiveConnect->value,
+    WebhookTriggers::LiveDisconnect->value,
+    WebhookTriggers::StationOffline->value,
+    WebhookTriggers::StationOnline->value,
 ];
 
-$allTriggers = array_keys($triggers);
-$allTriggersExceptListeners = array_diff($allTriggers, [
-    StationWebhook::TRIGGER_LISTENER_GAINED,
-    StationWebhook::TRIGGER_LISTENER_LOST,
-]);
+$allTriggersExceptListeners = array_diff(
+    $allTriggers,
+    [
+        WebhookTriggers::ListenerGained->value,
+        WebhookTriggers::ListenerLost->value,
+    ]
+);
 
 return [
     'webhooks' => [
@@ -59,13 +61,13 @@ return [
             'class' => Connector\Twitter::class,
             'name' => __('Twitter Post'),
             'description' => __('Automatically send a tweet.'),
-            'triggers' => $allTriggers,
+            'triggers' => $allTriggersExceptListeners,
         ],
         Connector\Mastodon::NAME => [
             'class' => Connector\Mastodon::class,
             'name' => __('Mastodon Post'),
             'description' => __('Automatically publish to a Mastodon instance.'),
-            'triggers' => [],
+            'triggers' => $allTriggersExceptListeners,
         ],
         Connector\GoogleAnalytics::NAME => [
             'class' => Connector\GoogleAnalytics::class,
@@ -82,5 +84,13 @@ return [
     ],
 
     // The triggers that can be selected for a web hook to trigger.
-    'triggers' => $triggers,
+    'triggers' => [
+        WebhookTriggers::SongChanged->value => __('Any time the currently playing song changes'),
+        WebhookTriggers::ListenerGained->value => __('Any time the listener count increases'),
+        WebhookTriggers::ListenerLost->value => __('Any time the listener count decreases'),
+        WebhookTriggers::LiveConnect->value => __('Any time a live streamer/DJ connects to the stream'),
+        WebhookTriggers::LiveDisconnect->value => __('Any time a live streamer/DJ disconnects from the stream'),
+        WebhookTriggers::StationOffline->value => __('When the station broadcast goes offline.'),
+        WebhookTriggers::StationOnline->value => __('When the station broadcast comes online.'),
+    ],
 ];

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 use App\Utilities\Urls;
 
 /**
@@ -14,7 +16,7 @@ final class Mastodon extends AbstractConnector
 {
     public const NAME = 'mastodon';
 
-    protected function getRateLimitTime(Entity\StationWebhook $webhook): ?int
+    protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
         $config = $webhook->getConfig();
         $rateLimitSeconds = (int)($config['rate_limit'] ?? 0);
@@ -23,9 +25,9 @@ final class Mastodon extends AbstractConnector
     }
 
     public function dispatch(
-        Entity\Station $station,
-        Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying\NowPlaying $np,
+        Station $station,
+        StationWebhook $webhook,
+        NowPlaying $np,
         array $triggers
     ): void {
         $config = $webhook->getConfig();

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 use App\Service\GuzzleFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
@@ -22,7 +24,7 @@ final class Twitter extends AbstractConnector
         parent::__construct($logger, $httpClient);
     }
 
-    protected function getRateLimitTime(Entity\StationWebhook $webhook): ?int
+    protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
         $config = $webhook->getConfig();
         $rateLimitSeconds = (int)($config['rate_limit'] ?? 0);
@@ -34,9 +36,9 @@ final class Twitter extends AbstractConnector
      * @inheritDoc
      */
     public function dispatch(
-        Entity\Station $station,
-        Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying\NowPlaying $np,
+        Station $station,
+        StationWebhook $webhook,
+        NowPlaying $np,
         array $triggers
     ): void {
         $config = $webhook->getConfig();

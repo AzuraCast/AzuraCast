@@ -171,7 +171,7 @@ export default {
                         bot_token: '',
                         chat_id: '',
                         api: '',
-                        text: '',
+                        text: this.langTelegramDefaultContent,
                         parse_mode: 'Markdown'
                     }
                 },

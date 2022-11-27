@@ -35,7 +35,7 @@
 
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import CommonFormattingInfo from "./CommonFormattingInfo";
+import CommonFormattingInfo from "./Common/FormattingInfo";
 
 export default {
     name: 'Email',

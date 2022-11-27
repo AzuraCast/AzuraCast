@@ -206,6 +206,10 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 
             if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
                 $triggers[] = WebhookTriggers::SongChanged->value;
+
+                if ($np->live->is_live) {
+                    $triggers[] = WebhookTriggers::SongChangedLive->value;
+                }
             }
         }
 

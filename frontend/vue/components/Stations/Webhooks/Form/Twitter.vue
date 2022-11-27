@@ -55,135 +55,25 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_config_rate_limit" :field="form.config.rate_limit">
-                    <template #label="{lang}">
-                        <translate :key="lang">Only Send One Tweet Every...</translate>
-                    </template>
-                    <template #default="props">
-                        <b-form-select :id="props.id" :options="rateLimitOptions" v-model="props.field.$model">
-                        </b-form-select>
-                    </template>
-                </b-wrapped-form-group>
+                <common-rate-limit-fields :form="form"></common-rate-limit-fields>
             </b-form-row>
         </b-form-group>
 
-        <common-formatting-info :now-playing-url="nowPlayingUrl"></common-formatting-info>
-
-        <b-form-group>
-            <b-form-row>
-                <template v-if="hasTrigger('song_changed')">
-                    <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message"
-                                          input-type="textarea">
-                        <template #label="{lang}">
-                            <translate :key="lang">Message Body on Song Change</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </template>
-                <template v-if="hasTrigger('live_connect')">
-                    <b-wrapped-form-group class="col-md-12" id="form_config_message_live_connect"
-                                          :field="form.config.message_live_connect" input-type="textarea">
-                        <template #label="{lang}">
-                            <translate :key="lang">Message Body on Streamer/DJ Connect</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </template>
-                <template v-if="hasTrigger('live_disconnect')">
-                    <b-wrapped-form-group class="col-md-12" id="form_config_message_live_disconnect"
-                                          :field="form.config.message_live_disconnect" input-type="textarea">
-                        <template #label="{lang}">
-                            <translate :key="lang">Message Body on Streamer/DJ Disconnect</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </template>
-                <template v-if="hasTrigger('station_offline')">
-                    <b-wrapped-form-group class="col-md-12" id="form_config_message_station_offline"
-                                          :field="form.config.message_station_offline" input-type="textarea">
-                        <template #label="{lang}">
-                            <translate :key="lang">Message Body on Station Offline</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </template>
-                <template v-if="hasTrigger('station_online')">
-                    <b-wrapped-form-group class="col-md-12" id="form_config_message_station_online"
-                                          :field="form.config.message_station_online" input-type="textarea">
-                        <template #label="{lang}">
-                            <translate :key="lang">Message Body on Station Online</translate>
-                        </template>
-                    </b-wrapped-form-group>
-                </template>
-            </b-form-row>
-        </b-form-group>
+        <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>
     </div>
 </template>
 
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import CommonFormattingInfo from "./CommonFormattingInfo";
-import _ from "lodash";
+import CommonRateLimitFields from "./Common/RateLimitFields";
+import CommonSocialPostFields from "./Common/SocialPostFields";
 
 export default {
     name: 'Twitter',
-    components: {CommonFormattingInfo, BWrappedFormGroup},
+    components: {CommonSocialPostFields, CommonRateLimitFields, BWrappedFormGroup},
     props: {
         form: Object,
         nowPlayingUrl: String
-    },
-    computed: {
-        langSeconds() {
-            return this.$gettext('%{ seconds } seconds');
-        },
-        langMinutes() {
-            return this.$gettext('%{ minutes } minutes');
-        },
-        rateLimitOptions() {
-            return [
-                {
-                    text: this.$gettext('No Limit'),
-                    value: 0,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 15}),
-                    value: 15,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 30}),
-                    value: 30,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 60}),
-                    value: 60,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 2}),
-                    value: 120,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 5}),
-                    value: 300,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 10}),
-                    value: 600,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 15}),
-                    value: 900,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 30}),
-                    value: 1800,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 60}),
-                    value: 3600,
-                }
-            ];
-        }
-    },
-    methods: {
-        hasTrigger(trigger) {
-            return _.includes(this.form.triggers.$model, trigger);
-        }
     }
 }
 </script>

@@ -9,6 +9,7 @@ use App\Webhook\Connector;
 
 $allTriggers = [
     WebhookTriggers::SongChanged->value,
+    WebhookTriggers::SongChangedLive->value,
     WebhookTriggers::ListenerGained->value,
     WebhookTriggers::ListenerLost->value,
     WebhookTriggers::LiveConnect->value,
@@ -81,16 +82,5 @@ return [
             'description' => __('Send stream listener details to Matomo Analytics.'),
             'triggers' => [],
         ],
-    ],
-
-    // The triggers that can be selected for a web hook to trigger.
-    'triggers' => [
-        WebhookTriggers::SongChanged->value => __('Any time the currently playing song changes'),
-        WebhookTriggers::ListenerGained->value => __('Any time the listener count increases'),
-        WebhookTriggers::ListenerLost->value => __('Any time the listener count decreases'),
-        WebhookTriggers::LiveConnect->value => __('Any time a live streamer/DJ connects to the stream'),
-        WebhookTriggers::LiveDisconnect->value => __('Any time a live streamer/DJ disconnects from the stream'),
-        WebhookTriggers::StationOffline->value => __('When the station broadcast goes offline.'),
-        WebhookTriggers::StationOnline->value => __('When the station broadcast comes online.'),
     ],
 ];

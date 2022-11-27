@@ -41,7 +41,8 @@ export default {
     props: {
         nowPlayingUrl: String,
         webhookTypes: Object,
-        webhookTriggers: Object
+        triggerTitles: Object,
+        triggerDescriptions: Object
     },
     data() {
         return {
@@ -82,7 +83,9 @@ export default {
             let webhookKeys = _.get(this.webhookTypes, [this.type, 'triggers'], []);
             return _.map(webhookKeys, (key) => {
                 return {
-                    text: this.webhookTriggers[key],
+                    html:
+                        '<h6 class="font-weight-bold mb-0">' + this.triggerTitles[key] + '</h6>'
+                        + '<p class="card-text small">' + this.triggerDescriptions[key] + '</p>',
                     value: key
                 };
             });
@@ -185,6 +188,7 @@ export default {
                         token_secret: {required},
                         rate_limit: {},
                         message: {},
+                        message_song_changed_live: {},
                         message_live_connect: {},
                         message_live_disconnect: {},
                         message_station_offline: {},
@@ -197,6 +201,7 @@ export default {
                         token_secret: '',
                         rate_limit: 0,
                         message: this.langTwitterDefaultMessage,
+                        message_song_changed_live: this.langTwitterSongChangedLiveMessage,
                         message_live_connect: this.langTwitterDjOnMessage,
                         message_live_disconnect: this.langTwitterDjOffMessage,
                         message_station_offline: this.langTwitterStationOfflineMessage,
@@ -211,6 +216,7 @@ export default {
                         rate_limit: {},
                         visibility: {required},
                         message: {},
+                        message_song_changed_live: {},
                         message_live_connect: {},
                         message_live_disconnect: {},
                         message_station_offline: {},
@@ -222,6 +228,7 @@ export default {
                         rate_limit: 0,
                         visibility: 'public',
                         message: this.langTwitterDefaultMessage,
+                        message_song_changed_live: this.langTwitterSongChangedLiveMessage,
                         message_live_connect: this.langTwitterDjOnMessage,
                         message_live_disconnect: this.langTwitterDjOffMessage,
                         message_station_offline: this.langTwitterStationOfflineMessage,
@@ -273,6 +280,16 @@ export default {
                 station: '{{ station.name }}',
                 title: '{{ now_playing.song.title }}',
                 artist: '{{ now_playing.song.artist }}',
+                url: '{{ station.public_player_url }}'
+            });
+        },
+        langTwitterSongChangedLiveMessage() {
+            let msg = this.$gettext('Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}',
+                title: '{{ now_playing.song.title }}',
+                artist: '{{ now_playing.song.artist }}',
+                dj: '{{ live.streamer_name }}',
                 url: '{{ station.public_player_url }}'
             });
         },

@@ -8,6 +8,8 @@ release channel, you can take advantage of these new features and fixes.
 - On Mastodon and Twitter posts, you can now specify different message bodies for the different web hook trigger types (
   i.e. live DJ connect/disconnect or station online/offline).
 
+- Web Hooks can now also be dispatched specifically when a song changes _and_ a DJ/streamer is live.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\WebhookTriggers;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -142,6 +143,20 @@ class StationWebhook implements
     public function setTriggers(?array $triggers = null): void
     {
         $this->triggers = $triggers;
+    }
+
+    public function hasTriggers(): bool
+    {
+        return 0 === count($this->getTriggers());
+    }
+
+    public function hasTrigger(WebhookTriggers|string $trigger): bool
+    {
+        if ($trigger instanceof WebhookTriggers) {
+            $trigger = $trigger->value;
+        }
+
+        return in_array($trigger, $this->getTriggers(), true);
     }
 
     /**

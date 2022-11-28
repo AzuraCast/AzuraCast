@@ -77,6 +77,10 @@ final class Twitter extends AbstractConnector
         ];
 
         foreach ($triggers as $trigger) {
+            if (!$webhook->hasTrigger($trigger)) {
+                continue;
+            }
+
             $message = $messages[$trigger] ?? '';
             if (empty($message)) {
                 $this->logger->error(

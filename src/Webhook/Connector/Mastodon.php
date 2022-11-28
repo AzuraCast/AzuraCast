@@ -53,7 +53,12 @@ final class Mastodon extends AbstractConnector
         ];
 
         foreach ($triggers as $trigger) {
+            if (!$webhook->hasTrigger($trigger)) {
+                continue;
+            }
+
             $message = $messages[$trigger] ?? '';
+
             if (empty($message)) {
                 $this->logger->error(
                     'Cannot send Twitter message; message body for this trigger type is empty.'

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\Entity\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Service\GuzzleFactory;
@@ -13,7 +12,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use Monolog\Logger;
 
-final class Twitter extends AbstractConnector
+final class Twitter extends AbstractSocialConnector
 {
     public const NAME = 'twitter';
 
@@ -67,32 +66,9 @@ final class Twitter extends AbstractConnector
         $stack->push($middleware);
 
         // Dispatch webhook
-        $messages = [
-            WebhookTriggers::SongChanged->value => $config['message'] ?? '',
-            WebhookTriggers::SongChangedLive->value => $config['message_song_changed_live'] ?? '',
-            WebhookTriggers::LiveConnect->value => $config['message_live_connect'] ?? '',
-            WebhookTriggers::LiveDisconnect->value => $config['message_live_disconnect'] ?? '',
-            WebhookTriggers::StationOffline->value => $config['message_station_offline'] ?? '',
-            WebhookTriggers::StationOnline->value => $config['message_station_online'] ?? '',
-        ];
+        $this->logger->debug('Posting to Twitter...');
 
-        foreach ($triggers as $trigger) {
-            if (!$webhook->hasTrigger($trigger)) {
-                continue;
-            }
-
-            $message = $messages[$trigger] ?? '';
-            if (empty($message)) {
-                $this->logger->error(
-                    'Cannot send Twitter message; message body for this trigger type is empty.'
-                );
-                return;
-            }
-
-            $vars = $this->replaceVariables(['message' => $message], $np);
-
-            $this->logger->debug('Posting to Twitter...');
-
+        foreach ($this->getMessages($webhook, $np, $triggers) as $message) {
             $response = $this->httpClient->request(
                 'POST',
                 'https://api.twitter.com/1.1/statuses/update.json',
@@ -100,7 +76,7 @@ final class Twitter extends AbstractConnector
                     'auth' => 'oauth',
                     'handler' => $stack,
                     'form_params' => [
-                        'status' => $vars['message'],
+                        'status' => $message,
                     ],
                 ]
             );

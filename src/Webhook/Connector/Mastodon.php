@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\Entity\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Utilities\Urls;
@@ -13,7 +12,7 @@ use App\Utilities\Urls;
 /**
  * Mastodon web hook connector.
  */
-final class Mastodon extends AbstractConnector
+final class Mastodon extends AbstractSocialConnector
 {
     public const NAME = 'mastodon';
 
@@ -43,33 +42,9 @@ final class Mastodon extends AbstractConnector
         $instanceUri = Urls::parseUserUrl($instanceUrl, 'Mastodon Instance URL');
         $visibility = $config['visibility'] ?? 'public';
 
-        $messages = [
-            WebhookTriggers::SongChanged->value => $config['message'] ?? '',
-            WebhookTriggers::SongChangedLive->value => $config['message_song_changed_live'] ?? '',
-            WebhookTriggers::LiveConnect->value => $config['message_live_connect'] ?? '',
-            WebhookTriggers::LiveDisconnect->value => $config['message_live_disconnect'] ?? '',
-            WebhookTriggers::StationOffline->value => $config['message_station_offline'] ?? '',
-            WebhookTriggers::StationOnline->value => $config['message_station_online'] ?? '',
-        ];
+        $this->logger->debug('Posting to Mastodon...');
 
-        foreach ($triggers as $trigger) {
-            if (!$webhook->hasTrigger($trigger)) {
-                continue;
-            }
-
-            $message = $messages[$trigger] ?? '';
-
-            if (empty($message)) {
-                $this->logger->error(
-                    'Cannot send Twitter message; message body for this trigger type is empty.'
-                );
-                return;
-            }
-
-            $vars = $this->replaceVariables(['message' => $message], $np);
-
-            $this->logger->debug('Posting to Twitter...');
-
+        foreach ($this->getMessages($webhook, $np, $triggers) as $message) {
             $response = $this->httpClient->request(
                 'POST',
                 $instanceUri->withPath('/api/v1/statuses'),
@@ -79,7 +54,7 @@ final class Mastodon extends AbstractConnector
                         'Content-Type' => 'application/json',
                     ],
                     'json' => [
-                        'status' => $vars['message'],
+                        'status' => $message,
                         'visibility' => $visibility,
                     ],
                 ]

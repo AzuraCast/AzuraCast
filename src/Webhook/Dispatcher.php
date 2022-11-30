@@ -124,6 +124,8 @@ final class Dispatcher
             $np->resolveUrls($this->router->getBaseUrl());
             $np->cache = 'event';
 
+            $this->localHandler->dispatch($station, $np);
+
             $connectorObj = $this->connectors->getConnector($webhook->getType());
             $connectorObj->dispatch($station, $webhook, $np, [
                 WebhookTriggers::SongChanged->value,

@@ -217,13 +217,7 @@ import IsMounted from "~/components/Common/IsMounted";
 export const radioPlayerProps = {
     ...nowPlayingProps,
     props: {
-        nowPlayingUri: {
-            type: String,
-            required: true
-        },
-        initialNowPlaying: {
-            type: Object
-        },
+        ...nowPlayingProps.props,
         showHls: {
             type: Boolean,
             default: true

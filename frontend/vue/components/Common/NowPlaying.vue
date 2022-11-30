@@ -8,9 +8,19 @@ export const nowPlayingProps = {
             type: String,
             required: true
         },
+        useSse: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        sseUri: {
+            type: String,
+            required: false,
+            default: null
+        },
         initialNowPlaying: {
             type: Object,
-            default () {
+            default() {
                 return NowPlaying;
             }
         }
@@ -19,29 +29,52 @@ export const nowPlayingProps = {
 
 export default {
     mixins: [nowPlayingProps],
-    mounted () {
+    data() {
+        return {
+            'sse': null
+        };
+    },
+    mounted() {
         // Convert initial NP data from prop to data.
         this.setNowPlaying(this.initialNowPlaying);
 
         setTimeout(this.checkNowPlaying, 5000);
     },
     methods: {
-        checkNowPlaying () {
-            this.axios.get(this.nowPlayingUri, {
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                }
-            }).then((response) => {
-                this.setNowPlaying(response.data);
+        checkNowPlaying() {
+            if (this.useSse) {
+                this.sse = new EventSource(this.sseUri);
 
-                setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
-            }).catch((error) => {
-                setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
-            });
+                this.sse.onopen = (e) => {
+                    console.log(e);
+                };
+
+                this.sse.onmessage = (e) => {
+                    console.log(e);
+
+                    const data = JSON.parse(e.data);
+                    const np = data.np || null;
+                    if (np) {
+                        this.setNowPlaying(np);
+                    }
+                };
+            } else {
+                this.axios.get(this.nowPlayingUri, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                    }
+                }).then((response) => {
+                    this.setNowPlaying(response.data);
+
+                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
+                }).catch((error) => {
+                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
+                });
+            }
         },
-        setNowPlaying (np_new) {
+        setNowPlaying(np_new) {
             // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({

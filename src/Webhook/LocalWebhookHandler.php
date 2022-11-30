@@ -6,6 +6,7 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Environment;
+use App\Service\Centrifugo;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -18,6 +19,7 @@ final class LocalWebhookHandler
     public function __construct(
         private readonly Logger $logger,
         private readonly Environment $environment,
+        private readonly Centrifugo $centrifugo
     ) {
     }
 
@@ -57,13 +59,15 @@ final class LocalWebhookHandler
         // Write JSON file to disk so nginx can serve it without calling the PHP stack at all.
         $this->logger->debug('Writing static nowplaying text file...');
 
-        $staticArtPath = $staticNpDir . '/' . $station->getShortName() . '.webp';
-
-
         $staticNpPath = $staticNpDir . '/' . $station->getShortName() . '.json';
         $fsUtils->dumpFile(
             $staticNpPath,
             json_encode($np, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) ?: ''
         );
+
+        // Publish to websocket library
+        if ($this->centrifugo->isSupported()) {
+            $this->centrifugo->publishToStation($station, $np);
+        }
     }
 }

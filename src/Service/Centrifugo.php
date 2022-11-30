@@ -42,21 +42,21 @@ final class Centrifugo
     public function getSseUrl(Station $station): string
     {
         return '/api/live/nowplaying/sse?' . http_build_query(
-                [
+            [
                     'cf_connect' => json_encode(
                         [
                             'subs' => [
-                                $this->getChannelName($station) => []
+                                $this->getChannelName($station) => [],
                             ],
                         ],
                         JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT
                     ),
                 ]
-            );
+        );
     }
 
     public function getChannelName(Station $station): string
     {
-        return 'station:'.$station->getShortName();
+        return 'station:' . $station->getShortName();
     }
 }

@@ -58,10 +58,12 @@ final class PlayerAction
                 : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),
         ];
 
+        /*
         if ($customization->useStaticNowPlaying() && $this->centrifugo->isSupported()) {
             $props['useSse'] = true;
             $props['sseUri'] = $this->centrifugo->getSseUrl($station);
         }
+        */
 
         // Render embedded player.
         if (!empty($embed)) {

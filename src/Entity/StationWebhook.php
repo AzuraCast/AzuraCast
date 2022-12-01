@@ -147,7 +147,7 @@ class StationWebhook implements
 
     public function hasTriggers(): bool
     {
-        return 0 === count($this->getTriggers());
+        return 0 !== count($this->getTriggers());
     }
 
     public function hasTrigger(WebhookTriggers|string $trigger): bool

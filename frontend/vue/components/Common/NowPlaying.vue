@@ -50,12 +50,12 @@ export default {
                 };
 
                 this.sse.onmessage = (e) => {
-                    console.log(e);
-
                     const data = JSON.parse(e.data);
-                    const np = data.np || null;
+                    const np = data?.pub?.data?.np || null;
                     if (np) {
-                        this.setNowPlaying(np);
+                        setTimeout(() => {
+                            this.setNowPlaying(np);
+                        }, 3000);
                     }
                 };
             } else {

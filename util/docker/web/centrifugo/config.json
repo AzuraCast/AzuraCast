@@ -9,6 +9,9 @@
   "uni_websocket": true,
   "uni_sse": true,
   "uni_http_stream": true,
+  "allowed_origins": [
+    "*"
+  ],
   "namespaces": [
     {
       "name": "station",

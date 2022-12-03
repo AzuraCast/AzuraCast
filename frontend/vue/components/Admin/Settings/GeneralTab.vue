@@ -56,11 +56,10 @@
             <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_static_nowplaying"
                                      :field="form.enable_static_nowplaying">
                 <template #label="{lang}">
-                    <translate :key="lang">Use Static Files for Now Playing Updates</translate>
+                    <translate :key="lang">Use High-Performance Now Playing Updates</translate>
                 </template>
                 <template #description="{lang}">
-                    <translate
-                        :key="lang">Uses static JSON files to serve Now Playing data on public pages. This improves performance but will cause problems if you use multiple base URLs.</translate>
+                    <translate :key="lang">Uses either Websockets, Server-Sent Events (SSE) or static JSON files to serve Now Playing data on public pages. This improves performance, especially with large listener volume. Disable this if you are encountering problems with the service or use multiple URLs to serve your public pages.</translate>
                 </template>
             </b-wrapped-form-checkbox>
 

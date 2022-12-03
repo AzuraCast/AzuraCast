@@ -5,6 +5,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **High-Performance Now Playing Updates are Back!** A few versions ago, we had to retire our previous
+  high-performance (Websocket/SSE) Now Playing updates system due to an error in the library on Ubuntu 22.04. We have
+  since found an excellent replacement library and implemented it. If you're using Websockets or Server-Sent Events (
+  SSE) for your Now Playing updates, you'll need to make minor changes to how you connect, which we've documented
+  here: https://docs.azuracast.com/en/developers/apis/now-playing-data#high-performance-updates
+
 - On Mastodon and Twitter posts, you can now specify different message bodies for the different web hook trigger types (
   i.e. live DJ connect/disconnect or station online/offline).
 

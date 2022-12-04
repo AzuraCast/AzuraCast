@@ -42,7 +42,12 @@ final class Mastodon extends AbstractSocialConnector
         $instanceUri = Urls::parseUserUrl($instanceUrl, 'Mastodon Instance URL');
         $visibility = $config['visibility'] ?? 'public';
 
-        $this->logger->debug('Posting to Mastodon...');
+        $this->logger->debug(
+            'Posting to Mastodon...',
+            [
+                'url' => (string)$instanceUri,
+            ]
+        );
 
         foreach ($this->getMessages($webhook, $np, $triggers) as $message) {
             $response = $this->httpClient->request(

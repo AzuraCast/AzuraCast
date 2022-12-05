@@ -11,7 +11,7 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
-# AzuraCast 0.17.5 (Dec 5, 2022)
+# AzuraCast 0.17.6 (Dec 5, 2022)
 
 ## New Features/Changes
 

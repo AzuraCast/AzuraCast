@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.17.5 (Dec 5, 2022)
+
+## New Features/Changes
+
 - **High-Performance Now Playing Updates are Back!** A few versions ago, we had to retire our previous
   high-performance (Websocket/SSE) Now Playing updates system due to an error in the library on Ubuntu 22.04. We have
   since found an excellent replacement library and implemented it. If you're using Websockets or Server-Sent Events (
@@ -16,9 +26,19 @@ release channel, you can take advantage of these new features and fixes.
 
 - Web Hooks can now also be dispatched specifically when a song changes _and_ a DJ/streamer is live.
 
-## Code Quality/Technical Changes
+## Technical Changes
+
+- When uploading a background or custom album art, whatever format is supplied (between PNG, JPG and WEBP) will be the
+  format saved to disk. If possible, we recommend using WebP as it offers significant bandwidth savings.
 
 ## Bug Fixes
+
+- Fixed a bug where posting URLs required "https://" prefixes but the documentation specifically said not to include
+  them.
+
+- Fixed an issue where malfunctioning stations would restart infinitely, causing excessive CPU load.
+
+- Fixed a template issue preventing the service worker from working on public player pages.
 
 ---
 

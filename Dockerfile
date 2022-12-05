@@ -10,6 +10,8 @@ RUN go install github.com/jwilder/dockerize@latest
 
 RUN go install github.com/aptible/supercronic@latest
 
+RUN go install github.com/centrifugal/centrifugo/v4@d465b5932ab786273f081392e1dc8fdfd2d2ec10
+
 #
 # Final build image
 #
@@ -20,6 +22,7 @@ ENV TZ="UTC"
 # Add Dockerize
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
 COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
+COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

@@ -56,13 +56,12 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
     {
-        $webhookTriggers = $webhook->getTriggers();
-        if (empty($webhookTriggers)) {
+        if (!$webhook->hasTriggers()) {
             return true;
         }
 
-        foreach ($webhookTriggers as $trigger) {
-            if (in_array($trigger, $triggers, true)) {
+        foreach ($triggers as $trigger) {
+            if ($webhook->hasTrigger($trigger)) {
                 return true;
             }
         }

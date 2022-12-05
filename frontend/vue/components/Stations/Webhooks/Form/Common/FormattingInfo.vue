@@ -12,9 +12,18 @@
         <p class="card-text">
             <translate key="lang_customize_message_desc_2">All values in the NowPlaying API response are available for use. Any empty fields are ignored.</translate>
             <br>
-            <a href="https://azuracast.com/api" target="_blank">
+            <a :href="nowPlayingUrl" target="_blank">
                 <translate key="lang_customize_response_link">NowPlaying API Response</translate>
             </a>
         </p>
     </b-form-group>
 </template>
+
+<script>
+export default {
+    name: 'CommonFormattingInfo',
+    props: {
+        nowPlayingUrl: String
+    }
+}
+</script>

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Sync\NowPlaying\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\ApiGenerator\NowPlayingApiGenerator;
+use App\Entity\Enums\WebhookTriggers;
+use App\Entity\Repository\ListenerRepository;
+use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
@@ -32,9 +35,9 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MessageBus $messageBus,
         private readonly RouterInterface $router,
-        private readonly Entity\Repository\ListenerRepository $listenerRepo,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
+        private readonly ListenerRepository $listenerRepo,
+        private readonly SettingsRepository $settingsRepo,
+        private readonly NowPlayingApiGenerator $nowPlayingApiGenerator,
         private readonly ReloadableEntityManagerInterface $em,
         private readonly LoggerInterface $logger,
         private readonly HlsListeners $hlsListeners,
@@ -171,7 +174,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
     }
 
     private function dispatchWebhooks(
-        Entity\Station $station,
+        Station $station,
         NowPlaying $npOriginal
     ): void {
         /** @var NowPlaying $np */
@@ -180,31 +183,33 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         $np->cache = 'event';
 
         $npOld = $station->getNowplaying();
-        $triggers = [
-            Entity\StationWebhook::TRIGGER_ALL,
-        ];
+        $triggers = [];
 
         if ($npOld instanceof NowPlaying) {
-            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_SONG_CHANGED;
-            }
-
             if ($npOld->listeners->current > $np->listeners->current) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_LISTENER_LOST;
+                $triggers[] = WebhookTriggers::ListenerLost->value;
             } elseif ($npOld->listeners->current < $np->listeners->current) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_LISTENER_GAINED;
+                $triggers[] = WebhookTriggers::ListenerGained->value;
             }
 
             if (!$npOld->live->is_live && $np->live->is_live) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_LIVE_CONNECT;
+                $triggers[] = WebhookTriggers::LiveConnect->value;
             } elseif ($npOld->live->is_live && !$np->live->is_live) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_LIVE_DISCONNECT;
+                $triggers[] = WebhookTriggers::LiveDisconnect->value;
             }
 
             if ($npOld->is_online && !$np->is_online) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_STATION_OFFLINE;
+                $triggers[] = WebhookTriggers::StationOffline->value;
             } elseif (!$npOld->is_online && $np->is_online) {
-                $triggers[] = Entity\StationWebhook::TRIGGER_STATION_ONLINE;
+                $triggers[] = WebhookTriggers::StationOnline->value;
+            }
+
+            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
+                $triggers[] = WebhookTriggers::SongChanged->value;
+
+                if ($np->live->is_live) {
+                    $triggers[] = WebhookTriggers::SongChangedLive->value;
+                }
             }
         }
 

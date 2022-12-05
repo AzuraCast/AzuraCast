@@ -96,6 +96,8 @@ We would like to thank the following organizations for their support of AzuraCas
   around the world
 - [Netlify](https://www.netlify.com/) for supporting open-source software like ours and for serving as the host of our
   primary [azuracast.com](https://www.azuracast.com/) web site.
+- [BrowserStack](https://www.browserstack.com/) for giving us tools to help test our software's accessibility and
+  features across multiple browsers and operating systems.
 
 - The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much
   to help move FOSS forward

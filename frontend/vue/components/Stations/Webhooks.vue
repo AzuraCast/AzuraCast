@@ -53,7 +53,8 @@
 
         <streaming-log-modal ref="logModal"></streaming-log-modal>
         <edit-modal ref="editModal" :create-url="listUrl" :webhook-types="webhookTypes"
-                    :webhook-triggers="webhookTriggers" @relist="relist"></edit-modal>
+                    :trigger-titles="langTriggerTitles" :trigger-descriptions="langTriggerDescriptions"
+                    :now-playing-url="nowPlayingUrl" @relist="relist"></edit-modal>
     </div>
 </template>
 
@@ -70,8 +71,8 @@ export default {
     components: {StreamingLogModal, InfoCard, Icon, EditModal, DataTable},
     props: {
         listUrl: String,
-        webhookTypes: Object,
-        webhookTriggers: Object
+        nowPlayingUrl: String,
+        webhookTypes: Object
     },
     data() {
         return {
@@ -81,6 +82,32 @@ export default {
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
+    },
+    computed: {
+        langTriggerTitles() {
+            return {
+                song_changed: this.$gettext('Song Change'),
+                song_changed_live: this.$gettext('Song Change (Live Only)'),
+                listener_gained: this.$gettext('Listener Gained'),
+                listener_lost: this.$gettext('Listener Lost'),
+                live_connect: this.$gettext('Live Streamer/DJ Connected'),
+                live_disconnect: this.$gettext('Live Streamer/DJ Disconnected'),
+                station_offline: this.$gettext('Station Goes Offline'),
+                station_online: this.$gettext('Station Goes Online'),
+            }
+        },
+        langTriggerDescriptions() {
+            return {
+                song_changed: this.$gettext('Any time the currently playing song changes'),
+                song_changed_live: this.$gettext('When the song changes and a live streamer/DJ is connected'),
+                listener_gained: this.$gettext('Any time the listener count increases'),
+                listener_lost: this.$gettext('Any time the listener count decreases'),
+                live_connect: this.$gettext('Any time a live streamer/DJ connects to the stream'),
+                live_disconnect: this.$gettext('Any time a live streamer/DJ disconnects from the stream'),
+                station_offline: this.$gettext('When the station broadcast goes offline'),
+                station_online: this.$gettext('When the station broadcast comes online'),
+            }
+        }
     },
     methods: {
         langToggleButton(record) {
@@ -98,7 +125,7 @@ export default {
         },
         getTriggerNames(triggers) {
             return _.map(triggers, (trigger) => {
-                return _.get(this.webhookTriggers, trigger, '');
+                return _.get(this.langTriggerTitles, trigger, '');
             });
         },
         relist() {

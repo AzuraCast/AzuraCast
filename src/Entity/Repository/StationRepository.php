@@ -8,6 +8,7 @@ use App\Assets\AlbumArtCustomAsset;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
@@ -22,7 +23,8 @@ final class StationRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
-        private readonly SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo,
+        private readonly Environment $environment
     ) {
         parent::__construct($em);
     }
@@ -186,7 +188,7 @@ final class StationRepository extends Repository
         }
 
         $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
-        return $customUrl ?? (new AlbumArtCustomAsset())->getUri();
+        return $customUrl ?? (new AlbumArtCustomAsset($this->environment))->getUri();
     }
 
     public function setFallback(

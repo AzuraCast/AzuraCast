@@ -154,6 +154,8 @@ final class Configuration
             $configLines = [
                 'user' => 'azuracast',
                 'priority' => 950,
+                'startsecs' => 10,
+                'startretries' => 5,
                 'command' => $adapter->getCommand($station),
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => 'TZ="' . $station->getTimezone() . '"',

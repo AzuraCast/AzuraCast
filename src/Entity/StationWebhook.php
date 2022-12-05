@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\WebhookTriggers;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -24,15 +25,6 @@ class StationWebhook implements
     use Traits\TruncateStrings;
 
     public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
-
-    public const TRIGGER_ALL = 'all';
-    public const TRIGGER_SONG_CHANGED = 'song_changed';
-    public const TRIGGER_LISTENER_GAINED = 'listener_gained';
-    public const TRIGGER_LISTENER_LOST = 'listener_lost';
-    public const TRIGGER_LIVE_CONNECT = 'live_connect';
-    public const TRIGGER_LIVE_DISCONNECT = 'live_disconnect';
-    public const TRIGGER_STATION_OFFLINE = 'station_offline';
-    public const TRIGGER_STATION_ONLINE = 'station_online';
 
     #[ORM\Column(nullable: false)]
     protected int $station_id;
@@ -151,6 +143,20 @@ class StationWebhook implements
     public function setTriggers(?array $triggers = null): void
     {
         $this->triggers = $triggers;
+    }
+
+    public function hasTriggers(): bool
+    {
+        return 0 !== count($this->getTriggers());
+    }
+
+    public function hasTrigger(WebhookTriggers|string $trigger): bool
+    {
+        if ($trigger instanceof WebhookTriggers) {
+            $trigger = $trigger->value;
+        }
+
+        return in_array($trigger, $this->getTriggers(), true);
     }
 
     /**

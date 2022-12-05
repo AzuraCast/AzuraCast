@@ -8,6 +8,7 @@ use App\Entity;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\Centrifugo;
 use Psr\Http\Message\ResponseInterface;
 
 final class PlayerAction
@@ -15,6 +16,7 @@ final class PlayerAction
     public function __construct(
         private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly Centrifugo $centrifugo
     ) {
     }
 
@@ -55,6 +57,11 @@ final class PlayerAction
                 ? '/api/nowplaying_static/' . urlencode($station->getShortName()) . '.json'
                 : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),
         ];
+
+        if ($customization->useStaticNowPlaying() && $this->centrifugo->isSupported()) {
+            $props['useSse'] = true;
+            $props['sseUri'] = $this->centrifugo->getSseUrl($station);
+        }
 
         // Render embedded player.
         if (!empty($embed)) {

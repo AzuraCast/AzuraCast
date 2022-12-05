@@ -14,14 +14,24 @@ msgstr ""
 msgid "# Songs"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:15
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:15
+#: ./vue/components/Stations/Webhooks/EditModal.vue:276
+msgid "%{ dj } is now live on %{ station }! Tune in now: %{ url }"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:14
 msgid "%{ minutes } minutes"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:12
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:12
+#: ./vue/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:11
 msgid "%{ seconds } seconds"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/EditModal.vue:296
+msgid "%{ station } is back online! Tune in now: %{ url }"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/EditModal.vue:290
+msgid "%{ station } is going offline for now."
 msgstr ""
 
 #: ./vue/components/Stations/Common/Quota.vue:52
@@ -240,7 +250,7 @@ msgid "Add User"
 msgstr ""
 
 #: ./vue/components/Stations/Webhooks.vue:14
-#: ./vue/components/Stations/Webhooks/EditModal.vue:53
+#: ./vue/components/Stations/Webhooks/EditModal.vue:55
 msgid "Add Web Hook"
 msgstr ""
 
@@ -296,7 +306,7 @@ msgstr ""
 #: ./vue/components/Admin/Settings/ServicesTab.vue:172
 #: ./vue/components/Admin/Settings/ServicesTab.vue:1
 #: ./vue/components/Public/OnDemand.vue:41
-#: ./vue/components/Public/Player.vue:69
+#: ./vue/components/Public/Player.vue:63
 #: ./vue/components/Public/Requests.vue:79
 #: ./vue/components/Stations/Media.vue:168
 #: ./vue/components/Stations/Media/EditModal.vue:20
@@ -318,7 +328,7 @@ msgstr ""
 msgid "All Podcasts"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/CommonFormattingInfo.vue:12
+#: ./vue/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:12
 msgid "All values in the NowPlaying API response are available for use. Any empty fields are ignored."
 msgstr ""
 
@@ -354,6 +364,26 @@ msgstr ""
 
 #: ./vue/components/Stations/Media/MediaToolbar.vue:56
 msgid "Analyze and reprocess the selected media"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:44
+msgid "Any time a live streamer/DJ connects to the stream"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:45
+msgid "Any time a live streamer/DJ disconnects from the stream"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:40
+msgid "Any time the currently playing song changes"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:43
+msgid "Any time the listener count decreases"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:42
+msgid "Any time the listener count increases"
 msgstr ""
 
 #: ./vue/components/Admin/Settings/SecurityPrivacyTab.vue:58
@@ -1460,7 +1490,7 @@ msgstr ""
 msgid "Delete User?"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks.vue:70
+#: ./vue/components/Stations/Webhooks.vue:96
 msgid "Delete Web Hook?"
 msgstr ""
 
@@ -1508,7 +1538,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/RequestsPanel.vue:14
 #: ./vue/components/Stations/Profile/StreamersPanel.vue:16
 #: ./vue/components/Stations/Profile/StreamersPanel.vue:14
-#: ./vue/components/Stations/Webhooks.vue:28
+#: ./vue/components/Stations/Webhooks.vue:54
 msgid "Disable"
 msgstr ""
 
@@ -1823,7 +1853,7 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/EditModal.vue:52
+#: ./vue/components/Stations/Webhooks/EditModal.vue:54
 msgid "Edit Web Hook"
 msgstr ""
 
@@ -1846,7 +1876,7 @@ msgstr ""
 #: ./vue/components/Stations/Profile/RequestsPanel.vue:10
 #: ./vue/components/Stations/Profile/StreamersPanel.vue:30
 #: ./vue/components/Stations/Profile/StreamersPanel.vue:10
-#: ./vue/components/Stations/Webhooks.vue:29
+#: ./vue/components/Stations/Webhooks.vue:55
 msgid "Enable"
 msgstr ""
 
@@ -2170,7 +2200,7 @@ msgstr ""
 
 #: ./vue/components/Common/Waveform.vue:37
 #: ./vue/components/InlinePlayer.vue:34
-#: ./vue/components/Public/Player.vue:66
+#: ./vue/components/Public/Player.vue:60
 msgid "Full Volume"
 msgstr ""
 
@@ -2264,7 +2294,7 @@ msgstr ""
 msgid "History"
 msgstr ""
 
-#: ./vue/components/Public/Player.vue:76
+#: ./vue/components/Public/Player.vue:70
 msgid "HLS"
 msgstr ""
 
@@ -2287,7 +2317,7 @@ msgstr ""
 msgid "Hour"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Telegram.vue:18
+#: ./vue/components/Stations/Webhooks/Form/Telegram.vue:19
 msgid "HTML"
 msgstr ""
 
@@ -2767,8 +2797,16 @@ msgstr ""
 msgid "Listener Analytics Collection"
 msgstr ""
 
+#: ./vue/components/Stations/Webhooks.vue:30
+msgid "Listener Gained"
+msgstr ""
+
 #: ./vue/components/Stations/Reports/Listeners.vue:41
 msgid "Listener History"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:31
+msgid "Listener Lost"
 msgstr ""
 
 #: ./vue/components/Stations/Queue.vue:41
@@ -2877,6 +2915,14 @@ msgstr ""
 msgid "Live Streamer:"
 msgstr ""
 
+#: ./vue/components/Stations/Webhooks.vue:32
+msgid "Live Streamer/DJ Connected"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:33
+msgid "Live Streamer/DJ Disconnected"
+msgstr ""
+
 #: ./vue/components/Admin/Index.vue:182
 msgid "Load Average"
 msgstr ""
@@ -2979,7 +3025,7 @@ msgstr ""
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Telegram.vue:14
+#: ./vue/components/Stations/Webhooks/Form/Telegram.vue:15
 msgid "Markdown"
 msgstr ""
 
@@ -3065,15 +3111,47 @@ msgstr ""
 
 #: ./vue/components/Stations/Webhooks/Form/Email.vue:27
 #: ./vue/components/Stations/Webhooks/Form/Email.vue:1
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:64
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:1
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:74
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:1
 msgid "Message Body"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/CommonFormattingInfo.vue:3
-#: ./vue/components/Stations/Webhooks/Form/CommonFormattingInfo.vue:1
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:9
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:1
+msgid "Message Body on Song Change"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:16
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:1
+msgid "Message Body on Song Change with Stramer/DJ Connected"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:37
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:1
+msgid "Message Body on Station Offline"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:44
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:1
+msgid "Message Body on Station Online"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:23
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:1
+msgid "Message Body on Streamer/DJ Connect"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:30
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:1
+msgid "Message Body on Streamer/DJ Disconnect"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:1
 msgid "Message Customization Tips"
 msgstr ""
 
@@ -3092,7 +3170,7 @@ msgstr ""
 msgid "Message Subject"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:70
+#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:54
 #: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:1
 msgid "Message Visibility"
 msgstr ""
@@ -3204,7 +3282,7 @@ msgstr ""
 
 #: ./vue/components/Common/Waveform.vue:28
 #: ./vue/components/InlinePlayer.vue:25
-#: ./vue/components/Public/Player.vue:60
+#: ./vue/components/Public/Player.vue:54
 msgid "Mute"
 msgstr ""
 
@@ -3301,8 +3379,7 @@ msgstr ""
 msgid "No files selected."
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:20
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:20
+#: ./vue/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:19
 msgid "No Limit"
 msgstr ""
 
@@ -3394,19 +3471,23 @@ msgstr ""
 msgid "Now Playing"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/EditModal.vue:221
+#: ./vue/components/Stations/Webhooks/EditModal.vue:245
 msgid "Now playing on %{ station }:"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/EditModal.vue:233
+#: ./vue/components/Stations/Webhooks/EditModal.vue:266
+msgid "Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/EditModal.vue:257
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/EditModal.vue:225
+#: ./vue/components/Stations/Webhooks/EditModal.vue:249
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now."
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/CommonFormattingInfo.vue:15
+#: ./vue/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:15
 #: ./vue/components/Stations/Webhooks/Form/Generic.vue:16
 msgid "NowPlaying API Response"
 msgstr ""
@@ -3524,14 +3605,9 @@ msgstr ""
 msgid "Only play one track at scheduled time."
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:48
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:1
+#: ./vue/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:3
+#: ./vue/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:1
 msgid "Only Post Once Every..."
-msgstr ""
-
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:58
-#: ./vue/components/Stations/Webhooks/Form/Twitter.vue:1
-msgid "Only Send One Tweet Every..."
 msgstr ""
 
 #: ./vue/components/Admin/AuditLog.vue:21
@@ -3786,7 +3862,7 @@ msgstr ""
 msgid "Port:"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/EditModal.vue:218
+#: ./vue/components/Stations/Webhooks/EditModal.vue:242
 msgid "Powered by AzuraCast"
 msgstr ""
 
@@ -3815,7 +3891,7 @@ msgstr ""
 msgid "Privacy"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:72
+#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:30
 msgid "Private"
 msgstr ""
 
@@ -3839,7 +3915,7 @@ msgstr ""
 msgid "Provide a valid license key from Thimeo. Functionality is limited without a license key."
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:64
+#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:22
 msgid "Public"
 msgstr ""
 
@@ -4708,6 +4784,14 @@ msgstr ""
 msgid "Song Artist"
 msgstr ""
 
+#: ./vue/components/Stations/Webhooks.vue:28
+msgid "Song Change"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:29
+msgid "Song Change (Live Only)"
+msgstr ""
+
 #: ./vue/components/Stations/Media/Form/BasicInfo.vue:26
 #: ./vue/components/Stations/Media/Form/BasicInfo.vue:1
 msgid "Song Genre"
@@ -4839,6 +4923,14 @@ msgstr ""
 #: ./vue/components/Stations/Streamers/Form/Schedule.vue:30
 #: ./vue/components/Stations/Streamers/Form/Schedule.vue:1
 msgid "Start Time"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:34
+msgid "Station Goes Offline"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:35
+msgid "Station Goes Online"
 msgstr ""
 
 #: ./vue/components/Admin/StorageLocations.vue:27
@@ -5100,6 +5192,10 @@ msgstr ""
 
 #: ./vue/components/Stations/Mounts/Form/BasicInfo.vue:20
 msgid "text"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks/EditModal.vue:284
+msgid "Thanks for listening to %{ station }!"
 msgstr ""
 
 #: ./vue/components/Admin/Index/MemoryStatsHelpModal.vue:7
@@ -5765,7 +5861,7 @@ msgstr ""
 msgid "Unknown Title"
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:68
+#: ./vue/components/Stations/Webhooks/Form/Mastodon.vue:26
 msgid "Unlisted"
 msgstr ""
 
@@ -5848,6 +5944,11 @@ msgstr ""
 msgid "Use Browser Default"
 msgstr ""
 
+#: ./vue/components/Admin/Settings/GeneralTab.vue:54
+#: ./vue/components/Admin/Settings/GeneralTab.vue:1
+msgid "Use High-Performance Now Playing Updates"
+msgstr ""
+
 #: ./vue/components/Admin/Stations/Form/FrontendForm.vue:25
 msgid "Use Icecast 2.4 on this server."
 msgstr ""
@@ -5876,11 +5977,6 @@ msgstr ""
 
 #: ./vue/components/Admin/Stations/Form/FrontendForm.vue:32
 msgid "Use Shoutcast DNAS 2 on this server."
-msgstr ""
-
-#: ./vue/components/Admin/Settings/GeneralTab.vue:54
-#: ./vue/components/Admin/Settings/GeneralTab.vue:1
-msgid "Use Static Files for Now Playing Updates"
 msgstr ""
 
 #: ./vue/components/Admin/Settings/GeneralTab.vue:33
@@ -5950,7 +6046,7 @@ msgstr ""
 
 #: ./vue/components/Admin/Settings/GeneralTab.vue:57
 #: ./vue/components/Admin/Settings/GeneralTab.vue:1
-msgid "Uses static JSON files to serve Now Playing data on public pages. This improves performance but will cause problems if you use multiple base URLs."
+msgid "Uses either Websockets, Server-Sent Events (SSE) or static JSON files to serve Now Playing data on public pages. This improves performance, especially with large listener volume. Disable this if you are encountering problems with the service or use multiple URLs to serve your public pages."
 msgstr ""
 
 #: ./vue/components/Stations/LiquidsoapConfig.vue:11
@@ -5962,7 +6058,7 @@ msgstr ""
 msgid "Usually enabled for port 465, disabled for ports 587 or 25."
 msgstr ""
 
-#: ./vue/components/Stations/Webhooks/Form/CommonFormattingInfo.vue:7
+#: ./vue/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:7
 msgid "Variables are in the form of:"
 msgstr ""
 
@@ -5990,7 +6086,7 @@ msgstr ""
 
 #: ./vue/components/Common/Waveform.vue:65
 #: ./vue/components/InlinePlayer.vue:21
-#: ./vue/components/Public/Player.vue:63
+#: ./vue/components/Public/Player.vue:57
 msgid "Volume"
 msgstr ""
 
@@ -6080,6 +6176,18 @@ msgstr ""
 
 #: ./vue/components/Account/ApiKeyNewKey.vue:25
 msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself."
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:41
+msgid "When the song changes and a live streamer/DJ is connected"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:47
+msgid "When the station broadcast comes online"
+msgstr ""
+
+#: ./vue/components/Stations/Webhooks.vue:46
+msgid "When the station broadcast goes offline"
 msgstr ""
 
 #: ./vue/components/Stations/Playlists/Form/BasicInfo.vue:53
@@ -6532,36 +6640,40 @@ msgstr ""
 msgid "GeoLite database not configured for this installation. See System Administration for instructions."
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:69
+#: /var/azuracast/www/src/Service/ServiceControl.php:78
 msgid "Message queue delivery service"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:70
+#: /var/azuracast/www/src/Service/ServiceControl.php:79
 msgid "Runs routine synchronized tasks"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:71
+#: /var/azuracast/www/src/Service/ServiceControl.php:80
 msgid "Database"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:72
+#: /var/azuracast/www/src/Service/ServiceControl.php:81
 msgid "Web server"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:73
+#: /var/azuracast/www/src/Service/ServiceControl.php:82
 msgid "PHP FastCGI Process Manager"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:74
+#: /var/azuracast/www/src/Service/ServiceControl.php:83
 msgid "Now Playing manager service"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:75
+#: /var/azuracast/www/src/Service/ServiceControl.php:84
 msgid "PHP queue processing worker"
 msgstr ""
 
-#: /var/azuracast/www/src/Service/ServiceControl.php:76
+#: /var/azuracast/www/src/Service/ServiceControl.php:85
 msgid "SFTP service"
+msgstr ""
+
+#: /var/azuracast/www/src/Service/ServiceControl.php:86
+msgid "Live Now Playing updates"
 msgstr ""
 
 #: /var/azuracast/www/src/Exception/SupervisorException.php:24
@@ -7503,103 +7615,75 @@ msgstr ""
 msgid "Install Shoutcast"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:11
-msgid "Any time the currently playing song changes"
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:12
-msgid "Any time the listener count increases"
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:13
-msgid "Any time the listener count decreases"
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:14
-msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:15
-msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:16
-msgid "When the station broadcast goes offline."
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:17
-msgid "When the station broadcast comes online."
-msgstr ""
-
-#: /var/azuracast/www/config/webhooks.php:30
+#: /var/azuracast/www/config/webhooks.php:33
 msgid "Generic Web Hook"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:31
+#: /var/azuracast/www/config/webhooks.php:34
 msgid "Automatically send a message to any URL when your station data changes."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:36
+#: /var/azuracast/www/config/webhooks.php:39
 msgid "Send E-mail"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:37
+#: /var/azuracast/www/config/webhooks.php:40
 msgid "Send an e-mail to specified address(es)."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:42
+#: /var/azuracast/www/config/webhooks.php:45
 msgid "TuneIn AIR"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:43
+#: /var/azuracast/www/config/webhooks.php:46
 msgid "Send song metadata changes to TuneIn."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:48
+#: /var/azuracast/www/config/webhooks.php:51
 msgid "Discord Webhook"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:49
+#: /var/azuracast/www/config/webhooks.php:52
 msgid "Automatically send a customized message to your Discord server."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:54
+#: /var/azuracast/www/config/webhooks.php:57
 msgid "Telegram Chat Message"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:55
+#: /var/azuracast/www/config/webhooks.php:58
 msgid "Use the Telegram Bot API to send a message to a channel."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:60
+#: /var/azuracast/www/config/webhooks.php:63
 msgid "Twitter Post"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:61
+#: /var/azuracast/www/config/webhooks.php:64
 msgid "Automatically send a tweet."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:66
+#: /var/azuracast/www/config/webhooks.php:69
 msgid "Mastodon Post"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:67
+#: /var/azuracast/www/config/webhooks.php:70
 msgid "Automatically publish to a Mastodon instance."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:72
+#: /var/azuracast/www/config/webhooks.php:75
 msgid "Google Analytics Integration"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:73
+#: /var/azuracast/www/config/webhooks.php:76
 msgid "Send stream listener details to Google Analytics."
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:78
+#: /var/azuracast/www/config/webhooks.php:81
 msgid "Matomo Analytics Integration"
 msgstr ""
 
-#: /var/azuracast/www/config/webhooks.php:79
+#: /var/azuracast/www/config/webhooks.php:82
 msgid "Send stream listener details to Matomo Analytics."
 msgstr ""
 

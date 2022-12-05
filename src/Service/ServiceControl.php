@@ -10,13 +10,15 @@ use App\Service\ServiceControl\ServiceData;
 use Supervisor\Exception\Fault\BadNameException;
 use Supervisor\Exception\Fault\NotRunningException;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
+use Supervisor\ProcessStates;
 use Supervisor\SupervisorInterface;
 
 final class ServiceControl
 {
     public function __construct(
         private readonly SupervisorInterface $supervisor,
-        private readonly Environment $environment
+        private readonly Environment $environment,
+        private readonly Centrifugo $centrifugo
     ) {
     }
 
@@ -27,7 +29,14 @@ final class ServiceControl
 
         foreach ($this->getServiceNames() as $name => $description) {
             try {
-                $isRunning = $this->supervisor->getProcess($name)->isRunning();
+                $isRunning = in_array(
+                    $this->supervisor->getProcess($name)->getState(),
+                    [
+                        ProcessStates::Running,
+                        ProcessStates::Starting,
+                    ],
+                    true
+                );
             } catch (BadNameException) {
                 $isRunning = false;
             }
@@ -74,7 +83,12 @@ final class ServiceControl
             'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
             'sftpgo' => __('SFTP service'),
+            'centrifugo' => __('Live Now Playing updates'),
         ];
+
+        if (!$this->centrifugo->isSupported()) {
+            unset($services['centrifugo']);
+        }
 
         if (!$this->environment->useLocalDatabase()) {
             unset($services['mariadb']);

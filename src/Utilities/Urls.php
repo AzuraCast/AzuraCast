@@ -4,53 +4,51 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
-use Exception;
-use GuzzleHttp\Psr7\Exception\MalformedUriException;
 use GuzzleHttp\Psr7\Uri;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 
 final class Urls
 {
-    public static function getUri(?string $url): ?UriInterface
-    {
-        if (null !== $url) {
-            $url = trim($url);
-            if (!empty($url)) {
-                try {
-                    return new Uri($url);
-                } catch (MalformedUriException) {
-                    if (!str_starts_with($url, 'http')) {
-                        /** @noinspection HttpUrlsUsage */
-                        return self::getUri('http://' . $url);
-                    }
-                }
-            }
+    public static function getUri(
+        ?string $url,
+        bool $mustBeAbsolute = true
+    ): UriInterface {
+        if (null === $url) {
+            throw new \RuntimeException('URL field is empty.');
         }
 
-        return null;
+        $url = trim($url);
+        if (empty($url)) {
+            throw new \RuntimeException('URL field is empty.');
+        }
+
+        $uri = new Uri($url);
+        if ($mustBeAbsolute && '' === $uri->getHost() && '' === $uri->getScheme()) {
+            return self::getUri('https://' . $url);
+        }
+
+        if ('' === $uri->getScheme()) {
+            $uri = $uri->withScheme('http');
+        }
+        if ('/' === $uri->getPath()) {
+            $uri = $uri->withPath('');
+        }
+        if (Uri::isDefaultPort($uri)) {
+            $uri = $uri->withPort(null);
+        }
+
+        return $uri;
     }
 
     public static function parseUserUrl(
         ?string $url,
-        string $context
+        string $context,
+        bool $mustBeAbsolute = true
     ): UriInterface {
         try {
-            if (empty($url)) {
-                throw new LogicException('No URL specified.');
-            }
-
-            $url = trim($url);
-            try {
-                return new Uri($url);
-            } catch (MalformedUriException $ex) {
-                if (!str_starts_with($url, 'http')) {
-                    /** @noinspection HttpUrlsUsage */
-                    return new Uri('http://' . $url);
-                }
-                throw $ex;
-            }
-        } catch (Exception $e) {
+            return self::getUri($url, $mustBeAbsolute);
+        } catch (\Throwable $e) {
             throw new LogicException(
                 message: sprintf('Could not parse %s URL "%s": %s', $context, $url, $e->getMessage()),
                 previous: $e
@@ -60,21 +58,19 @@ final class Urls
 
     public static function tryParseUserUrl(
         ?string $url,
-        string $context
+        string $context,
+        bool $mustBeAbsolute = true
     ): ?UriInterface {
-        if (empty($url)) {
-            return null;
-        }
-
         try {
-            return self::parseUserUrl($url, $context);
-        } catch (Exception $e) {
+            return self::getUri($url, $mustBeAbsolute);
+        } catch (\Throwable $e) {
             Logger::getInstance()->error(
-                sprintf('Could not parse %s URL "%s": %s', $context, $url, $e->getMessage()),
+                sprintf('Could not parse %s URL "%s"', $context, $url),
                 [
                     'exception' => $e,
                 ]
             );
+
             return null;
         }
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 
 final class Generic extends AbstractConnector
 {
@@ -14,9 +16,9 @@ final class Generic extends AbstractConnector
      * @inheritDoc
      */
     public function dispatch(
-        Entity\Station $station,
-        Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying\NowPlaying $np,
+        Station $station,
+        StationWebhook $webhook,
+        NowPlaying $np,
         array $triggers
     ): void {
         $config = $webhook->getConfig();

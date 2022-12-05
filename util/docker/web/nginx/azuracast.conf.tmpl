@@ -6,6 +6,10 @@ upstream php-fpm-www {
     server unix:/var/run/php-fpm-www.sock;
 }
 
+upstream centrifugo {
+    server 127.0.0.1:6020;
+}
+
 # Internal connection handler for PubSub and internal API calls
 server {
     listen 127.0.0.1:6010;
@@ -79,6 +83,12 @@ server {
         try_files $uri =404;
     }
 
+    # Websocket/SSE Now Playing Updates
+    location ~ ^/api/live/nowplaying/(\w+)$ {
+        include proxy_params;
+        proxy_pass http://centrifugo/connection/uni_$1?$args;
+    }
+
     # Default clean URL routing
     location / {
         try_files $uri @clean_url;
@@ -94,7 +104,7 @@ server {
     }
 
     location /static/uploads {
-        rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg)$ $1.$2 last;
+        rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg|webp)$ $1.$2 last;
 
         alias /var/azuracast/uploads;
         try_files $uri =404;

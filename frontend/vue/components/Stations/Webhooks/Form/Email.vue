@@ -13,7 +13,7 @@
             </b-form-row>
         </b-form-group>
 
-        <common-formatting-info></common-formatting-info>
+        <common-formatting-info :now-playing-url="nowPlayingUrl"></common-formatting-info>
 
         <b-form-group>
             <b-form-row>
@@ -35,13 +35,14 @@
 
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import CommonFormattingInfo from "./CommonFormattingInfo";
+import CommonFormattingInfo from "./Common/FormattingInfo";
 
 export default {
     name: 'Email',
     components: {CommonFormattingInfo, BWrappedFormGroup},
     props: {
-        form: Object
+        form: Object,
+        nowPlayingUrl: String
     }
 }
 </script>

@@ -16,6 +16,7 @@ final class DecoratedEntityManager extends EntityManagerDecorator implements Rel
     public function __construct(callable $createEm)
     {
         parent::__construct($createEm());
+
         $this->createEm = $createEm(...);
     }
 

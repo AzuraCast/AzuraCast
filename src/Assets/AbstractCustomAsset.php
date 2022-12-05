@@ -10,6 +10,11 @@ use Psr\Http\Message\UriInterface;
 
 abstract class AbstractCustomAsset implements CustomAssetInterface
 {
+    public function __construct(
+        protected readonly Environment $environment
+    ) {
+    }
+
     abstract protected function getPattern(): string;
 
     abstract protected function getDefaultUrl(): string;
@@ -17,7 +22,7 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
     public function getPath(): string
     {
         $pattern = sprintf($this->getPattern(), '');
-        return Environment::getInstance()->getUploadsDirectory() . '/' . $pattern;
+        return $this->environment->getUploadsDirectory() . '/' . $pattern;
     }
 
     public function getUrl(): string
@@ -27,7 +32,7 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
             $pattern = $this->getPattern();
             $mtime = filemtime($path);
 
-            return Environment::getInstance()->getAssetUrl() . self::UPLOADS_URL_PREFIX . '/' . sprintf(
+            return $this->environment->getAssetUrl() . self::UPLOADS_URL_PREFIX . '/' . sprintf(
                 $pattern,
                 '.' . $mtime
             );

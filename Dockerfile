@@ -51,6 +51,10 @@ COPY ./util/docker/mariadb /bd_build/mariadb/
 RUN bash /bd_build/mariadb/setup.sh \
     && rm -rf /bd_build/mariadb
 
+COPY ./util/docker/redis /bd_build/redis/
+RUN bash /bd_build/redis/setup.sh \
+    && rm -rf /bd_build/redis
+
 #
 # START Operations as `azuracast` user
 #

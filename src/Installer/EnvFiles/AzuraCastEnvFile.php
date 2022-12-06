@@ -28,6 +28,7 @@ final class AzuraCastEnvFile extends AbstractEnvFile
             }
 
             $dbSettings = $emptyEnv->getDatabaseSettings();
+            $redisSettings = $emptyEnv->getRedisSettings();
 
             $config = [
                 Environment::LANG => [
@@ -150,6 +151,28 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                         'Set the amount of allowed connections to the database. This value should be increased if you are seeing the "Too many connections" error in the logs.',
                     ),
                     'default' => 100,
+                ],
+                Environment::ENABLE_REDIS => [
+                    'name' => __('Enable Redis'),
+                    'description' => __(
+                        'Disable to use a flatfile cache instead of Redis.',
+                    ),
+                ],
+                Environment::REDIS_HOST => [
+                    'name' => __('Redis Host'),
+                    'default' => $redisSettings['host'],
+                    'required' => true,
+                ],
+                Environment::REDIS_PORT => [
+                    'name' => __('Redis Port'),
+                    'default' => $redisSettings['port'],
+                    'required' => true,
+                ],
+                Environment::REDIS_DB => [
+                    'name' => __('Redis Database Index'),
+                    'options' => range(0, 15),
+                    'default' => $redisSettings['db'],
+                    'required' => true,
                 ],
                 'PHP_MAX_FILE_SIZE' => [
                     'name' => __('PHP Maximum POST File Size'),

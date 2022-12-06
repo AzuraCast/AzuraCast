@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Environment;
 use App\Exception\SupervisorException;
 use App\Service\ServiceControl\ServiceData;
 use Supervisor\Exception\Fault\BadNameException;
@@ -27,7 +26,7 @@ final class ServiceControl
     {
         $services = [];
 
-        foreach ($this->getServiceNames() as $name => $description) {
+        foreach (self::getServiceNames() as $name => $description) {
             try {
                 $isRunning = in_array(
                     $this->supervisor->getProcess($name)->getState(),
@@ -53,7 +52,7 @@ final class ServiceControl
 
     public function restart(string $service): void
     {
-        $serviceNames = $this->getServiceNames();
+        $serviceNames = self::getServiceNames();
         if (!isset($serviceNames[$service])) {
             throw new \InvalidArgumentException(
                 sprintf('Service "%s" is not managed by AzuraCast.', $service)
@@ -72,9 +71,9 @@ final class ServiceControl
         }
     }
 
-    public function getServiceNames(): array
+    public static function getServiceNames(): array
     {
-        $services = [
+        return [
             'beanstalkd' => __('Message queue delivery service'),
             'cron' => __('Runs routine synchronized tasks'),
             'mariadb' => __('Database'),
@@ -82,6 +81,7 @@ final class ServiceControl
             'php-fpm' => __('PHP FastCGI Process Manager'),
             'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
+            'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
             'centrifugo' => __('Live Now Playing updates'),
         ];

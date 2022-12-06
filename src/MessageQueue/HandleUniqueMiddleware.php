@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use App\LockFactory;
+use App\Lock\LockFactory;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 final class HandleUniqueMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly LockFactory $lockFactory
+        protected LockFactory $lockFactory
     ) {
     }
 

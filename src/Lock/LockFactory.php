@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Lock;
 
 use Exception;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\LockFactory as SymfonyLockFactory;
 use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Lock\PersistingStoreInterface;
@@ -16,6 +17,11 @@ final class LockFactory extends SymfonyLockFactory
         PersistingStoreInterface $lockStore,
         LoggerInterface $logger
     ) {
+        if (!$lockStore instanceof BlockingStoreInterface) {
+            $lockStore = new RetryTillSaveStore($lockStore, 30, 1000);
+            $lockStore->setLogger($logger);
+        }
+
         parent::__construct($lockStore);
         $this->setLogger($logger);
     }

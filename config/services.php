@@ -145,19 +145,41 @@ return [
     App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
+    // Redis cache
+    Redis::class => static function (Environment $environment) {
+        if (!$environment->enableRedis()) {
+            throw new App\Exception\BootstrapException('Redis is disabled on this installation.');
+        }
+
+        $settings = $environment->getRedisSettings();
+
+        $redis = new Redis();
+        if (isset($settings['socket'])) {
+            $redis->connect($settings['socket']);
+        } else {
+            $redis->connect($settings['host'], $settings['port'], 15);
+        }
+        $redis->select($settings['db']);
+
+        return $redis;
+    },
+
     Symfony\Contracts\Cache\CacheInterface::class => static function (
         Environment $environment,
-        Psr\Log\LoggerInterface $logger
+        Psr\Log\LoggerInterface $logger,
+        ContainerInterface $di
     ) {
         if ($environment->isTesting()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        } else {
+        } elseif (!$environment->enableRedis()) {
             $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';
             $cacheInterface = new Symfony\Component\Cache\Adapter\FilesystemAdapter(
                 '',
                 0,
                 $tempDir
             );
+        } else {
+            $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
         }
 
         $cacheInterface->setLogger($logger);
@@ -170,14 +192,24 @@ return [
     Psr\Cache\CacheItemPoolInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),
-    Psr\SimpleCache\CacheInterface::class => static fn(
-        Psr\Cache\CacheItemPoolInterface $cache
-    ) => new Symfony\Component\Cache\Psr16Cache($cache),
+    Psr\SimpleCache\CacheInterface::class => static function (Psr\Cache\CacheItemPoolInterface $cache) {
+        return new Symfony\Component\Cache\Psr16Cache($cache);
+    },
 
     // Symfony Lock adapter
-    Symfony\Component\Lock\PersistingStoreInterface::class => static fn(
+    Symfony\Component\Lock\PersistingStoreInterface::class => static function (
+        ContainerInterface $di,
         Environment $environment
-    ) => new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory()),
+    ) {
+        if ($environment->enableRedis()) {
+            $redis = $di->get(Redis::class);
+            $store = new Symfony\Component\Lock\Store\RedisStore($redis);
+        } else {
+            $store = new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
+        }
+
+        return $store;
+    },
 
     // Console
     App\Console\Application::class => static function (
@@ -313,7 +345,7 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        App\LockFactory $lockFactory,
+        App\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,

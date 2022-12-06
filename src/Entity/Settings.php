@@ -201,10 +201,7 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(
-            description: "Whether to use high-performance static JSON for Now Playing data updates.",
-            example: "false"
-        ),
+        OA\Property(description: "Whether to use high-performance static JSON for Now Playing data updates.", example: "false"),
         ORM\Column,
         Groups(self::GROUP_GENERAL)
     ]

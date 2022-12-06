@@ -300,6 +300,11 @@ final class Environment
         return $dbSettings;
     }
 
+    public function useLocalDatabase(): bool
+    {
+        return 'localhost' === ($this->data[self::DB_HOST] ?? 'localhost');
+    }
+
     public function enableRedis(): bool
     {
         return self::envToBool($this->data[self::ENABLE_REDIS] ?? true);
@@ -321,6 +326,11 @@ final class Environment
         }
 
         return $redisSettings;
+    }
+
+    public function useLocalRedis(): bool
+    {
+        return $this->enableRedis() && 'localhost' === ($this->data[self::REDIS_HOST] ?? 'localhost');
     }
 
     public function isProfilingExtensionEnabled(): bool

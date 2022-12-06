@@ -11,15 +11,11 @@ use Psr\Container\ContainerInterface;
 return [
 
     // Slim interface
-    Slim\Interfaces\RouteCollectorInterface::class => static function (Slim\App $app) {
-        return $app->getRouteCollector();
-    },
+    Slim\Interfaces\RouteCollectorInterface::class => static fn(Slim\App $app) => $app->getRouteCollector(),
 
-    Slim\Interfaces\RouteParserInterface::class => static function (
+    Slim\Interfaces\RouteParserInterface::class => static fn(
         Slim\Interfaces\RouteCollectorInterface $routeCollector
-    ) {
-        return $routeCollector->getRouteParser();
-    },
+    ) => $routeCollector->getRouteParser(),
 
     // URL Router helper
     App\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
@@ -453,28 +449,22 @@ return [
         );
     },
 
-    Symfony\Component\Mailer\Mailer::class => static function (
+    Symfony\Component\Mailer\Mailer::class => static fn(
         Symfony\Component\Mailer\Transport\TransportInterface $transport,
         Symfony\Component\Messenger\MessageBus $messageBus,
         Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
-    ) {
-        return new Symfony\Component\Mailer\Mailer(
-            $transport,
-            $messageBus,
-            $eventDispatcher
-        );
-    },
+    ) => new Symfony\Component\Mailer\Mailer($transport, $messageBus, $eventDispatcher),
 
     Symfony\Component\Mailer\MailerInterface::class => DI\get(
         Symfony\Component\Mailer\Mailer::class
     ),
 
     // Supervisor manager
-    Supervisor\SupervisorInterface::class => static function (
+    Supervisor\SupervisorInterface::class => static fn(
         Environment $environment,
         Psr\Log\LoggerInterface $logger
-    ) {
-        $client = new fXmlRpc\Client(
+    ) => new Supervisor\Supervisor(
+        new fXmlRpc\Client(
             'http://localhost/RPC2',
             new fXmlRpc\Transport\PsrTransport(
                 new GuzzleHttp\Psr7\HttpFactory(),
@@ -484,10 +474,9 @@ return [
                     ],
                 ])
             )
-        );
-
-        return new Supervisor\Supervisor($client, $logger);
-    },
+        ),
+        $logger
+    ),
 
     // NowPlaying Adapter factory
     NowPlaying\AdapterFactory::class => static function (

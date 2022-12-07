@@ -70,7 +70,7 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {BACKEND_NONE} from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import BFormMarkup from "~/components/Form/BFormMarkup";
-import BackendDisabled from "~/components/Admin/Stations/Form/Common/BackendDisabled.vue";
+import BackendDisabled from "./Common/BackendDisabled.vue";
 
 export default {
     name: 'AdminStationsRequestsForm',

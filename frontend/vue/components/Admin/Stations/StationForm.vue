@@ -95,11 +95,11 @@ import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
 import AdminStationsBackendForm from "./Form/BackendForm";
 import AdminStationsAdminForm from "./Form/AdminForm";
+import AdminStationsHlsForm from "./Form/HlsForm.vue";
+import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
+import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
 import _ from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
-import AdminStationsHlsForm from "~/components/Admin/Stations/Form/HlsForm.vue";
-import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/RequestsForm.vue";
-import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
 
 export const StationFormProps = {
     props: {

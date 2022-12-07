@@ -2,7 +2,7 @@
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
+        <b-tabs content-class="mt-3" pills>
             <form-basic-info :form="$v.form"></form-basic-info>
             <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                            :station-time-zone="stationTimeZone"></form-schedule>

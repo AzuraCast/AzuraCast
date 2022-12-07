@@ -3,7 +3,7 @@
         <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
         <b-form class="form vue-form" @submit.prevent="submit">
-            <b-tabs :card="!isModal" lazy justified :content-class="tabContentClass">
+            <b-tabs :card="!isModal" pills :content-class="tabContentClass">
                 <b-tab :title-link-class="getTabClass($v.profileTab)" active>
                     <template #title>
                         <translate key="tab_profile">Profile</translate>
@@ -32,6 +32,33 @@
                     <admin-stations-backend-form :form="$v.form" :station="station"
                                                  :is-stereo-tool-installed="isStereoToolInstalled"
                                                  :show-advanced="showAdvanced"></admin-stations-backend-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass($v.hlsTab)">
+                    <template #title>
+                        <translate key="tab_hls">HLS</translate>
+                    </template>
+
+                    <admin-stations-hls-form :form="$v.form" :station="station" :show-advanced="showAdvanced">
+                    </admin-stations-hls-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass($v.requestsTab)">
+                    <template #title>
+                        <translate key="tab_requests">Song Requests</translate>
+                    </template>
+
+                    <admin-stations-requests-form :form="$v.form" :station="station" :show-advanced="showAdvanced">
+                    </admin-stations-requests-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass($v.streamersTab)">
+                    <template #title>
+                        <translate key="tab_streamers">Streamers/DJs</translate>
+                    </template>
+
+                    <admin-stations-streamers-form :form="$v.form" :station="station" :show-advanced="showAdvanced">
+                    </admin-stations-streamers-form>
                 </b-tab>
 
                 <b-tab v-if="showAdminTab" :title-link-class="getTabClass($v.adminTab)">
@@ -70,6 +97,9 @@ import AdminStationsBackendForm from "./Form/BackendForm";
 import AdminStationsAdminForm from "./Form/AdminForm";
 import _ from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
+import AdminStationsHlsForm from "~/components/Admin/Stations/Form/HlsForm.vue";
+import AdminStationsRequestsForm from "~/components/Admin/Stations/Form/RequestsForm.vue";
+import AdminStationsStreamersForm from "~/components/Admin/Stations/Form/StreamersForm.vue";
 
 export const StationFormProps = {
     props: {
@@ -102,7 +132,12 @@ export const StationFormProps = {
 export default {
     name: 'AdminStationsForm',
     inheritAttrs: false,
-    components: {AdminStationsAdminForm, AdminStationsBackendForm, AdminStationsFrontendForm, AdminStationsProfileForm},
+    components: {
+        AdminStationsStreamersForm,
+        AdminStationsRequestsForm,
+        AdminStationsHlsForm,
+        AdminStationsAdminForm, AdminStationsBackendForm, AdminStationsFrontendForm, AdminStationsProfileForm
+    },
     emits: ['error', 'submitted', 'loadingUpdate', 'validUpdate'],
     props: {
         createUrl: String,
@@ -164,9 +199,20 @@ export default {
                 'form.frontend_type', 'form.frontend_config'
             ],
             backendTab: [
-                'form.backend_type', 'form.backend_config', 'form.enable_requests', 'form.request_delay',
-                'form.request_threshold', 'form.enable_streamers', 'form.disconnect_deactivate_streamer'
+                'form.backend_type', 'form.backend_config',
             ],
+            hlsTab: [
+                'form.enable_hls',
+            ],
+            requestsTab: [
+                'form.enable_requests',
+                'form.request_delay',
+                'form.request_threshold'
+            ],
+            streamersTab: [
+                'form.enable_streamers',
+                'form.disconnect_deactivate_streamer'
+            ]
         };
 
         function mergeCustom(objValue, srcValue) {

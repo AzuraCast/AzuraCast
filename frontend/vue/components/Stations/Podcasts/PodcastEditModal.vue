@@ -2,7 +2,7 @@
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
+        <b-tabs content-class="mt-3" pills>
             <podcast-form-basic-info :form="$v.form"
                                      :categories-options="categoriesOptions" :language-options="languageOptions">
             </podcast-form-basic-info>

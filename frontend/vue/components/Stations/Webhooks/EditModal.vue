@@ -3,7 +3,7 @@
                 @submit="doSubmit" @hidden="clearContents">
 
         <type-select v-if="!type" :webhook-types="webhookTypes" @select="setType"></type-select>
-        <b-tabs v-else lazy content-class="mt-3">
+        <b-tabs v-else lazy content-class="mt-3" pills>
             <b-tab active>
                 <template #title>
                     <translate key="tab_basic_info">Basic Info</translate>

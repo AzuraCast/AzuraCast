@@ -16,7 +16,7 @@
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
             <b-overlay variant="card" :show="loading">
-                <b-tabs card lazy justified>
+                <b-tabs pills card lazy>
                     <b-tab :title-link-class="getTabClass($v.generalTab)">
                         <template #title>
                             <translate key="tab_general">Settings</translate>

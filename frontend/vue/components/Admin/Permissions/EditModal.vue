@@ -2,7 +2,7 @@
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
+        <b-tabs content-class="mt-3" pills>
             <admin-permissions-global-form :form="$v.form" :global-permissions="globalPermissions">
             </admin-permissions-global-form>
 

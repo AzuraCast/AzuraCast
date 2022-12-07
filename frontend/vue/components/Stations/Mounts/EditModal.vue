@@ -2,7 +2,7 @@
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
+        <b-tabs content-class="mt-3" pills>
             <mount-form-basic-info :form="$v.form"
                                    :station-frontend-type="stationFrontendType"></mount-form-basic-info>
             <mount-form-auto-dj :form="$v.form"

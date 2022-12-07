@@ -268,9 +268,9 @@
                         </h2>
                     </b-card-header>
 
-                    <b-tabs content-class="mt-3">
+                    <b-tabs content-class="mt-3" pills card>
                         <b-tab v-for="netInterface in stats.network" :key="netInterface.interface_name"
-                               :title="netInterface.interface_name" pills card>
+                               :title="netInterface.interface_name">
                             <b-row class="mb-3">
                                 <b-col class="mb-3">
                                     <h5 class="mb-1 text-center">

@@ -161,6 +161,38 @@ export default {
         isBackendEnabled() {
             return this.form.backend_type.$model !== BACKEND_NONE;
         },
+        recordStreamsOptions() {
+            return [
+                {
+                    text: 'MP3',
+                    value: 'mp3',
+                },
+                {
+                    text: 'OGG Vorbis',
+                    value: 'ogg',
+                },
+                {
+                    text: 'OGG Opus',
+                    value: 'opus',
+                },
+                {
+                    text: 'AAC+ (MPEG4 HE-AAC v2)',
+                    value: 'aac'
+                }
+            ];
+        },
+        recordBitrateOptions() {
+            return [
+                {text: '32', value: 32},
+                {text: '48', value: 48},
+                {text: '64', value: 64},
+                {text: '96', value: 96},
+                {text: '128', value: 128},
+                {text: '192', value: 192},
+                {text: '256', value: 256},
+                {text: '320', value: 320}
+            ];
+        },
     }
 }
 </script>

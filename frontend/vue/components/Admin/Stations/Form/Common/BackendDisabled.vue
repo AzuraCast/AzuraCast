@@ -11,11 +11,5 @@
     </b-form-fieldset>
 </template>
 
-<script>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-
-export default {
-    name: 'StationsFormCommonBackendDisabled',
-    components: {BFormFieldset}
-}
-</script>
+<script setup>
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";</script>

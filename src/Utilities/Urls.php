@@ -61,10 +61,14 @@ final class Urls
         string $context,
         bool $mustBeAbsolute = true
     ): ?UriInterface {
+        if (empty($url)) {
+            return null;
+        }
+
         try {
             return self::getUri($url, $mustBeAbsolute);
         } catch (\Throwable $e) {
-            Logger::getInstance()->error(
+            Logger::getInstance()->notice(
                 sprintf('Could not parse %s URL "%s"', $context, $url),
                 [
                     'exception' => $e,

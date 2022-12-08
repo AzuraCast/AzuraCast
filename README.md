@@ -41,7 +41,7 @@ to install AzuraCast on your own server.
 ## License
 
 AzuraCast is licensed under
-the [Affero GNU General Public License (AGPL) version 3.0](https://github.com/AzuraCast/AzuraCast/blob/main/LICENSE.txt).
+the [Affero GNU General Public License (AGPL) version 3.0](https://github.com/AzuraCast/AzuraCast/blob/main/LICENSE.md).
 This project is free
 and open-source software, and pull requests are always welcome.
 

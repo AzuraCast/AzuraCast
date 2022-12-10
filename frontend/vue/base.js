@@ -2,6 +2,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import GetTextPlugin from 'vue-gettext';
 import translations from '../../translations/translations.json';
+import pinia from './vendor/pinia';
 
 export default function (vueApp) {
     return function (el, props) {

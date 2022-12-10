@@ -1,13 +1,13 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <sftp-users-form :form="$v.form" :is-edit-mode="isEditMode"></sftp-users-form>
+        <sftp-users-form :form="v$.form" :is-edit-mode="isEditMode"></sftp-users-form>
 
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import SftpUsersForm from "./Form";
 

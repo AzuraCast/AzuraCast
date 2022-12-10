@@ -14,7 +14,7 @@
                     <b-form-group>
                         <b-form-row>
                             <b-wrapped-form-group class="col-md-6" id="edit_form_public_theme"
-                                                  :field="$v.form.public_theme">
+                                                  :field="v$.form.public_theme">
                                 <template #label="{lang}">
                                     <translate :key="lang">Base Theme for Public Pages</translate>
                                 </template>
@@ -30,7 +30,7 @@
 
                             <b-col md="6">
                                 <b-wrapped-form-checkbox class="mb-2" id="form_edit_hide_album_art"
-                                                         :field="$v.form.hide_album_art">
+                                                         :field="v$.form.hide_album_art">
                                     <template #label="{lang}">
                                         <translate :key="lang">Hide Album Art on Public Pages</translate>
                                     </template>
@@ -40,7 +40,7 @@
                                 </b-wrapped-form-checkbox>
 
                                 <b-wrapped-form-checkbox id="form_edit_hide_product_name"
-                                                         :field="$v.form.hide_product_name">
+                                                         :field="v$.form.hide_product_name">
                                     <template #label="{lang}">
                                         <translate :key="lang">Hide AzuraCast Branding on Public Pages</translate>
                                     </template>
@@ -51,7 +51,7 @@
                             </b-col>
 
                             <b-wrapped-form-group class="col-md-6" id="form_edit_homepage_redirect_url"
-                                                  :field="$v.form.homepage_redirect_url">
+                                                  :field="v$.form.homepage_redirect_url">
                                 <template #label="{lang}">
                                     <translate :key="lang">Homepage Redirect URL</translate>
                                 </template>
@@ -61,7 +61,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-6" id="form_edit_default_album_art_url"
-                                                  :field="$v.form.default_album_art_url">
+                                                  :field="v$.form.default_album_art_url">
                                 <template #label="{lang}">
                                     <translate :key="lang">Default Album Art URL</translate>
                                 </template>
@@ -71,7 +71,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_css"
-                                                  :field="$v.form.public_custom_css">
+                                                  :field="v$.form.public_custom_css">
                                 <template #label="{lang}">
                                     <translate :key="lang">Custom CSS for Public Pages</translate>
                                 </template>
@@ -85,7 +85,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_js"
-                                                  :field="$v.form.public_custom_js">
+                                                  :field="v$.form.public_custom_js">
                                 <template #label="{lang}">
                                     <translate :key="lang">Custom JS for Public Pages</translate>
                                 </template>
@@ -99,7 +99,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_internal_custom_css"
-                                                  :field="$v.form.internal_custom_css">
+                                                  :field="v$.form.internal_custom_css">
                                 <template #label="{lang}">
                                     <translate :key="lang">Custom CSS for Internal Pages</translate>
                                 </template>
@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import {validationMixin} from "vuelidate";
+import useVuelidate from "@vuelidate/core";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
@@ -139,9 +139,9 @@ export default {
         BWrappedFormGroup,
         CodemirrorTextarea,
     },
-    mixins: [
-        validationMixin
-    ],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     data() {
         return {
             loading: true,
@@ -184,7 +184,7 @@ export default {
     },
     methods: {
         relist() {
-            this.$v.form.$reset();
+            this.v$.$reset();
             this.loading = true;
 
             this.axios.get(this.apiUrl).then((resp) => {
@@ -207,8 +207,8 @@ export default {
             }
         },
         submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

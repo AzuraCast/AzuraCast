@@ -1,17 +1,17 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3" pills>
-            <remote-form-basic-info :form="$v.form"></remote-form-basic-info>
+            <remote-form-basic-info :form="v$.form"></remote-form-basic-info>
 
-            <remote-form-auto-dj :form="$v.form"></remote-form-auto-dj>
+            <remote-form-auto-dj :form="v$.form"></remote-form-auto-dj>
         </b-tabs>
 
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";

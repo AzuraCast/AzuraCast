@@ -63,7 +63,7 @@
 
                         <form @submit.prevent="doUpdate">
                             <fieldset>
-                                <b-wrapped-form-group id="edit_form_key" :field="$v.key">
+                                <b-wrapped-form-group id="edit_form_key" :field="v$.key">
                                     <template #label>
                                         <translate key="lang_edit_form_key">MaxMind License Key</translate>
                                     </template>
@@ -87,18 +87,18 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import {validationMixin} from "vuelidate";
 import '~/vendor/sweetalert.js';
 import InfoCard from "~/components/Common/InfoCard";
 
 export default {
     name: 'GeoLite',
     components: {InfoCard, BWrappedFormGroup, BFormFieldset},
-    mixins: [
-        validationMixin
-    ],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         apiUrl: String
     },

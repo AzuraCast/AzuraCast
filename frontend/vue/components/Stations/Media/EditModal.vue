@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doEdit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3" pills>
@@ -8,14 +8,14 @@
                     <translate key="tab_basic_info">Basic Information</translate>
                 </template>
 
-                <media-form-basic-info :form="$v.form"></media-form-basic-info>
+                <media-form-basic-info :form="v$.form"></media-form-basic-info>
             </b-tab>
             <b-tab>
                 <template #title>
                     <translate key="tab_playlists">Playlists</translate>
                 </template>
 
-                <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
+                <media-form-playlists :form="v$.form" :playlists="playlists"></media-form-playlists>
             </b-tab>
             <b-tab lazy>
                 <template #title>
@@ -30,7 +30,7 @@
                     <translate key="tab_custom_fields">Custom Fields</translate>
                 </template>
 
-                <media-form-custom-fields :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
+                <media-form-custom-fields :form="v$.form" :custom-fields="customFields"></media-form-custom-fields>
             </b-tab>
 
             <b-tab lazy>
@@ -47,14 +47,13 @@
                     <translate key="tab_advanced">Advanced</translate>
                 </template>
 
-                <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
+                <media-form-advanced-settings :form="v$.form" :song-length="songLength"></media-form-advanced-settings>
             </b-tab>
         </b-tabs>
     </modal-form>
 </template>
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import _ from 'lodash';
 import MediaFormBasicInfo from './Form/BasicInfo';
 import MediaFormAlbumArt from './Form/AlbumArt';
@@ -63,6 +62,7 @@ import MediaFormAdvancedSettings from './Form/AdvancedSettings';
 import MediaFormPlaylists from './Form/Playlists';
 import MediaFormWaveformEditor from './Form/WaveformEditor';
 import ModalForm from "~/components/Common/ModalForm";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
@@ -75,7 +75,9 @@ export default {
         MediaFormAlbumArt,
         MediaFormBasicInfo
     },
-    mixins: [validationMixin],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         customFields: Array,
         playlists: Array
@@ -200,7 +202,7 @@ export default {
                 });
 
                 this.loading = false;
-            }).catch((error) => {
+            }).catch(() => {
                 this.close();
             });
         },
@@ -209,17 +211,17 @@ export default {
         },
         clearContents() {
             this.resetForm();
-            this.$v.form.$reset();
+            this.v$.$reset();
         },
         doEdit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
             this.error = null;
 
-            this.axios.put(this.recordUrl, this.form).then((resp) => {
+            this.axios.put(this.recordUrl, this.form).then(() => {
                 this.$notifySuccess();
                 this.$emit('relist');
                 this.close();

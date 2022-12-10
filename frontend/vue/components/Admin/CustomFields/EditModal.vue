@@ -1,23 +1,26 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <admin-custom-fields-form :form="$v.form" :auto-assign-types="autoAssignTypes">
+        <admin-custom-fields-form :form="v$.form" :auto-assign-types="autoAssignTypes">
         </admin-custom-fields-form>
 
     </modal-form>
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form";
 
 export default {
     name: 'AdminCustomFieldsEditModal',
     components: {AdminCustomFieldsForm},
-    mixins: [validationMixin, BaseEditModal],
+    setup() {
+        return {v$: useVuelidate()}
+    },
+    mixins: [BaseEditModal],
     props: {
         autoAssignTypes: Object
     },

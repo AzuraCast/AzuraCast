@@ -22,7 +22,7 @@
             <b-overlay variant="card" :show="loading">
                 <div class="card-body">
                     <b-form-fieldset v-for="(row, index) in config" :key="index" class="mb-0">
-                        <b-wrapped-form-group v-if="row.is_field" :field="$v.form[row.field_name]"
+                        <b-wrapped-form-group v-if="row.is_field" :field="v$.form[row.field_name]"
                                               :id="'form_edit_'+row.field_name" input-type="textarea"
                                               :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}">
                         </b-wrapped-form-group>
@@ -31,7 +31,7 @@
                         </b-form-markup>
                     </b-form-fieldset>
 
-                    <b-button size="lg" type="submit" :variant="($v.form.$invalid) ? 'danger' : 'primary'">
+                    <b-button size="lg" type="submit" :variant="(v$.form.$invalid) ? 'danger' : 'primary'">
                         <translate key="lang_btn_save_changes">Save Changes</translate>
                     </b-button>
                 </div>
@@ -41,10 +41,10 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormMarkup from "~/components/Form/BFormMarkup";
-import {validationMixin} from "vuelidate";
 import _ from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
@@ -53,6 +53,9 @@ import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.v
 export default {
     name: 'StationsLiquidsoapConfig',
     components: {InfoCard, BFormFieldset, BWrappedFormGroup, BFormMarkup},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         settingsUrl: String,
         config: Array,
@@ -60,7 +63,6 @@ export default {
     },
     mixins: [
         StationMayNeedRestart,
-        validationMixin
     ],
     validations() {
         let validations = {form: {}};
@@ -88,7 +90,7 @@ export default {
         },
         relist() {
             this.resetForm();
-            this.$v.form.$reset();
+            this.v$.$reset();
 
             this.loading = true;
             this.axios.get(this.settingsUrl).then((resp) => {
@@ -97,8 +99,8 @@ export default {
             });
         },
         submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -108,7 +110,7 @@ export default {
                     url: this.settingsUrl,
                     data: this.form
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess();
 
                 this.mayNeedRestart();

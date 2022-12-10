@@ -16,6 +16,8 @@
         "@fullcalendar/luxon2": "^5.10.2",
         "@fullcalendar/timegrid": "^5.9.0",
         "@fullcalendar/vue": "^5.9.0",
+        "@vuelidate/core": "^2.0.0",
+        "@vuelidate/validators": "^2.0.0",
         "axios": "^1",
         "bootstrap": "^4.6.0 <5",
         "bootstrap-notify": "^3.1.3",
@@ -62,12 +64,10 @@
         "vue-clipboard2": "^0.3.3",
         "vue-gettext": "^2.1.12",
         "vue-loader": "^15 <16",
-        "vue-template-compiler": "^2.6.14",
         "vue2-daterange-picker": "^0.6.6",
         "vue2-leaflet": "^2.7.1",
         "vue2-leaflet-fullscreen": "^1.0.1",
         "vuedraggable": "^2.24.1",
-        "vuelidate": "^0.7.6",
         "vuex": "^3 <4",
         "wavesurfer.js": "^6",
         "webpack": "^5.52.1",
@@ -2068,6 +2068,40 @@
       "integrity": "sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==",
       "optional": true
     },
+    "node_modules/@vuelidate/core": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@vuelidate/core/-/core-2.0.0.tgz",
+      "integrity": "sha512-xIFgdQlScO0aaSZ0wTGPJh8YcTMNAj5veI8yPgiAyxOT+GV7vNQFiU1vpYWCL4cklkkhYvRRSC2OEX7YOZNmPQ==",
+      "dependencies": {
+        "vue-demi": "^0.13.11"
+      },
+      "peerDependencies": {
+        "@vue/composition-api": "^1.0.0-rc.1",
+        "vue": "^2.0.0 || >=3.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@vue/composition-api": {
+          "optional": true
+        }
+      }
+    },
+    "node_modules/@vuelidate/validators": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@vuelidate/validators/-/validators-2.0.0.tgz",
+      "integrity": "sha512-fQQcmDWfz7pyH5/JPi0Ng2GEgNK1pUHn/Z/j5rG/Q+HwhgIXvJblTPcZwKOj1ABL7V4UVuGKECvZCDHNGOwdrg==",
+      "dependencies": {
+        "vue-demi": "^0.13.11"
+      },
+      "peerDependencies": {
+        "@vue/composition-api": "^1.0.0-rc.1",
+        "vue": "^2.0.0 || >=3.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@vue/composition-api": {
+          "optional": true
+        }
+      }
+    },
     "node_modules/@webassemblyjs/ast": {
       "version": "1.11.1",
       "resolved": "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.11.1.tgz",
@@ -3719,11 +3753,6 @@
         "es5-ext": "^0.10.50",
         "type": "^1.0.1"
       }
-    },
-    "node_modules/de-indent": {
-      "version": "1.0.2",
-      "resolved": "https://registry.npmjs.org/de-indent/-/de-indent-1.0.2.tgz",
-      "integrity": "sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg=="
     },
     "node_modules/debug": {
       "version": "4.3.4",
@@ -5379,14 +5408,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/hash-sum/-/hash-sum-1.0.2.tgz",
       "integrity": "sha512-fUs4B4L+mlt8/XAtSOGMUO1TXmAelItBPtJG7CyHJfYTdDjwisntGO2JQz7oUsatOY9o68+57eziUVNw/mRHmA=="
-    },
-    "node_modules/he": {
-      "version": "1.2.0",
-      "resolved": "https://registry.npmjs.org/he/-/he-1.2.0.tgz",
-      "integrity": "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==",
-      "bin": {
-        "he": "bin/he"
-      }
     },
     "node_modules/hls.js": {
       "version": "1.2.7",
@@ -9649,6 +9670,31 @@
         "clipboard": "^2.0.0"
       }
     },
+    "node_modules/vue-demi": {
+      "version": "0.13.11",
+      "resolved": "https://registry.npmjs.org/vue-demi/-/vue-demi-0.13.11.tgz",
+      "integrity": "sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==",
+      "hasInstallScript": true,
+      "bin": {
+        "vue-demi-fix": "bin/vue-demi-fix.js",
+        "vue-demi-switch": "bin/vue-demi-switch.js"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/antfu"
+      },
+      "peerDependencies": {
+        "@vue/composition-api": "^1.0.0-rc.1",
+        "vue": "^3.0.0-0 || ^2.6.0"
+      },
+      "peerDependenciesMeta": {
+        "@vue/composition-api": {
+          "optional": true
+        }
+      }
+    },
     "node_modules/vue-functional-data-merge": {
       "version": "3.1.0",
       "resolved": "https://registry.npmjs.org/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz",
@@ -9700,15 +9746,6 @@
         "loader-utils": "^1.0.2"
       }
     },
-    "node_modules/vue-template-compiler": {
-      "version": "2.7.14",
-      "resolved": "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.7.14.tgz",
-      "integrity": "sha512-zyA5Y3ArvVG0NacJDkkzJuPQDF8RFeRlzV2vLeSnhSpieO6LK2OVbdLPi5MPPs09Ii+gMO8nY4S3iKQxBxDmWQ==",
-      "dependencies": {
-        "de-indent": "^1.0.2",
-        "he": "^1.2.0"
-      }
-    },
     "node_modules/vue-template-es2015-compiler": {
       "version": "1.9.1",
       "resolved": "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz",
@@ -9757,15 +9794,6 @@
       "integrity": "sha512-6/HDXi92GzB+Hcs9fC6PAAozK1RLt1ewPTLjK0anTYguXLAeySDmcnqE8IC0xa7shvSzRjQXq3/+dsZ7ETGF3g==",
       "dependencies": {
         "sortablejs": "1.10.2"
-      }
-    },
-    "node_modules/vuelidate": {
-      "version": "0.7.7",
-      "resolved": "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz",
-      "integrity": "sha512-pT/U2lDI67wkIqI4tum7cMSIfGcAMfB+Phtqh2ttdXURwvHRBJEAQ0tVbUsW9Upg83Q5QH59bnCoXI7A9JDGnA==",
-      "engines": {
-        "node": ">= 4.0.0",
-        "npm": ">= 3.0.0"
       }
     },
     "node_modules/vuex": {
@@ -11627,6 +11655,22 @@
       "integrity": "sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==",
       "optional": true
     },
+    "@vuelidate/core": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@vuelidate/core/-/core-2.0.0.tgz",
+      "integrity": "sha512-xIFgdQlScO0aaSZ0wTGPJh8YcTMNAj5veI8yPgiAyxOT+GV7vNQFiU1vpYWCL4cklkkhYvRRSC2OEX7YOZNmPQ==",
+      "requires": {
+        "vue-demi": "^0.13.11"
+      }
+    },
+    "@vuelidate/validators": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@vuelidate/validators/-/validators-2.0.0.tgz",
+      "integrity": "sha512-fQQcmDWfz7pyH5/JPi0Ng2GEgNK1pUHn/Z/j5rG/Q+HwhgIXvJblTPcZwKOj1ABL7V4UVuGKECvZCDHNGOwdrg==",
+      "requires": {
+        "vue-demi": "^0.13.11"
+      }
+    },
     "@webassemblyjs/ast": {
       "version": "1.11.1",
       "resolved": "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.11.1.tgz",
@@ -12906,11 +12950,6 @@
         "es5-ext": "^0.10.50",
         "type": "^1.0.1"
       }
-    },
-    "de-indent": {
-      "version": "1.0.2",
-      "resolved": "https://registry.npmjs.org/de-indent/-/de-indent-1.0.2.tgz",
-      "integrity": "sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg=="
     },
     "debug": {
       "version": "4.3.4",
@@ -14201,11 +14240,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/hash-sum/-/hash-sum-1.0.2.tgz",
       "integrity": "sha512-fUs4B4L+mlt8/XAtSOGMUO1TXmAelItBPtJG7CyHJfYTdDjwisntGO2JQz7oUsatOY9o68+57eziUVNw/mRHmA=="
-    },
-    "he": {
-      "version": "1.2.0",
-      "resolved": "https://registry.npmjs.org/he/-/he-1.2.0.tgz",
-      "integrity": "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw=="
     },
     "hls.js": {
       "version": "1.2.7",
@@ -17427,6 +17461,12 @@
         "clipboard": "^2.0.0"
       }
     },
+    "vue-demi": {
+      "version": "0.13.11",
+      "resolved": "https://registry.npmjs.org/vue-demi/-/vue-demi-0.13.11.tgz",
+      "integrity": "sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==",
+      "requires": {}
+    },
     "vue-functional-data-merge": {
       "version": "3.1.0",
       "resolved": "https://registry.npmjs.org/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz",
@@ -17461,15 +17501,6 @@
       "requires": {
         "hash-sum": "^1.0.2",
         "loader-utils": "^1.0.2"
-      }
-    },
-    "vue-template-compiler": {
-      "version": "2.7.14",
-      "resolved": "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.7.14.tgz",
-      "integrity": "sha512-zyA5Y3ArvVG0NacJDkkzJuPQDF8RFeRlzV2vLeSnhSpieO6LK2OVbdLPi5MPPs09Ii+gMO8nY4S3iKQxBxDmWQ==",
-      "requires": {
-        "de-indent": "^1.0.2",
-        "he": "^1.2.0"
       }
     },
     "vue-template-es2015-compiler": {
@@ -17507,11 +17538,6 @@
       "requires": {
         "sortablejs": "1.10.2"
       }
-    },
-    "vuelidate": {
-      "version": "0.7.7",
-      "resolved": "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz",
-      "integrity": "sha512-pT/U2lDI67wkIqI4tum7cMSIfGcAMfB+Phtqh2ttdXURwvHRBJEAQ0tVbUsW9Upg83Q5QH59bnCoXI7A9JDGnA=="
     },
     "vuex": {
       "version": "3.6.2",

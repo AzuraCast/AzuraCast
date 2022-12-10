@@ -1,10 +1,10 @@
 <template>
-    <modal-form ref="modal" size="lg" :title="langTitle" :loading="loading" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" size="lg" :title="langTitle" :loading="loading" :disable-save-button="v$.form.$invalid"
                 @submit="submit" @hidden="clearContents">
         <b-form-fieldset>
             <b-form-row class="mb-3">
                 <b-wrapped-form-checkbox class="col-md-12" id="form_edit_backup_enabled"
-                                         :field="$v.form.backup_enabled">
+                                         :field="v$.form.backup_enabled">
                     <template #label="{lang}">
                         <translate :key="lang">Run Automatic Nightly Backups</translate>
                     </template>
@@ -14,8 +14,8 @@
                 </b-wrapped-form-checkbox>
             </b-form-row>
 
-            <b-form-row v-if="$v.form.backup_enabled.$model">
-                <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="$v.form.backup_time_code">
+            <b-form-row v-if="v$.form.backup_enabled.$model">
+                <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="v$.form.backup_time_code">
                     <template #label="{lang}">
                         <translate :key="lang">Scheduled Backup Time</translate>
                     </template>
@@ -28,7 +28,7 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="form_edit_exclude_media"
-                                         :field="$v.form.backup_exclude_media">
+                                         :field="v$.form.backup_exclude_media">
                     <template #label="{lang}">
                         <translate :key="lang">Exclude Media from Backup</translate>
                     </template>
@@ -37,7 +37,7 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="$v.form.backup_keep_copies"
+                <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="v$.form.backup_keep_copies"
                                       input-type="number" :input-attrs="{min: '0', max: '365'}">
                     <template #label="{lang}">
                         <translate :key="lang">Number of Backup Copies to Keep</translate>
@@ -48,7 +48,7 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backup_storage_location"
-                                      :field="$v.form.backup_storage_location">
+                                      :field="v$.form.backup_storage_location">
                     <template #label="{lang}">
                         <translate :key="lang">Storage Location</translate>
                     </template>
@@ -58,7 +58,7 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="$v.form.backup_format">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="v$.form.backup_format">
                     <template #label="{lang}">
                         <translate :key="lang">Backup Format</translate>
                     </template>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import {validationMixin} from "vuelidate";
+import useVuelidate from "@vuelidate/core";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
@@ -86,6 +86,9 @@ import objectToFormOptions from "~/functions/objectToFormOptions";
 export default {
     name: 'AdminBackupsConfigureModal',
     emits: ['relist'],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         settingsUrl: String,
         storageLocations: Object
@@ -98,9 +101,6 @@ export default {
         CodemirrorTextarea,
         TimeCode
     },
-    mixins: [
-        validationMixin
-    ],
     data() {
         return {
             loading: true,
@@ -157,7 +157,7 @@ export default {
             });
         },
         clearContents() {
-            this.$v.form.$reset();
+            this.v$.$reset();
 
             this.form = {
                 backup_enabled: false,
@@ -173,8 +173,8 @@ export default {
             this.$refs.modal.hide();
         },
         submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

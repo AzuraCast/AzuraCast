@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents" no-enforce-focus>
 
         <b-row>
@@ -21,7 +21,7 @@
                 </p>
 
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_otp" :field="$v.form.otp" autofocus>
+                    <b-wrapped-form-group id="form_otp" :field="v$.form.otp" autofocus>
                         <template #label="{lang}">
                             <translate :key="lang">Code from Authenticator App</translate>
                         </template>
@@ -47,24 +47,27 @@
             <translate key="lang_btn_submit">Submit Code</translate>
         </template>
     </modal-form>
-
 </template>
 
 <script>
 import ModalForm from "~/components/Common/ModalForm";
-import {validationMixin} from "vuelidate";
-import {minLength, required} from 'vuelidate/dist/validators.min.js';
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {minLength, required} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'AccountTwoFactorModal',
     components: {ModalForm, CopyToClipboardButton, BFormFieldset, BWrappedFormGroup},
-    mixins: [validationMixin],
     emits: ['relist'],
     props: {
         twoFactorUrl: String
+    },
+    setup() {
+        return {
+            v$: useVuelidate()
+        };
     },
     data() {
         return {
@@ -76,19 +79,17 @@ export default {
                 qr_code: null
             },
             form: {
-                otp: null
+                otp: ''
             }
         };
     },
-    validations() {
-        return {
-            form: {
-                otp: {
-                    required,
-                    minLength: minLength(6)
-                }
+    validations: {
+        form: {
+            otp: {
+                required,
+                minLength: minLength(6)
             }
-        };
+        }
     },
     computed: {
         langTitle() {
@@ -118,13 +119,13 @@ export default {
             ).then((resp) => {
                 this.totp = resp.data;
                 this.loading = false;
-            }).catch((error) => {
+            }).catch(() => {
                 this.close();
             });
         },
         doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -139,7 +140,7 @@ export default {
                         otp: this.form.otp
                     }
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess();
                 this.$emit('relist');
                 this.close();
@@ -151,7 +152,7 @@ export default {
             this.$refs.modal.hide();
         },
         clearContents() {
-            this.$v.form.$reset();
+            this.v$.$reset();
 
             this.loading = false;
             this.error = null;

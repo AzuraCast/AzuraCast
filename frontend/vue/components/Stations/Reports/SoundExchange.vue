@@ -41,21 +41,21 @@
                 </b-form-fieldset>
 
                 <b-form-fieldset>
-                    <b-wrapped-form-group name="start_date" id="form_start_date" :field="$v.form.start_date"
+                    <b-wrapped-form-group name="start_date" id="form_start_date" :field="v$.form.start_date"
                                           input-type="date">
                         <template #label="{lang}">
                             <translate :key="lang">Start Date</translate>
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group name="end_date" id="form_end_date" :field="$v.form.end_date"
+                    <b-wrapped-form-group name="end_date" id="form_end_date" :field="v$.form.end_date"
                                           input-type="date">
                         <template #label="{lang}">
                             <translate :key="lang">End Date</translate>
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-checkbox name="fetch_isrc" id="form_edit_fetch_isrc" :field="$v.form.fetch_isrc">
+                    <b-wrapped-form-checkbox name="fetch_isrc" id="form_edit_fetch_isrc" :field="v$.form.fetch_isrc">
                         <template #label="{lang}">
                             <translate :key="lang">Attempt to Automatically Retrieve ISRC When Missing</translate>
                         </template>
@@ -65,7 +65,7 @@
                     </b-wrapped-form-checkbox>
                 </b-form-fieldset>
 
-                <b-button type="submit" size="lg" :variant="($v.form.$invalid) ? 'danger' : 'primary'" class="mt-2">
+                <b-button type="submit" size="lg" :variant="(v$.form.$invalid) ? 'danger' : 'primary'" class="mt-2">
                     <translate key="btn_submit">Generate Report</translate>
                 </b-button>
             </div>
@@ -74,10 +74,10 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import Icon from "~/components/Common/Icon";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import {validationMixin} from "vuelidate";
-import {required} from 'vuelidate/dist/validators.min.js';
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
@@ -89,9 +89,9 @@ export default {
         endDate: String
     },
     components: {Icon, BWrappedFormGroup, BFormFieldset, BWrappedFormCheckbox},
-    mixins: [
-        validationMixin
-    ],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     validations() {
         return {
             form: {

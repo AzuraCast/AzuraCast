@@ -32,14 +32,10 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
 
-export default {
-    name: 'AccountApiKeyNewKey',
-    components: {CopyToClipboardButton},
-    props: {
-        newKey: String
-    }
-}
+const props = defineProps({
+    newKey: String
+});
 </script>

@@ -4,69 +4,69 @@
 
         <b-form class="form vue-form" @submit.prevent="submit">
             <b-tabs :card="!isModal" pills :content-class="tabContentClass">
-                <b-tab :title-link-class="getTabClass($v.profileTab)" active>
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.profileTab)" active>
                     <template #title>
                         <translate key="tab_profile">Profile</translate>
                     </template>
 
-                    <admin-stations-profile-form :form="$v.form" :timezones="timezones"
+                    <admin-stations-profile-form :form="v$.form" :timezones="timezones"
                                                  :show-advanced="showAdvanced"></admin-stations-profile-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.frontendTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.frontendTab)">
                     <template #title>
                         <translate key="tab_frontend">Broadcasting</translate>
                     </template>
 
-                    <admin-stations-frontend-form :form="$v.form"
+                    <admin-stations-frontend-form :form="v$.form"
                                                   :is-shoutcast-installed="isShoutcastInstalled"
                                                   :countries="countries"
                                                   :show-advanced="showAdvanced"></admin-stations-frontend-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.backendTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.backendTab)">
                     <template #title>
                         <translate key="tab_backend">AutoDJ</translate>
                     </template>
 
-                    <admin-stations-backend-form :form="$v.form" :station="station"
+                    <admin-stations-backend-form :form="v$.form" :station="station"
                                                  :is-stereo-tool-installed="isStereoToolInstalled"
                                                  :show-advanced="showAdvanced"></admin-stations-backend-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.hlsTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.hlsTab)">
                     <template #title>
                         <translate key="tab_hls">HLS</translate>
                     </template>
 
-                    <admin-stations-hls-form :form="$v.form" :station="station" :show-advanced="showAdvanced">
+                    <admin-stations-hls-form :form="v$.form" :station="station" :show-advanced="showAdvanced">
                     </admin-stations-hls-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.requestsTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.requestsTab)">
                     <template #title>
                         <translate key="tab_requests">Song Requests</translate>
                     </template>
 
-                    <admin-stations-requests-form :form="$v.form" :station="station" :show-advanced="showAdvanced">
+                    <admin-stations-requests-form :form="v$.form" :station="station" :show-advanced="showAdvanced">
                     </admin-stations-requests-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.streamersTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.streamersTab)">
                     <template #title>
                         <translate key="tab_streamers">Streamers/DJs</translate>
                     </template>
 
-                    <admin-stations-streamers-form :form="$v.form" :station="station" :show-advanced="showAdvanced">
+                    <admin-stations-streamers-form :form="v$.form" :station="station" :show-advanced="showAdvanced">
                     </admin-stations-streamers-form>
                 </b-tab>
 
-                <b-tab v-if="showAdminTab" :title-link-class="getTabClass($v.adminTab)">
+                <b-tab v-if="showAdminTab" :title-link-class="getTabClass(v$.$validationGroups.adminTab)">
                     <template #title>
                         <translate key="tab_admin">Administration</translate>
                     </template>
 
-                    <admin-stations-admin-form :form="$v.form"
+                    <admin-stations-admin-form :form="v$.form"
                                                :is-edit-mode="isEditMode"
                                                :storage-location-api-url="storageLocationApiUrl"
                                                :show-advanced="showAdvanced">
@@ -88,9 +88,6 @@
 </template>
 
 <script>
-import {validationMixin} from "vuelidate";
-import {decimal, numeric, required, url} from 'vuelidate/dist/validators.min.js';
-import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import AdminStationsProfileForm from "./Form/ProfileForm";
 import AdminStationsFrontendForm from "./Form/FrontendForm";
 import AdminStationsBackendForm from "./Form/BackendForm";
@@ -98,6 +95,10 @@ import AdminStationsAdminForm from "./Form/AdminForm";
 import AdminStationsHlsForm from "./Form/HlsForm.vue";
 import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
+import useVuelidate from "@vuelidate/core";
+import {decimal, numeric, required, url} from '@vuelidate/validators';
+import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+
 import _ from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 
@@ -136,9 +137,17 @@ export default {
         AdminStationsStreamersForm,
         AdminStationsRequestsForm,
         AdminStationsHlsForm,
-        AdminStationsAdminForm, AdminStationsBackendForm, AdminStationsFrontendForm, AdminStationsProfileForm
+        AdminStationsAdminForm,
+        AdminStationsBackendForm,
+        AdminStationsFrontendForm,
+        AdminStationsProfileForm
     },
     emits: ['error', 'submitted', 'loadingUpdate', 'validUpdate'],
+    setup() {
+        return {
+            v$: useVuelidate()
+        };
+    },
     props: {
         createUrl: String,
         editUrl: String,
@@ -149,7 +158,6 @@ export default {
         }
     },
     mixins: [
-        validationMixin,
         StationFormProps
     ],
     validations() {
@@ -191,28 +199,30 @@ export default {
                 enable_streamers: {},
                 disconnect_deactivate_streamer: {},
             },
-            profileTab: [
-                'form.name', 'form.description', 'form.genre', 'form.url', 'form.timezone', 'form.enable_public_page',
-                'form.enable_on_demand', 'form.enable_on_demand_download', 'form.default_album_art_url'
-            ],
-            frontendTab: [
-                'form.frontend_type', 'form.frontend_config'
-            ],
-            backendTab: [
-                'form.backend_type', 'form.backend_config',
-            ],
-            hlsTab: [
-                'form.enable_hls',
-            ],
-            requestsTab: [
-                'form.enable_requests',
-                'form.request_delay',
-                'form.request_threshold'
-            ],
-            streamersTab: [
-                'form.enable_streamers',
-                'form.disconnect_deactivate_streamer'
-            ]
+            $validationGroups: {
+                profileTab: [
+                    'form.name', 'form.description', 'form.genre', 'form.url', 'form.timezone', 'form.enable_public_page',
+                    'form.enable_on_demand', 'form.enable_on_demand_download', 'form.default_album_art_url'
+                ],
+                frontendTab: [
+                    'form.frontend_type', 'form.frontend_config'
+                ],
+                backendTab: [
+                    'form.backend_type', 'form.backend_config',
+                ],
+                hlsTab: [
+                    'form.enable_hls',
+                ],
+                requestsTab: [
+                    'form.enable_requests',
+                    'form.request_delay',
+                    'form.request_threshold'
+                ],
+                streamersTab: [
+                    'form.enable_streamers',
+                    'form.disconnect_deactivate_streamer'
+                ]
+            }
         };
 
         function mergeCustom(objValue, srcValue) {
@@ -250,9 +260,11 @@ export default {
                         duplicate_prevention_time_range: {},
                     },
                 },
-                profileTab: [
-                    'form.short_name', 'form.api_history_items'
-                ],
+                $validationGroups: {
+                    profileTab: [
+                        'form.short_name', 'form.api_history_items'
+                    ],
+                }
             };
 
             _.mergeWith(formValidations, advancedValidations, mergeCustom);
@@ -266,10 +278,12 @@ export default {
                     podcasts_storage_location: {},
                     is_enabled: {},
                 },
-                adminTab: [
-                    'form.media_storage_location', 'form.recordings_storage_location',
-                    'form.podcasts_storage_location', 'form.is_enabled'
-                ]
+                $validationGroups: {
+                    adminTab: [
+                        'form.media_storage_location', 'form.recordings_storage_location',
+                        'form.podcasts_storage_location', 'form.is_enabled'
+                    ]
+                }
             };
 
             _.mergeWith(formValidations, adminValidations, mergeCustom);
@@ -279,9 +293,11 @@ export default {
                     form: {
                         radio_base_dir: {},
                     },
-                    adminTab: [
-                        'form.radio_base_dir'
-                    ]
+                    $validationGroups: {
+                        adminTab: [
+                            'form.radio_base_dir'
+                        ]
+                    }
                 }
 
                 _.mergeWith(formValidations, advancedAdminValidations, mergeCustom);
@@ -294,7 +310,7 @@ export default {
         return {
             loading: true,
             error: null,
-            form: {},
+            form: this.getEmptyForm(),
             station: {},
         };
     },
@@ -308,7 +324,7 @@ export default {
     },
     computed: {
         isValid() {
-            return !this.$v.form.$invalid;
+            return !this.v$?.form?.$invalid ?? true;
         },
         tabContentClass() {
             return (this.isModal)
@@ -323,10 +339,7 @@ export default {
             }
             return null;
         },
-        clear() {
-            this.loading = false;
-            this.error = null;
-
+        getEmptyForm() {
             let form = {
                 name: '',
                 description: '',
@@ -413,13 +426,18 @@ export default {
                 }
             }
 
+            return form;
+        },
+        clear() {
+            this.loading = false;
+            this.error = null;
             this.station = {
                 stereo_tool_configuration_file_path: null,
                 links: {
                     stereo_tool_configuration: null
                 }
             };
-            this.form = form;
+            this.form = this.getEmptyForm();
         },
         reset() {
             this.clear();
@@ -445,8 +463,8 @@ export default {
             return this.form;
         },
         submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -462,7 +480,7 @@ export default {
                         : this.createUrl,
                     data: this.getSubmittableFormData()
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess();
                 this.$emit('submitted');
             }).catch((error) => {

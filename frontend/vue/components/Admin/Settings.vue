@@ -17,28 +17,28 @@
 
             <b-overlay variant="card" :show="loading">
                 <b-tabs pills card lazy>
-                    <b-tab :title-link-class="getTabClass($v.generalTab)">
+                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.generalTab)">
                         <template #title>
                             <translate key="tab_general">Settings</translate>
                         </template>
 
-                        <settings-general-tab :form="$v.form"></settings-general-tab>
+                        <settings-general-tab :form="v$.form"></settings-general-tab>
                     </b-tab>
 
-                    <b-tab :title-link-class="getTabClass($v.securityPrivacyTab)">
+                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.securityPrivacyTab)">
                         <template #title>
                             <translate key="tab_security_privacy">Security & Privacy</translate>
                         </template>
 
-                        <settings-security-privacy-tab :form="$v.form"></settings-security-privacy-tab>
+                        <settings-security-privacy-tab :form="v$.form"></settings-security-privacy-tab>
                     </b-tab>
 
-                    <b-tab :title-link-class="getTabClass($v.servicesTab)">
+                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.servicesTab)">
                         <template #title>
                             <translate key="tab_services">Services</translate>
                         </template>
 
-                        <settings-services-tab :form="$v.form"
+                        <settings-services-tab :form="v$.form"
                                                :release-channel="releaseChannel"
                                                :test-message-url="testMessageUrl"
                                                :acme-url="acmeUrl"></settings-services-tab>
@@ -47,7 +47,7 @@
             </b-overlay>
 
             <b-card-body body-class="card-padding-sm">
-                <b-button size="lg" type="submit" :variant="($v.form.$invalid) ? 'danger' : 'primary'">
+                <b-button size="lg" type="submit" :variant="(v$.form.$invalid) ? 'danger' : 'primary'">
                     <slot name="submitButtonName">
                         <translate key="lang_btn_save_changes">Save Changes</translate>
                     </slot>
@@ -58,15 +58,18 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import SettingsGeneralTab from "./Settings/GeneralTab";
 import SettingsServicesTab from "./Settings/ServicesTab";
-import {validationMixin} from "vuelidate";
-import {required} from 'vuelidate/dist/validators.min.js';
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab";
 
 export default {
     name: 'AdminSettings',
     components: {SettingsSecurityPrivacyTab, SettingsServicesTab, SettingsGeneralTab},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     emits: ['saved'],
     props: {
         apiUrl: String,
@@ -78,9 +81,6 @@ export default {
             required: false
         }
     },
-    mixins: [
-        validationMixin
-    ],
     data() {
         return {
             loading: true,
@@ -120,22 +120,24 @@ export default {
             use_external_album_art_when_processing_media: {},
             last_fm_api_key: {}
         },
-        generalTab: [
-            'form.base_url', 'form.instance_name', 'form.prefer_browser_url', 'form.use_radio_proxy',
-            'form.history_keep_days', 'form.enable_static_nowplaying', 'form.enable_advanced_features'
-        ],
-        securityPrivacyTab: [
-            'form.analytics', 'form.always_use_ssl', 'form.api_access_control'
-        ],
-        servicesTab: [
-            'form.check_for_updates',
-            'form.acme_email', 'form.acme_domains',
-            'form.mail_enabled', 'form.mail_sender_name', 'form.mail_sender_email',
-            'form.mail_smtp_host', 'form.mail_smtp_port', 'form.mail_smtp_secure', 'form.mail_smtp_username',
-            'form.mail_smtp_password', 'form.avatar_service', 'form.avatar_default_url',
-            'form.use_external_album_art_in_apis', 'form.use_external_album_art_when_processing_media',
-            'form.last_fm_api_key',
-        ]
+        $validationGroups: {
+            generalTab: [
+                'form.base_url', 'form.instance_name', 'form.prefer_browser_url', 'form.use_radio_proxy',
+                'form.history_keep_days', 'form.enable_static_nowplaying', 'form.enable_advanced_features'
+            ],
+            securityPrivacyTab: [
+                'form.analytics', 'form.always_use_ssl', 'form.api_access_control'
+            ],
+            servicesTab: [
+                'form.check_for_updates',
+                'form.acme_email', 'form.acme_domains',
+                'form.mail_enabled', 'form.mail_sender_name', 'form.mail_sender_email',
+                'form.mail_smtp_host', 'form.mail_smtp_port', 'form.mail_smtp_secure', 'form.mail_smtp_username',
+                'form.mail_smtp_password', 'form.avatar_service', 'form.avatar_default_url',
+                'form.use_external_album_art_in_apis', 'form.use_external_album_art_when_processing_media',
+                'form.last_fm_api_key',
+            ]
+        }
     },
     mounted() {
         this.relist();
@@ -148,7 +150,7 @@ export default {
             return null;
         },
         relist() {
-            this.$v.form.$reset();
+            this.v$.$reset();
             this.loading = true;
 
             this.axios.get(this.apiUrl).then((resp) => {
@@ -190,8 +192,8 @@ export default {
             }
         },
         submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

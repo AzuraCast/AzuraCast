@@ -1,22 +1,25 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <storage-location-form :form="$v.form"></storage-location-form>
+        <storage-location-form :form="v$.form"></storage-location-form>
 
     </modal-form>
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import StorageLocationForm from './Form';
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'AdminStorageLocationsEditModal',
     components: {StorageLocationForm},
-    mixins: [validationMixin, BaseEditModal],
+    setup() {
+        return {v$: useVuelidate()}
+    },
+    mixins: [BaseEditModal],
     props: {
         type: String
     },

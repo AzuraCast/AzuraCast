@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <type-select v-if="!type" :webhook-types="webhookTypes" @select="setType"></type-select>
@@ -9,17 +9,17 @@
                     <translate key="tab_basic_info">Basic Info</translate>
                 </template>
 
-                <basic-info :trigger-options="triggerOptions" :form="$v.form"></basic-info>
+                <basic-info :trigger-options="triggerOptions" :form="v$.form"></basic-info>
             </b-tab>
             <b-tab :title="typeTitle">
-                <component :is="formComponent" :now-playing-url="nowPlayingUrl" :form="$v.form"></component>
+                <component :is="formComponent" :now-playing-url="nowPlayingUrl" :form="v$.form"></component>
             </b-tab>
         </b-tabs>
 
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";

@@ -6,7 +6,7 @@
 
             <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_comments" :field="$v.form.comment" autofocus>
+                    <b-wrapped-form-group id="form_comments" :field="v$.form.comment" autofocus>
                         <template #label="{lang}">
                             <translate :key="lang">API Key Description/Comments</translate>
                         </template>
@@ -26,7 +26,7 @@
                 <b-button variant="default" type="button" @click="close">
                     <translate key="lang_btn_close">Close</translate>
                 </b-button>
-                <b-button v-if="newKey === null" :variant="($v.form.$invalid) ? 'danger' : 'primary'" type="submit"
+                <b-button v-if="newKey === null" :variant="(v$.$invalid) ? 'danger' : 'primary'" type="submit"
                           @click="doSubmit">
                     <translate key="lang_btn_create_key">Create New Key</translate>
                 </b-button>
@@ -36,32 +36,34 @@
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import AccountApiKeyNewKey from "./ApiKeyNewKey";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {required} from '@vuelidate/validators';
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'AccountApiKeyModal',
-    components: {BWrappedFormGroup, AccountApiKeyNewKey, InvisibleSubmitButton, BFormFieldset},
-    mixins: [validationMixin],
+    components: {BFormFieldset, InvisibleSubmitButton, AccountApiKeyNewKey, BWrappedFormGroup},
     props: {
         createUrl: String
     },
-    validations() {
+    setup() {
         return {
-            form: {
-                comment: {required}
-            }
+            v$: useVuelidate()
         };
     },
     data() {
         return {
             error: null,
-            form: {},
             newKey: null,
+            form: this.getBlankForm()
+        }
+    },
+    validations: {
+        form: {
+            comment: {required}
         }
     },
     computed: {
@@ -76,15 +78,18 @@ export default {
 
             this.$refs.modal.show();
         },
-        resetForm() {
-            this.newKey = null;
-            this.form = {
+        getBlankForm() {
+            return {
                 comment: ''
             };
         },
+        resetForm() {
+            this.newKey = null;
+            this.form = this.getBlankForm();
+        },
         doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -105,9 +110,10 @@ export default {
         },
         close() {
             this.$refs.modal.hide();
+            this.clearContents();
         },
         clearContents() {
-            this.$v.form.$reset();
+            this.v$.$reset();
 
             this.error = null;
             this.resetForm();

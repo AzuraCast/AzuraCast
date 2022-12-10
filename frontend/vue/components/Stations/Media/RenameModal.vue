@@ -1,7 +1,7 @@
 <template>
     <b-modal id="rename_file" centered ref="modal" :title="langRenameFile">
         <b-form @submit.prevent="doRename">
-            <b-wrapped-form-group id="new_directory_name" :field="$v.form.newPath" autofocus>
+            <b-wrapped-form-group id="new_directory_name" :field="v$.form.newPath" autofocus>
                 <template #label="{lang}">
                     <translate :key="lang">New File Name</translate>
                 </template>
@@ -11,21 +11,23 @@
             <b-button variant="default" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <b-button :variant="($v.form.$invalid) ? 'danger' : 'primary'" @click="doRename">
+            <b-button :variant="(v$.form.$invalid) ? 'danger' : 'primary'" @click="doRename">
                 <translate key="lang_btn_rename">Rename</translate>
             </b-button>
         </template>
     </b-modal>
 </template>
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 export default {
     name: 'RenameModal',
     components: {BWrappedFormGroup},
-    mixins: [validationMixin],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         renameUrl: String
     },
@@ -50,19 +52,19 @@ export default {
         }
     },
     methods: {
-        open (filePath) {
+        open(filePath) {
             this.form.file = filePath;
             this.form.newPath = filePath;
 
             this.$refs.modal.show();
         },
-        close () {
-            this.$v.form.$reset();
+        close() {
+            this.v$.$reset();
             this.$refs.modal.hide();
         },
-        doRename () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+        doRename() {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

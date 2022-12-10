@@ -1,23 +1,23 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3" pills>
-            <mount-form-basic-info :form="$v.form"
+            <mount-form-basic-info :form="v$.form"
                                    :station-frontend-type="stationFrontendType"></mount-form-basic-info>
-            <mount-form-auto-dj :form="$v.form"
+            <mount-form-auto-dj :form="v$.form"
                                 :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
-            <mount-form-intro v-model="$v.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
+            <mount-form-intro v-model="v$.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
                               :new-intro-url="newIntroUrl"
                               :edit-intro-url="record.links.intro"></mount-form-intro>
-            <mount-form-advanced v-if="showAdvanced" :form="$v.form"
+            <mount-form-advanced v-if="showAdvanced" :form="v$.form"
                                  :station-frontend-type="stationFrontendType"></mount-form-advanced>
         </b-tabs>
 
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 
 import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';

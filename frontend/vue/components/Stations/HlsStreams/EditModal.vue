@@ -1,13 +1,13 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
         <b-tabs content-class="mt-3" pills>
-            <form-basic-info :form="$v.form"></form-basic-info>
+            <form-basic-info :form="v$.form"></form-basic-info>
         </b-tabs>
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import FormBasicInfo from './Form/BasicInfo';
 import mergeExisting from "~/functions/mergeExisting";

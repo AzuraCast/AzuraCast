@@ -1,21 +1,21 @@
 <template>
-    <modal-form ref="modal" size="md" centered :title="langTitle" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" size="md" centered :title="langTitle" :disable-save-button="v$.$invalid"
                 @submit="onSubmit" @hidden="onHidden">
         <b-form-fieldset>
-            <b-wrapped-form-group id="form_current_password" :field="$v.form.current_password"
+            <b-wrapped-form-group id="form_current_password" :field="v$.form.current_password"
                                   input-type="password" autofocus>
                 <template #label="{lang}">
                     <translate :key="lang">Current Password</translate>
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_new_password" :field="$v.form.new_password" input-type="password">
+            <b-wrapped-form-group id="form_new_password" :field="v$.form.new_password" input-type="password">
                 <template #label="{lang}">
                     <translate :key="lang">New Password</translate>
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_current_password" :field="$v.form.new_password2" input-type="password">
+            <b-wrapped-form-group id="form_current_password" :field="v$.form.new_password2" input-type="password">
                 <template #label="{lang}">
                     <translate :key="lang">Confirm New Password</translate>
                 </template>
@@ -27,29 +27,29 @@
         </template>
     </modal-form>
 </template>
+
 <script>
-import {validationMixin} from 'vuelidate';
-import {required, sameAs} from 'vuelidate/dist/validators.min.js';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
 import BFormFieldset from "~/components/Form/BFormFieldset";
+import {required, sameAs} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
+import useVuelidate from "@vuelidate/core";
 
 export default {
-    name: 'AccountChangePasswordModal',
-    components: {ModalForm, BWrappedFormGroup, BFormFieldset},
-    emits: ['relist'],
-    mixins: [validationMixin],
+    components: {BWrappedFormGroup, ModalForm, BFormFieldset},
     props: {
         changePasswordUrl: String
     },
+    emits: ['relist'],
+    setup() {
+        return {
+            v$: useVuelidate()
+        };
+    },
     data() {
         return {
-            form: {
-                current_password: null,
-                new_password: null,
-                new_password2: null
-            }
+            form: this.getBlankForm(),
         };
     },
     validations: {
@@ -68,18 +68,29 @@ export default {
         }
     },
     methods: {
+        getBlankForm() {
+            return {
+                current_password: null,
+                new_password: null,
+                new_password2: null
+            };
+        },
         open() {
+            this.resetForm();
             this.$refs.modal.show();
         },
         close() {
             this.$refs.modal.hide();
         },
         onHidden() {
-            this.$v.form.$reset();
+            this.clearContents();
+        },
+        resetForm() {
+            this.form = this.getBlankForm();
         },
         onSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -89,7 +100,13 @@ export default {
                 this.$refs.modal.hide();
                 this.$emit('relist');
             });
-        }
+        },
+        clearContents() {
+            this.v$.$reset();
+
+            this.error = null;
+            this.resetForm();
+        },
     }
 };
 </script>

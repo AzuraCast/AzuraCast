@@ -8,7 +8,7 @@
                 <b-form-fieldset>
                     <b-form-row>
                         <b-wrapped-form-group class="col-md-12" id="edit_form_storage_location"
-                                              :field="$v.form.storage_location">
+                                              :field="v$.form.storage_location">
                             <template #label="{lang}">
                                 <translate :key="lang">Storage Location</translate>
                             </template>
@@ -19,7 +19,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-12" id="edit_form_path"
-                                              :field="$v.form.path">
+                                              :field="v$.form.path">
                             <template #label="{lang}">
                                 <translate :key="lang">File Name</translate>
                             </template>
@@ -42,7 +42,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_exclude_media"
-                                                 :field="$v.form.exclude_media">
+                                                 :field="v$.form.exclude_media">
                             <template #label="{lang}">
                                 <translate :key="lang">Exclude Media from Backup</translate>
                             </template>
@@ -66,7 +66,7 @@
                 <b-button variant="default" type="button" @click="close">
                     <translate key="lang_btn_close">Close</translate>
                 </b-button>
-                <b-button v-if="logUrl === null" :variant="($v.form.$invalid) ? 'danger' : 'primary'" type="submit"
+                <b-button v-if="logUrl === null" :variant="(v$.form.$invalid) ? 'danger' : 'primary'" type="submit"
                           @click="submit">
                     <translate key="lang_btn_run_backup">Run Manual Backup</translate>
                 </b-button>
@@ -76,10 +76,10 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
-import {validationMixin} from "vuelidate";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView";
@@ -91,9 +91,9 @@ export default {
         runBackupUrl: String,
         storageLocations: Object
     },
-    mixins: [
-        validationMixin
-    ],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     components: {
         BFormFieldset,
         BWrappedFormGroup,
@@ -132,8 +132,8 @@ export default {
             this.$emit('relist');
         },
         submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

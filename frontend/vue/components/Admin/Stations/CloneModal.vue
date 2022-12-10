@@ -1,21 +1,24 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <admin-stations-clone-modal-form :form="$v.form"></admin-stations-clone-modal-form>
+        <admin-stations-clone-modal-form :form="v$.form"></admin-stations-clone-modal-form>
 
     </modal-form>
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm";
-import {validationMixin} from "vuelidate";
-import {required} from 'vuelidate/dist/validators.min.js';
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm";
 
 export default {
     name: 'AdminStationsCloneModal',
     components: {AdminStationsCloneModalForm, ModalForm},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     emits: ['relist'],
     data() {
         return {
@@ -25,9 +28,6 @@ export default {
             form: {},
         }
     },
-    mixins: [
-        validationMixin
-    ],
     validations() {
         return {
             form: {
@@ -70,8 +70,8 @@ export default {
             this.$refs.modal.hide();
         },
         doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

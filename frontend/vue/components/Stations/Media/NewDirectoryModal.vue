@@ -1,7 +1,7 @@
 <template>
     <b-modal id="create_directory" centered ref="modal" :title="langNewDirectory">
         <b-form @submit.prevent="doMkdir">
-            <b-wrapped-form-group id="new_directory_name" :field="$v.newDirectory" autofocus>
+            <b-wrapped-form-group id="new_directory_name" :field="v$.newDirectory" autofocus>
                 <template #label="{lang}">
                     <translate :key="lang">Directory Name</translate>
                 </template>
@@ -11,7 +11,7 @@
             <b-button variant="default" @click="close" key="lang_btn_close" v-translate>
                 Close
             </b-button>
-            <b-button :variant="($v.$invalid) ? 'danger' : 'primary'" @click="doMkdir" key="lang_btn_create"
+            <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doMkdir" key="lang_btn_create"
                       v-translate>
                 Create Directory
             </b-button>
@@ -19,14 +19,16 @@
     </b-modal>
 </template>
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 export default {
     name: 'NewDirectoryModal',
     components: {BWrappedFormGroup},
-    mixins: [validationMixin],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         currentDirectory: String,
         mkdirUrl: String
@@ -47,14 +49,14 @@ export default {
         }
     },
     methods: {
-        close () {
+        close() {
             this.newDirectory = null;
-            this.$v.$reset();
+            this.v$.$reset();
             this.$refs.modal.hide();
         },
-        doMkdir () {
-            this.$v.$touch();
-            if (this.$v.$anyError) {
+        doMkdir() {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 

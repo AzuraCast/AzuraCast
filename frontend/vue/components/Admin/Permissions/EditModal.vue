@@ -1,12 +1,12 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3" pills>
-            <admin-permissions-global-form :form="$v.form" :global-permissions="globalPermissions">
+            <admin-permissions-global-form :form="v$.form" :global-permissions="globalPermissions">
             </admin-permissions-global-form>
 
-            <admin-permissions-station-form :form="$v.form" :stations="stations"
+            <admin-permissions-station-form :form="v$.form" :stations="stations"
                                             :station-permissions="stationPermissions">
             </admin-permissions-station-form>
         </b-tabs>
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
@@ -25,7 +25,10 @@ import _ from 'lodash';
 export default {
     name: 'AdminPermissionsEditModal',
     components: {AdminPermissionsStationForm, AdminPermissionsGlobalForm},
-    mixins: [validationMixin, BaseEditModal],
+    setup() {
+        return {v$: useVuelidate()}
+    },
+    mixins: [BaseEditModal],
     props: {
         stations: Object,
         globalPermissions: Object,
@@ -44,12 +47,7 @@ export default {
                 'name': {required},
                 'permissions': {
                     'global': {},
-                    'station': {
-                        $each: {
-                            'station_id': {},
-                            'permissions': {},
-                        }
-                    },
+                    'station': {},
                 }
             }
         };

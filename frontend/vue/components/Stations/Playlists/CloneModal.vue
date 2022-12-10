@@ -1,15 +1,15 @@
 <template>
     <modal-form ref="modal" id="clone_modal" :title="langTitle" :error="error"
-                :disable-save-button="$v.form.$invalid" @submit="doSubmit" @hidden="clearContents">
+                :disable-save-button="v$.form.$invalid" @submit="doSubmit" @hidden="clearContents">
 
         <b-form-row>
-            <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="$v.form.name">
+            <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="v$.form.name">
                 <template #label="{lang}">
                     <translate :key="lang">New Playlist Name</translate>
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="form_edit_clone" :field="$v.form.clone">
+            <b-wrapped-form-group class="col-md-12" id="form_edit_clone" :field="v$.form.clone">
                 <template #label="{lang}">
                     <translate :key="lang">Customize Copy</translate>
                 </template>
@@ -30,19 +30,19 @@
 </template>
 
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {required} from '@vuelidate/validators';
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
-import {validationMixin} from 'vuelidate';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
 
 export default {
     name: 'CloneModal',
     components: {ModalForm, BWrappedFormGroup, InvisibleSubmitButton},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     emits: ['relist', 'needs-restart'],
-    mixins: [
-        validationMixin
-    ],
     data() {
         return {
             error: null,
@@ -51,7 +51,7 @@ export default {
         };
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Duplicate Playlist');
         }
     },
@@ -75,13 +75,13 @@ export default {
             this.cloneUrl = cloneUrl;
 
             let langNewName = this.$gettext('%{name} - Copy');
-            this.form.name = this.$gettextInterpolate(langNewName, { name: name });
+            this.form.name = this.$gettextInterpolate(langNewName, {name: name});
 
             this.$refs.modal.show();
         },
-        doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+        async doSubmit() {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -93,7 +93,7 @@ export default {
                     url: this.cloneUrl,
                     data: this.form
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess();
                 this.$emit('needs-restart');
                 this.$emit('relist');
@@ -105,7 +105,7 @@ export default {
             this.cloneUrl = null;
             this.resetForm();
 
-            this.$v.form.$reset();
+            this.v$.$reset();
         }
     }
 };

@@ -31,7 +31,7 @@
                 <form id="login-form" class="form vue-form" action="" method="post">
                     <input type="hidden" name="csrf" :value="csrf"/>
 
-                    <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="$v.form.username"
+                    <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="v$.form.username"
                                           input-type="email">
                         <template #label="{lang}">
                             <icon icon="email" class="mr-1"></icon>
@@ -39,7 +39,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="$v.form.password"
+                    <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="v$.form.password"
                                           input-type="password">
                         <template #label="{lang}">
                             <icon icon="vpn_key" class="mr-1"></icon>
@@ -47,7 +47,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button type="submit" size="lg" block variant="primary" :disabled="$v.form.$invalid"
+                    <b-button type="submit" size="lg" block variant="primary" :disabled="v$.form.$invalid"
                               class="mt-2">
                         <translate key="btn_create_acct">Create Account</translate>
                     </b-button>
@@ -58,8 +58,8 @@
 </template>
 
 <script>
-import {validationMixin} from "vuelidate";
-import {email, required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {email, required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import Icon from "~/components/Common/Icon";
 import validatePassword from '~/functions/validatePassword.js';
@@ -67,9 +67,9 @@ import validatePassword from '~/functions/validatePassword.js';
 export default {
     name: 'SetupRegister',
     components: {Icon, BWrappedFormGroup},
-    mixins: [
-        validationMixin
-    ],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         csrf: String,
         error: String,

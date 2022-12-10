@@ -1,19 +1,19 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3" pills>
-            <form-basic-info :form="$v.form"></form-basic-info>
-            <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
+            <form-basic-info :form="v$.form"></form-basic-info>
+            <form-schedule :form="v$.form" :schedule-items="form.schedule_items"
                            :station-time-zone="stationTimeZone"></form-schedule>
-            <form-artwork v-model="$v.form.artwork_file.$model" :artwork-src="record.links.art"
+            <form-artwork v-model="v$.form.artwork_file.$model" :artwork-src="record.links.art"
                           :new-art-url="newArtUrl" :edit-art-url="record.links.art"></form-artwork>
         </b-tabs>
 
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormArtwork from './Form/Artwork';
@@ -38,15 +38,7 @@ export default {
                 'is_active': {},
                 'enforce_schedule': {},
                 'artwork_file': {},
-                'schedule_items': {
-                    $each: {
-                        'start_time': {required},
-                        'end_time': {required},
-                        'start_date': {},
-                        'end_date': {},
-                        'days': {}
-                    }
-                }
+                'schedule_items': {}
             }
         };
 

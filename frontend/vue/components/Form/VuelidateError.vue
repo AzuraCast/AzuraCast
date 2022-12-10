@@ -64,16 +64,13 @@ export default {
     },
     computed: {
         errorMessages() {
-            if (!this.field.$error) {
-                return [];
-            }
-
             let errors = [];
-            _.forEach(this.messages, (message, key) => {
-                const isValid = !!_.get(this.field, key, true);
-                if (!isValid) {
-                    const params = _.get(this.field, ['$params', key], {});
-                    errors.push(message(params));
+            _.forEach(this.field.$errors, (error) => {
+                const message = _.get(this.messages, error.$validator, null);
+                if (null !== message) {
+                    errors.push(message(error.$params));
+                } else {
+                    errors.push(error.$message);
                 }
             });
 

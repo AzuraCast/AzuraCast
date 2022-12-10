@@ -1,16 +1,14 @@
-import Vue
-  from 'vue';
+import Vue from 'vue';
+import InlinePlayer from '~/components/InlinePlayer.vue';
+import {createPinia, PiniaVuePlugin} from 'pinia';
 
-import store
-  from '~/store';
-
-import InlinePlayer
-  from '~/components/InlinePlayer.vue';
+Vue.use(PiniaVuePlugin);
+const pinia = createPinia();
 
 document.addEventListener('DOMContentLoaded', function () {
-  let inlinePlayer = new Vue({
-    el: '#radio-player-controls',
-    store: store,
-    render: createElement => createElement(InlinePlayer)
-  });
+    let inlinePlayer = new Vue({
+        el: '#radio-player-controls',
+        render: createElement => createElement(InlinePlayer),
+        pinia
+    });
 });

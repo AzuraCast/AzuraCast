@@ -68,10 +68,15 @@
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon';
-import store from '~/store.js';
+import {usePlayerStore} from "~/store.js";
 
 export default {
     components: {Icon, AudioPlayer},
+    setup() {
+        return {
+            store: usePlayerStore()
+        };
+    },
     data() {
         return {
             is_mounted: false
@@ -132,15 +137,15 @@ export default {
             }
         },
         isPlaying() {
-            return store.state.player.isPlaying;
+            return this.store.isPlaying;
         },
         current() {
-            return store.state.player.current;
+            return this.store.current;
         }
     },
     methods: {
         stop () {
-            store.commit('player/toggle', {
+            this.store.toggle({
                 url: null,
                 isStream: true
             });

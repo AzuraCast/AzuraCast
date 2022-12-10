@@ -9,11 +9,16 @@ import Icon from "./Icon";
 
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
 
-import store from '~/store.js';
+import {usePlayerStore} from '~/store.js';
 
 export default {
     name: 'PlayButton',
     components: {Icon},
+    setup() {
+        return {
+            store: usePlayerStore()
+        }
+    },
     props: {
         url: String,
         isStream: {
@@ -28,10 +33,10 @@ export default {
     },
     computed: {
         isPlaying() {
-            return store.state.player.isPlaying;
+            return this.store.isPlaying;
         },
         current() {
-            return store.state.player.current;
+            return this.store.current;
         },
         isThisPlaying() {
             if (!this.isPlaying) {
@@ -55,7 +60,7 @@ export default {
     },
     methods: {
         toggle() {
-            store.commit('player/toggle', {
+            this.store.toggle({
                 url: this.url,
                 isStream: this.isStream,
                 isHls: this.isHls

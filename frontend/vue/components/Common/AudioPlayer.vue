@@ -7,12 +7,17 @@
 <script>
 import store from 'store';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
-import vueStore from '~/store.js';
 import Hls from 'hls.js';
+import {usePlayerStore} from "~/store.js";
 
 export default {
     props: {
         title: String
+    },
+    setup() {
+        return {
+            store: usePlayerStore()
+        }
     },
     data() {
         return {
@@ -25,10 +30,10 @@ export default {
     },
     computed: {
         isPlaying() {
-            return vueStore.state.player.isPlaying;
+            return this.store.isPlaying;
         },
         current() {
-            return vueStore.state.player.current;
+            return this.store.current;
         }
     },
     watch: {
@@ -85,7 +90,7 @@ export default {
             this.duration = 0;
             this.currentTime = 0;
 
-            vueStore.commit('player/stopPlaying');
+            this.store.stopPlaying();
         },
         play() {
             if (this.isPlaying) {
@@ -96,7 +101,7 @@ export default {
                 return;
             }
 
-            vueStore.commit('player/startPlaying');
+            this.store.startPlaying();
 
             this.$nextTick(() => {
                 this.audio = this.$refs.audio;
@@ -149,7 +154,7 @@ export default {
             });
         },
         toggle(url, isStream, isHls) {
-            vueStore.commit('player/toggle', {
+            this.store.toggle({
                 url: url,
                 isStream: isStream,
                 isHls: isHls,

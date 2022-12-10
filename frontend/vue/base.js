@@ -3,6 +3,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import GetTextPlugin from 'vue-gettext';
 import translations from '../../translations/translations.json';
+import pinia from './vendor/pinia';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Configure localization
@@ -29,28 +30,29 @@ document.addEventListener('DOMContentLoaded', function () {
 export default function (component) {
   return function (el, props) {
     return new Vue({
-      el: el,
-      created () {
-        let handleAxiosError = (error) => {
-          let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-          if (error.response) {
-            // Request made and server responded
-            notifyMessage = error.response.data.message;
-            console.error(notifyMessage);
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.error(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.error('Error', error.message);
-          }
+        el: el,
+        pinia,
+        created() {
+            let handleAxiosError = (error) => {
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                if (error.response) {
+                    // Request made and server responded
+                    notifyMessage = error.response.data.message;
+                    console.error(notifyMessage);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.error(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.error('Error', error.message);
+                }
 
-          if (typeof this.$notifyError === 'function') {
-            this.$notifyError(notifyMessage);
-          }
-        };
+                if (typeof this.$notifyError === 'function') {
+                    this.$notifyError(notifyMessage);
+                }
+            };
 
-        axios.interceptors.request.use((config) => {
+            axios.interceptors.request.use((config) => {
           return config;
         }, (error) => {
           handleAxiosError(error);

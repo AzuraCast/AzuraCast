@@ -3,7 +3,7 @@
         <permissions-form-station-row
             v-for="(row, index) in form.permissions.$model.station" :key="index"
             :stations="stations" :station-permissions="stationPermissions"
-            :row.sync="row" @remove="remove(index)"
+            v-model:row="form.permissions.$model.station[index]" @remove="remove(index)"
         ></permissions-form-station-row>
 
         <b-button-group v-if="hasRemainingStations">

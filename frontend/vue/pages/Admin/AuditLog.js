@@ -1,10 +1,12 @@
-import initBase
-  from '~/base.js';
-
-import '~/vendor/bootstrapVue.js';
+import initBase from '~/base.js';
+import {createApp} from "vue";
+import useBootstrapVue from '~/vendor/bootstrapVue.js';
 import '~/vendor/luxon.js';
 
-import AuditLog
-  from '~/components/Admin/AuditLog.vue';
+import AuditLog from '~/components/Admin/AuditLog.vue';
 
-export default initBase(AuditLog);
+const vueApp = createApp(AuditLog);
+
+useBootstrapVue(vueApp);
+
+export default initBase(vueApp);

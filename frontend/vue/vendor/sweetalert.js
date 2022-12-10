@@ -1,25 +1,19 @@
 import Swal from 'sweetalert2';
 
-import Vue from 'vue';
+export default function useSweetAlert(vueApp) {
+    vueApp.config.globalProperties.$swal = function (options = {}) {
+        return Swal.fire(options);
+    };
 
-const ConfirmFunctions = {
-    install(Vue, opts) {
-        Vue.prototype.$swal = function (options = {}) {
-            return Swal.fire(options);
+    vueApp.config.globalProperties.$confirmDelete = function (options = {}) {
+        const defaults = {
+            title: this.$gettext('Delete Record?'),
+            confirmButtonText: this.$gettext('Delete'),
+            confirmButtonColor: '#e64942',
+            showCancelButton: true,
+            focusCancel: true
         };
 
-        Vue.prototype.$confirmDelete = function (options = {}) {
-            const defaults = {
-                title: this.$gettext('Delete Record?'),
-                confirmButtonText: this.$gettext('Delete'),
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
-            };
-
-            return this.$swal({...defaults, ...options});
-        };
-    }
-};
-
-Vue.use(ConfirmFunctions);
+        return this.$swal({...defaults, ...options});
+    };
+}

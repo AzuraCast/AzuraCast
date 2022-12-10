@@ -11,7 +11,7 @@
 
         <playlists-form-schedule-row v-for="(row, index) in scheduleItems" :key="index"
                                      :station-time-zone="stationTimeZone"
-                                     :index="index" :row.sync="row" @remove="remove(index)">
+                                     :index="index" v-model:row="scheduleItems[index]" @remove="remove(index)">
         </playlists-form-schedule-row>
 
         <b-button-group>

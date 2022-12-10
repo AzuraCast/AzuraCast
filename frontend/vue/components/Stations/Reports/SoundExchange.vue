@@ -22,6 +22,7 @@
                             nonsubscription transmissions other than broadcast simulcasts and transmissions of non-music
                             programming." If your station does not fall within this category, update the transmission
                             category field accordingly.
+                        </li>
                         <li>The data collected by AzuraCast meets the SoundExchange standard for Actual Total
                             Performances (ATP) by tracking unique listeners across all song plays. All other information
                             is derived from the metadata of the uploaded songs themselves, and may not be completely

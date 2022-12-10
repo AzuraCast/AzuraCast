@@ -2,13 +2,12 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-textarea v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
-                                 v-model="modelValue"
-                                 :required="isRequired" :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
+                <b-form-textarea v-bind="inputAttrs" v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
+                                 v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
                                  :autofocus="autofocus" :state="fieldState"></b-form-textarea>
-                <b-form-input v-else ref="input" :type="inputType" :id="id" :name="name" v-model="modelValue"
-                              :required="isRequired" :number="isNumeric" :trim="inputTrim"
-                              :autofocus="autofocus" v-bind="inputAttrs" :state="fieldState"></b-form-input>
+                <b-form-input v-bind="inputAttrs" v-else ref="input" :type="inputType" :id="id" :name="name"
+                              v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
+                              :autofocus="autofocus" :state="fieldState"></b-form-input>
             </slot>
 
             <b-form-invalid-feedback :state="fieldState">
@@ -17,7 +16,7 @@
         </template>
 
         <template #label="slotProps">
-            <slot name="label" v-bind="slotProps" :lang="'lang_'+id"></slot>
+            <slot v-bind="slotProps" name="label" :lang="'lang_'+id"></slot>
             <span v-if="isRequired" class="text-danger">
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
@@ -27,12 +26,11 @@
             </span>
         </template>
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps" :lang="'lang_'+id+'_desc'"></slot>
+            <slot v-bind="slotProps" name="description" :lang="'lang_'+id+'_desc'"></slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-form-group>
 </template>
@@ -101,7 +99,7 @@ export default {
             }
         },
         filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
+            return _.filter(this.$slots, (slot, name) => {
                 return !_.includes([
                     'default', 'label', 'description'
                 ], name);

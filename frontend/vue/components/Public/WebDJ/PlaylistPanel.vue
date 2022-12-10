@@ -37,7 +37,7 @@
             <div class="mt-3" v-if="playing">
 
                 <div class="d-flex flex-row mb-2">
-                    <div class="flex-shrink-0 pt-1 pr-2">{{ position | prettifyTime }}</div>
+                    <div class="flex-shrink-0 pt-1 pr-2">{{ prettifyTime(position) }}</div>
                     <div class="flex-fill">
                         <input type="range" min="0" max="100" step="0.1" class="custom-range slider"
                                v-bind:value="seekingPosition"
@@ -45,7 +45,7 @@
                                v-on:mousemove="doSeek($event)"
                                v-on:mouseup="isSeeking = false">
                     </div>
-                    <div class="flex-shrink-0 pt-1 pl-2">{{ duration | prettifyTime }}</div>
+                    <div class="flex-shrink-0 pt-1 pl-2">{{ prettifyTime(duration) }}</div>
                 </div>
 
                 <div class="progress mb-1">
@@ -93,7 +93,7 @@
                     <h5 class="mb-0">{{
                             rowFile.metadata.title ? rowFile.metadata.title : lang_unknown_title
                         }}</h5>
-                    <small class="pt-1">{{ rowFile.audio.length | prettifyTime }}</small>
+                    <small class="pt-1">{{ prettifyTime(rowFile.audio.length) }}</small>
                 </div>
                 <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : lang_unknown_artist }}</p>
             </a>
@@ -155,16 +155,16 @@ export default {
         this.$root.$on('new-mixer-value', this.setMixGain);
         this.$root.$on('new-cue', this.onNewCue);
     },
-    filters: {
-        prettifyTime (time) {
+    methods: {
+        prettifyTime(time) {
             if (typeof time === 'undefined') {
                 return 'N/A';
             }
 
-            var hours = parseInt(time / 3600);
+            let hours = parseInt(time / 3600);
             time %= 3600;
-            var minutes = parseInt(time / 60);
-            var seconds = parseInt(time % 60);
+            let minutes = parseInt(time / 60);
+            let seconds = parseInt(time % 60);
 
             if (minutes < 10) {
                 minutes = '0' + minutes;
@@ -178,19 +178,17 @@ export default {
             } else {
                 return minutes + ':' + seconds;
             }
-        }
-    },
-    methods: {
-        cue () {
+        },
+        cue() {
             this.resumeStream();
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
         },
 
-        onNewCue (new_cue) {
+        onNewCue(new_cue) {
             this.passThrough = (new_cue === this.id);
         },
 
-        setMixGain (new_value) {
+        setMixGain(new_value) {
             if (this.id === 'playlist_1') {
                 this.mixGainObj.gain.value = 1.0 - new_value;
             } else {

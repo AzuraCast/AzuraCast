@@ -6,7 +6,7 @@
             </h3>
         </div>
 
-        <admin-stations-form ref="form" v-bind="$props" :is-edit-mode="true" :edit-url="editUrl"
+        <admin-stations-form v-bind="$props" ref="form" :is-edit-mode="true" :edit-url="editUrl"
                              @submitted="onSubmitted"></admin-stations-form>
     </section>
 </template>

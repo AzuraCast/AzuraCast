@@ -2,7 +2,7 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-checkbox :id="id" :name="name" v-model="field.$model" v-bind="inputAttrs">
+                <b-form-checkbox v-bind="inputAttrs" v-model="field.$model" :id="id" :name="name">
                     <slot name="label" :lang="'lang_'+id">
 
                     </slot>
@@ -25,9 +25,8 @@
             <slot name="description" v-bind="slotProps" :lang="'lang_'+id+'_desc'"></slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-form-group>
 </template>
@@ -64,7 +63,7 @@ export default {
     },
     computed: {
         filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
+            return _.filter(this.$slots, (slot, name) => {
                 return !_.includes([
                     'default', 'description'
                 ], name);

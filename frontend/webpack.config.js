@@ -60,7 +60,8 @@ module.exports = {
     resolve: {
         enforceExtension: false,
         alias: {
-            '~': path.resolve(__dirname, './vue')
+            '~': path.resolve(__dirname, './vue'),
+            vue: '@vue/compat'
         },
         extensions: ['.js', '.vue', '.json']
     },
@@ -101,14 +102,18 @@ module.exports = {
         rules: [
             {
                 test: /\.vue$/i,
-                use: [
-                    'vue-loader'
-                ]
+                loader: 'vue-loader',
+                options: {
+                    compilerOptions: {
+                        compatConfig: {
+                            MODE: 2
+                        }
+                    }
+                }
             },
             {
                 test: /\.scss$/i,
                 use: [
-                    'vue-style-loader',
                     'css-loader',
                     'sass-loader'
                 ]
@@ -116,7 +121,6 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
-                    'vue-style-loader',
                     'css-loader'
                 ]
             },

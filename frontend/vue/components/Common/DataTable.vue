@@ -60,14 +60,14 @@
         </div>
         <div class="datatable-main">
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                     :current-page.sync="currentPage" @row-selected="onRowSelected" :items="itemProvider"
+                     v-model:current-page="currentPage" @row-selected="onRowSelected" :items="itemProvider"
                      :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
                      :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
                      :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed"
-                     :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="onSortChanged">
+                     v-model:sort-by="sortBy" v-model:sort-desc="sortDesc" @sort-changed="onSortChanged">
                 <template #head(selected)="data">
                     <b-form-checkbox :aria-label="langSelectAll" :checked="allSelected"
                                      @change="toggleSelected"></b-form-checkbox>

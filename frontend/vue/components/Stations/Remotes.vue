@@ -28,7 +28,7 @@
                     <template v-if="row.item.enable_autodj">
                         <translate key="lang_autodj_enabled">Enabled</translate>
                         -
-                        {{ row.item.autodj_bitrate }}kbps {{ row.item.autodj_format|upper }}
+                        {{ row.item.autodj_bitrate }}kbps {{ upper(row.item.autodj_format) }}
                     </template>
                     <template v-else>
                         <translate key="lang_autodj_disabled">Disabled</translate>
@@ -77,7 +77,7 @@ export default {
             ]
         };
     },
-    filters: {
+    methods: {
         upper(data) {
             if (!data) {
                 return '';
@@ -88,9 +88,7 @@ export default {
                 upper.push(word.toUpperCase());
             });
             return upper.join(' ');
-        }
-    },
-    methods: {
+        },
         relist() {
             this.$refs.datatable.refresh();
         },

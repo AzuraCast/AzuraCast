@@ -10,7 +10,7 @@
             </div>
             <div class="break"></div>
             <small class="date-played text-muted">
-                <span v-html="unixTimestampToDate(row.played_at)">{{ row.played_at }}</span>
+                <span v-html="unixTimestampToDate(row.played_at)"></span>
             </small>
         </div>
     </div>

@@ -55,7 +55,7 @@
                     <translate key="lang_public_pages_disable">Disable</translate>
                 </a>
             </div>
-            <embed-modal ref="embed_modal" v-bind="$props"></embed-modal>
+            <embed-modal v-bind="$props" ref="embed_modal"></embed-modal>
         </template>
         <template v-else>
             <div class="card-header bg-primary-dark">

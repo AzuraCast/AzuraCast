@@ -1,6 +1,5 @@
 <template>
     <l-map v-if="mapPoints.length < 3000" style="height: 300px; z-index: 0;" :zoom="1" :center="[40, 0]">
-        <l-control-fullscreen/>
         <l-tile-layer :url="tileUrl" :attribution="tileAttribution"></l-tile-layer>
         <l-marker v-for="l in mapPoints" :key="l.hash"
                   :lat-lng="{lat: l.location.lat, lng: l.location.lon}">
@@ -22,8 +21,7 @@
 
 <script>
 import L from 'leaflet';
-import {LMap, LMarker, LTileLayer, LTooltip} from 'vue2-leaflet';
-import LControlFullscreen from 'vue2-leaflet-fullscreen';
+import {LMap, LMarker, LTileLayer, LTooltip} from '@vue-leaflet/vue-leaflet';
 import _ from 'lodash';
 
 export default {
@@ -36,8 +34,7 @@ export default {
         LMap,
         LTileLayer,
         LMarker,
-        LTooltip,
-        LControlFullscreen
+        LTooltip
     },
     data() {
         return {

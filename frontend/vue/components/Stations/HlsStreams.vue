@@ -24,7 +24,7 @@
                     <h5 class="m-0">{{ row.item.name }}</h5>
                 </template>
                 <template #cell(format)="row">
-                    {{ row.item.format|upper }}
+                    {{ upper(row.item.format) }}
                 </template>
                 <template #cell(bitrate)="row">
                     {{ row.item.bitrate }}kbps
@@ -70,16 +70,14 @@ export default {
             ]
         };
     },
-    filters: {
+    methods: {
         upper(data) {
             let upper = [];
             data.split(' ').forEach((word) => {
                 upper.push(word.toUpperCase());
             });
             return upper.join(' ');
-        }
-    },
-    methods: {
+        },
         relist() {
             this.$refs.datatable.refresh();
         },

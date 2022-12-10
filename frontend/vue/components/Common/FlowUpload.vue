@@ -1,16 +1,18 @@
 <template>
     <div class="flow-upload">
         <div class="upload-progress">
-            <div class="uploading-file pt-1" v-for="(file, _) in files" :id="'file_upload_' + file.uniqueIdentifier"
-                 v-if="file.is_visible" :class="{ 'text-success': file.is_completed, 'text-danger': file.error }">
-                <h6 class="fileuploadname m-0">{{ file.name }}</h6>
-                <b-progress v-if="!file.is_completed" :value="file.progress_percent" :max="100"
-                            show-progress class="h-15 my-1"></b-progress>
-                <div class="upload-status" v-if="file.error">
-                    {{ file.error }}
+            <template v-for="(file, _) in files">
+                <div v-if="file.is_visible" class="uploading-file pt-1" :id="'file_upload_' + file.uniqueIdentifier"
+                     :class="{ 'text-success': file.is_completed, 'text-danger': file.error }">
+                    <h6 class="fileuploadname m-0">{{ file.name }}</h6>
+                    <b-progress v-if="!file.is_completed" :value="file.progress_percent" :max="100"
+                                show-progress class="h-15 my-1"></b-progress>
+                    <div class="upload-status" v-if="file.error">
+                        {{ file.error }}
+                    </div>
+                    <div class="size">{{ formatFileSize(file.size) }}</div>
                 </div>
-                <div class="size">{{ formatFileSize(file.size) }}</div>
-            </div>
+            </template>
         </div>
         <div class="file-drop-target" ref="file_drop_target">
             <translate key="lang_upload_target">Drag file(s) here to upload or</translate>

@@ -3,4 +3,16 @@
     @include reset-material-icons($material-icon-size * 2);
     line-height: 0.5em;
   }
+
+  .btn > & {
+    margin-right: calc($btn-padding-x / 2);
+  }
+
+  .btn-lg > & {
+    margin-right: calc($btn-padding-x-lg / 2);
+  }
+
+  .btn-sm > & {
+    margin-right: calc($btn-padding-x-sm / 2);
+  }
 }

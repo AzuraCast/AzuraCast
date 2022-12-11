@@ -24,10 +24,14 @@ import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
 import {DateTime} from 'luxon';
 import mergeExisting from "~/functions/mergeExisting";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     components: {EpisodeFormMedia, PodcastCommonArtwork, EpisodeFormBasicInfo},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,

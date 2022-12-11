@@ -27,9 +27,9 @@
                     </td>
                     <td class="pl-1 text-right">
                         <icon class="sm align-middle" icon="headset"></icon>
-                        <span class="listeners-total">{{ mount.listeners.total }}</span><br>
+                        <span class="listeners-total pl-1">{{ mount.listeners.total }}</span><br>
                         <small>
-                            <span class="listeners-unique">{{ mount.listeners.unique }}</span>
+                            <span class="listeners-unique pr-1">{{ mount.listeners.unique }}</span>
                             <translate key="lang_streams_unique">Unique</translate>
                         </small>
                     </td>
@@ -55,9 +55,9 @@
                     </td>
                     <td class="pl-1 text-right">
                         <icon class="sm align-middle" icon="headset"></icon>
-                        <span class="listeners-total">{{ remote.listeners.total }}</span><br>
+                        <span class="listeners-total pl-1">{{ remote.listeners.total }}</span><br>
                         <small>
-                            <span class="listeners-unique">{{ remote.listeners.unique }}</span>
+                            <span class="listeners-unique pr-1">{{ remote.listeners.unique }}</span>
                             <translate key="lang_streams_unique">Unique</translate>
                         </small>
                     </td>
@@ -82,7 +82,7 @@
                     </td>
                     <td class="pl-1 text-right">
                         <icon class="sm align-middle" icon="headset"></icon>
-                        <span class="listeners-total">{{ np.station.hls_listeners }}</span>
+                        <span class="listeners-total pl-1">{{ np.station.hls_listeners }}</span>
                     </td>
                 </tr>
                 </tbody>

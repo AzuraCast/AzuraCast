@@ -114,6 +114,7 @@ module.exports = {
             {
                 test: /\.scss$/i,
                 use: [
+                    'vue-style-loader',
                     'css-loader',
                     'sass-loader'
                 ]
@@ -121,6 +122,7 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
+                    'vue-style-loader',
                     'css-loader'
                 ]
             },

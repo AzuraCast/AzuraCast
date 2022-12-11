@@ -20,10 +20,14 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import mergeExisting from "~/functions/mergeExisting";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     components: {PodcastCommonArtwork, PodcastFormBasicInfo},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,

@@ -46,7 +46,7 @@
                 </div>
 
                 <data-table ref="datatable" id="station_media" selectable paginated select-fields
-                            @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
+                            @row-selected="onRowSelected" :fields="fields" :api-url="listUrl"
                             :request-config="requestConfig">
                     <template #cell(path)="row">
                         <div class="d-flex align-items-center">
@@ -342,9 +342,6 @@ export default {
                 directories: _.map(splitItems[0], 'path')
             };
         },
-        onRefreshed() {
-            this.$eventHub.$emit('refreshed');
-        },
         onTriggerNavigate() {
             this.$refs.datatable.navigate();
         },
@@ -366,9 +363,6 @@ export default {
         },
         isFilterString(str) {
             return str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:';
-        },
-        playAudio(url) {
-            this.$eventHub.$emit('player_toggle', url);
         },
         changeDirectory(newDir) {
             window.location.hash = newDir;

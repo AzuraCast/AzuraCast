@@ -33,9 +33,13 @@ import Twitter from "./Form/Twitter";
 import GoogleAnalytics from "./Form/GoogleAnalytics";
 import MatomoAnalytics from "./Form/MatomoAnalytics";
 import Mastodon from "./Form/Mastodon";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
+    setup() {
+        return {v$: useVuelidate()}
+    },
     components: {BasicInfo, TypeSelect},
     mixins: [BaseEditModal],
     props: {

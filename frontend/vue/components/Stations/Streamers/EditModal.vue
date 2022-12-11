@@ -19,9 +19,13 @@ import FormSchedule from './Form/Schedule';
 import FormArtwork from './Form/Artwork';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import mergeExisting from "~/functions/mergeExisting";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     components: {FormBasicInfo, FormSchedule, FormArtwork},
     props: {

@@ -11,10 +11,14 @@ import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import FormBasicInfo from './Form/BasicInfo';
 import mergeExisting from "~/functions/mergeExisting";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     emits: ['needs-restart'],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     components: {FormBasicInfo},
     validations() {

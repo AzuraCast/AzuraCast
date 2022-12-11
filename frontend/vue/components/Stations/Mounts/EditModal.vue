@@ -26,10 +26,14 @@ import MountFormAutoDj from './Form/AutoDj';
 import MountFormAdvanced from './Form/Advanced';
 import MountFormIntro from "./Form/Intro";
 import mergeExisting from "~/functions/mergeExisting";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     emits: ['needs-restart'],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo},
     props: {

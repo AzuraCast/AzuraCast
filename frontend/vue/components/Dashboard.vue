@@ -144,7 +144,9 @@
                             </template>
                         </td>
                         <td class="text-center">
-                            <icon class="sm align-middle" icon="headset"></icon>
+                            <span class="pr-1">
+                                <icon class="sm align-middle" icon="headset"></icon>
+                            </span>
                             <template v-if="item.links.listeners">
                                 <a :href="item.links.listeners">
                                     {{ item.listeners.total }}

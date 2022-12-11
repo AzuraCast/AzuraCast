@@ -16,10 +16,14 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
 import {REMOTE_ICECAST} from "~/components/Entity/RadioAdapters";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'RemoteEditModal',
     emits: ['needs-restart'],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     components: {
         RemoteFormAutoDj,

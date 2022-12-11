@@ -10,9 +10,13 @@
 import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import SftpUsersForm from "./Form";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'SftpUsersEditModal',
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     components: {SftpUsersForm},
     validations() {

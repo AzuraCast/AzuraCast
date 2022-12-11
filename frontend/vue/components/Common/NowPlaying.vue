@@ -87,7 +87,6 @@ export default {
             }
 
             this.$emit('np_updated', np_new);
-            this.$eventHub.$emit('np_updated', np_new);
 
             document.dispatchEvent(new CustomEvent("now-playing", {
                 detail: np_new

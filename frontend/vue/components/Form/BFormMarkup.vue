@@ -13,9 +13,8 @@
             <slot name="description" v-bind="slotProps"></slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-form-group>
 </template>
@@ -33,7 +32,7 @@ export default {
     },
     computed: {
         filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
+            return _.filter(this.$slots, (slot, name) => {
                 return !_.includes([
                     'default', 'label', 'description'
                 ], name);

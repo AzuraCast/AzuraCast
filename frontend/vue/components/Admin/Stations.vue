@@ -43,7 +43,7 @@
             </data-table>
         </b-card>
 
-        <admin-stations-edit-modal ref="editModal" :create-url="listUrl" v-bind="$props"
+        <admin-stations-edit-modal v-bind="$props" ref="editModal" :create-url="listUrl"
                                    @relist="relist"></admin-stations-edit-modal>
 
         <admin-stations-clone-modal ref="cloneModal" @relist="relist"></admin-stations-clone-modal>

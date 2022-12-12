@@ -4,7 +4,7 @@
 
 <script>
 import '@fullcalendar/core/vdom';
-import FullCalendar from '@fullcalendar/vue';
+import FullCalendar from '@fullcalendar/vue3';
 import allLocales from '@fullcalendar/core/locales-all';
 import luxon2Plugin from '@fullcalendar/luxon2';
 import timeGridPlugin from '@fullcalendar/timegrid';

@@ -1,37 +1,38 @@
 <template>
     <date-range-picker
-        ref="picker" controlContainerClass="" opens="left" show-dropdowns
-        v-bind="$props"
-        :time-picker-increment="1" :ranges="ranges" @update="onUpdate">
+        v-bind="$props" ref="picker" controlContainerClass="" opens="left" show-dropdowns
+        :time-picker-increment="1" :ranges="ranges" v-model="dateRange" v-model:date-range="dateRange"
+        @select="onSelect">
         <template #input="datePicker">
             <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                 <icon icon="date_range"></icon>
                 {{ datePicker.rangeText }}
             </a>
         </template>
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+
+        <template v-for="(_, slot) of $slots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </date-range-picker>
 </template>
 
-<style lang="css">
-@import '../../../node_modules/vue2-daterange-picker/dist/vue2-daterange-picker.css';
+<style lang="scss">
+@import 'vue3-daterange-picker/src/assets/daterangepicker';
 </style>
 
 <script>
-import DateRangePicker from 'vue2-daterange-picker';
+import DateRangePicker from 'vue3-daterange-picker';
 import Icon from "./Icon";
 import {DateTime} from 'luxon';
 
 export default {
     name: 'DateRangeDropdown',
     components: {DateRangePicker, Icon},
-    emits: ['update', 'input'],
+    emits: ['update:modelValue', 'update'],
+    inheritAttrs: false,
     model: {
-        prop: 'dateRange',
-        event: 'update',
+        prop: 'modelValue',
+        event: 'update:modelValue'
     },
     props: {
         tz: {
@@ -54,9 +55,8 @@ export default {
             type: Boolean,
             default: false,
         },
-        dateRange: { // for v-model
-            type: [Object],
-            default: null,
+        modelValue: {
+            type: Object,
             required: true
         },
         customRanges: {
@@ -65,7 +65,14 @@ export default {
         },
     },
     computed: {
-
+        dateRange: {
+            get() {
+                return this.modelValue;
+            },
+            set(newValue) {
+                // Noop
+            }
+        },
         ranges() {
             let ranges = {};
 
@@ -113,8 +120,9 @@ export default {
         }
     },
     methods: {
-        onUpdate(newValue) {
-            this.$emit('update', newValue);
+        onSelect(range) {
+            this.$emit('update:modelValue', range);
+            this.$emit('update', range);
         }
     }
 }

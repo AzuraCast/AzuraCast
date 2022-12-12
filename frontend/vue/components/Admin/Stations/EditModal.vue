@@ -1,7 +1,7 @@
 <template>
     <b-modal size="lg" id="station_edit_modal" ref="modal" :title="langTitle" :busy="loading"
              @shown="resetForm" @hidden="clearContents">
-        <admin-stations-form ref="form" v-bind="$props" is-modal :create-url="createUrl" :edit-url="editUrl"
+        <admin-stations-form v-bind="$props" ref="form" is-modal :create-url="createUrl" :edit-url="editUrl"
                              :is-edit-mode="isEditMode" @error="close" @submitted="onSubmit"
                              @validUpdate="onValidUpdate" @loadingUpdate="onLoadingUpdate">
             <template #submitButton>

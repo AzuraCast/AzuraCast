@@ -1,8 +1,23 @@
-import Vue
-  from 'vue';
-import VueClipboard
-  from 'vue-clipboard2';
+import VueClipboard, {copyText} from 'vue3-clipboard';
 
-VueClipboard.config.autoSetContainer = true;
+export function copyToClipboard(text) {
+    copyText(
+        text,
+        undefined,
+        (error) => {
+            if (error) {
+                console.error(error)
+            }
+        }
+    );
+}
 
-Vue.use(VueClipboard);
+export default function useVueClipboard(vueApp) {
+    vueApp.use(
+        VueClipboard,
+        {
+            autoSetContainer: true,
+            appendToBody: true,
+        }
+    );
+};

@@ -1,72 +1,89 @@
-import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import GetTextPlugin from 'vue-gettext';
-import translations from '../../translations/translations.json';
-import pinia from './vendor/pinia';
+import usePinia from './vendor/pinia';
+import gettext from './vendor/gettext';
+import {createApp} from "vue";
+import useBootstrapVue from "./vendor/bootstrapVue";
+import useSweetAlert from "./vendor/sweetalert";
+import useVueClipboard from "~/vendor/clipboard";
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Configure localization
-    Vue.use(GetTextPlugin, {
-        defaultLanguage: 'en_US',
-        translations: translations,
-        silent: true
-    });
+export default function (component, options) {
+    return function (el, props) {
+        const vueApp = createApp(
+            component,
+            {
+                ...options,
+                ...props
+            }
+        );
 
-    if (typeof App.locale !== 'undefined') {
-        Vue.config.language = App.locale;
-    }
+        /* Gettext */
+        if (typeof App.locale !== 'undefined') {
+            vueApp.config.language = App.locale;
+        }
 
-    // Configure auto-CSRF on requests
-    if (typeof App.api_csrf !== 'undefined') {
-        axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
-    }
+        vueApp.use(gettext);
 
-  Vue.use(VueAxios, axios);
+        /* Axios */
 
-  Vue.prototype.$eventHub = new Vue();
-});
+        // Configure auto-CSRF on requests
+        if (typeof App.api_csrf !== 'undefined') {
+            axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
+        }
 
-export default function (component) {
-  return function (el, props) {
-    return new Vue({
-        el: el,
-        pinia,
-        created() {
-            let handleAxiosError = (error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.error(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.error(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.error('Error', error.message);
-                }
+        vueApp.use(VueAxios, axios);
 
-                if (typeof this.$notifyError === 'function') {
-                    this.$notifyError(notifyMessage);
-                }
-            };
+        vueApp.mixin({
+            mounted() {
+                const handleAxiosError = (error) => {
+                    const {$gettext} = gettext;
 
-            axios.interceptors.request.use((config) => {
-          return config;
-        }, (error) => {
-          handleAxiosError(error);
-          return Promise.reject(error);
+                    let notifyMessage = $gettext('An error occurred and your request could not be completed.');
+                    if (error.response) {
+                        // Request made and server responded
+                        notifyMessage = error.response.data.message;
+                        console.error(notifyMessage);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        console.error(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.error('Error', error.message);
+                    }
+
+                    if (typeof this.$notifyError === 'function') {
+                        this.$notifyError(notifyMessage);
+                    }
+                };
+
+                axios.interceptors.request.use((config) => {
+                    return config;
+                }, (error) => {
+                    handleAxiosError(error);
+                    return Promise.reject(error);
+                });
+
+                axios.interceptors.response.use((response) => {
+                    return response;
+                }, (error) => {
+                    handleAxiosError(error);
+                    return Promise.reject(error);
+                });
+            }
         });
 
-        axios.interceptors.response.use((response) => {
-          return response;
-        }, (error) => {
-          handleAxiosError(error);
-          return Promise.reject(error);
-        });
-      },
-      render: createElement => createElement(component, { props: props })
-    });
-  };
+        /* Pinia */
+        usePinia(vueApp);
+
+        /* Bootstrap Vue */
+        useBootstrapVue(vueApp);
+
+        /* SweetAlert */
+        useSweetAlert(vueApp);
+
+        /* Clipboard */
+        useVueClipboard(vueApp);
+
+        vueApp.mount(el);
+    };
 }

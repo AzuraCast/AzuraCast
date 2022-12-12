@@ -1,6 +1,6 @@
 <template>
     <div class="row pt-4" id="app-toolbar">
-        <div class="col-md-8">
+        <div class="col-md-8 buttons">
             <div class="btn-group dropdown allow-focus">
                 <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown" v-b-tooltip.hover
                             :title="langPlaylistDropdown">

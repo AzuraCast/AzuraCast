@@ -5,10 +5,13 @@
                 <h3 class="flex-shrink card-title my-0" key="lang_profile_nowplaying_onair" v-translate>On the Air</h3>
                 <h6 class="card-subtitle text-right flex-fill my-0" style="line-height: 1;">
                     <icon class="sm align-middle" icon="headset"></icon>
-                    {{ langListeners }}
+                    <span class="pl-1">
+                        {{ langListeners }}
+                    </span>
+
                     <br>
                     <small>
-                        <span>{{ np.listeners.unique }}</span>
+                        <span class="pr-1">{{ np.listeners.unique }}</span>
                         <translate key="lang_profile_nowplaying_unique">Unique</translate>
                     </small>
                 </h6>

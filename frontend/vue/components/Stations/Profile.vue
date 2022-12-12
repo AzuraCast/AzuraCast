@@ -4,26 +4,26 @@
 
         <div class="row" id="profile">
             <div class="col-lg-7">
-                <profile-now-playing :np="np" v-bind="$props"></profile-now-playing>
+                <profile-now-playing v-bind="$props" :np="np"></profile-now-playing>
 
                 <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
 
-                <profile-streams :np="np" v-bind="$props"></profile-streams>
+                <profile-streams v-bind="$props" :np="np"></profile-streams>
 
                 <profile-public-pages v-bind="$props"></profile-public-pages>
             </div>
 
             <div class="col-lg-5">
-                <profile-requests v-if="stationSupportsRequests" v-bind="$props"></profile-requests>
+                <profile-requests v-bind="$props" v-if="stationSupportsRequests"></profile-requests>
 
-                <profile-streamers v-if="stationSupportsStreamers" v-bind="$props"></profile-streamers>
+                <profile-streamers v-bind="$props" v-if="stationSupportsStreamers"></profile-streamers>
 
                 <template v-if="hasActiveFrontend">
-                    <profile-frontend :np="np" v-bind="$props"></profile-frontend>
+                    <profile-frontend v-bind="$props" :np="np"></profile-frontend>
                 </template>
 
                 <template v-if="hasActiveBackend">
-                    <profile-backend :np="np" v-bind="$props"></profile-backend>
+                    <profile-backend v-bind="$props" :np="np"></profile-backend>
                 </template>
                 <template v-else>
                     <profile-backend-none></profile-backend-none>

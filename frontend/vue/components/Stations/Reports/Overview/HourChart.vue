@@ -4,71 +4,68 @@
     </canvas>
 </template>
 
-<script>
-import {Chart} from 'chart.js';
-import {Tableau20} from '~/vendor/chartjs-colorschemes/colorschemes.tableau.js';
+<script setup>
+import {get, templateRef, watchOnce} from "@vueuse/core";
+import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
+import {Chart} from "chart.js";
+import gettext from "~/vendor/gettext";
+import {onUnmounted} from "vue";
 
-export default {
-    name: 'HourChart',
-    inheritAttrs: true,
-    props: {
-        options: Object,
-        data: Array,
-        labels: Array
-    },
-    data() {
-        return {
-            _chart: null
-        };
-    },
-    mounted() {
-        this.renderChart();
-    },
-    methods: {
-        renderChart() {
-            const defaultOptions = {
-                type: 'bar',
-                data: {
-                    labels: this.labels,
-                    datasets: this.data
+const props = defineProps({
+    options: Object,
+    data: Array,
+    labels: Array
+});
+
+let $chart = null;
+const $canvas = templateRef('canvas');
+const {$gettext} = gettext;
+
+watchOnce($canvas, () => {
+    const defaultOptions = {
+        type: 'bar',
+        data: {
+            labels: props.labels,
+            datasets: props.data
+        },
+        options: {
+            aspectRatio: 2,
+            plugins: {
+                colorschemes: {
+                    scheme: Tableau20
+                }
+            },
+            scales: {
+                x: {
+                    scaleLabel: {
+                        display: true,
+                        labelString: $gettext('Hour')
+                    }
                 },
-                options: {
-                    aspectRatio: 2,
-                    plugins: {
-                        colorschemes: {
-                            scheme: Tableau20
-                        }
+                y: {
+                    scaleLabel: {
+                        display: true,
+                        labelString: $gettext('Listeners')
                     },
-                    scales: {
-                        x: {
-                            scaleLabel: {
-                                display: true,
-                                labelString: this.$gettext('Hour')
-                            }
-                        },
-                        y: {
-                            scaleLabel: {
-                                display: true,
-                                labelString: this.$gettext('Listeners')
-                            },
-                            ticks: {
-                                min: 0
-                            }
-                        }
+                    ticks: {
+                        min: 0
                     }
                 }
-            };
-
-            if (this._chart) this._chart.destroy();
-
-            let chartOptions = _.defaultsDeep({}, this.options, defaultOptions);
-            this._chart = new Chart(this.$refs.canvas.getContext('2d'), chartOptions);
+            }
         }
-    },
-    beforeDestroy() {
-        if (this._chart) {
-            this._chart.destroy();
-        }
+    };
+
+    if ($chart) {
+        $chart.destroy();
     }
-};
+
+    let chartOptions = _.defaultsDeep({}, props.options, defaultOptions);
+    $chart = new Chart(get($canvas).getContext('2d'), chartOptions);
+});
+
+onUnmounted(() => {
+    if ($chart) {
+        $chart.destroy();
+    }
+});
 </script>

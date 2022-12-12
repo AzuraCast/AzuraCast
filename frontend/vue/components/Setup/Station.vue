@@ -13,7 +13,7 @@
                 <translate key="lang_hdr_info">Continue the setup process by creating your first radio station below. You can edit any of these details later.</translate>
             </info-card>
 
-            <admin-stations-form ref="form" v-bind="$props" :is-edit-mode="false" :create-url="createUrl"
+            <admin-stations-form v-bind="$props" ref="form" :is-edit-mode="false" :create-url="createUrl"
                                  @submitted="onSubmitted">
                 <template #submitButtonText>
                     <translate key="lang_btn_create_and_continue">Create and Continue</translate>

@@ -18,11 +18,15 @@ import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
 import BaseEditModal from '~/components/Common/BaseEditModal';
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     emits: ['needs-restart'],
     components: {FormSchedule, FormBasicInfo, FormAdvanced},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,

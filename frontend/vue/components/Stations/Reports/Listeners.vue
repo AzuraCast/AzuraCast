@@ -9,14 +9,15 @@
                                 <translate key="lang_header">Listeners</translate>
                             </h2>
                         </div>
-                        <div class="flex-shrink">
+                        <div class="flex-shrink buttons">
                             <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
                                 <icon icon="file_download"></icon>
                                 <translate key="lang_download_csv_button">Download CSV</translate>
                             </a>
 
                             <date-range-dropdown v-if="!isLive" time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :tz="stationTimeZone" v-model="dateRange" @update="updateListeners">
+                                                 :tz="stationTimeZone" v-model="dateRange"
+                                                 @update="updateListeners">
                             </date-range-dropdown>
                         </div>
                     </div>

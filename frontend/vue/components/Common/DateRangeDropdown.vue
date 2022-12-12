@@ -1,7 +1,7 @@
 <template>
     <date-range-picker
         v-bind="$props" ref="picker" controlContainerClass="" opens="left" show-dropdowns
-        :time-picker-increment="1" :ranges="ranges" @update="onUpdate">
+        :time-picker-increment="1" :ranges="ranges" :date-range="modelValue" @update="onUpdate">
         <template #input="datePicker">
             <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                 <icon icon="date_range"></icon>
@@ -27,11 +27,7 @@ import {DateTime} from 'luxon';
 export default {
     name: 'DateRangeDropdown',
     components: {DateRangePicker, Icon},
-    emits: ['update', 'input'],
-    model: {
-        prop: 'dateRange',
-        event: 'update',
-    },
+    emits: ['update:modelValue', 'update'],
     props: {
         tz: {
             type: String,
@@ -53,7 +49,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        dateRange: { // for v-model
+        modelValue: {
             type: [Object],
             default: null,
             required: true
@@ -64,7 +60,6 @@ export default {
         },
     },
     computed: {
-
         ranges() {
             let ranges = {};
 
@@ -113,6 +108,7 @@ export default {
     },
     methods: {
         onUpdate(newValue) {
+            this.$emit('update:modelValue', newValue);
             this.$emit('update', newValue);
         }
     }

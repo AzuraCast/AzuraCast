@@ -10,12 +10,12 @@
                     <h3 class="card-subtitle">{{ user.email }}</h3>
                 </div>
 
-                <div class="flex-md-shrink-0 mt-3 mt-md-0">
+                <div class="flex-md-shrink-0 mt-3 mt-md-0 buttons">
                     <a class="btn btn-bg" role="button" :href="profileUrl">
                         <icon icon="account_circle"></icon>
                         <translate key="dashboard_btn_my_account">My Account</translate>
                     </a>
-                    <a v-if="showAdmin" class="btn btn-bg ml-2" role="button" :href="adminUrl">
+                    <a v-if="showAdmin" class="btn btn-bg" role="button" :href="adminUrl">
                         <icon icon="settings"></icon>
                         <translate key="dashboard_btn_administration">Administration</translate>
                     </a>

@@ -6,7 +6,8 @@
                     <translate key="hdr">Station Statistics</translate>
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"></date-range-dropdown>
+                    <date-range-dropdown time-picker v-model="dateRange"
+                                         :tz="stationTimeZone"></date-range-dropdown>
                 </div>
             </div>
         </div>

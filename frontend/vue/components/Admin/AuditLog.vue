@@ -6,7 +6,7 @@
                     <translate key="lang_title">Audit Log</translate>
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown v-model="dateRange" @update="relist"></date-range-dropdown>
+                    <date-range-dropdown v-model:date-range="dateRange" @update="relist"></date-range-dropdown>
                 </div>
             </div>
         </div>

@@ -1,9 +1,9 @@
 <template>
     <div class="row pt-4" id="app-toolbar">
-        <div class="col-md-8">
+        <div class="col-md-8 buttons">
             <div class="btn-group dropdown allow-focus">
                 <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown" v-b-tooltip.hover
-                            class="mr-2" :title="langPlaylistDropdown">
+                            :title="langPlaylistDropdown">
                     <template #button-content>
                         <icon icon="clear_all"></icon>
                         <translate key="lang_playlists_title">Playlists</translate>
@@ -41,11 +41,11 @@
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
-            <b-button size="sm" variant="primary" class="mr-2" v-b-modal.move_file>
+            <b-button size="sm" variant="primary" v-b-modal.move_file>
                 <icon icon="open_with"></icon>
                 <translate key="lang_btn_move">Move</translate>
             </b-button>
-            <b-dropdown size="sm" variant="default" class="mr-2">
+            <b-dropdown size="sm" variant="default">
                 <template #button-content>
                     <icon icon="more_horiz"></icon>
                     {{ langMore }}

@@ -312,7 +312,7 @@ export default {
 
         window.addEventListener('hashchange', this.onHashChange);
     },
-    destroyed() {
+    unmounted() {
         window.removeEventListener('hashchange', this.onHashChange);
     },
     computed: {

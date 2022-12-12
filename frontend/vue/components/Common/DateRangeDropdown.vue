@@ -1,7 +1,8 @@
 <template>
     <date-range-picker
         v-bind="$props" ref="picker" controlContainerClass="" opens="left" show-dropdowns
-        :time-picker-increment="1" :ranges="ranges" :date-range="modelValue" @update="onUpdate">
+        :time-picker-increment="1" :ranges="ranges" v-model="dateRange" v-model:date-range="dateRange"
+        @select="onSelect">
         <template #input="datePicker">
             <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
                 <icon icon="date_range"></icon>
@@ -16,7 +17,7 @@
 </template>
 
 <style lang="scss">
-@import '../../../node_modules/vue3-daterange-picker/src/assets/daterangepicker';
+@import 'vue3-daterange-picker/src/assets/daterangepicker';
 </style>
 
 <script>
@@ -28,6 +29,11 @@ export default {
     name: 'DateRangeDropdown',
     components: {DateRangePicker, Icon},
     emits: ['update:modelValue', 'update'],
+    inheritAttrs: false,
+    model: {
+        prop: 'modelValue',
+        event: 'update:modelValue'
+    },
     props: {
         tz: {
             type: String,
@@ -50,8 +56,7 @@ export default {
             default: false,
         },
         modelValue: {
-            type: [Object],
-            default: null,
+            type: Object,
             required: true
         },
         customRanges: {
@@ -60,6 +65,14 @@ export default {
         },
     },
     computed: {
+        dateRange: {
+            get() {
+                return this.modelValue;
+            },
+            set(newValue) {
+                // Noop
+            }
+        },
         ranges() {
             let ranges = {};
 
@@ -107,9 +120,9 @@ export default {
         }
     },
     methods: {
-        onUpdate(newValue) {
-            this.$emit('update:modelValue', newValue);
-            this.$emit('update', newValue);
+        onSelect(range) {
+            this.$emit('update:modelValue', range);
+            this.$emit('update', range);
         }
     }
 }

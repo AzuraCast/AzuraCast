@@ -16,6 +16,7 @@
 <script>
 import '~/vendor/clipboard.js';
 import StreamingLogView from "~/components/Common/StreamingLogView";
+import {copyToClipboard} from "~/vendor/clipboard";
 
 export default {
     name: 'StreamingLogModal',
@@ -36,7 +37,7 @@ export default {
             this.$refs.modal.show();
         },
         doCopy() {
-            this.$copyText(this.$refs.logView.getContents());
+            copyToClipboard(this.$refs.logView.getContents());
         },
         close() {
             this.$refs.modal.hide();

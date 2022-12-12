@@ -5,29 +5,22 @@
     </button>
 </template>
 
-<script>
-import '~/vendor/clipboard.js';
-import Icon from './Icon';
+<script setup>
+import Icon from "~/components/Common/Icon.vue";
+import {copyToClipboard} from "~/vendor/clipboard";
 
-export default {
-    components: { Icon },
-    props: {
-        text: {
-            type: String,
-            required: true,
-        },
-        hideText: {
-            type: Boolean,
-            default: false
-        }
+const props = defineProps({
+    text: {
+        type: String,
+        required: true,
     },
-    methods: {
-        doCopy() {
-            this.$copyText(this.text).then(function (e) {
-            }, function (e) {
-                console.error(e);
-            })
-        }
+    hideText: {
+        type: Boolean,
+        default: false
     }
+});
+
+const doCopy = () => {
+    copyToClipboard(props.text);
 };
 </script>

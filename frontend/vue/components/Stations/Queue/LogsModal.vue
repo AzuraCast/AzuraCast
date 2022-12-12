@@ -15,6 +15,7 @@
 
 <script>
 import '~/vendor/clipboard.js';
+import {copyToClipboard} from "~/vendor/clipboard";
 
 export default {
     name: 'QueueLogsModal',
@@ -39,7 +40,7 @@ export default {
             this.$refs.modal.show();
         },
         doCopy() {
-            this.$copyText(this.logs);
+            copyToClipboard(this.logs);
         },
         close() {
             this.$refs.modal.hide();

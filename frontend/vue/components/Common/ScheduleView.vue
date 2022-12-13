@@ -2,67 +2,63 @@
     <full-calendar ref="calendar" :options="calendarOptions"></full-calendar>
 </template>
 
-<script>
+<script setup>
 import '@fullcalendar/core/vdom';
 import FullCalendar from '@fullcalendar/vue3';
 import allLocales from '@fullcalendar/core/locales-all';
 import luxon2Plugin from '@fullcalendar/luxon2';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import {shallowRef} from "vue";
 
-export default {
-    name: 'Schedule',
-    components: {FullCalendar},
-    props: {
-        scheduleUrl: String,
-        stationTimeZone: String
-    },
-    data() {
-        return {
-            calendarOptions: {
-                locale: App.locale_short,
-                locales: allLocales,
-                plugins: [luxon2Plugin, timeGridPlugin],
-                initialView: 'timeGridWeek',
-                timeZone: this.stationTimeZone,
-                themeSystem: 'bootstrap',
-                nowIndicator: true,
-                defaultTimedEventDuration: '00:20',
-                headerToolbar: false,
-                footerToolbar: false,
-                height: 'auto',
-                events: this.scheduleUrl,
-                eventClick: this.onEventClick,
-                eventDidMount: this.onEventDidMount,
-                views: {
-                    timeGridWeek: {
-                        slotLabelFormat: {
-                            ...App.time_config,
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            omitZeroMinute: true,
-                            meridiem: 'short'
-                        }
-                    }
-                }
-            }
-        };
-    },
-    methods: {
-        refresh() {
+const props = defineProps({
+    scheduleUrl: String,
+    stationTimeZone: String
+});
 
-        },
-        onEventDidMount(info) {
-            $(info.el).tooltip({
-                title: info.event.extendedProps.description,
-                placement: 'top',
-                trigger: 'hover',
-                container: 'body',
-                offset: 0
-            });
-        },
-        onEventClick(arg) {
-            this.$emit('click', arg.event);
-        }
+const emit = defineEmits(['click']);
+
+const onEventDidMount = (info) => {
+    let desc = info?.event?.extendedProps?.description || null;
+    if (desc !== null) {
+        $(info.el).tooltip({
+            title: desc,
+            placement: 'top',
+            trigger: 'hover',
+            container: 'body',
+            offset: 0
+        });
     }
 };
+
+const onEventClick = (arg) => {
+    emit('click', arg.event);
+};
+
+const calendarOptions = shallowRef({
+    locale: App.locale_short,
+    locales: allLocales,
+    plugins: [luxon2Plugin, timeGridPlugin],
+    initialView: 'timeGridWeek',
+    timeZone: props.stationTimeZone,
+    themeSystem: 'bootstrap',
+    nowIndicator: true,
+    defaultTimedEventDuration: '00:20',
+    headerToolbar: false,
+    footerToolbar: false,
+    height: 'auto',
+    events: props.scheduleUrl,
+    eventClick: onEventClick,
+    eventDidMount: onEventDidMount,
+    views: {
+        timeGridWeek: {
+            slotLabelFormat: {
+                ...App.time_config,
+                hour: 'numeric',
+                minute: '2-digit',
+                omitZeroMinute: true,
+                meridiem: 'short'
+            }
+        }
+    }
+});
 </script>

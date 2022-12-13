@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="logs_modal" ref="modal" :title="langLogView">
+    <b-modal id="logs_modal" ref="modal" :title="$gettext('Log Viewer')">
         <textarea class="form-control log-viewer" spellcheck="false" readonly>{{ logs }}</textarea>
 
         <template #modal-footer>
@@ -13,38 +13,34 @@
     </b-modal>
 </template>
 
-<script>
-import '~/vendor/clipboard.js';
-import {copyToClipboard} from "~/vendor/clipboard";
+<script setup>
+import {ref} from "vue";
+import {get, set, templateRef, useClipboard} from "@vueuse/core";
 
-export default {
-    name: 'QueueLogsModal',
-    data () {
-        return {
-            logs: 'Loading...',
-        };
-    },
-    computed: {
-        langLogView () {
-            return this.$gettext('Log Viewer');
-        }
-    },
-    methods: {
-        show(logs) {
-            let logDisplay = [];
-            logs.forEach(function (log) {
-                logDisplay.push(log.formatted);
-            });
+const logs = ref('Loading...');
+const $modal = templateRef('modal');
 
-            this.logs = logDisplay.join('');
-            this.$refs.modal.show();
-        },
-        doCopy() {
-            copyToClipboard(this.logs);
-        },
-        close() {
-            this.$refs.modal.hide();
-        }
-    }
+const show = (newLogs) => {
+    let logDisplay = [];
+    newLogs.forEach((log) => {
+        logDisplay.push(log.formatted);
+    });
+
+    set(logs, logDisplay.join(''));
+    get($modal).show();
 };
+
+const clipboard = useClipboard();
+
+const doCopy = () => {
+    clipboard.copy(get(logs));
+};
+
+const close = () => {
+    get($modal).hide();
+}
+
+defineExpose({
+    show
+});
 </script>

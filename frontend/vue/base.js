@@ -5,7 +5,6 @@ import gettext from './vendor/gettext';
 import {createApp} from "vue";
 import useBootstrapVue from "./vendor/bootstrapVue";
 import useSweetAlert from "./vendor/sweetalert";
-import useVueClipboard from "~/vendor/clipboard";
 
 export default function (component, options) {
     return function (el, props) {
@@ -80,9 +79,6 @@ export default function (component, options) {
 
         /* SweetAlert */
         useSweetAlert(vueApp);
-
-        /* Clipboard */
-        useVueClipboard(vueApp);
 
         vueApp.mount(el);
     };

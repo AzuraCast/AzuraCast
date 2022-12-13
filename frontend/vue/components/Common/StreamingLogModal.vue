@@ -1,5 +1,6 @@
 <template>
-    <b-modal id="logs_modal" size="lg" ref="modal" :title="langLogView" @hidden="clearContents" no-enforce-focus>
+    <b-modal id="logs_modal" size="lg" ref="modal" @hidden="clearContents"
+             :title="$gettext('Log Viewer')" no-enforce-focus>
         <streaming-log-view ref="logView" :log-url="logUrl"></streaming-log-view>
 
         <template #modal-footer>
@@ -13,39 +14,35 @@
     </b-modal>
 </template>
 
-<script>
-import '~/vendor/clipboard.js';
+<script setup>
 import StreamingLogView from "~/components/Common/StreamingLogView";
-import {copyToClipboard} from "~/vendor/clipboard";
+import {ref} from "vue";
+import {get, set, templateRef, useClipboard} from "@vueuse/core";
 
-export default {
-    name: 'StreamingLogModal',
-    components: {StreamingLogView},
-    data() {
-        return {
-            logUrl: null
-        };
-    },
-    computed: {
-        langLogView() {
-            return this.$gettext('Log Viewer');
-        }
-    },
-    methods: {
-        show(logUrl) {
-            this.logUrl = logUrl;
-            this.$refs.modal.show();
-        },
-        doCopy() {
-            copyToClipboard(this.$refs.logView.getContents());
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        clearContents() {
-            this.logUrl = null;
-            this.log = null;
-        }
-    }
+const logUrl = ref('');
+const $modal = templateRef('modal');
+const $logView = templateRef('logView');
+
+const show = (newLogUrl) => {
+    set(logUrl, newLogUrl);
+    get($modal).show();
 };
+
+const clipboard = useClipboard();
+
+const doCopy = () => {
+    clipboard.copy(get($logView).getContents());
+};
+
+const close = () => {
+    get($modal).hide();
+}
+
+const clearContents = () => {
+    set(logUrl, '');
+}
+
+defineExpose({
+    show
+})
 </script>

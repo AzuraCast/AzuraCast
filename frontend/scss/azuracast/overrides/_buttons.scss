@@ -10,6 +10,14 @@
   margin-right: calc($btn-padding-x-sm / 2);
 }
 
+.btn,
+.btn-lg,
+.btn-sm {
+  .material-icons:only-child {
+    margin-right: 0;
+  }
+}
+
 .buttons {
   & > * {
     margin-right: .5rem;

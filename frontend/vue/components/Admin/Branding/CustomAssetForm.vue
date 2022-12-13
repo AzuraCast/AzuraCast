@@ -8,7 +8,7 @@
         <b-overlay variant="card" :show="loading">
             <b-form-group :label-for="id">
                 <template #label>{{ caption }}</template>
-                <b-form-file :id="id" v-model="file" accept="image/*" @input="upload"></b-form-file>
+                <b-form-file :id="id" v-model="file" accept="image/*"></b-form-file>
             </b-form-group>
             <b-button v-if="isUploaded" variant="outline-danger" @click.prevent="clear()">
                 <translate key="lang_btn_reset">Clear Image</translate>
@@ -37,6 +37,22 @@ export default {
     mounted() {
         this.relist();
     },
+    watch: {
+        file(newFile) {
+            if (null === newFile) {
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('file', this.file);
+
+            this.$wrapWithLoading(
+                this.axios.post(this.apiUrl, formData)
+            ).finally(() => {
+                this.relist();
+            });
+        }
+    },
     methods: {
         relist() {
             this.file = null;
@@ -48,25 +64,10 @@ export default {
 
                 this.loading = false;
             });
-
         },
         clear() {
             this.$wrapWithLoading(
                 this.axios.delete(this.apiUrl)
-            ).finally((resp) => {
-                this.relist();
-            });
-        },
-        upload() {
-            if (null === this.file) {
-                return;
-            }
-
-            let formData = new FormData();
-            formData.append('file', this.file);
-
-            this.$wrapWithLoading(
-                this.axios.post(this.apiUrl, formData)
             ).finally((resp) => {
                 this.relist();
             });

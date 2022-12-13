@@ -1,71 +1,75 @@
 <template>
     <a href="#" @click.prevent="toggle" :title="langTitle">
-        <icon :class="iconClass" :icon="icon"></icon>
+        <icon :class="iconClass" :icon="iconText"></icon>
     </a>
 </template>
 
-<script>
+<script setup>
 import Icon from "./Icon";
-
+import {usePlayerStore} from "~/store";
+import {computed} from "vue";
+import {get} from "@vueuse/core";
+import gettext from "~/vendor/gettext";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
 
-import {usePlayerStore} from '~/store.js';
+const props = defineProps({
+    url: String,
+    isStream: {
+        type: Boolean,
+        default: false
+    },
+    isHls: {
+        type: Boolean,
+        default: false
+    },
+    iconClass: String
+});
 
-export default {
-    name: 'PlayButton',
-    components: {Icon},
-    setup() {
-        return {
-            store: usePlayerStore()
-        }
-    },
-    props: {
-        url: String,
-        isStream: {
-            type: Boolean,
-            default: false
-        },
-        isHls: {
-            type: Boolean,
-            default: false
-        },
-        iconClass: String
-    },
-    computed: {
-        isPlaying() {
-            return this.store.isPlaying;
-        },
-        current() {
-            return this.store.current;
-        },
-        isThisPlaying() {
-            if (!this.isPlaying) {
-                return false;
-            }
+const $store = usePlayerStore();
+const {$gettext} = gettext;
 
-            let playingUrl = getUrlWithoutQuery(this.current.url);
-            let thisUrl = getUrlWithoutQuery(this.url);
-            return playingUrl === thisUrl;
-        },
-        langTitle() {
-            return this.isThisPlaying
-                ? this.$gettext('Stop')
-                : this.$gettext('Play');
-        },
-        icon() {
-            return this.isThisPlaying
-                ? 'stop_circle'
-                : 'play_circle';
-        }
-    },
-    methods: {
-        toggle() {
-            this.store.toggle({
-                url: this.url,
-                isStream: this.isStream,
-                isHls: this.isHls
-            });
-        }
+const isPlaying = computed(() => {
+    return $store.isPlaying;
+});
+
+const current = computed(() => {
+    return $store.current;
+});
+
+const isThisPlaying = computed(() => {
+    if (!get(isPlaying)) {
+        return false;
     }
-}
+
+    let playingUrl = getUrlWithoutQuery(get(current).url);
+    let thisUrl = getUrlWithoutQuery(props.url);
+    return playingUrl === thisUrl;
+});
+
+const langTitle = computed(() => {
+    return get(isThisPlaying)
+        ? $gettext('Stop')
+        : $gettext('Play');
+});
+
+const iconText = computed(() => {
+    return get(isThisPlaying)
+        ? 'stop_circle'
+        : 'play_circle';
+});
+
+const toggle = () => {
+    $store.toggle({
+        url: props.url,
+        isStream: props.isStream,
+        isHls: props.isHls
+    });
+};
+
+defineExpose({
+    current,
+    isPlaying,
+    isThisPlaying,
+    toggle
+})
 </script>

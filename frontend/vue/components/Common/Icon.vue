@@ -1,30 +1,25 @@
 <template>
-    <i :class="iconClass" aria-hidden="true">{{ iconContent }}</i>
+    <i :class="iconClass" aria-hidden="true">{{ icon }}</i>
 </template>
 
-<script>
-export default {
-    name: 'Icon',
-    props: {
-        type: {
-            type: String,
-            default: 'md'
-        },
-        icon: {
-            type: String,
-            required: true
-        }
+<script setup>
+import {computed} from "vue";
+
+const props = defineProps({
+    type: {
+        type: String,
+        default: 'md'
     },
-    computed: {
-        iconClass () {
-            if (this.type === 'md') {
-                return ['material-icons'];
-            }
-            return null;
-        },
-        iconContent () {
-            return this.icon;
-        }
+    icon: {
+        type: String,
+        required: true
     }
-};
+});
+
+const iconClass = computed(() => {
+    if (props.type === 'md') {
+        return ['material-icons'];
+    }
+    return null;
+});
 </script>

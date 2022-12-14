@@ -1,14 +1,13 @@
 <template>
-    <textarea ref="textarea" spellcheck="false" v-model="textValue"/>
+    <code-mirror basic v-model="textValue" :lang="lang" :dark="dark"></code-mirror>
 </template>
 
 <script setup>
-import Codemirror from 'codemirror';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/css/css.js';
-import 'codemirror/mode/javascript/javascript.js';
-import {get, set, templateRef, useVModel} from "@vueuse/core";
-import {nextTick, onMounted, onUnmounted, ref, watch} from "vue";
+import CodeMirror from "vue-codemirror6";
+import {useVModel} from "@vueuse/core";
+import {computed} from "vue";
+import {css} from "@codemirror/lang-css";
+import {javascript} from "@codemirror/lang-javascript";
 
 const props = defineProps({
     modelValue: String,
@@ -19,58 +18,19 @@ const emit = defineEmits(['update:modelValue']);
 
 const textValue = useVModel(props, 'modelValue', emit);
 
-const $textarea = templateRef('textarea');
-const content = ref(null);
-let codemirror = null;
-
-watch(textValue, (newVal) => {
-    newVal = newVal || '';
-
-    const cm_value = (codemirror !== null)
-        ? codemirror.getValue()
-        : null;
-
-    if (newVal !== cm_value) {
-        set(content, newVal);
-
-        if (codemirror !== null) {
-            codemirror.setValue(newVal);
-        }
+const lang = computed(() => {
+    if (props.mode === 'css') {
+        return css();
+    } else if (props.mode === 'javascript') {
+        return javascript();
     }
+    return null;
 });
 
-const refresh = () => {
-    nextTick(() => {
-        if (codemirror !== null) {
-            codemirror.refresh();
-        }
-    });
-};
-
-onMounted(() => {
-    codemirror = Codemirror.fromTextArea(
-        get($textarea),
-        {
-            lineNumbers: true,
-            theme: 'default',
-            mode: props.mode
-        }
-    );
-
-    set(content, props.value || '');
-
-    codemirror.setValue(get(content));
-    codemirror.on('change', cm => {
-        emit('update:modelValue', cm.getValue());
-    });
-
-    refresh();
-});
-
-onUnmounted(() => {
-    const element = codemirror.doc.cm.getWrapperElement();
-    element && element.remove && element.remove();
-});
+const dark = computed(() => {
+    console.log(App.theme);
+    return App.theme === 'dark';
+})
 </script>
 
 <script>

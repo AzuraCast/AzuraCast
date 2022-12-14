@@ -10,7 +10,7 @@ RUN go install github.com/jwilder/dockerize@latest
 
 RUN go install github.com/aptible/supercronic@latest
 
-RUN go install github.com/centrifugal/centrifugo/v4@d465b5932ab786273f081392e1dc8fdfd2d2ec10
+RUN go install github.com/centrifugal/centrifugo@latest
 
 #
 # Final build image

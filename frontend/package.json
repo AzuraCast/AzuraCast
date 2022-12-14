@@ -40,7 +40,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-dart-sass": "^1.0.2",
     "gulp-mode": "^1.1.0",
-    "gulp-rev": "^9",
+    "gulp-rev": "^10",
     "gulp-rev-delete-original": "^0.2.3",
     "gulp-run-command": "0.0.10",
     "gulp-sourcemaps": "^3",

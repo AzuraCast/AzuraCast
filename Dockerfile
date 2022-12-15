@@ -6,11 +6,11 @@ FROM golang:1-bullseye AS go-dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
 
-RUN go install github.com/jwilder/dockerize@latest
+RUN go install github.com/jwilder/dockerize@v0.6.1
 
-RUN go install github.com/aptible/supercronic@latest
+RUN go install github.com/aptible/supercronic@v0.2.1
 
-RUN go install github.com/centrifugal/centrifugo@latest
+RUN go install github.com/centrifugal/centrifugo/v4@v4.0.5
 
 #
 # Final build image

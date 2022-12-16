@@ -2,7 +2,7 @@
     <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
-                <h3 class="flex-shrink card-title my-0" key="lang_profile_nowplaying_onair" v-translate>On the Air</h3>
+                <h3 class="flex-shrink card-title my-0">{{ $gettext('On the Air') }}</h3>
                 <h6 class="card-subtitle text-right flex-fill my-0" style="line-height: 1;">
                     <icon class="sm align-middle" icon="headset"></icon>
                     <span class="pl-1">
@@ -12,7 +12,7 @@
                     <br>
                     <small>
                         <span class="pr-1">{{ np.listeners.unique }}</span>
-                        <translate key="lang_profile_nowplaying_unique">Unique</translate>
+                        {{ $gettext('Unique') }}
                     </small>
                 </h6>
             </div>
@@ -24,7 +24,7 @@
                         <div class="clearfix">
                             <h6 style="margin-left: 32px;">
                                 <icon icon="music_note"></icon>
-                                <translate key="lang_profile_nowplaying_title">Now Playing</translate>
+                                {{ $gettext('Now Playing') }}
                             </h6>
                             <div class="media">
                                 <a class="mr-2" v-if="np.now_playing.song.art" :href="np.now_playing.song.art"
@@ -35,7 +35,7 @@
                                 <div class="media-body">
                                     <div v-if="!np.is_online">
                                         <h5 class="media-heading m-0 text-muted">
-                                            <translate key="station_offline">Station Offline</translate>
+                                            {{ $gettext('Station Offline') }}
                                         </h5>
                                     </div>
                                     <div v-else-if="np.now_playing.song.title !== ''">
@@ -50,7 +50,7 @@
                                     </div>
                                     <div v-if="np.now_playing.playlist">
                                         <small class="text-muted">
-                                            <translate key="lang_profile_nowplaying_playlist">Playlist</translate>
+                                            {{ $gettext('Playlist') }}
                                             : {{ np.now_playing.playlist }}</small>
                                     </div>
                                     <div class="nowplaying-progress" v-if="timeDisplay">
@@ -64,7 +64,7 @@
                         <div class="clearfix" v-if="!np.live.is_live && np.playing_next">
                             <h6 style="margin-left: 22px;">
                                 <icon icon="skip_next"></icon>
-                                <translate key="profile_nowplaying_playing_next">Playing Next</translate>
+                                {{ $gettext('Playing Next') }}
                             </h6>
 
                             <div class="media">
@@ -87,7 +87,7 @@
 
                                     <div v-if="np.playing_next.playlist">
                                         <small class="text-muted">
-                                            <translate key="lang_profile_nowplaying_playlist">Playlist</translate>
+                                            {{ $gettext('Playlist') }}
                                             : {{ np.playing_next.playlist }}</small>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                         <div class="clearfix" v-else-if="np.live.is_live">
                             <h6 style="margin-left: 22px;">
                                 <icon icon="mic"></icon>
-                                <translate key="lang_profile_nowplaying_live">Live</translate>
+                                {{ $gettext('Live') }}
                             </h6>
 
                             <h4 class="media-heading" style="margin-left: 22px;">
@@ -112,12 +112,12 @@
             <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button"
                v-if="!np.live.is_live" :href="backendSkipSongUri">
                 <icon icon="skip_next"></icon>
-                <translate key="lang_backend_skip">Skip Song</translate>
+                {{ $gettext('Skip Song') }}
             </a>
             <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button"
                v-if="np.live.is_live" :href="backendDisconnectStreamerUri">
                 <icon icon="volume_off"></icon>
-                <translate key="lang_backend_disconnect">Disconnect Streamer</translate>
+                {{ $gettext('Disconnect Streamer') }}
             </a>
         </div>
     </section>

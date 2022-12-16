@@ -8,10 +8,10 @@
                 <b-thead>
                     <tr>
                         <th style="width: 5%">&nbsp;</th>
-                        <th style="width: 25%;" key="lang_col_title" v-translate>Title</th>
-                        <th style="width: 25%;" key="lang_col_artist" v-translate>Artist</th>
-                        <th style="width: 25%;" key="lang_col_album" v-translate>Album</th>
-                        <th style="width: 20%;" key="lang_col_actions" v-translate>Actions</th>
+                        <th style="width: 25%;">{{ $gettext('Title') }}</th>
+                        <th style="width: 25%;">{{ $gettext('Artist') }}</th>
+                        <th style="width: 25%;">{{ $gettext('Album') }}</th>
+                        <th style="width: 20%;">{{ $gettext('Actions') }}</th>
                     </tr>
                 </b-thead>
                 <draggable v-model="media" tag="tbody" @change="save">

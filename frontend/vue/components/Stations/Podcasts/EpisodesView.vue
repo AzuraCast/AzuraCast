@@ -10,7 +10,7 @@
                             </div>
                             <div class="flex-fill">
                                 <h2 class="card-title">{{ podcast.title }}</h2>
-                                <h4 class="card-subtitle text-muted" key="lang_episodes" v-translate>Episodes</h4>
+                                <h4 class="card-subtitle text-muted">{{ $gettext('Episodes') }}</h4>
                             </div>
                         </div>
                     </b-col>
@@ -23,12 +23,12 @@
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="bg" @click="doClearPodcast()">
                     <icon icon="arrow_back"></icon>
-                    <translate key="lang_podcast_back">All Podcasts</translate>
+                    {{ $gettext('All Podcasts') }}
                 </b-button>
 
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <i class="material-icons" aria-hidden="true">add</i>
-                    <translate key="lang_add_episode">Add Episode</translate>
+                    {{ $gettext('Add Episode') }}
                 </b-button>
             </b-card-body>
 
@@ -39,11 +39,7 @@
                 </template>
                 <template #cell(title)="row">
                     <h5 class="m-0">{{ row.item.title }}</h5>
-                    <a :href="row.item.links.public" target="_blank">
-                        <translate key="lang_link_public">
-                        Public Page
-                        </translate>
-                    </a>
+                    <a :href="row.item.links.public" target="_blank">{{ $gettext('Public Page') }}</a>
                 </template>
                 <template #cell(podcast_media)="row">
                     <template v-if="row.item.media">
@@ -53,17 +49,15 @@
                     </template>
                 </template>
                 <template #cell(explicit)="row">
-                        <span class="badge badge-danger" v-if="row.item.explicit">
-                            <translate key="explicit">Explicit</translate>
-                        </span>
+                    <span class="badge badge-danger" v-if="row.item.explicit">{{ $gettext('Explicit') }}</span>
                 </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

@@ -2,19 +2,21 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>HLS Streams</h2>
+                <h2 class="card-title">{{ $gettext('HLS Streams') }}</h2>
             </b-card-header>
 
             <info-card>
                 <p class="card-text">
-                    <translate key="lang_card_info">HTTP Live Streaming (HLS) is a new adaptive-bitrate streaming technology. From this page, you can configure the individual bitrates and formats that are included in the combined HLS stream.</translate>
+                    {{
+                        $gettext('HTTP Live Streaming (HLS) is a new adaptive-bitrate streaming technology. From this page, you can configure the individual bitrates and formats that are included in the combined HLS stream.')
+                    }}
                 </p>
             </info-card>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add HLS Stream</translate>
+                    {{ $gettext('Add HLS Stream') }}
                 </b-button>
             </b-card-body>
 
@@ -32,10 +34,10 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

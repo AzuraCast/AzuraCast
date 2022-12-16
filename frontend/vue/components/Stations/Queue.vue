@@ -2,12 +2,12 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_queue" v-translate>Upcoming Song Queue</h2>
+                <h2 class="card-title">{{ $gettext('Upcoming Song Queue') }}</h2>
             </b-card-header>
             <div class="card-actions">
                 <b-button variant="outline-danger" @click="doClear()">
                     <icon icon="remove"></icon>
-                    <translate key="lang_btn_clear_requests">Clear Upcoming Song Queue</translate>
+                    {{ $gettext('Clear Upcoming Song Queue') }}
                 </b-button>
             </div>
             <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl">
@@ -15,11 +15,11 @@
                     <b-button-group>
                         <b-button v-if="row.item.log" size="sm" variant="primary"
                                   @click.prevent="doShowLogs(row.item.log)">
-                            <translate key="lang_btn_logs">Logs</translate>
+                            {{ $gettext('Logs') }}
                         </b-button>
                         <b-button v-if="!row.item.sent_to_autodj" size="sm" variant="danger"
                                   @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>
@@ -41,11 +41,10 @@
                 </template>
                 <template #cell(source)="row">
                     <div v-if="row.item.is_request">
-                        <translate key="lang_source_request">Listener Request</translate>
+                        {{ $gettext('Listener Request') }}
                     </div>
                     <div v-else-if="row.item.playlist">
-                        <translate key="lang_source_playlist">Playlist: </translate>
-                        {{ row.item.playlist }}
+                        {{ $gettext('Playlist') }}: {{ row.item.playlist }}
                     </div>
                 </template>
             </data-table>

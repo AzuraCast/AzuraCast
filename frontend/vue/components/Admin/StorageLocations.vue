@@ -2,7 +2,7 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_storage_locations" v-translate>Storage Locations</h2>
+                <h2 class="card-title">{{ $gettext('Storage Locations') }}</h2>
             </b-card-header>
             <b-tabs pills card lazy>
                 <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
@@ -12,7 +12,7 @@
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_playlist">Add Storage Location</translate>
+                    {{ $gettext('Add Storage Location') }}
                 </b-button>
             </b-card-body>
 
@@ -21,10 +21,10 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

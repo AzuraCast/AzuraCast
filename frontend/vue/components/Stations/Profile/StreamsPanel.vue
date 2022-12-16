@@ -1,7 +1,7 @@
 <template>
     <section class="card mb-4" role="region">
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title" key="lang_profile_streams" v-translate>Streams</h3>
+            <h3 class="card-title">{{ $gettext('Streams') }}</h3>
         </div>
         <table class="table table-sm table-striped table-responsive mb-0">
             <colgroup>
@@ -12,8 +12,8 @@
             <template v-if="np.station.mounts.length > 0">
                 <thead>
                 <tr>
-                    <th colspan="2" key="lang_streams_local" v-translate>Local Streams</th>
-                    <th class="text-right" key="lang_streams_listeners" v-translate>Listeners</th>
+                    <th colspan="2">{{ $gettext('Local Streams') }}</th>
+                    <th class="text-right">{{ $gettext('Listeners') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,7 @@
                         <span class="listeners-total pl-1">{{ mount.listeners.total }}</span><br>
                         <small>
                             <span class="listeners-unique pr-1">{{ mount.listeners.unique }}</span>
-                            <translate key="lang_streams_unique">Unique</translate>
+                            {{ $gettext('Unique') }}
                         </small>
                     </td>
                 </tr>
@@ -40,8 +40,8 @@
             <template v-if="np.station.remotes.length > 0">
                 <thead>
                 <tr>
-                    <th colspan="2" key="lang_streams_remote" v-translate>Remote Relays</th>
-                    <th class="text-right" key="lang_streams_listeners" v-translate>Listeners</th>
+                    <th colspan="2">{{ $gettext('Remote Relays') }}</th>
+                    <th class="text-right">{{ $gettext('Listeners') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,7 +58,7 @@
                         <span class="listeners-total pl-1">{{ remote.listeners.total }}</span><br>
                         <small>
                             <span class="listeners-unique pr-1">{{ remote.listeners.unique }}</span>
-                            <translate key="lang_streams_unique">Unique</translate>
+                            {{ $gettext('Unique') }}
                         </small>
                     </td>
                 </tr>
@@ -68,8 +68,8 @@
             <template v-if="np.station.hls_enabled">
                 <thead>
                 <tr>
-                    <th colspan="2" key="lang_streams_hls" v-translate>HTTP Live Streaming (HLS)</th>
-                    <th class="text-right" key="lang_streams_listeners" v-translate>Listeners</th>
+                    <th colspan="2">{{ $gettext('HTTP Live Streaming (HLS)') }}</th>
+                    <th class="text-right">{{ $gettext('Listeners') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,11 +91,11 @@
         <div class="card-actions">
             <a class="btn btn-outline-primary" :href="np.station.playlist_pls_url">
                 <icon icon="file_download"></icon>
-                <translate key="lang_streams_download_pls">Download PLS</translate>
+                {{ $gettext('Download PLS') }}
             </a>
             <a class="btn btn-outline-primary" :href="np.station.playlist_m3u_url">
                 <icon icon="file_download"></icon>
-                <translate key="lang_streams_download_m3u">Download M3U</translate>
+                {{ $gettext('Download M3U') }}
             </a>
         </div>
     </section>

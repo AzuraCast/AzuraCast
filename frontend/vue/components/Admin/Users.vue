@@ -2,13 +2,13 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Users</h2>
+                <h2 class="card-title">{{ $gettext('Users') }}</h2>
             </b-card-header>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add User</translate>
+                    {{ $gettext('Add User') }}
                 </b-button>
             </b-card-body>
 
@@ -17,7 +17,7 @@
                     <h5 class="mb-0" v-if="row.item.name !== ''">{{ row.item.name }}</h5>
                     <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>
                     <span v-if="row.item.is_me" class="badge badge-primary">
-                        <translate key="lang_is_me">You</translate>
+                        {{ $gettext('You') }}
                     </span>
                 </template>
                 <template #cell(roles)="row">
@@ -28,13 +28,13 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm" v-if="!row.item.is_me">
                         <b-button size="sm" variant="secondary" :href="row.item.links.masquerade" target="_blank">
-                            <translate key="lang_btn_masquerade">Log In</translate>
+                            {{ $gettext('Log In') }}
                         </b-button>
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

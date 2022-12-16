@@ -4,10 +4,15 @@
             <b-card-header header-bg-variant="primary-dark">
                 <b-row class="align-items-center">
                     <b-col md="6">
-                        <h2 class="card-title" key="lang_playlists" v-translate>Playlists</h2>
+                        <h2 class="card-title">{{ $gettext('Playlists') }}</h2>
                     </b-col>
                     <b-col md="6" class="text-right text-muted">
-                        <translate key="lang_station_tz" :translate-params="{ tz: stationTimeZone }">This station's time zone is currently %{tz}.</translate>
+                        {{
+                            $gettext(
+                                'This station\'s time zone is currently %{tz}.',
+                                {tz: stationTimeZone}
+                            )
+                        }}
                     </b-col>
                 </b-row>
             </b-card-header>
@@ -16,7 +21,7 @@
                     <b-card-body body-class="card-padding-sm">
                         <b-button variant="outline-primary" @click.prevent="doCreate">
                             <icon icon="add"></icon>
-                            <translate key="lang_add_playlist">Add Playlist</translate>
+                            {{ $gettext('Add Playlist') }}
                         </b-button>
                     </b-card-body>
 
@@ -25,10 +30,10 @@
                         <template #cell(actions)="row">
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                                    <translate key="lang_btn_edit">Edit</translate>
+                                    {{ $gettext('Edit') }}
                                 </b-button>
                                 <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                                    <translate key="lang_btn_delete">Delete</translate>
+                                    {{ $gettext('Delete') }}
                                 </b-button>
 
                                 <b-dropdown size="sm" variant="dark" boundary="window" :text="langMore">
@@ -56,9 +61,12 @@
                                     </b-dropdown-item>
                                     <template v-for="format in ['pls', 'm3u']">
                                         <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
-                                            <translate :key="'lang_format_'+format" :translate-params="{ format: format.toUpperCase() }">
-                                            Export %{format}
-                                            </translate>
+                                            {{
+                                                $gettext(
+                                                    'Export %{format}',
+                                                    {format: format.toUpperCase()}
+                                                )
+                                            }}
                                         </b-dropdown-item>
                                     </template>
                                 </b-dropdown>
@@ -68,28 +76,28 @@
                             <h5 class="m-0">{{ row.item.name }}</h5>
                             <div>
                                 <span class="badge badge-dark">
-                                    <translate key="lang_song_based_playlist" v-if="row.item.source === 'songs'">
-                                        Song-based
-                                    </translate>
-                                    <translate key="lang_remote_url_playlist" v-else>
-                                        Remote URL
-                                    </translate>
+                                    <template v-if="row.item.source === 'songs'">
+                                        {{ $gettext('Song-based') }}
+                                    </template>
+                                    <template v-else>
+                                        {{ $gettext('Remote URL') }}
+                                    </template>
                                 </span>
                                 <span class="badge badge-primary" v-if="row.item.is_jingle">
-                                    <translate key="lang_jingle_mode">Jingle Mode</translate>
+                                    {{ $gettext('Jingle Mode') }}
                                 </span>
                                 <span class="badge badge-info"
                                       v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
-                                    <translate key="lang_sequential">Sequential</translate>
+                                    {{ $gettext('Sequential') }}
                                 </span>
                                 <span class="badge badge-info" v-if="row.item.include_in_on_demand">
-                                    <translate key="lang_on_demand">On-Demand</translate>
+                                    {{ $gettext('On-Demand') }}
                                 </span>
                                 <span class="badge badge-success" v-if="row.item.include_in_automation">
-                                    <translate key="lang_auto_assigned">Auto-Assigned</translate>
+                                    {{ $gettext('Auto-Assigned') }}
                                 </span>
                                 <span class="badge badge-danger" v-if="!row.item.is_enabled">
-                                    <translate key="lang_disabled">Disabled</translate>
+                                    {{ $gettext('Disabled') }}
                                 </span>
                             </div>
                         </template>

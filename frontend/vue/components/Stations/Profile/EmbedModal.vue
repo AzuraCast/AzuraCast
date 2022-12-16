@@ -4,7 +4,7 @@
             <b-col md="7">
                 <b-card class="mb-3" no-body>
                     <div class="card-header bg-primary-dark">
-                        <h2 class="card-title" v-translate key="lang_embed_options">Customize</h2>
+                        <h2 class="card-title">{{ $gettext('Customize') }}</h2>
                     </div>
                     <b-card-body>
                         <b-row>
@@ -37,7 +37,7 @@
             <b-col md="5">
                 <b-card class="mb-3" no-body>
                     <div class="card-header bg-primary-dark">
-                        <h2 class="card-title" v-translate key="lang_embed_code">Embed Code</h2>
+                        <h2 class="card-title">{{ $gettext('Embed Code') }}</h2>
                     </div>
                     <b-card-body>
                         <textarea class="full-width form-control text-preformatted" spellcheck="false"
@@ -50,7 +50,7 @@
 
         <b-card class="mb-3" no-body>
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title" v-translate key="lang_embed_preview">Preview</h2>
+                <h2 class="card-title">{{ $gettext('Preview') }}</h2>
             </div>
             <b-card-body :body-bg-variant="selectedTheme">
                 <iframe width="100%" :src="embedUrl" frameborder="0" style="width: 100%; border: 0;"

@@ -16,15 +16,15 @@
                 </div>
             </div>
 
-            <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()">
+            <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()"
+               :aria-label="$gettext('Stop')">
                 <icon icon="stop"></icon>
-                <span class="sr-only" key="lang_pause" v-translate>Stop</span>
             </a>
             <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
                 <div class="flex-shrink-0">
-                    <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0">
+                    <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0"
+                       :aria-label="$gettext('Mute')">
                         <icon icon="volume_mute"></icon>
-                        <span class="sr-only" key="lang_mute" v-translate>Mute</span>
                     </a>
                 </div>
                 <div class="flex-fill mx-1">
@@ -32,9 +32,9 @@
                            step="1" v-model="volume">
                 </div>
                 <div class="flex-shrink-0">
-                    <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100">
+                    <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100"
+                       :aria-label="$gettext('Full Volume')">
                         <icon icon="volume_up"></icon>
-                        <span class="sr-only" key="lang_full_volume" v-translate>Full Volume</span>
                     </a>
                 </div>
             </div>

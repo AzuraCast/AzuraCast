@@ -2,13 +2,13 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Stations</h2>
+                <h2 class="card-title">{{ $gettext('Stations') }}</h2>
             </b-card-header>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add Station</translate>
+                    {{ $gettext('Add Station') }}
                 </b-button>
             </b-card-body>
 
@@ -26,17 +26,17 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="secondary" :href="row.item.links.manage" target="_blank">
-                            <translate key="lang_btn_manage">Manage</translate>
+                            {{ $gettext('Manage') }}
                         </b-button>
                         <b-button size="sm" variant="secondary"
                                   @click.prevent="doClone(row.item.name, row.item.links.clone)">
-                            <translate key="lang_btn_clone">Clone</translate>
+                            {{ $gettext('Clone') }}
                         </b-button>
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

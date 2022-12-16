@@ -2,19 +2,21 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Remote Relays</h2>
+                <h2 class="card-title">{{ $gettext('Remote Relays') }}</h2>
             </b-card-header>
 
             <info-card>
                 <p class="card-text">
-                    <translate key="lang_card_info">Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays.</translate>
+                    {{
+                        $gettext('Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.')
+                    }}
                 </p>
             </info-card>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add Remote Relay</translate>
+                    {{ $gettext('Add Remote Relay') }}
                 </b-button>
             </b-card-body>
 
@@ -26,21 +28,21 @@
                 </template>
                 <template #cell(enable_autodj)="row">
                     <template v-if="row.item.enable_autodj">
-                        <translate key="lang_autodj_enabled">Enabled</translate>
-                        -
-                        {{ row.item.autodj_bitrate }}kbps {{ upper(row.item.autodj_format) }}
+                        {{ $gettext('Enabled') }} - {{ row.item.autodj_bitrate }}kbps {{
+                            upper(row.item.autodj_format)
+                        }}
                     </template>
                     <template v-else>
-                        <translate key="lang_autodj_disabled">Disabled</translate>
+                        {{ $gettext('Disabled') }}
                     </template>
                 </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm" v-if="row.item.is_editable">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

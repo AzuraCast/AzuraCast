@@ -14,31 +14,31 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td key="lang_profile_public_page" v-translate>Public Page</td>
+                    <td>{{ $gettext('Public Page') }}</td>
                     <td>
                         <a :href="publicPageUri">{{ publicPageUri }}</a>
                     </td>
                 </tr>
                 <tr v-if="stationSupportsStreamers && enableStreamers">
-                    <td key="lang_profile_web_dj" v-translate>Web DJ</td>
+                    <td>{{ $gettext('Web DJ') }}</td>
                     <td>
                         <a :href="publicWebDjUri">{{ publicWebDjUri }}</a>
                     </td>
                 </tr>
                 <tr v-if="enableOnDemand">
-                    <td key="lang_profile_on_demand_media" v-translate>On-Demand Media</td>
+                    <td>{{ $gettext('On-Demand Media') }}</td>
                     <td>
                         <a :href="publicOnDemandUri">{{ publicOnDemandUri }}</a>
                     </td>
                 </tr>
                 <tr>
-                    <td key="lang_profile_podcasts" v-translate>Podcasts</td>
+                    <td>{{ $gettext('Podcasts') }}</td>
                     <td>
                         <a :href="publicPodcastsUri">{{ publicPodcastsUri }}</a>
                     </td>
                 </tr>
                 <tr>
-                    <td key="lang_profile_schedule" v-translate>Schedule</td>
+                    <td>{{ $gettext('Schedule') }}</td>
                     <td>
                         <a :href="publicScheduleUri">{{ publicScheduleUri }}</a>
                     </td>
@@ -48,11 +48,11 @@
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-danger" @click.prevent="doOpenEmbed">
                     <icon icon="code"></icon>
-                    <translate key="lang_public_pages_disable">Embed Widgets</translate>
+                    {{ $gettext('Embed Widgets') }}
                 </a>
                 <a class="btn btn-outline-danger" :data-confirm-title="langDisablePublicPages" :href="togglePublicPageUri">
                     <icon icon="close"></icon>
-                    <translate key="lang_public_pages_disable">Disable</translate>
+                    {{ $gettext('Disable') }}
                 </a>
             </div>
             <embed-modal v-bind="$props" ref="embed_modal"></embed-modal>
@@ -60,14 +60,14 @@
         <template v-else>
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_public_title">Public Pages</translate>
+                    {{ $gettext('Public Pages') }}
                     <enabled-badge :enabled="false"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-success" :data-confirm-title="langEnablePublicPages" :href="togglePublicPageUri">
                     <icon icon="check"></icon>
-                    <translate key="lang_public_pages_enable">Enable</translate>
+                    {{ $gettext('Enable') }}
                 </a>
             </div>
         </template>

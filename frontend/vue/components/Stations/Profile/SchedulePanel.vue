@@ -2,7 +2,7 @@
     <div id="profile-scheduled">
         <section class="card mb-4 scheduled" role="region" v-if="processedScheduleItems.length > 0">
             <div class="card-header bg-primary-dark">
-                <h3 class="card-title" key="lang_schedule_title" v-translate>Scheduled</h3>
+                <h3 class="card-title">{{ $gettext('Scheduled') }}</h3>
             </div>
             <table class="table table-striped mb-0">
                 <tbody>
@@ -12,10 +12,10 @@
                             <h5 class="m-0">
                                 <small>
                                     <template v-if="row.type === 'playlist'">
-                                        <translate key="lang_schedule_playlist_name">Playlist</translate>
+                                        {{ $gettext('Playlist') }}
                                     </template>
                                     <template v-else>
-                                        <translate key="lang_schedule_streamer_name">Streamer/DJ</translate>
+                                        {{ $gettext('Streamer/DJ') }}
                                     </template>
                                 </small><br>
                                 {{ row.name }}
@@ -25,7 +25,7 @@
                                 <br>
                                 <strong>
                                     <template v-if="row.is_now">
-                                        <translate key="lang_schedule_now">Now</translate>
+                                        {{ $gettext('Now') }}
                                     </template>
                                     <template v-else>{{ row.time_until }}</template>
                                 </strong>

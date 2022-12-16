@@ -4,7 +4,7 @@
             <b-card-header header-bg-variant="primary-dark">
                 <b-row class="align-items-center">
                     <b-col md="7">
-                        <h2 class="card-title" key="lang_podcasts" v-translate>Podcasts</h2>
+                        <h2 class="card-title">{{ $gettext('Podcasts') }}</h2>
                     </b-col>
                     <b-col md="5" class="text-right text-white-50">
                         <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
@@ -15,7 +15,7 @@
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <i class="material-icons" aria-hidden="true">add</i>
-                    <translate key="lang_add_podcasts">Add Podcast</translate>
+                    {{ $gettext('Add Podcast') }}
                 </b-button>
             </b-card-body>
 
@@ -26,16 +26,8 @@
                 </template>
                 <template #cell(title)="row">
                     <h5 class="m-0">{{ row.item.title }}</h5>
-                    <a :href="row.item.links.public_episodes" target="_blank">
-                        <translate key="lang_link_public_page">
-                        Public Page
-                        </translate>
-                    </a> &bull;
-                    <a :href="row.item.links.public_feed" target="_blank">
-                        <translate key="lang_link_rss_feed">
-                        RSS Feed
-                        </translate>
-                    </a>
+                    <a :href="row.item.links.public_episodes" target="_blank">{{ $gettext('Public Page') }}</a> &bull;
+                    <a :href="row.item.links.public_feed" target="_blank">{{ $gettext('RSS Feed') }}</a>
                 </template>
                 <template #cell(num_episodes)="row">
                     {{ countEpisodes(row.item.episodes) }}
@@ -43,13 +35,13 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                         <b-button size="sm" variant="dark" @click.prevent="doSelectPodcast(row.item)">
-                            <translate key="lang_btn_episodes">Episodes</translate>
+                            {{ $gettext('Episodes') }}
                         </b-button>
                     </b-button-group>
                 </template>

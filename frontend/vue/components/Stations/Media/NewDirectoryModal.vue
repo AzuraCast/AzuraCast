@@ -2,18 +2,17 @@
     <b-modal id="create_directory" centered ref="modal" :title="langNewDirectory">
         <b-form @submit.prevent="doMkdir">
             <b-wrapped-form-group id="new_directory_name" :field="v$.newDirectory" autofocus>
-                <template #label="{lang}">
-                    <translate :key="lang">Directory Name</translate>
+                <template #label>
+                    {{ $gettext('Directory Name') }}
                 </template>
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
-            <b-button variant="default" @click="close" key="lang_btn_close" v-translate>
-                Close
+            <b-button variant="default" @click="close">
+                {{ $gettext('Close') }}
             </b-button>
-            <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doMkdir" key="lang_btn_create"
-                      v-translate>
-                Create Directory
+            <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doMkdir">
+                {{ $gettext('Create Directory') }}
             </b-button>
         </template>
     </b-modal>

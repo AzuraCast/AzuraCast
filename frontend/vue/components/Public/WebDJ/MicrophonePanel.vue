@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center">
                 <div class="flex-fill">
                     <h5 class="card-title">
-                        <translate key="lang_mic_title">Microphone</translate>
+                        {{ $gettext('Microphone') }}
                     </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
@@ -23,15 +23,16 @@
                                 <icon icon="mic"></icon>
                             </button>
                             <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
-                                <translate key="lang_btn_cue">Cue</translate>
+                                {{ $gettext('Cue') }}
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="flex-fill pl-3">
                     <div class="form-group microphone-entry mb-0">
-                        <label for="select_microphone_source" class="mb-2" key="lang_mic_source" v-translate>Microphone
-                            Source</label>
+                        <label for="select_microphone_source" class="mb-2">
+                            {{ $gettext('Microphone Source') }}
+                        </label>
                         <div class="controls">
                             <select id="select_microphone_source" v-model="device" class="form-control">
                                 <option v-for="device_row in devices" v-bind:value="device_row.deviceId">

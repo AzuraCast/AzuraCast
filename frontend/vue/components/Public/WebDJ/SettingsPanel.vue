@@ -29,23 +29,30 @@
                     <div class="tab-content mt-1">
                         <div class="tab-pane active" id="settings">
                             <div class="form-group">
-                                <label class="mb-2" key="lang_encoder" v-translate>Encoder</label>
+                                <label class="mb-2">
+                                    {{ $gettext('Encoder') }}
+                                </label>
                                 <div class="controls">
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input id="encoder_mp3" type="radio" v-model="encoder" value="mp3"
                                                class="custom-control-input">
-                                        <label for="encoder_mp3" class="custom-control-label" key="lang_encoder_mp3"
-                                               v-translate>MP3</label>
+                                        <label for="encoder_mp3" class="custom-control-label">
+                                            {{ $gettext('MP3') }}
+                                        </label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input id="encoder_raw" type="radio" v-model="encoder" value="raw"
                                                class="custom-control-input">
-                                        <label for="encoder_raw" class="custom-control-label" key="lang_encoder_raw" v-translate>Raw</label>
+                                        <label for="encoder_raw" class="custom-control-label">
+                                            {{ $gettext('Raw') }}
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="select_samplerate" class="mb-2" key="lang_sample_rate" v-translate>Sample Rate</label>
+                                <label for="select_samplerate" class="mb-2">
+                                    {{ $gettext('Sample Rate') }}
+                                </label>
                                 <div class="controls">
                                     <select id="select_samplerate" class="form-control" v-model.number="samplerate">
                                         <option value="8000">8 kHz</option>
@@ -61,7 +68,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="select_bitrate" class="mb-2" key="lang_bit_rate" v-translate>Bit Rate</label>
+                                <label for="select_bitrate" class="mb-2">
+                                    {{ $gettext('Bit Rate') }}
+                                </label>
                                 <div class="controls">
                                     <select id="select_bitrate" class="form-control" v-model.number="bitrate">
                                         <option value="8">8 kbps</option>
@@ -86,7 +95,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="mb-2" key="lang_dj_creds" v-translate>DJ Credentials</label>
+                                <label class="mb-2">
+                                    {{ $gettext('DJ Credentials') }}
+                                </label>
 
                                 <div class="form-row">
                                     <div class="col-6">
@@ -104,21 +115,25 @@
                                     <input id="use_async_worker" type="checkbox" v-model="asynchronous"
                                            class="custom-control-input">
                                     <label for="use_async_worker" class="custom-control-label">
-                                        <translate key="lang_asynchronous">Use Asynchronous Worker</translate>
+                                        {{ $gettext('Use Asynchronous Worker') }}
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="metadata">
                             <div class="form-group">
-                                <label for="metadata_title" class="mb-2" key="lang_metadata_title" v-translate>Title</label>
+                                <label for="metadata_title" class="mb-2">
+                                    {{ $gettext('Title') }}
+                                </label>
                                 <div class="controls">
                                     <input id="metadata_title" class="form-control" type="text" v-model="metadata.title"
                                            v-bind:disabled="!isStreaming">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="metadata_artist" class="mb-2" key="lang_metadata_artist" v-translate>Artist</label>
+                                <label for="metadata_artist" class="mb-2">
+                                    {{ $gettext('Artist') }}
+                                </label>
                                 <div class="controls">
                                     <input id="metadata_artist" class="form-control" type="text"
                                            v-model="metadata.artist" v-bind:disabled="!isStreaming">
@@ -127,7 +142,7 @@
                             <div class="form-group">
                                 <button class="btn btn-primary" v-on:click="updateMetadata"
                                         v-bind:disabled="!isStreaming">
-                                    <translate key="lang_btn_update_metadata">Update Metadata</translate>
+                                    {{ $gettext('Update Metadata') }}
                                 </button>
                             </div>
                         </div>

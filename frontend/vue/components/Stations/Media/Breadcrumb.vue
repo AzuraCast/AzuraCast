@@ -1,6 +1,6 @@
 <template>
     <h3 class="card-subtitle mt-0 mb-2" id="breadcrumb">
-        <a href="#" key="lang_home" @click.prevent="changeDirectory('')" v-translate>Home</a>
+        <a href="#" @click.prevent="changeDirectory('')">{{ $gettext('Home') }}</a>
         <template v-for="part in directoryParts">
             &blacktriangleright;
             <a href="#" @click.prevent="changeDirectory(part.dir)">{{ part.display }}</a>
@@ -8,40 +8,39 @@
     </h3>
 </template>
 
-<script>
-export default {
-    name: 'Breadcrumb',
-    props: {
-        currentDirectory: String
-    },
-    computed: {
-        directoryParts () {
-            let dirParts = [];
+<script setup>
+import {computed} from "vue";
 
-            if (this.currentDirectory === '') {
-                return dirParts;
-            }
+const props = defineProps({
+    currentDirectory: String
+});
 
-            let builtDir = '';
-            let dirSegments = this.currentDirectory.split('/');
+const emit = defineEmits(['change-directory']);
 
-            dirSegments.forEach((part) => {
-                if (builtDir === '') {
-                    builtDir += part;
-                } else {
-                    builtDir += '/' + part;
-                }
+const directoryParts = computed(() => {
+    let dirParts = [];
 
-                dirParts.push({ dir: builtDir, display: part });
-            });
-
-            return dirParts;
-        }
-    },
-    methods: {
-        changeDirectory (newDir) {
-            this.$emit('change-directory', newDir);
-        }
+    if (props.currentDirectory === '') {
+        return dirParts;
     }
-};
+
+    let builtDir = '';
+    let dirSegments = props.currentDirectory.split('/');
+
+    dirSegments.forEach((part) => {
+        if (builtDir === '') {
+            builtDir += part;
+        } else {
+            builtDir += '/' + part;
+        }
+
+        dirParts.push({dir: builtDir, display: part});
+    });
+
+    return dirParts;
+});
+
+const changeDirectory = (newDir) => {
+    emit('change-directory', newDir);
+}
 </script>

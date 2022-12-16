@@ -2,17 +2,17 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Web Hooks</h2>
+                <h2 class="card-title">{{ $gettext('Web Hooks') }}</h2>
             </b-card-header>
 
             <info-card>
-                <translate key="lang_info_card">Web hooks let you connect to external web services and broadcast changes to your station to them.</translate>
+                {{ $gettext('Web hooks let you connect to external web services and broadcast changes to your station to them.') }}
             </info-card>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_webhook">Add Web Hook</translate>
+                    {{ $gettext('Add Web Hook') }}
                 </b-button>
             </b-card-body>
 
@@ -22,7 +22,7 @@
                     <big>{{ row.item.name }}</big><br>
                     {{ getWebhookName(row.item.type) }}
                     <b-badge v-if="!row.item.is_enabled" variant="danger">
-                        <translate key="lang_webhook_disabled">Disabled</translate>
+                        {{ $gettext('Disabled') }}
                     </b-badge>
                 </template>
                 <template #cell(triggers)="row">
@@ -34,17 +34,17 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" :variant="getToggleVariant(row.item)"
                                   @click.prevent="doToggle(row.item.links.toggle)">
                             {{ langToggleButton(row.item) }}
                         </b-button>
                         <b-button size="sm" variant="default" @click.prevent="doTest(row.item.links.test)">
-                            <translate key="lang_btn_test">Test</translate>
+                            {{ $gettext('Test') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

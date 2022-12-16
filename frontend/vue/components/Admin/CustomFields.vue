@@ -2,19 +2,21 @@
     <div>
         <b-card no-body>
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Custom Fields</h2>
+                <h2 class="card-title">{{ $gettext('Custom Fields') }}</h2>
             </b-card-header>
 
             <info-card>
                 <p class="card-text">
-                    <translate key="lang_card_info">Create custom fields to store extra metadata about each media file uploaded to your station libraries.</translate>
+                    {{
+                        $gettext('Create custom fields to store extra metadata about each media file uploaded to your station libraries.')
+                    }}
                 </p>
             </info-card>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
                     <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add Custom Field</translate>
+                    {{ $gettext('Add Custom Field') }}
                 </b-button>
             </b-card-body>
 
@@ -28,10 +30,10 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
+                            {{ $gettext('Edit') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>

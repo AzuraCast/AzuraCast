@@ -4,7 +4,7 @@
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     <translate key="lang_profile_streamers_title">Streamers/DJs</translate>
-                    <small class="badge badge-pill badge-success" key="lang_profile_streamers_enabled" v-translate>Enabled</small>
+                    <enabled-badge :enabled="true"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageStreamers || userCanManageProfile">
@@ -22,7 +22,7 @@
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     <translate key="lang_profile_streamers_title">Streamers/DJs</translate>
-                    <small class="badge badge-pill badge-danger" key="lang_profile_streamers_disabled" v-translate>Disabled</small>
+                    <enabled-badge :enabled="false"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
@@ -37,6 +37,7 @@
 
 <script>
 import Icon from '~/components/Common/Icon';
+import EnabledBadge from "./Common/EnabledBadge.vue";
 
 export const profileStreamersProps = {
     props: {
@@ -50,7 +51,7 @@ export const profileStreamersProps = {
 
 export default {
     inheritAttrs: false,
-    components: {Icon},
+    components: {EnabledBadge, Icon},
     mixins: [profileStreamersProps],
     computed: {
         langDisableStreamers() {

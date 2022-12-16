@@ -3,8 +3,8 @@
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
                 <translate key="lang_frontend_title">Broadcasting Service</translate>
-                <small class="badge badge-pill badge-success" v-if="np.services.frontend_running" key="lang_frontend_running">Running</small>
-                <small class="badge badge-pill badge-danger" v-else key="lang_frontend_not_running">Not Running</small>
+
+                <running-badge :running="np.services.frontend_running"></running-badge>
                 <br>
                 <small>{{ frontendName }}</small>
             </h3>
@@ -96,6 +96,7 @@
 import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters.js';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import Icon from '~/components/Common/Icon';
+import RunningBadge from "./Common/RunningBadge.vue";
 
 export const profileFrontendProps = {
     props: {
@@ -114,7 +115,7 @@ export const profileFrontendProps = {
 
 export default {
     inheritAttrs: false,
-    components: {Icon, CopyToClipboardButton},
+    components: {RunningBadge, Icon, CopyToClipboardButton},
     mixins: [profileFrontendProps],
     props: {
         np: Object

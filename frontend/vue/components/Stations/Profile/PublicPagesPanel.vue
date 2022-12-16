@@ -4,7 +4,7 @@
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     <translate key="lang_profile_public_title">Public Pages</translate>
-                    <small class="badge badge-pill badge-success" key="lang_profile_public_enabled" v-translate>Enabled</small>
+                    <enabled-badge :enabled="true"></enabled-badge>
                 </h3>
             </div>
             <table class="table table-striped table-responsive-md mb-0">
@@ -61,7 +61,7 @@
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     <translate key="lang_profile_public_title">Public Pages</translate>
-                    <small class="badge badge-pill badge-danger" key="lang_profile_public_disabled" v-translate>Disabled</small>
+                    <enabled-badge :enabled="false"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
@@ -77,6 +77,7 @@
 <script>
 import EmbedModal, {profileEmbedModalProps} from './EmbedModal';
 import Icon from '~/components/Common/Icon';
+import EnabledBadge from "./Common/EnabledBadge.vue";
 
 export const profilePublicProps = {
     props: {
@@ -98,7 +99,7 @@ export const profilePublicProps = {
 
 export default {
     inheritAttrs: false,
-    components: {Icon, EmbedModal},
+    components: {EnabledBadge, Icon, EmbedModal},
     mixins: [profilePublicProps, profileEmbedModalProps],
     computed: {
         langDisablePublicPages() {

@@ -4,8 +4,7 @@
             <h3 class="card-title">
                 <translate key="lang_profile_backend_title">AutoDJ Service</translate>
 
-                <small class="badge badge-pill badge-success" v-if="np.services.backend_running" key="lang_profile_backend_running" v-translate>Running</small>
-                <small class="badge badge-pill badge-danger" v-else key="lang_profile_backend_not_running" v-translate>Not Running</small>
+                <running-badge :running="np.services.backend_running"></running-badge>
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
@@ -42,6 +41,7 @@
 <script>
 import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
 import Icon from '~/components/Common/Icon';
+import RunningBadge from "./Common/RunningBadge.vue";
 
 export const profileBackendProps = {
     props: {
@@ -61,7 +61,7 @@ export const profileBackendProps = {
 
 export default {
     inheritAttrs: false,
-    components: {Icon},
+    components: {RunningBadge, Icon},
     mixins: [profileBackendProps],
     props: {
         np: Object

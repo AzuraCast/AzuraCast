@@ -9,7 +9,7 @@
             <div class="flex-shrink-0">
                 <b-button size="sm" variant="outline-light" class="py-2 pr-0" @click.prevent="$emit('remove')">
                     <icon icon="remove"></icon>
-                    <translate key="lang_btn_remove">Remove</translate>
+                    {{ $gettext('Remove') }}
                 </b-button>
             </div>
         </div>
@@ -20,10 +20,10 @@
                                           :id="'edit_form_station_permissions_'+row.station_id"
                                           :field="v$.row.permissions">
                         <template #label="{lang}">
-                            <translate :key="lang">Station Permissions</translate>
+                            {{ $gettext('Station Permissions') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Users with this role will have these permissions for this single station.</translate>
+                            {{ $gettext('Users with this role will have these permissions for this single station.') }}
                         </template>
                         <template #default="props">
                             <b-form-checkbox-group :id="props.id" :options="stationPermissionOptions"

@@ -4,15 +4,15 @@
             <setup-step :step="3"></setup-step>
         </template>
         <template #cardTitle>
-            <translate key="lang_setup_settings_hdr">Customize AzuraCast Settings</translate>
+            {{ $gettext('Customize AzuraCast Settings') }}
         </template>
         <template #cardUpper>
             <info-card>
-                <translate key="lang_setup_settings_info">Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.</translate>
+                {{ $gettext('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') }}
             </info-card>
         </template>
         <template #submitButtonName>
-            <translate key="lang_setup_settings_btn">Save and Continue</translate>
+            {{ $gettext('Save and Continue') }}
         </template>
     </admin-settings>
 </template>

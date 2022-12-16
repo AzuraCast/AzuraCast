@@ -4,11 +4,11 @@
             <div class="card-body p-4">
                 <div class="mb-3">
                     <h2 class="card-title mb-0 text-center">
-                        <translate key="lang_hdr">Recover Account</translate>
+                        {{ $gettext('Recover Account') }}
                     </h2>
                     <h3 class="text-center">
                         <small class="text-muted">
-                            <translate key="lang_subhdr">Choose a new password for your account.</translate>
+                            {{ $gettext('Choose a new password for your account.') }}
                         </small>
                     </h3>
                 </div>
@@ -22,13 +22,13 @@
                                           input-type="password">
                         <template #label="{lang}">
                             <icon icon="vpn_key" class="mr-1"></icon>
-                            <translate :key="lang">Password</translate>
+                            {{ $gettext('Password') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-button type="submit" size="lg" block variant="primary" :disabled="v$.form.$invalid"
                               class="mt-2">
-                        <translate key="btn_submit">Recover Account</translate>
+                        {{ $gettext('Recover Account') }}
                     </b-button>
                 </form>
             </div>

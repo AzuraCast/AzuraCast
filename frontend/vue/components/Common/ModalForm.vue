@@ -17,11 +17,11 @@
         <template #modal-footer="slotProps">
             <slot name="modal-footer" v-bind="slotProps">
                 <b-button variant="default" type="button" @click="close">
-                    <translate key="lang_btn_close">Close</translate>
+                    {{ $gettext('Close') }}
                 </b-button>
                 <b-button :variant="(disableSaveButton) ? 'danger' : 'primary'" type="submit" @click="doSubmit">
                     <slot name="save-button-name">
-                        <translate key="lang_btn_save_changes">Save Changes</translate>
+                        {{ $gettext('Save Changes') }}
                     </slot>
                 </b-button>
             </slot>

@@ -10,7 +10,7 @@
                                     {{ stationName }}
                                 </template>
                                 <template v-else>
-                                    <translate key="lang_title">On-Demand Media</translate>
+                                    {{ $gettext('On-Demand Media') }}
                                 </template>
                             </h2>
                         </div>

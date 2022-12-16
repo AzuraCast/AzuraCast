@@ -4,7 +4,7 @@
             <b-col md="6">
                 <b-button size="sm" variant="primary" @click="pageBack" :disabled="dirHistory.length === 0">
                     <icon icon="chevron_left"></icon>
-                    <translate key="lang_btn_back">Back</translate>
+                    {{ $gettext('Back') }}
                 </b-button>
             </b-col>
             <b-col md="6" class="text-right">
@@ -32,10 +32,10 @@
         </b-row>
         <template #modal-footer>
             <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button variant="primary" @click="doMove">
-                <translate key="lang_btn_move">Move to Directory</translate>
+                {{ $gettext('Move to Directory') }}
             </b-button>
         </template>
     </b-modal>

@@ -2,7 +2,7 @@
     <section class="card" role="region">
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
-                <translate key="hdr">SoundExchange Report</translate>
+                {{ $gettext('SoundExchange Report') }}
             </h3>
         </div>
 
@@ -45,29 +45,29 @@
                     <b-wrapped-form-group name="start_date" id="form_start_date" :field="v$.form.start_date"
                                           input-type="date">
                         <template #label="{lang}">
-                            <translate :key="lang">Start Date</translate>
+                            {{ $gettext('Start Date') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group name="end_date" id="form_end_date" :field="v$.form.end_date"
                                           input-type="date">
                         <template #label="{lang}">
-                            <translate :key="lang">End Date</translate>
+                            {{ $gettext('End Date') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-checkbox name="fetch_isrc" id="form_edit_fetch_isrc" :field="v$.form.fetch_isrc">
                         <template #label="{lang}">
-                            <translate :key="lang">Attempt to Automatically Retrieve ISRC When Missing</translate>
+                            {{ $gettext('Attempt to Automatically Retrieve ISRC When Missing') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.</translate>
+                            {{ $gettext('If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.') }}
                         </template>
                     </b-wrapped-form-checkbox>
                 </b-form-fieldset>
 
                 <b-button type="submit" size="lg" :variant="(v$.form.$invalid) ? 'danger' : 'primary'" class="mt-2">
-                    <translate key="btn_submit">Generate Report</translate>
+                    {{ $gettext('Generate Report') }}
                 </b-button>
             </div>
         </form>

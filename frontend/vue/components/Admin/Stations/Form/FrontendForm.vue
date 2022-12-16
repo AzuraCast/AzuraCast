@@ -5,11 +5,10 @@
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
                                       :field="form.frontend_type">
                     <template #label="{lang}">
-                        <translate :key="lang">Broadcasting Service</translate>
+                        {{ $gettext('Broadcasting Service') }}
                     </template>
                     <template #description="{lang}">
-                        <translate
-                            :key="lang">This software delivers your broadcast to the listening audience.</translate>
+                        {{ $gettext('This software delivers your broadcast to the listening audience.') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" :options="frontendTypeOptions"
@@ -26,14 +25,14 @@
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_license_id"
                                           :field="form.frontend_config.sc_license_id">
                         <template #label="{lang}">
-                            <translate :key="lang">Shoutcast License ID</translate>
+                            {{ $gettext('Shoutcast License ID') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_user_id"
                                           :field="form.frontend_config.sc_user_id">
                         <template #label="{lang}">
-                            <translate :key="lang">Shoutcast User ID</translate>
+                            {{ $gettext('Shoutcast User ID') }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>
@@ -44,20 +43,20 @@
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
                                           :field="form.frontend_config.source_pw">
                         <template #label="{lang}">
-                            <translate :key="lang">Customize Source Password</translate>
+                            {{ $gettext('Customize Source Password') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Leave blank to automatically generate a new password.</translate>
+                            {{ $gettext('Leave blank to automatically generate a new password.') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_admin_pw"
                                           :field="form.frontend_config.admin_pw">
                         <template #label="{lang}">
-                            <translate :key="lang">Customize Administrator Password</translate>
+                            {{ $gettext('Customize Administrator Password') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Leave blank to automatically generate a new password.</translate>
+                            {{ $gettext('Leave blank to automatically generate a new password.') }}
                         </template>
                     </b-wrapped-form-group>
 
@@ -65,20 +64,24 @@
                                           :field="form.frontend_config.port" input-type="number"
                                           :input-attrs="{min: '0'}" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Customize Broadcasting Port</translate>
+                            {{ $gettext('Customize Broadcasting Port') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">No other program can be using this port. Leave blank to automatically assign a port.</translate>
+                            {{
+                                $gettext('No other program can be using this port. Leave blank to automatically assign a port.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_max_listeners"
                                           :field="form.frontend_config.max_listeners" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Maximum Listeners</translate>
+                            {{ $gettext('Maximum Listeners') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Maximum number of total listeners across all streams. Leave blank to use the default.</translate>
+                            {{
+                                $gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>
@@ -91,11 +94,10 @@
                                               :field="form.frontend_config.banned_ips" input-type="textarea"
                                               :input-attrs="{class: 'text-preformatted'}" advanced>
                             <template #label="{lang}">
-                                <translate :key="lang">Banned IP Addresses</translate>
+                                {{ $gettext('Banned IP Addresses') }}
                             </template>
                             <template #description="{lang}">
-                                <translate
-                                    :key="lang">List one IP address or group (in CIDR format) per line.</translate>
+                                {{ $gettext('List one IP address or group (in CIDR format) per line.') }}
                             </template>
                         </b-wrapped-form-group>
 
@@ -103,11 +105,10 @@
                                               :field="form.frontend_config.allowed_ips" input-type="textarea"
                                               :input-attrs="{class: 'text-preformatted'}" advanced>
                             <template #label="{lang}">
-                                <translate :key="lang">Allowed IP Addresses</translate>
+                                {{ $gettext('Allowed IP Addresses') }}
                             </template>
                             <template #description="{lang}">
-                                <translate
-                                    :key="lang">List one IP address or group (in CIDR format) per line.</translate>
+                                {{ $gettext('List one IP address or group (in CIDR format) per line.') }}
                             </template>
                         </b-wrapped-form-group>
 
@@ -115,11 +116,10 @@
                                               :field="form.frontend_config.banned_user_agents" input-type="textarea"
                                               :input-attrs="{class: 'text-preformatted'}" advanced>
                             <template #label="{lang}">
-                                <translate :key="lang">Banned User Agents</translate>
+                                {{ $gettext('Banned User Agents') }}
                             </template>
                             <template #description="{lang}">
-                                <translate
-                                    :key="lang">List one user agent per line. Wildcards (*) are allowed.</translate>
+                                {{ $gettext('List one user agent per line. Wildcards (*) are allowed.') }}
                             </template>
                         </b-wrapped-form-group>
                     </b-col>
@@ -128,11 +128,10 @@
                                           :field="form.frontend_config.banned_countries"
                                           advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Banned Countries</translate>
+                            {{ $gettext('Banned Countries') }}
                         </template>
                         <template #description="{lang}">
-                            <translate
-                                :key="lang">Select the countries that are not allowed to connect to the streams.</translate>
+                            {{ $gettext('Select the countries that are not allowed to connect to the streams.') }}
                         </template>
                         <template #default="props">
                             <b-form-select :id="props.id" v-model="props.field.$model"
@@ -140,7 +139,7 @@
                                            multiple></b-form-select>
 
                             <b-button block variant="outline-primary" @click.prevent="clearCountries">
-                                <translate key="lang_btn_clear_countries">Clear List</translate>
+                                {{ $gettext('Clear List') }}
                             </b-button>
                         </template>
                     </b-wrapped-form-group>
@@ -149,10 +148,10 @@
 
             <b-form-fieldset v-if="showAdvanced">
                 <template #label>
-                    <translate key="lang_hdr_custom_config">Custom Configuration</translate>
+                    {{ $gettext('Custom Configuration') }}
                 </template>
                 <template #description>
-                    <translate key="lang_custom_config_1">This code will be included in the frontend configuration. Allowed formats are:</translate>
+                    {{ $gettext('This code will be included in the frontend configuration. Allowed formats are:') }}
                     <ul>
                         <li>JSON: <code>{"new_key": "new_value"}</code></li>
                         <li>XML: <code>&lt;new_key&gt;new_value&lt;/new_key&gt;</code></li>
@@ -165,7 +164,7 @@
                                           :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
                                           advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Custom Configuration</translate>
+                            {{ $gettext('Custom Configuration') }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>

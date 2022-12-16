@@ -11,7 +11,7 @@
                         <span class="sr-only">Required</span>
                     </span>
                     <span v-if="advanced" class="badge small badge-primary">
-                        <translate key="badge_advanced">Advanced</translate>
+                        {{ $gettext('Advanced') }}
                     </span>
                 </b-form-checkbox>
 

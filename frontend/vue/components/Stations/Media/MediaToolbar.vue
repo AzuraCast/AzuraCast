@@ -6,7 +6,7 @@
                             :title="langPlaylistDropdown">
                     <template #button-content>
                         <icon icon="clear_all"></icon>
-                        <translate key="lang_playlists_title">Playlists</translate>
+                        {{ $gettext('Playlists') }}
                         <span class="caret"></span>
                     </template>
                     <b-dropdown-form class="pt-2" @submit.prevent="setPlaylists">
@@ -33,17 +33,17 @@
                         </div>
 
                         <b-button type="submit" size="sm" variant="primary">
-                            <translate key="lang_btn_save">Save</translate>
+                            {{ $gettext('Save') }}
                         </b-button>
                         <b-button type="button" size="sm" variant="warning" @click="clearPlaylists()">
-                            <translate key="lang_btn_clear">Clear</translate>
+                            {{ $gettext('Clear') }}
                         </b-button>
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
             <b-button size="sm" variant="primary" v-b-modal.move_file>
                 <icon icon="open_with"></icon>
-                <translate key="lang_btn_move">Move</translate>
+                {{ $gettext('Move') }}
             </b-button>
             <b-dropdown size="sm" variant="default">
                 <template #button-content>
@@ -51,26 +51,26 @@
                     {{ langMore }}
                 </template>
                 <b-dropdown-item @click="doQueue" v-b-tooltip.hover :title="langQueue">
-                    <translate key="lang_btn_queue">Queue</translate>
+                    {{ $gettext('Queue') }}
                 </b-dropdown-item>
                 <b-dropdown-item v-if="supportsImmediateQueue" @click="doImmediateQueue" v-b-tooltip.hover
                                  :title="langImmediateQueue">
-                    <translate key="lang_btn_immediate_queue">Play Now</translate>
+                    {{ $gettext('Play Now') }}
                 </b-dropdown-item>
                 <b-dropdown-item @click="doReprocess" v-b-tooltip.hover :title="langReprocess">
-                    <translate key="lang_btn_reprocess">Reprocess</translate>
+                    {{ $gettext('Reprocess') }}
                 </b-dropdown-item>
             </b-dropdown>
 
             <b-button size="sm" variant="danger" @click="doDelete">
                 <icon icon="delete"></icon>
-                <translate key="lang_btn_delete">Delete</translate>
+                {{ $gettext('Delete') }}
             </b-button>
         </div>
         <div class="col-md-4 text-right">
             <b-button size="sm" variant="primary" v-b-modal.create_directory>
                 <icon icon="folder"></icon>
-                <translate key="lang_btn_new_folder">New Folder</translate>
+                {{ $gettext('New Folder') }}
             </b-button>
         </div>
     </div>

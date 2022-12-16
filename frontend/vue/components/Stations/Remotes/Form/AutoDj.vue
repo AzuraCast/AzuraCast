@@ -4,10 +4,12 @@
 
             <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
                 <template #label="{lang}">
-                    <translate :key="lang">Broadcast AutoDJ to Remote Station</translate>
+                    {{ $gettext('Broadcast AutoDJ to Remote Station') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">If enabled, the AutoDJ on this installation will automatically play music to this mount point.</translate>
+                    {{
+                        $gettext('If enabled, the AutoDJ on this installation will automatically play music to this mount point.')
+                    }}
                 </template>
             </b-wrapped-form-checkbox>
 
@@ -17,7 +19,7 @@
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
                 <template #label="{lang}">
-                    <translate :key="lang">AutoDJ Format</translate>
+                    {{ $gettext('AutoDJ Format') }}
                 </template>
                 <template #default="props">
                     <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
@@ -28,7 +30,7 @@
             <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
                                   v-if="formatSupportsBitrateOptions">
                 <template #label="{lang}">
-                    <translate :key="lang">AutoDJ Bitrate (kbps)</translate>
+                    {{ $gettext('AutoDJ Bitrate (kbps)') }}
                 </template>
                 <template #default="props">
                     <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
@@ -38,49 +40,52 @@
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_port" :field="form.source_port">
                 <template #label="{lang}">
-                    <translate :key="lang">Remote Station Source Port</translate>
+                    {{ $gettext('Remote Station Source Port') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.</translate>
+                    {{
+                        $gettext('If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.')
+                    }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_mount" :field="form.source_mount">
                 <template #label="{lang}">
-                    <translate :key="lang">Remote Station Source Mountpoint/SID</translate>
+                    {{ $gettext('Remote Station Source Mountpoint/SID') }}
                 </template>
                 <template #description="{lang}">
-                    <translate
-                        :key="lang">If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.</translate>
+                    {{
+                        $gettext('If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the one listed above, specify the source mount point here.')
+                    }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_username" :field="form.source_username">
                 <template #label="{lang}">
-                    <translate :key="lang">Remote Station Source Username</translate>
+                    {{ $gettext('Remote Station Source Username') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">If you are broadcasting using AutoDJ, enter the source username here. This may be blank.</translate>
+                    {{
+                        $gettext('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.')
+                    }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_source_password" :field="form.source_password">
                 <template #label="{lang}">
-                    <translate :key="lang">Remote Station Source Password</translate>
+                    {{ $gettext('Remote Station Source Password') }}
                 </template>
                 <template #description="{lang}">
-                    <translate
-                        :key="lang">If you are broadcasting using AutoDJ, enter the source password here.</translate>
+                    {{ $gettext('If you are broadcasting using AutoDJ, enter the source password here.') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_public" :field="form.is_public">
                 <template #label="{lang}">
-                    <translate :key="lang">Publish to "Yellow Pages" Directories</translate>
+                    {{ $gettext('Publish to "Yellow Pages" Directories') }}
                 </template>
                 <template #description="{lang}">
-                    <translate
-                        :key="lang">Enable to advertise this relay on "Yellow Pages" public radio directories.</translate>
+                    {{ $gettext('Enable to advertise this relay on "Yellow Pages" public radio directories.') }}
                 </template>
             </b-wrapped-form-checkbox>
 

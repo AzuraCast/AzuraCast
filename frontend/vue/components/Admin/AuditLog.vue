@@ -3,7 +3,7 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
-                    <translate key="lang_title">Audit Log</translate>
+                    {{ $gettext('Audit Log') }}
                 </h2>
                 <div class="flex-shrink">
                     <date-range-dropdown v-model="dateRange" @update="relist"></date-range-dropdown>
@@ -35,14 +35,12 @@
                     <small>{{ row.item.target_class }}</small><br>
                     {{ row.item.target }}
                 </template>
-                <template v-else>
-                    <translate key="lang_target_not_available">N/A</translate>
-                </template>
+                <template v-else>{{ $gettext('N/A') }}</template>
             </template>
             <template #cell(actions)="row">
                 <template v-if="row.item.changes.length > 0">
                     <b-button size="sm" variant="primary" @click="row.toggleDetails">
-                        <translate key="lang_changes_btn">Changes</translate>
+                        {{ $gettext('Changes') }}
                     </b-button>
                 </template>
             </template>
@@ -55,15 +53,9 @@
                     </colgroup>
                     <thead>
                     <tr>
-                        <th>
-                            <translate key="lang_col_field">Field Name</translate>
-                        </th>
-                        <th>
-                            <translate key="lang_col_previous">Previous</translate>
-                        </th>
-                        <th>
-                            <translate key="lang_col_updated">Updated</translate>
-                        </th>
+                        <th>{{ $gettext('Field Name') }}</th>
+                        <th>{{ $gettext('Previous') }}</th>
+                        <th>{{ $gettext('Updated') }}</th>
                     </tr>
                     </thead>
                     <tbody>

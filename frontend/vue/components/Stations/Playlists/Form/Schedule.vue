@@ -2,10 +2,10 @@
     <b-tab :title="langTabTitle">
         <b-form-group v-if="scheduleItems.length === 0">
             <label>
-                <translate key="lang_playlist_schedule_not_scheduled">Not Scheduled</translate>
+                {{ $gettext('Not Scheduled') }}
             </label>
             <p>
-                <translate key="lang_playlist_schedule_desc">This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.</translate>
+                {{ $gettext('This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.') }}
             </p>
         </b-form-group>
 
@@ -17,7 +17,7 @@
         <b-button-group>
             <b-button size="sm" variant="outline-primary" @click.prevent="add">
                 <icon icon="add"></icon>
-                <translate key="lang_btn_add">Add Schedule Item</translate>
+                {{ $gettext('Add Schedule Item') }}
             </b-button>
         </b-button-group>
     </b-tab>

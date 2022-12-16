@@ -11,13 +11,13 @@
             </div>
             <div class="now-playing-main">
                 <h6 class="now-playing-live" v-if="np.live.is_live">
-                    <translate key="lang_live" class="badge badge-primary">Live</translate>
+                    {{ $gettext('Live') }}
                     {{ np.live.streamer_name }}
                 </h6>
 
                 <div v-if="!np.is_online">
                     <h4 class="now-playing-title text-muted">
-                        <translate key="station_offline">Station Offline</translate>
+                        {{ $gettext('Station Offline') }}
                     </h4>
                 </div>
                 <div v-else-if="np.now_playing.song.title !== ''">

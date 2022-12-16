@@ -6,7 +6,7 @@
             <b-tabs :card="!isModal" pills :content-class="tabContentClass">
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.profileTab)" active>
                     <template #title>
-                        <translate key="tab_profile">Profile</translate>
+                        {{ $gettext('Profile') }}
                     </template>
 
                     <admin-stations-profile-form :form="v$.form" :timezones="timezones"
@@ -15,7 +15,7 @@
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.frontendTab)">
                     <template #title>
-                        <translate key="tab_frontend">Broadcasting</translate>
+                        {{ $gettext('Broadcasting') }}
                     </template>
 
                     <admin-stations-frontend-form :form="v$.form"
@@ -26,7 +26,7 @@
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.backendTab)">
                     <template #title>
-                        <translate key="tab_backend">AutoDJ</translate>
+                        {{ $gettext('AutoDJ') }}
                     </template>
 
                     <admin-stations-backend-form :form="v$.form" :station="station"
@@ -36,7 +36,7 @@
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.hlsTab)">
                     <template #title>
-                        <translate key="tab_hls">HLS</translate>
+                        {{ $gettext('HLS') }}
                     </template>
 
                     <admin-stations-hls-form :form="v$.form" :station="station" :show-advanced="showAdvanced">
@@ -45,7 +45,7 @@
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.requestsTab)">
                     <template #title>
-                        <translate key="tab_requests">Song Requests</translate>
+                        {{ $gettext('Song Requests') }}
                     </template>
 
                     <admin-stations-requests-form :form="v$.form" :station="station" :show-advanced="showAdvanced">
@@ -54,7 +54,7 @@
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.streamersTab)">
                     <template #title>
-                        <translate key="tab_streamers">Streamers/DJs</translate>
+                        {{ $gettext('Streamers/DJs') }}
                     </template>
 
                     <admin-stations-streamers-form :form="v$.form" :station="station" :show-advanced="showAdvanced">
@@ -63,7 +63,7 @@
 
                 <b-tab v-if="showAdminTab" :title-link-class="getTabClass(v$.$validationGroups.adminTab)">
                     <template #title>
-                        <translate key="tab_admin">Administration</translate>
+                        {{ $gettext('Administration') }}
                     </template>
 
                     <admin-stations-admin-form :form="v$.form"
@@ -78,7 +78,7 @@
                 <b-card-body body-class="card-padding-sm">
                     <b-button size="lg" type="submit" :variant="(!isValid) ? 'danger' : 'primary'">
                         <slot name="submitButtonText">
-                            <translate key="lang_btn_save_changes">Save Changes</translate>
+                            {{ $gettext('Save Changes') }}
                         </slot>
                     </b-button>
                 </b-card-body>

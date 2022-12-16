@@ -3,32 +3,32 @@
         <template v-if="enableRequests">
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_requests_title">Song Requests</translate>
+                    {{ $gettext('Song Requests') }}
                     <enabled-badge :enabled="true"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageReports || userCanManageProfile">
                 <a class="btn btn-outline-primary" v-if="userCanManageReports" :href="requestsViewUri">
                     <icon icon="assignment"></icon>
-                    <translate key="lang_profile_requests_view">View</translate>
+                    {{ $gettext('View') }}
                 </a>
                 <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableRequests" :href="requestsToggleUri">
                     <icon icon="close"></icon>
-                    <translate key="lang_profile_requests_disable">Disable</translate>
+                    {{ $gettext('Disable') }}
                 </a>
             </div>
         </template>
         <template v-else>
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_requests_title">Song Requests</translate>
+                    {{ $gettext('Song Requests') }}
                     <enabled-badge :enabled="false"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-success" :data-confirm-title="langEnableRequests" :href="requestsToggleUri">
                     <icon icon="check"></icon>
-                    <translate key="lang_profile_requests_enable">Enable</translate>
+                    {{ $gettext('Enable') }}
                 </a>
             </div>
         </template>

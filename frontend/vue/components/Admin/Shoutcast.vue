@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
-                <translate key="lang_title">Install Shoutcast 2 DNAS</translate>
+                {{ $gettext('Install Shoutcast 2 DNAS') }}
             </h2>
         </div>
 
@@ -12,33 +12,37 @@
                     <div class="col-md-7">
                         <fieldset>
                             <legend>
-                                <translate key="lang_instructions">Instructions</translate>
+                                {{ $gettext('Instructions') }}
                             </legend>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1a">Shoutcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the Shoutcast binary.</translate>
+                                {{
+                                    $gettext('Shoutcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the Shoutcast binary.')
+                                }}
                             </p>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1b">In order to install Shoutcast:</translate>
+                                {{ $gettext('In order to install Shoutcast:') }}
                             </p>
 
                             <ul>
                                 <li>
-                                    <translate key="lang_instructions_2">Download the Linux x64 binary from the Shoutcast Radio Manager:</translate>
+                                    {{ $gettext('Download the Linux x64 binary from the Shoutcast Radio Manager:') }}
                                     <br>
                                     <a href="https://radiomanager.shoutcast.com/register/serverSoftwareFreemium"
                                        target="_blank">
-                                        <translate key="lang_instructions_2_url">Shoutcast Radio Manager</translate>
+                                        {{ $gettext('Shoutcast Radio Manager') }}
                                     </a>
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_3">The file name should look like:</translate>
+                                    {{ $gettext('The file name should look like:') }}
                                     <br>
                                     <code>sc_serv2_linux_x64-latest.tar.gz</code>
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_4">Upload the file on this page to automatically extract it into the proper directory.</translate>
+                                    {{
+                                        $gettext('Upload the file on this page to automatically extract it into the proper directory.')
+                                    }}
                                 </li>
                             </ul>
                         </fieldset>
@@ -46,15 +50,14 @@
                     <div class="col-md-5">
                         <fieldset class="mb-3">
                             <legend>
-                                <translate key="lang_current_version">Current Installed Version</translate>
+                                {{ $gettext('Current Installed Version') }}
                             </legend>
 
                             <p v-if="version" class="text-success card-text">
                                 {{ langInstalledVersion }}
                             </p>
                             <p v-else class="text-danger card-text">
-                                <translate
-                                    key="lang_not_installed">Shoutcast 2 DNAS is not currently installed on this installation.</translate>
+                                {{ $gettext('Shoutcast 2 DNAS is not currently installed on this installation.') }}
                             </p>
                         </fieldset>
 

@@ -5,18 +5,18 @@
         <b-card no-body>
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_hdr_new_station">Create a New Radio Station</translate>
+                    {{ $gettext('Create a New Radio Station') }}
                 </h3>
             </div>
 
             <info-card>
-                <translate key="lang_hdr_info">Continue the setup process by creating your first radio station below. You can edit any of these details later.</translate>
+                {{ $gettext('Continue the setup process by creating your first radio station below. You can edit any of these details later.') }}
             </info-card>
 
             <admin-stations-form v-bind="$props" ref="form" :is-edit-mode="false" :create-url="createUrl"
                                  @submitted="onSubmitted">
                 <template #submitButtonText>
-                    <translate key="lang_btn_create_and_continue">Create and Continue</translate>
+                    {{ $gettext('Create and Continue') }}
                 </template>
             </admin-stations-form>
         </b-card>

@@ -3,16 +3,16 @@
         <b-form @submit.prevent="doRename">
             <b-wrapped-form-group id="new_directory_name" :field="v$.form.newPath" autofocus>
                 <template #label="{lang}">
-                    <translate :key="lang">New File Name</translate>
+                    {{ $gettext('New File Name') }}
                 </template>
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
             <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button :variant="(v$.form.$invalid) ? 'danger' : 'primary'" @click="doRename">
-                <translate key="lang_btn_rename">Rename</translate>
+                {{ $gettext('Rename') }}
             </b-button>
         </template>
     </b-modal>

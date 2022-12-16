@@ -5,35 +5,35 @@
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_title" :field="form.title">
                     <template #label="{lang}">
-                        <translate :key="lang">Episode</translate>
+                        {{ $gettext('Episode') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_link" :field="form.link">
                     <template #label="{lang}">
-                        <translate :key="lang">Website</translate>
+                        {{ $gettext('Website') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">Typically a website with content about the episode.</translate>
+                        {{ $gettext('Typically a website with content about the episode.') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description"
                                       input-type="textarea">
                     <template #label="{lang}">
-                        <translate :key="lang">Description</translate>
+                        {{ $gettext('Description') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.</translate>
+                        {{ $gettext('The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_publish_date" :field="form.publish_date">
                     <template #label="{lang}">
-                        <translate :key="lang">Publish Date</translate>
+                        {{ $gettext('Publish Date') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">The date when the episode should be published.</translate>
+                        {{ $gettext('The date when the episode should be published.') }}
                     </template>
                     <template #default="props">
                         <b-form-datepicker :id="props.id" v-model="props.field.$model" :state="props.state"
@@ -43,10 +43,10 @@
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_publish_time" :field="form.publish_time">
                     <template #label="{lang}">
-                        <translate :key="lang">Publish Time</translate>
+                        {{ $gettext('Publish Time') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">The time when the episode should be published (according to the stations timezone).</translate>
+                        {{ $gettext('The time when the episode should be published (according to the stations timezone).') }}
                     </template>
                     <template #default="props">
                         <b-form-timepicker :id="props.id" v-model="props.field.$model"
@@ -56,10 +56,10 @@
 
                 <b-wrapped-form-checkbox class="col-md-12" id="form_edit_explicit" :field="form.explicit">
                     <template #label="{lang}">
-                        <translate :key="lang">Contains explicit content</translate>
+                        {{ $gettext('Contains explicit content') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.</translate>
+                        {{ $gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.') }}
                     </template>
                 </b-wrapped-form-checkbox>
             </b-form-row>

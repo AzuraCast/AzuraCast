@@ -6,7 +6,7 @@
         <b-tabs v-else lazy content-class="mt-3" pills>
             <b-tab active>
                 <template #title>
-                    <translate key="tab_basic_info">Basic Info</translate>
+                    {{ $gettext('Basic Info') }}
                 </template>
 
                 <basic-info :trigger-options="triggerOptions" :form="v$.form"></basic-info>

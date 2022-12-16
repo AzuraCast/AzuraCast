@@ -5,10 +5,10 @@
                 <b-col md="8">
                     <b-form-group label-for="edit_form_art">
                         <template #label>
-                            <translate key="artwork_file">Select PNG/JPG artwork file</translate>
+                            {{ $gettext('Select PNG/JPG artwork file') }}
                         </template>
                         <template #description>
-                            <translate key="artwork_file_desc">This image will be used as the default album art when this streamer is live.</translate>
+                            {{ $gettext('This image will be used as the default album art when this streamer is live.') }}
                         </template>
                         <b-form-file id="edit_form_art" accept="image/jpeg, image/png"
                                      @input="uploadNewArt"></b-form-file>
@@ -19,7 +19,7 @@
 
                     <div class="buttons pt-3">
                         <b-button block variant="danger" @click="deleteArt">
-                            <translate key="lang_btn_delete_art">Clear Artwork</translate>
+                            {{ $gettext('Clear Artwork') }}
                         </b-button>
                     </div>
                 </b-col>

@@ -3,32 +3,32 @@
         <template v-if="enableStreamers">
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_streamers_title">Streamers/DJs</translate>
+                    {{ $gettext('Streamers/DJs') }}
                     <enabled-badge :enabled="true"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageStreamers || userCanManageProfile">
                 <a class="btn btn-outline-primary" v-if="userCanManageStreamers" :href="streamersViewUri">
                     <icon icon="settings"></icon>
-                    <translate key="lang_profile_streamers_manage">Manage</translate>
+                    {{ $gettext('Manage') }}
                 </a>
                 <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableStreamers" :href="streamersToggleUri">
                     <icon icon="close"></icon>
-                    <translate key="lang_profile_streamers_disable">Disable</translate>
+                    {{ $gettext('Disable') }}
                 </a>
             </div>
         </template>
         <template v-else>
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_streamers_title">Streamers/DJs</translate>
+                    {{ $gettext('Streamers/DJs') }}
                     <enabled-badge :enabled="false"></enabled-badge>
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-success" :data-confirm-title="langEnableStreamers" :href="streamersToggleUri">
                     <icon icon="check"></icon>
-                    <translate key="lang_profile_streamers_enable">Enable</translate>
+                    {{ $gettext('Enable') }}
                 </a>
             </div>
         </template>

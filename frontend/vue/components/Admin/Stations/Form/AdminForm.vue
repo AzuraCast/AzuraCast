@@ -5,21 +5,22 @@
                 <b-form-row>
                     <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
                         <template #label="{lang}">
-                            <translate :key="lang">Enable Broadcasting</translate>
+                            {{ $gettext('Enable Broadcasting') }}
                         </template>
                         <template #description="{lang}">
-                            <translate
-                                :key="lang">If disabled, the station will not broadcast or shuffle its AutoDJ.</translate>
+                            {{ $gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.') }}
                         </template>
                     </b-wrapped-form-checkbox>
 
                     <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_radio_base_dir"
                                           :field="form.radio_base_dir" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Base Station Directory</translate>
+                            {{ $gettext('Base Station Directory') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.</translate>
+                            {{
+                                $gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>
@@ -31,7 +32,7 @@
                         <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location"
                                               :field="form.media_storage_location">
                             <template #label="{lang}">
-                                <translate :key="lang">Media Storage Location</translate>
+                                {{ $gettext('Media Storage Location') }}
                             </template>
                             <template #default="props">
                                 <b-form-select :id="props.id" v-model="props.field.$model"
@@ -42,7 +43,7 @@
                         <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location"
                                               :field="form.recordings_storage_location">
                             <template #label="{lang}">
-                                <translate :key="lang">Live Recordings Storage Location</translate>
+                                {{ $gettext('Live Recordings Storage Location') }}
                             </template>
                             <template #default="props">
                                 <b-form-select :id="props.id" v-model="props.field.$model"
@@ -53,7 +54,7 @@
                         <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location"
                                               :field="form.podcasts_storage_location">
                             <template #label="{lang}">
-                                <translate :key="lang">Podcasts Storage Location</translate>
+                                {{ $gettext('Podcasts Storage Location') }}
                             </template>
                             <template #default="props">
                                 <b-form-select :id="props.id" v-model="props.field.$model"

@@ -6,7 +6,7 @@
                     <b-row class="align-items-center">
                         <b-col md="7">
                             <h2 class="card-title">
-                                <translate key="lang_title">Music Files</translate>
+                                {{ $gettext('Music Files') }}
                             </h2>
                         </b-col>
                         <b-col md="5" class="text-right text-white-50">
@@ -21,12 +21,12 @@
                     </div>
                     <div class="flex-fill">
                         <p class="mb-0">
-                            <translate key="lang_sftp_details">You can also upload files in bulk via SFTP.</translate>
+                            {{ $gettext('You can also upload files in bulk via SFTP.') }}
                         </p>
                     </div>
                     <div class="flex-shrink-0 ml-2">
                         <a class="btn btn-sm btn-light" target="_blank" :href="sftpUrl">
-                            <translate key="lang_sftp_btn">Manage SFTP Accounts</translate>
+                            {{ $gettext('Manage SFTP Accounts') }}
                         </a>
                     </div>
                 </div>

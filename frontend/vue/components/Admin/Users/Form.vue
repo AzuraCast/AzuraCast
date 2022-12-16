@@ -3,31 +3,31 @@
         <b-form-row>
             <b-wrapped-form-group class="col-md-6" id="edit_form_email" :field="form.email" input-type="email">
                 <template #label="{lang}">
-                    <translate :key="lang">E-mail Address</translate>
+                    {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_new_password" :field="form.new_password"
                                   input-type="password">
                 <template #label="{lang}">
-                    <translate v-if="isEditMode" :key="lang+'a'">Reset Password</translate>
-                    <translate v-else :key="lang+'b'">Password</translate>
+                    {{ $gettext('Reset Password') }}
+                    {{ $gettext('Password') }}
                 </template>
                 <template v-if="isEditMode" #description="{lang}">
-                    <translate :key="lang">Leave blank to use the current password.</translate>
+                    {{ $gettext('Leave blank to use the current password.') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
                 <template #label="{lang}">
-                    <translate :key="lang">Display Name</translate>
+                    {{ $gettext('Display Name') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="edit_form_roles"
                                   :field="form.roles">
                 <template #label="{lang}">
-                    <translate :key="lang">Roles</translate>
+                    {{ $gettext('Roles') }}
                 </template>
                 <template #default="props">
                     <b-form-checkbox-group :id="props.id" :options="roleOptions" v-model="props.field.$model">

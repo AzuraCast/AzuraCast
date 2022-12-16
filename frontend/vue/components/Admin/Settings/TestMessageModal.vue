@@ -3,16 +3,16 @@
         <b-form @submit.prevent="doSendTest">
             <b-wrapped-form-group id="email_address" :field="v$.emailAddress" autofocus>
                 <template #label="{lang}">
-                    <translate :key="lang">E-mail Address</translate>
+                    {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
             <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doSendTest">
-                <translate key="lang_btn_send">Send Test Message</translate>
+                {{ $gettext('Send Test Message') }}
             </b-button>
         </template>
     </b-modal>

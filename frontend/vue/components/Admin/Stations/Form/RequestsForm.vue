@@ -3,12 +3,12 @@
         <b-form-fieldset v-if="isBackendEnabled">
             <b-form-fieldset>
                 <template #label>
-                    <translate key="lang_hdr_song_requests">Song Requests</translate>
+                    {{ $gettext('Song Requests') }}
                 </template>
                 <template #description>
-                    <translate key="lang_song_requests_desc">Some stream licensing providers may have specific rules
-                        regarding song requests. Check your local regulations for more information.
-                    </translate>
+                    {{
+                        $gettext('Some stream licensing providers may have specific rules regarding song requests. Check your local regulations for more information.')
+                    }}
                 </template>
 
                 <b-form-fieldset>
@@ -16,12 +16,12 @@
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_requests"
                                                  :field="form.enable_requests">
                             <template #label="{lang}">
-                                <translate :key="lang">Allow Song Requests</translate>
+                                {{ $gettext('Allow Song Requests') }}
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">Enable listeners to request a song for play on your station. Only
-                                    songs that are already in your playlists are requestable.
-                                </translate>
+                                {{
+                                    $gettext('Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.')
+                                }}
                             </template>
                         </b-wrapped-form-checkbox>
                     </b-form-row>
@@ -33,13 +33,12 @@
                                               :field="form.request_delay" input-type="number"
                                               :input-attrs="{ min: '0', max: '1440' }">
                             <template #label="{lang}">
-                                <translate :key="lang">Request Minimum Delay (Minutes)</translate>
+                                {{ $gettext('Request Minimum Delay (Minutes)') }}
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">If requests are enabled, this specifies the minimum delay (in
-                                    minutes) between a request being submitted and being played. If set to zero, a minor
-                                    delay of 15 seconds is applied to prevent request floods.
-                                </translate>
+                                {{
+                                    $gettext('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, a minor delay of 15 seconds is applied to prevent request floods.')
+                                }}
                             </template>
                         </b-wrapped-form-group>
 
@@ -47,13 +46,12 @@
                                               :field="form.request_threshold" input-type="number"
                                               :input-attrs="{ min: '0', max: '1440' }">
                             <template #label="{lang}">
-                                <translate :key="lang">Request Last Played Threshold (Minutes)</translate>
+                                {{ $gettext('Request Last Played Threshold (Minutes)') }}
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">This specifies the minimum time (in minutes) between a song
-                                    playing on the radio and being available to request again. Set to 0 for no
-                                    threshold.
-                                </translate>
+                                {{
+                                    $gettext('This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.')
+                                }}
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

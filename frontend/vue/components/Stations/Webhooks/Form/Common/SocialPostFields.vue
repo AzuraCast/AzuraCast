@@ -8,7 +8,7 @@
                     <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message"
                                           input-type="textarea">
                         <template #label="{lang}">
-                            <translate :key="lang">Message Body on Song Change</translate>
+                            {{ $gettext('Message Body on Song Change') }}
                         </template>
                     </b-wrapped-form-group>
                 </template>
@@ -17,7 +17,7 @@
                                           :field="form.config.message_song_changed_live"
                                           input-type="textarea">
                         <template #label="{lang}">
-                            <translate :key="lang">Message Body on Song Change with Stramer/DJ Connected</translate>
+                            {{ $gettext('Message Body on Song Change with Stramer/DJ Connected') }}
                         </template>
                     </b-wrapped-form-group>
                 </template>
@@ -25,7 +25,7 @@
                     <b-wrapped-form-group class="col-md-12" id="form_config_message_live_connect"
                                           :field="form.config.message_live_connect" input-type="textarea">
                         <template #label="{lang}">
-                            <translate :key="lang">Message Body on Streamer/DJ Connect</translate>
+                            {{ $gettext('Message Body on Streamer/DJ Connect') }}
                         </template>
                     </b-wrapped-form-group>
                 </template>
@@ -33,7 +33,7 @@
                     <b-wrapped-form-group class="col-md-12" id="form_config_message_live_disconnect"
                                           :field="form.config.message_live_disconnect" input-type="textarea">
                         <template #label="{lang}">
-                            <translate :key="lang">Message Body on Streamer/DJ Disconnect</translate>
+                            {{ $gettext('Message Body on Streamer/DJ Disconnect') }}
                         </template>
                     </b-wrapped-form-group>
                 </template>
@@ -41,7 +41,7 @@
                     <b-wrapped-form-group class="col-md-12" id="form_config_message_station_offline"
                                           :field="form.config.message_station_offline" input-type="textarea">
                         <template #label="{lang}">
-                            <translate :key="lang">Message Body on Station Offline</translate>
+                            {{ $gettext('Message Body on Station Offline') }}
                         </template>
                     </b-wrapped-form-group>
                 </template>
@@ -49,7 +49,7 @@
                     <b-wrapped-form-group class="col-md-12" id="form_config_message_station_online"
                                           :field="form.config.message_station_online" input-type="textarea">
                         <template #label="{lang}">
-                            <translate :key="lang">Message Body on Station Online</translate>
+                            {{ $gettext('Message Body on Station Online') }}
                         </template>
                     </b-wrapped-form-group>
                 </template>

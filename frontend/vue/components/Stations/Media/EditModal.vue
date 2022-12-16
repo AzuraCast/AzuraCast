@@ -5,21 +5,21 @@
         <b-tabs content-class="mt-3" pills>
             <b-tab active>
                 <template #title>
-                    <translate key="tab_basic_info">Basic Information</translate>
+                    {{ $gettext('Basic Information') }}
                 </template>
 
                 <media-form-basic-info :form="v$.form"></media-form-basic-info>
             </b-tab>
             <b-tab>
                 <template #title>
-                    <translate key="tab_playlists">Playlists</translate>
+                    {{ $gettext('Playlists') }}
                 </template>
 
                 <media-form-playlists :form="v$.form" :playlists="playlists"></media-form-playlists>
             </b-tab>
             <b-tab lazy>
                 <template #title>
-                    <translate key="tab_album_art">Album Art</translate>
+                    {{ $gettext('Album Art') }}
                 </template>
 
                 <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
@@ -27,7 +27,7 @@
 
             <b-tab v-if="customFields.length > 0">
                 <template #title>
-                    <translate key="tab_custom_fields">Custom Fields</translate>
+                    {{ $gettext('Custom Fields') }}
                 </template>
 
                 <media-form-custom-fields :form="v$.form" :custom-fields="customFields"></media-form-custom-fields>
@@ -35,7 +35,7 @@
 
             <b-tab lazy>
                 <template #title>
-                    <translate key="tab_waveform_editor">Visual Cue Editor</translate>
+                    {{ $gettext('Visual Cue Editor') }}
                 </template>
 
                 <media-form-waveform-editor :form="form" :audio-url="audioUrl"
@@ -44,7 +44,7 @@
 
             <b-tab>
                 <template #title>
-                    <translate key="tab_advanced">Advanced</translate>
+                    {{ $gettext('Advanced') }}
                 </template>
 
                 <media-form-advanced-settings :form="v$.form" :song-length="songLength"></media-form-advanced-settings>

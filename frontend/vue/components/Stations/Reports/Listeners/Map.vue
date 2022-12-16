@@ -3,17 +3,17 @@
                :attribution="attribution">
         <map-point v-for="l in visibleListeners" :key="l.hash"
                    :position="[l.location.lat, l.location.lon]">
-            <translate key="l-ip">IP</translate>
+            {{ $gettext('IP') }}
             : {{ l.ip }}<br>
-            <translate key="l-country">Country</translate>
+            {{ $gettext('Country') }}
             : {{ l.location.country }}<br>
-            <translate key="l-region">Region</translate>
+            {{ $gettext('Region') }}
             : {{ l.location.region }}<br>
-            <translate key="l-city">City</translate>
+            {{ $gettext('City') }}
             : {{ l.location.city }}<br>
-            <translate key="l-time">Time</translate>
+            {{ $gettext('Time') }}
             : {{ l.connected_time }}<br>
-            <translate key="l-ua">User Agent</translate>
+            {{ $gettext('User Agent') }}
             : {{ l.user_agent }}
         </map-point>
     </inner-map>

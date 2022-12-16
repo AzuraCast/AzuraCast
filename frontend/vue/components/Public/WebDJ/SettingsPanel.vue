@@ -2,7 +2,7 @@
     <div class="card settings">
         <div class="card-header bg-primary-dark">
             <h5 class="card-title">
-                <translate key="lang_title">WebDJ</translate>
+                {{ $gettext('WebDJ') }}
                 <br>
                 <small>{{ stationName }}</small>
             </h5>
@@ -13,12 +13,12 @@
                     <ul class="nav nav-tabs card-header-tabs mt-0">
                         <li class="nav-item">
                             <a class="nav-link active" href="#settings" data-toggle="tab">
-                                <translate key="lang_settings_title">Settings</translate>
+                                {{ $gettext('Settings') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#metadata" data-toggle="tab">
-                                <translate key="lang_metadata_title">Metadata</translate>
+                                {{ $gettext('Metadata') }}
                             </a>
                         </li>
                     </ul>
@@ -159,7 +159,7 @@
                 {{ langStreamButton }}
             </button>
             <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
-                <translate key="lang_btn_cue">Cue</translate>
+                {{ $gettext('Cue') }}
             </button>
         </div>
     </div>

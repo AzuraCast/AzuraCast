@@ -2,11 +2,10 @@
     <b-tab :title="langTabTitle">
         <b-form-group v-if="scheduleItems.length === 0">
             <label>
-                <translate key="lang_schedule_not_scheduled">Not Scheduled</translate>
+                {{ $gettext('Not Scheduled') }}
             </label>
             <p>
-                <translate
-                    key="lang_schedule_not_scheduled_desc">This streamer is not scheduled to play at any times.</translate>
+                {{ $gettext('This streamer is not scheduled to play at any times.') }}
             </p>
         </b-form-group>
 
@@ -18,7 +17,7 @@
         <b-button-group>
             <b-button size="sm" variant="outline-primary" @click.prevent="add">
                 <icon icon="add"></icon>
-                <translate key="lang_btn_add">Add Schedule Item</translate>
+                {{ $gettext('Add Schedule Item') }}
             </b-button>
         </b-button-group>
     </b-tab>

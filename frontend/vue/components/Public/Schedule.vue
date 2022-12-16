@@ -10,7 +10,7 @@
                                     {{ stationName }}
                                 </template>
                                 <template v-else>
-                                    <translate key="lang_title">Schedule</translate>
+                                    {{ $gettext('Schedule') }}
                                 </template>
                             </h2>
                         </div>

@@ -4,10 +4,10 @@
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_to" :field="form.config.to">
                     <template #label="{lang}">
-                        <translate :key="lang">Message Recipient(s)</translate>
+                        {{ $gettext('Message Recipient(s)') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">E-mail addresses can be separated by commas.</translate>
+                        {{ $gettext('E-mail addresses can be separated by commas.') }}
                     </template>
                 </b-wrapped-form-group>
             </b-form-row>
@@ -19,13 +19,13 @@
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_subject" :field="form.config.subject">
                     <template #label="{lang}">
-                        <translate :key="lang">Message Subject</translate>
+                        {{ $gettext('Message Subject') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message">
                     <template #label="{lang}">
-                        <translate :key="lang">Message Body</translate>
+                        {{ $gettext('Message Body') }}
                     </template>
                 </b-wrapped-form-group>
             </b-form-row>

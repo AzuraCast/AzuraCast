@@ -3,13 +3,13 @@
         <div class="card-header bg-primary-dark d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
-                    <translate :key="'lang_scheduled_time_'+index" :translate-params="{ num: parseInt(index)+1 }">Scheduled Time #%{num}</translate>
+                    {{ $gettext('Scheduled Time #%{num}') }}
                 </h2>
             </div>
             <div class="flex-shrink-0">
                 <b-button size="sm" variant="outline-light" class="py-2 pr-0" @click.prevent="$emit('remove')">
                     <icon icon="remove"></icon>
-                    <translate key="lang_btn_remove">Remove</translate>
+                    {{ $gettext('Remove') }}
                 </b-button>
             </div>
         </div>
@@ -19,7 +19,7 @@
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_time_'+index"
                                           :field="v$.row.start_time">
                         <template #label="{lang}">
-                            <translate :key="lang">Start Time</translate>
+                            {{ $gettext('Start Time') }}
                         </template>
                         <template #default="props">
                             <playlist-time :id="props.id" v-model="props.field.$model"
@@ -29,10 +29,12 @@
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="v$.row.end_time">
                         <template #label="{lang}">
-                            <translate :key="lang">End Time</translate>
+                            {{ $gettext('End Time') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">If the end time is before the start time, the schedule entry will continue overnight.</translate>
+                            {{
+                                $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
+                            }}
                         </template>
                         <template #default="props">
                             <playlist-time :id="props.id" v-model="props.field.$model"
@@ -42,36 +44,38 @@
 
                     <b-col md="4" class="form-group">
                         <label>
-                            <translate key="lang_station_tz">Station Time Zone</translate>
+                            {{ $gettext('Station Time Zone') }}
                         </label>
                         <div>
-                            <translate key="lang_station_tz_desc" :translate-params="{ tz: stationTimeZone }">This station's time zone is currently %{tz}.</translate>
+                            {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: stationTimeZone}) }}
                         </div>
                     </b-col>
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_date_'+index"
                                           :field="v$.row.start_date" input-type="date">
                         <template #label="{lang}">
-                            <translate :key="lang">Start Date</translate>
+                            {{ $gettext('Start Date') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">To set this schedule to run only within a certain date range, specify a start and end date.</translate>
+                            {{
+                                $gettext('To set this schedule to run only within a certain date range, specify a start and end date.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="v$.row.end_date"
                                           input-type="date">
                         <template #label="{lang}">
-                            <translate :key="lang">End Date</translate>
+                            {{ $gettext('End Date') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_days_'+index" :field="v$.row.days">
                         <template #label="{lang}">
-                            <translate :key="lang">Scheduled Play Days of Week</translate>
+                            {{ $gettext('Scheduled Play Days of Week') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Leave blank to play on every day of the week.</translate>
+                            {{ $gettext('Leave blank to play on every day of the week.') }}
                         </template>
                         <template #default="props">
                             <b-checkbox-group stacked :id="props.id" v-model="props.field.$model"

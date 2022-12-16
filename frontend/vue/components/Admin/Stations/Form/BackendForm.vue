@@ -5,12 +5,12 @@
                 <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
                                       :field="form.backend_type">
                     <template #label="{lang}">
-                        <translate :key="lang">AutoDJ Service</translate>
+                        {{ $gettext('AutoDJ Service') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">This software shuffles from playlists of music constantly and plays when
-                            no other radio source is available.
-                        </translate>
+                        {{
+                            $gettext('This software shuffles from playlists of music constantly and plays when no other radio source is available.')
+                        }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" :options="backendTypeOptions"
@@ -27,13 +27,12 @@
                     <b-wrapped-form-group class="col-md-7" id="edit_form_backend_crossfade_type"
                                           :field="form.backend_config.crossfade_type">
                         <template #label="{lang}">
-                            <translate :key="lang">Crossfade Method</translate>
+                            {{ $gettext('Crossfade Method') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Choose a method to use when transitioning from one song to another.
-                                Smart Mode considers the volume of the two tracks when fading for a smoother effect, but
-                                requires more CPU resources.
-                            </translate>
+                            {{
+                                $gettext('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.')
+                            }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="crossfadeOptions"
@@ -46,10 +45,10 @@
                                           :field="form.backend_config.crossfade" input-type="number"
                                           :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }">
                         <template #label="{lang}">
-                            <translate :key="lang">Crossfade Duration (Seconds)</translate>
+                            {{ $gettext('Crossfade Duration (Seconds)') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Number of seconds to overlap songs.</translate>
+                            {{ $gettext('Number of seconds to overlap songs.') }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>
@@ -57,12 +56,12 @@
                     <b-wrapped-form-group class="col-md-12" id="edit_form_backend_config_audio_processing_method"
                                           :field="form.backend_config.audio_processing_method">
                         <template #label="{lang}">
-                            <translate :key="lang">Audio Processing Method</translate>
+                            {{ $gettext('Audio Processing Method') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Choose a method to use for processing audio which produces a more
-                                uniform and "full" sound for your station.
-                            </translate>
+                            {{
+                                $gettext('Choose a method to use for processing audio which produces a more uniform and "full" sound for your station.')
+                            }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="audioProcessingOptions"
@@ -75,12 +74,14 @@
 
             <b-form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
                 <template #label>
-                    <translate key="lang_hdr_stereo_tool">Stereo Tool</translate>
+                    {{ $gettext('Stereo Tool') }}
                 </template>
                 <template #description>
-                    <translate key="lang_stereo_tool_desc">Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the</translate>
+                    {{
+                        $gettext('Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the')
+                    }}
                     <a href="https://www.thimeo.com/stereo-tool/" target="_blank">
-                        <translate key="lang_stereo_tool_documentation_desc">Stereo Tool documentation.</translate>
+                        {{ $gettext('Stereo Tool documentation.') }}
                     </a>
                 </template>
 
@@ -89,20 +90,24 @@
                         <b-wrapped-form-group class="col-md-7" id="edit_form_backend_stereo_tool_license_key"
                                               :field="form.backend_config.stereo_tool_license_key" input-type="text">
                             <template #label="{lang}">
-                                <translate :key="lang">Stereo Tool License Key</translate>
+                                {{ $gettext('Stereo Tool License Key') }}
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">Provide a valid license key from Thimeo. Functionality is limited without a license key.</translate>
+                                {{
+                                    $gettext('Provide a valid license key from Thimeo. Functionality is limited without a license key.')
+                                }}
                             </template>
                         </b-wrapped-form-group>
 
                         <b-form-markup class="col-md-5" id="edit_form_backend_stereo_tool_config">
                             <template #label="{lang}">
-                                <translate :key="lang">Upload Stereo Tool Configuration</translate>
+                                {{ $gettext('Upload Stereo Tool Configuration') }}
                             </template>
 
                             <p class="card-text">
-                                <translate key="lang_stereotool_config">Upload a Stereo Tool configuration file from the "Broadcasting" submenu in the station profile.</translate>
+                                {{
+                                    $gettext('Upload a Stereo Tool configuration file from the "Broadcasting" submenu in the station profile.')
+                                }}
                             </p>
                         </b-form-markup>
                     </b-form-row>
@@ -111,7 +116,7 @@
 
             <b-form-fieldset v-if="showAdvanced">
                 <template #label>
-                    <translate key="lang_hdr_advanced">Advanced Configuration</translate>
+                    {{ $gettext('Advanced Configuration') }}
                 </template>
 
                 <b-form-row>
@@ -119,13 +124,12 @@
                                              id="edit_form_backend_use_manual_autodj"
                                              :field="form.backend_config.use_manual_autodj" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Manual AutoDJ Mode</translate>
+                            {{ $gettext('Manual AutoDJ Mode') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">This mode disables AzuraCast's AutoDJ management, using Liquidsoap
-                                itself to manage song playback. "Next Song" and some other features will not be
-                                available.
-                            </translate>
+                            {{
+                                $gettext('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.')
+                            }}
                         </template>
                     </b-wrapped-form-checkbox>
 
@@ -133,12 +137,12 @@
                                              id="edit_form_backend_enable_replaygain_metadata"
                                              :field="form.backend_config.enable_replaygain_metadata" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Use Replaygain Metadata</translate>
+                            {{ $gettext('Use Replaygain Metadata') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">Instruct Liquidsoap to use any replaygain metadata associated with a
-                                song to control its volume level. This may increase CPU consumption.
-                            </translate>
+                            {{
+                                $gettext('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.')
+                            }}
                         </template>
                     </b-wrapped-form-checkbox>
 
@@ -146,12 +150,12 @@
                                           :field="form.backend_config.telnet_port" input-type="number"
                                           :input-attrs="{ min: '0' }" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Customize Internal Request Processing Port</translate>
+                            {{ $gettext('Customize Internal Request Processing Port') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">This port is not used by any external process. Only modify this port
-                                if the assigned port is in use. Leave blank to automatically assign a port.
-                            </translate>
+                            {{
+                                $gettext('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
 
@@ -159,25 +163,24 @@
                                           :field="form.backend_config.autodj_queue_length" input-type="number"
                                           :input-attrs="{ min: '2', max: '25' }" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">AutoDJ Queue Length</translate>
+                            {{ $gettext('AutoDJ Queue Length') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">This determines how many songs in advance the AutoDJ will
-                                automatically fill the queue.
-                            </translate>
+                            {{
+                                $gettext('This determines how many songs in advance the AutoDJ will automatically fill the queue.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="edit_form_backend_charset"
                                           :field="form.backend_config.charset" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Character Set Encoding</translate>
+                            {{ $gettext('Character Set Encoding') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">For most cases, use the default UTF-8 encoding. The older ISO-8859-1
-                                encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy
-                                software.
-                            </translate>
+                            {{
+                                $gettext('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy software.')
+                            }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="charsetOptions"
@@ -189,12 +192,12 @@
                     <b-wrapped-form-group class="col-md-6" id="edit_form_backend_performance_mode"
                                           :field="form.backend_config.performance_mode" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Liquidsoap Performance Tuning</translate>
+                            {{ $gettext('Liquidsoap Performance Tuning') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">If your installation is constrained by CPU or memory, you can change
-                                this setting to tune the resources used by Liquidsoap.
-                            </translate>
+                            {{
+                                $gettext('If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.')
+                            }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="performanceModeOptions"
@@ -207,12 +210,12 @@
                                           :field="form.backend_config.duplicate_prevention_time_range"
                                           input-type="number" :input-attrs="{ min: '0', max: '1440' }" advanced>
                         <template #label="{lang}">
-                            <translate :key="lang">Duplicate Prevention Time Range (Minutes)</translate>
+                            {{ $gettext('Duplicate Prevention Time Range (Minutes)') }}
                         </template>
                         <template #description="{lang}">
-                            <translate :key="lang">This specifies the time range (in minutes) of the song history that
-                                the duplicate song prevention algorithm should take into account.
-                            </translate>
+                            {{
+                                $gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-row>

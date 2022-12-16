@@ -6,7 +6,7 @@
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
                     <slot name="cardTitle">
-                        <translate key="lang_settings">System Settings</translate>
+                        {{ $gettext('System Settings') }}
                     </slot>
                 </h2>
             </div>
@@ -19,7 +19,7 @@
                 <b-tabs pills card lazy>
                     <b-tab :title-link-class="getTabClass(v$.$validationGroups.generalTab)">
                         <template #title>
-                            <translate key="tab_general">Settings</translate>
+                            {{ $gettext('Settings') }}
                         </template>
 
                         <settings-general-tab :form="v$.form"></settings-general-tab>
@@ -27,7 +27,7 @@
 
                     <b-tab :title-link-class="getTabClass(v$.$validationGroups.securityPrivacyTab)">
                         <template #title>
-                            <translate key="tab_security_privacy">Security & Privacy</translate>
+                            {{ $gettext('Security & Privacy') }}
                         </template>
 
                         <settings-security-privacy-tab :form="v$.form"></settings-security-privacy-tab>
@@ -35,7 +35,7 @@
 
                     <b-tab :title-link-class="getTabClass(v$.$validationGroups.servicesTab)">
                         <template #title>
-                            <translate key="tab_services">Services</translate>
+                            {{ $gettext('Services') }}
                         </template>
 
                         <settings-services-tab :form="v$.form"
@@ -49,7 +49,7 @@
             <b-card-body body-class="card-padding-sm">
                 <b-button size="lg" type="submit" :variant="(v$.form.$invalid) ? 'danger' : 'primary'">
                     <slot name="submitButtonName">
-                        <translate key="lang_btn_save_changes">Save Changes</translate>
+                        {{ $gettext('Save Changes') }}
                     </slot>
                 </b-button>
             </b-card-body>

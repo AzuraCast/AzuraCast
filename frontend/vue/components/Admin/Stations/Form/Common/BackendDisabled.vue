@@ -1,12 +1,11 @@
 <template>
     <b-form-fieldset>
         <template #label>
-            <translate key="lang_backend_disabled">No AutoDJ Enabled</translate>
+            {{ $gettext('No AutoDJ Enabled') }}
         </template>
 
         <p class="card-text">
-            <translate
-                key="lang_backend_disabled_desc">This feature requires the AutoDJ feature to be enabled.</translate>
+            {{ $gettext('This feature requires the AutoDJ feature to be enabled.') }}
         </p>
     </b-form-fieldset>
 </template>

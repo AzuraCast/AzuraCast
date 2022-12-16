@@ -1,13 +1,13 @@
 <template>
     <div>
         <h2 class="outside-card-header mb-1">
-            <translate key="lang_header">Custom Branding</translate>
+            {{ $gettext('Custom Branding') }}
         </h2>
 
         <section class="card mb-3" role="region">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_custom_assets">Upload Custom Assets</translate>
+                    {{ $gettext('Upload Custom Assets') }}
                 </h2>
             </div>
             <div class="card-body">

@@ -11,7 +11,7 @@
                 <b-form-file :id="id" v-model="file" accept="image/*"></b-form-file>
             </b-form-group>
             <b-button v-if="isUploaded" variant="outline-danger" @click.prevent="clear()">
-                <translate key="lang_btn_reset">Clear Image</translate>
+                {{ $gettext('Clear Image') }}
             </b-button>
         </b-overlay>
     </b-media>

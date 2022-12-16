@@ -4,17 +4,17 @@
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
                     <template #label="{lang}">
-                        <translate :key="lang">Role Name</translate>
+                        {{ $gettext('Role Name') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_global_permissions"
                                       :field="form.permissions.global">
                     <template #label="{lang}">
-                        <translate :key="lang">Global Permissions</translate>
+                        {{ $gettext('Global Permissions') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">Users with this role will have these permissions across the entire installation.</translate>
+                        {{ $gettext('Users with this role will have these permissions across the entire installation.') }}
                     </template>
                     <template #default="props">
                         <b-form-checkbox-group :id="props.id" :options="globalPermissionOptions"

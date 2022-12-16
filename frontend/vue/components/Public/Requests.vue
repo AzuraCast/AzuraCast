@@ -16,7 +16,7 @@
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button size="sm" variant="primary" @click.prevent="doSubmitRequest(row.item.request_url)">
-                        <translate key="lang_btn_request">Request</translate>
+                        {{ $gettext('Request') }}
                     </b-button>
                 </b-button-group>
             </template>

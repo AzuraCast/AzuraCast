@@ -8,7 +8,7 @@
                 <b-col md="12" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="hdr_listeners_by_day">Listeners by Day</translate>
+                            {{ $gettext('Listeners by Day') }}
                         </legend>
 
                         <time-series-chart style="width: 100%;" :data="chartData.daily.metrics">
@@ -19,7 +19,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="hdr_listeners_by_dow">Listeners by Day of Week</translate>
+                            {{ $gettext('Listeners by Day of Week') }}
                         </legend>
 
                         <pie-chart style="width: 100%;" :data="chartData.day_of_week.metrics"
@@ -31,7 +31,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="hdr_listeners_by_hour">Listeners by Hour</translate>
+                            {{ $gettext('Listeners by Hour') }}
                         </legend>
 
                         <hour-chart style="width: 100%;" :data="chartData.hourly.metrics"

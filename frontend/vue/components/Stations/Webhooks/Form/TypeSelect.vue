@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <template #label>
-            <translate key="lang_select_type_header">Select Web Hook Type</translate>
+            {{ $gettext('Select Web Hook Type') }}
         </template>
 
         <b-list-group>

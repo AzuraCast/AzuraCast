@@ -13,11 +13,11 @@
                 <div class="flex-md-shrink-0 mt-3 mt-md-0 buttons">
                     <a class="btn btn-bg" role="button" :href="profileUrl">
                         <icon icon="account_circle"></icon>
-                        <translate key="dashboard_btn_my_account">My Account</translate>
+                        {{ $gettext('My Account') }}
                     </a>
                     <a v-if="showAdmin" class="btn btn-bg" role="button" :href="adminUrl">
                         <icon icon="settings"></icon>
-                        <translate key="dashboard_btn_administration">Administration</translate>
+                        {{ $gettext('Administration') }}
                     </a>
                 </div>
             </div>
@@ -47,9 +47,7 @@
         <section class="card mb-4" role="region" v-if="showCharts">
             <div class="card-header bg-primary-dark d-flex align-items-center">
                 <div class="flex-fill">
-                    <h3 class="card-title">
-                        <translate key="dashboard_header_listeners_per_station">Listeners Per Station</translate>
-                    </h3>
+                    <h3 class="card-title">{{ $gettext('Listeners Per Station') }}</h3>
                 </div>
                 <div class="flex-shrink-0">
                     <b-button variant="outline-light" size="sm" class="py-2" @click="toggleCharts">{{
@@ -66,7 +64,7 @@
                     <b-tabs pills card lazy v-else>
                         <b-tab active>
                             <template #title>
-                                <translate key="tab_average_listeners">Average Listeners</translate>
+                                {{ $gettext('Average Listeners') }}
                             </template>
 
                             <time-series-chart style="width: 100%;" :data="chartsData.average.metrics">
@@ -75,7 +73,7 @@
                         </b-tab>
                         <b-tab>
                             <template #title>
-                                <translate key="tab_unique_listeners">Unique Listeners</translate>
+                                {{ $gettext('Unique Listeners') }}
                             </template>
 
                             <time-series-chart style="width: 100%;" :data="chartsData.unique.metrics">
@@ -90,14 +88,12 @@
         <section class="card" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
                 <div class="flex-fill">
-                    <h2 class="card-title">
-                        <translate key="dashboard_header_stations">Station Overview</translate>
-                    </h2>
+                    <h2 class="card-title">{{ $gettext('Station Overview') }}</h2>
                 </div>
                 <div class="flex-shrink-0" v-if="showAdmin">
                     <b-button variant="outline-light" size="sm" class="py-2" :href="manageStationsUrl">
                         <icon icon="settings"></icon>
-                        <translate key="dashboard_btn_manage_stations">Manage Stations</translate>
+                        {{ $gettext('Manage Stations') }}
                     </b-button>
                 </div>
             </div>
@@ -117,15 +113,9 @@
                     <thead>
                     <tr>
                         <th class="pr-3">&nbsp;</th>
-                        <th class="pl-2">
-                            <translate key="lang_col_station_name">Station Name</translate>
-                        </th>
-                        <th class="text-center">
-                            <translate key="lang_col_listeners">Listeners</translate>
-                        </th>
-                        <th>
-                            <translate key="lang_col_now_playing">Now Playing</translate>
-                        </th>
+                        <th class="pl-2">{{ $gettext('Station Name') }}</th>
+                        <th class="text-center">{{ $gettext('Listeners') }}</th>
+                        <th>{{ $gettext('Now Playing') }}</th>
                         <th class="text-right"></th>
                     </tr>
                     </thead>
@@ -139,7 +129,7 @@
                             <big>{{ item.station.name }}</big><br>
                             <template v-if="item.station.is_public">
                                 <a :href="item.links.public" target="_blank">
-                                    <translate key="dashboard_link_public_page">Public Page</translate>
+                                    {{ $gettext('Public Page') }}
                                 </a>
                             </template>
                         </td>
@@ -162,7 +152,7 @@
                                            class="flex-shrink-0 pr-3"></album-art>
 
                                 <div v-if="!item.is_online" class="flex-fill text-muted">
-                                    <translate key="station_offline">Station Offline</translate>
+                                    {{ $gettext('Station Offline') }}
                                 </div>
                                 <div v-else-if="item.now_playing.song.title !== ''" class="flex-fill">
                                     <strong><span class="nowplaying-title">
@@ -179,7 +169,7 @@
                         </td>
                         <td class="text-right">
                             <a class="btn btn-primary" v-bind:href="item.links.manage">
-                                <translate key="dashboard_btn_manage_station">Manage</translate>
+                                {{ $gettext('Manage') }}
                             </a>
                         </td>
                     </tr>

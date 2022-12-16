@@ -2,13 +2,13 @@
     <section class="card" role="region">
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
-                <translate key="lang_hdr">Custom Fallback File</translate>
+                {{ $gettext('Custom Fallback File') }}
             </h2>
         </div>
 
         <info-card>
             <p class="card-text">
-                <translate key="lang_fallback_1">This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.</translate>
+                {{ $gettext('This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting.') }}
             </p>
         </info-card>
 
@@ -17,7 +17,7 @@
                 <b-form-row>
                     <b-form-group class="col-md-6" label-for="intro_file">
                         <template #label>
-                            <translate key="intro_file">Select Custom Fallback File</translate>
+                            {{ $gettext('Select Custom Fallback File') }}
                         </template>
 
                         <flow-upload :target-url="apiUrl" :valid-mime-types="acceptMimeTypes"
@@ -26,22 +26,22 @@
 
                     <b-form-group class="col-md-6">
                         <template #label>
-                            <translate key="existing_intro">Current Custom Fallback File</translate>
+                            {{ $gettext('Current Custom Fallback File') }}
                         </template>
 
                         <div v-if="hasFallback">
                             <div class="buttons pt-3">
                                 <b-button block variant="bg" :href="apiUrl"
                                           target="_blank">
-                                    <translate key="btn_download">Download</translate>
+                                    {{ $gettext('Download') }}
                                 </b-button>
                                 <b-button block variant="danger" @click="deleteFallback">
-                                    <translate key="btn_delete_fallback">Clear File</translate>
+                                    {{ $gettext('Clear File') }}
                                 </b-button>
                             </div>
                         </div>
                         <div v-else>
-                            <translate key="no_existing_fallback">There is no existing custom fallback file associated with this station.</translate>
+                            {{ $gettext('There is no existing custom fallback file associated with this station.') }}
                         </div>
                     </b-form-group>
                 </b-form-row>

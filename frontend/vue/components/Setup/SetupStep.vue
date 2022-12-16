@@ -6,7 +6,7 @@
                 <span v-else>1</span>
             </div>
             <span class="stepper-text">
-                <translate key="lang_step_register">Create Account</translate>
+                {{ $gettext('Create Account') }}
             </span>
         </div>
         <div :class="getStepperClass(2)">
@@ -15,7 +15,7 @@
                 <span v-else>2</span>
             </div>
             <span class="stepper-text">
-                <translate key="lang_step_station">Create Station</translate>
+                {{ $gettext('Create Station') }}
             </span>
         </div>
         <div :class="getStepperClass(3)">
@@ -23,7 +23,7 @@
                 <span>3</span>
             </div>
             <span class="stepper-text">
-                <translate key="lang_step_settings">System Settings</translate>
+                {{ $gettext('System Settings') }}
             </span>
         </div>
     </div>

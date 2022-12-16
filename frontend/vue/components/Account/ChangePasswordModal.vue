@@ -4,20 +4,20 @@
         <b-form-fieldset>
             <b-wrapped-form-group id="form_current_password" :field="v$.form.current_password"
                                   input-type="password" autofocus>
-                <template #label="{lang}">
-                    <translate :key="lang">Current Password</translate>
+                <template #label>
+                    {{ $gettext('Current Password') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group id="form_new_password" :field="v$.form.new_password" input-type="password">
-                <template #label="{lang}">
-                    <translate :key="lang">New Password</translate>
+                <template #label>
+                    {{ $gettext('New Password') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group id="form_current_password" :field="v$.form.new_password2" input-type="password">
-                <template #label="{lang}">
-                    <translate :key="lang">Confirm New Password</translate>
+                <template #label>
+                    {{ $gettext('Confirm New Password') }}
                 </template>
             </b-wrapped-form-group>
         </b-form-fieldset>

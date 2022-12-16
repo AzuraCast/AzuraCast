@@ -2,10 +2,10 @@
     <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
                          field-key="client" :field-label="langFieldLabel">
         <template #by_listeners_legend>
-            <translate key="hdr_top_by_listeners">Clients by Listeners</translate>
+            {{ $gettext('Clients by Listeners') }}
         </template>
         <template #by_connected_time_legend>
-            <translate key="hdr_top_by_connected_seconds">Clients by Connected Time</translate>
+            {{ $gettext('Clients by Connected Time') }}
         </template>
     </common-metrics-view>
 </template>

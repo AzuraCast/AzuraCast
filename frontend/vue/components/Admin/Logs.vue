@@ -3,7 +3,7 @@
         <div class="card mb-3">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="hdr_system_logs">System Logs</translate>
+                    {{ $gettext('System Logs') }}
                 </h2>
             </div>
 
@@ -13,7 +13,7 @@
         <div class="card" v-if="stationLogs.length > 0">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="hdr_logs_by_station">Logs by Station</translate>
+                    {{ $gettext('Logs by Station') }}
                 </h2>
             </div>
 

@@ -22,7 +22,7 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>
@@ -30,7 +30,7 @@
         </template>
         <template #modal-footer>
             <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
         </template>
     </b-modal>

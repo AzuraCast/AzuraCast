@@ -3,12 +3,12 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
-                    <translate key="lang_title">Song Playback Timeline</translate>
+                    {{ $gettext('Song Playback Timeline') }}
                 </h2>
                 <div class="flex-shrink">
                     <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
                         <icon icon="file_download"></icon>
-                        <translate key="lang_download_csv_button">Download CSV</translate>
+                        {{ $gettext('Download CSV') }}
                     </a>
 
                     <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"
@@ -57,14 +57,14 @@
             </template>
             <template #cell(source)="row">
                 <template v-if="row.item.is_request">
-                    <translate key="lang_source_request">Listener Request</translate>
+                    {{ $gettext('Listener Request') }}
                 </template>
                 <template v-else-if="row.item.playlist">
-                    <translate key="lang_playlist">Playlist:</translate>
+                    {{ $gettext('Playlist:') }}
                     {{ row.item.playlist }}
                 </template>
                 <template v-else-if="row.item.streamer">
-                    <translate key="lang_streamer">Live Streamer:</translate>
+                    {{ $gettext('Live Streamer:') }}
                     {{ row.item.streamer }}
                 </template>
                 <template v-else>

@@ -7,7 +7,7 @@
             <div class="card-body">
                 <fieldset>
                     <legend>
-                        <translate key="chart_listening_time">Listeners by Listening Time</translate>
+                        {{ $gettext('Listeners by Listening Time') }}
                     </legend>
 
                     <pie-chart style="width: 100%;" :data="chart.datasets"

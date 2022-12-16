@@ -3,10 +3,10 @@
         <b-form-row>
             <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="form.name">
                 <template #label="{lang}">
-                    <translate :key="lang">Web Hook Name</translate>
+                    {{ $gettext('Web Hook Name') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.</translate>
+                    {{ $gettext('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.') }}
                 </template>
             </b-wrapped-form-group>
 
@@ -14,10 +14,10 @@
                                   id="edit_form_triggers"
                                   :field="form.triggers">
                 <template #label="{lang}">
-                    <translate :key="lang">Web Hook Triggers</translate>
+                    {{ $gettext('Web Hook Triggers') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">This web hook will only run when the selected event(s) occur on this specific station.</translate>
+                    {{ $gettext('This web hook will only run when the selected event(s) occur on this specific station.') }}
                 </template>
                 <template #default="props">
                     <b-form-checkbox-group :id="props.id" :options="triggerOptions"

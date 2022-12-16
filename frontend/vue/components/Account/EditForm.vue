@@ -3,14 +3,14 @@
         <b-form-fieldset>
             <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Name</translate>
+                    <template #label>
+                        {{ $gettext('Name') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
-                    <template #label="{lang}">
-                        <translate :key="lang">E-mail Address</translate>
+                    <template #label>
+                        {{ $gettext('E-mail Address') }}
                     </template>
                 </b-wrapped-form-group>
             </b-form-row>
@@ -18,15 +18,15 @@
 
         <b-form-fieldset>
             <template #label>
-                <translate key="lang_hdr_customize">Customization</translate>
+                {{ $gettext('Customization') }}
             </template>
 
             <b-form-row>
                 <b-col md="6">
                     <b-wrapped-form-group id="edit_form_locale"
                                           :field="form.locale">
-                        <template #label="{lang}">
-                            <translate :key="lang">Language</translate>
+                        <template #label>
+                            {{ $gettext('Language') }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="localeOptions"
@@ -38,8 +38,8 @@
                 <b-col md="6">
                     <b-wrapped-form-group id="edit_form_theme"
                                           :field="form.theme">
-                        <template #label="{lang}">
-                            <translate :key="lang">Site Theme</translate>
+                        <template #label>
+                            {{ $gettext('Site Theme') }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="themeOptions"
@@ -50,8 +50,8 @@
 
                     <b-wrapped-form-group id="edit_form_show_24_hour_time"
                                           :field="form.show_24_hour_time">
-                        <template #label="{lang}">
-                            <translate :key="lang">Time Display</translate>
+                        <template #label>
+                            {{ $gettext('Time Display') }}
                         </template>
                         <template #default="props">
                             <b-form-radio-group stacked :id="props.id" :options="show24hourOptions"

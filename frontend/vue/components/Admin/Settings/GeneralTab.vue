@@ -4,48 +4,58 @@
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_base_url" :field="form.base_url" input-type="url">
                 <template #label="{lang}">
-                    <translate :key="lang">Site Base URL</translate>
+                    {{ $gettext('Site Base URL') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.</translate>
+                    {{
+                        $gettext('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.')
+                    }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_instance_name" :field="form.instance_name">
                 <template #label="{lang}">
-                    <translate :key="lang">AzuraCast Instance Name</translate>
+                    {{ $gettext('AzuraCast Instance Name') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.</translate>
+                    {{
+                        $gettext('This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.')
+                    }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-checkbox class="col-md-6" id="edit_form_prefer_browser_url"
                                      :field="form.prefer_browser_url">
                 <template #label="{lang}">
-                    <translate :key="lang">Prefer Browser URL (If Available)</translate>
+                    {{ $gettext('Prefer Browser URL (If Available)') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">If this setting is set to "Yes", the browser URL will be used instead of the base URL when it's available. Set to "No" to always use the base URL.</translate>
+                    {{
+                        $gettext('If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.')
+                    }}
                 </template>
             </b-wrapped-form-checkbox>
 
             <b-wrapped-form-checkbox class="col-md-6" id="edit_form_use_radio_proxy"
                                      :field="form.use_radio_proxy">
                 <template #label="{lang}">
-                    <translate :key="lang">Use Web Proxy for Radio</translate>
+                    {{ $gettext('Use Web Proxy for Radio') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).</translate>
+                    {{
+                        $gettext('By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).')
+                    }}
                 </template>
             </b-wrapped-form-checkbox>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_history_keep_days" :field="form.history_keep_days">
                 <template #label="{lang}">
-                    <translate :key="lang">Days of Playback History to Keep</translate>
+                    {{ $gettext('Days of Playback History to Keep') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.</translate>
+                    {{
+                        $gettext('Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.')
+                    }}
                 </template>
                 <template #default="props">
                     <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
@@ -56,20 +66,24 @@
             <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_static_nowplaying"
                                      :field="form.enable_static_nowplaying">
                 <template #label="{lang}">
-                    <translate :key="lang">Use High-Performance Now Playing Updates</translate>
+                    {{ $gettext('Use High-Performance Now Playing Updates') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">Uses either Websockets, Server-Sent Events (SSE) or static JSON files to serve Now Playing data on public pages. This improves performance, especially with large listener volume. Disable this if you are encountering problems with the service or use multiple URLs to serve your public pages.</translate>
+                    {{
+                        $gettext('Uses either Websockets, Server-Sent Events (SSE) or static JSON files to serve Now Playing data on public pages. This improves performance, especially with large listener volume. Disable this if you are encountering problems with the service or use multiple URLs to serve your public pages.')
+                    }}
                 </template>
             </b-wrapped-form-checkbox>
 
             <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_advanced_features"
                                      :field="form.enable_advanced_features">
                 <template #label="{lang}">
-                    <translate :key="lang">Enable Advanced Features</translate>
+                    {{ $gettext('Enable Advanced Features') }}
                 </template>
                 <template #description="{lang}">
-                    <translate :key="lang">Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.</translate>
+                    {{
+                        $gettext('Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.')
+                    }}
                 </template>
             </b-wrapped-form-checkbox>
 

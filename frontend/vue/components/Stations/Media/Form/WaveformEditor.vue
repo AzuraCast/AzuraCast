@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>
-            <translate key="lang_waveform_editor_desc">Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.</translate>
+            {{ $gettext('Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.') }}
         </p>
 
         <b-form-group>
@@ -12,34 +12,34 @@
             <b-button-group>
                 <b-button variant="light" @click="playAudio">
                     <icon icon="play_arrow"></icon>
-                    <span class="sr-only"><translate key="lang_btn_play">Play</translate></span>
+                    <span class="sr-only">{{ $gettext('Play') }}</span>
                 </b-button>
                 <b-button variant="dark" @click="stopAudio">
                     <icon icon="stop"></icon>
-                    <span class="sr-only"><translate key="lang_btn_stop">Stop</translate></span>
+                    <span class="sr-only">{{ $gettext('Stop') }}</span>
                 </b-button>
             </b-button-group>
             <b-button-group>
                 <b-button variant="primary" @click="setCueIn">
-                    <translate key="lang_btn_set_cue_in">Set Cue In</translate>
+                    {{ $gettext('Set Cue In') }}
                 </b-button>
 
                 <b-button variant="primary" @click="setCueOut">
-                    <translate key="lang_btn_set_cue_out">Set Cue Out</translate>
+                    {{ $gettext('Set Cue Out') }}
                 </b-button>
             </b-button-group>
             <b-button-group>
                 <b-button variant="warning" @click="setFadeOverlap">
-                    <translate key="lang_btn_set_fade_overlap">Set Overlap</translate>
+                    {{ $gettext('Set Overlap') }}
                 </b-button>
             </b-button-group>
             <b-button-group>
                 <b-button variant="danger" @click="setFadeIn">
-                    <translate key="lang_btn_set_fade_in">Set Fade In</translate>
+                    {{ $gettext('Set Fade In') }}
                 </b-button>
 
                 <b-button variant="danger" @click="setFadeOut">
-                    <translate key="lang_btn_set_fade_out">Set Fade Out</translate>
+                    {{ $gettext('Set Fade Out') }}
                 </b-button>
             </b-button-group>
         </b-form-group>

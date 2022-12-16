@@ -1,31 +1,24 @@
 <template>
     <div>
-        <h2 class="outside-card-header mb-1">
-            <translate key="hdr">Backups</translate>
-        </h2>
+        <h2 class="outside-card-header mb-1">{{ $gettext('Backups') }}</h2>
 
         <div class="card-deck">
             <section class="card mb-3" role="region">
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
-                        <translate key="lang_hdr_auto_backups">Automatic Backups</translate>
-                        <small v-if="settings.backupEnabled" class="badge badge-success">
-                            <translate key="lang_hdr_backups_enabled">Enabled</translate>
-                        </small>
-                        <small v-else class="badge badge-danger">
-                            <translate key="lang_hdr_backups_disabled">Disabled</translate>
-                        </small>
+                        {{ $gettext('Automatic Backups') }}
+                        <enabled-badge :enabled="settings.backupEnabled"></enabled-badge>
                     </h2>
                 </b-card-header>
 
                 <b-overlay variant="card" :show="settingsLoading">
                     <div v-if="settings.backupEnabled" class="card-body">
                         <p v-if="settings.backupLastRun > 0" class="card-text">
-                            <translate key="lang_backup_last_run">Last run:</translate>
+                            {{ $gettext('Last run:') }}
                             {{ toRelativeTime(settings.backupLastRun) }}
                         </p>
                         <p v-else class="card-text">
-                            <translate key="lang_backup_never_run">Never run</translate>
+                            {{ $gettext('Never run') }}
                         </p>
                     </div>
                 </b-overlay>
@@ -33,12 +26,12 @@
                 <div class="card-actions">
                     <b-button variant="outline-primary" @click.prevent="doConfigure">
                         <icon icon="settings"></icon>
-                        <translate key="lang_btn_configure">Configure</translate>
+                        {{ $gettext('Configure') }}
                     </b-button>
                     <b-button v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
                               variant="outline-secondary" @click.prevent="showLastOutput">
                         <icon icon="assignment"></icon>
-                        <translate key="lang_btn_last_backup">Most Recent Backup Log</translate>
+                        {{ $gettext('Most Recent Backup Log') }}
                     </b-button>
                 </div>
             </section>
@@ -46,20 +39,22 @@
             <section class="card mb-3" role="region">
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
-                        <translate key="lang_hdr_restoring_backups">Restoring Backups</translate>
+                        {{ $gettext('Restoring Backups') }}
                     </h2>
                 </b-card-header>
 
                 <div class="card-body">
                     <p class="card-text">
-                        <translate key="lang_restore_1">To restore a backup from your host computer, run:</translate>
+                        {{ $gettext('To restore a backup from your host computer, run:') }}
                     </p>
 
                     <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
                     <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
 
                     <p class="card-text text-warning">
-                        <translate key="lang_restore_2">Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.</translate>
+                        {{
+                            $gettext('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.')
+                        }}
                     </p>
                 </div>
             </section>
@@ -68,14 +63,14 @@
         <section class="card mb-3" role="region">
             <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_hdr_existing_backups">Backups</translate>
+                    {{ $gettext('Backups') }}
                 </h2>
             </b-card-header>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doRunBackup">
                     <icon icon="send"></icon>
-                    <translate key="lang_btn_run_backup">Run Manual Backup</translate>
+                    {{ $gettext('Run Manual Backup') }}
                 </b-button>
             </b-card-body>
 
@@ -89,10 +84,10 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" :href="row.item.links.download" target="_blank">
-                            <translate key="lang_btn_download">Download</translate>
+                            {{ $gettext('Download') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>
@@ -120,10 +115,14 @@ import {DateTime} from 'luxon';
 import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal";
+import EnabledBadge from "~/components/Stations/Profile/Common/EnabledBadge.vue";
 
 export default {
     name: 'AdminBackups',
-    components: {AdminBackupsRunBackupModal, AdminBackupsConfigureModal, AdminBackupsLastOutputModal, DataTable, Icon},
+    components: {
+        EnabledBadge,
+        AdminBackupsRunBackupModal, AdminBackupsConfigureModal, AdminBackupsLastOutputModal, DataTable, Icon
+    },
     props: {
         listUrl: String,
         settingsUrl: String,

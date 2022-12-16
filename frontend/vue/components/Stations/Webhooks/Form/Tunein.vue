@@ -3,23 +3,22 @@
         <b-form-row>
             <b-wrapped-form-group class="col-md-6" id="form_config_station_id" :field="form.config.station_id">
                 <template #label="{lang}">
-                    <translate :key="lang">TuneIn Station ID</translate>
+                    {{ $gettext('TuneIn Station ID') }}
                 </template>
                 <template #description="{lang}">
-                    <translate
-                        :key="lang">The station ID will be a numeric string that starts with the letter S.</translate>
+                    {{ $gettext('The station ID will be a numeric string that starts with the letter S.') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_partner_id" :field="form.config.partner_id">
                 <template #label="{lang}">
-                    <translate :key="lang">TuneIn Partner ID</translate>
+                    {{ $gettext('TuneIn Partner ID') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_partner_key" :field="form.config.partner_key">
                 <template #label="{lang}">
-                    <translate :key="lang">TuneIn Partner Key</translate>
+                    {{ $gettext('TuneIn Partner Key') }}
                 </template>
             </b-wrapped-form-group>
         </b-form-row>

@@ -2,20 +2,20 @@
     <b-form-row>
         <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
             <template #label="{lang}">
-                <translate :key="lang">New Station Name</translate>
+                {{ $gettext('New Station Name') }}
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
                               input-type="textarea">
             <template #label="{lang}">
-                <translate :key="lang">New Station Description</translate>
+                {{ $gettext('New Station Description') }}
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_clone" :field="form.clone">
             <template #label="{lang}">
-                <translate :key="lang">Copy to New Station</translate>
+                {{ $gettext('Copy to New Station') }}
             </template>
             <template #default="props">
                 <b-form-checkbox-group

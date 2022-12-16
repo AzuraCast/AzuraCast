@@ -4,16 +4,16 @@
             <b-form-row class="mb-3">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
                     <template #label="{lang}">
-                        <translate :key="lang">Programmatic Name</translate>
+                        {{ $gettext('Programmatic Name') }}
                     </template>
                     <template #description="{lang}">
-                        <translate :key="lang">A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. "stream_lofi").</translate>
+                        {{ $gettext('A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. "stream_lofi").') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_format" :field="form.format">
                     <template #label="{lang}">
-                        <translate :key="lang">Audio Format</translate>
+                        {{ $gettext('Audio Format') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
@@ -27,7 +27,7 @@
                 </b-wrapped-form-group>
                 <b-wrapped-form-group class="col-md-6" id="edit_form_bitrate" :field="form.bitrate">
                     <template #label="{lang}">
-                        <translate :key="lang">Audio Bitrate (kbps)</translate>
+                        {{ $gettext('Audio Bitrate (kbps)') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group

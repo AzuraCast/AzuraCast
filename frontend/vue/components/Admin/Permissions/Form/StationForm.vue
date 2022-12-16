@@ -9,7 +9,7 @@
         <b-button-group v-if="hasRemainingStations">
             <b-dropdown size="sm" variant="outline-primary">
                 <template #button-content>
-                    <translate key="lang_btn_add_station">Add Station</translate>
+                    {{ $gettext('Add Station') }}
                 </template>
                 <div style="max-height: 300px; overflow-y: auto;">
                     <b-dropdown-item-button v-for="(stationName, stationId) in remainingStations" :key="stationId"

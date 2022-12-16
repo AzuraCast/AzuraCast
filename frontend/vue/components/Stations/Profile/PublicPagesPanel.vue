@@ -3,7 +3,7 @@
         <template v-if="enablePublicPage">
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_public_title">Public Pages</translate>
+                    {{ $gettext('Public Pages') }}
                     <enabled-badge :enabled="true"></enabled-badge>
                 </h3>
             </div>

@@ -5,11 +5,11 @@
                 <div class="row mb-2">
                     <div class="col-sm">
                         <h2 class="card-title mb-0 text-center">
-                            <translate key="lang_hdr_setup">AzuraCast First-Time Setup</translate>
+                            {{ $gettext('AzuraCast First-Time Setup') }}
                         </h2>
                         <h3 class="text-center">
                             <small class="text-muted">
-                                <translate key="lang_subhdr_welcome">Welcome to AzuraCast!</translate>
+                                {{ $gettext('Welcome to AzuraCast!') }}
                             </small>
                         </h3>
                     </div>
@@ -18,10 +18,12 @@
                 <div class="row mb-3">
                     <div class="col-sm">
                         <p class="card-text">
-                            <translate key="lang_intro_1">Let's get started by creating your Super Administrator account.</translate>
+                            {{ $gettext('Let\'s get started by creating your Super Administrator account.') }}
                         </p>
                         <p class="card-text">
-                            <translate key="lang_intro_2">This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup.</translate>
+                            {{
+                                $gettext('This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.')
+                            }}
                         </p>
                     </div>
                 </div>
@@ -35,7 +37,7 @@
                                           input-type="email">
                         <template #label="{lang}">
                             <icon icon="email" class="mr-1"></icon>
-                            <translate :key="lang">E-mail Address</translate>
+                            {{ $gettext('E-mail Address') }}
                         </template>
                     </b-wrapped-form-group>
 
@@ -43,13 +45,13 @@
                                           input-type="password">
                         <template #label="{lang}">
                             <icon icon="vpn_key" class="mr-1"></icon>
-                            <translate :key="lang">Password</translate>
+                            {{ $gettext('Password') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-button type="submit" size="lg" block variant="primary" :disabled="v$.form.$invalid"
                               class="mt-2">
-                        <translate key="btn_create_acct">Create Account</translate>
+                        {{ $gettext('Create Account') }}
                     </b-button>
                 </form>
             </div>

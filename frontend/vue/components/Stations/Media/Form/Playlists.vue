@@ -3,7 +3,7 @@
         <b-row>
             <b-wrapped-form-group class="col-md-12" id="edit_form_playlists" :field="form.playlists">
                 <template #label>
-                    <translate key="field_playlists">Playlists</translate>
+                    {{ $gettext('Playlists') }}
                 </template>
                 <template #default="props">
                     <b-form-checkbox-group

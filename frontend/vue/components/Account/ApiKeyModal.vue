@@ -7,8 +7,8 @@
             <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
                 <b-form-fieldset>
                     <b-wrapped-form-group id="form_comments" :field="v$.form.comment" autofocus>
-                        <template #label="{lang}">
-                            <translate :key="lang">API Key Description/Comments</translate>
+                        <template #label>
+                            {{ $gettext('API Key Description/Comments') }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-fieldset>
@@ -24,11 +24,11 @@
         <template #modal-footer="slotProps">
             <slot name="modal-footer" v-bind="slotProps">
                 <b-button variant="default" type="button" @click="close">
-                    <translate key="lang_btn_close">Close</translate>
+                    {{ $gettext('Close') }}
                 </b-button>
                 <b-button v-if="newKey === null" :variant="(v$.$invalid) ? 'danger' : 'primary'" type="submit"
                           @click="doSubmit">
-                    <translate key="lang_btn_create_key">Create New Key</translate>
+                    {{ $gettext('Create New Key') }}
                 </b-button>
             </slot>
         </template>

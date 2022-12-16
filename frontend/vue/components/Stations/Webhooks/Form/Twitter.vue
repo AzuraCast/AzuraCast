@@ -2,29 +2,33 @@
     <div>
         <b-form-group>
             <template #label>
-                <translate key="lang_twitter_instructions_hdr">Twitter Account Details</translate>
+                {{ $gettext('Twitter Account Details') }}
             </template>
 
             <p class="card-text">
-                <translate key="lang_twitter_instructions_1">Steps for configuring a Twitter application:</translate>
+                {{ $gettext('Steps for configuring a Twitter application:') }}
             </p>
             <ul>
                 <li>
-                    <translate key="lang_twitter_instructions_1">Create a new app on the Twitter Applications site. Use this installation's base URL as the application URL.</translate>
+                    {{
+                        $gettext('Create a new app on the Twitter Applications site. Use this installation\'s base URL as the application URL.')
+                    }}
                     <br>
                     <a href="https://developer.twitter.com/en/apps" target="_blank">
-                        <translate key="lang_twitter_instructions_url">Twitter Applications</translate>
+                        {{ $gettext('Twitter Applications') }}
                     </a>
                 </li>
                 <li>
-                    <translate key="lang_twitter_instructions_2">In the newly created application, click the "Keys and Access Tokens" tab.</translate>
+                    {{ $gettext('In the newly created application, click the "Keys and Access Tokens" tab.') }}
                 </li>
                 <li>
-                    <translate key="lang_twitter_instructions_3">At the bottom of the page, click "Create my access token".</translate>
+                    {{ $gettext('At the bottom of the page, click "Create my access token".') }}
                 </li>
             </ul>
             <p class="card-text">
-                <translate key="lang_twitter_instructions_4">Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</translate>
+                {{
+                    $gettext('Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.')
+                }}
             </p>
         </b-form-group>
 
@@ -32,26 +36,26 @@
             <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_config_consumer_key" :field="form.config.consumer_key">
                     <template #label="{lang}">
-                        <translate :key="lang">Consumer Key (API Key)</translate>
+                        {{ $gettext('Consumer Key (API Key)') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_consumer_secret"
                                       :field="form.config.consumer_secret">
                     <template #label="{lang}">
-                        <translate :key="lang">Consumer Secret (API Secret)</translate>
+                        {{ $gettext('Consumer Secret (API Secret)') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
                     <template #label="{lang}">
-                        <translate :key="lang">Access Token</translate>
+                        {{ $gettext('Access Token') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_token_secret" :field="form.config.token_secret">
                     <template #label="{lang}">
-                        <translate :key="lang">Access Token Secret</translate>
+                        {{ $gettext('Access Token Secret') }}
                     </template>
                 </b-wrapped-form-group>
 

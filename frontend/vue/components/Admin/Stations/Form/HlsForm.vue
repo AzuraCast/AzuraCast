@@ -3,10 +3,10 @@
         <b-form-fieldset v-if="isBackendEnabled">
             <b-form-fieldset>
                 <template #label>
-                    <translate key="lang_hls">HTTP Live Streaming (HLS)</translate>
+                    {{ $gettext('HTTP Live Streaming (HLS)') }}
                 </template>
                 <template #description>
-                    <translate key="lang_hls_desc">HTTP Live Streaming (HLS) is a new adaptive-bitrate technology supported by some clients. It does not use the standard broadcasting frontends.</translate>
+                    {{ $gettext('HTTP Live Streaming (HLS) is a new adaptive-bitrate technology supported by some clients. It does not use the standard broadcasting frontends.') }}
                 </template>
 
                 <b-form-fieldset>
@@ -14,7 +14,7 @@
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_hls"
                                                  :field="form.enable_hls">
                             <template #label="{lang}">
-                                <translate :key="lang">Enable HTTP Live Streaming (HLS)</translate>
+                                {{ $gettext('Enable HTTP Live Streaming (HLS)') }}
                             </template>
                         </b-wrapped-form-checkbox>
                     </b-form-row>
@@ -25,14 +25,14 @@
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_hls_enable_on_public_player"
                                                  :field="form.backend_config.hls_enable_on_public_player">
                             <template #label="{lang}">
-                                <translate :key="lang">Show HLS Stream on Public Player</translate>
+                                {{ $gettext('Show HLS Stream on Public Player') }}
                             </template>
                         </b-wrapped-form-checkbox>
 
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_hls_is_default"
                                                  :field="form.backend_config.hls_is_default">
                             <template #label="{lang}">
-                                <translate :key="lang">Make HLS Stream Default in Public Player</translate>
+                                {{ $gettext('Make HLS Stream Default in Public Player') }}
                             </template>
                         </b-wrapped-form-checkbox>
                     </b-form-row>
@@ -45,7 +45,7 @@
                                               :field="form.backend_config.hls_segment_length" input-type="number"
                                               :input-attrs="{ min: '0', max: '60' }" advanced>
                             <template #label="{lang}">
-                                <translate :key="lang">Segment Length (Seconds)</translate>
+                                {{ $gettext('Segment Length (Seconds)') }}
                             </template>
                         </b-wrapped-form-group>
 
@@ -54,7 +54,7 @@
                                               :field="form.backend_config.hls_segments_in_playlist" input-type="number"
                                               :input-attrs="{ min: '0', max: '60' }" advanced>
                             <template #label="{lang}">
-                                <translate :key="lang">Segments in Playlist</translate>
+                                {{ $gettext('Segments in Playlist') }}
                             </template>
                         </b-wrapped-form-group>
 
@@ -63,7 +63,7 @@
                                               :field="form.backend_config.hls_segments_overhead" input-type="number"
                                               :input-attrs="{ min: '0', max: '60' }" advanced>
                             <template #label="{lang}">
-                                <translate :key="lang">Segments Overhead</translate>
+                                {{ $gettext('Segments Overhead') }}
                             </template>
                         </b-wrapped-form-group>
                     </b-form-row>

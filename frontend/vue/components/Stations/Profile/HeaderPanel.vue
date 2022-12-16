@@ -10,7 +10,7 @@
         <div class="flex-shrink-0 ml-3" v-if="userCanManageProfile">
             <a class="btn btn-primary btn-lg" role="button" :href="manageProfileUri">
                 <icon icon="edit"></icon>
-                <translate key="lang_profile_btn_edit">Edit Profile</translate>
+                {{ $gettext('Edit Profile') }}
             </a>
         </div>
     </div>

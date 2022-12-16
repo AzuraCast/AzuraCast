@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
-                <translate key="lang_title">Install Stereo Tool</translate>
+                {{ $gettext('Install Stereo Tool') }}
             </h2>
         </div>
 
@@ -12,35 +12,45 @@
                     <div class="col-md-7">
                         <fieldset>
                             <legend>
-                                <translate key="lang_instructions">Instructions</translate>
+                                {{ $gettext('Instructions') }}
                             </legend>
 
                             <p class="card-text">
-                                <translate key="lang_disclaimer">Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding.</translate>
+                                {{
+                                    $gettext('Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding.')
+                                }}
                             </p>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1a">Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary.</translate>
+                                {{
+                                    $gettext('Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary.')
+                                }}
                             </p>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1b">In order to install Stereo Tool:</translate>
+                                {{ $gettext('In order to install Stereo Tool:') }}
                             </p>
 
                             <ul>
                                 <li>
-                                    <translate key="lang_instructions_2">Download the appropriate binary from the Stereo Tool downloads page:</translate>
+                                    {{
+                                        $gettext('Download the appropriate binary from the Stereo Tool downloads page:')
+                                    }}
                                     <br>
                                     <a href="https://www.thimeo.com/stereo-tool/download/"
                                        target="_blank">
-                                        <translate key="lang_instructions_2_url">Stereo Tool Downloads</translate>
+                                        {{ $gettext('Stereo Tool Downloads') }}
                                     </a>
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_3">For most installations, you should choose the "Command line version 64 bit". For Raspberry Pi devices, select "Raspberry Pi 3/4 64 bit command line".</translate>
+                                    {{
+                                        $gettext('For most installations, you should choose the "Command line version 64 bit". For Raspberry Pi devices, select "Raspberry Pi 3/4 64 bit command line".')
+                                    }}
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_4">Upload the file on this page to automatically extract it into the proper directory.</translate>
+                                    {{
+                                        $gettext('Upload the file on this page to automatically extract it into the proper directory.')
+                                    }}
                                 </li>
                             </ul>
                         </fieldset>
@@ -48,15 +58,14 @@
                     <div class="col-md-5">
                         <fieldset class="mb-3">
                             <legend>
-                                <translate key="lang_current_version">Current Installed Version</translate>
+                                {{ $gettext('Current Installed Version') }}
                             </legend>
 
                             <p v-if="version" class="text-success card-text">
                                 {{ langInstalledVersion }}
                             </p>
                             <p v-else class="text-danger card-text">
-                                <translate
-                                    key="lang_not_installed">Stereo Tool is not currently installed on this installation.</translate>
+                                {{ $gettext('Stereo Tool is not currently installed on this installation.') }}
                             </p>
                         </fieldset>
 

@@ -2,7 +2,7 @@
     <section class="card mb-4" role="region" id="profile-frontend">
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
-                <translate key="lang_frontend_title">Broadcasting Service</translate>
+                {{ $gettext('Broadcasting Service') }}
 
                 <running-badge :running="np.services.frontend_running"></running-badge>
                 <br>
@@ -16,16 +16,16 @@
                 <tr class="align-middle">
                     <td>
                         <a :href="frontendAdminUri" target="_blank">
-                            <translate key="lang_frontend_admin">Administration</translate>
+                            {{ $gettext('Administration') }}
                         </a>
                     </td>
                     <td class="px-0">
                         <div>
-                            <translate key="lang_username">Username:</translate>
+                            {{ $gettext('Username:') }}
                             <span class="text-monospace">admin</span>
                         </div>
                         <div>
-                            <translate key="lang_password">Password:</translate>
+                            {{ $gettext('Password:') }}
                             <span class="text-monospace">{{ frontendAdminPassword }}</span>
                         </div>
                     </td>
@@ -35,15 +35,15 @@
                 </tr>
                 <tr class="align-middle">
                     <td>
-                        <translate key="lang_frontend_source">Source</translate>
+                        {{ $gettext('Source') }}
                     </td>
                     <td class="px-0">
                         <div>
-                            <translate key="lang_username">Username:</translate>
+                            {{ $gettext('Username:') }}
                             <span class="text-monospace">source</span>
                         </div>
                         <div>
-                            <translate key="lang_password">Password:</translate>
+                            {{ $gettext('Password:') }}
                             <span class="text-monospace">{{ frontendSourcePassword }}</span>
                         </div>
                     </td>
@@ -53,15 +53,15 @@
                 </tr>
                 <tr class="align-middle">
                     <td>
-                        <translate key="lang_frontend_relay">Relay</translate>
+                        {{ $gettext('Relay') }}
                     </td>
                     <td class="px-0">
                         <div>
-                            <translate key="lang_username">Username:</translate>
+                            {{ $gettext('Username:') }}
                             <span class="text-monospace">relay</span>
                         </div>
                         <div>
-                            <translate key="lang_password">Password:</translate>
+                            {{ $gettext('Password:') }}
                             <span class="text-monospace">{{ frontendRelayPassword }}</span>
                         </div>
                     </td>
@@ -75,17 +75,17 @@
             <div class="card-actions" v-if="hasStarted">
                 <a class="api-call no-reload btn btn-outline-secondary" :href="frontendRestartUri">
                     <icon icon="update"></icon>
-                    <translate key="lang_profile_frontend_restart">Restart</translate>
+                    {{ $gettext('Restart') }}
                 </a>
                 <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.frontend_running"
                    :href="frontendStartUri">
                     <icon icon="play_arrow"></icon>
-                    <translate key="lang_profile_frontend_start">Start</translate>
+                    {{ $gettext('Start') }}
                 </a>
                 <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.frontend_running"
                    :href="frontendStopUri">
                     <icon icon="stop"></icon>
-                    <translate key="lang_profile_frontend_stop">Stop</translate>
+                    {{ $gettext('Stop') }}
                 </a>
             </div>
         </template>

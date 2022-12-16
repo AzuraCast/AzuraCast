@@ -10,7 +10,7 @@
                         <b-wrapped-form-group class="col-md-12" id="edit_form_storage_location"
                                               :field="v$.form.storage_location">
                             <template #label="{lang}">
-                                <translate :key="lang">Storage Location</translate>
+                                {{ $gettext('Storage Location') }}
                             </template>
                             <template #default="props">
                                 <b-form-select :id="props.id" v-model="props.field.$model"
@@ -21,20 +21,20 @@
                         <b-wrapped-form-group class="col-md-12" id="edit_form_path"
                                               :field="v$.form.path">
                             <template #label="{lang}">
-                                <translate :key="lang">File Name</translate>
+                                {{ $gettext('File Name') }}
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">This will be the file name for your backup, include the extension for file type you wish to use.</translate>
+                                {{ $gettext('This will be the file name for your backup, include the extension for file type you wish to use.') }}
                                 <br>
                                 <strong>
-                                    <translate :key="lang+'2'">Supported file formats:</translate>
+                                    {{ $gettext('Supported file formats:') }}
                                 </strong>
                                 <br>
                                 <ul class="m-0">
                                     <li>.zip</li>
                                     <li>.tar.gz</li>
                                     <li>.tzst (
-                                        <translate :key="lang+'zstd'">ZStandard compression</translate>
+                                        {{ $gettext('ZStandard compression') }}
                                         )
                                     </li>
                                 </ul>
@@ -44,10 +44,10 @@
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_exclude_media"
                                                  :field="v$.form.exclude_media">
                             <template #label="{lang}">
-                                <translate :key="lang">Exclude Media from Backup</translate>
+                                {{ $gettext('Exclude Media from Backup') }}
                             </template>
                             <template #description="{lang}">
-                                <translate :key="lang">This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.</translate>
+                                {{ $gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.') }}
                             </template>
                         </b-wrapped-form-checkbox>
                     </b-form-row>
@@ -64,11 +64,11 @@
         <template #modal-footer="slotProps">
             <slot name="modal-footer" v-bind="slotProps">
                 <b-button variant="default" type="button" @click="close">
-                    <translate key="lang_btn_close">Close</translate>
+                    {{ $gettext('Close') }}
                 </b-button>
                 <b-button v-if="logUrl === null" :variant="(v$.form.$invalid) ? 'danger' : 'primary'" type="submit"
                           @click="submit">
-                    <translate key="lang_btn_run_backup">Run Manual Backup</translate>
+                    {{ $gettext('Run Manual Backup') }}
                 </b-button>
             </slot>
         </template>

@@ -4,10 +4,10 @@
             <b-form-row>
                 <b-form-group class="col-md-6" label-for="intro_file">
                     <template #label>
-                        <translate key="intro_file">Select Intro File</translate>
+                        {{ $gettext('Select Intro File') }}
                     </template>
                     <template #description>
-                        <translate key="intro_file_desc">This introduction file should exactly match the bitrate and format of the mount point itself.</translate>
+                        {{ $gettext('This introduction file should exactly match the bitrate and format of the mount point itself.') }}
                     </template>
 
                     <flow-upload :target-url="targetUrl" :valid-mime-types="acceptMimeTypes"
@@ -16,21 +16,21 @@
 
                 <b-form-group class="col-md-6">
                     <template #label>
-                        <translate key="existing_intro">Current Intro File</translate>
+                        {{ $gettext('Current Intro File') }}
                     </template>
 
                     <div v-if="hasIntro">
                         <div class="buttons pt-3">
                             <b-button v-if="editIntroUrl" block variant="bg" :href="editIntroUrl" target="_blank">
-                                <translate key="btn_download">Download</translate>
+                                {{ $gettext('Download') }}
                             </b-button>
                             <b-button block variant="danger" @click="deleteIntro">
-                                <translate key="btn_delete_intro">Clear File</translate>
+                                {{ $gettext('Clear File') }}
                             </b-button>
                         </div>
                     </div>
                     <div v-else>
-                        <translate key="no_existing_intro">There is no existing intro file associated with this mount point.</translate>
+                        {{ $gettext('There is no existing intro file associated with this mount point.') }}
                     </div>
                 </b-form-group>
             </b-form-row>

@@ -2,28 +2,32 @@
     <div>
         <b-form-group>
             <template #label>
-                <translate key="lang_mastodon_hdr">Mastodon Account Details</translate>
+                {{ $gettext('Mastodon Account Details') }}
             </template>
 
             <p class="card-text">
-                <translate key="lang_mastodon_instructions_1">Steps for configuring a Mastodon application:</translate>
+                {{ $gettext('Steps for configuring a Mastodon application:') }}
             </p>
             <ul>
                 <li>
-                    <translate key="lang_mastodon_instructions_1">Visit your Mastodon instance.</translate>
+                    {{ $gettext('Visit your Mastodon instance.') }}
                 </li>
                 <li>
-                    <translate key="lang_mastodon_instructions_2">Click the "Preferences" link, then "Development" on the left side menu.</translate>
+                    {{ $gettext('Click the "Preferences" link, then "Development" on the left side menu.') }}
                 </li>
                 <li>
-                    <translate key="lang_mastodon_instructions_3">Click "New Application"</translate>
+                    {{ $gettext('Click "New Application"') }}
                 </li>
                 <li>
-                    <translate key="lang_mastodon_instructions_4">Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.</translate>
+                    {{
+                        $gettext('Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.')
+                    }}
                 </li>
             </ul>
             <p class="card-text">
-                <translate key="lang_twitter_instructions_5">Once these steps are completed, enter the "Access Token" from the application's page into the field below.</translate>
+                {{
+                    $gettext('Once these steps are completed, enter the "Access Token" from the application\'s page into the field below.')
+                }}
             </p>
         </b-form-group>
 
@@ -31,18 +35,17 @@
             <b-form-row>
                 <b-wrapped-form-group class="col-md-6" id="form_config_instance_url" :field="form.config.instance_url">
                     <template #label="{lang}">
-                        <translate :key="lang">Mastodon Instance URL</translate>
+                        {{ $gettext('Mastodon Instance URL') }}
                     </template>
                     <template #description="{lang}">
-                        <translate
-                            :key="lang">If your Mastodon username is "@test@example.com", enter "example.com".</translate>
+                        {{ $gettext('If your Mastodon username is "@test@example.com", enter "example.com".') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_config_access_token"
                                       :field="form.config.access_token">
                     <template #label="{lang}">
-                        <translate :key="lang">Access Token</translate>
+                        {{ $gettext('Access Token') }}
                     </template>
                 </b-wrapped-form-group>
 
@@ -54,7 +57,7 @@
             <b-form-row>
                 <b-wrapped-form-group class="col-md-12" id="form_config_visibility" :field="form.config.visibility">
                     <template #label="{lang}">
-                        <translate :key="lang">Message Visibility</translate>
+                        {{ $gettext('Message Visibility') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group stacked :id="props.id" :options="visibilityOptions"

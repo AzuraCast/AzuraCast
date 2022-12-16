@@ -5,10 +5,10 @@
 
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button variant="primary" class="btn_copy" @click.prevent="doCopy" type="button">
-                <translate key="lang_btn_copy">Copy to Clipboard</translate>
+                {{ $gettext('Copy to Clipboard') }}
             </b-button>
         </template>
     </b-modal>

@@ -8,7 +8,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_best_songs">Best Performing Songs</translate>
+                            {{ $gettext('Best Performing Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -19,10 +19,10 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <translate key="reports_overview_col_change">Change</translate>
+                                    {{ $gettext('Change') }}
                                 </th>
                                 <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
+                                    {{ $gettext('Song') }}
                                 </th>
                             </tr>
                             </thead>
@@ -45,7 +45,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_worst_songs">Worst Performing Songs</translate>
+                            {{ $gettext('Worst Performing Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -56,10 +56,10 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <translate key="reports_overview_col_change">Change</translate>
+                                    {{ $gettext('Change') }}
                                 </th>
                                 <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
+                                    {{ $gettext('Song') }}
                                 </th>
                             </tr>
                             </thead>
@@ -83,7 +83,7 @@
                 <b-col md="12" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_most_played">Most Played Songs</translate>
+                            {{ $gettext('Most Played Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -94,10 +94,10 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <translate key="reports_overview_col_plays">Plays</translate>
+                                    {{ $gettext('Plays') }}
                                 </th>
                                 <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
+                                    {{ $gettext('Song') }}
                                 </th>
                             </tr>
                             </thead>

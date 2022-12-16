@@ -1,9 +1,7 @@
 <template>
     <section class="card" role="region">
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
-                <translate key="lang_hdr">API Keys</translate>
-            </h2>
+            <h2 class="card-title">{{ $gettext('API Keys') }}</h2>
         </b-card-header>
 
         <data-table ref="datatable" id="api_keys" :fields="fields" :api-url="apiUrl">
@@ -13,7 +11,7 @@
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                        <translate key="lang_btn_delete">Delete</translate>
+                        {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
             </template>

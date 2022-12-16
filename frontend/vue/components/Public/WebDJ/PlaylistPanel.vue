@@ -29,7 +29,7 @@
                         <icon icon="stop"></icon>
                     </button>
                     <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">
-                        <translate key="lang_btn_cue">Cue</translate>
+                        {{ $gettext('Cue') }}
                     </button>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*"
                            multiple="multiple" v-on:change="addNewFiles($event.target.files)">
                     <label v-bind:for="id + '_files'" class="custom-file-label">
-                        <translate key="lang_btn_add_files_to_playlist">Add Files to Playlist</translate>
+                        {{ $gettext('Add Files to Playlist') }}
                     </label>
                 </div>
             </div>
@@ -72,13 +72,13 @@
                         <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
                                v-model="playThrough">
                         <label v-bind:for="id + '_playthrough'" class="custom-control-label">
-                            <translate key="lang_continuous_play">Continuous Play</translate>
+                            {{ $gettext('Continuous Play') }}
                         </label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
                         <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
                         <label v-bind:for="id + '_loop'" class="custom-control-label">
-                            <translate key="lang_repeat_playlist">Repeat</translate>
+                            {{ $gettext('Repeat') }}
                         </label>
                     </div>
                 </div>

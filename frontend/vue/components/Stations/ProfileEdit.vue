@@ -2,7 +2,7 @@
     <section class="card" role="region">
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
-                <translate key="lang_hdr_profile_edit">Edit Station Profile</translate>
+                {{ $gettext('Edit Station Profile') }}
             </h3>
         </div>
 

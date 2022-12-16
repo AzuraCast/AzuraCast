@@ -11,10 +11,10 @@
 
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button :variant="(disableSaveButton) ? 'danger' : 'primary'" type="submit" @click="doSubmit">
-                <translate key="lang_btn_save_changes">Save Changes</translate>
+                {{ $gettext('Save Changes') }}
             </b-button>
         </template>
     </b-modal>

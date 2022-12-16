@@ -15,10 +15,10 @@
             </template>
         </div>
         <div class="file-drop-target" ref="file_drop_target">
-            <translate key="lang_upload_target">Drag file(s) here to upload or</translate>
+            {{ $gettext('Drag file(s) here to upload or') }}
             <button ref="file_browse_target" class="file-upload btn btn-primary text-center ml-1" type="button">
                 <icon icon="cloud_upload"></icon>
-                <translate key="lang_select_file">Select File</translate>
+                {{ $gettext('Select File') }}
             </button>
             <small class="file-name"></small>
             <input type="file" :accept="validMimeTypesList" :multiple="allowMultiple"

@@ -125,7 +125,7 @@ export default {
         this.flow.assignBrowse(this.$refs.file_browse_target);
         this.flow.assignDrop(this.$refs.file_drop_target);
 
-        this.flow.on('fileAdded', (file, event) => {
+        this.flow.on('fileAdded', (file) => {
             file.progress_percent = 0;
             file.is_completed = false;
             file.error = null;
@@ -135,7 +135,7 @@ export default {
             return true;
         });
 
-        this.flow.on('filesSubmitted', (array, event) => {
+        this.flow.on('filesSubmitted', () => {
             this.flow.upload();
         });
 

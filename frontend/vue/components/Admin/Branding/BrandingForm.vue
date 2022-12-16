@@ -190,7 +190,7 @@ export default {
             this.axios.get(this.apiUrl).then((resp) => {
                 this.populateForm(resp.data);
                 this.loading = false;
-            }).catch((error) => {
+            }).catch(() => {
                 this.close();
             });
         },
@@ -218,7 +218,7 @@ export default {
                     url: this.apiUrl,
                     data: this.form
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess(this.$gettext('Changes saved.'));
                 this.relist();
             });

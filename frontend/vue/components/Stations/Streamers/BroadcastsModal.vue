@@ -61,7 +61,7 @@ export default {
                     key: 'timestampStart',
                     label: this.$gettext('Start Time'),
                     sortable: false,
-                    formatter: (value, key, item) => {
+                    formatter: (value) => {
                         return DateTime.fromSeconds(value).toLocaleString(
                             {...DateTime.DATETIME_MED, ...App.time_config}
                         );
@@ -72,7 +72,7 @@ export default {
                     key: 'timestampEnd',
                     label: this.$gettext('End Time'),
                     sortable: false,
-                    formatter: (value, key, item) => {
+                    formatter: (value) => {
                         if (value === 0) {
                             return this.$gettext('Live');
                         }

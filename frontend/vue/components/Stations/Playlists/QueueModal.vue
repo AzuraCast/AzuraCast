@@ -62,7 +62,7 @@ export default {
         doClear () {
             this.$wrapWithLoading(
                 this.axios.delete(this.queueUrl)
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess(this.$gettext('Playlist queue cleared.'));
                 this.close();
             });

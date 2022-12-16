@@ -74,7 +74,7 @@ export default {
         };
     },
     methods: {
-        onFileSuccess(file, message) {
+        onFileSuccess() {
             this.mayNeedRestart();
             this.hasStereoToolConfiguration = true;
         },
@@ -84,7 +84,7 @@ export default {
                     method: 'DELETE',
                     url: this.apiUrl
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.mayNeedRestart();
                 this.hasStereoToolConfiguration = false;
                 this.$notifySuccess();

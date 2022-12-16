@@ -119,7 +119,7 @@ export default {
             this.axios.post(url).then((resp) => {
                 this.$notifySuccess(resp.data.message);
                 this.$emit('submitted');
-            }).catch((err) => {
+            }).catch(() => {
                 this.$emit('submitted');
             });
         }

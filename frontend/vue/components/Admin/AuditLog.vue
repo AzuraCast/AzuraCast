@@ -22,7 +22,7 @@
                 <span class="text-danger" v-else-if="row.item.operation_text === 'delete'" :title="langDelete">
                     <icon class="lg inline" icon="remove_circle"></icon>
                 </span>
-                <span class="text-primary" v-else>
+                <span class="text-primary" v-else :title="langUpdate">
                     <icon class="lg inline" icon="swap_horizontal_circle"></icon>
                 </span>
             </template>

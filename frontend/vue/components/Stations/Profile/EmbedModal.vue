@@ -161,15 +161,6 @@ export default {
         embedUrl() {
             return this.baseEmbedUrl + '?theme=' + this.selectedTheme;
         },
-        bgVariant() {
-            switch (this.selectedTheme) {
-                case 'light':
-                    return 'dark';
-
-                case 'dark':
-                    return 'light';
-            }
-        },
         embedHeight() {
             switch (this.selectedType) {
                 case 'ondemand':

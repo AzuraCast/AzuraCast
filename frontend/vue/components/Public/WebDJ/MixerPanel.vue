@@ -35,7 +35,7 @@ export default {
         };
     },
     watch: {
-        position (val, oldVal) {
+        position(val) {
             this.$root.$emit('new-mixer-value', val);
         }
     }

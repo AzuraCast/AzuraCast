@@ -222,7 +222,7 @@ export default {
         startStreaming () {
             this.resumeStream();
 
-            var encoderClass;
+            let encoderClass;
             switch (this.encoder) {
                 case 'mp3':
                     encoderClass = Webcast.Encoder.Mp3;

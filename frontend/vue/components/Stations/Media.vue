@@ -263,7 +263,7 @@ export default {
                 key: 'timestamp',
                 label: this.$gettext('Modified'),
                 sortable: true,
-                formatter: (value, key, item) => {
+                formatter: (value) => {
                     if (!value) {
                         return '';
                     }

@@ -49,7 +49,7 @@ export default {
             this.record = d;
             this.form = mergeExisting(this.form, d);
         },
-        onSubmitSuccess(response) {
+        onSubmitSuccess() {
             this.$notifySuccess();
 
             this.$emit('needs-restart');

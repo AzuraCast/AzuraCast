@@ -37,7 +37,7 @@ export default {
     watch: {
         albumArtUrl: {
             immediate: true,
-            handler(newVal, oldVal) {
+            handler(newVal) {
                 this.albumArtSrc = newVal;
             }
         }
@@ -51,7 +51,7 @@ export default {
             let formData = new FormData();
             formData.append('art', this.artFile);
 
-            this.axios.post(this.albumArtUrl, formData).then((resp) => {
+            this.axios.post(this.albumArtUrl, formData).then(() => {
                 this.reloadArt();
             }).catch((err) => {
                 console.log(err);
@@ -59,7 +59,7 @@ export default {
             });
         },
         deleteArt() {
-            this.axios.delete(this.albumArtUrl).then((resp) => {
+            this.axios.delete(this.albumArtUrl).then(() => {
                 this.reloadArt();
             }).catch((err) => {
                 console.log(err);

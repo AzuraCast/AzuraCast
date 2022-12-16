@@ -38,13 +38,6 @@ export default {
                 ], name);
             });
         },
-        labelClassWithRequired() {
-            let labelClass = this.labelClass;
-            if (this.isRequired) {
-                labelClass += ' required';
-            }
-            return labelClass;
-        },
         isRequired() {
             return _.has(this.field, 'required');
         }

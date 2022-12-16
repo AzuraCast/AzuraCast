@@ -152,7 +152,7 @@ export default {
             this.axios.get(this.settingsUrl).then((resp) => {
                 this.form = mergeExisting(this.form, resp.data);
                 this.loading = false;
-            }).catch((error) => {
+            }).catch(() => {
                 this.close();
             });
         },
@@ -184,7 +184,7 @@ export default {
                     url: this.settingsUrl,
                     data: this.form
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess();
                 this.close();
             });

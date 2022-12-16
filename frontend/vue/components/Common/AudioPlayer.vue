@@ -172,7 +172,7 @@ export default {
         getDuration() {
             return this.duration;
         },
-        getProgress(x) {
+        getProgress() {
             return (this.duration !== 0) ? +((this.currentTime / this.duration) * 100).toFixed(2) : 0;
         },
         setProgress(progress) {

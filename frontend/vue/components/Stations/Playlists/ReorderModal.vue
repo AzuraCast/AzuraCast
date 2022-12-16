@@ -110,7 +110,7 @@ export default {
                 newOrder[row.id] = i;
             });
 
-            this.axios.put(this.reorderUrl, {'order': newOrder}).then((resp) => {
+            this.axios.put(this.reorderUrl, {'order': newOrder}).then(() => {
                 this.$notifySuccess(this.$gettext('Playlist order set.'));
             });
         },

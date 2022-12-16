@@ -68,11 +68,11 @@ export default {
         };
     },
     methods: {
-        onFileSuccess(file, message) {
+        onFileSuccess() {
             this.hasFallback = true;
         },
         deleteFallback() {
-            this.axios.delete(this.apiUrl).then((resp) => {
+            this.axios.delete(this.apiUrl).then(() => {
                 this.hasFallback = false;
             });
         }

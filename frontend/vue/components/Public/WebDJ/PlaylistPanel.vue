@@ -225,7 +225,7 @@ export default {
             this.prepare();
 
             return this.getStream().createFileSource(this.file, this, (source) => {
-                var ref1;
+                let ref1;
                 this.source = source;
                 this.source.connect(this.destination);
                 if (this.source.duration != null) {

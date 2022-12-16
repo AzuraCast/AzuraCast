@@ -77,7 +77,7 @@ export default {
                 is_public: false
             };
         },
-        onSubmitSuccess(response) {
+        onSubmitSuccess() {
             this.$notifySuccess();
 
             this.$emit('needs-restart');

@@ -314,7 +314,7 @@ export default {
             {value: 4, text: '4'},
             {value: 5, text: '5 - ' + this.$gettext('High')}
         ];
-        for (var i = 6; i <= 25; i++) {
+        for (let i = 6; i <= 25; i++) {
             weightOptions.push({value: i, text: i});
         }
 

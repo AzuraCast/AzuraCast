@@ -82,7 +82,7 @@ export default {
                     url: this.cloneUrl,
                     data: this.form
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess();
                 this.$emit('relist');
                 this.close();

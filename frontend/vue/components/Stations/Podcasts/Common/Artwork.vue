@@ -73,7 +73,7 @@ export default {
         },
         deleteArt () {
             if (this.editArtUrl) {
-                this.axios.delete(this.editArtUrl).then((resp) => {
+                this.axios.delete(this.editArtUrl).then(() => {
                     this.localSrc = '';
                 });
             } else {

@@ -393,7 +393,7 @@ export default {
         setFilter(newTerm) {
             this.filter = newTerm;
         },
-        loadItems(ctx, callback) {
+        loadItems(ctx) {
             let queryParams = {
                 internal: true
             };

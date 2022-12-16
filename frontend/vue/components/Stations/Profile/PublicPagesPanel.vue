@@ -108,15 +108,6 @@ export default {
         langEnablePublicPages() {
             return this.$gettext('Enable public pages?');
         },
-        publicPageEmbedCode() {
-            return '<iframe src="' + this.publicPageEmbedUri + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe>';
-        },
-        publicOnDemandEmbedCode () {
-            return '<iframe src="' + this.publicOnDemandEmbedUri + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 400px; border: 0;"></iframe>';
-        },
-        publicRequestEmbedCode () {
-            return '<iframe src="' + this.publicRequestEmbedUri + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe>';
-        }
     },
     methods: {
         doOpenEmbed () {

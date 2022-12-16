@@ -59,15 +59,6 @@ export default {
             return this.isEditMode
                 ? this.$gettext('Edit Episode')
                 : this.$gettext('Add Episode');
-        },
-        langSaveChanges () {
-            let baseText = this.$gettext('Save Changes');
-
-            if (null !== this.uploadPercentage) {
-                baseText = baseText + ' (' + this.uploadPercentage + '%)';
-            }
-
-            return baseText;
         }
     },
     validations: {

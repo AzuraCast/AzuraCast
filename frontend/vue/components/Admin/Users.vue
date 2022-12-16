@@ -68,9 +68,6 @@ export default {
         };
     },
     methods: {
-        isMe(userId) {
-            return this.currentUserId === userId;
-        },
         relist() {
             this.$refs.datatable.refresh();
         },

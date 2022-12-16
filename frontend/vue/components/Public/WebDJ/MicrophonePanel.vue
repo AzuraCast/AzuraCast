@@ -73,7 +73,7 @@ export default {
         };
     },
     watch: {
-        device: function (val, oldVal) {
+        device: function () {
             if (this.source == null) {
                 return;
             }
@@ -81,13 +81,13 @@ export default {
         }
     },
     mounted: function () {
-        var base, base1;
+        let base, base1;
 
         // Get multimedia devices by requesting them from the browser.
         navigator.mediaDevices || (navigator.mediaDevices = {});
 
         (base = navigator.mediaDevices).getUserMedia || (base.getUserMedia = function (constraints) {
-            var fn;
+            let fn;
             fn = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
             if (fn == null) {
                 return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
@@ -101,7 +101,7 @@ export default {
             return Promise.reject(new Error('enumerateDevices is not implemented on this browser'));
         });
 
-        var vm_mic = this;
+        const vm_mic = this;
         navigator.mediaDevices.getUserMedia({
             audio: true,
             video: false
@@ -129,7 +129,7 @@ export default {
             }
         },
         createSource: function (cb) {
-            var constraints;
+            let constraints;
             if (this.source != null) {
                 this.source.disconnect(this.destination);
             }
@@ -158,7 +158,7 @@ export default {
             });
         },
         setDevices: function (devices) {
-            devices = _.filter(devices, function ({ kind, deviceId }) {
+            devices = _.filter(devices, function ({kind}) {
                 return kind === 'audioinput';
             });
             if (_.isEmpty(devices)) {

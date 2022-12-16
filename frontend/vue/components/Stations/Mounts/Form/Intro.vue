@@ -80,7 +80,7 @@ export default {
         },
         deleteIntro() {
             if (this.editIntroUrl) {
-                this.axios.delete(this.editIntroUrl).then((resp) => {
+                this.axios.delete(this.editIntroUrl).then(() => {
                     this.hasIntro = false;
                 });
             } else {

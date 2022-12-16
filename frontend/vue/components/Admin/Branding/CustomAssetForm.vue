@@ -68,7 +68,7 @@ export default {
         clear() {
             this.$wrapWithLoading(
                 this.axios.delete(this.apiUrl)
-            ).finally((resp) => {
+            ).finally(() => {
                 this.relist();
             });
         },

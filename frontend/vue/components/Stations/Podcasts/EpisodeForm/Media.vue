@@ -58,6 +58,8 @@ export default {
             acceptMimeTypes: ['audio/x-m4a', 'audio/mpeg']
         };
     },
+
+
     watch: {
         recordHasMedia(newValue) {
             this.hasMedia = newValue;
@@ -82,7 +84,7 @@ export default {
         },
         deleteMedia () {
             if (this.editMediaUrl) {
-                this.axios.delete(this.editMediaUrl).then((resp) => {
+                this.axios.delete(this.editMediaUrl).then(() => {
                     this.hasMedia = false;
                 });
             } else {

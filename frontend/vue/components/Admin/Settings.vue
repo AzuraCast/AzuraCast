@@ -203,7 +203,7 @@ export default {
                     url: this.apiUrl,
                     data: this.form
                 })
-            ).then((resp) => {
+            ).then(() => {
                 this.$emit('saved');
 
                 this.$notifySuccess(this.$gettext('Changes saved.'));

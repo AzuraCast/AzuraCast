@@ -87,11 +87,6 @@ export default {
             ]
         };
     },
-    computed: {
-        langAllPodcastsTab () {
-            return this.$gettext('All Podcasts');
-        }
-    },
     methods: {
         countEpisodes (episodes) {
             return episodes.length;

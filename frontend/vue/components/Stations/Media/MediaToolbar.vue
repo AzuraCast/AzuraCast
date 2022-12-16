@@ -136,21 +136,18 @@ export default {
         langErrors() {
             return this.$gettext('The request could not be processed.');
         },
-        newPlaylistIsChecked() {
-            return this.newPlaylist !== '';
-        }
     },
     methods: {
-        doImmediateQueue(e) {
+        doImmediateQueue() {
             this.doBatch('immediate', this.$gettext('Files played immediately:'));
         },
-        doQueue(e) {
+        doQueue() {
             this.doBatch('queue', this.$gettext('Files queued for playback:'));
         },
-        doReprocess(e) {
+        doReprocess() {
             this.doBatch('reprocess', this.$gettext('Files marked for reprocessing:'));
         },
-        doDelete(e) {
+        doDelete() {
             let buttonConfirmText = this.$gettext('Delete %{ num } media files?');
             let numFiles = this.selectedItems.all.length;
 

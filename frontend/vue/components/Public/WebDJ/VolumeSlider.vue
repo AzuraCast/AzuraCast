@@ -13,36 +13,34 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
+import {onMounted, ref} from "vue";
+import {get, set, useVModel} from "@vueuse/core";
 
+const props = defineProps({
+    modelValue: String
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const initial = ref(75);
+onMounted(() => {
+    set(initial, props.modelValue);
+});
+
+const volume = useVModel(props, 'modelValue', emit);
+
+const reset = () => {
+    set(volume, get(initial));
+}
+</script>
+
+<script>
 export default {
-    components: {Icon},
-    name: "VolumeSlider",
-    emits: "input",
-    props: ['value'],
-    data() {
-        return {
-            initial: 75
-        }
-    },
-    mounted() {
-        this.initial = this.value;
-    },
-    computed: {
-        volume: {
-            get() {
-                return this.value
-            },
-            set(newValue) {
-                this.$emit('input', newValue);
-            }
-        }
-    },
-    methods: {
-        reset() {
-            this.volume = this.initial;
-        }
+    model: {
+        prop: 'modelValue',
+        event: 'update:modelValue'
     }
 }
 </script>

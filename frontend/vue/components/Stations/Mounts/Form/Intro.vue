@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTitle">
+    <b-tab :title="$gettext('Intro')">
         <b-form-group>
             <b-form-row>
                 <b-form-group class="col-md-6" label-for="intro_file">
@@ -7,10 +7,12 @@
                         {{ $gettext('Select Intro File') }}
                     </template>
                     <template #description>
-                        {{ $gettext('This introduction file should exactly match the bitrate and format of the mount point itself.') }}
+                        {{
+                            $gettext('This introduction file should exactly match the bitrate and format of the mount point itself.')
+                        }}
                     </template>
 
-                    <flow-upload :target-url="targetUrl" :valid-mime-types="acceptMimeTypes"
+                    <flow-upload :target-url="targetUrl" :valid-mime-types="['audio/*']"
                                  @success="onFileSuccess"></flow-upload>
                 </b-form-group>
 
@@ -38,56 +40,57 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 
-export default {
-    name: 'MountFormIntro',
-    components: {FlowUpload},
-    props: {
-        value: Object,
-        recordHasIntro: Boolean,
-        editIntroUrl: String,
-        newIntroUrl: String
-    },
-    data() {
-        return {
-            hasIntro: this.recordHasIntro,
-            acceptMimeTypes: ['audio/*']
-        };
-    },
-    watch: {
-        recordHasIntro(newValue) {
-            this.hasIntro = newValue;
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Intro');
-        },
-        targetUrl() {
-            return (this.editIntroUrl)
-                ? this.editIntroUrl
-                : this.newIntroUrl;
-        }
-    },
-    methods: {
-        onFileSuccess(file, message) {
-            this.hasIntro = true;
-            if (!this.editIntroUrl) {
-                this.$emit('input', message);
-            }
-        },
-        deleteIntro() {
-            if (this.editIntroUrl) {
-                this.axios.delete(this.editIntroUrl).then(() => {
-                    this.hasIntro = false;
-                });
-            } else {
-                this.hasIntro = false;
-                this.$emit('input', null);
-            }
-        }
+import {computed, toRef} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {set} from "@vueuse/core";
+
+const props = defineProps({
+    modelValue: Object,
+    recordHasIntro: Boolean,
+    editIntroUrl: String,
+    newIntroUrl: String
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const hasIntro = toRef(props, 'recordHasIntro');
+
+const targetUrl = computed(() => {
+    return (props.editIntroUrl)
+        ? props.editIntroUrl
+        : props.newIntroUrl;
+});
+
+const onFileSuccess = (file, message) => {
+    set(hasIntro, true);
+
+    if (!props.editIntroUrl) {
+        emit('update:modelValue', message);
     }
 };
+
+const {axios} = useAxios();
+
+const deleteIntro = () => {
+    if (props.editIntroUrl) {
+        axios.delete(props.editIntroUrl).then(() => {
+            set(hasIntro, false);
+        });
+    } else {
+        set(hasIntro, false);
+        emit('update:modelValue', null);
+    }
+};
+</script>
+
+<script>
+export default {
+    model: {
+        prop: 'modelValue',
+        event: 'update:modelValue'
+    }
+}
 </script>

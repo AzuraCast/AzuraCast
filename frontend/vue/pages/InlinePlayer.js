@@ -1,6 +1,6 @@
 import {createApp} from 'vue';
 import InlinePlayer from '~/components/InlinePlayer.vue';
-import usePinia from '../vendor/pinia';
+import installPinia from '../vendor/pinia';
 import gettext from "../vendor/gettext";
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     inlineApp.use(gettext);
 
     /* Pinia */
-    usePinia(inlineApp);
+    installPinia(inlineApp);
 
     inlineApp.mount('#radio-player-controls');
 });

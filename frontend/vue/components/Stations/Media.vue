@@ -97,11 +97,8 @@
                                        class="flex-shrink-1 pl-2"></album-art>
                         </div>
                     </template>
-                    <template #cell(media_genre)="row">
-                        {{ row.item.media_genre }}
-                    </template>
-                    <template #cell(media_length)="row">
-                        {{ row.item.media_length_text }}
+                    <template #cell(media.length)="row">
+                        {{ row.item.media.length_text }}
                     </template>
                     <template #cell(size)="row">
                         <template v-if="!row.item.size">&nbsp;</template>
@@ -149,7 +146,7 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import MediaToolbar from './Media/MediaToolbar';
 import Breadcrumb from './Media/Breadcrumb';
@@ -158,29 +155,17 @@ import NewDirectoryModal from './Media/NewDirectoryModal';
 import MoveFilesModal from './Media/MoveFilesModal';
 import RenameModal from './Media/RenameModal';
 import EditModal from './Media/EditModal';
-import formatFileSize from '~/functions/formatFileSize.js';
-import _ from 'lodash';
+import StationsCommonQuota from "~/components/Stations/Common/Quota";
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
-import PlayButton from "~/components/Common/PlayButton";
+import PlayButton from "~/components/Common/PlayButton";</script>
+
+<script>
+import formatFileSize from '~/functions/formatFileSize.js';
+import _ from 'lodash';
 import {DateTime} from 'luxon';
-import StationsCommonQuota from "~/components/Stations/Common/Quota";
 
 export default {
-    components: {
-        StationsCommonQuota,
-        PlayButton,
-        AlbumArt,
-        Icon,
-        EditModal,
-        RenameModal,
-        MoveFilesModal,
-        NewDirectoryModal,
-        FileUpload,
-        MediaToolbar,
-        DataTable,
-        Breadcrumb
-    },
     props: {
         listUrl: {
             type: String,

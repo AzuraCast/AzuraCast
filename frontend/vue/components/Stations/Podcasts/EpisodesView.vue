@@ -1,73 +1,71 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <b-row class="row align-items-center">
-                    <b-col md="7">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0 pr-3">
-                                <album-art :src="podcast.art"></album-art>
-                            </div>
-                            <div class="flex-fill">
-                                <h2 class="card-title">{{ podcast.title }}</h2>
-                                <h4 class="card-subtitle text-muted">{{ $gettext('Episodes') }}</h4>
-                            </div>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <b-row class="row align-items-center">
+                <b-col md="7">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 pr-3">
+                            <album-art :src="podcast.art"></album-art>
                         </div>
-                    </b-col>
-                    <b-col md="5" class="text-right text-white-50">
-                        <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
-                    </b-col>
-                </b-row>
-            </b-card-header>
+                        <div class="flex-fill">
+                            <h2 class="card-title">{{ podcast.title }}</h2>
+                            <h4 class="card-subtitle text-muted">{{ $gettext('Episodes') }}</h4>
+                        </div>
+                    </div>
+                </b-col>
+                <b-col md="5" class="text-right text-white-50">
+                    <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
+                </b-col>
+            </b-row>
+        </b-card-header>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="bg" @click="doClearPodcast()">
-                    <icon icon="arrow_back"></icon>
-                    {{ $gettext('All Podcasts') }}
-                </b-button>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="bg" @click="doClearPodcast()">
+                <icon icon="arrow_back"></icon>
+                {{ $gettext('All Podcasts') }}
+            </b-button>
 
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <i class="material-icons" aria-hidden="true">add</i>
-                    {{ $gettext('Add Episode') }}
-                </b-button>
-            </b-card-body>
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <i class="material-icons" aria-hidden="true">add</i>
+                {{ $gettext('Add Episode') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="station_podcast_episodes" paginated :fields="fields" :responsive="false"
-                        :api-url="podcast.links.episodes">
-                <template #cell(art)="row">
-                    <album-art :src="row.item.art"></album-art>
+        <data-table ref="datatable" id="station_podcast_episodes" paginated :fields="fields" :responsive="false"
+                    :api-url="podcast.links.episodes">
+            <template #cell(art)="row">
+                <album-art :src="row.item.art"></album-art>
+            </template>
+            <template #cell(title)="row">
+                <h5 class="m-0">{{ row.item.title }}</h5>
+                <a :href="row.item.links.public" target="_blank">{{ $gettext('Public Page') }}</a>
+            </template>
+            <template #cell(podcast_media)="row">
+                <template v-if="row.item.media">
+                    <span>{{ row.item.media.original_name }}</span>
+                    <br/>
+                    <small>{{ row.item.media.length_text }}</small>
                 </template>
-                <template #cell(title)="row">
-                    <h5 class="m-0">{{ row.item.title }}</h5>
-                    <a :href="row.item.links.public" target="_blank">{{ $gettext('Public Page') }}</a>
-                </template>
-                <template #cell(podcast_media)="row">
-                    <template v-if="row.item.media">
-                        <span>{{ row.item.media.original_name }}</span>
-                        <br/>
-                        <small>{{ row.item.media.length_text }}</small>
-                    </template>
-                </template>
-                <template #cell(explicit)="row">
-                    <span class="badge badge-danger" v-if="row.item.explicit">{{ $gettext('Explicit') }}</span>
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            {{ $gettext('Edit') }}
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+            </template>
+            <template #cell(explicit)="row">
+                <span class="badge badge-danger" v-if="row.item.explicit">{{ $gettext('Explicit') }}</span>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editEpisodeModal" :create-url="podcast.links.episodes" :station-time-zone="stationTimeZone"
-                    :new-art-url="podcast.links.episode_new_art" :new-media-url="podcast.links.episode_new_media"
-                    :locale="locale" :podcast-id="podcast.id" @relist="relist"></edit-modal>
-    </div>
+    <edit-modal ref="editEpisodeModal" :create-url="podcast.links.episodes" :station-time-zone="stationTimeZone"
+                :new-art-url="podcast.links.episode_new_art" :new-media-url="podcast.links.episode_new_media"
+                :locale="locale" :podcast-id="podcast.id" @relist="relist"></edit-modal>
 </template>
 
 <script>

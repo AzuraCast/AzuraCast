@@ -1,56 +1,54 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title">{{ $gettext('Song Requests') }}</h2>
-            </b-card-header>
-            <b-tabs pills card>
-                <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
-                       :title="tab.title" no-body></b-tab>
-            </b-tabs>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Song Requests') }}</h2>
+        </b-card-header>
+        <b-tabs pills card>
+            <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
+                   :title="tab.title" no-body></b-tab>
+        </b-tabs>
 
-            <div class="card-actions" v-if="activeType === 'pending'">
-                <b-button variant="outline-danger" @click="doClear()">
-                    <icon icon="remove"></icon>
-                    {{ $gettext('Clear Pending Requests') }}
-                </b-button>
-            </div>
+        <div class="card-actions" v-if="activeType === 'pending'">
+            <b-button variant="outline-danger" @click="doClear()">
+                <icon icon="remove"></icon>
+                {{ $gettext('Clear Pending Requests') }}
+            </b-button>
+        </div>
 
-            <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrlForType">
-                <template #cell(timestamp)="row">
-                    {{ formatTime(row.item.timestamp) }}
-                </template>
-                <template #cell(played_at)="row">
-                    <span v-if="row.item.played_at === 0">
-                        {{ $gettext('Not Played') }}
-                    </span>
-                    <span v-else>
-                        {{ formatTime(row.item.played_at) }}
-                    </span>
-                </template>
-                <template #cell(song_title)="row">
-                    <div v-if="row.item.track.title">
-                        <b>{{ row.item.track.title }}</b><br>
-                        {{ row.item.track.artist }}
-                    </div>
-                    <div v-else>
-                        {{ row.item.track.text }}
-                    </div>
-                </template>
-                <template #cell(ip)="row">
-                    {{ row.item.ip }}
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group>
-                        <b-button v-if="row.item.played_at === 0" size="sm" variant="danger"
-                                  @click.prevent="doDelete(row.item.links.delete)">
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
-    </div>
+        <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrlForType">
+            <template #cell(timestamp)="row">
+                {{ formatTime(row.item.timestamp) }}
+            </template>
+            <template #cell(played_at)="row">
+                <span v-if="row.item.played_at === 0">
+                    {{ $gettext('Not Played') }}
+                </span>
+                <span v-else>
+                    {{ formatTime(row.item.played_at) }}
+                </span>
+            </template>
+            <template #cell(song_title)="row">
+                <div v-if="row.item.track.title">
+                    <b>{{ row.item.track.title }}</b><br>
+                    {{ row.item.track.artist }}
+                </div>
+                <div v-else>
+                    {{ row.item.track.text }}
+                </div>
+            </template>
+            <template #cell(ip)="row">
+                {{ row.item.ip }}
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group>
+                    <b-button v-if="row.item.played_at === 0" size="sm" variant="danger"
+                              @click.prevent="doDelete(row.item.links.delete)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 </template>
 
 <script>

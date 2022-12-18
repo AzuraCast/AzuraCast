@@ -1,68 +1,66 @@
 <template>
-    <div>
-        <b-form-fieldset>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
+    <b-form-fieldset>
+        <b-form-row>
+            <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
+                <template #label>
+                    {{ $gettext('Name') }}
+                </template>
+            </b-wrapped-form-group>
+
+            <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
+                <template #label>
+                    {{ $gettext('E-mail Address') }}
+                </template>
+            </b-wrapped-form-group>
+        </b-form-row>
+    </b-form-fieldset>
+
+    <b-form-fieldset>
+        <template #label>
+            {{ $gettext('Customization') }}
+        </template>
+
+        <b-form-row>
+            <b-col md="6">
+                <b-wrapped-form-group id="edit_form_locale"
+                                      :field="form.locale">
                     <template #label>
-                        {{ $gettext('Name') }}
+                        {{ $gettext('Language') }}
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="localeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+            </b-col>
+            <b-col md="6">
+                <b-wrapped-form-group id="edit_form_theme"
+                                      :field="form.theme">
+                    <template #label>
+                        {{ $gettext('Site Theme') }}
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="themeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
+                <b-wrapped-form-group id="edit_form_show_24_hour_time"
+                                      :field="form.show_24_hour_time">
                     <template #label>
-                        {{ $gettext('E-mail Address') }}
+                        {{ $gettext('Time Display') }}
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="show24hourOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
-        </b-form-fieldset>
-
-        <b-form-fieldset>
-            <template #label>
-                {{ $gettext('Customization') }}
-            </template>
-
-            <b-form-row>
-                <b-col md="6">
-                    <b-wrapped-form-group id="edit_form_locale"
-                                          :field="form.locale">
-                        <template #label>
-                            {{ $gettext('Language') }}
-                        </template>
-                        <template #default="props">
-                            <b-form-radio-group stacked :id="props.id" :options="localeOptions"
-                                                v-model="props.field.$model">
-                            </b-form-radio-group>
-                        </template>
-                    </b-wrapped-form-group>
-                </b-col>
-                <b-col md="6">
-                    <b-wrapped-form-group id="edit_form_theme"
-                                          :field="form.theme">
-                        <template #label>
-                            {{ $gettext('Site Theme') }}
-                        </template>
-                        <template #default="props">
-                            <b-form-radio-group stacked :id="props.id" :options="themeOptions"
-                                                v-model="props.field.$model">
-                            </b-form-radio-group>
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group id="edit_form_show_24_hour_time"
-                                          :field="form.show_24_hour_time">
-                        <template #label>
-                            {{ $gettext('Time Display') }}
-                        </template>
-                        <template #default="props">
-                            <b-form-radio-group stacked :id="props.id" :options="show24hourOptions"
-                                                v-model="props.field.$model">
-                            </b-form-radio-group>
-                        </template>
-                    </b-wrapped-form-group>
-                </b-col>
-            </b-form-row>
-        </b-form-fieldset>
-    </div>
+            </b-col>
+        </b-form-row>
+    </b-form-fieldset>
 </template>
 
 <script>

@@ -1,54 +1,52 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title">{{ $gettext('Roles & Permissions') }}</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Roles & Permissions') }}</h2>
+        </b-card-header>
 
-            <info-card>
-                <p class="card-text">
-                    {{
-                        $gettext('AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.')
-                    }}
-                </p>
-            </info-card>
+        <info-card>
+            <p class="card-text">
+                {{
+                    $gettext('AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.')
+                }}
+            </p>
+        </info-card>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    {{ $gettext('Add Role') }}
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <icon icon="add"></icon>
+                {{ $gettext('Add Role') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="permissions" paginated :fields="fields" :api-url="listUrl">
-                <template #cell(permissions)="row">
-                    <div v-if="row.item.permissions.global.length > 0">
-                        {{ $gettext('Global') }}
-                        :
-                        {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
-                    </div>
-                    <div v-for="(permissions, stationId) in row.item.permissions.station" :key="stationId">
-                        <b>{{ getStationName(stationId) }}</b>:
-                        {{ getStationPermissionNames(permissions).join(', ') }}
-                    </div>
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm" v-if="!row.item.is_super_admin">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            {{ $gettext('Edit') }}
-                        </b-button>
-                        <b-button v-if="row.item.id !== 1" size="sm" variant="danger"
-                                  @click.prevent="doDelete(row.item.links.self)">
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table ref="datatable" id="permissions" paginated :fields="fields" :api-url="listUrl">
+            <template #cell(permissions)="row">
+                <div v-if="row.item.permissions.global.length > 0">
+                    {{ $gettext('Global') }}
+                    :
+                    {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
+                </div>
+                <div v-for="(permissions, stationId) in row.item.permissions.station" :key="stationId">
+                    <b>{{ getStationName(stationId) }}</b>:
+                    {{ getStationPermissionNames(permissions).join(', ') }}
+                </div>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm" v-if="!row.item.is_super_admin">
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button v-if="row.item.id !== 1" size="sm" variant="danger"
+                              @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :station-permissions="stationPermissions" :stations="stations"
-                    :global-permissions="globalPermissions" @relist="relist"></edit-modal>
-    </div>
+    <edit-modal ref="editModal" :create-url="listUrl" :station-permissions="stationPermissions" :stations="stations"
+                :global-permissions="globalPermissions" @relist="relist"></edit-modal>
 </template>
 
 <script>

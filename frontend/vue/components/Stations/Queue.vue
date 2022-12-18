@@ -1,57 +1,55 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title">{{ $gettext('Upcoming Song Queue') }}</h2>
-            </b-card-header>
-            <div class="card-actions">
-                <b-button variant="outline-danger" @click="doClear()">
-                    <icon icon="remove"></icon>
-                    {{ $gettext('Clear Upcoming Song Queue') }}
-                </b-button>
-            </div>
-            <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl">
-                <template #cell(actions)="row">
-                    <b-button-group>
-                        <b-button v-if="row.item.log" size="sm" variant="primary"
-                                  @click.prevent="doShowLogs(row.item.log)">
-                            {{ $gettext('Logs') }}
-                        </b-button>
-                        <b-button v-if="!row.item.sent_to_autodj" size="sm" variant="danger"
-                                  @click.prevent="doDelete(row.item.links.self)">
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-                <template #cell(song_title)="row">
-                    <div v-if="row.item.autodj_custom_uri">
-                        {{ row.item.autodj_custom_uri }}
-                    </div>
-                    <div v-else-if="row.item.song.title">
-                        <b>{{ row.item.song.title }}</b><br>
-                        {{ row.item.song.artist }}
-                    </div>
-                    <div v-else>
-                        {{ row.item.song.text }}
-                    </div>
-                </template>
-                <template #cell(played_at)="row">
-                    {{ formatTime(row.item.played_at) }}<br>
-                    <small>{{ formatRelativeTime(row.item.played_at) }}</small>
-                </template>
-                <template #cell(source)="row">
-                    <div v-if="row.item.is_request">
-                        {{ $gettext('Listener Request') }}
-                    </div>
-                    <div v-else-if="row.item.playlist">
-                        {{ $gettext('Playlist') }}: {{ row.item.playlist }}
-                    </div>
-                </template>
-            </data-table>
-        </b-card>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Upcoming Song Queue') }}</h2>
+        </b-card-header>
+        <div class="card-actions">
+            <b-button variant="outline-danger" @click="doClear()">
+                <icon icon="remove"></icon>
+                {{ $gettext('Clear Upcoming Song Queue') }}
+            </b-button>
+        </div>
+        <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl">
+            <template #cell(actions)="row">
+                <b-button-group>
+                    <b-button v-if="row.item.log" size="sm" variant="primary"
+                              @click.prevent="doShowLogs(row.item.log)">
+                        {{ $gettext('Logs') }}
+                    </b-button>
+                    <b-button v-if="!row.item.sent_to_autodj" size="sm" variant="danger"
+                              @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+            <template #cell(song_title)="row">
+                <div v-if="row.item.autodj_custom_uri">
+                    {{ row.item.autodj_custom_uri }}
+                </div>
+                <div v-else-if="row.item.song.title">
+                    <b>{{ row.item.song.title }}</b><br>
+                    {{ row.item.song.artist }}
+                </div>
+                <div v-else>
+                    {{ row.item.song.text }}
+                </div>
+            </template>
+            <template #cell(played_at)="row">
+                {{ formatTime(row.item.played_at) }}<br>
+                <small>{{ formatRelativeTime(row.item.played_at) }}</small>
+            </template>
+            <template #cell(source)="row">
+                <div v-if="row.item.is_request">
+                    {{ $gettext('Listener Request') }}
+                </div>
+                <div v-else-if="row.item.playlist">
+                    {{ $gettext('Playlist') }}: {{ row.item.playlist }}
+                </div>
+            </template>
+        </data-table>
+    </b-card>
 
-        <queue-logs-modal ref="logs_modal"></queue-logs-modal>
-    </div>
+    <queue-logs-modal ref="logs_modal"></queue-logs-modal>
 </template>
 
 <script>

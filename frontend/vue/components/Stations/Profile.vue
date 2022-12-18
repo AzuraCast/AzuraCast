@@ -1,34 +1,32 @@
 <template>
-    <div>
-        <profile-header v-bind="$props" :np="np"></profile-header>
+    <profile-header v-bind="$props" :np="np"></profile-header>
 
-        <div class="row" id="profile">
-            <div class="col-lg-7">
-                <profile-now-playing v-bind="$props" :np="np"></profile-now-playing>
+    <div class="row" id="profile">
+        <div class="col-lg-7">
+            <profile-now-playing v-bind="$props" :np="np"></profile-now-playing>
 
-                <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
+            <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
 
-                <profile-streams v-bind="$props" :np="np"></profile-streams>
+            <profile-streams v-bind="$props" :np="np"></profile-streams>
 
-                <profile-public-pages v-bind="$props"></profile-public-pages>
-            </div>
+            <profile-public-pages v-bind="$props"></profile-public-pages>
+        </div>
 
-            <div class="col-lg-5">
-                <profile-requests v-bind="$props" v-if="stationSupportsRequests"></profile-requests>
+        <div class="col-lg-5">
+            <profile-requests v-bind="$props" v-if="stationSupportsRequests"></profile-requests>
 
-                <profile-streamers v-bind="$props" v-if="stationSupportsStreamers"></profile-streamers>
+            <profile-streamers v-bind="$props" v-if="stationSupportsStreamers"></profile-streamers>
 
-                <template v-if="hasActiveFrontend">
-                    <profile-frontend v-bind="$props" :np="np"></profile-frontend>
-                </template>
+            <template v-if="hasActiveFrontend">
+                <profile-frontend v-bind="$props" :np="np"></profile-frontend>
+            </template>
 
-                <template v-if="hasActiveBackend">
-                    <profile-backend v-bind="$props" :np="np"></profile-backend>
-                </template>
-                <template v-else>
-                    <profile-backend-none></profile-backend-none>
-                </template>
-            </div>
+            <template v-if="hasActiveBackend">
+                <profile-backend v-bind="$props" :np="np"></profile-backend>
+            </template>
+            <template v-else>
+                <profile-backend-none></profile-backend-none>
+            </template>
         </div>
     </div>
 </template>

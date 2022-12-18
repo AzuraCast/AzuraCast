@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
-    </div>
+    <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
 </template>
 
 <script>

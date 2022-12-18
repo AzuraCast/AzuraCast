@@ -1,64 +1,62 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title">{{ $gettext('Mount Points') }}</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Mount Points') }}</h2>
+        </b-card-header>
 
-            <info-card>
-                <p class="card-text">
-                    {{
-                        $gettext('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.')
-                    }}
-                </p>
-            </info-card>
+        <info-card>
+            <p class="card-text">
+                {{
+                    $gettext('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.')
+                }}
+            </p>
+        </info-card>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    {{ $gettext('Add Mount Point') }}
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <icon icon="add"></icon>
+                {{ $gettext('Add Mount Point') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="station_mounts" :fields="fields" paginated
-                        :api-url="listUrl">
-                <template #cell(display_name)="row">
-                    <h5 class="m-0">
-                        <a :href="row.item.links.listen">{{ row.item.display_name }}</a>
-                    </h5>
-                    <div v-if="row.item.is_default">
-                        <span class="badge badge-success">
-                            {{ $gettext('Default Mount') }}
-                        </span>
-                    </div>
+        <data-table ref="datatable" id="station_mounts" :fields="fields" paginated
+                    :api-url="listUrl">
+            <template #cell(display_name)="row">
+                <h5 class="m-0">
+                    <a :href="row.item.links.listen">{{ row.item.display_name }}</a>
+                </h5>
+                <div v-if="row.item.is_default">
+                    <span class="badge badge-success">
+                        {{ $gettext('Default Mount') }}
+                    </span>
+                </div>
+            </template>
+            <template #cell(enable_autodj)="row">
+                <template v-if="row.item.enable_autodj">
+                    {{ $gettext('Enabled') }}
+                    -
+                    {{ row.item.autodj_bitrate }}kbps {{ upper(row.item.autodj_format) }}
                 </template>
-                <template #cell(enable_autodj)="row">
-                    <template v-if="row.item.enable_autodj">
-                        {{ $gettext('Enabled') }}
-                        -
-                        {{ row.item.autodj_bitrate }}kbps {{ upper(row.item.autodj_format) }}
-                    </template>
-                    <template v-else>
-                        {{ $gettext('Disabled') }}
-                    </template>
+                <template v-else>
+                    {{ $gettext('Disabled') }}
                 </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            {{ $gettext('Edit') }}
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
-                    :show-advanced="showAdvanced" :station-frontend-type="stationFrontendType"
-                    @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
-    </div>
+    <edit-modal ref="editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
+                :show-advanced="showAdvanced" :station-frontend-type="stationFrontendType"
+                @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
 </template>
 
 <script>

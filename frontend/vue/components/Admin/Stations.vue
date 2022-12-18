@@ -1,53 +1,51 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title">{{ $gettext('Stations') }}</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Stations') }}</h2>
+        </b-card-header>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    {{ $gettext('Add Station') }}
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <icon icon="add"></icon>
+                {{ $gettext('Add Station') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="stations" paginated :fields="fields" :api-url="listUrl">
-                <template #cell(name)="row">
-                    <big>{{ row.item.name }}</big><br>
-                    <code>{{ row.item.short_name }}</code>
-                </template>
-                <template #cell(frontend_type)="row">
-                    {{ getFrontendName(row.item.frontend_type) }}
-                </template>
-                <template #cell(backend_type)="row">
-                    {{ getBackendName(row.item.backend_type) }}
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="secondary" :href="row.item.links.manage" target="_blank">
-                            {{ $gettext('Manage') }}
-                        </b-button>
-                        <b-button size="sm" variant="secondary"
-                                  @click.prevent="doClone(row.item.name, row.item.links.clone)">
-                            {{ $gettext('Clone') }}
-                        </b-button>
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            {{ $gettext('Edit') }}
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table ref="datatable" id="stations" paginated :fields="fields" :api-url="listUrl">
+            <template #cell(name)="row">
+                <big>{{ row.item.name }}</big><br>
+                <code>{{ row.item.short_name }}</code>
+            </template>
+            <template #cell(frontend_type)="row">
+                {{ getFrontendName(row.item.frontend_type) }}
+            </template>
+            <template #cell(backend_type)="row">
+                {{ getBackendName(row.item.backend_type) }}
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button size="sm" variant="secondary" :href="row.item.links.manage" target="_blank">
+                        {{ $gettext('Manage') }}
+                    </b-button>
+                    <b-button size="sm" variant="secondary"
+                              @click.prevent="doClone(row.item.name, row.item.links.clone)">
+                        {{ $gettext('Clone') }}
+                    </b-button>
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <admin-stations-edit-modal v-bind="$props" ref="editModal" :create-url="listUrl"
-                                   @relist="relist"></admin-stations-edit-modal>
+    <admin-stations-edit-modal v-bind="$props" ref="editModal" :create-url="listUrl"
+                               @relist="relist"></admin-stations-edit-modal>
 
-        <admin-stations-clone-modal ref="cloneModal" @relist="relist"></admin-stations-clone-modal>
-    </div>
+    <admin-stations-clone-modal ref="cloneModal" @relist="relist"></admin-stations-clone-modal>
 </template>
 
 <script>

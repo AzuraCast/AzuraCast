@@ -119,60 +119,59 @@
     </b-overlay>
 </template>
 
-<script>
-import {DateTime} from "luxon";
+<script setup>
 import Icon from "~/components/Common/Icon";
-import IsMounted from "~/components/Common/IsMounted";
+import {get, set, useMounted} from "@vueuse/core";
+import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {DateTime} from "luxon";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'BestAndWorstTab',
-    components: {Icon},
-    mixins: [IsMounted],
-    props: {
-        dateRange: Object,
-        apiUrl: String,
-    },
-    data() {
-        return {
-            loading: true,
-            bestAndWorst: {
-                best: [],
-                worst: []
-            },
-            mostPlayed: [],
-        };
-    },
-    watch: {
-        dateRange() {
-            if (this.isMounted) {
-                this.relist();
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl, {
-                params: {
-                    start: DateTime.fromJSDate(this.dateRange.startDate).toISO(),
-                    end: DateTime.fromJSDate(this.dateRange.endDate).toISO()
-                }
-            }).then((response) => {
-                this.bestAndWorst = response.data.bestAndWorst;
-                this.mostPlayed = response.data.mostPlayed;
-                this.loading = false;
-            });
-        },
-        getSongText(song) {
-            if (song.title !== '') {
-                return '<b>' + song.title + '</b><br>' + song.artist;
-            }
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String,
+});
 
-            return song.text;
+const loading = ref(true);
+const bestAndWorst = shallowRef({
+    best: [],
+    worst: []
+});
+const mostPlayed = ref([]);
+
+const dateRange = toRef(props, 'dateRange');
+const {axios} = useAxios();
+
+const relist = () => {
+    set(loading, true);
+    axios.get(props.apiUrl, {
+        params: {
+            start: DateTime.fromJSDate(get(dateRange).startDate).toISO(),
+            end: DateTime.fromJSDate(get(dateRange).endDate).toISO()
         }
+    }).then((response) => {
+        set(bestAndWorst, response.data.bestAndWorst);
+        set(mostPlayed, response.data.mostPlayed);
+        set(loading, false);
+    });
+};
+
+const isMounted = useMounted();
+
+watch(dateRange, () => {
+    if (get(isMounted)) {
+        relist();
     }
-}
+});
+
+onMounted(() => {
+    relist();
+});
+
+const getSongText = (song) => {
+    if (song.title !== '') {
+        return '<b>' + song.title + '</b><br>' + song.artist;
+    }
+
+    return song.text;
+};
 </script>

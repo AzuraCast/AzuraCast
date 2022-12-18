@@ -1,5 +1,5 @@
 <template>
-    <div id="leaflet-container" ref="map">
+    <div id="leaflet-container" ref="container">
         <slot v-if="$map" :map="$map"/>
     </div>
 </template>
@@ -14,16 +14,15 @@
 </style>
 
 <script setup>
-import {onMounted, provide, ref} from "vue";
+import {onMounted, provide, ref, shallowRef} from "vue";
 import L from "leaflet";
-import {get, set, templateRef} from "@vueuse/core";
 
 const props = defineProps({
     attribution: String
 });
 
-const $container = templateRef('map');
-const $map = ref();
+const container = ref(); // Template Ref
+const $map = shallowRef();
 
 provide('map', $map);
 
@@ -38,9 +37,10 @@ onMounted(() => {
     });
 
     // Init map
-    const map = L.map(get($container));
+    const map = L.map(container.value);
     map.setView([40, 0], 1);
-    set($map, map);
+
+    $map.value = map;
 
     // Add tile layer
     const tileUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/{theme}_all/{z}/{x}/{y}.png';

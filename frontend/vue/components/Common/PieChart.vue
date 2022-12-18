@@ -5,10 +5,9 @@
 </template>
 
 <script setup>
-import {get, templateRef, watchOnce} from "@vueuse/core";
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {Chart} from "chart.js";
-import {onUnmounted} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 
 const props = defineProps({
     options: Object,
@@ -20,10 +19,10 @@ const props = defineProps({
     }
 });
 
-const $canvas = templateRef('canvas');
+const canvas = ref(); // Template ref
 let $chart = null;
 
-watchOnce($canvas, () => {
+onMounted(() => {
     const defaultOptions = {
         type: 'pie',
         data: {
@@ -45,7 +44,7 @@ watchOnce($canvas, () => {
     }
 
     let chartOptions = _.defaultsDeep({}, props.options, defaultOptions);
-    $chart = new Chart(get($canvas).getContext('2d'), chartOptions);
+    $chart = new Chart(canvas.value.getContext('2d'), chartOptions);
 });
 
 onUnmounted(() => {

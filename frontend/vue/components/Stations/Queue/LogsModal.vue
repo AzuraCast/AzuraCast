@@ -15,10 +15,10 @@
 
 <script setup>
 import {ref} from "vue";
-import {get, set, templateRef, useClipboard} from "@vueuse/core";
+import {useClipboard} from "@vueuse/core";
 
 const logs = ref('Loading...');
-const $modal = templateRef('modal');
+const modal = ref(); // Template Ref
 
 const show = (newLogs) => {
     let logDisplay = [];
@@ -26,18 +26,18 @@ const show = (newLogs) => {
         logDisplay.push(log.formatted);
     });
 
-    set(logs, logDisplay.join(''));
-    get($modal).show();
+    logs.value = logDisplay.join('');
+    modal.value.show();
 };
 
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy(get(logs));
+    clipboard.copy(logs.value);
 };
 
 const close = () => {
-    get($modal).hide();
+    modal.value.hide();
 }
 
 defineExpose({

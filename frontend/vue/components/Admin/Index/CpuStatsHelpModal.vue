@@ -67,15 +67,15 @@
 </template>
 
 <script setup>
-import {get, templateRef} from "@vueuse/core";
+import {ref} from "vue";
 
-const $modal = templateRef('modal');
+const modal = ref();
 
 const create = () => {
-    get($modal).show();
+    modal.value.show();
 }
 const close = () => {
-    get($modal).hide();
+    modal.value.hide();
 }
 
 defineExpose({

@@ -1,6 +1,6 @@
 <template>
     <div style="display: contents">
-        <audio-player ref="player"></audio-player>
+        <audio-player ref="player" :volume="volume" :is-muted="isMuted"></audio-player>
 
         <div class="ml-3 player-inline" v-if="isPlaying">
             <div class="inline-seek d-inline-flex align-items-center ml-1" v-if="!current.isStream && duration !== 0">
@@ -8,7 +8,8 @@
                     {{ currentTimeText }}
                 </div>
                 <div class="flex-fill mx-2">
-                    <input type="range" :title="langSeek" class="player-seek-range custom-range" min="0" max="100"
+                    <input type="range" :title="$gettext('Seek')" class="player-seek-range custom-range" min="0"
+                           max="100"
                            step="1" v-model="progress">
                 </div>
                 <div class="flex-shrink-0 mx-1 text-white-50 time-display">
@@ -28,7 +29,8 @@
                     </a>
                 </div>
                 <div class="flex-fill mx-1">
-                    <input type="range" :title="langVolume" class="player-volume-range custom-range" min="0" max="100"
+                    <input type="range" :title="$gettext('Volume')" class="player-volume-range custom-range" min="0"
+                           max="100"
                            step="1" v-model="volume">
                 </div>
                 <div class="flex-shrink-0">
@@ -64,92 +66,69 @@
 }
 </style>
 
-<script>
+<script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon';
 import {usePlayerStore} from "~/store.js";
+import {get, set, useMounted, useStorage} from "@vueuse/core";
+import {computed, ref, toRef} from "vue";
 
-export default {
-    components: {Icon, AudioPlayer},
-    setup() {
-        return {
-            store: usePlayerStore()
-        };
-    },
-    data() {
-        return {
-            is_mounted: false
-        };
-    },
-    mounted() {
-        this.is_mounted = true;
-    },
-    computed: {
-        langSeek() {
-            return this.$gettext('Seek');
-        },
-        langVolume () {
-            return this.$gettext('Volume');
-        },
-        durationText () {
-            return formatTime(this.duration);
-        },
-        currentTimeText () {
-            return formatTime(this.currentTime);
-        },
-        duration () {
-            if (!this.is_mounted) {
-                return;
-            }
+const store = usePlayerStore();
+const isPlaying = toRef(store, 'isPlaying');
+const current = toRef(store, 'current');
 
-            return this.$refs.player.getDuration();
-        },
-        currentTime () {
-            if (!this.is_mounted) {
-                return;
-            }
+const volume = useStorage('player_volume', 55);
+const isMuted = useStorage('player_is_muted', false);
+const isMounted = useMounted();
+const player = ref(); // Template ref
 
-            return this.$refs.player.getCurrentTime();
-        },
-        volume: {
-            get () {
-                if (!this.is_mounted) {
-                    return;
-                }
-
-                return this.$refs.player.getVolume();
-            },
-            set (vol) {
-                this.$refs.player.setVolume(vol);
-            }
-        },
-        progress: {
-            get() {
-                if (!this.is_mounted) {
-                    return;
-                }
-
-                return this.$refs.player.getProgress();
-            },
-            set(progress) {
-                this.$refs.player.setProgress(progress);
-            }
-        },
-        isPlaying() {
-            return this.store.isPlaying;
-        },
-        current() {
-            return this.store.current;
-        }
-    },
-    methods: {
-        stop () {
-            this.store.toggle({
-                url: null,
-                isStream: true
-            });
-        }
+const duration = computed(() => {
+    if (!get(isMounted)) {
+        return;
     }
+
+    return get(player).getDuration();
+});
+
+const durationText = computed(() => {
+    return formatTime(get(duration));
+});
+
+const currentTime = computed(() => {
+    if (!get(isMounted)) {
+        return;
+    }
+
+    return get(player).getCurrentTime();
+});
+
+const currentTimeText = computed(() => {
+    return formatTime(get(currentTime));
+});
+
+const progress = computed({
+    get: () => {
+        if (!get(isMounted)) {
+            return;
+        }
+
+        return get(player).getProgress();
+    },
+    set: (prog) => {
+        get(player).setProgress(prog);
+    }
+});
+
+const stop = () => {
+    store.toggle({
+        url: null,
+        isStream: true,
+        isHls: false,
+    });
+};
+
+const mute = () => {
+    set(isMuted, !get(isMuted));
 };
 </script>

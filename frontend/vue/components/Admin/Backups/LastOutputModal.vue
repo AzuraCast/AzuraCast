@@ -6,15 +6,15 @@
 </template>
 
 <script setup>
-import {get, templateRef} from "@vueuse/core";
+import {ref} from "vue";
 
 const props = defineProps({
     lastOutput: String,
 });
 
-const $modal = templateRef('modal');
+const modal = ref(); // Template ref
 const show = () => {
-    get($modal).show();
+    modal.value.show();
 };
 
 defineExpose({

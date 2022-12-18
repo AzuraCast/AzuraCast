@@ -7,7 +7,7 @@
 <script setup>
 import Icon from "./Icon";
 import {usePlayerStore} from "~/store";
-import {computed} from "vue";
+import {computed, toRef} from "vue";
 import {get} from "@vueuse/core";
 import gettext from "~/vendor/gettext";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
@@ -26,15 +26,9 @@ const props = defineProps({
 });
 
 const $store = usePlayerStore();
-const {$gettext} = gettext;
 
-const isPlaying = computed(() => {
-    return $store.isPlaying;
-});
-
-const current = computed(() => {
-    return $store.current;
-});
+const isPlaying = toRef($store, 'isPlaying');
+const current = toRef($store, 'current');
 
 const isThisPlaying = computed(() => {
     if (!get(isPlaying)) {
@@ -45,6 +39,8 @@ const isThisPlaying = computed(() => {
     let thisUrl = getUrlWithoutQuery(props.url);
     return playingUrl === thisUrl;
 });
+
+const {$gettext} = gettext;
 
 const langTitle = computed(() => {
     return get(isThisPlaying)

@@ -17,29 +17,29 @@
 <script setup>
 import StreamingLogView from "~/components/Common/StreamingLogView";
 import {ref} from "vue";
-import {get, set, templateRef, useClipboard} from "@vueuse/core";
+import {useClipboard} from "@vueuse/core";
 
 const logUrl = ref('');
-const $modal = templateRef('modal');
-const $logView = templateRef('logView');
+const modal = ref(); // Template ref
+const logView = ref(); // Template ref
 
 const show = (newLogUrl) => {
-    set(logUrl, newLogUrl);
-    get($modal).show();
+    logUrl.value = newLogUrl;
+    modal.value.show();
 };
 
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy(get($logView).getContents());
+    clipboard.copy(logView.value.getContents());
 };
 
 const close = () => {
-    get($modal).hide();
+    modal.value.hide();
 }
 
 const clearContents = () => {
-    set(logUrl, '');
+    logUrl.value = '';
 }
 
 defineExpose({

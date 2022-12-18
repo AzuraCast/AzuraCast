@@ -13,15 +13,15 @@
                 <div class="card-actions">
                     <a class="btn btn-sm btn-outline-secondary" v-b-modal.song_history_modal>
                         <icon icon="history"></icon>
-                        {{ langSongHistory }}
+                        {{ $gettext('Song History') }}
                     </a>
                     <a class="btn btn-sm btn-outline-secondary" v-if="enableRequests" v-b-modal.request_modal>
                         <icon icon="help_outline"></icon>
-                        {{ langRequestSong }}
+                        {{ $gettext('Request Song') }}
                     </a>
                     <a class="btn btn-sm btn-outline-secondary" :href="downloadPlaylistUri">
                         <icon icon="file_download"></icon>
-                        {{ langDownloadPlaylist }}
+                        {{ $gettext('Playlist') }}
                     </a>
                 </div>
             </div>
@@ -33,54 +33,45 @@
     </div>
 </template>
 
-<script>
-import RadioPlayer, {radioPlayerProps} from './Player.vue';
+<script setup>
 import SongHistoryModal from './FullPlayer/SongHistoryModal';
 import RequestModal from './FullPlayer/RequestModal';
 import Icon from '~/components/Common/Icon';
+import RadioPlayer, {radioPlayerProps} from './Player.vue';
+import {useMounted} from "@vueuse/core";
+import {ref} from "vue";
 
-export default {
-    inheritAttrs: false,
-    components: { Icon, RequestModal, SongHistoryModal, RadioPlayer },
-    mixins: [radioPlayerProps],
-    props: {
-        stationName: {
-            type: String,
-            required: true
-        },
-        enableRequests: {
-            type: Boolean,
-            default: false
-        },
-        downloadPlaylistUri: {
-            type: String,
-            required: true
-        },
-        requestListUri: {
-            type: String,
-            required: true
-        },
-        customFields: {
-            type: Array,
-            required: false,
-            default: () => []
-        }
+const props = defineProps({
+    ...radioPlayerProps,
+    stationName: {
+        type: String,
+        required: true
     },
-    computed: {
-        langSongHistory () {
-            return this.$gettext('Song History');
-        },
-        langRequestSong () {
-            return this.$gettext('Request Song');
-        },
-        langDownloadPlaylist () {
-            return this.$gettext('Playlist');
-        }
+    enableRequests: {
+        type: Boolean,
+        default: false
     },
-    methods: {
-        onNowPlayingUpdate (newNowPlaying) {
-            this.$refs.history_modal.updateHistory(newNowPlaying);
-        }
+    downloadPlaylistUri: {
+        type: String,
+        required: true
+    },
+    requestListUri: {
+        type: String,
+        required: true
+    },
+    customFields: {
+        type: Array,
+        required: false,
+        default: () => []
     }
-};
+});
+
+const history_modal = ref(); // Template ref
+const isMounted = useMounted();
+
+const onNowPlayingUpdate = (newNowPlaying) => {
+    if (isMounted.value) {
+        history_modal.value.updateHistory(newNowPlaying);
+    }
+}
 </script>

@@ -5,11 +5,10 @@
 </template>
 
 <script setup>
-import {get, templateRef, watchOnce} from "@vueuse/core";
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {Chart} from "chart.js";
 import gettext from "~/vendor/gettext";
-import {onUnmounted} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 
 const props = defineProps({
     options: Object,
@@ -18,10 +17,10 @@ const props = defineProps({
 });
 
 let $chart = null;
-const $canvas = templateRef('canvas');
+const canvas = ref(); // Template Ref
 const {$gettext} = gettext;
 
-watchOnce($canvas, () => {
+onMounted(() => {
     const defaultOptions = {
         type: 'bar',
         data: {
@@ -60,7 +59,7 @@ watchOnce($canvas, () => {
     }
 
     let chartOptions = _.defaultsDeep({}, props.options, defaultOptions);
-    $chart = new Chart(get($canvas).getContext('2d'), chartOptions);
+    $chart = new Chart(canvas.value.getContext('2d'), chartOptions);
 });
 
 onUnmounted(() => {

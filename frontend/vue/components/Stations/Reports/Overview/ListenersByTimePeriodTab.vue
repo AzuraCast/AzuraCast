@@ -45,62 +45,61 @@
     </b-overlay>
 </template>
 
-<script>
+<script setup>
 import TimeSeriesChart from "~/components/Common/TimeSeriesChart";
 import HourChart from "~/components/Stations/Reports/Overview/HourChart";
 import {DateTime} from "luxon";
 import PieChart from "~/components/Common/PieChart";
-import IsMounted from "~/components/Common/IsMounted";
+import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {get, set, useMounted} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'ListenersByTimePeriodTab',
-    components: {PieChart, HourChart, TimeSeriesChart},
-    mixins: [IsMounted],
-    props: {
-        dateRange: Object,
-        apiUrl: String,
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String,
+});
+
+const loading = ref(true);
+
+const chartData = shallowRef({
+    daily: {},
+    day_of_week: {
+        labels: [],
+        metrics: [],
+        alt: ''
     },
-    data() {
-        return {
-            loading: true,
-            chartData: {
-                daily: {},
-                day_of_week: {
-                    labels: [],
-                    metrics: [],
-                    alt: ''
-                },
-                hourly: {
-                    labels: [],
-                    metrics: [],
-                    alt: ''
-                }
-            },
-        };
-    },
-    watch: {
-        dateRange() {
-            if (this.isMounted) {
-                this.relist();
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl, {
-                params: {
-                    start: DateTime.fromJSDate(this.dateRange.startDate).toISO(),
-                    end: DateTime.fromJSDate(this.dateRange.endDate).toISO()
-                }
-            }).then((response) => {
-                this.chartData = response.data;
-                this.loading = false;
-            });
-        }
+    hourly: {
+        labels: [],
+        metrics: [],
+        alt: ''
     }
+});
+
+const dateRange = toRef(props, 'dateRange');
+const {axios} = useAxios();
+
+const relist = () => {
+    set(loading, true);
+    axios.get(props.apiUrl, {
+        params: {
+            start: DateTime.fromJSDate(get(dateRange).startDate).toISO(),
+            end: DateTime.fromJSDate(get(dateRange).endDate).toISO()
+        }
+    }).then((response) => {
+        set(chartData, response.data);
+        set(loading, false);
+    });
 }
+
+const isMounted = useMounted();
+
+watch(dateRange, () => {
+    if (get(isMounted)) {
+        relist();
+    }
+});
+
+onMounted(() => {
+    relist();
+});
 </script>

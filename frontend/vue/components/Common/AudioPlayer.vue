@@ -5,14 +5,21 @@
 </template>
 
 <script>
-import store from 'store';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store.js";
 
 export default {
     props: {
-        title: String
+        title: String,
+        volume: {
+            type: Number,
+            default: 55
+        },
+        isMuted: {
+            type: Boolean,
+            default: false
+        }
     },
     setup() {
         return {
@@ -23,7 +30,6 @@ export default {
         return {
             'audio': null,
             'hls': null,
-            'volume': 55,
             'duration': 0,
             'currentTime': 0
         };
@@ -41,9 +47,10 @@ export default {
             if (this.audio !== null) {
                 this.audio.volume = getLogarithmicVolume(volume);
             }
-
-            if (store.enabled) {
-                store.set('player_volume', volume);
+        },
+        isMuted(muted) {
+            if (this.audio !== null) {
+                this.audio.muted = muted;
             }
         },
         current(newCurrent) {
@@ -62,19 +69,6 @@ export default {
                 this.stop();
             });
         }
-
-        // Check webstorage for existing volume preference.
-        if (store.enabled && store.get('player_volume') !== undefined) {
-            this.volume = store.get('player_volume', this.volume);
-        }
-
-        // Check the query string if browser supports easy query string access.
-        if (typeof URLSearchParams !== 'undefined') {
-            let urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('volume')) {
-                this.volume = parseInt(urlParams.get('volume'));
-            }
-        }
     },
     methods: {
         stop() {
@@ -82,6 +76,7 @@ export default {
                 this.audio.pause();
                 this.audio.src = '';
             }
+
             if (this.hls !== null) {
                 this.hls.destroy();
                 this.hls = null;
@@ -126,6 +121,7 @@ export default {
                 };
 
                 this.audio.volume = getLogarithmicVolume(this.volume);
+                this.audio.muted = this.isMuted;
 
                 if (this.current.isHls) {
                     // HLS playback support
@@ -159,12 +155,6 @@ export default {
                 isStream: isStream,
                 isHls: isHls,
             });
-        },
-        getVolume() {
-            return this.volume;
-        },
-        setVolume(vol) {
-            this.volume = vol;
         },
         getCurrentTime() {
             return this.currentTime;

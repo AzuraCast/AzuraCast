@@ -46,10 +46,10 @@
 </template>
 
 <script setup>
-import TimeSeriesChart from "~/components/Common/TimeSeriesChart";
-import HourChart from "~/components/Stations/Reports/Overview/HourChart";
+import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
+import HourChart from "~/components/Common/Charts/HourChart.vue";
 import {DateTime} from "luxon";
-import PieChart from "~/components/Common/PieChart";
+import PieChart from "~/components/Common/Charts/PieChart.vue";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {get, set, useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";

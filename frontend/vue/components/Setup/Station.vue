@@ -14,7 +14,7 @@
             }}
         </info-card>
 
-        <admin-stations-form v-bind="$props" ref="form" :is-edit-mode="false" :create-url="createUrl"
+        <admin-stations-form v-bind="$props" ref="adminForm" :is-edit-mode="false" :create-url="createUrl"
                              @submitted="onSubmitted">
             <template #submitButtonText>
                 {{ $gettext('Create and Continue') }}
@@ -23,29 +23,28 @@
     </b-card>
 </template>
 
-<script>
+<script setup>
 import AdminStationsForm, {StationFormProps} from "~/components/Admin/Stations/StationForm";
 import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";
+import {onMounted, ref} from "vue";
 
-export default {
-    name: 'StationsProfileEdit',
-    components: {InfoCard, SetupStep, AdminStationsForm},
-    mixins: [StationFormProps],
-    props: {
-        createUrl: String,
-        continueUrl: {
-            type: String,
-            required: true
-        }
-    },
-    mounted() {
-        this.$refs.form.reset();
-    },
-    methods: {
-        onSubmitted() {
-            window.location.href = this.continueUrl;
-        },
+const props = defineProps({
+    ...StationFormProps.props,
+    createUrl: String,
+    continueUrl: {
+        type: String,
+        required: true
     }
+});
+
+const adminForm = ref(); // Template Ref
+
+onMounted(() => {
+    adminForm.value.reset();
+});
+
+const onSubmitted = () => {
+    window.location.href = props.continueUrl;
 }
 </script>

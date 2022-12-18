@@ -29,25 +29,20 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
 
-export default {
-    name: 'SetupStep',
-    components: {Icon},
-    props: {
-        step: Number
-    },
-    methods: {
-        getStepperClass(currentStep) {
-            if (this.step === currentStep) {
-                return ['stepper', 'active'];
-            } else if (this.step > currentStep) {
-                return ['stepper', 'done'];
-            } else {
-                return ['stepper'];
-            }
-        }
+const props = defineProps({
+    step: Number
+});
+
+const getStepperClass = (currentStep) => {
+    if (props.step === currentStep) {
+        return ['stepper', 'active'];
+    } else if (props.step > currentStep) {
+        return ['stepper', 'done'];
+    } else {
+        return ['stepper'];
     }
 }
 </script>

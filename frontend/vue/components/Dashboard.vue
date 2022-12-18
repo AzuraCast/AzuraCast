@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import TimeSeriesChart from '~/components/Common/TimeSeriesChart';
+import TimeSeriesChart from '~/components/Common/Charts/TimeSeriesChart.vue';
 import DataTable from '~/components/Common/DataTable';
 import store from 'store';
 import Icon from '~/components/Common/Icon';

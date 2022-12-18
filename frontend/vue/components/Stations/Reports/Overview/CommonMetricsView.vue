@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import PieChart from "~/components/Common/PieChart";
+import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable";
 import formatTime from "~/functions/formatTime";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";

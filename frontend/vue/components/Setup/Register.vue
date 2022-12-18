@@ -33,7 +33,7 @@
                 <form id="login-form" class="form vue-form" action="" method="post">
                     <input type="hidden" name="csrf" :value="csrf"/>
 
-                    <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="v$.form.username"
+                    <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="v$.username"
                                           input-type="email">
                         <template #label="{lang}">
                             <icon icon="email" class="mr-1"></icon>
@@ -41,7 +41,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="v$.form.password"
+                    <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="v$.password"
                                           input-type="password">
                         <template #label="{lang}">
                             <icon icon="vpn_key" class="mr-1"></icon>
@@ -49,7 +49,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button type="submit" size="lg" block variant="primary" :disabled="v$.form.$invalid"
+                    <b-button type="submit" size="lg" block variant="primary" :disabled="v$.$invalid"
                               class="mt-2">
                         {{ $gettext('Create Account') }}
                     </b-button>
@@ -59,38 +59,28 @@
     </div>
 </template>
 
-<script>
-import useVuelidate from "@vuelidate/core";
-import {email, required} from '@vuelidate/validators';
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import Icon from "~/components/Common/Icon";
-import validatePassword from '~/functions/validatePassword.js';
+import {reactive} from "vue";
+import {email, required} from "@vuelidate/validators";
+import validatePassword from "~/functions/validatePassword";
+import useVuelidate from "@vuelidate/core";
 
-export default {
-    name: 'SetupRegister',
-    components: {Icon, BWrappedFormGroup},
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    props: {
-        csrf: String,
-        error: String,
-    },
-    validations() {
-        return {
-            form: {
-                username: {required, email},
-                password: {required, validatePassword}
-            }
-        }
-    },
-    data() {
-        return {
-            form: {
-                username: null,
-                password: null,
-            }
-        }
-    }
-}
+const props = defineProps({
+    csrf: String,
+    error: String,
+});
+
+const form = reactive({
+    username: null,
+    password: null,
+});
+
+const formValidations = {
+    username: {required, email},
+    password: {required, validatePassword}
+};
+
+const v$ = useVuelidate(formValidations, form);
 </script>

@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import PieChart from "~/components/Common/PieChart";
+import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import gettext from "~/vendor/gettext";

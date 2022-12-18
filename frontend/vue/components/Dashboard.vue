@@ -126,12 +126,12 @@
                                          :url="item.station.listen_url" is-stream></play-button>
                         </td>
                         <td class="pl-2">
-                            <big>{{ item.station.name }}</big><br>
-                            <template v-if="item.station.is_public">
+                            <div class="typography-subheading">{{ item.station.name }}</div>
+                            <div v-if="item.station.is_public">
                                 <a :href="item.links.public" target="_blank">
                                     {{ $gettext('Public Page') }}
                                 </a>
-                            </template>
+                            </div>
                         </td>
                         <td class="text-center">
                             <span class="pr-1">

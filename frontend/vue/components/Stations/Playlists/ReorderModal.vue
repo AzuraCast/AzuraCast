@@ -20,7 +20,7 @@
                             <play-button :url="row.media.links.play" icon-class="lg outlined"></play-button>
                         </td>
                         <td class="pl-2">
-                            <big>{{ row.media.title }}</big>
+                            <span class="typography-subheading">{{ row.media.title }}</span>
                         </td>
                         <td>{{ row.media.artist }}</td>
                         <td>{{ row.media.album }}</td>

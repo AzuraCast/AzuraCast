@@ -15,7 +15,9 @@
                 </b-thead>
                 <b-tbody>
                     <tr class="align-middle" v-for="(row,index) in media" :key="row.id">
-                        <td><big>{{ row.title }}</big></td>
+                        <td>
+                            <span class="typography-subheading">{{ row.title }}</span>
+                        </td>
                         <td>{{ row.artist }}</td>
                     </tr>
                 </b-tbody>

@@ -13,7 +13,7 @@
 
         <data-table ref="datatable" id="stations" paginated :fields="fields" :api-url="listUrl">
             <template #cell(name)="row">
-                <big>{{ row.item.name }}</big><br>
+                <div class="typography-subheading">{{ row.item.name }}</div>
                 <code>{{ row.item.short_name }}</code>
             </template>
             <template #cell(frontend_type)="row">

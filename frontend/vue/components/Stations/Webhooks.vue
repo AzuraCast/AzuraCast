@@ -20,7 +20,7 @@
         <data-table ref="datatable" id="station_webhooks" :fields="fields"
                     :api-url="listUrl">
             <template #cell(name)="row">
-                <big>{{ row.item.name }}</big><br>
+                <div class="typography-subheading">{{ row.item.name }}</div>
                 {{ getWebhookName(row.item.type) }}
                 <b-badge v-if="!row.item.is_enabled" variant="danger">
                     {{ $gettext('Disabled') }}

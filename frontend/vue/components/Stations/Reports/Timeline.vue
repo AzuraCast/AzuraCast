@@ -28,21 +28,23 @@
                 {{ row.item.listeners_start }}
             </template>
             <template #cell(delta)="row">
+                <span class="typography-subheading">
                 <template v-if="row.item.delta_total > 0">
-                    <big><span class="text-success">
+                    <span class="text-success">
                         <icon icon="trending_up"></icon>
                         {{ abs(row.item.delta_total) }}
-                    </span></big>
+                    </span>
                 </template>
                 <template v-else-if="row.item.delta_total < 0">
-                    <big><span class="text-danger">
+                    <span class="text-danger">
                         <icon icon="trending_down"></icon>
                         {{ abs(row.item.delta_total) }}
-                    </span></big>
+                    </span>
                 </template>
                 <template v-else>
-                    <big>0</big>
+                    0
                 </template>
+                </span>
             </template>
             <template #cell(song)="row">
                 <div :class="{'text-muted': !row.item.is_visible}">

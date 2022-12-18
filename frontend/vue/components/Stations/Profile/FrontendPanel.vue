@@ -93,45 +93,42 @@
 </template>
 
 <script>
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters.js';
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
-import Icon from '~/components/Common/Icon';
-import RunningBadge from "./Common/RunningBadge.vue";
-
 export const profileFrontendProps = {
-    props: {
-        frontendType: String,
-        frontendAdminUri: String,
-        frontendAdminPassword: String,
-        frontendSourcePassword: String,
-        frontendRelayPassword: String,
-        frontendRestartUri: String,
-        frontendStartUri: String,
-        frontendStopUri: String,
-        hasStarted: Boolean,
-        userCanManageBroadcasting: Boolean
-    }
+    frontendType: String,
+    frontendAdminUri: String,
+    frontendAdminPassword: String,
+    frontendSourcePassword: String,
+    frontendRelayPassword: String,
+    frontendRestartUri: String,
+    frontendStartUri: String,
+    frontendStopUri: String,
+    hasStarted: Boolean,
+    userCanManageBroadcasting: Boolean
 };
 
 export default {
-    inheritAttrs: false,
-    components: {RunningBadge, Icon, CopyToClipboardButton},
-    mixins: [profileFrontendProps],
-    props: {
-        np: Object
-    },
-    computed: {
-        frontendName() {
-            if (this.frontendType === FRONTEND_ICECAST) {
-                return 'Icecast';
-            } else if (this.frontendType === FRONTEND_SHOUTCAST) {
-                return 'Shoutcast';
-            }
-            return '';
-        },
-        isIcecast () {
-            return this.frontendType === FRONTEND_ICECAST;
-        }
-    }
+    inheritAttrs: false
 };
+</script>
+
+<script setup>
+import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters.js';
+import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
+import Icon from '~/components/Common/Icon';
+import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
+import {computed} from "vue";
+
+const props = defineProps({
+    ...profileFrontendProps,
+    np: Object
+});
+
+const frontendName = computed(() => {
+    if (props.frontendType === FRONTEND_ICECAST) {
+        return 'Icecast';
+    } else if (props.frontendType === FRONTEND_SHOUTCAST) {
+        return 'Shoutcast';
+    }
+    return '';
+});
 </script>

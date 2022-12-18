@@ -50,7 +50,8 @@
                     <icon icon="code"></icon>
                     {{ $gettext('Embed Widgets') }}
                 </a>
-                <a class="btn btn-outline-danger" :data-confirm-title="langDisablePublicPages" :href="togglePublicPageUri">
+                <a class="btn btn-outline-danger" :data-confirm-title="$gettext('Disable public pages?')"
+                   :href="togglePublicPageUri">
                     <icon icon="close"></icon>
                     {{ $gettext('Disable') }}
                 </a>
@@ -65,7 +66,8 @@
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
-                <a class="btn btn-outline-success" :data-confirm-title="langEnablePublicPages" :href="togglePublicPageUri">
+                <a class="btn btn-outline-success" :data-confirm-title="$gettext('Enable public pages?')"
+                   :href="togglePublicPageUri">
                     <icon icon="check"></icon>
                     {{ $gettext('Enable') }}
                 </a>
@@ -75,44 +77,43 @@
 </template>
 
 <script>
-import EmbedModal, {profileEmbedModalProps} from './EmbedModal';
-import Icon from '~/components/Common/Icon';
-import EnabledBadge from "./Common/EnabledBadge.vue";
+import {profileEmbedModalProps} from './EmbedModal';
 
 export const profilePublicProps = {
-    props: {
-        stationSupportsStreamers: Boolean,
-        stationSupportsRequests: Boolean,
-        enablePublicPage: Boolean,
-        enableStreamers: Boolean,
-        enableOnDemand: Boolean,
-        enableRequests: Boolean,
-        userCanManageProfile: Boolean,
-        publicPageUri: String,
-        publicWebDjUri: String,
-        publicOnDemandUri: String,
-        publicPodcastsUri: String,
-        publicScheduleUri: String,
-        togglePublicPageUri: String
-    }
+    stationSupportsStreamers: Boolean,
+    stationSupportsRequests: Boolean,
+    enablePublicPage: Boolean,
+    enableStreamers: Boolean,
+    enableOnDemand: Boolean,
+    enableRequests: Boolean,
+    userCanManageProfile: Boolean,
+    publicPageUri: String,
+    publicWebDjUri: String,
+    publicOnDemandUri: String,
+    publicPodcastsUri: String,
+    publicScheduleUri: String,
+    togglePublicPageUri: String
 };
 
 export default {
-    inheritAttrs: false,
-    components: {EnabledBadge, Icon, EmbedModal},
-    mixins: [profilePublicProps, profileEmbedModalProps],
-    computed: {
-        langDisablePublicPages() {
-            return this.$gettext('Disable public pages?');
-        },
-        langEnablePublicPages() {
-            return this.$gettext('Enable public pages?');
-        },
-    },
-    methods: {
-        doOpenEmbed () {
-            this.$refs.embed_modal.open();
-        }
-    }
+    inheritAttrs: false
+};
+</script>
+
+<script setup>
+import Icon from '~/components/Common/Icon';
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import {ref} from "vue";
+import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
+
+const props = defineProps({
+    ...profilePublicProps,
+    ...profileEmbedModalProps
+});
+
+const embed_modal = ref(); // Template Ref
+
+const doOpenEmbed = () => {
+    embed_modal.value.open();
 };
 </script>

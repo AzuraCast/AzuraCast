@@ -115,13 +115,17 @@ import {DateTime} from 'luxon';
 import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal";
-import EnabledBadge from "~/components/Stations/Profile/Common/EnabledBadge.vue";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 
 export default {
     name: 'AdminBackups',
     components: {
         EnabledBadge,
-        AdminBackupsRunBackupModal, AdminBackupsConfigureModal, AdminBackupsLastOutputModal, DataTable, Icon
+        AdminBackupsRunBackupModal,
+        AdminBackupsConfigureModal,
+        AdminBackupsLastOutputModal,
+        DataTable,
+        Icon
     },
     props: {
         listUrl: String,

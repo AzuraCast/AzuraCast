@@ -38,53 +38,68 @@
 </template>
 
 <script>
-import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
-import Icon from '~/components/Common/Icon';
-import RunningBadge from "./Common/RunningBadge.vue";
-
 export const profileBackendProps = {
-    props: {
-        numSongs: Number,
-        numPlaylists: Number,
-        backendType: String,
-        hasStarted: Boolean,
-        userCanManageBroadcasting: Boolean,
-        userCanManageMedia: Boolean,
-        manageMediaUri: String,
-        managePlaylistsUri: String,
-        backendRestartUri: String,
-        backendStartUri: String,
-        backendStopUri: String
-    }
+    numSongs: Number,
+    numPlaylists: Number,
+    backendType: String,
+    hasStarted: Boolean,
+    userCanManageBroadcasting: Boolean,
+    userCanManageMedia: Boolean,
+    manageMediaUri: String,
+    managePlaylistsUri: String,
+    backendRestartUri: String,
+    backendStartUri: String,
+    backendStopUri: String
 };
 
 export default {
     inheritAttrs: false,
-    components: {RunningBadge, Icon},
-    mixins: [profileBackendProps],
-    props: {
-        np: Object
-    },
-    computed: {
-        langTotalTracks() {
-            let numSongsRaw = this.$ngettext('%{numSongs} uploaded song', '%{numSongs} uploaded songs', this.numSongs);
-            let numSongs = this.$gettextInterpolate(numSongsRaw, {numSongs: this.numSongs});
+}
+</script>
 
-            let numPlaylistsRaw = this.$ngettext('%{numPlaylists} playlist', '%{numPlaylists} playlists', this.numPlaylists);
-            let numPlaylists = this.$gettextInterpolate(numPlaylistsRaw, { numPlaylists: this.numPlaylists });
+<script setup>
+import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
+import Icon from '~/components/Common/Icon';
+import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
+import gettext from "~/vendor/gettext";
+import {computed} from "vue";
 
-            let translated = this.$gettext('LiquidSoap is currently shuffling from %{songs} and %{playlists}.');
-            return this.$gettextInterpolate(translated, {
-                songs: numSongs,
-                playlists: numPlaylists
-            });
-        },
-        backendName () {
-            if (this.backendType === BACKEND_LIQUIDSOAP) {
-                return 'Liquidsoap';
-            }
-            return '';
+const props = defineProps({
+    ...profileBackendProps,
+    np: Object
+});
+
+const {$gettext, $ngettext} = gettext;
+
+const langTotalTracks = computed(() => {
+    let numSongs = $ngettext(
+        '%{numSongs} uploaded song',
+        '%{numSongs} uploaded songs',
+        props.numSongs,
+        {numSongs: props.numSongs}
+    );
+
+    let numPlaylists = $ngettext(
+        '%{numPlaylists} playlist',
+        '%{numPlaylists} playlists',
+        props.numPlaylists,
+        {numPlaylists: props.numPlaylists}
+    );
+
+    return $gettext(
+        'LiquidSoap is currently shuffling from %{songs} and %{playlists}.',
+        {
+            songs: numSongs,
+            playlists: numPlaylists
         }
+    );
+});
+
+const backendName = computed(() => {
+    if (props.backendType === BACKEND_LIQUIDSOAP) {
+        return 'Liquidsoap';
     }
-};
+    return '';
+});
+
 </script>

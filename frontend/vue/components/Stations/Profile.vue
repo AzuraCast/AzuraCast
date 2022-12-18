@@ -32,6 +32,12 @@
 </template>
 
 <script>
+export default {
+    inheritAttrs: false
+};
+</script>
+
+<script setup>
 import ProfileStreams from './Profile/StreamsPanel';
 import ProfileHeader, {profileHeaderProps} from './Profile/HeaderPanel';
 import ProfileNowPlaying, {profileNowPlayingProps} from './Profile/NowPlayingPanel';
@@ -45,75 +51,58 @@ import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
 import {profileEmbedModalProps} from './Profile/EmbedModal';
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters.js';
 import NowPlaying from '~/components/Entity/NowPlaying';
+import {computed, onMounted, shallowRef} from "vue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    inheritAttrs: false,
-    components: {
-        ProfileBackend,
-        ProfileBackendNone,
-        ProfileFrontend,
-        ProfilePublicPages,
-        ProfileStreamers,
-        ProfileRequests,
-        ProfileSchedule,
-        ProfileNowPlaying,
-        ProfileHeader,
-        ProfileStreams
-    },
-    mixins: [
-        profileHeaderProps,
-        profileNowPlayingProps,
-        profileRequestsProps,
-        profileStreamersProps,
-        profilePublicProps,
-        profileFrontendProps,
-        profileBackendProps,
-        profileEmbedModalProps
-    ],
-    props: {
-        profileApiUri: String,
-        stationTimeZone: String,
-        stationSupportsRequests: Boolean,
-        stationSupportsStreamers: Boolean
-    },
-    data() {
-        return {
-            np: {
-                ...NowPlaying,
-                loading: true,
-                services: {
-                    backend_running: false,
-                    frontend_running: false
-                },
-                schedule: []
-            }
-        };
-    },
-    mounted() {
-        this.checkNowPlaying();
-    },
-    computed: {
-        hasActiveFrontend() {
-            return this.frontendType !== FRONTEND_REMOTE;
-        },
-        hasActiveBackend() {
-            return this.backendType !== BACKEND_NONE;
-        },
-    },
-    methods: {
-        checkNowPlaying() {
-            this.axios.get(this.profileApiUri).then((response) => {
-                let np = response.data;
-                np.loading = false;
-                this.np = np;
+const props = defineProps({
+    ...profileHeaderProps,
+    ...profileNowPlayingProps,
+    ...profileRequestsProps,
+    ...profileStreamersProps,
+    ...profilePublicProps,
+    ...profileFrontendProps,
+    ...profileBackendProps,
+    ...profileEmbedModalProps,
+    profileApiUri: String,
+    stationTimeZone: String,
+    stationSupportsRequests: Boolean,
+    stationSupportsStreamers: Boolean
+});
 
-                setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
-            }).catch((error) => {
-                if (!error.response || error.response.data.code !== 403) {
-                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
-                }
-            });
+const np = shallowRef({
+    ...NowPlaying,
+    loading: true,
+    services: {
+        backend_running: false,
+        frontend_running: false
+    },
+    schedule: []
+});
+
+const hasActiveFrontend = computed(() => {
+    return props.frontendType !== FRONTEND_REMOTE;
+});
+
+const hasActiveBackend = computed(() => {
+    return props.backendType !== BACKEND_NONE;
+});
+
+const {axios} = useAxios();
+
+const checkNowPlaying = () => {
+    axios.get(props.profileApiUri).then((response) => {
+        let np_new = response.data;
+        np_new.loading = false;
+
+        np.value = np_new;
+
+        setTimeout(checkNowPlaying, (!document.hidden) ? 15000 : 30000);
+    }).catch((error) => {
+        if (!error.response || error.response.data.code !== 403) {
+            setTimeout(checkNowPlaying, (!document.hidden) ? 30000 : 120000);
         }
-    }
-};
+    });
+}
+
+onMounted(checkNowPlaying);
 </script>

@@ -17,24 +17,24 @@
 </template>
 
 <script>
-import Icon from '~/components/Common/Icon';
-import PlayButton from "../../Common/PlayButton";
-
 export const profileHeaderProps = {
-    props: {
-        stationName: String,
-        stationDescription: String,
-        userCanManageProfile: Boolean,
-        manageProfileUri: String
-    }
+    stationName: String,
+    stationDescription: String,
+    userCanManageProfile: Boolean,
+    manageProfileUri: String
 };
 
 export default {
-    inheritAttrs: false,
-    props: {
-        np: Object
-    },
-    components: {PlayButton, Icon},
-    mixins: [profileHeaderProps]
+    inheritAttrs: false
 };
+</script>
+
+<script setup>
+import Icon from '~/components/Common/Icon';
+import PlayButton from "~/components/Common/PlayButton.vue";
+
+const props = defineProps({
+    ...profileHeaderProps,
+    np: Object
+});
 </script>

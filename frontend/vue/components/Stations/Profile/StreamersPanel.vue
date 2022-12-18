@@ -12,7 +12,8 @@
                     <icon icon="settings"></icon>
                     {{ $gettext('Manage') }}
                 </a>
-                <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableStreamers" :href="streamersToggleUri">
+                <a class="btn btn-outline-danger" v-if="userCanManageProfile"
+                   :data-confirm-title="$gettext('Disable streamers?')" :href="streamersToggleUri">
                     <icon icon="close"></icon>
                     {{ $gettext('Disable') }}
                 </a>
@@ -26,7 +27,8 @@
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
-                <a class="btn btn-outline-success" :data-confirm-title="langEnableStreamers" :href="streamersToggleUri">
+                <a class="btn btn-outline-success" :data-confirm-title="$gettext('Enable streamers?')"
+                   :href="streamersToggleUri">
                     <icon icon="check"></icon>
                     {{ $gettext('Enable') }}
                 </a>
@@ -36,30 +38,24 @@
 </template>
 
 <script>
-import Icon from '~/components/Common/Icon';
-import EnabledBadge from "./Common/EnabledBadge.vue";
-
 export const profileStreamersProps = {
-    props: {
-        enableStreamers: Boolean,
-        userCanManageProfile: Boolean,
-        userCanManageStreamers: Boolean,
-        streamersViewUri: String,
-        streamersToggleUri: String
-    }
+    enableStreamers: Boolean,
+    userCanManageProfile: Boolean,
+    userCanManageStreamers: Boolean,
+    streamersViewUri: String,
+    streamersToggleUri: String
 };
 
 export default {
-    inheritAttrs: false,
-    components: {EnabledBadge, Icon},
-    mixins: [profileStreamersProps],
-    computed: {
-        langDisableStreamers() {
-            return this.$gettext('Disable streamers?');
-        },
-        langEnableStreamers() {
-            return this.$gettext('Enable streamers?');
-        }
-    }
+    inheritAttrs: false
 };
+</script>
+
+<script setup>
+import Icon from "~/components/Common/Icon.vue";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+
+const props = defineProps({
+    ...profileStreamersProps
+});
 </script>

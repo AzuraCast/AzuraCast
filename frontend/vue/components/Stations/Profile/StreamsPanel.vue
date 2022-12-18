@@ -102,14 +102,16 @@
 </template>
 
 <script>
+export default {
+    inheritAttrs: false
+};
+</script>
+
+<script setup>
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 
-export default {
-    inheritAttrs: false,
-    components: {PlayButton, Icon},
-    props: {
-        np: Object
-    }
-};
+const props = defineProps({
+    np: Object
+});
 </script>

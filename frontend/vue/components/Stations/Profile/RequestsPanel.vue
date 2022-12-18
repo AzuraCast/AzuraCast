@@ -12,7 +12,8 @@
                     <icon icon="assignment"></icon>
                     {{ $gettext('View') }}
                 </a>
-                <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableRequests" :href="requestsToggleUri">
+                <a class="btn btn-outline-danger" v-if="userCanManageProfile"
+                   :data-confirm-title="$gettext('Disable song requests?')" :href="requestsToggleUri">
                     <icon icon="close"></icon>
                     {{ $gettext('Disable') }}
                 </a>
@@ -26,7 +27,8 @@
                 </h3>
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
-                <a class="btn btn-outline-success" :data-confirm-title="langEnableRequests" :href="requestsToggleUri">
+                <a class="btn btn-outline-success" :data-confirm-title="$gettext('Enable song requests?')"
+                   :href="requestsToggleUri">
                     <icon icon="check"></icon>
                     {{ $gettext('Enable') }}
                 </a>
@@ -36,30 +38,23 @@
 </template>
 
 <script>
-import Icon from '~/components/Common/Icon';
-import EnabledBadge from "./Common/EnabledBadge.vue";
-
 export const profileRequestsProps = {
-    props: {
-        enableRequests: Boolean,
-        userCanManageReports: Boolean,
-        userCanManageProfile: Boolean,
-        requestsViewUri: String,
-        requestsToggleUri: String
-    }
+    enableRequests: Boolean,
+    userCanManageReports: Boolean,
+    userCanManageProfile: Boolean,
+    requestsViewUri: String,
+    requestsToggleUri: String
 };
 
 export default {
-    inheritAttrs: false,
-    components: {EnabledBadge, Icon},
-    mixins: [profileRequestsProps],
-    computed: {
-        langDisableRequests() {
-            return this.$gettext('Disable song requests?');
-        },
-        langEnableRequests() {
-            return this.$gettext('Enable song requests?');
-        }
-    }
+    inheritAttrs: false
 };
+</script>
+
+<script setup>
+import Icon from '~/components/Common/Icon';
+
+const props = defineProps({
+    ...profileRequestsProps
+});
 </script>

@@ -136,7 +136,7 @@ import AccountTwoFactorModal from "./Account/TwoFactorModal";
 import AccountEditModal from "./Account/EditModal";
 import Avatar from "~/components/Common/Avatar";
 import InfoCard from "~/components/Common/InfoCard";
-import EnabledBadge from "~/components/Stations/Profile/Common/EnabledBadge.vue";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 
 export default {
     name: 'Account',

@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="embed_modal" ref="modal" :title="langTitle" hide-footer no-enforce-focus>
+    <b-modal size="lg" id="embed_modal" ref="modal" :title="$gettext('Embed Widgets')" hide-footer no-enforce-focus>
         <b-row>
             <b-col md="7">
                 <b-card class="mb-3" no-body>
@@ -9,7 +9,7 @@
                     <b-card-body>
                         <b-row>
                             <b-col md="6">
-                                <b-form-group :label="langEmbedType">
+                                <b-form-group :label="$gettext('Widget Type')">
                                     <b-form-radio-group
                                         id="embed_type"
                                         v-model="selectedType"
@@ -20,7 +20,7 @@
                                 </b-form-group>
                             </b-col>
                             <b-col md="6">
-                                <b-form-group :label="langTheme">
+                                <b-form-group :label="$gettext('Theme')">
                                     <b-form-radio-group
                                         id="embed_theme"
                                         v-model="selectedTheme"
@@ -61,133 +61,140 @@
 </template>
 
 <script>
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
-
 export const profileEmbedModalProps = {
-    props: {
-        stationSupportsStreamers: Boolean,
-        stationSupportsRequests: Boolean,
-        enablePublicPage: Boolean,
-        enableStreamers: Boolean,
-        enableOnDemand: Boolean,
-        enableRequests: Boolean,
-        publicPageEmbedUri: String,
-        publicOnDemandEmbedUri: String,
-        publicRequestEmbedUri: String,
-        publicHistoryEmbedUri: String,
-        publicScheduleEmbedUri: String
-    }
+    stationSupportsStreamers: Boolean,
+    stationSupportsRequests: Boolean,
+    enablePublicPage: Boolean,
+    enableStreamers: Boolean,
+    enableOnDemand: Boolean,
+    enableRequests: Boolean,
+    publicPageEmbedUri: String,
+    publicOnDemandEmbedUri: String,
+    publicRequestEmbedUri: String,
+    publicHistoryEmbedUri: String,
+    publicScheduleEmbedUri: String
 };
 
 export default {
-    inheritAttrs: false,
-    components: {CopyToClipboardButton},
-    mixins: [profileEmbedModalProps],
-    data() {
-        let types = [
-            {
-                value: 'player',
-                text: this.$gettext('Radio Player')
-            },
-            {
-                value: 'history',
-                text: this.$gettext('History')
-            },
-            {
-                value: 'schedule',
-                text: this.$gettext('Schedule')
-            }
-        ];
+    inheritAttrs: false
+}
+</script>
 
-        if (this.stationSupportsRequests && this.enableRequests) {
-            types.push({
-                value: 'requests',
-                text: this.$gettext('Requests')
-            });
+<script setup>
+import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
+import {computed, ref} from "vue";
+import gettext from "~/vendor/gettext";
+
+const props = defineProps({
+    ...profileEmbedModalProps
+});
+
+const selectedType = ref('player');
+const selectedTheme = ref('light');
+
+const {$gettext} = gettext;
+
+const types = computed(() => {
+    let types = [
+        {
+            value: 'player',
+            text: $gettext('Radio Player')
+        },
+        {
+            value: 'history',
+            text: $gettext('History')
+        },
+        {
+            value: 'schedule',
+            text: $gettext('Schedule')
         }
+    ];
 
-        if (this.enableOnDemand) {
-            types.push({
-                value: 'ondemand',
-                text: this.$gettext('On-Demand Media')
-            });
-        }
-
-        return {
-            selectedType: 'player',
-            types: types,
-            selectedTheme: 'light',
-            themes: [
-                {
-                    value: 'light',
-                    text: this.$gettext('Light')
-                },
-                {
-                    value: 'dark',
-                    text: this.$gettext('Dark')
-                }
-            ]
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Embed Widgets');
-        },
-        langEmbedType() {
-            return this.$gettext('Widget Type');
-        },
-        langTheme() {
-            return this.$gettext('Theme');
-        },
-        baseEmbedUrl() {
-            switch (this.selectedType) {
-                case 'history':
-                    return this.publicHistoryEmbedUri;
-
-                case 'ondemand':
-                    return this.publicOnDemandEmbedUri;
-
-                case 'requests':
-                    return this.publicRequestEmbedUri;
-
-                case 'schedule':
-                    return this.publicScheduleEmbedUri;
-
-                case 'player':
-                default:
-                    return this.publicPageEmbedUri;
-            }
-        },
-        embedUrl() {
-            return this.baseEmbedUrl + '?theme=' + this.selectedTheme;
-        },
-        embedHeight() {
-            switch (this.selectedType) {
-                case 'ondemand':
-                    return '400px';
-
-                case 'requests':
-                    return '850px';
-
-                case 'history':
-                    return '300px';
-
-                case 'schedule':
-                    return '800px'
-
-                case 'player':
-                default:
-                    return '150px';
-            }
-        },
-        embedCode() {
-            return '<iframe src="' + this.embedUrl + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + this.embedHeight + '; border: 0;"></iframe>';
-        }
-    },
-    methods: {
-        open() {
-            this.$refs.modal.show();
-        }
+    if (props.stationSupportsRequests && props.enableRequests) {
+        types.push({
+            value: 'requests',
+            text: $gettext('Requests')
+        });
     }
+
+    if (props.enableOnDemand) {
+        types.push({
+            value: 'ondemand',
+            text: $gettext('On-Demand Media')
+        });
+    }
+
+    return types;
+});
+
+const themes = computed(() => {
+    return [
+        {
+            value: 'light',
+            text: $gettext('Light')
+        },
+        {
+            value: 'dark',
+            text: $gettext('Dark')
+        }
+    ];
+});
+
+const baseEmbedUrl = computed(() => {
+    switch (selectedType.value) {
+        case 'history':
+            return props.publicHistoryEmbedUri;
+
+        case 'ondemand':
+            return props.publicOnDemandEmbedUri;
+
+        case 'requests':
+            return props.publicRequestEmbedUri;
+
+        case 'schedule':
+            return props.publicScheduleEmbedUri;
+
+        case 'player':
+        default:
+            return props.publicPageEmbedUri;
+    }
+});
+
+const embedUrl = computed(() => {
+    return baseEmbedUrl.value + '?theme=' + selectedTheme.value;
+});
+
+const embedHeight = computed(() => {
+    switch (selectedType.value) {
+        case 'ondemand':
+            return '400px';
+
+        case 'requests':
+            return '850px';
+
+        case 'history':
+            return '300px';
+
+        case 'schedule':
+            return '800px'
+
+        case 'player':
+        default:
+            return '150px';
+    }
+});
+
+const embedCode = computed(() => {
+    return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
+});
+
+const modal = ref(); // Template Ref
+
+const open = () => {
+    modal.value.show();
 };
+
+defineExpose({
+    open
+});
 </script>

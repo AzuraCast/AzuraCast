@@ -124,87 +124,77 @@
 </template>
 
 <script>
-import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
-import Icon from '~/components/Common/Icon';
-
 export const profileNowPlayingProps = {
-    props: {
-        backendType: String,
-        userCanManageBroadcasting: Boolean,
-        backendSkipSongUri: String,
-        backendDisconnectStreamerUri: String
-    }
+    backendType: String,
+    userCanManageBroadcasting: Boolean,
+    backendSkipSongUri: String,
+    backendDisconnectStreamerUri: String
 };
 
 export default {
-    inheritAttrs: false,
-    components: {Icon},
-    mixins: [profileNowPlayingProps],
-    props: {
-        np: Object
-    },
-    data() {
-        return {
-            npElapsed: 0,
-            clockInterval: null
-        };
-    },
-    mounted() {
-        this.clockInterval = setInterval(this.iterateTimer, 1000);
-    },
-    computed: {
-        langListeners() {
-            let translated = this.$ngettext('%{listeners} Listener', '%{listeners} Listeners', this.np.listeners.total);
-            return this.$gettextInterpolate(translated, {listeners: this.np.listeners.total});
-        },
-        isLiquidsoap() {
-            return this.backendType === BACKEND_LIQUIDSOAP;
-        },
-        timeDisplay() {
-            let time_played = this.npElapsed;
-            let time_total = this.np.now_playing.duration;
+    inheritAttrs: false
+};
+</script>
 
-            if (!time_total) {
-                return null;
-            }
+<script setup>
+import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
+import Icon from '~/components/Common/Icon';
+import {computed, onMounted, ref} from "vue";
+import {useIntervalFn} from "@vueuse/core";
+import gettext from "~/vendor/gettext";
+import formatTime from "~/functions/formatTime";
 
-            if (time_played > time_total) {
-                time_played = time_total;
-            }
+const props = defineProps({
+    ...profileNowPlayingProps,
+    np: Object
+});
 
-            return this.formatTime(time_played) + ' / ' + this.formatTime(time_total);
-        }
-    },
-    methods: {
-        iterateTimer() {
+const npElapsed = ref(0);
+
+onMounted(() => {
+    useIntervalFn(
+        () => {
             let current_time = Math.floor(Date.now() / 1000);
-            let np_elapsed = current_time - this.np.now_playing.played_at;
+            let np_elapsed = current_time - props.np.now_playing.played_at;
             if (np_elapsed < 0) {
                 np_elapsed = 0;
-            } else if (np_elapsed >= this.np.now_playing.duration) {
-                np_elapsed = this.np.now_playing.duration;
+            } else if (np_elapsed >= props.np.now_playing.duration) {
+                np_elapsed = props.np.now_playing.duration;
             }
 
-            this.npElapsed = np_elapsed;
+            npElapsed.value = np_elapsed;
         },
-        formatTime(time) {
-            let sec_num = parseInt(time, 10);
+        1000
+    );
+});
 
-            let hours = Math.floor(sec_num / 3600);
-            let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-            let seconds = sec_num - (hours * 3600) - (minutes * 60);
+const {$ngettext} = gettext;
 
-            if (hours < 10) {
-                hours = '0' + hours;
-            }
-            if (minutes < 10) {
-                minutes = '0' + minutes;
-            }
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            }
-            return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds;
-        }
+const langListeners = computed(() => {
+    return $ngettext(
+        '%{listeners} Listener',
+        '%{listeners} Listeners',
+        props.np.listeners.total,
+        {listeners: props.np.listeners.total}
+    );
+});
+
+const isLiquidsoap = computed(() => {
+    return props.backendType === BACKEND_LIQUIDSOAP;
+});
+
+const timeDisplay = computed(() => {
+    let time_played = npElapsed.value;
+    let time_total = props.np.now_playing.duration;
+
+    if (!time_total) {
+        return null;
     }
-};
+
+    if (time_played > time_total) {
+        time_played = time_total;
+    }
+
+    return formatTime(time_played) + ' / ' + formatTime(time_total);
+});
 </script>

@@ -40,48 +40,51 @@
 </template>
 
 <script>
+export default {
+    inheritAttrs: false
+};
+</script>
+
+<script setup>
 import {DateTime} from "luxon";
 import _ from "lodash";
+import {computed} from "vue";
 
-export default {
-    inheritAttrs: false,
-    props: {
-        scheduleItems: Array,
-        stationTimeZone: String
-    },
-    computed: {
-        processedScheduleItems() {
-            const now = DateTime.now().setZone(this.stationTimeZone);
+const props = defineProps({
+    scheduleItems: Array,
+    stationTimeZone: String
+});
 
-            return _.map(this.scheduleItems, (row) => {
-                const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(this.stationTimeZone);
-                const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(this.stationTimeZone);
+const processedScheduleItems = computed(() => {
+    const now = DateTime.now().setZone(props.stationTimeZone);
 
-                row.time_until = start_moment.toRelative();
+    return _.map(props.scheduleItems, (row) => {
+        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(props.stationTimeZone);
+        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(props.stationTimeZone);
 
-                if (start_moment.hasSame(now, 'day')) {
-                    row.start_formatted = start_moment.toLocaleString(
-                        {...DateTime.TIME_SIMPLE, ...App.time_config}
-                    );
-                } else {
-                    row.start_formatted = start_moment.toLocaleString(
-                        {...DateTime.DATETIME_MED, ...App.time_config}
-                    );
-                }
+        row.time_until = start_moment.toRelative();
 
-                if (end_moment.hasSame(start_moment, 'day')) {
-                    row.end_formatted = end_moment.toLocaleString(
-                        {...DateTime.TIME_SIMPLE, ...App.time_config}
-                    );
-                } else {
-                    row.end_formatted = end_moment.toLocaleString(
-                        {...DateTime.DATETIME_MED, ...App.time_config}
-                    );
-                }
-
-                return row;
-            });
+        if (start_moment.hasSame(now, 'day')) {
+            row.start_formatted = start_moment.toLocaleString(
+                {...DateTime.TIME_SIMPLE, ...App.time_config}
+            );
+        } else {
+            row.start_formatted = start_moment.toLocaleString(
+                {...DateTime.DATETIME_MED, ...App.time_config}
+            );
         }
-    }
-};
+
+        if (end_moment.hasSame(start_moment, 'day')) {
+            row.end_formatted = end_moment.toLocaleString(
+                {...DateTime.TIME_SIMPLE, ...App.time_config}
+            );
+        } else {
+            row.end_formatted = end_moment.toLocaleString(
+                {...DateTime.DATETIME_MED, ...App.time_config}
+            );
+        }
+
+        return row;
+    });
+});
 </script>

@@ -32,7 +32,6 @@
 
 <script setup>
 import {computed, ref, toRef} from "vue";
-import {get, set} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -48,7 +47,7 @@ const artworkSrc = toRef(props, 'artworkSrc');
 const localSrc = ref(null);
 
 const src = computed(() => {
-    return get(localSrc) ?? get(artworkSrc);
+    return localSrc.value ?? artworkSrc.value;
 });
 
 const {axios} = useAxios();
@@ -60,7 +59,7 @@ const uploadNewArt = (file) => {
 
     let fileReader = new FileReader();
     fileReader.addEventListener('load', () => {
-        set(localSrc, fileReader.result);
+        localSrc.value = fileReader.result;
     }, false);
     fileReader.readAsDataURL(file);
 
@@ -76,10 +75,10 @@ const uploadNewArt = (file) => {
 const deleteArt = () => {
     if (props.editArtUrl) {
         axios.delete(props.editArtUrl).then(() => {
-            set(localSrc, null);
+            localSrc.value = null;
         });
     } else {
-        set(localSrc, null);
+        localSrc.value = null;
     }
 }
 </script>

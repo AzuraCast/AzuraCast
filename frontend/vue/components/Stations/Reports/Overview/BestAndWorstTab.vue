@@ -121,7 +121,7 @@
 
 <script setup>
 import Icon from "~/components/Common/Icon";
-import {get, set, useMounted} from "@vueuse/core";
+import {useMounted} from "@vueuse/core";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {DateTime} from "luxon";
 import {useAxios} from "~/vendor/axios";
@@ -142,23 +142,24 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const relist = () => {
-    set(loading, true);
+    loading.value = true;
+
     axios.get(props.apiUrl, {
         params: {
-            start: DateTime.fromJSDate(get(dateRange).startDate).toISO(),
-            end: DateTime.fromJSDate(get(dateRange).endDate).toISO()
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
         }
     }).then((response) => {
-        set(bestAndWorst, response.data.bestAndWorst);
-        set(mostPlayed, response.data.mostPlayed);
-        set(loading, false);
+        bestAndWorst.value = response.data.bestAndWorst;
+        mostPlayed.value = response.data.mostPlayed;
+        loading.value = false;
     });
 };
 
 const isMounted = useMounted();
 
 watch(dateRange, () => {
-    if (get(isMounted)) {
+    if (isMounted.value) {
         relist();
     }
 });

@@ -50,7 +50,7 @@ import formatTime from "~/functions/formatTime";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import gettext from "~/vendor/gettext";
 import {DateTime} from "luxon";
-import {get, set, useMounted} from "@vueuse/core";
+import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -88,26 +88,28 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const relist = () => {
-    set(loading, true);
+    loading.value = true;
+
     axios.get(props.apiUrl, {
         params: {
-            start: DateTime.fromJSDate(get(dateRange).startDate).toISO(),
-            end: DateTime.fromJSDate(get(dateRange).endDate).toISO()
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
         }
     }).then((response) => {
-        set(stats, {
+        stats.value = {
             all: response.data.all,
             top_listeners: response.data.top_listeners,
             top_connected_time: response.data.top_connected_time
-        });
-        set(loading, false);
+        };
+
+        loading.value = false;
     });
 };
 
 const isMounted = useMounted();
 
 watch(dateRange, () => {
-    if (get(isMounted)) {
+    if (isMounted.value) {
         relist();
     }
 });

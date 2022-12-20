@@ -1,6 +1,6 @@
 import NowPlaying from '~/components/Entity/NowPlaying';
 import {onMounted, shallowRef, watch} from "vue";
-import {set, useEventSource} from "@vueuse/core";
+import {useEventSource} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 export const nowPlayingProps = {
@@ -30,7 +30,7 @@ export default function useNowPlaying(props) {
     const np = shallowRef(props.initialNowPlaying);
 
     const setNowPlaying = (np_new) => {
-        set(np, np_new);
+        np.value = np_new;
 
         // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
         if ('mediaSession' in navigator) {

@@ -51,7 +51,7 @@ import HourChart from "~/components/Common/Charts/HourChart.vue";
 import {DateTime} from "luxon";
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
-import {get, set, useMounted} from "@vueuse/core";
+import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -79,22 +79,23 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const relist = () => {
-    set(loading, true);
+    loading.value = true;
+
     axios.get(props.apiUrl, {
         params: {
-            start: DateTime.fromJSDate(get(dateRange).startDate).toISO(),
-            end: DateTime.fromJSDate(get(dateRange).endDate).toISO()
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
         }
     }).then((response) => {
-        set(chartData, response.data);
-        set(loading, false);
+        chartData.value = response.data;
+        loading.value = false;
     });
 }
 
 const isMounted = useMounted();
 
 watch(dateRange, () => {
-    if (get(isMounted)) {
+    if (isMounted.value) {
         relist();
     }
 });

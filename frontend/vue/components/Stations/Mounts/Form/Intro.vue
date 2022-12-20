@@ -45,7 +45,6 @@ import FlowUpload from '~/components/Common/FlowUpload';
 
 import {computed, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {set} from "@vueuse/core";
 
 const props = defineProps({
     modelValue: Object,
@@ -65,7 +64,7 @@ const targetUrl = computed(() => {
 });
 
 const onFileSuccess = (file, message) => {
-    set(hasIntro, true);
+    hasIntro.value = true;
 
     if (!props.editIntroUrl) {
         emit('update:modelValue', message);
@@ -77,10 +76,11 @@ const {axios} = useAxios();
 const deleteIntro = () => {
     if (props.editIntroUrl) {
         axios.delete(props.editIntroUrl).then(() => {
-            set(hasIntro, false);
+            hasIntro.value = false;
         });
     } else {
-        set(hasIntro, false);
+        hasIntro.value = false;
+        
         emit('update:modelValue', null);
     }
 };

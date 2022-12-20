@@ -16,7 +16,7 @@
 <script setup>
 import Icon from "~/components/Common/Icon";
 import {onMounted, ref} from "vue";
-import {get, set, useVModel} from "@vueuse/core";
+import {useVModel} from "@vueuse/core";
 
 const props = defineProps({
     modelValue: String
@@ -26,13 +26,13 @@ const emit = defineEmits(['update:modelValue']);
 
 const initial = ref(75);
 onMounted(() => {
-    set(initial, props.modelValue);
+    initial.value = props.modelValue;
 });
 
 const volume = useVModel(props, 'modelValue', emit);
 
 const reset = () => {
-    set(volume, get(initial));
+    volume.value = initial.value;
 }
 </script>
 

@@ -43,7 +43,6 @@
 <script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 import {computed, toRef} from "vue";
-import {set} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -65,7 +64,8 @@ const targetUrl = computed(() => {
 });
 
 const onFileSuccess = (file, message) => {
-    set(hasMedia, true);
+    hasMedia.value = true;
+
     if (!props.editMediaUrl) {
         emit('update:modelValue', message);
     }
@@ -76,10 +76,11 @@ const {axios} = useAxios();
 const deleteMedia = () => {
     if (props.editMediaUrl) {
         axios.delete(props.editMediaUrl).then(() => {
-            set(hasMedia, false);
+            hasMedia.value = false;
         });
     } else {
-        set(hasMedia, false);
+        hasMedia.value = false;
+
         emit('update:modelValue', null);
     }
 }

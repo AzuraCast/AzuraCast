@@ -21,7 +21,7 @@
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
             </span>
-            <span v-if="advanced" class="badge small badge-primary">
+            <span v-if="advanced" class="badge small badge-primary ml-2">
                 {{ $gettext('Advanced') }}
             </span>
         </template>

@@ -57,6 +57,7 @@ import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'StationQueue',
@@ -78,8 +79,10 @@ export default {
     },
     methods: {
         formatTime(time) {
+            const {timeConfig} = useAzuraCast();
+
             return this.getDateTime(time).toLocaleString(
-                {...DateTime.TIME_WITH_SECONDS, ...App.time_config}
+                {...DateTime.TIME_WITH_SECONDS, ...timeConfig}
             );
         },
         formatRelativeTime(time) {

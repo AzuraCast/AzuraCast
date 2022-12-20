@@ -164,6 +164,7 @@ import PlayButton from "~/components/Common/PlayButton";</script>
 import formatFileSize from '~/functions/formatFileSize.js';
 import _ from 'lodash';
 import {DateTime} from 'luxon';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     props: {
@@ -252,8 +253,11 @@ export default {
                     if (!value) {
                         return '';
                     }
+
+                    const {timeConfig} = useAzuraCast();
+
                     return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(
-                        {...DateTime.DATETIME_MED, ...App.time_config}
+                        {...DateTime.DATETIME_MED, ...timeConfig}
                     );
                 },
                 selectable: true,

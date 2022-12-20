@@ -43,6 +43,7 @@ import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
 import '~/vendor/sweetalert.js';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'StreamerBroadcastsModal',
@@ -62,8 +63,10 @@ export default {
                     label: this.$gettext('Start Time'),
                     sortable: false,
                     formatter: (value) => {
+                        const {timeConfig} = useAzuraCast();
+
                         return DateTime.fromSeconds(value).toLocaleString(
-                            {...DateTime.DATETIME_MED, ...App.time_config}
+                            {...DateTime.DATETIME_MED, ...timeConfig}
                         );
                     },
                     class: 'pl-3'
@@ -76,8 +79,11 @@ export default {
                         if (value === 0) {
                             return this.$gettext('Live');
                         }
+
+                        const {timeConfig} = useAzuraCast();
+
                         return DateTime.fromSeconds(value).toLocaleString(
-                            {...DateTime.DATETIME_MED, ...App.time_config}
+                            {...DateTime.DATETIME_MED, ...timeConfig}
                         );
                     }
                 },

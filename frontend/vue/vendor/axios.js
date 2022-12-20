@@ -2,6 +2,7 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import gettext from "~/vendor/gettext";
 import {inject} from "vue";
+import useAzuraCast from "~/vendor/azuracast";
 
 /* Composition API Axios utilities */
 export function useAxios() {
@@ -12,8 +13,10 @@ export function useAxios() {
 
 export default function installAxios(vueApp) {
     // Configure auto-CSRF on requests
-    if (typeof App.api_csrf !== 'undefined') {
-        axios.defaults.headers.common['X-API-CSRF'] = App.api_csrf;
+    const {apiCsrf} = useAzuraCast();
+
+    if (typeof apiCsrf !== 'undefined') {
+        axios.defaults.headers.common['X-API-CSRF'] = apiCsrf;
     }
 
     vueApp.use(VueAxios, axios);

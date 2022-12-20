@@ -82,6 +82,7 @@ import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'StationsReportsTimeline',
@@ -167,13 +168,17 @@ export default {
             return Math.abs(val);
         },
         formatTimestamp(unix_timestamp) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
             );
         },
         formatTimestampStation(unix_timestamp) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
             );
         }
     }

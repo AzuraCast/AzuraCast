@@ -49,11 +49,14 @@ export default {
 import {DateTime} from "luxon";
 import _ from "lodash";
 import {computed} from "vue";
+import useAzuraCast from "~/vendor/azuracast";
 
 const props = defineProps({
     scheduleItems: Array,
     stationTimeZone: String
 });
+
+const {timeConfig} = useAzuraCast();
 
 const processedScheduleItems = computed(() => {
     const now = DateTime.now().setZone(props.stationTimeZone);
@@ -66,21 +69,21 @@ const processedScheduleItems = computed(() => {
 
         if (start_moment.hasSame(now, 'day')) {
             row.start_formatted = start_moment.toLocaleString(
-                {...DateTime.TIME_SIMPLE, ...App.time_config}
+                {...DateTime.TIME_SIMPLE, ...timeConfig}
             );
         } else {
             row.start_formatted = start_moment.toLocaleString(
-                {...DateTime.DATETIME_MED, ...App.time_config}
+                {...DateTime.DATETIME_MED, ...timeConfig}
             );
         }
 
         if (end_moment.hasSame(start_moment, 'day')) {
             row.end_formatted = end_moment.toLocaleString(
-                {...DateTime.TIME_SIMPLE, ...App.time_config}
+                {...DateTime.TIME_SIMPLE, ...timeConfig}
             );
         } else {
             row.end_formatted = end_moment.toLocaleString(
-                {...DateTime.DATETIME_MED, ...App.time_config}
+                {...DateTime.DATETIME_MED, ...timeConfig}
             );
         }
 

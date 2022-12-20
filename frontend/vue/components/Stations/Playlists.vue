@@ -142,6 +142,7 @@ import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
 import {DateTime} from 'luxon';
 import humanizeDuration from 'humanize-duration';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'StationPlaylists',
@@ -198,14 +199,18 @@ export default {
                 : this.$gettext('Enable');
         },
         formatTime (time) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_MED, ...App.time_config}
+                {...DateTime.DATETIME_MED, ...timeConfig}
             );
         },
         formatLength (length) {
+            const {localeShort} = useAzuraCast();
+
             return humanizeDuration(length * 1000, {
                 round: true,
-                language: App.locale_short,
+                language: localeShort,
                 fallbacks: ['en']
             });
         },

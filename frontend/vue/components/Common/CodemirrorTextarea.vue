@@ -8,6 +8,7 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
+import useAzuraCast from "~/vendor/azuracast";
 
 const props = defineProps({
     modelValue: String,
@@ -27,9 +28,10 @@ const lang = computed(() => {
     return null;
 });
 
+const {theme} = useAzuraCast();
+
 const dark = computed(() => {
-    console.log(App.theme);
-    return App.theme === 'dark';
+    return theme === 'dark';
 })
 </script>
 

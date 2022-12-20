@@ -73,6 +73,7 @@ import Icon from './Icon';
 import _ from 'lodash';
 import {computed, onMounted, onUnmounted, reactive, ref} from "vue";
 import Flow from "@flowjs/flow.js";
+import useAzuraCast from "~/vendor/azuracast";
 
 const props = defineProps({
     targetUrl: String,
@@ -131,6 +132,8 @@ const files = reactive({
 const file_browse_target = ref(); // Template Ref
 const file_drop_target = ref(); // Template Ref
 
+const {apiCsrf} = useAzuraCast();
+
 onMounted(() => {
     let defaultConfig = {
         target: () => {
@@ -139,7 +142,7 @@ onMounted(() => {
         singleFile: !props.allowMultiple,
         headers: {
             'Accept': 'application/json',
-            'X-API-CSRF': App.api_csrf
+            'X-API-CSRF': apiCsrf
         },
         withCredentials: true,
         allowDuplicateUploads: true,

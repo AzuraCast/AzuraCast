@@ -22,7 +22,7 @@
         </a>
         <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
             <div class="flex-shrink-0">
-                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0"
+                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="mute"
                    :aria-label="$gettext('Mute')">
                     <icon icon="volume_mute"></icon>
                 </a>
@@ -33,7 +33,7 @@
                        step="1" v-model="volume">
             </div>
             <div class="flex-shrink-0">
-                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100"
+                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="fullVolume"
                    :aria-label="$gettext('Full Volume')">
                     <icon icon="volume_up"></icon>
                 </a>
@@ -65,11 +65,11 @@
 </style>
 
 <script setup>
-import AudioPlayer from '~/components/Common/AudioPlayer';
+import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime.js';
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import {usePlayerStore} from "~/store.js";
-import {get, set, useMounted, useStorage} from "@vueuse/core";
+import {useMounted, useStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
 
 const store = usePlayerStore();
@@ -79,42 +79,30 @@ const current = toRef(store, 'current');
 const volume = useStorage('player_volume', 55);
 const isMuted = useStorage('player_is_muted', false);
 const isMounted = useMounted();
-const player = ref(); // Template ref
+const player = ref(); // AudioPlayer
 
 const duration = computed(() => {
-    if (!get(isMounted)) {
-        return;
-    }
-
-    return get(player).getDuration();
+    return player.value?.getDuration();
 });
 
 const durationText = computed(() => {
-    return formatTime(get(duration));
+    return formatTime(duration.value);
 });
 
 const currentTime = computed(() => {
-    if (!get(isMounted)) {
-        return;
-    }
-
-    return get(player).getCurrentTime();
+    return player.value?.getCurrentTime();
 });
 
 const currentTimeText = computed(() => {
-    return formatTime(get(currentTime));
+    return formatTime(currentTime.value);
 });
 
 const progress = computed({
     get: () => {
-        if (!get(isMounted)) {
-            return;
-        }
-
-        return get(player).getProgress();
+        return player.value?.getProgress();
     },
     set: (prog) => {
-        get(player).setProgress(prog);
+        player.value?.setProgress(prog);
     }
 });
 
@@ -127,6 +115,10 @@ const stop = () => {
 };
 
 const mute = () => {
-    set(isMuted, !get(isMuted));
+    isMuted.value = !isMuted.value;
+};
+
+const fullVolume = () => {
+    volume.value = 100;
 };
 </script>

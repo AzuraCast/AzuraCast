@@ -116,6 +116,7 @@ import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'AdminBackups',
@@ -186,8 +187,10 @@ export default {
             return DateTime.fromSeconds(timestamp).toRelative();
         },
         toLocaleTime(timestamp) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, timeConfig}
             );
         },
         formatFileSize(size) {

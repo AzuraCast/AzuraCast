@@ -9,6 +9,7 @@ import allLocales from '@fullcalendar/core/locales-all';
 import luxon2Plugin from '@fullcalendar/luxon2';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import {shallowRef} from "vue";
+import useAzuraCast from "~/vendor/azuracast";
 
 const props = defineProps({
     scheduleUrl: String,
@@ -34,8 +35,10 @@ const onEventClick = (arg) => {
     emit('click', arg.event);
 };
 
+const {localeShort, timeConfig} = useAzuraCast();
+
 const calendarOptions = shallowRef({
-    locale: App.locale_short,
+    locale: localeShort,
     locales: allLocales,
     plugins: [luxon2Plugin, timeGridPlugin],
     initialView: 'timeGridWeek',
@@ -52,7 +55,7 @@ const calendarOptions = shallowRef({
     views: {
         timeGridWeek: {
             slotLabelFormat: {
-                ...App.time_config,
+                ...timeConfig,
                 hour: 'numeric',
                 minute: '2-digit',
                 omitZeroMinute: true,

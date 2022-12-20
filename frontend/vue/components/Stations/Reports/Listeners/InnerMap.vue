@@ -16,6 +16,7 @@
 <script setup>
 import {onMounted, provide, ref, shallowRef} from "vue";
 import L from "leaflet";
+import useAzuraCast from "~/vendor/azuracast";
 
 const props = defineProps({
     attribution: String
@@ -25,6 +26,8 @@ const container = ref(); // Template Ref
 const $map = shallowRef();
 
 provide('map', $map);
+
+const {theme} = useAzuraCast();
 
 onMounted(() => {
     // Fix issue with Leaflet icons being built in Webpack
@@ -47,7 +50,7 @@ onMounted(() => {
     const tileAttribution = 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
 
     L.tileLayer(tileUrl, {
-        theme: App.theme,
+        theme: theme,
         attribution: tileAttribution,
     }).addTo(map);
 

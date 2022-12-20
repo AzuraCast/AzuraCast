@@ -87,6 +87,7 @@ import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'AdminAuditLog',
@@ -135,8 +136,10 @@ export default {
             this.$refs.datatable.relist();
         },
         formatTimestamp(unix_timestamp) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, timeConfig}
             );
         }
     }

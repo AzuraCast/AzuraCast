@@ -55,6 +55,7 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
+import useAzuraCast from "~/vendor/azuracast";
 
 export default {
     name: 'StationRequests',
@@ -102,8 +103,10 @@ export default {
             this.$refs.datatable.refresh();
         },
         formatTime(time) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_MED, ...App.time_config}
+                {...DateTime.DATETIME_MED, ...timeConfig}
             );
         },
         doDelete(url) {

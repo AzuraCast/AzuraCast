@@ -1,10 +1,10 @@
 <template>
-    <modal-form ref="modal" size="lg" :title="langTitle" :loading="loading" :disable-save-button="v$.form.$invalid"
-                @submit="submit" @hidden="clearContents">
+    <modal-form ref="modal" size="lg" :title="$gettext('Configure Backups')" :loading="loading"
+                :disable-save-button="v$.$invalid" @submit="submit" @hidden="clearContents">
         <b-form-fieldset>
             <div class="form-row mb-3">
                 <b-wrapped-form-checkbox class="col-md-12" id="form_edit_backup_enabled"
-                                         :field="v$.form.backup_enabled">
+                                         :field="v$.backup_enabled">
                     <template #label>
                         {{ $gettext('Run Automatic Nightly Backups') }}
                     </template>
@@ -16,8 +16,8 @@
                 </b-wrapped-form-checkbox>
             </div>
 
-            <div class="form-row" v-if="v$.form.backup_enabled.$model">
-                <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="v$.form.backup_time_code">
+            <div class="form-row" v-if="v$.backup_enabled.$model">
+                <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="v$.backup_time_code">
                     <template #label>
                         {{ $gettext('Scheduled Backup Time') }}
                     </template>
@@ -30,7 +30,7 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="form_edit_exclude_media"
-                                         :field="v$.form.backup_exclude_media">
+                                         :field="v$.backup_exclude_media">
                     <template #label>
                         {{ $gettext('Exclude Media from Backup') }}
                     </template>
@@ -41,7 +41,7 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="v$.form.backup_keep_copies"
+                <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="v$.backup_keep_copies"
                                       input-type="number" :input-attrs="{min: '0', max: '365'}">
                     <template #label>
                         {{ $gettext('Number of Backup Copies to Keep') }}
@@ -54,7 +54,7 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backup_storage_location"
-                                      :field="v$.form.backup_storage_location">
+                                      :field="v$.backup_storage_location">
                     <template #label>
                         {{ $gettext('Storage Location') }}
                     </template>
@@ -64,7 +64,7 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="v$.form.backup_format">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="v$.backup_format">
                     <template #label>
                         {{ $gettext('Backup Format') }}
                     </template>
@@ -78,9 +78,7 @@
     </modal-form>
 </template>
 
-<script>
-import useVuelidate from "@vuelidate/core";
-import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
 import BFormFieldset from "~/components/Form/BFormFieldset";
@@ -88,113 +86,113 @@ import mergeExisting from "~/functions/mergeExisting";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import TimeCode from "~/components/Common/TimeCode";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import {computed, ref} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
+import useVuelidate from "@vuelidate/core";
 
-export default {
-    name: 'AdminBackupsConfigureModal',
-    emits: ['relist'],
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    props: {
-        settingsUrl: String,
-        storageLocations: Object
-    },
-    components: {
-        ModalForm,
-        BFormFieldset,
-        BWrappedFormGroup,
-        BWrappedFormCheckbox,
-        CodemirrorTextarea,
-        TimeCode
-    },
-    data() {
-        return {
-            loading: true,
-            error: null,
-            form: {},
-        };
-    },
-    validations: {
-        form: {
-            'backup_enabled': {},
-            'backup_time_code': {},
-            'backup_exclude_media': {},
-            'backup_keep_copies': {},
-            'backup_storage_location': {},
-            'backup_format': {},
+const props = defineProps({
+    settingsUrl: String,
+    storageLocations: Object
+});
+
+const emit = defineEmits(['relist']);
+
+const loading = ref(true);
+const error = ref(null);
+
+const form = ref({});
+
+const modal = ref(); // Template Ref
+
+const validations = {
+    'backup_enabled': {},
+    'backup_time_code': {},
+    'backup_exclude_media': {},
+    'backup_keep_copies': {},
+    'backup_storage_location': {},
+    'backup_format': {},
+};
+
+const v$ = useVuelidate(validations, form);
+
+const storageLocationOptions = computed(() => {
+    return objectToFormOptions(props.storageLocations);
+});
+
+const formatOptions = computed(() => {
+    return [
+        {
+            value: 'zip',
+            text: 'Zip',
+        },
+        {
+            value: 'tgz',
+            text: 'TarGz'
+        },
+        {
+            value: 'tzst',
+            text: 'ZStd'
         }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Configure Backups');
-        },
-        storageLocationOptions() {
-            return objectToFormOptions(this.storageLocations);
-        },
-        formatOptions() {
-            return [
-                {
-                    value: 'zip',
-                    text: 'Zip',
-                },
-                {
-                    value: 'tgz',
-                    text: 'TarGz'
-                },
-                {
-                    value: 'tzst',
-                    text: 'ZStd'
-                }
-            ];
-        },
-    },
-    methods: {
-        open() {
-            this.clearContents();
-            this.loading = true;
+    ];
+});
 
-            this.$refs.modal.show();
+const clearContents = () => {
+    v$.value.$reset();
 
-            this.axios.get(this.settingsUrl).then((resp) => {
-                this.form = mergeExisting(this.form, resp.data);
-                this.loading = false;
-            }).catch(() => {
-                this.close();
-            });
-        },
-        clearContents() {
-            this.v$.$reset();
+    form.value = {
+        backup_enabled: false,
+        backup_time_code: null,
+        backup_exclude_media: null,
+        backup_keep_copies: null,
+        backup_storage_location: null,
+        backup_format: null,
+    };
+};
 
-            this.form = {
-                backup_enabled: false,
-                backup_time_code: null,
-                backup_exclude_media: null,
-                backup_keep_copies: null,
-                backup_storage_location: null,
-                backup_format: null,
-            };
-        },
-        close() {
-            this.$emit('relist');
-            this.$refs.modal.hide();
-        },
-        submit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
+const {axios} = useAxios();
 
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.settingsUrl,
-                    data: this.form
-                })
-            ).then(() => {
-                this.$notifySuccess();
-                this.close();
-            });
-        }
+const close = () => {
+    emit('relist');
+    modal.value.hide();
+};
+
+const open = () => {
+    clearContents();
+    loading.value = true;
+
+    modal.value.show();
+
+    axios.get(props.settingsUrl).then((resp) => {
+        form.value = mergeExisting(form.value, resp.data);
+        loading.value = false;
+    }).catch(() => {
+        close();
+    });
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+
+const submit = () => {
+    v$.value.$touch();
+
+    if (v$.value.$errors.length > 0) {
+        return;
     }
+
+    wrapWithLoading(
+        axios({
+            method: 'PUT',
+            url: props.settingsUrl,
+            data: form.value
+        })
+    ).then(() => {
+        notifySuccess();
+        close();
+    });
 }
+
+defineExpose({
+    open
+});
 </script>

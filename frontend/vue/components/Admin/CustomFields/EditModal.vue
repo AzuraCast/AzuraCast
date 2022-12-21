@@ -1,8 +1,8 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <admin-custom-fields-form :form="v$.form" :auto-assign-types="autoAssignTypes">
+        <admin-custom-fields-form :form="v$" :auto-assign-types="autoAssignTypes">
         </admin-custom-fields-form>
 
     </modal-form>
@@ -13,14 +13,39 @@ import useVuelidate from "@vuelidate/core";
 import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form";
+import {ref} from "vue";
 
 export default {
     name: 'AdminCustomFieldsEditModal',
+    mixins: [BaseEditModal],
     components: {AdminCustomFieldsForm},
     setup() {
-        return {v$: useVuelidate()}
+        const blankForm = {
+            'name': '',
+            'short_name': '',
+            'auto_assign': ''
+        };
+
+        const form = ref(blankForm);
+
+        const resetForm = () => {
+            form.value = blankForm;
+        }
+
+        const validations = {
+            'name': {required},
+            'short_name': {},
+            'auto_assign': {}
+        };
+
+        const v$ = useVuelidate(validations, form);
+
+        return {
+            form,
+            resetForm,
+            v$
+        };
     },
-    mixins: [BaseEditModal],
     props: {
         autoAssignTypes: Object
     },
@@ -31,23 +56,5 @@ export default {
                 : this.$gettext('Add Custom Field');
         }
     },
-    validations() {
-        return {
-            form: {
-                'name': {required},
-                'short_name': {},
-                'auto_assign': {}
-            }
-        };
-    },
-    methods: {
-        resetForm() {
-            this.form = {
-                'name': '',
-                'short_name': '',
-                'auto_assign': ''
-            };
-        }
-    }
 };
 </script>

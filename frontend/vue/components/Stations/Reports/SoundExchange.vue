@@ -44,24 +44,26 @@
                 <b-form-fieldset>
                     <b-wrapped-form-group name="start_date" id="form_start_date" :field="v$.form.start_date"
                                           input-type="date">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Start Date') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group name="end_date" id="form_end_date" :field="v$.form.end_date"
                                           input-type="date">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('End Date') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-checkbox name="fetch_isrc" id="form_edit_fetch_isrc" :field="v$.form.fetch_isrc">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Attempt to Automatically Retrieve ISRC When Missing') }}
                         </template>
-                        <template #description="{lang}">
-                            {{ $gettext('If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.') }}
+                        <template #description>
+                            {{
+                                $gettext('If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.')
+                            }}
                         </template>
                     </b-wrapped-form-checkbox>
                 </b-form-fieldset>

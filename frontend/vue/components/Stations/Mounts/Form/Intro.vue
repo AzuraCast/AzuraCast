@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="$gettext('Intro')">
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-form-group class="col-md-6" label-for="intro_file">
                     <template #label>
                         {{ $gettext('Select Intro File') }}
@@ -35,7 +35,7 @@
                         {{ $gettext('There is no existing intro file associated with this mount point.') }}
                     </div>
                 </b-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
@@ -80,7 +80,7 @@ const deleteIntro = () => {
         });
     } else {
         hasIntro.value = false;
-        
+
         emit('update:modelValue', null);
     }
 };

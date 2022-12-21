@@ -17,13 +17,15 @@
 
         <div class="card-body">
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-form-group class="col-md-6" label-for="stereo_tool_configuration_file">
                         <template #label>
                             {{ $gettext('Select Configuration File') }}
                         </template>
                         <template #description>
-                            {{ $gettext('This configuration file should be a valid .sts file exported from Stereo Tool.') }}
+                            {{
+                                $gettext('This configuration file should be a valid .sts file exported from Stereo Tool.')
+                            }}
                         </template>
 
                         <flow-upload :target-url="apiUrl" :valid-mime-types="acceptMimeTypes"
@@ -48,7 +50,7 @@
                             {{ $gettext('There is no Stereo Tool configuration file present.') }}
                         </div>
                     </b-form-group>
-                </b-form-row>
+                </div>
             </b-form-group>
         </div>
     </section>

@@ -2,7 +2,7 @@
     <b-modal id="send_test_message" centered ref="modal" :title="langTitle">
         <b-form @submit.prevent="doSendTest">
             <b-wrapped-form-group id="email_address" :field="v$.emailAddress" autofocus>
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>

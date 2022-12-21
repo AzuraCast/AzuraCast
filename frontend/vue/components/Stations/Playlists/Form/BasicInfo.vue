@@ -1,18 +1,18 @@
 <template>
     <b-tab :title="langTabTitle" active>
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-wrapped-form-group class="col-md-6" id="form_edit_name" :field="form.name">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Playlist Name') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="form_edit_is_enabled" :field="form.is_enabled">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Enable') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')
                         }}
@@ -20,7 +20,7 @@
                 </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_source" :field="form.source">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Source') }}
                     </template>
                     <template #default="props">
@@ -36,7 +36,7 @@
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
 
         <b-card v-show="form.source.$model === 'songs'" class="mb-3" no-body>
@@ -47,13 +47,13 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-form-row>
+                    <div class="form-row">
                         <b-wrapped-form-checkbox class="col-md-6" id="form_edit_avoid_duplicates"
                                                  :field="form.avoid_duplicates">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Avoid Duplicate Artists/Titles') }}
                             </template>
-                            <template #description="{lang}">
+                            <template #description>
                                 {{
                                     $gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')
                                 }}
@@ -62,10 +62,10 @@
 
                         <b-wrapped-form-checkbox class="col-md-6" id="form_edit_include_in_on_demand"
                                                  :field="form.include_in_on_demand">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Include in On-Demand Player') }}
                             </template>
-                            <template #description="{lang}">
+                            <template #description>
                                 {{
                                     $gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')
                                 }}
@@ -74,7 +74,7 @@
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_include_in_requests"
                                               :field="form.include_in_requests">
-                            <template #description="{lang}">
+                            <template #description>
                                 {{
                                     $gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')
                                 }}
@@ -87,7 +87,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_is_jingle" :field="form.is_jingle">
-                            <template #description="{lang}">
+                            <template #description>
                                 {{
                                     $gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')
                                 }}
@@ -100,7 +100,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="edit_form_type" :field="form.type">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Playlist Type') }}
                             </template>
                             <template #default="props">
@@ -138,7 +138,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="edit_form_order" :field="form.order">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Song Playback Order') }}
                             </template>
                             <template #default="props">
@@ -164,7 +164,7 @@
                                 </b-form-radio-group>
                             </template>
                         </b-wrapped-form-group>
-                    </b-form-row>
+                    </div>
                 </b-form-group>
 
                 <b-form-fieldset v-show="form.type.$model === 'default'">
@@ -173,12 +173,12 @@
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
+                        <div class="form-row">
                             <b-wrapped-form-group class="col-md-12" id="form_edit_weight" :field="form.weight">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Playlist Weight') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')
                                     }}
@@ -188,7 +188,7 @@
                                                    :state="props.state"></b-form-select>
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
 
@@ -198,20 +198,20 @@
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
+                        <div class="form-row">
                             <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_songs"
                                                   :field="form.play_per_songs" input-type="number"
                                                   :input-attrs="{min: '0', max: '150'}">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Number of Songs Between Plays') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('This playlist will play every $x songs, where $x is specified here.')
                                     }}
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
 
@@ -221,22 +221,22 @@
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
+                        <div class="form-row">
 
                             <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_minutes"
                                                   :field="form.play_per_minutes" input-type="number"
                                                   :input-attrs="{min: '0', max: '360'}">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Number of Minutes Between Plays') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('This playlist will play every $x minutes, where $x is specified here.')
                                     }}
                                 </template>
                             </b-wrapped-form-group>
 
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
 
@@ -246,18 +246,18 @@
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
+                        <div class="form-row">
                             <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_hour_minute"
                                                   :field="form.play_per_hour_minute" input-type="number"
                                                   :input-attrs="{min: '0', max: '59'}">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Minute of Hour to Play') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{ $gettext('Specify the minute of every hour that this playlist should play.') }}
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
             </b-card-body>
@@ -271,15 +271,15 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-form-row>
+                    <div class="form-row">
                         <b-wrapped-form-group class="col-md-6" id="form_edit_remote_url" :field="form.remote_url">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Remote URL') }}
                             </template>
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="edit_form_remote_type" :field="form.remote_type">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Remote URL Type') }}
                             </template>
                             <template #default="props">
@@ -295,10 +295,10 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-6" id="form_edit_remote_buffer" :field="form.remote_buffer">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Remote Playback Buffer (Seconds)') }}
                             </template>
-                            <template #description="{lang}">
+                            <template #description>
                                 {{
                                     $gettext('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.')
                                 }}
@@ -310,7 +310,7 @@
                             </template>
                         </b-wrapped-form-group>
 
-                    </b-form-row>
+                    </div>
                 </b-form-group>
             </b-card-body>
         </b-card>

@@ -4,12 +4,12 @@
             {{ $gettext('Privacy') }}
         </template>
 
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-12" id="edit_form_analytics" :field="form.analytics">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Listener Analytics Collection') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.')
                     }}
@@ -37,7 +37,7 @@
                     </b-form-radio-group>
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-fieldset>
 
     <b-form-fieldset>
@@ -45,13 +45,13 @@
             {{ $gettext('Security') }}
         </template>
 
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-checkbox class="col-md-12" id="edit_form_always_use_ssl"
                                      :field="form.always_use_ssl">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Always Use HTTPS') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.')
                     }}
@@ -60,10 +60,10 @@
 
             <b-wrapped-form-group class="col-md-12" id="edit_form_api_access_control"
                                   :field="form.api_access_control">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('API "Access-Control-Allow-Origin" Header') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('Set to * to allow all sources, or specify a list of origins separated by a comma (,).')
                     }}
@@ -74,7 +74,7 @@
                     </a>
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-fieldset>
 </template>
 

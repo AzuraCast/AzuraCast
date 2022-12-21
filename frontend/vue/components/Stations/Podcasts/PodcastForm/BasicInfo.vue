@@ -1,38 +1,40 @@
 <template>
     <b-tab :title="langTitle" active>
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_title" :field="form.title">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Podcast Title') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_link" :field="form.link">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Website') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{ $gettext('Typically the home page of a podcast.') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description"
                                       input-type="textarea">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Description') }}
                     </template>
-                    <template #description="{lang}">
-                        {{ $gettext('The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.') }}
+                    <template #description>
+                        {{
+                            $gettext('The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_edit_language" :field="form.language">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Language') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{ $gettext('The language spoken on the podcast.') }}
                     </template>
                     <template #default="props">
@@ -42,28 +44,32 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_author" :field="form.author">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Author') }}
                     </template>
-                    <template #description="{lang}">
-                        {{ $gettext('The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.') }}
+                    <template #description>
+                        {{
+                            $gettext('The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="form_edit_email" :field="form.email" input-type="email">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('E-Mail') }}
                     </template>
-                    <template #description="{lang}">
-                        {{ $gettext('The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.') }}
+                    <template #description>
+                        {{
+                            $gettext('The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="form_edit_categories" :field="form.categories">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Categories') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{ $gettext('Select the category/categories that best reflects the content of your podcast.') }}
                     </template>
                     <template #default="props">
@@ -72,7 +78,7 @@
                     </template>
                 </b-wrapped-form-group>
 
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>

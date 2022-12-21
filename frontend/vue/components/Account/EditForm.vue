@@ -1,6 +1,6 @@
 <template>
     <b-form-fieldset>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
                 <template #label>
                     {{ $gettext('Name') }}
@@ -12,7 +12,7 @@
                     {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-fieldset>
 
     <b-form-fieldset>
@@ -20,7 +20,7 @@
             {{ $gettext('Customization') }}
         </template>
 
-        <b-form-row>
+        <div class="form-row">
             <b-col md="6">
                 <b-wrapped-form-group id="edit_form_locale"
                                       :field="form.locale">
@@ -59,7 +59,7 @@
                     </template>
                 </b-wrapped-form-group>
             </b-col>
-        </b-form-row>
+        </div>
     </b-form-fieldset>
 </template>
 

@@ -1,34 +1,34 @@
 <template>
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-12" id="form_config_matomo_url" :field="form.config.matomo_url"
                                   input-type="url">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Matomo Installation Base URL') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{ $gettext('The full base URL of your Matomo installation.') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_site_id" :field="form.config.site_id">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Matomo Site ID') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{ $gettext('The numeric site ID for this site.') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Matomo API Token') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{ $gettext('Optionally supply an API token to allow IP address overriding.') }}
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 

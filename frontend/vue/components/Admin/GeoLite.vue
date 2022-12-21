@@ -14,7 +14,7 @@
 
         <div class="card-body">
             <b-overlay variant="card" :show="loading">
-                <b-form-row>
+                <div class="form-row">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>{{ $gettext('Instructions') }}</legend>
@@ -80,7 +80,7 @@
                             </div>
                         </form>
                     </div>
-                </b-form-row>
+                </div>
             </b-overlay>
         </div>
     </div>

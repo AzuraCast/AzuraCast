@@ -2,7 +2,7 @@
     <b-modal id="rename_file" centered ref="modal" :title="langRenameFile">
         <b-form @submit.prevent="doRename">
             <b-wrapped-form-group id="new_directory_name" :field="v$.form.newPath" autofocus>
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('New File Name') }}
                 </template>
             </b-wrapped-form-group>

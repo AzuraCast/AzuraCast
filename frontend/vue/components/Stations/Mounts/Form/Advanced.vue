@@ -1,38 +1,33 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-group>
-            <b-form-row class="mb-3">
-
+            <div class="form-row mb-3">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_custom_listen_url"
                                       :field="form.custom_listen_url" advanced>
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Mount Point URL') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
                         }}
                     </template>
                 </b-wrapped-form-group>
-
-            </b-form-row>
-            <b-form-row v-if="isIcecast">
-
+            </div>
+            <div class="form-row" v-if="isIcecast">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_config" :field="form.frontend_config"
                                       input-type="textarea" advanced
                                       :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Custom Frontend Configuration') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;')
                         }}
                     </template>
                 </b-wrapped-form-group>
-
-            </b-form-row>
-
+            </div>
         </b-form-group>
     </b-tab>
 </template>

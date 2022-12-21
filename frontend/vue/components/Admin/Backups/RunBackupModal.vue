@@ -6,10 +6,10 @@
 
             <b-form v-if="logUrl === null" class="form vue-form" @submit.prevent="submit">
                 <b-form-fieldset>
-                    <b-form-row>
+                    <div class="form-row">
                         <b-wrapped-form-group class="col-md-12" id="edit_form_storage_location"
                                               :field="v$.form.storage_location">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Storage Location') }}
                             </template>
                             <template #default="props">
@@ -20,11 +20,13 @@
 
                         <b-wrapped-form-group class="col-md-12" id="edit_form_path"
                                               :field="v$.form.path">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('File Name') }}
                             </template>
-                            <template #description="{lang}">
-                                {{ $gettext('This will be the file name for your backup, include the extension for file type you wish to use.') }}
+                            <template #description>
+                                {{
+                                    $gettext('This will be the file name for your backup, include the extension for file type you wish to use.')
+                                }}
                                 <br>
                                 <strong>
                                     {{ $gettext('Supported file formats:') }}
@@ -43,14 +45,16 @@
 
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_exclude_media"
                                                  :field="v$.form.exclude_media">
-                            <template #label="{lang}">
+                            <template #label>
                                 {{ $gettext('Exclude Media from Backup') }}
                             </template>
-                            <template #description="{lang}">
-                                {{ $gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.') }}
+                            <template #description>
+                                {{
+                                    $gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
+                                }}
                             </template>
                         </b-wrapped-form-checkbox>
-                    </b-form-row>
+                    </div>
                 </b-form-fieldset>
 
                 <invisible-submit-button/>

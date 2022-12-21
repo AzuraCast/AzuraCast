@@ -15,13 +15,13 @@
         </div>
         <b-card-body>
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_time_'+index"
                                           :field="v$.row.start_time">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Start Time') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{ $gettext('To play once per day, set the start and end times to the same value.') }}.00
                         </template>
                         <template #default="props">
@@ -31,10 +31,10 @@
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="v$.row.end_time">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('End Time') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{
                                 $gettext('If the end time is before the start time, the playlist will play overnight.')
                             }}
@@ -56,10 +56,10 @@
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_date_'+index"
                                           :field="v$.row.start_date">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Start Date') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{
                                 $gettext('To set this schedule to run only within a certain date range, specify a start and end date.')
                             }}
@@ -71,7 +71,7 @@
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="v$.row.end_date">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('End Date') }}
                         </template>
                         <template #default="props">
@@ -82,19 +82,19 @@
 
                     <b-wrapped-form-checkbox class="col-md-4" :id="'edit_form_loop_once_'+index"
                                              :field="v$.row.loop_once">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Loop Once') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{ $gettext('Only loop through playlist once.') }}
                         </template>
                     </b-wrapped-form-checkbox>
 
                     <b-wrapped-form-group class="col-md-4" :id="'edit_form_days_'+index" :field="v$.row.days">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Scheduled Play Days of Week') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{ $gettext('Leave blank to play on every day of the week.') }}
                         </template>
                         <template #default="props">
@@ -103,7 +103,7 @@
                         </template>
                     </b-wrapped-form-group>
 
-                </b-form-row>
+                </div>
             </b-form-group>
         </b-card-body>
     </b-card>

@@ -16,7 +16,7 @@
         </template>
 
         <template #label="slotProps">
-            <slot v-bind="slotProps" name="label" :lang="'lang_'+id"></slot>
+            <slot v-bind="slotProps" name="label"></slot>
             <span v-if="isRequired" class="text-danger">
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
@@ -26,7 +26,7 @@
             </span>
         </template>
         <template #description="slotProps">
-            <slot v-bind="slotProps" name="description" :lang="'lang_'+id+'_desc'"></slot>
+            <slot v-bind="slotProps" name="description"></slot>
         </template>
 
         <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">

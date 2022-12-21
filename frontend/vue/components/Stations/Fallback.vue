@@ -14,7 +14,7 @@
 
         <div class="card-body">
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-form-group class="col-md-6" label-for="intro_file">
                         <template #label>
                             {{ $gettext('Select Custom Fallback File') }}
@@ -44,7 +44,7 @@
                             {{ $gettext('There is no existing custom fallback file associated with this station.') }}
                         </div>
                     </b-form-group>
-                </b-form-row>
+                </div>
             </b-form-group>
         </div>
     </section>

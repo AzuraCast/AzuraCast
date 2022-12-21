@@ -15,14 +15,14 @@
         </div>
         <b-card-body>
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-group class="col-md-12"
                                           :id="'edit_form_station_permissions_'+row.station_id"
                                           :field="v$.row.permissions">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Station Permissions') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{ $gettext('Users with this role will have these permissions for this single station.') }}
                         </template>
                         <template #default="props">
@@ -31,7 +31,7 @@
                             </b-form-checkbox-group>
                         </template>
                     </b-wrapped-form-group>
-                </b-form-row>
+                </div>
             </b-form-group>
         </b-card-body>
     </b-card>

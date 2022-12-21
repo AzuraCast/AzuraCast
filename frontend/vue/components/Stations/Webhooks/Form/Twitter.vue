@@ -32,34 +32,34 @@
     </b-form-group>
 
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-6" id="form_config_consumer_key" :field="form.config.consumer_key">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Consumer Key (API Key)') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_consumer_secret"
                                   :field="form.config.consumer_secret">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Consumer Secret (API Secret)') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Access Token') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="form_config_token_secret" :field="form.config.token_secret">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Access Token Secret') }}
                 </template>
             </b-wrapped-form-group>
 
             <common-rate-limit-fields :form="form"></common-rate-limit-fields>
-        </b-form-row>
+        </div>
     </b-form-group>
 
     <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>

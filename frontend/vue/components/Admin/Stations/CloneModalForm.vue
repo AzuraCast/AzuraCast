@@ -1,20 +1,20 @@
 <template>
-    <b-form-row>
+    <div class="form-row">
         <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-            <template #label="{lang}">
+            <template #label>
                 {{ $gettext('New Station Name') }}
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
                               input-type="textarea">
-            <template #label="{lang}">
+            <template #label>
                 {{ $gettext('New Station Description') }}
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_clone" :field="form.clone">
-            <template #label="{lang}">
+            <template #label>
                 {{ $gettext('Copy to New Station') }}
             </template>
             <template #default="props">
@@ -26,7 +26,7 @@
                 ></b-form-checkbox-group>
             </template>
         </b-wrapped-form-group>
-    </b-form-row>
+    </div>
 </template>
 
 <script>

@@ -3,9 +3,7 @@
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
                 <b-form-checkbox v-bind="inputAttrs" v-model="field.$model" :id="id" :name="name">
-                    <slot name="label" :lang="'lang_'+id">
-
-                    </slot>
+                    <slot name="label"></slot>
                     <span v-if="isRequired" class="text-danger">
                         <span aria-hidden="true">*</span>
                         <span class="sr-only">Required</span>
@@ -22,7 +20,7 @@
         </template>
 
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps" :lang="'lang_'+id+'_desc'"></slot>
+            <slot name="description" v-bind="slotProps"></slot>
         </template>
 
         <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">

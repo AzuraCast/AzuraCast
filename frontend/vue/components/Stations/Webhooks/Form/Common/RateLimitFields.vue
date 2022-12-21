@@ -1,6 +1,6 @@
 <template>
     <b-wrapped-form-group class="col-md-12" id="form_config_rate_limit" :field="form.config.rate_limit">
-        <template #label="{lang}">
+        <template #label>
             {{ $gettext('Only Post Once Every...') }}
         </template>
         <template #default="props">

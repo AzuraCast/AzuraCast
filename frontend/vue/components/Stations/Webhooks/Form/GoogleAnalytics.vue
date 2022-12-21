@@ -1,15 +1,15 @@
 <template>
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-12" id="form_config_tracking_id" :field="form.config.tracking_id">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('GA Property Tracking ID') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{ $gettext('The property ID used to track live listeners.') }}
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 

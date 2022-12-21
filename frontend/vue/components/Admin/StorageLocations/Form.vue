@@ -1,8 +1,8 @@
 <template>
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-12" id="form_edit_adapter" :field="form.adapter">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Storage Adapter') }}
                 </template>
                 <template #default="props">
@@ -24,10 +24,10 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="form_edit_path" :field="form.path">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Path/Suffix') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.')
                     }}
@@ -35,16 +35,16 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="form_edit_storageQuota" :field="form.storageQuota">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Storage Quota') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
                     }}
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-group>
 
     <b-card v-show="form.adapter.$model === 's3'" class="mb-3" no-body>
@@ -55,45 +55,45 @@
         </div>
         <b-card-body>
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-group class="col-md-6" id="form_edit_s3CredentialKey"
                                           :field="form.s3CredentialKey">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Access Key ID') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="form_edit_s3CredentialSecret"
                                           :field="form.s3CredentialSecret">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Secret Key') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="form_edit_s3Endpoint" :field="form.s3Endpoint">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Endpoint') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="form_edit_s3Bucket" :field="form.s3Bucket">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Bucket Name') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="form_edit_s3Region" :field="form.s3Region">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Region') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-6" id="form_edit_s3Version" :field="form.s3Version">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('API Version') }}
                         </template>
                     </b-wrapped-form-group>
-                </b-form-row>
+                </div>
             </b-form-group>
         </b-card-body>
     </b-card>
@@ -106,19 +106,19 @@
         </div>
         <b-card-body>
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-group class="col-md-12" id="form_edit_dropboxAuthToken"
                                           :field="form.dropboxAuthToken">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Dropbox Generated Access Token') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{
                                 $gettext('Note: Dropbox now only issues short-lived tokens that will not work for this purpose. If your token begins with "sl", it is short-lived and will not work correctly.')
                             }}
                         </template>
                     </b-wrapped-form-group>
-                </b-form-row>
+                </div>
             </b-form-group>
         </b-card-body>
     </b-card>
@@ -131,10 +131,10 @@
         </div>
         <b-card-body>
             <b-form-group>
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpHost"
                                           :field="form.sftpHost">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('SFTP Host') }}
                         </template>
                     </b-wrapped-form-group>
@@ -142,39 +142,39 @@
                     <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpPort" input-type="number" min="1"
                                           step="1"
                                           :field="form.sftpPort">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('SFTP Port') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpUsername"
                                           :field="form.sftpUsername">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('SFTP Username') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-12 col-lg-6" id="form_edit_sftpPassword"
                                           :field="form.sftpPassword">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('SFTP Password') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPrivateKeyPassPhrase"
                                           :field="form.sftpPrivateKeyPassPhrase">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('SFTP Private Key Pass Phrase') }}
                         </template>
                     </b-wrapped-form-group>
 
                     <b-wrapped-form-group class="col-md-12" id="form_edit_sftpPrivateKey" input-type="textarea"
                                           :field="form.sftpPrivateKey">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('SFTP Private Key') }}
                         </template>
                     </b-wrapped-form-group>
-                </b-form-row>
+                </div>
             </b-form-group>
         </b-card-body>
     </b-card>

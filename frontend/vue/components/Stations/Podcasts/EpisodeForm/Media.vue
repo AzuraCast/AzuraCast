@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="$gettext('Media')">
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-form-group class="col-md-6" label-for="media_file">
                     <template #label>
                         {{ $gettext('Select Media File') }}
@@ -35,7 +35,7 @@
                         {{ $gettext('There is no existing media associated with this episode.') }}
                     </div>
                 </b-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>

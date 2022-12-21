@@ -12,13 +12,13 @@
             <b-overlay variant="card" :show="loading">
                 <div class="card-body">
                     <b-form-group>
-                        <b-form-row>
+                        <div class="form-row">
                             <b-wrapped-form-group class="col-md-6" id="edit_form_public_theme"
                                                   :field="v$.form.public_theme">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Base Theme for Public Pages') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('Select a theme to use as a base for station public pages and the login page.')
                                     }}
@@ -33,10 +33,10 @@
                             <b-col md="6">
                                 <b-wrapped-form-checkbox class="mb-2" id="form_edit_hide_album_art"
                                                          :field="v$.form.hide_album_art">
-                                    <template #label="{lang}">
+                                    <template #label>
                                         {{ $gettext('Hide Album Art on Public Pages') }}
                                     </template>
-                                    <template #description="{lang}">
+                                    <template #description>
                                         {{
                                             $gettext('If selected, album art will not display on public-facing radio pages.')
                                         }}
@@ -45,10 +45,10 @@
 
                                 <b-wrapped-form-checkbox id="form_edit_hide_product_name"
                                                          :field="v$.form.hide_product_name">
-                                    <template #label="{lang}">
+                                    <template #label>
                                         {{ $gettext('Hide AzuraCast Branding on Public Pages') }}
                                     </template>
-                                    <template #description="{lang}">
+                                    <template #description>
                                         {{
                                             $gettext('If selected, this will remove the AzuraCast branding from public-facing pages.')
                                         }}
@@ -58,10 +58,10 @@
 
                             <b-wrapped-form-group class="col-md-6" id="form_edit_homepage_redirect_url"
                                                   :field="v$.form.homepage_redirect_url">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Homepage Redirect URL') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.')
                                     }}
@@ -70,10 +70,10 @@
 
                             <b-wrapped-form-group class="col-md-6" id="form_edit_default_album_art_url"
                                                   :field="v$.form.default_album_art_url">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Default Album Art URL') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
                                     }}
@@ -82,10 +82,10 @@
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_css"
                                                   :field="v$.form.public_custom_css">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Custom CSS for Public Pages') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('This CSS will be applied to the station public pages and login page.')
                                     }}
@@ -98,10 +98,10 @@
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_js"
                                                   :field="v$.form.public_custom_js">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Custom JS for Public Pages') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('This javascript code will be applied to the station public pages and login page.')
                                     }}
@@ -114,10 +114,10 @@
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_internal_custom_css"
                                                   :field="v$.form.internal_custom_css">
-                                <template #label="{lang}">
+                                <template #label>
                                     {{ $gettext('Custom CSS for Internal Pages') }}
                                 </template>
-                                <template #description="{lang}">
+                                <template #description>
                                     {{
                                         $gettext('This CSS will be applied to the main management pages, like this one.')
                                     }}
@@ -127,7 +127,7 @@
                                                          v-model="props.field.$model"></codemirror-textarea>
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
 
                         <b-button size="lg" type="submit" class="mt-3" variant="primary">
                             {{ $gettext('Save Changes') }}

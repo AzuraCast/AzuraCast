@@ -1,8 +1,8 @@
 <template>
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-6" id="edit_form_username" :field="form.username">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Username') }}
                 </template>
             </b-wrapped-form-group>
@@ -23,15 +23,17 @@
 
             <b-wrapped-form-group class="col-md-12" id="edit_form_publicKeys" :field="form.publicKeys"
                                   input-type="textarea">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('SSH Public Keys') }}
                 </template>
-                <template #description="{lang}">
-                    {{ $gettext('Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.') }}
+                <template #description>
+                    {{
+                        $gettext('Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.')
+                    }}
                 </template>
             </b-wrapped-form-group>
 
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 

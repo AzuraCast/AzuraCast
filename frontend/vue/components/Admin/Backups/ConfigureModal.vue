@@ -2,24 +2,26 @@
     <modal-form ref="modal" size="lg" :title="langTitle" :loading="loading" :disable-save-button="v$.form.$invalid"
                 @submit="submit" @hidden="clearContents">
         <b-form-fieldset>
-            <b-form-row class="mb-3">
+            <div class="form-row mb-3">
                 <b-wrapped-form-checkbox class="col-md-12" id="form_edit_backup_enabled"
                                          :field="v$.form.backup_enabled">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Run Automatic Nightly Backups') }}
                     </template>
-                    <template #description="{lang}">
-                        {{ $gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.') }}
+                    <template #description>
+                        {{
+                            $gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.')
+                        }}
                     </template>
                 </b-wrapped-form-checkbox>
-            </b-form-row>
+            </div>
 
-            <b-form-row v-if="v$.form.backup_enabled.$model">
+            <div class="form-row" v-if="v$.form.backup_enabled.$model">
                 <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="v$.form.backup_time_code">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Scheduled Backup Time') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{ $gettext('If the end time is before the start time, the playlist will play overnight.') }}
                     </template>
                     <template #default="props">
@@ -29,27 +31,31 @@
 
                 <b-wrapped-form-checkbox class="col-md-6" id="form_edit_exclude_media"
                                          :field="v$.form.backup_exclude_media">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Exclude Media from Backup') }}
                     </template>
-                    <template #description="{lang}">
-                        {{ $gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.') }}
+                    <template #description>
+                        {{
+                            $gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
+                        }}
                     </template>
                 </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="v$.form.backup_keep_copies"
                                       input-type="number" :input-attrs="{min: '0', max: '365'}">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Number of Backup Copies to Keep') }}
                     </template>
-                    <template #description="{lang}">
-                        {{ $gettext('Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.') }}
+                    <template #description>
+                        {{
+                            $gettext('Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backup_storage_location"
                                       :field="v$.form.backup_storage_location">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Storage Location') }}
                     </template>
                     <template #default="props">
@@ -59,7 +65,7 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="v$.form.backup_format">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Backup Format') }}
                     </template>
                     <template #default="props">
@@ -67,7 +73,7 @@
                                             :options="formatOptions"></b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-fieldset>
     </modal-form>
 </template>

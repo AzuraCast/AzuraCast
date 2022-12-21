@@ -1,15 +1,15 @@
 <template>
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-6" id="edit_form_email" :field="form.email" input-type="email">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_new_password" :field="form.new_password"
                                   input-type="password">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Reset Password') }}
                     {{ $gettext('Password') }}
                 </template>
@@ -19,14 +19,14 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Display Name') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="edit_form_roles"
                                   :field="form.roles">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Roles') }}
                 </template>
                 <template #default="props">
@@ -34,7 +34,7 @@
                     </b-form-checkbox-group>
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 

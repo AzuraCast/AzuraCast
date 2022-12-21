@@ -1,11 +1,11 @@
 <template>
     <b-form-group>
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-6" id="edit_form_name" :field="form.name">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Field Name') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('This will be used as the label when editing individual songs, and will show in API results.')
                     }}
@@ -13,10 +13,10 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_short_name" :field="form.short_name">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Programmatic Name') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('Optionally specify an API-friendly name, such as "field_name". Leave this field blank to automatically create one based on the name.')
                     }}
@@ -24,10 +24,10 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-6" id="edit_form_auto_assign" :field="form.auto_assign">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Automatically Set from ID3v2 Value') }}
                 </template>
-                <template #description="{lang}">
+                <template #description>
                     {{
                         $gettext('Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.')
                     }}
@@ -37,7 +37,7 @@
                                    :options="autoAssignOptions"></b-form-select>
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 

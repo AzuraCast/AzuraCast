@@ -8,7 +8,8 @@
 
         <div class="card-body">
             <b-overlay variant="card" :show="loading">
-                <b-form-row>
+
+                <div class="form-row">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>
@@ -63,7 +64,7 @@
 
                         <flow-upload :target-url="apiUrl" @complete="relist"></flow-upload>
                     </div>
-                </b-form-row>
+                </div>
             </b-overlay>
         </div>
     </div>

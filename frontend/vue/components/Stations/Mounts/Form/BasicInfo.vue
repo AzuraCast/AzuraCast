@@ -1,14 +1,12 @@
 <template>
     <b-tab :title="langTabTitle" active>
         <b-form-group>
-
-            <b-form-row class="mb-3">
-
+            <div class="form-row mb-3">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_name" :field="form.name">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Mount Point URL') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3')
                         }}
@@ -16,10 +14,10 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_display_name" :field="form.display_name">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Display Name') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.')
                         }}
@@ -28,10 +26,10 @@
 
                 <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_visible_on_public_pages"
                                          :field="form.is_visible_on_public_pages">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Show on Public Pages') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('Enable to allow listeners to select this mount point on this station\'s public pages.')
                         }}
@@ -39,10 +37,10 @@
                 </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_default" :field="form.is_default">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Set as Default Mount Point') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('If this mount is the default, it will be played on the radio preview and the public radio page in this system.')
                         }}
@@ -50,10 +48,10 @@
                 </b-wrapped-form-checkbox>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_relay_url" :field="form.relay_url">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Relay Stream URL') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('Enter the full URL of another stream to relay its broadcast through this mount point.')
                         }}
@@ -61,10 +59,10 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_public" :field="form.is_public">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Publish to "Yellow Pages" Directories') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('Enable to advertise this mount point on "Yellow Pages" public radio directories.')
                         }}
@@ -74,10 +72,10 @@
                 <b-wrapped-form-group class="col-md-6" id="edit_form_max_listener_duration"
                                       :field="form.max_listener_duration" input-type="number"
                                       :input-attrs="{min: '0', max: '2147483647'}">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Max Listener Duration') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{
                             $gettext('Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.')
                         }}
@@ -86,7 +84,7 @@
 
                 <template v-if="isShoutcast">
                     <b-wrapped-form-group class="col-md-6" id="edit_form_authhash" :field="form.authhash">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('YP Directory Authorization Hash') }}
                         </template>
                         <template #description><span v-html="langAuthhashDesc"></span></template>
@@ -94,17 +92,17 @@
                 </template>
                 <template v-if="isIcecast">
                     <b-wrapped-form-group class="col-md-6" id="edit_form_fallback_mount" :field="form.fallback_mount">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Fallback Mount') }}
                         </template>
-                        <template #description="{lang}">
+                        <template #description>
                             {{
                                 $gettext('If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.')
                             }}
                         </template>
                     </b-wrapped-form-group>
                 </template>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>

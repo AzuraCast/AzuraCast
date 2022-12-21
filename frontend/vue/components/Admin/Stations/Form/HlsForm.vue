@@ -11,41 +11,41 @@
             </template>
 
             <b-form-fieldset>
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_hls"
                                              :field="form.enable_hls">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Enable HTTP Live Streaming (HLS)') }}
                         </template>
                     </b-wrapped-form-checkbox>
-                </b-form-row>
+                </div>
             </b-form-fieldset>
 
             <b-form-fieldset v-if="form.enable_hls.$model">
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_hls_enable_on_public_player"
                                              :field="form.backend_config.hls_enable_on_public_player">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Show HLS Stream on Public Player') }}
                         </template>
                     </b-wrapped-form-checkbox>
 
                     <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_hls_is_default"
                                              :field="form.backend_config.hls_is_default">
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Make HLS Stream Default in Public Player') }}
                         </template>
                     </b-wrapped-form-checkbox>
-                </b-form-row>
+                </div>
             </b-form-fieldset>
 
             <b-form-fieldset v-if="showAdvanced && form.enable_hls.$model">
-                <b-form-row>
+                <div class="form-row">
                     <b-wrapped-form-group class="col-md-4"
                                           id="edit_form_backend_hls_segment_length"
                                           :field="form.backend_config.hls_segment_length" input-type="number"
                                           :input-attrs="{ min: '0', max: '60' }" advanced>
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Segment Length (Seconds)') }}
                         </template>
                     </b-wrapped-form-group>
@@ -54,7 +54,7 @@
                                           id="edit_form_backend_hls_segments_in_playlist"
                                           :field="form.backend_config.hls_segments_in_playlist" input-type="number"
                                           :input-attrs="{ min: '0', max: '60' }" advanced>
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Segments in Playlist') }}
                         </template>
                     </b-wrapped-form-group>
@@ -63,11 +63,11 @@
                                           id="edit_form_backend_hls_segments_overhead"
                                           :field="form.backend_config.hls_segments_overhead" input-type="number"
                                           :input-attrs="{ min: '0', max: '60' }" advanced>
-                        <template #label="{lang}">
+                        <template #label>
                             {{ $gettext('Segments Overhead') }}
                         </template>
                     </b-wrapped-form-group>
-                </b-form-row>
+                </div>
             </b-form-fieldset>
         </b-form-fieldset>
     </b-form-fieldset>

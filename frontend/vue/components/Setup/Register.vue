@@ -35,7 +35,7 @@
 
                     <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="v$.username"
                                           input-type="email">
-                        <template #label="{lang}">
+                        <template #label>
                             <icon icon="email" class="mr-1"></icon>
                             {{ $gettext('E-mail Address') }}
                         </template>
@@ -43,7 +43,7 @@
 
                     <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="v$.password"
                                           input-type="password">
-                        <template #label="{lang}">
+                        <template #label>
                             <icon icon="vpn_key" class="mr-1"></icon>
                             {{ $gettext('Password') }}
                         </template>

@@ -2,15 +2,15 @@
     <modal-form ref="modal" id="clone_modal" :title="langTitle" :error="error"
                 :disable-save-button="v$.form.$invalid" @submit="doSubmit" @hidden="clearContents">
 
-        <b-form-row>
+        <div class="form-row">
             <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="v$.form.name">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('New Playlist Name') }}
                 </template>
             </b-wrapped-form-group>
 
             <b-wrapped-form-group class="col-md-12" id="form_edit_clone" :field="v$.form.clone">
-                <template #label="{lang}">
+                <template #label>
                     {{ $gettext('Customize Copy') }}
                 </template>
                 <template #default="props">
@@ -24,7 +24,7 @@
                     </b-form-checkbox-group>
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
 
     </modal-form>
 </template>

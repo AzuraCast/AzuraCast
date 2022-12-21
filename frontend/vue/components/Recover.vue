@@ -20,7 +20,7 @@
 
                     <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="v$.form.password"
                                           input-type="password">
-                        <template #label="{lang}">
+                        <template #label>
                             <icon icon="vpn_key" class="mr-1"></icon>
                             {{ $gettext('Password') }}
                         </template>

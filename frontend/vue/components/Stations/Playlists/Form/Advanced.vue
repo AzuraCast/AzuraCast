@@ -1,12 +1,12 @@
 <template>
     <b-tab :title="langTabTitle">
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backend_options" :field="form.backend_options">
-                    <template #label="{lang}">
+                    <template #label>
                         {{ $gettext('Advanced Manual AutoDJ Scheduling Options') }}
                     </template>
-                    <template #description="{lang}">
+                    <template #description>
                         {{ $gettext('Control how this playlist is handled by the AutoDJ software.') }}
                     </template>
                     <template #default="props">
@@ -23,7 +23,7 @@
                         </b-form-checkbox-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>

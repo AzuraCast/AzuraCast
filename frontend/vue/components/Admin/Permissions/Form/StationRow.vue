@@ -18,7 +18,7 @@
                 <div class="form-row">
                     <b-wrapped-form-group class="col-md-12"
                                           :id="'edit_form_station_permissions_'+row.station_id"
-                                          :field="v$.row.permissions">
+                                          :field="v$.permissions">
                         <template #label>
                             {{ $gettext('Station Permissions') }}
                         </template>
@@ -37,46 +37,41 @@
     </b-card>
 </template>
 
-<script>
+<script setup>
 import useVuelidate from "@vuelidate/core";
 import _ from "lodash";
 import Icon from "~/components/Common/Icon.vue";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import {useVModel} from "@vueuse/core";
+import {computed} from "vue";
 
-export default {
-    name: 'PermissionsFormStationRow',
-    components: {BWrappedFormGroup, Icon},
-    emits: ['remove'],
-    props: {
-        row: Object,
-        stations: Object,
-        stationPermissions: Object
-    },
-    setup() {
+const props = defineProps({
+    row: Object,
+    stations: Object,
+    stationPermissions: Object
+});
+
+const emit = defineEmits(['remove', 'update:row']);
+
+const form = useVModel(props, 'row', emit);
+
+const validations = {
+    'station_id': {},
+    'permissions': {},
+};
+
+const v$ = useVuelidate(validations, form);
+
+const stationPermissionOptions = computed(() => {
+    return _.map(props.stationPermissions, (permissionName, permissionKey) => {
         return {
-            v$: useVuelidate()
-        }
-    },
-    validations: {
-        row: {
-            'station_id': {},
-            'permissions': {},
-        }
-    },
-    computed: {
-        stationPermissionOptions() {
-            return _.map(this.stationPermissions, (permissionName, permissionKey) => {
-                return {
-                    text: permissionName,
-                    value: permissionKey
-                };
-            })
-        },
-    },
-    methods: {
-        getStationName(stationId) {
-            return _.get(this.stations, stationId, null);
-        },
-    }
-}
+            text: permissionName,
+            value: permissionKey
+        };
+    })
+});
+
+const getStationName = (stationId) => {
+    return _.get(props.stations, stationId, null);
+};
 </script>

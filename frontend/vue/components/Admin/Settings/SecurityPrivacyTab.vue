@@ -78,16 +78,12 @@
     </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
-export default {
-    name: 'SettingsSecurityPrivacyTab',
-    components: {BWrappedFormCheckbox, BFormFieldset, BWrappedFormGroup},
-    props: {
-        form: Object
-    }
-}
+const props = defineProps({
+    form: Object
+});
 </script>

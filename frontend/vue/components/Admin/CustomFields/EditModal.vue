@@ -26,10 +26,12 @@ export default {
             'auto_assign': ''
         };
 
-        const form = ref(blankForm);
+        const form = ref({
+            ...blankForm
+        });
 
         const resetForm = () => {
-            form.value = blankForm;
+            form.value = {...blankForm};
         }
 
         const validations = {

@@ -14,7 +14,7 @@
                     <b-form-group>
                         <div class="form-row">
                             <b-wrapped-form-group class="col-md-6" id="edit_form_public_theme"
-                                                  :field="v$.form.public_theme">
+                                                  :field="v$.public_theme">
                                 <template #label>
                                     {{ $gettext('Base Theme for Public Pages') }}
                                 </template>
@@ -32,7 +32,7 @@
 
                             <b-col md="6">
                                 <b-wrapped-form-checkbox class="mb-2" id="form_edit_hide_album_art"
-                                                         :field="v$.form.hide_album_art">
+                                                         :field="v$.hide_album_art">
                                     <template #label>
                                         {{ $gettext('Hide Album Art on Public Pages') }}
                                     </template>
@@ -44,7 +44,7 @@
                                 </b-wrapped-form-checkbox>
 
                                 <b-wrapped-form-checkbox id="form_edit_hide_product_name"
-                                                         :field="v$.form.hide_product_name">
+                                                         :field="v$.hide_product_name">
                                     <template #label>
                                         {{ $gettext('Hide AzuraCast Branding on Public Pages') }}
                                     </template>
@@ -57,7 +57,7 @@
                             </b-col>
 
                             <b-wrapped-form-group class="col-md-6" id="form_edit_homepage_redirect_url"
-                                                  :field="v$.form.homepage_redirect_url">
+                                                  :field="v$.homepage_redirect_url">
                                 <template #label>
                                     {{ $gettext('Homepage Redirect URL') }}
                                 </template>
@@ -69,7 +69,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-6" id="form_edit_default_album_art_url"
-                                                  :field="v$.form.default_album_art_url">
+                                                  :field="v$.default_album_art_url">
                                 <template #label>
                                     {{ $gettext('Default Album Art URL') }}
                                 </template>
@@ -81,7 +81,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_css"
-                                                  :field="v$.form.public_custom_css">
+                                                  :field="v$.public_custom_css">
                                 <template #label>
                                     {{ $gettext('Custom CSS for Public Pages') }}
                                 </template>
@@ -97,7 +97,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_js"
-                                                  :field="v$.form.public_custom_js">
+                                                  :field="v$.public_custom_js">
                                 <template #label>
                                     {{ $gettext('Custom JS for Public Pages') }}
                                 </template>
@@ -113,7 +113,7 @@
                             </b-wrapped-form-group>
 
                             <b-wrapped-form-group class="col-md-12" id="edit_form_internal_custom_css"
-                                                  :field="v$.form.internal_custom_css">
+                                                  :field="v$.internal_custom_css">
                                 <template #label>
                                     {{ $gettext('Custom CSS for Internal Pages') }}
                                 </template>
@@ -139,108 +139,105 @@
     </form>
 </template>
 
-<script>
+<script setup>
 import useVuelidate from "@vuelidate/core";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {computed, onMounted, ref} from "vue";
+import gettext from "~/vendor/gettext";
+import {useAxios} from "~/vendor/axios";
+import mergeExisting from "~/functions/mergeExisting";
+import {useNotify} from "~/vendor/bootstrapVue";
 
-export default {
-    name: 'BrandingForm',
-    props: {
-        apiUrl: String
-    },
-    components: {
-        BWrappedFormCheckbox,
-        BWrappedFormGroup,
-        CodemirrorTextarea,
-    },
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    data() {
-        return {
-            loading: true,
-            error: null,
-            form: {},
-        };
-    },
-    computed: {
-        publicThemeOptions() {
-            return [
-                {
-                    text: this.$gettext('Prefer System Default'),
-                    value: 'browser',
-                },
-                {
-                    text: this.$gettext('Light'),
-                    value: 'light',
-                },
-                {
-                    text: this.$gettext('Dark'),
-                    value: 'dark',
-                }
-            ];
+const props = defineProps({
+    apiUrl: String,
+});
+
+const loading = ref(true);
+const error = ref(null);
+
+const blankForm = {
+    'public_theme': '',
+    'hide_album_art': false,
+    'homepage_redirect_url': '',
+    'default_album_art_url': '',
+    'hide_product_name': false,
+    'public_custom_css': '',
+    'public_custom_js': '',
+    'internal_custom_css': ''
+};
+
+const form = ref({...blankForm});
+
+const validations = {
+    'public_theme': {},
+    'hide_album_art': {},
+    'homepage_redirect_url': {},
+    'default_album_art_url': {},
+    'hide_product_name': {},
+    'public_custom_css': {},
+    'public_custom_js': {},
+    'internal_custom_css': {}
+};
+
+const v$ = useVuelidate(validations, form);
+
+const {$gettext} = gettext;
+
+const publicThemeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Prefer System Default'),
+            value: 'browser',
         },
-    },
-    validations: {
-        form: {
-            'public_theme': {},
-            'hide_album_art': {},
-            'homepage_redirect_url': {},
-            'default_album_art_url': {},
-            'hide_product_name': {},
-            'public_custom_css': {},
-            'public_custom_js': {},
-            'internal_custom_css': {}
+        {
+            text: $gettext('Light'),
+            value: 'light',
+        },
+        {
+            text: $gettext('Dark'),
+            value: 'dark',
         }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.v$.$reset();
-            this.loading = true;
+    ];
+});
 
-            this.axios.get(this.apiUrl).then((resp) => {
-                this.populateForm(resp.data);
-                this.loading = false;
-            }).catch(() => {
-                this.close();
-            });
-        },
-        populateForm(data) {
-            this.form = {
-                'public_theme': data.public_theme,
-                'hide_album_art': data.hide_album_art,
-                'homepage_redirect_url': data.homepage_redirect_url,
-                'default_album_art_url': data.default_album_art_url,
-                'hide_product_name': data.hide_product_name,
-                'public_custom_css': data.public_custom_css,
-                'public_custom_js': data.public_custom_js,
-                'internal_custom_css': data.internal_custom_css
-            }
-        },
-        submit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
+const {axios} = useAxios();
 
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.apiUrl,
-                    data: this.form
-                })
-            ).then(() => {
-                this.$notifySuccess(this.$gettext('Changes saved.'));
-                this.relist();
-            });
+const populateForm = (data) => {
+    form.value = mergeExisting(form.value, data);
+};
 
-        }
+const relist = () => {
+    v$.value.$reset();
+    form.value = {...blankForm};
+    loading.value = true;
+
+    axios.get(props.apiUrl).then((resp) => {
+        populateForm(resp.data);
+        loading.value = false;
+    });
+}
+
+onMounted(relist);
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+
+const submit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
     }
+
+    wrapWithLoading(
+        axios({
+            method: 'PUT',
+            url: props.apiUrl,
+            data: form.value
+        })
+    ).then(() => {
+        notifySuccess($gettext('Changes saved.'));
+        relist();
+    });
 }
 </script>
-

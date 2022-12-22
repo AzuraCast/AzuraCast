@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="md" centered id="run_backup_modal" ref="modal" :title="langTitle"
+    <b-modal size="md" centered id="run_backup_modal" ref="modal" :title="$gettext('Run Manual Backup')"
              @hidden="clearContents">
         <template #default="slotProps">
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
@@ -8,7 +8,7 @@
                 <b-form-fieldset>
                     <div class="form-row">
                         <b-wrapped-form-group class="col-md-12" id="edit_form_storage_location"
-                                              :field="v$.form.storage_location">
+                                              :field="v$.storage_location">
                             <template #label>
                                 {{ $gettext('Storage Location') }}
                             </template>
@@ -19,7 +19,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-12" id="edit_form_path"
-                                              :field="v$.form.path">
+                                              :field="v$.path">
                             <template #label>
                                 {{ $gettext('File Name') }}
                             </template>
@@ -44,7 +44,7 @@
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-checkbox class="col-md-12" id="edit_form_exclude_media"
-                                                 :field="v$.form.exclude_media">
+                                                 :field="v$.exclude_media">
                             <template #label>
                                 {{ $gettext('Exclude Media from Backup') }}
                             </template>
@@ -70,7 +70,7 @@
                 <b-button variant="default" type="button" @click="close">
                     {{ $gettext('Close') }}
                 </b-button>
-                <b-button v-if="logUrl === null" :variant="(v$.form.$invalid) ? 'danger' : 'primary'" type="submit"
+                <b-button v-if="logUrl === null" :variant="(v$.$invalid) ? 'danger' : 'primary'" type="submit"
                           @click="submit">
                     {{ $gettext('Run Manual Backup') }}
                 </b-button>
@@ -79,7 +79,7 @@
     </b-modal>
 </template>
 
-<script>
+<script setup>
 import useVuelidate from "@vuelidate/core";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
@@ -87,83 +87,81 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView";
+import {computed, ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminBackupsRunBackupModal',
-    emits: ['relist'],
-    props: {
-        runBackupUrl: String,
-        storageLocations: Object
-    },
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    components: {
-        BFormFieldset,
-        BWrappedFormGroup,
-        BWrappedFormCheckbox,
-        InvisibleSubmitButton,
-        StreamingLogView
-    },
-    validations: {
-        form: {
-            'storage_location': {},
-            'path': {},
-            'exclude_media': {}
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Run Manual Backup');
-        },
-        storageLocationOptions() {
-            return objectToFormOptions(this.storageLocations);
-        }
-    },
-    data() {
-        return {
-            logUrl: null,
-            error: null,
-            form: {},
-        };
-    },
-    methods: {
-        open() {
-            this.$refs.modal.show();
-        },
-        close() {
-            this.$refs.modal.hide();
-            this.$emit('relist');
-        },
-        submit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
+const props = defineProps({
+    runBackupUrl: String,
+    storageLocations: Object
+});
 
-            this.error = null;
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'POST',
-                    url: this.runBackupUrl,
-                    data: this.form
-                })
-            ).then((resp) => {
-                this.logUrl = resp.data.links.log;
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
-        clearContents() {
-            this.logUrl = null;
-            this.error = null;
+const emit = defineEmits(['relist']);
 
-            this.form = {
-                storage_location: null,
-                path: null,
-                exclude_media: false
-            };
-        }
-    }
+const storageLocationOptions = computed(() => {
+    return objectToFormOptions(props.storageLocations);
+});
+
+const logUrl = ref(null);
+const error = ref(null);
+const modal = ref(); // BModal
+
+const blankForm = {
+    storage_location: null,
+    path: '',
+    exclude_media: false,
+};
+
+const form = ref({...blankForm});
+
+const validations = {
+    'storage_location': {},
+    'path': {},
+    'exclude_media': {}
+};
+
+const v$ = useVuelidate(validations, form);
+
+const open = () => {
+    modal.value.show();
+};
+
+const close = () => {
+    modal.value.hide();
+    emit('relist');
 }
+
+const {wrapWithLoading} = useNotify();
+const {axios} = useAxios();
+
+const submit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
+    }
+
+    error.value = null;
+    wrapWithLoading(
+        axios({
+            method: 'POST',
+            url: props.runBackupUrl,
+            data: form.value
+        })
+    ).then((resp) => {
+        logUrl.value = resp.data.links.log;
+    }).catch((error) => {
+        error.value = error.response.data.message;
+    });
+};
+
+const clearContents = () => {
+    logUrl.value = null;
+    error.value = null;
+
+    form.value = {...blankForm};
+}
+
+defineExpose({
+    open
+});
 </script>

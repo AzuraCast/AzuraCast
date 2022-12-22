@@ -91,46 +91,45 @@
     </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {computed} from "vue";
+import gettext from "~/vendor/gettext";
 
-export default {
-    name: 'SettingsGeneralTab',
-    components: {BWrappedFormCheckbox, BFormFieldset, BWrappedFormGroup},
-    props: {
-        form: Object
-    },
-    computed: {
-        historyKeepDaysOptions() {
-            return [
-                {
-                    value: 14,
-                    text: this.$gettext('Last 14 Days')
-                },
-                {
-                    value: 30,
-                    text: this.$gettext('Last 30 Days')
-                },
-                {
-                    value: 60,
-                    text: this.$gettext('Last 60 Days')
-                },
-                {
-                    value: 365,
-                    text: this.$gettext('Last Year')
-                },
-                {
-                    value: 730,
-                    text: this.$gettext('Last 2 Years')
-                },
-                {
-                    value: 0,
-                    text: this.$gettext('Indefinitely')
-                },
-            ]
+const props = defineProps({
+    form: Object
+});
+
+const {$gettext} = gettext;
+
+const historyKeepDaysOptions = computed(() => {
+    return [
+        {
+            value: 14,
+            text: $gettext('Last 14 Days')
         },
-    }
-}
+        {
+            value: 30,
+            text: $gettext('Last 30 Days')
+        },
+        {
+            value: 60,
+            text: $gettext('Last 60 Days')
+        },
+        {
+            value: 365,
+            text: $gettext('Last Year')
+        },
+        {
+            value: 730,
+            text: $gettext('Last 2 Years')
+        },
+        {
+            value: 0,
+            text: $gettext('Indefinitely')
+        },
+    ]
+});
 </script>

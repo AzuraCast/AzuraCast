@@ -225,7 +225,7 @@
     <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
 </template>
 
-<script>
+<script setup>
 import BFormMarkup from "~/components/Form/BFormMarkup";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
@@ -233,55 +233,52 @@ import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal";
 import Icon from "~/components/Common/Icon";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
+import {computed, ref} from "vue";
+import gettext from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'SettingsServicesTab',
-    components: {
-        StreamingLogModal,
-        Icon,
-        AdminSettingsTestMessageModal,
-        BWrappedFormCheckbox,
-        BFormFieldset,
-        BWrappedFormGroup,
-        BFormMarkup
-    },
-    props: {
-        form: Object,
-        releaseChannel: String,
-        testMessageUrl: String,
-        acmeUrl: String,
-    },
-    computed: {
-        langReleaseChannel() {
-            return (this.releaseChannel === 'stable')
-                ? this.$gettext('Stable')
-                : this.$gettext('Rolling Release');
+const props = defineProps({
+    form: Object,
+    releaseChannel: String,
+    testMessageUrl: String,
+    acmeUrl: String,
+});
+
+const {$gettext} = gettext;
+
+const langReleaseChannel = computed(() => {
+    return (props.releaseChannel === 'stable')
+        ? $gettext('Stable')
+        : $gettext('Rolling Release');
+});
+
+const avatarServiceOptions = computed(() => {
+    return [
+        {
+            value: 'libravatar',
+            text: 'Libravatar'
         },
-        avatarServiceOptions() {
-            return [
-                {
-                    value: 'libravatar',
-                    text: 'Libravatar'
-                },
-                {
-                    value: 'gravatar',
-                    text: 'Gravatar'
-                },
-                {
-                    value: 'disabled',
-                    text: this.$gettext('Disabled')
-                }
-            ]
+        {
+            value: 'gravatar',
+            text: 'Gravatar'
         },
-    },
-    methods: {
-        generateAcmeCert() {
-            this.$wrapWithLoading(
-                this.axios.put(this.acmeUrl)
-            ).then((resp) => {
-                this.$refs.acmeModal.show(resp.data.links.log);
-            });
+        {
+            value: 'disabled',
+            text: $gettext('Disabled')
         }
-    }
+    ]
+});
+
+const acmeModal = ref(); // BModal
+const {wrapWithLoading} = useNotify();
+const {axios} = useAxios();
+
+const generateAcmeCert = () => {
+    wrapWithLoading(
+        axios.put(props.acmeUrl)
+    ).then((resp) => {
+        acmeModal.value.show(resp.data.links.log);
+    });
 }
 </script>

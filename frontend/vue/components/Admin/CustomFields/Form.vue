@@ -41,35 +41,30 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import _ from 'lodash';
+import {computed} from "vue";
 
-export default {
-    name: 'AdminCustomFieldsForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        autoAssignTypes: Object
-    },
-    computed: {
-        autoAssignOptions() {
-            let autoAssignOptions = [
-                {
-                    text: this.$gettext('Disable'),
-                    value: '',
-                }
-            ];
+const props = defineProps({
+    form: Object,
+    autoAssignTypes: Object
+});
 
-            _.forEach(this.autoAssignTypes, (typeName, typeKey) => {
-                autoAssignOptions.push({
-                    text: typeName,
-                    value: typeKey
-                });
-            });
+const autoAssignOptions = computed(() => {
+    let autoAssignOptions = [
+        {
+            text: this.$gettext('Disable'),
+            value: '',
+        }
+    ];
 
-            return autoAssignOptions;
-        },
-    }
-};
+    _.forEach(this.autoAssignTypes, (typeName, typeKey) => {
+        autoAssignOptions.push({
+            text: typeName,
+            value: typeKey
+        });
+    });
+
+    return autoAssignOptions;
+});
 </script>

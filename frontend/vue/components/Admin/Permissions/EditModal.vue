@@ -1,12 +1,12 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <b-tabs content-class="mt-3" pills>
-            <admin-permissions-global-form :form="v$.form" :global-permissions="globalPermissions">
+            <admin-permissions-global-form :form="v$" :global-permissions="globalPermissions">
             </admin-permissions-global-form>
 
-            <admin-permissions-station-form :form="v$.form" :stations="stations"
+            <admin-permissions-station-form :form="v$" :stations="stations"
                                             :station-permissions="stationPermissions">
             </admin-permissions-station-form>
         </b-tabs>
@@ -21,18 +21,47 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
 import _ from 'lodash';
+import {ref} from "vue";
 
 export default {
     name: 'AdminPermissionsEditModal',
     components: {AdminPermissionsStationForm, AdminPermissionsGlobalForm},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     mixins: [BaseEditModal],
     props: {
         stations: Object,
         globalPermissions: Object,
         stationPermissions: Object
+    },
+    setup() {
+        const blankForm = {
+            'name': '',
+            'permissions': {
+                'global': [],
+                'station': [],
+            }
+        };
+
+        const form = ref({...blankForm});
+
+        const validations = {
+            'name': {required},
+            'permissions': {
+                'global': {},
+                'station': {},
+            }
+        };
+
+        const resetForm = () => {
+            form.value = {...blankForm};
+        }
+
+        const v$ = useVuelidate(validations, form);
+
+        return {
+            form,
+            resetForm,
+            v$
+        }
     },
     computed: {
         langTitle() {
@@ -41,28 +70,8 @@ export default {
                 : this.$gettext('Add Role');
         }
     },
-    validations() {
-        return {
-            form: {
-                'name': {required},
-                'permissions': {
-                    'global': {},
-                    'station': {},
-                }
-            }
-        };
-    },
     methods: {
-        resetForm() {
-            this.form = {
-                'name': '',
-                'permissions': {
-                    'global': [],
-                    'station': [],
-                }
-            };
-        },
-        populateForm (data) {
+        populateForm(data) {
             this.form.name = data.name;
             this.form.permissions.global = data.permissions.global;
             this.form.permissions.station = _.map(data.permissions.station, (permissions, stationId) => {

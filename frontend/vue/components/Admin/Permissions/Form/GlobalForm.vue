@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Global Permissions')" active>
         <b-form-group>
             <div class="form-row">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
@@ -29,29 +29,22 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import _ from 'lodash';
+import {computed} from "vue";
 
-export default {
-    name: 'AdminPermissionsGlobalForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        globalPermissions: Object
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Global Permissions');
-        },
-        globalPermissionOptions() {
-            return _.map(this.globalPermissions, (permissionName, permissionKey) => {
-                return {
-                    text: permissionName,
-                    value: permissionKey
-                };
-            });
-        },
-    }
-};
+const props = defineProps({
+    form: Object,
+    globalPermissions: Object
+});
+
+const globalPermissionOptions = computed(() => {
+    return _.map(props.globalPermissions, (permissionName, permissionKey) => {
+        return {
+            text: permissionName,
+            value: permissionKey
+        };
+    });
+});
 </script>

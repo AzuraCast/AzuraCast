@@ -20,70 +20,86 @@
     </b-modal>
 </template>
 
-<script>
-import ModalForm from "~/components/Common/ModalForm";
+<script setup>
 import AdminStationsForm, {StationFormProps} from "~/components/Admin/Stations/StationForm";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
+import {computed, ref} from "vue";
+import gettext from "~/vendor/gettext";
 
+const props = defineProps({
+    ...StationFormProps.props,
+    createUrl: String
+});
+
+const emit = defineEmits(['relist']);
+
+const editUrl = ref(null);
+const loading = ref(true);
+const disableSaveButton = ref(true);
+
+const isEditMode = computed(() => {
+    return editUrl.value !== null;
+});
+
+const {$gettext} = gettext;
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Station')
+        : $gettext('Add Station');
+});
+
+const modal = ref(); // BVModal
+
+const onValidUpdate = (newValue) => {
+    disableSaveButton.value = !newValue;
+};
+
+const onLoadingUpdate = (newValue) => {
+    loading.value = newValue;
+};
+
+const create = () => {
+    editUrl.value = null;
+    modal.value.show();
+};
+
+const edit = (recordUrl) => {
+    editUrl.value = recordUrl;
+    modal.value.show();
+};
+
+const form = ref(); // Template Ref
+
+const resetForm = () => {
+    form.value.reset();
+};
+
+const close = () => {
+    modal.value.hide();
+};
+
+const onSubmit = () => {
+    emit('relist');
+    close();
+};
+
+const doSubmit = () => {
+    form.value.submit();
+};
+
+const clearContents = () => {
+    editUrl.value = null;
+};
+
+defineExpose({
+    create,
+    edit
+});
+</script>
+
+<script>
 export default {
-    name: 'AdminStationsEditModal',
     inheritAttrs: false,
-    components: {InvisibleSubmitButton, AdminStationsForm, ModalForm},
-    emits: ['relist'],
-    props: {
-        createUrl: String
-    },
-    mixins: [
-        StationFormProps
-    ],
-    data() {
-        return {
-            editUrl: null,
-            loading: true,
-            disableSaveButton: true,
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Station')
-                : this.$gettext('Add Station');
-        },
-        isEditMode() {
-            return this.editUrl !== null;
-        }
-    },
-    methods: {
-        onValidUpdate(newValue) {
-            this.disableSaveButton = !newValue;
-        },
-        onLoadingUpdate(newValue) {
-            this.loading = newValue;
-        },
-        create() {
-            this.editUrl = null;
-            this.$refs.modal.show();
-        },
-        edit(recordUrl) {
-            this.editUrl = recordUrl;
-            this.$refs.modal.show();
-        },
-        resetForm() {
-            this.$refs.form.reset();
-        },
-        onSubmit() {
-            this.$emit('relist');
-            this.close();
-        },
-        doSubmit() {
-            this.$refs.form.submit();
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        clearContents() {
-            this.editUrl = null;
-        },
-    }
 };
 </script>

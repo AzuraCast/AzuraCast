@@ -134,61 +134,58 @@
     <backend-disabled v-else></backend-disabled>
 </template>
 
-<script>
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {BACKEND_NONE} from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import BFormMarkup from "~/components/Form/BFormMarkup";
 import BackendDisabled from "./Common/BackendDisabled.vue";
+import {computed} from "vue";
 
-export default {
-    name: 'AdminStationsStreamersForm',
-    components: {BackendDisabled, BFormMarkup, BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        station: Object,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: Object,
+    station: Object,
+    showAdvanced: {
+        type: Boolean,
+        default: true
     },
-    computed: {
-        isBackendEnabled() {
-            return this.form.backend_type.$model !== BACKEND_NONE;
+});
+
+const isBackendEnabled = computed(() => {
+    return props.form.backend_type.$model !== BACKEND_NONE;
+});
+
+const recordStreamsOptions = computed(() => {
+    return [
+        {
+            text: 'MP3',
+            value: 'mp3',
         },
-        recordStreamsOptions() {
-            return [
-                {
-                    text: 'MP3',
-                    value: 'mp3',
-                },
-                {
-                    text: 'OGG Vorbis',
-                    value: 'ogg',
-                },
-                {
-                    text: 'OGG Opus',
-                    value: 'opus',
-                },
-                {
-                    text: 'AAC+ (MPEG4 HE-AAC v2)',
-                    value: 'aac'
-                }
-            ];
+        {
+            text: 'OGG Vorbis',
+            value: 'ogg',
         },
-        recordBitrateOptions() {
-            return [
-                {text: '32', value: 32},
-                {text: '48', value: 48},
-                {text: '64', value: 64},
-                {text: '96', value: 96},
-                {text: '128', value: 128},
-                {text: '192', value: 192},
-                {text: '256', value: 256},
-                {text: '320', value: 320}
-            ];
+        {
+            text: 'OGG Opus',
+            value: 'opus',
         },
-    }
-}
+        {
+            text: 'AAC+ (MPEG4 HE-AAC v2)',
+            value: 'aac'
+        }
+    ];
+});
+
+const recordBitrateOptions = computed(() => {
+    return [
+        {text: '32', value: 32},
+        {text: '48', value: 48},
+        {text: '64', value: 64},
+        {text: '96', value: 96},
+        {text: '128', value: 128},
+        {text: '192', value: 192},
+        {text: '256', value: 256},
+        {text: '320', value: 320}
+    ];
+});
 </script>

@@ -29,56 +29,55 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {computed} from "vue";
+import gettext from "~/vendor/gettext";
 
-export default {
-    name: 'AdminStationsCloneModalForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object
-    },
-    computed: {
-        cloneOptions() {
-            return [
-                {
-                    text: this.$gettext('Share Media Storage Location'),
-                    value: 'media_storage'
-                },
-                {
-                    text: this.$gettext('Share Recordings Storage Location'),
-                    value: 'recordings_storage'
-                },
-                {
-                    text: this.$gettext('Share Podcasts Storage Location'),
-                    value: 'podcasts_storage'
-                },
-                {
-                    text: this.$gettext('Playlists'),
-                    value: 'playlists',
-                },
-                {
-                    text: this.$gettext('Mount Points'),
-                    value: 'mounts'
-                },
-                {
-                    text: this.$gettext('Remote Relays'),
-                    value: 'remotes'
-                },
-                {
-                    text: this.$gettext('Streamers/DJs'),
-                    value: 'streamers'
-                },
-                {
-                    text: this.$gettext('User Permissions'),
-                    value: 'permissions'
-                },
-                {
-                    text: this.$gettext('Web Hooks'),
-                    value: 'webhooks'
-                }
-            ];
+const props = defineProps({
+    form: Object
+});
+
+const {$gettext} = gettext;
+
+const cloneOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Share Media Storage Location'),
+            value: 'media_storage'
+        },
+        {
+            text: $gettext('Share Recordings Storage Location'),
+            value: 'recordings_storage'
+        },
+        {
+            text: $gettext('Share Podcasts Storage Location'),
+            value: 'podcasts_storage'
+        },
+        {
+            text: $gettext('Playlists'),
+            value: 'playlists',
+        },
+        {
+            text: $gettext('Mount Points'),
+            value: 'mounts'
+        },
+        {
+            text: $gettext('Remote Relays'),
+            value: 'remotes'
+        },
+        {
+            text: $gettext('Streamers/DJs'),
+            value: 'streamers'
+        },
+        {
+            text: $gettext('User Permissions'),
+            value: 'permissions'
+        },
+        {
+            text: $gettext('Web Hooks'),
+            value: 'webhooks'
         }
-    }
-}
+    ];
+});
 </script>

@@ -74,29 +74,24 @@
     <backend-disabled v-else></backend-disabled>
 </template>
 
-<script>
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {BACKEND_NONE} from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import BFormMarkup from "~/components/Form/BFormMarkup";
 import BackendDisabled from "./Common/BackendDisabled.vue";
+import {computed} from "vue";
 
-export default {
-    name: 'AdminStationsHlsForm',
-    components: {BackendDisabled, BFormMarkup, BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        station: Object,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: Object,
+    station: Object,
+    showAdvanced: {
+        type: Boolean,
+        default: true
     },
-    computed: {
-        isBackendEnabled() {
-            return this.form.backend_type.$model !== BACKEND_NONE;
-        },
-    }
-}
+});
+
+const isBackendEnabled = computed(() => {
+    return props.form.backend_type.$model !== BACKEND_NONE;
+});
 </script>

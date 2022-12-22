@@ -66,66 +66,62 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import BFormFieldset from "~/components/Form/BFormFieldset";
+import {onMounted, reactive, ref} from "vue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminStationsAdminForm',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        isEditMode: Boolean,
-        storageLocationApiUrl: String,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: Object,
+    isEditMode: Boolean,
+    storageLocationApiUrl: String,
+    showAdvanced: {
+        type: Boolean,
+        default: true
     },
-    data() {
-        return {
-            storageLocationsLoading: true,
-            storageLocationOptions: {
-                media_storage_location: [],
-                recordings_storage_location: [],
-                podcasts_storage_location: []
-            }
-        }
-    },
-    mounted() {
-        this.loadLocations();
-    },
-    methods: {
-        loadLocations() {
-            this.axios.get(this.storageLocationApiUrl).then((resp) => {
-                this.storageLocationOptions.media_storage_location = objectToFormOptions(
-                    this.filterLocations(resp.data.media_storage_location)
-                );
-                this.storageLocationOptions.recordings_storage_location = objectToFormOptions(
-                    this.filterLocations(resp.data.recordings_storage_location)
-                );
-                this.storageLocationOptions.podcasts_storage_location = objectToFormOptions(
-                    this.filterLocations(resp.data.podcasts_storage_location)
-                );
-            }).finally(() => {
-                this.storageLocationsLoading = false;
-            });
-        },
-        filterLocations(group) {
-            if (!this.isEditMode) {
-                return group;
-            }
+});
 
-            let newGroup = {};
-            for (const oldKey in group) {
-                if (oldKey !== "") {
-                    newGroup[oldKey] = group[oldKey];
-                }
-            }
-            return newGroup;
+const storageLocationsLoading = ref(true);
+const storageLocationOptions = reactive({
+    media_storage_location: [],
+    recordings_storage_location: [],
+    podcasts_storage_location: []
+});
+
+const filterLocations = (group) => {
+    if (!props.isEditMode) {
+        return group;
+    }
+
+    let newGroup = {};
+    for (const oldKey in group) {
+        if (oldKey !== "") {
+            newGroup[oldKey] = group[oldKey];
         }
     }
+    return newGroup;
 }
+
+const {axios} = useAxios();
+
+const loadLocations = () => {
+    axios.get(props.storageLocationApiUrl).then((resp) => {
+        storageLocationOptions.media_storage_location = objectToFormOptions(
+            filterLocations(resp.data.media_storage_location)
+        );
+        storageLocationOptions.recordings_storage_location = objectToFormOptions(
+            filterLocations(resp.data.recordings_storage_location)
+        );
+        storageLocationOptions.podcasts_storage_location = objectToFormOptions(
+            filterLocations(resp.data.podcasts_storage_location)
+        );
+    }).finally(() => {
+        storageLocationsLoading.value = false;
+    });
+};
+
+onMounted(loadLocations);
 </script>

@@ -222,7 +222,7 @@
     </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {
@@ -234,106 +234,111 @@ import {
 } from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import BFormMarkup from "~/components/Form/BFormMarkup";
+import {computed} from "vue";
+import gettext from "~/vendor/gettext";
 
-export default {
-    name: 'AdminStationsBackendForm',
-    components: {BFormMarkup, BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        station: Object,
-        isStereoToolInstalled: {
-            type: Boolean,
-            default: true
-        },
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: Object,
+    station: Object,
+    isStereoToolInstalled: {
+        type: Boolean,
+        default: true
     },
-    computed: {
-        backendTypeOptions() {
-            return [
-                {
-                    text: this.$gettext('Use Liquidsoap on this server.'),
-                    value: BACKEND_LIQUIDSOAP
-                },
-                {
-                    text: this.$gettext('Do not use an AutoDJ service.'),
-                    value: BACKEND_NONE
-                }
-            ];
-        },
-        isBackendEnabled() {
-            return this.form.backend_type.$model !== BACKEND_NONE;
-        },
-        isStereoToolEnabled() {
-            return this.form.backend_config.audio_processing_method.$model === AUDIO_PROCESSING_STEREO_TOOL;
-        },
-        crossfadeOptions() {
-            return [
-                {
-                    text: this.$gettext('Smart Mode'),
-                    value: 'smart',
-                },
-                {
-                    text: this.$gettext('Normal Mode'),
-                    value: 'normal',
-                },
-                {
-                    text: this.$gettext('Disable Crossfading'),
-                    value: 'none',
-                }
-            ];
-        },
-        audioProcessingOptions() {
-            const audioProcessingOptions = [
-                {
-                    text: this.$gettext('Liquidsoap'),
-                    value: AUDIO_PROCESSING_LIQUIDSOAP,
-                },
-                {
-                    text: this.$gettext('Disable Processing'),
-                    value: AUDIO_PROCESSING_NONE,
-                }
-            ];
+    showAdvanced: {
+        type: Boolean,
+        default: true
+    },
+});
 
-            if (this.isStereoToolInstalled) {
-                audioProcessingOptions.splice(1, 0,
-                    {
-                        text: this.$gettext('Stereo Tool'),
-                        value: AUDIO_PROCESSING_STEREO_TOOL,
-                    }
-                )
-            }
+const isBackendEnabled = computed(() => {
+    return props.form.backend_type.$model !== BACKEND_NONE;
+});
 
-            return audioProcessingOptions;
+const isStereoToolEnabled = computed(() => {
+    return props.form.backend_config.audio_processing_method.$model === AUDIO_PROCESSING_STEREO_TOOL;
+});
+
+const {$gettext} = gettext;
+
+const backendTypeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Use Liquidsoap on this server.'),
+            value: BACKEND_LIQUIDSOAP
         },
-        charsetOptions() {
-            return [
-                {text: 'UTF-8', value: 'UTF-8'},
-                {text: 'ISO-8859-1', value: 'ISO-8859-1'}
-            ];
-        },
-        performanceModeOptions() {
-            return [
-                {
-                    text: this.$gettext('Use Less Memory (Uses More CPU)'),
-                    value: 'less_memory'
-                },
-                {
-                    text: this.$gettext('Balanced'),
-                    value: 'balanced'
-                },
-                {
-                    text: this.$gettext('Use Less CPU (Uses More Memory)'),
-                    value: 'less_cpu'
-                },
-                {
-                    text: this.$gettext('Disable Optimizations'),
-                    value: 'disabled'
-                }
-            ];
+        {
+            text: $gettext('Do not use an AutoDJ service.'),
+            value: BACKEND_NONE
         }
+    ];
+});
+
+const crossfadeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Smart Mode'),
+            value: 'smart',
+        },
+        {
+            text: $gettext('Normal Mode'),
+            value: 'normal',
+        },
+        {
+            text: $gettext('Disable Crossfading'),
+            value: 'none',
+        }
+    ];
+});
+
+const audioProcessingOptions = computed(() => {
+    const audioProcessingOptions = [
+        {
+            text: $gettext('Liquidsoap'),
+            value: AUDIO_PROCESSING_LIQUIDSOAP,
+        },
+        {
+            text: $gettext('Disable Processing'),
+            value: AUDIO_PROCESSING_NONE,
+        }
+    ];
+
+    if (props.isStereoToolInstalled) {
+        audioProcessingOptions.splice(1, 0,
+            {
+                text: $gettext('Stereo Tool'),
+                value: AUDIO_PROCESSING_STEREO_TOOL,
+            }
+        )
     }
-}
+
+    return audioProcessingOptions;
+});
+
+const charsetOptions = computed(() => {
+    return [
+        {text: 'UTF-8', value: 'UTF-8'},
+        {text: 'ISO-8859-1', value: 'ISO-8859-1'}
+    ];
+});
+
+const performanceModeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Use Less Memory (Uses More CPU)'),
+            value: 'less_memory'
+        },
+        {
+            text: $gettext('Balanced'),
+            value: 'balanced'
+        },
+        {
+            text: $gettext('Use Less CPU (Uses More Memory)'),
+            value: 'less_cpu'
+        },
+        {
+            text: $gettext('Disable Optimizations'),
+            value: 'disabled'
+        }
+    ];
+});
 </script>

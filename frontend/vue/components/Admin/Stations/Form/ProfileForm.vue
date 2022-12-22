@@ -140,39 +140,39 @@
     </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {computed} from "vue";
+import gettext from "~/vendor/gettext";
 
-export default {
-    name: 'AdminStationsProfileForm',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        timezones: Object,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: Object,
+    timezones: Object,
+    showAdvanced: {
+        type: Boolean,
+        default: true
     },
-    computed: {
-        timezoneOptions() {
-            return objectToFormOptions(this.timezones);
+});
+
+const timezoneOptions = computed(() => {
+    return objectToFormOptions(props.timezones);
+});
+
+const {$gettext} = gettext;
+
+const historyItemsOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Disabled'),
+            value: 0,
         },
-        historyItemsOptions() {
-            return [
-                {
-                    text: this.$gettext('Disabled'),
-                    value: 0,
-                },
-                {text: '1', value: 1},
-                {text: '5', value: 5},
-                {text: '10', value: 10},
-                {text: '15', value: 15}
-            ];
-        }
-    }
-}
+        {text: '1', value: 1},
+        {text: '5', value: 5},
+        {text: '10', value: 10},
+        {text: '15', value: 15}
+    ];
+});
 </script>

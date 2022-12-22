@@ -171,64 +171,65 @@
     </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import {computed} from "vue";
+import gettext from "~/vendor/gettext";
 
-export default {
-    name: 'AdminStationsFrontendForm',
-    components: {BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        isShoutcastInstalled: {
-            type: Boolean,
-            default: false
-        },
-        countries: Object,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: Object,
+    isShoutcastInstalled: {
+        type: Boolean,
+        default: false
     },
-    computed: {
-        frontendTypeOptions() {
-            let frontendOptions = [
-                {
-                    text: this.$gettext('Use Icecast 2.4 on this server.'),
-                    value: FRONTEND_ICECAST
-                },
-            ];
-
-            if (this.isShoutcastInstalled) {
-                frontendOptions.push({
-                    text: this.$gettext('Use Shoutcast DNAS 2 on this server.'),
-                    value: FRONTEND_SHOUTCAST
-                });
-            }
-
-            frontendOptions.push({
-                text: this.$gettext('Only connect to a remote server.'),
-                value: FRONTEND_REMOTE
-            });
-
-            return frontendOptions;
-        },
-        countryOptions() {
-            return objectToFormOptions(this.countries);
-        },
-        isLocalFrontend() {
-            return this.form.frontend_type.$model !== FRONTEND_REMOTE;
-        },
-        isShoutcastFrontend() {
-            return this.form.frontend_type.$model === FRONTEND_SHOUTCAST;
-        }
+    countries: Object,
+    showAdvanced: {
+        type: Boolean,
+        default: true
     },
-    methods: {
-        clearCountries() {
-            this.form.frontend_config.banned_countries.$model = [];
-        }
+});
+
+const {$gettext} = gettext;
+
+const frontendTypeOptions = computed(() => {
+    let frontendOptions = [
+        {
+            text: $gettext('Use Icecast 2.4 on this server.'),
+            value: FRONTEND_ICECAST
+        },
+    ];
+
+    if (props.isShoutcastInstalled) {
+        frontendOptions.push({
+            text: $gettext('Use Shoutcast DNAS 2 on this server.'),
+            value: FRONTEND_SHOUTCAST
+        });
     }
+
+    frontendOptions.push({
+        text: $gettext('Only connect to a remote server.'),
+        value: FRONTEND_REMOTE
+    });
+
+    return frontendOptions;
+});
+
+const countryOptions = computed(() => {
+    return objectToFormOptions(props.countries);
+});
+
+const isLocalFrontend = computed(() => {
+    return props.form.frontend_type.$model !== FRONTEND_REMOTE;
+});
+
+const isShoutcastFrontend = computed(() => {
+    return props.form.frontend_type.$model === FRONTEND_SHOUTCAST;
+});
+
+const clearCountries = () => {
+    props.form.frontend_config.banned_countries.$model = [];
 }
 </script>

@@ -2,12 +2,12 @@ import {BootstrapVue} from 'bootstrap-vue';
 
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import gettext from "~/vendor/gettext";
-import {useEventBus} from "@vueuse/core";
+import {useNotifyBus} from "~/vendor/events";
 
 /* Composition API BootstrapVue utilities */
 export function useNotify() {
     const {$gettext} = gettext;
-    const notifyBus = useEventBus('notify');
+    const notifyBus = useNotifyBus();
 
     const notify = (message = null, options = {}) => {
         if (!!document.hidden) {

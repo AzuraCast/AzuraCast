@@ -2,6 +2,8 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import {inject} from "vue";
 import useAzuraCast from "~/vendor/azuracast";
+import gettext from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
 
 /* Composition API Axios utilities */
 export function useAxios() {
@@ -18,7 +20,42 @@ export default function installAxios(vueApp) {
         axios.defaults.headers.common['X-API-CSRF'] = apiCsrf;
     }
 
+    // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
+    const handleAxiosError = (error) => {
+        const {$gettext} = gettext;
+
+        let notifyMessage = $gettext('An error occurred and your request could not be completed.');
+        if (error.response) {
+            // Request made and server responded
+            notifyMessage = error.response.data.message;
+            console.error(notifyMessage);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error(error.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error', error.message);
+        }
+
+        const {notifyError} = useNotify();
+        notifyError(notifyMessage);
+    };
+
+    axios.interceptors.request.use((config) => {
+        return config;
+    }, (error) => {
+        handleAxiosError(error);
+        return Promise.reject(error);
+    });
+
+    axios.interceptors.response.use((response) => {
+        return response;
+    }, (error) => {
+        handleAxiosError(error);
+        return Promise.reject(error);
+    });
+
     vueApp.use(VueAxios, axios);
-    
+
     vueApp.provide('axios', axios);
 }

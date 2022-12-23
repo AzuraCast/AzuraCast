@@ -98,10 +98,10 @@ import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
 import {decimal, numeric, required, url} from '@vuelidate/validators';
 import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
 import {computed, ref, watch} from "vue";
-import useVuelidate from "@vuelidate/core";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
     ...StationFormProps.props,
@@ -335,10 +335,7 @@ const buildForm = () => {
 };
 
 const {blankForm, validations} = buildForm();
-
-const form = ref({...blankForm});
-
-const v$ = useVuelidate(validations, form);
+const {form, resetForm, v$} = useVuelidateOnForm(validations, blankForm);
 
 const isValid = computed(() => {
     return !v$.value?.$invalid ?? true;
@@ -379,10 +376,10 @@ const getTabClass = (validationGroup) => {
 }
 
 const clear = () => {
+    resetForm();
     loading.value = false;
     error.value = null;
     station.value = {...blankStation};
-    form.value = {...blankForm};
 };
 
 const populateForm = (data) => {

@@ -9,38 +9,28 @@
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
 import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form";
-import {ref} from "vue";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 export default {
     name: 'AdminCustomFieldsEditModal',
     mixins: [BaseEditModal],
     components: {AdminCustomFieldsForm},
     setup() {
-        const blankForm = {
-            'name': '',
-            'short_name': '',
-            'auto_assign': ''
-        };
-
-        const form = ref({
-            ...blankForm
-        });
-
-        const resetForm = () => {
-            form.value = {...blankForm};
-        }
-
-        const validations = {
-            'name': {required},
-            'short_name': {},
-            'auto_assign': {}
-        };
-
-        const v$ = useVuelidate(validations, form);
+        const {form, resetForm, v$} = useVuelidateOnForm(
+            {
+                'name': {required},
+                'short_name': {},
+                'auto_assign': {}
+            },
+            {
+                'name': '',
+                'short_name': '',
+                'auto_assign': ''
+            }
+        );
 
         return {
             form,

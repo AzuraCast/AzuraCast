@@ -44,21 +44,24 @@
 <script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: Object,
     autoAssignTypes: Object
 });
 
+const {$gettext} = useTranslate();
+
 const autoAssignOptions = computed(() => {
     let autoAssignOptions = [
         {
-            text: this.$gettext('Disable'),
+            text: $gettext('Disable'),
             value: '',
         }
     ];
 
-    _.forEach(this.autoAssignTypes, (typeName, typeKey) => {
+    _.forEach(props.autoAssignTypes, (typeName, typeKey) => {
         autoAssignOptions.push({
             text: typeName,
             value: typeKey

@@ -80,7 +80,6 @@
 </template>
 
 <script setup>
-import useVuelidate from "@vuelidate/core";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
@@ -90,6 +89,7 @@ import StreamingLogView from "~/components/Common/StreamingLogView";
 import {computed, ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
     runBackupUrl: String,
@@ -106,21 +106,18 @@ const logUrl = ref(null);
 const error = ref(null);
 const modal = ref(); // BModal
 
-const blankForm = {
-    storage_location: null,
-    path: '',
-    exclude_media: false,
-};
-
-const form = ref({...blankForm});
-
-const validations = {
-    'storage_location': {},
-    'path': {},
-    'exclude_media': {}
-};
-
-const v$ = useVuelidate(validations, form);
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        'storage_location': {},
+        'path': {},
+        'exclude_media': {}
+    },
+    {
+        storage_location: null,
+        path: '',
+        exclude_media: false,
+    }
+);
 
 const open = () => {
     modal.value.show();
@@ -158,7 +155,7 @@ const clearContents = () => {
     logUrl.value = null;
     error.value = null;
 
-    form.value = {...blankForm};
+    resetForm();
 }
 
 defineExpose({

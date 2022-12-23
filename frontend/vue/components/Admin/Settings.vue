@@ -63,11 +63,11 @@ import SettingsGeneralTab from "./Settings/GeneralTab";
 import SettingsServicesTab from "./Settings/ServicesTab";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab";
 import {onMounted, ref} from "vue";
-import useVuelidate from "@vuelidate/core";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useTranslate} from "~/vendor/gettext";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
     apiUrl: String,
@@ -82,88 +82,85 @@ const props = defineProps({
 
 const emits = defineEmits(['saved']);
 
-const blankForm = {
-    base_url: '',
-    instance_name: '',
-    prefer_browser_url: true,
-    use_radio_proxy: true,
-    history_keep_days: 7,
-    enable_static_nowplaying: true,
-    enable_advanced_features: true,
-    analytics: null,
-    always_use_ssl: false,
-    api_access_control: '*',
-    check_for_updates: 1,
-    acme_email: '',
-    acme_domains: '',
-    mail_enabled: false,
-    mail_sender_name: '',
-    mail_sender_email: '',
-    mail_smtp_host: '',
-    mail_smtp_port: '',
-    mail_smtp_secure: '',
-    mail_smtp_username: '',
-    mail_smtp_password: '',
-    avatar_service: 'gravatar',
-    avatar_default_url: '',
-    use_external_album_art_in_apis: false,
-    use_external_album_art_when_processing_media: false,
-    last_fm_api_key: ''
-};
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        base_url: {required},
+        instance_name: {},
+        prefer_browser_url: {},
+        use_radio_proxy: {},
+        history_keep_days: {required},
+        enable_static_nowplaying: {},
+        enable_advanced_features: {},
 
-const form = ref({...blankForm});
+        analytics: {required},
 
-const validations = {
-    base_url: {required},
-    instance_name: {},
-    prefer_browser_url: {},
-    use_radio_proxy: {},
-    history_keep_days: {required},
-    enable_static_nowplaying: {},
-    enable_advanced_features: {},
+        always_use_ssl: {},
+        api_access_control: {},
 
-    analytics: {required},
-
-    always_use_ssl: {},
-    api_access_control: {},
-
-    check_for_updates: {},
-    acme_email: {},
-    acme_domains: {},
-    mail_enabled: {},
-    mail_sender_name: {},
-    mail_sender_email: {},
-    mail_smtp_host: {},
-    mail_smtp_port: {},
-    mail_smtp_secure: {},
-    mail_smtp_username: {},
-    mail_smtp_password: {},
-    avatar_service: {},
-    avatar_default_url: {},
-    use_external_album_art_in_apis: {},
-    use_external_album_art_when_processing_media: {},
-    last_fm_api_key: {},
-    $validationGroups: {
-        generalTab: [
-            'base_url', 'instance_name', 'prefer_browser_url', 'use_radio_proxy',
-            'history_keep_days', 'enable_static_nowplaying', 'enable_advanced_features'
-        ],
-        securityPrivacyTab: [
-            'analytics', 'always_use_ssl', 'api_access_control'
-        ],
-        servicesTab: [
-            'check_for_updates',
-            'acme_email', 'acme_domains',
-            'mail_enabled', 'mail_sender_name', 'mail_sender_email',
-            'mail_smtp_host', 'mail_smtp_port', 'mail_smtp_secure', 'mail_smtp_username',
-            'mail_smtp_password', 'avatar_service', 'avatar_default_url',
-            'use_external_album_art_in_apis', 'use_external_album_art_when_processing_media',
-            'last_fm_api_key',
-        ]
+        check_for_updates: {},
+        acme_email: {},
+        acme_domains: {},
+        mail_enabled: {},
+        mail_sender_name: {},
+        mail_sender_email: {},
+        mail_smtp_host: {},
+        mail_smtp_port: {},
+        mail_smtp_secure: {},
+        mail_smtp_username: {},
+        mail_smtp_password: {},
+        avatar_service: {},
+        avatar_default_url: {},
+        use_external_album_art_in_apis: {},
+        use_external_album_art_when_processing_media: {},
+        last_fm_api_key: {},
+        $validationGroups: {
+            generalTab: [
+                'base_url', 'instance_name', 'prefer_browser_url', 'use_radio_proxy',
+                'history_keep_days', 'enable_static_nowplaying', 'enable_advanced_features'
+            ],
+            securityPrivacyTab: [
+                'analytics', 'always_use_ssl', 'api_access_control'
+            ],
+            servicesTab: [
+                'check_for_updates',
+                'acme_email', 'acme_domains',
+                'mail_enabled', 'mail_sender_name', 'mail_sender_email',
+                'mail_smtp_host', 'mail_smtp_port', 'mail_smtp_secure', 'mail_smtp_username',
+                'mail_smtp_password', 'avatar_service', 'avatar_default_url',
+                'use_external_album_art_in_apis', 'use_external_album_art_when_processing_media',
+                'last_fm_api_key',
+            ]
+        }
+    },
+    {
+        base_url: '',
+        instance_name: '',
+        prefer_browser_url: true,
+        use_radio_proxy: true,
+        history_keep_days: 7,
+        enable_static_nowplaying: true,
+        enable_advanced_features: true,
+        analytics: null,
+        always_use_ssl: false,
+        api_access_control: '*',
+        check_for_updates: 1,
+        acme_email: '',
+        acme_domains: '',
+        mail_enabled: false,
+        mail_sender_name: '',
+        mail_sender_email: '',
+        mail_smtp_host: '',
+        mail_smtp_port: '',
+        mail_smtp_secure: '',
+        mail_smtp_username: '',
+        mail_smtp_password: '',
+        avatar_service: 'gravatar',
+        avatar_default_url: '',
+        use_external_album_art_in_apis: false,
+        use_external_album_art_when_processing_media: false,
+        last_fm_api_key: ''
     }
-};
-
-const v$ = useVuelidate(validations, form);
+);
 
 const loading = ref(true);
 const error = ref(null);

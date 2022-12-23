@@ -13,6 +13,7 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import StorageLocationForm from './Form';
 import useVuelidate from "@vuelidate/core";
 import {computed} from "vue";
+import {useResettableForm} from "~/components/Form/UseResettableForm";
 
 export default {
     name: 'AdminStorageLocationsEditModal',
@@ -41,11 +42,7 @@ export default {
             'storageQuota': ''
         }
 
-        const form = {...blankForm};
-
-        const resetForm = () => {
-            form.value = {...blankForm};
-        };
+        const {form, resetForm} = useResettableForm(blankForm);
 
         const validations = computed(() => {
             let validationRules = {

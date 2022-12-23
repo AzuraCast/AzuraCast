@@ -15,13 +15,11 @@
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
 import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
 import _ from 'lodash';
-import {ref} from "vue";
 
 export default {
     name: 'AdminPermissionsEditModal',
@@ -33,29 +31,22 @@ export default {
         stationPermissions: Object
     },
     setup() {
-        const blankForm = {
-            'name': '',
-            'permissions': {
-                'global': [],
-                'station': [],
+        const {form, resetForm, v$} = useVuelidateOnForm(
+            {
+                'name': {required},
+                'permissions': {
+                    'global': {},
+                    'station': {},
+                }
+            },
+            {
+                'name': '',
+                'permissions': {
+                    'global': [],
+                    'station': [],
+                }
             }
-        };
-
-        const form = ref({...blankForm});
-
-        const validations = {
-            'name': {required},
-            'permissions': {
-                'global': {},
-                'station': {},
-            }
-        };
-
-        const resetForm = () => {
-            form.value = {...blankForm};
-        }
-
-        const v$ = useVuelidate(validations, form);
+        );
 
         return {
             form,

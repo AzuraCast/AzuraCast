@@ -86,22 +86,40 @@
     </div>
 </template>
 
-<script>
-import useVuelidate from "@vuelidate/core";
-import BFormFieldset from "~/components/Form/BFormFieldset";
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import '~/vendor/sweetalert.js';
 import InfoCard from "~/components/Common/InfoCard";
+import {ref} from "vue";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+
+const props = defineProps({
+    apiUrl: String
+});
+
+const loading = ref(true);
+const version = ref(null);
+
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        key: {}
+    },
+    {
+        key: null
+    }
+);
+
+
+</script>
+
+<script>
+
 
 export default {
-    name: 'GeoLite',
-    components: {InfoCard, BWrappedFormGroup, BFormFieldset},
     setup() {
         return {v$: useVuelidate()}
     },
-    props: {
-        apiUrl: String
-    },
+    props: {},
     data() {
         return {
             loading: true,
@@ -109,9 +127,7 @@ export default {
             version: null
         };
     },
-    validations: {
-        key: {}
-    },
+    validations: {},
     computed: {
         langInstalledVersion() {
             const text = this.$gettext('GeoLite version "%{ version }" is currently installed.');

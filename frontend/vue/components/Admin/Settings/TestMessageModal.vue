@@ -19,33 +19,26 @@
 </template>
 
 <script setup>
-import useVuelidate from "@vuelidate/core";
 import {email, required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
     testMessageUrl: String
 });
 
-const blankForm = {
-    emailAddress: null
-};
-
-const form = ref({...blankForm});
-
-const validations = {
-    emailAddress: {required, email}
-};
-
-const v$ = useVuelidate(validations, form, {$stopPropagation: true});
-
-const resetForm = () => {
-    form.value = {...blankForm};
-};
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        emailAddress: {required, email}
+    },
+    {
+        emailAddress: null
+    }
+);
 
 const modal = ref(); // BModal
 

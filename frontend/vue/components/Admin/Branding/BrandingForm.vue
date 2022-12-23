@@ -140,7 +140,6 @@
 </template>
 
 <script setup>
-import useVuelidate from "@vuelidate/core";
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
@@ -149,6 +148,7 @@ import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useTranslate} from "~/vendor/gettext";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
     apiUrl: String,
@@ -157,31 +157,28 @@ const props = defineProps({
 const loading = ref(true);
 const error = ref(null);
 
-const blankForm = {
-    'public_theme': '',
-    'hide_album_art': false,
-    'homepage_redirect_url': '',
-    'default_album_art_url': '',
-    'hide_product_name': false,
-    'public_custom_css': '',
-    'public_custom_js': '',
-    'internal_custom_css': ''
-};
-
-const form = ref({...blankForm});
-
-const validations = {
-    'public_theme': {},
-    'hide_album_art': {},
-    'homepage_redirect_url': {},
-    'default_album_art_url': {},
-    'hide_product_name': {},
-    'public_custom_css': {},
-    'public_custom_js': {},
-    'internal_custom_css': {}
-};
-
-const v$ = useVuelidate(validations, form);
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        'public_theme': {},
+        'hide_album_art': {},
+        'homepage_redirect_url': {},
+        'default_album_art_url': {},
+        'hide_product_name': {},
+        'public_custom_css': {},
+        'public_custom_js': {},
+        'internal_custom_css': {}
+    },
+    {
+        'public_theme': '',
+        'hide_album_art': false,
+        'homepage_redirect_url': '',
+        'default_album_art_url': '',
+        'hide_product_name': false,
+        'public_custom_css': '',
+        'public_custom_js': '',
+        'internal_custom_css': ''
+    }
+);
 
 const {$gettext} = useTranslate();
 
@@ -209,8 +206,8 @@ const populateForm = (data) => {
 };
 
 const relist = () => {
-    v$.value.$reset();
-    form.value = {...blankForm};
+    resetForm();
+
     loading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {

@@ -13,11 +13,11 @@
             <div class="card-body">
                 <ul class="list-unstyled">
                     <custom-asset-form id="asset_background" class="mb-3" :api-url="backgroundApiUrl"
-                                       :caption="langBackground"></custom-asset-form>
+                                       :caption="$gettext('Public Page Background')"></custom-asset-form>
                     <custom-asset-form id="asset_album_art" class="mb-3" :api-url="albumArtApiUrl"
-                                       :caption="langAlbumArt"></custom-asset-form>
+                                       :caption="$gettext('Default Album Art')"></custom-asset-form>
                     <custom-asset-form id="asset_browser_icon" :api-url="browserIconApiUrl"
-                                       :caption="langBrowserIcon"></custom-asset-form>
+                                       :caption="$gettext('Browser Icon')"></custom-asset-form>
                 </ul>
             </div>
         </section>
@@ -26,29 +26,15 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import CustomAssetForm from "./Branding/CustomAssetForm";
 import BrandingForm from "./Branding/BrandingForm";
 
-export default {
-    name: 'Branding',
-    components: {BrandingForm, CustomAssetForm},
-    props: {
-        settingsApiUrl: String,
-        browserIconApiUrl: String,
-        backgroundApiUrl: String,
-        albumArtApiUrl: String
-    },
-    computed: {
-        langBrowserIcon() {
-            return this.$gettext('Browser Icon');
-        },
-        langBackground() {
-            return this.$gettext('Public Page Background');
-        },
-        langAlbumArt() {
-            return this.$gettext('Default Album Art');
-        }
-    }
-};
+const props = defineProps({
+    settingsApiUrl: String,
+    browserIconApiUrl: String,
+    backgroundApiUrl: String,
+    albumArtApiUrl: String
+});
 </script>
+

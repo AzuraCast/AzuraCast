@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import useVuelidate from "@vuelidate/core";
 import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm";
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm";
@@ -17,6 +16,7 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const emit = defineEmits(['relist']);
 
@@ -24,25 +24,18 @@ const loading = ref(true);
 const cloneUrl = ref(null);
 const error = ref(null);
 
-const blankForm = {
-    name: '',
-    description: '',
-    clone: [],
-};
-
-const form = ref({...blankForm});
-
-const validations = {
-    name: {required},
-    description: {},
-    clone: {}
-};
-
-const v$ = useVuelidate(validations, form);
-
-const resetForm = () => {
-    form.value = {...blankForm};
-};
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        name: {required},
+        description: {},
+        clone: {}
+    },
+    {
+        name: '',
+        description: '',
+        clone: [],
+    }
+);
 
 const modal = ref(); // BVModal
 const {$gettext} = useTranslate();

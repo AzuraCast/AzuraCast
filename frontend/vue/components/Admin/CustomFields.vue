@@ -39,60 +39,71 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editModal" :create-url="listUrl" :auto-assign-types="autoAssignTypes"
+    <edit-modal ref="editmodal" :create-url="listUrl" :auto-assign-types="autoAssignTypes"
                 @relist="relist"></edit-modal>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './CustomFields/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import _ from 'lodash';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminCustomFields',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    props: {
-        listUrl: String,
-        autoAssignTypes: Object
-    },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Field Name'), sortable: false},
-                {key: 'auto_assign', label: this.$gettext('Auto-Assign Value'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        getAutoAssignName(autoAssign) {
-            return _.get(this.autoAssignTypes, autoAssign, this.$gettext('None'));
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Custom Field?')
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
+const props = defineProps({
+    listUrl: String,
+    autoAssignTypes: Object
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Field Name'), sortable: false},
+    {key: 'auto_assign', label: $gettext('Auto-Assign Value'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const getAutoAssignName = (autoAssign) => {
+    return _.get(props.autoAssignTypes, autoAssign, $gettext('None'));
+};
+
+const datatable = ref(); // Template Ref
+
+const relist = () => {
+    datatable.value.refresh();
+};
+
+const editmodal = ref(); // Template Ref
+
+const doCreate = () => {
+    editmodal.value.create();
+}
+
+const doEdit = (url) => {
+    editmodal.value.edit(url);
+}
+
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Custom Field?')
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
-    }
+    });
 };
 </script>

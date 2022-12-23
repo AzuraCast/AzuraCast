@@ -41,7 +41,7 @@ const validations = {
     emailAddress: {required, email}
 };
 
-const v$ = useVuelidate(validations, form);
+const v$ = useVuelidate(validations, form, {$stopPropagation: true});
 
 const resetForm = () => {
     form.value = {...blankForm};

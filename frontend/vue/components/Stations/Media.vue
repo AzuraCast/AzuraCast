@@ -164,7 +164,7 @@ import PlayButton from "~/components/Common/PlayButton";</script>
 import formatFileSize from '~/functions/formatFileSize.js';
 import _ from 'lodash';
 import {DateTime} from 'luxon';
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {
     props: {

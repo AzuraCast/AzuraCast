@@ -16,7 +16,7 @@
 <script setup>
 import {onMounted, provide, ref, shallowRef} from "vue";
 import L from "leaflet";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     attribution: String

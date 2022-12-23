@@ -1,7 +1,7 @@
 import axios from "axios";
 import VueAxios from "vue-axios";
 import {inject} from "vue";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 

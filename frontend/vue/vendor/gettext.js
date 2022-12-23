@@ -1,6 +1,6 @@
 import translations from "../../../translations/translations.json";
 import {createGettext} from "vue3-gettext";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const {locale} = useAzuraCast();
 

@@ -49,7 +49,7 @@ export default {
 import {DateTime} from "luxon";
 import _ from "lodash";
 import {computed} from "vue";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     scheduleItems: Array,

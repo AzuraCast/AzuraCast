@@ -116,7 +116,7 @@ import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {
     name: 'AdminBackups',

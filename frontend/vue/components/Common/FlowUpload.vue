@@ -73,7 +73,7 @@ import Icon from './Icon';
 import _ from 'lodash';
 import {computed, onMounted, onUnmounted, reactive, ref} from "vue";
 import Flow from "@flowjs/flow.js";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     targetUrl: String,

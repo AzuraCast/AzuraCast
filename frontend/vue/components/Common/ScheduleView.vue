@@ -9,7 +9,7 @@ import allLocales from '@fullcalendar/core/locales-all';
 import luxon2Plugin from '@fullcalendar/luxon2';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import {shallowRef} from "vue";
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     scheduleUrl: String,

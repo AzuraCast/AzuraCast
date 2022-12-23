@@ -1,5 +1,5 @@
 import {Settings} from 'luxon';
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const {localeWithDashes} = useAzuraCast();
 

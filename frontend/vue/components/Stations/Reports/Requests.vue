@@ -55,7 +55,7 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
-import useAzuraCast from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {
     name: 'StationRequests',

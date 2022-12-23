@@ -1,4 +1,4 @@
-export default function useAzuraCast() {
+export function useAzuraCast() {
     return {
         lang: {
             confirm: App.lang.confirm ?? 'Are you sure?',

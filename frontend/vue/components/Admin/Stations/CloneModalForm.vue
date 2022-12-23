@@ -32,13 +32,13 @@
 <script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {computed} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: Object
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const cloneOptions = computed(() => {
     return [

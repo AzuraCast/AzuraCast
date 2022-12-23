@@ -141,7 +141,7 @@ import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
 import Icon from '~/components/Common/Icon';
 import {computed, onMounted, ref} from "vue";
 import {useIntervalFn} from "@vueuse/core";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import formatTime from "~/functions/formatTime";
 
 const props = defineProps({
@@ -168,7 +168,7 @@ onMounted(() => {
     );
 });
 
-const {$ngettext} = gettext;
+const {$ngettext} = useTranslate();
 
 const langListeners = computed(() => {
     return $ngettext(

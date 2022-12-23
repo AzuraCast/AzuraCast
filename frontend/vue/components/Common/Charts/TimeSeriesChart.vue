@@ -11,7 +11,7 @@ import {DateTime} from "luxon";
 import _ from "lodash";
 import {Chart} from "chart.js";
 import {onMounted, onUnmounted, ref} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     options: Object,
@@ -21,7 +21,7 @@ const props = defineProps({
 const canvas = ref(); // Template ref
 let $chart = null;
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 onMounted(() => {
     const defaultOptions = {

@@ -67,7 +67,7 @@ import useVuelidate from "@vuelidate/core";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     apiUrl: String,
@@ -194,7 +194,7 @@ const relist = () => {
 onMounted(relist);
 
 const {wrapWithLoading, notifySuccess} = useNotify();
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const submit = () => {
     v$.value.$touch();

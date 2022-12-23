@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const swalCustom = Swal.mixin({
     confirmButtonText: $gettext('Confirm'),

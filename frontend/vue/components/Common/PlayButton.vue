@@ -9,7 +9,7 @@ import Icon from "./Icon";
 import {usePlayerStore} from "~/store";
 import {computed, toRef} from "vue";
 import {get} from "@vueuse/core";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
 
 const props = defineProps({
@@ -40,7 +40,7 @@ const isThisPlaying = computed(() => {
     return playingUrl === thisUrl;
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const langTitle = computed(() => {
     return get(isThisPlaying)

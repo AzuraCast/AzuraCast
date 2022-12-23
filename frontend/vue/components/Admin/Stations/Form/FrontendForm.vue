@@ -177,7 +177,7 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: Object,
@@ -192,7 +192,7 @@ const props = defineProps({
     },
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const frontendTypeOptions = computed(() => {
     let frontendOptions = [

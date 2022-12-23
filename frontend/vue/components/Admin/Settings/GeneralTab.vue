@@ -96,13 +96,13 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import {computed} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: Object
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const historyKeepDaysOptions = computed(() => {
     return [

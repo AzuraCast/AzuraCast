@@ -14,7 +14,7 @@ import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm";
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm";
 import {ref} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
@@ -45,7 +45,7 @@ const resetForm = () => {
 };
 
 const modal = ref(); // BVModal
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const create = (stationName, stationCloneUrl) => {
     resetForm();

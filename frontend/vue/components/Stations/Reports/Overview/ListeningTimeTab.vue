@@ -28,7 +28,7 @@
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {DateTime} from "luxon";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
@@ -48,7 +48,8 @@ const stats = shallowRef({
     }
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
+
 const fields = shallowRef([
     {key: 'label', label: $gettext('Listening Time'), sortable: false},
     {key: 'value', label: $gettext('Listeners'), sortable: false}

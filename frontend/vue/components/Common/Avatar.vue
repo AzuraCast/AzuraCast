@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 
 const props = defineProps({
@@ -19,7 +19,7 @@ const props = defineProps({
     }
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const langAvatar = computed(() => {
     return $gettext(

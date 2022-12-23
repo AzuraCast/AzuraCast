@@ -24,7 +24,7 @@ import {email, required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -56,7 +56,7 @@ const close = () => {
 
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const doSendTest = () => {
     v$.value.$touch();

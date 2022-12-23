@@ -238,7 +238,7 @@ import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {useIntervalFn, useMounted, useStorage} from "@vueuse/core";
 import formatTime from "~/functions/formatTime";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/components/Common/NowPlaying.js";
 
 const props = defineProps({
@@ -260,7 +260,7 @@ const enable_hls = computed(() => {
     return props.showHls && $np.station.hls_enabled;
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const streams = computed(() => {
     let all_streams = [];

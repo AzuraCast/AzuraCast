@@ -235,7 +235,7 @@ import {
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import BFormMarkup from "~/components/Form/BFormMarkup";
 import {computed} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: Object,
@@ -258,7 +258,7 @@ const isStereoToolEnabled = computed(() => {
     return props.form.backend_config.audio_processing_method.$model === AUDIO_PROCESSING_STEREO_TOOL;
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const backendTypeOptions = computed(() => {
     return [

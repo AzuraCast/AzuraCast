@@ -7,7 +7,7 @@
 <script setup>
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {Chart} from "chart.js";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {onMounted, onUnmounted, ref} from "vue";
 
 const props = defineProps({
@@ -18,7 +18,7 @@ const props = defineProps({
 
 let $chart = null;
 const canvas = ref(); // Template Ref
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 onMounted(() => {
     const defaultOptions = {

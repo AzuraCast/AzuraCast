@@ -1,11 +1,10 @@
-import installPinia from './vendor/pinia';
-import gettext from './vendor/gettext';
 import {createApp, h} from "vue";
 import installBootstrapVue from "./vendor/bootstrapVue";
 import installSweetAlert from "./vendor/sweetalert";
 import installAxios from "~/vendor/axios";
-import useAzuraCast from "~/vendor/azuracast";
+import {installPinia} from '~/vendor/pinia';
 import {useNotifyBus} from "~/vendor/events";
+import {installTranslate} from "~/vendor/gettext";
 
 export default function (component) {
     const vueApp = createApp({
@@ -27,13 +26,7 @@ export default function (component) {
     });
 
     /* Gettext */
-    const {locale} = useAzuraCast();
-
-    if (typeof locale !== 'undefined') {
-        vueApp.config.language = locale;
-    }
-
-    vueApp.use(gettext);
+    installTranslate(vueApp);
 
     /* Axios */
     installAxios(vueApp);

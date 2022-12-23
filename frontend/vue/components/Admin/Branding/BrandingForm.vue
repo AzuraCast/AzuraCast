@@ -145,10 +145,10 @@ import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import {computed, onMounted, ref} from "vue";
-import gettext from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     apiUrl: String,
@@ -183,7 +183,7 @@ const validations = {
 
 const v$ = useVuelidate(validations, form);
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const publicThemeOptions = computed(() => {
     return [

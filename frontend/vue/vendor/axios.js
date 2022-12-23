@@ -2,7 +2,7 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import {inject} from "vue";
 import useAzuraCast from "~/vendor/azuracast";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 
 /* Composition API Axios utilities */
@@ -22,7 +22,7 @@ export default function installAxios(vueApp) {
 
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
     const handleAxiosError = (error) => {
-        const {$gettext} = gettext;
+        const {$gettext} = useTranslate();
 
         let notifyMessage = $gettext('An error occurred and your request could not be completed.');
         if (error.response) {

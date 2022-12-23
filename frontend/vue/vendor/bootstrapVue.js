@@ -1,12 +1,12 @@
 import {BootstrapVue} from 'bootstrap-vue';
 
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {useNotifyBus} from "~/vendor/events";
 
 /* Composition API BootstrapVue utilities */
 export function useNotify() {
-    const {$gettext} = gettext;
+    const {$gettext} = useTranslate();
     const notifyBus = useNotifyBus();
 
     const notify = (message = null, options = {}) => {

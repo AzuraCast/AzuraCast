@@ -146,7 +146,7 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import {computed} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: Object,
@@ -161,7 +161,7 @@ const timezoneOptions = computed(() => {
     return objectToFormOptions(props.timezones);
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const historyItemsOptions = computed(() => {
     return [

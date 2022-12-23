@@ -1,20 +1,13 @@
 import {createApp} from 'vue';
 import InlinePlayer from '~/components/InlinePlayer.vue';
-import installPinia from '../vendor/pinia';
-import gettext from "../vendor/gettext";
-import useAzuraCast from "~/vendor/azuracast";
+import {installPinia} from '~/vendor/pinia';
+import {installTranslate} from "~/vendor/gettext";
 
 document.addEventListener('DOMContentLoaded', function () {
     const inlineApp = createApp(InlinePlayer);
 
     /* Gettext */
-    const {locale} = useAzuraCast();
-
-    if (typeof locale !== 'undefined') {
-        inlineApp.config.language = locale;
-    }
-
-    inlineApp.use(gettext);
+    installTranslate(inlineApp);
 
     /* Pinia */
     installPinia(inlineApp);

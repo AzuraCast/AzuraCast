@@ -83,7 +83,7 @@ export default {
 <script setup>
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import {computed, ref} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     ...profileEmbedModalProps
@@ -92,7 +92,7 @@ const props = defineProps({
 const selectedType = ref('player');
 const selectedTheme = ref('light');
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const types = computed(() => {
     let types = [

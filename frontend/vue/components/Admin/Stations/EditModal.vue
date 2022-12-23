@@ -24,7 +24,7 @@
 import AdminStationsForm, {StationFormProps} from "~/components/Admin/Stations/StationForm";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import {computed, ref} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     ...StationFormProps.props,
@@ -41,7 +41,7 @@ const isEditMode = computed(() => {
     return editUrl.value !== null;
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const langTitle = computed(() => {
     return isEditMode.value

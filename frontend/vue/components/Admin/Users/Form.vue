@@ -38,22 +38,18 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import {computed} from "vue";
 
-export default {
-    name: 'AdminUserForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        roles: Object,
-        isEditMode: Boolean
-    },
-    computed: {
-        roleOptions() {
-            return objectToFormOptions(this.roles);
-        }
-    }
-};
+const props = defineProps({
+    form: Object,
+    roles: Object,
+    isEditMode: Boolean
+});
+
+const roleOptions = computed(() => {
+    return objectToFormOptions(props.roles);
+});
 </script>

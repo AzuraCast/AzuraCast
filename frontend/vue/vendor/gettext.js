@@ -4,8 +4,20 @@ import useAzuraCast from "~/vendor/azuracast";
 
 const {locale} = useAzuraCast();
 
-export default createGettext({
+const gettext = createGettext({
     defaultLanguage: locale,
     translations: translations,
     silent: true
 });
+
+export function useTranslate() {
+    return gettext;
+}
+
+export function installTranslate(vueApp) {
+    if (typeof locale !== 'undefined') {
+        vueApp.config.language = locale;
+    }
+
+    vueApp.use(gettext);
+}

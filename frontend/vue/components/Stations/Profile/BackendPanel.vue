@@ -61,7 +61,7 @@ export default {
 import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
 import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 
 const props = defineProps({
@@ -69,7 +69,7 @@ const props = defineProps({
     np: Object
 });
 
-const {$gettext, $ngettext} = gettext;
+const {$gettext, $ngettext} = useTranslate();
 
 const langTotalTracks = computed(() => {
     let numSongs = $ngettext(

@@ -12,27 +12,43 @@ import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import StorageLocationForm from './Form';
 import useVuelidate from "@vuelidate/core";
+import {computed} from "vue";
 
 export default {
     name: 'AdminStorageLocationsEditModal',
     components: {StorageLocationForm},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     mixins: [BaseEditModal],
     props: {
         type: String
     },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Storage Location')
-                : this.$gettext('Add Storage Location');
+    setup() {
+        const blankForm = {
+            'adapter': 'local',
+            'path': '',
+            's3CredentialKey': null,
+            's3CredentialSecret': null,
+            's3Region': null,
+            's3Version': 'latest',
+            's3Bucket': null,
+            's3Endpoint': null,
+            'dropboxAuthToken': null,
+            'sftpHost': null,
+            'sftpPort': '22',
+            'sftpUsername': null,
+            'sftpPassword': null,
+            'sftpPrivateKey': null,
+            'sftpPrivateKeyPassPhrase': null,
+            'storageQuota': ''
         }
-    },
-    validations() {
-        let validations = {
-            form: {
+
+        const form = {...blankForm};
+
+        const resetForm = () => {
+            form.value = {...blankForm};
+        };
+
+        const validations = computed(() => {
+            let validationRules = {
                 'adapter': {required},
                 'storageQuota': {},
                 'path': {},
@@ -49,57 +65,52 @@ export default {
                 'sftpPassword': {},
                 'sftpPrivateKey': {},
                 'sftpPrivateKeyPassPhrase': {}
+            };
+
+            switch (form.value.adapter) {
+                case 'local':
+                    validationRules.path = {required};
+                    break;
+
+                case 'dropbox':
+                    validationRules.dropboxAuthToken = {required};
+                    break;
+
+                case 's3':
+                    validationRules.s3CredentialKey = {required};
+                    validationRules.s3CredentialSecret = {required};
+                    validationRules.s3Region = {required};
+                    validationRules.s3Version = {required};
+                    validationRules.s3Bucket = {required};
+                    validationRules.s3Endpoint = {required};
+                    break;
+
+                case 'sftp':
+                    validationRules.sftpHost = {required};
+                    validationRules.sftpPort = {required};
+                    validationRules.sftpUsername = {required};
+                    break;
             }
+
+            return validationRules;
+        });
+
+        const v$ = useVuelidate(validations, form);
+
+        return {
+            form,
+            resetForm,
+            v$
         };
-
-        switch (this.form.adapter) {
-            case 'local':
-                validations.form.path = {required};
-                break;
-
-            case 'dropbox':
-                validations.form.dropboxAuthToken = {required};
-                break;
-
-            case 's3':
-                validations.form.s3CredentialKey = { required };
-                validations.form.s3CredentialSecret = { required };
-                validations.form.s3Region = { required };
-                validations.form.s3Version = { required };
-                validations.form.s3Bucket = { required };
-                validations.form.s3Endpoint = { required };
-                break;
-                
-            case 'sftp':
-                validations.form.sftpHost = { required };
-                validations.form.sftpPort = { required };
-                validations.form.sftpUsername = { required };
-                break;
+    },
+    computed: {
+        langTitle() {
+            return this.isEditMode
+                ? this.$gettext('Edit Storage Location')
+                : this.$gettext('Add Storage Location');
         }
-
-        return validations;
     },
     methods: {
-        resetForm() {
-            this.form = {
-                'adapter': 'local',
-                'path': '',
-                's3CredentialKey': null,
-                's3CredentialSecret': null,
-                's3Region': null,
-                's3Version': 'latest',
-                's3Bucket': null,
-                's3Endpoint': null,
-                'dropboxAuthToken': null,
-                'sftpHost': null,
-                'sftpPort': '22',
-                'sftpUsername': null,
-                'sftpPassword': null,
-                'sftpPrivateKey': null,
-                'sftpPrivateKeyPassPhrase': null,
-                'storageQuota': ''
-            };
-        },
         getSubmittableFormData() {
             if (this.isEditMode) {
                 return this.form;

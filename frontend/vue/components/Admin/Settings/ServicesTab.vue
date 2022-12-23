@@ -234,7 +234,7 @@ import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessa
 import Icon from "~/components/Common/Icon";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {computed, ref} from "vue";
-import gettext from "~/vendor/gettext";
+import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
@@ -245,7 +245,7 @@ const props = defineProps({
     acmeUrl: String,
 });
 
-const {$gettext} = gettext;
+const {$gettext} = useTranslate();
 
 const langReleaseChannel = computed(() => {
     return (props.releaseChannel === 'stable')

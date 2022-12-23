@@ -63,7 +63,7 @@ module.exports = {
             '~': path.resolve(__dirname, './vue'),
             vue: '@vue/compat'
         },
-        extensions: ['.js', '.vue', '.json']
+        extensions: ['.ts', '.js', '.vue', '.json']
     },
     output: {
         path: path.resolve(__dirname, '../web/static/webpack_dist'),
@@ -129,6 +129,14 @@ module.exports = {
             {
                 test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
                 type: 'asset/resource'
+            },
+            {
+                test: /\.ts$/i,
+                loader: "ts-loader",
+                options: {
+                    appendTsSuffixTo: [/\.vue$/]
+                },
+                exclude: /node_modules/
             }
         ]
     },

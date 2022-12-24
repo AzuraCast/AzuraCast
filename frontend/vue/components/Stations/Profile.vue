@@ -49,7 +49,7 @@ import ProfileFrontend, {profileFrontendProps} from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
 import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
 import {profileEmbedModalProps} from './Profile/EmbedModal';
-import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters.js';
+import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
 import {computed, onMounted, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";

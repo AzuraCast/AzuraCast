@@ -112,7 +112,7 @@ export default {
 </script>
 
 <script setup>
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters.js';
+import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";

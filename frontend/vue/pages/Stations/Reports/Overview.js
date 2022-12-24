@@ -1,6 +1,6 @@
 import initBase from '~/base.js';
 
-import '~/vendor/chartjs.js';
+import '~/vendor/chartjs';
 
 import Overview from '~/components/Stations/Reports/Overview.vue';
 

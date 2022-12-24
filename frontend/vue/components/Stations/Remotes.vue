@@ -59,7 +59,7 @@ import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import RemoteEditModal from "./Remotes/EditModal";
 import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
-import '~/vendor/sweetalert.js';
+import '~/vendor/sweetalert';
 
 export default {
     name: 'StationMounts',

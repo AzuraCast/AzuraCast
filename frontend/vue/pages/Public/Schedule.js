@@ -1,6 +1,6 @@
 import initBase from '~/base.js';
 
-import '~/vendor/luxon.js';
+import '~/vendor/luxon';
 
 import Schedule from '~/components/Public/Schedule.vue';
 

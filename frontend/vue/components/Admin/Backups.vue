@@ -107,14 +107,14 @@
     </div>
 </template>
 
-<script setup>
-import Icon from "~/components/Common/Icon";
-import DataTable from "~/components/Common/DataTable";
-import AdminBackupsLastOutputModal from "./Backups/LastOutputModal";
+<script setup lang="ts">
+import Icon from "~/components/Common/Icon.vue";
+import DataTable from "~/components/Common/DataTable.vue";
+import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
 import {DateTime} from 'luxon';
 import formatFileSize from "~/functions/formatFileSize";
-import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal";
-import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal";
+import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
+import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {onMounted, ref} from "vue";
@@ -131,7 +131,7 @@ const props = defineProps({
     isDocker: Boolean,
 });
 
-const settingsLoading = ref(false);
+const settingsLoading = ref<Boolean>(false);
 
 const blankSettings = {
     backupEnabled: false,
@@ -168,7 +168,7 @@ const fields = [
     }
 ];
 
-const datatable = ref(); // Template Ref
+const datatable = ref<InstanceType<typeof DataTable>>();
 
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
@@ -203,17 +203,17 @@ const toLocaleTime = (timestamp) => {
     );
 };
 
-const lastOutputModal = ref(); // Template Ref
+const lastOutputModal = ref<InstanceType<typeof AdminBackupsLastOutputModal>>();
 const showLastOutput = () => {
     lastOutputModal.value.show();
 };
 
-const configureModal = ref(); // Template Ref
+const configureModal = ref<InstanceType<typeof AdminBackupsConfigureModal>>();
 const doConfigure = () => {
     configureModal.value.open();
 };
 
-const runBackupModal = ref(); // Template Ref
+const runBackupModal = ref<InstanceType<typeof AdminBackupsRunBackupModal>>();
 const doRunBackup = () => {
     runBackupModal.value.open();
 };

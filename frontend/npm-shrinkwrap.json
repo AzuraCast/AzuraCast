@@ -78,6 +78,11 @@
         "webpack-assets-manifest": "^5",
         "webpack-cli": "^5",
         "zxcvbn": "^4.4.2"
+      },
+      "devDependencies": {
+        "@types/lodash": "^4.14.191",
+        "@types/luxon": "^3.1.0",
+        "@types/store": "^2.0.2"
       }
     },
     "node_modules/@ampproject/remapping": {
@@ -2098,6 +2103,18 @@
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz",
       "integrity": "sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ=="
     },
+    "node_modules/@types/lodash": {
+      "version": "4.14.191",
+      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.191.tgz",
+      "integrity": "sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==",
+      "dev": true
+    },
+    "node_modules/@types/luxon": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/@types/luxon/-/luxon-3.1.0.tgz",
+      "integrity": "sha512-gCd/HcCgjqSxfMrgtqxCgYk/22NBQfypwFUG7ZAyG/4pqs51WLTcUzVp1hqTbieDYeHS3WoVEh2Yv/2l+7B0Vg==",
+      "dev": true
+    },
     "node_modules/@types/minimatch": {
       "version": "5.1.2",
       "resolved": "https://registry.npmjs.org/@types/minimatch/-/minimatch-5.1.2.tgz",
@@ -2117,6 +2134,12 @@
       "version": "5.0.3",
       "resolved": "https://registry.npmjs.org/@types/parse5/-/parse5-5.0.3.tgz",
       "integrity": "sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw=="
+    },
+    "node_modules/@types/store": {
+      "version": "2.0.2",
+      "resolved": "https://registry.npmjs.org/@types/store/-/store-2.0.2.tgz",
+      "integrity": "sha512-ZPHnXkzmGMfk+pHqAGzTSpA9CbsHmJLgkvOl5w52LZ0XTxB1ZIHWZzQ7lEtjTNWScBbsQekg8TjApMXkMe4nkw==",
+      "dev": true
     },
     "node_modules/@types/vinyl": {
       "version": "2.0.7",
@@ -12607,6 +12630,18 @@
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz",
       "integrity": "sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ=="
     },
+    "@types/lodash": {
+      "version": "4.14.191",
+      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.191.tgz",
+      "integrity": "sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==",
+      "dev": true
+    },
+    "@types/luxon": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/@types/luxon/-/luxon-3.1.0.tgz",
+      "integrity": "sha512-gCd/HcCgjqSxfMrgtqxCgYk/22NBQfypwFUG7ZAyG/4pqs51WLTcUzVp1hqTbieDYeHS3WoVEh2Yv/2l+7B0Vg==",
+      "dev": true
+    },
     "@types/minimatch": {
       "version": "5.1.2",
       "resolved": "https://registry.npmjs.org/@types/minimatch/-/minimatch-5.1.2.tgz",
@@ -12626,6 +12661,12 @@
       "version": "5.0.3",
       "resolved": "https://registry.npmjs.org/@types/parse5/-/parse5-5.0.3.tgz",
       "integrity": "sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw=="
+    },
+    "@types/store": {
+      "version": "2.0.2",
+      "resolved": "https://registry.npmjs.org/@types/store/-/store-2.0.2.tgz",
+      "integrity": "sha512-ZPHnXkzmGMfk+pHqAGzTSpA9CbsHmJLgkvOl5w52LZ0XTxB1ZIHWZzQ7lEtjTNWScBbsQekg8TjApMXkMe4nkw==",
+      "dev": true
     },
     "@types/vinyl": {
       "version": "2.0.7",

@@ -26,9 +26,9 @@
     </div>
 </template>
 
-<script setup>
-import CustomAssetForm from "./Branding/CustomAssetForm";
-import BrandingForm from "./Branding/BrandingForm";
+<script setup lang="ts">
+import CustomAssetForm from "./Branding/CustomAssetForm.vue";
+import BrandingForm from "./Branding/BrandingForm.vue";
 
 const props = defineProps({
     settingsApiUrl: String,

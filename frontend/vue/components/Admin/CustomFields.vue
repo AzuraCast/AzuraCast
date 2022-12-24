@@ -43,11 +43,11 @@
                 @relist="relist"></edit-modal>
 </template>
 
-<script setup>
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './CustomFields/EditModal';
-import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
+<script setup lang="ts">
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './CustomFields/EditModal.vue';
+import Icon from '~/components/Common/Icon.vue';
+import InfoCard from '~/components/Common/InfoCard.vue';
 import _ from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
@@ -72,13 +72,13 @@ const getAutoAssignName = (autoAssign) => {
     return _.get(props.autoAssignTypes, autoAssign, $gettext('None'));
 };
 
-const datatable = ref(); // Template Ref
+const datatable = ref<InstanceType<typeof DataTable>>();
 
 const relist = () => {
     datatable.value.refresh();
 };
 
-const editmodal = ref(); // Template Ref
+const editmodal = ref<InstanceType<typeof EditModal>>();
 
 const doCreate = () => {
     editmodal.value.create();

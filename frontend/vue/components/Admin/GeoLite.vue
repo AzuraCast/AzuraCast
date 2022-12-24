@@ -86,18 +86,21 @@
     </div>
 </template>
 
-<script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import '~/vendor/sweetalert.js';
-import InfoCard from "~/components/Common/InfoCard";
-import {ref} from "vue";
+<script setup lang="ts">
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import InfoCard from "~/components/Common/InfoCard.vue";
+import {computed, onMounted, ref} from "vue";
 import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useAxios} from "~/vendor/axios";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
 
 const props = defineProps({
     apiUrl: String
 });
 
-const loading = ref(true);
+const loading = ref<Boolean>(true);
 const version = ref(null);
 
 const {form, resetForm, v$} = useVuelidateOnForm(
@@ -109,66 +112,54 @@ const {form, resetForm, v$} = useVuelidateOnForm(
     }
 );
 
+const {$gettext} = useTranslate();
 
-</script>
-
-<script>
-
-
-export default {
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    props: {},
-    data() {
-        return {
-            loading: true,
-            key: null,
-            version: null
-        };
-    },
-    validations: {},
-    computed: {
-        langInstalledVersion() {
-            const text = this.$gettext('GeoLite version "%{ version }" is currently installed.');
-            return this.$gettextInterpolate(text, {
-                version: this.version
-            });
+const langInstalledVersion = computed(() => {
+    return $gettext(
+        'GeoLite version "%{ version }" is currently installed.',
+        {
+            version: version.value
         }
-    },
-    mounted() {
-        this.doFetch();
-    },
-    methods: {
-        doFetch() {
-            this.loading = true;
-            this.axios.get(this.apiUrl).then((resp) => {
-                this.key = resp.data.key;
-                this.version = resp.data.version;
+    );
+});
 
-                this.loading = false;
-            });
-        },
-        doUpdate() {
-            this.loading = true;
-            this.$wrapWithLoading(
-                this.axios.post(this.apiUrl, {
-                    geolite_license_key: this.key
-                })
-            ).then((resp) => {
-                this.version = resp.data.version;
-            }).finally(() => {
-                this.loading = false;
-            });
-        },
-        doDelete() {
-            this.$confirmDelete().then((result) => {
-                if (result.value) {
-                    this.key = null;
-                    this.doUpdate();
-                }
-            });
+const {axios} = useAxios();
+
+const doFetch = () => {
+    loading.value = true;
+
+    axios.get(props.apiUrl).then((resp) => {
+        form.value.key = resp.data.key;
+        version.value = resp.data.version;
+        loading.value = false;
+    });
+};
+
+onMounted(doFetch);
+
+const {wrapWithLoading} = useNotify();
+
+const doUpdate = () => {
+    loading.value = true;
+    wrapWithLoading(
+        axios.post(props.apiUrl, {
+            geolite_license_key: form.value.key
+        })
+    ).then((resp) => {
+        version.value = resp.data.version;
+    }).finally(() => {
+        loading.value = false;
+    });
+};
+
+const {confirmDelete} = useSweetAlert();
+
+const doDelete = () => {
+    confirmDelete().then((result) => {
+        if (result.value) {
+            form.value.key = null;
+            doUpdate();
         }
-    }
+    });
 }
 </script>

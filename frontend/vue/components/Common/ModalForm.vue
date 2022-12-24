@@ -33,10 +33,12 @@
     </b-modal>
 </template>
 
-<script>
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
+<script lang="ts">
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import {defineComponent} from "vue";
+import _ from "lodash";
 
-export default {
+export default defineComponent({
     components: {InvisibleSubmitButton},
     emits: ['submit', 'shown', 'hidden'],
     props: {
@@ -101,5 +103,5 @@ export default {
             this.$refs.modal.show();
         }
     }
-}
+});
 </script>

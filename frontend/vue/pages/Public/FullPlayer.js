@@ -1,7 +1,7 @@
 import initBase from '~/base.js';
 
-import '~/vendor/fancybox.js';
-import '~/vendor/luxon.js';
+import '~/vendor/fancybox';
+import '~/vendor/luxon';
 
 import FullPlayer from '~/components/Public/FullPlayer.vue';
 

@@ -79,5 +79,10 @@
     "webpack-assets-manifest": "^5",
     "webpack-cli": "^5",
     "zxcvbn": "^4.4.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.191",
+    "@types/luxon": "^3.1.0",
+    "@types/store": "^2.0.2"
   }
 }

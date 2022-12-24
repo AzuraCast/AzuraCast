@@ -1,6 +1,6 @@
 import initBase from '~/base.js';
-import '~/vendor/fancybox.js';
-import '~/vendor/chartjs.js';
+import '~/vendor/fancybox';
+import '~/vendor/chartjs';
 
 import '~/pages/InlinePlayer.js';
 

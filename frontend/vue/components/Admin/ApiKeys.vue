@@ -19,8 +19,8 @@
     </section>
 </template>
 
-<script setup>
-import DataTable from "~/components/Common/DataTable";
+<script setup lang="ts">
+import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/vendor/bootstrapVue";
@@ -31,22 +31,29 @@ const props = defineProps({
     apiUrl: String
 });
 
+const {$gettext} = useTranslate();
+
 const fields = ref([
     {
         key: 'comment',
         isRowHeader: true,
-        label: this.$gettext('API Key Description/Comments'),
+        label: $gettext('API Key Description/Comments'),
         sortable: false
     },
     {
         key: 'owner',
-        label: this.$gettext('Owner'),
+        label: $gettext('Owner'),
         sortable: false
     },
-    {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
 ]);
 
-const datatable = ref(); // Datatable
+const datatable = ref<InstanceType<typeof DataTable>>();
 
 const relist = () => {
     datatable.value.relist();
@@ -55,22 +62,19 @@ const relist = () => {
 const {confirmDelete} = useSweetAlert();
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
-const {$gettext} = useTranslate();
 
 const doDelete = (url) => {
     confirmDelete({
-        title: this.$gettext('Delete API Key?'),
+        title: $gettext('Delete API Key?'),
     }).then((result) => {
         if (result.value) {
-            this.$wrapWithLoading(
-                this.axios.delete(url)
+            wrapWithLoading(
+                axios.delete(url)
             ).then((resp) => {
-                this.$notifySuccess(resp.data.message);
-                this.relist();
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
     });
 }
-
-
 </script>

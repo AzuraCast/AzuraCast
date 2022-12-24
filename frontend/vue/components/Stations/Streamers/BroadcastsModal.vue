@@ -42,7 +42,7 @@ import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
-import '~/vendor/sweetalert.js';
+import '~/vendor/sweetalert';
 import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {

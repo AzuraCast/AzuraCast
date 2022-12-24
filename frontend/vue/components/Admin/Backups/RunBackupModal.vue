@@ -79,17 +79,18 @@
     </b-modal>
 </template>
 
-<script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+<script setup lang="ts">
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import StreamingLogView from "~/components/Common/StreamingLogView";
+import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {computed, ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {BModal} from "bootstrap-vue";
 
 const props = defineProps({
     runBackupUrl: String,
@@ -104,7 +105,7 @@ const storageLocationOptions = computed(() => {
 
 const logUrl = ref(null);
 const error = ref(null);
-const modal = ref(); // BModal
+const modal = ref<InstanceType<typeof BModal>>();
 
 const {form, resetForm, v$} = useVuelidateOnForm(
     {

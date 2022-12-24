@@ -1,14 +1,17 @@
 import axios from "axios";
 import VueAxios from "vue-axios";
+import type {InjectionKey} from "vue";
 import {inject} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 
+const axiosKey = Symbol() as InjectionKey<typeof axios>;
+
 /* Composition API Axios utilities */
 export function useAxios() {
     return {
-        axios: inject('axios')
+        axios: inject(axiosKey)
     };
 }
 
@@ -57,5 +60,5 @@ export default function installAxios(vueApp) {
 
     vueApp.use(VueAxios, axios);
 
-    vueApp.provide('axios', axios);
+    vueApp.provide(axiosKey, axios);
 }

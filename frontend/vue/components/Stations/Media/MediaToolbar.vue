@@ -78,7 +78,7 @@
 <script>
 import _ from 'lodash';
 import Icon from '~/components/Common/Icon';
-import '~/vendor/sweetalert.js';
+import '~/vendor/sweetalert';
 
 export default {
     name: 'station-media-toolbar',

@@ -153,12 +153,13 @@ table.b-table-selectable {
 }
 </style>
 
-<script>
+<script lang="ts">
 import store from 'store';
 import _ from 'lodash';
-import Icon from './Icon';
+import Icon from './Icon.vue';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     name: 'DataTable',
     components: {Icon},
     props: {
@@ -209,7 +210,7 @@ export default {
     },
     data() {
         let allFields = [];
-        _.forEach(this.fields, function (field) {
+        _.forEach(this.fields, function (field: object) {
             allFields.push({
                 ...{
                     label: '',
@@ -394,7 +395,7 @@ export default {
             this.filter = newTerm;
         },
         loadItems(ctx) {
-            let queryParams = {
+            let queryParams: { [k: string]: any } = {
                 internal: true
             };
 
@@ -460,5 +461,5 @@ export default {
             this.$emit('filtered', filter);
         }
     }
-};
+});
 </script>

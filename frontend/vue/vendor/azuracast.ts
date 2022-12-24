@@ -1,4 +1,6 @@
 export function useAzuraCast() {
+    const App = globalThis.App;
+
     return {
         lang: {
             confirm: App.lang.confirm ?? 'Are you sure?',

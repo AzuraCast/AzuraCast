@@ -5,7 +5,7 @@
     </b-modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref} from "vue";
 
 const props = defineProps({

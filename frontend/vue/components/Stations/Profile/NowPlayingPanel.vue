@@ -137,7 +137,7 @@ export default {
 </script>
 
 <script setup>
-import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
+import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
 import {computed, onMounted, ref} from "vue";
 import {useIntervalFn} from "@vueuse/core";

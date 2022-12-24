@@ -2,12 +2,13 @@
     <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
 </template>
 
-<script>
+<script lang="ts">
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store.js";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     props: {
         title: String,
         volume: {
@@ -169,5 +170,5 @@ export default {
             }
         },
     }
-};
+});
 </script>

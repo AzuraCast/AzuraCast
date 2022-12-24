@@ -1,6 +1,6 @@
 import initBase from '~/base.js';
 
-import '~/vendor/fancybox.js';
+import '~/vendor/fancybox';
 
 import AdminBranding from '~/components/Admin/Branding.vue';
 

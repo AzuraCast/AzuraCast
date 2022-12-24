@@ -58,7 +58,7 @@ export default {
 </script>
 
 <script setup>
-import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters.js';
+import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";

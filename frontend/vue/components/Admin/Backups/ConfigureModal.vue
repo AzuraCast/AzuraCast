@@ -1,6 +1,6 @@
 <template>
     <modal-form ref="modal" size="lg" :title="$gettext('Configure Backups')" :loading="loading"
-                :disable-save-button="v$.$invalid" @submit="submit" @hidden="clearContents">
+                :disable-save-button="v$.$invalid" @submit="submit" @hidden="resetForm">
         <b-form-fieldset>
             <div class="form-row mb-3">
                 <b-wrapped-form-checkbox class="col-md-12" id="form_edit_backup_enabled"
@@ -78,18 +78,18 @@
     </modal-form>
 </template>
 
-<script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import ModalForm from "~/components/Common/ModalForm";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import mergeExisting from "~/functions/mergeExisting";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import TimeCode from "~/components/Common/TimeCode";
-import objectToFormOptions from "~/functions/objectToFormOptions";
+<script setup lang="ts">
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import mergeExisting from "~/functions/mergeExisting.js";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import TimeCode from "~/components/Common/TimeCode.vue";
+import objectToFormOptions from "~/functions/objectToFormOptions.js";
 import {computed, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/vendor/bootstrapVue";
-import useVuelidate from "@vuelidate/core";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
     settingsUrl: String,
@@ -98,23 +98,29 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const loading = ref(true);
-const error = ref(null);
+const loading = ref<Boolean>(true);
+const error = ref<string | null>(null);
 
-const form = ref({});
+const modal = ref<InstanceType<typeof ModalForm>>();
 
-const modal = ref(); // Template Ref
-
-const validations = {
-    'backup_enabled': {},
-    'backup_time_code': {},
-    'backup_exclude_media': {},
-    'backup_keep_copies': {},
-    'backup_storage_location': {},
-    'backup_format': {},
-};
-
-const v$ = useVuelidate(validations, form);
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        'backup_enabled': {},
+        'backup_time_code': {},
+        'backup_exclude_media': {},
+        'backup_keep_copies': {},
+        'backup_storage_location': {},
+        'backup_format': {},
+    },
+    {
+        backup_enabled: false,
+        backup_time_code: null,
+        backup_exclude_media: null,
+        backup_keep_copies: null,
+        backup_storage_location: null,
+        backup_format: null,
+    }
+);
 
 const storageLocationOptions = computed(() => {
     return objectToFormOptions(props.storageLocations);
@@ -137,19 +143,6 @@ const formatOptions = computed(() => {
     ];
 });
 
-const clearContents = () => {
-    v$.value.$reset();
-
-    form.value = {
-        backup_enabled: false,
-        backup_time_code: null,
-        backup_exclude_media: null,
-        backup_keep_copies: null,
-        backup_storage_location: null,
-        backup_format: null,
-    };
-};
-
 const {axios} = useAxios();
 
 const close = () => {
@@ -158,7 +151,7 @@ const close = () => {
 };
 
 const open = () => {
-    clearContents();
+    resetForm();
     loading.value = true;
 
     modal.value.show();

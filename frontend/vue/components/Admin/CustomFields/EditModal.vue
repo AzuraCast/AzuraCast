@@ -8,13 +8,14 @@
     </modal-form>
 </template>
 
-<script>
+<script lang="ts">
 import {required} from '@vuelidate/validators';
-import BaseEditModal from '~/components/Common/BaseEditModal';
-import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form";
+import BaseEditModal from '~/components/Common/BaseEditModal.vue';
+import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";
 import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     name: 'AdminCustomFieldsEditModal',
     mixins: [BaseEditModal],
     components: {AdminCustomFieldsForm},
@@ -48,5 +49,5 @@ export default {
                 : this.$gettext('Add Custom Field');
         }
     },
-};
+});
 </script>

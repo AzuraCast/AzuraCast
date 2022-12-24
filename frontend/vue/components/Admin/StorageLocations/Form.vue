@@ -181,7 +181,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 
 const props = defineProps({
     form: Object

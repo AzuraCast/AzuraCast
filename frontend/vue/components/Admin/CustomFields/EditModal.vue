@@ -8,7 +8,7 @@
     </modal-form>
 </template>
 
-<script lang="ts">
+<script>
 import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal.vue';
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";

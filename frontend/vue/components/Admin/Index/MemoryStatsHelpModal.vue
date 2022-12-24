@@ -40,8 +40,9 @@
 
 <script setup>
 import {ref} from "vue";
+import {BModal} from "bootstrap-vue";
 
-const modal = ref(); // Template ref
+const modal = ref(); // BModal
 
 const create = () => {
     modal.value.show();

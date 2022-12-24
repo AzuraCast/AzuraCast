@@ -223,27 +223,27 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {
-    AUDIO_PROCESSING_LIQUIDSOAP,
-    AUDIO_PROCESSING_NONE,
-    AUDIO_PROCESSING_STEREO_TOOL,
-    BACKEND_LIQUIDSOAP,
-    BACKEND_NONE
+  AUDIO_PROCESSING_LIQUIDSOAP,
+  AUDIO_PROCESSING_NONE,
+  AUDIO_PROCESSING_STEREO_TOOL,
+  BACKEND_LIQUIDSOAP,
+  BACKEND_NONE
 } from "~/components/Entity/RadioAdapters";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import BFormMarkup from "~/components/Form/BFormMarkup";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import BFormMarkup from "~/components/Form/BFormMarkup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    form: Object,
-    station: Object,
-    isStereoToolInstalled: {
-        type: Boolean,
-        default: true
-    },
+  form: Object,
+  station: Object,
+  isStereoToolInstalled: {
+    type: Boolean,
+    default: true
+  },
     showAdvanced: {
         type: Boolean,
         default: true

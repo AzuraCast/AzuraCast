@@ -78,7 +78,7 @@
     </modal-form>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import BFormFieldset from "~/components/Form/BFormFieldset.vue";
@@ -98,10 +98,10 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const loading = ref<Boolean>(true);
-const error = ref<string | null>(null);
+const loading = ref(true);
+const error = ref(null);
 
-const modal = ref<InstanceType<typeof ModalForm>>();
+const modal = ref(); // ModalForm
 
 const {form, resetForm, v$} = useVuelidateOnForm(
     {

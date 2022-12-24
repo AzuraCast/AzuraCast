@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import AdminStationsForm, {StationFormProps} from "~/components/Admin/Stations/StationForm";
+import AdminStationsForm, {stationFormProps} from "~/components/Admin/Stations/StationForm";
 
 export default {
     name: 'StationsProfileEdit',
     components: {AdminStationsForm},
-    mixins: [StationFormProps],
     props: {
+        ...stationFormProps,
         editUrl: String,
         continueUrl: {
             type: String,

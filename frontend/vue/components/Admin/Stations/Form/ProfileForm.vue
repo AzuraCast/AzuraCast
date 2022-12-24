@@ -141,10 +141,10 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 

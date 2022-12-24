@@ -33,7 +33,7 @@
     </b-modal>
 </template>
 
-<script lang="ts">
+<script>
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {defineComponent} from "vue";
 import _ from "lodash";

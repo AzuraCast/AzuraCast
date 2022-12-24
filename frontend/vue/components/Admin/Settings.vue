@@ -59,9 +59,9 @@
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import SettingsGeneralTab from "./Settings/GeneralTab";
-import SettingsServicesTab from "./Settings/ServicesTab";
-import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab";
+import SettingsGeneralTab from "./Settings/GeneralTab.vue";
+import SettingsServicesTab from "./Settings/ServicesTab.vue";
+import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
@@ -80,7 +80,7 @@ const props = defineProps({
     }
 });
 
-const emits = defineEmits(['saved']);
+const emit = defineEmits(['saved']);
 
 const {form, resetForm, v$} = useVuelidateOnForm(
     {

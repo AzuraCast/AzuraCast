@@ -153,7 +153,7 @@ table.b-table-selectable {
 }
 </style>
 
-<script lang="ts">
+<script>
 import store from 'store';
 import _ from 'lodash';
 import Icon from './Icon.vue';
@@ -210,7 +210,7 @@ export default defineComponent({
     },
     data() {
         let allFields = [];
-        _.forEach(this.fields, function (field: object) {
+        _.forEach(this.fields, function (field) {
             allFields.push({
                 ...{
                     label: '',
@@ -395,7 +395,7 @@ export default defineComponent({
             this.filter = newTerm;
         },
         loadItems(ctx) {
-            let queryParams: { [k: string]: any } = {
+            let queryParams = {
                 internal: true
             };
 

@@ -10,8 +10,8 @@
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import ModalForm from "~/components/Common/ModalForm";
-import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
@@ -37,7 +37,7 @@ const {form, resetForm, v$} = useVuelidateOnForm(
     }
 );
 
-const modal = ref(); // BVModal
+const modal = ref(); // ModalForm
 const {$gettext} = useTranslate();
 
 const create = (stationName, stationCloneUrl) => {

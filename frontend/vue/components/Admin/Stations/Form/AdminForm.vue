@@ -67,10 +67,10 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import BFormFieldset from "~/components/Form/BFormFieldset";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
 import {onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 

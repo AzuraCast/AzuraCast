@@ -172,18 +172,18 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    form: Object,
-    isShoutcastInstalled: {
-        type: Boolean,
-        default: false
+  form: Object,
+  isShoutcastInstalled: {
+    type: Boolean,
+    default: false
     },
     countries: Object,
     showAdvanced: {

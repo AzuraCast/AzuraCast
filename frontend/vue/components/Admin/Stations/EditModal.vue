@@ -21,13 +21,14 @@
 </template>
 
 <script setup>
-import AdminStationsForm, {StationFormProps} from "~/components/Admin/Stations/StationForm";
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
+import AdminStationsForm, {stationFormProps} from "~/components/Admin/Stations/StationForm.vue";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import {BModal} from "bootstrap-vue";
 
 const props = defineProps({
-    ...StationFormProps.props,
+    ...stationFormProps,
     createUrl: String
 });
 
@@ -49,7 +50,7 @@ const langTitle = computed(() => {
         : $gettext('Add Station');
 });
 
-const modal = ref(); // BVModal
+const modal = ref(); // BModal
 
 const onValidUpdate = (newValue) => {
     disableSaveButton.value = !newValue;
@@ -69,7 +70,7 @@ const edit = (recordUrl) => {
     modal.value.show();
 };
 
-const form = ref(); // Template Ref
+const form = ref(); // AdminStationsForm
 
 const resetForm = () => {
     form.value.reset();
@@ -99,7 +100,9 @@ defineExpose({
 </script>
 
 <script>
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
     inheritAttrs: false,
-};
+});
 </script>

@@ -19,7 +19,7 @@
     </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
@@ -53,7 +53,7 @@ const fields = ref([
     }
 ]);
 
-const datatable = ref<InstanceType<typeof DataTable>>();
+const datatable = ref();
 
 const relist = () => {
     datatable.value.relist();

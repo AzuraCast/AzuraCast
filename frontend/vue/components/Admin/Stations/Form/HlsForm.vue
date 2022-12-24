@@ -75,18 +75,18 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {BACKEND_NONE} from "~/components/Entity/RadioAdapters";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
 
 const props = defineProps({
-    form: Object,
-    station: Object,
-    showAdvanced: {
-        type: Boolean,
+  form: Object,
+  station: Object,
+  showAdvanced: {
+    type: Boolean,
         default: true
     },
 });

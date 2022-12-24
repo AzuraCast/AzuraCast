@@ -20,12 +20,13 @@
 
 <script setup>
 import {email, required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {BModal} from "bootstrap-vue";
 
 const props = defineProps({
     testMessageUrl: String

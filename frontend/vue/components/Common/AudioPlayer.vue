@@ -2,7 +2,7 @@
     <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
 </template>
 
-<script lang="ts">
+<script>
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store.js";

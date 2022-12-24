@@ -64,7 +64,7 @@
 }
 </style>
 
-<script setup lang="ts">
+<script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon.vue';
@@ -79,7 +79,7 @@ const current = toRef(store, 'current');
 const volume = useStorage('player_volume', 55);
 const isMuted = useStorage('player_is_muted', false);
 const isMounted = useMounted();
-const player = ref<InstanceType<typeof AudioPlayer>>();
+const player = ref(); // AudioPlayer
 
 const duration = computed(() => {
     return player.value?.getDuration();

@@ -42,9 +42,10 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import {forEach} from "lodash";
 
 const props = defineProps({
     form: Object,
@@ -61,7 +62,7 @@ const autoAssignOptions = computed(() => {
         }
     ];
 
-    _.forEach(props.autoAssignTypes, (typeName, typeKey) => {
+    forEach(props.autoAssignTypes, (typeName, typeKey) => {
         autoAssignOptions.push({
             text: typeName,
             value: typeKey

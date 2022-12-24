@@ -79,7 +79,7 @@
     </b-modal>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset.vue";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
@@ -105,7 +105,7 @@ const storageLocationOptions = computed(() => {
 
 const logUrl = ref(null);
 const error = ref(null);
-const modal = ref<InstanceType<typeof BModal>>();
+const modal = ref(); // BModal
 
 const {form, resetForm, v$} = useVuelidateOnForm(
     {

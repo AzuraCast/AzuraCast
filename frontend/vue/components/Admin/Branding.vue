@@ -26,7 +26,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import CustomAssetForm from "./Branding/CustomAssetForm.vue";
 import BrandingForm from "./Branding/BrandingForm.vue";
 

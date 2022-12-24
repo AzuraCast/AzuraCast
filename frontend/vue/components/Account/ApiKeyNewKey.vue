@@ -27,7 +27,7 @@
     </p>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 
 const props = defineProps({

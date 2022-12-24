@@ -92,9 +92,9 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 

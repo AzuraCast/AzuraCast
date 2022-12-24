@@ -84,7 +84,7 @@ pre.changes {
 }
 </style>
 
-<script setup lang="ts">
+<script setup>
 import {DateTime} from "luxon";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

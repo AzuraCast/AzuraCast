@@ -86,7 +86,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {computed, onMounted, ref} from "vue";
@@ -100,7 +100,7 @@ const props = defineProps({
     apiUrl: String
 });
 
-const loading = ref<Boolean>(true);
+const loading = ref(true);
 const version = ref(null);
 
 const {form, resetForm, v$} = useVuelidateOnForm(

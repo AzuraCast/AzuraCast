@@ -87,11 +87,45 @@
     </b-overlay>
 </template>
 
+<script>
+import {defineComponent} from "vue";
+
+export const stationFormProps = {
+    // Global
+    showAdminTab: {
+        type: Boolean,
+        default: true
+    },
+    showAdvanced: {
+        type: Boolean,
+        default: true
+    },
+    // Profile
+    timezones: Object,
+    // Frontend
+    isShoutcastInstalled: {
+        type: Boolean,
+        default: false
+    },
+    isStereoToolInstalled: {
+        type: Boolean,
+        default: false
+    },
+    countries: Object,
+    // Admin
+    storageLocationApiUrl: String
+};
+
+export default defineComponent({
+    inheritAttrs: false
+});
+</script>
+
 <script setup>
-import AdminStationsProfileForm from "./Form/ProfileForm";
-import AdminStationsFrontendForm from "./Form/FrontendForm";
-import AdminStationsBackendForm from "./Form/BackendForm";
-import AdminStationsAdminForm from "./Form/AdminForm";
+import AdminStationsProfileForm from "./Form/ProfileForm.vue";
+import AdminStationsFrontendForm from "./Form/FrontendForm.vue";
+import AdminStationsBackendForm from "./Form/BackendForm.vue";
+import AdminStationsAdminForm from "./Form/AdminForm.vue";
 import AdminStationsHlsForm from "./Form/HlsForm.vue";
 import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
@@ -102,9 +136,10 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {isArray, merge, mergeWith} from "lodash";
 
 const props = defineProps({
-    ...StationFormProps.props,
+    ...stationFormProps,
     createUrl: String,
     editUrl: String,
     isEditMode: Boolean,
@@ -218,7 +253,7 @@ const buildForm = () => {
     };
 
     function mergeCustom(objValue, srcValue) {
-        if (_.isArray(objValue)) {
+        if (isArray(objValue)) {
             return objValue.concat(srcValue);
         }
     }
@@ -256,7 +291,8 @@ const buildForm = () => {
                 ],
             }
         };
-        _.mergeWith(validations, advancedValidations, mergeCustom);
+
+        mergeWith(validations, advancedValidations, mergeCustom);
 
         const advancedForm = {
             short_name: '',
@@ -285,7 +321,8 @@ const buildForm = () => {
                 duplicate_prevention_time_range: 120,
             },
         };
-        _.merge(blankForm, advancedForm);
+
+        merge(blankForm, advancedForm);
     }
 
     if (props.showAdminTab) {
@@ -302,7 +339,7 @@ const buildForm = () => {
             }
         };
 
-        _.mergeWith(validations, adminValidations, mergeCustom);
+        mergeWith(validations, adminValidations, mergeCustom);
 
         const adminForm = {
             media_storage_location: '',
@@ -310,7 +347,8 @@ const buildForm = () => {
             podcasts_storage_location: '',
             is_enabled: true,
         };
-        _.merge(blankForm, adminForm);
+
+        merge(blankForm, adminForm);
 
         if (props.showAdvanced) {
             const advancedAdminValidations = {
@@ -322,12 +360,13 @@ const buildForm = () => {
                 }
             }
 
-            _.mergeWith(validations, advancedAdminValidations, mergeCustom);
+            mergeWith(validations, advancedAdminValidations, mergeCustom);
 
             const adminAdvancedForm = {
                 radio_base_dir: '',
             };
-            _.merge(blankForm, adminAdvancedForm);
+
+            merge(blankForm, adminAdvancedForm);
         }
     }
 
@@ -441,36 +480,4 @@ defineExpose({
 });
 </script>
 
-<script>
-export const StationFormProps = {
-    props: {
-        // Global
-        showAdminTab: {
-            type: Boolean,
-            default: true
-        },
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
-        // Profile
-        timezones: Object,
-        // Frontend
-        isShoutcastInstalled: {
-            type: Boolean,
-            default: false
-        },
-        isStereoToolInstalled: {
-            type: Boolean,
-            default: false
-        },
-        countries: Object,
-        // Admin
-        storageLocationApiUrl: String
-    }
-};
 
-export default {
-    inheritAttrs: false
-}
-</script>

@@ -220,19 +220,19 @@
         </div>
     </b-form-fieldset>
 
-    <streaming-log-modal ref="acmeModal"></streaming-log-modal>
+    <streaming-log-modal ref="acmemodal"></streaming-log-modal>
 
     <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
 </template>
 
 <script setup>
-import BFormMarkup from "~/components/Form/BFormMarkup";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal";
-import Icon from "~/components/Common/Icon";
-import StreamingLogModal from "~/components/Common/StreamingLogModal";
+import BFormMarkup from "~/components/Form/BFormMarkup.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal.vue";
+import Icon from "~/components/Common/Icon.vue";
+import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
@@ -270,7 +270,7 @@ const avatarServiceOptions = computed(() => {
     ]
 });
 
-const acmeModal = ref(); // BModal
+const acmemodal = ref(); // StreamingLogModal
 const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
@@ -278,7 +278,7 @@ const generateAcmeCert = () => {
     wrapWithLoading(
         axios.put(props.acmeUrl)
     ).then((resp) => {
-        acmeModal.value.show(resp.data.links.log);
+        acmemodal.value.show(resp.data.links.log);
     });
 }
 </script>

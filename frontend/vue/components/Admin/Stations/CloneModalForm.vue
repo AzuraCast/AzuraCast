@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 

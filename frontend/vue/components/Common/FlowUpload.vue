@@ -69,17 +69,18 @@ div.flow-upload {
 
 <script setup>
 import formatFileSize from '~/functions/formatFileSize.js';
-import Icon from './Icon';
-import _ from 'lodash';
+import Icon from './Icon.vue';
+import {defaultsDeep, forEach, toInteger} from 'lodash';
 import {computed, onMounted, onUnmounted, reactive, ref} from "vue";
 import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    targetUrl: String,
-    allowMultiple: {
-        type: Boolean,
-        default: false
+  targetUrl: String,
+  allowMultiple: {
+    type: Boolean,
+    default: false
     },
     validMimeTypes: {
         type: Array,
@@ -120,13 +121,13 @@ const files = reactive({
         return this.value[file.uniqueIdentifier] ?? {};
     },
     hideAll() {
-        _.forEach(this.value, (file) => {
-            file.isVisible = false;
-        });
+      forEach(this.value, (file) => {
+        file.isVisible = false;
+      });
     },
-    reset() {
-        this.value = {};
-    }
+  reset() {
+    this.value = {};
+  }
 });
 
 const file_browse_target = ref(); // Template Ref
@@ -134,26 +135,28 @@ const file_drop_target = ref(); // Template Ref
 
 const {apiCsrf} = useAzuraCast();
 
+const {$gettext} = useTranslate();
+
 onMounted(() => {
-    let defaultConfig = {
-        target: () => {
-            return props.targetUrl
-        },
-        singleFile: !props.allowMultiple,
-        headers: {
-            'Accept': 'application/json',
-            'X-API-CSRF': apiCsrf
-        },
-        withCredentials: true,
-        allowDuplicateUploads: true,
-        fileParameterName: 'file_data',
-        uploadMethod: 'POST',
-        testMethod: 'GET',
-        method: 'multipart',
-        maxChunkRetries: 3,
-        testChunks: false
-    };
-    let config = _.defaultsDeep({}, props.flowConfiguration, defaultConfig);
+  let defaultConfig = {
+    target: () => {
+      return props.targetUrl
+    },
+    singleFile: !props.allowMultiple,
+    headers: {
+      'Accept': 'application/json',
+      'X-API-CSRF': apiCsrf
+    },
+    withCredentials: true,
+    allowDuplicateUploads: true,
+    fileParameterName: 'file_data',
+    uploadMethod: 'POST',
+    testMethod: 'GET',
+    method: 'multipart',
+    maxChunkRetries: 3,
+    testChunks: false
+  };
+  let config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
 
     flow = new Flow(config);
 
@@ -170,7 +173,7 @@ onMounted(() => {
     });
 
     flow.on('fileProgress', (file) => {
-        files.get(file).progressPercent = parseInt(file.progress() * 100);
+      files.get(file).progressPercent = toInteger(file.progress() * 100);
     });
 
     flow.on('fileSuccess', (file, message) => {
@@ -183,7 +186,7 @@ onMounted(() => {
     flow.on('error', (message, file, chunk) => {
         console.error(message, file, chunk);
 
-        let messageText = this.$gettext('Could not upload file.');
+      let messageText = $gettext('Could not upload file.');
         try {
             if (typeof message !== 'undefined') {
                 let messageJson = JSON.parse(message);

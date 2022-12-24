@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 

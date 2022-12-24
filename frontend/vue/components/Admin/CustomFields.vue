@@ -43,7 +43,7 @@
                 @relist="relist"></edit-modal>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
 import Icon from '~/components/Common/Icon.vue';
@@ -72,13 +72,13 @@ const getAutoAssignName = (autoAssign) => {
     return _.get(props.autoAssignTypes, autoAssign, $gettext('None'));
 };
 
-const datatable = ref<InstanceType<typeof DataTable>>();
+const datatable = ref(); // DataTable
 
 const relist = () => {
     datatable.value.refresh();
 };
 
-const editmodal = ref<InstanceType<typeof EditModal>>();
+const editmodal = ref(); // EditModal
 
 const doCreate = () => {
     editmodal.value.create();

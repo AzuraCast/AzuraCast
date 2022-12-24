@@ -107,7 +107,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Icon from "~/components/Common/Icon.vue";
 import DataTable from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
@@ -131,7 +131,7 @@ const props = defineProps({
     isDocker: Boolean,
 });
 
-const settingsLoading = ref<Boolean>(false);
+const settingsLoading = ref(false);
 
 const blankSettings = {
     backupEnabled: false,
@@ -168,7 +168,7 @@ const fields = [
     }
 ];
 
-const datatable = ref<InstanceType<typeof DataTable>>();
+const datatable = ref(); // DataTable
 
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
@@ -203,17 +203,17 @@ const toLocaleTime = (timestamp) => {
     );
 };
 
-const lastOutputModal = ref<InstanceType<typeof AdminBackupsLastOutputModal>>();
+const lastOutputModal = ref(); // AdminBackupsLastOutputModal
 const showLastOutput = () => {
     lastOutputModal.value.show();
 };
 
-const configureModal = ref<InstanceType<typeof AdminBackupsConfigureModal>>();
+const configureModal = ref(); // AdminBackupsConfigureModal
 const doConfigure = () => {
     configureModal.value.open();
 };
 
-const runBackupModal = ref<InstanceType<typeof AdminBackupsRunBackupModal>>();
+const runBackupModal = ref(); // AdminBackupsRunBackupModal
 const doRunBackup = () => {
     runBackupModal.value.open();
 };

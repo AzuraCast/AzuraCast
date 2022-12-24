@@ -30,21 +30,21 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import _ from 'lodash';
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import {map} from 'lodash';
 import {computed} from "vue";
 
 const props = defineProps({
-    form: Object,
-    globalPermissions: Object
+  form: Object,
+  globalPermissions: Object
 });
 
 const globalPermissionOptions = computed(() => {
-    return _.map(props.globalPermissions, (permissionName, permissionKey) => {
-        return {
-            text: permissionName,
-            value: permissionKey
-        };
-    });
+  return map(props.globalPermissions, (permissionName, permissionKey) => {
+    return {
+      text: permissionName,
+      value: permissionKey
+    };
+  });
 });
 </script>

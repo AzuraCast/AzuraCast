@@ -39,7 +39,7 @@
 
 <script setup>
 import useVuelidate from "@vuelidate/core";
-import _ from "lodash";
+import {get, map} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {useVModel} from "@vueuse/core";
@@ -63,7 +63,7 @@ const validations = {
 const v$ = useVuelidate(validations, form);
 
 const stationPermissionOptions = computed(() => {
-    return _.map(props.stationPermissions, (permissionName, permissionKey) => {
+    return map(props.stationPermissions, (permissionName, permissionKey) => {
         return {
             text: permissionName,
             value: permissionKey
@@ -72,6 +72,6 @@ const stationPermissionOptions = computed(() => {
 });
 
 const getStationName = (stationId) => {
-    return _.get(props.stations, stationId, null);
+    return get(props.stations, stationId, null);
 };
 </script>

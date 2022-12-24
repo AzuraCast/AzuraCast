@@ -36,10 +36,12 @@ const dark = computed(() => {
 </script>
 
 <script>
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
     model: {
         prop: 'modelValue',
         event: 'update:modelValue'
     },
-};
+});
 </script>

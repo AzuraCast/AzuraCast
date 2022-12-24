@@ -140,9 +140,9 @@
 </template>
 
 <script setup>
-import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import {computed, onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
@@ -151,7 +151,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
 
 const props = defineProps({
-    apiUrl: String,
+  apiUrl: String,
 });
 
 const loading = ref(true);

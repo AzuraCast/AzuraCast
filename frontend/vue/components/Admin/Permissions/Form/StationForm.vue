@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import _ from 'lodash';
+import {find, isEmpty, pickBy} from 'lodash';
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed} from "vue";
 
@@ -33,13 +33,13 @@ const props = defineProps({
 });
 
 const remainingStations = computed(() => {
-    return _.pickBy(props.stations, (stationName, stationId) => {
-        return !_.find(props.form.permissions.$model.station, {'station_id': stationId});
+    return pickBy(props.stations, (stationName, stationId) => {
+        return !find(props.form.permissions.$model.station, {'station_id': stationId});
     });
 });
 
 const hasRemainingStations = computed(() => {
-    return !_.isEmpty(remainingStations.value);
+    return !isEmpty(remainingStations.value);
 });
 
 const remove = (index) => {

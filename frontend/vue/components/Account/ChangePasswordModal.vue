@@ -1,21 +1,21 @@
 <template>
-    <modal-form ref="modal" size="md" centered :title="langTitle" :disable-save-button="v$.$invalid"
-                @submit="onSubmit" @hidden="onHidden">
+    <modal-form ref="modal" size="md" centered :title="$gettext('Change Password')" :disable-save-button="v$.$invalid"
+                @submit="onSubmit" @hidden="clearContents">
         <b-form-fieldset>
-            <b-wrapped-form-group id="form_current_password" :field="v$.form.current_password"
+            <b-wrapped-form-group id="form_current_password" :field="v$.current_password"
                                   input-type="password" autofocus>
                 <template #label>
                     {{ $gettext('Current Password') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_new_password" :field="v$.form.new_password" input-type="password">
+            <b-wrapped-form-group id="form_new_password" :field="v$.new_password" input-type="password">
                 <template #label>
                     {{ $gettext('New Password') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_current_password" :field="v$.form.new_password2" input-type="password">
+            <b-wrapped-form-group id="form_current_password" :field="v$.new_password2" input-type="password">
                 <template #label>
                     {{ $gettext('Confirm New Password') }}
                 </template>
@@ -23,90 +23,87 @@
         </b-form-fieldset>
 
         <template #save-button-name>
-            {{ langTitle }}
+            {{ $gettext('Change Password') }}
         </template>
     </modal-form>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
 import BFormFieldset from "~/components/Form/BFormFieldset";
-import {required, sameAs} from "@vuelidate/validators";
+import {helpers, required, sameAs} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
-import useVuelidate from "@vuelidate/core";
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    components: {BWrappedFormGroup, ModalForm, BFormFieldset},
-    props: {
-        changePasswordUrl: String
-    },
-    emits: ['relist'],
-    setup() {
-        return {
-            v$: useVuelidate()
-        };
-    },
-    data() {
-        return {
-            form: this.getBlankForm(),
-        };
-    },
-    validations: {
-        form: {
-            current_password: {required},
-            new_password: {required, validatePassword},
-            new_password2: {
-                required,
-                sameAs: sameAs('new_password')
-            }
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Change Password');
-        }
-    },
-    methods: {
-        getBlankForm() {
-            return {
-                current_password: null,
-                new_password: null,
-                new_password2: null
-            };
-        },
-        open() {
-            this.resetForm();
-            this.$refs.modal.show();
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        onHidden() {
-            this.clearContents();
-        },
-        resetForm() {
-            this.form = this.getBlankForm();
-        },
-        onSubmit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
+const props = defineProps({
+    changePasswordUrl: String
+});
 
-            this.$wrapWithLoading(
-                this.axios.put(this.changePasswordUrl, this.form)
-            ).finally(() => {
-                this.$refs.modal.hide();
-                this.$emit('relist');
-            });
-        },
-        clearContents() {
-            this.v$.$reset();
+const emit = defineEmits(['relist']);
 
-            this.error = null;
-            this.resetForm();
-        },
-    }
+const passwordsMatch = (value, siblings) => {
+    return siblings.new_password === value;
 };
+
+const {$gettext} = useTranslate();
+
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        current_password: {required},
+        new_password: {required, validatePassword},
+        new_password2: {
+            required,
+            passwordsMatch: helpers.withMessage($gettext('Must match new password.'), passwordsMatch)
+        }
+    },
+    {
+        current_password: null,
+        new_password: null,
+        new_password2: null
+    }
+);
+
+const error = ref(null);
+
+const clearContents = () => {
+    error.value = null;
+    resetForm();
+};
+
+const modal = ref(); // ModalForm
+
+const open = () => {
+    clearContents();
+    modal.value.show();
+};
+
+const close = () => {
+    modal.value.hide();
+}
+
+const {wrapWithLoading} = useNotify();
+const {axios} = useAxios();
+
+const onSubmit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
+    }
+
+    wrapWithLoading(
+        axios.put(props.changePasswordUrl, form.value)
+    ).finally(() => {
+        modal.value.hide();
+        emit('relist');
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

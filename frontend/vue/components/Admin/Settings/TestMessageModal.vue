@@ -38,6 +38,9 @@ const {form, resetForm, v$} = useVuelidateOnForm(
     },
     {
         emailAddress: null
+    },
+    {
+        $stopPropagation: true
     }
 );
 

@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <song-history-modal :show-album-art="showAlbumArt" ref="history_modal"></song-history-modal>
+    <song-history-modal :show-album-art="showAlbumArt" :history="history"></song-history-modal>
     <request-modal :show-album-art="showAlbumArt" :request-list-uri="requestListUri"
                    :custom-fields="customFields"></request-modal>
 </template>
@@ -64,12 +64,9 @@ const props = defineProps({
     }
 });
 
-const history_modal = ref(); // Template ref
-const isMounted = useMounted();
+const history = ref({});
 
 const onNowPlayingUpdate = (newNowPlaying) => {
-    if (isMounted.value) {
-        history_modal.value.updateHistory(newNowPlaying);
-    }
+    history.value = newNowPlaying?.song_history;
 }
 </script>

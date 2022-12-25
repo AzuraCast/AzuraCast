@@ -28,7 +28,7 @@
                             }}
                         </template>
 
-                        <flow-upload :target-url="apiUrl" :valid-mime-types="acceptMimeTypes"
+                        <flow-upload :target-url="apiUrl" :valid-mime-types="['text/plain']"
                                      @success="onFileSuccess"></flow-upload>
                     </b-form-group>
 
@@ -56,42 +56,42 @@
     </section>
 </template>
 
-<script>
+<script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
-import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
+import {ref} from "vue";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'StationsStereoToolConfiguration',
-    components: {InfoCard, FlowUpload},
-    mixins: [StationMayNeedRestart],
-    props: {
-        recordHasStereoToolConfiguration: Boolean,
-        apiUrl: String
-    },
-    data() {
-        return {
-            hasStereoToolConfiguration: this.recordHasStereoToolConfiguration,
-            acceptMimeTypes: ['text/plain']
-        };
-    },
-    methods: {
-        onFileSuccess() {
-            this.mayNeedRestart();
-            this.hasStereoToolConfiguration = true;
-        },
-        deleteConfigurationFile() {
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'DELETE',
-                    url: this.apiUrl
-                })
-            ).then(() => {
-                this.mayNeedRestart();
-                this.hasStereoToolConfiguration = false;
-                this.$notifySuccess();
-            });
-        },
-    }
+const props = defineProps({
+    ...mayNeedRestartProps,
+    recordHasStereoToolConfiguration: Boolean,
+    apiUrl: String
+});
+
+const hasStereoToolConfiguration = ref(props.recordHasStereoToolConfiguration);
+
+const {mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
+
+const onFileSuccess = () => {
+    mayNeedRestart();
+    hasStereoToolConfiguration.value = true;
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const deleteConfigurationFile = () => {
+    wrapWithLoading(
+        axios({
+            method: 'DELETE',
+            url: this.apiUrl
+        })
+    ).then(() => {
+        mayNeedRestart();
+        hasStereoToolConfiguration.value = false;
+        notifySuccess();
+    });
 };
 </script>

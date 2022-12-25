@@ -70,40 +70,39 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import FlowUpload from "~/components/Common/FlowUpload";
+import {computed, onMounted, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminShoutcast',
-    components: {FlowUpload},
-    props: {
-        apiUrl: String
-    },
-    data() {
-        return {
-            loading: true,
-            version: null,
-        };
-    },
-    computed: {
-        langInstalledVersion() {
-            const text = this.$gettext('Shoutcast version "%{ version }" is currently installed.');
-            return this.$gettextInterpolate(text, {
-                version: this.version
-            });
+const props = defineProps({
+    apiUrl: String
+});
+
+const loading = ref(true);
+const version = ref(null);
+
+const {$gettext} = useTranslate();
+
+const langInstalledVersion = computed(() => {
+    return $gettext(
+        'Shoutcast version "%{ version }" is currently installed.',
+        {
+            version: version.value
         }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl).then((resp) => {
-                this.version = resp.data.version;
-                this.loading = false;
-            });
-        }
-    }
-}
+    );
+});
+
+const {axios} = useAxios();
+
+const relist = () => {
+    loading.value = true;
+    axios.get(props.apiUrl).then((resp) => {
+        version.value = resp.data.version;
+        loading.value = false;
+    });
+};
+
+onMounted(relist);
 </script>

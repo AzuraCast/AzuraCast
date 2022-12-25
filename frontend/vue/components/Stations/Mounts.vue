@@ -54,72 +54,87 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
+    <edit-modal ref="editmodal" :create-url="listUrl" :new-intro-url="newIntroUrl"
                 :show-advanced="showAdvanced" :station-frontend-type="stationFrontendType"
                 @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
+import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'StationMounts',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    mixins: [StationMayNeedRestart],
-    props: {
-        listUrl: String,
-        newIntroUrl: String,
-        stationFrontendType: String,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    ...mayNeedRestartProps,
+    listUrl: String,
+    newIntroUrl: String,
+    stationFrontendType: String,
+    showAdvanced: {
+        type: Boolean,
+        default: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'display_name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-                {key: 'enable_autodj', label: this.$gettext('AutoDJ'), sortable: true},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        upper(data) {
-            let upper = [];
-            data.split(' ').forEach((word) => {
-                upper.push(word.toUpperCase());
-            });
-            return upper.join(' ');
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Mount Point?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.needsRestart();
-                        this.relist();
-                    });
-                }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},
+    {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const upper = (data) => {
+    let upper = [];
+    data.split(' ').forEach((word) => {
+        upper.push(word.toUpperCase());
+    });
+    return upper.join(' ');
+};
+
+const datatable = ref(); // DataTable
+
+const relist = () => {
+    datatable.value.refresh();
+};
+
+const editmodal = ref(); // EditModal
+
+const doCreate = () => {
+    editmodal.value.create();
+};
+
+const doEdit = (url) => {
+    editmodal.value.edit(url);
+};
+
+const {needsRestart, mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
+
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Mount Point?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                needsRestart();
+                relist();
             });
         }
-    }
-};
+    });
+}
+
 </script>
+

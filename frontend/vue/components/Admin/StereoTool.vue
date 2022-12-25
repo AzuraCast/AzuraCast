@@ -77,43 +77,46 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import FlowUpload from "~/components/Common/FlowUpload";
+import {computed, onMounted, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminStereoTool',
-    components: {FlowUpload},
-    props: {
-        apiUrl: String
-    },
-    data() {
-        return {
-            loading: true,
-            version: null,
-        };
-    },
-    computed: {
-        langInstalledVersion() {
-            const text = this.$gettext('Stereo Tool version %{ version } is currently installed.');
-            return this.$gettextInterpolate(text, {
-                version: this.version
-            });
+const props = defineProps({
+    apiUrl: String
+});
+
+const loading = ref(true);
+const version = ref(null);
+
+const {$gettext} = useTranslate();
+
+const langInstalledVersion = computed(() => {
+    return $gettext(
+        'Stereo Tool version %{ version } is currently installed.',
+        {
+            version: version.value
         }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        onError(file, message) {
-            this.$notifyError(message);
-        },
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl).then((resp) => {
-                this.version = resp.data.version;
-                this.loading = false;
-            });
-        }
-    }
-}
+    );
+});
+
+const {notifyError} = useNotify();
+
+const onError = (file, message) => {
+    notifyError(message);
+};
+
+const {axios} = useAxios();
+
+const relist = () => {
+    loading.value = true;
+    axios.get(props.apiUrl).then((resp) => {
+        version.value = resp.data.version;
+        loading.value = false;
+    });
+};
+
+onMounted(relist);
 </script>

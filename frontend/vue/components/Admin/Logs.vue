@@ -26,21 +26,19 @@
     <streaming-log-modal ref="modal"></streaming-log-modal>
 </template>
 
-<script>
+<script setup>
 import LogList from "~/components/Common/LogList";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
+import {ref} from "vue";
 
-export default {
-    name: 'AdminLogs',
-    components: {StreamingLogModal, LogList},
-    props: {
-        systemLogsUrl: String,
-        stationLogs: Array
-    },
-    methods: {
-        viewLog(url) {
-            this.$refs.modal.show(url);
-        }
-    }
-}
+const props = defineProps({
+    systemLogsUrl: String,
+    stationLogs: Array
+});
+
+const modal = ref(); // StreamingLogModal
+
+const viewLog = (url) => {
+    modal.value.show(url);
+};
 </script>

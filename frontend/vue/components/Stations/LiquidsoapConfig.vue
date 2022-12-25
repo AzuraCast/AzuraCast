@@ -28,7 +28,7 @@
             <b-overlay variant="card" :show="loading">
                 <div class="card-body">
                     <b-form-fieldset v-for="(row, index) in config" :key="index" class="mb-0">
-                        <b-wrapped-form-group v-if="row.is_field" :field="v$.form[row.field_name]"
+                        <b-wrapped-form-group v-if="row.is_field" :field="v$[row.field_name]"
                                               :id="'form_edit_'+row.field_name" input-type="textarea"
                                               :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}">
                         </b-wrapped-form-group>
@@ -37,7 +37,7 @@
                         </b-form-markup>
                     </b-form-fieldset>
 
-                    <b-button size="lg" type="submit" :variant="(v$.form.$invalid) ? 'danger' : 'primary'">
+                    <b-button size="lg" type="submit" :variant="(v$.$invalid) ? 'danger' : 'primary'">
                         {{ $gettext('Save Changes') }}
                     </b-button>
                 </div>
@@ -46,83 +46,78 @@
     </form>
 </template>
 
-<script>
-import useVuelidate from "@vuelidate/core";
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormMarkup from "~/components/Form/BFormMarkup";
-import _ from "lodash";
+import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
-import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
+import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {onMounted, ref} from "vue";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
 
-export default {
-    name: 'StationsLiquidsoapConfig',
-    components: {InfoCard, BFormFieldset, BWrappedFormGroup, BFormMarkup},
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    props: {
-        settingsUrl: String,
-        config: Array,
-        sections: Array,
-    },
-    mixins: [
-        StationMayNeedRestart,
-    ],
-    validations() {
-        let validations = {form: {}};
-        _.forEach(this.sections, (section) => {
-            validations.form[section] = {};
-        });
-        return validations;
-    },
-    data() {
-        return {
-            loading: true,
-            form: {},
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        resetForm() {
-            let form = {};
-            _.forEach(this.sections, (section) => {
-                form[section] = null;
-            });
-            this.form = form;
-        },
-        relist() {
-            this.resetForm();
-            this.v$.$reset();
+const props = defineProps({
+    ...mayNeedRestartProps,
+    settingsUrl: String,
+    config: Array,
+    sections: Array,
+});
 
-            this.loading = true;
-            this.axios.get(this.settingsUrl).then((resp) => {
-                this.form = mergeExisting(this.form, resp.data);
-                this.loading = false;
-            });
-        },
-        submit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
+const buildForm = () => {
+    let validations = {};
+    let blankForm = {};
 
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.settingsUrl,
-                    data: this.form
-                })
-            ).then(() => {
-                this.$notifySuccess();
+    forEach(props.sections, (section) => {
+        validations[section] = {};
+        blankForm[section] = null;
+    });
 
-                this.mayNeedRestart();
-                this.relist();
-            });
-        }
+    return {validations, blankForm};
+}
+
+const {validations, blankForm} = buildForm();
+const {form, resetForm, v$} = useVuelidateOnForm(validations, blankForm);
+
+const loading = ref();
+
+const {mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
+
+const {axios} = useAxios();
+
+const relist = () => {
+    resetForm();
+
+    loading.value = true;
+    axios.get(props.settingsUrl).then((resp) => {
+        form.value = mergeExisting(form.value, resp.data);
+        loading.value = false;
+    });
+};
+
+onMounted(relist);
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+
+const submit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
     }
+
+    wrapWithLoading(
+        axios({
+            method: 'PUT',
+            url: props.settingsUrl,
+            data: form.value,
+        })
+    ).then(() => {
+        notifySuccess();
+
+        mayNeedRestart();
+        relist();
+    });
 }
 </script>

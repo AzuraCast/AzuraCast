@@ -43,65 +43,77 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editModal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
+    <edit-modal ref="editmodal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './HlsStreams/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'StationHlsStreams',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    mixins: [StationMayNeedRestart],
-    props: {
-        listUrl: String
-    },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-                {key: 'format', label: this.$gettext('Format'), sortable: true},
-                {key: 'bitrate', label: this.$gettext('Bitrate'), sortable: true},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        upper(data) {
-            let upper = [];
-            data.split(' ').forEach((word) => {
-                upper.push(word.toUpperCase());
+const props = defineProps({
+    ...mayNeedRestartProps,
+    listUrl: String
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
+    {key: 'format', label: $gettext('Format'), sortable: true},
+    {key: 'bitrate', label: $gettext('Bitrate'), sortable: true},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const upper = (data) => {
+    let upper = [];
+    data.split(' ').forEach((word) => {
+        upper.push(word.toUpperCase());
+    });
+    return upper.join(' ');
+};
+
+const datatable = ref(); // DataTable
+
+const relist = () => {
+    datatable.value?.refresh();
+};
+
+const editmodal = ref(); // EditModal
+
+const doCreate = () => {
+    editmodal.value?.create();
+};
+
+const doEdit = (url) => {
+    editmodal.value?.edit(url);
+};
+
+const {mayNeedRestart, needsRestart} = useMayNeedRestart(props.restartStatusUrl);
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete HLS Stream?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                needsRestart();
+                relist();
             });
-            return upper.join(' ');
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete HLS Stream?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.needsRestart();
-                        this.relist();
-                    });
-                }
-            });
-        },
-    }
+        }
+    });
 };
 </script>

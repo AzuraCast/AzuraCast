@@ -5,13 +5,15 @@
 </template>
 
 <script setup>
-import EpisodesView, {episodeViewProps} from './Podcasts/EpisodesView';
-import ListView, {listViewProps} from './Podcasts/ListView';
+import EpisodesView from './Podcasts/EpisodesView';
+import ListView from './Podcasts/ListView';
 import {ref} from "vue";
+import episodesViewProps from "./Podcasts/episodesViewProps";
+import listViewProps from "./Podcasts/listViewProps";
 
 const props = defineProps({
-    ...episodeViewProps.props,
-    ...listViewProps.props
+    ...episodesViewProps,
+    ...listViewProps
 });
 
 const activePodcast = ref(null);

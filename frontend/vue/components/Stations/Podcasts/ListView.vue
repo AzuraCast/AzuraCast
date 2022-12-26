@@ -57,23 +57,14 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
-
-export const listViewProps = {
-    props: {
-        listUrl: String,
-        newArtUrl: String,
-        quotaUrl: String,
-        locale: String,
-        stationTimeZone: String,
-        languageOptions: Object,
-        categoriesOptions: Object
-    }
-};
+import listViewProps from "./listViewProps";
 
 export default {
     name: 'ListView',
     components: {StationsCommonQuota, AlbumArt, EditModal, DataTable},
-    mixins: [listViewProps],
+    props: {
+        ...listViewProps
+    },
     emits: ['select-podcast'],
     data() {
         return {

@@ -44,7 +44,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const artworkSrc = toRef(props, 'artworkSrc');
+const artworkSrc = ref(props.artworkSrc);
 const localSrc = ref(null);
 
 const src = computed(() => {

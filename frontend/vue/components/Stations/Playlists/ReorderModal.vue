@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="reorder_modal" ref="modal" :title="langTitle" :busy="loading" hide-footer>
+    <b-modal size="lg" id="reorder_modal" ref="modal" :title="$gettext('Reorder Playlist')" :busy="loading" hide-footer>
         <b-overlay variant="card" :show="loading">
             <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
                 <inline-player ref="player"></inline-player>
@@ -27,11 +27,12 @@
                         <td>
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="moveDown(index)"
-                                          :title="langDownBtn"
+                                          :title="$gettext('Down')"
                                           v-if="index+1 < media.length">
                                     <icon icon="arrow_downward"></icon>
                                 </b-button>
-                                <b-button size="sm" variant="primary" @click.prevent="moveUp(index)" :title="langUpBtn"
+                                <b-button size="sm" variant="primary" @click.prevent="moveUp(index)"
+                                          :title="$gettext('Up')"
                                           v-if="index > 0">
                                     <icon icon="arrow_upward"></icon>
                                 </b-button>
@@ -70,17 +71,6 @@ export default {
             reorderUrl: null,
             media: []
         };
-    },
-    computed: {
-        langTitle () {
-            return this.$gettext('Reorder Playlist');
-        },
-        langDownBtn () {
-            return this.$gettext('Down');
-        },
-        langUpBtn () {
-            return this.$gettext('Up');
-        }
     },
     methods: {
         open (reorderUrl) {

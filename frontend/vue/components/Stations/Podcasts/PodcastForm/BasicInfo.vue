@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTitle" active>
+    <b-tab :title="$gettext('Basic Information')" active>
         <b-form-group>
             <div class="form-row">
 
@@ -83,21 +83,12 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'PodcastFormBasicInfo',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        languageOptions: Object,
-        categoriesOptions: Object
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Basic Information');
-        }
-    }
-};
+const props = defineProps({
+    form: Object,
+    languageOptions: Object,
+    categoriesOptions: Object
+});
 </script>

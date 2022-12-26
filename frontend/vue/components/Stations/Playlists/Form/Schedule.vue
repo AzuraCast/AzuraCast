@@ -1,11 +1,13 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="$gettext('Schedule')">
         <b-form-group v-if="scheduleItems.length === 0">
             <label>
                 {{ $gettext('Not Scheduled') }}
             </label>
             <p>
-                {{ $gettext('This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.') }}
+                {{
+                    $gettext('This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.')
+                }}
             </p>
         </b-form-group>
 
@@ -36,11 +38,6 @@ export default {
         form: Object,
         stationTimeZone: String,
         scheduleItems: Array
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Schedule');
-        }
     },
     methods: {
         add () {

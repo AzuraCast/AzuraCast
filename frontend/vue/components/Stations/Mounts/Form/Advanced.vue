@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="$gettext('Advanced')">
         <b-form-group>
             <div class="form-row mb-3">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_custom_listen_url"
@@ -44,9 +44,6 @@ export default {
         stationFrontendType: String
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Advanced');
-        },
         isIcecast() {
             return FRONTEND_ICECAST === this.stationFrontendType;
         }

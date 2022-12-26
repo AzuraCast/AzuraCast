@@ -47,21 +47,19 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import LogList from "~/components/Common/LogList";
+import {ref} from "vue";
 
-export default {
-    name: 'StationsHelp',
-    components: {LogList, StreamingLogModal, Icon},
-    props: {
-        logsUrl: String,
-    },
-    methods: {
-        viewLog(url) {
-            this.$refs.modal.show(url);
-        }
-    }
-}
+const props = defineProps({
+    logsUrl: String,
+});
+
+const modal = ref(); // BModal
+
+const viewLog = (url) => {
+    modal.value?.show(url);
+};
 </script>

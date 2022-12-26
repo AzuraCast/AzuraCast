@@ -63,16 +63,12 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./Common/FormattingInfo";
 
-export default {
-    name: 'Discord',
-    components: {CommonFormattingInfo, BWrappedFormGroup},
-    props: {
-        form: Object,
-        nowPlayingUrl: String
-    }
-}
+const props = defineProps({
+    form: Object,
+    nowPlayingUrl: String
+});
 </script>

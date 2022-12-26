@@ -33,15 +33,11 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'BasicInfo',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        triggerOptions: Array
-    }
-}
+const props = defineProps({
+    form: Object,
+    triggerOptions: Array
+});
 </script>

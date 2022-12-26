@@ -64,30 +64,29 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./Common/FormattingInfo";
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'Telegram',
-    components: {CommonFormattingInfo, BWrappedFormGroup},
-    props: {
-        form: Object,
-        nowPlayingUrl: String
-    },
-    computed: {
-        parseModeOptions() {
-            return [
-                {
-                    text: this.$gettext('Markdown'),
-                    value: 'Markdown',
-                },
-                {
-                    text: this.$gettext('HTML'),
-                    value: 'HTML',
-                }
-            ];
+const props = defineProps({
+    form: Object,
+    nowPlayingUrl: String
+});
+
+const {$gettext} = useTranslate();
+
+const parseModeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Markdown'),
+            value: 'Markdown',
+        },
+        {
+            text: $gettext('HTML'),
+            value: 'HTML',
         }
-    }
-}
+    ];
+});
 </script>

@@ -80,15 +80,11 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'MediaFormAdvancedSettings',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        songLength: String
-    },
-};
+const props = defineProps({
+    form: Object,
+    songLength: String
+});
 </script>

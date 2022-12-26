@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Basic Info')" active>
         <b-form-group>
             <div class="form-row mb-3">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_name" :field="form.name">
@@ -120,9 +120,6 @@ export default {
         stationFrontendType: String
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        },
         langAuthhashDesc() {
             let text = 'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the Shoutcast web site</a>.';
             let url = 'https://radiomanager.shoutcast.com/';

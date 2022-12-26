@@ -19,7 +19,7 @@
                 </b-card-header>
 
                 <b-tabs pills card lazy>
-                    <b-tab :title="langAccountListTab" no-body>
+                    <b-tab :title="$gettext('Account List')" no-body>
                         <b-card-body body-class="card-padding-sm">
                             <b-button variant="outline-primary" @click.prevent="doCreate">
                                 <icon icon="add"></icon>
@@ -56,7 +56,7 @@
                             </template>
                         </data-table>
                     </b-tab>
-                    <b-tab :title="langScheduleViewTab" no-body>
+                    <b-tab :title="$gettext('Schedule View')" no-body>
                         <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
                                   @click="doCalendarClick"></schedule>
                     </b-tab>
@@ -102,14 +102,6 @@ export default {
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
-    },
-    computed: {
-        langAccountListTab() {
-            return this.$gettext('Account List');
-        },
-        langScheduleViewTab() {
-            return this.$gettext('Schedule View');
-        }
     },
     methods: {
         relist() {

@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="import_modal" ref="modal" :title="langTitle" @hidden="onHidden">
+    <b-modal id="import_modal" ref="modal" :title="$gettext('Import from PLS/M3U')" @hidden="onHidden">
         <div v-if="results">
             <p class="card-text">{{ results.message }}</p>
 
@@ -64,11 +64,6 @@ export default {
             playlistFile: null,
             results: null,
         };
-    },
-    computed: {
-        langTitle () {
-            return this.$gettext('Import from PLS/M3U');
-        }
     },
     methods: {
         open (importPlaylistUrl) {

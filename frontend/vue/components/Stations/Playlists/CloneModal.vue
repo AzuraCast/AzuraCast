@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" id="clone_modal" :title="langTitle" :error="error"
+    <modal-form ref="modal" id="clone_modal" :title="$gettext('Duplicate Playlist')" :error="error"
                 :disable-save-button="v$.form.$invalid" @submit="doSubmit" @hidden="clearContents">
 
         <div class="form-row">
@@ -49,11 +49,6 @@ export default {
             cloneUrl: null,
             form: {}
         };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Duplicate Playlist');
-        }
     },
     validations: {
         form: {

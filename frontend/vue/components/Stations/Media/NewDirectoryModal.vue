@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="create_directory" centered ref="modal" :title="langNewDirectory">
+    <b-modal id="create_directory" centered ref="modal" :title="$gettext('New Directory')">
         <b-form @submit.prevent="doMkdir">
             <b-wrapped-form-group id="new_directory_name" :field="v$.newDirectory" autofocus>
                 <template #label>
@@ -40,11 +40,6 @@ export default {
     validations: {
         newDirectory: {
             required
-        }
-    },
-    computed: {
-        langNewDirectory () {
-            return this.$gettext('New Directory');
         }
     },
     methods: {

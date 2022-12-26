@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="$gettext('Schedule')">
         <b-form-group v-if="scheduleItems.length === 0">
             <label>
                 {{ $gettext('Not Scheduled') }}
@@ -49,11 +49,6 @@ export default {
                 {value: 7, text: this.$gettext('Sunday')}
             ]
         };
-    },
-    computed: {
-        langTabTitle () {
-            return this.$gettext('Schedule');
-        }
     },
     methods: {
         add () {

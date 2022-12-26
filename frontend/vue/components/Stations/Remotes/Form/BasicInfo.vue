@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Basic Info')" active>
         <b-form-group>
             <div class="form-row">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_type" :field="form.type">
@@ -90,9 +90,6 @@ export default {
         form: Object
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        },
         typeOptions() {
             return [
                 {

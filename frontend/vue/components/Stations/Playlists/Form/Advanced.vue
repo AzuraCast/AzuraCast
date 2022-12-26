@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="$gettext('Advanced')">
         <b-form-group>
             <div class="form-row">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_backend_options" :field="form.backend_options">
@@ -28,19 +28,10 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'PlaylistEditAdvanced',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Advanced');
-        }
-    }
-};
+const props = defineProps({
+    form: Object
+});
 </script>

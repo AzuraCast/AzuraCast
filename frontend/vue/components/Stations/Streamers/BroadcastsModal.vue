@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="langHeader">
+    <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="$gettext('Streamer Broadcasts')">
         <template v-if="listUrl">
             <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
                 <inline-player ref="player"></inline-player>
@@ -13,7 +13,7 @@
                                      :url="row.item.recording?.links?.download"></play-button>
                         &nbsp;
                         <a class="name" :href="row.item.recording?.links?.download" target="_blank"
-                           :title="langDownload">
+                           :title="$gettext('Download')">
                             <icon icon="cloud_download"></icon>
                         </a>
                     </template>
@@ -107,17 +107,6 @@ export default {
                 }
             ]
         };
-    },
-    computed: {
-        langHeader () {
-            return this.$gettext('Streamer Broadcasts');
-        },
-        langPlayPause () {
-            return this.$gettext('Play/Pause');
-        },
-        langDownload () {
-            return this.$gettext('Download');
-        }
     },
     methods: {
         doDelete (url) {

@@ -10,15 +10,11 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'MediaFormCustomFields',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        customFields: Array
-    },
-};
+const props = defineProps({
+    form: Object,
+    customFields: Array
+});
 </script>

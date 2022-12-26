@@ -1,6 +1,6 @@
 <template>
     <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
-                         field-key="browser" :field-label="langFieldLabel">
+                         field-key="browser" :field-label="$gettext('Browser')">
         <template #by_listeners_legend>
             {{ $gettext('Top Browsers by Listeners') }}
         </template>
@@ -10,20 +10,11 @@
     </common-metrics-view>
 </template>
 
-<script>
+<script setup>
 import CommonMetricsView from "./CommonMetricsView";
 
-export default {
-    name: 'BrowsersTab',
-    components: {CommonMetricsView},
-    props: {
-        dateRange: Object,
-        apiUrl: String,
-    },
-    computed: {
-        langFieldLabel() {
-            return this.$gettext('Browser');
-        }
-    }
-}
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String,
+});
 </script>

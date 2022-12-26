@@ -109,7 +109,7 @@
                     <template #cell(playlists)="row">
                         <template v-for="(playlist, index) in row.item.playlists">
                             <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
-                               :title="langPlaylistSelect">{{ playlist.name }}</a>
+                               :title="$gettext('View tracks in playlist')">{{ playlist.name }}</a>
                             <span v-if="index+1 < row.item.playlists.length">, </span>
                         </template>
                     </template>
@@ -117,12 +117,12 @@
                         <template v-if="row.item.media.links.edit">
                             <b-button size="sm" variant="primary"
                                       @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)">
-                                {{ langEditButton }}
+                                {{ $gettext('Edit') }}
                             </b-button>
                         </template>
                         <template v-else>
                             <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
-                                {{ langRenameButton }}
+                                {{ $gettext('Rename') }}
                             </b-button>
                         </template>
                     </template>
@@ -303,20 +303,6 @@ export default {
     },
     unmounted() {
         window.removeEventListener('hashchange', this.onHashChange);
-    },
-    computed: {
-        langAlbumArt() {
-            return this.$gettext('Album Art');
-        },
-        langRenameButton() {
-            return this.$gettext('Rename');
-        },
-        langEditButton() {
-            return this.$gettext('Edit');
-        },
-        langPlaylistSelect() {
-            return this.$gettext('View tracks in playlist');
-        },
     },
     methods: {
         formatFileSize(size) {

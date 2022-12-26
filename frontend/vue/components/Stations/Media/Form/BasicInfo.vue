@@ -52,14 +52,10 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'MediaFormBasicInfo',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object
-    }
-};
+const props = defineProps({
+    form: Object
+});
 </script>

@@ -11,27 +11,26 @@
     </section>
 </template>
 
-<script>
+<script setup>
 import AdminStationsForm, {stationFormProps} from "~/components/Admin/Stations/StationForm";
+import {onMounted, ref} from "vue";
 
-export default {
-    name: 'StationsProfileEdit',
-    components: {AdminStationsForm},
-    props: {
-        ...stationFormProps,
-        editUrl: String,
-        continueUrl: {
-            type: String,
-            required: true
-        }
-    },
-    mounted() {
-        this.$refs.form.reset();
-    },
-    methods: {
-        onSubmitted() {
-            window.location.href = this.continueUrl;
-        },
+const props = defineProps({
+    ...stationFormProps,
+    editUrl: String,
+    continueUrl: {
+        type: String,
+        required: true
     }
+});
+
+const form = ref(); // AdminStationsForm
+
+onMounted(() => {
+    form.value?.reset();
+});
+
+const onSubmitted = () => {
+    window.location.href = props.continueUrl;
 }
 </script>

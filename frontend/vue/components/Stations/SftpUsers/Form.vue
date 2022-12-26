@@ -37,15 +37,11 @@
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'SftpUsersForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        isEditMode: Boolean
-    },
-};
+const props = defineProps({
+    form: Object,
+    isEditMode: Boolean
+});
 </script>

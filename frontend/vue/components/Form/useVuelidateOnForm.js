@@ -1,14 +1,14 @@
 import useVuelidate from "@vuelidate/core";
-import {useResettableForm} from "~/components/Form/UseResettableForm";
+import {useResettableRef} from "~/functions/useResettableRef";
 
 export function useVuelidateOnForm(validations, blankForm, options = {}) {
-    const {form, resetForm: parentResetForm} = useResettableForm(blankForm);
+    const {record: form, reset} = useResettableRef(blankForm);
 
     const v$ = useVuelidate(validations, form, options);
 
     const resetForm = () => {
         v$.value.$reset();
-        parentResetForm();
+        reset();
     }
 
     return {

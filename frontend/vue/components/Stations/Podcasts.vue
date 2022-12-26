@@ -4,26 +4,23 @@
     <list-view v-else v-bind="$props" @select-podcast="onSelectPodcast"></list-view>
 </template>
 
-<script>
+<script setup>
 import EpisodesView, {episodeViewProps} from './Podcasts/EpisodesView';
 import ListView, {listViewProps} from './Podcasts/ListView';
+import {ref} from "vue";
 
-export default {
-    name: 'StationPodcasts',
-    components: {ListView, EpisodesView},
-    mixins: [episodeViewProps, listViewProps],
-    data() {
-        return {
-            activePodcast: null
-        };
-    },
-    methods: {
-        onSelectPodcast (podcast) {
-            this.activePodcast = podcast;
-        },
-        onClearPodcast () {
-            this.activePodcast = null;
-        }
-    }
+const props = defineProps({
+    ...episodeViewProps.props,
+    ...listViewProps.props
+});
+
+const activePodcast = ref(null);
+
+const onSelectPodcast = (podcast) => {
+    activePodcast.value = podcast;
 };
+
+const onClearPodcast = () => {
+    activePodcast.value = null;
+}
 </script>

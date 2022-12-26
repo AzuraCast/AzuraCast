@@ -65,17 +65,13 @@
     <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 
-export default {
-    name: 'Twitter',
-    components: {CommonSocialPostFields, CommonRateLimitFields, BWrappedFormGroup},
-    props: {
-        form: Object,
-        nowPlayingUrl: String
-    }
-}
+const props = defineProps({
+    form: Object,
+    nowPlayingUrl: String
+});
 </script>

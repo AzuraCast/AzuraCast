@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Basic Info')" active>
         <b-form-group>
             <div class="form-row">
 
@@ -74,20 +74,11 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
-export default {
-    name: 'StreamerFormBasicInfo',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: Object
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        }
-    }
-};
+const props = defineProps({
+    form: Object
+});
 </script>

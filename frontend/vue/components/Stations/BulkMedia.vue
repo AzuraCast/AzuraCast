@@ -60,7 +60,7 @@
             </section>
         </div>
 
-        <b-modal id="import_modal" ref="modal" :title="langModalTitle">
+        <b-modal id="import_modal" ref="modal" :title="$gettext('Import Results')">
             <div>
                 <p class="card-text">{{ importResults.message }}</p>
 
@@ -123,11 +123,6 @@ export default {
             importFile: null,
             importResults: {},
         };
-    },
-    computed: {
-        langModalTitle() {
-            return this.$gettext('Import Results');
-        }
     },
     methods: {
         doSubmit() {

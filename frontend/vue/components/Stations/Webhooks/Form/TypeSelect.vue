@@ -14,17 +14,14 @@
     </b-form-group>
 </template>
 
-<script>
-export default {
-    name: 'TypeSelect',
-    emits: ['select'],
-    props: {
-        webhookTypes: Object,
-    },
-    methods: {
-        selectType(type) {
-            this.$emit('select', type);
-        }
-    }
+<script setup>
+const props = defineProps({
+    webhookTypes: Object,
+});
+
+const emit = defineEmits(['select']);
+
+const selectType = (type) => {
+    emit('select', type);
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="$gettext('AutoDJ')">
         <b-form-group>
             <div class="form-row mb-3">
                 <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
@@ -60,9 +60,6 @@ export default {
         stationFrontendType: String
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('AutoDJ');
-        },
         formatOptions() {
             return [
                 {

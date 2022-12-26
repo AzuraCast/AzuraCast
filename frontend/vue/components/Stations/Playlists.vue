@@ -16,7 +16,7 @@
             </b-row>
         </b-card-header>
         <b-tabs pills card lazy>
-            <b-tab :title="langAllPlaylistsTab" no-body>
+            <b-tab :title="$gettext('All Playlists')" no-body>
                 <b-card-body body-class="card-padding-sm">
                     <b-button variant="outline-primary" @click.prevent="doCreate">
                         <icon icon="add"></icon>
@@ -35,28 +35,28 @@
                                 {{ $gettext('Delete') }}
                             </b-button>
 
-                            <b-dropdown size="sm" variant="dark" boundary="window" :text="langMore">
+                            <b-dropdown size="sm" variant="dark" boundary="window" :text="$gettext('More')">
                                 <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
                                     {{ langToggleButton(row.item) }}
                                 </b-dropdown-item>
                                 <b-dropdown-item @click.prevent="doImport(row.item.links.import)"
                                                  v-if="row.item.source === 'songs'">
-                                    {{ langImportButton }}
+                                    {{ $gettext('Import from PLS/M3U') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item @click.prevent="doReorder(row.item.links.order)"
                                                  v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
-                                    {{ langReorderButton }}
+                                    {{ $gettext('Reorder') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item @click.prevent="doQueue(row.item.links.queue)"
                                                  v-if="row.item.source === 'songs' && row.item.order !== 'random'">
-                                    {{ langQueueButton }}
+                                    {{ $gettext('Playback Queue') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item @click.prevent="doModify(row.item.links.reshuffle)"
                                                  v-if="row.item.order === 'shuffle'">
-                                    {{ langReshuffleButton }}
+                                    {{ $gettext('Reshuffle') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item @click.prevent="doClone(row.item.name, row.item.links.clone)">
-                                    {{ langCloneButton }}
+                                    {{ $gettext('Duplicate') }}
                                 </b-dropdown-item>
                                 <template v-for="format in ['pls', 'm3u']">
                                     <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
@@ -114,7 +114,7 @@
                     </template>
                 </data-table>
             </b-tab>
-            <b-tab :title="langScheduleViewTab" no-body>
+            <b-tab :title="$gettext('Schedule View')" no-body>
                 <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
                           @click="doCalendarClick"></schedule>
             </b-tab>
@@ -165,32 +165,6 @@ export default {
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
-    },
-    computed: {
-        langAllPlaylistsTab () {
-            return this.$gettext('All Playlists');
-        },
-        langScheduleViewTab () {
-            return this.$gettext('Schedule View');
-        },
-        langMore () {
-            return this.$gettext('More');
-        },
-        langReorderButton () {
-            return this.$gettext('Reorder');
-        },
-        langQueueButton () {
-            return this.$gettext('Playback Queue');
-        },
-        langReshuffleButton () {
-            return this.$gettext('Reshuffle');
-        },
-        langCloneButton () {
-            return this.$gettext('Duplicate');
-        },
-        langImportButton () {
-            return this.$gettext('Import from PLS/M3U');
-        }
     },
     methods: {
         langToggleButton (record) {

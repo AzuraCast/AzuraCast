@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Basic Info')" active>
         <b-form-group>
             <div class="form-row mb-3">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
@@ -46,39 +46,29 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {map} from "lodash";
 
-export default {
-    name: 'HlsStreamFormBasicInfo',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: Object,
-        stationFrontendType: String
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        },
-        formatOptions() {
-            return [
-                {
-                    value: 'aac',
-                    text: 'AAC'
-                }
-            ];
-        },
-        bitrateOptions() {
-            let options = [];
-            [32, 48, 64, 96, 128, 192, 256, 320].forEach((val) => {
-                options.push({
-                    value: val,
-                    text: val
-                });
-            });
-            return options;
-        },
+const props = defineProps({
+    form: Object,
+    stationFrontendType: String
+});
+
+const formatOptions = [
+    {
+        value: 'aac',
+        text: 'AAC'
     }
-};
+];
+
+const bitrateOptions = map(
+    [32, 48, 64, 96, 128, 192, 256, 320],
+    (val) => {
+        return {
+            value: val,
+            text: val
+        }
+    },
+);
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Basic Info')" active>
         <b-form-group>
             <div class="form-row">
                 <b-wrapped-form-group class="col-md-6" id="form_edit_name" :field="form.name">
@@ -343,11 +343,6 @@ export default {
         return {
             weightOptions: weightOptions
         };
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        }
     }
 };
 </script>

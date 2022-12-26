@@ -20,7 +20,7 @@
                             {{ $gettext('Select Custom Fallback File') }}
                         </template>
 
-                        <flow-upload :target-url="apiUrl" :valid-mime-types="acceptMimeTypes"
+                        <flow-upload :target-url="apiUrl" :valid-mime-types="['audio/*']"
                                      @success="onFileSuccess"></flow-upload>
                     </b-form-group>
 
@@ -50,32 +50,28 @@
     </section>
 </template>
 
-<script>
+<script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
+import {ref} from "vue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'StationsFallback',
-    components: {InfoCard, FlowUpload},
-    props: {
-        apiUrl: String,
-        recordHasFallback: Boolean
-    },
-    data() {
-        return {
-            hasFallback: this.recordHasFallback,
-            acceptMimeTypes: ['audio/*']
-        };
-    },
-    methods: {
-        onFileSuccess() {
-            this.hasFallback = true;
-        },
-        deleteFallback() {
-            this.axios.delete(this.apiUrl).then(() => {
-                this.hasFallback = false;
-            });
-        }
-    }
+const props = defineProps({
+    apiUrl: String,
+    recordHasFallback: Boolean
+});
+
+const hasFallback = ref(props.recordHasFallback);
+
+const onFileSuccess = () => {
+    hasFallback.value = true;
 };
+
+const {axios} = useAxios();
+
+const deleteFallback = () => {
+    axios.delete(props.apiUrl).then(() => {
+        hasFallback.value = false;
+    });
+}
 </script>

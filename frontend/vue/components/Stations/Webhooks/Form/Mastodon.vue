@@ -70,41 +70,34 @@
     <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import RateLimitFields from "./Common/RateLimitFields";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'Mastodon',
-    components: {
-        CommonRateLimitFields,
-        CommonSocialPostFields,
-        RateLimitFields,
-        BWrappedFormGroup
-    },
-    props: {
-        form: Object,
-        nowPlayingUrl: String
-    },
-    computed: {
-        visibilityOptions() {
-            return [
-                {
-                    text: this.$gettext('Public'),
-                    value: 'public',
-                },
-                {
-                    text: this.$gettext('Unlisted'),
-                    value: 'unlisted',
-                },
-                {
-                    text: this.$gettext('Private'),
-                    value: 'private',
-                }
-            ];
+const props = defineProps({
+    form: Object,
+    nowPlayingUrl: String
+});
+
+const {$gettext} = useTranslate();
+
+const visibilityOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Public'),
+            value: 'public',
+        },
+        {
+            text: $gettext('Unlisted'),
+            value: 'unlisted',
+        },
+        {
+            text: $gettext('Private'),
+            value: 'private',
         }
-    }
-}
+    ];
+});
 </script>

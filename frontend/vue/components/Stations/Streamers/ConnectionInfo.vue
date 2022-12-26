@@ -78,11 +78,9 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    name: 'ConnectionInfo',
-    props: {
-        connectionInfo: Object
-    }
-}
+
+<script setup>
+const props = defineProps({
+    connectionInfo: Object
+});
 </script>

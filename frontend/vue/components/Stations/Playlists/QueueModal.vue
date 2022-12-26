@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="queue_modal" ref="modal" :title="langTitle" :busy="loading">
+    <b-modal size="lg" id="queue_modal" ref="modal" :title="$gettext('Playback Queue')" :busy="loading">
         <p>
             {{
                 $gettext('This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).')
@@ -44,11 +44,6 @@ export default {
             queueUrl: null,
             media: []
         };
-    },
-    computed: {
-        langTitle () {
-            return this.$gettext('Playback Queue');
-        }
     },
     methods: {
         open (queueUrl) {

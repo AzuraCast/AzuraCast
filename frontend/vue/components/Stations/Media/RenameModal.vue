@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="rename_file" centered ref="modal" :title="langRenameFile">
+    <b-modal id="rename_file" centered ref="modal" :title="$gettext('Rename File/Directory')">
         <b-form @submit.prevent="doRename">
             <b-wrapped-form-group id="new_directory_name" :field="v$.form.newPath" autofocus>
                 <template #label>
@@ -44,11 +44,6 @@ export default {
             newPath: {
                 required
             }
-        }
-    },
-    computed: {
-        langRenameFile () {
-            return this.$gettext('Rename File/Directory');
         }
     },
     methods: {

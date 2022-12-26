@@ -23,8 +23,10 @@
                     </div>
                 </div>
                 <b-tabs pills card>
-                    <b-tab key="live" active @click="setIsLive(true)" :title="langLiveListeners" no-body></b-tab>
-                    <b-tab key="not-live" @click="setIsLive(false)" :title="langListenerHistory" no-body></b-tab>
+                    <b-tab key="live" active @click="setIsLive(true)" :title="$gettext('Live Listeners')"
+                           no-body></b-tab>
+                    <b-tab key="not-live" @click="setIsLive(false)" :title="$gettext('Listener History')"
+                           no-body></b-tab>
                 </b-tabs>
                 <div id="map">
                     <StationReportsListenersMap :listeners="listeners"></StationReportsListenersMap>
@@ -154,12 +156,6 @@ export default {
         };
     },
     computed: {
-        langLiveListeners() {
-            return this.$gettext('Live Listeners');
-        },
-        langListenerHistory() {
-            return this.$gettext('Listener History');
-        },
         nowTz() {
             return DateTime.now().setZone(this.stationTimeZone);
         },

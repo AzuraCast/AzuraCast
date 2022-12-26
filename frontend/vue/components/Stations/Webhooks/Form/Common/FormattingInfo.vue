@@ -19,11 +19,8 @@
     </b-form-group>
 </template>
 
-<script>
-export default {
-    name: 'CommonFormattingInfo',
-    props: {
-        nowPlayingUrl: String
-    }
-}
+<script setup>
+const props = defineProps({
+    nowPlayingUrl: String
+});
 </script>

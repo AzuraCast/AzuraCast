@@ -63,59 +63,60 @@
     </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'AccountEditForm',
-    props: {
-        form: Object,
-        supportedLocales: Object
-    },
-    components: {BFormFieldset, BWrappedFormGroup},
-    computed: {
-        localeOptions() {
-            let localeOptions = objectToFormOptions(this.supportedLocales);
-            localeOptions.unshift({
-                text: this.$gettext('Use Browser Default'),
-                value: 'default'
-            });
-            return localeOptions;
+const props = defineProps({
+    form: Object,
+    supportedLocales: Object
+});
+
+const {$gettext} = useTranslate();
+
+const localeOptions = computed(() => {
+    let localeOptions = objectToFormOptions(props.supportedLocales);
+    localeOptions.unshift({
+        text: $gettext('Use Browser Default'),
+        value: 'default'
+    });
+    return localeOptions;
+});
+
+const themeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Prefer System Default'),
+            value: 'browser'
         },
-        themeOptions() {
-            return [
-                {
-                    text: this.$gettext('Prefer System Default'),
-                    value: 'browser'
-                },
-                {
-                    text: this.$gettext('Light'),
-                    value: 'light'
-                },
-                {
-                    text: this.$gettext('Dark'),
-                    value: 'dark'
-                }
-            ];
+        {
+            text: $gettext('Light'),
+            value: 'light'
         },
-        show24hourOptions() {
-            return [
-                {
-                    text: this.$gettext('Prefer System Default'),
-                    value: null
-                },
-                {
-                    text: this.$gettext('12 Hour'),
-                    value: false
-                },
-                {
-                    text: this.$gettext('24 Hour'),
-                    value: true
-                }
-            ];
+        {
+            text: $gettext('Dark'),
+            value: 'dark'
         }
-    }
-}
+    ];
+});
+
+const show24hourOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Prefer System Default'),
+            value: null
+        },
+        {
+            text: $gettext('12 Hour'),
+            value: false
+        },
+        {
+            text: $gettext('24 Hour'),
+            value: true
+        }
+    ];
+});
 </script>

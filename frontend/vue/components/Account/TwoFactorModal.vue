@@ -1,5 +1,6 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="$gettext('Enable Two-Factor Authentication')"
+                :error="error" :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents" no-enforce-focus>
 
         <b-row>
@@ -23,7 +24,7 @@
                 </p>
 
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_otp" :field="v$.form.otp" autofocus>
+                    <b-wrapped-form-group id="form_otp" :field="v$.otp" autofocus>
                         <template #label>
                             {{ $gettext('Code from Authenticator App') }}
                         </template>
@@ -51,116 +52,106 @@
     </modal-form>
 </template>
 
-<script>
+<script setup>
 import ModalForm from "~/components/Common/ModalForm";
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {minLength, required} from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {ref} from "vue";
+import {useResettableRef} from "~/functions/useResettableRef";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AccountTwoFactorModal',
-    components: {ModalForm, CopyToClipboardButton, BFormFieldset, BWrappedFormGroup},
-    emits: ['relist'],
-    props: {
-        twoFactorUrl: String
-    },
-    setup() {
-        return {
-            v$: useVuelidate()
-        };
-    },
-    data() {
-        return {
-            loading: true,
-            error: null,
-            totp: {
-                secret: null,
-                totp_uri: null,
-                qr_code: null
-            },
-            form: {
-                otp: ''
-            }
-        };
-    },
-    validations: {
-        form: {
-            otp: {
-                required,
-                minLength: minLength(6)
-            }
+const props = defineProps({
+    twoFactorUrl: String
+});
+
+const emit = defineEmits(['relist']);
+
+const loading = ref(true);
+const error = ref(null);
+
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        otp: {
+            required,
+            minLength: minLength(6)
         }
     },
-    computed: {
-        langTitle() {
-            return this.$gettext('Enable Two-Factor Authentication');
-        }
-    },
-    methods: {
-        resetForm() {
-            this.totp = {
-                secret: null,
-                totp_uri: null,
-                qr_code: null
-            };
-            this.form = {
-                otp: '',
-            };
-        },
-        open() {
-            this.resetForm();
-            this.loading = false;
-            this.error = null;
-
-            this.$refs.modal.show();
-
-            this.$wrapWithLoading(
-                this.axios.put(this.twoFactorUrl)
-            ).then((resp) => {
-                this.totp = resp.data;
-                this.loading = false;
-            }).catch(() => {
-                this.close();
-            });
-        },
-        doSubmit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
-
-            this.error = null;
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.twoFactorUrl,
-                    data: {
-                        secret: this.totp.secret,
-                        otp: this.form.otp
-                    }
-                })
-            ).then(() => {
-                this.$notifySuccess();
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        clearContents() {
-            this.v$.$reset();
-
-            this.loading = false;
-            this.error = null;
-
-            this.resetForm();
-        },
+    {
+        otp: ''
     }
-}
+);
+
+const {record: totp, reset: resetTotp} = useResettableRef({
+    secret: null,
+    totp_uri: null,
+    qr_code: null
+});
+
+const clearContents = () => {
+    resetForm();
+    resetTotp();
+
+    loading.value = false;
+    error.value = null;
+};
+
+const modal = ref(); // BModal
+
+const close = () => {
+    modal.value?.hide();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const open = () => {
+    clearContents();
+
+    loading.value = true;
+
+    modal.value?.show();
+
+    wrapWithLoading(
+        axios.put(props.twoFactorUrl)
+    ).then((resp) => {
+        totp.value = resp.data;
+        loading.value = false;
+    }).catch(() => {
+        close();
+    });
+};
+
+const doSubmit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
+    }
+
+    error.value = null;
+
+    wrapWithLoading(
+        axios({
+            method: 'PUT',
+            url: props.twoFactorUrl,
+            data: {
+                secret: totp.value.secret,
+                otp: form.value.otp
+            }
+        })
+    ).then(() => {
+        notifySuccess();
+        emit('relist');
+        close();
+    }).catch((error) => {
+        error.value = error.response.data.message;
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

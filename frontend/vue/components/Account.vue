@@ -114,20 +114,20 @@
             </b-col>
         </b-row>
 
-        <account-edit-modal ref="editModal" :user-url="userUrl" :supported-locales="supportedLocales"
-                            @relist="relist"></account-edit-modal>
+        <account-edit-modal ref="editmodal" :user-url="userUrl" :supported-locales="supportedLocales"
+                            @reload="reload"></account-edit-modal>
 
-        <account-change-password-modal ref="changePasswordModal" :change-password-url="changePasswordUrl"
+        <account-change-password-modal ref="changepasswordmodal" :change-password-url="changePasswordUrl"
                                        @relist="relist"></account-change-password-modal>
 
-        <account-two-factor-modal ref="twoFactorModal" :two-factor-url="twoFactorUrl"
+        <account-two-factor-modal ref="twofactormodal" :two-factor-url="twoFactorUrl"
                                   @relist="relist"></account-two-factor-modal>
 
-        <account-api-key-modal ref="apiKeyModal" :create-url="apiKeysApiUrl" @relist="relist"></account-api-key-modal>
+        <account-api-key-modal ref="apikeymodal" :create-url="apiKeysApiUrl" @relist="relist"></account-api-key-modal>
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import AccountChangePasswordModal from "./Account/ChangePasswordModal";
@@ -137,127 +137,148 @@ import AccountEditModal from "./Account/EditModal";
 import Avatar from "~/components/Common/Avatar";
 import InfoCard from "~/components/Common/InfoCard";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import {onMounted, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
-export default {
-    name: 'Account',
-    components: {
-        EnabledBadge,
-        AccountEditModal,
-        AccountTwoFactorModal,
-        AccountApiKeyModal,
-        AccountChangePasswordModal,
-        Icon,
-        InfoCard,
-        DataTable,
-        Avatar
-    },
-    props: {
-        userUrl: String,
-        changePasswordUrl: String,
-        twoFactorUrl: String,
-        apiKeysApiUrl: String,
-        supportedLocales: Object
-    },
-    data() {
-        return {
-            userLoading: true,
-            user: {
-                name: null,
-                email: null,
-                avatar: {
-                    url: null,
-                    service: null,
-                    serviceUrl: null
-                },
-                roles: [],
-            },
-            securityLoading: true,
-            security: {
-                twoFactorEnabled: false,
-            },
-            apiKeyFields: [
-                {
-                    key: 'comment',
-                    isRowHeader: true,
-                    label: this.$gettext('API Key Description/Comments'),
-                    sortable: false
-                },
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.userLoading = true;
-            this.$wrapWithLoading(
-                this.axios.get(this.userUrl)
-            ).then((resp) => {
-                this.user = {
-                    name: resp.data.name,
-                    email: resp.data.email,
-                    roles: resp.data.roles,
-                    avatar: {
-                        url: resp.data.avatar.url_64,
-                        service: resp.data.avatar.service_name,
-                        serviceUrl: resp.data.avatar.service_url
-                    }
-                };
-                this.userLoading = false;
-            });
+const props = defineProps({
+    userUrl: String,
+    changePasswordUrl: String,
+    twoFactorUrl: String,
+    apiKeysApiUrl: String,
+    supportedLocales: Object
+});
 
-            this.securityLoading = true;
-            this.$wrapWithLoading(
-                this.axios.get(this.twoFactorUrl)
-            ).then((resp) => {
-                this.security.twoFactorEnabled = resp.data.two_factor_enabled;
-                this.securityLoading = false;
-            });
+const userLoading = ref(true);
+const user = ref({
+    name: null,
+    email: null,
+    avatar: {
+        url: null,
+        service: null,
+        serviceUrl: null
+    },
+    roles: [],
+});
 
-            this.$refs.datatable.relist();
-        },
-        doEditProfile() {
-            this.$refs.editModal.open();
-        },
-        doChangePassword() {
-            this.$refs.changePasswordModal.open();
-        },
-        enableTwoFactor() {
-            this.$refs.twoFactorModal.open();
-        },
-        disableTwoFactor() {
-            this.$confirmDelete({
-                title: this.$gettext('Disable two-factor authentication?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(this.twoFactorUrl)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        },
-        createApiKey() {
-            this.$refs.apiKeyModal.create();
-        },
-        deleteApiKey(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete API Key?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+const securityLoading = ref(true);
+const security = ref({
+    twoFactorEnabled: false,
+});
+
+const {$gettext} = useTranslate();
+
+const apiKeyFields = [
+    {
+        key: 'comment',
+        isRowHeader: true,
+        label: $gettext('API Key Description/Comments'),
+        sortable: false
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
     }
-}
+];
+
+const datatable = ref(); // DataTable
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const relist = () => {
+    userLoading.value = true;
+
+    wrapWithLoading(
+        axios.get(props.userUrl)
+    ).then((resp) => {
+        user.value = {
+            name: resp.data.name,
+            email: resp.data.email,
+            roles: resp.data.roles,
+            avatar: {
+                url: resp.data.avatar.url_64,
+                service: resp.data.avatar.service_name,
+                serviceUrl: resp.data.avatar.service_url
+            }
+        };
+        userLoading.value = false;
+    });
+
+    securityLoading.value = true;
+
+    wrapWithLoading(
+        axios.get(props.twoFactorUrl)
+    ).then((resp) => {
+        security.value.twoFactorEnabled = resp.data.two_factor_enabled;
+        securityLoading.value = false;
+    });
+
+    datatable.value?.relist();
+};
+
+onMounted(relist);
+
+const reload = () => {
+    location.reload();
+};
+
+const editmodal = ref(); // EditModal
+
+const doEditProfile = () => {
+    editmodal.value?.open();
+};
+
+const changepasswordmodal = ref(); // ChangePasswordModal
+
+const doChangePassword = () => {
+    changepasswordmodal.value?.open();
+};
+
+const twofactormodal = ref(); // TwoFactorModal
+
+const enableTwoFactor = () => {
+    twofactormodal.value?.open();
+};
+
+const {confirmDelete} = useSweetAlert();
+
+const disableTwoFactor = () => {
+    confirmDelete({
+        title: $gettext('Disable two-factor authentication?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(props.twoFactorUrl)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
+};
+
+const apikeymodal = ref(); // ApiKeyModal
+
+const createApiKey = () => {
+    apikeymodal.value?.create();
+};
+
+const deleteApiKey = (url) => {
+    confirmDelete({
+        title: $gettext('Delete API Key?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
+};
 </script>

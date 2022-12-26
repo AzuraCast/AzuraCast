@@ -1,12 +1,12 @@
 <template>
-    <b-modal size="md" centered id="api_keys_modal" ref="modal" :title="langTitle" @hidden="clearContents"
+    <b-modal size="md" centered id="api_keys_modal" ref="modal" :title="$gettext('Add API Key')" @hidden="clearContents"
              no-enforce-focus>
         <template #default="slotProps">
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
             <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_comments" :field="v$.form.comment" autofocus>
+                    <b-wrapped-form-group id="form_comments" :field="v$.comment" autofocus>
                         <template #label>
                             {{ $gettext('API Key Description/Comments') }}
                         </template>
@@ -35,89 +35,79 @@
     </b-modal>
 </template>
 
-<script>
+<script setup>
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import AccountApiKeyNewKey from "./ApiKeyNewKey";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {required} from '@vuelidate/validators';
-import useVuelidate from "@vuelidate/core";
+import {ref} from "vue";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AccountApiKeyModal',
-    components: {BFormFieldset, InvisibleSubmitButton, AccountApiKeyNewKey, BWrappedFormGroup},
-    props: {
-        createUrl: String
-    },
-    setup() {
-        return {
-            v$: useVuelidate()
-        };
-    },
-    data() {
-        return {
-            error: null,
-            newKey: null,
-            form: this.getBlankForm()
-        }
-    },
-    validations: {
-        form: {
-            comment: {required}
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Add API Key');
-        }
-    },
-    methods: {
-        create() {
-            this.resetForm();
-            this.error = null;
+const props = defineProps({
+    createUrl: String
+});
 
-            this.$refs.modal.show();
-        },
-        getBlankForm() {
-            return {
-                comment: ''
-            };
-        },
-        resetForm() {
-            this.newKey = null;
-            this.form = this.getBlankForm();
-        },
-        doSubmit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
+const emit = defineEmits(['relist']);
 
-            this.error = null;
+const error = ref(null);
+const newKey = ref(null);
 
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'POST',
-                    url: this.createUrl,
-                    data: this.form
-                })
-            ).then((resp) => {
-                this.newKey = resp.data.key;
-                this.$emit('relist');
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
-        close() {
-            this.$refs.modal.hide();
-            this.clearContents();
-        },
-        clearContents() {
-            this.v$.$reset();
-
-            this.error = null;
-            this.resetForm();
-        },
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
+        comment: {required}
+    },
+    {
+        comment: ''
     }
+);
+
+const clearContents = () => {
+    resetForm();
+    error.value = null;
+    newKey.value = null;
 };
+
+const modal = ref(); // BModal
+
+const create = () => {
+    clearContents();
+
+    modal.value?.show();
+};
+
+const {wrapWithLoading} = useNotify();
+const {axios} = useAxios();
+
+const doSubmit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
+    }
+
+    error.value = null;
+
+    wrapWithLoading(
+        axios({
+            method: 'POST',
+            url: props.createUrl,
+            data: form.value
+        })
+    ).then((resp) => {
+        newKey.value = resp.data.key;
+        emit('relist');
+    }).catch((error) => {
+        error.value = error.response.data.message;
+    });
+};
+
+const close = () => {
+    modal.value?.hide();
+};
+
+defineExpose({
+    create
+});
 </script>

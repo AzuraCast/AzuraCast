@@ -36,7 +36,6 @@ import SongHistoryModal from './FullPlayer/SongHistoryModal';
 import RequestModal from './FullPlayer/RequestModal';
 import Icon from '~/components/Common/Icon';
 import RadioPlayer, {radioPlayerProps} from './Player.vue';
-import {useMounted} from "@vueuse/core";
 import {ref} from "vue";
 
 const props = defineProps({

@@ -89,7 +89,7 @@ import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {computed, ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
 import {BModal} from "bootstrap-vue";
 
 const props = defineProps({

@@ -329,7 +329,7 @@ export default {
         },
         onHashChange() {
             // Handle links from the sidebar for special functions.
-            let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
+            let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
 
             if ('' !== urlHash && this.isFilterString(urlHash)) {
                 window.location.hash = '';

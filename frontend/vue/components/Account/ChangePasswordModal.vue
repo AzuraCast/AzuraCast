@@ -32,9 +32,9 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
 import BFormFieldset from "~/components/Form/BFormFieldset";
-import {helpers, required, sameAs} from "@vuelidate/validators";
+import {helpers, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
-import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
 import {ref} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";

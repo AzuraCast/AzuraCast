@@ -67,7 +67,7 @@ import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useTranslate} from "~/vendor/gettext";
-import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
 
 const props = defineProps({
     apiUrl: String,

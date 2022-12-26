@@ -12,7 +12,7 @@ import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import FormBasicInfo from './Form/BasicInfo';
 import mergeExisting from "~/functions/mergeExisting";
-import {useVuelidateOnForm} from "~/components/Form/UseVuelidateOnForm";
+import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
 
 export default {
     name: 'EditModal',

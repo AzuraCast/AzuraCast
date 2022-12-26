@@ -207,30 +207,6 @@
 }
 </style>
 
-<script>
-import {nowPlayingProps} from "~/functions/useNowPlaying";
-
-export const radioPlayerProps = {
-    ...nowPlayingProps,
-    showHls: {
-        type: Boolean,
-        default: true
-    },
-    hlsIsDefault: {
-        type: Boolean,
-        default: true
-    },
-    showAlbumArt: {
-        type: Boolean,
-        default: true
-    },
-    autoplay: {
-        type: Boolean,
-        default: false
-    }
-};
-</script>
-
 <script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import Icon from '~/components/Common/Icon';
@@ -240,9 +216,10 @@ import {useIntervalFn, useMounted, useStorage} from "@vueuse/core";
 import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
+import playerProps from "~/components/Public/playerProps";
 
 const props = defineProps({
-    ...radioPlayerProps
+    ...playerProps
 });
 
 const emit = defineEmits(['np_updated']);

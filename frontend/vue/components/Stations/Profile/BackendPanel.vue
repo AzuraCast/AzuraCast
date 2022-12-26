@@ -38,20 +38,6 @@
 </template>
 
 <script>
-export const profileBackendProps = {
-    numSongs: Number,
-    numPlaylists: Number,
-    backendType: String,
-    hasStarted: Boolean,
-    userCanManageBroadcasting: Boolean,
-    userCanManageMedia: Boolean,
-    manageMediaUri: String,
-    managePlaylistsUri: String,
-    backendRestartUri: String,
-    backendStartUri: String,
-    backendStopUri: String
-};
-
 export default {
     inheritAttrs: false,
 }
@@ -63,9 +49,10 @@ import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
+import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 
 const props = defineProps({
-    ...profileBackendProps,
+    ...backendPanelProps,
     np: Object
 });
 

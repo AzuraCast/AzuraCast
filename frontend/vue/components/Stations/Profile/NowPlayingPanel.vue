@@ -124,13 +124,6 @@
 </template>
 
 <script>
-export const profileNowPlayingProps = {
-    backendType: String,
-    userCanManageBroadcasting: Boolean,
-    backendSkipSongUri: String,
-    backendDisconnectStreamerUri: String
-};
-
 export default {
     inheritAttrs: false
 };
@@ -143,9 +136,10 @@ import {computed, onMounted, ref} from "vue";
 import {useIntervalFn} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import formatTime from "~/functions/formatTime";
+import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 
 const props = defineProps({
-    ...profileNowPlayingProps,
+    ...nowPlayingPanelProps,
     np: Object
 });
 

@@ -39,30 +39,37 @@ export default {
 
 <script setup>
 import ProfileStreams from './Profile/StreamsPanel';
-import ProfileHeader, {profileHeaderProps} from './Profile/HeaderPanel';
-import ProfileNowPlaying, {profileNowPlayingProps} from './Profile/NowPlayingPanel';
+import ProfileHeader from './Profile/HeaderPanel';
+import ProfileNowPlaying from './Profile/NowPlayingPanel';
 import ProfileSchedule from './Profile/SchedulePanel';
-import ProfileRequests, {profileRequestsProps} from './Profile/RequestsPanel';
-import ProfileStreamers, {profileStreamersProps} from './Profile/StreamersPanel';
-import ProfilePublicPages, {profilePublicProps} from './Profile/PublicPagesPanel';
-import ProfileFrontend, {profileFrontendProps} from './Profile/FrontendPanel';
+import ProfileRequests from './Profile/RequestsPanel';
+import ProfileStreamers from './Profile/StreamersPanel';
+import ProfilePublicPages from './Profile/PublicPagesPanel';
+import ProfileFrontend from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
-import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
-import {profileEmbedModalProps} from './Profile/EmbedModal';
+import ProfileBackend from './Profile/BackendPanel';
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
 import {computed, onMounted, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
+import backendPanelProps from "./Profile/backendPanelProps";
+import embedModalProps from "./Profile/embedModalProps";
+import frontendPanelProps from "./Profile/frontendPanelProps";
+import headerPanelProps from "./Profile/headerPanelProps";
+import nowPlayingPanelProps from "./Profile/nowPlayingPanelProps";
+import publicPagesPanelProps from "./Profile/publicPagesPanelProps";
+import requestsPanelProps from "./Profile/requestsPanelProps";
+import streamersPanelProps from "./Profile/streamersPanelProps";
 
 const props = defineProps({
-    ...profileHeaderProps,
-    ...profileNowPlayingProps,
-    ...profileRequestsProps,
-    ...profileStreamersProps,
-    ...profilePublicProps,
-    ...profileFrontendProps,
-    ...profileBackendProps,
-    ...profileEmbedModalProps,
+    ...backendPanelProps,
+    ...embedModalProps,
+    ...frontendPanelProps,
+    ...headerPanelProps,
+    ...nowPlayingPanelProps,
+    ...publicPagesPanelProps,
+    ...requestsPanelProps,
+    ...streamersPanelProps,
     profileApiUri: String,
     stationTimeZone: String,
     stationSupportsRequests: Boolean,

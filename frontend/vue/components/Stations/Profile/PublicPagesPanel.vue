@@ -77,24 +77,6 @@
 </template>
 
 <script>
-import {profileEmbedModalProps} from './EmbedModal';
-
-export const profilePublicProps = {
-    stationSupportsStreamers: Boolean,
-    stationSupportsRequests: Boolean,
-    enablePublicPage: Boolean,
-    enableStreamers: Boolean,
-    enableOnDemand: Boolean,
-    enableRequests: Boolean,
-    userCanManageProfile: Boolean,
-    publicPageUri: String,
-    publicWebDjUri: String,
-    publicOnDemandUri: String,
-    publicPodcastsUri: String,
-    publicScheduleUri: String,
-    togglePublicPageUri: String
-};
-
 export default {
     inheritAttrs: false
 };
@@ -105,10 +87,12 @@ import Icon from '~/components/Common/Icon';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {ref} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
+import publicPagesPanelProps from "~/components/Stations/Profile/publicPagesPanelProps";
+import embedModalProps from "~/components/Stations/Profile/embedModalProps";
 
 const props = defineProps({
-    ...profilePublicProps,
-    ...profileEmbedModalProps
+    ...publicPagesPanelProps,
+    ...embedModalProps
 });
 
 const embed_modal = ref(); // Template Ref

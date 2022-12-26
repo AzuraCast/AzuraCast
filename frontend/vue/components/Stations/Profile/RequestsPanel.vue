@@ -38,14 +38,6 @@
 </template>
 
 <script>
-export const profileRequestsProps = {
-    enableRequests: Boolean,
-    userCanManageReports: Boolean,
-    userCanManageProfile: Boolean,
-    requestsViewUri: String,
-    requestsToggleUri: String
-};
-
 export default {
     inheritAttrs: false
 };
@@ -53,8 +45,9 @@ export default {
 
 <script setup>
 import Icon from '~/components/Common/Icon';
+import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
 
 const props = defineProps({
-    ...profileRequestsProps
+    ...requestsPanelProps
 });
 </script>

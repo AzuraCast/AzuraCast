@@ -93,19 +93,6 @@
 </template>
 
 <script>
-export const profileFrontendProps = {
-    frontendType: String,
-    frontendAdminUri: String,
-    frontendAdminPassword: String,
-    frontendSourcePassword: String,
-    frontendRelayPassword: String,
-    frontendRestartUri: String,
-    frontendStartUri: String,
-    frontendStopUri: String,
-    hasStarted: Boolean,
-    userCanManageBroadcasting: Boolean
-};
-
 export default {
     inheritAttrs: false
 };
@@ -117,9 +104,10 @@ import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
+import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
 
 const props = defineProps({
-    ...profileFrontendProps,
+    ...frontendPanelProps,
     np: Object
 });
 

@@ -17,13 +17,6 @@
 </template>
 
 <script>
-export const profileHeaderProps = {
-    stationName: String,
-    stationDescription: String,
-    userCanManageProfile: Boolean,
-    manageProfileUri: String
-};
-
 export default {
     inheritAttrs: false
 };
@@ -32,9 +25,10 @@ export default {
 <script setup>
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton.vue";
+import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
 
 const props = defineProps({
-    ...profileHeaderProps,
+    ...headerPanelProps,
     np: Object
 });
 </script>

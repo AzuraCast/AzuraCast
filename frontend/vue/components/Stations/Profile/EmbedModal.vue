@@ -61,20 +61,6 @@
 </template>
 
 <script>
-export const profileEmbedModalProps = {
-    stationSupportsStreamers: Boolean,
-    stationSupportsRequests: Boolean,
-    enablePublicPage: Boolean,
-    enableStreamers: Boolean,
-    enableOnDemand: Boolean,
-    enableRequests: Boolean,
-    publicPageEmbedUri: String,
-    publicOnDemandEmbedUri: String,
-    publicRequestEmbedUri: String,
-    publicHistoryEmbedUri: String,
-    publicScheduleEmbedUri: String
-};
-
 export default {
     inheritAttrs: false
 }
@@ -84,9 +70,10 @@ export default {
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import embedModalProps from "./embedModalProps";
 
 const props = defineProps({
-    ...profileEmbedModalProps
+    ...embedModalProps
 });
 
 const selectedType = ref('player');

@@ -38,14 +38,6 @@
 </template>
 
 <script>
-export const profileStreamersProps = {
-    enableStreamers: Boolean,
-    userCanManageProfile: Boolean,
-    userCanManageStreamers: Boolean,
-    streamersViewUri: String,
-    streamersToggleUri: String
-};
-
 export default {
     inheritAttrs: false
 };
@@ -54,8 +46,9 @@ export default {
 <script setup>
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import streamersPanelProps from "~/components/Stations/Profile/streamersPanelProps";
 
 const props = defineProps({
-    ...profileStreamersProps
+    ...streamersPanelProps
 });
 </script>

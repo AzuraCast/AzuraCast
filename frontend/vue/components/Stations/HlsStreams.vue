@@ -53,7 +53,7 @@ import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";

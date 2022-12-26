@@ -53,9 +53,9 @@ import BFormMarkup from "~/components/Form/BFormMarkup";
 import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
-import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {onMounted, ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/vendor/bootstrapVue";
 

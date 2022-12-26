@@ -64,7 +64,7 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";

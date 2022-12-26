@@ -16,7 +16,7 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
-import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const emit = defineEmits(['relist']);
 

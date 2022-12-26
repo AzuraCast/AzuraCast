@@ -90,7 +90,7 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {computed, onMounted, ref} from "vue";
-import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";

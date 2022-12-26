@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import useNowPlaying, {nowPlayingProps} from '~/components/Common/NowPlaying';
+import useNowPlaying, {nowPlayingProps} from '~/functions/useNowPlaying';
 import {computed} from "vue";
 import SongHistory from "~/components/Public/FullPlayer/SongHistory.vue";
 

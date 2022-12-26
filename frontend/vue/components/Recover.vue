@@ -41,7 +41,7 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import Icon from "~/components/Common/Icon";
 import validatePassword from '~/functions/validatePassword.js';
 import {required} from '@vuelidate/validators';
-import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({
     csrf: String,

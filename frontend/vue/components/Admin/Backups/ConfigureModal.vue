@@ -89,7 +89,7 @@ import objectToFormOptions from "~/functions/objectToFormOptions.js";
 import {computed, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/vendor/bootstrapVue";
-import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({
     settingsUrl: String,

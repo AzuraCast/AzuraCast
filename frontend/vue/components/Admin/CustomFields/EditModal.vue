@@ -12,7 +12,7 @@
 import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal.vue';
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";
-import {useVuelidateOnForm} from "~/components/Form/useVuelidateOnForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {defineComponent} from "vue";
 
 export default defineComponent({

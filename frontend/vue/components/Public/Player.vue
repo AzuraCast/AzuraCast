@@ -208,7 +208,7 @@
 </style>
 
 <script>
-import {nowPlayingProps} from '~/components/Common/NowPlaying';
+import {nowPlayingProps} from "~/functions/useNowPlaying";
 
 export const radioPlayerProps = {
     ...nowPlayingProps,
@@ -239,7 +239,7 @@ import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {useIntervalFn, useMounted, useStorage} from "@vueuse/core";
 import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
-import useNowPlaying from "~/components/Common/NowPlaying";
+import useNowPlaying from "~/functions/useNowPlaying";
 
 const props = defineProps({
     ...radioPlayerProps

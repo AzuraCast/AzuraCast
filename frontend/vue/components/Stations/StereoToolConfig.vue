@@ -60,7 +60,7 @@
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
 import {ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/components/Stations/Common/useMayNeedRestart";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 

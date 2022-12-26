@@ -109,11 +109,6 @@ export default {
             ]
         };
     },
-    computed: {
-        langAlbumArt () {
-            return this.$gettext('Album Art');
-        }
-    },
     methods: {
         doSubmitRequest (url) {
             this.axios.post(url).then((resp) => {

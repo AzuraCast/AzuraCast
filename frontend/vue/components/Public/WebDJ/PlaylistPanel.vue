@@ -87,7 +87,7 @@
 
         <div class="list-group list-group-flush" v-if="files.length > 0">
             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"
-               v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex == fileIndex }"
+               v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex === fileIndex }"
                v-on:click.prevent="play({ fileIndex: rowIndex })">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{

@@ -88,7 +88,7 @@
                             </div>
                         </template>
                         <template #cell(stream)="row">
-                            <span v-if="row.item.mount_name == ''">
+                            <span v-if="row.item.mount_name === ''">
                                 {{ $gettext('Unknown') }}
                             </span>
                             <span v-else>

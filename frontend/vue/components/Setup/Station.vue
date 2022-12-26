@@ -24,13 +24,14 @@
 </template>
 
 <script setup>
-import AdminStationsForm, {stationFormProps} from "~/components/Admin/Stations/StationForm";
+import AdminStationsForm from "~/components/Admin/Stations/StationForm";
 import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";
 import {onMounted, ref} from "vue";
+import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
-    ...StationFormProps,
+    ...stationFormProps,
     createUrl: String,
     continueUrl: {
         type: String,

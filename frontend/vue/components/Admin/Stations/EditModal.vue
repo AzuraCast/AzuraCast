@@ -21,11 +21,12 @@
 </template>
 
 <script setup>
-import AdminStationsForm, {stationFormProps} from "~/components/Admin/Stations/StationForm.vue";
+import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {BModal} from "bootstrap-vue";
+import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
     ...stationFormProps,

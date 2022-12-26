@@ -90,32 +90,6 @@
 <script>
 import {defineComponent} from "vue";
 
-export const stationFormProps = {
-    // Global
-    showAdminTab: {
-        type: Boolean,
-        default: true
-    },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
-    // Profile
-    timezones: Object,
-    // Frontend
-    isShoutcastInstalled: {
-        type: Boolean,
-        default: false
-    },
-    isStereoToolInstalled: {
-        type: Boolean,
-        default: false
-    },
-    countries: Object,
-    // Admin
-    storageLocationApiUrl: String
-};
-
 export default defineComponent({
     inheritAttrs: false
 });
@@ -137,6 +111,7 @@ import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {isArray, merge, mergeWith} from "lodash";
+import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
     ...stationFormProps,

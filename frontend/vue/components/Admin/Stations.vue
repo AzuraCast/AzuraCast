@@ -52,10 +52,10 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import {stationFormProps} from "./Stations/StationForm.vue";
 import AdminStationsEditModal from "./Stations/EditModal";
 import _ from "lodash";
-import AdminStationsCloneModal from "~/components/Admin/Stations/CloneModal";
+import AdminStationsCloneModal from "./Stations/CloneModal";
+import stationFormProps from "./Stations/stationFormProps";
 
 export default {
     name: 'AdminPermissions',

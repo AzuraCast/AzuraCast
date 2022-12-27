@@ -20,6 +20,7 @@ import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
 import _ from 'lodash';
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 export default {
     name: 'AdminPermissionsEditModal',

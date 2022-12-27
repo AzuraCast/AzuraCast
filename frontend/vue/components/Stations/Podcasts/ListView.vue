@@ -12,10 +12,12 @@
         </b-card-header>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <i class="material-icons" aria-hidden="true">add</i>
-                {{ $gettext('Add Podcast') }}
-            </b-button>
+            <div class="buttons">
+                <b-button variant="outline-primary" @click.prevent="doCreate">
+                    <i class="material-icons" aria-hidden="true">add</i>
+                    {{ $gettext('Add Podcast') }}
+                </b-button>
+            </div>
         </b-card-body>
 
         <data-table ref="datatable" id="station_podcasts" paginated :fields="fields" :responsive="false"

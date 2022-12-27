@@ -20,15 +20,17 @@
         </b-card-header>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="bg" @click="doClearPodcast()">
-                <icon icon="arrow_back"></icon>
-                {{ $gettext('All Podcasts') }}
-            </b-button>
+            <div class="buttons">
+                <b-button variant="bg" @click="doClearPodcast()">
+                    <icon icon="arrow_back"></icon>
+                    {{ $gettext('All Podcasts') }}
+                </b-button>
 
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <i class="material-icons" aria-hidden="true">add</i>
-                {{ $gettext('Add Episode') }}
-            </b-button>
+                <b-button variant="outline-primary" @click.prevent="doCreate">
+                    <i class="material-icons" aria-hidden="true">add</i>
+                    {{ $gettext('Add Episode') }}
+                </b-button>
+            </div>
         </b-card-body>
 
         <data-table ref="datatable" id="station_podcast_episodes" paginated :fields="fields" :responsive="false"

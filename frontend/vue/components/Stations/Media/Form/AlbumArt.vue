@@ -13,63 +13,51 @@
                     <template #label>
                         {{ $gettext('Replace Album Cover Art') }}
                     </template>
-                    <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"
-                                 @input="uploadNewArt"></b-form-file>
+                    <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"></b-form-file>
                 </b-form-group>
             </b-col>
         </b-row>
     </b-form-group>
 </template>
 
-<script>
+<script setup>
+import {ref, toRef, watch} from "vue";
+import {syncRef} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'MediaFormAlbumArt',
-    props: {
-        albumArtUrl: String
-    },
-    data() {
-        return {
-            artFile: null,
-            albumArtSrc: null
-        };
-    },
-    watch: {
-        albumArtUrl: {
-            immediate: true,
-            handler(newVal) {
-                this.albumArtSrc = newVal;
-            }
-        }
-    },
-    methods: {
-        uploadNewArt() {
-            if (null === this.artFile) {
-                return;
-            }
+const props = defineProps({
+    albumArtUrl: String
+});
 
-            let formData = new FormData();
-            formData.append('art', this.artFile);
+const albumArtSrc = ref(null);
+syncRef(toRef(props, 'albumArtUrl'), albumArtSrc, {direction: 'ltr'});
 
-            this.axios.post(this.albumArtUrl, formData).then(() => {
-                this.reloadArt();
-            }).catch((err) => {
-                console.log(err);
-                this.reloadArt();
-            });
-        },
-        deleteArt() {
-            this.axios.delete(this.albumArtUrl).then(() => {
-                this.reloadArt();
-            }).catch((err) => {
-                console.log(err);
-                this.reloadArt();
-            });
-        },
-        reloadArt() {
-            this.artFile = null;
-            this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
-        }
+const artFile = ref(null);
+
+const reloadArt = () => {
+    artFile.value = null;
+    albumArtSrc.value = props.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
+}
+watch(toRef(props, 'albumArtUrl'), reloadArt);
+
+const {axios} = useAxios();
+
+watch(artFile, (file) => {
+    if (null === file) {
+        return;
     }
+
+    let formData = new FormData();
+    formData.append('art', file);
+
+    axios.post(props.albumArtUrl, formData).finally(() => {
+        reloadArt();
+    });
+});
+
+const deleteArt = () => {
+    axios.delete(props.albumArtUrl).finally(() => {
+        reloadArt();
+    });
 };
 </script>

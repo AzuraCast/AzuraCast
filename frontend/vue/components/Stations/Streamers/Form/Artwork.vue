@@ -13,7 +13,7 @@
                             }}
                         </template>
                         <b-form-file id="edit_form_art" accept="image/jpeg, image/png"
-                                     @input="uploadNewArt"></b-form-file>
+                                     v-model="uploadedFile"></b-form-file>
                     </b-form-group>
                 </b-col>
                 <b-col md="4" v-if="src && src !== ''">
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import {computed, ref, toRef} from "vue";
+import {computed, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -52,8 +52,9 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploadNewArt = (file) => {
-    if (!(file instanceof File)) {
+const uploadedFile = ref(null);
+watch(uploadedFile, (file) => {
+    if (null === file) {
         return;
     }
 
@@ -70,7 +71,7 @@ const uploadNewArt = (file) => {
     axios.post(url, formData).then((resp) => {
         emit('update:modelValue', resp.data);
     });
-};
+});
 
 const deleteArt = () => {
     if (props.editArtUrl) {

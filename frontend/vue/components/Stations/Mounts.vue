@@ -33,9 +33,8 @@
             </template>
             <template #cell(enable_autodj)="row">
                 <template v-if="row.item.enable_autodj">
-                    {{ $gettext('Enabled') }}
-                    -
-                    {{ row.item.autodj_bitrate }}kbps {{ upper(row.item.autodj_format) }}
+                    {{ $gettext('Enabled') }} -
+                    {{ showFormatAndBitrate(row.item.autodj_format, row.item.autodj_bitrate) }}
                 </template>
                 <template v-else>
                     {{ $gettext('Disabled') }}
@@ -70,6 +69,7 @@ import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -89,14 +89,6 @@ const fields = [
     {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
-
-const upper = (data) => {
-    let upper = [];
-    data.split(' ').forEach((word) => {
-        upper.push(word.toUpperCase());
-    });
-    return upper.join(' ');
-};
 
 const datatable = ref(); // DataTable
 

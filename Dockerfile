@@ -6,9 +6,11 @@ FROM golang:1-bullseye AS go-dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
 
-RUN go install github.com/jwilder/dockerize@latest
+RUN go install github.com/jwilder/dockerize@v0.6.1
 
-RUN go install github.com/aptible/supercronic@latest
+RUN go install github.com/aptible/supercronic@v0.2.1
+
+RUN go install github.com/centrifugal/centrifugo/v4@v4.0.5
 
 #
 # Final build image
@@ -20,6 +22,7 @@ ENV TZ="UTC"
 # Add Dockerize
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
 COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
+COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 
 # Run base build process
 COPY ./util/docker/common /bd_build/
@@ -47,6 +50,10 @@ RUN bash /bd_build/web/setup.sh \
 COPY ./util/docker/mariadb /bd_build/mariadb/
 RUN bash /bd_build/mariadb/setup.sh \
     && rm -rf /bd_build/mariadb
+
+COPY ./util/docker/redis /bd_build/redis/
+RUN bash /bd_build/redis/setup.sh \
+    && rm -rf /bd_build/redis
 
 #
 # START Operations as `azuracast` user

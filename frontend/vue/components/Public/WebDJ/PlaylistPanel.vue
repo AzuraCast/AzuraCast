@@ -29,7 +29,7 @@
                         <icon icon="stop"></icon>
                     </button>
                     <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">
-                        <translate key="lang_btn_cue">Cue</translate>
+                        {{ $gettext('Cue') }}
                     </button>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="mt-3" v-if="playing">
 
                 <div class="d-flex flex-row mb-2">
-                    <div class="flex-shrink-0 pt-1 pr-2">{{ position | prettifyTime }}</div>
+                    <div class="flex-shrink-0 pt-1 pr-2">{{ prettifyTime(position) }}</div>
                     <div class="flex-fill">
                         <input type="range" min="0" max="100" step="0.1" class="custom-range slider"
                                v-bind:value="seekingPosition"
@@ -45,7 +45,7 @@
                                v-on:mousemove="doSeek($event)"
                                v-on:mouseup="isSeeking = false">
                     </div>
-                    <div class="flex-shrink-0 pt-1 pl-2">{{ duration | prettifyTime }}</div>
+                    <div class="flex-shrink-0 pt-1 pl-2">{{ prettifyTime(duration) }}</div>
                 </div>
 
                 <div class="progress mb-1">
@@ -61,7 +61,7 @@
                     <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*"
                            multiple="multiple" v-on:change="addNewFiles($event.target.files)">
                     <label v-bind:for="id + '_files'" class="custom-file-label">
-                        <translate key="lang_btn_add_files_to_playlist">Add Files to Playlist</translate>
+                        {{ $gettext('Add Files to Playlist') }}
                     </label>
                 </div>
             </div>
@@ -72,13 +72,13 @@
                         <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
                                v-model="playThrough">
                         <label v-bind:for="id + '_playthrough'" class="custom-control-label">
-                            <translate key="lang_continuous_play">Continuous Play</translate>
+                            {{ $gettext('Continuous Play') }}
                         </label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
                         <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
                         <label v-bind:for="id + '_loop'" class="custom-control-label">
-                            <translate key="lang_repeat_playlist">Repeat</translate>
+                            {{ $gettext('Repeat') }}
                         </label>
                     </div>
                 </div>
@@ -87,13 +87,13 @@
 
         <div class="list-group list-group-flush" v-if="files.length > 0">
             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"
-               v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex == fileIndex }"
+               v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex === fileIndex }"
                v-on:click.prevent="play({ fileIndex: rowIndex })">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
                             rowFile.metadata.title ? rowFile.metadata.title : lang_unknown_title
                         }}</h5>
-                    <small class="pt-1">{{ rowFile.audio.length | prettifyTime }}</small>
+                    <small class="pt-1">{{ prettifyTime(rowFile.audio.length) }}</small>
                 </div>
                 <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : lang_unknown_artist }}</p>
             </a>
@@ -155,16 +155,16 @@ export default {
         this.$root.$on('new-mixer-value', this.setMixGain);
         this.$root.$on('new-cue', this.onNewCue);
     },
-    filters: {
-        prettifyTime (time) {
+    methods: {
+        prettifyTime(time) {
             if (typeof time === 'undefined') {
                 return 'N/A';
             }
 
-            var hours = parseInt(time / 3600);
+            let hours = parseInt(time / 3600);
             time %= 3600;
-            var minutes = parseInt(time / 60);
-            var seconds = parseInt(time % 60);
+            let minutes = parseInt(time / 60);
+            let seconds = parseInt(time % 60);
 
             if (minutes < 10) {
                 minutes = '0' + minutes;
@@ -178,19 +178,17 @@ export default {
             } else {
                 return minutes + ':' + seconds;
             }
-        }
-    },
-    methods: {
-        cue () {
+        },
+        cue() {
             this.resumeStream();
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
         },
 
-        onNewCue (new_cue) {
+        onNewCue(new_cue) {
             this.passThrough = (new_cue === this.id);
         },
 
-        setMixGain (new_value) {
+        setMixGain(new_value) {
             if (this.id === 'playlist_1') {
                 this.mixGainObj.gain.value = 1.0 - new_value;
             } else {
@@ -227,7 +225,7 @@ export default {
             this.prepare();
 
             return this.getStream().createFileSource(this.file, this, (source) => {
-                var ref1;
+                let ref1;
                 this.source = source;
                 this.source.connect(this.destination);
                 if (this.source.duration != null) {

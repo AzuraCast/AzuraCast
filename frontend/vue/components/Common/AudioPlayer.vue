@@ -1,34 +1,44 @@
 <template>
-    <div>
-        <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
-    </div>
+    <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
 </template>
 
 <script>
-import store from 'store';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
-import vueStore from '~/store.js';
 import Hls from 'hls.js';
+import {usePlayerStore} from "~/store.js";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     props: {
-        title: String
+        title: String,
+        volume: {
+            type: Number,
+            default: 55
+        },
+        isMuted: {
+            type: Boolean,
+            default: false
+        }
+    },
+    setup() {
+        return {
+            store: usePlayerStore()
+        }
     },
     data() {
         return {
             'audio': null,
             'hls': null,
-            'volume': 55,
             'duration': 0,
             'currentTime': 0
         };
     },
     computed: {
         isPlaying() {
-            return vueStore.state.player.isPlaying;
+            return this.store.isPlaying;
         },
         current() {
-            return vueStore.state.player.current;
+            return this.store.current;
         }
     },
     watch: {
@@ -36,9 +46,10 @@ export default {
             if (this.audio !== null) {
                 this.audio.volume = getLogarithmicVolume(volume);
             }
-
-            if (store.enabled) {
-                store.set('player_volume', volume);
+        },
+        isMuted(muted) {
+            if (this.audio !== null) {
+                this.audio.muted = muted;
             }
         },
         current(newCurrent) {
@@ -57,19 +68,6 @@ export default {
                 this.stop();
             });
         }
-
-        // Check webstorage for existing volume preference.
-        if (store.enabled && store.get('player_volume') !== undefined) {
-            this.volume = store.get('player_volume', this.volume);
-        }
-
-        // Check the query string if browser supports easy query string access.
-        if (typeof URLSearchParams !== 'undefined') {
-            let urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('volume')) {
-                this.volume = parseInt(urlParams.get('volume'));
-            }
-        }
     },
     methods: {
         stop() {
@@ -77,6 +75,7 @@ export default {
                 this.audio.pause();
                 this.audio.src = '';
             }
+
             if (this.hls !== null) {
                 this.hls.destroy();
                 this.hls = null;
@@ -85,7 +84,7 @@ export default {
             this.duration = 0;
             this.currentTime = 0;
 
-            vueStore.commit('player/stopPlaying');
+            this.store.stopPlaying();
         },
         play() {
             if (this.isPlaying) {
@@ -96,7 +95,7 @@ export default {
                 return;
             }
 
-            vueStore.commit('player/startPlaying');
+            this.store.startPlaying();
 
             this.$nextTick(() => {
                 this.audio = this.$refs.audio;
@@ -121,6 +120,7 @@ export default {
                 };
 
                 this.audio.volume = getLogarithmicVolume(this.volume);
+                this.audio.muted = this.isMuted;
 
                 if (this.current.isHls) {
                     // HLS playback support
@@ -149,17 +149,11 @@ export default {
             });
         },
         toggle(url, isStream, isHls) {
-            vueStore.commit('player/toggle', {
+            this.store.toggle({
                 url: url,
                 isStream: isStream,
                 isHls: isHls,
             });
-        },
-        getVolume() {
-            return this.volume;
-        },
-        setVolume(vol) {
-            this.volume = vol;
         },
         getCurrentTime() {
             return this.currentTime;
@@ -167,7 +161,7 @@ export default {
         getDuration() {
             return this.duration;
         },
-        getProgress(x) {
+        getProgress() {
             return (this.duration !== 0) ? +((this.currentTime / this.duration) * 100).toFixed(2) : 0;
         },
         setProgress(progress) {
@@ -176,5 +170,5 @@ export default {
             }
         },
     }
-};
+});
 </script>

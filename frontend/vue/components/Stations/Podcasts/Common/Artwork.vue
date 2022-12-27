@@ -1,14 +1,16 @@
 <template>
-    <b-tab :title="langTitle">
+    <b-tab :title="$gettext('Artwork')">
         <b-form-group>
             <b-row>
                 <b-col md="8">
                     <b-form-group label-for="edit_form_art">
                         <template #label>
-                            <translate key="artwork_file">Select PNG/JPG artwork file</translate>
+                            {{ $gettext('Select PNG/JPG artwork file') }}
                         </template>
                         <template #description>
-                            <translate key="artwork_file_desc">Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.</translate>
+                            {{
+                                $gettext('Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.')
+                            }}
                         </template>
                         <b-form-file id="edit_form_art" accept="image/jpeg, image/png"
                                      @input="uploadNewArt"></b-form-file>
@@ -19,7 +21,7 @@
 
                     <div class="buttons pt-3">
                         <b-button block variant="danger" @click="deleteArt">
-                            <translate key="lang_btn_delete_art">Clear Artwork</translate>
+                            {{ $gettext('Clear Artwork') }}
                         </b-button>
                     </div>
                 </b-col>
@@ -28,58 +30,66 @@
     </b-tab>
 </template>
 
+<script setup>
+
+import {computed, ref, toRef, watch} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {syncRef} from "@vueuse/core";
+
+const props = defineProps({
+    modelValue: Object,
+    artworkSrc: String,
+    editArtUrl: String,
+    newArtUrl: String,
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const artworkSrc = toRef(props, 'artworkSrc');
+const localSrc = ref(null);
+
+const src = computed(() => {
+    return localSrc.value ?? artworkSrc.value;
+});
+
+const {axios} = useAxios();
+
+const uploadNewArt = (file) => {
+    if (!(file instanceof File)) {
+        return;
+    }
+
+    let fileReader = new FileReader();
+    fileReader.addEventListener('load', () => {
+        localSrc.value = fileReader.result;
+    }, false);
+    fileReader.readAsDataURL(file);
+
+    let url = (props.editArtUrl) ? props.editArtUrl : props.newArtUrl;
+    let formData = new FormData();
+    formData.append('art', file);
+
+    axios.post(url, formData).then((resp) => {
+        emit('update:modelValue', resp.data);
+    });
+};
+
+const deleteArt = () => {
+    if (props.editArtUrl) {
+        axios.delete(props.editArtUrl).then(() => {
+            localSrc.value = null;
+        });
+    } else {
+        localSrc.value = null;
+    }
+}
+</script>
+
 <script>
-
 export default {
-    name: 'PodcastCommonArtwork',
-    props: {
-        value: Object,
-        artworkSrc: String,
-        editArtUrl: String,
-        newArtUrl: String,
-    },
-    data() {
-        return {
-            localSrc: null,
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Artwork');
-        },
-        src() {
-            return this.localSrc ?? this.artworkSrc;
-        }
-    },
-    methods: {
-        uploadNewArt(file) {
-            if (!(file instanceof File)) {
-                return;
-            }
-
-            let fileReader = new FileReader();
-            fileReader.addEventListener('load', () => {
-                this.localSrc = fileReader.result;
-            }, false);
-            fileReader.readAsDataURL(file);
-
-            let url = (this.editArtUrl) ? this.editArtUrl : this.newArtUrl;
-            let formData = new FormData();
-            formData.append('art', file);
-
-            this.axios.post(url, formData).then((resp) => {
-                this.$emit('input', resp.data);
-            });
-        },
-        deleteArt () {
-            if (this.editArtUrl) {
-                this.axios.delete(this.editArtUrl).then((resp) => {
-                    this.localSrc = '';
-                });
-            } else {
-                this.localSrc = '';
-            }
-        }
+    model: {
+        prop: 'modelValue',
+        event: 'update:modelValue'
     }
 };
 </script>

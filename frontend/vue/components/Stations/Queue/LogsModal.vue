@@ -1,49 +1,46 @@
 <template>
-    <b-modal id="logs_modal" ref="modal" :title="langLogView">
+    <b-modal id="logs_modal" ref="modal" :title="$gettext('Log Viewer')">
         <textarea class="form-control log-viewer" spellcheck="false" readonly>{{ logs }}</textarea>
 
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button variant="primary" class="btn_copy" @click.prevent="doCopy" type="button">
-                <translate key="lang_btn_copy">Copy to Clipboard</translate>
+                {{ $gettext('Copy to Clipboard') }}
             </b-button>
         </template>
     </b-modal>
 </template>
 
-<script>
-import '~/vendor/clipboard.js';
+<script setup>
+import {ref} from "vue";
+import {useClipboard} from "@vueuse/core";
 
-export default {
-    name: 'QueueLogsModal',
-    data () {
-        return {
-            logs: 'Loading...',
-        };
-    },
-    computed: {
-        langLogView () {
-            return this.$gettext('Log Viewer');
-        }
-    },
-    methods: {
-        show(logs) {
-            let logDisplay = [];
-            logs.forEach(function (log) {
-                logDisplay.push(log.formatted);
-            });
+const logs = ref('Loading...');
+const modal = ref(); // Template Ref
 
-            this.logs = logDisplay.join('');
-            this.$refs.modal.show();
-        },
-        doCopy() {
-            this.$copyText(this.logs);
-        },
-        close() {
-            this.$refs.modal.hide();
-        }
-    }
+const show = (newLogs) => {
+    let logDisplay = [];
+    newLogs.forEach((log) => {
+        logDisplay.push(log.formatted);
+    });
+
+    logs.value = logDisplay.join('');
+    modal.value.show();
 };
+
+const clipboard = useClipboard();
+
+const doCopy = () => {
+    clipboard.copy(logs.value);
+};
+
+const close = () => {
+    modal.value.hide();
+}
+
+defineExpose({
+    show
+});
 </script>

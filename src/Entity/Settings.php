@@ -11,7 +11,6 @@ use App\OpenApi;
 use App\Service\Avatar;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
-use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
@@ -94,16 +93,6 @@ class Settings implements Stringable
             $baseUrl,
             'System Base URL'
         );
-
-        if ('' === $baseUri->getScheme()) {
-            $baseUri = $baseUri->withScheme('http');
-        }
-        if ('/' === $baseUri->getPath()) {
-            $baseUri = $baseUri->withPath('');
-        }
-        if (Uri::isDefaultPort($baseUri)) {
-            $baseUri = $baseUri->withPort(null);
-        }
 
         $this->base_url = $this->truncateNullableString((string)$baseUri);
     }
@@ -388,6 +377,7 @@ class Settings implements Stringable
         return Urls::tryParseUserUrl(
             $this->homepage_redirect_url,
             'Homepage Redirect URL',
+            false
         );
     }
 
@@ -413,6 +403,7 @@ class Settings implements Stringable
         return Urls::tryParseUserUrl(
             $this->default_album_art_url,
             'Default Album Art URL',
+            false
         );
     }
 

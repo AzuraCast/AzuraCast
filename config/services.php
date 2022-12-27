@@ -6,21 +6,16 @@
 
 use App\Environment;
 use App\Event;
-use App\Exception;
 use Psr\Container\ContainerInterface;
 
 return [
 
     // Slim interface
-    Slim\Interfaces\RouteCollectorInterface::class => static function (Slim\App $app) {
-        return $app->getRouteCollector();
-    },
+    Slim\Interfaces\RouteCollectorInterface::class => static fn(Slim\App $app) => $app->getRouteCollector(),
 
-    Slim\Interfaces\RouteParserInterface::class => static function (
+    Slim\Interfaces\RouteParserInterface::class => static fn(
         Slim\Interfaces\RouteCollectorInterface $routeCollector
-    ) {
-        return $routeCollector->getRouteParser();
-    },
+    ) => $routeCollector->getRouteParser(),
 
     // URL Router helper
     App\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
@@ -102,73 +97,85 @@ return [
             ]
         );
 
-        try {
-            $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
+        $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
 
-            $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
-                $mappingClassesPaths,
-                $environment->getBaseDirectory()
-            );
-            $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
+        $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
+            $mappingClassesPaths,
+            $environment->getBaseDirectory()
+        );
+        $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
 
-            $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
+        $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
-            // Fetch and store entity manager.
-            $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
-                $mappingClassesPaths,
-                !$environment->isProduction(),
-                $environment->getTempDirectory() . '/proxies',
-                $psr6Cache
-            );
+        // Fetch and store entity manager.
+        $config = Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+            $mappingClassesPaths,
+            !$environment->isProduction(),
+            $environment->getTempDirectory() . '/proxies',
+            $psr6Cache
+        );
 
-            $config->setAutoGenerateProxyClasses(
-                Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
-            );
+        $config->setAutoGenerateProxyClasses(
+            Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
+        );
 
-            // Debug mode:
-            // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
+        // Debug mode:
+        // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
 
-            $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
+        $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
-            if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
-                Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
-            }
-
-            $eventManager = new Doctrine\Common\EventManager();
-            $eventManager->addEventSubscriber($eventRequiresRestart);
-            $eventManager->addEventSubscriber($eventAuditLog);
-            $eventManager->addEventSubscriber($eventChangeTracking);
-
-            return new App\Doctrine\DecoratedEntityManager(
-                function () use (
-                    $connectionOptions,
-                    $config,
-                    $eventManager
-                ) {
-                    return Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager);
-                }
-            );
-        } catch (Exception $e) {
-            throw new App\Exception\BootstrapException($e->getMessage());
+        if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
+            Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
         }
+
+        $eventManager = new Doctrine\Common\EventManager();
+        $eventManager->addEventSubscriber($eventRequiresRestart);
+        $eventManager->addEventSubscriber($eventAuditLog);
+        $eventManager->addEventSubscriber($eventChangeTracking);
+
+        return new App\Doctrine\DecoratedEntityManager(
+            fn() => Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager)
+        );
     },
 
     App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
+    // Redis cache
+    Redis::class => static function (Environment $environment) {
+        if (!$environment->enableRedis()) {
+            throw new App\Exception\BootstrapException('Redis is disabled on this installation.');
+        }
+
+        $settings = $environment->getRedisSettings();
+
+        $redis = new Redis();
+        if (isset($settings['socket'])) {
+            $redis->connect($settings['socket']);
+        } else {
+            $redis->connect($settings['host'], $settings['port'], 15);
+        }
+        $redis->select($settings['db']);
+
+        return $redis;
+    },
+
     Symfony\Contracts\Cache\CacheInterface::class => static function (
         Environment $environment,
-        Psr\Log\LoggerInterface $logger
+        Psr\Log\LoggerInterface $logger,
+        ContainerInterface $di
     ) {
         if ($environment->isTesting()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        } else {
+        } elseif (!$environment->enableRedis()) {
             $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';
             $cacheInterface = new Symfony\Component\Cache\Adapter\FilesystemAdapter(
                 '',
                 0,
                 $tempDir
             );
+        } else {
+            $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
         }
 
         $cacheInterface->setLogger($logger);
@@ -181,14 +188,24 @@ return [
     Psr\Cache\CacheItemPoolInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),
-    Psr\SimpleCache\CacheInterface::class => static fn(
-        Psr\Cache\CacheItemPoolInterface $cache
-    ) => new Symfony\Component\Cache\Psr16Cache($cache),
+    Psr\SimpleCache\CacheInterface::class => static function (Psr\Cache\CacheItemPoolInterface $cache) {
+        return new Symfony\Component\Cache\Psr16Cache($cache);
+    },
 
     // Symfony Lock adapter
-    Symfony\Component\Lock\PersistingStoreInterface::class => static fn(
+    Symfony\Component\Lock\PersistingStoreInterface::class => static function (
+        ContainerInterface $di,
         Environment $environment
-    ) => new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory()),
+    ) {
+        if ($environment->enableRedis()) {
+            $redis = $di->get(Redis::class);
+            $store = new Symfony\Component\Lock\Store\RedisStore($redis);
+        } else {
+            $store = new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
+        }
+
+        return $store;
+    },
 
     // Console
     App\Console\Application::class => static function (
@@ -324,7 +341,7 @@ return [
 
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
-        App\LockFactory $lockFactory,
+        App\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
@@ -432,28 +449,22 @@ return [
         );
     },
 
-    Symfony\Component\Mailer\Mailer::class => static function (
+    Symfony\Component\Mailer\Mailer::class => static fn(
         Symfony\Component\Mailer\Transport\TransportInterface $transport,
         Symfony\Component\Messenger\MessageBus $messageBus,
         Psr\EventDispatcher\EventDispatcherInterface $eventDispatcher
-    ) {
-        return new Symfony\Component\Mailer\Mailer(
-            $transport,
-            $messageBus,
-            $eventDispatcher
-        );
-    },
+    ) => new Symfony\Component\Mailer\Mailer($transport, $messageBus, $eventDispatcher),
 
     Symfony\Component\Mailer\MailerInterface::class => DI\get(
         Symfony\Component\Mailer\Mailer::class
     ),
 
     // Supervisor manager
-    Supervisor\SupervisorInterface::class => static function (
+    Supervisor\SupervisorInterface::class => static fn(
         Environment $environment,
         Psr\Log\LoggerInterface $logger
-    ) {
-        $client = new fXmlRpc\Client(
+    ) => new Supervisor\Supervisor(
+        new fXmlRpc\Client(
             'http://localhost/RPC2',
             new fXmlRpc\Transport\PsrTransport(
                 new GuzzleHttp\Psr7\HttpFactory(),
@@ -463,10 +474,9 @@ return [
                     ],
                 ])
             )
-        );
-
-        return new Supervisor\Supervisor($client, $logger);
-    },
+        ),
+        $logger
+    ),
 
     // NowPlaying Adapter factory
     NowPlaying\AdapterFactory::class => static function (

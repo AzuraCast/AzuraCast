@@ -1,23 +1,23 @@
 <template>
     <div class="radio-player-widget">
-        <now-playing v-bind="$props" @np_updated="setNowPlaying"></now-playing>
-        <audio-player ref="player" v-bind:title="np.now_playing.song.text"></audio-player>
+        <audio-player ref="player" :title="np.now_playing.song.text" :volume="volume"
+                      :is-muted="isMuted"></audio-player>
 
         <div class="now-playing-details">
             <div class="now-playing-art" v-if="showAlbumArt && np.now_playing.song.art">
-                <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
-                    <img v-bind:src="np.now_playing.song.art" :alt="lang_album_art_alt">
+                <a :href="np.now_playing.song.art" data-fancybox target="_blank">
+                    <img :src="np.now_playing.song.art" :alt="$gettext('Album Art')">
                 </a>
             </div>
             <div class="now-playing-main">
                 <h6 class="now-playing-live" v-if="np.live.is_live">
-                    <translate key="lang_live" class="badge badge-primary">Live</translate>
+                    {{ $gettext('Live') }}
                     {{ np.live.streamer_name }}
                 </h6>
 
                 <div v-if="!np.is_online">
                     <h4 class="now-playing-title text-muted">
-                        <translate key="station_offline">Station Offline</translate>
+                        {{ $gettext('Station Offline') }}
                     </h4>
                 </div>
                 <div v-else-if="np.now_playing.song.title !== ''">
@@ -28,14 +28,14 @@
                     <h4 class="now-playing-title">{{ np.now_playing.song.text }}</h4>
                 </div>
 
-                <div class="time-display" v-if="time_display_played">
+                <div class="time-display" v-if="time_display_played != null">
                     <div class="time-display-played text-secondary">
                         {{ time_display_played }}
                     </div>
                     <div class="time-display-progress">
                         <div class="progress">
                             <div class="progress-bar bg-secondary" role="progressbar"
-                                 v-bind:style="{ width: time_percent+'%' }"></div>
+                                 :style="{ width: time_percent+'%' }"></div>
                         </div>
                     </div>
                     <div class="time-display-total text-secondary">
@@ -52,7 +52,7 @@
                          :is-hls="current_stream.hls" is-stream></play-button>
 
             <div class="radio-control-select-stream">
-                <div v-if="this.streams.length > 1" class="dropdown">
+                <div v-if="streams.length > 1" class="dropdown">
                     <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ current_stream.name }}
@@ -67,16 +67,16 @@
             </div>
 
             <div class="radio-control-mute-button">
-                <a href="#" class="text-secondary" :title="lang_mute_btn" @click.prevent="volume = 0">
+                <a href="#" class="text-secondary" :title="$gettext('Mute')" @click.prevent="toggleMute">
                     <icon icon="volume_mute"></icon>
                 </a>
             </div>
             <div class="radio-control-volume-slider">
-                <input type="range" :title="lang_volume_slider" class="custom-range" min="0" max="100" step="1"
-                       v-model="volume">
+                <input type="range" :title="$gettext('Volume')" class="custom-range" min="0" max="100" step="1"
+                       :disabled="isMuted" v-model.number="volume">
             </div>
             <div class="radio-control-max-volume-button">
-                <a href="#" class="text-secondary" :title="lang_full_volume_btn" @click.prevent="volume = 100">
+                <a href="#" class="text-secondary" :title="$gettext('Full Volume')" @click.prevent="fullVolume">
                     <icon icon="volume_up"></icon>
                 </a>
             </div>
@@ -207,209 +207,179 @@
 }
 </style>
 
-<script>
+<script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer';
-import NowPlaying, {nowPlayingProps} from '~/components/Common/NowPlaying';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
-import IsMounted from "~/components/Common/IsMounted";
+import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import {useIntervalFn, useMounted, useStorage} from "@vueuse/core";
+import formatTime from "~/functions/formatTime";
+import {useTranslate} from "~/vendor/gettext";
+import useNowPlaying from "~/functions/useNowPlaying";
+import playerProps from "~/components/Public/playerProps";
 
-export const radioPlayerProps = {
-    ...nowPlayingProps,
-    props: {
-        nowPlayingUri: {
-            type: String,
-            required: true
-        },
-        initialNowPlaying: {
-            type: Object
-        },
-        showHls: {
-            type: Boolean,
-            default: true
-        },
-        hlsIsDefault: {
-            type: Boolean,
-            default: true
-        },
-        showAlbumArt: {
-            type: Boolean,
-            default: true
-        },
-        autoplay: {
-            type: Boolean,
-            default: false
-        }
+const props = defineProps({
+    ...playerProps
+});
+
+const emit = defineEmits(['np_updated']);
+
+const np = useNowPlaying(props);
+const np_elapsed = ref(0);
+const current_stream = shallowRef({
+    'name': '',
+    'url': '',
+    'hls': false,
+});
+
+const enable_hls = computed(() => {
+    let $np = np.value;
+    return props.showHls && $np.station.hls_enabled;
+});
+
+const {$gettext} = useTranslate();
+
+const streams = computed(() => {
+    let all_streams = [];
+    let $np = np.value;
+
+    if (enable_hls.value) {
+        all_streams.push({
+            'name': $gettext('HLS'),
+            'url': $np.station.hls_url,
+            'hls': true,
+        });
     }
+
+    $np.station.mounts.forEach(function (mount) {
+        all_streams.push({
+            'name': mount.name,
+            'url': mount.url,
+            'hls': false,
+        });
+    });
+    $np.station.remotes.forEach(function (remote) {
+        all_streams.push({
+            'name': remote.name,
+            'url': remote.url,
+            'hls': false,
+        });
+    });
+
+    return all_streams;
+});
+
+const time_total = computed(() => {
+    let $np = np.value;
+    return $np?.now_playing?.duration ?? 0;
+});
+
+const time_percent = computed(() => {
+    let $np_elapsed = np_elapsed.value;
+    let $time_total = time_total.value;
+
+    if (!$time_total) {
+        return 0;
+    }
+    if ($np_elapsed > $time_total) {
+        return 100;
+    }
+
+    return ($np_elapsed / $time_total) * 100;
+});
+
+const time_display_played = computed(() => {
+    let $np_elapsed = np_elapsed.value;
+    let $time_total = time_total.value;
+
+    if (!$time_total) {
+        return null;
+    }
+
+    if ($np_elapsed > $time_total) {
+        $np_elapsed = $time_total;
+    }
+
+    return formatTime($np_elapsed);
+});
+
+const time_display_total = computed(() => {
+    let $time_total = time_total.value;
+    return ($time_total) ? formatTime($time_total) : null;
+});
+
+const isMounted = useMounted();
+const player = ref(); // Template ref
+
+const volume = useStorage('player_volume', 55);
+const isMuted = useStorage('player_is_muted', false);
+
+const toggleMute = () => {
+    isMuted.value = !isMuted.value;
+}
+
+const fullVolume = () => {
+    volume.value = 100;
 };
 
-export default {
-    components: {PlayButton, Icon, NowPlaying, AudioPlayer},
-    mixins: [radioPlayerProps, IsMounted],
-    data() {
-        return {
-            'np': this.initialNowPlaying,
-            'np_elapsed': 0,
-            'current_stream': {
-                'name': '',
-                'url': '',
-                'hls': false,
-            },
-            'clock_interval': null
-        };
-    },
-    mounted() {
-        this.clock_interval = setInterval(this.iterateTimer, 1000);
+const switchStream = (new_stream) => {
+    current_stream.value = new_stream;
+    player.value.toggle(new_stream.url, true, new_stream.hls);
+};
 
-        if (this.autoplay) {
-            this.switchStream(this.current_stream);
-        }
-    },
-    computed: {
-        lang_mute_btn() {
-            return this.$gettext('Mute');
-        },
-        lang_volume_slider() {
-            return this.$gettext('Volume');
-        },
-        lang_full_volume_btn() {
-            return this.$gettext('Full Volume');
-        },
-        lang_album_art_alt() {
-            return this.$gettext('Album Art');
-        },
-        streams() {
-            let all_streams = [];
+onMounted(() => {
+    useIntervalFn(
+        () => {
+            let $np = np.value;
 
-            if (this.enable_hls) {
-                all_streams.push({
-                    'name': this.$gettext('HLS'),
-                    'url': this.np.station.hls_url,
-                    'hls': true,
-                });
-            }
-
-            this.np.station.mounts.forEach(function (mount) {
-                all_streams.push({
-                    'name': mount.name,
-                    'url': mount.url,
-                    'hls': false,
-                });
-            });
-            this.np.station.remotes.forEach(function (remote) {
-                all_streams.push({
-                    'name': remote.name,
-                    'url': remote.url,
-                    'hls': false,
-                });
-            });
-            return all_streams;
-        },
-        enable_hls() {
-            return this.showHls && this.np.station.hls_enabled;
-        },
-        time_percent() {
-            let time_played = this.np_elapsed;
-            let time_total = this.np.now_playing.duration;
-
-            if (!time_total) {
-                return 0;
-            }
-            if (time_played > time_total) {
-                return 100;
-            }
-
-            return (time_played / time_total) * 100;
-        },
-        time_display_played() {
-            let time_played = this.np_elapsed;
-            let time_total = this.np.now_playing.duration;
-
-            if (!time_total) {
-                return null;
-            }
-
-            if (time_played > time_total) {
-                time_played = time_total;
-            }
-
-            return this.formatTime(time_played);
-        },
-        time_display_total() {
-            let time_total = this.np.now_playing.duration;
-            return (time_total) ? this.formatTime(time_total) : null;
-        },
-        volume: {
-            get() {
-                if (!this.isMounted) {
-                    return;
-                }
-
-                return this.$refs.player.getVolume();
-            },
-            set(vol) {
-                this.$refs.player.setVolume(vol);
-            }
-        }
-    },
-    methods: {
-        switchStream(new_stream) {
-            this.current_stream = new_stream;
-            this.$refs.player.toggle(this.current_stream.url, true, this.current_stream.hls);
-        },
-        setNowPlaying(np_new) {
-            this.np = np_new;
-            this.$emit('np_updated', np_new);
-
-            // Set a "default" current stream if none exists.
-            if (this.current_stream.url === '' && this.streams.length > 0) {
-                if (this.hlsIsDefault && this.enable_hls) {
-                    this.current_stream = this.streams[0];
-                } else {
-                    let current_stream = null;
-                    if (np_new.station.listen_url !== '') {
-                        this.streams.forEach(function (stream) {
-                            if (stream.url === np_new.station.listen_url) {
-                                current_stream = stream;
-                            }
-                        });
-                    }
-
-                    if (current_stream === null) {
-                        current_stream = this.streams[0];
-                    }
-                    this.current_stream = current_stream;
-                }
-            }
-        },
-        iterateTimer() {
             let current_time = Math.floor(Date.now() / 1000);
-            let np_elapsed = current_time - this.np.now_playing.played_at;
-            if (np_elapsed < 0) {
-                np_elapsed = 0;
-            } else if (np_elapsed >= this.np.now_playing.duration) {
-                np_elapsed = this.np.now_playing.duration;
+            let $np_elapsed = current_time - $np.now_playing.played_at;
+
+            if ($np_elapsed < 0) {
+                $np_elapsed = 0;
+            } else if ($np_elapsed >= $np.now_playing.duration) {
+                $np_elapsed = $np.now_playing.duration;
             }
-            this.np_elapsed = np_elapsed;
+
+            np_elapsed.value = $np_elapsed;
         },
-        formatTime(time) {
-            let sec_num = parseInt(time, 10);
+        1000
+    );
 
-            let hours = Math.floor(sec_num / 3600);
-            let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-            let seconds = sec_num - (hours * 3600) - (minutes * 60);
+    if (props.autoplay) {
+        switchStream(current_stream.value);
+    }
+});
 
-            if (hours < 10) {
-                hours = '0' + hours;
+const onNowPlayingUpdated = (np_new) => {
+    emit('np_updated', np_new);
+
+    // Set a "default" current stream if none exists.
+    let $streams = streams.value;
+    let $current_stream = current_stream.value;
+
+    if ($current_stream.url === '' && $streams.length > 0) {
+        if (props.hlsIsDefault && enable_hls.value) {
+            current_stream.value = $streams[0];
+        } else {
+            $current_stream = null;
+
+            if (np_new.station.listen_url !== '') {
+                $streams.forEach(function (stream) {
+                    if (stream.url === np_new.station.listen_url) {
+                        $current_stream = stream;
+                    }
+                });
             }
-            if (minutes < 10) {
-                minutes = '0' + minutes;
+
+            if ($current_stream === null) {
+                $current_stream = $streams[0];
             }
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            }
-            return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds;
+
+            current_stream.value = $current_stream;
         }
     }
 };
+
+watch(np, onNowPlayingUpdated, {immediate: true});
 </script>

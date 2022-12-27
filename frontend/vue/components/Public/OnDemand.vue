@@ -10,7 +10,7 @@
                                     {{ stationName }}
                                 </template>
                                 <template v-else>
-                                    <translate key="lang_title">On-Demand Media</translate>
+                                    {{ $gettext('On-Demand Media') }}
                                 </template>
                             </h2>
                         </div>
@@ -27,7 +27,7 @@
                                      :is-stream="false"></play-button>
                         <template v-if="showDownloadButton">
                             &nbsp;
-                            <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
+                            <a class="name" :href="row.item.download_url" target="_blank" :title="$gettext('Download')">
                                 <icon icon="cloud_download"></icon>
                             </a>
                         </template>
@@ -35,7 +35,7 @@
                     <template #cell(media_art)="row">
                         <a :href="row.item.media_art" class="album-art" target="_blank"
                            data-fancybox="gallery">
-                            <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
+                            <img class="media_manager_album_art" :alt="$gettext('Album Art')" :src="row.item.media_art">
                         </a>
                     </template>
                     <template #cell(size)="row">
@@ -90,59 +90,41 @@
         border-radius: 5px;
     }
 }
-
-
 </style>
 
-<script>
+<script setup>
 import InlinePlayer from '../InlinePlayer';
 import DataTable from '~/components/Common/DataTable';
-import _ from 'lodash';
+import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    components: {PlayButton, Icon, DataTable, InlinePlayer},
-    props: {
-        listUrl: String,
-        stationName: String,
-        customFields: Array,
-        showDownloadButton: Boolean
-    },
-    data() {
-        let fields = [
-            {key: 'download_url', label: ' '},
-            {key: 'media_art', label: this.$gettext('Art')},
-            {key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true},
-            {key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true},
-            {key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
-            {key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false}
-        ];
+const props = defineProps({
+    listUrl: String,
+    stationName: String,
+    customFields: Array,
+    showDownloadButton: Boolean
+});
 
-        _.forEach(this.customFields.slice(), (field) => {
-            fields.push({
-                key: field.display_key,
-                label: field.label,
-                sortable: true,
-                selectable: true,
-                visible: false
-            });
-        });
+const {$gettext} = useTranslate();
 
-        return {
-            fields: fields
-        };
-    },
-    computed: {
-        langAlbumArt () {
-            return this.$gettext('Album Art');
-        },
-        langPlayPause () {
-            return this.$gettext('Play/Pause');
-        },
-        langDownload () {
-            return this.$gettext('Download');
-        }
-    }
-};
+let fields = [
+    {key: 'download_url', label: ' '},
+    {key: 'media_art', label: $gettext('Art')},
+    {key: 'media_title', label: $gettext('Title'), sortable: true, selectable: true},
+    {key: 'media_artist', label: $gettext('Artist'), sortable: true, selectable: true},
+    {key: 'media_album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
+    {key: 'playlist', label: $gettext('Playlist'), sortable: true, selectable: true, visible: false}
+];
+
+forEach(props.customFields.slice(), (field) => {
+    fields.push({
+        key: field.display_key,
+        label: field.label,
+        sortable: true,
+        selectable: true,
+        visible: false
+    });
+});
 </script>

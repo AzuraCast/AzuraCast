@@ -1,57 +1,56 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_storage_locations" v-translate>Storage Locations</h2>
-            </b-card-header>
-            <b-tabs pills card lazy>
-                <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
-                       :title="tab.title" no-body></b-tab>
-            </b-tabs>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Storage Locations') }}</h2>
+        </b-card-header>
+        <b-tabs pills card lazy>
+            <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
+                   :title="tab.title" no-body></b-tab>
+        </b-tabs>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    <translate key="lang_add_playlist">Add Storage Location</translate>
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <icon icon="add"></icon>
+                {{ $gettext('Add Storage Location') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="admin_storage_locations" :show-toolbar="false" :fields="fields" :responsive="false"
-                        :api-url="listUrlForType">
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
-                        </b-button>
-                    </b-button-group>
-                </template>
-                <template #cell(adapter)="row">
-                    <h5 class="m-0">{{ getAdapterName(row.item.adapter) }}</h5>
-                    <p class="card-text">{{ row.item.uri }}</p>
-                </template>
-                <template #cell(space)="row">
-                    <template v-if="row.item.storageAvailable">
-                        <b-progress :value="row.item.storageUsedPercent" show-progress height="15px" class="mb-1"
-                                    :variant="getProgressVariant(row.item.storageUsedPercent)">
-                        </b-progress>
+        <data-table ref="datatable" id="admin_storage_locations" :show-toolbar="false" :fields="fields"
+                    :responsive="false"
+                    :api-url="listUrlForType">
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+            <template #cell(adapter)="row">
+                <h5 class="m-0">{{ getAdapterName(row.item.adapter) }}</h5>
+                <p class="card-text">{{ row.item.uri }}</p>
+            </template>
+            <template #cell(space)="row">
+                <template v-if="row.item.storageAvailable">
+                    <b-progress :value="row.item.storageUsedPercent" show-progress height="15px" class="mb-1"
+                                :variant="getProgressVariant(row.item.storageUsedPercent)">
+                    </b-progress>
 
-                        {{ getSpaceUsed(row.item) }}
-                    </template>
-                    <template v-else>
-                        {{ getSpaceUsed(row.item) }}
-                    </template>
+                    {{ getSpaceUsed(row.item) }}
                 </template>
-                <template #cell(stations)="row">
-                    {{ row.item.stations.join(', ') }}
+                <template v-else>
+                    {{ getSpaceUsed(row.item) }}
                 </template>
-            </data-table>
-        </b-card>
+            </template>
+            <template #cell(stations)="row">
+                {{ row.item.stations.join(', ') }}
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :type="activeType" @relist="relist"></edit-modal>
-    </div>
+    <edit-modal ref="editModal" :create-url="listUrl" :type="activeType" @relist="relist"></edit-modal>
 </template>
 
 <script>

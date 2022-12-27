@@ -1,9 +1,7 @@
 <template>
     <section class="card" role="region">
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
-                <translate key="lang_hdr">API Keys</translate>
-            </h2>
+            <h2 class="card-title">{{ $gettext('API Keys') }}</h2>
         </b-card-header>
 
         <data-table ref="datatable" id="api_keys" :fields="fields" :api-url="apiUrl">
@@ -13,7 +11,7 @@
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                        <translate key="lang_btn_delete">Delete</translate>
+                        {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
             </template>
@@ -21,51 +19,62 @@
     </section>
 </template>
 
-<script>
-import DataTable from "~/components/Common/DataTable";
+<script setup>
+import DataTable from "~/components/Common/DataTable.vue";
+import {ref} from "vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'AdminApiKeys',
-    components: {DataTable},
-    props: {
-        apiUrl: String
+const props = defineProps({
+    apiUrl: String
+});
+
+const {$gettext} = useTranslate();
+
+const fields = ref([
+    {
+        key: 'comment',
+        isRowHeader: true,
+        label: $gettext('API Key Description/Comments'),
+        sortable: false
     },
-    data() {
-        return {
-            fields: [
-                {
-                    key: 'comment',
-                    isRowHeader: true,
-                    label: this.$gettext('API Key Description/Comments'),
-                    sortable: false
-                },
-                {
-                    key: 'owner',
-                    label: this.$gettext('Owner'),
-                    sortable: false
-                },
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    {
+        key: 'owner',
+        label: $gettext('Owner'),
+        sortable: false
     },
-    methods: {
-        relist() {
-            this.$refs.datatable.relist();
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete API Key?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
+]);
+
+const datatable = ref();
+
+const relist = () => {
+    datatable.value.relist();
+};
+
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete API Key?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
-    }
+    });
 }
 </script>

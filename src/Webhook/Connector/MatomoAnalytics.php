@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Repository\ListenerRepository;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 use App\Http\RouterInterface;
 use App\Utilities\Urls;
 use GuzzleHttp\Client;
@@ -19,7 +22,7 @@ final class MatomoAnalytics extends AbstractConnector
         Logger $logger,
         Client $httpClient,
         private readonly RouterInterface $router,
-        private readonly Entity\Repository\ListenerRepository $listenerRepo
+        private readonly ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
     }
@@ -28,9 +31,9 @@ final class MatomoAnalytics extends AbstractConnector
      * @inheritDoc
      */
     public function dispatch(
-        Entity\Station $station,
-        Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying\NowPlaying $np,
+        Station $station,
+        StationWebhook $webhook,
+        NowPlaying $np,
         array $triggers
     ): void {
         $config = $webhook->getConfig();

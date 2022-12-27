@@ -12,15 +12,15 @@ final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
     protected function getPatterns(): array
     {
         return [
-            'default' => 'background%s.webp',
-            'image/jpeg' => 'background%s.jpg',
+            'default' => 'background%s.jpg',
             'image/png' => 'background%s.png',
+            'image/webp' => 'background%s.webp',
         ];
     }
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/img/hexbg.webp';
+        return $this->environment->getAssetUrl() . '/img/hexbg.png';
     }
 
     public function upload(Image $image): void
@@ -32,11 +32,10 @@ final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
 
         $this->delete();
 
-        $pattern = $this->getPattern();
-
+        $patterns = $this->getPatterns();
         $mimeType = $newImage->mime();
-        $quality = ('image/png' === $mimeType) ? 100 : 90;
 
-        $newImage->save($this->getPathForPattern($pattern), $quality);
+        $pattern = $patterns[$mimeType] ?? $patterns['default'];
+        $newImage->save($this->getPathForPattern($pattern), 90);
     }
 }

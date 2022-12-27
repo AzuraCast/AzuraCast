@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="langHeader">
+    <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="$gettext('Streamer Broadcasts')">
         <template v-if="listUrl">
             <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
                 <inline-player ref="player"></inline-player>
@@ -13,7 +13,7 @@
                                      :url="row.item.recording?.links?.download"></play-button>
                         &nbsp;
                         <a class="name" :href="row.item.recording?.links?.download" target="_blank"
-                           :title="langDownload">
+                           :title="$gettext('Download')">
                             <icon icon="cloud_download"></icon>
                         </a>
                     </template>
@@ -22,7 +22,7 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>
@@ -30,7 +30,7 @@
         </template>
         <template #modal-footer>
             <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
         </template>
     </b-modal>
@@ -42,7 +42,8 @@ import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {DateTime} from 'luxon';
-import '~/vendor/sweetalert.js';
+import '~/vendor/sweetalert';
+import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {
     name: 'StreamerBroadcastsModal',
@@ -61,9 +62,11 @@ export default {
                     key: 'timestampStart',
                     label: this.$gettext('Start Time'),
                     sortable: false,
-                    formatter: (value, key, item) => {
+                    formatter: (value) => {
+                        const {timeConfig} = useAzuraCast();
+
                         return DateTime.fromSeconds(value).toLocaleString(
-                            {...DateTime.DATETIME_MED, ...App.time_config}
+                            {...DateTime.DATETIME_MED, ...timeConfig}
                         );
                     },
                     class: 'pl-3'
@@ -72,12 +75,15 @@ export default {
                     key: 'timestampEnd',
                     label: this.$gettext('End Time'),
                     sortable: false,
-                    formatter: (value, key, item) => {
+                    formatter: (value) => {
                         if (value === 0) {
                             return this.$gettext('Live');
                         }
+
+                        const {timeConfig} = useAzuraCast();
+
                         return DateTime.fromSeconds(value).toLocaleString(
-                            {...DateTime.DATETIME_MED, ...App.time_config}
+                            {...DateTime.DATETIME_MED, ...timeConfig}
                         );
                     }
                 },
@@ -101,17 +107,6 @@ export default {
                 }
             ]
         };
-    },
-    computed: {
-        langHeader () {
-            return this.$gettext('Streamer Broadcasts');
-        },
-        langPlayPause () {
-            return this.$gettext('Play/Pause');
-        },
-        langDownload () {
-            return this.$gettext('Download');
-        }
     },
     methods: {
         doDelete (url) {

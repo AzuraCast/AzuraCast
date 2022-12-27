@@ -1,9 +1,7 @@
 import initBase from '~/base.js';
 
-import '~/vendor/bootstrapVue.js';
-import '~/vendor/fancybox.js';
-import '~/vendor/luxon.js';
-import '~/vendor/sweetalert.js';
+import '~/vendor/fancybox';
+import '~/vendor/luxon';
 
 import '~/pages/InlinePlayer.js';
 

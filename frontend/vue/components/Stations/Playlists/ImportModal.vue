@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="import_modal" ref="modal" :title="langTitle" @hidden="onHidden">
+    <b-modal id="import_modal" ref="modal" :title="$gettext('Import from PLS/M3U')" @hidden="onHidden">
         <div v-if="results">
             <p class="card-text">{{ results.message }}</p>
 
@@ -7,9 +7,9 @@
                 <b-thead>
                     <b-tr>
                         <b-th class="p-2">
-                            <translate key="lang_playlist_results_original">Original Path</translate>
+                            {{ $gettext('Original Path') }}
                             <br>
-                            <translate key="lang_playlist_results_matched">Matched</translate>
+                            {{ $gettext('Matched') }}
                         </b-th>
                     </b-tr>
                 </b-thead>
@@ -19,7 +19,7 @@
                             <pre class="mb-0">{{ row.path }}</pre>
                             <pre v-if="row.match" class="mb-0 text-success">{{ row.match }}</pre>
                             <pre v-else class="mb-0 text-danger">
-                                <translate key="lang_playlist_results_no_match">No Match</translate>
+                                {{ $gettext('No Match') }}
                             </pre>
                         </b-td>
                     </b-tr>
@@ -29,10 +29,12 @@
         <b-form v-else class="form" @submit.prevent="doSubmit">
             <b-form-group label-for="import_modal_playlist_file">
                 <template #label>
-                    <translate key="lang_form_playlist_file">Select PLS/M3U File to Import</translate>
+                    {{ $gettext('Select PLS/M3U File to Import') }}
                 </template>
                 <template #description>
-                    <translate key="lang_form_playlist_file_desc">AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.</translate>
+                    {{
+                        $gettext('AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
+                    }}
                 </template>
                 <b-form-file id="import_modal_playlist_file" v-model="playlistFile"></b-form-file>
             </b-form-group>
@@ -41,10 +43,10 @@
         </b-form>
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button v-if="!results" variant="primary" type="submit" @click="doSubmit">
-                <translate key="lang_btn_import">Import from PLS/M3U</translate>
+                {{ $gettext('Import from PLS/M3U') }}
             </b-button>
         </template>
     </b-modal>
@@ -62,11 +64,6 @@ export default {
             playlistFile: null,
             results: null,
         };
-    },
-    computed: {
-        langTitle () {
-            return this.$gettext('Import from PLS/M3U');
-        }
     },
     methods: {
         open (importPlaylistUrl) {

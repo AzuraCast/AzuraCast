@@ -1,31 +1,24 @@
 <template>
     <div>
-        <h2 class="outside-card-header mb-1">
-            <translate key="hdr">Backups</translate>
-        </h2>
+        <h2 class="outside-card-header mb-1">{{ $gettext('Backups') }}</h2>
 
         <div class="card-deck">
             <section class="card mb-3" role="region">
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
-                        <translate key="lang_hdr_auto_backups">Automatic Backups</translate>
-                        <small v-if="settings.backupEnabled" class="badge badge-success">
-                            <translate key="lang_hdr_backups_enabled">Enabled</translate>
-                        </small>
-                        <small v-else class="badge badge-danger">
-                            <translate key="lang_hdr_backups_disabled">Disabled</translate>
-                        </small>
+                        {{ $gettext('Automatic Backups') }}
+                        <enabled-badge :enabled="settings.backupEnabled"></enabled-badge>
                     </h2>
                 </b-card-header>
 
                 <b-overlay variant="card" :show="settingsLoading">
                     <div v-if="settings.backupEnabled" class="card-body">
                         <p v-if="settings.backupLastRun > 0" class="card-text">
-                            <translate key="lang_backup_last_run">Last run:</translate>
+                            {{ $gettext('Last run:') }}
                             {{ toRelativeTime(settings.backupLastRun) }}
                         </p>
                         <p v-else class="card-text">
-                            <translate key="lang_backup_never_run">Never run</translate>
+                            {{ $gettext('Never run') }}
                         </p>
                     </div>
                 </b-overlay>
@@ -33,12 +26,12 @@
                 <div class="card-actions">
                     <b-button variant="outline-primary" @click.prevent="doConfigure">
                         <icon icon="settings"></icon>
-                        <translate key="lang_btn_configure">Configure</translate>
+                        {{ $gettext('Configure') }}
                     </b-button>
                     <b-button v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
                               variant="outline-secondary" @click.prevent="showLastOutput">
                         <icon icon="assignment"></icon>
-                        <translate key="lang_btn_last_backup">Most Recent Backup Log</translate>
+                        {{ $gettext('Most Recent Backup Log') }}
                     </b-button>
                 </div>
             </section>
@@ -46,20 +39,22 @@
             <section class="card mb-3" role="region">
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
-                        <translate key="lang_hdr_restoring_backups">Restoring Backups</translate>
+                        {{ $gettext('Restoring Backups') }}
                     </h2>
                 </b-card-header>
 
                 <div class="card-body">
                     <p class="card-text">
-                        <translate key="lang_restore_1">To restore a backup from your host computer, run:</translate>
+                        {{ $gettext('To restore a backup from your host computer, run:') }}
                     </p>
 
                     <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
                     <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
 
                     <p class="card-text text-warning">
-                        <translate key="lang_restore_2">Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.</translate>
+                        {{
+                            $gettext('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.')
+                        }}
                     </p>
                 </div>
             </section>
@@ -68,14 +63,14 @@
         <section class="card mb-3" role="region">
             <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_hdr_existing_backups">Backups</translate>
+                    {{ $gettext('Backups') }}
                 </h2>
             </b-card-header>
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doRunBackup">
                     <icon icon="send"></icon>
-                    <translate key="lang_btn_run_backup">Run Manual Backup</translate>
+                    {{ $gettext('Run Manual Backup') }}
                 </b-button>
             </b-card-body>
 
@@ -89,10 +84,10 @@
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" :href="row.item.links.download" target="_blank">
-                            <translate key="lang_btn_download">Download</translate>
+                            {{ $gettext('Download') }}
                         </b-button>
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
-                            <translate key="lang_btn_delete">Delete</translate>
+                            {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
                 </template>
@@ -112,107 +107,131 @@
     </div>
 </template>
 
-<script>
-import Icon from "~/components/Common/Icon";
-import DataTable from "~/components/Common/DataTable";
-import AdminBackupsLastOutputModal from "./Backups/LastOutputModal";
+<script setup>
+import Icon from "~/components/Common/Icon.vue";
+import DataTable from "~/components/Common/DataTable.vue";
+import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
 import {DateTime} from 'luxon';
 import formatFileSize from "~/functions/formatFileSize";
-import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal";
-import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal";
+import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
+import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import {useAzuraCast} from "~/vendor/azuracast";
+import {onMounted, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
-export default {
-    name: 'AdminBackups',
-    components: {AdminBackupsRunBackupModal, AdminBackupsConfigureModal, AdminBackupsLastOutputModal, DataTable, Icon},
-    props: {
-        listUrl: String,
-        settingsUrl: String,
-        runBackupUrl: String,
-        storageLocations: Object,
-        isDocker: Boolean,
-    },
-    data() {
-        return {
-            fields: [
-                {
-                    key: 'basename',
-                    isRowHeader: true,
-                    label: this.$gettext('File Name'),
-                    sortable: false
-                },
-                {
-                    key: 'timestamp',
-                    label: this.$gettext('Last Modified'),
-                    sortable: false
-                },
-                {
-                    key: 'size',
-                    label: this.$gettext('Size'),
-                    sortable: false
-                },
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ],
-            settingsLoading: false,
-            settings: {
-                backupEnabled: false,
-                backupLastRun: null,
-                backupLastOutput: '',
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.settingsLoading = true;
-            this.$wrapWithLoading(
-                this.axios.get(this.settingsUrl)
-            ).then((resp) => {
-                this.settings = {
-                    backupEnabled: resp.data.backup_enabled,
-                    backupLastRun: resp.data.backup_last_run,
-                    backupLastOutput: resp.data.backup_last_output
-                };
-                this.settingsLoading = false;
-            });
+const props = defineProps({
+    listUrl: String,
+    settingsUrl: String,
+    runBackupUrl: String,
+    storageLocations: Object,
+    isDocker: Boolean,
+});
 
-            this.$refs.datatable.relist();
-        },
-        toRelativeTime(timestamp) {
-            return DateTime.fromSeconds(timestamp).toRelative();
-        },
-        toLocaleTime(timestamp) {
-            return DateTime.fromSeconds(timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
-            );
-        },
-        formatFileSize(size) {
-            return formatFileSize(size);
-        },
-        showLastOutput() {
-            this.$refs.lastOutputModal.show();
-        },
-        doConfigure() {
-            this.$refs.configureModal.open();
-        },
-        doRunBackup() {
-            this.$refs.runBackupModal.open();
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Backup?')
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+const settingsLoading = ref(false);
+
+const blankSettings = {
+    backupEnabled: false,
+    backupLastRun: null,
+    backupLastOutput: '',
+};
+
+const settings = ref({...blankSettings});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {
+        key: 'basename',
+        isRowHeader: true,
+        label: $gettext('File Name'),
+        sortable: false
+    },
+    {
+        key: 'timestamp',
+        label: $gettext('Last Modified'),
+        sortable: false
+    },
+    {
+        key: 'size',
+        label: $gettext('Size'),
+        sortable: false
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
     }
-}
+];
+
+const datatable = ref(); // DataTable
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const relist = () => {
+    settingsLoading.value = true;
+    wrapWithLoading(
+        axios.get(props.settingsUrl)
+    ).then((resp) => {
+        settings.value = {
+            backupEnabled: resp.data.backup_enabled,
+            backupLastRun: resp.data.backup_last_run,
+            backupLastOutput: resp.data.backup_last_output
+        };
+        settingsLoading.value = false;
+    });
+
+    datatable.value.relist();
+};
+
+onMounted(relist);
+
+const toRelativeTime = (timestamp) => {
+    return DateTime.fromSeconds(timestamp).toRelative();
+};
+
+const toLocaleTime = (timestamp) => {
+    const {timeConfig} = useAzuraCast();
+
+    return DateTime.fromSeconds(timestamp).toLocaleString(
+        {...DateTime.DATETIME_SHORT, timeConfig}
+    );
+};
+
+const lastOutputModal = ref(); // AdminBackupsLastOutputModal
+const showLastOutput = () => {
+    lastOutputModal.value.show();
+};
+
+const configureModal = ref(); // AdminBackupsConfigureModal
+const doConfigure = () => {
+    configureModal.value.open();
+};
+
+const runBackupModal = ref(); // AdminBackupsRunBackupModal
+const doRunBackup = () => {
+    runBackupModal.value.open();
+};
+
+const {confirmDelete} = useSweetAlert();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Backup?')
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
+};
 </script>

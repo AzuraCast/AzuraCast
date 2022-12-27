@@ -1,22 +1,21 @@
 <template>
-    <b-tab :title="langTabTitle">
+    <b-tab :title="$gettext('AutoDJ')">
         <b-form-group>
-            <b-form-row class="mb-3">
+            <div class="form-row mb-3">
                 <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
-                    <template #label="{lang}">
-                        <translate :key="lang">Enable AutoDJ</translate>
+                    <template #label>
+                        {{ $gettext('Enable AutoDJ') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate
-                            :key="lang">If enabled, the AutoDJ will automatically play music to this mount point.</translate>
+                    <template #description>
+                        {{ $gettext('If enabled, the AutoDJ will automatically play music to this mount point.') }}
                     </template>
                 </b-wrapped-form-checkbox>
-            </b-form-row>
+            </div>
 
-            <b-form-row v-if="form.enable_autodj.$model">
+            <div class="form-row" v-if="form.enable_autodj.$model">
                 <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
-                    <template #label="{lang}">
-                        <translate :key="lang">AutoDJ Format</translate>
+                    <template #label>
+                        {{ $gettext('AutoDJ Format') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
@@ -30,8 +29,8 @@
                 </b-wrapped-form-group>
                 <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
                                       v-if="formatSupportsBitrateOptions">
-                    <template #label="{lang}">
-                        <translate :key="lang">AutoDJ Bitrate (kbps)</translate>
+                    <template #label>
+                        {{ $gettext('AutoDJ Bitrate (kbps)') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
@@ -43,7 +42,7 @@
                         ></b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
@@ -61,9 +60,6 @@ export default {
         stationFrontendType: String
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('AutoDJ');
-        },
         formatOptions() {
             return [
                 {

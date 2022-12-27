@@ -12,14 +12,15 @@ final class AlbumArtCustomAsset extends AbstractMultiPatternCustomAsset
     protected function getPatterns(): array
     {
         return [
-            'default' => 'album_art%s.webp',
-            'image/jpeg' => 'album_art%s.jpg',
+            'default' => 'album_art%s.jpg',
+            'image/png' => 'album_art%s.png',
+            'image/webp' => 'album_art%s.webp',
         ];
     }
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/img/generic_song.webp';
+        return $this->environment->getAssetUrl() . '/img/generic_song.jpg';
     }
 
     public function upload(Image $image): void
@@ -31,11 +32,10 @@ final class AlbumArtCustomAsset extends AbstractMultiPatternCustomAsset
 
         $this->delete();
 
-        $pattern = $this->getPattern();
-
+        $patterns = $this->getPatterns();
         $mimeType = $newImage->mime();
-        $quality = ('image/png' === $mimeType) ? 100 : 90;
 
-        $newImage->save($this->getPathForPattern($pattern), $quality);
+        $pattern = $patterns[$mimeType] ?? $patterns['default'];
+        $newImage->save($this->getPathForPattern($pattern), 90);
     }
 }

@@ -1,23 +1,23 @@
 <template>
     <div>
         <h2 class="outside-card-header mb-1">
-            <translate key="lang_header">Custom Branding</translate>
+            {{ $gettext('Custom Branding') }}
         </h2>
 
         <section class="card mb-3" role="region">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_custom_assets">Upload Custom Assets</translate>
+                    {{ $gettext('Upload Custom Assets') }}
                 </h2>
             </div>
             <div class="card-body">
                 <ul class="list-unstyled">
                     <custom-asset-form id="asset_background" class="mb-3" :api-url="backgroundApiUrl"
-                                       :caption="langBackground"></custom-asset-form>
+                                       :caption="$gettext('Public Page Background')"></custom-asset-form>
                     <custom-asset-form id="asset_album_art" class="mb-3" :api-url="albumArtApiUrl"
-                                       :caption="langAlbumArt"></custom-asset-form>
+                                       :caption="$gettext('Default Album Art')"></custom-asset-form>
                     <custom-asset-form id="asset_browser_icon" :api-url="browserIconApiUrl"
-                                       :caption="langBrowserIcon"></custom-asset-form>
+                                       :caption="$gettext('Browser Icon')"></custom-asset-form>
                 </ul>
             </div>
         </section>
@@ -26,29 +26,15 @@
     </div>
 </template>
 
-<script>
-import CustomAssetForm from "./Branding/CustomAssetForm";
-import BrandingForm from "./Branding/BrandingForm";
+<script setup>
+import CustomAssetForm from "./Branding/CustomAssetForm.vue";
+import BrandingForm from "./Branding/BrandingForm.vue";
 
-export default {
-    name: 'Branding',
-    components: {BrandingForm, CustomAssetForm},
-    props: {
-        settingsApiUrl: String,
-        browserIconApiUrl: String,
-        backgroundApiUrl: String,
-        albumArtApiUrl: String
-    },
-    computed: {
-        langBrowserIcon() {
-            return this.$gettext('Browser Icon');
-        },
-        langBackground() {
-            return this.$gettext('Public Page Background');
-        },
-        langAlbumArt() {
-            return this.$gettext('Default Album Art');
-        }
-    }
-};
+const props = defineProps({
+    settingsApiUrl: String,
+    browserIconApiUrl: String,
+    backgroundApiUrl: String,
+    albumArtApiUrl: String
+});
 </script>
+

@@ -13,42 +13,21 @@
             <slot name="description" v-bind="slotProps"></slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-form-group>
 </template>
 
-<script>
-import _ from "lodash";
+<script setup>
+import useSlotsExcept from "~/functions/useSlotsExcept";
 
-export default {
-    name: 'BFormMarkup',
-    props: {
-        id: {
-            type: String,
-            required: true
-        },
-    },
-    computed: {
-        filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
-                return !_.includes([
-                    'default', 'label', 'description'
-                ], name);
-            });
-        },
-        labelClassWithRequired() {
-            let labelClass = this.labelClass;
-            if (this.isRequired) {
-                labelClass += ' required';
-            }
-            return labelClass;
-        },
-        isRequired() {
-            return _.has(this.field, 'required');
-        }
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
     }
-}
+});
+
+const filteredSlots = useSlotsExcept(['default', 'label', 'description']);
 </script>

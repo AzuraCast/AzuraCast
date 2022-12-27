@@ -1,17 +1,12 @@
-import '~/vendor/luxon.js';
+import '~/vendor/luxon';
 
-import {
-  Chart,
-  registerables
-} from 'chart.js';
+import {Chart, registerables} from 'chart.js';
 
 import 'chartjs-adapter-luxon';
 
-import colorSchemesPlugin
-  from './chartjs-colorschemes/plugin.colorschemes.js';
+import colorSchemesPlugin from './chartjs-colorschemes/plugin.colorschemes.js';
 
-import zoomPlugin
-  from 'chartjs-plugin-zoom';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 Chart.register(...registerables);
 

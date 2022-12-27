@@ -1,28 +1,32 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
-            <form-basic-info :form="$v.form"></form-basic-info>
-            <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
+        <b-tabs content-class="mt-3" pills>
+            <form-basic-info :form="v$.form"></form-basic-info>
+            <form-schedule :form="v$.form" :schedule-items="form.schedule_items"
                            :station-time-zone="stationTimeZone"></form-schedule>
-            <form-advanced :form="$v.form" v-if="enableAdvancedFeatures"></form-advanced>
+            <form-advanced :form="v$.form" v-if="enableAdvancedFeatures"></form-advanced>
         </b-tabs>
 
     </modal-form>
 </template>
 
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
 import BaseEditModal from '~/components/Common/BaseEditModal';
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     emits: ['needs-restart'],
     components: {FormSchedule, FormBasicInfo, FormAdvanced},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
@@ -54,16 +58,7 @@ export default {
             'include_in_requests': {},
             'avoid_duplicates': {},
             'backend_options': {},
-            'schedule_items': {
-                $each: {
-                    'start_time': {required},
-                    'end_time': {required},
-                    'start_date': {},
-                    'end_date': {},
-                    'days': {},
-                    'loop_once': {}
-                }
-            }
+            'schedule_items': {}
         }
     },
     methods: {
@@ -89,7 +84,7 @@ export default {
                 'schedule_items': []
             };
         },
-        onSubmitSuccess(response) {
+        onSubmitSuccess() {
             this.$notifySuccess();
 
             this.$emit('needs-restart');

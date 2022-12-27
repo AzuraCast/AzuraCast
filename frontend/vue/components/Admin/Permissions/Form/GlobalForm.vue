@@ -1,20 +1,22 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Global Permissions')" active>
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Role Name</translate>
+                    <template #label>
+                        {{ $gettext('Role Name') }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-12" id="edit_form_global_permissions"
                                       :field="form.permissions.global">
-                    <template #label="{lang}">
-                        <translate :key="lang">Global Permissions</translate>
+                    <template #label>
+                        {{ $gettext('Global Permissions') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Users with this role will have these permissions across the entire installation.</translate>
+                    <template #description>
+                        {{
+                            $gettext('Users with this role will have these permissions across the entire installation.')
+                        }}
                     </template>
                     <template #default="props">
                         <b-form-checkbox-group :id="props.id" :options="globalPermissionOptions"
@@ -22,34 +24,27 @@
                         </b-form-checkbox-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
 
-<script>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import _ from 'lodash';
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import {map} from 'lodash';
+import {computed} from "vue";
 
-export default {
-    name: 'AdminPermissionsGlobalForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        globalPermissions: Object
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Global Permissions');
-        },
-        globalPermissionOptions() {
-            return _.map(this.globalPermissions, (permissionName, permissionKey) => {
-                return {
-                    text: permissionName,
-                    value: permissionKey
-                };
-            });
-        },
-    }
-};
+const props = defineProps({
+  form: Object,
+  globalPermissions: Object
+});
+
+const globalPermissionOptions = computed(() => {
+  return map(props.globalPermissions, (permissionName, permissionKey) => {
+    return {
+      text: permissionName,
+      value: permissionKey
+    };
+  });
+});
 </script>

@@ -3,7 +3,7 @@
         <b-row>
             <b-wrapped-form-group class="col-md-12" id="edit_form_playlists" :field="form.playlists">
                 <template #label>
-                    <translate key="field_playlists">Playlists</translate>
+                    {{ $gettext('Playlists') }}
                 </template>
                 <template #default="props">
                     <b-form-checkbox-group
@@ -18,26 +18,22 @@
     </b-form-group>
 </template>
 
-<script>
-import _ from 'lodash';
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {map} from "lodash";
+import {computed} from "vue";
 
-export default {
-    name: 'MediaFormPlaylists',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        playlists: Array
-    },
-    computed: {
-        options() {
-            return _.map(this.playlists, function (row) {
-                return {
-                    text: row.name,
-                    value: row.id
-                };
-            });
-        }
-    }
-};
+const props = defineProps({
+    form: Object,
+    playlists: Array
+});
+
+const options = computed(() => {
+    return map(props.playlists, function (row) {
+        return {
+            text: row.name,
+            value: row.id
+        };
+    });
+});
 </script>

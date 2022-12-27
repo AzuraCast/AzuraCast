@@ -1,15 +1,15 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
-            <episode-form-basic-info :form="$v.form"></episode-form-basic-info>
+        <b-tabs content-class="mt-3" pills>
+            <episode-form-basic-info :form="v$.form"></episode-form-basic-info>
 
-            <episode-form-media v-model="$v.form.media_file.$model" :record-has-media="record.has_media"
+            <episode-form-media v-model="v$.form.media_file.$model" :record-has-media="record.has_media"
                                 :new-media-url="newMediaUrl" :edit-media-url="record.links.media"
                                 :download-url="record.links.download"></episode-form-media>
 
-            <podcast-common-artwork v-model="$v.form.artwork_file.$model" :artwork-src="record.art"
+            <podcast-common-artwork v-model="v$.form.artwork_file.$model" :artwork-src="record.art"
                                     :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
         </b-tabs>
 
@@ -17,17 +17,21 @@
 </template>
 
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
 import {DateTime} from 'luxon';
 import mergeExisting from "~/functions/mergeExisting";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
     components: {EpisodeFormMedia, PodcastCommonArtwork, EpisodeFormBasicInfo},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
@@ -55,15 +59,6 @@ export default {
             return this.isEditMode
                 ? this.$gettext('Edit Episode')
                 : this.$gettext('Add Episode');
-        },
-        langSaveChanges () {
-            let baseText = this.$gettext('Save Changes');
-
-            if (null !== this.uploadPercentage) {
-                baseText = baseText + ' (' + this.uploadPercentage + '%)';
-            }
-
-            return baseText;
         }
     },
     validations: {

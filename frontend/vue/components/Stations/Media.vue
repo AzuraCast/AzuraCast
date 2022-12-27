@@ -6,7 +6,7 @@
                     <b-row class="align-items-center">
                         <b-col md="7">
                             <h2 class="card-title">
-                                <translate key="lang_title">Music Files</translate>
+                                {{ $gettext('Music Files') }}
                             </h2>
                         </b-col>
                         <b-col md="5" class="text-right text-white-50">
@@ -21,12 +21,12 @@
                     </div>
                     <div class="flex-fill">
                         <p class="mb-0">
-                            <translate key="lang_sftp_details">You can also upload files in bulk via SFTP.</translate>
+                            {{ $gettext('You can also upload files in bulk via SFTP.') }}
                         </p>
                     </div>
                     <div class="flex-shrink-0 ml-2">
                         <a class="btn btn-sm btn-light" target="_blank" :href="sftpUrl">
-                            <translate key="lang_sftp_btn">Manage SFTP Accounts</translate>
+                            {{ $gettext('Manage SFTP Accounts') }}
                         </a>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 </div>
 
                 <data-table ref="datatable" id="station_media" selectable paginated select-fields
-                            @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
+                            @row-selected="onRowSelected" :fields="fields" :api-url="listUrl"
                             :request-config="requestConfig">
                     <template #cell(path)="row">
                         <div class="d-flex align-items-center">
@@ -97,11 +97,8 @@
                                        class="flex-shrink-1 pl-2"></album-art>
                         </div>
                     </template>
-                    <template #cell(media_genre)="row">
-                        {{ row.item.media_genre }}
-                    </template>
-                    <template #cell(media_length)="row">
-                        {{ row.item.media_length_text }}
+                    <template #cell(media.length)="row">
+                        {{ row.item.media.length_text }}
                     </template>
                     <template #cell(size)="row">
                         <template v-if="!row.item.size">&nbsp;</template>
@@ -112,7 +109,7 @@
                     <template #cell(playlists)="row">
                         <template v-for="(playlist, index) in row.item.playlists">
                             <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
-                               :title="langPlaylistSelect">{{ playlist.name }}</a>
+                               :title="$gettext('View tracks in playlist')">{{ playlist.name }}</a>
                             <span v-if="index+1 < row.item.playlists.length">, </span>
                         </template>
                     </template>
@@ -120,12 +117,12 @@
                         <template v-if="row.item.media.links.edit">
                             <b-button size="sm" variant="primary"
                                       @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)">
-                                {{ langEditButton }}
+                                {{ $gettext('Edit') }}
                             </b-button>
                         </template>
                         <template v-else>
                             <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
-                                {{ langRenameButton }}
+                                {{ $gettext('Rename') }}
                             </b-button>
                         </template>
                     </template>
@@ -149,7 +146,7 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import MediaToolbar from './Media/MediaToolbar';
 import Breadcrumb from './Media/Breadcrumb';
@@ -158,29 +155,18 @@ import NewDirectoryModal from './Media/NewDirectoryModal';
 import MoveFilesModal from './Media/MoveFilesModal';
 import RenameModal from './Media/RenameModal';
 import EditModal from './Media/EditModal';
-import formatFileSize from '~/functions/formatFileSize.js';
-import _ from 'lodash';
+import StationsCommonQuota from "~/components/Stations/Common/Quota";
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
-import PlayButton from "~/components/Common/PlayButton";
+import PlayButton from "~/components/Common/PlayButton";</script>
+
+<script>
+import formatFileSize from '~/functions/formatFileSize.js';
+import _ from 'lodash';
 import {DateTime} from 'luxon';
-import StationsCommonQuota from "~/components/Stations/Common/Quota";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {
-    components: {
-        StationsCommonQuota,
-        PlayButton,
-        AlbumArt,
-        Icon,
-        EditModal,
-        RenameModal,
-        MoveFilesModal,
-        NewDirectoryModal,
-        FileUpload,
-        MediaToolbar,
-        DataTable,
-        Breadcrumb
-    },
     props: {
         listUrl: {
             type: String,
@@ -249,7 +235,7 @@ export default {
 
         _.forEach(this.customFields.slice(), (field) => {
             fields.push({
-                key: 'media.custom_fields.' + field.id,
+                key: 'media.custom_fields[' + field.id + ']',
                 label: field.name,
                 sortable: true,
                 selectable: true,
@@ -263,12 +249,15 @@ export default {
                 key: 'timestamp',
                 label: this.$gettext('Modified'),
                 sortable: true,
-                formatter: (value, key, item) => {
+                formatter: (value) => {
                     if (!value) {
                         return '';
                     }
+
+                    const {timeConfig} = useAzuraCast();
+
                     return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(
-                        {...DateTime.DATETIME_MED, ...App.time_config}
+                        {...DateTime.DATETIME_MED, ...timeConfig}
                     );
                 },
                 selectable: true,
@@ -312,22 +301,8 @@ export default {
 
         window.addEventListener('hashchange', this.onHashChange);
     },
-    destroyed() {
+    unmounted() {
         window.removeEventListener('hashchange', this.onHashChange);
-    },
-    computed: {
-        langAlbumArt() {
-            return this.$gettext('Album Art');
-        },
-        langRenameButton() {
-            return this.$gettext('Rename');
-        },
-        langEditButton() {
-            return this.$gettext('Edit');
-        },
-        langPlaylistSelect() {
-            return this.$gettext('View tracks in playlist');
-        },
     },
     methods: {
         formatFileSize(size) {
@@ -342,9 +317,6 @@ export default {
                 directories: _.map(splitItems[0], 'path')
             };
         },
-        onRefreshed() {
-            this.$eventHub.$emit('refreshed');
-        },
         onTriggerNavigate() {
             this.$refs.datatable.navigate();
         },
@@ -357,7 +329,7 @@ export default {
         },
         onHashChange() {
             // Handle links from the sidebar for special functions.
-            let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
+            let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
 
             if ('' !== urlHash && this.isFilterString(urlHash)) {
                 window.location.hash = '';
@@ -366,9 +338,6 @@ export default {
         },
         isFilterString(str) {
             return str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:';
-        },
-        playAudio(url) {
-            this.$eventHub.$emit('player_toggle', url);
         },
         changeDirectory(newDir) {
             window.location.hash = newDir;

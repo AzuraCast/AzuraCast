@@ -8,7 +8,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_best_songs">Best Performing Songs</translate>
+                            {{ $gettext('Best Performing Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -19,10 +19,10 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <translate key="reports_overview_col_change">Change</translate>
+                                    {{ $gettext('Change') }}
                                 </th>
                                 <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
+                                    {{ $gettext('Song') }}
                                 </th>
                             </tr>
                             </thead>
@@ -45,7 +45,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_worst_songs">Worst Performing Songs</translate>
+                            {{ $gettext('Worst Performing Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -56,10 +56,10 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <translate key="reports_overview_col_change">Change</translate>
+                                    {{ $gettext('Change') }}
                                 </th>
                                 <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
+                                    {{ $gettext('Song') }}
                                 </th>
                             </tr>
                             </thead>
@@ -83,7 +83,7 @@
                 <b-col md="12" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_most_played">Most Played Songs</translate>
+                            {{ $gettext('Most Played Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -94,10 +94,10 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <translate key="reports_overview_col_plays">Plays</translate>
+                                    {{ $gettext('Plays') }}
                                 </th>
                                 <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
+                                    {{ $gettext('Song') }}
                                 </th>
                             </tr>
                             </thead>
@@ -119,60 +119,60 @@
     </b-overlay>
 </template>
 
-<script>
-import {DateTime} from "luxon";
+<script setup>
 import Icon from "~/components/Common/Icon";
-import IsMounted from "~/components/Common/IsMounted";
+import {useMounted} from "@vueuse/core";
+import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {DateTime} from "luxon";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'BestAndWorstTab',
-    components: {Icon},
-    mixins: [IsMounted],
-    props: {
-        dateRange: Object,
-        apiUrl: String,
-    },
-    data() {
-        return {
-            loading: true,
-            bestAndWorst: {
-                best: [],
-                worst: []
-            },
-            mostPlayed: [],
-        };
-    },
-    watch: {
-        dateRange() {
-            if (this.isMounted) {
-                this.relist();
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl, {
-                params: {
-                    start: DateTime.fromJSDate(this.dateRange.startDate).toISO(),
-                    end: DateTime.fromJSDate(this.dateRange.endDate).toISO()
-                }
-            }).then((response) => {
-                this.bestAndWorst = response.data.bestAndWorst;
-                this.mostPlayed = response.data.mostPlayed;
-                this.loading = false;
-            });
-        },
-        getSongText(song) {
-            if (song.title !== '') {
-                return '<b>' + song.title + '</b><br>' + song.artist;
-            }
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String,
+});
 
-            return song.text;
+const loading = ref(true);
+const bestAndWorst = shallowRef({
+    best: [],
+    worst: []
+});
+const mostPlayed = ref([]);
+
+const dateRange = toRef(props, 'dateRange');
+const {axios} = useAxios();
+
+const relist = () => {
+    loading.value = true;
+
+    axios.get(props.apiUrl, {
+        params: {
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
         }
+    }).then((response) => {
+        bestAndWorst.value = response.data.bestAndWorst;
+        mostPlayed.value = response.data.mostPlayed;
+        loading.value = false;
+    });
+};
+
+const isMounted = useMounted();
+
+watch(dateRange, () => {
+    if (isMounted.value) {
+        relist();
     }
-}
+});
+
+onMounted(() => {
+    relist();
+});
+
+const getSongText = (song) => {
+    if (song.title !== '') {
+        return '<b>' + song.title + '</b><br>' + song.artist;
+    }
+
+    return song.text;
+};
 </script>

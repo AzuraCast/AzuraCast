@@ -1,25 +1,25 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
         <type-select v-if="!type" :webhook-types="webhookTypes" @select="setType"></type-select>
-        <b-tabs v-else lazy content-class="mt-3">
+        <b-tabs v-else lazy content-class="mt-3" pills>
             <b-tab active>
                 <template #title>
-                    <translate key="tab_basic_info">Basic Info</translate>
+                    {{ $gettext('Basic Info') }}
                 </template>
 
-                <basic-info :trigger-options="triggerOptions" :form="$v.form"></basic-info>
+                <basic-info :trigger-options="triggerOptions" :form="v$.form"></basic-info>
             </b-tab>
             <b-tab :title="typeTitle">
-                <component :is="formComponent" :form="$v.form"></component>
+                <component :is="formComponent" :now-playing-url="nowPlayingUrl" :form="v$.form"></component>
             </b-tab>
         </b-tabs>
 
     </modal-form>
 </template>
 <script>
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";
@@ -33,14 +33,20 @@ import Twitter from "./Form/Twitter";
 import GoogleAnalytics from "./Form/GoogleAnalytics";
 import MatomoAnalytics from "./Form/MatomoAnalytics";
 import Mastodon from "./Form/Mastodon";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
+    setup() {
+        return {v$: useVuelidate()}
+    },
     components: {BasicInfo, TypeSelect},
     mixins: [BaseEditModal],
     props: {
+        nowPlayingUrl: String,
         webhookTypes: Object,
-        webhookTriggers: Object
+        triggerTitles: Object,
+        triggerDescriptions: Object
     },
     data() {
         return {
@@ -81,7 +87,9 @@ export default {
             let webhookKeys = _.get(this.webhookTypes, [this.type, 'triggers'], []);
             return _.map(webhookKeys, (key) => {
                 return {
-                    text: this.webhookTriggers[key],
+                    html:
+                        '<h6 class="font-weight-bold mb-0">' + this.triggerTitles[key] + '</h6>'
+                        + '<p class="card-text small">' + this.triggerDescriptions[key] + '</p>',
                     value: key
                 };
             });
@@ -171,7 +179,7 @@ export default {
                         bot_token: '',
                         chat_id: '',
                         api: '',
-                        text: '',
+                        text: this.langTelegramDefaultContent,
                         parse_mode: 'Markdown'
                     }
                 },
@@ -183,7 +191,12 @@ export default {
                         token: {required},
                         token_secret: {required},
                         rate_limit: {},
-                        message: {required}
+                        message: {},
+                        message_song_changed_live: {},
+                        message_live_connect: {},
+                        message_live_disconnect: {},
+                        message_station_offline: {},
+                        message_station_online: {}
                     },
                     defaultConfig: {
                         consumer_key: '',
@@ -191,7 +204,12 @@ export default {
                         token: '',
                         token_secret: '',
                         rate_limit: 0,
-                        message: this.langTwitterDefaultMessage
+                        message: this.langTwitterDefaultMessage,
+                        message_song_changed_live: this.langTwitterSongChangedLiveMessage,
+                        message_live_connect: this.langTwitterDjOnMessage,
+                        message_live_disconnect: this.langTwitterDjOffMessage,
+                        message_station_offline: this.langTwitterStationOfflineMessage,
+                        message_station_online: this.langTwitterStationOnlineMessage
                     }
                 },
                 'mastodon': {
@@ -200,15 +218,25 @@ export default {
                         instance_url: {required},
                         access_token: {required},
                         rate_limit: {},
-                        message: {required},
-                        visibility: {required}
+                        visibility: {required},
+                        message: {},
+                        message_song_changed_live: {},
+                        message_live_connect: {},
+                        message_live_disconnect: {},
+                        message_station_offline: {},
+                        message_station_online: {}
                     },
                     defaultConfig: {
                         instance_url: '',
                         access_token: '',
                         rate_limit: 0,
+                        visibility: 'public',
                         message: this.langTwitterDefaultMessage,
-                        visibility: 'public'
+                        message_song_changed_live: this.langTwitterSongChangedLiveMessage,
+                        message_live_connect: this.langTwitterDjOnMessage,
+                        message_live_disconnect: this.langTwitterDjOffMessage,
+                        message_station_offline: this.langTwitterStationOfflineMessage,
+                        message_station_online: this.langTwitterStationOnlineMessage
                     }
                 },
                 'google_analytics': {
@@ -259,6 +287,43 @@ export default {
                 url: '{{ station.public_player_url }}'
             });
         },
+        langTwitterSongChangedLiveMessage() {
+            let msg = this.$gettext('Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}',
+                title: '{{ now_playing.song.title }}',
+                artist: '{{ now_playing.song.artist }}',
+                dj: '{{ live.streamer_name }}',
+                url: '{{ station.public_player_url }}'
+            });
+        },
+        langTwitterDjOnMessage() {
+            let msg = this.$gettext('%{ dj } is now live on %{ station }! Tune in now: %{ url }');
+            return this.$gettextInterpolate(msg, {
+                dj: '{{ live.streamer_name }}',
+                station: '{{ station.name }}',
+                url: '{{ station.public_player_url }}'
+            });
+        },
+        langTwitterDjOffMessage() {
+            let msg = this.$gettext('Thanks for listening to %{ station }!');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}',
+            });
+        },
+        langTwitterStationOfflineMessage() {
+            let msg = this.$gettext('%{ station } is going offline for now.');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}'
+            });
+        },
+        langTwitterStationOnlineMessage() {
+            let msg = this.$gettext('%{ station } is back online! Tune in now: %{ url }');
+            return this.$gettextInterpolate(msg, {
+                station: '{{ station.name }}',
+                url: '{{ station.public_player_url }}'
+            });
+        }
     },
     methods: {
         resetForm() {

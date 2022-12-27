@@ -1,10 +1,10 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab :title="$gettext('Basic Info')" active>
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-wrapped-form-group class="col-md-12" id="edit_form_type" :field="form.type">
-                    <template #label="{lang}">
-                        <translate :key="lang">Remote Station Type</translate>
+                    <template #label>
+                        {{ $gettext('Remote Station Type') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
@@ -18,52 +18,62 @@
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_display_name" :field="form.display_name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Display Name</translate>
+                    <template #label>
+                        {{ $gettext('Display Name') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.</translate>
+                    <template #description>
+                        {{
+                            $gettext('The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_url" :field="form.url">
-                    <template #label="{lang}">
-                        <translate :key="lang">Remote Station Listening URL</translate>
+                    <template #label>
+                        {{ $gettext('Remote Station Listening URL') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".</translate>
+                    <template #description>
+                        {{
+                            $gettext('Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_mount" :field="form.mount">
-                    <template #label="{lang}">
-                        <translate :key="lang">Remote Station Listening Mountpoint/SID</translate>
+                    <template #label>
+                        {{ $gettext('Remote Station Listening Mountpoint/SID') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.</translate>
+                    <template #description>
+                        {{
+                            $gettext('Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-group class="col-md-6" id="edit_form_admin_password" :field="form.admin_password">
-                    <template #label="{lang}">
-                        <translate :key="lang">Remote Station Administrator Password</translate>
+                    <template #label>
+                        {{ $gettext('Remote Station Administrator Password') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">To retrieve detailed unique listeners and client details, an administrator password is often required.</translate>
+                    <template #description>
+                        {{
+                            $gettext('To retrieve detailed unique listeners and client details, an administrator password is often required.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
                 <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_visible_on_public_pages"
                                          :field="form.is_visible_on_public_pages">
-                    <template #label="{lang}">
-                        <translate :key="lang">Show on Public Pages</translate>
+                    <template #label>
+                        {{ $gettext('Show on Public Pages') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Enable to allow listeners to select this relay on this station's public pages.</translate>
+                    <template #description>
+                        {{
+                            $gettext('Enable to allow listeners to select this relay on this station\'s public pages.')
+                        }}
                     </template>
                 </b-wrapped-form-checkbox>
 
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
@@ -80,9 +90,6 @@ export default {
         form: Object
     },
     computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        },
         typeOptions() {
             return [
                 {

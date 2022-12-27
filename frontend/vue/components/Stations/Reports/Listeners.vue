@@ -6,24 +6,27 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-fill my-0">
                             <h2 class="card-title">
-                                <translate key="lang_header">Listeners</translate>
+                                {{ $gettext('Listeners') }}
                             </h2>
                         </div>
-                        <div class="flex-shrink">
+                        <div class="flex-shrink buttons">
                             <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
                                 <icon icon="file_download"></icon>
-                                <translate key="lang_download_csv_button">Download CSV</translate>
+                                {{ $gettext('Download CSV') }}
                             </a>
 
                             <date-range-dropdown v-if="!isLive" time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :tz="stationTimeZone" v-model="dateRange" @update="updateListeners">
+                                                 :tz="stationTimeZone" v-model="dateRange"
+                                                 @update="updateListeners">
                             </date-range-dropdown>
                         </div>
                     </div>
                 </div>
                 <b-tabs pills card>
-                    <b-tab key="live" active @click="setIsLive(true)" :title="langLiveListeners" no-body></b-tab>
-                    <b-tab key="not-live" @click="setIsLive(false)" :title="langListenerHistory" no-body></b-tab>
+                    <b-tab key="live" active @click="setIsLive(true)" :title="$gettext('Live Listeners')"
+                           no-body></b-tab>
+                    <b-tab key="not-live" @click="setIsLive(false)" :title="$gettext('Listener History')"
+                           no-body></b-tab>
                 </b-tabs>
                 <div id="map">
                     <StationReportsListenersMap :listeners="listeners"></StationReportsListenersMap>
@@ -32,20 +35,20 @@
                     <div class="card-body row">
                         <div class="col-md-4">
                             <h5>
-                                <translate key="lang_unique_listeners">Unique Listeners</translate>
+                                {{ $gettext('Unique Listeners') }}
                                 <br>
                                 <small>
-                                    <translate key="lang_for_selected_period">for selected period</translate>
+                                    {{ $gettext('for selected period') }}
                                 </small>
                             </h5>
                             <h3>{{ listeners.length }}</h3>
                         </div>
                         <div class="col-md-4">
                             <h5>
-                                <translate key="lang_tlh">Total Listener Hours</translate>
+                                {{ $gettext('Total Listener Hours') }}
                                 <br>
                                 <small>
-                                    <translate key="lang_for_selected_period">for selected period</translate>
+                                    {{ $gettext('for selected period') }}
                                 </small>
                             </h5>
                             <h3>{{ totalListenerHours }}</h3>
@@ -68,13 +71,13 @@
                                 <span v-if="row.item.is_mobile">
                                     <icon icon="smartphone"></icon>
                                     <span class="sr-only">
-                                        <translate key="lang_device_mobile">Mobile Device</translate>
+                                        {{ $gettext('Mobile Device') }}
                                     </span>
                                 </span>
                                 <span v-else>
                                     <icon icon="desktop_windows"></icon>
                                     <span class="sr-only">
-                                        <translate key="lang_device_desktop">Desktop Device</translate>
+                                        {{ $gettext('Desktop Device') }}
                                     </span>
                                 </span>
 
@@ -85,16 +88,16 @@
                             </div>
                         </template>
                         <template #cell(stream)="row">
-                            <span v-if="row.item.mount_name == ''">
-                                <translate key="lang_stream_unknown">Unknown</translate>
+                            <span v-if="row.item.mount_name === ''">
+                                {{ $gettext('Unknown') }}
                             </span>
                             <span v-else>
                                 {{ row.item.mount_name }}<br>
                                 <small v-if="row.item.mount_is_local">
-                                    <translate key="lang_mount_local">Local</translate>
+                                    {{ $gettext('Local') }}
                                 </small>
                                 <small v-else>
-                                    <translate key="lang_mount_remote">Remote</translate>
+                                    {{ $gettext('Remote') }}
                                 </small>
                             </span>
                         </template>
@@ -103,7 +106,7 @@
                                 {{ row.item.location.description }}
                             </span>
                             <span v-else>
-                                <translate key="lang_location_unknown">Unknown</translate>
+                                {{ $gettext('Unknown') }}
                             </span>
                         </template>
                     </data-table>
@@ -153,12 +156,6 @@ export default {
         };
     },
     computed: {
-        langLiveListeners() {
-            return this.$gettext('Live Listeners');
-        },
-        langListenerHistory() {
-            return this.$gettext('Listener History');
-        },
         nowTz() {
             return DateTime.now().setZone(this.stationTimeZone);
         },

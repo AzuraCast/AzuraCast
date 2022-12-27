@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center">
                 <div class="flex-fill">
                     <h5 class="card-title">
-                        <translate key="lang_mic_title">Microphone</translate>
+                        {{ $gettext('Microphone') }}
                     </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
@@ -23,15 +23,16 @@
                                 <icon icon="mic"></icon>
                             </button>
                             <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
-                                <translate key="lang_btn_cue">Cue</translate>
+                                {{ $gettext('Cue') }}
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="flex-fill pl-3">
                     <div class="form-group microphone-entry mb-0">
-                        <label for="select_microphone_source" class="mb-2" key="lang_mic_source" v-translate>Microphone
-                            Source</label>
+                        <label for="select_microphone_source" class="mb-2">
+                            {{ $gettext('Microphone Source') }}
+                        </label>
                         <div class="controls">
                             <select id="select_microphone_source" v-model="device" class="form-control">
                                 <option v-for="device_row in devices" v-bind:value="device_row.deviceId">
@@ -72,7 +73,7 @@ export default {
         };
     },
     watch: {
-        device: function (val, oldVal) {
+        device: function () {
             if (this.source == null) {
                 return;
             }
@@ -80,13 +81,13 @@ export default {
         }
     },
     mounted: function () {
-        var base, base1;
+        let base, base1;
 
         // Get multimedia devices by requesting them from the browser.
         navigator.mediaDevices || (navigator.mediaDevices = {});
 
         (base = navigator.mediaDevices).getUserMedia || (base.getUserMedia = function (constraints) {
-            var fn;
+            let fn;
             fn = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
             if (fn == null) {
                 return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
@@ -100,7 +101,7 @@ export default {
             return Promise.reject(new Error('enumerateDevices is not implemented on this browser'));
         });
 
-        var vm_mic = this;
+        const vm_mic = this;
         navigator.mediaDevices.getUserMedia({
             audio: true,
             video: false
@@ -128,7 +129,7 @@ export default {
             }
         },
         createSource: function (cb) {
-            var constraints;
+            let constraints;
             if (this.source != null) {
                 this.source.disconnect(this.destination);
             }
@@ -157,7 +158,7 @@ export default {
             });
         },
         setDevices: function (devices) {
-            devices = _.filter(devices, function ({ kind, deviceId }) {
+            devices = _.filter(devices, function ({kind}) {
                 return kind === 'audioinput';
             });
             if (_.isEmpty(devices)) {

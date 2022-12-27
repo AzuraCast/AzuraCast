@@ -19,6 +19,7 @@ use Doctrine\ORM\Query\Expr;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 final class ListAction
 {
@@ -26,8 +27,7 @@ final class ListAction
 
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly CacheInterface $cache,
-        private readonly Entity\Repository\StationRepository $stationRepo
+        private readonly CacheInterface $cache
     ) {
     }
 
@@ -327,11 +327,14 @@ final class ListAction
         // Apply sorting
         [$sort, $sortOrder] = $this->getSortFromRequest($request);
 
+        $propertyAccessor = self::getPropertyAccessor();
+
         usort(
             $result,
             static fn(Entity\Api\FileList $a, Entity\Api\FileList $b) => self::sortRows(
                 $a,
                 $b,
+                $propertyAccessor,
                 $searchPhrase,
                 $sort,
                 $sortOrder
@@ -353,9 +356,10 @@ final class ListAction
     private static function sortRows(
         Entity\Api\FileList $a,
         Entity\Api\FileList $b,
+        PropertyAccessorInterface $propertyAccessor,
         ?string $searchPhrase = null,
         ?string $sort = null,
-        ?string $sortOrder = Criteria::ASC
+        string $sortOrder = Criteria::ASC
     ): int {
         if ('special:duplicates' === $searchPhrase) {
             return $a->media->id <=> $b->media->id;
@@ -366,33 +370,13 @@ final class ListAction
             return $isDirComp;
         }
 
-        $sort ??= '';
-        if (str_starts_with($sort, 'media_custom_fields_')) {
-            $property = str_replace('media_custom_fields_', '', $sort);
-            $aVal = $a->media->custom_fields[$property] ?? null;
-            $bVal = $b->media->custom_fields[$property] ?? null;
-        } elseif (str_starts_with($sort, 'media_')) {
-            $property = str_replace('media_', '', $sort);
-            $aVal = property_exists($a->media, $property) ? $a->media->{$property} : null;
-            $bVal = property_exists($b->media, $property) ? $b->media->{$property} : null;
-        } elseif (!empty($sort)) {
-            $aVal = property_exists($a, $sort) ? $a->{$sort} : null;
-            $bVal = property_exists($b, $sort) ? $b->{$sort} : null;
-        } else {
+        if (!$sort) {
             $aVal = $a->path;
             $bVal = $b->path;
+            return (Criteria::ASC === $sortOrder) ? $aVal <=> $bVal : $bVal <=> $aVal;
         }
 
-        if (is_string($aVal)) {
-            $aVal = mb_strtolower($aVal, 'UTF-8');
-        }
-        if (is_string($bVal)) {
-            $bVal = mb_strtolower($bVal, 'UTF-8');
-        }
-
-        return (Criteria::ASC === $sortOrder)
-            ? $aVal <=> $bVal
-            : $bVal <=> $aVal;
+        return self::sortByDotNotation($a, $b, $propertyAccessor, $sort, $sortOrder);
     }
 
     private static function postProcessRow(

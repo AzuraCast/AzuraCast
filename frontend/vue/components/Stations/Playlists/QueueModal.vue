@@ -1,19 +1,23 @@
 <template>
-    <b-modal size="lg" id="queue_modal" ref="modal" :title="langTitle" :busy="loading">
+    <b-modal size="lg" id="queue_modal" ref="modal" :title="$gettext('Playback Queue')" :busy="loading">
         <p>
-            <translate key="queue_info">This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).</translate>
+            {{
+                $gettext('This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).')
+            }}
         </p>
         <b-overlay variant="card" :show="loading">
             <b-table-simple striped class="sortable mb-0">
                 <b-thead>
                     <tr>
-                        <th style="width: 50%;" key="lang_col_title" v-translate>Title</th>
-                        <th style="width: 50%;" key="lang_col_artist" v-translate>Artist</th>
+                        <th style="width: 50%;">{{ $gettext('Title') }}</th>
+                        <th style="width: 50%;">{{ $gettext('Artist') }}</th>
                     </tr>
                 </b-thead>
                 <b-tbody>
                     <tr class="align-middle" v-for="(row,index) in media" :key="row.id">
-                        <td><big>{{ row.title }}</big></td>
+                        <td>
+                            <span class="typography-subheading">{{ row.title }}</span>
+                        </td>
                         <td>{{ row.artist }}</td>
                     </tr>
                 </b-tbody>
@@ -21,10 +25,10 @@
         </b-overlay>
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button variant="danger" type="submit" @click="doClear">
-                <translate key="lang_btn_clear_queue">Clear Queue</translate>
+                {{ $gettext('Clear Queue') }}
             </b-button>
         </template>
     </b-modal>
@@ -41,11 +45,6 @@ export default {
             media: []
         };
     },
-    computed: {
-        langTitle () {
-            return this.$gettext('Playback Queue');
-        }
-    },
     methods: {
         open (queueUrl) {
             this.$refs.modal.show();
@@ -60,7 +59,7 @@ export default {
         doClear () {
             this.$wrapWithLoading(
                 this.axios.delete(this.queueUrl)
-            ).then((resp) => {
+            ).then(() => {
                 this.$notifySuccess(this.$gettext('Playlist queue cleared.'));
                 this.close();
             });

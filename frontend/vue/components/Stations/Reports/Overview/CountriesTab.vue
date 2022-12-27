@@ -1,29 +1,20 @@
 <template>
     <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
-                         field-key="country" :field-label="langFieldLabel">
+                         field-key="country" :field-label="$gettext('Country')">
         <template #by_listeners_legend>
-            <translate key="hdr_top_by_listeners">Top Countries by Listeners</translate>
+            {{ $gettext('Top Countries by Listeners') }}
         </template>
         <template #by_connected_time_legend>
-            <translate key="hdr_top_by_connected_seconds">Top Countries by Connected Time</translate>
+            {{ $gettext('Top Countries by Connected Time') }}
         </template>
     </common-metrics-view>
 </template>
 
-<script>
+<script setup>
 import CommonMetricsView from "./CommonMetricsView";
 
-export default {
-    name: 'CountriesTab',
-    components: {CommonMetricsView},
-    props: {
-        dateRange: Object,
-        apiUrl: String,
-    },
-    computed: {
-        langFieldLabel() {
-            return this.$gettext('Country');
-        }
-    }
-}
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String,
+});
 </script>

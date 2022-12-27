@@ -1,49 +1,49 @@
 <template>
-    <div>
-        <p>
-            <translate key="lang_waveform_editor_desc">Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.</translate>
-        </p>
+    <p>
+        {{
+            $gettext('Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.')
+        }}
+    </p>
 
-        <b-form-group>
-            <waveform ref="waveform" :audio-url="audioUrl" :waveform-url="waveformUrl"
-                      @ready="updateRegions"></waveform>
-        </b-form-group>
-        <b-form-group>
-            <b-button-group>
-                <b-button variant="light" @click="playAudio">
-                    <icon icon="play_arrow"></icon>
-                    <span class="sr-only"><translate key="lang_btn_play">Play</translate></span>
-                </b-button>
-                <b-button variant="dark" @click="stopAudio">
-                    <icon icon="stop"></icon>
-                    <span class="sr-only"><translate key="lang_btn_stop">Stop</translate></span>
-                </b-button>
-            </b-button-group>
-            <b-button-group>
-                <b-button variant="primary" @click="setCueIn">
-                    <translate key="lang_btn_set_cue_in">Set Cue In</translate>
-                </b-button>
+    <b-form-group>
+        <waveform ref="waveform" :audio-url="audioUrl" :waveform-url="waveformUrl"
+                  @ready="updateRegions"></waveform>
+    </b-form-group>
+    <b-form-group>
+        <b-button-group>
+            <b-button variant="light" @click="playAudio">
+                <icon icon="play_arrow"></icon>
+                <span class="sr-only">{{ $gettext('Play') }}</span>
+            </b-button>
+            <b-button variant="dark" @click="stopAudio">
+                <icon icon="stop"></icon>
+                <span class="sr-only">{{ $gettext('Stop') }}</span>
+            </b-button>
+        </b-button-group>
+        <b-button-group>
+            <b-button variant="primary" @click="setCueIn">
+                {{ $gettext('Set Cue In') }}
+            </b-button>
 
-                <b-button variant="primary" @click="setCueOut">
-                    <translate key="lang_btn_set_cue_out">Set Cue Out</translate>
-                </b-button>
-            </b-button-group>
-            <b-button-group>
-                <b-button variant="warning" @click="setFadeOverlap">
-                    <translate key="lang_btn_set_fade_overlap">Set Overlap</translate>
-                </b-button>
-            </b-button-group>
-            <b-button-group>
-                <b-button variant="danger" @click="setFadeIn">
-                    <translate key="lang_btn_set_fade_in">Set Fade In</translate>
-                </b-button>
+            <b-button variant="primary" @click="setCueOut">
+                {{ $gettext('Set Cue Out') }}
+            </b-button>
+        </b-button-group>
+        <b-button-group>
+            <b-button variant="warning" @click="setFadeOverlap">
+                {{ $gettext('Set Overlap') }}
+            </b-button>
+        </b-button-group>
+        <b-button-group>
+            <b-button variant="danger" @click="setFadeIn">
+                {{ $gettext('Set Fade In') }}
+            </b-button>
 
-                <b-button variant="danger" @click="setFadeOut">
-                    <translate key="lang_btn_set_fade_out">Set Fade Out</translate>
-                </b-button>
-            </b-button-group>
-        </b-form-group>
-    </div>
+            <b-button variant="danger" @click="setFadeOut">
+                {{ $gettext('Set Fade Out') }}
+            </b-button>
+        </b-button-group>
+    </b-form-group>
 </template>
 
 <script>

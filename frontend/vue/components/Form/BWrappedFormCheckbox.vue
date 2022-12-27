@@ -2,16 +2,14 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-checkbox :id="id" :name="name" v-model="field.$model" v-bind="inputAttrs">
-                    <slot name="label" :lang="'lang_'+id">
-
-                    </slot>
+                <b-form-checkbox v-bind="inputAttrs" v-model="field.$model" :id="id" :name="name">
+                    <slot name="label"></slot>
                     <span v-if="isRequired" class="text-danger">
                         <span aria-hidden="true">*</span>
                         <span class="sr-only">Required</span>
                     </span>
                     <span v-if="advanced" class="badge small badge-primary">
-                        <translate key="badge_advanced">Advanced</translate>
+                        {{ $gettext('Advanced') }}
                     </span>
                 </b-form-checkbox>
 
@@ -22,60 +20,52 @@
         </template>
 
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps" :lang="'lang_'+id+'_desc'"></slot>
+            <slot name="description" v-bind="slotProps"></slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-form-group>
 </template>
 
-<script>
-import _ from "lodash";
+<script setup>
+import {has} from "lodash";
 import VuelidateError from "./VuelidateError";
+import useSlotsExcept from "~/functions/useSlotsExcept";
+import {computed} from "vue";
 
-export default {
-    name: 'BWrappedFormCheckbox',
-    components: {VuelidateError},
-    props: {
-        id: {
-            type: String,
-            required: true
-        },
-        name: {
-            type: String,
-        },
-        field: {
-            type: Object,
-            required: true
-        },
-        inputAttrs: {
-            type: Object,
-            default() {
-                return {};
-            }
-        },
-        advanced: {
-            type: Boolean,
-            default: false
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+    },
+    field: {
+        type: Object,
+        required: true
+    },
+    inputAttrs: {
+        type: Object,
+        default() {
+            return {};
         }
     },
-    computed: {
-        filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
-                return !_.includes([
-                    'default', 'description'
-                ], name);
-            });
-        },
-        fieldState() {
-            return this.field.$dirty ? !this.field.$error : null;
-        },
-        isRequired() {
-            return _.has(this.field, 'required');
-        }
+    advanced: {
+        type: Boolean,
+        default: false
     }
-}
+});
+
+const filteredSlots = useSlotsExcept(['default', 'description']);
+
+const fieldState = computed(() => {
+    return props.field.$dirty ? !props.field.$error : null;
+});
+
+const isRequired = computed(() => {
+    return has(props.field, 'required');
+});
 </script>

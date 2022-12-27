@@ -2,7 +2,7 @@
     <div id="profile-scheduled">
         <section class="card mb-4 scheduled" role="region" v-if="processedScheduleItems.length > 0">
             <div class="card-header bg-primary-dark">
-                <h3 class="card-title" key="lang_schedule_title" v-translate>Scheduled</h3>
+                <h3 class="card-title">{{ $gettext('Scheduled') }}</h3>
             </div>
             <table class="table table-striped mb-0">
                 <tbody>
@@ -12,10 +12,10 @@
                             <h5 class="m-0">
                                 <small>
                                     <template v-if="row.type === 'playlist'">
-                                        <translate key="lang_schedule_playlist_name">Playlist</translate>
+                                        {{ $gettext('Playlist') }}
                                     </template>
                                     <template v-else>
-                                        <translate key="lang_schedule_streamer_name">Streamer/DJ</translate>
+                                        {{ $gettext('Streamer/DJ') }}
                                     </template>
                                 </small><br>
                                 {{ row.name }}
@@ -25,7 +25,7 @@
                                 <br>
                                 <strong>
                                     <template v-if="row.is_now">
-                                        <translate key="lang_schedule_now">Now</translate>
+                                        {{ $gettext('Now') }}
                                     </template>
                                     <template v-else>{{ row.time_until }}</template>
                                 </strong>
@@ -40,48 +40,54 @@
 </template>
 
 <script>
+export default {
+    inheritAttrs: false
+};
+</script>
+
+<script setup>
 import {DateTime} from "luxon";
 import _ from "lodash";
+import {computed} from "vue";
+import {useAzuraCast} from "~/vendor/azuracast";
 
-export default {
-    inheritAttrs: false,
-    props: {
-        scheduleItems: Array,
-        stationTimeZone: String
-    },
-    computed: {
-        processedScheduleItems() {
-            const now = DateTime.now().setZone(this.stationTimeZone);
+const props = defineProps({
+    scheduleItems: Array,
+    stationTimeZone: String
+});
 
-            return _.map(this.scheduleItems, (row) => {
-                const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(this.stationTimeZone);
-                const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(this.stationTimeZone);
+const {timeConfig} = useAzuraCast();
 
-                row.time_until = start_moment.toRelative();
+const processedScheduleItems = computed(() => {
+    const now = DateTime.now().setZone(props.stationTimeZone);
 
-                if (start_moment.hasSame(now, 'day')) {
-                    row.start_formatted = start_moment.toLocaleString(
-                        {...DateTime.TIME_SIMPLE, ...App.time_config}
-                    );
-                } else {
-                    row.start_formatted = start_moment.toLocaleString(
-                        {...DateTime.DATETIME_MED, ...App.time_config}
-                    );
-                }
+    return _.map(props.scheduleItems, (row) => {
+        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(props.stationTimeZone);
+        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(props.stationTimeZone);
 
-                if (end_moment.hasSame(start_moment, 'day')) {
-                    row.end_formatted = end_moment.toLocaleString(
-                        {...DateTime.TIME_SIMPLE, ...App.time_config}
-                    );
-                } else {
-                    row.end_formatted = end_moment.toLocaleString(
-                        {...DateTime.DATETIME_MED, ...App.time_config}
-                    );
-                }
+        row.time_until = start_moment.toRelative();
 
-                return row;
-            });
+        if (start_moment.hasSame(now, 'day')) {
+            row.start_formatted = start_moment.toLocaleString(
+                {...DateTime.TIME_SIMPLE, ...timeConfig}
+            );
+        } else {
+            row.start_formatted = start_moment.toLocaleString(
+                {...DateTime.DATETIME_MED, ...timeConfig}
+            );
         }
-    }
-};
+
+        if (end_moment.hasSame(start_moment, 'day')) {
+            row.end_formatted = end_moment.toLocaleString(
+                {...DateTime.TIME_SIMPLE, ...timeConfig}
+            );
+        } else {
+            row.end_formatted = end_moment.toLocaleString(
+                {...DateTime.DATETIME_MED, ...timeConfig}
+            );
+        }
+
+        return row;
+    });
+});
 </script>

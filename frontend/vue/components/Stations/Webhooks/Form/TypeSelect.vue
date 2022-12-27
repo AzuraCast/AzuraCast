@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <template #label>
-            <translate key="lang_select_type_header">Select Web Hook Type</translate>
+            {{ $gettext('Select Web Hook Type') }}
         </template>
 
         <b-list-group>
@@ -14,17 +14,14 @@
     </b-form-group>
 </template>
 
-<script>
-export default {
-    name: 'TypeSelect',
-    emits: ['select'],
-    props: {
-        webhookTypes: Object,
-    },
-    methods: {
-        selectType(type) {
-            this.$emit('select', type);
-        }
-    }
+<script setup>
+const props = defineProps({
+    webhookTypes: Object,
+});
+
+const emit = defineEmits(['select']);
+
+const selectType = (type) => {
+    emit('select', type);
 }
 </script>

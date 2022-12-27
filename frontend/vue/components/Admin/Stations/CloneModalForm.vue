@@ -1,21 +1,21 @@
 <template>
-    <b-form-row>
+    <div class="form-row">
         <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-            <template #label="{lang}">
-                <translate :key="lang">New Station Name</translate>
+            <template #label>
+                {{ $gettext('New Station Name') }}
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
                               input-type="textarea">
-            <template #label="{lang}">
-                <translate :key="lang">New Station Description</translate>
+            <template #label>
+                {{ $gettext('New Station Description') }}
             </template>
         </b-wrapped-form-group>
 
         <b-wrapped-form-group class="col-md-12" id="edit_form_clone" :field="form.clone">
-            <template #label="{lang}">
-                <translate :key="lang">Copy to New Station</translate>
+            <template #label>
+                {{ $gettext('Copy to New Station') }}
             </template>
             <template #default="props">
                 <b-form-checkbox-group
@@ -26,59 +26,58 @@
                 ></b-form-checkbox-group>
             </template>
         </b-wrapped-form-group>
-    </b-form-row>
+    </div>
 </template>
 
-<script>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'AdminStationsCloneModalForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object
-    },
-    computed: {
-        cloneOptions() {
-            return [
-                {
-                    text: this.$gettext('Share Media Storage Location'),
-                    value: 'media_storage'
-                },
-                {
-                    text: this.$gettext('Share Recordings Storage Location'),
-                    value: 'recordings_storage'
-                },
-                {
-                    text: this.$gettext('Share Podcasts Storage Location'),
-                    value: 'podcasts_storage'
-                },
-                {
-                    text: this.$gettext('Playlists'),
-                    value: 'playlists',
-                },
-                {
-                    text: this.$gettext('Mount Points'),
-                    value: 'mounts'
-                },
-                {
-                    text: this.$gettext('Remote Relays'),
-                    value: 'remotes'
-                },
-                {
-                    text: this.$gettext('Streamers/DJs'),
-                    value: 'streamers'
-                },
-                {
-                    text: this.$gettext('User Permissions'),
-                    value: 'permissions'
-                },
-                {
-                    text: this.$gettext('Web Hooks'),
-                    value: 'webhooks'
-                }
-            ];
+const props = defineProps({
+    form: Object
+});
+
+const {$gettext} = useTranslate();
+
+const cloneOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Share Media Storage Location'),
+            value: 'media_storage'
+        },
+        {
+            text: $gettext('Share Recordings Storage Location'),
+            value: 'recordings_storage'
+        },
+        {
+            text: $gettext('Share Podcasts Storage Location'),
+            value: 'podcasts_storage'
+        },
+        {
+            text: $gettext('Playlists'),
+            value: 'playlists',
+        },
+        {
+            text: $gettext('Mount Points'),
+            value: 'mounts'
+        },
+        {
+            text: $gettext('Remote Relays'),
+            value: 'remotes'
+        },
+        {
+            text: $gettext('Streamers/DJs'),
+            value: 'streamers'
+        },
+        {
+            text: $gettext('User Permissions'),
+            value: 'permissions'
+        },
+        {
+            text: $gettext('Web Hooks'),
+            value: 'webhooks'
         }
-    }
-}
+    ];
+});
 </script>

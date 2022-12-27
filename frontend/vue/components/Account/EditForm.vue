@@ -1,123 +1,122 @@
 <template>
-    <div>
-        <b-form-fieldset>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Name</translate>
+    <b-form-fieldset>
+        <div class="form-row">
+            <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
+                <template #label>
+                    {{ $gettext('Name') }}
+                </template>
+            </b-wrapped-form-group>
+
+            <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
+                <template #label>
+                    {{ $gettext('E-mail Address') }}
+                </template>
+            </b-wrapped-form-group>
+        </div>
+    </b-form-fieldset>
+
+    <b-form-fieldset>
+        <template #label>
+            {{ $gettext('Customization') }}
+        </template>
+
+        <div class="form-row">
+            <b-col md="6">
+                <b-wrapped-form-group id="edit_form_locale"
+                                      :field="form.locale">
+                    <template #label>
+                        {{ $gettext('Language') }}
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="localeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+            </b-col>
+            <b-col md="6">
+                <b-wrapped-form-group id="edit_form_theme"
+                                      :field="form.theme">
+                    <template #label>
+                        {{ $gettext('Site Theme') }}
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="themeOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
-                    <template #label="{lang}">
-                        <translate :key="lang">E-mail Address</translate>
+                <b-wrapped-form-group id="edit_form_show_24_hour_time"
+                                      :field="form.show_24_hour_time">
+                    <template #label>
+                        {{ $gettext('Time Display') }}
+                    </template>
+                    <template #default="props">
+                        <b-form-radio-group stacked :id="props.id" :options="show24hourOptions"
+                                            v-model="props.field.$model">
+                        </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
-        </b-form-fieldset>
-
-        <b-form-fieldset>
-            <template #label>
-                <translate key="lang_hdr_customize">Customization</translate>
-            </template>
-
-            <b-form-row>
-                <b-col md="6">
-                    <b-wrapped-form-group id="edit_form_locale"
-                                          :field="form.locale">
-                        <template #label="{lang}">
-                            <translate :key="lang">Language</translate>
-                        </template>
-                        <template #default="props">
-                            <b-form-radio-group stacked :id="props.id" :options="localeOptions"
-                                                v-model="props.field.$model">
-                            </b-form-radio-group>
-                        </template>
-                    </b-wrapped-form-group>
-                </b-col>
-                <b-col md="6">
-                    <b-wrapped-form-group id="edit_form_theme"
-                                          :field="form.theme">
-                        <template #label="{lang}">
-                            <translate :key="lang">Site Theme</translate>
-                        </template>
-                        <template #default="props">
-                            <b-form-radio-group stacked :id="props.id" :options="themeOptions"
-                                                v-model="props.field.$model">
-                            </b-form-radio-group>
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group id="edit_form_show_24_hour_time"
-                                          :field="form.show_24_hour_time">
-                        <template #label="{lang}">
-                            <translate :key="lang">Time Display</translate>
-                        </template>
-                        <template #default="props">
-                            <b-form-radio-group stacked :id="props.id" :options="show24hourOptions"
-                                                v-model="props.field.$model">
-                            </b-form-radio-group>
-                        </template>
-                    </b-wrapped-form-group>
-                </b-col>
-            </b-form-row>
-        </b-form-fieldset>
-    </div>
+            </b-col>
+        </div>
+    </b-form-fieldset>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'AccountEditForm',
-    props: {
-        form: Object,
-        supportedLocales: Object
-    },
-    components: {BFormFieldset, BWrappedFormGroup},
-    computed: {
-        localeOptions() {
-            let localeOptions = objectToFormOptions(this.supportedLocales);
-            localeOptions.unshift({
-                text: this.$gettext('Use Browser Default'),
-                value: 'default'
-            });
-            return localeOptions;
+const props = defineProps({
+    form: Object,
+    supportedLocales: Object
+});
+
+const {$gettext} = useTranslate();
+
+const localeOptions = computed(() => {
+    let localeOptions = objectToFormOptions(props.supportedLocales);
+    localeOptions.unshift({
+        text: $gettext('Use Browser Default'),
+        value: 'default'
+    });
+    return localeOptions;
+});
+
+const themeOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Prefer System Default'),
+            value: 'browser'
         },
-        themeOptions() {
-            return [
-                {
-                    text: this.$gettext('Prefer System Default'),
-                    value: 'browser'
-                },
-                {
-                    text: this.$gettext('Light'),
-                    value: 'light'
-                },
-                {
-                    text: this.$gettext('Dark'),
-                    value: 'dark'
-                }
-            ];
+        {
+            text: $gettext('Light'),
+            value: 'light'
         },
-        show24hourOptions() {
-            return [
-                {
-                    text: this.$gettext('Prefer System Default'),
-                    value: null
-                },
-                {
-                    text: this.$gettext('12 Hour'),
-                    value: false
-                },
-                {
-                    text: this.$gettext('24 Hour'),
-                    value: true
-                }
-            ];
+        {
+            text: $gettext('Dark'),
+            value: 'dark'
         }
-    }
-}
+    ];
+});
+
+const show24hourOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Prefer System Default'),
+            value: null
+        },
+        {
+            text: $gettext('12 Hour'),
+            value: false
+        },
+        {
+            text: $gettext('24 Hour'),
+            value: true
+        }
+    ];
+});
 </script>

@@ -939,7 +939,8 @@ class Station implements Stringable, IdentifiableEntityInterface
     {
         return Urls::tryParseUserUrl(
             $this->default_album_art_url,
-            'Station ' . $this->__toString() . ' Default Album Art URL'
+            'Station ' . $this->__toString() . ' Default Album Art URL',
+            false
         );
     }
 

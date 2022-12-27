@@ -1,70 +1,75 @@
 <template>
-    <b-modal id="send_test_message" centered ref="modal" :title="langTitle">
+    <b-modal id="send_test_message" centered ref="modal" :title="$gettext('Send Test Message')">
         <b-form @submit.prevent="doSendTest">
-            <b-wrapped-form-group id="email_address" :field="$v.emailAddress" autofocus>
-                <template #label="{lang}">
-                    <translate :key="lang">E-mail Address</translate>
+            <b-wrapped-form-group id="email_address" :field="v$.emailAddress" autofocus>
+                <template #label>
+                    {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
             <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
-            <b-button :variant="($v.$invalid) ? 'danger' : 'primary'" @click="doSendTest">
-                <translate key="lang_btn_send">Send Test Message</translate>
+            <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doSendTest">
+                {{ $gettext('Send Test Message') }}
             </b-button>
         </template>
     </b-modal>
 </template>
 
-<script>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import {validationMixin} from "vuelidate";
-import {email, required} from 'vuelidate/dist/validators.min.js';
+<script setup>
+import {email, required} from '@vuelidate/validators';
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
+import {useAxios} from "~/vendor/axios";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {BModal} from "bootstrap-vue";
 
-export default {
-    name: 'AdminSettingsTestMessageModal',
-    components: {BWrappedFormGroup},
-    mixins: [validationMixin],
-    props: {
-        testMessageUrl: String
-    },
-    data() {
-        return {
-            emailAddress: null
-        };
-    },
-    validations: {
+const props = defineProps({
+    testMessageUrl: String
+});
+
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
         emailAddress: {required, email}
     },
-    computed: {
-        langTitle() {
-            return this.$gettext('Send Test Message');
-        },
+    {
+        emailAddress: null
     },
-    methods: {
-        close() {
-            this.emailAddress = null;
-            this.$v.$reset();
-            this.$refs.modal.hide();
-        },
-        doSendTest() {
-            this.$v.$touch();
-            if (this.$v.$anyError) {
-                return;
-            }
-
-            this.$wrapWithLoading(
-                this.axios.post(this.testMessageUrl, {
-                    'email': this.emailAddress
-                })
-            ).then(() => {
-                this.$notifySuccess(this.$gettext('Test message sent.'));
-            }).finally(() => {
-                this.close();
-            });
-        }
+    {
+        $stopPropagation: true
     }
+);
+
+const modal = ref(); // BModal
+
+const close = () => {
+    v$.value.reset();
+    modal.value.hide();
 }
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+const {$gettext} = useTranslate();
+
+const doSendTest = () => {
+    v$.value.$touch();
+
+    if (v$.value.$errors.length > 0) {
+        return;
+    }
+
+    wrapWithLoading(
+        axios.post(props.testMessageUrl, {
+            'email': form.value.emailAddress
+        })
+    ).then(() => {
+        notifySuccess($gettext('Test message sent.'));
+    }).finally(() => {
+        close();
+    });
+};
 </script>

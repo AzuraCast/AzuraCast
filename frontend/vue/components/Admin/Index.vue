@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 class="outside-card-header mb-1">
-            <translate key="lang_hdr_admin">Administration</translate>
+            {{ $gettext('Administration') }}
         </h2>
 
         <b-row>
@@ -27,7 +27,7 @@
         </b-row>
 
         <h2 class="outside-card-header mb-1">
-            <translate key="lang_hdr_server_status">Server Status</translate>
+            {{ $gettext('Server Status') }}
         </h2>
 
         <b-row>
@@ -36,7 +36,7 @@
                     <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
-                                <translate key="lang_hdr_memory">Memory</translate>
+                                {{ $gettext('Memory') }}
                             </h2>
                         </div>
 
@@ -50,7 +50,7 @@
 
                     <b-card-body>
                         <h6 class="mb-1 text-center">
-                            <translate key="lang_disk_header">Total RAM</translate>
+                            {{ $gettext('Total RAM') }}
                             :
                             {{ stats.memory.readable.total }}
                         </h6>
@@ -65,12 +65,12 @@
                         <b-row>
                             <b-col>
                                 <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
-                                <translate key="lang_memory_used">Used</translate>
+                                {{ $gettext('Used') }}
                                 : {{ stats.memory.readable.used }}
                             </b-col>
                             <b-col>
                                 <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;
-                                <translate key="lang_memory_cached">Cached</translate>
+                                {{ $gettext('Cached') }}
                                 : {{ stats.memory.readable.cached }}
                             </b-col>
                         </b-row>
@@ -82,13 +82,13 @@
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
                         <h2 class="card-title">
-                            <translate key="lang_hdr_disk_space">Disk Space</translate>
+                            {{ $gettext('Disk Space') }}
                         </h2>
                     </b-card-header>
 
                     <b-card-body>
                         <h6 class="mb-1 text-center">
-                            <translate key="lang_total_disk_space">Total Disk Space</translate>
+                            {{ $gettext('Total Disk Space') }}
                             :
                             {{ stats.disk.readable.total }}
                         </h6>
@@ -101,7 +101,7 @@
                         <b-row>
                             <b-col>
                                 <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
-                                <translate key="lang_used_disk_space">Used</translate>
+                                {{ $gettext('Used') }}
                                 :
                                 {{ stats.disk.readable.used }}
                             </b-col>
@@ -117,7 +117,7 @@
                     <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
-                                <translate key="lang_hdr_cpu_load">CPU Load</translate>
+                                {{ $gettext('CPU Load') }}
                             </h2>
                         </div>
 
@@ -142,17 +142,17 @@
                         <b-row>
                             <b-col>
                                 <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;
-                                <translate key="lang_cpu_steal">Steal</translate>
+                                {{ $gettext('Steal') }}
                                 : {{ stats.cpu.total.steal }}%
                             </b-col>
                             <b-col>
                                 <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;
-                                <translate key="lang_cpu_wait">Wait</translate>
+                                {{ $gettext('Wait') }}
                                 : {{ stats.cpu.total.io_wait }}%
                             </b-col>
                             <b-col>
                                 <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
-                                <translate key="lang_cpu_use">Use</translate>
+                                {{ $gettext('Use') }}
                                 : {{ stats.cpu.total.usage }}%
                             </b-col>
                         </b-row>
@@ -186,7 +186,7 @@
 
                     <b-card-footer>
                         <h6 class="mb-1 text-center">
-                            <translate key="lang_cpu_average">Load Average</translate>
+                            {{ $gettext('Load Average') }}
                         </h6>
                         <b-row class="text-center" no-gutters>
                             <b-col>
@@ -211,7 +211,7 @@
                     <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
-                                <translate key="lang_hdr_services">Services</translate>
+                                {{ $gettext('Services') }}
                             </h2>
                         </div>
                     </b-card-header>
@@ -248,7 +248,7 @@
                                 <b-button-group size="sm" v-if="service.links.restart">
                                     <b-button size="sm" :variant="service.running ? 'bg' : 'danger'"
                                               @click.prevent="doRestart(service.links.restart)">
-                                        <translate key="lang_btn_restart">Restart</translate>
+                                        {{ $gettext('Restart') }}
                                     </b-button>
                                 </b-button-group>
                             </td>
@@ -264,17 +264,17 @@
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
                         <h2 class="card-title">
-                            <translate key="lang_hdr_network_interfaces">Network Interfaces</translate>
+                            {{ $gettext('Network Interfaces') }}
                         </h2>
                     </b-card-header>
 
-                    <b-tabs content-class="mt-3">
+                    <b-tabs content-class="mt-3" pills card>
                         <b-tab v-for="netInterface in stats.network" :key="netInterface.interface_name"
-                               :title="netInterface.interface_name" pills card>
+                               :title="netInterface.interface_name">
                             <b-row class="mb-3">
                                 <b-col class="mb-3">
                                     <h5 class="mb-1 text-center">
-                                        <translate key="lang_net_received">Received</translate>
+                                        {{ $gettext('Received') }}
                                     </h5>
                                     <b-table striped responsive
                                              :items="getNetworkInterfaceTableItems(netInterface.received)"
@@ -283,7 +283,7 @@
                                 </b-col>
                                 <b-col>
                                     <h5 class="mb-1 text-center">
-                                        <translate key="lang_net_transmitted">Transmitted</translate>
+                                        {{ $gettext('Transmitted') }}
                                     </h5>
                                     <b-table striped responsive
                                              :items="getNetworkInterfaceTableItems(netInterface.transmitted)"

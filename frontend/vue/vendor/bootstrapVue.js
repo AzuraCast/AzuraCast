@@ -1,111 +1,139 @@
-import Vue from 'vue';
 import {BootstrapVue} from 'bootstrap-vue';
 
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import {useTranslate} from "~/vendor/gettext";
+import {useNotifyBus} from "~/vendor/events";
 
-Vue.use(BootstrapVue);
+/* Composition API BootstrapVue utilities */
+export function useNotify() {
+    const {$gettext} = useTranslate();
+    const notifyBus = useNotifyBus();
 
-const BootstrapVueNotifiers = {
-    install(Vue, opts) {
-        Vue.prototype.$notify = function (message = null, options = {}) {
-            if (!!document.hidden) {
-                return;
-            }
-        
-            const defaults = {
-                variant: 'default',
-                toaster: 'b-toaster-top-right',
-                autoHideDelay: 3000,
-                solid: true
-            };
+    const notify = (message = null, options = {}) => {
+        if (!!document.hidden) {
+            return;
+        }
 
-            this.$bvToast.toast(message, {...defaults, ...options});
+        const defaults = {
+            variant: 'default',
+            toaster: 'b-toaster-top-right',
+            autoHideDelay: 3000,
+            solid: true
         };
 
-        Vue.prototype.$notifyError = function (message = null, options = {}) {
-            if (message === null) {
-                message = this.$gettext('An error occurred and your request could not be completed.');
-            }
+        notifyBus.emit('show', {
+            message: message,
+            options: {...defaults, ...options}
+        });
+    };
 
-            const defaults = {
-                variant: 'danger',
-                title: this.$gettext('Error')
-            };
+    const notifyError = (message = null, options = {}) => {
+        if (message === null) {
+            message = $gettext('An error occurred and your request could not be completed.');
+        }
 
-            this.$notify(message, {...defaults, ...options});
-
-            return message;
+        const defaults = {
+            variant: 'danger',
+            title: $gettext('Error')
         };
 
-        Vue.prototype.$notifySuccess = function (message = null, options = {}) {
-            if (message === null) {
-                message = this.$gettext('Changes saved.');
-            }
+        notify(message, {...defaults, ...options});
 
-            const defaults = {
-                variant: 'success',
-                title: this.$gettext('Success')
-            };
+        return message;
+    };
 
-            this.$notify(message, {...defaults, ...options});
+    const notifySuccess = (message = null, options = {}) => {
+        if (message === null) {
+            message = $gettext('Changes saved.');
+        }
 
-            return message;
+        const defaults = {
+            variant: 'success',
+            title: $gettext('Success')
         };
 
-        const LOADING_TOAST_ID = 'toast-loading';
+        notify(message, {...defaults, ...options});
 
-        Vue.prototype.$showLoading = function (message = null, options = {}) {
-            if (message === null) {
-                message = this.$gettext('Applying changes...');
-            }
+        return message;
+    };
 
-            const defaults = {
-                id: LOADING_TOAST_ID,
-                variant: 'warning',
-                title: this.$gettext('Please wait...'),
-                autoHideDelay: 10000,
-                isStatus: true
-            };
+    const LOADING_TOAST_ID = 'toast-loading';
 
-            this.$notify(message, {...defaults, ...options});
-            return message;
+    const showLoading = (message = null, options = {}) => {
+        if (message === null) {
+            message = $gettext('Applying changes...');
+        }
+
+        const defaults = {
+            id: LOADING_TOAST_ID,
+            variant: 'warning',
+            title: $gettext('Please wait...'),
+            autoHideDelay: 10000,
+            isStatus: true
         };
 
-        Vue.prototype.$hideLoading = function () {
-            this.$bvToast.hide(LOADING_TOAST_ID);
-        };
+        notify(message, {...defaults, ...options});
+        return message;
+    };
 
-        let $isAxiosLoading = false;
-        let $axiosLoadCount = 0;
+    const hideLoading = () => {
+        notifyBus.emit('hide', {
+            id: LOADING_TOAST_ID
+        });
+    };
 
-        Vue.prototype.$setLoading = function (isLoading) {
-            let prevIsLoading = $isAxiosLoading;
-            if (isLoading) {
-                $axiosLoadCount++;
-                $isAxiosLoading = true;
-            } else if ($axiosLoadCount > 0) {
-                $axiosLoadCount--;
-                $isAxiosLoading = ($axiosLoadCount > 0);
-            }
+    let $isAxiosLoading = false;
+    let $axiosLoadCount = 0;
 
-            // Handle state changes
-            if (!prevIsLoading && $isAxiosLoading) {
-                this.$showLoading();
-            } else if (prevIsLoading && !$isAxiosLoading) {
-                this.$hideLoading();
-            }
-        };
+    const setLoading = (isLoading) => {
+        let prevIsLoading = $isAxiosLoading;
+        if (isLoading) {
+            $axiosLoadCount++;
+            $isAxiosLoading = true;
+        } else if ($axiosLoadCount > 0) {
+            $axiosLoadCount--;
+            $isAxiosLoading = ($axiosLoadCount > 0);
+        }
 
-        Vue.prototype.$wrapWithLoading = function (promise) {
-            this.$setLoading(true);
+        // Handle state changes
+        if (!prevIsLoading && $isAxiosLoading) {
+            showLoading();
+        } else if (prevIsLoading && !$isAxiosLoading) {
+            hideLoading();
+        }
+    };
 
-            promise.finally(() => {
-                this.$setLoading(false);
-            });
+    const wrapWithLoading = (promise) => {
+        setLoading(true);
 
-            return promise;
-        };
-    }
+        promise.finally(() => {
+            setLoading(false);
+        });
+
+        return promise;
+    };
+
+    return {
+        install(app) {
+            app.config.globalProperties.$notify = notify;
+            app.config.globalProperties.$notifyError = notifyError;
+            app.config.globalProperties.$notifySuccess = notifySuccess;
+            app.config.globalProperties.$showLoading = showLoading;
+            app.config.globalProperties.$hideLoading = hideLoading;
+            app.config.globalProperties.$setLoading = setLoading;
+            app.config.globalProperties.$wrapWithLoading = wrapWithLoading;
+        },
+        notify,
+        notifyError,
+        notifySuccess,
+        showLoading,
+        hideLoading,
+        setLoading,
+        wrapWithLoading
+    };
+}
+
+export default function installBootstrapVue(vueApp) {
+    vueApp.use(BootstrapVue);
+    vueApp.use(useNotify());
 };
-
-Vue.use(BootstrapVueNotifiers);

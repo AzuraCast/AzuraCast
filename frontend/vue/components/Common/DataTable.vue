@@ -60,14 +60,14 @@
         </div>
         <div class="datatable-main">
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                     :current-page.sync="currentPage" @row-selected="onRowSelected" :items="itemProvider"
+                     v-model:current-page="currentPage" @row-selected="onRowSelected" :items="itemProvider"
                      :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
                      :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
                      :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed"
-                     :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="onSortChanged">
+                     v-model:sort-by="sortBy" v-model:sort-desc="sortDesc" @sort-changed="onSortChanged">
                 <template #head(selected)="data">
                     <b-form-checkbox :aria-label="langSelectAll" :checked="allSelected"
                                      @change="toggleSelected"></b-form-checkbox>
@@ -105,9 +105,9 @@
                         </div>
                     </div>
                 </template>
-                <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-                <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
-                    <slot :name="name" v-bind="slotData"/>
+
+                <template v-for="(_, slot) of $slots" v-slot:[slot]="scope">
+                    <slot :name="slot" v-bind="scope"></slot>
                 </template>
             </b-table>
         </div>
@@ -156,9 +156,10 @@ table.b-table-selectable {
 <script>
 import store from 'store';
 import _ from 'lodash';
-import Icon from './Icon';
+import Icon from './Icon.vue';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     name: 'DataTable',
     components: {Icon},
     props: {
@@ -393,7 +394,7 @@ export default {
         setFilter(newTerm) {
             this.filter = newTerm;
         },
-        loadItems(ctx, callback) {
+        loadItems(ctx) {
             let queryParams = {
                 internal: true
             };
@@ -460,5 +461,5 @@ export default {
             this.$emit('filtered', filter);
         }
     }
-};
+});
 </script>

@@ -25,7 +25,7 @@ trait PassThruProcess
         }
 
         $process->setTimeout($timeout - 60);
-        $process->setIdleTimeout(3600);
+        $process->setIdleTimeout(null);
 
         $stdout = [];
         $stderr = [];

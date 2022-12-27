@@ -3,20 +3,20 @@
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
+import useVuelidate from "@vuelidate/core";
 import ModalForm from "~/components/Common/ModalForm";
 import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'BaseEditModal',
     components: {ModalForm},
+    setup() {
+        return {v$: useVuelidate()}
+    },
     emits: ['relist'],
     props: {
         createUrl: String
     },
-    mixins: [
-        validationMixin
-    ],
     data() {
         return {
             loading: true,
@@ -62,7 +62,7 @@ export default {
             ).then((resp) => {
                 this.populateForm(resp.data);
                 this.loading = false;
-            }).catch((error) => {
+            }).catch(() => {
                 this.close();
             });
         },
@@ -83,7 +83,7 @@ export default {
                 data: this.getSubmittableFormData()
             };
         },
-        onSubmitSuccess(response) {
+        onSubmitSuccess() {
             this.$notifySuccess();
             this.$emit('relist');
             this.close();
@@ -91,9 +91,9 @@ export default {
         onSubmitError(error) {
             this.error = error.response.data.message;
         },
-        doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+        async doSubmit() {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
@@ -111,7 +111,7 @@ export default {
             this.$refs.modal.hide();
         },
         clearContents() {
-            this.$v.form.$reset();
+            this.v$.$reset();
 
             this.loading = false;
             this.error = null;

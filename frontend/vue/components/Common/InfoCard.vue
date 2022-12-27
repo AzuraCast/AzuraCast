@@ -9,11 +9,5 @@
     </div>
 </template>
 
-<script>
-import Icon from './Icon';
-
-export default {
-    name: 'InfoCard',
-    components: { Icon }
-};
-</script>
+<script setup>
+import Icon from './Icon';</script>

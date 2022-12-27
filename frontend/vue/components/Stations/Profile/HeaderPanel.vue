@@ -10,31 +10,25 @@
         <div class="flex-shrink-0 ml-3" v-if="userCanManageProfile">
             <a class="btn btn-primary btn-lg" role="button" :href="manageProfileUri">
                 <icon icon="edit"></icon>
-                <translate key="lang_profile_btn_edit">Edit Profile</translate>
+                {{ $gettext('Edit Profile') }}
             </a>
         </div>
     </div>
 </template>
 
 <script>
-import Icon from '~/components/Common/Icon';
-import PlayButton from "../../Common/PlayButton";
-
-export const profileHeaderProps = {
-    props: {
-        stationName: String,
-        stationDescription: String,
-        userCanManageProfile: Boolean,
-        manageProfileUri: String
-    }
-};
-
 export default {
-    inheritAttrs: false,
-    props: {
-        np: Object
-    },
-    components: {PlayButton, Icon},
-    mixins: [profileHeaderProps]
+    inheritAttrs: false
 };
+</script>
+
+<script setup>
+import Icon from '~/components/Common/Icon';
+import PlayButton from "~/components/Common/PlayButton.vue";
+import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
+
+const props = defineProps({
+    ...headerPanelProps,
+    np: Object
+});
 </script>

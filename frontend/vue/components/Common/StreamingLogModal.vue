@@ -1,50 +1,48 @@
 <template>
-    <b-modal id="logs_modal" size="lg" ref="modal" :title="langLogView" @hidden="clearContents" no-enforce-focus>
+    <b-modal id="logs_modal" size="lg" ref="modal" @hidden="clearContents"
+             :title="$gettext('Log Viewer')" no-enforce-focus>
         <streaming-log-view ref="logView" :log-url="logUrl"></streaming-log-view>
 
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+                {{ $gettext('Close') }}
             </b-button>
             <b-button variant="primary" class="btn_copy" @click.prevent="doCopy" type="button">
-                <translate key="lang_btn_copy">Copy to Clipboard</translate>
+                {{ $gettext('Copy to Clipboard') }}
             </b-button>
         </template>
     </b-modal>
 </template>
 
-<script>
-import '~/vendor/clipboard.js';
+<script setup>
 import StreamingLogView from "~/components/Common/StreamingLogView";
+import {ref} from "vue";
+import {useClipboard} from "@vueuse/core";
 
-export default {
-    name: 'StreamingLogModal',
-    components: {StreamingLogView},
-    data() {
-        return {
-            logUrl: null
-        };
-    },
-    computed: {
-        langLogView() {
-            return this.$gettext('Log Viewer');
-        }
-    },
-    methods: {
-        show(logUrl) {
-            this.logUrl = logUrl;
-            this.$refs.modal.show();
-        },
-        doCopy() {
-            this.$copyText(this.$refs.logView.getContents());
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        clearContents() {
-            this.logUrl = null;
-            this.log = null;
-        }
-    }
+const logUrl = ref('');
+const modal = ref(); // Template ref
+const logView = ref(); // Template ref
+
+const show = (newLogUrl) => {
+    logUrl.value = newLogUrl;
+    modal.value.show();
 };
+
+const clipboard = useClipboard();
+
+const doCopy = () => {
+    clipboard.copy(logView.value.getContents());
+};
+
+const close = () => {
+    modal.value.hide();
+}
+
+const clearContents = () => {
+    logUrl.value = '';
+}
+
+defineExpose({
+    show
+})
 </script>

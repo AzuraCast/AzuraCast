@@ -1,16 +1,16 @@
-import Vue
-  from 'vue';
-
-import store
-  from '~/store';
-
-import InlinePlayer
-  from '~/components/InlinePlayer.vue';
+import {createApp} from 'vue';
+import InlinePlayer from '~/components/InlinePlayer.vue';
+import {installPinia} from '~/vendor/pinia';
+import {installTranslate} from "~/vendor/gettext";
 
 document.addEventListener('DOMContentLoaded', function () {
-  let inlinePlayer = new Vue({
-    el: '#radio-player-controls',
-    store: store,
-    render: createElement => createElement(InlinePlayer)
-  });
+    const inlineApp = createApp(InlinePlayer);
+
+    /* Gettext */
+    installTranslate(inlineApp);
+
+    /* Pinia */
+    installPinia(inlineApp);
+
+    inlineApp.mount('#radio-player-controls');
 });

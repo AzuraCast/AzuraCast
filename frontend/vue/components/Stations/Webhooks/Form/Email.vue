@@ -1,47 +1,42 @@
 <template>
-    <div>
-        <b-form-group>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-12" id="form_config_to" :field="form.config.to">
-                    <template #label="{lang}">
-                        <translate :key="lang">Message Recipient(s)</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">E-mail addresses can be separated by commas.</translate>
-                    </template>
-                </b-wrapped-form-group>
-            </b-form-row>
-        </b-form-group>
+    <b-form-group>
+        <div class="form-row">
+            <b-wrapped-form-group class="col-md-12" id="form_config_to" :field="form.config.to">
+                <template #label>
+                    {{ $gettext('Message Recipient(s)') }}
+                </template>
+                <template #description>
+                    {{ $gettext('E-mail addresses can be separated by commas.') }}
+                </template>
+            </b-wrapped-form-group>
+        </div>
+    </b-form-group>
 
-        <common-formatting-info></common-formatting-info>
+    <common-formatting-info :now-playing-url="nowPlayingUrl"></common-formatting-info>
 
-        <b-form-group>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-12" id="form_config_subject" :field="form.config.subject">
-                    <template #label="{lang}">
-                        <translate :key="lang">Message Subject</translate>
-                    </template>
-                </b-wrapped-form-group>
+    <b-form-group>
+        <div class="form-row">
+            <b-wrapped-form-group class="col-md-12" id="form_config_subject" :field="form.config.subject">
+                <template #label>
+                    {{ $gettext('Message Subject') }}
+                </template>
+            </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message">
-                    <template #label="{lang}">
-                        <translate :key="lang">Message Body</translate>
-                    </template>
-                </b-wrapped-form-group>
-            </b-form-row>
-        </b-form-group>
-    </div>
+            <b-wrapped-form-group class="col-md-12" id="form_config_message" :field="form.config.message">
+                <template #label>
+                    {{ $gettext('Message Body') }}
+                </template>
+            </b-wrapped-form-group>
+        </div>
+    </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import CommonFormattingInfo from "./CommonFormattingInfo";
+import CommonFormattingInfo from "./Common/FormattingInfo";
 
-export default {
-    name: 'Email',
-    components: {CommonFormattingInfo, BWrappedFormGroup},
-    props: {
-        form: Object
-    }
-}
+const props = defineProps({
+    form: Object,
+    nowPlayingUrl: String
+});
 </script>

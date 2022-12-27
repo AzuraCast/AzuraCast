@@ -3,43 +3,70 @@
         <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
 
         <b-form class="form vue-form" @submit.prevent="submit">
-            <b-tabs :card="!isModal" lazy justified :content-class="tabContentClass">
-                <b-tab :title-link-class="getTabClass($v.profileTab)" active>
+            <b-tabs :card="!isModal" pills :content-class="tabContentClass">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.profileTab)" active>
                     <template #title>
-                        <translate key="tab_profile">Profile</translate>
+                        {{ $gettext('Profile') }}
                     </template>
 
-                    <admin-stations-profile-form :form="$v.form" :timezones="timezones"
+                    <admin-stations-profile-form :form="v$" :timezones="timezones"
                                                  :show-advanced="showAdvanced"></admin-stations-profile-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.frontendTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.frontendTab)">
                     <template #title>
-                        <translate key="tab_frontend">Broadcasting</translate>
+                        {{ $gettext('Broadcasting') }}
                     </template>
 
-                    <admin-stations-frontend-form :form="$v.form"
+                    <admin-stations-frontend-form :form="v$"
                                                   :is-shoutcast-installed="isShoutcastInstalled"
                                                   :countries="countries"
                                                   :show-advanced="showAdvanced"></admin-stations-frontend-form>
                 </b-tab>
 
-                <b-tab :title-link-class="getTabClass($v.backendTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.backendTab)">
                     <template #title>
-                        <translate key="tab_backend">AutoDJ</translate>
+                        {{ $gettext('AutoDJ') }}
                     </template>
 
-                    <admin-stations-backend-form :form="$v.form" :station="station"
+                    <admin-stations-backend-form :form="v$" :station="station"
                                                  :is-stereo-tool-installed="isStereoToolInstalled"
                                                  :show-advanced="showAdvanced"></admin-stations-backend-form>
                 </b-tab>
 
-                <b-tab v-if="showAdminTab" :title-link-class="getTabClass($v.adminTab)">
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.hlsTab)">
                     <template #title>
-                        <translate key="tab_admin">Administration</translate>
+                        {{ $gettext('HLS') }}
                     </template>
 
-                    <admin-stations-admin-form :form="$v.form"
+                    <admin-stations-hls-form :form="v$" :station="station" :show-advanced="showAdvanced">
+                    </admin-stations-hls-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.requestsTab)">
+                    <template #title>
+                        {{ $gettext('Song Requests') }}
+                    </template>
+
+                    <admin-stations-requests-form :form="v$" :station="station" :show-advanced="showAdvanced">
+                    </admin-stations-requests-form>
+                </b-tab>
+
+                <b-tab :title-link-class="getTabClass(v$.$validationGroups.streamersTab)">
+                    <template #title>
+                        {{ $gettext('Streamers/DJs') }}
+                    </template>
+
+                    <admin-stations-streamers-form :form="v$" :station="station" :show-advanced="showAdvanced">
+                    </admin-stations-streamers-form>
+                </b-tab>
+
+                <b-tab v-if="showAdminTab" :title-link-class="getTabClass(v$.$validationGroups.adminTab)">
+                    <template #title>
+                        {{ $gettext('Administration') }}
+                    </template>
+
+                    <admin-stations-admin-form :form="v$"
                                                :is-edit-mode="isEditMode"
                                                :storage-location-api-url="storageLocationApiUrl"
                                                :show-advanced="showAdvanced">
@@ -51,7 +78,7 @@
                 <b-card-body body-class="card-padding-sm">
                     <b-button size="lg" type="submit" :variant="(!isValid) ? 'danger' : 'primary'">
                         <slot name="submitButtonText">
-                            <translate key="lang_btn_save_changes">Save Changes</translate>
+                            {{ $gettext('Save Changes') }}
                         </slot>
                     </b-button>
                 </b-card-body>
@@ -61,368 +88,371 @@
 </template>
 
 <script>
-import {validationMixin} from "vuelidate";
-import {decimal, numeric, required, url} from 'vuelidate/dist/validators.min.js';
-import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
-import AdminStationsProfileForm from "./Form/ProfileForm";
-import AdminStationsFrontendForm from "./Form/FrontendForm";
-import AdminStationsBackendForm from "./Form/BackendForm";
-import AdminStationsAdminForm from "./Form/AdminForm";
-import _ from "lodash";
-import mergeExisting from "~/functions/mergeExisting";
+import {defineComponent} from "vue";
 
-export const StationFormProps = {
-    props: {
-        // Global
-        showAdminTab: {
-            type: Boolean,
-            default: true
+export default defineComponent({
+    inheritAttrs: false
+});
+</script>
+
+<script setup>
+import AdminStationsProfileForm from "./Form/ProfileForm.vue";
+import AdminStationsFrontendForm from "./Form/FrontendForm.vue";
+import AdminStationsBackendForm from "./Form/BackendForm.vue";
+import AdminStationsAdminForm from "./Form/AdminForm.vue";
+import AdminStationsHlsForm from "./Form/HlsForm.vue";
+import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
+import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
+import {decimal, numeric, required, url} from '@vuelidate/validators';
+import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+import {computed, ref, watch} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import mergeExisting from "~/functions/mergeExisting";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {isArray, merge, mergeWith} from "lodash";
+import stationFormProps from "~/components/Admin/Stations/stationFormProps";
+
+const props = defineProps({
+    ...stationFormProps,
+    createUrl: String,
+    editUrl: String,
+    isEditMode: Boolean,
+    isModal: {
+        type: Boolean,
+        default: false
+    }
+});
+
+const emit = defineEmits(['error', 'submitted', 'loadingUpdate', 'validUpdate']);
+
+const buildForm = () => {
+    let validations = {
+        name: {required},
+        description: {},
+        genre: {},
+        url: {url},
+        timezone: {},
+        enable_public_page: {},
+        enable_on_demand: {},
+        enable_hls: {},
+        default_album_art_url: {},
+        enable_on_demand_download: {},
+        frontend_type: {required},
+        frontend_config: {
+            sc_license_id: {},
+            sc_user_id: {},
+            source_pw: {},
+            admin_pw: {},
         },
-        showAdvanced: {
-            type: Boolean,
-            default: true
+        backend_type: {required},
+        backend_config: {
+            hls_enable_on_public_player: {},
+            hls_is_default: {},
+            crossfade_type: {},
+            crossfade: {decimal},
+            audio_processing_method: {},
+            stereo_tool_license_key: {},
+            record_streams: {},
+            record_streams_format: {},
+            record_streams_bitrate: {},
+            dj_buffer: {numeric},
         },
-        // Profile
-        timezones: Object,
-        // Frontend
-        isShoutcastInstalled: {
-            type: Boolean,
-            default: false
+        enable_requests: {},
+        request_delay: {numeric},
+        request_threshold: {numeric},
+        enable_streamers: {},
+        disconnect_deactivate_streamer: {},
+        $validationGroups: {
+            profileTab: [
+                'name', 'description', 'genre', 'url', 'timezone', 'enable_public_page',
+                'enable_on_demand', 'enable_on_demand_download', 'default_album_art_url'
+            ],
+            frontendTab: [
+                'frontend_type', 'frontend_config'
+            ],
+            backendTab: [
+                'backend_type', 'backend_config',
+            ],
+            hlsTab: [
+                'enable_hls',
+            ],
+            requestsTab: [
+                'enable_requests',
+                'request_delay',
+                'request_threshold'
+            ],
+            streamersTab: [
+                'enable_streamers',
+                'disconnect_deactivate_streamer'
+            ]
+        }
+    };
+
+    let blankForm = {
+        name: '',
+        description: '',
+        genre: '',
+        url: '',
+        timezone: 'UTC',
+        enable_public_page: true,
+        enable_on_demand: false,
+        enable_hls: false,
+        default_album_art_url: '',
+        enable_on_demand_download: true,
+        frontend_type: FRONTEND_ICECAST,
+        frontend_config: {
+            sc_license_id: '',
+            sc_user_id: '',
+            source_pw: '',
+            admin_pw: '',
         },
-        isStereoToolInstalled: {
-            type: Boolean,
-            default: false
+        backend_type: BACKEND_LIQUIDSOAP,
+        backend_config: {
+            hls_enable_on_public_player: false,
+            hls_is_default: false,
+            crossfade_type: 'normal',
+            crossfade: 2,
+            audio_processing_method: AUDIO_PROCESSING_NONE,
+            stereo_tool_license_key: '',
+            record_streams: false,
+            record_streams_format: 'mp3',
+            record_streams_bitrate: 128,
+            dj_buffer: 5,
         },
-        countries: Object,
-        // Admin
-        storageLocationApiUrl: String
+        enable_requests: false,
+        request_delay: 5,
+        request_threshold: 15,
+        enable_streamers: false,
+        disconnect_deactivate_streamer: 0,
+    };
+
+    function mergeCustom(objValue, srcValue) {
+        if (isArray(objValue)) {
+            return objValue.concat(srcValue);
+        }
+    }
+
+    if (props.showAdvanced) {
+        const advancedValidations = {
+            short_name: {},
+            api_history_items: {},
+            frontend_config: {
+                port: {numeric},
+                max_listeners: {},
+                custom_config: {},
+                banned_ips: {},
+                banned_countries: {},
+                allowed_ips: {},
+                banned_user_agents: {}
+            },
+            backend_config: {
+                hls_segment_length: {numeric},
+                hls_segments_in_playlist: {numeric},
+                hls_segments_overhead: {numeric},
+                dj_port: {numeric},
+                telnet_port: {numeric},
+                dj_mount_point: {},
+                enable_replaygain_metadata: {},
+                autodj_queue_length: {},
+                use_manual_autodj: {},
+                charset: {},
+                performance_mode: {},
+                duplicate_prevention_time_range: {},
+            },
+            $validationGroups: {
+                profileTab: [
+                    'short_name', 'api_history_items'
+                ],
+            }
+        };
+
+        mergeWith(validations, advancedValidations, mergeCustom);
+
+        const advancedForm = {
+            short_name: '',
+            api_history_items: 5,
+            frontend_config: {
+                port: '',
+                max_listeners: '',
+                custom_config: '',
+                banned_ips: '',
+                banned_countries: [],
+                allowed_ips: '',
+                banned_user_agents: '',
+            },
+            backend_config: {
+                hls_segment_length: 4,
+                hls_segments_in_playlist: 5,
+                hls_segments_overhead: 2,
+                dj_port: '',
+                telnet_port: '',
+                dj_mount_point: '/',
+                enable_replaygain_metadata: false,
+                autodj_queue_length: 3,
+                use_manual_autodj: false,
+                charset: 'UTF-8',
+                performance_mode: 'disabled',
+                duplicate_prevention_time_range: 120,
+            },
+        };
+
+        merge(blankForm, advancedForm);
+    }
+
+    if (props.showAdminTab) {
+        const adminValidations = {
+            media_storage_location: {},
+            recordings_storage_location: {},
+            podcasts_storage_location: {},
+            is_enabled: {},
+            $validationGroups: {
+                adminTab: [
+                    'media_storage_location', 'recordings_storage_location',
+                    'podcasts_storage_location', 'is_enabled'
+                ]
+            }
+        };
+
+        mergeWith(validations, adminValidations, mergeCustom);
+
+        const adminForm = {
+            media_storage_location: '',
+            recordings_storage_location: '',
+            podcasts_storage_location: '',
+            is_enabled: true,
+        };
+
+        merge(blankForm, adminForm);
+
+        if (props.showAdvanced) {
+            const advancedAdminValidations = {
+                radio_base_dir: {},
+                $validationGroups: {
+                    adminTab: [
+                        'radio_base_dir'
+                    ]
+                }
+            }
+
+            mergeWith(validations, advancedAdminValidations, mergeCustom);
+
+            const adminAdvancedForm = {
+                radio_base_dir: '',
+            };
+
+            merge(blankForm, adminAdvancedForm);
+        }
+    }
+
+    return {blankForm, validations};
+};
+
+const {blankForm, validations} = buildForm();
+const {form, resetForm, v$} = useVuelidateOnForm(validations, blankForm);
+
+const isValid = computed(() => {
+    return !v$.value?.$invalid ?? true;
+});
+
+watch(isValid, (newValue) => {
+    emit('validUpdate', newValue);
+});
+
+const loading = ref(true);
+
+watch(loading, (newValue) => {
+    emit('loadingUpdate', newValue);
+});
+
+const error = ref(null);
+
+const blankStation = {
+    stereo_tool_configuration_file_path: null,
+    links: {
+        stereo_tool_configuration: null
     }
 };
 
-export default {
-    name: 'AdminStationsForm',
-    inheritAttrs: false,
-    components: {AdminStationsAdminForm, AdminStationsBackendForm, AdminStationsFrontendForm, AdminStationsProfileForm},
-    emits: ['error', 'submitted', 'loadingUpdate', 'validUpdate'],
-    props: {
-        createUrl: String,
-        editUrl: String,
-        isEditMode: Boolean,
-        isModal: {
-            type: Boolean,
-            default: false
-        }
-    },
-    mixins: [
-        validationMixin,
-        StationFormProps
-    ],
-    validations() {
-        let formValidations = {
-            form: {
-                name: {required},
-                description: {},
-                genre: {},
-                url: {url},
-                timezone: {},
-                enable_public_page: {},
-                enable_on_demand: {},
-                enable_hls: {},
-                default_album_art_url: {},
-                enable_on_demand_download: {},
-                frontend_type: {required},
-                frontend_config: {
-                    sc_license_id: {},
-                    sc_user_id: {},
-                    source_pw: {},
-                    admin_pw: {},
-                },
-                backend_type: {required},
-                backend_config: {
-                    hls_enable_on_public_player: {},
-                    hls_is_default: {},
-                    crossfade_type: {},
-                    crossfade: {decimal},
-                    audio_processing_method: {},
-                    stereo_tool_license_key: {},
-                    record_streams: {},
-                    record_streams_format: {},
-                    record_streams_bitrate: {},
-                    dj_buffer: {numeric},
-                },
-                enable_requests: {},
-                request_delay: {numeric},
-                request_threshold: {numeric},
-                enable_streamers: {},
-                disconnect_deactivate_streamer: {},
-            },
-            profileTab: [
-                'form.name', 'form.description', 'form.genre', 'form.url', 'form.timezone', 'form.enable_public_page',
-                'form.enable_on_demand', 'form.enable_on_demand_download', 'form.default_album_art_url'
-            ],
-            frontendTab: [
-                'form.frontend_type', 'form.frontend_config'
-            ],
-            backendTab: [
-                'form.backend_type', 'form.backend_config', 'form.enable_requests', 'form.request_delay',
-                'form.request_threshold', 'form.enable_streamers', 'form.disconnect_deactivate_streamer'
-            ],
-        };
+const station = ref({...blankStation});
 
-        function mergeCustom(objValue, srcValue) {
-            if (_.isArray(objValue)) {
-                return objValue.concat(srcValue);
-            }
-        }
+const tabContentClass = computed(() => {
+    return (props.isModal)
+        ? 'mt-3'
+        : '';
+});
 
-        if (this.showAdvanced) {
-            const advancedValidations = {
-                form: {
-                    short_name: {},
-                    api_history_items: {},
-                    frontend_config: {
-                        port: {numeric},
-                        max_listeners: {},
-                        custom_config: {},
-                        banned_ips: {},
-                        banned_countries: {},
-                        allowed_ips: {},
-                        banned_user_agents: {}
-                    },
-                    backend_config: {
-                        hls_segment_length: {numeric},
-                        hls_segments_in_playlist: {numeric},
-                        hls_segments_overhead: {numeric},
-                        dj_port: {numeric},
-                        telnet_port: {numeric},
-                        dj_mount_point: {},
-                        enable_replaygain_metadata: {},
-                        autodj_queue_length: {},
-                        use_manual_autodj: {},
-                        charset: {},
-                        performance_mode: {},
-                        duplicate_prevention_time_range: {},
-                    },
-                },
-                profileTab: [
-                    'form.short_name', 'form.api_history_items'
-                ],
-            };
-
-            _.mergeWith(formValidations, advancedValidations, mergeCustom);
-        }
-
-        if (this.showAdminTab) {
-            const adminValidations = {
-                form: {
-                    media_storage_location: {},
-                    recordings_storage_location: {},
-                    podcasts_storage_location: {},
-                    is_enabled: {},
-                },
-                adminTab: [
-                    'form.media_storage_location', 'form.recordings_storage_location',
-                    'form.podcasts_storage_location', 'form.is_enabled'
-                ]
-            };
-
-            _.mergeWith(formValidations, adminValidations, mergeCustom);
-
-            if (this.showAdvanced) {
-                const advancedAdminValidations = {
-                    form: {
-                        radio_base_dir: {},
-                    },
-                    adminTab: [
-                        'form.radio_base_dir'
-                    ]
-                }
-
-                _.mergeWith(formValidations, advancedAdminValidations, mergeCustom);
-            }
-        }
-
-        return formValidations;
-    },
-    data() {
-        return {
-            loading: true,
-            error: null,
-            form: {},
-            station: {},
-        };
-    },
-    watch: {
-        loading(newValue) {
-            this.$emit('loadingUpdate', newValue);
-        },
-        isValid(newValue) {
-            this.$emit('validUpdate', newValue);
-        }
-    },
-    computed: {
-        isValid() {
-            return !this.$v.form.$invalid;
-        },
-        tabContentClass() {
-            return (this.isModal)
-                ? 'mt-3'
-                : '';
-        }
-    },
-    methods: {
-        getTabClass(validationGroup) {
-            if (!this.loading && validationGroup.$invalid) {
-                return 'text-danger';
-            }
-            return null;
-        },
-        clear() {
-            this.loading = false;
-            this.error = null;
-
-            let form = {
-                name: '',
-                description: '',
-                genre: '',
-                url: '',
-                timezone: 'UTC',
-                enable_public_page: true,
-                enable_on_demand: false,
-                enable_hls: false,
-                default_album_art_url: '',
-                enable_on_demand_download: true,
-                frontend_type: FRONTEND_ICECAST,
-                frontend_config: {
-                    sc_license_id: '',
-                    sc_user_id: '',
-                    source_pw: '',
-                    admin_pw: '',
-                },
-                backend_type: BACKEND_LIQUIDSOAP,
-                backend_config: {
-                    hls_enable_on_public_player: false,
-                    hls_is_default: false,
-                    crossfade_type: 'normal',
-                    crossfade: 2,
-                    audio_processing_method: AUDIO_PROCESSING_NONE,
-                    stereo_tool_license_key: '',
-                    record_streams: false,
-                    record_streams_format: 'mp3',
-                    record_streams_bitrate: 128,
-                    dj_buffer: 5,
-                },
-                enable_requests: false,
-                request_delay: 5,
-                request_threshold: 15,
-                enable_streamers: false,
-                disconnect_deactivate_streamer: 0,
-            };
-
-            if (this.showAdvanced) {
-                const advancedForm = {
-                    short_name: '',
-                    api_history_items: 5,
-                    frontend_config: {
-                        port: '',
-                        max_listeners: '',
-                        custom_config: '',
-                        banned_ips: '',
-                        banned_countries: [],
-                        allowed_ips: '',
-                        banned_user_agents: '',
-                    },
-                    backend_config: {
-                        hls_segment_length: 4,
-                        hls_segments_in_playlist: 5,
-                        hls_segments_overhead: 2,
-                        dj_port: '',
-                        telnet_port: '',
-                        dj_mount_point: '/',
-                        enable_replaygain_metadata: false,
-                        autodj_queue_length: 3,
-                        use_manual_autodj: false,
-                        charset: 'UTF-8',
-                        performance_mode: 'disabled',
-                        duplicate_prevention_time_range: 120,
-                    },
-                };
-                _.merge(form, advancedForm);
-            }
-
-            if (this.showAdminTab) {
-                const adminForm = {
-                    media_storage_location: '',
-                    recordings_storage_location: '',
-                    podcasts_storage_location: '',
-                    is_enabled: true,
-                };
-                _.merge(form, adminForm);
-
-                if (this.showAdvanced) {
-                    const adminAdvancedForm = {
-                        radio_base_dir: '',
-                    };
-                    _.merge(form, adminAdvancedForm);
-                }
-            }
-
-            this.station = {
-                stereo_tool_configuration_file_path: null,
-                links: {
-                    stereo_tool_configuration: null
-                }
-            };
-            this.form = form;
-        },
-        reset() {
-            this.clear();
-            if (this.isEditMode) {
-                this.doLoad();
-            }
-        },
-        doLoad() {
-            this.$wrapWithLoading(
-                this.axios.get(this.editUrl)
-            ).then((resp) => {
-                this.populateForm(resp.data);
-            }).catch((error) => {
-                this.$emit('error', error);
-            }).finally(() => {
-                this.loading = false;
-            });
-        },
-        populateForm(data) {
-            this.form = mergeExisting(this.form, data);
-        },
-        getSubmittableFormData() {
-            return this.form;
-        },
-        submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: (this.isEditMode)
-                        ? 'PUT'
-                        : 'POST',
-                    url: (this.isEditMode)
-                        ? this.editUrl
-                        : this.createUrl,
-                    data: this.getSubmittableFormData()
-                })
-            ).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('submitted');
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
+const getTabClass = (validationGroup) => {
+    if (!loading.value && validationGroup.$invalid) {
+        return 'text-danger';
     }
+    return null;
 }
+
+const clear = () => {
+    resetForm();
+    loading.value = false;
+    error.value = null;
+    station.value = {...blankStation};
+};
+
+const populateForm = (data) => {
+    form.value = mergeExisting(form.value, data);
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doLoad = () => {
+    loading.value = true;
+
+    wrapWithLoading(
+        axios.get(props.editUrl)
+    ).then((resp) => {
+        populateForm(resp.data);
+    }).catch((err) => {
+        emit('error', err);
+    }).finally(() => {
+        loading.value = false;
+    });
+};
+
+const reset = () => {
+    clear();
+    if (props.isEditMode) {
+        doLoad();
+    }
+};
+
+const submit = () => {
+    v$.value.$touch();
+    if (v$.value.$errors.length > 0) {
+        return;
+    }
+
+    error.value = null;
+    wrapWithLoading(
+        axios({
+            method: (props.isEditMode)
+                ? 'PUT'
+                : 'POST',
+            url: (props.isEditMode)
+                ? props.editUrl
+                : props.createUrl,
+            data: form.value
+        })
+    ).then(() => {
+        notifySuccess();
+        emit('submitted');
+    }).catch((err) => {
+        error.value = err.response.data.message;
+    });
+};
+
+defineExpose({
+    reset,
+    submit
+});
 </script>
+
+

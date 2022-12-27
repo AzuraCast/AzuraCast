@@ -17,7 +17,8 @@ final class ServiceControl
 {
     public function __construct(
         private readonly SupervisorInterface $supervisor,
-        private readonly Environment $environment
+        private readonly Environment $environment,
+        private readonly Centrifugo $centrifugo
     ) {
     }
 
@@ -81,11 +82,21 @@ final class ServiceControl
             'php-fpm' => __('PHP FastCGI Process Manager'),
             'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
+            'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
+            'centrifugo' => __('Live Now Playing updates'),
         ];
+
+        if (!$this->centrifugo->isSupported()) {
+            unset($services['centrifugo']);
+        }
 
         if (!$this->environment->useLocalDatabase()) {
             unset($services['mariadb']);
+        }
+
+        if (!$this->environment->useLocalRedis()) {
+            unset($services['redis']);
         }
 
         return $services;

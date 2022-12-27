@@ -16,7 +16,7 @@
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button size="sm" variant="primary" @click.prevent="doSubmitRequest(row.item.request_url)">
-                        <translate key="lang_btn_request">Request</translate>
+                        {{ $gettext('Request') }}
                     </b-button>
                 </b-button-group>
             </template>
@@ -109,17 +109,12 @@ export default {
             ]
         };
     },
-    computed: {
-        langAlbumArt () {
-            return this.$gettext('Album Art');
-        }
-    },
     methods: {
         doSubmitRequest (url) {
             this.axios.post(url).then((resp) => {
                 this.$notifySuccess(resp.data.message);
                 this.$emit('submitted');
-            }).catch((err) => {
+            }).catch(() => {
                 this.$emit('submitted');
             });
         }

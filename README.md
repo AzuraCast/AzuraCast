@@ -4,7 +4,7 @@
 
 [![Build Status](https://github.com/azuracast/azuracast/workflows/Build,%20Test%20and%20Publish/badge.svg)](https://github.com/AzuraCast/AzuraCast/actions)
 [![Latest Stable Release](https://img.shields.io/packagist/v/azuracast/azuracast.svg?label=latest+stable+version)]()
-[![Apache 2.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
+[![AGPL-3.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
 [![Ethical Open Source](https://img.shields.io/badge/open-ethical-%234baaaa)](https://ethicalsource.dev/definition/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_radio.svg)](https://hub.docker.com/r/azuracast/azuracast/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
@@ -41,7 +41,8 @@ to install AzuraCast on your own server.
 ## License
 
 AzuraCast is licensed under
-the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/main/LICENSE.txt). This project is free
+the [Affero GNU General Public License (AGPL) version 3.0](https://github.com/AzuraCast/AzuraCast/blob/main/LICENSE.md).
+This project is free
 and open-source software, and pull requests are always welcome.
 
 ## Need Help?
@@ -96,6 +97,8 @@ We would like to thank the following organizations for their support of AzuraCas
   around the world
 - [Netlify](https://www.netlify.com/) for supporting open-source software like ours and for serving as the host of our
   primary [azuracast.com](https://www.azuracast.com/) web site.
+- [BrowserStack](https://www.browserstack.com/) for giving us tools to help test our software's accessibility and
+  features across multiple browsers and operating systems.
 
 - The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much
   to help move FOSS forward

@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="reorder_modal" ref="modal" :title="langTitle" :busy="loading" hide-footer>
+    <b-modal size="lg" id="reorder_modal" ref="modal" :title="$gettext('Reorder Playlist')" :busy="loading" hide-footer>
         <b-overlay variant="card" :show="loading">
             <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
                 <inline-player ref="player"></inline-player>
@@ -8,10 +8,10 @@
                 <b-thead>
                     <tr>
                         <th style="width: 5%">&nbsp;</th>
-                        <th style="width: 25%;" key="lang_col_title" v-translate>Title</th>
-                        <th style="width: 25%;" key="lang_col_artist" v-translate>Artist</th>
-                        <th style="width: 25%;" key="lang_col_album" v-translate>Album</th>
-                        <th style="width: 20%;" key="lang_col_actions" v-translate>Actions</th>
+                        <th style="width: 25%;">{{ $gettext('Title') }}</th>
+                        <th style="width: 25%;">{{ $gettext('Artist') }}</th>
+                        <th style="width: 25%;">{{ $gettext('Album') }}</th>
+                        <th style="width: 20%;">{{ $gettext('Actions') }}</th>
                     </tr>
                 </b-thead>
                 <draggable v-model="media" tag="tbody" @change="save">
@@ -20,18 +20,19 @@
                             <play-button :url="row.media.links.play" icon-class="lg outlined"></play-button>
                         </td>
                         <td class="pl-2">
-                            <big>{{ row.media.title }}</big>
+                            <span class="typography-subheading">{{ row.media.title }}</span>
                         </td>
                         <td>{{ row.media.artist }}</td>
                         <td>{{ row.media.album }}</td>
                         <td>
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="moveDown(index)"
-                                          :title="langDownBtn"
+                                          :title="$gettext('Down')"
                                           v-if="index+1 < media.length">
                                     <icon icon="arrow_downward"></icon>
                                 </b-button>
-                                <b-button size="sm" variant="primary" @click.prevent="moveUp(index)" :title="langUpBtn"
+                                <b-button size="sm" variant="primary" @click.prevent="moveUp(index)"
+                                          :title="$gettext('Up')"
                                           v-if="index > 0">
                                     <icon icon="arrow_upward"></icon>
                                 </b-button>
@@ -71,17 +72,6 @@ export default {
             media: []
         };
     },
-    computed: {
-        langTitle () {
-            return this.$gettext('Reorder Playlist');
-        },
-        langDownBtn () {
-            return this.$gettext('Down');
-        },
-        langUpBtn () {
-            return this.$gettext('Up');
-        }
-    },
     methods: {
         open (reorderUrl) {
             this.$refs.modal.show();
@@ -110,7 +100,7 @@ export default {
                 newOrder[row.id] = i;
             });
 
-            this.axios.put(this.reorderUrl, {'order': newOrder}).then((resp) => {
+            this.axios.put(this.reorderUrl, {'order': newOrder}).then(() => {
                 this.$notifySuccess(this.$gettext('Playlist order set.'));
             });
         },

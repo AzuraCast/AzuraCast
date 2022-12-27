@@ -1,109 +1,119 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>HLS Streams</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('HLS Streams') }}</h2>
+        </b-card-header>
 
-            <info-card>
-                <p class="card-text">
-                    <translate key="lang_card_info">HTTP Live Streaming (HLS) is a new adaptive-bitrate streaming technology. From this page, you can configure the individual bitrates and formats that are included in the combined HLS stream.</translate>
-                </p>
-            </info-card>
+        <info-card>
+            <p class="card-text">
+                {{
+                    $gettext('HTTP Live Streaming (HLS) is a new adaptive-bitrate streaming technology. From this page, you can configure the individual bitrates and formats that are included in the combined HLS stream.')
+                }}
+            </p>
+        </info-card>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add HLS Stream</translate>
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <icon icon="add"></icon>
+                {{ $gettext('Add HLS Stream') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="station_hls_streams" :fields="fields" paginated
-                        :api-url="listUrl">
-                <template #cell(name)="row">
-                    <h5 class="m-0">{{ row.item.name }}</h5>
-                </template>
-                <template #cell(format)="row">
-                    {{ row.item.format|upper }}
-                </template>
-                <template #cell(bitrate)="row">
-                    {{ row.item.bitrate }}kbps
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table ref="datatable" id="station_hls_streams" :fields="fields" paginated
+                    :api-url="listUrl">
+            <template #cell(name)="row">
+                <h5 class="m-0">{{ row.item.name }}</h5>
+            </template>
+            <template #cell(format)="row">
+                {{ upper(row.item.format) }}
+            </template>
+            <template #cell(bitrate)="row">
+                {{ row.item.bitrate }}kbps
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
-    </div>
+    <edit-modal ref="editmodal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './HlsStreams/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import StationMayNeedRestart from '~/components/Stations/Common/MayNeedRestart.vue';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'StationHlsStreams',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    mixins: [StationMayNeedRestart],
-    props: {
-        listUrl: String
-    },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-                {key: 'format', label: this.$gettext('Format'), sortable: true},
-                {key: 'bitrate', label: this.$gettext('Bitrate'), sortable: true},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    filters: {
-        upper(data) {
-            let upper = [];
-            data.split(' ').forEach((word) => {
-                upper.push(word.toUpperCase());
+const props = defineProps({
+    ...mayNeedRestartProps,
+    listUrl: String
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
+    {key: 'format', label: $gettext('Format'), sortable: true},
+    {key: 'bitrate', label: $gettext('Bitrate'), sortable: true},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const upper = (data) => {
+    let upper = [];
+    data.split(' ').forEach((word) => {
+        upper.push(word.toUpperCase());
+    });
+    return upper.join(' ');
+};
+
+const datatable = ref(); // DataTable
+
+const relist = () => {
+    datatable.value?.refresh();
+};
+
+const editmodal = ref(); // EditModal
+
+const doCreate = () => {
+    editmodal.value?.create();
+};
+
+const doEdit = (url) => {
+    editmodal.value?.edit(url);
+};
+
+const {mayNeedRestart, needsRestart} = useMayNeedRestart(props.restartStatusUrl);
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete HLS Stream?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                needsRestart();
+                relist();
             });
-            return upper.join(' ');
         }
-    },
-    methods: {
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete HLS Stream?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.needsRestart();
-                        this.relist();
-                    });
-                }
-            });
-        },
-    }
+    });
 };
 </script>

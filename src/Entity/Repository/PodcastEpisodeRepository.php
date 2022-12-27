@@ -9,9 +9,9 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\InvalidPodcastMediaFileException;
 use App\Exception\StorageLocationFullException;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
-use App\Flysystem\ExtendedFilesystemInterface;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 
@@ -62,6 +62,7 @@ final class PodcastEpisodeRepository extends Repository
             ->from(Entity\PodcastEpisode::class, 'pe')
             ->where('pe.podcast = :podcast')
             ->setParameter('podcast', $podcast)
+            ->orderBy('pe.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 

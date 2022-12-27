@@ -5,13 +5,13 @@
                 <b-img :src="albumArtSrc" rounded fluid></b-img>
                 <br>
                 <b-button block variant="link" class="text-danger mt-2" @click="deleteArt">
-                    <translate key="lang_btn_delete_art">Delete Album Art</translate>
+                    {{ $gettext('Delete Album Art') }}
                 </b-button>
             </b-col>
             <b-col md="8">
                 <b-form-group label-for="edit_form_art">
                     <template #label>
-                        <translate key="lang_btn_replace_art">Replace Album Cover Art</translate>
+                        {{ $gettext('Replace Album Cover Art') }}
                     </template>
                     <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"
                                  @input="uploadNewArt"></b-form-file>
@@ -37,7 +37,7 @@ export default {
     watch: {
         albumArtUrl: {
             immediate: true,
-            handler(newVal, oldVal) {
+            handler(newVal) {
                 this.albumArtSrc = newVal;
             }
         }
@@ -51,7 +51,7 @@ export default {
             let formData = new FormData();
             formData.append('art', this.artFile);
 
-            this.axios.post(this.albumArtUrl, formData).then((resp) => {
+            this.axios.post(this.albumArtUrl, formData).then(() => {
                 this.reloadArt();
             }).catch((err) => {
                 console.log(err);
@@ -59,7 +59,7 @@ export default {
             });
         },
         deleteArt() {
-            this.axios.delete(this.albumArtUrl).then((resp) => {
+            this.axios.delete(this.albumArtUrl).then(() => {
                 this.reloadArt();
             }).catch((err) => {
                 console.log(err);

@@ -2,13 +2,12 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-textarea v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
-                                 v-model="modelValue"
-                                 :required="isRequired" :number="isNumeric" :trim="inputTrim" v-bind="inputAttrs"
+                <b-form-textarea v-bind="inputAttrs" v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
+                                 v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
                                  :autofocus="autofocus" :state="fieldState"></b-form-textarea>
-                <b-form-input v-else ref="input" :type="inputType" :id="id" :name="name" v-model="modelValue"
-                              :required="isRequired" :number="isNumeric" :trim="inputTrim"
-                              :autofocus="autofocus" v-bind="inputAttrs" :state="fieldState"></b-form-input>
+                <b-form-input v-bind="inputAttrs" v-else ref="input" :type="inputType" :id="id" :name="name"
+                              v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
+                              :autofocus="autofocus" :state="fieldState"></b-form-input>
             </slot>
 
             <b-form-invalid-feedback :state="fieldState">
@@ -17,112 +16,109 @@
         </template>
 
         <template #label="slotProps">
-            <slot name="label" v-bind="slotProps" :lang="'lang_'+id"></slot>
+            <slot v-bind="slotProps" name="label"></slot>
             <span v-if="isRequired" class="text-danger">
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
             </span>
-            <span v-if="advanced" class="badge small badge-primary">
-                <translate key="badge_advanced">Advanced</translate>
+            <span v-if="advanced" class="badge small badge-primary ml-2">
+                {{ $gettext('Advanced') }}
             </span>
         </template>
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps" :lang="'lang_'+id+'_desc'"></slot>
+            <slot v-bind="slotProps" name="description"></slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-form-group>
 </template>
 
-<script>
-import _ from "lodash";
+<script setup>
 import VuelidateError from "./VuelidateError";
+import {computed, ref} from "vue";
+import useSlotsExcept from "~/functions/useSlotsExcept";
+import {has} from "lodash";
 
-export default {
-    name: 'BWrappedFormGroup',
-    components: {VuelidateError},
-    props: {
-        id: {
-            type: String,
-            required: true
-        },
-        name: {
-            type: String,
-        },
-        field: {
-            type: Object,
-            required: true
-        },
-        inputType: {
-            type: String,
-            default: 'text'
-        },
-        inputNumber: {
-            type: Boolean,
-            default: false
-        },
-        inputTrim: {
-            type: Boolean,
-            default: false
-        },
-        inputEmptyIsNull: {
-            type: Boolean,
-            default: false
-        },
-        inputAttrs: {
-            type: Object,
-            default() {
-                return {};
-            }
-        },
-        autofocus: {
-            type: Boolean,
-            default: false
-        },
-        advanced: {
-            type: Boolean,
-            default: false
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+    },
+    field: {
+        type: Object,
+        required: true
+    },
+    inputType: {
+        type: String,
+        default: 'text'
+    },
+    inputNumber: {
+        type: Boolean,
+        default: false
+    },
+    inputTrim: {
+        type: Boolean,
+        default: false
+    },
+    inputEmptyIsNull: {
+        type: Boolean,
+        default: false
+    },
+    inputAttrs: {
+        type: Object,
+        default() {
+            return {};
         }
     },
-    computed: {
-        modelValue: {
-            get() {
-                return this.field.$model;
-            },
-            set(value) {
-                if ((this.isNumeric || this.inputEmptyIsNull) && '' === value) {
-                    value = null;
-                }
-
-                this.field.$model = value;
-            }
-        },
-        filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
-                return !_.includes([
-                    'default', 'label', 'description'
-                ], name);
-            });
-        },
-        fieldState() {
-            return this.field.$dirty ? !this.field.$error : null;
-        },
-        isRequired() {
-            return _.has(this.field, 'required');
-        },
-        isNumeric() {
-            return this.inputNumber || this.inputType === "number";
-        }
+    autofocus: {
+        type: Boolean,
+        default: false
     },
-    methods: {
-        focus() {
-            if (typeof this.$refs.input !== "undefined") {
-                this.$refs.input.focus();
-            }
-        }
+    advanced: {
+        type: Boolean,
+        default: false
     }
-}
+});
+
+const modelValue = computed({
+    get() {
+        return props.field.$model;
+    },
+    set(newValue) {
+        if ((props.isNumeric || props.inputEmptyIsNull) && '' === newValue) {
+            newValue = null;
+        }
+
+        props.field.$model = newValue;
+    }
+});
+
+const filteredSlots = useSlotsExcept(['default', 'label', 'description']);
+
+const fieldState = computed(() => {
+    return props.field.$dirty ? !props.field.$error : null;
+});
+
+const isRequired = computed(() => {
+    return has(props.field, 'required');
+});
+
+const isNumeric = computed(() => {
+    return props.inputNumber || props.inputType === "number";
+});
+
+const input = ref(); // Input
+
+const focus = () => {
+    input.value?.focus();
+};
+
+defineExpose({
+    focus
+});
 </script>

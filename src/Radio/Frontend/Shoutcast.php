@@ -119,8 +119,7 @@ final class Shoutcast extends AbstractFrontend
 
         [$certPath, $certKey] = Acme::getCertificatePaths();
 
-        $publicUrl = $this->getPublicUrl($station);
-        $urlHost = $publicUrl->getScheme() . '://' . $publicUrl->getHost();
+        $urlHost = $this->getPublicUrl($station)->getHost();
 
         $config = [
             'password' => $frontendConfig->getSourcePassword(),

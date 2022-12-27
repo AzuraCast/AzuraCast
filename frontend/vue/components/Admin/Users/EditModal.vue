@@ -1,16 +1,16 @@
 <template>
     <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error"
-                :disable-save-button="$v.form.$invalid"
+                :disable-save-button="v$.form.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
-        <admin-users-form :form="$v.form" :roles="roles" :is-edit-mode="isEditMode"></admin-users-form>
+        <admin-users-form :form="v$.form" :roles="roles" :is-edit-mode="isEditMode"></admin-users-form>
 
     </modal-form>
 </template>
 
 <script>
-import {validationMixin} from 'vuelidate';
-import {email, required} from 'vuelidate/dist/validators.min.js';
+import useVuelidate from "@vuelidate/core";
+import {email, required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminUsersForm from './Form.vue';
 import _ from 'lodash';
@@ -19,7 +19,10 @@ import validatePassword from "~/functions/validatePassword";
 export default {
     name: 'AdminUsersEditModal',
     components: {AdminUsersForm},
-    mixins: [validationMixin, BaseEditModal],
+    setup() {
+        return {v$: useVuelidate()}
+    },
+    mixins: [BaseEditModal],
     props: {
         roles: Object
     },

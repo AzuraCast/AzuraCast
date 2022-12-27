@@ -17,27 +17,28 @@
         <template #modal-footer="slotProps">
             <slot name="modal-footer" v-bind="slotProps">
                 <b-button variant="default" type="button" @click="close">
-                    <translate key="lang_btn_close">Close</translate>
+                    {{ $gettext('Close') }}
                 </b-button>
                 <b-button :variant="(disableSaveButton) ? 'danger' : 'primary'" type="submit" @click="doSubmit">
                     <slot name="save-button-name">
-                        <translate key="lang_btn_save_changes">Save Changes</translate>
+                        {{ $gettext('Save Changes') }}
                     </slot>
                 </b-button>
             </slot>
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">
+            <slot :name="slot" v-bind="scope"></slot>
         </template>
     </b-modal>
 </template>
 
 <script>
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import {defineComponent} from "vue";
+import _ from "lodash";
 
-export default {
+export default defineComponent({
     components: {InvisibleSubmitButton},
     emits: ['submit', 'shown', 'hidden'],
     props: {
@@ -75,7 +76,7 @@ export default {
     },
     computed: {
         filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
+            return _.filter(this.$slots, (slot, name) => {
                 return !_.includes([
                     'default', 'modal-footer'
                 ], name);
@@ -102,5 +103,5 @@ export default {
             this.$refs.modal.show();
         }
     }
-}
+});
 </script>

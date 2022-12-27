@@ -3,13 +3,13 @@
         <div class="col-md-8">
             <b-card no-body>
                 <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title" key="lang_title" v-translate>SFTP Users</h2>
+                    <h2 class="card-title">{{ $gettext('SFTP Users') }}</h2>
                 </b-card-header>
 
                 <b-card-body body-class="card-padding-sm">
                     <b-button variant="outline-primary" @click.prevent="doCreate">
                         <icon icon="add"></icon>
-                        <translate key="lang_add_btn">Add SFTP User</translate>
+                        {{ $gettext('Add SFTP User') }}
                     </b-button>
                 </b-card-body>
 
@@ -18,10 +18,10 @@
                     <template #cell(actions)="row">
                         <b-button-group size="sm">
                             <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                                <translate key="lang_btn_edit">Edit</translate>
+                                {{ $gettext('Edit') }}
                             </b-button>
                             <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                                <translate key="lang_btn_delete">Delete</translate>
+                                {{ $gettext('Delete') }}
                             </b-button>
                         </b-button-group>
                     </template>
@@ -32,23 +32,23 @@
             <div class="card">
                 <div class="card-header bg-primary-dark">
                     <h2 class="card-title">
-                        <translate key="lang_connection_info">Connection Information</translate>
+                        {{ $gettext('Connection Information') }}
                     </h2>
                 </div>
                 <div class="card-body">
                     <dl>
                         <dt class="mb-1">
-                            <translate key="lang_connection_server">Server:</translate>
+                            {{ $gettext('Server:') }}
                         </dt>
                         <dd><code>{{ connectionInfo.url }}</code></dd>
 
                         <dd v-if="connectionInfo.ip">
-                            <translate key="lang_connection_ip">You may need to connect directly to your IP address:</translate>
+                            {{ $gettext('You may need to connect directly to your IP address:') }}
                             <code>{{ connectionInfo.ip }}</code>
                         </dd>
 
                         <dt class="mb-1">
-                            <translate key="lang_connection_port">Port:</translate>
+                            {{ $gettext('Port:') }}
                         </dt>
                         <dd><code>{{ connectionInfo.port }}</code></dd>
                     </dl>

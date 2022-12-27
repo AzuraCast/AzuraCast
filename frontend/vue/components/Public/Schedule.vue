@@ -10,7 +10,7 @@
                                     {{ stationName }}
                                 </template>
                                 <template v-else>
-                                    <translate key="lang_title">Schedule</translate>
+                                    {{ $gettext('Schedule') }}
                                 </template>
                             </h2>
                         </div>
@@ -39,15 +39,12 @@
 }
 </style>
 
-<script>
+<script setup>
 import Schedule from '~/components/Common/ScheduleView';
 
-export default {
-    components: { Schedule },
-    props: {
-        scheduleUrl: String,
-        stationName: String,
-        stationTimeZone: String
-    },
-};
+const props = defineProps({
+    scheduleUrl: String,
+    stationName: String,
+    stationTimeZone: String
+});
 </script>

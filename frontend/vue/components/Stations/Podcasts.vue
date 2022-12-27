@@ -1,30 +1,28 @@
 <template>
-    <div>
-        <episodes-view v-if="activePodcast" v-bind="$props" :podcast="activePodcast" @clear-podcast="onClearPodcast"></episodes-view>
-        <list-view v-else v-bind="$props" @select-podcast="onSelectPodcast"></list-view>
-    </div>
+    <episodes-view v-if="activePodcast" v-bind="$props" :podcast="activePodcast"
+                   @clear-podcast="onClearPodcast"></episodes-view>
+    <list-view v-else v-bind="$props" @select-podcast="onSelectPodcast"></list-view>
 </template>
 
-<script>
-import EpisodesView, { episodeViewProps } from './Podcasts/EpisodesView';
-import ListView, { listViewProps } from './Podcasts/ListView';
+<script setup>
+import EpisodesView from './Podcasts/EpisodesView';
+import ListView from './Podcasts/ListView';
+import {ref} from "vue";
+import episodesViewProps from "./Podcasts/episodesViewProps";
+import listViewProps from "./Podcasts/listViewProps";
 
-export default {
-    name: 'StationPodcasts',
-    components: { ListView, EpisodesView },
-    mixins: [episodeViewProps, listViewProps],
-    data () {
-        return {
-            activePodcast: null
-        };
-    },
-    methods: {
-        onSelectPodcast (podcast) {
-            this.activePodcast = podcast;
-        },
-        onClearPodcast () {
-            this.activePodcast = null;
-        }
-    }
+const props = defineProps({
+    ...episodesViewProps,
+    ...listViewProps
+});
+
+const activePodcast = ref(null);
+
+const onSelectPodcast = (podcast) => {
+    activePodcast.value = podcast;
 };
+
+const onClearPodcast = () => {
+    activePodcast.value = null;
+}
 </script>

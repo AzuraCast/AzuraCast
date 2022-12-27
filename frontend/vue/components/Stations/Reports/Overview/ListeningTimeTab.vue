@@ -7,77 +7,83 @@
             <div class="card-body">
                 <fieldset>
                     <legend>
-                        <translate key="chart_listening_time">Listeners by Listening Time</translate>
+                        {{ $gettext('Listeners by Listening Time') }}
                     </legend>
 
-                    <pie-chart style="width: 100%;" :data="chart.datasets"
-                               :labels="chart.labels" :aspect-ratio="4">
-                        <span v-html="chart.alt"></span>
+                    <pie-chart style="width: 100%;" :data="stats.chart.datasets"
+                               :labels="stats.chart.labels" :aspect-ratio="4">
+                        <span v-html="stats.chart.alt"></span>
                     </pie-chart>
                 </fieldset>
             </div>
 
             <data-table ref="datatable" id="listening_time_table" paginated handle-client-side
-                        :fields="fields" :responsive="false" :items="all">
+                        :fields="fields" :responsive="false" :items="stats.all">
             </data-table>
         </div>
     </b-overlay>
 </template>
 
-<script>
-import {DateTime} from "luxon";
-import PieChart from "~/components/Common/PieChart";
+<script setup>
+import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable";
-import IsMounted from "~/components/Common/IsMounted";
+import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {DateTime} from "luxon";
+import {useMounted} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'ListeningTimeTab',
-    components: {DataTable, PieChart},
-    mixins: [IsMounted],
-    props: {
-        dateRange: Object,
-        apiUrl: String
-    },
-    data() {
-        return {
-            loading: true,
-            all: [],
-            chart: {
-                labels: [],
-                datasets: [],
-                alt: ''
-            },
-            fields: [
-                {key: 'label', label: this.$gettext('Listening Time'), sortable: false},
-                {key: 'value', label: this.$gettext('Listeners'), sortable: false}
-            ]
-        };
-    },
-    watch: {
-        dateRange() {
-            if (this.isMounted) {
-                this.relist();
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl, {
-                params: {
-                    start: DateTime.fromJSDate(this.dateRange.startDate).toISO(),
-                    end: DateTime.fromJSDate(this.dateRange.endDate).toISO()
-                }
-            }).then((response) => {
-                this.all = response.data.all;
-                this.chart = response.data.chart;
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String
+});
 
-                this.loading = false;
-            });
-        }
+const loading = ref(true);
+const stats = shallowRef({
+    all: [],
+    chart: {
+        labels: [],
+        datasets: [],
+        alt: ''
     }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = shallowRef([
+    {key: 'label', label: $gettext('Listening Time'), sortable: false},
+    {key: 'value', label: $gettext('Listeners'), sortable: false}
+]);
+
+const dateRange = toRef(props, 'dateRange');
+const {axios} = useAxios();
+
+const relist = () => {
+    loading.value = true;
+
+    axios.get(props.apiUrl, {
+        params: {
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
+        }
+    }).then((response) => {
+        stats.value = {
+            all: response.data.all,
+            chart: response.data.chart
+        };
+        loading.value = false;
+    });
 }
+
+const isMounted = useMounted();
+
+watch(dateRange, () => {
+    if (isMounted.value) {
+        relist();
+    }
+});
+
+onMounted(() => {
+    relist();
+});
 </script>

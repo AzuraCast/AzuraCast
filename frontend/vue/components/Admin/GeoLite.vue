@@ -2,46 +2,47 @@
     <div class="card">
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
-                <translate key="lang_title">Install GeoLite IP Database</translate>
+                {{ $gettext('Install GeoLite IP Database') }}
             </h2>
         </div>
 
         <info-card>
-            <translate key="lang_info_card">IP Geolocation is used to guess the approximate location of your listeners based on the IP address they connect with. Use the free built-in IP Geolocation library or enter a license key on this page to use MaxMind GeoLite.</translate>
+            {{
+                $gettext('IP Geolocation is used to guess the approximate location of your listeners based on the IP address they connect with. Use the free built-in IP Geolocation library or enter a license key on this page to use MaxMind GeoLite.')
+            }}
         </info-card>
 
         <div class="card-body">
             <b-overlay variant="card" :show="loading">
-                <b-form-row>
+                <div class="form-row">
                     <div class="col-md-7">
                         <fieldset>
-                            <legend>
-                                <translate key="lang_instructions">Instructions</translate>
-                            </legend>
+                            <legend>{{ $gettext('Instructions') }}</legend>
 
                             <p class="card-text">
-                                <translate key="lang_instructions_1a">AzuraCast ships with a built-in free IP geolocation database. You may prefer to use the MaxMind GeoLite service instead to achieve more accurate results. Using MaxMind GeoLite requires a license key, but once the key is provided, we will automatically keep the database updated.</translate>
+                                {{
+                                    $gettext('AzuraCast ships with a built-in free IP geolocation database. You may prefer to use the MaxMind GeoLite service instead to achieve more accurate results. Using MaxMind GeoLite requires a license key, but once the key is provided, we will automatically keep the database updated.')
+                                }}
                             </p>
                             <p class="card-text">
-                                <translate key="lang_instructions_1b">To download the GeoLite database:</translate>
+                                {{ $gettext('To download the GeoLite database:') }}
                             </p>
                             <ul>
                                 <li>
-                                    <translate
-                                        key="lang_instructions_2">Create an account on the MaxMind developer site.</translate>
+                                    {{ $gettext('Create an account on the MaxMind developer site.') }}
                                     <br>
                                     <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">
-                                        <translate key="lang_instructions_2_link">MaxMind Developer Site</translate>
+                                        {{ $gettext('MaxMind Developer Site') }}
                                     </a>
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_3">Visit the "My License Key" page under the "Services" section.</translate>
+                                    {{ $gettext('Visit the "My License Key" page under the "Services" section.') }}
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_4">Click "Generate new license key".</translate>
+                                    {{ $gettext('Click "Generate new license key".') }}
                                 </li>
                                 <li>
-                                    <translate key="lang_instructions_5">Paste the generated license key into the field on this page.</translate>
+                                    {{ $gettext('Paste the generated license key into the field on this page.') }}
                                 </li>
                             </ul>
                         </fieldset>
@@ -49,110 +50,116 @@
                     <div class="col-md-5">
                         <fieldset class="mb-3">
                             <legend>
-                                <translate key="lang_current_version">Current Installed Version</translate>
+                                {{ $gettext('Current Installed Version') }}
                             </legend>
 
                             <p v-if="version" class="text-success card-text">
                                 {{ langInstalledVersion }}
                             </p>
                             <p v-else class="text-danger card-text">
-                                <translate
-                                    key="lang_not_installed">GeoLite is not currently installed on this installation.</translate>
+                                {{ $gettext('GeoLite is not currently installed on this installation.') }}
                             </p>
                         </fieldset>
 
                         <form @submit.prevent="doUpdate">
                             <fieldset>
-                                <b-wrapped-form-group id="edit_form_key" :field="$v.key">
+                                <b-wrapped-form-group id="edit_form_key" :field="v$.key">
                                     <template #label>
-                                        <translate key="lang_edit_form_key">MaxMind License Key</translate>
+                                        {{ $gettext('MaxMind License Key') }}
                                     </template>
                                 </b-wrapped-form-group>
                             </fieldset>
 
                             <div class="buttons">
                                 <b-button variant="primary" type="submit">
-                                    <translate key="btn_save_changes">Save Changes</translate>
+                                    {{ $gettext('Save Changes') }}
                                 </b-button>
                                 <b-button variant="danger" type="button" @click.prevent="doDelete">
-                                    <translate key="btn_remove_key">Remove Key</translate>
+                                    {{ $gettext('Remove Key') }}
                                 </b-button>
                             </div>
                         </form>
                     </div>
-                </b-form-row>
+                </div>
             </b-overlay>
         </div>
     </div>
 </template>
 
-<script>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import {validationMixin} from "vuelidate";
-import '~/vendor/sweetalert.js';
-import InfoCard from "~/components/Common/InfoCard";
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import InfoCard from "~/components/Common/InfoCard.vue";
+import {computed, onMounted, ref} from "vue";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useAxios} from "~/vendor/axios";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
 
-export default {
-    name: 'GeoLite',
-    components: {InfoCard, BWrappedFormGroup, BFormFieldset},
-    mixins: [
-        validationMixin
-    ],
-    props: {
-        apiUrl: String
-    },
-    data() {
-        return {
-            loading: true,
-            key: null,
-            version: null
-        };
-    },
-    validations: {
+const props = defineProps({
+    apiUrl: String
+});
+
+const loading = ref(true);
+const version = ref(null);
+
+const {form, resetForm, v$} = useVuelidateOnForm(
+    {
         key: {}
     },
-    computed: {
-        langInstalledVersion() {
-            const text = this.$gettext('GeoLite version "%{ version }" is currently installed.');
-            return this.$gettextInterpolate(text, {
-                version: this.version
-            });
-        }
-    },
-    mounted() {
-        this.doFetch();
-    },
-    methods: {
-        doFetch() {
-            this.loading = true;
-            this.axios.get(this.apiUrl).then((resp) => {
-                this.key = resp.data.key;
-                this.version = resp.data.version;
-
-                this.loading = false;
-            });
-        },
-        doUpdate() {
-            this.loading = true;
-            this.$wrapWithLoading(
-                this.axios.post(this.apiUrl, {
-                    geolite_license_key: this.key
-                })
-            ).then((resp) => {
-                this.version = resp.data.version;
-            }).finally(() => {
-                this.loading = false;
-            });
-        },
-        doDelete() {
-            this.$confirmDelete().then((result) => {
-                if (result.value) {
-                    this.key = null;
-                    this.doUpdate();
-                }
-            });
-        }
+    {
+        key: null
     }
+);
+
+const {$gettext} = useTranslate();
+
+const langInstalledVersion = computed(() => {
+    return $gettext(
+        'GeoLite version "%{ version }" is currently installed.',
+        {
+            version: version.value
+        }
+    );
+});
+
+const {axios} = useAxios();
+
+const doFetch = () => {
+    loading.value = true;
+
+    axios.get(props.apiUrl).then((resp) => {
+        form.value.key = resp.data.key;
+        version.value = resp.data.version;
+        loading.value = false;
+    });
+};
+
+onMounted(doFetch);
+
+const {wrapWithLoading} = useNotify();
+
+const doUpdate = () => {
+    loading.value = true;
+    wrapWithLoading(
+        axios.post(props.apiUrl, {
+            geolite_license_key: form.value.key
+        })
+    ).then((resp) => {
+        version.value = resp.data.version;
+    }).finally(() => {
+        loading.value = false;
+    });
+};
+
+const {confirmDelete} = useSweetAlert();
+
+const doDelete = () => {
+    confirmDelete().then((result) => {
+        if (result.value) {
+            form.value.key = null;
+            doUpdate();
+        }
+    });
 }
 </script>

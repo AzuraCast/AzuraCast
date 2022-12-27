@@ -8,7 +8,7 @@
                 <b-col md="12" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="hdr_listeners_by_day">Listeners by Day</translate>
+                            {{ $gettext('Listeners by Day') }}
                         </legend>
 
                         <time-series-chart style="width: 100%;" :data="chartData.daily.metrics">
@@ -19,7 +19,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="hdr_listeners_by_dow">Listeners by Day of Week</translate>
+                            {{ $gettext('Listeners by Day of Week') }}
                         </legend>
 
                         <pie-chart style="width: 100%;" :data="chartData.day_of_week.metrics"
@@ -31,7 +31,7 @@
                 <b-col md="6" class="mb-4">
                     <fieldset>
                         <legend>
-                            <translate key="hdr_listeners_by_hour">Listeners by Hour</translate>
+                            {{ $gettext('Listeners by Hour') }}
                         </legend>
 
                         <hour-chart style="width: 100%;" :data="chartData.hourly.metrics"
@@ -45,62 +45,62 @@
     </b-overlay>
 </template>
 
-<script>
-import TimeSeriesChart from "~/components/Common/TimeSeriesChart";
-import HourChart from "~/components/Stations/Reports/Overview/HourChart";
+<script setup>
+import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
+import HourChart from "~/components/Common/Charts/HourChart.vue";
 import {DateTime} from "luxon";
-import PieChart from "~/components/Common/PieChart";
-import IsMounted from "~/components/Common/IsMounted";
+import PieChart from "~/components/Common/Charts/PieChart.vue";
+import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {useMounted} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'ListenersByTimePeriodTab',
-    components: {PieChart, HourChart, TimeSeriesChart},
-    mixins: [IsMounted],
-    props: {
-        dateRange: Object,
-        apiUrl: String,
+const props = defineProps({
+    dateRange: Object,
+    apiUrl: String,
+});
+
+const loading = ref(true);
+
+const chartData = shallowRef({
+    daily: {},
+    day_of_week: {
+        labels: [],
+        metrics: [],
+        alt: ''
     },
-    data() {
-        return {
-            loading: true,
-            chartData: {
-                daily: {},
-                day_of_week: {
-                    labels: [],
-                    metrics: [],
-                    alt: ''
-                },
-                hourly: {
-                    labels: [],
-                    metrics: [],
-                    alt: ''
-                }
-            },
-        };
-    },
-    watch: {
-        dateRange() {
-            if (this.isMounted) {
-                this.relist();
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl, {
-                params: {
-                    start: DateTime.fromJSDate(this.dateRange.startDate).toISO(),
-                    end: DateTime.fromJSDate(this.dateRange.endDate).toISO()
-                }
-            }).then((response) => {
-                this.chartData = response.data;
-                this.loading = false;
-            });
-        }
+    hourly: {
+        labels: [],
+        metrics: [],
+        alt: ''
     }
+});
+
+const dateRange = toRef(props, 'dateRange');
+const {axios} = useAxios();
+
+const relist = () => {
+    loading.value = true;
+
+    axios.get(props.apiUrl, {
+        params: {
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
+        }
+    }).then((response) => {
+        chartData.value = response.data;
+        loading.value = false;
+    });
 }
+
+const isMounted = useMounted();
+
+watch(dateRange, () => {
+    if (isMounted.value) {
+        relist();
+    }
+});
+
+onMounted(() => {
+    relist();
+});
 </script>

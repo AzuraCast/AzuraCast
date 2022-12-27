@@ -6,6 +6,10 @@ upstream php-fpm-www {
     server unix:/var/run/php-fpm-www.sock;
 }
 
+upstream centrifugo {
+    server 127.0.0.1:6020;
+}
+
 # Internal connection handler for PubSub and internal API calls
 server {
     listen 127.0.0.1:6010;
@@ -77,6 +81,12 @@ server {
 
         alias /var/azuracast/www_tmp/nowplaying;
         try_files $uri =404;
+    }
+
+    # Websocket/SSE Now Playing Updates
+    location ~ ^/api/live/nowplaying/(\w+)$ {
+        include proxy_params;
+        proxy_pass http://centrifugo/connection/uni_$1?$args;
     }
 
     # Default clean URL routing

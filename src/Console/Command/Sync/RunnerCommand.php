@@ -7,7 +7,7 @@ namespace App\Console\Command\Sync;
 use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Event\GetSyncTasks;
-use App\LockFactory;
+use App\Lock\LockFactory;
 use App\Sync\Task\AbstractTask;
 use Carbon\CarbonImmutable;
 use Cron\CronExpression;

@@ -3,12 +3,12 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
-                    <translate key="lang_title">Song Playback Timeline</translate>
+                    {{ $gettext('Song Playback Timeline') }}
                 </h2>
                 <div class="flex-shrink">
                     <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
                         <icon icon="file_download"></icon>
-                        <translate key="lang_download_csv_button">Download CSV</translate>
+                        {{ $gettext('Download CSV') }}
                     </a>
 
                     <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"
@@ -28,21 +28,23 @@
                 {{ row.item.listeners_start }}
             </template>
             <template #cell(delta)="row">
+                <span class="typography-subheading">
                 <template v-if="row.item.delta_total > 0">
-                    <big><span class="text-success">
+                    <span class="text-success">
                         <icon icon="trending_up"></icon>
                         {{ abs(row.item.delta_total) }}
-                    </span></big>
+                    </span>
                 </template>
                 <template v-else-if="row.item.delta_total < 0">
-                    <big><span class="text-danger">
+                    <span class="text-danger">
                         <icon icon="trending_down"></icon>
                         {{ abs(row.item.delta_total) }}
-                    </span></big>
+                    </span>
                 </template>
                 <template v-else>
-                    <big>0</big>
+                    0
                 </template>
+                </span>
             </template>
             <template #cell(song)="row">
                 <div :class="{'text-muted': !row.item.is_visible}">
@@ -57,14 +59,14 @@
             </template>
             <template #cell(source)="row">
                 <template v-if="row.item.is_request">
-                    <translate key="lang_source_request">Listener Request</translate>
+                    {{ $gettext('Listener Request') }}
                 </template>
                 <template v-else-if="row.item.playlist">
-                    <translate key="lang_playlist">Playlist:</translate>
+                    {{ $gettext('Playlist:') }}
                     {{ row.item.playlist }}
                 </template>
                 <template v-else-if="row.item.streamer">
-                    <translate key="lang_streamer">Live Streamer:</translate>
+                    {{ $gettext('Live Streamer:') }}
                     {{ row.item.streamer }}
                 </template>
                 <template v-else>
@@ -80,6 +82,7 @@ import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
+import {useAzuraCast} from "~/vendor/azuracast";
 
 export default {
     name: 'StationsReportsTimeline',
@@ -165,13 +168,17 @@ export default {
             return Math.abs(val);
         },
         formatTimestamp(unix_timestamp) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
             );
         },
         formatTimestampStation(unix_timestamp) {
+            const {timeConfig} = useAzuraCast();
+
             return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
             );
         }
     }

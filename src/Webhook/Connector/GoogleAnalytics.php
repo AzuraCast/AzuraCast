@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Repository\ListenerRepository;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
@@ -18,7 +21,7 @@ final class GoogleAnalytics extends AbstractConnector
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        private readonly Entity\Repository\ListenerRepository $listenerRepo
+        private readonly ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
     }
@@ -27,9 +30,9 @@ final class GoogleAnalytics extends AbstractConnector
      * @inheritDoc
      */
     public function dispatch(
-        Entity\Station $station,
-        Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying\NowPlaying $np,
+        Station $station,
+        StationWebhook $webhook,
+        NowPlaying $np,
         array $triggers
     ): void {
         $config = $webhook->getConfig();

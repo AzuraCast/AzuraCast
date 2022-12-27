@@ -2,7 +2,7 @@
     <b-overlay variant="card" :show="loading">
         <b-form-group label-for="modal_scroll_to_bottom">
             <b-form-checkbox id="modal_scroll_to_bottom" v-model="scrollToBottom">
-                <translate key="scroll_to_bottom">Automatically Scroll to Bottom</translate>
+                {{ $gettext('Automatically Scroll to Bottom') }}
             </b-form-checkbox>
         </b-form-group>
 

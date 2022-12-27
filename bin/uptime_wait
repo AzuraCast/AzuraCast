@@ -6,17 +6,16 @@ declare(strict_types=1);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 ini_set('display_errors', '1');
 
-class Spinner
+final class Spinner
 {
-    protected array $frames = [];
+    private readonly int $length;
 
-    protected int $length;
+    private int $current = 0;
 
-    protected int $current = 0;
-
-    public function __construct(array $frames)
+    public function __construct(
+            private readonly array $frames
+    )
     {
-        $this->frames = $frames;
         $this->length = count($this->frames);
     }
 
@@ -41,15 +40,15 @@ class Spinner
     }
 }
 
-class UptimeWait
+final class UptimeWait
 {
-    protected Spinner $spinner;
+    private Spinner $spinner;
 
-    protected int $timeout = 180;
+    private int $timeout = 180;
 
-    protected int $retryInterval = 1;
+    private int $retryInterval = 1;
 
-    protected bool $debugMode = false;
+    private bool $debugMode = false;
 
     public function __construct()
     {
@@ -74,7 +73,7 @@ class UptimeWait
 
         $elapsed = 0;
         while ($elapsed <= $this->timeout) {
-            if ($this->checkDatabase()) {
+            if ($this->checkRedis() && $this->checkDatabase()) {
                 $this->println('Services started up and ready!');
                 die(0);
             }
@@ -89,7 +88,7 @@ class UptimeWait
         die(1);
     }
 
-    protected function checkDatabase(): bool
+    private function checkDatabase(): bool
     {
         try {
             $dbOptions = [
@@ -119,11 +118,59 @@ class UptimeWait
         }
     }
 
-    protected function println(string $line): void
+    private function checkRedis(): bool
+    {
+        $enableRedis = $this->envToBool($_ENV['ENABLE_REDIS'] ?? true);
+        $redisHost = $_ENV['REDIS_HOST'] ?? 'localhost';
+        $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
+        $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
+
+        $redisSocket = ('localhost' === $redisHost)
+                ? '/run/redis/redis.sock'
+                : null;
+
+        if (!$enableRedis) {
+            $this->println('Redis disabled; skipping Redis check...');
+            return true;
+        }
+
+        try {
+            $redis = new Redis();
+            if (null !== $redisSocket) {
+                $redis->connect($redisSocket);
+            } else {
+                $redis->connect($redisHost, $redisPort, 15);
+            }
+            $redis->select($redisDb);
+
+            $redis->ping();
+
+            return true;
+        } catch (Throwable $e) {
+            if ($this->debugMode) {
+                $this->println($e->getMessage());
+            }
+
+            return false;
+        }
+    }
+
+    private function envToBool(string|bool $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return str_starts_with(strtolower($value), 'y')
+                || 'true' === strtolower($value)
+                || '1' === $value;
+    }
+
+    private function println(string $line): void
     {
         echo $line . "\n";
     }
 }
 
-$uptimeWait = new UptimeWait;
+$uptimeWait = new UptimeWait();
 $uptimeWait->run();

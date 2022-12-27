@@ -1,60 +1,61 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Web Hooks</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">{{ $gettext('Web Hooks') }}</h2>
+        </b-card-header>
 
-            <info-card>
-                <translate key="lang_info_card">Web hooks let you connect to external web services and broadcast changes to your station to them.</translate>
-            </info-card>
+        <info-card>
+            {{
+                $gettext('Web hooks let you connect to external web services and broadcast changes to your station to them.')
+            }}
+        </info-card>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    <translate key="lang_add_webhook">Add Web Hook</translate>
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button variant="outline-primary" @click.prevent="doCreate">
+                <icon icon="add"></icon>
+                {{ $gettext('Add Web Hook') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="station_webhooks" :fields="fields"
-                        :api-url="listUrl">
-                <template #cell(name)="row">
-                    <big>{{ row.item.name }}</big><br>
-                    {{ getWebhookName(row.item.type) }}
-                    <b-badge v-if="!row.item.is_enabled" variant="danger">
-                        <translate key="lang_webhook_disabled">Disabled</translate>
-                    </b-badge>
-                </template>
-                <template #cell(triggers)="row">
-                    <div v-for="(name, index) in getTriggerNames(row.item.triggers)" :key="row.item.id+'_'+index"
-                         class="small">
-                        {{ name }}
-                    </div>
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
-                        <b-button size="sm" :variant="getToggleVariant(row.item)"
-                                  @click.prevent="doToggle(row.item.links.toggle)">
-                            {{ langToggleButton(row.item) }}
-                        </b-button>
-                        <b-button size="sm" variant="default" @click.prevent="doTest(row.item.links.test)">
-                            <translate key="lang_btn_test">Test</translate>
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table ref="datatable" id="station_webhooks" :fields="fields"
+                    :api-url="listUrl">
+            <template #cell(name)="row">
+                <div class="typography-subheading">{{ row.item.name }}</div>
+                {{ getWebhookName(row.item.type) }}
+                <b-badge v-if="!row.item.is_enabled" variant="danger">
+                    {{ $gettext('Disabled') }}
+                </b-badge>
+            </template>
+            <template #cell(triggers)="row">
+                <div v-for="(name, index) in getTriggerNames(row.item.triggers)" :key="row.item.id+'_'+index"
+                     class="small">
+                    {{ name }}
+                </div>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button size="sm" :variant="getToggleVariant(row.item)"
+                              @click.prevent="doToggle(row.item.links.toggle)">
+                        {{ langToggleButton(row.item) }}
+                    </b-button>
+                    <b-button size="sm" variant="default" @click.prevent="doTest(row.item.links.test)">
+                        {{ $gettext('Test') }}
+                    </b-button>
+                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <streaming-log-modal ref="logModal"></streaming-log-modal>
-        <edit-modal ref="editModal" :create-url="listUrl" :webhook-types="webhookTypes"
-                    :webhook-triggers="webhookTriggers" @relist="relist"></edit-modal>
-    </div>
+    <streaming-log-modal ref="logModal"></streaming-log-modal>
+    <edit-modal ref="editModal" :create-url="listUrl" :webhook-types="webhookTypes"
+                :trigger-titles="langTriggerTitles" :trigger-descriptions="langTriggerDescriptions"
+                :now-playing-url="nowPlayingUrl" @relist="relist"></edit-modal>
 </template>
 
 <script>
@@ -70,8 +71,8 @@ export default {
     components: {StreamingLogModal, InfoCard, Icon, EditModal, DataTable},
     props: {
         listUrl: String,
-        webhookTypes: Object,
-        webhookTriggers: Object
+        nowPlayingUrl: String,
+        webhookTypes: Object
     },
     data() {
         return {
@@ -81,6 +82,32 @@ export default {
                 {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
             ]
         };
+    },
+    computed: {
+        langTriggerTitles() {
+            return {
+                song_changed: this.$gettext('Song Change'),
+                song_changed_live: this.$gettext('Song Change (Live Only)'),
+                listener_gained: this.$gettext('Listener Gained'),
+                listener_lost: this.$gettext('Listener Lost'),
+                live_connect: this.$gettext('Live Streamer/DJ Connected'),
+                live_disconnect: this.$gettext('Live Streamer/DJ Disconnected'),
+                station_offline: this.$gettext('Station Goes Offline'),
+                station_online: this.$gettext('Station Goes Online'),
+            }
+        },
+        langTriggerDescriptions() {
+            return {
+                song_changed: this.$gettext('Any time the currently playing song changes'),
+                song_changed_live: this.$gettext('When the song changes and a live streamer/DJ is connected'),
+                listener_gained: this.$gettext('Any time the listener count increases'),
+                listener_lost: this.$gettext('Any time the listener count decreases'),
+                live_connect: this.$gettext('Any time a live streamer/DJ connects to the stream'),
+                live_disconnect: this.$gettext('Any time a live streamer/DJ disconnects from the stream'),
+                station_offline: this.$gettext('When the station broadcast goes offline'),
+                station_online: this.$gettext('When the station broadcast comes online'),
+            }
+        }
     },
     methods: {
         langToggleButton(record) {
@@ -98,7 +125,7 @@ export default {
         },
         getTriggerNames(triggers) {
             return _.map(triggers, (trigger) => {
-                return _.get(this.webhookTriggers, trigger, '');
+                return _.get(this.langTriggerTitles, trigger, '');
             });
         },
         relist() {

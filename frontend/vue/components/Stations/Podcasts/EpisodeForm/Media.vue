@@ -1,95 +1,98 @@
 <template>
-    <b-tab :title="langTitle">
+    <b-tab :title="$gettext('Media')">
         <b-form-group>
-            <b-form-row>
+            <div class="form-row">
                 <b-form-group class="col-md-6" label-for="media_file">
                     <template #label>
-                        <translate key="media_file">Select Media File</translate>
+                        {{ $gettext('Select Media File') }}
                     </template>
                     <template #description>
-                        <translate key="media_file_desc">Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.</translate>
+                        {{
+                            $gettext('Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.')
+                        }}
                     </template>
 
-                    <flow-upload :target-url="targetUrl" :valid-mime-types="acceptMimeTypes"
+                    <flow-upload :target-url="targetUrl" :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
                                  @success="onFileSuccess"></flow-upload>
                 </b-form-group>
 
                 <b-form-group class="col-md-6">
                     <template #label>
-                        <translate key="existing_media">Current Podcast Media</translate>
+                        {{ $gettext('Current Podcast Media') }}
                     </template>
 
                     <div v-if="hasMedia">
                         <div class="buttons pt-3">
                             <b-button v-if="downloadUrl" block variant="bg" :href="downloadUrl" target="_blank">
-                                <translate key="btn_download">Download</translate>
+                                {{ $gettext('Download') }}
                             </b-button>
                             <b-button block variant="danger" @click="deleteMedia">
-                                <translate key="btn_delete_media">Clear Media</translate>
+                                {{ $gettext('Clear Media') }}
                             </b-button>
                         </div>
                     </div>
                     <div v-else>
-                        <translate
-                            key="no_existing_media">There is no existing media associated with this episode.</translate>
+                        {{ $gettext('There is no existing media associated with this episode.') }}
                     </div>
                 </b-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
+import {computed, ref, toRef} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {syncRef} from "@vueuse/core";
 
+const props = defineProps({
+    modelValue: Object,
+    recordHasMedia: Boolean,
+    downloadUrl: String,
+    editMediaUrl: String,
+    newMediaUrl: String
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const hasMedia = ref(null);
+syncRef(toRef(props, 'recordHasMedia'), hasMedia, {direction: 'ltr'});
+
+const targetUrl = computed(() => {
+    return (props.editMediaUrl)
+        ? props.editMediaUrl
+        : props.newMediaUrl;
+});
+
+const onFileSuccess = (file, message) => {
+    hasMedia.value = true;
+
+    if (!props.editMediaUrl) {
+        emit('update:modelValue', message);
+    }
+};
+
+const {axios} = useAxios();
+
+const deleteMedia = () => {
+    if (props.editMediaUrl) {
+        axios.delete(props.editMediaUrl).then(() => {
+            hasMedia.value = false;
+        });
+    } else {
+        hasMedia.value = false;
+
+        emit('update:modelValue', null);
+    }
+}
+</script>
+
+<script>
 export default {
-    name: 'EpisodeFormMedia',
-    components: {FlowUpload},
-    props: {
-        value: Object,
-        recordHasMedia: Boolean,
-        downloadUrl: String,
-        editMediaUrl: String,
-        newMediaUrl: String
-    },
-    data() {
-        return {
-            hasMedia: this.recordHasMedia,
-            acceptMimeTypes: ['audio/x-m4a', 'audio/mpeg']
-        };
-    },
-    watch: {
-        recordHasMedia(newValue) {
-            this.hasMedia = newValue;
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Media');
-        },
-        targetUrl() {
-            return (this.editMediaUrl)
-                ? this.editMediaUrl
-                : this.newMediaUrl;
-        }
-    },
-    methods: {
-        onFileSuccess (file, message) {
-            this.hasMedia = true;
-            if (!this.editMediaUrl) {
-                this.$emit('input', message);
-            }
-        },
-        deleteMedia () {
-            if (this.editMediaUrl) {
-                this.axios.delete(this.editMediaUrl).then((resp) => {
-                    this.hasMedia = false;
-                });
-            } else {
-                this.hasMedia = false;
-                this.$emit('input', null);
-            }
-        }
+    model: {
+        prop: 'modelValue',
+        event: 'update:modelValue'
     }
 };
 </script>

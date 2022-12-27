@@ -13,7 +13,7 @@
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <label for="waveform-zoom">
-                            <translate key="lang_waveform_title">Waveform Zoom</translate>
+                            {{ $gettext('Waveform Zoom') }}
                         </label>
                     </div>
                     <div class="flex-fill mx-3">
@@ -26,7 +26,7 @@
                     <div class="flex-shrink-0">
                         <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 0">
                             <icon icon="volume_mute"></icon>
-                            <span class="sr-only" key="lang_mute" v-translate>Mute</span>
+                            {{ $gettext('Mute') }}
                         </a>
                     </div>
                     <div class="flex-fill mx-1">
@@ -36,7 +36,7 @@
                     <div class="flex-shrink-0">
                         <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 100">
                             <icon icon="volume_up"></icon>
-                            <span class="sr-only" key="lang_vol_full" v-translate>Full Volume</span>
+                            {{ $gettext('Full Volume') }}
                         </a>
                     </div>
                 </div>

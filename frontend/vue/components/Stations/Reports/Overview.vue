@@ -3,10 +3,11 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
-                    <translate key="hdr">Station Statistics</translate>
+                    {{ $gettext('Station Statistics') }}
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"></date-range-dropdown>
+                    <date-range-dropdown time-picker v-model="dateRange"
+                                         :tz="stationTimeZone"></date-range-dropdown>
                 </div>
             </div>
         </div>
@@ -14,7 +15,7 @@
         <b-tabs pills lazy nav-class="card-header-pills" nav-wrapper-class="card-header">
             <b-tab>
                 <template #title>
-                    <translate key="tab_best_and_worst">Best & Worst</translate>
+                    {{ $gettext('Best & Worst') }}
                 </template>
 
                 <best-and-worst-tab :api-url="bestAndWorstUrl" :date-range="dateRange">
@@ -23,7 +24,7 @@
 
             <b-tab>
                 <template #title>
-                    <translate key="tab_by_time_period">Listeners By Time Period</translate>
+                    {{ $gettext('Listeners By Time Period') }}
                 </template>
 
                 <listeners-by-time-period-tab :api-url="listenersByTimePeriodUrl" :date-range="dateRange">
@@ -32,7 +33,7 @@
 
             <b-tab>
                 <template #title>
-                    <translate key="tab_listening_time">Listening Time</translate>
+                    {{ $gettext('Listening Time') }}
                 </template>
 
                 <listening-time-tab :api-url="listeningTimeUrl" :date-range="dateRange">
@@ -41,7 +42,7 @@
 
             <b-tab>
                 <template #title>
-                    <translate key="tab_streams">Streams</translate>
+                    {{ $gettext('Streams') }}
                 </template>
 
                 <streams-tab :api-url="byStreamUrl" :date-range="dateRange">
@@ -50,7 +51,7 @@
 
             <b-tab v-if="showFullAnalytics">
                 <template #title>
-                    <translate key="tab_clients">Clients</translate>
+                    {{ $gettext('Clients') }}
                 </template>
 
                 <clients-tab :api-url="byClientUrl" :date-range="dateRange">
@@ -59,7 +60,7 @@
 
             <b-tab v-if="showFullAnalytics">
                 <template #title>
-                    <translate key="tab_browsers">Browsers</translate>
+                    {{ $gettext('Browsers') }}
                 </template>
 
                 <browsers-tab :api-url="byBrowserUrl" :date-range="dateRange">
@@ -68,7 +69,7 @@
 
             <b-tab v-if="showFullAnalytics">
                 <template #title>
-                    <translate key="tab_countries">Countries</translate>
+                    {{ $gettext('Countries') }}
                 </template>
 
                 <countries-tab :api-url="byCountryUrl" :date-range="dateRange">

@@ -1,25 +1,25 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
+    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
                 @submit="doEdit" @hidden="clearContents">
 
-        <b-tabs content-class="mt-3">
+        <b-tabs content-class="mt-3" pills>
             <b-tab active>
                 <template #title>
-                    <translate key="tab_basic_info">Basic Information</translate>
+                    {{ $gettext('Basic Information') }}
                 </template>
 
-                <media-form-basic-info :form="$v.form"></media-form-basic-info>
+                <media-form-basic-info :form="v$.form"></media-form-basic-info>
             </b-tab>
             <b-tab>
                 <template #title>
-                    <translate key="tab_playlists">Playlists</translate>
+                    {{ $gettext('Playlists') }}
                 </template>
 
-                <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
+                <media-form-playlists :form="v$.form" :playlists="playlists"></media-form-playlists>
             </b-tab>
             <b-tab lazy>
                 <template #title>
-                    <translate key="tab_album_art">Album Art</translate>
+                    {{ $gettext('Album Art') }}
                 </template>
 
                 <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
@@ -27,15 +27,15 @@
 
             <b-tab v-if="customFields.length > 0">
                 <template #title>
-                    <translate key="tab_custom_fields">Custom Fields</translate>
+                    {{ $gettext('Custom Fields') }}
                 </template>
 
-                <media-form-custom-fields :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
+                <media-form-custom-fields :form="v$.form" :custom-fields="customFields"></media-form-custom-fields>
             </b-tab>
 
             <b-tab lazy>
                 <template #title>
-                    <translate key="tab_waveform_editor">Visual Cue Editor</translate>
+                    {{ $gettext('Visual Cue Editor') }}
                 </template>
 
                 <media-form-waveform-editor :form="form" :audio-url="audioUrl"
@@ -44,17 +44,16 @@
 
             <b-tab>
                 <template #title>
-                    <translate key="tab_advanced">Advanced</translate>
+                    {{ $gettext('Advanced') }}
                 </template>
 
-                <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
+                <media-form-advanced-settings :form="v$.form" :song-length="songLength"></media-form-advanced-settings>
             </b-tab>
         </b-tabs>
     </modal-form>
 </template>
 <script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
+import {required} from '@vuelidate/validators';
 import _ from 'lodash';
 import MediaFormBasicInfo from './Form/BasicInfo';
 import MediaFormAlbumArt from './Form/AlbumArt';
@@ -63,6 +62,7 @@ import MediaFormAdvancedSettings from './Form/AdvancedSettings';
 import MediaFormPlaylists from './Form/Playlists';
 import MediaFormWaveformEditor from './Form/WaveformEditor';
 import ModalForm from "~/components/Common/ModalForm";
+import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
@@ -75,7 +75,9 @@ export default {
         MediaFormAlbumArt,
         MediaFormBasicInfo
     },
-    mixins: [validationMixin],
+    setup() {
+        return {v$: useVuelidate()}
+    },
     props: {
         customFields: Array,
         playlists: Array
@@ -200,7 +202,7 @@ export default {
                 });
 
                 this.loading = false;
-            }).catch((error) => {
+            }).catch(() => {
                 this.close();
             });
         },
@@ -209,17 +211,17 @@ export default {
         },
         clearContents() {
             this.resetForm();
-            this.$v.form.$reset();
+            this.v$.$reset();
         },
         doEdit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.v$.$touch();
+            if (this.v$.$errors.length > 0) {
                 return;
             }
 
             this.error = null;
 
-            this.axios.put(this.recordUrl, this.form).then((resp) => {
+            this.axios.put(this.recordUrl, this.form).then(() => {
                 this.$notifySuccess();
                 this.$emit('relist');
                 this.close();

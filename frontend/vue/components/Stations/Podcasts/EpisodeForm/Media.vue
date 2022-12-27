@@ -44,6 +44,7 @@
 import FlowUpload from '~/components/Common/FlowUpload';
 import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
+import {syncRef} from "@vueuse/core";
 
 const props = defineProps({
     modelValue: Object,
@@ -55,7 +56,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const hasMedia = ref(props.recordHasMedia);
+const hasMedia = ref(null);
+syncRef(toRef(props, 'recordHasMedia'), hasMedia, {direction: 'ltr'});
 
 const targetUrl = computed(() => {
     return (props.editMediaUrl)

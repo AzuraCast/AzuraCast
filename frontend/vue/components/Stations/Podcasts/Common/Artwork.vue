@@ -32,8 +32,9 @@
 
 <script setup>
 
-import {computed, ref, toRef} from "vue";
+import {computed, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
+import {syncRef} from "@vueuse/core";
 
 const props = defineProps({
     modelValue: Object,
@@ -44,7 +45,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const artworkSrc = ref(props.artworkSrc);
+const artworkSrc = toRef(props, 'artworkSrc');
 const localSrc = ref(null);
 
 const src = computed(() => {

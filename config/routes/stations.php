@@ -23,11 +23,11 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/bulk-media', Controller\Stations\BulkMediaAction::class)
                 ->setName('stations:bulk-media')
-                ->add(new Middleware\Permissions(StationPermissions::MediaImportExport, true));
+                ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
             $group->get('/fallback', Controller\Stations\FallbackAction::class)
                 ->setName('stations:fallback')
-                ->add(new Middleware\Permissions(StationPermissions::BroadcastingFallbackFile, true));
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/files', Controller\Stations\FilesAction::class)
                 ->setName('stations:files:index')
@@ -42,7 +42,7 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
                 ->setName('stations:util:ls_config')
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::CustomLiquidsoapConfig))
-                ->add(new Middleware\Permissions(StationPermissions::BroadcastingLiquidsoapConfig, true));
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
 
             $group->get('/stereo_tool_config', Controller\Stations\UploadStereoToolConfigAction::class)
                 ->setName('stations:stereo_tool_config')
@@ -95,28 +95,23 @@ return static function (RouteCollectorProxy $app) {
                 '/reports',
                 function (RouteCollectorProxy $group) {
                     $group->get('/overview', Controller\Stations\Reports\OverviewAction::class)
-                        ->setName('stations:reports:overview')
-                        ->add(new Middleware\Permissions(StationPermissions::ReportsStatistics, true));
+                        ->setName('stations:reports:overview');
 
                     $group->get('/timeline', Controller\Stations\Reports\TimelineAction::class)
-                        ->setName('stations:reports:timeline')
-                        ->add(new Middleware\Permissions(StationPermissions::ReportsSongTimeline, true));
+                        ->setName('stations:reports:timeline');
 
                     $group->get('/listeners', Controller\Stations\Reports\ListenersAction::class)
-                        ->setName('stations:reports:listeners')
-                        ->add(new Middleware\Permissions(StationPermissions::ReportsListeners, true));
+                        ->setName('stations:reports:listeners');
 
                     $group->map(
                         ['GET', 'POST'],
                         '/soundexchange',
                         Controller\Stations\Reports\SoundExchangeAction::class
                     )
-                        ->setName('stations:reports:soundexchange')
-                        ->add(new Middleware\Permissions(StationPermissions::ReportsSoundExchange, true));
+                        ->setName('stations:reports:soundexchange');
 
                     $group->get('/requests', Controller\Stations\Reports\RequestsAction::class)
-                        ->setName('stations:reports:requests')
-                        ->add(new Middleware\Permissions(StationPermissions::ReportsSongRequests, true));
+                        ->setName('stations:reports:requests');
                 }
             )->add(new Middleware\Permissions(StationPermissions::Reports, true));
 

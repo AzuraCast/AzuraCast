@@ -8,15 +8,14 @@ use App\Entity;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Service\Centrifugo;
+use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
 
 final class PlayerAction
 {
     public function __construct(
-        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
-        private readonly Centrifugo $centrifugo
+        private readonly NowPlayingComponent $nowPlayingComponent
     ) {
     }
 
@@ -36,32 +35,10 @@ final class PlayerAction
             throw new StationNotFoundException();
         }
 
-        $baseUrl = $request->getRouter()->getBaseUrl();
-
-        $np = $this->npApiGenerator->currentOrEmpty($station);
-        $np->resolveUrls($baseUrl);
-
         // Build Vue props.
-        $customization = $request->getCustomization();
         $router = $request->getRouter();
 
-        $backendConfig = $station->getBackendConfig();
-
-        $props = [
-            'initialNowPlaying' => $np,
-            'showAlbumArt' => !$customization->hideAlbumArt(),
-            'autoplay' => !empty($request->getQueryParam('autoplay')),
-            'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
-            'hlsIsDefault' => $backendConfig->getHlsIsDefault(),
-            'nowPlayingUri' => $customization->useStaticNowPlaying()
-                ? '/api/nowplaying_static/' . urlencode($station->getShortName()) . '.json'
-                : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),
-        ];
-
-        if ($customization->useStaticNowPlaying() && $this->centrifugo->isSupported()) {
-            $props['useSse'] = true;
-            $props['sseUri'] = $this->centrifugo->getSseUrl($station);
-        }
+        $props = $this->nowPlayingComponent->getProps($request);
 
         // Render embedded player.
         if (!empty($embed)) {

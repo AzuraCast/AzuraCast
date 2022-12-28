@@ -17,5 +17,5 @@ export default {
     autoplay: {
         type: Boolean,
         default: false
-    }
+    },
 }

@@ -28,18 +28,18 @@
                     <h4 class="now-playing-title">{{ np.now_playing.song.text }}</h4>
                 </div>
 
-                <div class="time-display" v-if="time_display_played != null">
+                <div class="time-display" v-if="currentTimeElapsedDisplay != null">
                     <div class="time-display-played text-secondary">
-                        {{ time_display_played }}
+                        {{ currentTimeElapsedDisplay }}
                     </div>
                     <div class="time-display-progress">
                         <div class="progress">
                             <div class="progress-bar bg-secondary" role="progressbar"
-                                 :style="{ width: time_percent+'%' }"></div>
+                                 :style="{ width: currentTrackPercent+'%' }"></div>
                         </div>
                     </div>
                     <div class="time-display-total text-secondary">
-                        {{ time_display_total }}
+                        {{ currentTimeTotalDisplay }}
                     </div>
                 </div>
             </div>
@@ -48,14 +48,14 @@
         <hr>
 
         <div class="radio-controls">
-            <play-button class="radio-control-play-button" icon-class="outlined lg" :url="current_stream.url"
-                         :is-hls="current_stream.hls" is-stream></play-button>
+            <play-button class="radio-control-play-button" icon-class="outlined lg" :url="currentStream.url"
+                         :is-hls="currentStream.hls" is-stream></play-button>
 
             <div class="radio-control-select-stream">
                 <div v-if="streams.length > 1" class="dropdown">
                     <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ current_stream.name }}
+                        {{ currentStream.name }}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btn-select-stream">
                         <a class="dropdown-item" v-for="stream in streams" href="javascript:"
@@ -212,7 +212,7 @@ import AudioPlayer from '~/components/Common/AudioPlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
-import {useIntervalFn, useMounted, useStorage} from "@vueuse/core";
+import {useMounted, useStorage} from "@vueuse/core";
 import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
@@ -224,9 +224,9 @@ const props = defineProps({
 
 const emit = defineEmits(['np_updated']);
 
-const np = useNowPlaying(props);
-const np_elapsed = ref(0);
-const current_stream = shallowRef({
+const {np, currentTrackElapsed, currentTrackDuration} = useNowPlaying(props);
+
+const currentStream = shallowRef({
     'name': '',
     'url': '',
     'hls': false,
@@ -240,11 +240,11 @@ const enable_hls = computed(() => {
 const {$gettext} = useTranslate();
 
 const streams = computed(() => {
-    let all_streams = [];
+    let allStreams = [];
     let $np = np.value;
 
     if (enable_hls.value) {
-        all_streams.push({
+        allStreams.push({
             'name': $gettext('HLS'),
             'url': $np.station.hls_url,
             'hls': true,
@@ -252,60 +252,55 @@ const streams = computed(() => {
     }
 
     $np.station.mounts.forEach(function (mount) {
-        all_streams.push({
+        allStreams.push({
             'name': mount.name,
             'url': mount.url,
             'hls': false,
         });
     });
     $np.station.remotes.forEach(function (remote) {
-        all_streams.push({
+        allStreams.push({
             'name': remote.name,
             'url': remote.url,
             'hls': false,
         });
     });
 
-    return all_streams;
+    return allStreams;
 });
 
-const time_total = computed(() => {
-    let $np = np.value;
-    return $np?.now_playing?.duration ?? 0;
-});
+const currentTrackPercent = computed(() => {
+    let $currentTrackElapsed = currentTrackElapsed.value;
+    let $currentTrackDuration = currentTrackDuration.value;
 
-const time_percent = computed(() => {
-    let $np_elapsed = np_elapsed.value;
-    let $time_total = time_total.value;
-
-    if (!$time_total) {
+    if (!$currentTrackDuration) {
         return 0;
     }
-    if ($np_elapsed > $time_total) {
+    if ($currentTrackElapsed > $currentTrackDuration) {
         return 100;
     }
 
-    return ($np_elapsed / $time_total) * 100;
+    return ($currentTrackElapsed / $currentTrackDuration) * 100;
 });
 
-const time_display_played = computed(() => {
-    let $np_elapsed = np_elapsed.value;
-    let $time_total = time_total.value;
+const currentTimeElapsedDisplay = computed(() => {
+    let $currentTrackElapsed = currentTrackElapsed.value;
+    let $currentTrackDuration = currentTrackDuration.value;
 
-    if (!$time_total) {
+    if (!$currentTrackDuration) {
         return null;
     }
 
-    if ($np_elapsed > $time_total) {
-        $np_elapsed = $time_total;
+    if ($currentTrackElapsed > $currentTrackDuration) {
+        $currentTrackElapsed = $currentTrackDuration;
     }
 
-    return formatTime($np_elapsed);
+    return formatTime($currentTrackElapsed);
 });
 
-const time_display_total = computed(() => {
-    let $time_total = time_total.value;
-    return ($time_total) ? formatTime($time_total) : null;
+const currentTimeTotalDisplay = computed(() => {
+    let $currentTrackDuration = currentTrackDuration.value;
+    return ($currentTrackDuration) ? formatTime($currentTrackDuration) : null;
 });
 
 const isMounted = useMounted();
@@ -323,31 +318,13 @@ const fullVolume = () => {
 };
 
 const switchStream = (new_stream) => {
-    current_stream.value = new_stream;
+    currentStream.value = new_stream;
     player.value.toggle(new_stream.url, true, new_stream.hls);
 };
 
 onMounted(() => {
-    useIntervalFn(
-        () => {
-            let $np = np.value;
-
-            let current_time = Math.floor(Date.now() / 1000);
-            let $np_elapsed = current_time - $np.now_playing.played_at;
-
-            if ($np_elapsed < 0) {
-                $np_elapsed = 0;
-            } else if ($np_elapsed >= $np.now_playing.duration) {
-                $np_elapsed = $np.now_playing.duration;
-            }
-
-            np_elapsed.value = $np_elapsed;
-        },
-        1000
-    );
-
     if (props.autoplay) {
-        switchStream(current_stream.value);
+        switchStream(currentStream.value);
     }
 });
 
@@ -356,27 +333,27 @@ const onNowPlayingUpdated = (np_new) => {
 
     // Set a "default" current stream if none exists.
     let $streams = streams.value;
-    let $current_stream = current_stream.value;
+    let $currentStream = currentStream.value;
 
-    if ($current_stream.url === '' && $streams.length > 0) {
+    if ($currentStream.url === '' && $streams.length > 0) {
         if (props.hlsIsDefault && enable_hls.value) {
-            current_stream.value = $streams[0];
+            currentStream.value = $streams[0];
         } else {
-            $current_stream = null;
+            $currentStream = null;
 
             if (np_new.station.listen_url !== '') {
                 $streams.forEach(function (stream) {
                     if (stream.url === np_new.station.listen_url) {
-                        $current_stream = stream;
+                        $currentStream = stream;
                     }
                 });
             }
 
-            if ($current_stream === null) {
-                $current_stream = $streams[0];
+            if ($currentStream === null) {
+                $currentStream = $streams[0];
             }
 
-            current_stream.value = $current_stream;
+            currentStream.value = $currentStream;
         }
     }
 };

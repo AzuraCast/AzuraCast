@@ -12,7 +12,6 @@ final class Centrifugo
 {
     public const GLOBAL_TIME_CHANNEL = 'global:time';
 
-
     public function __construct(
         private readonly Environment $environment,
         private readonly Client $client,
@@ -21,7 +20,7 @@ final class Centrifugo
 
     public function isSupported(): bool
     {
-        return $this->environment->isDocker();
+        return $this->environment->isDocker() && !$this->environment->isTesting();
     }
 
     public function sendTime(): void

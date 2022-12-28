@@ -11,16 +11,16 @@ use Psr\Log\LoggerInterface;
 final class SendTimeOnSocketTask extends AbstractTask
 {
     public function __construct(
-        private readonly Centrifugo $centrifugo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
+        private readonly Centrifugo $centrifugo,
     ) {
         parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
     {
-        return '* * * * *';
+        return self::SCHEDULE_EVERY_MINUTE;
     }
 
     public function run(bool $force = false): void

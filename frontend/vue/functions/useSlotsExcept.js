@@ -9,4 +9,4 @@ export default function useSlotsExcept(except) {
             return !includes(except, name);
         });
     });
-};
+}

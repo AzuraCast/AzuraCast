@@ -1,4 +1,5 @@
 // noinspection all
+// @eslint-
 
 var stream = {};
 var defaultChannels = 2;

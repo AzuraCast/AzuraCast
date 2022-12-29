@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 export function useAzuraCast() {
     return {
         lang: {

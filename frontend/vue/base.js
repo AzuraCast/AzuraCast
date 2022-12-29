@@ -8,9 +8,6 @@ import {installTranslate} from "~/vendor/gettext";
 
 export default function (component) {
     const vueApp = createApp({
-        render() {
-            return h(component, this.$appProps)
-        },
         mounted() {
             // Workaround to use BootstrapVue toast notifications in Vue 3 composition API.
             const notifyBus = useNotifyBus();
@@ -22,7 +19,10 @@ export default function (component) {
                     this.$bvToast.hide(payload.id);
                 }
             });
-        }
+        },
+        render() {
+            return h(component, this.$appProps)
+        },
     });
 
     /* Gettext */

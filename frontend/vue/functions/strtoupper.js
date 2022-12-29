@@ -8,4 +8,4 @@ export default function strtoupper(data) {
         upper.push(word.toUpperCase());
     });
     return upper.join(' ');
-};
+}

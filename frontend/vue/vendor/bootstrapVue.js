@@ -10,7 +10,7 @@ export function useNotify() {
     const notifyBus = useNotifyBus();
 
     const notify = (message = null, options = {}) => {
-        if (!!document.hidden) {
+        if (document.hidden) {
             return;
         }
 
@@ -136,4 +136,4 @@ export function useNotify() {
 export default function installBootstrapVue(vueApp) {
     vueApp.use(BootstrapVue);
     vueApp.use(useNotify());
-};
+}

@@ -134,7 +134,9 @@ module.exports = {
         ]
     },
     plugins: [
-        new ESLintPlugin({}),
+        new ESLintPlugin({
+            extensions: ['js', 'vue']
+        }),
         new WebpackAssetsManifest({
             output: path.resolve(__dirname, '../web/static/webpack.json'),
             writeToDisk: true,

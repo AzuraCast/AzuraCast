@@ -1,68 +1,80 @@
 <template>
-    <audio-player ref="$player" :volume="volume" :is-muted="isMuted"></audio-player>
+    <audio-player
+        ref="$player"
+        :volume="volume"
+        :is-muted="isMuted"
+    />
 
-    <div class="ml-3 player-inline" v-if="isPlaying">
-        <div class="inline-seek d-inline-flex align-items-center ml-1" v-if="!current.isStream && duration !== 0">
+    <div
+        v-if="isPlaying"
+        class="ml-3 player-inline"
+    >
+        <div
+            v-if="!current.isStream && duration !== 0"
+            class="inline-seek d-inline-flex align-items-center ml-1"
+        >
             <div class="flex-shrink-0 mx-1 text-white-50 time-display">
                 {{ currentTimeText }}
             </div>
             <div class="flex-fill mx-2">
-                <input type="range" :title="$gettext('Seek')" class="player-seek-range custom-range" min="0"
-                       max="100"
-                       step="1" v-model="progress">
+                <input
+                    v-model="progress"
+                    type="range"
+                    :title="$gettext('Seek')"
+                    class="player-seek-range custom-range"
+                    min="0"
+                    max="100"
+                    step="1"
+                >
             </div>
             <div class="flex-shrink-0 mx-1 text-white-50 time-display">
                 {{ durationText }}
             </div>
         </div>
 
-        <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()"
-           :aria-label="$gettext('Stop')">
-            <icon icon="stop"></icon>
+        <a
+            class="btn btn-sm btn-outline-light px-2 ml-1"
+            href="#"
+            :aria-label="$gettext('Stop')"
+            @click.prevent="stop()"
+        >
+            <icon icon="stop" />
         </a>
         <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
             <div class="flex-shrink-0">
-                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="mute"
-                   :aria-label="$gettext('Mute')">
-                    <icon icon="volume_mute"></icon>
+                <a
+                    class="btn btn-sm btn-outline-light px-2"
+                    href="#"
+                    :aria-label="$gettext('Mute')"
+                    @click.prevent="mute"
+                >
+                    <icon icon="volume_mute" />
                 </a>
             </div>
             <div class="flex-fill mx-1">
-                <input type="range" :title="$gettext('Volume')" class="player-volume-range custom-range" min="0"
-                       max="100"
-                       step="1" v-model="volume">
+                <input
+                    v-model="volume"
+                    type="range"
+                    :title="$gettext('Volume')"
+                    class="player-volume-range custom-range"
+                    min="0"
+                    max="100"
+                    step="1"
+                >
             </div>
             <div class="flex-shrink-0">
-                <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="fullVolume"
-                   :aria-label="$gettext('Full Volume')">
-                    <icon icon="volume_up"></icon>
+                <a
+                    class="btn btn-sm btn-outline-light px-2"
+                    href="#"
+                    :aria-label="$gettext('Full Volume')"
+                    @click.prevent="fullVolume"
+                >
+                    <icon icon="volume_up" />
                 </a>
             </div>
         </div>
     </div>
 </template>
-
-<style lang="scss">
-.player-inline {
-    .inline-seek {
-        width: 300px;
-
-        div.time-display {
-            font-size: 90%;
-        }
-    }
-
-    .inline-volume-controls {
-        width: 175px;
-    }
-
-    input.player-volume-range,
-    input.player-seek-range {
-        width: 100%;
-        height: 10px;
-    }
-}
-</style>
 
 <script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
@@ -122,3 +134,25 @@ const fullVolume = () => {
     volume.value = 100;
 };
 </script>
+
+<style lang="scss">
+.player-inline {
+    .inline-seek {
+        width: 300px;
+
+        div.time-display {
+            font-size: 90%;
+        }
+    }
+
+    .inline-volume-controls {
+        width: 175px;
+    }
+
+    input.player-volume-range,
+    input.player-seek-range {
+        width: 100%;
+        height: 10px;
+    }
+}
+</style>

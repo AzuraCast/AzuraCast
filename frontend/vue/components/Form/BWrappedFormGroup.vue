@@ -1,36 +1,82 @@
 <template>
-    <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
+    <b-form-group
+        v-bind="$attrs"
+        :label-for="id"
+        :state="fieldState"
+    >
         <template #default>
-            <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-textarea v-bind="inputAttrs" v-if="inputType === 'textarea'" ref="$input" :id="id" :name="name"
-                                 v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
-                                 :autofocus="autofocus" :state="fieldState"></b-form-textarea>
-                <b-form-input v-bind="inputAttrs" v-else ref="$input" :type="inputType" :id="id" :name="name"
-                              v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
-                              :autofocus="autofocus" :state="fieldState"></b-form-input>
+            <slot
+                name="default"
+                v-bind="{ id, field, state: fieldState }"
+            >
+                <b-form-textarea
+                    v-if="inputType === 'textarea'"
+                    v-bind="inputAttrs"
+                    :id="id"
+                    ref="$input"
+                    v-model="modelValue"
+                    :name="name"
+                    :required="isRequired"
+                    :number="isNumeric"
+                    :trim="inputTrim"
+                    :autofocus="autofocus"
+                    :state="fieldState"
+                />
+                <b-form-input
+                    v-else
+                    v-bind="inputAttrs"
+                    :id="id"
+                    ref="$input"
+                    v-model="modelValue"
+                    :type="inputType"
+                    :name="name"
+                    :required="isRequired"
+                    :number="isNumeric"
+                    :trim="inputTrim"
+                    :autofocus="autofocus"
+                    :state="fieldState"
+                />
             </slot>
 
             <b-form-invalid-feedback :state="fieldState">
-                <vuelidate-error :field="field"></vuelidate-error>
+                <vuelidate-error :field="field" />
             </b-form-invalid-feedback>
         </template>
 
         <template #label="slotProps">
-            <slot v-bind="slotProps" name="label"></slot>
-            <span v-if="isRequired" class="text-danger">
+            <slot
+                v-bind="slotProps"
+                name="label"
+            />
+            <span
+                v-if="isRequired"
+                class="text-danger"
+            >
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
             </span>
-            <span v-if="advanced" class="badge small badge-primary ml-2">
+            <span
+                v-if="advanced"
+                class="badge small badge-primary ml-2"
+            >
                 {{ $gettext('Advanced') }}
             </span>
         </template>
         <template #description="slotProps">
-            <slot v-bind="slotProps" name="description"></slot>
+            <slot
+                v-bind="slotProps"
+                name="description"
+            />
         </template>
 
-        <template v-for="(_, slot) of filteredSlots" v-slot:[slot]="scope">
-            <slot :name="slot" v-bind="scope"></slot>
+        <template
+            v-for="(_, slot) of filteredSlots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
     </b-form-group>
 </template>

@@ -10,26 +10,48 @@
                             </h2>
                         </div>
                         <div class="flex-shrink buttons">
-                            <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
-                                <icon icon="file_download"></icon>
+                            <a
+                                id="btn-export"
+                                class="btn btn-bg"
+                                :href="exportUrl"
+                                target="_blank"
+                            >
+                                <icon icon="file_download" />
                                 {{ $gettext('Download CSV') }}
                             </a>
 
-                            <date-range-dropdown v-if="!isLive" time-picker :min-date="minDate" :max-date="maxDate"
-                                                 :tz="stationTimeZone" v-model="dateRange"
-                                                 @update="updateListeners">
-                            </date-range-dropdown>
+                            <date-range-dropdown
+                                v-if="!isLive"
+                                v-model="dateRange"
+                                time-picker
+                                :min-date="minDate"
+                                :max-date="maxDate"
+                                :tz="stationTimeZone"
+                                @update="updateListeners"
+                            />
                         </div>
                     </div>
                 </div>
-                <b-tabs pills card>
-                    <b-tab key="live" active @click="setIsLive(true)" :title="$gettext('Live Listeners')"
-                           no-body></b-tab>
-                    <b-tab key="not-live" @click="setIsLive(false)" :title="$gettext('Listener History')"
-                           no-body></b-tab>
+                <b-tabs
+                    pills
+                    card
+                >
+                    <b-tab
+                        key="live"
+                        active
+                        :title="$gettext('Live Listeners')"
+                        no-body
+                        @click="setIsLive(true)"
+                    />
+                    <b-tab
+                        key="not-live"
+                        :title="$gettext('Listener History')"
+                        no-body
+                        @click="setIsLive(false)"
+                    />
                 </b-tabs>
                 <div id="map">
-                    <StationReportsListenersMap :listeners="listeners"></StationReportsListenersMap>
+                    <StationReportsListenersMap :listeners="listeners" />
                 </div>
                 <div>
                     <div class="card-body row">
@@ -55,8 +77,15 @@
                         </div>
                     </div>
 
-                    <data-table ref="datatable" id="station_playlists" paginated handle-client-side
-                                :fields="fields" :responsive="false" :items="listeners">
+                    <data-table
+                        id="station_playlists"
+                        ref="datatable"
+                        paginated
+                        handle-client-side
+                        :fields="fields"
+                        :responsive="false"
+                        :items="listeners"
+                    >
                         <template #cell(ip)="row">
                             {{ row.item.ip }}
                         </template>
@@ -69,13 +98,13 @@
                         <template #cell(user_agent)="row">
                             <div>
                                 <span v-if="row.item.is_mobile">
-                                    <icon icon="smartphone"></icon>
+                                    <icon icon="smartphone" />
                                     <span class="sr-only">
                                         {{ $gettext('Mobile Device') }}
                                     </span>
                                 </span>
                                 <span v-else>
-                                    <icon icon="desktop_windows"></icon>
+                                    <icon icon="desktop_windows" />
                                     <span class="sr-only">
                                         {{ $gettext('Desktop Device') }}
                                     </span>

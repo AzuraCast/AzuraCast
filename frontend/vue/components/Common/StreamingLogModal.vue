@@ -1,13 +1,31 @@
 <template>
-    <b-modal id="logs_modal" size="lg" ref="$modal" @hidden="clearContents"
-             :title="$gettext('Log Viewer')" no-enforce-focus>
-        <streaming-log-view ref="$logView" :log-url="logUrl"></streaming-log-view>
+    <b-modal
+        id="logs_modal"
+        ref="$modal"
+        size="lg"
+        :title="$gettext('Log Viewer')"
+        no-enforce-focus
+        @hidden="clearContents"
+    >
+        <streaming-log-view
+            ref="$logView"
+            :log-url="logUrl"
+        />
 
         <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
+            <b-button
+                variant="default"
+                type="button"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button variant="primary" class="btn_copy" @click.prevent="doCopy" type="button">
+            <b-button
+                variant="primary"
+                class="btn_copy"
+                type="button"
+                @click.prevent="doCopy"
+            >
                 {{ $gettext('Copy to Clipboard') }}
             </b-button>
         </template>

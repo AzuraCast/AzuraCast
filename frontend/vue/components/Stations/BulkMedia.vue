@@ -1,7 +1,10 @@
 <template>
     <div class="row">
         <div class="col-md-6">
-            <section class="card" role="region">
+            <section
+                class="card"
+                role="region"
+            >
                 <div class="card-header bg-primary-dark">
                     <h2 class="card-title">
                         {{ $gettext('Export Media to CSV') }}
@@ -21,7 +24,12 @@
                     </p>
 
                     <div class="buttons">
-                        <b-button variant="primary" size="lg" block :href="apiUrl">
+                        <b-button
+                            variant="primary"
+                            size="lg"
+                            block
+                            :href="apiUrl"
+                        >
                             {{ $gettext('Export Media to CSV') }}
                         </b-button>
                     </div>
@@ -29,7 +37,10 @@
             </section>
         </div>
         <div class="col-md-6">
-            <section class="card" role="region">
+            <section
+                class="card"
+                role="region"
+            >
                 <div class="card-header bg-primary-dark">
                     <h2 class="card-title">
                         {{ $gettext('Import Changes from CSV') }}
@@ -43,28 +54,49 @@
                         }}
                     </p>
 
-                    <b-form class="form" @submit.prevent="doSubmit">
+                    <b-form
+                        class="form"
+                        @submit.prevent="doSubmit"
+                    >
                         <b-form-group label-for="import_file">
                             <template #label>
                                 {{ $gettext('Select CSV File') }}
                             </template>
-                            <b-form-file id="import_modal_playlist_file" v-model="importFile"></b-form-file>
+                            <b-form-file
+                                id="import_modal_playlist_file"
+                                v-model="importFile"
+                            />
                         </b-form-group>
 
-                        <b-button type="submit" size="lg" block variant="primary" class="mt-2">
+                        <b-button
+                            type="submit"
+                            size="lg"
+                            block
+                            variant="primary"
+                            class="mt-2"
+                        >
                             {{ $gettext('Import Changes from CSV') }}
                         </b-button>
-
                     </b-form>
                 </div>
             </section>
         </div>
 
-        <b-modal id="import_modal" ref="modal" :title="$gettext('Import Results')">
+        <b-modal
+            id="import_modal"
+            ref="modal"
+            :title="$gettext('Import Results')"
+        >
             <div>
-                <p class="card-text">{{ importResults.message }}</p>
+                <p class="card-text">
+                    {{ importResults.message }}
+                </p>
 
-                <b-table-simple striped responsive style="max-height: 300px; overflow-y: scroll;">
+                <b-table-simple
+                    striped
+                    responsive
+                    style="max-height: 300px; overflow-y: scroll;"
+                >
                     <b-thead>
                         <b-tr>
                             <b-th class="p-2">
@@ -76,12 +108,21 @@
                         </b-tr>
                     </b-thead>
                     <b-tbody>
-                        <b-tr v-for="row in importResults.import_results" :key="row.id">
-                            <b-td class="p-2" style="overflow-x: auto;">
+                        <b-tr
+                            v-for="row in importResults.import_results"
+                            :key="row.id"
+                        >
+                            <b-td
+                                class="p-2"
+                                style="overflow-x: auto;"
+                            >
                                 <b>{{ row.title }}</b><br>
                                 {{ row.artist }}
                             </b-td>
-                            <b-td class="p-2" style="overflow-x: auto;">
+                            <b-td
+                                class="p-2"
+                                style="overflow-x: auto;"
+                            >
                                 <template v-if="row.success">
                                     <div class="text-success">
                                         {{ $gettext('Updated successfully.') }}
@@ -101,7 +142,11 @@
                 </b-table-simple>
             </div>
             <template #modal-footer>
-                <b-button variant="default" type="button" @click="closeModal">
+                <b-button
+                    variant="default"
+                    type="button"
+                    @click="closeModal"
+                >
                     {{ $gettext('Close') }}
                 </b-button>
             </template>

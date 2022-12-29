@@ -1,23 +1,41 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('Upcoming Song Queue') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('Upcoming Song Queue') }}
+            </h2>
         </b-card-header>
         <div class="card-actions">
-            <b-button variant="outline-danger" @click="doClear()">
-                <icon icon="remove"></icon>
+            <b-button
+                variant="outline-danger"
+                @click="doClear()"
+            >
+                <icon icon="remove" />
                 {{ $gettext('Clear Upcoming Song Queue') }}
             </b-button>
         </div>
-        <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl">
+        <data-table
+            id="station_queue"
+            ref="datatable"
+            :fields="fields"
+            :api-url="listUrl"
+        >
             <template #cell(actions)="row">
                 <b-button-group>
-                    <b-button v-if="row.item.log" size="sm" variant="primary"
-                              @click.prevent="doShowLogs(row.item.log)">
+                    <b-button
+                        v-if="row.item.log"
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doShowLogs(row.item.log)"
+                    >
                         {{ $gettext('Logs') }}
                     </b-button>
-                    <b-button v-if="!row.item.sent_to_autodj" size="sm" variant="danger"
-                              @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        v-if="!row.item.sent_to_autodj"
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -49,7 +67,7 @@
         </data-table>
     </b-card>
 
-    <queue-logs-modal ref="logs_modal"></queue-logs-modal>
+    <queue-logs-modal ref="logs_modal" />
 </template>
 
 <script>

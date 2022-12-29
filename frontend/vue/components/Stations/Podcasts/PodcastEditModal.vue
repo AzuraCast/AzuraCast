@@ -1,16 +1,30 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <podcast-form-basic-info
+                :form="v$.form"
+                :categories-options="categoriesOptions"
+                :language-options="languageOptions"
+            />
 
-        <b-tabs content-class="mt-3" pills>
-            <podcast-form-basic-info :form="v$.form"
-                                     :categories-options="categoriesOptions" :language-options="languageOptions">
-            </podcast-form-basic-info>
-
-            <podcast-common-artwork v-model="v$.form.artwork_file.$model" :artwork-src="record.art"
-                                    :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
+            <podcast-common-artwork
+                v-model="v$.form.artwork_file.$model"
+                :artwork-src="record.art"
+                :new-art-url="newArtUrl"
+                :edit-art-url="record.links.art"
+            />
         </b-tabs>
-
     </modal-form>
 </template>
 
@@ -25,15 +39,15 @@ import useVuelidate from "@vuelidate/core";
 export default {
     name: 'EditModal',
     components: {PodcastCommonArtwork, PodcastFormBasicInfo},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
         languageOptions: Object,
         categoriesOptions: Object,
         newArtUrl: String
+    },
+    setup() {
+        return {v$: useVuelidate()}
     },
     data() {
         return {

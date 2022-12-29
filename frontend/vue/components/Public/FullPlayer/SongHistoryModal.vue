@@ -1,6 +1,16 @@
 <template>
-    <b-modal size="md" id="song_history_modal" ref="modal" :title="$gettext('Song History')" centered hide-footer>
-        <song-history :show-album-art="showAlbumArt" :history="history"></song-history>
+    <b-modal
+        id="song_history_modal"
+        ref="modal"
+        size="md"
+        :title="$gettext('Song History')"
+        centered
+        hide-footer
+    >
+        <song-history
+            :show-album-art="showAlbumArt"
+            :history="history"
+        />
     </b-modal>
 </template>
 

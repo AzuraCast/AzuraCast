@@ -1,17 +1,32 @@
 <template>
-    <b-modal id="send_test_message" centered ref="$modal" :title="$gettext('Send Test Message')">
+    <b-modal
+        id="send_test_message"
+        ref="$modal"
+        centered
+        :title="$gettext('Send Test Message')"
+    >
         <b-form @submit.prevent="doSendTest">
-            <b-wrapped-form-group id="email_address" :field="v$.emailAddress" autofocus>
+            <b-wrapped-form-group
+                id="email_address"
+                :field="v$.emailAddress"
+                autofocus
+            >
                 <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
-            <b-button variant="default" @click="close">
+            <b-button
+                variant="default"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doSendTest">
+            <b-button
+                :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                @click="doSendTest"
+            >
                 {{ $gettext('Send Test Message') }}
             </b-button>
         </template>

@@ -1,6 +1,6 @@
 <template>
     <canvas ref="$canvas">
-        <slot></slot>
+        <slot />
     </canvas>
 </template>
 

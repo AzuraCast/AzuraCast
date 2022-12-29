@@ -7,8 +7,10 @@
         </div>
 
         <div class="card-body">
-            <b-overlay variant="card" :show="loading">
-
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
                 <div class="form-row">
                     <div class="col-md-7">
                         <fieldset>
@@ -30,8 +32,10 @@
                                 <li>
                                     {{ $gettext('Download the Linux x64 binary from the Shoutcast Radio Manager:') }}
                                     <br>
-                                    <a href="https://radiomanager.shoutcast.com/register/serverSoftwareFreemium"
-                                       target="_blank">
+                                    <a
+                                        href="https://radiomanager.shoutcast.com/register/serverSoftwareFreemium"
+                                        target="_blank"
+                                    >
                                         {{ $gettext('Shoutcast Radio Manager') }}
                                     </a>
                                 </li>
@@ -54,15 +58,24 @@
                                 {{ $gettext('Current Installed Version') }}
                             </legend>
 
-                            <p v-if="version" class="text-success card-text">
+                            <p
+                                v-if="version"
+                                class="text-success card-text"
+                            >
                                 {{ langInstalledVersion }}
                             </p>
-                            <p v-else class="text-danger card-text">
+                            <p
+                                v-else
+                                class="text-danger card-text"
+                            >
                                 {{ $gettext('Shoutcast 2 DNAS is not currently installed on this installation.') }}
                             </p>
                         </fieldset>
 
-                        <flow-upload :target-url="apiUrl" @complete="relist"></flow-upload>
+                        <flow-upload
+                            :target-url="apiUrl"
+                            @complete="relist"
+                        />
                     </div>
                 </div>
             </b-overlay>

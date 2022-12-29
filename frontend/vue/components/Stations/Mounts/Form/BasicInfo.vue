@@ -1,8 +1,15 @@
 <template>
-    <b-tab :title="$gettext('Basic Info')" active>
+    <b-tab
+        :title="$gettext('Basic Info')"
+        active
+    >
         <b-form-group>
             <div class="form-row mb-3">
-                <b-wrapped-form-group class="col-md-6" id="edit_form_name" :field="form.name">
+                <b-wrapped-form-group
+                    id="edit_form_name"
+                    class="col-md-6"
+                    :field="form.name"
+                >
                     <template #label>
                         {{ $gettext('Mount Point URL') }}
                     </template>
@@ -13,7 +20,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_display_name" :field="form.display_name">
+                <b-wrapped-form-group
+                    id="edit_form_display_name"
+                    class="col-md-6"
+                    :field="form.display_name"
+                >
                     <template #label>
                         {{ $gettext('Display Name') }}
                     </template>
@@ -24,8 +35,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_visible_on_public_pages"
-                                         :field="form.is_visible_on_public_pages">
+                <b-wrapped-form-checkbox
+                    id="edit_form_is_visible_on_public_pages"
+                    class="col-md-6"
+                    :field="form.is_visible_on_public_pages"
+                >
                     <template #label>
                         {{ $gettext('Show on Public Pages') }}
                     </template>
@@ -36,7 +50,11 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_default" :field="form.is_default">
+                <b-wrapped-form-checkbox
+                    id="edit_form_is_default"
+                    class="col-md-6"
+                    :field="form.is_default"
+                >
                     <template #label>
                         {{ $gettext('Set as Default Mount Point') }}
                     </template>
@@ -47,7 +65,11 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_relay_url" :field="form.relay_url">
+                <b-wrapped-form-group
+                    id="edit_form_relay_url"
+                    class="col-md-6"
+                    :field="form.relay_url"
+                >
                     <template #label>
                         {{ $gettext('Relay Stream URL') }}
                     </template>
@@ -58,7 +80,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_public" :field="form.is_public">
+                <b-wrapped-form-checkbox
+                    id="edit_form_is_public"
+                    class="col-md-6"
+                    :field="form.is_public"
+                >
                     <template #label>
                         {{ $gettext('Publish to "Yellow Pages" Directories') }}
                     </template>
@@ -69,9 +95,13 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_max_listener_duration"
-                                      :field="form.max_listener_duration" input-type="number"
-                                      :input-attrs="{min: '0', max: '2147483647'}">
+                <b-wrapped-form-group
+                    id="edit_form_max_listener_duration"
+                    class="col-md-6"
+                    :field="form.max_listener_duration"
+                    input-type="number"
+                    :input-attrs="{min: '0', max: '2147483647'}"
+                >
                     <template #label>
                         {{ $gettext('Max Listener Duration') }}
                     </template>
@@ -83,15 +113,25 @@
                 </b-wrapped-form-group>
 
                 <template v-if="isShoutcast">
-                    <b-wrapped-form-group class="col-md-6" id="edit_form_authhash" :field="form.authhash">
+                    <b-wrapped-form-group
+                        id="edit_form_authhash"
+                        class="col-md-6"
+                        :field="form.authhash"
+                    >
                         <template #label>
                             {{ $gettext('YP Directory Authorization Hash') }}
                         </template>
-                        <template #description><span v-html="langAuthhashDesc"></span></template>
+                        <template #description>
+                            <span v-html="langAuthhashDesc" />
+                        </template>
                     </b-wrapped-form-group>
                 </template>
                 <template v-if="isIcecast">
-                    <b-wrapped-form-group class="col-md-6" id="edit_form_fallback_mount" :field="form.fallback_mount">
+                    <b-wrapped-form-group
+                        id="edit_form_fallback_mount"
+                        class="col-md-6"
+                        :field="form.fallback_mount"
+                    >
                         <template #label>
                             {{ $gettext('Fallback Mount') }}
                         </template>

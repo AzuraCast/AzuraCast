@@ -1,15 +1,25 @@
 <template>
-    <b-tab :title="$gettext('Basic Information')" active>
+    <b-tab
+        :title="$gettext('Basic Information')"
+        active
+    >
         <b-form-group>
             <div class="form-row">
-
-                <b-wrapped-form-group class="col-md-6" id="form_edit_title" :field="form.title">
+                <b-wrapped-form-group
+                    id="form_edit_title"
+                    class="col-md-6"
+                    :field="form.title"
+                >
                     <template #label>
                         {{ $gettext('Podcast Title') }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_link" :field="form.link">
+                <b-wrapped-form-group
+                    id="form_edit_link"
+                    class="col-md-6"
+                    :field="form.link"
+                >
                     <template #label>
                         {{ $gettext('Website') }}
                     </template>
@@ -18,8 +28,12 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description"
-                                      input-type="textarea">
+                <b-wrapped-form-group
+                    id="form_edit_description"
+                    class="col-md-12"
+                    :field="form.description"
+                    input-type="textarea"
+                >
                     <template #label>
                         {{ $gettext('Description') }}
                     </template>
@@ -30,7 +44,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_edit_language" :field="form.language">
+                <b-wrapped-form-group
+                    id="form_edit_language"
+                    class="col-md-12"
+                    :field="form.language"
+                >
                     <template #label>
                         {{ $gettext('Language') }}
                     </template>
@@ -38,12 +56,20 @@
                         {{ $gettext('The language spoken on the podcast.') }}
                     </template>
                     <template #default="props">
-                        <b-form-select :id="props.id" v-model="props.field.$model" :options="languageOptions"
-                                       :state="props.state"></b-form-select>
+                        <b-form-select
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :options="languageOptions"
+                            :state="props.state"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_author" :field="form.author">
+                <b-wrapped-form-group
+                    id="form_edit_author"
+                    class="col-md-6"
+                    :field="form.author"
+                >
                     <template #label>
                         {{ $gettext('Author') }}
                     </template>
@@ -54,7 +80,12 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_email" :field="form.email" input-type="email">
+                <b-wrapped-form-group
+                    id="form_edit_email"
+                    class="col-md-6"
+                    :field="form.email"
+                    input-type="email"
+                >
                     <template #label>
                         {{ $gettext('E-Mail') }}
                     </template>
@@ -65,7 +96,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_edit_categories" :field="form.categories">
+                <b-wrapped-form-group
+                    id="form_edit_categories"
+                    class="col-md-12"
+                    :field="form.categories"
+                >
                     <template #label>
                         {{ $gettext('Categories') }}
                     </template>
@@ -73,11 +108,15 @@
                         {{ $gettext('Select the category/categories that best reflects the content of your podcast.') }}
                     </template>
                     <template #default="props">
-                        <b-form-select :id="props.id" v-model="props.field.$model" :options="categoriesOptions"
-                                       :state="props.state" multiple></b-form-select>
+                        <b-form-select
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :options="categoriesOptions"
+                            :state="props.state"
+                            multiple
+                        />
                     </template>
                 </b-wrapped-form-group>
-
             </div>
         </b-form-group>
     </b-tab>

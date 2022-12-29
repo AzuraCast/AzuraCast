@@ -1,10 +1,17 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <admin-custom-fields-form :form="v$" :auto-assign-types="autoAssignTypes">
-        </admin-custom-fields-form>
-
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <admin-custom-fields-form
+            :form="v$"
+            :auto-assign-types="autoAssignTypes"
+        />
     </modal-form>
 </template>
 
@@ -17,8 +24,11 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
     name: 'AdminCustomFieldsEditModal',
-    mixins: [BaseEditModal],
     components: {AdminCustomFieldsForm},
+    mixins: [BaseEditModal],
+    props: {
+        autoAssignTypes: Object
+    },
     setup() {
         const {form, resetForm, v$} = useVuelidateOnForm(
             {
@@ -38,9 +48,6 @@ export default defineComponent({
             resetForm,
             v$
         };
-    },
-    props: {
-        autoAssignTypes: Object
     },
     computed: {
         langTitle() {

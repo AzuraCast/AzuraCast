@@ -1,9 +1,15 @@
 <template>
-    <b-tab :title="$gettext('Basic Info')" active>
+    <b-tab
+        :title="$gettext('Basic Info')"
+        active
+    >
         <b-form-group>
             <div class="form-row">
-
-                <b-wrapped-form-group class="col-md-6" id="edit_form_streamer_username" :field="form.streamer_username">
+                <b-wrapped-form-group
+                    id="edit_form_streamer_username"
+                    class="col-md-6"
+                    :field="form.streamer_username"
+                >
                     <template #label>
                         {{ $gettext('Streamer Username') }}
                     </template>
@@ -12,8 +18,12 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_streamer_password" :field="form.streamer_password"
-                                      input-type="password">
+                <b-wrapped-form-group
+                    id="edit_form_streamer_password"
+                    class="col-md-6"
+                    :field="form.streamer_password"
+                    input-type="password"
+                >
                     <template #label>
                         {{ $gettext('Streamer password') }}
                     </template>
@@ -21,11 +31,13 @@
                         {{ $gettext('The streamer will use this password to connect to the radio server.') }}
                     </template>
                 </b-wrapped-form-group>
-
             </div>
             <div class="form-row">
-
-                <b-wrapped-form-group class="col-md-6" id="edit_form_display_name" :field="form.display_name">
+                <b-wrapped-form-group
+                    id="edit_form_display_name"
+                    class="col-md-6"
+                    :field="form.display_name"
+                >
                     <template #label>
                         {{ $gettext('Streamer Display Name') }}
                     </template>
@@ -36,8 +48,12 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_comments" :field="form.comments"
-                                      input-type="textarea">
+                <b-wrapped-form-group
+                    id="edit_form_comments"
+                    class="col-md-6"
+                    :field="form.comments"
+                    input-type="textarea"
+                >
                     <template #label>
                         {{ $gettext('Comments') }}
                     </template>
@@ -45,11 +61,13 @@
                         {{ $gettext('Internal notes or comments about the user, visible only on this control panel.') }}
                     </template>
                 </b-wrapped-form-group>
-
             </div>
             <div class="form-row mt-3">
-
-                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_is_active" :field="form.is_active">
+                <b-wrapped-form-checkbox
+                    id="form_edit_is_active"
+                    class="col-md-6"
+                    :field="form.is_active"
+                >
                     <template #label>
                         {{ $gettext('Account is Active') }}
                     </template>
@@ -58,8 +76,11 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_enforce_schedule"
-                                         :field="form.enforce_schedule">
+                <b-wrapped-form-checkbox
+                    id="form_edit_enforce_schedule"
+                    class="col-md-6"
+                    :field="form.enforce_schedule"
+                >
                     <template #label>
                         {{ $gettext('Enforce Schedule Times') }}
                     </template>

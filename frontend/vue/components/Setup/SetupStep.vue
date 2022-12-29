@@ -2,7 +2,10 @@
     <div class="stepper-horiz">
         <div :class="getStepperClass(1)">
             <div class="stepper-icon">
-                <icon v-if="step > 1" icon="check"></icon>
+                <icon
+                    v-if="step > 1"
+                    icon="check"
+                />
                 <span v-else>1</span>
             </div>
             <span class="stepper-text">
@@ -11,7 +14,10 @@
         </div>
         <div :class="getStepperClass(2)">
             <div class="stepper-icon">
-                <icon v-if="step > 2" icon="check"></icon>
+                <icon
+                    v-if="step > 2"
+                    icon="check"
+                />
                 <span v-else>2</span>
             </div>
             <span class="stepper-text">

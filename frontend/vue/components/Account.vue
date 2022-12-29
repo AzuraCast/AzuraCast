@@ -5,52 +5,100 @@
         </h2>
 
         <b-row>
-            <b-col sm="12" md="6" lg="5">
-                <section class="card mb-3" role="region">
+            <b-col
+                sm="12"
+                md="6"
+                lg="5"
+            >
+                <section
+                    class="card mb-3"
+                    role="region"
+                >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">{{ $gettext('Profile') }}</h2>
+                        <h2 class="card-title">
+                            {{ $gettext('Profile') }}
+                        </h2>
                     </b-card-header>
 
-                    <b-overlay variant="card" :show="userLoading">
+                    <b-overlay
+                        variant="card"
+                        :show="userLoading"
+                    >
                         <b-card-body body-class="card-padding-sm">
-                            <b-media right-align vertical-align="center">
-                                <template v-if="user.avatar.url" #aside>
-                                    <avatar :url="user.avatar.url" :service="user.avatar.service"
-                                            :service-url="user.avatar.serviceUrl"></avatar>
+                            <b-media
+                                right-align
+                                vertical-align="center"
+                            >
+                                <template
+                                    v-if="user.avatar.url"
+                                    #aside
+                                >
+                                    <avatar
+                                        :url="user.avatar.url"
+                                        :service="user.avatar.service"
+                                        :service-url="user.avatar.serviceUrl"
+                                    />
                                 </template>
 
-                                <h2 v-if="user.name" class="card-title">{{ user.name }}</h2>
-                                <h2 v-else class="card-title">
+                                <h2
+                                    v-if="user.name"
+                                    class="card-title"
+                                >
+                                    {{ user.name }}
+                                </h2>
+                                <h2
+                                    v-else
+                                    class="card-title"
+                                >
                                     {{ $gettext('AzuraCast User') }}
                                 </h2>
-                                <h3 class="card-subtitle">{{ user.email }}</h3>
+                                <h3 class="card-subtitle">
+                                    {{ user.email }}
+                                </h3>
 
-                                <div v-if="user.roles.length > 0" class="mt-2">
-                                <span v-for="role in user.roles" :key="role.id"
-                                      class="badge badge-secondary mr-2">{{ role.name }}</span>
+                                <div
+                                    v-if="user.roles.length > 0"
+                                    class="mt-2"
+                                >
+                                    <span
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="badge badge-secondary mr-2"
+                                    >{{ role.name }}</span>
                                 </div>
                             </b-media>
                         </b-card-body>
                     </b-overlay>
 
                     <div class="card-actions">
-                        <b-button variant="outline-primary" @click.prevent="doEditProfile">
-                            <icon icon="edit"></icon>
+                        <b-button
+                            variant="outline-primary"
+                            @click.prevent="doEditProfile"
+                        >
+                            <icon icon="edit" />
                             {{ $gettext('Edit Profile') }}
                         </b-button>
                     </div>
                 </section>
 
-                <section class="card" role="region">
+                <section
+                    class="card"
+                    role="region"
+                >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">{{ $gettext('Security') }}</h2>
+                        <h2 class="card-title">
+                            {{ $gettext('Security') }}
+                        </h2>
                     </b-card-header>
 
-                    <b-overlay variant="card" :show="securityLoading">
+                    <b-overlay
+                        variant="card"
+                        :show="securityLoading"
+                    >
                         <b-card-body>
                             <h5>
                                 {{ $gettext('Two-Factor Authentication') }}
-                                <enabled-badge :enabled="security.twoFactorEnabled"></enabled-badge>
+                                <enabled-badge :enabled="security.twoFactorEnabled" />
                             </h5>
 
                             <p class="card-text mt-2">
@@ -62,49 +110,80 @@
                     </b-overlay>
 
                     <div class="card-actions">
-                        <b-button variant="outline-primary" @click.prevent="doChangePassword">
-                            <icon icon="vpn_key"></icon>
+                        <b-button
+                            variant="outline-primary"
+                            @click.prevent="doChangePassword"
+                        >
+                            <icon icon="vpn_key" />
                             {{ $gettext('Change Password') }}
                         </b-button>
-                        <b-button v-if="security.twoFactorEnabled" variant="outline-danger"
-                                  @click.prevent="disableTwoFactor">
-                            <icon icon="lock_open"></icon>
+                        <b-button
+                            v-if="security.twoFactorEnabled"
+                            variant="outline-danger"
+                            @click.prevent="disableTwoFactor"
+                        >
+                            <icon icon="lock_open" />
                             {{ $gettext('Disable Two-Factor') }}
                         </b-button>
-                        <b-button v-else variant="outline-success" @click.prevent="enableTwoFactor">
-                            <icon icon="lock"></icon>
+                        <b-button
+                            v-else
+                            variant="outline-success"
+                            @click.prevent="enableTwoFactor"
+                        >
+                            <icon icon="lock" />
                             {{ $gettext('Enable Two-Factor') }}
                         </b-button>
                     </div>
                 </section>
             </b-col>
-            <b-col sm="12" md="6" lg="7">
+            <b-col
+                sm="12"
+                md="6"
+                lg="7"
+            >
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">{{ $gettext('API Keys') }}</h2>
+                        <h2 class="card-title">
+                            {{ $gettext('API Keys') }}
+                        </h2>
                     </b-card-header>
 
                     <info-card>
                         {{
                             $gettext('Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.')
                         }}
-                        <a href="/api" target="_blank">
+                        <a
+                            href="/api"
+                            target="_blank"
+                        >
                             {{ $gettext('API Documentation') }}
                         </a>
                     </info-card>
 
                     <b-card-body body-class="card-padding-sm">
-                        <b-button variant="outline-primary" @click.prevent="createApiKey">
-                            <icon icon="add"></icon>
+                        <b-button
+                            variant="outline-primary"
+                            @click.prevent="createApiKey"
+                        >
+                            <icon icon="add" />
                             {{ $gettext('Add API Key') }}
                         </b-button>
                     </b-card-body>
 
-                    <data-table ref="$dataTable" id="account_api_keys" :show-toolbar="false" :fields="apiKeyFields"
-                                :api-url="apiKeysApiUrl">
+                    <data-table
+                        id="account_api_keys"
+                        ref="$dataTable"
+                        :show-toolbar="false"
+                        :fields="apiKeyFields"
+                        :api-url="apiKeysApiUrl"
+                    >
                         <template #cell(actions)="row">
                             <b-button-group size="sm">
-                                <b-button size="sm" variant="danger" @click.prevent="deleteApiKey(row.item.links.self)">
+                                <b-button
+                                    size="sm"
+                                    variant="danger"
+                                    @click.prevent="deleteApiKey(row.item.links.self)"
+                                >
                                     {{ $gettext('Delete') }}
                                 </b-button>
                             </b-button-group>
@@ -114,16 +193,30 @@
             </b-col>
         </b-row>
 
-        <account-edit-modal ref="$editModal" :user-url="userUrl" :supported-locales="supportedLocales"
-                            @reload="reload"></account-edit-modal>
+        <account-edit-modal
+            ref="$editModal"
+            :user-url="userUrl"
+            :supported-locales="supportedLocales"
+            @reload="reload"
+        />
 
-        <account-change-password-modal ref="$changePasswordModal" :change-password-url="changePasswordUrl"
-                                       @relist="relist"></account-change-password-modal>
+        <account-change-password-modal
+            ref="$changePasswordModal"
+            :change-password-url="changePasswordUrl"
+            @relist="relist"
+        />
 
-        <account-two-factor-modal ref="$twoFactorModal" :two-factor-url="twoFactorUrl"
-                                  @relist="relist"></account-two-factor-modal>
+        <account-two-factor-modal
+            ref="$twoFactorModal"
+            :two-factor-url="twoFactorUrl"
+            @relist="relist"
+        />
 
-        <account-api-key-modal ref="$apiKeyModal" :create-url="apiKeysApiUrl" @relist="relist"></account-api-key-modal>
+        <account-api-key-modal
+            ref="$apiKeyModal"
+            :create-url="apiKeysApiUrl"
+            @relist="relist"
+        />
     </div>
 </template>
 

@@ -1,14 +1,28 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <b-tabs content-class="mt-3" pills>
-            <form-basic-info :form="v$.form"></form-basic-info>
-            <form-schedule :form="v$.form" :schedule-items="form.schedule_items"
-                           :station-time-zone="stationTimeZone"></form-schedule>
-            <form-advanced :form="v$.form" v-if="enableAdvancedFeatures"></form-advanced>
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <form-basic-info :form="v$.form" />
+            <form-schedule
+                :form="v$.form"
+                :schedule-items="form.schedule_items"
+                :station-time-zone="stationTimeZone"
+            />
+            <form-advanced
+                v-if="enableAdvancedFeatures"
+                :form="v$.form"
+            />
         </b-tabs>
-
     </modal-form>
 </template>
 
@@ -22,15 +36,15 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
-    emits: ['needs-restart'],
     components: {FormSchedule, FormBasicInfo, FormAdvanced},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
         enableAdvancedFeatures: Boolean
+    },
+    emits: ['needs-restart'],
+    setup() {
+        return {v$: useVuelidate()}
     },
     computed: {
         langTitle() {

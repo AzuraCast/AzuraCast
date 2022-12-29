@@ -1,7 +1,11 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_path" :field="form.path">
+            <b-wrapped-form-group
+                id="edit_form_path"
+                class="col-md-6"
+                :field="form.path"
+            >
                 <template #label>
                     {{ $gettext('File Name') }}
                 </template>
@@ -10,37 +14,62 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_title" :field="form.title">
+            <b-wrapped-form-group
+                id="edit_form_title"
+                class="col-md-6"
+                :field="form.title"
+            >
                 <template #label>
                     {{ $gettext('Song Title') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_artist" :field="form.artist">
+            <b-wrapped-form-group
+                id="edit_form_artist"
+                class="col-md-6"
+                :field="form.artist"
+            >
                 <template #label>
                     {{ $gettext('Song Artist') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_genre" :field="form.genre">
+            <b-wrapped-form-group
+                id="edit_form_genre"
+                class="col-md-6"
+                :field="form.genre"
+            >
                 <template #label>
                     {{ $gettext('Song Genre') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_album" :field="form.album">
+            <b-wrapped-form-group
+                id="edit_form_album"
+                class="col-md-6"
+                :field="form.album"
+            >
                 <template #label>
                     {{ $gettext('Song Album') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_lyrics" :field="form.lyrics" input-type="textarea">
+            <b-wrapped-form-group
+                id="edit_form_lyrics"
+                class="col-md-6"
+                :field="form.lyrics"
+                input-type="textarea"
+            >
                 <template #label>
                     {{ $gettext('Song Lyrics') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_isrc" :field="form.isrc">
+            <b-wrapped-form-group
+                id="edit_form_isrc"
+                class="col-md-6"
+                :field="form.isrc"
+            >
                 <template #label>
                     {{ $gettext('ISRC') }}
                 </template>

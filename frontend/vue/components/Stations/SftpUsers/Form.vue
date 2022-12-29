@@ -1,28 +1,49 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_username" :field="form.username">
+            <b-wrapped-form-group
+                id="edit_form_username"
+                class="col-md-6"
+                :field="form.username"
+            >
                 <template #label>
                     {{ $gettext('Username') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_password" :field="form.password"
-                                  input-type="password">
-                <template #label v-if="isEditMode">
+            <b-wrapped-form-group
+                id="edit_form_password"
+                class="col-md-6"
+                :field="form.password"
+                input-type="password"
+            >
+                <template
+                    v-if="isEditMode"
+                    #label
+                >
                     {{ $gettext('New Password') }}
                 </template>
-                <template #label v-else>
+                <template
+                    v-else
+                    #label
+                >
                     {{ $gettext('Password') }}
                 </template>
 
-                <template #description v-if="isEditMode">
+                <template
+                    v-if="isEditMode"
+                    #description
+                >
                     {{ $gettext('Leave blank to use the current password.') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_publicKeys" :field="form.publicKeys"
-                                  input-type="textarea">
+            <b-wrapped-form-group
+                id="edit_form_publicKeys"
+                class="col-md-12"
+                :field="form.publicKeys"
+                input-type="textarea"
+            >
                 <template #label>
                     {{ $gettext('SSH Public Keys') }}
                 </template>
@@ -32,7 +53,6 @@
                     }}
                 </template>
             </b-wrapped-form-group>
-
         </div>
     </b-form-group>
 </template>

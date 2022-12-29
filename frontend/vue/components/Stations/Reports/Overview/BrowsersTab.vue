@@ -1,6 +1,10 @@
 <template>
-    <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
-                         field-key="browser" :field-label="$gettext('Browser')">
+    <common-metrics-view
+        :date-range="dateRange"
+        :api-url="apiUrl"
+        field-key="browser"
+        :field-label="$gettext('Browser')"
+    >
         <template #by_listeners_legend>
             {{ $gettext('Top Browsers by Listeners') }}
         </template>

@@ -8,7 +8,7 @@
                     </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
-                    <volume-slider v-model.number="volume"></volume-slider>
+                    <volume-slider v-model.number="volume" />
                 </div>
             </div>
         </div>
@@ -18,11 +18,18 @@
                 <div class="d-flex-shrink-0">
                     <div class="control-group">
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-danger" v-on:click="toggleRecording"
-                                    v-bind:class="{ active: playing }">
-                                <icon icon="mic"></icon>
+                            <button
+                                class="btn btn-danger"
+                                :class="{ active: playing }"
+                                @click="toggleRecording"
+                            >
+                                <icon icon="mic" />
                             </button>
-                            <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
+                            <button
+                                class="btn"
+                                :class="{ 'btn-primary': passThrough }"
+                                @click="cue"
+                            >
                                 {{ $gettext('Cue') }}
                             </button>
                         </div>
@@ -30,12 +37,22 @@
                 </div>
                 <div class="flex-fill pl-3">
                     <div class="form-group microphone-entry mb-0">
-                        <label for="select_microphone_source" class="mb-2">
+                        <label
+                            for="select_microphone_source"
+                            class="mb-2"
+                        >
                             {{ $gettext('Microphone Source') }}
                         </label>
                         <div class="controls">
-                            <select id="select_microphone_source" v-model="device" class="form-control">
-                                <option v-for="device_row in devices" v-bind:value="device_row.deviceId">
+                            <select
+                                id="select_microphone_source"
+                                v-model="device"
+                                class="form-control"
+                            >
+                                <option
+                                    v-for="device_row in devices"
+                                    :value="device_row.deviceId"
+                                >
                                     {{ device_row.label }}
                                 </option>
                             </select>
@@ -44,12 +61,21 @@
                 </div>
             </div>
 
-            <div v-if="playing" class="mt-3">
+            <div
+                v-if="playing"
+                class="mt-3"
+            >
                 <div class="progress mb-1">
-                    <div class="progress-bar" v-bind:style="{ width: volumeLeft+'%' }"></div>
+                    <div
+                        class="progress-bar"
+                        :style="{ width: volumeLeft+'%' }"
+                    />
                 </div>
                 <div class="progress mb-2">
-                    <div class="progress-bar" v-bind:style="{ width: volumeRight+'%' }"></div>
+                    <div
+                        class="progress-bar"
+                        :style="{ width: volumeRight+'%' }"
+                    />
                 </div>
             </div>
         </div>

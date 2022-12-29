@@ -1,20 +1,38 @@
 <template>
-    <modal-form ref="modal" id="clone_modal" :title="$gettext('Duplicate Playlist')" :error="error"
-                :disable-save-button="v$.form.$invalid" @submit="doSubmit" @hidden="clearContents">
-
+    <modal-form
+        id="clone_modal"
+        ref="modal"
+        :title="$gettext('Duplicate Playlist')"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="v$.form.name">
+            <b-wrapped-form-group
+                id="form_edit_name"
+                class="col-md-12"
+                :field="v$.form.name"
+            >
                 <template #label>
                     {{ $gettext('New Playlist Name') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="form_edit_clone" :field="v$.form.clone">
+            <b-wrapped-form-group
+                id="form_edit_clone"
+                class="col-md-12"
+                :field="v$.form.clone"
+            >
                 <template #label>
                     {{ $gettext('Customize Copy') }}
                 </template>
                 <template #default="props">
-                    <b-form-checkbox-group stacked :id="props.id" v-model="props.field.$model">
+                    <b-form-checkbox-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                    >
                         <b-form-checkbox value="media">
                             {{ $gettext('Copy associated media and folders.') }}
                         </b-form-checkbox>
@@ -25,7 +43,6 @@
                 </template>
             </b-wrapped-form-group>
         </div>
-
     </modal-form>
 </template>
 
@@ -39,10 +56,10 @@ import ModalForm from "~/components/Common/ModalForm";
 export default {
     name: 'CloneModal',
     components: {ModalForm, BWrappedFormGroup, InvisibleSubmitButton},
+    emits: ['relist', 'needs-restart'],
     setup() {
         return {v$: useVuelidate()}
     },
-    emits: ['relist', 'needs-restart'],
     data() {
         return {
             error: null,

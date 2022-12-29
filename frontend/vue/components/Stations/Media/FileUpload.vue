@@ -1,8 +1,12 @@
 <template>
-    <flow-upload :target-url="uploadUrl" :flow-configuration="flowConfiguration"
-                 :valid-mime-types="validMimeTypes" allow-multiple
-                 @complete="onFlowUpload" @error="onFlowUpload">
-    </flow-upload>
+    <flow-upload
+        :target-url="uploadUrl"
+        :flow-configuration="flowConfiguration"
+        :valid-mime-types="validMimeTypes"
+        allow-multiple
+        @complete="onFlowUpload"
+        @error="onFlowUpload"
+    />
 </template>
 
 <script>

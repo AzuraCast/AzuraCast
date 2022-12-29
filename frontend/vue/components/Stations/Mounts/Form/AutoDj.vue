@@ -2,7 +2,11 @@
     <b-tab :title="$gettext('AutoDJ')">
         <b-form-group>
             <div class="form-row mb-3">
-                <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
+                <b-wrapped-form-checkbox
+                    id="edit_form_enable_autodj"
+                    class="col-md-12"
+                    :field="form.enable_autodj"
+                >
                     <template #label>
                         {{ $gettext('Enable AutoDJ') }}
                     </template>
@@ -12,34 +16,45 @@
                 </b-wrapped-form-checkbox>
             </div>
 
-            <div class="form-row" v-if="form.enable_autodj.$model">
-                <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
+            <div
+                v-if="form.enable_autodj.$model"
+                class="form-row"
+            >
+                <b-wrapped-form-group
+                    id="edit_form_autodj_format"
+                    class="col-md-6"
+                    :field="form.autodj_format"
+                >
                     <template #label>
                         {{ $gettext('AutoDJ Format') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
-                            stacked
                             :id="props.id"
-                            :state="props.state"
                             v-model="props.field.$model"
+                            stacked
+                            :state="props.state"
                             :options="formatOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
-                                      v-if="formatSupportsBitrateOptions">
+                <b-wrapped-form-group
+                    v-if="formatSupportsBitrateOptions"
+                    id="edit_form_autodj_bitrate"
+                    class="col-md-6"
+                    :field="form.autodj_bitrate"
+                >
                     <template #label>
                         {{ $gettext('AutoDJ Bitrate (kbps)') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
-                            stacked
                             :id="props.id"
-                            :state="props.state"
                             v-model="props.field.$model"
+                            stacked
+                            :state="props.state"
                             :options="bitrateOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
             </div>

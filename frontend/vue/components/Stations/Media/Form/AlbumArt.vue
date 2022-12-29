@@ -2,9 +2,18 @@
     <b-form-group>
         <b-row>
             <b-col md="4">
-                <b-img :src="albumArtSrc" rounded fluid></b-img>
+                <b-img
+                    :src="albumArtSrc"
+                    rounded
+                    fluid
+                />
                 <br>
-                <b-button block variant="link" class="text-danger mt-2" @click="deleteArt">
+                <b-button
+                    block
+                    variant="link"
+                    class="text-danger mt-2"
+                    @click="deleteArt"
+                >
                     {{ $gettext('Delete Album Art') }}
                 </b-button>
             </b-col>
@@ -13,7 +22,11 @@
                     <template #label>
                         {{ $gettext('Replace Album Cover Art') }}
                     </template>
-                    <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"></b-form-file>
+                    <b-form-file
+                        id="edit_form_art"
+                        v-model="artFile"
+                        accept="image/*"
+                    />
                 </b-form-group>
             </b-col>
         </b-row>

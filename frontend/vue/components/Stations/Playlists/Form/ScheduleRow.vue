@@ -1,5 +1,8 @@
 <template>
-    <b-card class="mb-3" no-body>
+    <b-card
+        class="mb-3"
+        no-body
+    >
         <div class="card-header bg-primary-dark d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
@@ -7,8 +10,13 @@
                 </h2>
             </div>
             <div class="flex-shrink-0">
-                <b-button size="sm" variant="outline-light" class="py-2 pr-0" @click.prevent="$emit('remove')">
-                    <icon icon="remove"></icon>
+                <b-button
+                    size="sm"
+                    variant="outline-light"
+                    class="py-2 pr-0"
+                    @click.prevent="$emit('remove')"
+                >
+                    <icon icon="remove" />
                     {{ $gettext('Remove') }}
                 </b-button>
             </div>
@@ -16,8 +24,11 @@
         <b-card-body>
             <b-form-group>
                 <div class="form-row">
-                    <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_time_'+index"
-                                          :field="v$.row.start_time">
+                    <b-wrapped-form-group
+                        :id="'edit_form_start_time_'+index"
+                        class="col-md-4"
+                        :field="v$.row.start_time"
+                    >
                         <template #label>
                             {{ $gettext('Start Time') }}
                         </template>
@@ -25,12 +36,19 @@
                             {{ $gettext('To play once per day, set the start and end times to the same value.') }}.00
                         </template>
                         <template #default="props">
-                            <playlist-time :id="props.id" v-model="props.field.$model"
-                                           :state="props.state"></playlist-time>
+                            <playlist-time
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                :state="props.state"
+                            />
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="v$.row.end_time">
+                    <b-wrapped-form-group
+                        :id="'edit_form_end_time_'+index"
+                        class="col-md-4"
+                        :field="v$.row.end_time"
+                    >
                         <template #label>
                             {{ $gettext('End Time') }}
                         </template>
@@ -40,12 +58,18 @@
                             }}
                         </template>
                         <template #default="props">
-                            <playlist-time :id="props.id" v-model="props.field.$model"
-                                           :state="props.state"></playlist-time>
+                            <playlist-time
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                :state="props.state"
+                            />
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-col md="4" class="form-group">
+                    <b-col
+                        md="4"
+                        class="form-group"
+                    >
                         <label>
                             {{ $gettext('Station Time Zone') }}
                         </label>
@@ -54,8 +78,11 @@
                         </div>
                     </b-col>
 
-                    <b-wrapped-form-group class="col-md-4" :id="'edit_form_start_date_'+index"
-                                          :field="v$.row.start_date">
+                    <b-wrapped-form-group
+                        :id="'edit_form_start_date_'+index"
+                        class="col-md-4"
+                        :field="v$.row.start_date"
+                    >
                         <template #label>
                             {{ $gettext('Start Date') }}
                         </template>
@@ -65,23 +92,38 @@
                             }}
                         </template>
                         <template #default="props">
-                            <b-form-input :id="props.id" type="date"
-                                          v-model="props.field.$model" :state="props.state"></b-form-input>
+                            <b-form-input
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                type="date"
+                                :state="props.state"
+                            />
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_date_'+index" :field="v$.row.end_date">
+                    <b-wrapped-form-group
+                        :id="'edit_form_end_date_'+index"
+                        class="col-md-4"
+                        :field="v$.row.end_date"
+                    >
                         <template #label>
                             {{ $gettext('End Date') }}
                         </template>
                         <template #default="props">
-                            <b-form-input :id="props.id" type="date" v-model="props.field.$model"
-                                          :state="props.state"></b-form-input>
+                            <b-form-input
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                type="date"
+                                :state="props.state"
+                            />
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-checkbox class="col-md-4" :id="'edit_form_loop_once_'+index"
-                                             :field="v$.row.loop_once">
+                    <b-wrapped-form-checkbox
+                        :id="'edit_form_loop_once_'+index"
+                        class="col-md-4"
+                        :field="v$.row.loop_once"
+                    >
                         <template #label>
                             {{ $gettext('Loop Once') }}
                         </template>
@@ -90,7 +132,11 @@
                         </template>
                     </b-wrapped-form-checkbox>
 
-                    <b-wrapped-form-group class="col-md-4" :id="'edit_form_days_'+index" :field="v$.row.days">
+                    <b-wrapped-form-group
+                        :id="'edit_form_days_'+index"
+                        class="col-md-4"
+                        :field="v$.row.days"
+                    >
                         <template #label>
                             {{ $gettext('Scheduled Play Days of Week') }}
                         </template>
@@ -98,11 +144,14 @@
                             {{ $gettext('Leave blank to play on every day of the week.') }}
                         </template>
                         <template #default="props">
-                            <b-checkbox-group stacked :id="'edit_form_days_'+index" v-model="v$.row.days.$model"
-                                              :options="dayOptions"></b-checkbox-group>
+                            <b-checkbox-group
+                                :id="'edit_form_days_'+index"
+                                v-model="v$.row.days.$model"
+                                stacked
+                                :options="dayOptions"
+                            />
                         </template>
                     </b-wrapped-form-group>
-
                 </div>
             </b-form-group>
         </b-card-body>
@@ -125,10 +174,10 @@ export default {
         row: Object,
         stationTimeZone: String,
     },
+    emits: ['remove'],
     setup() {
         return {v$: useVuelidate()}
     },
-    emits: ['remove'],
     validations: {
         row: {
             'start_time': {required},

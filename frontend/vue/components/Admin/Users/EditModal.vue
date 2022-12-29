@@ -1,10 +1,18 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error"
-                :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <admin-users-form :form="v$.form" :roles="roles" :is-edit-mode="isEditMode"></admin-users-form>
-
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <admin-users-form
+            :form="v$.form"
+            :roles="roles"
+            :is-edit-mode="isEditMode"
+        />
     </modal-form>
 </template>
 
@@ -19,12 +27,12 @@ import validatePassword from "~/functions/validatePassword";
 export default {
     name: 'AdminUsersEditModal',
     components: {AdminUsersForm},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     mixins: [BaseEditModal],
     props: {
         roles: Object
+    },
+    setup() {
+        return {v$: useVuelidate()}
     },
     computed: {
         langTitle() {

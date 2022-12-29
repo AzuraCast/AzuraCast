@@ -1,5 +1,8 @@
 <template>
-    <i :class="iconClass" aria-hidden="true">{{ icon }}</i>
+    <i
+        :class="iconClass"
+        aria-hidden="true"
+    >{{ icon }}</i>
 </template>
 
 <script setup>

@@ -1,13 +1,21 @@
 <template>
     <b-form-fieldset>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="form_name" :field="form.name">
+            <b-wrapped-form-group
+                id="form_name"
+                class="col-md-6"
+                :field="form.name"
+            >
                 <template #label>
                     {{ $gettext('Name') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_email" :field="form.email">
+            <b-wrapped-form-group
+                id="form_email"
+                class="col-md-6"
+                :field="form.email"
+            >
                 <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
@@ -22,40 +30,55 @@
 
         <div class="form-row">
             <b-col md="6">
-                <b-wrapped-form-group id="edit_form_locale"
-                                      :field="form.locale">
+                <b-wrapped-form-group
+                    id="edit_form_locale"
+                    :field="form.locale"
+                >
                     <template #label>
                         {{ $gettext('Language') }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="localeOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="localeOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
             </b-col>
             <b-col md="6">
-                <b-wrapped-form-group id="edit_form_theme"
-                                      :field="form.theme">
+                <b-wrapped-form-group
+                    id="edit_form_theme"
+                    :field="form.theme"
+                >
                     <template #label>
                         {{ $gettext('Site Theme') }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="themeOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="themeOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group id="edit_form_show_24_hour_time"
-                                      :field="form.show_24_hour_time">
+                <b-wrapped-form-group
+                    id="edit_form_show_24_hour_time"
+                    :field="form.show_24_hour_time"
+                >
                     <template #label>
                         {{ $gettext('Time Display') }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="show24hourOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="show24hourOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
             </b-col>

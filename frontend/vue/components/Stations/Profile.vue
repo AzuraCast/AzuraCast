@@ -1,31 +1,58 @@
 <template>
-    <profile-header v-bind="$props" :np="np"></profile-header>
+    <profile-header
+        v-bind="$props"
+        :np="np"
+    />
 
-    <div class="row" id="profile">
+    <div
+        id="profile"
+        class="row"
+    >
         <div class="col-lg-7">
-            <profile-now-playing v-bind="$props" :np="np"></profile-now-playing>
+            <profile-now-playing
+                v-bind="$props"
+                :np="np"
+            />
 
-            <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
+            <profile-schedule
+                :station-time-zone="stationTimeZone"
+                :schedule-items="np.schedule"
+            />
 
-            <profile-streams v-bind="$props" :np="np"></profile-streams>
+            <profile-streams
+                v-bind="$props"
+                :np="np"
+            />
 
-            <profile-public-pages v-bind="$props"></profile-public-pages>
+            <profile-public-pages v-bind="$props" />
         </div>
 
         <div class="col-lg-5">
-            <profile-requests v-bind="$props" v-if="stationSupportsRequests"></profile-requests>
+            <profile-requests
+                v-if="stationSupportsRequests"
+                v-bind="$props"
+            />
 
-            <profile-streamers v-bind="$props" v-if="stationSupportsStreamers"></profile-streamers>
+            <profile-streamers
+                v-if="stationSupportsStreamers"
+                v-bind="$props"
+            />
 
             <template v-if="hasActiveFrontend">
-                <profile-frontend v-bind="$props" :np="np"></profile-frontend>
+                <profile-frontend
+                    v-bind="$props"
+                    :np="np"
+                />
             </template>
 
             <template v-if="hasActiveBackend">
-                <profile-backend v-bind="$props" :np="np"></profile-backend>
+                <profile-backend
+                    v-bind="$props"
+                    :np="np"
+                />
             </template>
             <template v-else>
-                <profile-backend-none></profile-backend-none>
+                <profile-backend-none />
             </template>
         </div>
     </div>

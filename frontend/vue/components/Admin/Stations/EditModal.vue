@@ -1,19 +1,43 @@
 <template>
-    <b-modal size="lg" id="station_edit_modal" ref="$modal" :title="langTitle" :busy="loading"
-             @shown="resetForm" @hidden="clearContents">
-        <admin-stations-form v-bind="$props" ref="$form" is-modal :create-url="createUrl" :edit-url="editUrl"
-                             :is-edit-mode="isEditMode" @error="close" @submitted="onSubmit"
-                             @validUpdate="onValidUpdate" @loadingUpdate="onLoadingUpdate">
+    <b-modal
+        id="station_edit_modal"
+        ref="$modal"
+        size="lg"
+        :title="langTitle"
+        :busy="loading"
+        @shown="resetForm"
+        @hidden="clearContents"
+    >
+        <admin-stations-form
+            v-bind="$props"
+            ref="$form"
+            is-modal
+            :create-url="createUrl"
+            :edit-url="editUrl"
+            :is-edit-mode="isEditMode"
+            @error="close"
+            @submitted="onSubmit"
+            @validUpdate="onValidUpdate"
+            @loadingUpdate="onLoadingUpdate"
+        >
             <template #submitButton>
-                <invisible-submit-button></invisible-submit-button>
+                <invisible-submit-button />
             </template>
         </admin-stations-form>
 
         <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
+            <b-button
+                variant="default"
+                type="button"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button :variant="(disableSaveButton) ? 'danger' : 'primary'" type="submit" @click="doSubmit">
+            <b-button
+                :variant="(disableSaveButton) ? 'danger' : 'primary'"
+                type="submit"
+                @click="doSubmit"
+            >
                 {{ $gettext('Save Changes') }}
             </b-button>
         </template>

@@ -1,7 +1,11 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="form.name">
+            <b-wrapped-form-group
+                id="form_edit_name"
+                class="col-md-12"
+                :field="form.name"
+            >
                 <template #label>
                     {{ $gettext('Web Hook Name') }}
                 </template>
@@ -12,9 +16,12 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group v-if="triggerOptions.length > 0" class="col-md-12"
-                                  id="edit_form_triggers"
-                                  :field="form.triggers">
+            <b-wrapped-form-group
+                v-if="triggerOptions.length > 0"
+                id="edit_form_triggers"
+                class="col-md-12"
+                :field="form.triggers"
+            >
                 <template #label>
                     {{ $gettext('Web Hook Triggers') }}
                 </template>
@@ -24,9 +31,12 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-checkbox-group :id="props.id" :options="triggerOptions"
-                                           v-model="props.field.$model" stacked>
-                    </b-form-checkbox-group>
+                    <b-form-checkbox-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        :options="triggerOptions"
+                        stacked
+                    />
                 </template>
             </b-wrapped-form-group>
         </div>

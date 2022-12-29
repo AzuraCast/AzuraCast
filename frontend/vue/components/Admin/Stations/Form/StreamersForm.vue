@@ -7,8 +7,11 @@
 
             <b-form-fieldset>
                 <div class="form-row">
-                    <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_streamers"
-                                             :field="form.enable_streamers">
+                    <b-wrapped-form-checkbox
+                        id="edit_form_enable_streamers"
+                        class="col-md-12"
+                        :field="form.enable_streamers"
+                    >
                         <template #label>
                             {{ $gettext('Allow Streamers / DJs') }}
                         </template>
@@ -24,8 +27,11 @@
             <b-form-fieldset v-if="form.enable_streamers.$model">
                 <b-form-fieldset>
                     <div class="form-row">
-                        <b-wrapped-form-checkbox class="col-md-12" id="edit_form_backend_record_streams"
-                                                 :field="form.backend_config.record_streams">
+                        <b-wrapped-form-checkbox
+                            id="edit_form_backend_record_streams"
+                            class="col-md-12"
+                            :field="form.backend_config.record_streams"
+                        >
                             <template #label>
                                 {{ $gettext('Record Live Broadcasts') }}
                             </template>
@@ -40,29 +46,41 @@
 
                 <b-form-fieldset v-if="form.backend_config.record_streams.$model">
                     <div class="form-row">
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_record_streams_format"
-                                              :field="form.backend_config.record_streams_format">
+                        <b-wrapped-form-group
+                            id="edit_form_backend_record_streams_format"
+                            class="col-md-6"
+                            :field="form.backend_config.record_streams_format"
+                        >
                             <template #label>
                                 {{ $gettext('Live Broadcast Recording Format') }}
                             </template>
 
                             <template #default="props">
-                                <b-form-radio-group stacked :id="props.id" :options="recordStreamsOptions"
-                                                    v-model="props.field.$model">
-                                </b-form-radio-group>
+                                <b-form-radio-group
+                                    :id="props.id"
+                                    v-model="props.field.$model"
+                                    stacked
+                                    :options="recordStreamsOptions"
+                                />
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_record_streams_bitrate"
-                                              :field="form.backend_config.record_streams_bitrate">
+                        <b-wrapped-form-group
+                            id="edit_form_backend_record_streams_bitrate"
+                            class="col-md-6"
+                            :field="form.backend_config.record_streams_bitrate"
+                        >
                             <template #label>
                                 {{ $gettext('Live Broadcast Recording Bitrate (kbps)') }}
                             </template>
 
                             <template #default="props">
-                                <b-form-radio-group stacked :id="props.id" :options="recordBitrateOptions"
-                                                    v-model="props.field.$model">
-                                </b-form-radio-group>
+                                <b-form-radio-group
+                                    :id="props.id"
+                                    v-model="props.field.$model"
+                                    stacked
+                                    :options="recordBitrateOptions"
+                                />
                             </template>
                         </b-wrapped-form-group>
                     </div>
@@ -70,9 +88,13 @@
 
                 <b-form-fieldset>
                     <div class="form-row">
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_disconnect_deactivate_streamer"
-                                              :field="form.disconnect_deactivate_streamer" input-type="number"
-                                              :input-attrs="{ min: '0' }">
+                        <b-wrapped-form-group
+                            id="edit_form_disconnect_deactivate_streamer"
+                            class="col-md-6"
+                            :field="form.disconnect_deactivate_streamer"
+                            input-type="number"
+                            :input-attrs="{ min: '0' }"
+                        >
                             <template #label>
                                 {{ $gettext('Deactivate Streamer on Disconnect (Seconds)') }}
                             </template>
@@ -83,10 +105,15 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group v-if="showAdvanced" class="col-md-6"
-                                              id="edit_form_backend_dj_port"
-                                              :field="form.backend_config.dj_port" input-type="number"
-                                              :input-attrs="{ min: '0' }" advanced>
+                        <b-wrapped-form-group
+                            v-if="showAdvanced"
+                            id="edit_form_backend_dj_port"
+                            class="col-md-6"
+                            :field="form.backend_config.dj_port"
+                            input-type="number"
+                            :input-attrs="{ min: '0' }"
+                            advanced
+                        >
                             <template #label>
                                 {{ $gettext('Customize DJ/Streamer Port') }}
                             </template>
@@ -101,9 +128,13 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_backend_dj_buffer"
-                                              :field="form.backend_config.dj_buffer" input-type="number"
-                                              :input-attrs="{ min: '0', max: '60' }">
+                        <b-wrapped-form-group
+                            id="edit_form_backend_dj_buffer"
+                            class="col-md-6"
+                            :field="form.backend_config.dj_buffer"
+                            input-type="number"
+                            :input-attrs="{ min: '0', max: '60' }"
+                        >
                             <template #label>
                                 {{ $gettext('DJ/Streamer Buffer Time (Seconds)') }}
                             </template>
@@ -114,9 +145,13 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group v-if="showAdvanced" class="col-md-6"
-                                              id="edit_form_backend_dj_mount_point"
-                                              :field="form.backend_config.dj_mount_point" advanced>
+                        <b-wrapped-form-group
+                            v-if="showAdvanced"
+                            id="edit_form_backend_dj_mount_point"
+                            class="col-md-6"
+                            :field="form.backend_config.dj_mount_point"
+                            advanced
+                        >
                             <template #label>
                                 {{ $gettext('Customize DJ/Streamer Mount Point') }}
                             </template>
@@ -131,7 +166,7 @@
             </b-form-fieldset>
         </b-form-fieldset>
     </b-form-fieldset>
-    <backend-disabled v-else></backend-disabled>
+    <backend-disabled v-else />
 </template>
 
 <script setup>

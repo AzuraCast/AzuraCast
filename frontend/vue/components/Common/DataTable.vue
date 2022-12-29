@@ -1,52 +1,113 @@
 <template>
-    <div :id="id" style="display: contents">
-        <div class="datatable-toolbar-top card-body" v-if="showToolbar">
+    <div
+        :id="id"
+        style="display: contents"
+    >
+        <div
+            v-if="showToolbar"
+            class="datatable-toolbar-top card-body"
+        >
             <b-row class="align-items-center mb-2">
-                <b-col xl="6" lg="5" md="12" sm="12" v-if="showPagination">
-                    <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                                  class="mb-0" v-if="showPagination">
-                    </b-pagination>
+                <b-col
+                    v-if="showPagination"
+                    xl="6"
+                    lg="5"
+                    md="12"
+                    sm="12"
+                >
+                    <b-pagination
+                        v-if="showPagination"
+                        v-model="currentPage"
+                        :total-rows="totalRows"
+                        :per-page="perPage"
+                        class="mb-0"
+                    />
                 </b-col>
-                <b-col xl="6" lg="5" md="12" sm="12" v-else>
+                <b-col
+                    v-else
+                    xl="6"
+                    lg="5"
+                    md="12"
+                    sm="12"
+                >
                     &nbsp;
                 </b-col>
-                <b-col xl="6" lg="7" md="12" sm="12" class="d-flex my-2">
+                <b-col
+                    xl="6"
+                    lg="7"
+                    md="12"
+                    sm="12"
+                    class="d-flex my-2"
+                >
                     <div class="flex-fill">
                         <div class="input-group">
                             <div class="input-group-prepend text-muted">
-                                <icon icon="search"></icon>
+                                <icon icon="search" />
                             </div>
-                            <b-form-input debounce="200" v-model="filter" type="search"
-                                          class="search-field form-control"
-                                          :placeholder="langSearch"></b-form-input>
+                            <b-form-input
+                                v-model="filter"
+                                debounce="200"
+                                type="search"
+                                class="search-field form-control"
+                                :placeholder="langSearch"
+                            />
                         </div>
                     </div>
                     <div class="flex-shrink-1 pl-3 pr-3">
                         <b-btn-group class="actions">
-                            <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
-                                      :title="langRefreshTooltip">
-                                <icon icon="refresh"></icon>
+                            <b-button
+                                v-b-tooltip.hover
+                                variant="default"
+                                title="Refresh"
+                                :title="langRefreshTooltip"
+                                @click="onClickRefresh"
+                            >
+                                <icon icon="refresh" />
                             </b-button>
-                            <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover v-if="paginated"
-                                        :title="langPerPageTooltip">
-                                <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
-                                                 :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
+                            <b-dropdown
+                                v-if="paginated"
+                                v-b-tooltip.hover
+                                variant="default"
+                                :text="perPageLabel"
+                                :title="langPerPageTooltip"
+                            >
+                                <b-dropdown-item
+                                    v-for="pageOption in pageOptions"
+                                    :key="pageOption"
+                                    :active="(pageOption === perPage)"
+                                    @click="setPerPage(pageOption)"
+                                >
                                     {{ getPerPageLabel(pageOption) }}
                                 </b-dropdown-item>
                             </b-dropdown>
-                            <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
-                                        :title="langSelectFieldsTooltip">
+                            <b-dropdown
+                                v-if="selectFields"
+                                v-b-tooltip.hover
+                                variant="default"
+                                :title="langSelectFieldsTooltip"
+                            >
                                 <template #button-content>
-                                    <icon icon="filter_list"></icon>
-                                    <span class="caret"></span>
+                                    <icon icon="filter_list" />
+                                    <span class="caret" />
                                 </template>
                                 <b-dropdown-form class="pt-3">
-                                    <div v-for="field in selectableFields" class="form-group">
+                                    <div
+                                        v-for="field in selectableFields"
+                                        class="form-group"
+                                    >
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   v-bind:id="'chk_field_' + field.key" name="is_field_visible"
-                                                   v-model="field.visible" @change="storeSettings">
-                                            <label class="custom-control-label" v-bind:for="'chk_field_'+field.key">
+                                            <input
+                                                :id="'chk_field_' + field.key"
+                                                v-model="field.visible"
+                                                type="checkbox"
+                                                class="custom-control-input"
+                                                name="is_field_visible"
+                                                @change="storeSettings"
+                                            >
+                                            <label
+                                                class="custom-control-label"
+                                                :for="'chk_field_'+field.key"
+                                            >
                                                 {{ field.label }}
                                             </label>
                                         </div>
@@ -59,43 +120,68 @@
             </b-row>
         </div>
         <div class="datatable-main">
-            <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                     v-model:current-page="currentPage" @row-selected="onRowSelected" :items="itemProvider"
-                     :fields="visibleFields"
-                     :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
-                     :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
-                     :no-provider-filtering="handleClientSide"
-                     tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
-                     :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed"
-                     v-model:sort-by="sortBy" v-model:sort-desc="sortDesc" @sort-changed="onSortChanged">
+            <b-table
+                ref="table"
+                v-model:current-page="currentPage"
+                show-empty
+                striped
+                hover
+                :selectable="selectable"
+                :api-url="apiUrl"
+                :per-page="perPage"
+                :items="itemProvider"
+                :fields="visibleFields"
+                :empty-text="langNoRecords"
+                :empty-filtered-text="langNoRecords"
+                :responsive="responsive"
+                :no-provider-paging="handleClientSide"
+                :no-provider-sorting="handleClientSide"
+                :no-provider-filtering="handleClientSide"
+                tbody-tr-class="align-middle"
+                @row-selected="onRowSelected"
+                thead-tr-class="align-middle"
+                selected-variant=""
+                :filter="filter"
+                v-model:sort-by="sortBy"
+                v-model:sort-desc="sortDesc"
+                @filtered="onFiltered"
+                @refreshed="onRefreshed"
+                @sort-changed="onSortChanged"
+            >
                 <template #head(selected)="data">
-                    <b-form-checkbox :aria-label="langSelectAll" :checked="allSelected"
-                                     @change="toggleSelected"></b-form-checkbox>
+                    <b-form-checkbox
+                        :aria-label="langSelectAll"
+                        :checked="allSelected"
+                        @change="toggleSelected"
+                    />
                 </template>
                 <template #cell(selected)="{ rowSelected }">
                     <div class="text-muted">
                         <template v-if="rowSelected">
                             <span class="sr-only">{{ langDeselectRow }}</span>
-                            <icon icon="check_box"></icon>
+                            <icon icon="check_box" />
                         </template>
                         <template v-else>
                             <span class="sr-only">{{ langSelectRow }}</span>
-                            <icon icon="check_box_outline_blank"></icon>
+                            <icon icon="check_box_outline_blank" />
                         </template>
                     </div>
                 </template>
                 <template #table-busy>
-                    <div role="alert" aria-live="polite">
+                    <div
+                        role="alert"
+                        aria-live="polite"
+                    >
                         <div class="text-center my-2">
                             <div class="progress-circular progress-circular-primary mx-auto mb-3">
                                 <div class="progress-circular-wrapper">
                                     <div class="progress-circular-inner">
                                         <div class="progress-circular-left">
-                                            <div class="progress-circular-spinner"></div>
+                                            <div class="progress-circular-spinner" />
                                         </div>
-                                        <div class="progress-circular-gap"></div>
+                                        <div class="progress-circular-gap" />
                                         <div class="progress-circular-right">
-                                            <div class="progress-circular-spinner"></div>
+                                            <div class="progress-circular-spinner" />
                                         </div>
                                     </div>
                                 </div>
@@ -106,52 +192,28 @@
                     </div>
                 </template>
 
-                <template v-for="(_, slot) of $slots" v-slot:[slot]="scope">
-                    <slot :name="slot" v-bind="scope"></slot>
+                <template
+                    v-for="(_, slot) of $slots"
+                    #[slot]="scope"
+                >
+                    <slot
+                        :name="slot"
+                        v-bind="scope"
+                    />
                 </template>
             </b-table>
         </div>
         <div class="datatable-toolbar-bottom card-body">
-            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                          class="mb-0 mt-2" v-if="showPagination">
-            </b-pagination>
+            <b-pagination
+                v-if="showPagination"
+                v-model="currentPage"
+                :total-rows="totalRows"
+                :per-page="perPage"
+                class="mb-0 mt-2"
+            />
         </div>
     </div>
 </template>
-
-<style lang="scss">
-div.datatable-main {
-    flex: 1;
-}
-
-div.datatable-toolbar-top,
-div.datatable-toolbar-bottom {
-    flex: 0;
-    padding: 0;
-}
-
-table.b-table {
-    td.shrink {
-        width: 0.1%;
-        white-space: nowrap;
-    }
-}
-
-table.b-table-selectable {
-    thead tr th:nth-child(1),
-    tbody tr td:nth-child(1),
-    tbody tr th:nth-child(1) {
-        padding-right: 0.75rem;
-        width: 3rem;
-    }
-
-    thead tr th:nth-child(2),
-    tbody tr td:nth-child(2),
-    tbody tr th:nth-child(2) {
-        padding-left: 0.5rem;
-    }
-}
-</style>
 
 <script>
 import store from 'store';
@@ -237,9 +299,6 @@ export default defineComponent({
             flushCache: false
         };
     },
-    created() {
-        this.loadStoredSettings();
-    },
     computed: {
         langRefreshTooltip() {
             return this.$gettext('Refresh rows');
@@ -324,6 +383,9 @@ export default defineComponent({
         filter() {
             this.currentPage = 1;
         }
+    },
+    created() {
+        this.loadStoredSettings();
     },
     methods: {
         loadStoredSettings() {
@@ -463,3 +525,37 @@ export default defineComponent({
     }
 });
 </script>
+
+<style lang="scss">
+div.datatable-main {
+    flex: 1;
+}
+
+div.datatable-toolbar-top,
+div.datatable-toolbar-bottom {
+    flex: 0;
+    padding: 0;
+}
+
+table.b-table {
+    td.shrink {
+        width: 0.1%;
+        white-space: nowrap;
+    }
+}
+
+table.b-table-selectable {
+    thead tr th:nth-child(1),
+    tbody tr td:nth-child(1),
+    tbody tr th:nth-child(1) {
+        padding-right: 0.75rem;
+        width: 3rem;
+    }
+
+    thead tr th:nth-child(2),
+    tbody tr td:nth-child(2),
+    tbody tr th:nth-child(2) {
+        padding-left: 0.5rem;
+    }
+}
+</style>

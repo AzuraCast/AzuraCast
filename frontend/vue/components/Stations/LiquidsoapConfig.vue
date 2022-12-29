@@ -1,6 +1,12 @@
 <template>
-    <form class="form vue-form" @submit.prevent="submit">
-        <section class="card" role="region">
+    <form
+        class="form vue-form"
+        @submit.prevent="submit"
+    >
+        <section
+            class="card"
+            role="region"
+        >
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
                     {{ $gettext('Edit Liquidsoap Configuration') }}
@@ -25,19 +31,36 @@
                 </p>
             </info-card>
 
-            <b-overlay variant="card" :show="loading">
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
                 <div class="card-body">
-                    <b-form-fieldset v-for="(row, index) in config" :key="index" class="mb-0">
-                        <b-wrapped-form-group v-if="row.is_field" :field="v$[row.field_name]"
-                                              :id="'form_edit_'+row.field_name" input-type="textarea"
-                                              :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}">
-                        </b-wrapped-form-group>
-                        <b-form-markup v-else :id="'form_section_'+index">
+                    <b-form-fieldset
+                        v-for="(row, index) in config"
+                        :key="index"
+                        class="mb-0"
+                    >
+                        <b-wrapped-form-group
+                            v-if="row.is_field"
+                            :id="'form_edit_'+row.field_name"
+                            :field="v$[row.field_name]"
+                            input-type="textarea"
+                            :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}"
+                        />
+                        <b-form-markup
+                            v-else
+                            :id="'form_section_'+index"
+                        >
                             <pre class="typography-body-1">{{ row.markup }}</pre>
                         </b-form-markup>
                     </b-form-fieldset>
 
-                    <b-button size="lg" type="submit" :variant="(v$.$invalid) ? 'danger' : 'primary'">
+                    <b-button
+                        size="lg"
+                        type="submit"
+                        :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    >
                         {{ $gettext('Save Changes') }}
                     </b-button>
                 </div>

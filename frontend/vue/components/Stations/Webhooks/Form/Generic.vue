@@ -16,7 +16,10 @@
         </p>
         <ul>
             <li>
-                <a href="https://azuracast.com/api" target="_blank">
+                <a
+                    href="https://azuracast.com/api"
+                    target="_blank"
+                >
                     {{ $gettext('NowPlaying API Response') }}
                 </a>
             </li>
@@ -30,8 +33,12 @@
 
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="form_config_webhook_url" :field="form.config.webhook_url"
-                                  input-type="url">
+            <b-wrapped-form-group
+                id="form_config_webhook_url"
+                class="col-md-12"
+                :field="form.config.webhook_url"
+                input-type="url"
+            >
                 <template #label>
                     {{ $gettext('Web Hook URL') }}
                 </template>
@@ -40,8 +47,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_basic_auth_username"
-                                  :field="form.config.basic_auth_username">
+            <b-wrapped-form-group
+                id="form_config_basic_auth_username"
+                class="col-md-6"
+                :field="form.config.basic_auth_username"
+            >
                 <template #label>
                     {{ $gettext('Optional: HTTP Basic Authentication Username') }}
                 </template>
@@ -50,8 +60,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_basic_auth_password"
-                                  :field="form.config.basic_auth_password">
+            <b-wrapped-form-group
+                id="form_config_basic_auth_password"
+                class="col-md-6"
+                :field="form.config.basic_auth_password"
+            >
                 <template #label>
                     {{ $gettext('Optional: HTTP Basic Authentication Password') }}
                 </template>
@@ -60,9 +73,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_timeout"
-                                  :field="form.config.timeout" input-type="number"
-                                  :input-attrs="{ min: '0.0', max: '600.0', step: '0.1' }">
+            <b-wrapped-form-group
+                id="form_config_timeout"
+                class="col-md-6"
+                :field="form.config.timeout"
+                input-type="number"
+                :input-attrs="{ min: '0.0', max: '600.0', step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Optional: Request Timeout (Seconds)') }}
                 </template>

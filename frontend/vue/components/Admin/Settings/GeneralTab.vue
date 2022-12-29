@@ -1,8 +1,12 @@
 <template>
     <b-form-fieldset>
         <div class="form-row">
-
-            <b-wrapped-form-group class="col-md-6" id="edit_form_base_url" :field="form.base_url" input-type="url">
+            <b-wrapped-form-group
+                id="edit_form_base_url"
+                class="col-md-6"
+                :field="form.base_url"
+                input-type="url"
+            >
                 <template #label>
                     {{ $gettext('Site Base URL') }}
                 </template>
@@ -13,7 +17,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_instance_name" :field="form.instance_name">
+            <b-wrapped-form-group
+                id="edit_form_instance_name"
+                class="col-md-6"
+                :field="form.instance_name"
+            >
                 <template #label>
                     {{ $gettext('AzuraCast Instance Name') }}
                 </template>
@@ -24,8 +32,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_prefer_browser_url"
-                                     :field="form.prefer_browser_url">
+            <b-wrapped-form-checkbox
+                id="edit_form_prefer_browser_url"
+                class="col-md-6"
+                :field="form.prefer_browser_url"
+            >
                 <template #label>
                     {{ $gettext('Prefer Browser URL (If Available)') }}
                 </template>
@@ -36,8 +47,11 @@
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_use_radio_proxy"
-                                     :field="form.use_radio_proxy">
+            <b-wrapped-form-checkbox
+                id="edit_form_use_radio_proxy"
+                class="col-md-6"
+                :field="form.use_radio_proxy"
+            >
                 <template #label>
                     {{ $gettext('Use Web Proxy for Radio') }}
                 </template>
@@ -48,7 +62,11 @@
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_history_keep_days" :field="form.history_keep_days">
+            <b-wrapped-form-group
+                id="edit_form_history_keep_days"
+                class="col-md-6"
+                :field="form.history_keep_days"
+            >
                 <template #label>
                     {{ $gettext('Days of Playback History to Keep') }}
                 </template>
@@ -58,13 +76,20 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
-                                        :options="historyKeepDaysOptions"></b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="historyKeepDaysOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_static_nowplaying"
-                                     :field="form.enable_static_nowplaying">
+            <b-wrapped-form-checkbox
+                id="edit_form_enable_static_nowplaying"
+                class="col-md-6"
+                :field="form.enable_static_nowplaying"
+            >
                 <template #label>
                     {{ $gettext('Use High-Performance Now Playing Updates') }}
                 </template>
@@ -75,8 +100,11 @@
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_enable_advanced_features"
-                                     :field="form.enable_advanced_features">
+            <b-wrapped-form-checkbox
+                id="edit_form_enable_advanced_features"
+                class="col-md-6"
+                :field="form.enable_advanced_features"
+            >
                 <template #label>
                     {{ $gettext('Enable Advanced Features') }}
                 </template>
@@ -86,7 +114,6 @@
                     }}
                 </template>
             </b-wrapped-form-checkbox>
-
         </div>
     </b-form-fieldset>
 </template>

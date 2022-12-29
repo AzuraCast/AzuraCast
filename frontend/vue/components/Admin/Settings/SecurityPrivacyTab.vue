@@ -5,7 +5,11 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="edit_form_analytics" :field="form.analytics">
+            <b-wrapped-form-group
+                id="edit_form_analytics"
+                class="col-md-12"
+                :field="form.analytics"
+            >
                 <template #label>
                     {{ $gettext('Listener Analytics Collection') }}
                 </template>
@@ -15,7 +19,11 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                    >
                         <b-form-radio value="all">
                             <b>
                                 {{ $gettext('Full:') }}
@@ -46,8 +54,11 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_always_use_ssl"
-                                     :field="form.always_use_ssl">
+            <b-wrapped-form-checkbox
+                id="edit_form_always_use_ssl"
+                class="col-md-12"
+                :field="form.always_use_ssl"
+            >
                 <template #label>
                     {{ $gettext('Always Use HTTPS') }}
                 </template>
@@ -58,8 +69,11 @@
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_api_access_control"
-                                  :field="form.api_access_control">
+            <b-wrapped-form-group
+                id="edit_form_api_access_control"
+                class="col-md-12"
+                :field="form.api_access_control"
+            >
                 <template #label>
                     {{ $gettext('API "Access-Control-Allow-Origin" Header') }}
                 </template>
@@ -68,8 +82,10 @@
                         $gettext('Set to * to allow all sources, or specify a list of origins separated by a comma (,).')
                     }}
                     <br>
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin"
-                       target="_blank">
+                    <a
+                        href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin"
+                        target="_blank"
+                    >
                         {{ $gettext('Learn more about this header.') }}
                     </a>
                 </template>

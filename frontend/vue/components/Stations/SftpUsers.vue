@@ -3,24 +3,42 @@
         <div class="col-md-8">
             <b-card no-body>
                 <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title">{{ $gettext('SFTP Users') }}</h2>
+                    <h2 class="card-title">
+                        {{ $gettext('SFTP Users') }}
+                    </h2>
                 </b-card-header>
 
                 <b-card-body body-class="card-padding-sm">
-                    <b-button variant="outline-primary" @click.prevent="doCreate">
-                        <icon icon="add"></icon>
+                    <b-button
+                        variant="outline-primary"
+                        @click.prevent="doCreate"
+                    >
+                        <icon icon="add" />
                         {{ $gettext('Add SFTP User') }}
                     </b-button>
                 </b-card-body>
 
-                <data-table ref="datatable" id="station_remotes" :show-toolbar="false" :fields="fields"
-                            :api-url="listUrl">
+                <data-table
+                    id="station_remotes"
+                    ref="datatable"
+                    :show-toolbar="false"
+                    :fields="fields"
+                    :api-url="listUrl"
+                >
                     <template #cell(actions)="row">
                         <b-button-group size="sm">
-                            <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                            <b-button
+                                size="sm"
+                                variant="primary"
+                                @click.prevent="doEdit(row.item.links.self)"
+                            >
                                 {{ $gettext('Edit') }}
                             </b-button>
-                            <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                            <b-button
+                                size="sm"
+                                variant="danger"
+                                @click.prevent="doDelete(row.item.links.self)"
+                            >
                                 {{ $gettext('Delete') }}
                             </b-button>
                         </b-button-group>
@@ -56,7 +74,11 @@
             </div>
         </div>
 
-        <sftp-users-edit-modal ref="editModal" :create-url="listUrl" @relist="relist"></sftp-users-edit-modal>
+        <sftp-users-edit-modal
+            ref="editModal"
+            :create-url="listUrl"
+            @relist="relist"
+        />
     </div>
 </template>
 

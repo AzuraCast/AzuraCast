@@ -9,14 +9,22 @@
             </p>
         </b-form-group>
 
-        <streamers-form-schedule-row v-for="(row, index) in scheduleItems" :key="index"
-                                     :station-time-zone="stationTimeZone"
-                                     :index="index" v-model:row="scheduleItems[index]" @remove="remove(index)">
-        </streamers-form-schedule-row>
+        <streamers-form-schedule-row
+            v-for="(row, index) in scheduleItems"
+            :key="index"
+            v-model:row="scheduleItems[index]"
+            :station-time-zone="stationTimeZone"
+            :index="index"
+            @remove="remove(index)"
+        />
 
         <b-button-group>
-            <b-button size="sm" variant="outline-primary" @click.prevent="add">
-                <icon icon="add"></icon>
+            <b-button
+                size="sm"
+                variant="outline-primary"
+                @click.prevent="add"
+            >
+                <icon icon="add" />
                 {{ $gettext('Add Schedule Item') }}
             </b-button>
         </b-button-group>

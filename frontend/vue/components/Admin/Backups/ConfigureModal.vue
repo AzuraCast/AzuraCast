@@ -1,10 +1,20 @@
 <template>
-    <modal-form ref="$modal" size="lg" :title="$gettext('Configure Backups')" :loading="loading"
-                :disable-save-button="v$.$invalid" @submit="submit" @hidden="resetForm">
+    <modal-form
+        ref="$modal"
+        size="lg"
+        :title="$gettext('Configure Backups')"
+        :loading="loading"
+        :disable-save-button="v$.$invalid"
+        @submit="submit"
+        @hidden="resetForm"
+    >
         <b-form-fieldset>
             <div class="form-row mb-3">
-                <b-wrapped-form-checkbox class="col-md-12" id="form_edit_backup_enabled"
-                                         :field="v$.backup_enabled">
+                <b-wrapped-form-checkbox
+                    id="form_edit_backup_enabled"
+                    class="col-md-12"
+                    :field="v$.backup_enabled"
+                >
                     <template #label>
                         {{ $gettext('Run Automatic Nightly Backups') }}
                     </template>
@@ -16,8 +26,15 @@
                 </b-wrapped-form-checkbox>
             </div>
 
-            <div class="form-row" v-if="v$.backup_enabled.$model">
-                <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="v$.backup_time_code">
+            <div
+                v-if="v$.backup_enabled.$model"
+                class="form-row"
+            >
+                <b-wrapped-form-group
+                    id="form_backup_time_code"
+                    class="col-md-6"
+                    :field="v$.backup_time_code"
+                >
                     <template #label>
                         {{ $gettext('Scheduled Backup Time') }}
                     </template>
@@ -25,12 +42,19 @@
                         {{ $gettext('If the end time is before the start time, the playlist will play overnight.') }}
                     </template>
                     <template #default="props">
-                        <time-code :id="props.id" v-model="props.field.$model" :state="props.state"></time-code>
+                        <time-code
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :state="props.state"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_exclude_media"
-                                         :field="v$.backup_exclude_media">
+                <b-wrapped-form-checkbox
+                    id="form_edit_exclude_media"
+                    class="col-md-6"
+                    :field="v$.backup_exclude_media"
+                >
                     <template #label>
                         {{ $gettext('Exclude Media from Backup') }}
                     </template>
@@ -41,8 +65,13 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="v$.backup_keep_copies"
-                                      input-type="number" :input-attrs="{min: '0', max: '365'}">
+                <b-wrapped-form-group
+                    id="form_backup_keep_copies"
+                    class="col-md-6"
+                    :field="v$.backup_keep_copies"
+                    input-type="number"
+                    :input-attrs="{min: '0', max: '365'}"
+                >
                     <template #label>
                         {{ $gettext('Number of Backup Copies to Keep') }}
                     </template>
@@ -53,24 +82,38 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_storage_location"
-                                      :field="v$.backup_storage_location">
+                <b-wrapped-form-group
+                    id="edit_form_backup_storage_location"
+                    class="col-md-6"
+                    :field="v$.backup_storage_location"
+                >
                     <template #label>
                         {{ $gettext('Storage Location') }}
                     </template>
                     <template #default="props">
-                        <b-form-select :id="props.id" v-model="props.field.$model"
-                                       :options="storageLocationOptions"></b-form-select>
+                        <b-form-select
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :options="storageLocationOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="v$.backup_format">
+                <b-wrapped-form-group
+                    id="edit_form_backup_format"
+                    class="col-md-6"
+                    :field="v$.backup_format"
+                >
                     <template #label>
                         {{ $gettext('Backup Format') }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
-                                            :options="formatOptions"></b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="formatOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
             </div>

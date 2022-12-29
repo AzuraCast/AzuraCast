@@ -12,8 +12,11 @@
 
             <b-form-fieldset>
                 <div class="form-row">
-                    <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_requests"
-                                             :field="form.enable_requests">
+                    <b-wrapped-form-checkbox
+                        id="edit_form_enable_requests"
+                        class="col-md-12"
+                        :field="form.enable_requests"
+                    >
                         <template #label>
                             {{ $gettext('Allow Song Requests') }}
                         </template>
@@ -28,9 +31,13 @@
 
             <b-form-fieldset v-if="form.enable_requests.$model">
                 <div class="form-row">
-                    <b-wrapped-form-group class="col-md-6" id="edit_form_request_delay"
-                                          :field="form.request_delay" input-type="number"
-                                          :input-attrs="{ min: '0', max: '1440' }">
+                    <b-wrapped-form-group
+                        id="edit_form_request_delay"
+                        class="col-md-6"
+                        :field="form.request_delay"
+                        input-type="number"
+                        :input-attrs="{ min: '0', max: '1440' }"
+                    >
                         <template #label>
                             {{ $gettext('Request Minimum Delay (Minutes)') }}
                         </template>
@@ -41,9 +48,13 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group class="col-md-6" id="edit_form_request_threshold"
-                                          :field="form.request_threshold" input-type="number"
-                                          :input-attrs="{ min: '0', max: '1440' }">
+                    <b-wrapped-form-group
+                        id="edit_form_request_threshold"
+                        class="col-md-6"
+                        :field="form.request_threshold"
+                        input-type="number"
+                        :input-attrs="{ min: '0', max: '1440' }"
+                    >
                         <template #label>
                             {{ $gettext('Request Last Played Threshold (Minutes)') }}
                         </template>
@@ -57,7 +68,7 @@
             </b-form-fieldset>
         </b-form-fieldset>
     </b-form-fieldset>
-    <backend-disabled v-else></backend-disabled>
+    <backend-disabled v-else />
 </template>
 
 <script setup>

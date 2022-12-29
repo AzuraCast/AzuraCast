@@ -5,9 +5,14 @@
                 <b-card-header header-bg-variant="primary-dark">
                     <b-row class="align-items-center">
                         <b-col md="6">
-                            <h2 class="card-title">{{ $gettext('Streamer/DJ Accounts') }}</h2>
+                            <h2 class="card-title">
+                                {{ $gettext('Streamer/DJ Accounts') }}
+                            </h2>
                         </b-col>
-                        <b-col md="6" class="text-right text-muted">
+                        <b-col
+                            md="6"
+                            class="text-right text-muted"
+                        >
                             {{
                                 $gettext(
                                     'This station\'s time zone is currently %{tz}.',
@@ -18,58 +23,98 @@
                     </b-row>
                 </b-card-header>
 
-                <b-tabs pills card lazy>
-                    <b-tab :title="$gettext('Account List')" no-body>
+                <b-tabs
+                    pills
+                    card
+                    lazy
+                >
+                    <b-tab
+                        :title="$gettext('Account List')"
+                        no-body
+                    >
                         <b-card-body body-class="card-padding-sm">
-                            <b-button variant="outline-primary" @click.prevent="doCreate">
-                                <icon icon="add"></icon>
+                            <b-button
+                                variant="outline-primary"
+                                @click.prevent="doCreate"
+                            >
+                                <icon icon="add" />
                                 {{ $gettext('Add Streamer') }}
                             </b-button>
                         </b-card-body>
 
-                        <data-table ref="datatable" id="station_streamers" :fields="fields"
-                                    :api-url="listUrl">
+                        <data-table
+                            id="station_streamers"
+                            ref="datatable"
+                            :fields="fields"
+                            :api-url="listUrl"
+                        >
                             <template #cell(art)="row">
-                                <album-art :src="row.item.art"></album-art>
+                                <album-art :src="row.item.art" />
                             </template>
                             <template #cell(streamer_username)="row">
                                 <code>{{ row.item.streamer_username }}</code>
                                 <div>
-                                <span class="badge badge-danger" v-if="!row.item.is_active">
-                                    {{ $gettext('Disabled') }}
-                                </span>
+                                    <span
+                                        v-if="!row.item.is_active"
+                                        class="badge badge-danger"
+                                    >
+                                        {{ $gettext('Disabled') }}
+                                    </span>
                                 </div>
                             </template>
                             <template #cell(actions)="row">
                                 <b-button-group size="sm">
-                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                                    <b-button
+                                        size="sm"
+                                        variant="primary"
+                                        @click.prevent="doEdit(row.item.links.self)"
+                                    >
                                         {{ $gettext('Edit') }}
                                     </b-button>
-                                    <b-button size="sm" variant="default"
-                                              @click.prevent="doShowBroadcasts(row.item.links.broadcasts)">
+                                    <b-button
+                                        size="sm"
+                                        variant="default"
+                                        @click.prevent="doShowBroadcasts(row.item.links.broadcasts)"
+                                    >
                                         {{ $gettext('Broadcasts') }}
                                     </b-button>
-                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                                    <b-button
+                                        size="sm"
+                                        variant="danger"
+                                        @click.prevent="doDelete(row.item.links.self)"
+                                    >
                                         {{ $gettext('Delete') }}
                                     </b-button>
                                 </b-button-group>
                             </template>
                         </data-table>
                     </b-tab>
-                    <b-tab :title="$gettext('Schedule View')" no-body>
-                        <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"
-                                  @click="doCalendarClick"></schedule>
+                    <b-tab
+                        :title="$gettext('Schedule View')"
+                        no-body
+                    >
+                        <schedule
+                            ref="schedule"
+                            :schedule-url="scheduleUrl"
+                            :station-time-zone="stationTimeZone"
+                            @click="doCalendarClick"
+                        />
                     </b-tab>
                 </b-tabs>
             </b-card>
         </div>
         <div class="col-md-4">
-            <connection-info :connection-info="connectionInfo"></connection-info>
+            <connection-info :connection-info="connectionInfo" />
         </div>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
-                    :new-art-url="newArtUrl" @relist="relist"></edit-modal>
-        <broadcasts-modal ref="broadcastsModal"></broadcasts-modal>
+        <edit-modal
+            ref="editModal"
+            :create-url="listUrl"
+            :station-time-zone="stationTimeZone"
+            :new-art-url="newArtUrl"
+            @relist="relist"
+        />
+        <broadcasts-modal ref="broadcastsModal" />
     </div>
 </template>
 

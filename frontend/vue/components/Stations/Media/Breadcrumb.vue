@@ -1,9 +1,18 @@
 <template>
-    <h3 class="card-subtitle mt-0 mb-2" id="breadcrumb">
-        <a href="#" @click.prevent="changeDirectory('')">{{ $gettext('Home') }}</a>
+    <h3
+        id="breadcrumb"
+        class="card-subtitle mt-0 mb-2"
+    >
+        <a
+            href="#"
+            @click.prevent="changeDirectory('')"
+        >{{ $gettext('Home') }}</a>
         <template v-for="part in directoryParts">
             &blacktriangleright;
-            <a href="#" @click.prevent="changeDirectory(part.dir)">{{ part.display }}</a>
+            <a
+                href="#"
+                @click.prevent="changeDirectory(part.dir)"
+            >{{ part.display }}</a>
         </template>
     </h3>
 </template>

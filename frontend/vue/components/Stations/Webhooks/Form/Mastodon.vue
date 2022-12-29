@@ -32,7 +32,11 @@
 
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="form_config_instance_url" :field="form.config.instance_url">
+            <b-wrapped-form-group
+                id="form_config_instance_url"
+                class="col-md-6"
+                :field="form.config.instance_url"
+            >
                 <template #label>
                     {{ $gettext('Mastodon Instance URL') }}
                 </template>
@@ -41,33 +45,46 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_access_token"
-                                  :field="form.config.access_token">
+            <b-wrapped-form-group
+                id="form_config_access_token"
+                class="col-md-6"
+                :field="form.config.access_token"
+            >
                 <template #label>
                     {{ $gettext('Access Token') }}
                 </template>
             </b-wrapped-form-group>
 
-            <common-rate-limit-fields :form="form"></common-rate-limit-fields>
+            <common-rate-limit-fields :form="form" />
         </div>
     </b-form-group>
 
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="form_config_visibility" :field="form.config.visibility">
+            <b-wrapped-form-group
+                id="form_config_visibility"
+                class="col-md-12"
+                :field="form.config.visibility"
+            >
                 <template #label>
                     {{ $gettext('Message Visibility') }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" :options="visibilityOptions"
-                                        v-model="props.field.$model">
-                    </b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="visibilityOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
         </div>
     </b-form-group>
 
-    <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>
+    <common-social-post-fields
+        :form="form"
+        :now-playing-url="nowPlayingUrl"
+    />
 </template>
 
 <script setup>

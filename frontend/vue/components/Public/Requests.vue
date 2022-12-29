@@ -1,12 +1,23 @@
 <template>
     <div style="overflow-x: hidden">
-        <data-table ref="datatable" id="song_requests" paginated select-fields :page-options="pageOptions"
-                    :fields="fields"
-                    :responsive="false" :api-url="requestListUri">
+        <data-table
+            id="song_requests"
+            ref="datatable"
+            paginated
+            select-fields
+            :page-options="pageOptions"
+            :fields="fields"
+            :responsive="false"
+            :api-url="requestListUri"
+        >
             <template #cell(name)="row">
                 <div class="d-flex align-items-center">
-                    <album-art v-if="showAlbumArt" :src="row.item.song.art" :width="40"
-                               class="flex-shrink-1 pr-3"></album-art>
+                    <album-art
+                        v-if="showAlbumArt"
+                        :src="row.item.song.art"
+                        :width="40"
+                        class="flex-shrink-1 pr-3"
+                    />
                     <div class="flex-fill">
                         {{ row.item.song.title }}<br>
                         <small>{{ row.item.song.artist }}</small>
@@ -15,7 +26,11 @@
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="primary" @click.prevent="doSubmitRequest(row.item.request_url)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doSubmitRequest(row.item.request_url)"
+                    >
                         {{ $gettext('Request') }}
                     </b-button>
                 </b-button-group>
@@ -24,14 +39,6 @@
     </div>
 </template>
 
-<style lang="scss">
-img.album_art {
-    width: 40px;
-    height: auto;
-    border-radius: 5px;
-}
-</style>
-
 <script>
 import DataTable from '~/components/Common/DataTable';
 import _ from 'lodash';
@@ -39,7 +46,6 @@ import AlbumArt from '~/components/Common/AlbumArt';
 
 export default {
     components: {AlbumArt, DataTable},
-    emits: ['submitted'],
     props: {
         requestListUri: {
             type: String,
@@ -55,6 +61,7 @@ export default {
             default: () => []
         }
     },
+    emits: ['submitted'],
     data () {
         let fields = [
             {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true, selectable: true},
@@ -121,3 +128,11 @@ export default {
     }
 };
 </script>
+
+<style lang="scss">
+img.album_art {
+    width: 40px;
+    height: auto;
+    border-radius: 5px;
+}
+</style>

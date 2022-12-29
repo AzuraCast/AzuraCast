@@ -1,29 +1,33 @@
 <template>
-    <section id="content" role="main" style="height: 100vh;">
+    <section
+        id="content"
+        role="main"
+        style="height: 100vh;"
+    >
         <div class="container pt-5">
             <div class="form-row">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel v-bind="{ stationName, baseUri, libUrls }"></settings-panel>
+                    <settings-panel v-bind="{ stationName, baseUri, libUrls }" />
                 </div>
 
                 <div class="col-md-8">
                     <div class="form-row mb-3">
                         <div class="col-md-12">
-                            <microphone-panel></microphone-panel>
+                            <microphone-panel />
                         </div>
                     </div>
                     <div class="form-row mb-3">
                         <div class="col-md-12">
-                            <mixer-panel></mixer-panel>
+                            <mixer-panel />
                         </div>
                     </div>
                     <div class="form-row mb-4">
                         <div class="col-md-6 mb-sm-4">
-                            <playlist-panel id="playlist_1"></playlist-panel>
+                            <playlist-panel id="playlist_1" />
                         </div>
 
                         <div class="col-md-6">
-                            <playlist-panel id="playlist_2"></playlist-panel>
+                            <playlist-panel id="playlist_2" />
                         </div>
                     </div>
                 </div>
@@ -41,26 +45,26 @@ import SettingsPanel from './WebDJ/SettingsPanel.vue';
 import Stream from './WebDJ/Stream.js';
 
 export default {
-    data: function () {
-        return {
-            'stream': Stream
-        };
-    },
     components: {
         MixerPanel,
         MicrophonePanel,
         PlaylistPanel,
         SettingsPanel
     },
+    provide: function () {
+        return {
+            getStream: this.getStream,
+            resumeStream: this.resumeStream
+        };
+    },
     props: {
         stationName: String,
         libUrls: Array,
         baseUri: String
     },
-    provide: function () {
+    data: function () {
         return {
-            getStream: this.getStream,
-            resumeStream: this.resumeStream
+            'stream': Stream
         };
     },
     methods: {

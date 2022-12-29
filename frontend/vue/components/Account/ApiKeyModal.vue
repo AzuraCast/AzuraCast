@@ -1,34 +1,64 @@
 <template>
-    <b-modal size="md" centered id="api_keys_modal" ref="$modal" :title="$gettext('Add API Key')"
-             @hidden="clearContents"
-             no-enforce-focus>
+    <b-modal
+        id="api_keys_modal"
+        ref="$modal"
+        size="md"
+        centered
+        :title="$gettext('Add API Key')"
+        no-enforce-focus
+        @hidden="clearContents"
+    >
         <template #default="slotProps">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+            <b-alert
+                variant="danger"
+                :show="error != null"
+            >
+                {{ error }}
+            </b-alert>
 
-            <b-form v-if="newKey === null" class="form vue-form" @submit.prevent="doSubmit">
+            <b-form
+                v-if="newKey === null"
+                class="form vue-form"
+                @submit.prevent="doSubmit"
+            >
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_comments" :field="v$.comment" autofocus>
+                    <b-wrapped-form-group
+                        id="form_comments"
+                        :field="v$.comment"
+                        autofocus
+                    >
                         <template #label>
                             {{ $gettext('API Key Description/Comments') }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-fieldset>
 
-                <invisible-submit-button/>
+                <invisible-submit-button />
             </b-form>
 
             <div v-else>
-                <account-api-key-new-key :new-key="newKey"></account-api-key-new-key>
+                <account-api-key-new-key :new-key="newKey" />
             </div>
         </template>
 
         <template #modal-footer="slotProps">
-            <slot name="modal-footer" v-bind="slotProps">
-                <b-button variant="default" type="button" @click="close">
+            <slot
+                name="modal-footer"
+                v-bind="slotProps"
+            >
+                <b-button
+                    variant="default"
+                    type="button"
+                    @click="close"
+                >
                     {{ $gettext('Close') }}
                 </b-button>
-                <b-button v-if="newKey === null" :variant="(v$.$invalid) ? 'danger' : 'primary'" type="submit"
-                          @click="doSubmit">
+                <b-button
+                    v-if="newKey === null"
+                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    type="submit"
+                    @click="doSubmit"
+                >
                     {{ $gettext('Create New Key') }}
                 </b-button>
             </slot>

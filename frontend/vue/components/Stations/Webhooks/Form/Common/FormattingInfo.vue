@@ -12,7 +12,10 @@
         <p class="card-text">
             {{ $gettext('All values in the NowPlaying API response are available for use. Any empty fields are ignored.') }}
             <br>
-            <a :href="nowPlayingUrl" target="_blank">
+            <a
+                :href="nowPlayingUrl"
+                target="_blank"
+            >
                 {{ $gettext('NowPlaying API Response') }}
             </a>
         </p>

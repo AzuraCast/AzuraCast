@@ -1,21 +1,40 @@
 <template>
-    <modal-form ref="$modal" size="md" centered :title="$gettext('Change Password')" :disable-save-button="v$.$invalid"
-                @submit="onSubmit" @hidden="clearContents">
+    <modal-form
+        ref="$modal"
+        size="md"
+        centered
+        :title="$gettext('Change Password')"
+        :disable-save-button="v$.$invalid"
+        @submit="onSubmit"
+        @hidden="clearContents"
+    >
         <b-form-fieldset>
-            <b-wrapped-form-group id="form_current_password" :field="v$.current_password"
-                                  input-type="password" autofocus>
+            <b-wrapped-form-group
+                id="form_current_password"
+                :field="v$.current_password"
+                input-type="password"
+                autofocus
+            >
                 <template #label>
                     {{ $gettext('Current Password') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_new_password" :field="v$.new_password" input-type="password">
+            <b-wrapped-form-group
+                id="form_new_password"
+                :field="v$.new_password"
+                input-type="password"
+            >
                 <template #label>
                     {{ $gettext('New Password') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group id="form_current_password" :field="v$.new_password2" input-type="password">
+            <b-wrapped-form-group
+                id="form_current_password"
+                :field="v$.new_password2"
+                input-type="password"
+            >
                 <template #label>
                     {{ $gettext('Confirm New Password') }}
                 </template>

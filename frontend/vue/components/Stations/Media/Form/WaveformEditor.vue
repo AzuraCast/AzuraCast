@@ -6,38 +6,72 @@
     </p>
 
     <b-form-group>
-        <waveform-component ref="$waveform" :audio-url="audioUrl" :waveform-url="waveformUrl"
-                            @ready="updateRegions"></waveform-component>
+        <waveform-component
+            ref="$waveform"
+            :audio-url="audioUrl"
+            :waveform-url="waveformUrl"
+            @ready="updateRegions"
+        />
     </b-form-group>
     <b-form-group>
         <div class="buttons">
             <b-button-group size="sm">
-                <b-button variant="light" @click="playAudio" :title="$gettext('Play')" size="sm">
-                    <icon icon="play_arrow"></icon>
+                <b-button
+                    variant="light"
+                    :title="$gettext('Play')"
+                    size="sm"
+                    @click="playAudio"
+                >
+                    <icon icon="play_arrow" />
                 </b-button>
-                <b-button variant="dark" @click="stopAudio" :title="$gettext('Stop')" size="sm">
-                    <icon icon="stop"></icon>
+                <b-button
+                    variant="dark"
+                    :title="$gettext('Stop')"
+                    size="sm"
+                    @click="stopAudio"
+                >
+                    <icon icon="stop" />
                 </b-button>
             </b-button-group>
             <b-button-group size="sm">
-                <b-button variant="primary" @click="setCueIn" size="sm">
+                <b-button
+                    variant="primary"
+                    size="sm"
+                    @click="setCueIn"
+                >
                     {{ $gettext('Set Cue In') }}
                 </b-button>
-                <b-button variant="primary" @click="setCueOut" size="sm">
+                <b-button
+                    variant="primary"
+                    size="sm"
+                    @click="setCueOut"
+                >
                     {{ $gettext('Set Cue Out') }}
                 </b-button>
             </b-button-group>
             <b-button-group size="sm">
-                <b-button variant="warning" @click="setFadeOverlap" size="sm">
+                <b-button
+                    variant="warning"
+                    size="sm"
+                    @click="setFadeOverlap"
+                >
                     {{ $gettext('Set Overlap') }}
                 </b-button>
             </b-button-group>
             <b-button-group size="sm">
-                <b-button variant="danger" @click="setFadeIn" size="sm">
+                <b-button
+                    variant="danger"
+                    size="sm"
+                    @click="setFadeIn"
+                >
                     {{ $gettext('Set Fade In') }}
                 </b-button>
 
-                <b-button variant="danger" @click="setFadeOut" size="sm">
+                <b-button
+                    variant="danger"
+                    size="sm"
+                    @click="setFadeOut"
+                >
                     {{ $gettext('Set Fade Out') }}
                 </b-button>
             </b-button-group>

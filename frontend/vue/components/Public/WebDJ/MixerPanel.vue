@@ -13,9 +13,16 @@
                             {{ $gettext('Playlist 1') }}
                         </div>
                         <div class="flex-fill px-2">
-                            <input type="range" min="0" max="1" step="0.01" class="custom-range slider"
-                                   v-model="position" @click.right.prevent="position = 0.5"
-                                   style="width: 200px; height: 10px;">
+                            <input
+                                v-model="position"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                class="custom-range slider"
+                                style="width: 200px; height: 10px;"
+                                @click.right.prevent="position = 0.5"
+                            >
                         </div>
                         <div class="flex-shrink-0">
                             {{ $gettext('Playlist 2') }}

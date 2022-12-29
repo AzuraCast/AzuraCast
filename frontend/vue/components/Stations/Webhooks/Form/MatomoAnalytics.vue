@@ -1,8 +1,12 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="form_config_matomo_url" :field="form.config.matomo_url"
-                                  input-type="url">
+            <b-wrapped-form-group
+                id="form_config_matomo_url"
+                class="col-md-12"
+                :field="form.config.matomo_url"
+                input-type="url"
+            >
                 <template #label>
                     {{ $gettext('Matomo Installation Base URL') }}
                 </template>
@@ -11,7 +15,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_site_id" :field="form.config.site_id">
+            <b-wrapped-form-group
+                id="form_config_site_id"
+                class="col-md-6"
+                :field="form.config.site_id"
+            >
                 <template #label>
                     {{ $gettext('Matomo Site ID') }}
                 </template>
@@ -20,7 +28,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
+            <b-wrapped-form-group
+                id="form_config_token"
+                class="col-md-6"
+                :field="form.config.token"
+            >
                 <template #label>
                     {{ $gettext('Matomo API Token') }}
                 </template>

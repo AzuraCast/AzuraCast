@@ -1,8 +1,11 @@
 <template>
     <b-form-fieldset>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_type"
-                                  :field="form.frontend_type">
+            <b-wrapped-form-group
+                id="edit_form_frontend_type"
+                class="col-md-12"
+                :field="form.frontend_type"
+            >
                 <template #label>
                     {{ $gettext('Broadcasting Service') }}
                 </template>
@@ -10,9 +13,12 @@
                     {{ $gettext('This software delivers your broadcast to the listening audience.') }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" :options="frontendTypeOptions"
-                                        v-model="props.field.$model">
-                    </b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="frontendTypeOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
         </div>
@@ -21,15 +27,21 @@
     <b-form-fieldset v-if="isLocalFrontend">
         <b-form-fieldset v-if="isShoutcastFrontend">
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_license_id"
-                                      :field="form.frontend_config.sc_license_id">
+                <b-wrapped-form-group
+                    id="edit_form_frontend_sc_license_id"
+                    class="col-md-6"
+                    :field="form.frontend_config.sc_license_id"
+                >
                     <template #label>
                         {{ $gettext('Shoutcast License ID') }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_sc_user_id"
-                                      :field="form.frontend_config.sc_user_id">
+                <b-wrapped-form-group
+                    id="edit_form_frontend_sc_user_id"
+                    class="col-md-6"
+                    :field="form.frontend_config.sc_user_id"
+                >
                     <template #label>
                         {{ $gettext('Shoutcast User ID') }}
                     </template>
@@ -39,8 +51,11 @@
 
         <b-form-fieldset>
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_source_pw"
-                                      :field="form.frontend_config.source_pw">
+                <b-wrapped-form-group
+                    id="edit_form_frontend_source_pw"
+                    class="col-md-6"
+                    :field="form.frontend_config.source_pw"
+                >
                     <template #label>
                         {{ $gettext('Customize Source Password') }}
                     </template>
@@ -49,8 +64,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_frontend_admin_pw"
-                                      :field="form.frontend_config.admin_pw">
+                <b-wrapped-form-group
+                    id="edit_form_frontend_admin_pw"
+                    class="col-md-6"
+                    :field="form.frontend_config.admin_pw"
+                >
                     <template #label>
                         {{ $gettext('Customize Administrator Password') }}
                     </template>
@@ -59,9 +77,15 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_frontend_port"
-                                      :field="form.frontend_config.port" input-type="number"
-                                      :input-attrs="{min: '0'}" advanced>
+                <b-wrapped-form-group
+                    v-if="showAdvanced"
+                    id="edit_form_frontend_port"
+                    class="col-md-6"
+                    :field="form.frontend_config.port"
+                    input-type="number"
+                    :input-attrs="{min: '0'}"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Customize Broadcasting Port') }}
                     </template>
@@ -72,8 +96,13 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_max_listeners"
-                                      :field="form.frontend_config.max_listeners" advanced>
+                <b-wrapped-form-group
+                    v-if="showAdvanced"
+                    id="edit_form_max_listeners"
+                    class="col-md-6"
+                    :field="form.frontend_config.max_listeners"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Maximum Listeners') }}
                     </template>
@@ -89,9 +118,13 @@
         <b-form-fieldset v-if="showAdvanced">
             <div class="form-row">
                 <b-col md="5">
-                    <b-wrapped-form-group id="edit_form_frontend_banned_ips"
-                                          :field="form.frontend_config.banned_ips" input-type="textarea"
-                                          :input-attrs="{class: 'text-preformatted'}" advanced>
+                    <b-wrapped-form-group
+                        id="edit_form_frontend_banned_ips"
+                        :field="form.frontend_config.banned_ips"
+                        input-type="textarea"
+                        :input-attrs="{class: 'text-preformatted'}"
+                        advanced
+                    >
                         <template #label>
                             {{ $gettext('Banned IP Addresses') }}
                         </template>
@@ -100,9 +133,13 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group id="edit_form_frontend_allowed_ips"
-                                          :field="form.frontend_config.allowed_ips" input-type="textarea"
-                                          :input-attrs="{class: 'text-preformatted'}" advanced>
+                    <b-wrapped-form-group
+                        id="edit_form_frontend_allowed_ips"
+                        :field="form.frontend_config.allowed_ips"
+                        input-type="textarea"
+                        :input-attrs="{class: 'text-preformatted'}"
+                        advanced
+                    >
                         <template #label>
                             {{ $gettext('Allowed IP Addresses') }}
                         </template>
@@ -111,9 +148,13 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group id="edit_form_frontend_banned_user_agents"
-                                          :field="form.frontend_config.banned_user_agents" input-type="textarea"
-                                          :input-attrs="{class: 'text-preformatted'}" advanced>
+                    <b-wrapped-form-group
+                        id="edit_form_frontend_banned_user_agents"
+                        :field="form.frontend_config.banned_user_agents"
+                        input-type="textarea"
+                        :input-attrs="{class: 'text-preformatted'}"
+                        advanced
+                    >
                         <template #label>
                             {{ $gettext('Banned User Agents') }}
                         </template>
@@ -123,9 +164,12 @@
                     </b-wrapped-form-group>
                 </b-col>
 
-                <b-wrapped-form-group class="col-md-7" id="edit_form_frontend_banned_countries"
-                                      :field="form.frontend_config.banned_countries"
-                                      advanced>
+                <b-wrapped-form-group
+                    id="edit_form_frontend_banned_countries"
+                    class="col-md-7"
+                    :field="form.frontend_config.banned_countries"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Banned Countries') }}
                     </template>
@@ -133,11 +177,19 @@
                         {{ $gettext('Select the countries that are not allowed to connect to the streams.') }}
                     </template>
                     <template #default="props">
-                        <b-form-select :id="props.id" v-model="props.field.$model"
-                                       :options="countryOptions" style="min-height: 300px;"
-                                       multiple></b-form-select>
+                        <b-form-select
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :options="countryOptions"
+                            style="min-height: 300px;"
+                            multiple
+                        />
 
-                        <b-button block variant="outline-primary" @click.prevent="clearCountries">
+                        <b-button
+                            block
+                            variant="outline-primary"
+                            @click.prevent="clearCountries"
+                        >
                             {{ $gettext('Clear List') }}
                         </b-button>
                     </template>
@@ -158,10 +210,14 @@
             </template>
 
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_custom_config"
-                                      :field="form.frontend_config.custom_config" input-type="textarea"
-                                      :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
-                                      advanced>
+                <b-wrapped-form-group
+                    id="edit_form_frontend_custom_config"
+                    class="col-md-12"
+                    :field="form.frontend_config.custom_config"
+                    input-type="textarea"
+                    :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Custom Configuration') }}
                     </template>

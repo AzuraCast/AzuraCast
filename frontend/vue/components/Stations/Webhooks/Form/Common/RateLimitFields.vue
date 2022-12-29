@@ -1,11 +1,18 @@
 <template>
-    <b-wrapped-form-group class="col-md-12" id="form_config_rate_limit" :field="form.config.rate_limit">
+    <b-wrapped-form-group
+        id="form_config_rate_limit"
+        class="col-md-12"
+        :field="form.config.rate_limit"
+    >
         <template #label>
             {{ $gettext('Only Post Once Every...') }}
         </template>
         <template #default="props">
-            <b-form-select :id="props.id" :options="rateLimitOptions" v-model="props.field.$model">
-            </b-form-select>
+            <b-form-select
+                :id="props.id"
+                v-model="props.field.$model"
+                :options="rateLimitOptions"
+            />
         </template>
     </b-wrapped-form-group>
 </template>

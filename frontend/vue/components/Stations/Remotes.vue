@@ -1,7 +1,9 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('Remote Relays') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('Remote Relays') }}
+            </h2>
         </b-card-header>
 
         <info-card>
@@ -13,16 +15,28 @@
         </info-card>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <icon icon="add"></icon>
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
                 {{ $gettext('Add Remote Relay') }}
             </b-button>
         </b-card-body>
 
-        <data-table ref="$dataTable" id="station_remotes" paginated :fields="fields" :api-url="listUrl">
+        <data-table
+            id="station_remotes"
+            ref="$dataTable"
+            paginated
+            :fields="fields"
+            :api-url="listUrl"
+        >
             <template #cell(display_name)="row">
                 <h5 class="m-0">
-                    <a :href="row.item.url" target="_blank">{{ row.item.display_name }}</a>
+                    <a
+                        :href="row.item.url"
+                        target="_blank"
+                    >{{ row.item.display_name }}</a>
                 </h5>
             </template>
             <template #cell(enable_autodj)="row">
@@ -35,11 +49,22 @@
                 </template>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm" v-if="row.item.is_editable">
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                <b-button-group
+                    v-if="row.item.is_editable"
+                    size="sm"
+                >
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -47,8 +72,12 @@
         </data-table>
     </b-card>
 
-    <remote-edit-modal ref="$editModal" :create-url="listUrl"
-                       @relist="relist" @needs-restart="mayNeedRestart"></remote-edit-modal>
+    <remote-edit-modal
+        ref="$editModal"
+        :create-url="listUrl"
+        @relist="relist"
+        @needs-restart="mayNeedRestart"
+    />
 </template>
 
 <script setup>

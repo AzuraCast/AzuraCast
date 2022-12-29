@@ -1,23 +1,34 @@
 <template>
-    <b-tab :title="$gettext('Basic Info')" active>
+    <b-tab
+        :title="$gettext('Basic Info')"
+        active
+    >
         <b-form-group>
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_type" :field="form.type">
+                <b-wrapped-form-group
+                    id="edit_form_type"
+                    class="col-md-12"
+                    :field="form.type"
+                >
                     <template #label>
                         {{ $gettext('Remote Station Type') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
-                            stacked
                             :id="props.id"
-                            :state="props.state"
                             v-model="props.field.$model"
+                            stacked
+                            :state="props.state"
                             :options="typeOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_display_name" :field="form.display_name">
+                <b-wrapped-form-group
+                    id="edit_form_display_name"
+                    class="col-md-6"
+                    :field="form.display_name"
+                >
                     <template #label>
                         {{ $gettext('Display Name') }}
                     </template>
@@ -28,7 +39,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_url" :field="form.url">
+                <b-wrapped-form-group
+                    id="edit_form_url"
+                    class="col-md-6"
+                    :field="form.url"
+                >
                     <template #label>
                         {{ $gettext('Remote Station Listening URL') }}
                     </template>
@@ -39,7 +54,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_mount" :field="form.mount">
+                <b-wrapped-form-group
+                    id="edit_form_mount"
+                    class="col-md-6"
+                    :field="form.mount"
+                >
                     <template #label>
                         {{ $gettext('Remote Station Listening Mountpoint/SID') }}
                     </template>
@@ -50,7 +69,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_admin_password" :field="form.admin_password">
+                <b-wrapped-form-group
+                    id="edit_form_admin_password"
+                    class="col-md-6"
+                    :field="form.admin_password"
+                >
                     <template #label>
                         {{ $gettext('Remote Station Administrator Password') }}
                     </template>
@@ -61,8 +84,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_visible_on_public_pages"
-                                         :field="form.is_visible_on_public_pages">
+                <b-wrapped-form-checkbox
+                    id="edit_form_is_visible_on_public_pages"
+                    class="col-md-6"
+                    :field="form.is_visible_on_public_pages"
+                >
                     <template #label>
                         {{ $gettext('Show on Public Pages') }}
                     </template>
@@ -72,7 +98,6 @@
                         }}
                     </template>
                 </b-wrapped-form-checkbox>
-
             </div>
         </b-form-group>
     </b-tab>

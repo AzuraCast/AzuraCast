@@ -1,15 +1,25 @@
 <template>
-    <b-tab :title="$gettext('Basic Information')" active>
+    <b-tab
+        :title="$gettext('Basic Information')"
+        active
+    >
         <b-form-group>
             <div class="form-row">
-
-                <b-wrapped-form-group class="col-md-6" id="form_edit_title" :field="form.title">
+                <b-wrapped-form-group
+                    id="form_edit_title"
+                    class="col-md-6"
+                    :field="form.title"
+                >
                     <template #label>
                         {{ $gettext('Episode') }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_link" :field="form.link">
+                <b-wrapped-form-group
+                    id="form_edit_link"
+                    class="col-md-6"
+                    :field="form.link"
+                >
                     <template #label>
                         {{ $gettext('Website') }}
                     </template>
@@ -18,8 +28,12 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description"
-                                      input-type="textarea">
+                <b-wrapped-form-group
+                    id="form_edit_description"
+                    class="col-md-12"
+                    :field="form.description"
+                    input-type="textarea"
+                >
                     <template #label>
                         {{ $gettext('Description') }}
                     </template>
@@ -30,7 +44,11 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_publish_date" :field="form.publish_date">
+                <b-wrapped-form-group
+                    id="form_edit_publish_date"
+                    class="col-md-6"
+                    :field="form.publish_date"
+                >
                     <template #label>
                         {{ $gettext('Publish Date') }}
                     </template>
@@ -38,12 +56,20 @@
                         {{ $gettext('The date when the episode should be published.') }}
                     </template>
                     <template #default="props">
-                        <b-form-datepicker :id="props.id" v-model="props.field.$model" :state="props.state"
-                                           :locale="locale"></b-form-datepicker>
+                        <b-form-datepicker
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :state="props.state"
+                            :locale="locale"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_edit_publish_time" :field="form.publish_time">
+                <b-wrapped-form-group
+                    id="form_edit_publish_time"
+                    class="col-md-6"
+                    :field="form.publish_time"
+                >
                     <template #label>
                         {{ $gettext('Publish Time') }}
                     </template>
@@ -53,12 +79,20 @@
                         }}
                     </template>
                     <template #default="props">
-                        <b-form-timepicker :id="props.id" v-model="props.field.$model"
-                                           :state="props.state" :locale="locale"></b-form-timepicker>
+                        <b-form-timepicker
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :state="props.state"
+                            :locale="locale"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-12" id="form_edit_explicit" :field="form.explicit">
+                <b-wrapped-form-checkbox
+                    id="form_edit_explicit"
+                    class="col-md-12"
+                    :field="form.explicit"
+                >
                     <template #label>
                         {{ $gettext('Contains explicit content') }}
                     </template>

@@ -1,5 +1,5 @@
 <template>
-    <b-modal ref="modal"></b-modal>
+    <b-modal ref="modal" />
 </template>
 
 <script>
@@ -10,12 +10,12 @@ import mergeExisting from "~/functions/mergeExisting";
 export default {
     name: 'BaseEditModal',
     components: {ModalForm},
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    emits: ['relist'],
     props: {
         createUrl: String
+    },
+    emits: ['relist'],
+    setup() {
+        return {v$: useVuelidate()}
     },
     data() {
         return {

@@ -5,59 +5,100 @@
                 <b-col md="7">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 pr-3">
-                            <album-art :src="podcast.art"></album-art>
+                            <album-art :src="podcast.art" />
                         </div>
                         <div class="flex-fill">
-                            <h2 class="card-title">{{ podcast.title }}</h2>
-                            <h4 class="card-subtitle text-muted">{{ $gettext('Episodes') }}</h4>
+                            <h2 class="card-title">
+                                {{ podcast.title }}
+                            </h2>
+                            <h4 class="card-subtitle text-muted">
+                                {{ $gettext('Episodes') }}
+                            </h4>
                         </div>
                     </div>
                 </b-col>
-                <b-col md="5" class="text-right text-white-50">
-                    <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
+                <b-col
+                    md="5"
+                    class="text-right text-white-50"
+                >
+                    <stations-common-quota
+                        ref="quota"
+                        :quota-url="quotaUrl"
+                    />
                 </b-col>
             </b-row>
         </b-card-header>
 
         <b-card-body body-class="card-padding-sm">
             <div class="buttons">
-                <b-button variant="bg" @click="doClearPodcast()">
-                    <icon icon="arrow_back"></icon>
+                <b-button
+                    variant="bg"
+                    @click="doClearPodcast()"
+                >
+                    <icon icon="arrow_back" />
                     {{ $gettext('All Podcasts') }}
                 </b-button>
 
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <i class="material-icons" aria-hidden="true">add</i>
+                <b-button
+                    variant="outline-primary"
+                    @click.prevent="doCreate"
+                >
+                    <i
+                        class="material-icons"
+                        aria-hidden="true"
+                    >add</i>
                     {{ $gettext('Add Episode') }}
                 </b-button>
             </div>
         </b-card-body>
 
-        <data-table ref="datatable" id="station_podcast_episodes" paginated :fields="fields" :responsive="false"
-                    :api-url="podcast.links.episodes">
+        <data-table
+            id="station_podcast_episodes"
+            ref="datatable"
+            paginated
+            :fields="fields"
+            :responsive="false"
+            :api-url="podcast.links.episodes"
+        >
             <template #cell(art)="row">
-                <album-art :src="row.item.art"></album-art>
+                <album-art :src="row.item.art" />
             </template>
             <template #cell(title)="row">
-                <h5 class="m-0">{{ row.item.title }}</h5>
-                <a :href="row.item.links.public" target="_blank">{{ $gettext('Public Page') }}</a>
+                <h5 class="m-0">
+                    {{ row.item.title }}
+                </h5>
+                <a
+                    :href="row.item.links.public"
+                    target="_blank"
+                >{{ $gettext('Public Page') }}</a>
             </template>
             <template #cell(podcast_media)="row">
                 <template v-if="row.item.media">
                     <span>{{ row.item.media.original_name }}</span>
-                    <br/>
+                    <br>
                     <small>{{ row.item.media.length_text }}</small>
                 </template>
             </template>
             <template #cell(explicit)="row">
-                <span class="badge badge-danger" v-if="row.item.explicit">{{ $gettext('Explicit') }}</span>
+                <span
+                    v-if="row.item.explicit"
+                    class="badge badge-danger"
+                >{{ $gettext('Explicit') }}</span>
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -65,9 +106,16 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editEpisodeModal" :create-url="podcast.links.episodes" :station-time-zone="stationTimeZone"
-                :new-art-url="podcast.links.episode_new_art" :new-media-url="podcast.links.episode_new_media"
-                :locale="locale" :podcast-id="podcast.id" @relist="relist"></edit-modal>
+    <edit-modal
+        ref="editEpisodeModal"
+        :create-url="podcast.links.episodes"
+        :station-time-zone="stationTimeZone"
+        :new-art-url="podcast.links.episode_new_art"
+        :new-media-url="podcast.links.episode_new_media"
+        :locale="locale"
+        :podcast-id="podcast.id"
+        @relist="relist"
+    />
 </template>
 
 <script>

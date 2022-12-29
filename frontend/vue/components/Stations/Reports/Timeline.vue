@@ -6,18 +6,33 @@
                     {{ $gettext('Song Playback Timeline') }}
                 </h2>
                 <div class="flex-shrink">
-                    <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
-                        <icon icon="file_download"></icon>
+                    <a
+                        id="btn-export"
+                        class="btn btn-bg"
+                        :href="exportUrl"
+                        target="_blank"
+                    >
+                        <icon icon="file_download" />
                         {{ $gettext('Download CSV') }}
                     </a>
 
-                    <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"
-                                         @update="relist"></date-range-dropdown>
+                    <date-range-dropdown
+                        v-model="dateRange"
+                        time-picker
+                        :tz="stationTimeZone"
+                        @update="relist"
+                    />
                 </div>
             </div>
         </div>
-        <data-table ref="datatable" responsive paginated select-fields
-                    :fields="fields" :apiUrl="apiUrl">
+        <data-table
+            ref="datatable"
+            responsive
+            paginated
+            select-fields
+            :fields="fields"
+            :api-url="apiUrl"
+        >
             <template #cell(datetime)="row">
                 {{ formatTimestamp(row.item.played_at) }}
             </template>
@@ -29,21 +44,21 @@
             </template>
             <template #cell(delta)="row">
                 <span class="typography-subheading">
-                <template v-if="row.item.delta_total > 0">
-                    <span class="text-success">
-                        <icon icon="trending_up"></icon>
-                        {{ abs(row.item.delta_total) }}
-                    </span>
-                </template>
-                <template v-else-if="row.item.delta_total < 0">
-                    <span class="text-danger">
-                        <icon icon="trending_down"></icon>
-                        {{ abs(row.item.delta_total) }}
-                    </span>
-                </template>
-                <template v-else>
-                    0
-                </template>
+                    <template v-if="row.item.delta_total > 0">
+                        <span class="text-success">
+                            <icon icon="trending_up" />
+                            {{ abs(row.item.delta_total) }}
+                        </span>
+                    </template>
+                    <template v-else-if="row.item.delta_total < 0">
+                        <span class="text-danger">
+                            <icon icon="trending_down" />
+                            {{ abs(row.item.delta_total) }}
+                        </span>
+                    </template>
+                    <template v-else>
+                        0
+                    </template>
                 </span>
             </template>
             <template #cell(song)="row">

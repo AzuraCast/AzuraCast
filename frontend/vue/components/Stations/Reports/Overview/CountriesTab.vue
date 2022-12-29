@@ -1,6 +1,10 @@
 <template>
-    <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
-                         field-key="country" :field-label="$gettext('Country')">
+    <common-metrics-view
+        :date-range="dateRange"
+        :api-url="apiUrl"
+        field-key="country"
+        :field-label="$gettext('Country')"
+    >
         <template #by_listeners_legend>
             {{ $gettext('Top Countries by Listeners') }}
         </template>

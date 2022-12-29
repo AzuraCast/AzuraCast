@@ -1,8 +1,15 @@
 <template>
-    <b-tab :title="$gettext('Basic Info')" active>
+    <b-tab
+        :title="$gettext('Basic Info')"
+        active
+    >
         <b-form-group>
             <div class="form-row mb-3">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
+                <b-wrapped-form-group
+                    id="edit_form_name"
+                    class="col-md-12"
+                    :field="form.name"
+                >
                     <template #label>
                         {{ $gettext('Programmatic Name') }}
                     </template>
@@ -13,32 +20,40 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_format" :field="form.format">
+                <b-wrapped-form-group
+                    id="edit_form_format"
+                    class="col-md-6"
+                    :field="form.format"
+                >
                     <template #label>
                         {{ $gettext('Audio Format') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
-                            stacked
                             :id="props.id"
-                            :state="props.state"
                             v-model="props.field.$model"
+                            stacked
+                            :state="props.state"
                             :options="formatOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_bitrate" :field="form.bitrate">
+                <b-wrapped-form-group
+                    id="edit_form_bitrate"
+                    class="col-md-6"
+                    :field="form.bitrate"
+                >
                     <template #label>
                         {{ $gettext('Audio Bitrate (kbps)') }}
                     </template>
                     <template #default="props">
                         <b-form-radio-group
-                            stacked
                             :id="props.id"
-                            :state="props.state"
                             v-model="props.field.$model"
+                            stacked
+                            :state="props.state"
                             :options="bitrateOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
             </div>

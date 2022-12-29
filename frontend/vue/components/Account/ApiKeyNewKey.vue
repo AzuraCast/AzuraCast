@@ -1,5 +1,7 @@
 <template>
-    <h3 class="card-subtitle">{{ $gettext('New Key Generated') }}</h3>
+    <h3 class="card-subtitle">
+        {{ $gettext('New Key Generated') }}
+    </h3>
 
     <p class="card-text">
         <b>{{ $gettext('Important: copy the key below before continuing!') }}</b>
@@ -13,7 +15,7 @@
     <div class="px-2">
         <code id="api_key">{{ newKey }}</code>
         <div class="buttons pt-2">
-            <copy-to-clipboard-button :text="newKey"></copy-to-clipboard-button>
+            <copy-to-clipboard-button :text="newKey" />
         </div>
     </div>
 

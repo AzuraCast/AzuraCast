@@ -1,6 +1,9 @@
 <template>
     <div id="song_history">
-        <song-history :show-album-art="showAlbumArt" :history="history"></song-history>
+        <song-history
+            :show-album-art="showAlbumArt"
+            :history="history"
+        />
     </div>
 </template>
 

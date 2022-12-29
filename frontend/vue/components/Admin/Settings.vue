@@ -1,6 +1,9 @@
 <template>
-    <form class="form vue-form" @submit.prevent="submit">
-        <slot name="preCard"></slot>
+    <form
+        class="form vue-form"
+        @submit.prevent="submit"
+    >
+        <slot name="preCard" />
 
         <b-card no-body>
             <div class="card-header bg-primary-dark">
@@ -11,18 +14,30 @@
                 </h2>
             </div>
 
-            <slot name="cardUpper"></slot>
+            <slot name="cardUpper" />
 
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+            <b-alert
+                variant="danger"
+                :show="error != null"
+            >
+                {{ error }}
+            </b-alert>
 
-            <b-overlay variant="card" :show="loading">
-                <b-tabs pills card lazy>
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
+                <b-tabs
+                    pills
+                    card
+                    lazy
+                >
                     <b-tab :title-link-class="getTabClass(v$.$validationGroups.generalTab)">
                         <template #title>
                             {{ $gettext('Settings') }}
                         </template>
 
-                        <settings-general-tab :form="v$"></settings-general-tab>
+                        <settings-general-tab :form="v$" />
                     </b-tab>
 
                     <b-tab :title-link-class="getTabClass(v$.$validationGroups.securityPrivacyTab)">
@@ -30,7 +45,7 @@
                             {{ $gettext('Security & Privacy') }}
                         </template>
 
-                        <settings-security-privacy-tab :form="v$"></settings-security-privacy-tab>
+                        <settings-security-privacy-tab :form="v$" />
                     </b-tab>
 
                     <b-tab :title-link-class="getTabClass(v$.$validationGroups.servicesTab)">
@@ -38,16 +53,22 @@
                             {{ $gettext('Services') }}
                         </template>
 
-                        <settings-services-tab :form="v$"
-                                               :release-channel="releaseChannel"
-                                               :test-message-url="testMessageUrl"
-                                               :acme-url="acmeUrl"></settings-services-tab>
+                        <settings-services-tab
+                            :form="v$"
+                            :release-channel="releaseChannel"
+                            :test-message-url="testMessageUrl"
+                            :acme-url="acmeUrl"
+                        />
                     </b-tab>
                 </b-tabs>
             </b-overlay>
 
             <b-card-body body-class="card-padding-sm">
-                <b-button size="lg" type="submit" :variant="(v$.$invalid) ? 'danger' : 'primary'">
+                <b-button
+                    size="lg"
+                    type="submit"
+                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                >
                     <slot name="submitButtonName">
                         {{ $gettext('Save Changes') }}
                     </slot>

@@ -1,19 +1,37 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <b-tabs content-class="mt-3" pills>
-            <mount-form-basic-info :form="v$.form"
-                                   :station-frontend-type="stationFrontendType"></mount-form-basic-info>
-            <mount-form-auto-dj :form="v$.form"
-                                :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
-            <mount-form-intro v-model="v$.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
-                              :new-intro-url="newIntroUrl"
-                              :edit-intro-url="record.links.intro"></mount-form-intro>
-            <mount-form-advanced v-if="showAdvanced" :form="v$.form"
-                                 :station-frontend-type="stationFrontendType"></mount-form-advanced>
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <mount-form-basic-info
+                :form="v$.form"
+                :station-frontend-type="stationFrontendType"
+            />
+            <mount-form-auto-dj
+                :form="v$.form"
+                :station-frontend-type="stationFrontendType"
+            />
+            <mount-form-intro
+                v-model="v$.form.intro_file.$model"
+                :record-has-intro="record.intro_path !== null"
+                :new-intro-url="newIntroUrl"
+                :edit-intro-url="record.links.intro"
+            />
+            <mount-form-advanced
+                v-if="showAdvanced"
+                :form="v$.form"
+                :station-frontend-type="stationFrontendType"
+            />
         </b-tabs>
-
     </modal-form>
 </template>
 <script>
@@ -30,12 +48,8 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
-    emits: ['needs-restart'],
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    mixins: [BaseEditModal],
     components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo},
+    mixins: [BaseEditModal],
     props: {
         stationFrontendType: String,
         newIntroUrl: String,
@@ -43,6 +57,10 @@ export default {
             type: Boolean,
             default: true
         },
+    },
+    emits: ['needs-restart'],
+    setup() {
+        return {v$: useVuelidate()}
     },
     data() {
         return {

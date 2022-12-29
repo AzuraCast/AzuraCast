@@ -2,33 +2,54 @@
     <div class="public-page">
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">{{ stationName }}</h2>
+                <h2 class="card-title">
+                    {{ stationName }}
+                </h2>
 
                 <div class="stations nowplaying">
-                    <radio-player v-bind="$props" @np_updated="onNowPlayingUpdate"></radio-player>
+                    <radio-player
+                        v-bind="$props"
+                        @np_updated="onNowPlayingUpdate"
+                    />
                 </div>
             </div>
 
             <div class="card-actions">
-                <a class="btn btn-sm btn-outline-secondary" v-b-modal.song_history_modal>
-                    <icon icon="history"></icon>
+                <a
+                    v-b-modal.song_history_modal
+                    class="btn btn-sm btn-outline-secondary"
+                >
+                    <icon icon="history" />
                     {{ $gettext('Song History') }}
                 </a>
-                <a class="btn btn-sm btn-outline-secondary" v-if="enableRequests" v-b-modal.request_modal>
-                    <icon icon="help_outline"></icon>
+                <a
+                    v-if="enableRequests"
+                    v-b-modal.request_modal
+                    class="btn btn-sm btn-outline-secondary"
+                >
+                    <icon icon="help_outline" />
                     {{ $gettext('Request Song') }}
                 </a>
-                <a class="btn btn-sm btn-outline-secondary" :href="downloadPlaylistUri">
-                    <icon icon="file_download"></icon>
+                <a
+                    class="btn btn-sm btn-outline-secondary"
+                    :href="downloadPlaylistUri"
+                >
+                    <icon icon="file_download" />
                     {{ $gettext('Playlist') }}
                 </a>
             </div>
         </div>
     </div>
 
-    <song-history-modal :show-album-art="showAlbumArt" :history="history"></song-history-modal>
-    <request-modal :show-album-art="showAlbumArt" :request-list-uri="requestListUri"
-                   :custom-fields="customFields"></request-modal>
+    <song-history-modal
+        :show-album-art="showAlbumArt"
+        :history="history"
+    />
+    <request-modal
+        :show-album-art="showAlbumArt"
+        :request-list-uri="requestListUri"
+        :custom-fields="customFields"
+    />
 </template>
 
 <script setup>

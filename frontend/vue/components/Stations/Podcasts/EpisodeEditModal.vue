@@ -1,18 +1,34 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <episode-form-basic-info :form="v$.form" />
 
-        <b-tabs content-class="mt-3" pills>
-            <episode-form-basic-info :form="v$.form"></episode-form-basic-info>
+            <episode-form-media
+                v-model="v$.form.media_file.$model"
+                :record-has-media="record.has_media"
+                :new-media-url="newMediaUrl"
+                :edit-media-url="record.links.media"
+                :download-url="record.links.download"
+            />
 
-            <episode-form-media v-model="v$.form.media_file.$model" :record-has-media="record.has_media"
-                                :new-media-url="newMediaUrl" :edit-media-url="record.links.media"
-                                :download-url="record.links.download"></episode-form-media>
-
-            <podcast-common-artwork v-model="v$.form.artwork_file.$model" :artwork-src="record.art"
-                                    :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
+            <podcast-common-artwork
+                v-model="v$.form.artwork_file.$model"
+                :artwork-src="record.art"
+                :new-art-url="newArtUrl"
+                :edit-art-url="record.links.art"
+            />
         </b-tabs>
-
     </modal-form>
 </template>
 
@@ -29,9 +45,6 @@ import useVuelidate from "@vuelidate/core";
 export default {
     name: 'EditModal',
     components: {EpisodeFormMedia, PodcastCommonArtwork, EpisodeFormBasicInfo},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
@@ -39,6 +52,9 @@ export default {
         podcastId: String,
         newArtUrl: String,
         newMediaUrl: String
+    },
+    setup() {
+        return {v$: useVuelidate()}
     },
     data() {
         return {

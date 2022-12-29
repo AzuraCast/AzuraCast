@@ -1,27 +1,54 @@
 <template>
-    <b-modal id="streamer_broadcasts" size="lg" centered ref="modal" :title="$gettext('Streamer Broadcasts')">
+    <b-modal
+        id="streamer_broadcasts"
+        ref="modal"
+        size="lg"
+        centered
+        :title="$gettext('Streamer Broadcasts')"
+    >
         <template v-if="listUrl">
-            <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
-                <inline-player ref="player"></inline-player>
+            <div
+                style="min-height: 40px;"
+                class="flex-fill text-left bg-primary rounded mb-2"
+            >
+                <inline-player ref="player" />
             </div>
 
-            <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
-                        :fields="fields" :api-url="listUrl">
+            <data-table
+                id="station_streamer_broadcasts"
+                ref="datatable"
+                :show-toolbar="false"
+                :fields="fields"
+                :api-url="listUrl"
+            >
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
-                        <play-button class="file-icon" icon-class="outlined"
-                                     :url="row.item.recording?.links?.download"></play-button>
+                        <play-button
+                            class="file-icon"
+                            icon-class="outlined"
+                            :url="row.item.recording?.links?.download"
+                        />
                         &nbsp;
-                        <a class="name" :href="row.item.recording?.links?.download" target="_blank"
-                           :title="$gettext('Download')">
-                            <icon icon="cloud_download"></icon>
+                        <a
+                            class="name"
+                            :href="row.item.recording?.links?.download"
+                            target="_blank"
+                            :title="$gettext('Download')"
+                        >
+                            <icon icon="cloud_download" />
                         </a>
                     </template>
-                    <template v-else>&nbsp;</template>
+                    <template v-else>
+&nbsp;
+                    </template>
                 </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
+                        <b-button
+                            size="sm"
+                            variant="danger"
+                            @click.prevent="doDelete(row.item.links.delete)"
+                        >
                             {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
@@ -29,7 +56,10 @@
             </data-table>
         </template>
         <template #modal-footer>
-            <b-button variant="default" @click="close">
+            <b-button
+                variant="default"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
         </template>

@@ -1,6 +1,10 @@
 <template>
-    <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
-                         field-key="client" :field-label="$gettext('Client')">
+    <common-metrics-view
+        :date-range="dateRange"
+        :api-url="apiUrl"
+        field-key="client"
+        :field-label="$gettext('Client')"
+    >
         <template #by_listeners_legend>
             {{ $gettext('Clients by Listeners') }}
         </template>

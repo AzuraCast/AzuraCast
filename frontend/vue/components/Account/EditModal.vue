@@ -1,10 +1,17 @@
 <template>
-    <modal-form ref="$modal" :loading="loading" :title="$gettext('Edit Profile')" :error="error"
-                :disable-save-button="v$.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <account-edit-form :form="v$" :supported-locales="supportedLocales"></account-edit-form>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Edit Profile')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <account-edit-form
+            :form="v$"
+            :supported-locales="supportedLocales"
+        />
     </modal-form>
 </template>
 

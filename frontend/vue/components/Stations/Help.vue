@@ -8,10 +8,13 @@
                     </h2>
                 </div>
 
-                <log-list :url="logsUrl" @view="viewLog"></log-list>
+                <log-list
+                    :url="logsUrl"
+                    @view="viewLog"
+                />
             </div>
 
-            <streaming-log-modal ref="$modal"></streaming-log-modal>
+            <streaming-log-modal ref="$modal" />
         </div>
         <div class="col-md-4">
             <div class="card">
@@ -25,7 +28,10 @@
                         {{ $gettext('You can find answers for many common questions in our support documents.') }}
                     </p>
                     <p class="card-text">
-                        <a href="https://docs.azuracast.com/en/user-guide/troubleshooting" target="_blank">
+                        <a
+                            href="https://docs.azuracast.com/en/user-guide/troubleshooting"
+                            target="_blank"
+                        >
                             {{ $gettext('Support Documents') }}
                         </a>
                     </p>
@@ -36,9 +42,13 @@
                     </p>
                 </div>
                 <div class="card-actions">
-                    <a class="btn btn-outline-primary" role="button"
-                       href="https://github.com/AzuraCast/AzuraCast/issues/new/choose" target="_blank">
-                        <icon icon="contact_support"></icon>
+                    <a
+                        class="btn btn-outline-primary"
+                        role="button"
+                        href="https://github.com/AzuraCast/AzuraCast/issues/new/choose"
+                        target="_blank"
+                    >
+                        <icon icon="contact_support" />
                         {{ $gettext('Add New GitHub Issue') }}
                     </a>
                 </div>

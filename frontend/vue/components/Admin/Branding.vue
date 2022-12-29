@@ -4,7 +4,10 @@
             {{ $gettext('Custom Branding') }}
         </h2>
 
-        <section class="card mb-3" role="region">
+        <section
+            class="card mb-3"
+            role="region"
+        >
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
                     {{ $gettext('Upload Custom Assets') }}
@@ -12,17 +15,28 @@
             </div>
             <div class="card-body">
                 <ul class="list-unstyled">
-                    <custom-asset-form id="asset_background" class="mb-3" :api-url="backgroundApiUrl"
-                                       :caption="$gettext('Public Page Background')"></custom-asset-form>
-                    <custom-asset-form id="asset_album_art" class="mb-3" :api-url="albumArtApiUrl"
-                                       :caption="$gettext('Default Album Art')"></custom-asset-form>
-                    <custom-asset-form id="asset_browser_icon" :api-url="browserIconApiUrl"
-                                       :caption="$gettext('Browser Icon')"></custom-asset-form>
+                    <custom-asset-form
+                        id="asset_background"
+                        class="mb-3"
+                        :api-url="backgroundApiUrl"
+                        :caption="$gettext('Public Page Background')"
+                    />
+                    <custom-asset-form
+                        id="asset_album_art"
+                        class="mb-3"
+                        :api-url="albumArtApiUrl"
+                        :caption="$gettext('Default Album Art')"
+                    />
+                    <custom-asset-form
+                        id="asset_browser_icon"
+                        :api-url="browserIconApiUrl"
+                        :caption="$gettext('Browser Icon')"
+                    />
                 </ul>
             </div>
         </section>
 
-        <branding-form :api-url="settingsApiUrl"></branding-form>
+        <branding-form :api-url="settingsApiUrl" />
     </div>
 </template>
 

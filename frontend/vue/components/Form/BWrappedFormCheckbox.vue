@@ -1,30 +1,57 @@
 <template>
-    <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
+    <b-form-group
+        v-bind="$attrs"
+        :label-for="id"
+        :state="fieldState"
+    >
         <template #default>
-            <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-checkbox v-bind="inputAttrs" v-model="field.$model" :id="id" :name="name">
-                    <slot name="label"></slot>
-                    <span v-if="isRequired" class="text-danger">
+            <slot
+                name="default"
+                v-bind="{ id, field, state: fieldState }"
+            >
+                <b-form-checkbox
+                    v-bind="inputAttrs"
+                    :id="id"
+                    v-model="field.$model"
+                    :name="name"
+                >
+                    <slot name="label" />
+                    <span
+                        v-if="isRequired"
+                        class="text-danger"
+                    >
                         <span aria-hidden="true">*</span>
                         <span class="sr-only">Required</span>
                     </span>
-                    <span v-if="advanced" class="badge small badge-primary">
+                    <span
+                        v-if="advanced"
+                        class="badge small badge-primary"
+                    >
                         {{ $gettext('Advanced') }}
                     </span>
                 </b-form-checkbox>
 
                 <b-form-invalid-feedback :state="fieldState">
-                    <vuelidate-error :field="field"></vuelidate-error>
+                    <vuelidate-error :field="field" />
                 </b-form-invalid-feedback>
             </slot>
         </template>
 
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps"></slot>
+            <slot
+                name="description"
+                v-bind="slotProps"
+            />
         </template>
 
-        <template v-for="(_, slot) of filteredSlots" v-slot:[slot]="scope">
-            <slot :name="slot" v-bind="scope"></slot>
+        <template
+            v-for="(_, slot) of filteredSlots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
     </b-form-group>
 </template>

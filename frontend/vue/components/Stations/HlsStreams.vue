@@ -1,7 +1,9 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('HLS Streams') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('HLS Streams') }}
+            </h2>
         </b-card-header>
 
         <info-card>
@@ -13,16 +15,26 @@
         </info-card>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <icon icon="add"></icon>
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
                 {{ $gettext('Add HLS Stream') }}
             </b-button>
         </b-card-body>
 
-        <data-table ref="$dataTable" id="station_hls_streams" :fields="fields" paginated
-                    :api-url="listUrl">
+        <data-table
+            id="station_hls_streams"
+            ref="$dataTable"
+            :fields="fields"
+            paginated
+            :api-url="listUrl"
+        >
             <template #cell(name)="row">
-                <h5 class="m-0">{{ row.item.name }}</h5>
+                <h5 class="m-0">
+                    {{ row.item.name }}
+                </h5>
             </template>
             <template #cell(format)="row">
                 {{ upper(row.item.format) }}
@@ -32,10 +44,18 @@
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -43,7 +63,12 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="$editModal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
+    <edit-modal
+        ref="$editModal"
+        :create-url="listUrl"
+        @relist="relist"
+        @needs-restart="mayNeedRestart"
+    />
 </template>
 
 <script setup>

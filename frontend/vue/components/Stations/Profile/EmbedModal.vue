@@ -1,10 +1,22 @@
 <template>
-    <b-modal size="lg" id="embed_modal" ref="$modal" :title="$gettext('Embed Widgets')" hide-footer no-enforce-focus>
+    <b-modal
+        id="embed_modal"
+        ref="$modal"
+        size="lg"
+        :title="$gettext('Embed Widgets')"
+        hide-footer
+        no-enforce-focus
+    >
         <b-row>
             <b-col md="7">
-                <b-card class="mb-3" no-body>
+                <b-card
+                    class="mb-3"
+                    no-body
+                >
                     <div class="card-header bg-primary-dark">
-                        <h2 class="card-title">{{ $gettext('Customize') }}</h2>
+                        <h2 class="card-title">
+                            {{ $gettext('Customize') }}
+                        </h2>
                     </div>
                     <b-card-body>
                         <b-row>
@@ -16,7 +28,7 @@
                                         :options="types"
                                         name="embed_type"
                                         stacked
-                                    ></b-form-radio-group>
+                                    />
                                 </b-form-group>
                             </b-col>
                             <b-col md="6">
@@ -27,7 +39,7 @@
                                         :options="themes"
                                         name="embed_theme"
                                         stacked
-                                    ></b-form-radio-group>
+                                    />
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -35,26 +47,44 @@
                 </b-card>
             </b-col>
             <b-col md="5">
-                <b-card class="mb-3" no-body>
+                <b-card
+                    class="mb-3"
+                    no-body
+                >
                     <div class="card-header bg-primary-dark">
-                        <h2 class="card-title">{{ $gettext('Embed Code') }}</h2>
+                        <h2 class="card-title">
+                            {{ $gettext('Embed Code') }}
+                        </h2>
                     </div>
                     <b-card-body>
-                        <textarea class="full-width form-control text-preformatted" spellcheck="false"
-                                  style="height: 100px;">{{ embedCode }}</textarea>
-                        <copy-to-clipboard-button :text="embedCode"></copy-to-clipboard-button>
+                        <textarea
+                            class="full-width form-control text-preformatted"
+                            spellcheck="false"
+                            style="height: 100px;"
+                        >{{ embedCode }}</textarea>
+                        <copy-to-clipboard-button :text="embedCode" />
                     </b-card-body>
                 </b-card>
             </b-col>
         </b-row>
 
-        <b-card class="mb-3" no-body>
+        <b-card
+            class="mb-3"
+            no-body
+        >
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title">{{ $gettext('Preview') }}</h2>
+                <h2 class="card-title">
+                    {{ $gettext('Preview') }}
+                </h2>
             </div>
             <b-card-body :body-bg-variant="selectedTheme">
-                <iframe width="100%" :src="embedUrl" frameborder="0" style="width: 100%; border: 0;"
-                        :style="{ 'min-height': this.embedHeight }"></iframe>
+                <iframe
+                    width="100%"
+                    :src="embedUrl"
+                    frameborder="0"
+                    style="width: 100%; border: 0;"
+                    :style="{ 'min-height': embedHeight }"
+                />
             </b-card-body>
         </b-card>
     </b-modal>

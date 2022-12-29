@@ -1,7 +1,11 @@
 <template>
     <b-tab :title="$gettext('AutoDJ')">
         <div class="form-row mb-3">
-            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
+            <b-wrapped-form-checkbox
+                id="edit_form_enable_autodj"
+                class="col-md-12"
+                :field="form.enable_autodj"
+            >
                 <template #label>
                     {{ $gettext('Broadcast AutoDJ to Remote Station') }}
                 </template>
@@ -13,29 +17,52 @@
             </b-wrapped-form-checkbox>
         </div>
 
-        <div class="form-row" v-if="form.enable_autodj.$model">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
+        <div
+            v-if="form.enable_autodj.$model"
+            class="form-row"
+        >
+            <b-wrapped-form-group
+                id="edit_form_autodj_format"
+                class="col-md-6"
+                :field="form.autodj_format"
+            >
                 <template #label>
                     {{ $gettext('AutoDJ Format') }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
-                                        :options="formatOptions"></b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="formatOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
-                                  v-if="formatSupportsBitrateOptions">
+            <b-wrapped-form-group
+                v-if="formatSupportsBitrateOptions"
+                id="edit_form_autodj_bitrate"
+                class="col-md-6"
+                :field="form.autodj_bitrate"
+            >
                 <template #label>
                     {{ $gettext('AutoDJ Bitrate (kbps)') }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
-                                        :options="bitrateOptions"></b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="bitrateOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_source_port" :field="form.source_port">
+            <b-wrapped-form-group
+                id="edit_form_source_port"
+                class="col-md-6"
+                :field="form.source_port"
+            >
                 <template #label>
                     {{ $gettext('Remote Station Source Port') }}
                 </template>
@@ -46,7 +73,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_source_mount" :field="form.source_mount">
+            <b-wrapped-form-group
+                id="edit_form_source_mount"
+                class="col-md-6"
+                :field="form.source_mount"
+            >
                 <template #label>
                     {{ $gettext('Remote Station Source Mountpoint/SID') }}
                 </template>
@@ -57,7 +88,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_source_username" :field="form.source_username">
+            <b-wrapped-form-group
+                id="edit_form_source_username"
+                class="col-md-6"
+                :field="form.source_username"
+            >
                 <template #label>
                     {{ $gettext('Remote Station Source Username') }}
                 </template>
@@ -68,7 +103,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_source_password" :field="form.source_password">
+            <b-wrapped-form-group
+                id="edit_form_source_password"
+                class="col-md-6"
+                :field="form.source_password"
+            >
                 <template #label>
                     {{ $gettext('Remote Station Source Password') }}
                 </template>
@@ -77,7 +116,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_public" :field="form.is_public">
+            <b-wrapped-form-checkbox
+                id="edit_form_is_public"
+                class="col-md-6"
+                :field="form.is_public"
+            >
                 <template #label>
                     {{ $gettext('Publish to "Yellow Pages" Directories') }}
                 </template>

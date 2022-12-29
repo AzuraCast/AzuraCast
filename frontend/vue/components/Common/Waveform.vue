@@ -3,8 +3,8 @@
         <b-row>
             <b-form-group class="col-md-12">
                 <div class="waveform__container">
-                    <div id="waveform-timeline"></div>
-                    <div id="waveform"></div>
+                    <div id="waveform-timeline" />
+                    <div id="waveform" />
                 </div>
             </b-form-group>
         </b-row>
@@ -17,27 +17,48 @@
                         </label>
                     </div>
                     <div class="flex-fill mx-3">
-                        <b-form-input id="waveform-zoom" v-model.number="zoom" type="range" min="0" max="256"
-                                      class="w-100"></b-form-input>
+                        <b-form-input
+                            id="waveform-zoom"
+                            v-model.number="zoom"
+                            type="range"
+                            min="0"
+                            max="256"
+                            class="w-100"
+                        />
                     </div>
                 </div>
             </b-col>
             <b-col md="5">
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <a class="btn btn-sm btn-outline-inverse" href="#" @click.prevent="volume = 0"
-                           :title="$gettext('Mute')">
-                            <icon icon="volume_mute"></icon>
+                        <a
+                            class="btn btn-sm btn-outline-inverse"
+                            href="#"
+                            :title="$gettext('Mute')"
+                            @click.prevent="volume = 0"
+                        >
+                            <icon icon="volume_mute" />
                         </a>
                     </div>
                     <div class="flex-fill mx-1">
-                        <input type="range" :title="$gettext('Volume')" class="player-volume-range custom-range w-100"
-                               min="0" max="100" step="1" v-model.number="volume">
+                        <input
+                            v-model.number="volume"
+                            type="range"
+                            :title="$gettext('Volume')"
+                            class="player-volume-range custom-range w-100"
+                            min="0"
+                            max="100"
+                            step="1"
+                        >
                     </div>
                     <div class="flex-shrink-0">
-                        <a class="btn btn-sm btn-outline-inverse" href="#" @click.prevent="volume = 100"
-                           :title="$gettext('Full Volume')">
-                            <icon icon="volume_up"></icon>
+                        <a
+                            class="btn btn-sm btn-outline-inverse"
+                            href="#"
+                            :title="$gettext('Full Volume')"
+                            @click.prevent="volume = 100"
+                        >
+                            <icon icon="volume_up" />
                         </a>
                     </div>
                 </div>

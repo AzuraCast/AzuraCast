@@ -1,7 +1,13 @@
 <template>
-    <section class="card" role="region" id="profile-backend">
+    <section
+        id="profile-backend"
+        class="card"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">{{ $gettext('AutoDJ Disabled') }}</h3>
+            <h3 class="card-title">
+                {{ $gettext('AutoDJ Disabled') }}
+            </h3>
         </div>
         <div class="card-body">
             <p class="card-text">

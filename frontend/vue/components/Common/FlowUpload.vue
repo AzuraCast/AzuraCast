@@ -1,71 +1,68 @@
 <template>
     <div class="flow-upload">
         <div class="upload-progress">
-            <template v-for="(file, key) in files.value" :key="key">
-                <div v-if="file.isVisible" class="uploading-file pt-1" :id="'file_upload_' + file.uniqueIdentifier"
-                     :class="{ 'text-success': file.isCompleted, 'text-danger': file.error }">
-                    <h6 class="fileuploadname m-0">{{ file.name }}</h6>
-                    <div v-if="!file.isCompleted" class="progress h-15 my-1">
-                        <div class="progress-bar h-15" role="progressbar" :style="{width: file.progressPercent+'%'}"
-                             :aria-valuenow="file.progressPercent" aria-valuemin="0" aria-valuemax="100"></div>
+            <template
+                v-for="(file, key) in files.value"
+                :key="key"
+            >
+                <div
+                    v-if="file.isVisible"
+                    :id="'file_upload_' + file.uniqueIdentifier"
+                    class="uploading-file pt-1"
+                    :class="{ 'text-success': file.isCompleted, 'text-danger': file.error }"
+                >
+                    <h6 class="fileuploadname m-0">
+                        {{ file.name }}
+                    </h6>
+                    <div
+                        v-if="!file.isCompleted"
+                        class="progress h-15 my-1"
+                    >
+                        <div
+                            class="progress-bar h-15"
+                            role="progressbar"
+                            :style="{width: file.progressPercent+'%'}"
+                            :aria-valuenow="file.progressPercent"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        />
                     </div>
 
-                    <div class="upload-status" v-if="file.error">
+                    <div
+                        v-if="file.error"
+                        class="upload-status"
+                    >
                         {{ file.error }}
                     </div>
-                    <div class="size">{{ file.size }}</div>
+                    <div class="size">
+                        {{ file.size }}
+                    </div>
                 </div>
             </template>
         </div>
-        <div class="file-drop-target" ref="$fileDropTarget">
+        <div
+            ref="$fileDropTarget"
+            class="file-drop-target"
+        >
             {{ $gettext('Drag file(s) here to upload or') }}
-            <button ref="$fileBrowseTarget" class="file-upload btn btn-primary text-center ml-1" type="button">
-                <icon icon="cloud_upload"></icon>
+            <button
+                ref="$fileBrowseTarget"
+                class="file-upload btn btn-primary text-center ml-1"
+                type="button"
+            >
+                <icon icon="cloud_upload" />
                 {{ $gettext('Select File') }}
             </button>
-            <small class="file-name"></small>
-            <input type="file" :accept="validMimeTypesList" :multiple="allowMultiple"
-                   style="visibility: hidden; position: absolute;"/>
+            <small class="file-name" />
+            <input
+                type="file"
+                :accept="validMimeTypesList"
+                :multiple="allowMultiple"
+                style="visibility: hidden; position: absolute;"
+            >
         </div>
     </div>
 </template>
-
-<style lang="scss">
-div.flow-upload {
-    div.upload-progress {
-        padding: 4px 0;
-
-        & > div {
-            padding: 3px 0;
-        }
-
-        .error {
-            color: #a00;
-        }
-
-        .progress {
-            margin-bottom: 5px;
-
-            .progress-bar {
-                border-bottom-width: 10px;
-
-                &::after {
-                    height: 10px;
-                }
-            }
-        }
-    }
-
-    div.file-drop-target {
-        padding: 25px 0;
-        text-align: center;
-
-        input {
-            display: inline;
-        }
-    }
-}
-</style>
 
 <script setup>
 import formatFileSize from '~/functions/formatFileSize.js';
@@ -216,3 +213,40 @@ onUnmounted(() => {
     files.reset();
 });
 </script>
+
+<style lang="scss">
+div.flow-upload {
+    div.upload-progress {
+        padding: 4px 0;
+
+        & > div {
+            padding: 3px 0;
+        }
+
+        .error {
+            color: #a00;
+        }
+
+        .progress {
+            margin-bottom: 5px;
+
+            .progress-bar {
+                border-bottom-width: 10px;
+
+                &::after {
+                    height: 10px;
+                }
+            }
+        }
+    }
+
+    div.file-drop-target {
+        padding: 25px 0;
+        text-align: center;
+
+        input {
+            display: inline;
+        }
+    }
+}
+</style>

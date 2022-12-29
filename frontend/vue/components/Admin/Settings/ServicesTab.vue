@@ -5,13 +5,18 @@
         </template>
 
         <div class="form-row">
-            <b-form-markup class="col-md-6" id="form_release_channel">
+            <b-form-markup
+                id="form_release_channel"
+                class="col-md-6"
+            >
                 <template #label>
                     {{ $gettext('Release Channel') }}
                 </template>
                 <template #description>
-                    <a href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
-                       target="_blank">
+                    <a
+                        href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
+                        target="_blank"
+                    >
                         {{ $gettext('Learn more about release channels in the AzuraCast docs.') }}
                     </a>
                 </template>
@@ -21,8 +26,11 @@
                 </p>
             </b-form-markup>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="edit_form_check_for_updates"
-                                     :field="form.check_for_updates">
+            <b-wrapped-form-checkbox
+                id="edit_form_check_for_updates"
+                class="col-md-6"
+                :field="form.check_for_updates"
+            >
                 <template #label>
                     {{ $gettext('Show Update Announcements') }}
                 </template>
@@ -44,8 +52,11 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_acme_domains"
-                                  :field="form.acme_domains">
+            <b-wrapped-form-group
+                id="edit_form_acme_domains"
+                class="col-md-6"
+                :field="form.acme_domains"
+            >
                 <template #label>
                     {{ $gettext('Domain Name(s)') }}
                 </template>
@@ -56,8 +67,12 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_acme_email"
-                                  :field="form.acme_email" input-type="email">
+            <b-wrapped-form-group
+                id="edit_form_acme_email"
+                class="col-md-6"
+                :field="form.acme_email"
+                input-type="email"
+            >
                 <template #label>
                     {{ $gettext('E-mail Address (Optional)') }}
                 </template>
@@ -67,8 +82,13 @@
             </b-wrapped-form-group>
 
             <div class="form-group col">
-                <b-button size="sm" variant="primary" :disabled="form.$anyDirty" @click="generateAcmeCert">
-                    <icon icon="badge"></icon>
+                <b-button
+                    size="sm"
+                    variant="primary"
+                    :disabled="form.$anyDirty"
+                    @click="generateAcmeCert"
+                >
+                    <icon icon="badge" />
                     {{ $gettext('Generate/Renew Certificate') }}
                     <span v-if="form.$anyDirty">
                         ({{ $gettext('Save Changes first') }})
@@ -87,45 +107,68 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_mail_enabled"
-                                     :field="form.mail_enabled">
+            <b-wrapped-form-checkbox
+                id="edit_form_mail_enabled"
+                class="col-md-12"
+                :field="form.mail_enabled"
+            >
                 <template #label>
                     {{ $gettext('Enable Mail Delivery') }}
                 </template>
             </b-wrapped-form-checkbox>
         </div>
 
-        <div class="form-row mt-2" v-if="form.mail_enabled.$model">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_mail_sender_name"
-                                  :field="form.mail_sender_name">
+        <div
+            v-if="form.mail_enabled.$model"
+            class="form-row mt-2"
+        >
+            <b-wrapped-form-group
+                id="edit_form_mail_sender_name"
+                class="col-md-6"
+                :field="form.mail_sender_name"
+            >
                 <template #label>
                     {{ $gettext('Sender Name') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_mail_sender_email"
-                                  :field="form.mail_sender_email" input-type="email">
+            <b-wrapped-form-group
+                id="edit_form_mail_sender_email"
+                class="col-md-6"
+                :field="form.mail_sender_email"
+                input-type="email"
+            >
                 <template #label>
                     {{ $gettext('Sender E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-4" id="edit_form_mail_smtp_host"
-                                  :field="form.mail_smtp_host">
+            <b-wrapped-form-group
+                id="edit_form_mail_smtp_host"
+                class="col-md-4"
+                :field="form.mail_smtp_host"
+            >
                 <template #label>
                     {{ $gettext('SMTP Host') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-3" id="edit_form_mail_smtp_port"
-                                  :field="form.mail_smtp_port" input-type="number">
+            <b-wrapped-form-group
+                id="edit_form_mail_smtp_port"
+                class="col-md-3"
+                :field="form.mail_smtp_port"
+                input-type="number"
+            >
                 <template #label>
                     {{ $gettext('SMTP Port') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-checkbox class="col-md-5" id="edit_form_mail_smtp_secure"
-                                     :field="form.mail_smtp_secure">
+            <b-wrapped-form-checkbox
+                id="edit_form_mail_smtp_secure"
+                class="col-md-5"
+                :field="form.mail_smtp_secure"
+            >
                 <template #label>
                     {{ $gettext('Use Secure (TLS) SMTP Connection') }}
                 </template>
@@ -134,23 +177,35 @@
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_mail_smtp_username"
-                                  :field="form.mail_smtp_username">
+            <b-wrapped-form-group
+                id="edit_form_mail_smtp_username"
+                class="col-md-6"
+                :field="form.mail_smtp_username"
+            >
                 <template #label>
                     {{ $gettext('SMTP Username') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_mail_smtp_password"
-                                  :field="form.mail_smtp_password" input-type="password">
+            <b-wrapped-form-group
+                id="edit_form_mail_smtp_password"
+                class="col-md-6"
+                :field="form.mail_smtp_password"
+                input-type="password"
+            >
                 <template #label>
                     {{ $gettext('SMTP Password') }}
                 </template>
             </b-wrapped-form-group>
 
             <div class="form-group col">
-                <b-button size="sm" variant="primary" :disabled="form.$anyDirty" v-b-modal.send_test_message>
-                    <icon icon="send"></icon>
+                <b-button
+                    v-b-modal.send_test_message
+                    size="sm"
+                    variant="primary"
+                    :disabled="form.$anyDirty"
+                >
+                    <icon icon="send" />
                     {{ $gettext('Send Test Message') }}
                     <span v-if="form.$anyDirty">
                         ({{ $gettext('Save Changes first') }})
@@ -166,18 +221,29 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_avatar_service" :field="form.avatar_service">
+            <b-wrapped-form-group
+                id="edit_form_avatar_service"
+                class="col-md-6"
+                :field="form.avatar_service"
+            >
                 <template #label>
                     {{ $gettext('Avatar Service') }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
-                                        :options="avatarServiceOptions"></b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="avatarServiceOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_avatar_default_url"
-                                  :field="form.avatar_default_url">
+            <b-wrapped-form-group
+                id="edit_form_avatar_default_url"
+                class="col-md-6"
+                :field="form.avatar_default_url"
+            >
                 <template #label>
                     {{ $gettext('Default Avatar URL') }}
                 </template>
@@ -191,28 +257,41 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-checkbox class="col-md-6" id="use_external_album_art_in_apis"
-                                     :field="form.use_external_album_art_in_apis">
+            <b-wrapped-form-checkbox
+                id="use_external_album_art_in_apis"
+                class="col-md-6"
+                :field="form.use_external_album_art_in_apis"
+            >
                 <template #label>
                     {{ $gettext('Check Web Services for Album Art for "Now Playing" Tracks') }}
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-checkbox class="col-md-6" id="use_external_album_art_when_processing_media"
-                                     :field="form.use_external_album_art_when_processing_media">
+            <b-wrapped-form-checkbox
+                id="use_external_album_art_when_processing_media"
+                class="col-md-6"
+                :field="form.use_external_album_art_when_processing_media"
+            >
                 <template #label>
                     {{ $gettext('Check Web Services for Album Art When Uploading Media') }}
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_last_fm_api_key" :field="form.last_fm_api_key">
+            <b-wrapped-form-group
+                id="edit_form_last_fm_api_key"
+                class="col-md-12"
+                :field="form.last_fm_api_key"
+            >
                 <template #label>
                     {{ $gettext('Last.fm API Key') }}
                 </template>
                 <template #description>
                     {{ $gettext('This service can provide album art for tracks where none is available locally.') }}
                     <br>
-                    <a href="https://www.last.fm/api/account/create" target="_blank">
+                    <a
+                        href="https://www.last.fm/api/account/create"
+                        target="_blank"
+                    >
                         {{ $gettext('Apply for an API key at Last.fm') }}
                     </a>
                 </template>
@@ -220,9 +299,9 @@
         </div>
     </b-form-fieldset>
 
-    <streaming-log-modal ref="$acmeModal"></streaming-log-modal>
+    <streaming-log-modal ref="$acmeModal" />
 
-    <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
+    <admin-settings-test-message-modal :test-message-url="testMessageUrl" />
 </template>
 
 <script setup>

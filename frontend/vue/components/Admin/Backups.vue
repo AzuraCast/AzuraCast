@@ -1,42 +1,68 @@
 <template>
     <div>
-        <h2 class="outside-card-header mb-1">{{ $gettext('Backups') }}</h2>
+        <h2 class="outside-card-header mb-1">
+            {{ $gettext('Backups') }}
+        </h2>
 
         <div class="card-deck">
-            <section class="card mb-3" role="region">
+            <section
+                class="card mb-3"
+                role="region"
+            >
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
                         {{ $gettext('Automatic Backups') }}
-                        <enabled-badge :enabled="settings.backupEnabled"></enabled-badge>
+                        <enabled-badge :enabled="settings.backupEnabled" />
                     </h2>
                 </b-card-header>
 
-                <b-overlay variant="card" :show="settingsLoading">
-                    <div v-if="settings.backupEnabled" class="card-body">
-                        <p v-if="settings.backupLastRun > 0" class="card-text">
+                <b-overlay
+                    variant="card"
+                    :show="settingsLoading"
+                >
+                    <div
+                        v-if="settings.backupEnabled"
+                        class="card-body"
+                    >
+                        <p
+                            v-if="settings.backupLastRun > 0"
+                            class="card-text"
+                        >
                             {{ $gettext('Last run:') }}
                             {{ toRelativeTime(settings.backupLastRun) }}
                         </p>
-                        <p v-else class="card-text">
+                        <p
+                            v-else
+                            class="card-text"
+                        >
                             {{ $gettext('Never run') }}
                         </p>
                     </div>
                 </b-overlay>
 
                 <div class="card-actions">
-                    <b-button variant="outline-primary" @click.prevent="doConfigure">
-                        <icon icon="settings"></icon>
+                    <b-button
+                        variant="outline-primary"
+                        @click.prevent="doConfigure"
+                    >
+                        <icon icon="settings" />
                         {{ $gettext('Configure') }}
                     </b-button>
-                    <b-button v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
-                              variant="outline-secondary" @click.prevent="showLastOutput">
-                        <icon icon="assignment"></icon>
+                    <b-button
+                        v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
+                        variant="outline-secondary"
+                        @click.prevent="showLastOutput"
+                    >
+                        <icon icon="assignment" />
                         {{ $gettext('Most Recent Backup Log') }}
                     </b-button>
                 </div>
             </section>
 
-            <section class="card mb-3" role="region">
+            <section
+                class="card mb-3"
+                role="region"
+            >
                 <b-card-header header-bg-variant="primary-dark">
                     <h2 class="card-title">
                         {{ $gettext('Restoring Backups') }}
@@ -60,7 +86,10 @@
             </section>
         </div>
 
-        <section class="card mb-3" role="region">
+        <section
+            class="card mb-3"
+            role="region"
+        >
             <b-card-header header-bg-variant="primary-dark">
                 <h2 class="card-title">
                     {{ $gettext('Backups') }}
@@ -68,13 +97,21 @@
             </b-card-header>
 
             <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doRunBackup">
-                    <icon icon="send"></icon>
+                <b-button
+                    variant="outline-primary"
+                    @click.prevent="doRunBackup"
+                >
+                    <icon icon="send" />
                     {{ $gettext('Run Manual Backup') }}
                 </b-button>
             </b-card-body>
 
-            <data-table ref="$dataTable" id="api_keys" :fields="fields" :api-url="listUrl">
+            <data-table
+                id="api_keys"
+                ref="$dataTable"
+                :fields="fields"
+                :api-url="listUrl"
+            >
                 <template #cell(timestamp)="row">
                     {{ toLocaleTime(row.item.timestamp) }}
                 </template>
@@ -83,10 +120,19 @@
                 </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" :href="row.item.links.download" target="_blank">
+                        <b-button
+                            size="sm"
+                            variant="primary"
+                            :href="row.item.links.download"
+                            target="_blank"
+                        >
                             {{ $gettext('Download') }}
                         </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.delete)">
+                        <b-button
+                            size="sm"
+                            variant="danger"
+                            @click.prevent="doDelete(row.item.links.delete)"
+                        >
                             {{ $gettext('Delete') }}
                         </b-button>
                     </b-button-group>
@@ -94,16 +140,24 @@
             </data-table>
         </section>
 
-        <admin-backups-configure-modal ref="$configureModal" :settings-url="settingsUrl"
-                                       :storage-locations="storageLocations"
-                                       @relist="relist"></admin-backups-configure-modal>
+        <admin-backups-configure-modal
+            ref="$configureModal"
+            :settings-url="settingsUrl"
+            :storage-locations="storageLocations"
+            @relist="relist"
+        />
 
-        <admin-backups-run-backup-modal ref="$runBackupModal" :run-backup-url="runBackupUrl"
-                                        :storage-locations="storageLocations"
-                                        @relist="relist"></admin-backups-run-backup-modal>
+        <admin-backups-run-backup-modal
+            ref="$runBackupModal"
+            :run-backup-url="runBackupUrl"
+            :storage-locations="storageLocations"
+            @relist="relist"
+        />
 
-        <admin-backups-last-output-modal ref="$lastOutputModal"
-                                         :last-output="settings.backupLastOutput"></admin-backups-last-output-modal>
+        <admin-backups-last-output-modal
+            ref="$lastOutputModal"
+            :last-output="settings.backupLastOutput"
+        />
     </div>
 </template>
 

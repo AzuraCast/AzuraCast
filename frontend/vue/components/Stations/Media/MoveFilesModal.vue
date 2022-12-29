@@ -1,28 +1,53 @@
 <template>
-    <b-modal id="move_file" size="xl" centered ref="modal" :title="langHeader">
+    <b-modal
+        id="move_file"
+        ref="modal"
+        size="xl"
+        centered
+        :title="langHeader"
+    >
         <b-row class="mb-3 align-items-center">
             <b-col md="6">
-                <b-button size="sm" variant="primary" @click="pageBack" :disabled="dirHistory.length === 0">
-                    <icon icon="chevron_left"></icon>
+                <b-button
+                    size="sm"
+                    variant="primary"
+                    :disabled="dirHistory.length === 0"
+                    @click="pageBack"
+                >
+                    <icon icon="chevron_left" />
                     {{ $gettext('Back') }}
                 </b-button>
             </b-col>
-            <b-col md="6" class="text-right">
-                <h6 class="m-0">{{ destinationDirectory }}</h6>
+            <b-col
+                md="6"
+                class="text-right"
+            >
+                <h6 class="m-0">
+                    {{ destinationDirectory }}
+                </h6>
             </b-col>
         </b-row>
         <b-row>
             <b-col md="12">
-                <data-table ref="datatable" id="station_media" :show-toolbar="false"
-                            :selectable="false" :fields="fields"
-                            :api-url="listDirectoriesUrl" :request-config="requestConfig">
+                <data-table
+                    id="station_media"
+                    ref="datatable"
+                    :show-toolbar="false"
+                    :selectable="false"
+                    :fields="fields"
+                    :api-url="listDirectoriesUrl"
+                    :request-config="requestConfig"
+                >
                     <template #cell(directory)="row">
                         <div class="is_dir">
                             <span class="file-icon">
-                                <icon icon="folder"></icon>
+                                <icon icon="folder" />
                             </span>
 
-                            <a href="#" @click.prevent="enterDirectory(row.item.path)">
+                            <a
+                                href="#"
+                                @click.prevent="enterDirectory(row.item.path)"
+                            >
                                 {{ row.item.name }}
                             </a>
                         </div>
@@ -31,10 +56,16 @@
             </b-col>
         </b-row>
         <template #modal-footer>
-            <b-button variant="default" @click="close">
+            <b-button
+                variant="default"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button variant="primary" @click="doMove">
+            <b-button
+                variant="primary"
+                @click="doMove"
+            >
                 {{ $gettext('Move to Directory') }}
             </b-button>
         </template>

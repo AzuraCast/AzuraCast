@@ -1,5 +1,8 @@
 <template>
-    <section class="card" role="region">
+    <section
+        class="card"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
                 {{ $gettext('Custom Fallback File') }}
@@ -15,13 +18,19 @@
         <div class="card-body">
             <b-form-group>
                 <div class="form-row">
-                    <b-form-group class="col-md-6" label-for="intro_file">
+                    <b-form-group
+                        class="col-md-6"
+                        label-for="intro_file"
+                    >
                         <template #label>
                             {{ $gettext('Select Custom Fallback File') }}
                         </template>
 
-                        <flow-upload :target-url="apiUrl" :valid-mime-types="['audio/*']"
-                                     @success="onFileSuccess"></flow-upload>
+                        <flow-upload
+                            :target-url="apiUrl"
+                            :valid-mime-types="['audio/*']"
+                            @success="onFileSuccess"
+                        />
                     </b-form-group>
 
                     <b-form-group class="col-md-6">
@@ -31,11 +40,19 @@
 
                         <div v-if="hasFallback">
                             <div class="buttons pt-3">
-                                <b-button block variant="bg" :href="apiUrl"
-                                          target="_blank">
+                                <b-button
+                                    block
+                                    variant="bg"
+                                    :href="apiUrl"
+                                    target="_blank"
+                                >
                                     {{ $gettext('Download') }}
                                 </b-button>
-                                <b-button block variant="danger" @click="deleteFallback">
+                                <b-button
+                                    block
+                                    variant="danger"
+                                    @click="deleteFallback"
+                                >
                                     {{ $gettext('Clear File') }}
                                 </b-button>
                             </div>

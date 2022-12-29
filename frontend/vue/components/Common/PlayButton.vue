@@ -1,6 +1,13 @@
 <template>
-    <a href="#" @click.prevent="toggle" :title="langTitle">
-        <icon :class="iconClass" :icon="iconText"></icon>
+    <a
+        href="#"
+        :title="langTitle"
+        @click.prevent="toggle"
+    >
+        <icon
+            :class="iconClass"
+            :icon="iconText"
+        />
     </a>
 </template>
 

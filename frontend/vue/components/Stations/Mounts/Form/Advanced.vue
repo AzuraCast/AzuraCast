@@ -2,8 +2,12 @@
     <b-tab :title="$gettext('Advanced')">
         <b-form-group>
             <div class="form-row mb-3">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_custom_listen_url"
-                                      :field="form.custom_listen_url" advanced>
+                <b-wrapped-form-group
+                    id="edit_form_custom_listen_url"
+                    class="col-md-12"
+                    :field="form.custom_listen_url"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Mount Point URL') }}
                     </template>
@@ -14,10 +18,18 @@
                     </template>
                 </b-wrapped-form-group>
             </div>
-            <div class="form-row" v-if="isIcecast">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_frontend_config" :field="form.frontend_config"
-                                      input-type="textarea" advanced
-                                      :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}">
+            <div
+                v-if="isIcecast"
+                class="form-row"
+            >
+                <b-wrapped-form-group
+                    id="edit_form_frontend_config"
+                    class="col-md-12"
+                    :field="form.frontend_config"
+                    input-type="textarea"
+                    advanced
+                    :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
+                >
                     <template #label>
                         {{ $gettext('Custom Frontend Configuration') }}
                     </template>

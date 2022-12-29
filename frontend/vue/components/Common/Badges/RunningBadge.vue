@@ -1,5 +1,8 @@
 <template>
-    <small class="badge badge-pill ml-2" :class="badgeClass">{{ badgeText }}</small>
+    <small
+        class="badge badge-pill ml-2"
+        :class="badgeClass"
+    >{{ badgeText }}</small>
 </template>
 
 <script setup>

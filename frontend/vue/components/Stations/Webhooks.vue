@@ -1,7 +1,9 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('Web Hooks') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('Web Hooks') }}
+            </h2>
         </b-card-header>
 
         <info-card>
@@ -11,40 +13,70 @@
         </info-card>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <icon icon="add"></icon>
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
                 {{ $gettext('Add Web Hook') }}
             </b-button>
         </b-card-body>
 
-        <data-table ref="datatable" id="station_webhooks" :fields="fields"
-                    :api-url="listUrl">
+        <data-table
+            id="station_webhooks"
+            ref="datatable"
+            :fields="fields"
+            :api-url="listUrl"
+        >
             <template #cell(name)="row">
-                <div class="typography-subheading">{{ row.item.name }}</div>
+                <div class="typography-subheading">
+                    {{ row.item.name }}
+                </div>
                 {{ getWebhookName(row.item.type) }}
-                <b-badge v-if="!row.item.is_enabled" variant="danger">
+                <b-badge
+                    v-if="!row.item.is_enabled"
+                    variant="danger"
+                >
                     {{ $gettext('Disabled') }}
                 </b-badge>
             </template>
             <template #cell(triggers)="row">
-                <div v-for="(name, index) in getTriggerNames(row.item.triggers)" :key="row.item.id+'_'+index"
-                     class="small">
+                <div
+                    v-for="(name, index) in getTriggerNames(row.item.triggers)"
+                    :key="row.item.id+'_'+index"
+                    class="small"
+                >
                     {{ name }}
                 </div>
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" :variant="getToggleVariant(row.item)"
-                              @click.prevent="doToggle(row.item.links.toggle)">
+                    <b-button
+                        size="sm"
+                        :variant="getToggleVariant(row.item)"
+                        @click.prevent="doToggle(row.item.links.toggle)"
+                    >
                         {{ langToggleButton(row.item) }}
                     </b-button>
-                    <b-button size="sm" variant="default" @click.prevent="doTest(row.item.links.test)">
+                    <b-button
+                        size="sm"
+                        variant="default"
+                        @click.prevent="doTest(row.item.links.test)"
+                    >
                         {{ $gettext('Test') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -52,10 +84,16 @@
         </data-table>
     </b-card>
 
-    <streaming-log-modal ref="logModal"></streaming-log-modal>
-    <edit-modal ref="editModal" :create-url="listUrl" :webhook-types="webhookTypes"
-                :trigger-titles="langTriggerTitles" :trigger-descriptions="langTriggerDescriptions"
-                :now-playing-url="nowPlayingUrl" @relist="relist"></edit-modal>
+    <streaming-log-modal ref="logModal" />
+    <edit-modal
+        ref="editModal"
+        :create-url="listUrl"
+        :webhook-types="webhookTypes"
+        :trigger-titles="langTriggerTitles"
+        :trigger-descriptions="langTriggerDescriptions"
+        :now-playing-url="nowPlayingUrl"
+        @relist="relist"
+    />
 </template>
 
 <script>

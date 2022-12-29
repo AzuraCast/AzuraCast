@@ -1,5 +1,10 @@
 <template>
-    <code-mirror basic v-model="textValue" :lang="lang" :dark="dark"></code-mirror>
+    <code-mirror
+        v-model="textValue"
+        basic
+        :lang="lang"
+        :dark="dark"
+    />
 </template>
 
 <script setup>

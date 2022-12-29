@@ -1,42 +1,69 @@
 <template>
-    <b-overlay variant="card" :show="loading">
-        <div class="card-body py-5" v-if="loading">
+    <b-overlay
+        variant="card"
+        :show="loading"
+    >
+        <div
+            v-if="loading"
+            class="card-body py-5"
+        >
             &nbsp;
         </div>
-        <div class="card-body" v-else>
+        <div
+            v-else
+            class="card-body"
+        >
             <b-row>
-                <b-col md="12" class="mb-4">
+                <b-col
+                    md="12"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
                             {{ $gettext('Listeners by Day') }}
                         </legend>
 
-                        <time-series-chart style="width: 100%;" :data="chartData.daily.metrics">
-                            <span v-html="chartData.daily.alt"></span>
+                        <time-series-chart
+                            style="width: 100%;"
+                            :data="chartData.daily.metrics"
+                        >
+                            <span v-html="chartData.daily.alt" />
                         </time-series-chart>
                     </fieldset>
                 </b-col>
-                <b-col md="6" class="mb-4">
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
                             {{ $gettext('Listeners by Day of Week') }}
                         </legend>
 
-                        <pie-chart style="width: 100%;" :data="chartData.day_of_week.metrics"
-                                   :labels="chartData.day_of_week.labels">
-                            <span v-html="chartData.day_of_week.alt"></span>
+                        <pie-chart
+                            style="width: 100%;"
+                            :data="chartData.day_of_week.metrics"
+                            :labels="chartData.day_of_week.labels"
+                        >
+                            <span v-html="chartData.day_of_week.alt" />
                         </pie-chart>
                     </fieldset>
                 </b-col>
-                <b-col md="6" class="mb-4">
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
                             {{ $gettext('Listeners by Hour') }}
                         </legend>
 
-                        <hour-chart style="width: 100%;" :data="chartData.hourly.metrics"
-                                    :labels="chartData.hourly.labels">
-                            <span v-html="chartData.hourly.alt"></span>
+                        <hour-chart
+                            style="width: 100%;"
+                            :data="chartData.hourly.metrics"
+                            :labels="chartData.hourly.labels"
+                        >
+                            <span v-html="chartData.hourly.alt" />
                         </hour-chart>
                     </fieldset>
                 </b-col>

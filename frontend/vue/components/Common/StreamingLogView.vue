@@ -1,13 +1,24 @@
 <template>
-    <b-overlay variant="card" :show="loading">
+    <b-overlay
+        variant="card"
+        :show="loading"
+    >
         <b-form-group label-for="modal_scroll_to_bottom">
-            <b-form-checkbox id="modal_scroll_to_bottom" v-model="scrollToBottom">
+            <b-form-checkbox
+                id="modal_scroll_to_bottom"
+                v-model="scrollToBottom"
+            >
                 {{ $gettext('Automatically Scroll to Bottom') }}
             </b-form-checkbox>
         </b-form-group>
 
-        <textarea class="form-control log-viewer" ref="textarea" id="log-view-contents" spellcheck="false"
-                  readonly>{{ logs }}</textarea>
+        <textarea
+            id="log-view-contents"
+            ref="textarea"
+            class="form-control log-viewer"
+            spellcheck="false"
+            readonly
+        >{{ logs }}</textarea>
     </b-overlay>
 </template>
 
@@ -56,7 +67,7 @@ export default {
             this.loading = false;
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         clearTimeout(this.timeoutUpdateLog);
     },
     methods: {

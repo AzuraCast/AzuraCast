@@ -1,6 +1,10 @@
 <template>
-    <common-metrics-view :date-range="dateRange" :api-url="apiUrl"
-                         field-key="stream" :field-label="$gettext('Stream')">
+    <common-metrics-view
+        :date-range="dateRange"
+        :api-url="apiUrl"
+        field-key="stream"
+        :field-label="$gettext('Stream')"
+    >
         <template #by_listeners_legend>
             {{ $gettext('Top Streams by Listeners') }}
         </template>

@@ -1,7 +1,11 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="edit_form_name" :field="form.name">
+            <b-wrapped-form-group
+                id="edit_form_name"
+                class="col-md-6"
+                :field="form.name"
+            >
                 <template #label>
                     {{ $gettext('Field Name') }}
                 </template>
@@ -12,7 +16,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_short_name" :field="form.short_name">
+            <b-wrapped-form-group
+                id="edit_form_short_name"
+                class="col-md-6"
+                :field="form.short_name"
+            >
                 <template #label>
                     {{ $gettext('Programmatic Name') }}
                 </template>
@@ -23,7 +31,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_auto_assign" :field="form.auto_assign">
+            <b-wrapped-form-group
+                id="edit_form_auto_assign"
+                class="col-md-6"
+                :field="form.auto_assign"
+            >
                 <template #label>
                     {{ $gettext('Automatically Set from ID3v2 Value') }}
                 </template>
@@ -33,8 +45,11 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-select :id="props.id" v-model="props.field.$model"
-                                   :options="autoAssignOptions"></b-form-select>
+                    <b-form-select
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        :options="autoAssignOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
         </div>

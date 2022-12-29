@@ -2,7 +2,11 @@
     <b-tab :title="$gettext('Advanced')">
         <b-form-group>
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_options" :field="form.backend_options">
+                <b-wrapped-form-group
+                    id="edit_form_backend_options"
+                    class="col-md-6"
+                    :field="form.backend_options"
+                >
                     <template #label>
                         {{ $gettext('Advanced Manual AutoDJ Scheduling Options') }}
                     </template>
@@ -10,7 +14,11 @@
                         {{ $gettext('Control how this playlist is handled by the AutoDJ software.') }}
                     </template>
                     <template #default="props">
-                        <b-form-checkbox-group stacked :id="props.id" v-model="props.field.$model">
+                        <b-form-checkbox-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                        >
                             <b-form-checkbox value="interrupt">
                                 {{ $gettext('Interrupt other songs to play at scheduled time.') }}
                             </b-form-checkbox>

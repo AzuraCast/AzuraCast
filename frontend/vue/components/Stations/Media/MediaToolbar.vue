@@ -1,75 +1,147 @@
 <template>
-    <div class="row pt-4" id="app-toolbar">
+    <div
+        id="app-toolbar"
+        class="row pt-4"
+    >
         <div class="col-md-8 buttons">
             <div class="btn-group dropdown allow-focus">
-                <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown" v-b-tooltip.hover
-                            :title="langPlaylistDropdown">
+                <b-dropdown
+                    ref="setPlaylistsDropdown"
+                    v-b-tooltip.hover
+                    size="sm"
+                    variant="primary"
+                    :title="langPlaylistDropdown"
+                >
                     <template #button-content>
-                        <icon icon="clear_all"></icon>
+                        <icon icon="clear_all" />
                         {{ $gettext('Playlists') }}
-                        <span class="caret"></span>
+                        <span class="caret" />
                     </template>
-                    <b-dropdown-form class="pt-2" @submit.prevent="setPlaylists">
-                        <div v-for="playlist in playlists" class="form-group">
+                    <b-dropdown-form
+                        class="pt-2"
+                        @submit.prevent="setPlaylists"
+                    >
+                        <div
+                            v-for="playlist in playlists"
+                            class="form-group"
+                        >
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"
-                                       v-bind:id="'chk_playlist_' + playlist.id" name="playlists[]"
-                                       v-model="checkedPlaylists" v-bind:value="playlist.id">
-                                <label class="custom-control-label" v-bind:for="'chk_playlist_'+playlist.id">
+                                <input
+                                    :id="'chk_playlist_' + playlist.id"
+                                    v-model="checkedPlaylists"
+                                    type="checkbox"
+                                    class="custom-control-input"
+                                    name="playlists[]"
+                                    :value="playlist.id"
+                                >
+                                <label
+                                    class="custom-control-label"
+                                    :for="'chk_playlist_'+playlist.id"
+                                >
                                     {{ playlist.name }}
                                 </label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="chk_playlist_new"
-                                       v-model="checkedPlaylists" value="new">
-                                <label class="custom-control-label" for="chk_playlist_new">
-                                    <input type="text" class="form-control p-2" id="new_playlist_name"
-                                           name="new_playlist_name" v-model="newPlaylist" style="min-width: 150px;"
-                                           :placeholder="langNewPlaylist">
+                                <input
+                                    id="chk_playlist_new"
+                                    v-model="checkedPlaylists"
+                                    type="checkbox"
+                                    class="custom-control-input"
+                                    value="new"
+                                >
+                                <label
+                                    class="custom-control-label"
+                                    for="chk_playlist_new"
+                                >
+                                    <input
+                                        id="new_playlist_name"
+                                        v-model="newPlaylist"
+                                        type="text"
+                                        class="form-control p-2"
+                                        name="new_playlist_name"
+                                        style="min-width: 150px;"
+                                        :placeholder="langNewPlaylist"
+                                    >
                                 </label>
                             </div>
                         </div>
 
-                        <b-button type="submit" size="sm" variant="primary">
+                        <b-button
+                            type="submit"
+                            size="sm"
+                            variant="primary"
+                        >
                             {{ $gettext('Save') }}
                         </b-button>
-                        <b-button type="button" size="sm" variant="warning" @click="clearPlaylists()">
+                        <b-button
+                            type="button"
+                            size="sm"
+                            variant="warning"
+                            @click="clearPlaylists()"
+                        >
                             {{ $gettext('Clear') }}
                         </b-button>
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
-            <b-button size="sm" variant="primary" v-b-modal.move_file>
-                <icon icon="open_with"></icon>
+            <b-button
+                v-b-modal.move_file
+                size="sm"
+                variant="primary"
+            >
+                <icon icon="open_with" />
                 {{ $gettext('Move') }}
             </b-button>
-            <b-dropdown size="sm" variant="default">
+            <b-dropdown
+                size="sm"
+                variant="default"
+            >
                 <template #button-content>
-                    <icon icon="more_horiz"></icon>
+                    <icon icon="more_horiz" />
                     {{ langMore }}
                 </template>
-                <b-dropdown-item @click="doQueue" v-b-tooltip.hover :title="langQueue">
+                <b-dropdown-item
+                    v-b-tooltip.hover
+                    :title="langQueue"
+                    @click="doQueue"
+                >
                     {{ $gettext('Queue') }}
                 </b-dropdown-item>
-                <b-dropdown-item v-if="supportsImmediateQueue" @click="doImmediateQueue" v-b-tooltip.hover
-                                 :title="langImmediateQueue">
+                <b-dropdown-item
+                    v-if="supportsImmediateQueue"
+                    v-b-tooltip.hover
+                    :title="langImmediateQueue"
+                    @click="doImmediateQueue"
+                >
                     {{ $gettext('Play Now') }}
                 </b-dropdown-item>
-                <b-dropdown-item @click="doReprocess" v-b-tooltip.hover :title="langReprocess">
+                <b-dropdown-item
+                    v-b-tooltip.hover
+                    :title="langReprocess"
+                    @click="doReprocess"
+                >
                     {{ $gettext('Reprocess') }}
                 </b-dropdown-item>
             </b-dropdown>
 
-            <b-button size="sm" variant="danger" @click="doDelete">
-                <icon icon="delete"></icon>
+            <b-button
+                size="sm"
+                variant="danger"
+                @click="doDelete"
+            >
+                <icon icon="delete" />
                 {{ $gettext('Delete') }}
             </b-button>
         </div>
         <div class="col-md-4 text-right">
-            <b-button size="sm" variant="primary" v-b-modal.create_directory>
-                <icon icon="folder"></icon>
+            <b-button
+                v-b-modal.create_directory
+                size="sm"
+                variant="primary"
+            >
+                <icon icon="folder" />
                 {{ $gettext('New Folder') }}
             </b-button>
         </div>
@@ -81,7 +153,7 @@ import Icon from '~/components/Common/Icon';
 import '~/vendor/sweetalert';
 
 export default {
-    name: 'station-media-toolbar',
+    name: 'StationMediaToolbar',
     components: {Icon},
     props: {
         currentDirectory: String,
@@ -95,24 +167,6 @@ export default {
             checkedPlaylists: [],
             newPlaylist: '',
         };
-    },
-    watch: {
-        selectedItems (items) {
-            // Get all playlists that are active on ALL selected items.
-            let playlistsForItems = _.map(items.all, (item) => {
-                return _.map(item.playlists, 'id');
-            });
-
-            // Check the checkboxes for those playlists.
-            this.checkedPlaylists = _.intersection(...playlistsForItems);
-        },
-        newPlaylist (text) {
-            if (text !== '') {
-                if (!this.checkedPlaylists.includes('new')) {
-                    this.checkedPlaylists.push('new');
-                }
-            }
-        }
     },
     computed: {
         langPlaylistDropdown() {
@@ -136,6 +190,24 @@ export default {
         langErrors() {
             return this.$gettext('The request could not be processed.');
         },
+    },
+    watch: {
+        selectedItems (items) {
+            // Get all playlists that are active on ALL selected items.
+            let playlistsForItems = _.map(items.all, (item) => {
+                return _.map(item.playlists, 'id');
+            });
+
+            // Check the checkboxes for those playlists.
+            this.checkedPlaylists = _.intersection(...playlistsForItems);
+        },
+        newPlaylist (text) {
+            if (text !== '') {
+                if (!this.checkedPlaylists.includes('new')) {
+                    this.checkedPlaylists.push('new');
+                }
+            }
+        }
     },
     methods: {
         doImmediateQueue() {

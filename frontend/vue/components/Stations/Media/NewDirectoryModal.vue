@@ -1,17 +1,32 @@
 <template>
-    <b-modal id="create_directory" centered ref="modal" :title="$gettext('New Directory')">
+    <b-modal
+        id="create_directory"
+        ref="modal"
+        centered
+        :title="$gettext('New Directory')"
+    >
         <b-form @submit.prevent="doMkdir">
-            <b-wrapped-form-group id="new_directory_name" :field="v$.newDirectory" autofocus>
+            <b-wrapped-form-group
+                id="new_directory_name"
+                :field="v$.newDirectory"
+                autofocus
+            >
                 <template #label>
                     {{ $gettext('Directory Name') }}
                 </template>
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
-            <b-button variant="default" @click="close">
+            <b-button
+                variant="default"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button :variant="(v$.$invalid) ? 'danger' : 'primary'" @click="doMkdir">
+            <b-button
+                :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                @click="doMkdir"
+            >
                 {{ $gettext('Create Directory') }}
             </b-button>
         </template>
@@ -25,12 +40,12 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 export default {
     name: 'NewDirectoryModal',
     components: {BWrappedFormGroup},
-    setup() {
-        return {v$: useVuelidate()}
-    },
     props: {
         currentDirectory: String,
         mkdirUrl: String
+    },
+    setup() {
+        return {v$: useVuelidate()}
     },
     data() {
         return {

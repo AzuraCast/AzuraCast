@@ -1,12 +1,29 @@
 <template>
-    <b-modal id="logs_modal" ref="$modal" :title="$gettext('Log Viewer')">
-        <textarea class="form-control log-viewer" spellcheck="false" readonly>{{ logs }}</textarea>
+    <b-modal
+        id="logs_modal"
+        ref="$modal"
+        :title="$gettext('Log Viewer')"
+    >
+        <textarea
+            class="form-control log-viewer"
+            spellcheck="false"
+            readonly
+        >{{ logs }}</textarea>
 
         <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
+            <b-button
+                variant="default"
+                type="button"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button variant="primary" class="btn_copy" @click.prevent="doCopy" type="button">
+            <b-button
+                variant="primary"
+                class="btn_copy"
+                type="button"
+                @click.prevent="doCopy"
+            >
                 {{ $gettext('Copy to Clipboard') }}
             </b-button>
         </template>

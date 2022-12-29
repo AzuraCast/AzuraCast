@@ -6,24 +6,42 @@
             </h2>
         </div>
 
-        <log-list :url="systemLogsUrl" @view="viewLog"></log-list>
+        <log-list
+            :url="systemLogsUrl"
+            @view="viewLog"
+        />
     </div>
 
-    <div class="card" v-if="stationLogs.length > 0">
+    <div
+        v-if="stationLogs.length > 0"
+        class="card"
+    >
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
                 {{ $gettext('Logs by Station') }}
             </h2>
         </div>
 
-        <b-tabs pills lazy nav-class="card-header-pills" nav-wrapper-class="card-header">
-            <b-tab v-for="row in stationLogs" :key="row.id" :title="row.name">
-                <log-list :url="row.url" @view="viewLog"></log-list>
+        <b-tabs
+            pills
+            lazy
+            nav-class="card-header-pills"
+            nav-wrapper-class="card-header"
+        >
+            <b-tab
+                v-for="row in stationLogs"
+                :key="row.id"
+                :title="row.name"
+            >
+                <log-list
+                    :url="row.url"
+                    @view="viewLog"
+                />
             </b-tab>
         </b-tabs>
     </div>
 
-    <streaming-log-modal ref="$modal"></streaming-log-modal>
+    <streaming-log-modal ref="$modal" />
 </template>
 
 <script setup>

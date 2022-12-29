@@ -1,7 +1,14 @@
 <template>
-    <button ref="btn" class="btn btn-copy btn-link btn-xs" @click.prevent="doCopy"
-            :aria-label="$gettext('Copy to Clipboard')">
-        <icon class="sm" icon="file_copy"></icon>
+    <button
+        ref="btn"
+        class="btn btn-copy btn-link btn-xs"
+        :aria-label="$gettext('Copy to Clipboard')"
+        @click.prevent="doCopy"
+    >
+        <icon
+            class="sm"
+            icon="file_copy"
+        />
         <span v-if="!hideText">{{ $gettext('Copy to Clipboard') }}</span>
     </button>
 </template>

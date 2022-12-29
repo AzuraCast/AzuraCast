@@ -1,10 +1,14 @@
 <template>
-    <modal-form ref="$modal" :loading="loading" :title="$gettext('Clone Station')" :error="error"
-                :disable-save-button="v$.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <admin-stations-clone-modal-form :form="v$"></admin-stations-clone-modal-form>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Clone Station')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <admin-stations-clone-modal-form :form="v$" />
     </modal-form>
 </template>
 

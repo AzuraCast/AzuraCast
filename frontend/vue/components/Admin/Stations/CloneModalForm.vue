@@ -1,19 +1,31 @@
 <template>
     <div class="form-row">
-        <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
+        <b-wrapped-form-group
+            id="edit_form_name"
+            class="col-md-12"
+            :field="form.name"
+        >
             <template #label>
                 {{ $gettext('New Station Name') }}
             </template>
         </b-wrapped-form-group>
 
-        <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
-                              input-type="textarea">
+        <b-wrapped-form-group
+            id="edit_form_description"
+            class="col-md-12"
+            :field="form.description"
+            input-type="textarea"
+        >
             <template #label>
                 {{ $gettext('New Station Description') }}
             </template>
         </b-wrapped-form-group>
 
-        <b-wrapped-form-group class="col-md-12" id="edit_form_clone" :field="form.clone">
+        <b-wrapped-form-group
+            id="edit_form_clone"
+            class="col-md-12"
+            :field="form.clone"
+        >
             <template #label>
                 {{ $gettext('Copy to New Station') }}
             </template>
@@ -23,7 +35,7 @@
                     v-model="props.field.$model"
                     :options="cloneOptions"
                     stacked
-                ></b-form-checkbox-group>
+                />
             </template>
         </b-wrapped-form-group>
     </div>

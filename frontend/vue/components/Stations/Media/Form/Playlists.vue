@@ -1,7 +1,11 @@
 <template>
     <b-form-group>
         <b-row>
-            <b-wrapped-form-group class="col-md-12" id="edit_form_playlists" :field="form.playlists">
+            <b-wrapped-form-group
+                id="edit_form_playlists"
+                class="col-md-12"
+                :field="form.playlists"
+            >
                 <template #label>
                     {{ $gettext('Playlists') }}
                 </template>
@@ -11,7 +15,7 @@
                         v-model="props.field.$model"
                         :options="options"
                         stacked
-                    ></b-form-checkbox-group>
+                    />
                 </template>
             </b-wrapped-form-group>
         </b-row>

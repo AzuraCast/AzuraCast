@@ -1,8 +1,16 @@
 <template>
-    <div v-if="!loading" style="line-height: 1;">
+    <div
+        v-if="!loading"
+        style="line-height: 1;"
+    >
         <template v-if="quota.available">
-            <b-progress :value="quota.used_percent" :variant="progressVariant" show-progress
-                        height="15px" class="mb-1"></b-progress>
+            <b-progress
+                :value="quota.used_percent"
+                :variant="progressVariant"
+                show-progress
+                height="15px"
+                class="mb-1"
+            />
 
             {{ langSpaceUsed }}
         </template>
@@ -17,13 +25,13 @@ import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'StationsCommonQuota',
-    emits: ['updated'],
     props: {
         quotaUrl: {
             type: String,
             required: true
         }
     },
+    emits: ['updated'],
     data() {
         return {
             loading: true,
@@ -39,9 +47,6 @@ export default {
                 num_files: null
             },
         }
-    },
-    mounted() {
-        this.update();
     },
     computed: {
         progressVariant() {
@@ -71,6 +76,9 @@ export default {
 
             return langParsed;
         },
+    },
+    mounted() {
+        this.update();
     },
     methods: {
         update() {

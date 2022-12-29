@@ -1,16 +1,37 @@
 <template>
-    <b-overlay variant="card" :show="loading">
-        <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+    <b-overlay
+        variant="card"
+        :show="loading"
+    >
+        <b-alert
+            variant="danger"
+            :show="error != null"
+        >
+            {{ error }}
+        </b-alert>
 
-        <b-form class="form vue-form" @submit.prevent="submit">
-            <b-tabs :card="!isModal" pills :content-class="tabContentClass">
-                <b-tab :title-link-class="getTabClass(v$.$validationGroups.profileTab)" active>
+        <b-form
+            class="form vue-form"
+            @submit.prevent="submit"
+        >
+            <b-tabs
+                :card="!isModal"
+                pills
+                :content-class="tabContentClass"
+            >
+                <b-tab
+                    :title-link-class="getTabClass(v$.$validationGroups.profileTab)"
+                    active
+                >
                     <template #title>
                         {{ $gettext('Profile') }}
                     </template>
 
-                    <admin-stations-profile-form :form="v$" :timezones="timezones"
-                                                 :show-advanced="showAdvanced"></admin-stations-profile-form>
+                    <admin-stations-profile-form
+                        :form="v$"
+                        :timezones="timezones"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.frontendTab)">
@@ -18,10 +39,12 @@
                         {{ $gettext('Broadcasting') }}
                     </template>
 
-                    <admin-stations-frontend-form :form="v$"
-                                                  :is-shoutcast-installed="isShoutcastInstalled"
-                                                  :countries="countries"
-                                                  :show-advanced="showAdvanced"></admin-stations-frontend-form>
+                    <admin-stations-frontend-form
+                        :form="v$"
+                        :is-shoutcast-installed="isShoutcastInstalled"
+                        :countries="countries"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.backendTab)">
@@ -29,9 +52,12 @@
                         {{ $gettext('AutoDJ') }}
                     </template>
 
-                    <admin-stations-backend-form :form="v$" :station="station"
-                                                 :is-stereo-tool-installed="isStereoToolInstalled"
-                                                 :show-advanced="showAdvanced"></admin-stations-backend-form>
+                    <admin-stations-backend-form
+                        :form="v$"
+                        :station="station"
+                        :is-stereo-tool-installed="isStereoToolInstalled"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.hlsTab)">
@@ -39,8 +65,11 @@
                         {{ $gettext('HLS') }}
                     </template>
 
-                    <admin-stations-hls-form :form="v$" :station="station" :show-advanced="showAdvanced">
-                    </admin-stations-hls-form>
+                    <admin-stations-hls-form
+                        :form="v$"
+                        :station="station"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.requestsTab)">
@@ -48,8 +77,11 @@
                         {{ $gettext('Song Requests') }}
                     </template>
 
-                    <admin-stations-requests-form :form="v$" :station="station" :show-advanced="showAdvanced">
-                    </admin-stations-requests-form>
+                    <admin-stations-requests-form
+                        :form="v$"
+                        :station="station"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
 
                 <b-tab :title-link-class="getTabClass(v$.$validationGroups.streamersTab)">
@@ -57,26 +89,37 @@
                         {{ $gettext('Streamers/DJs') }}
                     </template>
 
-                    <admin-stations-streamers-form :form="v$" :station="station" :show-advanced="showAdvanced">
-                    </admin-stations-streamers-form>
+                    <admin-stations-streamers-form
+                        :form="v$"
+                        :station="station"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
 
-                <b-tab v-if="showAdminTab" :title-link-class="getTabClass(v$.$validationGroups.adminTab)">
+                <b-tab
+                    v-if="showAdminTab"
+                    :title-link-class="getTabClass(v$.$validationGroups.adminTab)"
+                >
                     <template #title>
                         {{ $gettext('Administration') }}
                     </template>
 
-                    <admin-stations-admin-form :form="v$"
-                                               :is-edit-mode="isEditMode"
-                                               :storage-location-api-url="storageLocationApiUrl"
-                                               :show-advanced="showAdvanced">
-                    </admin-stations-admin-form>
+                    <admin-stations-admin-form
+                        :form="v$"
+                        :is-edit-mode="isEditMode"
+                        :storage-location-api-url="storageLocationApiUrl"
+                        :show-advanced="showAdvanced"
+                    />
                 </b-tab>
             </b-tabs>
 
             <slot name="submitButton">
                 <b-card-body body-class="card-padding-sm">
-                    <b-button size="lg" type="submit" :variant="(!isValid) ? 'danger' : 'primary'">
+                    <b-button
+                        size="lg"
+                        type="submit"
+                        :variant="(!isValid) ? 'danger' : 'primary'"
+                    >
                         <slot name="submitButtonText">
                             {{ $gettext('Save Changes') }}
                         </slot>

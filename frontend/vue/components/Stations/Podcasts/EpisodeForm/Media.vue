@@ -2,7 +2,10 @@
     <b-tab :title="$gettext('Media')">
         <b-form-group>
             <div class="form-row">
-                <b-form-group class="col-md-6" label-for="media_file">
+                <b-form-group
+                    class="col-md-6"
+                    label-for="media_file"
+                >
                     <template #label>
                         {{ $gettext('Select Media File') }}
                     </template>
@@ -12,8 +15,11 @@
                         }}
                     </template>
 
-                    <flow-upload :target-url="targetUrl" :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
-                                 @success="onFileSuccess"></flow-upload>
+                    <flow-upload
+                        :target-url="targetUrl"
+                        :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
+                        @success="onFileSuccess"
+                    />
                 </b-form-group>
 
                 <b-form-group class="col-md-6">
@@ -23,10 +29,20 @@
 
                     <div v-if="hasMedia">
                         <div class="buttons pt-3">
-                            <b-button v-if="downloadUrl" block variant="bg" :href="downloadUrl" target="_blank">
+                            <b-button
+                                v-if="downloadUrl"
+                                block
+                                variant="bg"
+                                :href="downloadUrl"
+                                target="_blank"
+                            >
                                 {{ $gettext('Download') }}
                             </b-button>
-                            <b-button block variant="danger" @click="deleteMedia">
+                            <b-button
+                                block
+                                variant="danger"
+                                @click="deleteMedia"
+                            >
                                 {{ $gettext('Clear Media') }}
                             </b-button>
                         </div>

@@ -1,8 +1,19 @@
 <template>
-    <b-modal size="lg" centered id="cpu_stats_help_modal" ref="$modal" :title="$gettext('Memory Stats Help')">
+    <b-modal
+        id="cpu_stats_help_modal"
+        ref="$modal"
+        size="lg"
+        centered
+        :title="$gettext('Memory Stats Help')"
+    >
         <div class="mb-2">
             <h6>
-                <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;
+                <b-badge
+                    pill
+                    variant="danger"
+                >
+&nbsp;&nbsp;
+                </b-badge>&nbsp;
                 {{ $gettext('Cached') }}:
                 {{ $gettext('The amount of memory Linux is using for disk caching.') }}
             </h6>
@@ -22,7 +33,12 @@
 
         <div class="mb-2">
             <h6>
-                <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
+                <b-badge
+                    pill
+                    variant="primary"
+                >
+&nbsp;&nbsp;
+                </b-badge>&nbsp;
                 {{ $gettext('Used') }}:
                 {{ $gettext('The current Memory usage excluding cached memory.') }}
             </h6>
@@ -30,7 +46,11 @@
 
         <template #modal-footer>
             <slot name="modal-footer">
-                <b-button variant="default" type="button" @click="close">
+                <b-button
+                    variant="default"
+                    type="button"
+                    @click="close"
+                >
                     {{ $gettext('Close') }}
                 </b-button>
             </slot>

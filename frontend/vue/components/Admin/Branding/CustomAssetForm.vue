@@ -1,16 +1,37 @@
 <template>
     <b-media tag="li">
         <template #aside>
-            <a :href="url" data-fancybox target="_blank">
-                <b-img :src="url" width="125" :alt="caption"></b-img>
+            <a
+                :href="url"
+                data-fancybox
+                target="_blank"
+            >
+                <b-img
+                    :src="url"
+                    width="125"
+                    :alt="caption"
+                />
             </a>
         </template>
-        <b-overlay variant="card" :show="loading">
+        <b-overlay
+            variant="card"
+            :show="loading"
+        >
             <b-form-group :label-for="id">
-                <template #label>{{ caption }}</template>
-                <b-form-file :id="id" v-model="file" accept="image/*"></b-form-file>
+                <template #label>
+                    {{ caption }}
+                </template>
+                <b-form-file
+                    :id="id"
+                    v-model="file"
+                    accept="image/*"
+                />
             </b-form-group>
-            <b-button v-if="isUploaded" variant="outline-danger" @click.prevent="clear()">
+            <b-button
+                v-if="isUploaded"
+                variant="outline-danger"
+                @click.prevent="clear()"
+            >
                 {{ $gettext('Clear Image') }}
             </b-button>
         </b-overlay>
@@ -34,9 +55,6 @@ export default {
             file: null,
         };
     },
-    mounted() {
-        this.relist();
-    },
     watch: {
         file(newFile) {
             if (null === newFile) {
@@ -52,6 +70,9 @@ export default {
                 this.relist();
             });
         }
+    },
+    mounted() {
+        this.relist();
     },
     methods: {
         relist() {

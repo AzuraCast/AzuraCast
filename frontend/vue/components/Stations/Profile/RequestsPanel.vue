@@ -1,20 +1,34 @@
 <template>
-    <section class="card mb-4" role="region">
+    <section
+        class="card mb-4"
+        role="region"
+    >
         <template v-if="enableRequests">
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     {{ $gettext('Song Requests') }}
-                    <enabled-badge :enabled="true"></enabled-badge>
+                    <enabled-badge :enabled="true" />
                 </h3>
             </div>
-            <div class="card-actions" v-if="userCanManageReports || userCanManageProfile">
-                <a class="btn btn-outline-primary" v-if="userCanManageReports" :href="requestsViewUri">
-                    <icon icon="assignment"></icon>
+            <div
+                v-if="userCanManageReports || userCanManageProfile"
+                class="card-actions"
+            >
+                <a
+                    v-if="userCanManageReports"
+                    class="btn btn-outline-primary"
+                    :href="requestsViewUri"
+                >
+                    <icon icon="assignment" />
                     {{ $gettext('View') }}
                 </a>
-                <a class="btn btn-outline-danger" v-if="userCanManageProfile"
-                   :data-confirm-title="$gettext('Disable song requests?')" :href="requestsToggleUri">
-                    <icon icon="close"></icon>
+                <a
+                    v-if="userCanManageProfile"
+                    class="btn btn-outline-danger"
+                    :data-confirm-title="$gettext('Disable song requests?')"
+                    :href="requestsToggleUri"
+                >
+                    <icon icon="close" />
                     {{ $gettext('Disable') }}
                 </a>
             </div>
@@ -23,13 +37,19 @@
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
                     {{ $gettext('Song Requests') }}
-                    <enabled-badge :enabled="false"></enabled-badge>
+                    <enabled-badge :enabled="false" />
                 </h3>
             </div>
-            <div class="card-actions" v-if="userCanManageProfile">
-                <a class="btn btn-outline-success" :data-confirm-title="$gettext('Enable song requests?')"
-                   :href="requestsToggleUri">
-                    <icon icon="check"></icon>
+            <div
+                v-if="userCanManageProfile"
+                class="card-actions"
+            >
+                <a
+                    class="btn btn-outline-success"
+                    :data-confirm-title="$gettext('Enable song requests?')"
+                    :href="requestsToggleUri"
+                >
+                    <icon icon="check" />
                     {{ $gettext('Enable') }}
                 </a>
             </div>

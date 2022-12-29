@@ -1,29 +1,40 @@
 <template>
-    <modal-form ref="$modal" :loading="loading" :title="$gettext('Edit Media')" :error="error"
-                :disable-save-button="v$.$invalid"
-                @submit="doEdit" @hidden="resetForm">
-
-        <b-tabs content-class="mt-3" pills>
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Edit Media')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doEdit"
+        @hidden="resetForm"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
             <b-tab active>
                 <template #title>
                     {{ $gettext('Basic Information') }}
                 </template>
 
-                <media-form-basic-info :form="v$"></media-form-basic-info>
+                <media-form-basic-info :form="v$" />
             </b-tab>
             <b-tab>
                 <template #title>
                     {{ $gettext('Playlists') }}
                 </template>
 
-                <media-form-playlists :form="v$" :playlists="playlists"></media-form-playlists>
+                <media-form-playlists
+                    :form="v$"
+                    :playlists="playlists"
+                />
             </b-tab>
             <b-tab lazy>
                 <template #title>
                     {{ $gettext('Album Art') }}
                 </template>
 
-                <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
+                <media-form-album-art :album-art-url="albumArtUrl" />
             </b-tab>
 
             <b-tab v-if="customFields.length > 0">
@@ -31,7 +42,10 @@
                     {{ $gettext('Custom Fields') }}
                 </template>
 
-                <media-form-custom-fields :form="v$" :custom-fields="customFields"></media-form-custom-fields>
+                <media-form-custom-fields
+                    :form="v$"
+                    :custom-fields="customFields"
+                />
             </b-tab>
 
             <b-tab lazy>
@@ -39,8 +53,11 @@
                     {{ $gettext('Visual Cue Editor') }}
                 </template>
 
-                <media-form-waveform-editor :form="form" :audio-url="audioUrl"
-                                            :waveform-url="waveformUrl"></media-form-waveform-editor>
+                <media-form-waveform-editor
+                    :form="form"
+                    :audio-url="audioUrl"
+                    :waveform-url="waveformUrl"
+                />
             </b-tab>
 
             <b-tab>
@@ -48,7 +65,10 @@
                     {{ $gettext('Advanced') }}
                 </template>
 
-                <media-form-advanced-settings :form="v$" :song-length="songLength"></media-form-advanced-settings>
+                <media-form-advanced-settings
+                    :form="v$"
+                    :song-length="songLength"
+                />
             </b-tab>
         </b-tabs>
     </modal-form>

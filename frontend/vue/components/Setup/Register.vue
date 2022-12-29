@@ -28,29 +28,65 @@
                     </div>
                 </div>
 
-                <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+                <b-alert
+                    variant="danger"
+                    :show="error != null"
+                >
+                    {{ error }}
+                </b-alert>
 
-                <form id="login-form" class="form vue-form" action="" method="post">
-                    <input type="hidden" name="csrf" :value="csrf"/>
+                <form
+                    id="login-form"
+                    class="form vue-form"
+                    action=""
+                    method="post"
+                >
+                    <input
+                        type="hidden"
+                        name="csrf"
+                        :value="csrf"
+                    >
 
-                    <b-wrapped-form-group id="username" name="username" label-class="mb-2" :field="v$.username"
-                                          input-type="email">
+                    <b-wrapped-form-group
+                        id="username"
+                        name="username"
+                        label-class="mb-2"
+                        :field="v$.username"
+                        input-type="email"
+                    >
                         <template #label>
-                            <icon icon="email" class="mr-1"></icon>
+                            <icon
+                                icon="email"
+                                class="mr-1"
+                            />
                             {{ $gettext('E-mail Address') }}
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group id="password" name="password" label-class="mb-2" :field="v$.password"
-                                          input-type="password">
+                    <b-wrapped-form-group
+                        id="password"
+                        name="password"
+                        label-class="mb-2"
+                        :field="v$.password"
+                        input-type="password"
+                    >
                         <template #label>
-                            <icon icon="vpn_key" class="mr-1"></icon>
+                            <icon
+                                icon="vpn_key"
+                                class="mr-1"
+                            />
                             {{ $gettext('Password') }}
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button type="submit" size="lg" block variant="primary" :disabled="v$.$invalid"
-                              class="mt-2">
+                    <b-button
+                        type="submit"
+                        size="lg"
+                        block
+                        variant="primary"
+                        :disabled="v$.$invalid"
+                        class="mt-2"
+                    >
                         {{ $gettext('Create Account') }}
                     </b-button>
                 </form>

@@ -1,13 +1,21 @@
 <template>
-    <section class="card" role="region">
+    <section
+        class="card"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
                 {{ $gettext('Edit Station Profile') }}
             </h3>
         </div>
 
-        <admin-stations-form v-bind="$props" ref="$form" :is-edit-mode="true" :edit-url="editUrl"
-                             @submitted="onSubmitted"></admin-stations-form>
+        <admin-stations-form
+            v-bind="$props"
+            ref="$form"
+            :is-edit-mode="true"
+            :edit-url="editUrl"
+            @submitted="onSubmitted"
+        />
     </section>
 </template>
 

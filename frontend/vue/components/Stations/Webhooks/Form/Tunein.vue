@@ -1,7 +1,11 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="form_config_station_id" :field="form.config.station_id">
+            <b-wrapped-form-group
+                id="form_config_station_id"
+                class="col-md-6"
+                :field="form.config.station_id"
+            >
                 <template #label>
                     {{ $gettext('TuneIn Station ID') }}
                 </template>
@@ -10,13 +14,21 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_partner_id" :field="form.config.partner_id">
+            <b-wrapped-form-group
+                id="form_config_partner_id"
+                class="col-md-6"
+                :field="form.config.partner_id"
+            >
                 <template #label>
                     {{ $gettext('TuneIn Partner ID') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_partner_key" :field="form.config.partner_key">
+            <b-wrapped-form-group
+                id="form_config_partner_key"
+                class="col-md-6"
+                :field="form.config.partner_key"
+            >
                 <template #label>
                     {{ $gettext('TuneIn Partner Key') }}
                 </template>

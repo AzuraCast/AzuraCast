@@ -1,5 +1,5 @@
 <template>
-    <setup-step :step="2"></setup-step>
+    <setup-step :step="2" />
 
     <b-card no-body>
         <div class="card-header bg-primary-dark">
@@ -14,8 +14,13 @@
             }}
         </info-card>
 
-        <admin-stations-form v-bind="$props" ref="$adminForm" :is-edit-mode="false" :create-url="createUrl"
-                             @submitted="onSubmitted">
+        <admin-stations-form
+            v-bind="$props"
+            ref="$adminForm"
+            :is-edit-mode="false"
+            :create-url="createUrl"
+            @submitted="onSubmitted"
+        >
             <template #submitButtonText>
                 {{ $gettext('Create and Continue') }}
             </template>

@@ -1,5 +1,11 @@
 <template>
-    <b-input v-bind="$attrs" type="time" v-model="timeCode" pattern="[0-9]{2}:[0-9]{2}" placeholder="13:45"></b-input>
+    <b-input
+        v-bind="$attrs"
+        v-model="timeCode"
+        type="time"
+        pattern="[0-9]{2}:[0-9]{2}"
+        placeholder="13:45"
+    />
 </template>
 
 <script setup>

@@ -1,11 +1,23 @@
 <template>
-    <b-overlay variant="card" :show="loading">
-        <div class="card-body py-5" v-if="loading">
+    <b-overlay
+        variant="card"
+        :show="loading"
+    >
+        <div
+            v-if="loading"
+            class="card-body py-5"
+        >
             &nbsp;
         </div>
-        <div class="card-body" v-else>
+        <div
+            v-else
+            class="card-body"
+        >
             <b-row>
-                <b-col md="6" class="mb-4">
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
                             {{ $gettext('Best Performing Songs') }}
@@ -17,32 +29,35 @@
                                 <col width="80%">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>
-                                    {{ $gettext('Change') }}
-                                </th>
-                                <th>
-                                    {{ $gettext('Song') }}
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th>
+                                        {{ $gettext('Change') }}
+                                    </th>
+                                    <th>
+                                        {{ $gettext('Song') }}
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in bestAndWorst.best">
-                                <td class="text-center text-success">
-                                    <icon icon="keyboard_arrow_up"></icon>
-                                    {{ row.stat_delta }}
-                                    <br>
-                                    <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
-                                </td>
-                                <td>
-                                    <span v-html="getSongText(row.song)"></span>
-                                </td>
-                            </tr>
+                                <tr v-for="row in bestAndWorst.best">
+                                    <td class="text-center text-success">
+                                        <icon icon="keyboard_arrow_up" />
+                                        {{ row.stat_delta }}
+                                        <br>
+                                        <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
+                                    </td>
+                                    <td>
+                                        <span v-html="getSongText(row.song)" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </fieldset>
                 </b-col>
-                <b-col md="6" class="mb-4">
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
                             {{ $gettext('Worst Performing Songs') }}
@@ -54,33 +69,36 @@
                                 <col width="80%">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>
-                                    {{ $gettext('Change') }}
-                                </th>
-                                <th>
-                                    {{ $gettext('Song') }}
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th>
+                                        {{ $gettext('Change') }}
+                                    </th>
+                                    <th>
+                                        {{ $gettext('Song') }}
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in bestAndWorst.worst">
-                                <td class="text-center text-danger">
-                                    <icon icon="keyboard_arrow_down"></icon>
-                                    {{ row.stat_delta }}
-                                    <br>
-                                    <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
-                                </td>
-                                <td>
-                                    <span v-html="getSongText(row.song)"></span>
-                                </td>
-                            </tr>
+                                <tr v-for="row in bestAndWorst.worst">
+                                    <td class="text-center text-danger">
+                                        <icon icon="keyboard_arrow_down" />
+                                        {{ row.stat_delta }}
+                                        <br>
+                                        <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
+                                    </td>
+                                    <td>
+                                        <span v-html="getSongText(row.song)" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </fieldset>
                 </b-col>
 
-                <b-col md="12" class="mb-4">
+                <b-col
+                    md="12"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
                             {{ $gettext('Most Played Songs') }}
@@ -92,24 +110,24 @@
                                 <col width="90%">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>
-                                    {{ $gettext('Plays') }}
-                                </th>
-                                <th>
-                                    {{ $gettext('Song') }}
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th>
+                                        {{ $gettext('Plays') }}
+                                    </th>
+                                    <th>
+                                        {{ $gettext('Song') }}
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in mostPlayed">
-                                <td class="text-center">
-                                    {{ row.num_plays }}
-                                </td>
-                                <td>
-                                    <span v-html="getSongText(row.song)"></span>
-                                </td>
-                            </tr>
+                                <tr v-for="row in mostPlayed">
+                                    <td class="text-center">
+                                        {{ row.num_plays }}
+                                    </td>
+                                    <td>
+                                        <span v-html="getSongText(row.song)" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </fieldset>

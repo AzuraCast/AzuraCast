@@ -1,7 +1,17 @@
 <template>
-    <a :href="serviceUrl" class="avatar" target="_blank" v-b-tooltip.hover.right :title="langAvatar"
-       v-if="'' !== serviceUrl">
-        <img :src="url" :style="{ width: this.width+'px', height: 'auto' }" alt="">
+    <a
+        v-if="'' !== serviceUrl"
+        v-b-tooltip.hover.right
+        :href="serviceUrl"
+        class="avatar"
+        target="_blank"
+        :title="langAvatar"
+    >
+        <img
+            :src="url"
+            :style="{ width: width+'px', height: 'auto' }"
+            alt=""
+        >
     </a>
 </template>
 

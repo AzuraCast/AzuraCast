@@ -3,64 +3,114 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <div class="flex-fill text-nowrap">
-                    <h5 class="card-title">{{ lang_header }}</h5>
+                    <h5 class="card-title">
+                        {{ lang_header }}
+                    </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
-                    <volume-slider v-model.number="volume"></volume-slider>
+                    <volume-slider v-model.number="volume" />
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="control-group d-flex justify-content-center">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-sm btn-success" v-if="!playing || paused" v-on:click="play">
-                        <icon icon="play_arrow"></icon>
+                    <button
+                        v-if="!playing || paused"
+                        class="btn btn-sm btn-success"
+                        @click="play"
+                    >
+                        <icon icon="play_arrow" />
                     </button>
-                    <button class="btn btn-sm btn-warning" v-if="playing && !paused" v-on:click="togglePause()">
-                        <icon icon="pause"></icon>
+                    <button
+                        v-if="playing && !paused"
+                        class="btn btn-sm btn-warning"
+                        @click="togglePause()"
+                    >
+                        <icon icon="pause" />
                     </button>
-                    <button class="btn btn-sm" v-on:click="previous()">
-                        <icon icon="fast_rewind"></icon>
+                    <button
+                        class="btn btn-sm"
+                        @click="previous()"
+                    >
+                        <icon icon="fast_rewind" />
                     </button>
-                    <button class="btn btn-sm" v-on:click="next()">
-                        <icon icon="fast_forward"></icon>
+                    <button
+                        class="btn btn-sm"
+                        @click="next()"
+                    >
+                        <icon icon="fast_forward" />
                     </button>
-                    <button class="btn btn-sm btn-danger" v-on:click="stop()">
-                        <icon icon="stop"></icon>
+                    <button
+                        class="btn btn-sm btn-danger"
+                        @click="stop()"
+                    >
+                        <icon icon="stop" />
                     </button>
-                    <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">
+                    <button
+                        class="btn btn-sm"
+                        :class="{ 'btn-primary': passThrough }"
+                        @click="cue()"
+                    >
                         {{ $gettext('Cue') }}
                     </button>
                 </div>
             </div>
 
-            <div class="mt-3" v-if="playing">
-
+            <div
+                v-if="playing"
+                class="mt-3"
+            >
                 <div class="d-flex flex-row mb-2">
-                    <div class="flex-shrink-0 pt-1 pr-2">{{ prettifyTime(position) }}</div>
-                    <div class="flex-fill">
-                        <input type="range" min="0" max="100" step="0.1" class="custom-range slider"
-                               v-bind:value="seekingPosition"
-                               v-on:mousedown="isSeeking = true"
-                               v-on:mousemove="doSeek($event)"
-                               v-on:mouseup="isSeeking = false">
+                    <div class="flex-shrink-0 pt-1 pr-2">
+                        {{ prettifyTime(position) }}
                     </div>
-                    <div class="flex-shrink-0 pt-1 pl-2">{{ prettifyTime(duration) }}</div>
+                    <div class="flex-fill">
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            class="custom-range slider"
+                            :value="seekingPosition"
+                            @mousedown="isSeeking = true"
+                            @mousemove="doSeek($event)"
+                            @mouseup="isSeeking = false"
+                        >
+                    </div>
+                    <div class="flex-shrink-0 pt-1 pl-2">
+                        {{ prettifyTime(duration) }}
+                    </div>
                 </div>
 
                 <div class="progress mb-1">
-                    <div class="progress-bar" v-bind:style="{ width: volumeLeft+'%' }"></div>
+                    <div
+                        class="progress-bar"
+                        :style="{ width: volumeLeft+'%' }"
+                    />
                 </div>
                 <div class="progress">
-                    <div class="progress-bar" v-bind:style="{ width: volumeRight+'%' }"></div>
+                    <div
+                        class="progress-bar"
+                        :style="{ width: volumeRight+'%' }"
+                    />
                 </div>
             </div>
 
             <div class="form-group mt-2">
                 <div class="custom-file">
-                    <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*"
-                           multiple="multiple" v-on:change="addNewFiles($event.target.files)">
-                    <label v-bind:for="id + '_files'" class="custom-file-label">
+                    <input
+                        :id="id + '_files'"
+                        type="file"
+                        class="custom-file-input files"
+                        accept="audio/*"
+                        multiple="multiple"
+                        @change="addNewFiles($event.target.files)"
+                    >
+                    <label
+                        :for="id + '_files'"
+                        class="custom-file-label"
+                    >
                         {{ $gettext('Add Files to Playlist') }}
                     </label>
                 </div>
@@ -69,15 +119,30 @@
             <div class="form-group mb-0">
                 <div class="controls">
                     <div class="custom-control custom-checkbox custom-control-inline">
-                        <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
-                               v-model="playThrough">
-                        <label v-bind:for="id + '_playthrough'" class="custom-control-label">
+                        <input
+                            :id="id + '_playthrough'"
+                            v-model="playThrough"
+                            type="checkbox"
+                            class="custom-control-input"
+                        >
+                        <label
+                            :for="id + '_playthrough'"
+                            class="custom-control-label"
+                        >
                             {{ $gettext('Continuous Play') }}
                         </label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                        <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
-                        <label v-bind:for="id + '_loop'" class="custom-control-label">
+                        <input
+                            :id="id + '_loop'"
+                            v-model="loop"
+                            type="checkbox"
+                            class="custom-control-input"
+                        >
+                        <label
+                            :for="id + '_loop'"
+                            class="custom-control-label"
+                        >
                             {{ $gettext('Repeat') }}
                         </label>
                     </div>
@@ -85,14 +150,21 @@
             </div>
         </div>
 
-        <div class="list-group list-group-flush" v-if="files.length > 0">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"
-               v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex === fileIndex }"
-               v-on:click.prevent="play({ fileIndex: rowIndex })">
+        <div
+            v-if="files.length > 0"
+            class="list-group list-group-flush"
+        >
+            <a
+                v-for="(rowFile, rowIndex) in files"
+                href="#"
+                class="list-group-item list-group-item-action flex-column align-items-start"
+                :class="{ active: rowIndex === fileIndex }"
+                @click.prevent="play({ fileIndex: rowIndex })"
+            >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
-                            rowFile.metadata.title ? rowFile.metadata.title : lang_unknown_title
-                        }}</h5>
+                        rowFile.metadata.title ? rowFile.metadata.title : lang_unknown_title
+                    }}</h5>
                     <small class="pt-1">{{ prettifyTime(rowFile.audio.length) }}</small>
                 </div>
                 <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : lang_unknown_artist }}</p>
@@ -110,6 +182,9 @@ import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 export default {
     components: {VolumeSlider, Icon},
     extends: track,
+    props: {
+        id: String
+    },
     data() {
         return {
             'fileIndex': -1,
@@ -143,9 +218,6 @@ export default {
         seekingPosition () {
             return (this.isSeeking) ? this.seekPosition : this.positionPercent;
         }
-    },
-    props: {
-        id: String
     },
     mounted () {
         this.mixGainObj = this.getStream().context.createGain();

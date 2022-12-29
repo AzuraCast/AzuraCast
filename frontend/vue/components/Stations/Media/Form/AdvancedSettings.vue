@@ -1,16 +1,28 @@
 <template>
     <b-form-group>
         <div class="form-row">
-            <b-form-group class="col-md-6" label-for="edit_form_song_length">
+            <b-form-group
+                class="col-md-6"
+                label-for="edit_form_song_length"
+            >
                 <template #label>
                     {{ $gettext('Song Length') }}
                 </template>
 
-                <b-form-input id="edit_form_song_length" readonly :value="songLength"></b-form-input>
+                <b-form-input
+                    id="edit_form_song_length"
+                    readonly
+                    :value="songLength"
+                />
             </b-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_amplify" :field="form.amplify"
-                                  input-type="number" :input-attrs="{ step: '0.1' }">
+            <b-wrapped-form-group
+                id="edit_form_amplify"
+                class="col-md-6"
+                :field="form.amplify"
+                input-type="number"
+                :input-attrs="{ step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Amplify: Amplification (dB)') }}
                 </template>
@@ -21,8 +33,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_fade_overlap" :field="form.fade_overlap"
-                                  input-type="number" :input-attrs="{ step: '0.1' }">
+            <b-wrapped-form-group
+                id="edit_form_fade_overlap"
+                class="col-md-6"
+                :field="form.fade_overlap"
+                input-type="number"
+                :input-attrs="{ step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Custom Fading: Overlap Time (seconds)') }}
                 </template>
@@ -33,8 +50,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_fade_in" :field="form.fade_in"
-                                  input-type="number" :input-attrs="{ step: '0.1' }">
+            <b-wrapped-form-group
+                id="edit_form_fade_in"
+                class="col-md-6"
+                :field="form.fade_in"
+                input-type="number"
+                :input-attrs="{ step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Custom Fading: Fade-In Time (seconds)') }}
                 </template>
@@ -45,8 +67,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_fade_out" :field="form.fade_out"
-                                  input-type="number" :input-attrs="{ step: '0.1' }">
+            <b-wrapped-form-group
+                id="edit_form_fade_out"
+                class="col-md-6"
+                :field="form.fade_out"
+                input-type="number"
+                :input-attrs="{ step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Custom Fading: Fade-Out Time (seconds)') }}
                 </template>
@@ -57,8 +84,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_cue_in" :field="form.cue_in"
-                                  input-type="number" :input-attrs="{ step: '0.1' }">
+            <b-wrapped-form-group
+                id="edit_form_cue_in"
+                class="col-md-6"
+                :field="form.cue_in"
+                input-type="number"
+                :input-attrs="{ step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Custom Cues: Cue-In Point (seconds)') }}
                 </template>
@@ -67,8 +99,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_cue_out" :field="form.cue_out"
-                                  input-type="number" :input-attrs="{ step: '0.1' }">
+            <b-wrapped-form-group
+                id="edit_form_cue_out"
+                class="col-md-6"
+                :field="form.cue_out"
+                input-type="number"
+                :input-attrs="{ step: '0.1' }"
+            >
                 <template #label>
                     {{ $gettext('Custom Cues: Cue-Out Point (seconds)') }}
                 </template>

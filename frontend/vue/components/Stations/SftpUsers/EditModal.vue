@@ -1,9 +1,17 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <sftp-users-form :form="v$.form" :is-edit-mode="isEditMode"></sftp-users-form>
-
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <sftp-users-form
+            :form="v$.form"
+            :is-edit-mode="isEditMode"
+        />
     </modal-form>
 </template>
 <script>
@@ -14,11 +22,11 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'SftpUsersEditModal',
+    components: {SftpUsersForm},
+    mixins: [BaseEditModal],
     setup() {
         return {v$: useVuelidate()}
     },
-    mixins: [BaseEditModal],
-    components: {SftpUsersForm},
     validations() {
         return {
             form: {

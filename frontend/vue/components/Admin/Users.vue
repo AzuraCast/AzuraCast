@@ -1,38 +1,76 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('Users') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('Users') }}
+            </h2>
         </b-card-header>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <icon icon="add"></icon>
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
                 {{ $gettext('Add User') }}
             </b-button>
         </b-card-body>
 
-        <data-table ref="datatable" id="users" paginated :fields="fields" :api-url="listUrl">
+        <data-table
+            id="users"
+            ref="datatable"
+            paginated
+            :fields="fields"
+            :api-url="listUrl"
+        >
             <template #cell(name)="row">
-                <h5 class="mb-0" v-if="row.item.name !== ''">{{ row.item.name }}</h5>
+                <h5
+                    v-if="row.item.name !== ''"
+                    class="mb-0"
+                >
+                    {{ row.item.name }}
+                </h5>
                 <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>
-                <span v-if="row.item.is_me" class="badge badge-primary">
+                <span
+                    v-if="row.item.is_me"
+                    class="badge badge-primary"
+                >
                     {{ $gettext('You') }}
                 </span>
             </template>
             <template #cell(roles)="row">
-                <div v-for="role in row.item.roles" :key="role.id">
+                <div
+                    v-for="role in row.item.roles"
+                    :key="role.id"
+                >
                     {{ role.name }}
                 </div>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm" v-if="!row.item.is_me">
-                    <b-button size="sm" variant="secondary" :href="row.item.links.masquerade" target="_blank">
+                <b-button-group
+                    v-if="!row.item.is_me"
+                    size="sm"
+                >
+                    <b-button
+                        size="sm"
+                        variant="secondary"
+                        :href="row.item.links.masquerade"
+                        target="_blank"
+                    >
                         {{ $gettext('Log In') }}
                     </b-button>
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -40,7 +78,12 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editModal" :create-url="listUrl" :roles="roles" @relist="relist"></edit-modal>
+    <edit-modal
+        ref="editModal"
+        :create-url="listUrl"
+        :roles="roles"
+        @relist="relist"
+    />
 </template>
 
 <script>

@@ -2,7 +2,11 @@
     <b-form-group>
         <b-form-fieldset>
             <div class="form-row">
-                <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
+                <b-wrapped-form-checkbox
+                    id="edit_form_is_enabled"
+                    class="col-md-6"
+                    :field="form.is_enabled"
+                >
                     <template #label>
                         {{ $gettext('Enable Broadcasting') }}
                     </template>
@@ -11,8 +15,13 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_radio_base_dir"
-                                      :field="form.radio_base_dir" advanced>
+                <b-wrapped-form-group
+                    v-if="showAdvanced"
+                    id="edit_form_radio_base_dir"
+                    class="col-md-6"
+                    :field="form.radio_base_dir"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Base Station Directory') }}
                     </template>
@@ -26,38 +35,59 @@
         </b-form-fieldset>
 
         <b-form-fieldset>
-            <b-overlay variant="card" :show="storageLocationsLoading">
+            <b-overlay
+                variant="card"
+                :show="storageLocationsLoading"
+            >
                 <div class="form-row">
-                    <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location"
-                                          :field="form.media_storage_location">
+                    <b-wrapped-form-group
+                        id="edit_form_media_storage_location"
+                        class="col-md-12"
+                        :field="form.media_storage_location"
+                    >
                         <template #label>
                             {{ $gettext('Media Storage Location') }}
                         </template>
                         <template #default="props">
-                            <b-form-select :id="props.id" v-model="props.field.$model"
-                                           :options="storageLocationOptions.media_storage_location"></b-form-select>
+                            <b-form-select
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                :options="storageLocationOptions.media_storage_location"
+                            />
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location"
-                                          :field="form.recordings_storage_location">
+                    <b-wrapped-form-group
+                        id="edit_form_recordings_storage_location"
+                        class="col-md-12"
+                        :field="form.recordings_storage_location"
+                    >
                         <template #label>
                             {{ $gettext('Live Recordings Storage Location') }}
                         </template>
                         <template #default="props">
-                            <b-form-select :id="props.id" v-model="props.field.$model"
-                                           :options="storageLocationOptions.recordings_storage_location"></b-form-select>
+                            <b-form-select
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                :options="storageLocationOptions.recordings_storage_location"
+                            />
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location"
-                                          :field="form.podcasts_storage_location">
+                    <b-wrapped-form-group
+                        id="edit_form_podcasts_storage_location"
+                        class="col-md-12"
+                        :field="form.podcasts_storage_location"
+                    >
                         <template #label>
                             {{ $gettext('Podcasts Storage Location') }}
                         </template>
                         <template #default="props">
-                            <b-form-select :id="props.id" v-model="props.field.$model"
-                                           :options="storageLocationOptions.podcasts_storage_location"></b-form-select>
+                            <b-form-select
+                                :id="props.id"
+                                v-model="props.field.$model"
+                                :options="storageLocationOptions.podcasts_storage_location"
+                            />
                         </template>
                     </b-wrapped-form-group>
                 </div>

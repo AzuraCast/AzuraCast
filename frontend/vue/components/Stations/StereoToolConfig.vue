@@ -1,5 +1,8 @@
 <template>
-    <section class="card" role="region">
+    <section
+        class="card"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
                 {{ $gettext('Upload Stereo Tool Configuration') }}
@@ -9,7 +12,10 @@
         <info-card>
             <p class="card-text">
                 {{ $gettext('Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the') }}
-                <a href="https://www.thimeo.com/stereo-tool/" target="_blank">
+                <a
+                    href="https://www.thimeo.com/stereo-tool/"
+                    target="_blank"
+                >
                     {{ $gettext('Stereo Tool documentation.') }}
                 </a>
             </p>
@@ -18,7 +24,10 @@
         <div class="card-body">
             <b-form-group>
                 <div class="form-row">
-                    <b-form-group class="col-md-6" label-for="stereo_tool_configuration_file">
+                    <b-form-group
+                        class="col-md-6"
+                        label-for="stereo_tool_configuration_file"
+                    >
                         <template #label>
                             {{ $gettext('Select Configuration File') }}
                         </template>
@@ -28,8 +37,11 @@
                             }}
                         </template>
 
-                        <flow-upload :target-url="apiUrl" :valid-mime-types="['text/plain']"
-                                     @success="onFileSuccess"></flow-upload>
+                        <flow-upload
+                            :target-url="apiUrl"
+                            :valid-mime-types="['text/plain']"
+                            @success="onFileSuccess"
+                        />
                     </b-form-group>
 
                     <b-form-group class="col-md-6">
@@ -38,10 +50,19 @@
                         </template>
                         <div v-if="hasStereoToolConfiguration">
                             <div class="buttons pt-3">
-                                <b-button block variant="bg" :href="apiUrl" target="_blank">
+                                <b-button
+                                    block
+                                    variant="bg"
+                                    :href="apiUrl"
+                                    target="_blank"
+                                >
                                     {{ $gettext('Download') }}
                                 </b-button>
-                                <b-button block variant="danger" @click="deleteConfigurationFile">
+                                <b-button
+                                    block
+                                    variant="danger"
+                                    @click="deleteConfigurationFile"
+                                >
                                     {{ $gettext('Clear File') }}
                                 </b-button>
                             </div>

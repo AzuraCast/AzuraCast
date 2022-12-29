@@ -1,14 +1,21 @@
 <template>
     <div class="d-flex flex-row align-items-center">
         <div class="flex-shrink-0">
-            <icon icon="volume_mute"></icon>
+            <icon icon="volume_mute" />
         </div>
         <div class="flex-fill px-2">
-            <input type="range" min="0" max="100" class="custom-range slider"
-                   v-model.number="volume" @click.right.prevent="reset" style="height: 10px; width: 100px;">
+            <input
+                v-model.number="volume"
+                type="range"
+                min="0"
+                max="100"
+                class="custom-range slider"
+                style="height: 10px; width: 100px;"
+                @click.right.prevent="reset"
+            >
         </div>
         <div class="flex-shrink-0">
-            <icon icon="volume_up"></icon>
+            <icon icon="volume_up" />
         </div>
     </div>
 </template>

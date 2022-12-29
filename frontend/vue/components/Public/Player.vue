@@ -1,16 +1,33 @@
 <template>
     <div class="radio-player-widget">
-        <audio-player ref="$player" :title="np.now_playing.song.text" :volume="volume"
-                      :is-muted="isMuted"></audio-player>
+        <audio-player
+            ref="$player"
+            :title="np.now_playing.song.text"
+            :volume="volume"
+            :is-muted="isMuted"
+        />
 
         <div class="now-playing-details">
-            <div class="now-playing-art" v-if="showAlbumArt && np.now_playing.song.art">
-                <a :href="np.now_playing.song.art" data-fancybox target="_blank">
-                    <img :src="np.now_playing.song.art" :alt="$gettext('Album Art')">
+            <div
+                v-if="showAlbumArt && np.now_playing.song.art"
+                class="now-playing-art"
+            >
+                <a
+                    :href="np.now_playing.song.art"
+                    data-fancybox
+                    target="_blank"
+                >
+                    <img
+                        :src="np.now_playing.song.art"
+                        :alt="$gettext('Album Art')"
+                    >
                 </a>
             </div>
             <div class="now-playing-main">
-                <h6 class="now-playing-live" v-if="np.live.is_live">
+                <h6
+                    v-if="np.live.is_live"
+                    class="now-playing-live"
+                >
                     {{ $gettext('Live') }}
                     {{ np.live.streamer_name }}
                 </h6>
@@ -21,21 +38,33 @@
                     </h4>
                 </div>
                 <div v-else-if="np.now_playing.song.title !== ''">
-                    <h4 class="now-playing-title">{{ np.now_playing.song.title }}</h4>
-                    <h5 class="now-playing-artist">{{ np.now_playing.song.artist }}</h5>
+                    <h4 class="now-playing-title">
+                        {{ np.now_playing.song.title }}
+                    </h4>
+                    <h5 class="now-playing-artist">
+                        {{ np.now_playing.song.artist }}
+                    </h5>
                 </div>
                 <div v-else>
-                    <h4 class="now-playing-title">{{ np.now_playing.song.text }}</h4>
+                    <h4 class="now-playing-title">
+                        {{ np.now_playing.song.text }}
+                    </h4>
                 </div>
 
-                <div class="time-display" v-if="currentTimeElapsedDisplay != null">
+                <div
+                    v-if="currentTimeElapsedDisplay != null"
+                    class="time-display"
+                >
                     <div class="time-display-played text-secondary">
                         {{ currentTimeElapsedDisplay }}
                     </div>
                     <div class="time-display-progress">
                         <div class="progress">
-                            <div class="progress-bar bg-secondary" role="progressbar"
-                                 :style="{ width: currentTrackPercent+'%' }"></div>
+                            <div
+                                class="progress-bar bg-secondary"
+                                role="progressbar"
+                                :style="{ width: currentTrackPercent+'%' }"
+                            />
                         </div>
                     </div>
                     <div class="time-display-total text-secondary">
@@ -48,18 +77,39 @@
         <hr>
 
         <div class="radio-controls">
-            <play-button class="radio-control-play-button" icon-class="outlined lg" :url="currentStream.url"
-                         :is-hls="currentStream.hls" is-stream></play-button>
+            <play-button
+                class="radio-control-play-button"
+                icon-class="outlined lg"
+                :url="currentStream.url"
+                :is-hls="currentStream.hls"
+                is-stream
+            />
 
             <div class="radio-control-select-stream">
-                <div v-if="streams.length > 1" class="dropdown">
-                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="btn-select-stream"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div
+                    v-if="streams.length > 1"
+                    class="dropdown"
+                >
+                    <button
+                        id="btn-select-stream"
+                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                        type="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
                         {{ currentStream.name }}
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="btn-select-stream">
-                        <a class="dropdown-item" v-for="stream in streams" href="javascript:"
-                           @click.prevent="switchStream(stream)">
+                    <div
+                        class="dropdown-menu"
+                        aria-labelledby="btn-select-stream"
+                    >
+                        <a
+                            v-for="stream in streams"
+                            class="dropdown-item"
+                            href="javascript:"
+                            @click.prevent="switchStream(stream)"
+                        >
                             {{ stream.name }}
                         </a>
                     </div>
@@ -67,145 +117,40 @@
             </div>
 
             <div class="radio-control-mute-button">
-                <a href="#" class="text-secondary" :title="$gettext('Mute')" @click.prevent="toggleMute">
-                    <icon icon="volume_mute"></icon>
+                <a
+                    href="#"
+                    class="text-secondary"
+                    :title="$gettext('Mute')"
+                    @click.prevent="toggleMute"
+                >
+                    <icon icon="volume_mute" />
                 </a>
             </div>
             <div class="radio-control-volume-slider">
-                <input type="range" :title="$gettext('Volume')" class="custom-range" min="0" max="100" step="1"
-                       :disabled="isMuted" v-model.number="volume">
+                <input
+                    v-model.number="volume"
+                    type="range"
+                    :title="$gettext('Volume')"
+                    class="custom-range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    :disabled="isMuted"
+                >
             </div>
             <div class="radio-control-max-volume-button">
-                <a href="#" class="text-secondary" :title="$gettext('Full Volume')" @click.prevent="fullVolume">
-                    <icon icon="volume_up"></icon>
+                <a
+                    href="#"
+                    class="text-secondary"
+                    :title="$gettext('Full Volume')"
+                    @click.prevent="fullVolume"
+                >
+                    <icon icon="volume_up" />
                 </a>
             </div>
         </div>
     </div>
 </template>
-
-<style lang="scss">
-.radio-player-widget {
-    .now-playing-details {
-        display: flex;
-        align-items: center;
-
-        .now-playing-art {
-            padding-right: .5rem;
-
-            img {
-                width: 75px;
-                height: auto;
-                border-radius: 5px;
-
-                @media (max-width: 575px) {
-                    width: 50px;
-                }
-            }
-        }
-
-        .now-playing-main {
-            flex: 1;
-            min-width: 0;
-        }
-
-        h4, h5, h6 {
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        h4 {
-            font-size: 15px;
-        }
-
-        h5 {
-            font-size: 13px;
-            font-weight: normal;
-        }
-
-        h6 {
-            font-size: 11px;
-            font-weight: normal;
-        }
-
-        .now-playing-title,
-        .now-playing-artist {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-
-            &:hover {
-                text-overflow: clip;
-                white-space: normal;
-                word-break: break-all;
-            }
-        }
-
-        .time-display {
-            font-size: 10px;
-            margin-top: .25rem;
-            flex-direction: row;
-            align-items: center;
-            display: flex;
-
-            .time-display-played {
-                margin-right: .5rem;
-            }
-
-            .time-display-progress {
-                flex: 1 1 auto;
-
-                .progress-bar {
-                    -webkit-transition: width 1s; /* Safari */
-                    transition: width 1s;
-                    transition-timing-function: linear;
-                }
-            }
-
-            .time-display-total {
-                margin-left: .5rem;
-            }
-        }
-    }
-
-    hr {
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-    }
-
-    i.material-icons {
-        line-height: 1;
-    }
-
-    .radio-controls {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-        .radio-control-play-button {
-            margin-right: .25rem;
-        }
-
-        .radio-control-select-stream {
-            flex: 1 1 auto;
-        }
-
-        .radio-control-mute-button,
-        .radio-control-max-volume-button {
-            flex-shrink: 0;
-        }
-
-        .radio-control-volume-slider {
-            flex: 1 1 auto;
-            max-width: 30%;
-
-            input {
-                height: 10px;
-            }
-        }
-    }
-}
-</style>
 
 <script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer';
@@ -362,3 +307,126 @@ const onNowPlayingUpdated = (np_new) => {
 
 watch(np, onNowPlayingUpdated, {immediate: true});
 </script>
+
+<style lang="scss">
+.radio-player-widget {
+    .now-playing-details {
+        display: flex;
+        align-items: center;
+
+        .now-playing-art {
+            padding-right: .5rem;
+
+            img {
+                width: 75px;
+                height: auto;
+                border-radius: 5px;
+
+                @media (max-width: 575px) {
+                    width: 50px;
+                }
+            }
+        }
+
+        .now-playing-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        h4, h5, h6 {
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        h4 {
+            font-size: 15px;
+        }
+
+        h5 {
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        h6 {
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .now-playing-title,
+        .now-playing-artist {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            &:hover {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
+        }
+
+        .time-display {
+            font-size: 10px;
+            margin-top: .25rem;
+            flex-direction: row;
+            align-items: center;
+            display: flex;
+
+            .time-display-played {
+                margin-right: .5rem;
+            }
+
+            .time-display-progress {
+                flex: 1 1 auto;
+
+                .progress-bar {
+                    -webkit-transition: width 1s; /* Safari */
+                    transition: width 1s;
+                    transition-timing-function: linear;
+                }
+            }
+
+            .time-display-total {
+                margin-left: .5rem;
+            }
+        }
+    }
+
+    hr {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    i.material-icons {
+        line-height: 1;
+    }
+
+    .radio-controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .radio-control-play-button {
+            margin-right: .25rem;
+        }
+
+        .radio-control-select-stream {
+            flex: 1 1 auto;
+        }
+
+        .radio-control-mute-button,
+        .radio-control-max-volume-button {
+            flex-shrink: 0;
+        }
+
+        .radio-control-volume-slider {
+            flex: 1 1 auto;
+            max-width: 30%;
+
+            input {
+                height: 10px;
+            }
+        }
+    }
+}
+</style>

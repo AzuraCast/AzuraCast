@@ -1,8 +1,18 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-        <b-tabs content-class="mt-3" pills>
-            <form-basic-info :form="v$"></form-basic-info>
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <form-basic-info :form="v$" />
         </b-tabs>
     </modal-form>
 </template>
@@ -16,6 +26,8 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 export default {
     name: 'EditModal',
+    components: {FormBasicInfo},
+    mixins: [BaseEditModal],
     emits: ['needs-restart'],
     setup() {
         const {form, resetForm, v$} = useVuelidateOnForm(
@@ -37,8 +49,6 @@ export default {
             v$
         }
     },
-    mixins: [BaseEditModal],
-    components: {FormBasicInfo},
     computed: {
         langTitle() {
             return this.isEditMode

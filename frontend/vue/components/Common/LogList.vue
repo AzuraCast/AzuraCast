@@ -1,7 +1,12 @@
 <template>
     <div class="list-group list-group-flush">
-        <a v-for="log in logs" :key="log.key" class="list-group-item list-group-item-action log-item"
-           href="#" @click.prevent="viewLog(log.links.self)">
+        <a
+            v-for="log in logs"
+            :key="log.key"
+            class="list-group-item list-group-item-action log-item"
+            href="#"
+            @click.prevent="viewLog(log.links.self)"
+        >
             <span class="log-name">{{ log.name }}</span><br>
             <small class="text-secondary">{{ log.path }}</small>
         </a>
@@ -11,10 +16,10 @@
 <script>
 export default {
     name: 'LogList',
-    emits: ['view'],
     props: {
         url: String,
     },
+    emits: ['view'],
     data() {
         return {
             loading: true,

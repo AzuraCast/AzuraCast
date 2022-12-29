@@ -1,21 +1,43 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('Song Requests') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('Song Requests') }}
+            </h2>
         </b-card-header>
-        <b-tabs pills card>
-            <b-tab v-for="tab in tabs" :key="tab.type" :active="activeType === tab.type" @click="setType(tab.type)"
-                   :title="tab.title" no-body></b-tab>
+        <b-tabs
+            pills
+            card
+        >
+            <b-tab
+                v-for="tab in tabs"
+                :key="tab.type"
+                :active="activeType === tab.type"
+                :title="tab.title"
+                no-body
+                @click="setType(tab.type)"
+            />
         </b-tabs>
 
-        <div class="card-actions" v-if="activeType === 'pending'">
-            <b-button variant="outline-danger" @click="doClear()">
-                <icon icon="remove"></icon>
+        <div
+            v-if="activeType === 'pending'"
+            class="card-actions"
+        >
+            <b-button
+                variant="outline-danger"
+                @click="doClear()"
+            >
+                <icon icon="remove" />
                 {{ $gettext('Clear Pending Requests') }}
             </b-button>
         </div>
 
-        <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrlForType">
+        <data-table
+            id="station_queue"
+            ref="datatable"
+            :fields="fields"
+            :api-url="listUrlForType"
+        >
             <template #cell(timestamp)="row">
                 {{ formatTime(row.item.timestamp) }}
             </template>
@@ -41,8 +63,12 @@
             </template>
             <template #cell(actions)="row">
                 <b-button-group>
-                    <b-button v-if="row.item.played_at === 0" size="sm" variant="danger"
-                              @click.prevent="doDelete(row.item.links.delete)">
+                    <b-button
+                        v-if="row.item.played_at === 0"
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.delete)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -65,6 +91,18 @@ export default {
         clearUrl: String,
         stationTimeZone: String
     },
+    data() {
+        return {
+            activeType: 'pending',
+            fields: [
+                {key: 'timestamp', label: this.$gettext('Date Requested'), sortable: false},
+                {key: 'played_at', label: this.$gettext('Date Played'), sortable: false},
+                {key: 'song_title', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
+                {key: 'ip', label: this.$gettext('Requester IP'), sortable: false},
+                {key: 'actions', label: this.$gettext('Actions'), sortable: false}
+            ]
+        }
+    },
     computed: {
         tabs() {
             return [
@@ -80,18 +118,6 @@ export default {
         },
         listUrlForType() {
             return this.listUrl + '?type=' + this.activeType;
-        }
-    },
-    data() {
-        return {
-            activeType: 'pending',
-            fields: [
-                {key: 'timestamp', label: this.$gettext('Date Requested'), sortable: false},
-                {key: 'played_at', label: this.$gettext('Date Played'), sortable: false},
-                {key: 'song_title', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
-                {key: 'ip', label: this.$gettext('Requester IP'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false}
-            ]
         }
     },
     methods: {

@@ -13,7 +13,10 @@
                     $gettext('Create a new app on the Twitter Applications site. Use this installation\'s base URL as the application URL.')
                 }}
                 <br>
-                <a href="https://developer.twitter.com/en/apps" target="_blank">
+                <a
+                    href="https://developer.twitter.com/en/apps"
+                    target="_blank"
+                >
                     {{ $gettext('Twitter Applications') }}
                 </a>
             </li>
@@ -33,36 +36,54 @@
 
     <b-form-group>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-6" id="form_config_consumer_key" :field="form.config.consumer_key">
+            <b-wrapped-form-group
+                id="form_config_consumer_key"
+                class="col-md-6"
+                :field="form.config.consumer_key"
+            >
                 <template #label>
                     {{ $gettext('Consumer Key (API Key)') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_consumer_secret"
-                                  :field="form.config.consumer_secret">
+            <b-wrapped-form-group
+                id="form_config_consumer_secret"
+                class="col-md-6"
+                :field="form.config.consumer_secret"
+            >
                 <template #label>
                     {{ $gettext('Consumer Secret (API Secret)') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_token" :field="form.config.token">
+            <b-wrapped-form-group
+                id="form_config_token"
+                class="col-md-6"
+                :field="form.config.token"
+            >
                 <template #label>
                     {{ $gettext('Access Token') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="form_config_token_secret" :field="form.config.token_secret">
+            <b-wrapped-form-group
+                id="form_config_token_secret"
+                class="col-md-6"
+                :field="form.config.token_secret"
+            >
                 <template #label>
                     {{ $gettext('Access Token Secret') }}
                 </template>
             </b-wrapped-form-group>
 
-            <common-rate-limit-fields :form="form"></common-rate-limit-fields>
+            <common-rate-limit-fields :form="form" />
         </div>
     </b-form-group>
 
-    <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>
+    <common-social-post-fields
+        :form="form"
+        :now-playing-url="nowPlayingUrl"
+    />
 </template>
 
 <script setup>

@@ -1,19 +1,29 @@
 <template>
     <b-tab :title="$gettext('Station Permissions')">
         <permissions-form-station-row
-            v-for="(row, index) in form.permissions.$model.station" :key="index"
-            :stations="stations" :station-permissions="stationPermissions"
-            v-model:row="form.permissions.$model.station[index]" @remove="remove(index)"
-        ></permissions-form-station-row>
+            v-for="(row, index) in form.permissions.$model.station"
+            :key="index"
+            v-model:row="form.permissions.$model.station[index]"
+            :stations="stations"
+            :station-permissions="stationPermissions"
+            @remove="remove(index)"
+        />
 
         <b-button-group v-if="hasRemainingStations">
-            <b-dropdown size="sm" variant="outline-primary">
+            <b-dropdown
+                size="sm"
+                variant="outline-primary"
+            >
                 <template #button-content>
                     {{ $gettext('Add Station') }}
                 </template>
                 <div style="max-height: 300px; overflow-y: auto;">
-                    <b-dropdown-item-button v-for="(stationName, stationId) in remainingStations" :key="stationId"
-                                            @click="add(stationId)">{{ stationName }}
+                    <b-dropdown-item-button
+                        v-for="(stationName, stationId) in remainingStations"
+                        :key="stationId"
+                        @click="add(stationId)"
+                    >
+                        {{ stationName }}
                     </b-dropdown-item-button>
                 </div>
             </b-dropdown>

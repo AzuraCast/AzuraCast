@@ -1,15 +1,30 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <b-tabs content-class="mt-3" pills>
-            <form-basic-info :form="v$.form"></form-basic-info>
-            <form-schedule :form="v$.form" :schedule-items="form.schedule_items"
-                           :station-time-zone="stationTimeZone"></form-schedule>
-            <form-artwork v-model="v$.form.artwork_file.$model" :artwork-src="record.links.art"
-                          :new-art-url="newArtUrl" :edit-art-url="record.links.art"></form-artwork>
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <form-basic-info :form="v$.form" />
+            <form-schedule
+                :form="v$.form"
+                :schedule-items="form.schedule_items"
+                :station-time-zone="stationTimeZone"
+            />
+            <form-artwork
+                v-model="v$.form.artwork_file.$model"
+                :artwork-src="record.links.art"
+                :new-art-url="newArtUrl"
+                :edit-art-url="record.links.art"
+            />
         </b-tabs>
-
     </modal-form>
 </template>
 <script>
@@ -23,14 +38,14 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    mixins: [BaseEditModal],
     components: {FormBasicInfo, FormSchedule, FormArtwork},
+    mixins: [BaseEditModal],
     props: {
         stationTimeZone: String,
         newArtUrl: String,
+    },
+    setup() {
+        return {v$: useVuelidate()}
     },
     validations() {
         let validations = {

@@ -1,20 +1,37 @@
 <template>
-    <form class="form vue-form" @submit.prevent="submit">
-        <section class="card mb-3" role="region">
+    <form
+        class="form vue-form"
+        @submit.prevent="submit"
+    >
+        <section
+            class="card mb-3"
+            role="region"
+        >
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
                     {{ $gettext('Branding Settings') }}
                 </h2>
             </div>
 
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+            <b-alert
+                variant="danger"
+                :show="error != null"
+            >
+                {{ error }}
+            </b-alert>
 
-            <b-overlay variant="card" :show="loading">
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
                 <div class="card-body">
                     <b-form-group>
                         <div class="form-row">
-                            <b-wrapped-form-group class="col-md-6" id="edit_form_public_theme"
-                                                  :field="v$.public_theme">
+                            <b-wrapped-form-group
+                                id="edit_form_public_theme"
+                                class="col-md-6"
+                                :field="v$.public_theme"
+                            >
                                 <template #label>
                                     {{ $gettext('Base Theme for Public Pages') }}
                                 </template>
@@ -24,15 +41,21 @@
                                     }}
                                 </template>
                                 <template #default="props">
-                                    <b-form-radio-group stacked :id="props.id" :options="publicThemeOptions"
-                                                        v-model="props.field.$model">
-                                    </b-form-radio-group>
+                                    <b-form-radio-group
+                                        :id="props.id"
+                                        v-model="props.field.$model"
+                                        stacked
+                                        :options="publicThemeOptions"
+                                    />
                                 </template>
                             </b-wrapped-form-group>
 
                             <b-col md="6">
-                                <b-wrapped-form-checkbox class="mb-2" id="form_edit_hide_album_art"
-                                                         :field="v$.hide_album_art">
+                                <b-wrapped-form-checkbox
+                                    id="form_edit_hide_album_art"
+                                    class="mb-2"
+                                    :field="v$.hide_album_art"
+                                >
                                     <template #label>
                                         {{ $gettext('Hide Album Art on Public Pages') }}
                                     </template>
@@ -43,8 +66,10 @@
                                     </template>
                                 </b-wrapped-form-checkbox>
 
-                                <b-wrapped-form-checkbox id="form_edit_hide_product_name"
-                                                         :field="v$.hide_product_name">
+                                <b-wrapped-form-checkbox
+                                    id="form_edit_hide_product_name"
+                                    :field="v$.hide_product_name"
+                                >
                                     <template #label>
                                         {{ $gettext('Hide AzuraCast Branding on Public Pages') }}
                                     </template>
@@ -56,8 +81,11 @@
                                 </b-wrapped-form-checkbox>
                             </b-col>
 
-                            <b-wrapped-form-group class="col-md-6" id="form_edit_homepage_redirect_url"
-                                                  :field="v$.homepage_redirect_url">
+                            <b-wrapped-form-group
+                                id="form_edit_homepage_redirect_url"
+                                class="col-md-6"
+                                :field="v$.homepage_redirect_url"
+                            >
                                 <template #label>
                                     {{ $gettext('Homepage Redirect URL') }}
                                 </template>
@@ -68,8 +96,11 @@
                                 </template>
                             </b-wrapped-form-group>
 
-                            <b-wrapped-form-group class="col-md-6" id="form_edit_default_album_art_url"
-                                                  :field="v$.default_album_art_url">
+                            <b-wrapped-form-group
+                                id="form_edit_default_album_art_url"
+                                class="col-md-6"
+                                :field="v$.default_album_art_url"
+                            >
                                 <template #label>
                                     {{ $gettext('Default Album Art URL') }}
                                 </template>
@@ -80,8 +111,11 @@
                                 </template>
                             </b-wrapped-form-group>
 
-                            <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_css"
-                                                  :field="v$.public_custom_css">
+                            <b-wrapped-form-group
+                                id="edit_form_public_custom_css"
+                                class="col-md-12"
+                                :field="v$.public_custom_css"
+                            >
                                 <template #label>
                                     {{ $gettext('Custom CSS for Public Pages') }}
                                 </template>
@@ -91,13 +125,19 @@
                                     }}
                                 </template>
                                 <template #default="props">
-                                    <codemirror-textarea :id="props.id" mode="css"
-                                                         v-model="props.field.$model"></codemirror-textarea>
+                                    <codemirror-textarea
+                                        :id="props.id"
+                                        v-model="props.field.$model"
+                                        mode="css"
+                                    />
                                 </template>
                             </b-wrapped-form-group>
 
-                            <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_js"
-                                                  :field="v$.public_custom_js">
+                            <b-wrapped-form-group
+                                id="edit_form_public_custom_js"
+                                class="col-md-12"
+                                :field="v$.public_custom_js"
+                            >
                                 <template #label>
                                     {{ $gettext('Custom JS for Public Pages') }}
                                 </template>
@@ -107,13 +147,19 @@
                                     }}
                                 </template>
                                 <template #default="props">
-                                    <codemirror-textarea :id="props.id" mode="javascript"
-                                                         v-model="props.field.$model"></codemirror-textarea>
+                                    <codemirror-textarea
+                                        :id="props.id"
+                                        v-model="props.field.$model"
+                                        mode="javascript"
+                                    />
                                 </template>
                             </b-wrapped-form-group>
 
-                            <b-wrapped-form-group class="col-md-12" id="edit_form_internal_custom_css"
-                                                  :field="v$.internal_custom_css">
+                            <b-wrapped-form-group
+                                id="edit_form_internal_custom_css"
+                                class="col-md-12"
+                                :field="v$.internal_custom_css"
+                            >
                                 <template #label>
                                     {{ $gettext('Custom CSS for Internal Pages') }}
                                 </template>
@@ -123,13 +169,21 @@
                                     }}
                                 </template>
                                 <template #default="props">
-                                    <codemirror-textarea :id="props.id" mode="css"
-                                                         v-model="props.field.$model"></codemirror-textarea>
+                                    <codemirror-textarea
+                                        :id="props.id"
+                                        v-model="props.field.$model"
+                                        mode="css"
+                                    />
                                 </template>
                             </b-wrapped-form-group>
                         </div>
 
-                        <b-button size="lg" type="submit" class="mt-3" variant="primary">
+                        <b-button
+                            size="lg"
+                            type="submit"
+                            class="mt-3"
+                            variant="primary"
+                        >
                             {{ $gettext('Save Changes') }}
                         </b-button>
                     </b-form-group>

@@ -1,20 +1,40 @@
 <template>
-    <b-modal size="lg" id="queue_modal" ref="modal" :title="$gettext('Playback Queue')" :busy="loading">
+    <b-modal
+        id="queue_modal"
+        ref="modal"
+        size="lg"
+        :title="$gettext('Playback Queue')"
+        :busy="loading"
+    >
         <p>
             {{
                 $gettext('This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).')
             }}
         </p>
-        <b-overlay variant="card" :show="loading">
-            <b-table-simple striped class="sortable mb-0">
+        <b-overlay
+            variant="card"
+            :show="loading"
+        >
+            <b-table-simple
+                striped
+                class="sortable mb-0"
+            >
                 <b-thead>
                     <tr>
-                        <th style="width: 50%;">{{ $gettext('Title') }}</th>
-                        <th style="width: 50%;">{{ $gettext('Artist') }}</th>
+                        <th style="width: 50%;">
+                            {{ $gettext('Title') }}
+                        </th>
+                        <th style="width: 50%;">
+                            {{ $gettext('Artist') }}
+                        </th>
                     </tr>
                 </b-thead>
                 <b-tbody>
-                    <tr class="align-middle" v-for="(row,index) in media" :key="row.id">
+                    <tr
+                        v-for="(row,index) in media"
+                        :key="row.id"
+                        class="align-middle"
+                    >
                         <td>
                             <span class="typography-subheading">{{ row.title }}</span>
                         </td>
@@ -24,10 +44,18 @@
             </b-table-simple>
         </b-overlay>
         <template #modal-footer>
-            <b-button variant="default" type="button" @click="close">
+            <b-button
+                variant="default"
+                type="button"
+                @click="close"
+            >
                 {{ $gettext('Close') }}
             </b-button>
-            <b-button variant="danger" type="submit" @click="doClear">
+            <b-button
+                variant="danger"
+                type="submit"
+                @click="doClear"
+            >
                 {{ $gettext('Clear Queue') }}
             </b-button>
         </template>

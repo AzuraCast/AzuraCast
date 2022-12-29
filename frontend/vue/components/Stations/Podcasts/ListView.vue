@@ -3,45 +3,85 @@
         <b-card-header header-bg-variant="primary-dark">
             <b-row class="align-items-center">
                 <b-col md="7">
-                    <h2 class="card-title">{{ $gettext('Podcasts') }}</h2>
+                    <h2 class="card-title">
+                        {{ $gettext('Podcasts') }}
+                    </h2>
                 </b-col>
-                <b-col md="5" class="text-right text-white-50">
-                    <stations-common-quota :quota-url="quotaUrl" ref="quota"></stations-common-quota>
+                <b-col
+                    md="5"
+                    class="text-right text-white-50"
+                >
+                    <stations-common-quota
+                        ref="quota"
+                        :quota-url="quotaUrl"
+                    />
                 </b-col>
             </b-row>
         </b-card-header>
 
         <b-card-body body-class="card-padding-sm">
             <div class="buttons">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <i class="material-icons" aria-hidden="true">add</i>
+                <b-button
+                    variant="outline-primary"
+                    @click.prevent="doCreate"
+                >
+                    <i
+                        class="material-icons"
+                        aria-hidden="true"
+                    >add</i>
                     {{ $gettext('Add Podcast') }}
                 </b-button>
             </div>
         </b-card-body>
 
-        <data-table ref="datatable" id="station_podcasts" paginated :fields="fields" :responsive="false"
-                    :api-url="listUrl">
+        <data-table
+            id="station_podcasts"
+            ref="datatable"
+            paginated
+            :fields="fields"
+            :responsive="false"
+            :api-url="listUrl"
+        >
             <template #cell(art)="row">
-                <album-art :src="row.item.art"></album-art>
+                <album-art :src="row.item.art" />
             </template>
             <template #cell(title)="row">
-                <h5 class="m-0">{{ row.item.title }}</h5>
-                <a :href="row.item.links.public_episodes" target="_blank">{{ $gettext('Public Page') }}</a> &bull;
-                <a :href="row.item.links.public_feed" target="_blank">{{ $gettext('RSS Feed') }}</a>
+                <h5 class="m-0">
+                    {{ row.item.title }}
+                </h5>
+                <a
+                    :href="row.item.links.public_episodes"
+                    target="_blank"
+                >{{ $gettext('Public Page') }}</a> &bull;
+                <a
+                    :href="row.item.links.public_feed"
+                    target="_blank"
+                >{{ $gettext('RSS Feed') }}</a>
             </template>
             <template #cell(num_episodes)="row">
                 {{ countEpisodes(row.item.episodes) }}
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
-                    <b-button size="sm" variant="dark" @click.prevent="doSelectPodcast(row.item)">
+                    <b-button
+                        size="sm"
+                        variant="dark"
+                        @click.prevent="doSelectPodcast(row.item)"
+                    >
                         {{ $gettext('Episodes') }}
                     </b-button>
                 </b-button-group>
@@ -49,9 +89,15 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editPodcastModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
-                :new-art-url="newArtUrl" :language-options="languageOptions"
-                :categories-options="categoriesOptions" @relist="relist"></edit-modal>
+    <edit-modal
+        ref="editPodcastModal"
+        :create-url="listUrl"
+        :station-time-zone="stationTimeZone"
+        :new-art-url="newArtUrl"
+        :language-options="languageOptions"
+        :categories-options="categoriesOptions"
+        @relist="relist"
+    />
 </template>
 
 <script>

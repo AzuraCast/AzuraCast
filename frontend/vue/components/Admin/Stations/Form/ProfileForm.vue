@@ -1,26 +1,43 @@
 <template>
     <b-form-fieldset>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
+            <b-wrapped-form-group
+                id="edit_form_name"
+                class="col-md-12"
+                :field="form.name"
+            >
                 <template #label>
                     {{ $gettext('Name') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_description" :field="form.description"
-                                  input-type="textarea">
+            <b-wrapped-form-group
+                id="edit_form_description"
+                class="col-md-12"
+                :field="form.description"
+                input-type="textarea"
+            >
                 <template #label>
                     {{ $gettext('Description') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_genre" :field="form.genre">
+            <b-wrapped-form-group
+                id="edit_form_genre"
+                class="col-md-6"
+                :field="form.genre"
+            >
                 <template #label>
                     {{ $gettext('Genre') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_url" :field="form.url" input-type="url">
+            <b-wrapped-form-group
+                id="edit_form_url"
+                class="col-md-6"
+                :field="form.url"
+                input-type="url"
+            >
                 <template #label>
                     {{ $gettext('Web Site URL') }}
                 </template>
@@ -31,7 +48,11 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_timezone" :field="form.timezone">
+            <b-wrapped-form-group
+                id="edit_form_timezone"
+                class="col-md-12"
+                :field="form.timezone"
+            >
                 <template #label>
                     {{ $gettext('Time Zone') }}
                 </template>
@@ -41,13 +62,19 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-select :id="props.id" v-model="props.field.$model"
-                                   :options="timezoneOptions"></b-form-select>
+                    <b-form-select
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        :options="timezoneOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_default_album_art_url"
-                                  :field="form.default_album_art_url">
+            <b-wrapped-form-group
+                id="edit_form_default_album_art_url"
+                class="col-md-6"
+                :field="form.default_album_art_url"
+            >
                 <template #label>
                     {{ $gettext('Default Album Art URL') }}
                 </template>
@@ -58,8 +85,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_short_name"
-                                  :field="form.short_name" advanced>
+            <b-wrapped-form-group
+                v-if="showAdvanced"
+                id="edit_form_short_name"
+                class="col-md-6"
+                :field="form.short_name"
+                advanced
+            >
                 <template #label>
                     {{ $gettext('URL Stub') }}
                 </template>
@@ -70,8 +102,13 @@
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_api_history_items"
-                                  :field="form.api_history_items" advanced>
+            <b-wrapped-form-group
+                v-if="showAdvanced"
+                id="edit_form_api_history_items"
+                class="col-md-6"
+                :field="form.api_history_items"
+                advanced
+            >
                 <template #label>
                     {{ $gettext('Number of Visible Recent Songs') }}
                 </template>
@@ -81,8 +118,11 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-select :id="props.id" v-model="props.field.$model"
-                                   :options="historyItemsOptions"></b-form-select>
+                    <b-form-select
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        :options="historyItemsOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
         </div>
@@ -94,8 +134,11 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_public_page"
-                                     :field="form.enable_public_page">
+            <b-wrapped-form-checkbox
+                id="edit_form_enable_public_page"
+                class="col-md-12"
+                :field="form.enable_public_page"
+            >
                 <template #label>
                     {{ $gettext('Enable Public Pages') }}
                 </template>
@@ -112,8 +155,11 @@
         </template>
 
         <div class="form-row">
-            <b-wrapped-form-checkbox class="col-md-12" id="edit_form_enable_on_demand"
-                                     :field="form.enable_on_demand">
+            <b-wrapped-form-checkbox
+                id="edit_form_enable_on_demand"
+                class="col-md-12"
+                :field="form.enable_on_demand"
+            >
                 <template #label>
                     {{ $gettext('Enable On-Demand Streaming') }}
                 </template>
@@ -124,9 +170,12 @@
                 </template>
             </b-wrapped-form-checkbox>
 
-            <b-wrapped-form-checkbox v-if="form.enable_on_demand.$model" class="col-md-12"
-                                     id="edit_form_enable_on_demand_download"
-                                     :field="form.enable_on_demand_download">
+            <b-wrapped-form-checkbox
+                v-if="form.enable_on_demand.$model"
+                id="edit_form_enable_on_demand_download"
+                class="col-md-12"
+                :field="form.enable_on_demand_download"
+            >
                 <template #label>
                     {{ $gettext('Enable Downloads on On-Demand Page') }}
                 </template>

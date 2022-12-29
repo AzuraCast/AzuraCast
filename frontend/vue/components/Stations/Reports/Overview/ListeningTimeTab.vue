@@ -1,6 +1,12 @@
 <template>
-    <b-overlay variant="card" :show="loading">
-        <div class="card-body py-5" v-if="loading">
+    <b-overlay
+        variant="card"
+        :show="loading"
+    >
+        <div
+            v-if="loading"
+            class="card-body py-5"
+        >
             &nbsp;
         </div>
         <div v-else>
@@ -10,16 +16,26 @@
                         {{ $gettext('Listeners by Listening Time') }}
                     </legend>
 
-                    <pie-chart style="width: 100%;" :data="stats.chart.datasets"
-                               :labels="stats.chart.labels" :aspect-ratio="4">
-                        <span v-html="stats.chart.alt"></span>
+                    <pie-chart
+                        style="width: 100%;"
+                        :data="stats.chart.datasets"
+                        :labels="stats.chart.labels"
+                        :aspect-ratio="4"
+                    >
+                        <span v-html="stats.chart.alt" />
                     </pie-chart>
                 </fieldset>
             </div>
 
-            <data-table ref="datatable" id="listening_time_table" paginated handle-client-side
-                        :fields="fields" :responsive="false" :items="stats.all">
-            </data-table>
+            <data-table
+                id="listening_time_table"
+                ref="datatable"
+                paginated
+                handle-client-side
+                :fields="fields"
+                :responsive="false"
+                :items="stats.all"
+            />
         </div>
     </b-overlay>
 </template>

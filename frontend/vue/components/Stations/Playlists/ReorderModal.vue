@@ -1,23 +1,60 @@
 <template>
-    <b-modal size="lg" id="reorder_modal" ref="modal" :title="$gettext('Reorder Playlist')" :busy="loading" hide-footer>
-        <b-overlay variant="card" :show="loading">
-            <div style="min-height: 40px;" class="flex-fill text-left bg-primary rounded mb-2">
-                <inline-player ref="player"></inline-player>
+    <b-modal
+        id="reorder_modal"
+        ref="modal"
+        size="lg"
+        :title="$gettext('Reorder Playlist')"
+        :busy="loading"
+        hide-footer
+    >
+        <b-overlay
+            variant="card"
+            :show="loading"
+        >
+            <div
+                style="min-height: 40px;"
+                class="flex-fill text-left bg-primary rounded mb-2"
+            >
+                <inline-player ref="player" />
             </div>
-            <b-table-simple striped class="sortable mb-0">
+            <b-table-simple
+                striped
+                class="sortable mb-0"
+            >
                 <b-thead>
                     <tr>
-                        <th style="width: 5%">&nbsp;</th>
-                        <th style="width: 25%;">{{ $gettext('Title') }}</th>
-                        <th style="width: 25%;">{{ $gettext('Artist') }}</th>
-                        <th style="width: 25%;">{{ $gettext('Album') }}</th>
-                        <th style="width: 20%;">{{ $gettext('Actions') }}</th>
+                        <th style="width: 5%">
+&nbsp;
+                        </th>
+                        <th style="width: 25%;">
+                            {{ $gettext('Title') }}
+                        </th>
+                        <th style="width: 25%;">
+                            {{ $gettext('Artist') }}
+                        </th>
+                        <th style="width: 25%;">
+                            {{ $gettext('Album') }}
+                        </th>
+                        <th style="width: 20%;">
+                            {{ $gettext('Actions') }}
+                        </th>
                     </tr>
                 </b-thead>
-                <draggable v-model="media" tag="tbody" @change="save">
-                    <tr class="align-middle" v-for="(row,index) in media" :key="media.id">
+                <draggable
+                    v-model="media"
+                    tag="tbody"
+                    @change="save"
+                >
+                    <tr
+                        v-for="(row,index) in media"
+                        :key="media.id"
+                        class="align-middle"
+                    >
                         <td class="pr-2">
-                            <play-button :url="row.media.links.play" icon-class="lg outlined"></play-button>
+                            <play-button
+                                :url="row.media.links.play"
+                                icon-class="lg outlined"
+                            />
                         </td>
                         <td class="pl-2">
                             <span class="typography-subheading">{{ row.media.title }}</span>
@@ -26,15 +63,23 @@
                         <td>{{ row.media.album }}</td>
                         <td>
                             <b-button-group size="sm">
-                                <b-button size="sm" variant="primary" @click.prevent="moveDown(index)"
-                                          :title="$gettext('Down')"
-                                          v-if="index+1 < media.length">
-                                    <icon icon="arrow_downward"></icon>
+                                <b-button
+                                    v-if="index+1 < media.length"
+                                    size="sm"
+                                    variant="primary"
+                                    :title="$gettext('Down')"
+                                    @click.prevent="moveDown(index)"
+                                >
+                                    <icon icon="arrow_downward" />
                                 </b-button>
-                                <b-button size="sm" variant="primary" @click.prevent="moveUp(index)"
-                                          :title="$gettext('Up')"
-                                          v-if="index > 0">
-                                    <icon icon="arrow_upward"></icon>
+                                <b-button
+                                    v-if="index > 0"
+                                    size="sm"
+                                    variant="primary"
+                                    :title="$gettext('Up')"
+                                    @click.prevent="moveUp(index)"
+                                >
+                                    <icon icon="arrow_upward" />
                                 </b-button>
                             </b-button-group>
                         </td>
@@ -44,12 +89,6 @@
         </b-overlay>
     </b-modal>
 </template>
-
-<style lang="scss">
-table.sortable {
-    cursor: pointer;
-}
-</style>
 
 <script>
 import Draggable from 'vuedraggable';
@@ -107,3 +146,9 @@ export default {
     }
 };
 </script>
+
+<style lang="scss">
+table.sortable {
+    cursor: pointer;
+}
+</style>

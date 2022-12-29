@@ -12,15 +12,30 @@
                                 $gettext('Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.')
                             }}
                         </template>
-                        <b-form-file id="edit_form_art" accept="image/jpeg, image/png"
-                                     v-model="uploadedFile"></b-form-file>
+                        <b-form-file
+                            id="edit_form_art"
+                            v-model="uploadedFile"
+                            accept="image/jpeg, image/png"
+                        />
                     </b-form-group>
                 </b-col>
-                <b-col md="4" v-if="src && src !== ''">
-                    <b-img :src="src" :alt="langTitle" rounded fluid></b-img>
+                <b-col
+                    v-if="src && src !== ''"
+                    md="4"
+                >
+                    <b-img
+                        :src="src"
+                        :alt="langTitle"
+                        rounded
+                        fluid
+                    />
 
                     <div class="buttons pt-3">
-                        <b-button block variant="danger" @click="deleteArt">
+                        <b-button
+                            block
+                            variant="danger"
+                            @click="deleteArt"
+                        >
                             {{ $gettext('Clear Artwork') }}
                         </b-button>
                     </div>

@@ -1,5 +1,9 @@
 <template>
-    <audio ref="audio" v-if="isPlaying" v-bind:title="title"/>
+    <audio
+        v-if="isPlaying"
+        ref="audio"
+        :title="title"
+    />
 </template>
 
 <script>

@@ -1,8 +1,11 @@
 <template>
     <b-form-fieldset>
         <div class="form-row">
-            <b-wrapped-form-group class="col-md-12" id="edit_form_backend_type"
-                                  :field="form.backend_type">
+            <b-wrapped-form-group
+                id="edit_form_backend_type"
+                class="col-md-12"
+                :field="form.backend_type"
+            >
                 <template #label>
                     {{ $gettext('AutoDJ Service') }}
                 </template>
@@ -12,9 +15,12 @@
                     }}
                 </template>
                 <template #default="props">
-                    <b-form-radio-group stacked :id="props.id" :options="backendTypeOptions"
-                                        v-model="props.field.$model">
-                    </b-form-radio-group>
+                    <b-form-radio-group
+                        :id="props.id"
+                        v-model="props.field.$model"
+                        stacked
+                        :options="backendTypeOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
         </div>
@@ -23,8 +29,11 @@
     <b-form-fieldset v-if="isBackendEnabled">
         <b-form-fieldset>
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-7" id="edit_form_backend_crossfade_type"
-                                      :field="form.backend_config.crossfade_type">
+                <b-wrapped-form-group
+                    id="edit_form_backend_crossfade_type"
+                    class="col-md-7"
+                    :field="form.backend_config.crossfade_type"
+                >
                     <template #label>
                         {{ $gettext('Crossfade Method') }}
                     </template>
@@ -34,15 +43,22 @@
                         }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="crossfadeOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="crossfadeOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-5" id="edit_form_backend_crossfade"
-                                      :field="form.backend_config.crossfade" input-type="number"
-                                      :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }">
+                <b-wrapped-form-group
+                    id="edit_form_backend_crossfade"
+                    class="col-md-5"
+                    :field="form.backend_config.crossfade"
+                    input-type="number"
+                    :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }"
+                >
                     <template #label>
                         {{ $gettext('Crossfade Duration (Seconds)') }}
                     </template>
@@ -52,8 +68,11 @@
                 </b-wrapped-form-group>
             </div>
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_backend_config_audio_processing_method"
-                                      :field="form.backend_config.audio_processing_method">
+                <b-wrapped-form-group
+                    id="edit_form_backend_config_audio_processing_method"
+                    class="col-md-12"
+                    :field="form.backend_config.audio_processing_method"
+                >
                     <template #label>
                         {{ $gettext('Audio Processing Method') }}
                     </template>
@@ -63,9 +82,12 @@
                         }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="audioProcessingOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="audioProcessingOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
             </div>
@@ -79,15 +101,22 @@
                 {{
                     $gettext('Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the')
                 }}
-                <a href="https://www.thimeo.com/stereo-tool/" target="_blank">
+                <a
+                    href="https://www.thimeo.com/stereo-tool/"
+                    target="_blank"
+                >
                     {{ $gettext('Stereo Tool documentation.') }}
                 </a>
             </template>
 
             <b-form-fieldset>
                 <div class="form-row">
-                    <b-wrapped-form-group class="col-md-7" id="edit_form_backend_stereo_tool_license_key"
-                                          :field="form.backend_config.stereo_tool_license_key" input-type="text">
+                    <b-wrapped-form-group
+                        id="edit_form_backend_stereo_tool_license_key"
+                        class="col-md-7"
+                        :field="form.backend_config.stereo_tool_license_key"
+                        input-type="text"
+                    >
                         <template #label>
                             {{ $gettext('Stereo Tool License Key') }}
                         </template>
@@ -98,7 +127,10 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-form-markup class="col-md-5" id="edit_form_backend_stereo_tool_config">
+                    <b-form-markup
+                        id="edit_form_backend_stereo_tool_config"
+                        class="col-md-5"
+                    >
                         <template #label>
                             {{ $gettext('Upload Stereo Tool Configuration') }}
                         </template>
@@ -119,9 +151,12 @@
             </template>
 
             <div class="form-row">
-                <b-wrapped-form-checkbox class="col-md-6"
-                                         id="edit_form_backend_use_manual_autodj"
-                                         :field="form.backend_config.use_manual_autodj" advanced>
+                <b-wrapped-form-checkbox
+                    id="edit_form_backend_use_manual_autodj"
+                    class="col-md-6"
+                    :field="form.backend_config.use_manual_autodj"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Manual AutoDJ Mode') }}
                     </template>
@@ -132,9 +167,12 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-checkbox class="col-md-6"
-                                         id="edit_form_backend_enable_replaygain_metadata"
-                                         :field="form.backend_config.enable_replaygain_metadata" advanced>
+                <b-wrapped-form-checkbox
+                    id="edit_form_backend_enable_replaygain_metadata"
+                    class="col-md-6"
+                    :field="form.backend_config.enable_replaygain_metadata"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Use Replaygain Metadata') }}
                     </template>
@@ -145,9 +183,14 @@
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_telnet_port"
-                                      :field="form.backend_config.telnet_port" input-type="number"
-                                      :input-attrs="{ min: '0' }" advanced>
+                <b-wrapped-form-group
+                    id="edit_form_backend_telnet_port"
+                    class="col-md-6"
+                    :field="form.backend_config.telnet_port"
+                    input-type="number"
+                    :input-attrs="{ min: '0' }"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Customize Internal Request Processing Port') }}
                     </template>
@@ -158,9 +201,14 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_autodj_queue_length"
-                                      :field="form.backend_config.autodj_queue_length" input-type="number"
-                                      :input-attrs="{ min: '2', max: '25' }" advanced>
+                <b-wrapped-form-group
+                    id="edit_form_backend_autodj_queue_length"
+                    class="col-md-6"
+                    :field="form.backend_config.autodj_queue_length"
+                    input-type="number"
+                    :input-attrs="{ min: '2', max: '25' }"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('AutoDJ Queue Length') }}
                     </template>
@@ -171,8 +219,12 @@
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_charset"
-                                      :field="form.backend_config.charset" advanced>
+                <b-wrapped-form-group
+                    id="edit_form_backend_charset"
+                    class="col-md-6"
+                    :field="form.backend_config.charset"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Character Set Encoding') }}
                     </template>
@@ -182,14 +234,21 @@
                         }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="charsetOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="charsetOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_performance_mode"
-                                      :field="form.backend_config.performance_mode" advanced>
+                <b-wrapped-form-group
+                    id="edit_form_backend_performance_mode"
+                    class="col-md-6"
+                    :field="form.backend_config.performance_mode"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Liquidsoap Performance Tuning') }}
                     </template>
@@ -199,15 +258,23 @@
                         }}
                     </template>
                     <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="performanceModeOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
+                        <b-form-radio-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            stacked
+                            :options="performanceModeOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backend_duplicate_prevention_time_range"
-                                      :field="form.backend_config.duplicate_prevention_time_range"
-                                      input-type="number" :input-attrs="{ min: '0', max: '1440' }" advanced>
+                <b-wrapped-form-group
+                    id="edit_form_backend_duplicate_prevention_time_range"
+                    class="col-md-6"
+                    :field="form.backend_config.duplicate_prevention_time_range"
+                    input-type="number"
+                    :input-attrs="{ min: '0', max: '1440' }"
+                    advanced
+                >
                     <template #label>
                         {{ $gettext('Duplicate Prevention Time Range (Minutes)') }}
                     </template>

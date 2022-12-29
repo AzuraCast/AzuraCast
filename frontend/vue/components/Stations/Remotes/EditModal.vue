@@ -1,13 +1,21 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <remote-form-basic-info :form="v$.form" />
 
-        <b-tabs content-class="mt-3" pills>
-            <remote-form-basic-info :form="v$.form"></remote-form-basic-info>
-
-            <remote-form-auto-dj :form="v$.form"></remote-form-auto-dj>
+            <remote-form-auto-dj :form="v$.form" />
         </b-tabs>
-
     </modal-form>
 </template>
 <script>
@@ -20,14 +28,14 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'RemoteEditModal',
-    emits: ['needs-restart'],
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    mixins: [BaseEditModal],
     components: {
         RemoteFormAutoDj,
         RemoteFormBasicInfo
+    },
+    mixins: [BaseEditModal],
+    emits: ['needs-restart'],
+    setup() {
+        return {v$: useVuelidate()}
     },
     validations() {
         return {

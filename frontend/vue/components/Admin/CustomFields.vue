@@ -1,7 +1,9 @@
 <template>
     <b-card no-body>
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('Custom Fields') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('Custom Fields') }}
+            </h2>
         </b-card-header>
 
         <info-card>
@@ -13,13 +15,22 @@
         </info-card>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button variant="outline-primary" @click.prevent="doCreate">
-                <icon icon="add"></icon>
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
                 {{ $gettext('Add Custom Field') }}
             </b-button>
         </b-card-body>
 
-        <data-table ref="$dataTable" id="custom_fields" :fields="fields" :show-toolbar="false" :api-url="listUrl">
+        <data-table
+            id="custom_fields"
+            ref="$dataTable"
+            :fields="fields"
+            :show-toolbar="false"
+            :api-url="listUrl"
+        >
             <template #cell(name)="row">
                 {{ row.item.name }} <code>{{ row.item.short_name }}</code>
             </template>
@@ -28,10 +39,18 @@
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
                         {{ $gettext('Edit') }}
                     </b-button>
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>
@@ -39,8 +58,12 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="$editModal" :create-url="listUrl" :auto-assign-types="autoAssignTypes"
-                @relist="relist"></edit-modal>
+    <edit-modal
+        ref="$editModal"
+        :create-url="listUrl"
+        :auto-assign-types="autoAssignTypes"
+        @relist="relist"
+    />
 </template>
 
 <script setup>

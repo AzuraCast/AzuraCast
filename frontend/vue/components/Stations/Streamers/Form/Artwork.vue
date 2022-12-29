@@ -12,15 +12,30 @@
                                 $gettext('This image will be used as the default album art when this streamer is live.')
                             }}
                         </template>
-                        <b-form-file id="edit_form_art" accept="image/jpeg, image/png"
-                                     v-model="uploadedFile"></b-form-file>
+                        <b-form-file
+                            id="edit_form_art"
+                            v-model="uploadedFile"
+                            accept="image/jpeg, image/png"
+                        />
                     </b-form-group>
                 </b-col>
-                <b-col md="4" v-if="src && src !== ''">
-                    <b-img :src="src" :alt="$gettext('Artwork')" rounded fluid></b-img>
+                <b-col
+                    v-if="src && src !== ''"
+                    md="4"
+                >
+                    <b-img
+                        :src="src"
+                        :alt="$gettext('Artwork')"
+                        rounded
+                        fluid
+                    />
 
                     <div class="buttons pt-3">
-                        <b-button block variant="danger" @click="deleteArt">
+                        <b-button
+                            block
+                            variant="danger"
+                            @click="deleteArt"
+                        >
                             {{ $gettext('Clear Artwork') }}
                         </b-button>
                     </div>

@@ -1,11 +1,19 @@
 <template>
-    <modal-form ref="$modal" :loading="loading" :title="$gettext('Enable Two-Factor Authentication')"
-                :error="error" :disable-save-button="v$.$invalid"
-                @submit="doSubmit" @hidden="clearContents" no-enforce-focus>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Enable Two-Factor Authentication')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        no-enforce-focus
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
         <b-row>
             <b-col md="7">
-                <h5 class="mt-2">{{ $gettext('Step 1: Scan QR Code') }}</h5>
+                <h5 class="mt-2">
+                    {{ $gettext('Step 1: Scan QR Code') }}
+                </h5>
 
                 <p class="card-text">
                     {{
@@ -24,7 +32,11 @@
                 </p>
 
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_otp" :field="v$.otp" autofocus>
+                    <b-wrapped-form-group
+                        id="form_otp"
+                        :field="v$.otp"
+                        autofocus
+                    >
                         <template #label>
                             {{ $gettext('Code from Authenticator App') }}
                         </template>
@@ -37,18 +49,27 @@
                 </b-form-fieldset>
             </b-col>
             <b-col md="5">
-                <b-img :src="totp.qr_code"></b-img>
+                <b-img :src="totp.qr_code" />
 
-                <div v-if="totp.totp_uri" class="mt-2">
-                    <code id="totp_uri" class="d-inline-block text-truncate" style="width: 100%;">
+                <div
+                    v-if="totp.totp_uri"
+                    class="mt-2"
+                >
+                    <code
+                        id="totp_uri"
+                        class="d-inline-block text-truncate"
+                        style="width: 100%;"
+                    >
                         {{ totp.totp_uri }}
                     </code>
-                    <copy-to-clipboard-button :text="totp.totp_uri"></copy-to-clipboard-button>
+                    <copy-to-clipboard-button :text="totp.totp_uri" />
                 </div>
             </b-col>
         </b-row>
 
-        <template #save-button-name>{{ $gettext('Submit Code') }}</template>
+        <template #save-button-name>
+            {{ $gettext('Submit Code') }}
+        </template>
     </modal-form>
 </template>
 

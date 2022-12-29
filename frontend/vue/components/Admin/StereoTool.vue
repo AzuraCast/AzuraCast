@@ -7,7 +7,10 @@
         </div>
 
         <div class="card-body">
-            <b-overlay variant="card" :show="loading">
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
                 <div class="form-row">
                     <div class="col-md-7">
                         <fieldset>
@@ -37,8 +40,10 @@
                                         $gettext('Download the appropriate binary from the Stereo Tool downloads page:')
                                     }}
                                     <br>
-                                    <a href="https://www.thimeo.com/stereo-tool/download/"
-                                       target="_blank">
+                                    <a
+                                        href="https://www.thimeo.com/stereo-tool/download/"
+                                        target="_blank"
+                                    >
                                         {{ $gettext('Stereo Tool Downloads') }}
                                     </a>
                                 </li>
@@ -61,15 +66,25 @@
                                 {{ $gettext('Current Installed Version') }}
                             </legend>
 
-                            <p v-if="version" class="text-success card-text">
+                            <p
+                                v-if="version"
+                                class="text-success card-text"
+                            >
                                 {{ langInstalledVersion }}
                             </p>
-                            <p v-else class="text-danger card-text">
+                            <p
+                                v-else
+                                class="text-danger card-text"
+                            >
                                 {{ $gettext('Stereo Tool is not currently installed on this installation.') }}
                             </p>
                         </fieldset>
 
-                        <flow-upload :target-url="apiUrl" @complete="relist" @error="onError"></flow-upload>
+                        <flow-upload
+                            :target-url="apiUrl"
+                            @complete="relist"
+                            @error="onError"
+                        />
                     </div>
                 </div>
             </b-overlay>

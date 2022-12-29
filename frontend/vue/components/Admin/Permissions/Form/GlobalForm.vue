@@ -1,15 +1,25 @@
 <template>
-    <b-tab :title="$gettext('Global Permissions')" active>
+    <b-tab
+        :title="$gettext('Global Permissions')"
+        active
+    >
         <b-form-group>
             <div class="form-row">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
+                <b-wrapped-form-group
+                    id="edit_form_name"
+                    class="col-md-12"
+                    :field="form.name"
+                >
                     <template #label>
                         {{ $gettext('Role Name') }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="edit_form_global_permissions"
-                                      :field="form.permissions.global">
+                <b-wrapped-form-group
+                    id="edit_form_global_permissions"
+                    class="col-md-12"
+                    :field="form.permissions.global"
+                >
                     <template #label>
                         {{ $gettext('Global Permissions') }}
                     </template>
@@ -19,9 +29,12 @@
                         }}
                     </template>
                     <template #default="props">
-                        <b-form-checkbox-group :id="props.id" :options="globalPermissionOptions"
-                                               v-model="props.field.$model" stacked>
-                        </b-form-checkbox-group>
+                        <b-form-checkbox-group
+                            :id="props.id"
+                            v-model="props.field.$model"
+                            :options="globalPermissionOptions"
+                            stacked
+                        />
                     </template>
                 </b-wrapped-form-group>
             </div>

@@ -1,8 +1,19 @@
 <template>
-    <b-modal size="lg" centered id="cpu_stats_help_modal" ref="$modal" :title="$gettext('CPU Stats Help')">
+    <b-modal
+        id="cpu_stats_help_modal"
+        ref="$modal"
+        size="lg"
+        centered
+        :title="$gettext('CPU Stats Help')"
+    >
         <div class="mb-2">
             <h6>
-                <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;
+                <b-badge
+                    pill
+                    variant="danger"
+                >
+&nbsp;&nbsp;
+                </b-badge>&nbsp;
                 {{ $gettext('Steal (St)') }}:
                 {{ $gettext('Time stolen by other virtual machines on the same physical server.') }}
             </h6>
@@ -26,7 +37,12 @@
         </div>
         <div class="mb-2">
             <h6>
-                <b-badge pill variant="warning">&nbsp;&nbsp;</b-badge>&nbsp;
+                <b-badge
+                    pill
+                    variant="warning"
+                >
+&nbsp;&nbsp;
+                </b-badge>&nbsp;
                 {{ $gettext('Wait (Wa)') }}:
                 {{ $gettext('Time spent waiting for disk I/O to be completed.') }}
             </h6>
@@ -50,7 +66,12 @@
         </div>
         <div class="mb-1">
             <h6>
-                <b-badge pill variant="primary">&nbsp;&nbsp;</b-badge>&nbsp;
+                <b-badge
+                    pill
+                    variant="primary"
+                >
+&nbsp;&nbsp;
+                </b-badge>&nbsp;
                 {{ $gettext('Use (Us)') }}:
                 {{ $gettext('The current CPU usage including I/O Wait and Steal.') }}
             </h6>
@@ -58,7 +79,11 @@
 
         <template #modal-footer>
             <slot name="modal-footer">
-                <b-button variant="default" type="button" @click="close">
+                <b-button
+                    variant="default"
+                    type="button"
+                    @click="close"
+                >
                     {{ $gettext('Close') }}
                 </b-button>
             </slot>

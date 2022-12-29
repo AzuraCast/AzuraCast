@@ -1,9 +1,13 @@
 <template>
-    <section class="card" role="region" id="profile-backend">
+    <section
+        id="profile-backend"
+        class="card"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
                 {{ $gettext('AutoDJ Service') }}
-                <running-badge :running="np.services.backend_running"></running-badge>
+                <running-badge :running="np.services.backend_running" />
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
@@ -13,24 +17,45 @@
                 {{ langTotalTracks }}
             </p>
 
-            <div class="buttons" v-if="userCanManageMedia">
-                <a class="btn btn-primary" :href="manageMediaUri">{{ $gettext('Music Files') }}</a>
-                <a class="btn btn-primary" :href="managePlaylistsUri">{{ $gettext('Playlists') }}</a>
+            <div
+                v-if="userCanManageMedia"
+                class="buttons"
+            >
+                <a
+                    class="btn btn-primary"
+                    :href="manageMediaUri"
+                >{{ $gettext('Music Files') }}</a>
+                <a
+                    class="btn btn-primary"
+                    :href="managePlaylistsUri"
+                >{{ $gettext('Playlists') }}</a>
             </div>
         </div>
-        <div class="card-actions" v-if="userCanManageBroadcasting && hasStarted">
-            <a class="api-call no-reload btn btn-outline-secondary" :href="backendRestartUri">
-                <icon icon="update"></icon>
+        <div
+            v-if="userCanManageBroadcasting && hasStarted"
+            class="card-actions"
+        >
+            <a
+                class="api-call no-reload btn btn-outline-secondary"
+                :href="backendRestartUri"
+            >
+                <icon icon="update" />
                 {{ $gettext('Restart') }}
             </a>
-            <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.backend_running"
-               :href="backendStartUri">
-                <icon icon="play_arrow"></icon>
+            <a
+                v-show="!np.services.backend_running"
+                class="api-call no-reload btn btn-outline-success"
+                :href="backendStartUri"
+            >
+                <icon icon="play_arrow" />
                 {{ $gettext('Start') }}
             </a>
-            <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.backend_running"
-               :href="backendStopUri">
-                <icon icon="stop"></icon>
+            <a
+                v-show="np.services.backend_running"
+                class="api-call no-reload btn btn-outline-danger"
+                :href="backendStopUri"
+            >
+                <icon icon="stop" />
                 {{ $gettext('Stop') }}
             </a>
         </div>

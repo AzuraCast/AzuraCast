@@ -1,25 +1,58 @@
 <template>
-    <b-modal :size="size" :centered="centered" :id="id" ref="modal" :title="title" :busy="loading" @shown="onShown"
-             @hidden="onHidden" :no-enforce-focus="noEnforceFocus">
+    <b-modal
+        :id="id"
+        ref="modal"
+        :size="size"
+        :centered="centered"
+        :title="title"
+        :busy="loading"
+        :no-enforce-focus="noEnforceFocus"
+        @shown="onShown"
+        @hidden="onHidden"
+    >
         <template #default="slotProps">
-            <b-overlay variant="card" :show="loading">
-                <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
+                <b-alert
+                    variant="danger"
+                    :show="error != null"
+                >
+                    {{ error }}
+                </b-alert>
 
-                <b-form class="form vue-form" @submit.prevent="doSubmit">
-                    <slot name="default" v-bind="slotProps">
-                    </slot>
+                <b-form
+                    class="form vue-form"
+                    @submit.prevent="doSubmit"
+                >
+                    <slot
+                        name="default"
+                        v-bind="slotProps"
+                    />
 
-                    <invisible-submit-button/>
+                    <invisible-submit-button />
                 </b-form>
             </b-overlay>
         </template>
 
         <template #modal-footer="slotProps">
-            <slot name="modal-footer" v-bind="slotProps">
-                <b-button variant="default" type="button" @click="close">
+            <slot
+                name="modal-footer"
+                v-bind="slotProps"
+            >
+                <b-button
+                    variant="default"
+                    type="button"
+                    @click="close"
+                >
                     {{ $gettext('Close') }}
                 </b-button>
-                <b-button :variant="(disableSaveButton) ? 'danger' : 'primary'" type="submit" @click="doSubmit">
+                <b-button
+                    :variant="(disableSaveButton) ? 'danger' : 'primary'"
+                    type="submit"
+                    @click="doSubmit"
+                >
                     <slot name="save-button-name">
                         {{ $gettext('Save Changes') }}
                     </slot>
@@ -27,8 +60,14 @@
             </slot>
         </template>
 
-        <template v-for="(_, slot) of filteredScopedSlots" v-slot:[slot]="scope">
-            <slot :name="slot" v-bind="scope"></slot>
+        <template
+            v-for="(_, slot) of filteredScopedSlots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
     </b-modal>
 </template>
@@ -40,7 +79,6 @@ import _ from "lodash";
 
 export default defineComponent({
     components: {InvisibleSubmitButton},
-    emits: ['submit', 'shown', 'hidden'],
     props: {
         title: {
             type: String,
@@ -74,6 +112,7 @@ export default defineComponent({
             type: String
         }
     },
+    emits: ['submit', 'shown', 'hidden'],
     computed: {
         filteredScopedSlots() {
             return _.filter(this.$slots, (slot, name) => {

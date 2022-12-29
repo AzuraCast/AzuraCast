@@ -6,26 +6,53 @@
                     {{ $gettext('Audit Log') }}
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown v-model="dateRange" @update="relist"></date-range-dropdown>
+                    <date-range-dropdown
+                        v-model="dateRange"
+                        @update="relist"
+                    />
                 </div>
             </div>
         </div>
-        <data-table ref="$dataTable" responsive paginated
-                    :fields="fields" :apiUrl="apiUrl">
+        <data-table
+            ref="$dataTable"
+            responsive
+            paginated
+            :fields="fields"
+            :api-url="apiUrl"
+        >
             <template #cell(date_time)="row">
                 {{ formatTimestamp(row.item.timestamp) }}
             </template>
             <template #cell(operation)="row">
-                <span class="text-success" v-if="row.item.operation_text === 'insert'"
-                      :title="$gettext('Insert')">
-                    <icon class="lg inline" icon="add_circle"></icon>
+                <span
+                    v-if="row.item.operation_text === 'insert'"
+                    class="text-success"
+                    :title="$gettext('Insert')"
+                >
+                    <icon
+                        class="lg inline"
+                        icon="add_circle"
+                    />
                 </span>
-                <span class="text-danger" v-else-if="row.item.operation_text === 'delete'"
-                      :title="$gettext('Delete')">
-                    <icon class="lg inline" icon="remove_circle"></icon>
+                <span
+                    v-else-if="row.item.operation_text === 'delete'"
+                    class="text-danger"
+                    :title="$gettext('Delete')"
+                >
+                    <icon
+                        class="lg inline"
+                        icon="remove_circle"
+                    />
                 </span>
-                <span class="text-primary" v-else :title="$gettext('Update')">
-                    <icon class="lg inline" icon="swap_horizontal_circle"></icon>
+                <span
+                    v-else
+                    class="text-primary"
+                    :title="$gettext('Update')"
+                >
+                    <icon
+                        class="lg inline"
+                        icon="swap_horizontal_circle"
+                    />
                 </span>
             </template>
             <template #cell(identifier)="row">
@@ -37,11 +64,17 @@
                     <small>{{ row.item.target_class }}</small><br>
                     {{ row.item.target }}
                 </template>
-                <template v-else>{{ $gettext('N/A') }}</template>
+                <template v-else>
+                    {{ $gettext('N/A') }}
+                </template>
             </template>
             <template #cell(actions)="row">
                 <template v-if="row.item.changes.length > 0">
-                    <b-button size="sm" variant="primary" @click="row.toggleDetails">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click="row.toggleDetails"
+                    >
                         {{ $gettext('Changes') }}
                     </b-button>
                 </template>
@@ -54,35 +87,31 @@
                         <col width="35%">
                     </colgroup>
                     <thead>
-                    <tr>
-                        <th>{{ $gettext('Field Name') }}</th>
-                        <th>{{ $gettext('Previous') }}</th>
-                        <th>{{ $gettext('Updated') }}</th>
-                    </tr>
+                        <tr>
+                            <th>{{ $gettext('Field Name') }}</th>
+                            <th>{{ $gettext('Previous') }}</th>
+                            <th>{{ $gettext('Updated') }}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="change in row.item.changes" :key="change.field">
-                        <td>{{ change.field }}</td>
-                        <td>
-                            <pre class="changes">{{ change.from }}</pre>
-                        </td>
-                        <td>
-                            <pre class="changes">{{ change.to }}</pre>
-                        </td>
-                    </tr>
+                        <tr
+                            v-for="change in row.item.changes"
+                            :key="change.field"
+                        >
+                            <td>{{ change.field }}</td>
+                            <td>
+                                <pre class="changes">{{ change.from }}</pre>
+                            </td>
+                            <td>
+                                <pre class="changes">{{ change.to }}</pre>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </template>
         </data-table>
     </div>
 </template>
-
-<style lang="scss">
-pre.changes {
-    max-width: 250px;
-    margin-bottom: 0;
-}
-</style>
 
 <script setup>
 import {DateTime} from "luxon";
@@ -137,3 +166,10 @@ const formatTimestamp = (unix_timestamp) => {
     );
 }
 </script>
+
+<style lang="scss">
+pre.changes {
+    max-width: 250px;
+    margin-bottom: 0;
+}
+</style>

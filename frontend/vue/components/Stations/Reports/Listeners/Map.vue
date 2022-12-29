@@ -1,8 +1,13 @@
 <template>
-    <inner-map v-if="visibleListeners.length < 3000"
-               :attribution="attribution">
-        <map-point v-for="l in visibleListeners" :key="l.hash"
-                   :position="[l.location.lat, l.location.lon]">
+    <inner-map
+        v-if="visibleListeners.length < 3000"
+        :attribution="attribution"
+    >
+        <map-point
+            v-for="l in visibleListeners"
+            :key="l.hash"
+            :position="[l.location.lat, l.location.lon]"
+        >
             {{ $gettext('IP') }}
             : {{ l.ip }}<br>
             {{ $gettext('Country') }}

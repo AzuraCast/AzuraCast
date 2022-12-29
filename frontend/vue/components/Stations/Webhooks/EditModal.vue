@@ -1,21 +1,42 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="v$.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <type-select v-if="!type" :webhook-types="webhookTypes" @select="setType"></type-select>
-        <b-tabs v-else lazy content-class="mt-3" pills>
+    <modal-form
+        ref="modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.form.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <type-select
+            v-if="!type"
+            :webhook-types="webhookTypes"
+            @select="setType"
+        />
+        <b-tabs
+            v-else
+            lazy
+            content-class="mt-3"
+            pills
+        >
             <b-tab active>
                 <template #title>
                     {{ $gettext('Basic Info') }}
                 </template>
 
-                <basic-info :trigger-options="triggerOptions" :form="v$.form"></basic-info>
+                <basic-info
+                    :trigger-options="triggerOptions"
+                    :form="v$.form"
+                />
             </b-tab>
             <b-tab :title="typeTitle">
-                <component :is="formComponent" :now-playing-url="nowPlayingUrl" :form="v$.form"></component>
+                <component
+                    :is="formComponent"
+                    :now-playing-url="nowPlayingUrl"
+                    :form="v$.form"
+                />
             </b-tab>
         </b-tabs>
-
     </modal-form>
 </template>
 <script>
@@ -37,9 +58,6 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
     name: 'EditModal',
-    setup() {
-        return {v$: useVuelidate()}
-    },
     components: {BasicInfo, TypeSelect},
     mixins: [BaseEditModal],
     props: {
@@ -47,6 +65,9 @@ export default {
         webhookTypes: Object,
         triggerTitles: Object,
         triggerDescriptions: Object
+    },
+    setup() {
+        return {v$: useVuelidate()}
     },
     data() {
         return {

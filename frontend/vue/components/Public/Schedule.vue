@@ -1,7 +1,18 @@
 <template>
-    <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
-        <div class="container pt-5 pb-5 h-100" style="flex: 1;">
-            <div class="card" style="height: 100%;">
+    <section
+        id="content"
+        role="main"
+        class="d-flex align-items-stretch"
+        style="height: 100vh;"
+    >
+        <div
+            class="container pt-5 pb-5 h-100"
+            style="flex: 1;"
+        >
+            <div
+                class="card"
+                style="height: 100%;"
+            >
                 <div class="card-header bg-primary-dark">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
@@ -18,13 +29,26 @@
                 </div>
 
                 <div id="station-schedule-calendar">
-                    <schedule ref="schedule" :schedule-url="scheduleUrl"
-                              :station-time-zone="stationTimeZone"></schedule>
+                    <schedule
+                        ref="schedule"
+                        :schedule-url="scheduleUrl"
+                        :station-time-zone="stationTimeZone"
+                    />
                 </div>
             </div>
         </div>
     </section>
 </template>
+
+<script setup>
+import Schedule from '~/components/Common/ScheduleView';
+
+const props = defineProps({
+    scheduleUrl: String,
+    stationName: String,
+    stationTimeZone: String
+});
+</script>
 
 <style lang="scss">
 .schedule.embed {
@@ -38,13 +62,3 @@
     overflow-y: auto;
 }
 </style>
-
-<script setup>
-import Schedule from '~/components/Common/ScheduleView';
-
-const props = defineProps({
-    scheduleUrl: String,
-    stationName: String,
-    stationTimeZone: String
-});
-</script>

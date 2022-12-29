@@ -1,10 +1,22 @@
 <template>
-    <section class="card mb-4 nowplaying" role="region" id="profile-nowplaying">
+    <section
+        id="profile-nowplaying"
+        class="card mb-4 nowplaying"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
-                <h3 class="flex-shrink card-title my-0">{{ $gettext('On the Air') }}</h3>
-                <h6 class="card-subtitle text-right flex-fill my-0" style="line-height: 1;">
-                    <icon class="sm align-middle" icon="headset"></icon>
+                <h3 class="flex-shrink card-title my-0">
+                    {{ $gettext('On the Air') }}
+                </h3>
+                <h6
+                    class="card-subtitle text-right flex-fill my-0"
+                    style="line-height: 1;"
+                >
+                    <icon
+                        class="sm align-middle"
+                        icon="headset"
+                    />
                     <span class="pl-1">
                         {{ langListeners }}
                     </span>
@@ -17,20 +29,32 @@
                 </h6>
             </div>
         </div>
-        <b-overlay variant="card" :show="np.loading">
+        <b-overlay
+            variant="card"
+            :show="np.loading"
+        >
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="clearfix">
                             <h6 style="margin-left: 32px;">
-                                <icon icon="music_note"></icon>
+                                <icon icon="music_note" />
                                 {{ $gettext('Now Playing') }}
                             </h6>
                             <div class="media">
-                                <a class="mr-2" v-if="np.now_playing.song.art" :href="np.now_playing.song.art"
-                                   data-fancybox target="_blank">
-                                    <img class="rounded" :src="np.now_playing.song.art" alt="Album Art"
-                                         style="width: 50px;">
+                                <a
+                                    v-if="np.now_playing.song.art"
+                                    class="mr-2"
+                                    :href="np.now_playing.song.art"
+                                    data-fancybox
+                                    target="_blank"
+                                >
+                                    <img
+                                        class="rounded"
+                                        :src="np.now_playing.song.art"
+                                        alt="Album Art"
+                                        style="width: 50px;"
+                                    >
                                 </a>
                                 <div class="media-body">
                                     <div v-if="!np.is_online">
@@ -39,21 +63,31 @@
                                         </h5>
                                     </div>
                                     <div v-else-if="np.now_playing.song.title !== ''">
-                                        <h5 class="media-heading m-0" style="line-height: 1;">
+                                        <h5
+                                            class="media-heading m-0"
+                                            style="line-height: 1;"
+                                        >
                                             {{ np.now_playing.song.title }}<br>
                                             <small>{{ np.now_playing.song.artist }}</small>
                                         </h5>
                                     </div>
                                     <div v-else>
-                                        <h5 class="media-heading m-0" style="line-height: 1;">
-                                            {{ np.now_playing.song.text }}</h5>
+                                        <h5
+                                            class="media-heading m-0"
+                                            style="line-height: 1;"
+                                        >
+                                            {{ np.now_playing.song.text }}
+                                        </h5>
                                     </div>
                                     <div v-if="np.now_playing.playlist">
                                         <small class="text-muted">
                                             {{ $gettext('Playlist') }}
                                             : {{ np.now_playing.playlist }}</small>
                                     </div>
-                                    <div class="nowplaying-progress" v-if="timeDisplay">
+                                    <div
+                                        v-if="timeDisplay"
+                                        class="nowplaying-progress"
+                                    >
                                         <small>{{ timeDisplay }}</small>
                                     </div>
                                 </div>
@@ -61,28 +95,47 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="clearfix" v-if="!np.live.is_live && np.playing_next">
+                        <div
+                            v-if="!np.live.is_live && np.playing_next"
+                            class="clearfix"
+                        >
                             <h6 style="margin-left: 22px;">
-                                <icon icon="skip_next"></icon>
+                                <icon icon="skip_next" />
                                 {{ $gettext('Playing Next') }}
                             </h6>
 
                             <div class="media">
-                                <a class="mr-2" v-if="np.playing_next.song.art" :href="np.playing_next.song.art"
-                                   data-fancybox target="_blank">
-                                    <img :src="np.playing_next.song.art" class="rounded" alt="Album Art"
-                                         style="width: 40px;">
+                                <a
+                                    v-if="np.playing_next.song.art"
+                                    class="mr-2"
+                                    :href="np.playing_next.song.art"
+                                    data-fancybox
+                                    target="_blank"
+                                >
+                                    <img
+                                        :src="np.playing_next.song.art"
+                                        class="rounded"
+                                        alt="Album Art"
+                                        style="width: 40px;"
+                                    >
                                 </a>
                                 <div class="media-body">
                                     <div v-if="np.playing_next.song.title !== ''">
-                                        <h5 class="media-heading m-0" style="line-height: 1;">
+                                        <h5
+                                            class="media-heading m-0"
+                                            style="line-height: 1;"
+                                        >
                                             {{ np.playing_next.song.title }}<br>
                                             <small>{{ np.playing_next.song.artist }}</small>
                                         </h5>
                                     </div>
                                     <div v-else>
-                                        <h5 class="media-heading m-0" style="line-height: 1;">
-                                            {{ np.playing_next.song.text }}</h5>
+                                        <h5
+                                            class="media-heading m-0"
+                                            style="line-height: 1;"
+                                        >
+                                            {{ np.playing_next.song.text }}
+                                        </h5>
                                     </div>
 
                                     <div v-if="np.playing_next.playlist">
@@ -93,13 +146,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="clearfix" v-else-if="np.live.is_live">
+                        <div
+                            v-else-if="np.live.is_live"
+                            class="clearfix"
+                        >
                             <h6 style="margin-left: 22px;">
-                                <icon icon="mic"></icon>
+                                <icon icon="mic" />
                                 {{ $gettext('Live') }}
                             </h6>
 
-                            <h4 class="media-heading" style="margin-left: 22px;">
+                            <h4
+                                class="media-heading"
+                                style="margin-left: 22px;"
+                            >
                                 {{ np.live.streamer_name }}
                             </h4>
                         </div>
@@ -108,15 +167,28 @@
             </div>
         </b-overlay>
 
-        <div class="card-actions flex-shrink" v-if="isLiquidsoap && userCanManageBroadcasting">
-            <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button"
-               v-if="!np.live.is_live" :href="backendSkipSongUri">
-                <icon icon="skip_next"></icon>
+        <div
+            v-if="isLiquidsoap && userCanManageBroadcasting"
+            class="card-actions flex-shrink"
+        >
+            <a
+                v-if="!np.live.is_live"
+                id="btn_skip_song"
+                class="btn btn-outline-primary api-call no-reload"
+                role="button"
+                :href="backendSkipSongUri"
+            >
+                <icon icon="skip_next" />
                 {{ $gettext('Skip Song') }}
             </a>
-            <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button"
-               v-if="np.live.is_live" :href="backendDisconnectStreamerUri">
-                <icon icon="volume_off"></icon>
+            <a
+                v-if="np.live.is_live"
+                id="btn_disconnect_streamer"
+                class="btn btn-outline-primary api-call no-reload"
+                role="button"
+                :href="backendDisconnectStreamerUri"
+            >
+                <icon icon="volume_off" />
                 {{ $gettext('Disconnect Streamer') }}
             </a>
         </div>

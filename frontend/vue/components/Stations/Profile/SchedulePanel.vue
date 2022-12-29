@@ -1,38 +1,44 @@
 <template>
     <div id="profile-scheduled">
-        <section class="card mb-4 scheduled" role="region" v-if="processedScheduleItems.length > 0">
+        <section
+            v-if="processedScheduleItems.length > 0"
+            class="card mb-4 scheduled"
+            role="region"
+        >
             <div class="card-header bg-primary-dark">
-                <h3 class="card-title">{{ $gettext('Scheduled') }}</h3>
+                <h3 class="card-title">
+                    {{ $gettext('Scheduled') }}
+                </h3>
             </div>
             <table class="table table-striped mb-0">
                 <tbody>
-                <tr v-for="row in processedScheduleItems">
-                    <td>
-                        <div class="d-flex w-100 justify-content-between align-items-center">
-                            <h5 class="m-0">
-                                <small>
-                                    <template v-if="row.type === 'playlist'">
-                                        {{ $gettext('Playlist') }}
-                                    </template>
-                                    <template v-else>
-                                        {{ $gettext('Streamer/DJ') }}
-                                    </template>
-                                </small><br>
-                                {{ row.name }}
-                            </h5>
-                            <p class="text-right m-0">
-                                <small>{{ row.start_formatted }} - {{ row.end_formatted }}</small>
-                                <br>
-                                <strong>
-                                    <template v-if="row.is_now">
-                                        {{ $gettext('Now') }}
-                                    </template>
-                                    <template v-else>{{ row.time_until }}</template>
-                                </strong>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
+                    <tr v-for="row in processedScheduleItems">
+                        <td>
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <h5 class="m-0">
+                                    <small>
+                                        <template v-if="row.type === 'playlist'">
+                                            {{ $gettext('Playlist') }}
+                                        </template>
+                                        <template v-else>
+                                            {{ $gettext('Streamer/DJ') }}
+                                        </template>
+                                    </small><br>
+                                    {{ row.name }}
+                                </h5>
+                                <p class="text-right m-0">
+                                    <small>{{ row.start_formatted }} - {{ row.end_formatted }}</small>
+                                    <br>
+                                    <strong>
+                                        <template v-if="row.is_now">
+                                            {{ $gettext('Now') }}
+                                        </template>
+                                        <template v-else>{{ row.time_until }}</template>
+                                    </strong>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </section>

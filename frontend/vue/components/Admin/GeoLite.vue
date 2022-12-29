@@ -13,7 +13,10 @@
         </info-card>
 
         <div class="card-body">
-            <b-overlay variant="card" :show="loading">
+            <b-overlay
+                variant="card"
+                :show="loading"
+            >
                 <div class="form-row">
                     <div class="col-md-7">
                         <fieldset>
@@ -31,7 +34,10 @@
                                 <li>
                                     {{ $gettext('Create an account on the MaxMind developer site.') }}
                                     <br>
-                                    <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">
+                                    <a
+                                        href="https://www.maxmind.com/en/geolite2/signup"
+                                        target="_blank"
+                                    >
                                         {{ $gettext('MaxMind Developer Site') }}
                                     </a>
                                 </li>
@@ -53,17 +59,26 @@
                                 {{ $gettext('Current Installed Version') }}
                             </legend>
 
-                            <p v-if="version" class="text-success card-text">
+                            <p
+                                v-if="version"
+                                class="text-success card-text"
+                            >
                                 {{ langInstalledVersion }}
                             </p>
-                            <p v-else class="text-danger card-text">
+                            <p
+                                v-else
+                                class="text-danger card-text"
+                            >
                                 {{ $gettext('GeoLite is not currently installed on this installation.') }}
                             </p>
                         </fieldset>
 
                         <form @submit.prevent="doUpdate">
                             <fieldset>
-                                <b-wrapped-form-group id="edit_form_key" :field="v$.key">
+                                <b-wrapped-form-group
+                                    id="edit_form_key"
+                                    :field="v$.key"
+                                >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
                                     </template>
@@ -71,10 +86,17 @@
                             </fieldset>
 
                             <div class="buttons">
-                                <b-button variant="primary" type="submit">
+                                <b-button
+                                    variant="primary"
+                                    type="submit"
+                                >
                                     {{ $gettext('Save Changes') }}
                                 </b-button>
-                                <b-button variant="danger" type="button" @click.prevent="doDelete">
+                                <b-button
+                                    variant="danger"
+                                    type="button"
+                                    @click.prevent="doDelete"
+                                >
                                     {{ $gettext('Remove Key') }}
                                 </b-button>
                             </div>

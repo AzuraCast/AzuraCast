@@ -1,25 +1,49 @@
 <template>
-    <b-modal size="md" centered id="run_backup_modal" ref="$modal" :title="$gettext('Run Manual Backup')"
-             @hidden="clearContents">
+    <b-modal
+        id="run_backup_modal"
+        ref="$modal"
+        size="md"
+        centered
+        :title="$gettext('Run Manual Backup')"
+        @hidden="clearContents"
+    >
         <template #default="slotProps">
-            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+            <b-alert
+                variant="danger"
+                :show="error != null"
+            >
+                {{ error }}
+            </b-alert>
 
-            <b-form v-if="logUrl === null" class="form vue-form" @submit.prevent="submit">
+            <b-form
+                v-if="logUrl === null"
+                class="form vue-form"
+                @submit.prevent="submit"
+            >
                 <b-form-fieldset>
                     <div class="form-row">
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_storage_location"
-                                              :field="v$.storage_location">
+                        <b-wrapped-form-group
+                            id="edit_form_storage_location"
+                            class="col-md-12"
+                            :field="v$.storage_location"
+                        >
                             <template #label>
                                 {{ $gettext('Storage Location') }}
                             </template>
                             <template #default="props">
-                                <b-form-select :id="props.id" v-model="props.field.$model"
-                                               :options="storageLocationOptions"></b-form-select>
+                                <b-form-select
+                                    :id="props.id"
+                                    v-model="props.field.$model"
+                                    :options="storageLocationOptions"
+                                />
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_path"
-                                              :field="v$.path">
+                        <b-wrapped-form-group
+                            id="edit_form_path"
+                            class="col-md-12"
+                            :field="v$.path"
+                        >
                             <template #label>
                                 {{ $gettext('File Name') }}
                             </template>
@@ -35,7 +59,8 @@
                                 <ul class="m-0">
                                     <li>.zip</li>
                                     <li>.tar.gz</li>
-                                    <li>.tzst (
+                                    <li>
+                                        .tzst (
                                         {{ $gettext('ZStandard compression') }}
                                         )
                                     </li>
@@ -43,8 +68,11 @@
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-checkbox class="col-md-12" id="edit_form_exclude_media"
-                                                 :field="v$.exclude_media">
+                        <b-wrapped-form-checkbox
+                            id="edit_form_exclude_media"
+                            class="col-md-12"
+                            :field="v$.exclude_media"
+                        >
                             <template #label>
                                 {{ $gettext('Exclude Media from Backup') }}
                             </template>
@@ -57,21 +85,32 @@
                     </div>
                 </b-form-fieldset>
 
-                <invisible-submit-button/>
+                <invisible-submit-button />
             </b-form>
 
             <div v-else>
-                <streaming-log-view :log-url="logUrl"></streaming-log-view>
+                <streaming-log-view :log-url="logUrl" />
             </div>
         </template>
 
         <template #modal-footer="slotProps">
-            <slot name="modal-footer" v-bind="slotProps">
-                <b-button variant="default" type="button" @click="close">
+            <slot
+                name="modal-footer"
+                v-bind="slotProps"
+            >
+                <b-button
+                    variant="default"
+                    type="button"
+                    @click="close"
+                >
                     {{ $gettext('Close') }}
                 </b-button>
-                <b-button v-if="logUrl === null" :variant="(v$.$invalid) ? 'danger' : 'primary'" type="submit"
-                          @click="submit">
+                <b-button
+                    v-if="logUrl === null"
+                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    type="submit"
+                    @click="submit"
+                >
                     {{ $gettext('Run Manual Backup') }}
                 </b-button>
             </slot>

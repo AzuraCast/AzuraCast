@@ -1,7 +1,11 @@
 <template>
-    <admin-settings :api-url="apiUrl" :release-channel="releaseChannel" @saved="onSaved">
+    <admin-settings
+        :api-url="apiUrl"
+        :release-channel="releaseChannel"
+        @saved="onSaved"
+    >
         <template #preCard>
-            <setup-step :step="3"></setup-step>
+            <setup-step :step="3" />
         </template>
         <template #cardTitle>
             {{ $gettext('Customize AzuraCast Settings') }}

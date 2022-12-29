@@ -1,24 +1,39 @@
 <template>
     <date-range-picker
-        v-bind="$props" ref="picker" controlContainerClass="" opens="left" show-dropdowns
-        :time-picker-increment="1" :ranges="ranges" v-model="dateRange" v-model:date-range="dateRange"
-        @select="onSelect">
+        v-bind="$props"
+        ref="picker"
+        v-model="dateRange"
+        v-model:date-range="dateRange"
+        control-container-class=""
+        opens="left"
+        show-dropdowns
+        :time-picker-increment="1"
+        :ranges="ranges"
+        @select="onSelect"
+    >
         <template #input="datePicker">
-            <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
-                <icon icon="date_range"></icon>
+            <a
+                id="reportrange"
+                class="btn btn-bg dropdown-toggle"
+                href="#"
+                @click.prevent=""
+            >
+                <icon icon="date_range" />
                 {{ datePicker.rangeText }}
             </a>
         </template>
 
-        <template v-for="(_, slot) of $slots" v-slot:[slot]="scope">
-            <slot :name="slot" v-bind="scope"></slot>
+        <template
+            v-for="(_, slot) of $slots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
     </date-range-picker>
 </template>
-
-<style lang="scss">
-@import 'vue3-daterange-picker/src/assets/daterangepicker';
-</style>
 
 <script>
 import DateRangePicker from 'vue3-daterange-picker';
@@ -28,7 +43,6 @@ import {DateTime} from 'luxon';
 export default {
     name: 'DateRangeDropdown',
     components: {DateRangePicker, Icon},
-    emits: ['update:modelValue', 'update'],
     inheritAttrs: false,
     model: {
         prop: 'modelValue',
@@ -64,6 +78,7 @@ export default {
             default: null,
         },
     },
+    emits: ['update:modelValue', 'update'],
     computed: {
         dateRange: {
             get() {
@@ -127,3 +142,7 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+@import 'vue3-daterange-picker/src/assets/daterangepicker';
+</style>

@@ -1,17 +1,14 @@
 <template>
-    <div id="leaflet-container" ref="$container">
-        <slot v-if="$map" :map="$map"/>
+    <div
+        id="leaflet-container"
+        ref="$container"
+    >
+        <slot
+            v-if="$map"
+            :map="$map"
+        />
     </div>
 </template>
-
-<style lang="scss">
-@import 'leaflet/dist/leaflet.css';
-
-.leaflet-container {
-    height: 300px;
-    z-index: 0;
-}
-</style>
 
 <script setup>
 import {onMounted, provide, ref, shallowRef} from "vue";
@@ -62,3 +59,12 @@ onMounted(() => {
 
 });
 </script>
+
+<style lang="scss">
+@import 'leaflet/dist/leaflet.css';
+
+.leaflet-container {
+    height: 300px;
+    z-index: 0;
+}
+</style>

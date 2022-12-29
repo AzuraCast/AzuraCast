@@ -1,7 +1,18 @@
 <template>
-    <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
-        <div class="container pt-5 pb-5 h-100" style="flex: 1;">
-            <div class="card" style="height: 100%;">
+    <section
+        id="content"
+        role="main"
+        class="d-flex align-items-stretch"
+        style="height: 100vh;"
+    >
+        <div
+            class="container pt-5 pb-5 h-100"
+            style="flex: 1;"
+        >
+            <div
+                class="card"
+                style="height: 100%;"
+            >
                 <div class="card-header bg-primary-dark">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
@@ -15,31 +26,56 @@
                             </h2>
                         </div>
                         <div class="flex-fill text-right">
-                            <inline-player ref="player"></inline-player>
+                            <inline-player ref="player" />
                         </div>
                     </div>
                 </div>
 
-                <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
-                            :fields="fields" :api-url="listUrl">
+                <data-table
+                    id="station_on_demand_table"
+                    ref="datatable"
+                    paginated
+                    select-fields
+                    :fields="fields"
+                    :api-url="listUrl"
+                >
                     <template #cell(download_url)="row">
-                        <play-button class="file-icon" icon-class="outlined" :url="row.item.download_url"
-                                     :is-stream="false"></play-button>
+                        <play-button
+                            class="file-icon"
+                            icon-class="outlined"
+                            :url="row.item.download_url"
+                            :is-stream="false"
+                        />
                         <template v-if="showDownloadButton">
                             &nbsp;
-                            <a class="name" :href="row.item.download_url" target="_blank" :title="$gettext('Download')">
-                                <icon icon="cloud_download"></icon>
+                            <a
+                                class="name"
+                                :href="row.item.download_url"
+                                target="_blank"
+                                :title="$gettext('Download')"
+                            >
+                                <icon icon="cloud_download" />
                             </a>
                         </template>
                     </template>
                     <template #cell(media_art)="row">
-                        <a :href="row.item.media_art" class="album-art" target="_blank"
-                           data-fancybox="gallery">
-                            <img class="media_manager_album_art" :alt="$gettext('Album Art')" :src="row.item.media_art">
+                        <a
+                            :href="row.item.media_art"
+                            class="album-art"
+                            target="_blank"
+                            data-fancybox="gallery"
+                        >
+                            <img
+                                class="media_manager_album_art"
+                                :alt="$gettext('Album Art')"
+                                :src="row.item.media_art"
+                            >
                         </a>
                     </template>
                     <template #cell(size)="row">
-                        <template v-if="!row.item.size">&nbsp;</template>
+                        <template v-if="!row.item.size">
+&nbsp;
+                        </template>
                         <template v-else>
                             {{ formatFileSize(row.item.size) }}
                         </template>
@@ -49,6 +85,43 @@
         </div>
     </section>
 </template>
+
+<script setup>
+import InlinePlayer from '../InlinePlayer';
+import DataTable from '~/components/Common/DataTable';
+import {forEach} from 'lodash';
+import Icon from '~/components/Common/Icon';
+import PlayButton from "~/components/Common/PlayButton";
+import {useTranslate} from "~/vendor/gettext";
+
+const props = defineProps({
+    listUrl: String,
+    stationName: String,
+    customFields: Array,
+    showDownloadButton: Boolean
+});
+
+const {$gettext} = useTranslate();
+
+let fields = [
+    {key: 'download_url', label: ' '},
+    {key: 'media_art', label: $gettext('Art')},
+    {key: 'media_title', label: $gettext('Title'), sortable: true, selectable: true},
+    {key: 'media_artist', label: $gettext('Artist'), sortable: true, selectable: true},
+    {key: 'media_album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
+    {key: 'playlist', label: $gettext('Playlist'), sortable: true, selectable: true, visible: false}
+];
+
+forEach(props.customFields.slice(), (field) => {
+    fields.push({
+        key: field.display_key,
+        label: field.label,
+        sortable: true,
+        selectable: true,
+        visible: false
+    });
+});
+</script>
 
 <style lang="scss">
 .ondemand.embed {
@@ -91,40 +164,3 @@
     }
 }
 </style>
-
-<script setup>
-import InlinePlayer from '../InlinePlayer';
-import DataTable from '~/components/Common/DataTable';
-import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon';
-import PlayButton from "~/components/Common/PlayButton";
-import {useTranslate} from "~/vendor/gettext";
-
-const props = defineProps({
-    listUrl: String,
-    stationName: String,
-    customFields: Array,
-    showDownloadButton: Boolean
-});
-
-const {$gettext} = useTranslate();
-
-let fields = [
-    {key: 'download_url', label: ' '},
-    {key: 'media_art', label: $gettext('Art')},
-    {key: 'media_title', label: $gettext('Title'), sortable: true, selectable: true},
-    {key: 'media_artist', label: $gettext('Artist'), sortable: true, selectable: true},
-    {key: 'media_album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
-    {key: 'playlist', label: $gettext('Playlist'), sortable: true, selectable: true, visible: false}
-];
-
-forEach(props.customFields.slice(), (field) => {
-    fields.push({
-        key: field.display_key,
-        label: field.label,
-        sortable: true,
-        selectable: true,
-        visible: false
-    });
-});
-</script>

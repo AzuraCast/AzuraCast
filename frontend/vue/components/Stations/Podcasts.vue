@@ -1,7 +1,15 @@
 <template>
-    <episodes-view v-if="activePodcast" v-bind="$props" :podcast="activePodcast"
-                   @clear-podcast="onClearPodcast"></episodes-view>
-    <list-view v-else v-bind="$props" @select-podcast="onSelectPodcast"></list-view>
+    <episodes-view
+        v-if="activePodcast"
+        v-bind="$props"
+        :podcast="activePodcast"
+        @clear-podcast="onClearPodcast"
+    />
+    <list-view
+        v-else
+        v-bind="$props"
+        @select-podcast="onSelectPodcast"
+    />
 </template>
 
 <script setup>

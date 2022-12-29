@@ -1,16 +1,30 @@
 <template>
-    <section class="card" role="region">
+    <section
+        class="card"
+        role="region"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">{{ $gettext('API Keys') }}</h2>
+            <h2 class="card-title">
+                {{ $gettext('API Keys') }}
+            </h2>
         </b-card-header>
 
-        <data-table ref="$dataTable" id="api_keys" :fields="fields" :api-url="apiUrl">
+        <data-table
+            id="api_keys"
+            ref="$dataTable"
+            :fields="fields"
+            :api-url="apiUrl"
+        >
             <template #cell(owner)="row">
                 {{ row.item.user.email }}
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
-                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
                         {{ $gettext('Delete') }}
                     </b-button>
                 </b-button-group>

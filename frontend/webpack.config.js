@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const {VueLoaderPlugin} = require('vue-loader');
 const path = require('path');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
@@ -133,6 +134,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new ESLintPlugin({}),
         new WebpackAssetsManifest({
             output: path.resolve(__dirname, '../web/static/webpack.json'),
             writeToDisk: true,

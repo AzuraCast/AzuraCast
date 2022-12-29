@@ -1,5 +1,5 @@
 <template>
-    <div id="leaflet-container" ref="container">
+    <div id="leaflet-container" ref="$container">
         <slot v-if="$map" :map="$map"/>
     </div>
 </template>
@@ -22,7 +22,7 @@ const props = defineProps({
     attribution: String
 });
 
-const container = ref(); // Template Ref
+const $container = ref(); // Template Ref
 const $map = shallowRef();
 
 provide('map', $map);
@@ -40,7 +40,7 @@ onMounted(() => {
     });
 
     // Init map
-    const map = L.map(container.value);
+    const map = L.map($container.value);
     map.setView([40, 0], 1);
 
     $map.value = map;

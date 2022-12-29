@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="embed_modal" ref="modal" :title="$gettext('Embed Widgets')" hide-footer no-enforce-focus>
+    <b-modal size="lg" id="embed_modal" ref="$modal" :title="$gettext('Embed Widgets')" hide-footer no-enforce-focus>
         <b-row>
             <b-col md="7">
                 <b-card class="mb-3" no-body>
@@ -175,10 +175,10 @@ const embedCode = computed(() => {
     return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
 });
 
-const modal = ref(); // Template Ref
+const $modal = ref(); // Template Ref
 
 const open = () => {
-    modal.value.show();
+    $modal.value.show();
 };
 
 defineExpose({

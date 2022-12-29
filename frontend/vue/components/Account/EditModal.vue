@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="$gettext('Edit Profile')" :error="error"
+    <modal-form ref="$modal" :loading="loading" :title="$gettext('Edit Profile')" :error="error"
                 :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
@@ -11,7 +11,6 @@
 <script setup>
 import mergeExisting from "~/functions/mergeExisting";
 import {email, required} from '@vuelidate/validators';
-import useVuelidate from "@vuelidate/core";
 import AccountEditForm from "./EditForm.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {ref} from "vue";
@@ -52,10 +51,10 @@ const clearContents = () => {
     error.value = null;
 };
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();
@@ -64,7 +63,7 @@ const {axios} = useAxios();
 const open = () => {
     clearContents();
 
-    modal.value?.show();
+    $modal.value?.show();
 
     wrapWithLoading(
         axios.get(props.userUrl)

@@ -14,7 +14,7 @@
             }}
         </info-card>
 
-        <admin-stations-form v-bind="$props" ref="adminForm" :is-edit-mode="false" :create-url="createUrl"
+        <admin-stations-form v-bind="$props" ref="$adminForm" :is-edit-mode="false" :create-url="createUrl"
                              @submitted="onSubmitted">
             <template #submitButtonText>
                 {{ $gettext('Create and Continue') }}
@@ -39,10 +39,10 @@ const props = defineProps({
     }
 });
 
-const adminForm = ref(); // Template Ref
+const $adminForm = ref(); // Template Ref
 
 onMounted(() => {
-    adminForm.value.reset();
+    $adminForm.value.reset();
 });
 
 const onSubmitted = () => {

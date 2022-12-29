@@ -11,7 +11,7 @@
                 <log-list :url="logsUrl" @view="viewLog"></log-list>
             </div>
 
-            <streaming-log-modal ref="modal"></streaming-log-modal>
+            <streaming-log-modal ref="$modal"></streaming-log-modal>
         </div>
         <div class="col-md-4">
             <div class="card">
@@ -57,9 +57,9 @@ const props = defineProps({
     logsUrl: String,
 });
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const viewLog = (url) => {
-    modal.value?.show(url);
+    $modal.value?.show(url);
 };
 </script>

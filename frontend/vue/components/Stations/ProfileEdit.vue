@@ -6,7 +6,7 @@
             </h3>
         </div>
 
-        <admin-stations-form v-bind="$props" ref="form" :is-edit-mode="true" :edit-url="editUrl"
+        <admin-stations-form v-bind="$props" ref="$form" :is-edit-mode="true" :edit-url="editUrl"
                              @submitted="onSubmitted"></admin-stations-form>
     </section>
 </template>
@@ -25,10 +25,10 @@ const props = defineProps({
     }
 });
 
-const form = ref(); // AdminStationsForm
+const $form = ref(); // AdminStationsForm
 
 onMounted(() => {
-    form.value?.reset();
+    $form.value?.reset();
 });
 
 const onSubmitted = () => {

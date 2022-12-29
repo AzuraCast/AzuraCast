@@ -100,7 +100,7 @@
                         </b-button>
                     </b-card-body>
 
-                    <data-table ref="datatable" id="account_api_keys" :show-toolbar="false" :fields="apiKeyFields"
+                    <data-table ref="$dataTable" id="account_api_keys" :show-toolbar="false" :fields="apiKeyFields"
                                 :api-url="apiKeysApiUrl">
                         <template #cell(actions)="row">
                             <b-button-group size="sm">
@@ -114,16 +114,16 @@
             </b-col>
         </b-row>
 
-        <account-edit-modal ref="editmodal" :user-url="userUrl" :supported-locales="supportedLocales"
+        <account-edit-modal ref="$editModal" :user-url="userUrl" :supported-locales="supportedLocales"
                             @reload="reload"></account-edit-modal>
 
-        <account-change-password-modal ref="changepasswordmodal" :change-password-url="changePasswordUrl"
+        <account-change-password-modal ref="$changePasswordModal" :change-password-url="changePasswordUrl"
                                        @relist="relist"></account-change-password-modal>
 
-        <account-two-factor-modal ref="twofactormodal" :two-factor-url="twoFactorUrl"
+        <account-two-factor-modal ref="$twoFactorModal" :two-factor-url="twoFactorUrl"
                                   @relist="relist"></account-two-factor-modal>
 
-        <account-api-key-modal ref="apikeymodal" :create-url="apiKeysApiUrl" @relist="relist"></account-api-key-modal>
+        <account-api-key-modal ref="$apiKeyModal" :create-url="apiKeysApiUrl" @relist="relist"></account-api-key-modal>
     </div>
 </template>
 
@@ -185,7 +185,7 @@ const apiKeyFields = [
     }
 ];
 
-const datatable = ref(); // DataTable
+const $dataTable = ref(); // DataTable
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 
@@ -217,7 +217,7 @@ const relist = () => {
         securityLoading.value = false;
     });
 
-    datatable.value?.relist();
+    $dataTable.value?.relist();
 };
 
 onMounted(relist);
@@ -226,22 +226,22 @@ const reload = () => {
     location.reload();
 };
 
-const editmodal = ref(); // EditModal
+const $editModal = ref(); // EditModal
 
 const doEditProfile = () => {
-    editmodal.value?.open();
+    $editModal.value?.open();
 };
 
-const changepasswordmodal = ref(); // ChangePasswordModal
+const $changePasswordModal = ref(); // ChangePasswordModal
 
 const doChangePassword = () => {
-    changepasswordmodal.value?.open();
+    $changePasswordModal.value?.open();
 };
 
-const twofactormodal = ref(); // TwoFactorModal
+const $twoFactorModal = ref(); // TwoFactorModal
 
 const enableTwoFactor = () => {
-    twofactormodal.value?.open();
+    $twoFactorModal.value?.open();
 };
 
 const {confirmDelete} = useSweetAlert();
@@ -261,10 +261,10 @@ const disableTwoFactor = () => {
     });
 };
 
-const apikeymodal = ref(); // ApiKeyModal
+const $apiKeyModal = ref(); // ApiKeyModal
 
 const createApiKey = () => {
-    apikeymodal.value?.create();
+    $apiKeyModal.value?.create();
 };
 
 const deleteApiKey = (url) => {

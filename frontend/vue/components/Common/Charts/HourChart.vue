@@ -1,5 +1,5 @@
 <template>
-    <canvas ref="canvas">
+    <canvas ref="$canvas">
         <slot></slot>
     </canvas>
 </template>
@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 let $chart = null;
-const canvas = ref(); // Template Ref
+const $canvas = ref(); // Template Ref
 const {$gettext} = useTranslate();
 
 onMounted(() => {
@@ -59,7 +59,7 @@ onMounted(() => {
     }
 
     let chartOptions = _.defaultsDeep({}, props.options, defaultOptions);
-    $chart = new Chart(canvas.value.getContext('2d'), chartOptions);
+    $chart = new Chart($canvas.value.getContext('2d'), chartOptions);
 });
 
 onUnmounted(() => {

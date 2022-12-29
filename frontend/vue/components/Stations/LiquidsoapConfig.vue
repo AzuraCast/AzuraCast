@@ -81,7 +81,7 @@ const buildForm = () => {
 const {validations, blankForm} = buildForm();
 const {form, resetForm, v$} = useVuelidateOnForm(validations, blankForm);
 
-const loading = ref();
+const loading = ref(true);
 
 const {mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
 

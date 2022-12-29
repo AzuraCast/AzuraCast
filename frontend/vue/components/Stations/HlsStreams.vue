@@ -19,7 +19,7 @@
             </b-button>
         </b-card-body>
 
-        <data-table ref="datatable" id="station_hls_streams" :fields="fields" paginated
+        <data-table ref="$dataTable" id="station_hls_streams" :fields="fields" paginated
                     :api-url="listUrl">
             <template #cell(name)="row">
                 <h5 class="m-0">{{ row.item.name }}</h5>
@@ -43,7 +43,7 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editmodal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
+    <edit-modal ref="$editModal" :create-url="listUrl" @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
 </template>
 
 <script setup>
@@ -80,20 +80,20 @@ const upper = (data) => {
     return upper.join(' ');
 };
 
-const datatable = ref(); // DataTable
+const $dataTable = ref(); // DataTable
 
 const relist = () => {
-    datatable.value?.refresh();
+    $dataTable.value?.refresh();
 };
 
-const editmodal = ref(); // EditModal
+const $editModal = ref(); // EditModal
 
 const doCreate = () => {
-    editmodal.value?.create();
+    $editModal.value?.create();
 };
 
 const doEdit = (url) => {
-    editmodal.value?.edit(url);
+    $editModal.value?.edit(url);
 };
 
 const {mayNeedRestart, needsRestart} = useMayNeedRestart(props.restartStatusUrl);

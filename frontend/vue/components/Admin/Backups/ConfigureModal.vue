@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" size="lg" :title="$gettext('Configure Backups')" :loading="loading"
+    <modal-form ref="$modal" size="lg" :title="$gettext('Configure Backups')" :loading="loading"
                 :disable-save-button="v$.$invalid" @submit="submit" @hidden="resetForm">
         <b-form-fieldset>
             <div class="form-row mb-3">
@@ -101,7 +101,7 @@ const emit = defineEmits(['relist']);
 const loading = ref(true);
 const error = ref(null);
 
-const modal = ref(); // ModalForm
+const $modal = ref(); // ModalForm
 
 const {form, resetForm, v$} = useVuelidateOnForm(
     {
@@ -147,14 +147,14 @@ const {axios} = useAxios();
 
 const close = () => {
     emit('relist');
-    modal.value.hide();
+    $modal.value.hide();
 };
 
 const open = () => {
     resetForm();
     loading.value = true;
 
-    modal.value.show();
+    $modal.value.show();
 
     axios.get(props.settingsUrl).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);

@@ -19,7 +19,7 @@
             </b-button>
         </b-card-body>
 
-        <data-table ref="datatable" id="station_remotes" paginated :fields="fields" :api-url="listUrl">
+        <data-table ref="$dataTable" id="station_remotes" paginated :fields="fields" :api-url="listUrl">
             <template #cell(display_name)="row">
                 <h5 class="m-0">
                     <a :href="row.item.url" target="_blank">{{ row.item.display_name }}</a>
@@ -47,7 +47,7 @@
         </data-table>
     </b-card>
 
-    <remote-edit-modal ref="editmodal" :create-url="listUrl"
+    <remote-edit-modal ref="$editModal" :create-url="listUrl"
                        @relist="relist" @needs-restart="mayNeedRestart"></remote-edit-modal>
 </template>
 
@@ -78,20 +78,20 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const datatable = ref(); // DataTable
+const $dataTable = ref(); // DataTable
 
 const relist = () => {
-    datatable.value?.refresh();
+    $dataTable.value?.refresh();
 };
 
-const editmodal = ref(); // EditModal
+const $editModal = ref(); // EditModal
 
 const doCreate = () => {
-    editmodal.value?.create();
+    $editModal.value?.create();
 };
 
 const doEdit = (url) => {
-    editmodal.value?.edit(url);
+    $editModal.value?.edit(url);
 };
 
 const {mayNeedRestart, needsRestart} = useMayNeedRestart(props.restartStatusUrl);

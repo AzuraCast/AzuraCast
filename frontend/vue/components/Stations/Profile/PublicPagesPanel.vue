@@ -56,7 +56,7 @@
                     {{ $gettext('Disable') }}
                 </a>
             </div>
-            <embed-modal v-bind="$props" ref="embed_modal"></embed-modal>
+            <embed-modal v-bind="$props" ref="$embedModal"></embed-modal>
         </template>
         <template v-else>
             <div class="card-header bg-primary-dark">
@@ -95,9 +95,9 @@ const props = defineProps({
     ...embedModalProps
 });
 
-const embed_modal = ref(); // Template Ref
+const $embedModal = ref(); // Template Ref
 
 const doOpenEmbed = () => {
-    embed_modal.value.open();
+    $embedModal.value.open();
 };
 </script>

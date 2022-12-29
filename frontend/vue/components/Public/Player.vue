@@ -1,6 +1,6 @@
 <template>
     <div class="radio-player-widget">
-        <audio-player ref="player" :title="np.now_playing.song.text" :volume="volume"
+        <audio-player ref="$player" :title="np.now_playing.song.text" :volume="volume"
                       :is-muted="isMuted"></audio-player>
 
         <div class="now-playing-details">
@@ -304,7 +304,7 @@ const currentTimeTotalDisplay = computed(() => {
 });
 
 const isMounted = useMounted();
-const player = ref(); // Template ref
+const $player = ref(); // Template ref
 
 const volume = useStorage('player_volume', 55);
 const isMuted = useStorage('player_is_muted', false);
@@ -319,7 +319,7 @@ const fullVolume = () => {
 
 const switchStream = (new_stream) => {
     currentStream.value = new_stream;
-    player.value.toggle(new_stream.url, true, new_stream.hls);
+    $player.value.toggle(new_stream.url, true, new_stream.hls);
 };
 
 onMounted(() => {

@@ -220,7 +220,7 @@
         </div>
     </b-form-fieldset>
 
-    <streaming-log-modal ref="acmemodal"></streaming-log-modal>
+    <streaming-log-modal ref="$acmeModal"></streaming-log-modal>
 
     <admin-settings-test-message-modal :test-message-url="testMessageUrl"></admin-settings-test-message-modal>
 </template>
@@ -270,7 +270,7 @@ const avatarServiceOptions = computed(() => {
     ]
 });
 
-const acmemodal = ref(); // StreamingLogModal
+const $acmeModal = ref(); // StreamingLogModal
 const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
@@ -278,7 +278,7 @@ const generateAcmeCert = () => {
     wrapWithLoading(
         axios.put(props.acmeUrl)
     ).then((resp) => {
-        acmemodal.value.show(resp.data.links.log);
+        $acmeModal.value.show(resp.data.links.log);
     });
 }
 </script>

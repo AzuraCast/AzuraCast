@@ -19,7 +19,7 @@
             </b-button>
         </b-card-body>
 
-        <data-table ref="datatable" id="custom_fields" :fields="fields" :show-toolbar="false" :api-url="listUrl">
+        <data-table ref="$dataTable" id="custom_fields" :fields="fields" :show-toolbar="false" :api-url="listUrl">
             <template #cell(name)="row">
                 {{ row.item.name }} <code>{{ row.item.short_name }}</code>
             </template>
@@ -39,7 +39,7 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editmodal" :create-url="listUrl" :auto-assign-types="autoAssignTypes"
+    <edit-modal ref="$editModal" :create-url="listUrl" :auto-assign-types="autoAssignTypes"
                 @relist="relist"></edit-modal>
 </template>
 
@@ -48,7 +48,7 @@ import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
 import Icon from '~/components/Common/Icon.vue';
 import InfoCard from '~/components/Common/InfoCard.vue';
-import _ from 'lodash';
+import _, {get} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
@@ -69,23 +69,23 @@ const fields = [
 ];
 
 const getAutoAssignName = (autoAssign) => {
-    return _.get(props.autoAssignTypes, autoAssign, $gettext('None'));
+    return get(props.autoAssignTypes, autoAssign, $gettext('None'));
 };
 
-const datatable = ref(); // DataTable
+const $dataTable = ref(); // DataTable
 
 const relist = () => {
-    datatable.value.refresh();
+    $dataTable.value.refresh();
 };
 
-const editmodal = ref(); // EditModal
+const $editModal = ref(); // EditModal
 
 const doCreate = () => {
-    editmodal.value.create();
+    $editModal.value.create();
 }
 
 const doEdit = (url) => {
-    editmodal.value.edit(url);
+    $editModal.value.edit(url);
 }
 
 const {confirmDelete} = useSweetAlert();

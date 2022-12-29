@@ -19,7 +19,7 @@
             </b-button>
         </b-card-body>
 
-        <data-table ref="datatable" id="station_mounts" :fields="fields" paginated
+        <data-table ref="$dataTable" id="station_mounts" :fields="fields" paginated
                     :api-url="listUrl">
             <template #cell(display_name)="row">
                 <h5 class="m-0">
@@ -53,7 +53,7 @@
         </data-table>
     </b-card>
 
-    <edit-modal ref="editmodal" :create-url="listUrl" :new-intro-url="newIntroUrl"
+    <edit-modal ref="$editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
                 :show-advanced="showAdvanced" :station-frontend-type="stationFrontendType"
                 @relist="relist" @needs-restart="mayNeedRestart"></edit-modal>
 </template>
@@ -90,20 +90,20 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const datatable = ref(); // DataTable
+const $dataTable = ref(); // DataTable
 
 const relist = () => {
-    datatable.value.refresh();
+    $dataTable.value.refresh();
 };
 
-const editmodal = ref(); // EditModal
+const $editModal = ref(); // EditModal
 
 const doCreate = () => {
-    editmodal.value.create();
+    $editModal.value.create();
 };
 
 const doEdit = (url) => {
-    editmodal.value.edit(url);
+    $editModal.value.edit(url);
 };
 
 const {needsRestart, mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);

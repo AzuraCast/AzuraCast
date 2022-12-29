@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="send_test_message" centered ref="modal" :title="$gettext('Send Test Message')">
+    <b-modal id="send_test_message" centered ref="$modal" :title="$gettext('Send Test Message')">
         <b-form @submit.prevent="doSendTest">
             <b-wrapped-form-group id="email_address" :field="v$.emailAddress" autofocus>
                 <template #label>
@@ -44,11 +44,11 @@ const {form, resetForm, v$} = useVuelidateOnForm(
     }
 );
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const close = () => {
     v$.value.reset();
-    modal.value.hide();
+    $modal.value.hide();
 }
 
 const {wrapWithLoading, notifySuccess} = useNotify();

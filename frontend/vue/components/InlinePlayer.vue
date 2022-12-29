@@ -1,5 +1,5 @@
 <template>
-    <audio-player ref="player" :volume="volume" :is-muted="isMuted"></audio-player>
+    <audio-player ref="$player" :volume="volume" :is-muted="isMuted"></audio-player>
 
     <div class="ml-3 player-inline" v-if="isPlaying">
         <div class="inline-seek d-inline-flex align-items-center ml-1" v-if="!current.isStream && duration !== 0">
@@ -79,10 +79,10 @@ const current = toRef(store, 'current');
 const volume = useStorage('player_volume', 55);
 const isMuted = useStorage('player_is_muted', false);
 const isMounted = useMounted();
-const player = ref(); // AudioPlayer
+const $player = ref(); // AudioPlayer
 
 const duration = computed(() => {
-    return player.value?.getDuration();
+    return $player.value?.getDuration();
 });
 
 const durationText = computed(() => {
@@ -90,7 +90,7 @@ const durationText = computed(() => {
 });
 
 const currentTime = computed(() => {
-    return player.value?.getCurrentTime();
+    return $player.value?.getCurrentTime();
 });
 
 const currentTimeText = computed(() => {
@@ -99,10 +99,10 @@ const currentTimeText = computed(() => {
 
 const progress = computed({
     get: () => {
-        return player.value?.getProgress();
+        return $player.value?.getProgress();
     },
     set: (prog) => {
-        player.value?.setProgress(prog);
+        $player.value?.setProgress(prog);
     }
 });
 

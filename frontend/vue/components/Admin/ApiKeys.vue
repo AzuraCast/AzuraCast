@@ -4,7 +4,7 @@
             <h2 class="card-title">{{ $gettext('API Keys') }}</h2>
         </b-card-header>
 
-        <data-table ref="datatable" id="api_keys" :fields="fields" :api-url="apiUrl">
+        <data-table ref="$dataTable" id="api_keys" :fields="fields" :api-url="apiUrl">
             <template #cell(owner)="row">
                 {{ row.item.user.email }}
             </template>
@@ -53,10 +53,10 @@ const fields = ref([
     }
 ]);
 
-const datatable = ref();
+const $dataTable = ref();
 
 const relist = () => {
-    datatable.value.relist();
+    $dataTable.value.relist();
 };
 
 const {confirmDelete} = useSweetAlert();

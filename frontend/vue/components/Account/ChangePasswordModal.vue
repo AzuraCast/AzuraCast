@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" size="md" centered :title="$gettext('Change Password')" :disable-save-button="v$.$invalid"
+    <modal-form ref="$modal" size="md" centered :title="$gettext('Change Password')" :disable-save-button="v$.$invalid"
                 @submit="onSubmit" @hidden="clearContents">
         <b-form-fieldset>
             <b-wrapped-form-group id="form_current_password" :field="v$.current_password"
@@ -75,15 +75,15 @@ const clearContents = () => {
     resetForm();
 };
 
-const modal = ref(); // ModalForm
+const $modal = ref(); // ModalForm
 
 const open = () => {
     clearContents();
-    modal.value.show();
+    $modal.value.show();
 };
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 }
 
 const {wrapWithLoading} = useNotify();
@@ -98,7 +98,7 @@ const onSubmit = () => {
     wrapWithLoading(
         axios.put(props.changePasswordUrl, form.value)
     ).finally(() => {
-        modal.value.hide();
+        $modal.value.hide();
         emit('relist');
     });
 };

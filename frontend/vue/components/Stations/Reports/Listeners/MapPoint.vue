@@ -1,5 +1,5 @@
 <template>
-    <div ref="content">
+    <div ref="$content">
         <slot/>
     </div>
 </template>
@@ -18,10 +18,10 @@ const marker = L.marker(props.position);
 marker.addTo(map);
 
 const popup = new L.Popup();
-const content = ref(); // Template Ref
+const $content = ref(); // Template Ref
 
 watch(
-    content,
+    $content,
     (newContent) => {
         popup.setContent(newContent);
         marker.bindPopup(popup);

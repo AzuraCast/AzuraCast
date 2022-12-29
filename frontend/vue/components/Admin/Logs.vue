@@ -23,7 +23,7 @@
         </b-tabs>
     </div>
 
-    <streaming-log-modal ref="modal"></streaming-log-modal>
+    <streaming-log-modal ref="$modal"></streaming-log-modal>
 </template>
 
 <script setup>
@@ -36,9 +36,9 @@ const props = defineProps({
     stationLogs: Array
 });
 
-const modal = ref(); // StreamingLogModal
+const $modal = ref(); // StreamingLogModal
 
 const viewLog = (url) => {
-    modal.value.show(url);
+    $modal.value.show(url);
 };
 </script>

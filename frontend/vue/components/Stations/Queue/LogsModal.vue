@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="logs_modal" ref="modal" :title="$gettext('Log Viewer')">
+    <b-modal id="logs_modal" ref="$modal" :title="$gettext('Log Viewer')">
         <textarea class="form-control log-viewer" spellcheck="false" readonly>{{ logs }}</textarea>
 
         <template #modal-footer>
@@ -18,7 +18,7 @@ import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
 
 const logs = ref('Loading...');
-const modal = ref(); // Template Ref
+const $modal = ref(); // Template Ref
 
 const show = (newLogs) => {
     let logDisplay = [];
@@ -27,7 +27,7 @@ const show = (newLogs) => {
     });
 
     logs.value = logDisplay.join('');
-    modal.value.show();
+    $modal.value.show();
 };
 
 const clipboard = useClipboard();
@@ -37,7 +37,7 @@ const doCopy = () => {
 };
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 }
 
 defineExpose({

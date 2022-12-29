@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" id="request_modal" ref="modal" :title="$gettext('Request a Song')" hide-footer>
+    <b-modal size="lg" id="request_modal" ref="$modal" :title="$gettext('Request a Song')" hide-footer>
         <song-request :show-album-art="showAlbumArt" :request-list-uri="requestListUri" :custom-fields="customFields"
                       @submitted="doClose"></song-request>
     </b-modal>
@@ -25,9 +25,9 @@ const props = defineProps({
     }
 });
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const doClose = () => {
-    modal.value?.hide();
+    $modal.value?.hide();
 };
 </script>

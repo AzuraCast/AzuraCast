@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="$gettext('Enable Two-Factor Authentication')"
+    <modal-form ref="$modal" :loading="loading" :title="$gettext('Enable Two-Factor Authentication')"
                 :error="error" :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents" no-enforce-focus>
 
@@ -99,10 +99,10 @@ const clearContents = () => {
     error.value = null;
 };
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const close = () => {
-    modal.value?.hide();
+    $modal.value?.hide();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();
@@ -113,7 +113,7 @@ const open = () => {
 
     loading.value = true;
 
-    modal.value?.show();
+    $modal.value?.show();
 
     wrapWithLoading(
         axios.put(props.twoFactorUrl)

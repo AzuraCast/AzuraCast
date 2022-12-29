@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="$gettext('Clone Station')" :error="error"
+    <modal-form ref="$modal" :loading="loading" :title="$gettext('Clone Station')" :error="error"
                 :disable-save-button="v$.$invalid"
                 @submit="doSubmit" @hidden="clearContents">
 
@@ -37,7 +37,7 @@ const {form, resetForm, v$} = useVuelidateOnForm(
     }
 );
 
-const modal = ref(); // ModalForm
+const $modal = ref(); // ModalForm
 const {$gettext} = useTranslate();
 
 const create = (stationName, stationCloneUrl) => {
@@ -51,7 +51,7 @@ const create = (stationName, stationCloneUrl) => {
     error.value = null;
     cloneUrl.value = stationCloneUrl;
 
-    modal.value.show();
+    $modal.value.show();
 };
 
 const clearContents = () => {
@@ -60,7 +60,7 @@ const clearContents = () => {
 };
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();

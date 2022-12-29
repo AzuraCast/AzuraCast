@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="lg" centered id="cpu_stats_help_modal" ref="modal" :title="$gettext('CPU Stats Help')">
+    <b-modal size="lg" centered id="cpu_stats_help_modal" ref="$modal" :title="$gettext('CPU Stats Help')">
         <div class="mb-2">
             <h6>
                 <b-badge pill variant="danger">&nbsp;&nbsp;</b-badge>&nbsp;
@@ -68,15 +68,14 @@
 
 <script setup>
 import {ref} from "vue";
-import {BModal} from "bootstrap-vue";
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const create = () => {
-    modal.value.show();
+    $modal.value.show();
 }
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 }
 
 defineExpose({

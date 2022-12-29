@@ -1,7 +1,7 @@
 <template>
-    <b-modal size="lg" id="station_edit_modal" ref="modal" :title="langTitle" :busy="loading"
+    <b-modal size="lg" id="station_edit_modal" ref="$modal" :title="langTitle" :busy="loading"
              @shown="resetForm" @hidden="clearContents">
-        <admin-stations-form v-bind="$props" ref="form" is-modal :create-url="createUrl" :edit-url="editUrl"
+        <admin-stations-form v-bind="$props" ref="$form" is-modal :create-url="createUrl" :edit-url="editUrl"
                              :is-edit-mode="isEditMode" @error="close" @submitted="onSubmit"
                              @validUpdate="onValidUpdate" @loadingUpdate="onLoadingUpdate">
             <template #submitButton>
@@ -51,7 +51,7 @@ const langTitle = computed(() => {
         : $gettext('Add Station');
 });
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const onValidUpdate = (newValue) => {
     disableSaveButton.value = !newValue;
@@ -63,22 +63,22 @@ const onLoadingUpdate = (newValue) => {
 
 const create = () => {
     editUrl.value = null;
-    modal.value.show();
+    $modal.value.show();
 };
 
 const edit = (recordUrl) => {
     editUrl.value = recordUrl;
-    modal.value.show();
+    $modal.value.show();
 };
 
-const form = ref(); // AdminStationsForm
+const $form = ref(); // AdminStationsForm
 
 const resetForm = () => {
-    form.value.reset();
+    $form.value.reset();
 };
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 };
 
 const onSubmit = () => {
@@ -87,7 +87,7 @@ const onSubmit = () => {
 };
 
 const doSubmit = () => {
-    form.value.submit();
+    $form.value.submit();
 };
 
 const clearContents = () => {

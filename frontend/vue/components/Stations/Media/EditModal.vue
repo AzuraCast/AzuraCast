@@ -1,5 +1,5 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="$gettext('Edit Media')" :error="error"
+    <modal-form ref="$modal" :loading="loading" :title="$gettext('Edit Media')" :error="error"
                 :disable-save-button="v$.$invalid"
                 @submit="doEdit" @hidden="resetForm">
 
@@ -145,10 +145,10 @@ const resetForm = () => {
     audioUrl.value = '';
 };
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const close = () => {
-    modal.value?.hide();
+    $modal.value?.hide();
 };
 
 const {axios} = useAxios();
@@ -162,7 +162,7 @@ const open = (newRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
     audioUrl.value = newAudioUrl;
     waveformUrl.value = newWaveformUrl;
 
-    modal.value?.show();
+    $modal.value?.show();
 
     axios.get(newRecordUrl).then((resp) => {
         let d = resp.data;

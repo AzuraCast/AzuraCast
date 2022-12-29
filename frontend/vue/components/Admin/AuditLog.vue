@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <data-table ref="datatable" responsive paginated
+        <data-table ref="$dataTable" responsive paginated
                     :fields="fields" :apiUrl="apiUrl">
             <template #cell(date_time)="row">
                 {{ formatTimestamp(row.item.timestamp) }}
@@ -123,10 +123,10 @@ const apiUrl = computed(() => {
     return apiUrl.toString();
 });
 
-const datatable = ref(); // DataTable Template Ref
+const $dataTable = ref(); // DataTable Template Ref
 
 const relist = () => {
-    datatable.value.relist();
+    $dataTable.value.relist();
 };
 
 const formatTimestamp = (unix_timestamp) => {

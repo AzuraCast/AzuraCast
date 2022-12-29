@@ -74,7 +74,7 @@
                 </b-button>
             </b-card-body>
 
-            <data-table ref="datatable" id="api_keys" :fields="fields" :api-url="listUrl">
+            <data-table ref="$dataTable" id="api_keys" :fields="fields" :api-url="listUrl">
                 <template #cell(timestamp)="row">
                     {{ toLocaleTime(row.item.timestamp) }}
                 </template>
@@ -94,15 +94,15 @@
             </data-table>
         </section>
 
-        <admin-backups-configure-modal ref="configureModal" :settings-url="settingsUrl"
+        <admin-backups-configure-modal ref="$configureModal" :settings-url="settingsUrl"
                                        :storage-locations="storageLocations"
                                        @relist="relist"></admin-backups-configure-modal>
 
-        <admin-backups-run-backup-modal ref="runBackupModal" :run-backup-url="runBackupUrl"
+        <admin-backups-run-backup-modal ref="$runBackupModal" :run-backup-url="runBackupUrl"
                                         :storage-locations="storageLocations"
                                         @relist="relist"></admin-backups-run-backup-modal>
 
-        <admin-backups-last-output-modal ref="lastOutputModal"
+        <admin-backups-last-output-modal ref="$lastOutputModal"
                                          :last-output="settings.backupLastOutput"></admin-backups-last-output-modal>
     </div>
 </template>
@@ -168,7 +168,7 @@ const fields = [
     }
 ];
 
-const datatable = ref(); // DataTable
+const $dataTable = ref(); // DataTable
 
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
@@ -186,7 +186,7 @@ const relist = () => {
         settingsLoading.value = false;
     });
 
-    datatable.value.relist();
+    $dataTable.value.relist();
 };
 
 onMounted(relist);
@@ -203,19 +203,19 @@ const toLocaleTime = (timestamp) => {
     );
 };
 
-const lastOutputModal = ref(); // AdminBackupsLastOutputModal
+const $lastOutputModal = ref(); // AdminBackupsLastOutputModal
 const showLastOutput = () => {
-    lastOutputModal.value.show();
+    $lastOutputModal.value.show();
 };
 
-const configureModal = ref(); // AdminBackupsConfigureModal
+const $configureModal = ref(); // AdminBackupsConfigureModal
 const doConfigure = () => {
-    configureModal.value.open();
+    $configureModal.value.open();
 };
 
-const runBackupModal = ref(); // AdminBackupsRunBackupModal
+const $runBackupModal = ref(); // AdminBackupsRunBackupModal
 const doRunBackup = () => {
-    runBackupModal.value.open();
+    $runBackupModal.value.open();
 };
 
 const {confirmDelete} = useSweetAlert();

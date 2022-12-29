@@ -1,7 +1,7 @@
 <template>
-    <b-modal id="logs_modal" size="lg" ref="modal" @hidden="clearContents"
+    <b-modal id="logs_modal" size="lg" ref="$modal" @hidden="clearContents"
              :title="$gettext('Log Viewer')" no-enforce-focus>
-        <streaming-log-view ref="logView" :log-url="logUrl"></streaming-log-view>
+        <streaming-log-view ref="$logView" :log-url="logUrl"></streaming-log-view>
 
         <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
@@ -20,22 +20,22 @@ import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
 
 const logUrl = ref('');
-const modal = ref(); // Template ref
-const logView = ref(); // Template ref
+const $modal = ref(); // Template ref
+const $logView = ref(); // Template ref
 
 const show = (newLogUrl) => {
     logUrl.value = newLogUrl;
-    modal.value.show();
+    $modal.value.show();
 };
 
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy(logView.value.getContents());
+    clipboard.copy($logView.value.getContents());
 };
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
 }
 
 const clearContents = () => {

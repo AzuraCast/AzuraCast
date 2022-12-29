@@ -1,5 +1,6 @@
 <template>
-    <b-modal size="md" centered id="api_keys_modal" ref="modal" :title="$gettext('Add API Key')" @hidden="clearContents"
+    <b-modal size="md" centered id="api_keys_modal" ref="$modal" :title="$gettext('Add API Key')"
+             @hidden="clearContents"
              no-enforce-focus>
         <template #default="slotProps">
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
@@ -70,12 +71,12 @@ const clearContents = () => {
     newKey.value = null;
 };
 
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const create = () => {
     clearContents();
 
-    modal.value?.show();
+    $modal.value?.show();
 };
 
 const {wrapWithLoading} = useNotify();
@@ -104,7 +105,7 @@ const doSubmit = () => {
 };
 
 const close = () => {
-    modal.value?.hide();
+    $modal.value?.hide();
 };
 
 defineExpose({

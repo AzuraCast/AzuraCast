@@ -1,5 +1,5 @@
 <template>
-    <b-modal size="md" centered id="run_backup_modal" ref="modal" :title="$gettext('Run Manual Backup')"
+    <b-modal size="md" centered id="run_backup_modal" ref="$modal" :title="$gettext('Run Manual Backup')"
              @hidden="clearContents">
         <template #default="slotProps">
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
@@ -105,7 +105,7 @@ const storageLocationOptions = computed(() => {
 
 const logUrl = ref(null);
 const error = ref(null);
-const modal = ref(); // BModal
+const $modal = ref(); // BModal
 
 const {form, resetForm, v$} = useVuelidateOnForm(
     {
@@ -121,11 +121,11 @@ const {form, resetForm, v$} = useVuelidateOnForm(
 );
 
 const open = () => {
-    modal.value.show();
+    $modal.value.show();
 };
 
 const close = () => {
-    modal.value.hide();
+    $modal.value.hide();
     emit('relist');
 }
 

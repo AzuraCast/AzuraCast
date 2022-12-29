@@ -2,10 +2,10 @@
     <b-form-group v-bind="$attrs" :label-for="id" :state="fieldState">
         <template #default>
             <slot name="default" v-bind="{ id, field, state: fieldState }">
-                <b-form-textarea v-bind="inputAttrs" v-if="inputType === 'textarea'" ref="input" :id="id" :name="name"
+                <b-form-textarea v-bind="inputAttrs" v-if="inputType === 'textarea'" ref="$input" :id="id" :name="name"
                                  v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
                                  :autofocus="autofocus" :state="fieldState"></b-form-textarea>
-                <b-form-input v-bind="inputAttrs" v-else ref="input" :type="inputType" :id="id" :name="name"
+                <b-form-input v-bind="inputAttrs" v-else ref="$input" :type="inputType" :id="id" :name="name"
                               v-model="modelValue" :required="isRequired" :number="isNumeric" :trim="inputTrim"
                               :autofocus="autofocus" :state="fieldState"></b-form-input>
             </slot>
@@ -112,10 +112,10 @@ const isNumeric = computed(() => {
     return props.inputNumber || props.inputType === "number";
 });
 
-const input = ref(); // Input
+const $input = ref(); // Input
 
 const focus = () => {
-    input.value?.focus();
+    $input.value?.focus();
 };
 
 defineExpose({

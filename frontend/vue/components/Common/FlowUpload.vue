@@ -17,9 +17,9 @@
                 </div>
             </template>
         </div>
-        <div class="file-drop-target" ref="file_drop_target">
+        <div class="file-drop-target" ref="$fileDropTarget">
             {{ $gettext('Drag file(s) here to upload or') }}
-            <button ref="file_browse_target" class="file-upload btn btn-primary text-center ml-1" type="button">
+            <button ref="$fileBrowseTarget" class="file-upload btn btn-primary text-center ml-1" type="button">
                 <icon icon="cloud_upload"></icon>
                 {{ $gettext('Select File') }}
             </button>
@@ -121,47 +121,47 @@ const files = reactive({
         return this.value[file.uniqueIdentifier] ?? {};
     },
     hideAll() {
-      forEach(this.value, (file) => {
-        file.isVisible = false;
-      });
+        forEach(this.value, (file) => {
+            file.isVisible = false;
+        });
     },
-  reset() {
-    this.value = {};
-  }
+    reset() {
+        this.value = {};
+    }
 });
 
-const file_browse_target = ref(); // Template Ref
-const file_drop_target = ref(); // Template Ref
+const $fileBrowseTarget = ref(); // Template Ref
+const $fileDropTarget = ref(); // Template Ref
 
 const {apiCsrf} = useAzuraCast();
 
 const {$gettext} = useTranslate();
 
 onMounted(() => {
-  let defaultConfig = {
-    target: () => {
-      return props.targetUrl
-    },
-    singleFile: !props.allowMultiple,
-    headers: {
-      'Accept': 'application/json',
-      'X-API-CSRF': apiCsrf
-    },
-    withCredentials: true,
-    allowDuplicateUploads: true,
-    fileParameterName: 'file_data',
-    uploadMethod: 'POST',
-    testMethod: 'GET',
-    method: 'multipart',
-    maxChunkRetries: 3,
-    testChunks: false
-  };
-  let config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
+    let defaultConfig = {
+        target: () => {
+            return props.targetUrl
+        },
+        singleFile: !props.allowMultiple,
+        headers: {
+            'Accept': 'application/json',
+            'X-API-CSRF': apiCsrf
+        },
+        withCredentials: true,
+        allowDuplicateUploads: true,
+        fileParameterName: 'file_data',
+        uploadMethod: 'POST',
+        testMethod: 'GET',
+        method: 'multipart',
+        maxChunkRetries: 3,
+        testChunks: false
+    };
+    let config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
 
     flow = new Flow(config);
 
-    flow.assignBrowse(file_browse_target.value);
-    flow.assignDrop(file_drop_target.value);
+    flow.assignBrowse($fileBrowseTarget.value);
+    flow.assignDrop($fileDropTarget.value);
 
     flow.on('fileAdded', (file) => {
         files.push(file);

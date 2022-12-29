@@ -323,6 +323,8 @@ const switchStream = (new_stream) => {
 };
 
 onMounted(() => {
+    document.dispatchEvent(new CustomEvent("player-ready"));
+
     if (props.autoplay) {
         switchStream(currentStream.value);
     }

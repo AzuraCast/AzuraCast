@@ -365,7 +365,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendLines($playlistConfigLines);
 
             if ($playlist->backendPlaySingleTrack()) {
-                $playlistVarName = 'once(' . $playlistVarName . ')';
+                $playlistVarName = 'predicate.once(' . $playlistVarName . ')';
             }
 
             switch ($playlist->getTypeEnum()) {

@@ -319,7 +319,9 @@ export default {
         },
         libUrls: {
             type: Array,
-            default: []
+            default: () => {
+                return [];
+            }
         },
         baseUri: {
             type: String,

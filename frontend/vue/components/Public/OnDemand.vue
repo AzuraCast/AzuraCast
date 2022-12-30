@@ -105,7 +105,9 @@ const props = defineProps({
     },
     customFields: {
         type: Array,
-        default: []
+        default: () => {
+            return [];
+        }
     },
     showDownloadButton: {
         type: Boolean,

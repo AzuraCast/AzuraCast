@@ -248,7 +248,6 @@ const currentTimeTotalDisplay = computed(() => {
     return ($currentTrackDuration) ? formatTime($currentTrackDuration) : null;
 });
 
-const isMounted = useMounted();
 const $player = ref(); // Template ref
 
 const volume = useStorage('player_volume', 55);

@@ -167,7 +167,9 @@ export default {
         },
         playlists: {
             type: Array,
-            default: []
+            default: () => {
+                return [];
+            }
         },
         batchUrl: {
             type: String,

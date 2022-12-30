@@ -32,8 +32,8 @@
 
                     <b-list-group>
                         <b-list-group-item
-                            v-for="(item, key) in panel.items"
-                            :key="key"
+                            v-for="(item, itemKey) in panel.items"
+                            :key="itemKey"
                             :href="item.url"
                         >
                             {{

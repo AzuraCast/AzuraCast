@@ -8,7 +8,8 @@
             class="form-control log-viewer"
             spellcheck="false"
             readonly
-        >{{ logs }}</textarea>
+            :value="logs"
+        />
 
         <template #modal-footer>
             <b-button

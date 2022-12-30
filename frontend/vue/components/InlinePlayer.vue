@@ -81,7 +81,7 @@ import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon.vue';
 import {usePlayerStore} from "~/store.js";
-import {useMounted, useStorage} from "@vueuse/core";
+import {useStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
 
 const store = usePlayerStore();
@@ -90,7 +90,6 @@ const current = toRef(store, 'current');
 
 const volume = useStorage('player_volume', 55);
 const isMuted = useStorage('player_is_muted', false);
-const isMounted = useMounted();
 const $player = ref(); // AudioPlayer
 
 const duration = computed(() => {

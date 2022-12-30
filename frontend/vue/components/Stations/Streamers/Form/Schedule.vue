@@ -32,14 +32,12 @@
 </template>
 
 <script>
-import PlaylistTime from '~/components/Common/TimeCode';
 import Icon from '~/components/Common/Icon';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 
 export default {
     name: 'StreamerFormSchedule',
-    components: {StreamersFormScheduleRow, BWrappedFormGroup, Icon, PlaylistTime},
+    components: {StreamersFormScheduleRow, Icon},
     props: {
         form: {
             type: Object,
@@ -51,7 +49,9 @@ export default {
         },
         scheduleItems: {
             type: Array,
-            default: []
+            default: () => {
+                return [];
+            }
         }
     },
     data() {

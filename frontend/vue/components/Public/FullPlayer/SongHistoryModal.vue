@@ -20,7 +20,9 @@ import SongHistory from './SongHistory';
 const props = defineProps({
     history: {
         type: Array,
-        default: []
+        default: () => {
+            return [];
+        }
     },
     showAlbumArt: {
         type: Boolean,

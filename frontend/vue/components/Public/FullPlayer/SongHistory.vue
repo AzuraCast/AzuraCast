@@ -31,7 +31,9 @@ import {DateTime} from "luxon";
 const props = defineProps({
     history: {
         type: Array,
-        default: []
+        default: () => {
+            return [];
+        }
     },
     showAlbumArt: {
         type: Boolean,

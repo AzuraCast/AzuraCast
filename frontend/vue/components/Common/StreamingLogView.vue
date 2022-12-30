@@ -18,17 +18,14 @@
             class="form-control log-viewer"
             spellcheck="false"
             readonly
-        >{{ logs }}</textarea>
+            :value="logs"
+        />
     </b-overlay>
 </template>
 
 <script>
-
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-
 export default {
     name: 'StreamingLogView',
-    components: {BWrappedFormCheckbox},
     props: {
         logUrl: {
             type: String,

@@ -322,7 +322,6 @@
 
 <script>
 import TimeSeriesChart from '~/components/Common/Charts/TimeSeriesChart.vue';
-import DataTable from '~/components/Common/DataTable';
 import store from 'store';
 import Icon from '~/components/Common/Icon';
 import Avatar from '~/components/Common/Avatar';
@@ -330,7 +329,7 @@ import PlayButton from "~/components/Common/PlayButton";
 import AlbumArt from "~/components/Common/AlbumArt";
 
 export default {
-    components: {PlayButton, Avatar, Icon, DataTable, TimeSeriesChart, AlbumArt},
+    components: {PlayButton, Avatar, Icon, TimeSeriesChart, AlbumArt},
     props: {
         userUrl: {
             type: String,

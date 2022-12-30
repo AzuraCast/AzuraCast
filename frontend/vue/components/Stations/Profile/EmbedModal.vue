@@ -61,7 +61,9 @@
                             class="full-width form-control text-preformatted"
                             spellcheck="false"
                             style="height: 100px;"
-                        >{{ embedCode }}</textarea>
+                            readonly
+                            :value="embedCode"
+                        />
                         <copy-to-clipboard-button :text="embedCode" />
                     </b-card-body>
                 </b-card>

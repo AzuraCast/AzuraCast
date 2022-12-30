@@ -18,11 +18,15 @@ const props = defineProps({
     },
     data: {
         type: Array,
-        default: []
+        default: () => {
+            return [];
+        }
     },
     labels: {
         type: Array,
-        default: []
+        default: () => {
+            return [];
+        }
     }
 });
 

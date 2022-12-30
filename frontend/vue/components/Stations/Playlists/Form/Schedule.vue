@@ -51,7 +51,9 @@ export default {
         },
         scheduleItems: {
             type: Array,
-            default: []
+            default: () => {
+                return [];
+            }
         }
     },
     methods: {

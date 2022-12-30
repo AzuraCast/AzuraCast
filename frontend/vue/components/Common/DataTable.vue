@@ -49,7 +49,7 @@
                                 debounce="200"
                                 type="search"
                                 class="search-field form-control"
-                                :placeholder="langSearch"
+                                :placeholder="$gettext('Search')"
                             />
                         </div>
                     </div>
@@ -58,8 +58,7 @@
                             <b-button
                                 v-b-tooltip.hover
                                 variant="default"
-                                title="Refresh"
-                                :title="langRefreshTooltip"
+                                :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
                                 <icon icon="refresh" />
@@ -69,7 +68,7 @@
                                 v-b-tooltip.hover
                                 variant="default"
                                 :text="perPageLabel"
-                                :title="langPerPageTooltip"
+                                :title="$gettext('Rows per page')"
                             >
                                 <b-dropdown-item
                                     v-for="pageOption in pageOptions"
@@ -84,7 +83,7 @@
                                 v-if="selectFields"
                                 v-b-tooltip.hover
                                 variant="default"
-                                :title="langSelectFieldsTooltip"
+                                :title="$gettext('Select displayed fields')"
                             >
                                 <template #button-content>
                                     <icon icon="filter_list" />
@@ -133,8 +132,8 @@
                 :per-page="perPage"
                 :items="itemProvider"
                 :fields="visibleFields"
-                :empty-text="langNoRecords"
-                :empty-filtered-text="langNoRecords"
+                :empty-text="$gettext('No records to display.')"
+                :empty-filtered-text="$gettext('No records to display.')"
                 :responsive="responsive"
                 :no-provider-paging="handleClientSide"
                 :no-provider-sorting="handleClientSide"
@@ -150,7 +149,7 @@
             >
                 <template #head(selected)="data">
                     <b-form-checkbox
-                        :aria-label="langSelectAll"
+                        :aria-label="$gettext('Select all visible rows')"
                         :checked="allSelected"
                         @change="toggleSelected"
                     />
@@ -158,11 +157,11 @@
                 <template #cell(selected)="{ rowSelected }">
                     <div class="text-muted">
                         <template v-if="rowSelected">
-                            <span class="sr-only">{{ langDeselectRow }}</span>
+                            <span class="sr-only">{{ $gettext('Deselect') }}</span>
                             <icon icon="check_box" />
                         </template>
                         <template v-else>
-                            <span class="sr-only">{{ langSelectRow }}</span>
+                            <span class="sr-only">{{ $gettext('Select') }}</span>
                             <icon icon="check_box_outline_blank" />
                         </template>
                     </div>
@@ -187,7 +186,7 @@
                                 </div>
                             </div>
 
-                            {{ langLoading }}
+                            {{ $gettext('Loading...') }}
                         </div>
                     </div>
                 </template>
@@ -217,7 +216,7 @@
 
 <script>
 import store from 'store';
-import {forEach, filter, map} from 'lodash';
+import {forEach, filter, map, defaultTo, includes} from 'lodash';
 import Icon from './Icon.vue';
 import {defineComponent} from "vue";
 
@@ -319,33 +318,6 @@ export default defineComponent({
         };
     },
     computed: {
-        langRefreshTooltip() {
-            return this.$gettext('Refresh rows');
-        },
-        langPerPageTooltip() {
-            return this.$gettext('Rows per page');
-        },
-        langSelectFieldsTooltip() {
-            return this.$gettext('Select displayed fields');
-        },
-        langSelectAll() {
-            return this.$gettext('Select all visible rows');
-        },
-        langSelectRow() {
-            return this.$gettext('Select');
-        },
-        langDeselectRow() {
-            return this.$gettext('Deselect');
-        },
-        langSearch() {
-            return this.$gettext('Search');
-        },
-        langNoRecords() {
-            return this.$gettext('No records to display.');
-        },
-        langLoading() {
-            return this.$gettext('Loading...');
-        },
         visibleFields() {
             let fields = this.allFields.slice();
 
@@ -411,10 +383,10 @@ export default defineComponent({
             if (store.enabled && store.get(this.storeKey) !== undefined) {
                 let settings = store.get(this.storeKey);
 
-                this.perPage = _.defaultTo(settings.perPage, this.defaultPerPage);
+                this.perPage = defaultTo(settings.perPage, this.defaultPerPage);
 
                 forEach(this.selectableFields, (field) => {
-                    field.visible = _.includes(settings.visibleFields, field.key);
+                    field.visible = includes(settings.visibleFields, field.key);
                 });
 
                 if (settings.sortBy) {

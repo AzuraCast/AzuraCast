@@ -31,55 +31,43 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import Icon from '~/components/Common/Icon';
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
+import {useVModel} from "@vueuse/core";
 
-export default {
-    name: 'StreamerFormSchedule',
-    components: {StreamersFormScheduleRow, Icon},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        scheduleItems: {
-            type: Array,
-            default: () => {
-                return [];
-            }
-        }
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    data() {
-        return {
-            dayOptions: [
-                {value: 1, text: this.$gettext('Monday')},
-                {value: 2, text: this.$gettext('Tuesday')},
-                {value: 3, text: this.$gettext('Wednesday')},
-                {value: 4, text: this.$gettext('Thursday')},
-                {value: 5, text: this.$gettext('Friday')},
-                {value: 6, text: this.$gettext('Saturday')},
-                {value: 7, text: this.$gettext('Sunday')}
-            ]
-        };
+    stationTimeZone: {
+        type: String,
+        required: true
     },
-    methods: {
-        add () {
-            this.scheduleItems.push({
-                start_time: null,
-                end_time: null,
-                start_date: null,
-                end_date: null,
-                days: []
-            });
-        },
-        remove (index) {
-            this.scheduleItems.splice(index, 1);
+    scheduleItems: {
+        type: Array,
+        default: () => {
+            return [];
         }
     }
+});
+
+const emit = defineEmits(['update:scheduleItems']);
+
+const scheduleItems = useVModel(props, 'scheduleItems', emit);
+
+const add = () => {
+    scheduleItems.value.push({
+        start_time: null,
+        end_time: null,
+        start_date: null,
+        end_date: null,
+        days: []
+    });
+};
+
+const remove = (index) => {
+    scheduleItems.value.splice(index, 1);
 };
 </script>

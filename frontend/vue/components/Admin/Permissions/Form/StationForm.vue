@@ -51,6 +51,7 @@ const props = defineProps({
     }
 });
 
+
 const remainingStations = computed(() => {
     return pickBy(props.stations, (stationName, stationId) => {
         return !find(props.form.permissions.$model.station, {'station_id': stationId});
@@ -60,6 +61,7 @@ const remainingStations = computed(() => {
 const hasRemainingStations = computed(() => {
     return !isEmpty(remainingStations.value);
 });
+
 
 const remove = (index) => {
     props.form.permissions.$model.station.splice(index, 1);

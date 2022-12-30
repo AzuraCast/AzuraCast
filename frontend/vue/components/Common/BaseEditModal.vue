@@ -9,7 +9,7 @@ import mergeExisting from "~/functions/mergeExisting";
 
 export default {
     name: 'BaseEditModal',
-    components: {ModalForm},
+    components: {ModalForm}, // eslint-disable-line
     props: {
         createUrl: {
             type: String,

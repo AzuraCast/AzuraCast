@@ -154,7 +154,7 @@ const setCueOut = () => {
 const setFadeOverlap = () => {
     let duration = $waveform.value?.getDuration();
     let currentTime = $waveform.value?.getCurrentTime();
-    let cue_out = form.value?.cue_out ?? duration;
+    let cue_out = props.form.cue_out ?? duration;
 
     props.form.fade_overlap = Math.round((cue_out - currentTime) * 10) / 10;
     updateRegions();
@@ -162,7 +162,7 @@ const setFadeOverlap = () => {
 
 const setFadeIn = () => {
     let currentTime = $waveform.value?.getCurrentTime();
-    let cue_in = form.value?.cue_in ?? 0;
+    let cue_in = props.form.cue_in ?? 0;
 
     props.form.fade_in = Math.round((currentTime - cue_in) * 10) / 10;
     updateRegions();
@@ -171,7 +171,7 @@ const setFadeIn = () => {
 const setFadeOut = () => {
     let currentTime = $waveform.value?.getCurrentTime();
     let duration = $waveform.value?.getDuration();
-    let cue_out = form.value?.cue_out ?? duration;
+    let cue_out = props.form.cue_out ?? duration;
 
     props.form.fade_out = Math.round((cue_out - currentTime) * 10) / 10;
     updateRegions();

@@ -33,43 +33,44 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import Icon from '~/components/Common/Icon';
 import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
+import {useVModel} from "@vueuse/core";
 
-export default {
-    name: 'PlaylistEditSchedule',
-    components: {PlaylistsFormScheduleRow, Icon},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        scheduleItems: {
-            type: Array,
-            default: () => {
-                return [];
-            }
-        }
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    methods: {
-        add() {
-            this.scheduleItems.push({
-                start_time: null,
-                end_time: null,
-                start_date: null,
-                end_date: null,
-                days: [],
-                loop_once: false
-            });
-        },
-        remove (index) {
-            this.scheduleItems.splice(index, 1);
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    scheduleItems: {
+        type: Array,
+        default: () => {
+            return [];
         }
     }
+});
+
+const emit = defineEmits(['update:scheduleItems']);
+
+const scheduleItems = useVModel(props, 'scheduleItems', emit);
+
+const add = () => {
+    scheduleItems.value.push({
+        start_time: null,
+        end_time: null,
+        start_date: null,
+        end_date: null,
+        days: [],
+        loop_once: false
+    });
+};
+
+const remove = (index) => {
+    scheduleItems.value.splice(index, 1);
 };
 </script>

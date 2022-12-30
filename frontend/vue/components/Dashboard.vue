@@ -46,6 +46,7 @@
             <template v-if="!notificationsLoading && notifications.length > 0">
                 <div
                     v-for="notification in notifications"
+                    :key="notification.title"
                     class="card-body d-flex align-items-center"
                     :class="'alert-'+notification.type"
                     role="alert"

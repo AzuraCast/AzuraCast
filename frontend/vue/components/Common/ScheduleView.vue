@@ -30,7 +30,7 @@ const emit = defineEmits(['click']);
 const onEventDidMount = (info) => {
     let desc = info?.event?.extendedProps?.description || null;
     if (desc !== null) {
-        // eslint-ignore-line no-undef
+        /* eslint-disable no-undef */
         $(info.el).tooltip({
             title: desc,
             placement: 'top',
@@ -38,6 +38,7 @@ const onEventDidMount = (info) => {
             container: 'body',
             offset: 0
         });
+        /* eslint-enable */
     }
 };
 

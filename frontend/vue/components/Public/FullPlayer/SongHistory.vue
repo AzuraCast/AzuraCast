@@ -5,6 +5,7 @@
         </p>
         <div
             v-for="(row, index) in history"
+            :key="row.sh_id"
             class="song"
         >
             <strong class="order">{{ history.length - index }}</strong>

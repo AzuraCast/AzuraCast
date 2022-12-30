@@ -163,6 +163,7 @@
                             />
                         </div>
                     </template>
+                    <!-- eslint-disable-next-line -->
                     <template #cell(media.length)="row">
                         {{ row.item.media.length_text }}
                     </template>
@@ -175,7 +176,10 @@
                         </template>
                     </template>
                     <template #cell(playlists)="row">
-                        <template v-for="(playlist, index) in row.item.playlists">
+                        <template
+                            v-for="(playlist, index) in row.item.playlists"
+                            :key="playlist.id"
+                        >
                             <a
                                 class="btn-search"
                                 href="#"

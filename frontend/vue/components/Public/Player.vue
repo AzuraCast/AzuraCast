@@ -106,6 +106,7 @@
                     >
                         <a
                             v-for="stream in streams"
+                            :key="stream.url"
                             class="dropdown-item"
                             href="javascript:"
                             @click.prevent="switchStream(stream)"
@@ -157,7 +158,7 @@ import AudioPlayer from '~/components/Common/AudioPlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
-import {useMounted, useStorage} from "@vueuse/core";
+import {useStorage} from "@vueuse/core";
 import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";

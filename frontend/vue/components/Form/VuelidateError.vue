@@ -1,6 +1,9 @@
 <template>
     <div style="display: contents">
-        <div v-for="message in errorMessages">
+        <div
+            v-for="message in errorMessages"
+            :key="message"
+        >
             {{ message }}
         </div>
     </div>

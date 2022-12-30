@@ -92,6 +92,7 @@
                                 <b-dropdown-form class="pt-3">
                                     <div
                                         v-for="field in selectableFields"
+                                        :key="field.key"
                                         class="form-group"
                                     >
                                         <div class="custom-control custom-checkbox">
@@ -147,7 +148,7 @@
                 @refreshed="onRefreshed"
                 @sort-changed="onSortChanged"
             >
-                <template #head(selected)="data">
+                <template #head(selected)>
                     <b-form-checkbox
                         :aria-label="$gettext('Select all visible rows')"
                         :checked="allSelected"
@@ -274,13 +275,11 @@ export default defineComponent({
         },
         requestConfig: {
             type: Function,
-            default: () => {
-            }
+            default: null
         },
         requestProcess: {
             type: Function,
-            default: () => {
-            }
+            default: null
         }
     },
     emits: [
@@ -361,7 +360,6 @@ export default defineComponent({
         },
         itemProvider() {
             if (this.items !== null) {
-                this.totalRows = this.items.length;
                 return this.items;
             }
 
@@ -371,6 +369,11 @@ export default defineComponent({
         }
     },
     watch: {
+        items(newVal) {
+            if (newVal !== null) {
+                this.totalRows = newVal.length;
+            }
+        },
         filter() {
             this.currentPage = 1;
         }

@@ -14,8 +14,8 @@
         >
             <form-basic-info :form="v$.form" />
             <form-schedule
+                v-model:schedule-items="form.schedule_items"
                 :form="v$.form"
-                :schedule-items="form.schedule_items"
                 :station-time-zone="stationTimeZone"
             />
             <form-artwork

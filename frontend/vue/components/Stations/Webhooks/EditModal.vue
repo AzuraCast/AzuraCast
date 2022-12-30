@@ -44,7 +44,7 @@ import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";
-import _ from "lodash";
+import {get, map} from "lodash";
 import Generic from "./Form/Generic";
 import Email from "./Form/Email";
 import Tunein from "./Form/Tunein";
@@ -101,7 +101,7 @@ export default {
         }
 
         if (this.type !== null) {
-            validations.form.config = _.get(this.webhookConfig, [this.type, 'validations'], {});
+            validations.form.config = get(this.webhookConfig, [this.type, 'validations'], {});
         }
 
         return validations;
@@ -117,8 +117,8 @@ export default {
                 return [];
             }
 
-            let webhookKeys = _.get(this.webhookTypes, [this.type, 'triggers'], []);
-            return _.map(webhookKeys, (key) => {
+            let webhookKeys = get(this.webhookTypes, [this.type, 'triggers'], []);
+            return map(webhookKeys, (key) => {
                 return {
                     html:
                         '<h6 class="font-weight-bold mb-0">' + this.triggerTitles[key] + '</h6>'
@@ -128,10 +128,10 @@ export default {
             });
         },
         typeTitle() {
-            return _.get(this.webhookTypes, [this.type, 'name'], '');
+            return get(this.webhookTypes, [this.type, 'name'], '');
         },
         formComponent() {
-            return _.get(this.webhookConfig, [this.type, 'component'], Generic);
+            return get(this.webhookConfig, [this.type, 'component'], Generic);
         },
         webhookConfig() {
             return {
@@ -300,62 +300,78 @@ export default {
             return this.$gettext('Powered by AzuraCast');
         },
         langDiscordDefaultContent() {
-            let msg = this.$gettext('Now playing on %{ station }:');
-            return this.$gettextInterpolate(msg, {'station': '{{ station.name }}'});
+            return this.$gettext(
+                'Now playing on %{ station }:',
+                {'station': '{{ station.name }}'}
+            );
         },
         langTelegramDefaultContent() {
-            let msg = this.$gettext('Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.');
-            return this.$gettextInterpolate(msg, {
-                station: '{{ station.name }}',
-                title: '{{ now_playing.song.title }}',
-                artist: '{{ now_playing.song.artist }}'
-            });
+            return this.$gettext(
+                'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.',
+                {
+                    station: '{{ station.name }}',
+                    title: '{{ now_playing.song.title }}',
+                    artist: '{{ now_playing.song.artist }}'
+                }
+            );
         },
         langTwitterDefaultMessage() {
-            let msg = this.$gettext('Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }');
-            return this.$gettextInterpolate(msg, {
-                station: '{{ station.name }}',
-                title: '{{ now_playing.song.title }}',
-                artist: '{{ now_playing.song.artist }}',
-                url: '{{ station.public_player_url }}'
-            });
+            return this.$gettext(
+                'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }',
+                {
+                    station: '{{ station.name }}',
+                    title: '{{ now_playing.song.title }}',
+                    artist: '{{ now_playing.song.artist }}',
+                    url: '{{ station.public_player_url }}'
+                }
+            );
         },
         langTwitterSongChangedLiveMessage() {
-            let msg = this.$gettext('Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }');
-            return this.$gettextInterpolate(msg, {
-                station: '{{ station.name }}',
-                title: '{{ now_playing.song.title }}',
-                artist: '{{ now_playing.song.artist }}',
-                dj: '{{ live.streamer_name }}',
-                url: '{{ station.public_player_url }}'
-            });
+            return this.$gettext(
+                'Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }',
+                {
+                    station: '{{ station.name }}',
+                    title: '{{ now_playing.song.title }}',
+                    artist: '{{ now_playing.song.artist }}',
+                    dj: '{{ live.streamer_name }}',
+                    url: '{{ station.public_player_url }}'
+                }
+            );
         },
         langTwitterDjOnMessage() {
-            let msg = this.$gettext('%{ dj } is now live on %{ station }! Tune in now: %{ url }');
-            return this.$gettextInterpolate(msg, {
-                dj: '{{ live.streamer_name }}',
-                station: '{{ station.name }}',
-                url: '{{ station.public_player_url }}'
-            });
+            return this.$gettext(
+                '%{ dj } is now live on %{ station }! Tune in now: %{ url }',
+                {
+                    dj: '{{ live.streamer_name }}',
+                    station: '{{ station.name }}',
+                    url: '{{ station.public_player_url }}'
+                }
+            );
         },
         langTwitterDjOffMessage() {
-            let msg = this.$gettext('Thanks for listening to %{ station }!');
-            return this.$gettextInterpolate(msg, {
-                station: '{{ station.name }}',
-            });
+            return this.$gettext(
+                'Thanks for listening to %{ station }!',
+                {
+                    station: '{{ station.name }}',
+                }
+            );
         },
         langTwitterStationOfflineMessage() {
-            let msg = this.$gettext('%{ station } is going offline for now.');
-            return this.$gettextInterpolate(msg, {
-                station: '{{ station.name }}'
-            });
+            return this.$gettext(
+                '%{ station } is going offline for now.',
+                {
+                    station: '{{ station.name }}'
+                }
+            );
         },
         langTwitterStationOnlineMessage() {
-            let msg = this.$gettext('%{ station } is back online! Tune in now: %{ url }');
-            return this.$gettextInterpolate(msg, {
-                station: '{{ station.name }}',
-                url: '{{ station.public_player_url }}'
-            });
+            return this.$gettext(
+                '%{ station } is back online! Tune in now: %{ url }',
+                {
+                    station: '{{ station.name }}',
+                    url: '{{ station.public_player_url }}'
+                }
+            );
         }
     },
     methods: {
@@ -369,7 +385,7 @@ export default {
         },
         setType(type) {
             this.type = type;
-            this.form.config = _.get(this.webhookConfig, [type, 'defaultConfig'], {});
+            this.form.config = get(this.webhookConfig, [type, 'defaultConfig'], {});
         },
         getSubmittableFormData() {
             let formData = this.form;

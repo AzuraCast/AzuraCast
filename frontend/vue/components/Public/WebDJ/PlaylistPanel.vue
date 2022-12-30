@@ -63,7 +63,7 @@
             >
                 <div class="d-flex flex-row mb-2">
                     <div class="flex-shrink-0 pt-1 pr-2">
-                        {{ prettifyTime(position) }}
+                        {{ formatTime(position) }}
                     </div>
                     <div class="flex-fill">
                         <input
@@ -79,7 +79,7 @@
                         >
                     </div>
                     <div class="flex-shrink-0 pt-1 pl-2">
-                        {{ prettifyTime(duration) }}
+                        {{ formatTime(duration) }}
                     </div>
                 </div>
 
@@ -163,11 +163,11 @@
             >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
-                        rowFile.metadata.title ? rowFile.metadata.title : lang_unknown_title
-                    }}</h5>
-                    <small class="pt-1">{{ prettifyTime(rowFile.audio.length) }}</small>
+                            rowFile?.metadata?.title ?? $gettext('Unknown Title')
+                        }}</h5>
+                    <small class="pt-1">{{ formatTime(rowFile.audio.length) }}</small>
                 </div>
-                <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : lang_unknown_artist }}</p>
+                <p class="mb-0">{{ rowFile?.metadata?.artist ?? $gettext('Unknown Artist') }}</p>
             </a>
         </div>
     </div>
@@ -175,9 +175,10 @@
 
 <script>
 import track from './Track.js';
-import _ from 'lodash';
+import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
+import formatTime from "../../../functions/formatTime";
 
 export default {
     components: {VolumeSlider, Icon},
@@ -209,12 +210,6 @@ export default {
                 ? this.$gettext('Playlist 1')
                 : this.$gettext('Playlist 2');
         },
-        lang_unknown_title () {
-            return this.$gettext('Unknown Title');
-        },
-        lang_unknown_artist () {
-            return this.$gettext('Unknown Artist');
-        },
         positionPercent () {
             return (100.0 * this.position / parseFloat(this.duration));
         },
@@ -231,38 +226,14 @@ export default {
         this.$root.$on('new-cue', this.onNewCue);
     },
     methods: {
-        prettifyTime(time) {
-            if (typeof time === 'undefined') {
-                return 'N/A';
-            }
-
-            let hours = parseInt(time / 3600);
-            time %= 3600;
-            let minutes = parseInt(time / 60);
-            let seconds = parseInt(time % 60);
-
-            if (minutes < 10) {
-                minutes = '0' + minutes;
-            }
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            }
-
-            if (hours > 0) {
-                return hours + ':' + minutes + ':' + seconds;
-            } else {
-                return minutes + ':' + seconds;
-            }
-        },
+        formatTime,
         cue() {
             this.resumeStream();
             this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
         },
-
         onNewCue(new_cue) {
             this.passThrough = (new_cue === this.id);
         },
-
         setMixGain(new_value) {
             if (this.id === 'playlist_1') {
                 this.mixGainObj.gain.value = 1.0 - new_value;
@@ -270,19 +241,17 @@ export default {
                 this.mixGainObj.gain.value = new_value;
             }
         },
-
         addNewFiles (newFiles) {
-            _.each(newFiles, (file) => {
+            forEach(newFiles, (file) => {
                 file.readTaglibMetadata((data) => {
                     this.files.push({
                         file: file,
                         audio: data.audio,
-                        metadata: data.metadata || { title: '', artist: '' }
+                        metadata: data.metadata || {title: '', artist: ''}
                     });
                 });
             });
         },
-
         play (options) {
             this.resumeStream();
 

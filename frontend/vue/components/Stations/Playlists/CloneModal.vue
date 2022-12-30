@@ -85,8 +85,10 @@ export default {
             this.resetForm();
             this.cloneUrl = cloneUrl;
 
-            let langNewName = this.$gettext('%{name} - Copy');
-            this.form.name = this.$gettextInterpolate(langNewName, {name: name});
+            this.form.name = this.$gettext(
+                '%{name} - Copy',
+                {name: name}
+            );
 
             this.$refs.modal.show();
         },

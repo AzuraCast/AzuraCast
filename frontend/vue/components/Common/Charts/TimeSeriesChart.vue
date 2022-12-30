@@ -8,7 +8,7 @@
 import {get} from "@vueuse/core";
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {DateTime} from "luxon";
-import _ from "lodash";
+import {defaultsDeep} from "lodash";
 import {Chart} from "chart.js";
 import {onMounted, onUnmounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -16,7 +16,9 @@ import {useTranslate} from "~/vendor/gettext";
 const props = defineProps({
     options: {
         type: Object,
-        required: true
+        default: () => {
+            return {};
+        }
     },
     data: {
         type: Array,
@@ -99,7 +101,7 @@ onMounted(() => {
         $chart.destroy();
     }
 
-    let chartOptions = _.defaultsDeep({}, props.options, defaultOptions);
+    let chartOptions = defaultsDeep({}, props.options, defaultOptions);
     $chart = new Chart(get($canvas).getContext('2d'), chartOptions);
 });
 

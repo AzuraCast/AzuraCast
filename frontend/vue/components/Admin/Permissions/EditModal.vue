@@ -31,7 +31,7 @@ import {required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
-import _ from 'lodash';
+import {forEach, map} from 'lodash';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 export default {
@@ -87,7 +87,7 @@ export default {
         populateForm(data) {
             this.form.name = data.name;
             this.form.permissions.global = data.permissions.global;
-            this.form.permissions.station = _.map(data.permissions.station, (permissions, stationId) => {
+            this.form.permissions.station = map(data.permissions.station, (permissions, stationId) => {
                 return {
                     'station_id': stationId,
                     'permissions': permissions
@@ -103,7 +103,7 @@ export default {
                 }
             };
 
-            _.forEach(this.form.permissions.station, (row) => {
+            forEach(this.form.permissions.station, (row) => {
                 form.permissions.station[row.station_id] = row.permissions;
             });
 

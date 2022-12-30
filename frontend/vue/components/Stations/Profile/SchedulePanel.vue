@@ -56,7 +56,7 @@ export default {
 
 <script setup>
 import {DateTime} from "luxon";
-import _ from "lodash";
+import {map} from "lodash";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 
@@ -76,7 +76,7 @@ const {timeConfig} = useAzuraCast();
 const processedScheduleItems = computed(() => {
     const now = DateTime.now().setZone(props.stationTimeZone);
 
-    return _.map(props.scheduleItems, (row) => {
+    return map(props.scheduleItems, (row) => {
         const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(props.stationTimeZone);
         const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(props.stationTimeZone);
 

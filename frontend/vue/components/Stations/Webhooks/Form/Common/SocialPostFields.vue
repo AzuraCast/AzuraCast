@@ -84,7 +84,7 @@
 <script>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./FormattingInfo";
-import _ from 'lodash';
+import {includes} from 'lodash';
 
 export default {
     name: 'CommonSocialPostFields',
@@ -101,7 +101,7 @@ export default {
     },
     methods: {
         hasTrigger(trigger) {
-            return _.includes(this.form.triggers.$model, trigger);
+            return includes(this.form.triggers.$model, trigger);
         }
     }
 }

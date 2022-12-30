@@ -25,7 +25,7 @@
                 >
                     <b-img
                         :src="src"
-                        :alt="langTitle"
+                        :alt="$gettext('Artwork')"
                         rounded
                         fluid
                     />

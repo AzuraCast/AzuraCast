@@ -21,7 +21,7 @@ import useVuelidate from "@vuelidate/core";
 import {email, required} from '@vuelidate/validators';
 import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminUsersForm from './Form.vue';
-import _ from 'lodash';
+import {map} from 'lodash';
 import validatePassword from "~/functions/validatePassword";
 
 export default {
@@ -75,7 +75,7 @@ export default {
                 name: data.name,
                 email: data.email,
                 new_password: '',
-                roles: _.map(data.roles, 'id')
+                roles: map(data.roles, 'id')
             };
         },
     }

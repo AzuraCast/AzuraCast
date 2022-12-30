@@ -368,26 +368,7 @@
                                 class="align-middle"
                             >
                                 <td class="text-center pr-2">
-                                    <template v-if="service.running">
-                                        <b-badge
-                                            pill
-                                            variant="success"
-                                            :title="langServiceRunning"
-                                        >
-                                        &nbsp;&nbsp;
-                                            <span class="sr-only">{{ langServiceRunning }}</span>
-                                        </b-badge>
-                                    </template>
-                                    <template v-else>
-                                        <b-badge
-                                            pill
-                                            variant="danger"
-                                            :title="langServiceStopped"
-                                        >
-                                        &nbsp;&nbsp;
-                                            <span class="sr-only">{{ langServiceStopped }}</span>
-                                        </b-badge>
-                                    </template>
+                                    <running-badge :running="service.running" />
                                 </td>
                                 <td class="pl-2">
                                     <h6 class="mb-0">
@@ -474,11 +455,12 @@
 import Icon from '~/components/Common/Icon';
 import CpuStatsHelpModal from "./Index/CpuStatsHelpModal";
 import MemoryStatsHelpModal from "./Index/MemoryStatsHelpModal";
-import _ from 'lodash';
+import {isObject, upperFirst} from 'lodash';
+import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 
 export default {
     name: 'AdminIndex',
-    components: {CpuStatsHelpModal, MemoryStatsHelpModal, Icon},
+    components: {RunningBadge, CpuStatsHelpModal, MemoryStatsHelpModal, Icon},
     props: {
         adminPanels: {
             type: Object,
@@ -537,21 +519,13 @@ export default {
             services: []
         };
     },
-    computed: {
-        langServiceRunning() {
-            return this.$gettext('Service Running');
-        },
-        langServiceStopped() {
-            return this.$gettext('Service Stopped');
-        }
-    },
     created() {
         this.updateStats();
         this.updateServices();
     },
     methods: {
         formatCpuName(cpuName) {
-            return _.upperFirst(cpuName);
+            return upperFirst(cpuName);
         },
         formatPercentageString(value) {
             return value + '%';
@@ -575,7 +549,7 @@ export default {
                 let key = data[0];
                 let value = data[1];
 
-                if (_.isObject(value)) {
+                if (isObject(value)) {
                     value = value.readable + '/s';
                 }
 

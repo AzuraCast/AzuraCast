@@ -101,7 +101,7 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Webhooks/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from "~/components/Common/InfoCard";
-import _ from 'lodash';
+import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 
 export default {
@@ -168,11 +168,11 @@ export default {
                 : 'success';
         },
         getWebhookName(key) {
-            return _.get(this.webhookTypes, [key, 'name'], '');
+            return get(this.webhookTypes, [key, 'name'], '');
         },
         getTriggerNames(triggers) {
-            return _.map(triggers, (trigger) => {
-                return _.get(this.langTriggerTitles, trigger, '');
+            return map(triggers, (trigger) => {
+                return get(this.langTriggerTitles, trigger, '');
             });
         },
         relist() {

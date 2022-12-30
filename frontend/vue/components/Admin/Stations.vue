@@ -88,7 +88,7 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
 import AdminStationsEditModal from "./Stations/EditModal";
-import _ from "lodash";
+import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal";
 import stationFormProps from "./Stations/stationFormProps";
 
@@ -148,10 +148,10 @@ export default {
             });
         },
         getFrontendName(frontend_type) {
-            return _.get(this.frontendTypes, [frontend_type, 'name'], '');
+            return get(this.frontendTypes, [frontend_type, 'name'], '');
         },
         getBackendName(backend_type) {
-            return _.get(this.backendTypes, [backend_type, 'name'], '');
+            return get(this.backendTypes, [backend_type, 'name'], '');
         }
     }
 };

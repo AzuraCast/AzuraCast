@@ -75,7 +75,7 @@
 <script>
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {defineComponent} from "vue";
-import _ from "lodash";
+import {filter, includes} from "lodash";
 
 export default defineComponent({
     components: {InvisibleSubmitButton},
@@ -116,8 +116,8 @@ export default defineComponent({
     emits: ['submit', 'shown', 'hidden'],
     computed: {
         filteredScopedSlots() {
-            return _.filter(this.$slots, (slot, name) => {
-                return !_.includes([
+            return filter(this.$slots, (slot, name) => {
+                return !includes([
                     'default', 'modal-footer'
                 ], name);
             });

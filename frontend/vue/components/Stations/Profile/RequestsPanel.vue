@@ -66,6 +66,7 @@ export default {
 <script setup>
 import Icon from '~/components/Common/Icon';
 import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 
 const props = defineProps({
     ...requestsPanelProps

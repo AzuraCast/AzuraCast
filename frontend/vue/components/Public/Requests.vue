@@ -41,7 +41,7 @@
 
 <script>
 import DataTable from '~/components/Common/DataTable';
-import _ from 'lodash';
+import {forEach} from 'lodash';
 import AlbumArt from '~/components/Common/AlbumArt';
 
 export default {
@@ -95,7 +95,7 @@ export default {
             }
         ];
 
-        _.forEach(this.customFields.slice(), (field) => {
+        forEach(this.customFields.slice(), (field) => {
             fields.push({
                 key: 'song.custom_fields.' + field.short_name,
                 label: field.name,

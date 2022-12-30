@@ -83,7 +83,7 @@
 </template>
 <script>
 import track from './Track.js';
-import _ from 'lodash';
+import {first, filter, isEmpty} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 
@@ -184,15 +184,15 @@ export default {
             });
         },
         setDevices: function (devices) {
-            devices = _.filter(devices, function ({kind}) {
+            devices = filter(devices, function ({kind}) {
                 return kind === 'audioinput';
             });
-            if (_.isEmpty(devices)) {
+            if (isEmpty(devices)) {
                 return;
             }
 
             this.devices = devices;
-            this.device = _.first(devices).deviceId;
+            this.device = first(devices).deviceId;
         }
     }
 };

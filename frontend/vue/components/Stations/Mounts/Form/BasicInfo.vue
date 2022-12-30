@@ -167,10 +167,10 @@ export default {
     },
     computed: {
         langAuthhashDesc() {
-            let text = 'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the Shoutcast web site</a>.';
-            let url = 'https://radiomanager.shoutcast.com/';
-
-            return this.$gettextInterpolate(this.$gettext(text), {url: url});
+            return this.$gettext(
+                'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the Shoutcast web site</a>.',
+                {url: 'https://radiomanager.shoutcast.com/'}
+            );
         },
         isIcecast () {
             return FRONTEND_ICECAST === this.stationFrontendType;

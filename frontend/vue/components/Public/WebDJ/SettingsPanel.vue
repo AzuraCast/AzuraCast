@@ -200,7 +200,7 @@
                                             v-model="djUsername"
                                             type="text"
                                             class="form-control"
-                                            :placeholder="langDjUsername"
+                                            :placeholder="$gettext('Username')"
                                         >
                                     </div>
                                     <div class="col-6">
@@ -208,7 +208,7 @@
                                             v-model="djPassword"
                                             type="password"
                                             class="form-control"
-                                            :placeholder="langDjPassword"
+                                            :placeholder="$gettext('Password')"
                                         >
                                     </div>
                                 </div>
@@ -345,12 +345,6 @@ export default {
         };
     },
     computed: {
-        langDjUsername () {
-            return this.$gettext('Username');
-        },
-        langDjPassword () {
-            return this.$gettext('Password');
-        },
         langStreamButton () {
             return (this.isStreaming)
                 ? this.$gettext('Stop Streaming')

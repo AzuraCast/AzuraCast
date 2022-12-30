@@ -11,7 +11,7 @@
 <script setup>
 
 import {computed} from "vue";
-import _ from 'lodash';
+import {isEmpty, padStart} from 'lodash';
 
 const props = defineProps({
     modelValue: {
@@ -24,7 +24,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const parseTimeCode = (timeCode) => {
     if (timeCode !== '' && timeCode !== null) {
-        timeCode = _.padStart(timeCode, 4, '0');
+        timeCode = padStart(timeCode, 4, '0');
         return timeCode.substring(0, 2) + ':' + timeCode.substring(2);
     }
 
@@ -32,7 +32,7 @@ const parseTimeCode = (timeCode) => {
 }
 
 const convertToTimeCode = (time) => {
-    if (_.isEmpty(time)) {
+    if (isEmpty(time)) {
         return null;
     }
 

@@ -85,7 +85,7 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Permissions/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import _ from 'lodash';
+import {filter, get, map} from 'lodash';
 
 export default {
     name: 'AdminPermissions',
@@ -119,17 +119,17 @@ export default {
     },
     methods: {
         getGlobalPermissionNames(permissions) {
-            return _.filter(_.map(permissions, (permission) => {
-                return _.get(this.globalPermissions, permission, null);
+            return filter(map(permissions, (permission) => {
+                return get(this.globalPermissions, permission, null);
             }));
         },
         getStationPermissionNames(permissions) {
-            return _.filter(_.map(permissions, (permission) => {
-                return _.get(this.stationPermissions, permission, null);
+            return filter(map(permissions, (permission) => {
+                return get(this.stationPermissions, permission, null);
             }));
         },
         getStationName(stationId) {
-            return _.get(this.stations, stationId, null);
+            return get(this.stations, stationId, null);
         },
         relist() {
             this.$refs.datatable.refresh();

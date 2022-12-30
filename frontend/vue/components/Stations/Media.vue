@@ -258,7 +258,7 @@ import PlayButton from "~/components/Common/PlayButton";</script>
 
 <script>
 import formatFileSize from '~/functions/formatFileSize.js';
-import _ from 'lodash';
+import {forEach, map, partition} from 'lodash';
 import {DateTime} from 'luxon';
 import {useAzuraCast} from "~/vendor/azuracast";
 
@@ -341,7 +341,7 @@ export default {
             {key: 'media.length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true}
         ];
 
-        _.forEach(this.customFields.slice(), (field) => {
+        forEach(this.customFields.slice(), (field) => {
             fields.push({
                 key: 'media.custom_fields[' + field.id + ']',
                 label: field.name,
@@ -417,12 +417,12 @@ export default {
             return formatFileSize(size);
         },
         onRowSelected(items) {
-            let splitItems = _.partition(items, 'is_dir');
+            let splitItems = partition(items, 'is_dir');
 
             this.selectedItems = {
                 all: items,
-                files: _.map(splitItems[1], 'path'),
-                directories: _.map(splitItems[0], 'path')
+                files: map(splitItems[1], 'path'),
+                directories: map(splitItems[0], 'path')
             };
         },
         onTriggerNavigate() {

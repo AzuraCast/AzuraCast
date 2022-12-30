@@ -71,7 +71,7 @@ import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
 import Icon from '~/components/Common/Icon.vue';
 import InfoCard from '~/components/Common/InfoCard.vue';
-import _, {get} from 'lodash';
+import {get} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";

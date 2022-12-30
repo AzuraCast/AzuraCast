@@ -73,7 +73,7 @@
 </template>
 <script>
 import DataTable from '~/components/Common/DataTable.vue';
-import _ from 'lodash';
+import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
 
 export default {
@@ -109,8 +109,10 @@ export default {
     },
     computed: {
         langHeader () {
-            let headerText = this.$gettext('Move %{ num } File(s) to');
-            return this.$gettextInterpolate(headerText, { num: this.selectedItems.all.length });
+            return this.$gettext(
+                'Move %{ num } File(s) to',
+                {num: this.selectedItems.all.length}
+            );
         }
     },
     methods: {
@@ -132,7 +134,7 @@ export default {
             ).then(() => {
                 let notifyMessage = this.$gettext('Files moved:');
                 let itemNameNodes = [];
-                _.forEach(this.selectedItems.all, (item) => {
+                forEach(this.selectedItems.all, (item) => {
                     itemNameNodes.push(this.$createElement('div', {}, item.name));
                 });
 

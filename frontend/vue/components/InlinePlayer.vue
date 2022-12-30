@@ -53,7 +53,7 @@
             </div>
             <div class="flex-fill mx-1">
                 <input
-                    v-model="volume"
+                    v-model.number="volume"
                     type="range"
                     :title="$gettext('Volume')"
                     class="player-volume-range custom-range"

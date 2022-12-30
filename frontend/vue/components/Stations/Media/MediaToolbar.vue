@@ -10,7 +10,7 @@
                     v-b-tooltip.hover
                     size="sm"
                     variant="primary"
-                    :title="langPlaylistDropdown"
+                    :title="$gettext('Set or clear playlists from the selected media')"
                 >
                     <template #button-content>
                         <icon icon="clear_all" />
@@ -63,7 +63,7 @@
                                         class="form-control p-2"
                                         name="new_playlist_name"
                                         style="min-width: 150px;"
-                                        :placeholder="langNewPlaylist"
+                                        :placeholder="$gettext('New Playlist')"
                                     >
                                 </label>
                             </div>
@@ -101,11 +101,11 @@
             >
                 <template #button-content>
                     <icon icon="more_horiz" />
-                    {{ langMore }}
+                    {{ $gettext('More') }}
                 </template>
                 <b-dropdown-item
                     v-b-tooltip.hover
-                    :title="langQueue"
+                    :title="$gettext('Queue the selected media to play next')"
                     @click="doQueue"
                 >
                     {{ $gettext('Queue') }}
@@ -113,14 +113,14 @@
                 <b-dropdown-item
                     v-if="supportsImmediateQueue"
                     v-b-tooltip.hover
-                    :title="langImmediateQueue"
+                    :title="$gettext('Make the selected media play immediately, interrupting existing media')"
                     @click="doImmediateQueue"
                 >
                     {{ $gettext('Play Now') }}
                 </b-dropdown-item>
                 <b-dropdown-item
                     v-b-tooltip.hover
-                    :title="langReprocess"
+                    :title="$gettext('Analyze and reprocess the selected media')"
                     @click="doReprocess"
                 >
                     {{ $gettext('Reprocess') }}
@@ -149,7 +149,7 @@
     </div>
 </template>
 <script>
-import _ from 'lodash';
+import {forEach, intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import '~/vendor/sweetalert';
 
@@ -188,24 +188,6 @@ export default {
         };
     },
     computed: {
-        langPlaylistDropdown() {
-            return this.$gettext('Set or clear playlists from the selected media');
-        },
-        langNewPlaylist() {
-            return this.$gettext('New Playlist');
-        },
-        langMore() {
-            return this.$gettext('More');
-        },
-        langImmediateQueue() {
-            return this.$gettext('Make the selected media play immediately, interrupting existing media');
-        },
-        langQueue() {
-            return this.$gettext('Queue the selected media to play next');
-        },
-        langReprocess() {
-            return this.$gettext('Analyze and reprocess the selected media');
-        },
         langErrors() {
             return this.$gettext('The request could not be processed.');
         },
@@ -213,12 +195,12 @@ export default {
     watch: {
         selectedItems (items) {
             // Get all playlists that are active on ALL selected items.
-            let playlistsForItems = _.map(items.all, (item) => {
-                return _.map(item.playlists, 'id');
+            let playlistsForItems = map(items.all, (item) => {
+                return map(item.playlists, 'id');
             });
 
             // Check the checkboxes for those playlists.
-            this.checkedPlaylists = _.intersection(...playlistsForItems);
+            this.checkedPlaylists = intersection(...playlistsForItems);
         },
         newPlaylist (text) {
             if (text !== '') {
@@ -262,7 +244,7 @@ export default {
                 ).then((resp) => {
                     if (resp.data.success) {
                         let allItemNodes = [];
-                        _.forEach(this.selectedItems.all, (item) => {
+                        forEach(this.selectedItems.all, (item) => {
                             allItemNodes.push(this.$createElement('div', {}, item.path_short));
                         });
 
@@ -271,7 +253,7 @@ export default {
                         });
                     } else {
                         let errorNodes = [];
-                        _.forEach(resp.data.errors, (error) => {
+                        forEach(resp.data.errors, (error) => {
                             errorNodes.push(this.$createElement('div', {}, error));
                         });
 
@@ -316,7 +298,7 @@ export default {
                             : this.$gettext('Playlists cleared for selected files:');
 
                         let allItemNodes = [];
-                        _.forEach(this.selectedItems.all, (item) => {
+                        forEach(this.selectedItems.all, (item) => {
                             allItemNodes.push(this.$createElement('div', {}, item.path_short));
                         });
 
@@ -328,7 +310,7 @@ export default {
                         this.newPlaylist = '';
                     } else {
                         let errorNodes = [];
-                        _.forEach(resp.data.errors, (error) => {
+                        forEach(resp.data.errors, (error) => {
                             errorNodes.push(this.$createElement('div', {}, error));
                         });
 
